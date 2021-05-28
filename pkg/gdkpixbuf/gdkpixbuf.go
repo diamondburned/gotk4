@@ -238,6 +238,221 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// Copy creates a copy of @format
+func (format *PixbufFormat) Copy() *PixbufFormat {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_copy(arg0)
+
+	var ret0 *PixbufFormat
+
+	ret0 = WrapPixbufFormat(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated when copying a PixbufFormat using
+// gdk_pixbuf_format_copy()
+func (format *PixbufFormat) Free() {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	C.gdk_pixbuf_format_free(arg0)
+}
+
+// Description returns a description of the format.
+func (format *PixbufFormat) Description() string {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_get_description(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Extensions returns the filename extensions typically used for files in the
+// given format.
+func (format *PixbufFormat) Extensions() []string {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_get_extensions(arg0)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// License returns information about the license of the image loader for the
+// format. The returned string should be a shorthand for a wellknown license,
+// e.g. "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other
+// license. This string should be freed with g_free() when it's no longer
+// needed.
+func (format *PixbufFormat) License() string {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_get_license(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// MIMETypes returns the mime types supported by the format.
+func (format *PixbufFormat) MIMETypes() []string {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_get_mime_types(arg0)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// Name returns the name of the format.
+func (format *PixbufFormat) Name() string {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_get_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// IsDisabled returns whether this image format is disabled. See
+// gdk_pixbuf_format_set_disabled().
+func (format *PixbufFormat) IsDisabled() bool {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_is_disabled(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsSaveOptionSupported returns true if the save option specified by
+// @option_key is supported when saving a pixbuf using the module implementing
+// @format. See gdk_pixbuf_save() for more information about option keys.
+func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
+	var arg0 *C.GdkPixbufFormat
+	var arg1 *C.gchar
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+	arg1 = (*C.gchar)(C.CString(optionKey))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gdk_pixbuf_format_is_save_option_supported(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsScalable returns whether this image format is scalable. If a file is in a
+// scalable format, it is preferable to load it at the desired size, rather than
+// loading it at the default size and scaling the resulting pixbuf to the
+// desired size.
+func (format *PixbufFormat) IsScalable() bool {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_is_scalable(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsWritable returns whether pixbufs can be saved in the given format.
+func (format *PixbufFormat) IsWritable() bool {
+	var arg0 *C.GdkPixbufFormat
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+
+	ret := C.gdk_pixbuf_format_is_writable(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetDisabled disables or enables an image format. If a format is disabled,
+// gdk-pixbuf won't use the image loader for this format to load images.
+// Applications can use this to avoid using image loaders with an inappropriate
+// license, see gdk_pixbuf_format_get_license().
+func (format *PixbufFormat) SetDisabled(disabled bool) {
+	var arg0 *C.GdkPixbufFormat
+	var arg1 C.gboolean
+
+	arg0 = (*C.GdkPixbufFormat)(format.Native())
+	arg1 = gextras.Cbool(disabled)
+
+	C.gdk_pixbuf_format_set_disabled(arg0, arg1)
+}
+
 // Pixbuf: this is the main structure in the gdk-pixbuf library. It is used to
 // represent images. It contains information about the image's pixel data, its
 // color space, bits per sample, width and height, and the rowstride (the number
@@ -349,8 +564,6 @@ type Pixbuf interface {
 	//
 	// See gdk_pixbuf_get_option() for more details.
 	Options() *glib.HashTable
-	// Pixels queries a pointer to the pixel data of a pixbuf.
-	Pixels() []byte
 	// PixelsWithLength queries a pointer to the pixel data of a pixbuf.
 	PixelsWithLength() (length uint, guint8s []byte)
 	// Rowstride queries the rowstride of a pixbuf, which is the number of bytes
@@ -611,28 +824,6 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) Pixbuf {
 	return ret0
 }
 
-// NewPixbufFromInline constructs a class Pixbuf.
-func NewPixbufFromInline(dataLength int, data []byte, copyPixels bool) Pixbuf {
-	var arg1 C.gint
-	var arg2 *C.guint8
-	var arg3 C.gboolean
-
-	{
-		arg2 = (*C.guint8)(&data[0])
-		arg1 = len(data)
-		defer runtime.KeepAlive(data)
-	}
-	arg3 = gextras.Cbool(copyPixels)
-
-	ret := C.gdk_pixbuf_new_from_inline(arg1, arg2, arg3)
-
-	var ret0 Pixbuf
-
-	ret0 = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // NewPixbufFromResource constructs a class Pixbuf.
 func NewPixbufFromResource(resourcePath string) Pixbuf {
 	var arg1 *C.char
@@ -703,19 +894,6 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	arg5 = (*C.GCancellable)(cancellable.Native())
 
 	ret := C.gdk_pixbuf_new_from_stream_at_scale(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 Pixbuf
-
-	ret0 = WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewPixbufFromStreamFinish constructs a class Pixbuf.
-func NewPixbufFromStreamFinish(asyncResult gio.AsyncResult) Pixbuf {
-	var arg1 *C.GAsyncResult
-
-	ret := C.gdk_pixbuf_new_from_stream_finish(arg1)
 
 	var ret0 Pixbuf
 
@@ -1150,32 +1328,6 @@ func (pixbuf pixbuf) Options() *glib.HashTable {
 	var ret0 *glib.HashTable
 
 	ret0 = glib.WrapHashTable(ret)
-
-	return ret0
-}
-
-// Pixels queries a pointer to the pixel data of a pixbuf.
-func (pixbuf pixbuf) Pixels() []byte {
-	var arg0 *C.GdkPixbuf
-
-	arg0 = (*C.GdkPixbuf)(pixbuf.Native())
-
-	ret := C.gdk_pixbuf_get_pixels(arg0)
-
-	var ret0 []byte
-
-	{
-		var length uint
-		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = byte(src)
-		}
-	}
 
 	return ret0
 }
@@ -1780,19 +1932,6 @@ func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancel
 	return ret0
 }
 
-// NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) PixbufAnimation {
-	var arg1 *C.GAsyncResult
-
-	ret := C.gdk_pixbuf_animation_new_from_stream_finish(arg1)
-
-	var ret0 PixbufAnimation
-
-	ret0 = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // Height queries the height of the bounding box of a pixbuf animation.
 func (animation pixbufAnimation) Height() int {
 	var arg0 *C.GdkPixbufAnimation
@@ -2145,12 +2284,6 @@ type PixbufLoader interface {
 	// Attempts to set the desired image size are ignored after the emission of
 	// the ::size-prepared signal.
 	SetSize(width int, height int)
-	// Write: this will cause a pixbuf loader to parse the next @count bytes of
-	// an image. It will return true if the data was loaded successfully, and
-	// false if an error occurred. In the latter case, the loader will be
-	// closed, and will not accept further writes. If false is returned, @error
-	// will be set to an error from the K_PIXBUF_ERROR or FILE_ERROR domains.
-	Write(buf []byte) bool
 	// WriteBytes: this will cause a pixbuf loader to parse a buffer inside a
 	// #GBytes for an image. It will return true if the data was loaded
 	// successfully, and false if an error occurred. In the latter case, the
@@ -2323,32 +2456,6 @@ func (loader pixbufLoader) SetSize(width int, height int) {
 	arg2 = C.int(height)
 
 	C.gdk_pixbuf_loader_set_size(arg0, arg1, arg2)
-}
-
-// Write: this will cause a pixbuf loader to parse the next @count bytes of
-// an image. It will return true if the data was loaded successfully, and
-// false if an error occurred. In the latter case, the loader will be
-// closed, and will not accept further writes. If false is returned, @error
-// will be set to an error from the K_PIXBUF_ERROR or FILE_ERROR domains.
-func (loader pixbufLoader) Write(buf []byte) bool {
-	var arg0 *C.GdkPixbufLoader
-	var arg1 *C.guchar
-	var arg2 C.gsize
-
-	arg0 = (*C.GdkPixbufLoader)(loader.Native())
-	{
-		arg1 = (*C.guchar)(&buf[0])
-		arg2 = len(buf)
-		defer runtime.KeepAlive(buf)
-	}
-
-	ret := C.gdk_pixbuf_loader_write(arg0, arg1, arg2)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // WriteBytes: this will cause a pixbuf loader to parse a buffer inside a

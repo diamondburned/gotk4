@@ -3,8 +3,10 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -538,6 +540,376 @@ func NewBoxAlloc() *Box {
 	return ret0
 }
 
+// ContainsBox checks whether the #graphene_box_t @a contains the given
+// #graphene_box_t @b.
+func (a *Box) ContainsBox(b *Box) bool {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(a.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_box_contains_box(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ContainsPoint checks whether @box contains the given @point.
+func (box *Box) ContainsPoint(point *Point3D) bool {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_box_contains_point(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given boxes are equal.
+func (a *Box) Equal(b *Box) bool {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(a.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_box_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Expand expands the dimensions of @box to include the coordinates at @point.
+func (box *Box) Expand(point *Point3D) Box {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_box_expand(arg0, arg1, &arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg2)
+
+	return ret0
+}
+
+// ExpandScalar expands the dimensions of @box by the given @scalar value.
+//
+// If @scalar is positive, the #graphene_box_t will grow; if @scalar is
+// negative, the #graphene_box_t will shrink.
+func (box *Box) ExpandScalar(scalar float32) Box {
+	var arg0 *C.graphene_box_t
+	var arg1 C.float
+	var arg2 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = C.float(scalar)
+
+	ret := C.graphene_box_expand_scalar(arg0, arg1, &arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg2)
+
+	return ret0
+}
+
+// ExpandVec3 expands the dimensions of @box to include the coordinates of the
+// given vector.
+func (box *Box) ExpandVec3(vec *Vec3) Box {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = (*C.graphene_vec3_t)(vec.Native())
+
+	ret := C.graphene_box_expand_vec3(arg0, arg1, &arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg2)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_box_alloc().
+func (box *Box) Free() {
+	var arg0 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	C.graphene_box_free(arg0)
+}
+
+// BoundingSphere computes the bounding #graphene_sphere_t capable of containing
+// the given #graphene_box_t.
+func (box *Box) BoundingSphere() Sphere {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_sphere_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_bounding_sphere(arg0, &arg1)
+
+	var ret0 *Sphere
+
+	ret0 = WrapSphere(arg1)
+
+	return ret0
+}
+
+// Center retrieves the coordinates of the center of a #graphene_box_t.
+func (box *Box) Center() Point3D {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_center(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// Depth retrieves the size of the @box on the Z axis.
+func (box *Box) Depth() float32 {
+	var arg0 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_depth(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Height retrieves the size of the @box on the Y axis.
+func (box *Box) Height() float32 {
+	var arg0 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_height(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Max retrieves the coordinates of the maximum point of the given
+// #graphene_box_t.
+func (box *Box) Max() Point3D {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_max(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// Min retrieves the coordinates of the minimum point of the given
+// #graphene_box_t.
+func (box *Box) Min() Point3D {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_min(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// Size retrieves the size of the box on all three axes, and stores it into the
+// given @size vector.
+func (box *Box) Size() Vec3 {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_size(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// Vertices computes the vertices of the given #graphene_box_t.
+func (box *Box) Vertices() [8]Vec3 {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_vertices(arg0, &arg1)
+
+	var ret0 [8]Vec3
+
+	{
+		cArray := ([8]graphene_vec3_t)(arg1)
+
+		for i := 0; i < 8; i++ {
+			src := cArray[i]
+			ret0[i] = WrapVec3(src)
+		}
+	}
+
+	return ret0
+}
+
+// Width retrieves the size of the @box on the X axis.
+func (box *Box) Width() float32 {
+	var arg0 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_box_get_width(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes the given #graphene_box_t with two vertices.
+func (box *Box) Init(min *Point3D, max *Point3D) *Box {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = (*C.graphene_point3d_t)(min.Native())
+	arg2 = (*C.graphene_point3d_t)(max.Native())
+
+	ret := C.graphene_box_init(arg0, arg1, arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(ret)
+
+	return ret0
+}
+
+// InitFromBox initializes the given #graphene_box_t with the vertices of
+// another #graphene_box_t.
+func (box *Box) InitFromBox(src *Box) *Box {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_box_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = (*C.graphene_box_t)(src.Native())
+
+	ret := C.graphene_box_init_from_box(arg0, arg1)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes the given #graphene_box_t with two vertices stored
+// inside #graphene_vec3_t.
+func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg1 = (*C.graphene_vec3_t)(min.Native())
+	arg2 = (*C.graphene_vec3_t)(max.Native())
+
+	ret := C.graphene_box_init_from_vec3(arg0, arg1, arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(ret)
+
+	return ret0
+}
+
+// Intersection intersects the two given #graphene_box_t.
+//
+// If the two boxes do not intersect, @res will contain a degenerate box
+// initialized with graphene_box_empty().
+func (a *Box) Intersection(b *Box) (res Box, ok bool) {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_box_t
+	var arg2 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_box_t)(a.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_box_intersection(arg0, arg1, &arg2)
+
+	var ret0 *Box
+	var ret1 bool
+
+	ret0 = WrapBox(arg2)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// Union unions the two given #graphene_box_t.
+func (a *Box) Union(b *Box) Box {
+	var arg0 *C.graphene_box_t
+	var arg1 *C.graphene_box_t
+	var arg2 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_box_t)(a.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_box_union(arg0, arg1, &arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg2)
+
+	return ret0
+}
+
 // Euler: describe a rotation using Euler angles.
 //
 // The contents of the #graphene_euler_t structure are private and should never
@@ -574,6 +946,398 @@ func NewEulerAlloc() *Euler {
 	var ret0 *Euler
 
 	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// Equal checks if two #graphene_euler_t are equal.
+func (a *Euler) Equal(b *Euler) bool {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(a.Native())
+	arg1 = (*C.graphene_euler_t)(b.Native())
+
+	ret := C.graphene_euler_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_euler_alloc().
+func (e *Euler) Free() {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	C.graphene_euler_free(arg0)
+}
+
+// Alpha retrieves the first component of the Euler angle vector, depending on
+// the order of rotation.
+//
+// See also: graphene_euler_get_x()
+func (e *Euler) Alpha() float32 {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_alpha(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Beta retrieves the second component of the Euler angle vector, depending on
+// the order of rotation.
+//
+// See also: graphene_euler_get_y()
+func (e *Euler) Beta() float32 {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_beta(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Gamma retrieves the third component of the Euler angle vector, depending on
+// the order of rotation.
+//
+// See also: graphene_euler_get_z()
+func (e *Euler) Gamma() float32 {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_gamma(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Order retrieves the order used to apply the rotations described in the
+// #graphene_euler_t structure, when converting to and from other structures,
+// like #graphene_quaternion_t and #graphene_matrix_t.
+//
+// This function does not return the GRAPHENE_EULER_ORDER_DEFAULT enumeration
+// value; it will return the effective order of rotation instead.
+func (e *Euler) Order() EulerOrder {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_order(arg0)
+
+	var ret0 EulerOrder
+
+	ret0 = EulerOrder(ret)
+
+	return ret0
+}
+
+// X retrieves the rotation angle on the X axis, in degrees.
+func (e *Euler) X() float32 {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_x(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Y retrieves the rotation angle on the Y axis, in degrees.
+func (e *Euler) Y() float32 {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_y(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Z retrieves the rotation angle on the Z axis, in degrees.
+func (e *Euler) Z() float32 {
+	var arg0 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_get_z(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes a #graphene_euler_t using the given angles.
+//
+// The order of the rotations is GRAPHENE_EULER_ORDER_DEFAULT.
+func (e *Euler) Init(x float32, y float32, z float32) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+
+	ret := C.graphene_euler_init(arg0, arg1, arg2, arg3)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// InitFromEuler initializes a #graphene_euler_t using the angles and order of
+// another #graphene_euler_t.
+//
+// If the #graphene_euler_t @src is nil, this function is equivalent to calling
+// graphene_euler_init() with all angles set to 0.
+func (e *Euler) InitFromEuler(src *Euler) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = (*C.graphene_euler_t)(src.Native())
+
+	ret := C.graphene_euler_init_from_euler(arg0, arg1)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// InitFromMatrix initializes a #graphene_euler_t using the given rotation
+// matrix.
+//
+// If the #graphene_matrix_t @m is nil, the #graphene_euler_t will be
+// initialized with all angles set to 0.
+func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_matrix_t
+	var arg2 C.graphene_euler_order_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = (*C.graphene_matrix_t)(m.Native())
+	arg2 = (C.graphene_euler_order_t)(order)
+
+	ret := C.graphene_euler_init_from_matrix(arg0, arg1, arg2)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// InitFromQuaternion initializes a #graphene_euler_t using the given normalized
+// quaternion.
+//
+// If the #graphene_quaternion_t @q is nil, the #graphene_euler_t will be
+// initialized with all angles set to 0.
+func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_quaternion_t
+	var arg2 C.graphene_euler_order_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = (*C.graphene_quaternion_t)(q.Native())
+	arg2 = (C.graphene_euler_order_t)(order)
+
+	ret := C.graphene_euler_init_from_quaternion(arg0, arg1, arg2)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// InitFromRadians initializes a #graphene_euler_t using the given angles and
+// order of rotation.
+func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrder) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.graphene_euler_order_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+	arg4 = (C.graphene_euler_order_t)(order)
+
+	ret := C.graphene_euler_init_from_radians(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes a #graphene_euler_t using the angles contained in a
+// #graphene_vec3_t.
+//
+// If the #graphene_vec3_t @v is nil, the #graphene_euler_t will be initialized
+// with all angles set to 0.
+func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 C.graphene_euler_order_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = (*C.graphene_vec3_t)(v.Native())
+	arg2 = (C.graphene_euler_order_t)(order)
+
+	ret := C.graphene_euler_init_from_vec3(arg0, arg1, arg2)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// InitWithOrder initializes a #graphene_euler_t with the given angles and
+// @order.
+func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder) *Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.graphene_euler_order_t
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+	arg4 = (C.graphene_euler_order_t)(order)
+
+	ret := C.graphene_euler_init_with_order(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(ret)
+
+	return ret0
+}
+
+// Reorder reorders a #graphene_euler_t using @order.
+//
+// This function is equivalent to creating a #graphene_quaternion_t from the
+// given #graphene_euler_t, and then converting the quaternion into another
+// #graphene_euler_t.
+func (e *Euler) Reorder(order EulerOrder) Euler {
+	var arg0 *C.graphene_euler_t
+	var arg1 C.graphene_euler_order_t
+	var arg2 *C.graphene_euler_t // out
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+	arg1 = (C.graphene_euler_order_t)(order)
+
+	ret := C.graphene_euler_reorder(arg0, arg1, &arg2)
+
+	var ret0 *Euler
+
+	ret0 = WrapEuler(arg2)
+
+	return ret0
+}
+
+// ToMatrix converts a #graphene_euler_t into a transformation matrix expressing
+// the extrinsic composition of rotations described by the Euler angles.
+//
+// The rotations are applied over the reference frame axes in the order
+// associated with the #graphene_euler_t; for instance, if the order used to
+// initialize @e is GRAPHENE_EULER_ORDER_XYZ:
+//
+//    * the first rotation moves the body around the X axis with
+//      an angle φ
+//    * the second rotation moves the body around the Y axis with
+//      an angle of ϑ
+//    * the third rotation moves the body around the Z axis with
+//      an angle of ψ
+//
+// The rotation sign convention is right-handed, to preserve compatibility
+// between Euler-based, quaternion-based, and angle-axis-based rotations.
+func (e *Euler) ToMatrix() Matrix {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_to_matrix(arg0, &arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg1)
+
+	return ret0
+}
+
+// ToQuaternion converts a #graphene_euler_t into a #graphene_quaternion_t.
+func (e *Euler) ToQuaternion() Quaternion {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_to_quaternion(arg0, &arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg1)
+
+	return ret0
+}
+
+// ToVec3 retrieves the angles of a #graphene_euler_t and initializes a
+// #graphene_vec3_t with them.
+func (e *Euler) ToVec3() Vec3 {
+	var arg0 *C.graphene_euler_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_euler_to_vec3(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
 
 	return ret0
 }
@@ -618,6 +1382,172 @@ func NewFrustumAlloc() *Frustum {
 	return ret0
 }
 
+// ContainsPoint checks whether a point is inside the volume defined by the
+// given #graphene_frustum_t.
+func (f *Frustum) ContainsPoint(point *Point3D) bool {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_frustum_contains_point(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_frustum_t are equal.
+func (a *Frustum) Equal(b *Frustum) bool {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_frustum_t
+
+	arg0 = (*C.graphene_frustum_t)(a.Native())
+	arg1 = (*C.graphene_frustum_t)(b.Native())
+
+	ret := C.graphene_frustum_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_frustum_alloc().
+func (f *Frustum) Free() {
+	var arg0 *C.graphene_frustum_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+
+	C.graphene_frustum_free(arg0)
+}
+
+// Planes retrieves the planes that define the given #graphene_frustum_t.
+func (f *Frustum) Planes() [6]Plane {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_plane_t // out
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+
+	ret := C.graphene_frustum_get_planes(arg0, &arg1)
+
+	var ret0 [6]Plane
+
+	{
+		cArray := ([6]graphene_plane_t)(arg1)
+
+		for i := 0; i < 6; i++ {
+			src := cArray[i]
+			ret0[i] = WrapPlane(src)
+		}
+	}
+
+	return ret0
+}
+
+// Init initializes the given #graphene_frustum_t using the provided clipping
+// planes.
+func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) *Frustum {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_plane_t
+	var arg2 *C.graphene_plane_t
+	var arg3 *C.graphene_plane_t
+	var arg4 *C.graphene_plane_t
+	var arg5 *C.graphene_plane_t
+	var arg6 *C.graphene_plane_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+	arg1 = (*C.graphene_plane_t)(p0.Native())
+	arg2 = (*C.graphene_plane_t)(p1.Native())
+	arg3 = (*C.graphene_plane_t)(p2.Native())
+	arg4 = (*C.graphene_plane_t)(p3.Native())
+	arg5 = (*C.graphene_plane_t)(p4.Native())
+	arg6 = (*C.graphene_plane_t)(p5.Native())
+
+	ret := C.graphene_frustum_init(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *Frustum
+
+	ret0 = WrapFrustum(ret)
+
+	return ret0
+}
+
+// InitFromFrustum initializes the given #graphene_frustum_t using the clipping
+// planes of another #graphene_frustum_t.
+func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_frustum_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+	arg1 = (*C.graphene_frustum_t)(src.Native())
+
+	ret := C.graphene_frustum_init_from_frustum(arg0, arg1)
+
+	var ret0 *Frustum
+
+	ret0 = WrapFrustum(ret)
+
+	return ret0
+}
+
+// InitFromMatrix initializes a #graphene_frustum_t using the given @matrix.
+func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+	arg1 = (*C.graphene_matrix_t)(matrix.Native())
+
+	ret := C.graphene_frustum_init_from_matrix(arg0, arg1)
+
+	var ret0 *Frustum
+
+	ret0 = WrapFrustum(ret)
+
+	return ret0
+}
+
+// IntersectsBox checks whether the given @box intersects a plane of a
+// #graphene_frustum_t.
+func (f *Frustum) IntersectsBox(box *Box) bool {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_box_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+	arg1 = (*C.graphene_box_t)(box.Native())
+
+	ret := C.graphene_frustum_intersects_box(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IntersectsSphere checks whether the given @sphere intersects a plane of a
+// #graphene_frustum_t.
+func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
+	var arg0 *C.graphene_frustum_t
+	var arg1 *C.graphene_sphere_t
+
+	arg0 = (*C.graphene_frustum_t)(f.Native())
+	arg1 = (*C.graphene_sphere_t)(sphere.Native())
+
+	ret := C.graphene_frustum_intersects_sphere(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
 // Matrix: a structure capable of holding a 4x4 matrix.
 //
 // The contents of the #graphene_matrix_t structure are private and should never
@@ -658,6 +1588,1317 @@ func NewMatrixAlloc() *Matrix {
 	return ret0
 }
 
+// Decompose decomposes a transformation matrix into its component
+// transformations.
+//
+// The algorithm for decomposing a matrix is taken from the CSS3 Transforms
+// specification (http://dev.w3.org/csswg/css-transforms/); specifically, the
+// decomposition code is based on the equivalent code published in "Graphics
+// Gems II", edited by Jim Arvo, and available online
+// (http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
+func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, shear Vec3, perspective Vec4, ok bool) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_vec3_t       // out
+	var arg2 *C.graphene_vec3_t       // out
+	var arg3 *C.graphene_quaternion_t // out
+	var arg4 *C.graphene_vec3_t       // out
+	var arg5 *C.graphene_vec4_t       // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_decompose(arg0, &arg1, &arg2, &arg3, &arg4, &arg5)
+
+	var ret0 *Vec3
+	var ret1 *Vec3
+	var ret2 *Quaternion
+	var ret3 *Vec3
+	var ret4 *Vec4
+	var ret5 bool
+
+	ret0 = WrapVec3(arg1)
+
+	ret1 = WrapVec3(arg2)
+
+	ret2 = WrapQuaternion(arg3)
+
+	ret3 = WrapVec3(arg4)
+
+	ret4 = WrapVec4(arg5)
+
+	ret5 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2, ret3, ret4, ret5
+}
+
+// Determinant computes the determinant of the given matrix.
+func (m *Matrix) Determinant() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_determinant(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_matrix_t matrices are equal.
+func (a *Matrix) Equal(b *Matrix) bool {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(a.Native())
+	arg1 = (*C.graphene_matrix_t)(b.Native())
+
+	ret := C.graphene_matrix_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// EqualFast checks whether the two given #graphene_matrix_t matrices are
+// byte-by-byte equal.
+//
+// While this function is faster than graphene_matrix_equal(), it can also
+// return false negatives, so it should be used in conjuction with either
+// graphene_matrix_equal() or graphene_matrix_near(). For instance:
+//
+//      if (graphene_matrix_equal_fast (a, b))
+//        {
+//          // matrices are definitely the same
+//        }
+//      else
+//        {
+//          if (graphene_matrix_equal (a, b))
+//            // matrices contain the same values within an epsilon of FLT_EPSILON
+//          else if (graphene_matrix_near (a, b, 0.0001))
+//            // matrices contain the same values within an epsilon of 0.0001
+//          else
+//            // matrices are not equal
+//        }
+//
+func (a *Matrix) EqualFast(b *Matrix) bool {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(a.Native())
+	arg1 = (*C.graphene_matrix_t)(b.Native())
+
+	ret := C.graphene_matrix_equal_fast(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_matrix_alloc().
+func (m *Matrix) Free() {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	C.graphene_matrix_free(arg0)
+}
+
+// Row retrieves the given row vector at @index_ inside a matrix.
+func (m *Matrix) Row(index_ uint) Vec4 {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.uint
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.uint(index_)
+
+	ret := C.graphene_matrix_get_row(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Value retrieves the value at the given @row and @col index.
+func (m *Matrix) Value(row uint, col uint) float32 {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.uint
+	var arg2 C.uint
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.uint(row)
+	arg2 = C.uint(col)
+
+	ret := C.graphene_matrix_get_value(arg0, arg1, arg2)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// XScale retrieves the scaling factor on the X axis in @m.
+func (m *Matrix) XScale() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_get_x_scale(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// XTranslation retrieves the translation component on the X axis from @m.
+func (m *Matrix) XTranslation() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_get_x_translation(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// YScale retrieves the scaling factor on the Y axis in @m.
+func (m *Matrix) YScale() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_get_y_scale(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// YTranslation retrieves the translation component on the Y axis from @m.
+func (m *Matrix) YTranslation() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_get_y_translation(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// ZScale retrieves the scaling factor on the Z axis in @m.
+func (m *Matrix) ZScale() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_get_z_scale(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// ZTranslation retrieves the translation component on the Z axis from @m.
+func (m *Matrix) ZTranslation() float32 {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_get_z_translation(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// InitFrom2D initializes a #graphene_matrix_t from the values of an affine
+// transformation matrix.
+//
+// The arguments map to the following matrix layout:
+//
+//      ⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
+//      ⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
+//      ⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
+//
+//
+// This function can be used to convert between an affine matrix type from other
+// libraries and a #graphene_matrix_t.
+func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.double
+	var arg2 C.double
+	var arg3 C.double
+	var arg4 C.double
+	var arg5 C.double
+	var arg6 C.double
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.double(xx)
+	arg2 = C.double(yx)
+	arg3 = C.double(xy)
+	arg4 = C.double(yy)
+	arg5 = C.double(x0)
+	arg6 = C.double(y0)
+
+	ret := C.graphene_matrix_init_from_2d(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitFromFloat initializes a #graphene_matrix_t with the given array of
+// floating point values.
+func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	{
+		arg1 = (*C.float)(&v)
+		defer runtime.KeepAlive(&v)
+	}
+
+	ret := C.graphene_matrix_init_from_float(arg0, arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitFromMatrix initializes a #graphene_matrix_t using the values of the given
+// matrix.
+func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_matrix_t)(src.Native())
+
+	ret := C.graphene_matrix_init_from_matrix(arg0, arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitFromVec4 initializes a #graphene_matrix_t with the given four row
+// vectors.
+func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t
+	var arg3 *C.graphene_vec4_t
+	var arg4 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_vec4_t)(v0.Native())
+	arg2 = (*C.graphene_vec4_t)(v1.Native())
+	arg3 = (*C.graphene_vec4_t)(v2.Native())
+	arg4 = (*C.graphene_vec4_t)(v3.Native())
+
+	ret := C.graphene_matrix_init_from_vec4(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitFrustum initializes a #graphene_matrix_t compatible with
+// #graphene_frustum_t.
+//
+// See also: graphene_frustum_init_from_matrix()
+func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top float32, zNear float32, zFar float32) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.float
+	var arg5 C.float
+	var arg6 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(left)
+	arg2 = C.float(right)
+	arg3 = C.float(bottom)
+	arg4 = C.float(top)
+	arg5 = C.float(zNear)
+	arg6 = C.float(zFar)
+
+	ret := C.graphene_matrix_init_frustum(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitIdentity initializes a #graphene_matrix_t with the identity matrix.
+func (m *Matrix) InitIdentity() *Matrix {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_init_identity(arg0)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitLookAt initializes a #graphene_matrix_t so that it positions the "camera"
+// at the given @eye coordinates towards an object at the @center coordinates.
+// The top of the camera is aligned to the direction of the @up vector.
+//
+// Before the transform, the camera is assumed to be placed at the origin,
+// looking towards the negative Z axis, with the top side of the camera facing
+// in the direction of the Y axis and the right side in the direction of the X
+// axis.
+//
+// In theory, one could use @m to transform a model of such a camera into
+// world-space. However, it is more common to use the inverse of @m to transform
+// another object from world coordinates to the view coordinates of the camera.
+// Typically you would then apply the camera projection transform to get from
+// view to screen coordinates.
+func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t
+	var arg3 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_vec3_t)(eye.Native())
+	arg2 = (*C.graphene_vec3_t)(center.Native())
+	arg3 = (*C.graphene_vec3_t)(up.Native())
+
+	ret := C.graphene_matrix_init_look_at(arg0, arg1, arg2, arg3)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitOrtho initializes a #graphene_matrix_t with an orthographic projection.
+func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom float32, zNear float32, zFar float32) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.float
+	var arg5 C.float
+	var arg6 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(left)
+	arg2 = C.float(right)
+	arg3 = C.float(top)
+	arg4 = C.float(bottom)
+	arg5 = C.float(zNear)
+	arg6 = C.float(zFar)
+
+	ret := C.graphene_matrix_init_ortho(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitPerspective initializes a #graphene_matrix_t with a perspective
+// projection.
+func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zFar float32) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(fovy)
+	arg2 = C.float(aspect)
+	arg3 = C.float(zNear)
+	arg4 = C.float(zFar)
+
+	ret := C.graphene_matrix_init_perspective(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitRotate initializes @m to represent a rotation of @angle degrees on the
+// axis represented by the @axis vector.
+func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(angle)
+	arg2 = (*C.graphene_vec3_t)(axis.Native())
+
+	ret := C.graphene_matrix_init_rotate(arg0, arg1, arg2)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitScale initializes a #graphene_matrix_t with the given scaling factors.
+func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+
+	ret := C.graphene_matrix_init_scale(arg0, arg1, arg2, arg3)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitSkew initializes a #graphene_matrix_t with a skew transformation with the
+// given factors.
+func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(xSkew)
+	arg2 = C.float(ySkew)
+
+	ret := C.graphene_matrix_init_skew(arg0, arg1, arg2)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// InitTranslate initializes a #graphene_matrix_t with a translation to the
+// given coordinates.
+func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_matrix_init_translate(arg0, arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates the two given #graphene_matrix_t by
+// interpolating the decomposed transformations separately.
+//
+// If either matrix cannot be reduced to their transformations then the
+// interpolation cannot be performed, and this function will return an identity
+// matrix.
+func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+	var arg2 C.double
+	var arg3 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_matrix_t)(a.Native())
+	arg1 = (*C.graphene_matrix_t)(b.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_matrix_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg3)
+
+	return ret0
+}
+
+// Inverse inverts the given matrix.
+func (m *Matrix) Inverse() (res Matrix, ok bool) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_inverse(arg0, &arg1)
+
+	var ret0 *Matrix
+	var ret1 bool
+
+	ret0 = WrapMatrix(arg1)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// Is2D checks whether the given #graphene_matrix_t is compatible with an a 2D
+// affine transformation matrix.
+func (m *Matrix) Is2D() bool {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_is_2d(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsBackfaceVisible checks whether a #graphene_matrix_t has a visible back
+// face.
+func (m *Matrix) IsBackfaceVisible() bool {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_is_backface_visible(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsIdentity checks whether the given #graphene_matrix_t is the identity
+// matrix.
+func (m *Matrix) IsIdentity() bool {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_is_identity(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsSingular checks whether a matrix is singular.
+func (m *Matrix) IsSingular() bool {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_is_singular(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Multiply multiplies two #graphene_matrix_t.
+//
+// Matrix multiplication is not commutative in general; the order of the factors
+// matters. The product of this multiplication is (@a × @b)
+func (a *Matrix) Multiply(b *Matrix) Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+	var arg2 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_matrix_t)(a.Native())
+	arg1 = (*C.graphene_matrix_t)(b.Native())
+
+	ret := C.graphene_matrix_multiply(arg0, arg1, &arg2)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg2)
+
+	return ret0
+}
+
+// Near compares the two given #graphene_matrix_t matrices and checks whether
+// their values are within the given @epsilon of each other.
+func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_matrix_t)(a.Native())
+	arg1 = (*C.graphene_matrix_t)(b.Native())
+	arg2 = C.float(epsilon)
+
+	ret := C.graphene_matrix_near(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Normalize normalizes the given #graphene_matrix_t.
+func (m *Matrix) Normalize() Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_normalize(arg0, &arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg1)
+
+	return ret0
+}
+
+// Perspective applies a perspective of @depth to the matrix.
+func (m *Matrix) Perspective(depth float32) Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(depth)
+
+	ret := C.graphene_matrix_perspective(arg0, arg1, &arg2)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg2)
+
+	return ret0
+}
+
+// Print prints the contents of a matrix to the standard error stream.
+//
+// This function is only useful for debugging; there are no guarantees made on
+// the format of the output.
+func (m *Matrix) Print() {
+	var arg0 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	C.graphene_matrix_print(arg0)
+}
+
+// ProjectPoint projects a #graphene_point_t using the matrix @m.
+func (m *Matrix) ProjectPoint(p *Point) Point {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_point_t
+	var arg2 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_point_t)(p.Native())
+
+	ret := C.graphene_matrix_project_point(arg0, arg1, &arg2)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg2)
+
+	return ret0
+}
+
+// ProjectRect projects all corners of a #graphene_rect_t using the given
+// matrix.
+//
+// See also: graphene_matrix_project_point()
+func (m *Matrix) ProjectRect(r *Rect) Quad {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_quad_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_matrix_project_rect(arg0, arg1, &arg2)
+
+	var ret0 *Quad
+
+	ret0 = WrapQuad(arg2)
+
+	return ret0
+}
+
+// ProjectRectBounds projects a #graphene_rect_t using the given matrix.
+//
+// The resulting rectangle is the axis aligned bounding rectangle capable of
+// fully containing the projected rectangle.
+func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_matrix_project_rect_bounds(arg0, arg1, &arg2)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg2)
+
+	return ret0
+}
+
+// Rotate adds a rotation transformation to @m, using the given @angle and @axis
+// vector.
+//
+// This is the equivalent of calling graphene_matrix_init_rotate() and then
+// multiplying the matrix @m with the rotation matrix.
+func (m *Matrix) Rotate(angle float32, axis *Vec3) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(angle)
+	arg2 = (*C.graphene_vec3_t)(axis.Native())
+
+	C.graphene_matrix_rotate(arg0, arg1, arg2)
+}
+
+// RotateEuler adds a rotation transformation to @m, using the given
+// #graphene_euler_t.
+func (m *Matrix) RotateEuler(e *Euler) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_euler_t)(e.Native())
+
+	C.graphene_matrix_rotate_euler(arg0, arg1)
+}
+
+// RotateQuaternion adds a rotation transformation to @m, using the given
+// #graphene_quaternion_t.
+//
+// This is the equivalent of calling graphene_quaternion_to_matrix() and then
+// multiplying @m with the rotation matrix.
+func (m *Matrix) RotateQuaternion(q *Quaternion) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_quaternion_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_quaternion_t)(q.Native())
+
+	C.graphene_matrix_rotate_quaternion(arg0, arg1)
+}
+
+// RotateX adds a rotation transformation around the X axis to @m, using the
+// given @angle.
+//
+// See also: graphene_matrix_rotate()
+func (m *Matrix) RotateX(angle float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(angle)
+
+	C.graphene_matrix_rotate_x(arg0, arg1)
+}
+
+// RotateY adds a rotation transformation around the Y axis to @m, using the
+// given @angle.
+//
+// See also: graphene_matrix_rotate()
+func (m *Matrix) RotateY(angle float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(angle)
+
+	C.graphene_matrix_rotate_y(arg0, arg1)
+}
+
+// RotateZ adds a rotation transformation around the Z axis to @m, using the
+// given @angle.
+//
+// See also: graphene_matrix_rotate()
+func (m *Matrix) RotateZ(angle float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(angle)
+
+	C.graphene_matrix_rotate_z(arg0, arg1)
+}
+
+// Scale adds a scaling transformation to @m, using the three given factors.
+//
+// This is the equivalent of calling graphene_matrix_init_scale() and then
+// multiplying the matrix @m with the scale matrix.
+func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(factorX)
+	arg2 = C.float(factorY)
+	arg3 = C.float(factorZ)
+
+	C.graphene_matrix_scale(arg0, arg1, arg2, arg3)
+}
+
+// SkewXY adds a skew of @factor on the X and Y axis to the given matrix.
+func (m *Matrix) SkewXY(factor float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(factor)
+
+	C.graphene_matrix_skew_xy(arg0, arg1)
+}
+
+// SkewXZ adds a skew of @factor on the X and Z axis to the given matrix.
+func (m *Matrix) SkewXZ(factor float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(factor)
+
+	C.graphene_matrix_skew_xz(arg0, arg1)
+}
+
+// SkewYZ adds a skew of @factor on the Y and Z axis to the given matrix.
+func (m *Matrix) SkewYZ(factor float32) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 C.float
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = C.float(factor)
+
+	C.graphene_matrix_skew_yz(arg0, arg1)
+}
+
+// To2D converts a #graphene_matrix_t to an affine transformation matrix, if the
+// given matrix is compatible.
+//
+// The returned values have the following layout:
+//
+//      ⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
+//      ⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
+//      ⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
+//
+//
+// This function can be used to convert between a #graphene_matrix_t and an
+// affine matrix type from other libraries.
+func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64, ok bool) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.double // out
+	var arg2 *C.double // out
+	var arg3 *C.double // out
+	var arg4 *C.double // out
+	var arg5 *C.double // out
+	var arg6 *C.double // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_to_2d(arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6)
+
+	var ret0 float64
+	var ret1 float64
+	var ret2 float64
+	var ret3 float64
+	var ret4 float64
+	var ret5 float64
+	var ret6 bool
+
+	ret0 = float64(arg1)
+
+	ret1 = float64(arg2)
+
+	ret2 = float64(arg3)
+
+	ret3 = float64(arg4)
+
+	ret4 = float64(arg5)
+
+	ret5 = float64(arg6)
+
+	ret6 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2, ret3, ret4, ret5, ret6
+}
+
+// ToFloat converts a #graphene_matrix_t to an array of floating point values.
+func (m *Matrix) ToFloat() [16]float32 {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.float // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_to_float(arg0, &arg1)
+
+	var ret0 [16]float32
+
+	ret0 = [16]float32(arg1)
+
+	return ret0
+}
+
+// TransformBounds transforms each corner of a #graphene_rect_t using the given
+// matrix @m.
+//
+// The result is the axis aligned bounding rectangle containing the coplanar
+// quadrilateral.
+//
+// See also: graphene_matrix_transform_point()
+func (m *Matrix) TransformBounds(r *Rect) Rect {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_matrix_transform_bounds(arg0, arg1, &arg2)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg2)
+
+	return ret0
+}
+
+// TransformBox transforms the vertices of a #graphene_box_t using the given
+// matrix @m.
+//
+// The result is the axis aligned bounding box containing the transformed
+// vertices.
+func (m *Matrix) TransformBox(b *Box) Box {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_box_t
+	var arg2 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_matrix_transform_box(arg0, arg1, &arg2)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg2)
+
+	return ret0
+}
+
+// TransformPoint transforms the given #graphene_point_t using the matrix @m.
+//
+// Unlike graphene_matrix_transform_vec3(), this function will take into account
+// the fourth row vector of the #graphene_matrix_t when computing the dot
+// product of each row vector of the matrix.
+//
+// See also: graphene_simd4x4f_point3_mul()
+func (m *Matrix) TransformPoint(p *Point) Point {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_point_t
+	var arg2 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_point_t)(p.Native())
+
+	ret := C.graphene_matrix_transform_point(arg0, arg1, &arg2)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg2)
+
+	return ret0
+}
+
+// TransformPoint3D transforms the given #graphene_point3d_t using the matrix
+// @m.
+//
+// Unlike graphene_matrix_transform_vec3(), this function will take into account
+// the fourth row vector of the #graphene_matrix_t when computing the dot
+// product of each row vector of the matrix.
+//
+// See also: graphene_simd4x4f_point3_mul()
+func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_matrix_transform_point3d(arg0, arg1, &arg2)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg2)
+
+	return ret0
+}
+
+// TransformRay: transform a #graphene_ray_t using the given matrix @m.
+func (m *Matrix) TransformRay(r *Ray) Ray {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_ray_t
+	var arg2 *C.graphene_ray_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_ray_t)(r.Native())
+
+	ret := C.graphene_matrix_transform_ray(arg0, arg1, &arg2)
+
+	var ret0 *Ray
+
+	ret0 = WrapRay(arg2)
+
+	return ret0
+}
+
+// TransformRect transforms each corner of a #graphene_rect_t using the given
+// matrix @m.
+//
+// The result is a coplanar quadrilateral.
+//
+// See also: graphene_matrix_transform_point()
+func (m *Matrix) TransformRect(r *Rect) Quad {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_quad_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_matrix_transform_rect(arg0, arg1, &arg2)
+
+	var ret0 *Quad
+
+	ret0 = WrapQuad(arg2)
+
+	return ret0
+}
+
+// TransformSphere transforms a #graphene_sphere_t using the given matrix @m.
+// The result is the bounding sphere containing the transformed sphere.
+func (m *Matrix) TransformSphere(s *Sphere) Sphere {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_sphere_t
+	var arg2 *C.graphene_sphere_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_matrix_transform_sphere(arg0, arg1, &arg2)
+
+	var ret0 *Sphere
+
+	ret0 = WrapSphere(arg2)
+
+	return ret0
+}
+
+// TransformVec3 transforms the given #graphene_vec3_t using the matrix @m.
+//
+// This function will multiply the X, Y, and Z row vectors of the matrix @m with
+// the corresponding components of the vector @v. The W row vector will be
+// ignored.
+//
+// See also: graphene_simd4x4f_vec3_mul()
+func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_matrix_transform_vec3(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// TransformVec4 transforms the given #graphene_vec4_t using the matrix @m.
+//
+// See also: graphene_simd4x4f_vec4_mul()
+func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_matrix_transform_vec4(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Translate adds a translation transformation to @m using the coordinates of
+// the given #graphene_point3d_t.
+//
+// This is the equivalent of calling graphene_matrix_init_translate() and then
+// multiplying @m with the translation matrix.
+func (m *Matrix) Translate(pos *Point3D) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_point3d_t)(pos.Native())
+
+	C.graphene_matrix_translate(arg0, arg1)
+}
+
+// Transpose transposes the given matrix.
+func (m *Matrix) Transpose() Matrix {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_matrix_transpose(arg0, &arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg1)
+
+	return ret0
+}
+
+// UnprojectPoint3D unprojects the given @point using the @projection matrix and
+// a @modelview matrix.
+func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_matrix_t
+	var arg2 *C.graphene_point3d_t
+	var arg3 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_matrix_t)(projection.Native())
+	arg1 = (*C.graphene_matrix_t)(modelview.Native())
+	arg2 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_matrix_unproject_point3d(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg3)
+
+	return ret0
+}
+
+// UntransformBounds undoes the transformation on the corners of a
+// #graphene_rect_t using the given matrix, within the given axis aligned
+// rectangular @bounds.
+func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_rect_t
+	var arg3 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_rect_t)(r.Native())
+	arg2 = (*C.graphene_rect_t)(bounds.Native())
+
+	ret := C.graphene_matrix_untransform_bounds(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg3)
+
+	return ret0
+}
+
+// UntransformPoint undoes the transformation of a #graphene_point_t using the
+// given matrix, within the given axis aligned rectangular @bounds.
+func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (res Point, ok bool) {
+	var arg0 *C.graphene_matrix_t
+	var arg1 *C.graphene_point_t
+	var arg2 *C.graphene_rect_t
+	var arg3 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_matrix_t)(m.Native())
+	arg1 = (*C.graphene_point_t)(p.Native())
+	arg2 = (*C.graphene_rect_t)(bounds.Native())
+
+	ret := C.graphene_matrix_untransform_point(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Point
+	var ret1 bool
+
+	ret0 = WrapPoint(arg3)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
 // Plane: a 2D plane that extends infinitely in a 3D volume.
 //
 // The contents of the `graphene_plane_t` are private, and should not be
@@ -694,6 +2935,243 @@ func NewPlaneAlloc() *Plane {
 	var ret0 *Plane
 
 	ret0 = WrapPlane(ret)
+
+	return ret0
+}
+
+// Distance computes the distance of @point from a #graphene_plane_t.
+func (p *Plane) Distance(point *Point3D) float32 {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_plane_distance(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_plane_t are equal.
+func (a *Plane) Equal(b *Plane) bool {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_plane_t
+
+	arg0 = (*C.graphene_plane_t)(a.Native())
+	arg1 = (*C.graphene_plane_t)(b.Native())
+
+	ret := C.graphene_plane_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_plane_alloc().
+func (p *Plane) Free() {
+	var arg0 *C.graphene_plane_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+
+	C.graphene_plane_free(arg0)
+}
+
+// Constant retrieves the distance along the normal vector of the given
+// #graphene_plane_t from the origin.
+func (p *Plane) Constant() float32 {
+	var arg0 *C.graphene_plane_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+
+	ret := C.graphene_plane_get_constant(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Normal retrieves the normal vector pointing towards the origin of the given
+// #graphene_plane_t.
+func (p *Plane) Normal() Vec3 {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+
+	ret := C.graphene_plane_get_normal(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// Init initializes the given #graphene_plane_t using the given @normal vector
+// and @constant values.
+func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_vec3_t)(normal.Native())
+	arg2 = C.float(constant)
+
+	ret := C.graphene_plane_init(arg0, arg1, arg2)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(ret)
+
+	return ret0
+}
+
+// InitFromPlane initializes the given #graphene_plane_t using the normal vector
+// and constant of another #graphene_plane_t.
+func (p *Plane) InitFromPlane(src *Plane) *Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_plane_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_plane_t)(src.Native())
+
+	ret := C.graphene_plane_init_from_plane(arg0, arg1)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(ret)
+
+	return ret0
+}
+
+// InitFromPoint initializes the given #graphene_plane_t using the given normal
+// vector and an arbitrary co-planar point.
+func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_vec3_t)(normal.Native())
+	arg2 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_plane_init_from_point(arg0, arg1, arg2)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(ret)
+
+	return ret0
+}
+
+// InitFromPoints initializes the given #graphene_plane_t using the 3 provided
+// co-planar points.
+//
+// The winding order is counter-clockwise, and determines which direction the
+// normal vector will point.
+func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_point3d_t
+	var arg3 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_point3d_t)(a.Native())
+	arg2 = (*C.graphene_point3d_t)(b.Native())
+	arg3 = (*C.graphene_point3d_t)(c.Native())
+
+	ret := C.graphene_plane_init_from_points(arg0, arg1, arg2, arg3)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(ret)
+
+	return ret0
+}
+
+// InitFromVec4 initializes the given #graphene_plane_t using the components of
+// the given #graphene_vec4_t vector.
+func (p *Plane) InitFromVec4(src *Vec4) *Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_vec4_t)(src.Native())
+
+	ret := C.graphene_plane_init_from_vec4(arg0, arg1)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(ret)
+
+	return ret0
+}
+
+// Negate negates the normal vector and constant of a #graphene_plane_t,
+// effectively mirroring the plane across the origin.
+func (p *Plane) Negate() Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_plane_t // out
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+
+	ret := C.graphene_plane_negate(arg0, &arg1)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(arg1)
+
+	return ret0
+}
+
+// Normalize normalizes the vector of the given #graphene_plane_t, and adjusts
+// the constant accordingly.
+func (p *Plane) Normalize() Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_plane_t // out
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+
+	ret := C.graphene_plane_normalize(arg0, &arg1)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(arg1)
+
+	return ret0
+}
+
+// Transform transforms a #graphene_plane_t @p using the given @matrix and
+// @normal_matrix.
+//
+// If @normal_matrix is nil, a transformation matrix for the plane normal will
+// be computed from @matrix. If you are transforming multiple planes using the
+// same @matrix it's recommended to compute the normal matrix beforehand to
+// avoid incurring in the cost of recomputing it every time.
+func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
+	var arg0 *C.graphene_plane_t
+	var arg1 *C.graphene_matrix_t
+	var arg2 *C.graphene_matrix_t
+	var arg3 *C.graphene_plane_t // out
+
+	arg0 = (*C.graphene_plane_t)(p.Native())
+	arg1 = (*C.graphene_matrix_t)(matrix.Native())
+	arg2 = (*C.graphene_matrix_t)(normalMatrix.Native())
+
+	ret := C.graphene_plane_transform(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(arg3)
 
 	return ret0
 }
@@ -747,6 +3225,175 @@ func (y *Point) Y() float32 {
 	var ret float32
 	ret = float32(p.native.y)
 	return ret
+}
+
+// Distance computes the distance between @a and @b.
+func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_point_t
+	var arg2 *C.float // out
+	var arg3 *C.float // out
+
+	arg0 = (*C.graphene_point_t)(a.Native())
+	arg1 = (*C.graphene_point_t)(b.Native())
+
+	ret := C.graphene_point_distance(arg0, arg1, &arg2, &arg3)
+
+	var ret0 float32
+	var ret1 float32
+	var ret2 float32
+
+	ret0 = float32(arg2)
+
+	ret1 = float32(arg3)
+
+	ret2 = float32(ret)
+
+	return ret0, ret1, ret2
+}
+
+// Equal checks if the two points @a and @b point to the same coordinates.
+//
+// This function accounts for floating point fluctuations; if you want to
+// control the fuzziness of the match, you can use graphene_point_near()
+// instead.
+func (a *Point) Equal(b *Point) bool {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_point_t
+
+	arg0 = (*C.graphene_point_t)(a.Native())
+	arg1 = (*C.graphene_point_t)(b.Native())
+
+	ret := C.graphene_point_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_point_alloc().
+func (p *Point) Free() {
+	var arg0 *C.graphene_point_t
+
+	arg0 = (*C.graphene_point_t)(p.Native())
+
+	C.graphene_point_free(arg0)
+}
+
+// Init initializes @p to the given @x and @y coordinates.
+//
+// It's safe to call this function multiple times.
+func (p *Point) Init(x float32, y float32) *Point {
+	var arg0 *C.graphene_point_t
+	var arg1 C.float
+	var arg2 C.float
+
+	arg0 = (*C.graphene_point_t)(p.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+
+	ret := C.graphene_point_init(arg0, arg1, arg2)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(ret)
+
+	return ret0
+}
+
+// InitFromPoint initializes @p with the same coordinates of @src.
+func (p *Point) InitFromPoint(src *Point) *Point {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_point_t
+
+	arg0 = (*C.graphene_point_t)(p.Native())
+	arg1 = (*C.graphene_point_t)(src.Native())
+
+	ret := C.graphene_point_init_from_point(arg0, arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(ret)
+
+	return ret0
+}
+
+// InitFromVec2 initializes @p with the coordinates inside the given
+// #graphene_vec2_t.
+func (p *Point) InitFromVec2(src *Vec2) *Point {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_point_t)(p.Native())
+	arg1 = (*C.graphene_vec2_t)(src.Native())
+
+	ret := C.graphene_point_init_from_vec2(arg0, arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates the coordinates of @a and @b using the
+// given @factor.
+func (a *Point) Interpolate(b *Point, factor float64) Point {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_point_t
+	var arg2 C.double
+	var arg3 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_point_t)(a.Native())
+	arg1 = (*C.graphene_point_t)(b.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_point_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg3)
+
+	return ret0
+}
+
+// Near checks whether the two points @a and @b are within the threshold of
+// @epsilon.
+func (a *Point) Near(b *Point, epsilon float32) bool {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_point_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_point_t)(a.Native())
+	arg1 = (*C.graphene_point_t)(b.Native())
+	arg2 = C.float(epsilon)
+
+	ret := C.graphene_point_near(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ToVec2 stores the coordinates of the given #graphene_point_t into a
+// #graphene_vec2_t.
+func (p *Point) ToVec2() Vec2 {
+	var arg0 *C.graphene_point_t
+	var arg1 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_point_t)(p.Native())
+
+	ret := C.graphene_point_to_vec2(arg0, &arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg1)
+
+	return ret0
 }
 
 // Point3D: a point with three components: X, Y, and Z.
@@ -807,6 +3454,281 @@ func (z *Point3D) Z() float32 {
 	return ret
 }
 
+// Cross computes the cross product of the two given #graphene_point3d_t.
+func (a *Point3D) Cross(b *Point3D) Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_point3d_t)(a.Native())
+	arg1 = (*C.graphene_point3d_t)(b.Native())
+
+	ret := C.graphene_point3d_cross(arg0, arg1, &arg2)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg2)
+
+	return ret0
+}
+
+// Distance computes the distance between the two given #graphene_point3d_t.
+func (a *Point3D) Distance(b *Point3D) (delta Vec3, gfloat float32) {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_point3d_t)(a.Native())
+	arg1 = (*C.graphene_point3d_t)(b.Native())
+
+	ret := C.graphene_point3d_distance(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+	var ret1 float32
+
+	ret0 = WrapVec3(arg2)
+
+	ret1 = float32(ret)
+
+	return ret0, ret1
+}
+
+// Dot computes the dot product of the two given #graphene_point3d_t.
+func (a *Point3D) Dot(b *Point3D) float32 {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_point3d_t)(a.Native())
+	arg1 = (*C.graphene_point3d_t)(b.Native())
+
+	ret := C.graphene_point3d_dot(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether two given points are equal.
+func (a *Point3D) Equal(b *Point3D) bool {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_point3d_t)(a.Native())
+	arg1 = (*C.graphene_point3d_t)(b.Native())
+
+	ret := C.graphene_point3d_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated via graphene_point3d_alloc().
+func (p *Point3D) Free() {
+	var arg0 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+
+	C.graphene_point3d_free(arg0)
+}
+
+// Init initializes a #graphene_point3d_t with the given coordinates.
+func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+
+	ret := C.graphene_point3d_init(arg0, arg1, arg2, arg3)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(ret)
+
+	return ret0
+}
+
+// InitFromPoint initializes a #graphene_point3d_t using the coordinates of
+// another #graphene_point3d_t.
+func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+	arg1 = (*C.graphene_point3d_t)(src.Native())
+
+	ret := C.graphene_point3d_init_from_point(arg0, arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes a #graphene_point3d_t using the components of a
+// #graphene_vec3_t.
+func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+	arg1 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_point3d_init_from_vec3(arg0, arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates each component of @a and @b using the
+// provided @factor, and places the result in @res.
+func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 C.double
+	var arg3 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_point3d_t)(a.Native())
+	arg1 = (*C.graphene_point3d_t)(b.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_point3d_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg3)
+
+	return ret0
+}
+
+// Length computes the length of the vector represented by the coordinates of
+// the given #graphene_point3d_t.
+func (p *Point3D) Length() float32 {
+	var arg0 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_point3d_length(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Near checks whether the two points are near each other, within an @epsilon
+// factor.
+func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_point3d_t)(a.Native())
+	arg1 = (*C.graphene_point3d_t)(b.Native())
+	arg2 = C.float(epsilon)
+
+	ret := C.graphene_point3d_near(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Normalize computes the normalization of the vector represented by the
+// coordinates of the given #graphene_point3d_t.
+func (p *Point3D) Normalize() Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_point3d_normalize(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// NormalizeViewport normalizes the coordinates of a #graphene_point3d_t using
+// the given viewport and clipping planes.
+//
+// The coordinates of the resulting #graphene_point3d_t will be in the [ -1, 1 ]
+// range.
+func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32) Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_rect_t
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+	arg1 = (*C.graphene_rect_t)(viewport.Native())
+	arg2 = C.float(zNear)
+	arg3 = C.float(zFar)
+
+	ret := C.graphene_point3d_normalize_viewport(arg0, arg1, arg2, arg3, &arg4)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg4)
+
+	return ret0
+}
+
+// Scale scales the coordinates of the given #graphene_point3d_t by the given
+// @factor.
+func (p *Point3D) Scale(factor float32) Point3D {
+	var arg0 *C.graphene_point3d_t
+	var arg1 C.float
+	var arg2 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+	arg1 = C.float(factor)
+
+	ret := C.graphene_point3d_scale(arg0, arg1, &arg2)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg2)
+
+	return ret0
+}
+
+// ToVec3 stores the coordinates of a #graphene_point3d_t into a
+// #graphene_vec3_t.
+func (p *Point3D) ToVec3() Vec3 {
+	var arg0 *C.graphene_point3d_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_point3d_to_vec3(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
 // Quad: a 4 vertex quadrilateral, as represented by four #graphene_point_t.
 //
 // The contents of a #graphene_quad_t are private and should never be accessed
@@ -839,6 +3761,131 @@ func (q *Quad) Native() unsafe.Pointer {
 func NewQuadAlloc() *Quad {
 
 	ret := C.graphene_quad_alloc()
+
+	var ret0 *Quad
+
+	ret0 = WrapQuad(ret)
+
+	return ret0
+}
+
+// Bounds computes the bounding rectangle of @q and places it into @r.
+func (q *Quad) Bounds() Rect {
+	var arg0 *C.graphene_quad_t
+	var arg1 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+
+	ret := C.graphene_quad_bounds(arg0, &arg1)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg1)
+
+	return ret0
+}
+
+// Contains checks if the given #graphene_quad_t contains the given
+// #graphene_point_t.
+func (q *Quad) Contains(p *Point) bool {
+	var arg0 *C.graphene_quad_t
+	var arg1 *C.graphene_point_t
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+	arg1 = (*C.graphene_point_t)(p.Native())
+
+	ret := C.graphene_quad_contains(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_quad_alloc()
+func (q *Quad) Free() {
+	var arg0 *C.graphene_quad_t
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+
+	C.graphene_quad_free(arg0)
+}
+
+// Point retrieves the point of a #graphene_quad_t at the given index.
+func (q *Quad) Point(index_ uint) *Point {
+	var arg0 *C.graphene_quad_t
+	var arg1 C.uint
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+	arg1 = C.uint(index_)
+
+	ret := C.graphene_quad_get_point(arg0, arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(ret)
+
+	return ret0
+}
+
+// Init initializes a #graphene_quad_t with the given points.
+func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
+	var arg0 *C.graphene_quad_t
+	var arg1 *C.graphene_point_t
+	var arg2 *C.graphene_point_t
+	var arg3 *C.graphene_point_t
+	var arg4 *C.graphene_point_t
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+	arg1 = (*C.graphene_point_t)(p1.Native())
+	arg2 = (*C.graphene_point_t)(p2.Native())
+	arg3 = (*C.graphene_point_t)(p3.Native())
+	arg4 = (*C.graphene_point_t)(p4.Native())
+
+	ret := C.graphene_quad_init(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Quad
+
+	ret0 = WrapQuad(ret)
+
+	return ret0
+}
+
+// InitFromPoints initializes a #graphene_quad_t using an array of points.
+func (q *Quad) InitFromPoints(points [4]Point) *Quad {
+	var arg0 *C.graphene_quad_t
+	var arg1 *C.graphene_point_t
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+	{
+		dst := &arg1
+
+		for i := 0; i < 4; i++ {
+			src := points[i]
+			dst[i] = (C.graphene_point_t)(src.Native())
+		}
+	}
+
+	ret := C.graphene_quad_init_from_points(arg0, arg1)
+
+	var ret0 *Quad
+
+	ret0 = WrapQuad(ret)
+
+	return ret0
+}
+
+// InitFromRect initializes a #graphene_quad_t using the four corners of the
+// given #graphene_rect_t.
+func (q *Quad) InitFromRect(r *Rect) *Quad {
+	var arg0 *C.graphene_quad_t
+	var arg1 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_quad_t)(q.Native())
+	arg1 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_quad_init_from_rect(arg0, arg1)
 
 	var ret0 *Quad
 
@@ -887,6 +3934,441 @@ func NewQuaternionAlloc() *Quaternion {
 	return ret0
 }
 
+// Add adds two #graphene_quaternion_t @a and @b.
+func (a *Quaternion) Add(b *Quaternion) Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t
+	var arg2 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(a.Native())
+	arg1 = (*C.graphene_quaternion_t)(b.Native())
+
+	ret := C.graphene_quaternion_add(arg0, arg1, &arg2)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg2)
+
+	return ret0
+}
+
+// Dot computes the dot product of two #graphene_quaternion_t.
+func (a *Quaternion) Dot(b *Quaternion) float32 {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t
+
+	arg0 = (*C.graphene_quaternion_t)(a.Native())
+	arg1 = (*C.graphene_quaternion_t)(b.Native())
+
+	ret := C.graphene_quaternion_dot(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether the given quaternions are equal.
+func (a *Quaternion) Equal(b *Quaternion) bool {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t
+
+	arg0 = (*C.graphene_quaternion_t)(a.Native())
+	arg1 = (*C.graphene_quaternion_t)(b.Native())
+
+	ret := C.graphene_quaternion_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free releases the resources allocated by graphene_quaternion_alloc().
+func (q *Quaternion) Free() {
+	var arg0 *C.graphene_quaternion_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	C.graphene_quaternion_free(arg0)
+}
+
+// Init initializes a #graphene_quaternion_t using the given four values.
+func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.float
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+	arg4 = C.float(w)
+
+	ret := C.graphene_quaternion_init(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromAngleVec3 initializes a #graphene_quaternion_t using an @angle on a
+// specific @axis.
+func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = C.float(angle)
+	arg2 = (*C.graphene_vec3_t)(axis.Native())
+
+	ret := C.graphene_quaternion_init_from_angle_vec3(arg0, arg1, arg2)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromAngles initializes a #graphene_quaternion_t using the values of the
+// Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
+//
+// See also: graphene_quaternion_init_from_euler()
+func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = C.float(degX)
+	arg2 = C.float(degY)
+	arg3 = C.float(degZ)
+
+	ret := C.graphene_quaternion_init_from_angles(arg0, arg1, arg2, arg3)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromEuler initializes a #graphene_quaternion_t using the given
+// #graphene_euler_t.
+func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_euler_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = (*C.graphene_euler_t)(e.Native())
+
+	ret := C.graphene_quaternion_init_from_euler(arg0, arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromMatrix initializes a #graphene_quaternion_t using the rotation
+// components of a transformation matrix.
+func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_matrix_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = (*C.graphene_matrix_t)(m.Native())
+
+	ret := C.graphene_quaternion_init_from_matrix(arg0, arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromQuaternion initializes a #graphene_quaternion_t with the values from
+// @src.
+func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = (*C.graphene_quaternion_t)(src.Native())
+
+	ret := C.graphene_quaternion_init_from_quaternion(arg0, arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromRadians initializes a #graphene_quaternion_t using the values of the
+// Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
+//
+// See also: graphene_quaternion_init_from_euler()
+func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = C.float(radX)
+	arg2 = C.float(radY)
+	arg3 = C.float(radZ)
+
+	ret := C.graphene_quaternion_init_from_radians(arg0, arg1, arg2, arg3)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitFromVec4 initializes a #graphene_quaternion_t with the values from @src.
+func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = (*C.graphene_vec4_t)(src.Native())
+
+	ret := C.graphene_quaternion_init_from_vec4(arg0, arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// InitIdentity initializes a #graphene_quaternion_t using the identity
+// transformation.
+func (q *Quaternion) InitIdentity() *Quaternion {
+	var arg0 *C.graphene_quaternion_t
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_init_identity(arg0)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(ret)
+
+	return ret0
+}
+
+// Invert inverts a #graphene_quaternion_t, and returns the conjugate quaternion
+// of @q.
+func (q *Quaternion) Invert() Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_invert(arg0, &arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg1)
+
+	return ret0
+}
+
+// Multiply multiplies two #graphene_quaternion_t @a and @b.
+func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t
+	var arg2 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(a.Native())
+	arg1 = (*C.graphene_quaternion_t)(b.Native())
+
+	ret := C.graphene_quaternion_multiply(arg0, arg1, &arg2)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg2)
+
+	return ret0
+}
+
+// Normalize normalizes a #graphene_quaternion_t.
+func (q *Quaternion) Normalize() Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_normalize(arg0, &arg1)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg1)
+
+	return ret0
+}
+
+// Scale scales all the elements of a #graphene_quaternion_t @q using the given
+// scalar factor.
+func (q *Quaternion) Scale(factor float32) Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 C.float
+	var arg2 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+	arg1 = C.float(factor)
+
+	ret := C.graphene_quaternion_scale(arg0, arg1, &arg2)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg2)
+
+	return ret0
+}
+
+// Slerp interpolates between the two given quaternions using a spherical linear
+// interpolation, or SLERP (http://en.wikipedia.org/wiki/Slerp), using the given
+// interpolation @factor.
+func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_quaternion_t
+	var arg2 C.float
+	var arg3 *C.graphene_quaternion_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(a.Native())
+	arg1 = (*C.graphene_quaternion_t)(b.Native())
+	arg2 = C.float(factor)
+
+	ret := C.graphene_quaternion_slerp(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Quaternion
+
+	ret0 = WrapQuaternion(arg3)
+
+	return ret0
+}
+
+// ToAngleVec3 converts a quaternion into an @angle, @axis pair.
+func (q *Quaternion) ToAngleVec3() (angle float32, axis Vec3) {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.float           // out
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_to_angle_vec3(arg0, &arg1, &arg2)
+
+	var ret0 float32
+	var ret1 *Vec3
+
+	ret0 = float32(arg1)
+
+	ret1 = WrapVec3(arg2)
+
+	return ret0, ret1
+}
+
+// ToAngles converts a #graphene_quaternion_t to its corresponding rotations on
+// the Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
+func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.float // out
+	var arg2 *C.float // out
+	var arg3 *C.float // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_to_angles(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 float32
+	var ret1 float32
+	var ret2 float32
+
+	ret0 = float32(arg1)
+
+	ret1 = float32(arg2)
+
+	ret2 = float32(arg3)
+
+	return ret0, ret1, ret2
+}
+
+// ToMatrix converts a quaternion into a transformation matrix expressing the
+// rotation defined by the #graphene_quaternion_t.
+func (q *Quaternion) ToMatrix() Matrix {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_matrix_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_to_matrix(arg0, &arg1)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(arg1)
+
+	return ret0
+}
+
+// ToRadians converts a #graphene_quaternion_t to its corresponding rotations on
+// the Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
+func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.float // out
+	var arg2 *C.float // out
+	var arg3 *C.float // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_to_radians(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 float32
+	var ret1 float32
+	var ret2 float32
+
+	ret0 = float32(arg1)
+
+	ret1 = float32(arg2)
+
+	ret2 = float32(arg3)
+
+	return ret0, ret1, ret2
+}
+
+// ToVec4 copies the components of a #graphene_quaternion_t into a
+// #graphene_vec4_t.
+func (q *Quaternion) ToVec4() Vec4 {
+	var arg0 *C.graphene_quaternion_t
+	var arg1 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_quaternion_t)(q.Native())
+
+	ret := C.graphene_quaternion_to_vec4(arg0, &arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg1)
+
+	return ret0
+}
+
 // Ray: a ray emitted from an origin in a given direction.
 //
 // The contents of the `graphene_ray_t` structure are private, and should not be
@@ -923,6 +4405,326 @@ func NewRayAlloc() *Ray {
 	var ret0 *Ray
 
 	ret0 = WrapRay(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_ray_t are equal.
+func (a *Ray) Equal(b *Ray) bool {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_ray_t
+
+	arg0 = (*C.graphene_ray_t)(a.Native())
+	arg1 = (*C.graphene_ray_t)(b.Native())
+
+	ret := C.graphene_ray_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_ray_alloc().
+func (r *Ray) Free() {
+	var arg0 *C.graphene_ray_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+
+	C.graphene_ray_free(arg0)
+}
+
+// ClosestPointToPoint computes the point on the given #graphene_ray_t that is
+// closest to the given point @p.
+func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_ray_get_closest_point_to_point(arg0, arg1, &arg2)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg2)
+
+	return ret0
+}
+
+// Direction retrieves the direction of the given #graphene_ray_t.
+func (r *Ray) Direction() Vec3 {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+
+	ret := C.graphene_ray_get_direction(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// DistanceToPlane computes the distance of the origin of the given
+// #graphene_ray_t from the given plane.
+//
+// If the ray does not intersect the plane, this function returns `INFINITY`.
+func (r *Ray) DistanceToPlane(p *Plane) float32 {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_plane_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_plane_t)(p.Native())
+
+	ret := C.graphene_ray_get_distance_to_plane(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// DistanceToPoint computes the distance of the closest approach between the
+// given #graphene_ray_t @r and the point @p.
+//
+// The closest approach to a ray from a point is the distance between the point
+// and the projection of the point on the ray itself.
+func (r *Ray) DistanceToPoint(p *Point3D) float32 {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_ray_get_distance_to_point(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Origin retrieves the origin of the given #graphene_ray_t.
+func (r *Ray) Origin() Point3D {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+
+	ret := C.graphene_ray_get_origin(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// PositionAt retrieves the coordinates of a point at the distance @t along the
+// given #graphene_ray_t.
+func (r *Ray) PositionAt(t float32) Point3D {
+	var arg0 *C.graphene_ray_t
+	var arg1 C.float
+	var arg2 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = C.float(t)
+
+	ret := C.graphene_ray_get_position_at(arg0, arg1, &arg2)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg2)
+
+	return ret0
+}
+
+// Init initializes the given #graphene_ray_t using the given @origin and
+// @direction values.
+func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_point3d_t)(origin.Native())
+	arg2 = (*C.graphene_vec3_t)(direction.Native())
+
+	ret := C.graphene_ray_init(arg0, arg1, arg2)
+
+	var ret0 *Ray
+
+	ret0 = WrapRay(ret)
+
+	return ret0
+}
+
+// InitFromRay initializes the given #graphene_ray_t using the origin and
+// direction values of another #graphene_ray_t.
+func (r *Ray) InitFromRay(src *Ray) *Ray {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_ray_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_ray_t)(src.Native())
+
+	ret := C.graphene_ray_init_from_ray(arg0, arg1)
+
+	var ret0 *Ray
+
+	ret0 = WrapRay(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes the given #graphene_ray_t using the given vectors.
+func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_vec3_t)(origin.Native())
+	arg2 = (*C.graphene_vec3_t)(direction.Native())
+
+	ret := C.graphene_ray_init_from_vec3(arg0, arg1, arg2)
+
+	var ret0 *Ray
+
+	ret0 = WrapRay(ret)
+
+	return ret0
+}
+
+// IntersectBox intersects the given #graphene_ray_t @r with the given
+// #graphene_box_t @b.
+func (r *Ray) IntersectBox(b *Box) (tOut float32, rayIntersectionKind RayIntersectionKind) {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_box_t
+	var arg2 *C.float // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_ray_intersect_box(arg0, arg1, &arg2)
+
+	var ret0 float32
+	var ret1 RayIntersectionKind
+
+	ret0 = float32(arg2)
+
+	ret1 = RayIntersectionKind(ret)
+
+	return ret0, ret1
+}
+
+// IntersectSphere intersects the given #graphene_ray_t @r with the given
+// #graphene_sphere_t @s.
+func (r *Ray) IntersectSphere(s *Sphere) (tOut float32, rayIntersectionKind RayIntersectionKind) {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_sphere_t
+	var arg2 *C.float // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_ray_intersect_sphere(arg0, arg1, &arg2)
+
+	var ret0 float32
+	var ret1 RayIntersectionKind
+
+	ret0 = float32(arg2)
+
+	ret1 = RayIntersectionKind(ret)
+
+	return ret0, ret1
+}
+
+// IntersectTriangle intersects the given #graphene_ray_t @r with the given
+// #graphene_triangle_t @t.
+func (r *Ray) IntersectTriangle(t *Triangle) (tOut float32, rayIntersectionKind RayIntersectionKind) {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_triangle_t
+	var arg2 *C.float // out
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_ray_intersect_triangle(arg0, arg1, &arg2)
+
+	var ret0 float32
+	var ret1 RayIntersectionKind
+
+	ret0 = float32(arg2)
+
+	ret1 = RayIntersectionKind(ret)
+
+	return ret0, ret1
+}
+
+// IntersectsBox checks whether the given #graphene_ray_t @r intersects the
+// given #graphene_box_t @b.
+//
+// See also: graphene_ray_intersect_box()
+func (r *Ray) IntersectsBox(b *Box) bool {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_box_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_box_t)(b.Native())
+
+	ret := C.graphene_ray_intersects_box(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IntersectsSphere checks if the given #graphene_ray_t @r intersects the given
+// #graphene_sphere_t @s.
+//
+// See also: graphene_ray_intersect_sphere()
+func (r *Ray) IntersectsSphere(s *Sphere) bool {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_sphere_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_ray_intersects_sphere(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IntersectsTriangle checks whether the given #graphene_ray_t @r intersects the
+// given #graphene_triangle_t @b.
+//
+// See also: graphene_ray_intersect_triangle()
+func (r *Ray) IntersectsTriangle(t *Triangle) bool {
+	var arg0 *C.graphene_ray_t
+	var arg1 *C.graphene_triangle_t
+
+	arg0 = (*C.graphene_ray_t)(r.Native())
+	arg1 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_ray_intersects_triangle(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -975,6 +4777,621 @@ func (s *Rect) Size() Size {
 	var ret Size
 	ret = WrapSize(r.native.size)
 	return ret
+}
+
+// ContainsPoint checks whether a #graphene_rect_t contains the given
+// coordinates.
+func (r *Rect) ContainsPoint(p *Point) bool {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = (*C.graphene_point_t)(p.Native())
+
+	ret := C.graphene_rect_contains_point(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ContainsRect checks whether a #graphene_rect_t fully contains the given
+// rectangle.
+func (a *Rect) ContainsRect(b *Rect) bool {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(a.Native())
+	arg1 = (*C.graphene_rect_t)(b.Native())
+
+	ret := C.graphene_rect_contains_rect(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given rectangle are equal.
+func (a *Rect) Equal(b *Rect) bool {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(a.Native())
+	arg1 = (*C.graphene_rect_t)(b.Native())
+
+	ret := C.graphene_rect_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Expand expands a #graphene_rect_t to contain the given #graphene_point_t.
+func (r *Rect) Expand(p *Point) Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t
+	var arg2 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = (*C.graphene_point_t)(p.Native())
+
+	ret := C.graphene_rect_expand(arg0, arg1, &arg2)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg2)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_rect_alloc().
+func (r *Rect) Free() {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	C.graphene_rect_free(arg0)
+}
+
+// Area: compute the area of given normalized rectangle.
+func (r *Rect) Area() float32 {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_area(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// BottomLeft retrieves the coordinates of the bottom-left corner of the given
+// rectangle.
+func (r *Rect) BottomLeft() Point {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_bottom_left(arg0, &arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg1)
+
+	return ret0
+}
+
+// BottomRight retrieves the coordinates of the bottom-right corner of the given
+// rectangle.
+func (r *Rect) BottomRight() Point {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_bottom_right(arg0, &arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg1)
+
+	return ret0
+}
+
+// Center retrieves the coordinates of the center of the given rectangle.
+func (r *Rect) Center() Point {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_center(arg0, &arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg1)
+
+	return ret0
+}
+
+// Height retrieves the normalized height of the given rectangle.
+func (r *Rect) Height() float32 {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_height(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// TopLeft retrieves the coordinates of the top-left corner of the given
+// rectangle.
+func (r *Rect) TopLeft() Point {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_top_left(arg0, &arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg1)
+
+	return ret0
+}
+
+// TopRight retrieves the coordinates of the top-right corner of the given
+// rectangle.
+func (r *Rect) TopRight() Point {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_point_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_top_right(arg0, &arg1)
+
+	var ret0 *Point
+
+	ret0 = WrapPoint(arg1)
+
+	return ret0
+}
+
+// Vertices computes the four vertices of a #graphene_rect_t.
+func (r *Rect) Vertices() [4]Vec2 {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_vertices(arg0, &arg1)
+
+	var ret0 [4]Vec2
+
+	{
+		cArray := ([4]graphene_vec2_t)(arg1)
+
+		for i := 0; i < 4; i++ {
+			src := cArray[i]
+			ret0[i] = WrapVec2(src)
+		}
+	}
+
+	return ret0
+}
+
+// Width retrieves the normalized width of the given rectangle.
+func (r *Rect) Width() float32 {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_width(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// X retrieves the normalized X coordinate of the origin of the given rectangle.
+func (r *Rect) X() float32 {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_x(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Y retrieves the normalized Y coordinate of the origin of the given rectangle.
+func (r *Rect) Y() float32 {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_get_y(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes the given #graphene_rect_t with the given values.
+//
+// This function will implicitly normalize the #graphene_rect_t before
+// returning.
+func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.float
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(width)
+	arg4 = C.float(height)
+
+	ret := C.graphene_rect_init(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(ret)
+
+	return ret0
+}
+
+// InitFromRect initializes @r using the given @src rectangle.
+//
+// This function will implicitly normalize the #graphene_rect_t before
+// returning.
+func (r *Rect) InitFromRect(src *Rect) *Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = (*C.graphene_rect_t)(src.Native())
+
+	ret := C.graphene_rect_init_from_rect(arg0, arg1)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(ret)
+
+	return ret0
+}
+
+// Inset changes the given rectangle to be smaller, or larger depending on the
+// given inset parameters.
+//
+// To create an inset rectangle, use positive @d_x or @d_y values; to create a
+// larger, encompassing rectangle, use negative @d_x or @d_y values.
+//
+// The origin of the rectangle is offset by @d_x and @d_y, while the size is
+// adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive values, the
+// size of the rectangle is decreased; if @d_x and @d_y are negative values, the
+// size of the rectangle is increased.
+//
+// If the size of the resulting inset rectangle has a negative width or height
+// then the size will be set to zero.
+func (r *Rect) Inset(dX float32, dY float32) *Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 C.float
+	var arg2 C.float
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = C.float(dX)
+	arg2 = C.float(dY)
+
+	ret := C.graphene_rect_inset(arg0, arg1, arg2)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(ret)
+
+	return ret0
+}
+
+// InsetR changes the given rectangle to be smaller, or larger depending on the
+// given inset parameters.
+//
+// To create an inset rectangle, use positive @d_x or @d_y values; to create a
+// larger, encompassing rectangle, use negative @d_x or @d_y values.
+//
+// The origin of the rectangle is offset by @d_x and @d_y, while the size is
+// adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive values, the
+// size of the rectangle is decreased; if @d_x and @d_y are negative values, the
+// size of the rectangle is increased.
+//
+// If the size of the resulting inset rectangle has a negative width or height
+// then the size will be set to zero.
+func (r *Rect) InsetR(dX float32, dY float32) Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = C.float(dX)
+	arg2 = C.float(dY)
+
+	ret := C.graphene_rect_inset_r(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg3)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates the origin and size of the two given
+// rectangles.
+func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t
+	var arg2 C.double
+	var arg3 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(a.Native())
+	arg1 = (*C.graphene_rect_t)(b.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_rect_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg3)
+
+	return ret0
+}
+
+// Intersection computes the intersection of the two given rectangles.
+//
+// ! (rectangle-intersection.png)
+//
+// The intersection in the image above is the blue outline.
+//
+// If the two rectangles do not intersect, @res will contain a degenerate
+// rectangle with origin in (0, 0) and a size of 0.
+func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(a.Native())
+	arg1 = (*C.graphene_rect_t)(b.Native())
+
+	ret := C.graphene_rect_intersection(arg0, arg1, &arg2)
+
+	var ret0 *Rect
+	var ret1 bool
+
+	ret0 = WrapRect(arg2)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// Normalize normalizes the passed rectangle.
+//
+// This function ensures that the size of the rectangle is made of positive
+// values, and that the origin is the top-left corner of the rectangle.
+func (r *Rect) Normalize() *Rect {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_normalize(arg0)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(ret)
+
+	return ret0
+}
+
+// NormalizeR normalizes the passed rectangle.
+//
+// This function ensures that the size of the rectangle is made of positive
+// values, and that the origin is in the top-left corner of the rectangle.
+func (r *Rect) NormalizeR() Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_normalize_r(arg0, &arg1)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg1)
+
+	return ret0
+}
+
+// Offset offsets the origin by @d_x and @d_y.
+//
+// The size of the rectangle is unchanged.
+func (r *Rect) Offset(dX float32, dY float32) *Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 C.float
+	var arg2 C.float
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = C.float(dX)
+	arg2 = C.float(dY)
+
+	ret := C.graphene_rect_offset(arg0, arg1, arg2)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(ret)
+
+	return ret0
+}
+
+// OffsetR offsets the origin of the given rectangle by @d_x and @d_y.
+//
+// The size of the rectangle is left unchanged.
+func (r *Rect) OffsetR(dX float32, dY float32) Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = C.float(dX)
+	arg2 = C.float(dY)
+
+	ret := C.graphene_rect_offset_r(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg3)
+
+	return ret0
+}
+
+// Round rounds the origin and size of the given rectangle to their nearest
+// integer values; the rounding is guaranteed to be large enough to have an area
+// bigger or equal to the original rectangle, but might not fully contain its
+// extents. Use graphene_rect_round_extents() in case you need to round to a
+// rectangle that covers fully the original one.
+//
+// This function is the equivalent of calling `floor` on the coordinates of the
+// origin, and `ceil` on the size.
+func (r *Rect) Round() Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_round(arg0, &arg1)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg1)
+
+	return ret0
+}
+
+// RoundExtents rounds the origin of the given rectangle to its nearest integer
+// value and and recompute the size so that the rectangle is large enough to
+// contain all the conrners of the original rectangle.
+//
+// This function is the equivalent of calling `floor` on the coordinates of the
+// origin, and recomputing the size calling `ceil` on the bottom-right
+// coordinates.
+//
+// If you want to be sure that the rounded rectangle completely covers the area
+// that was covered by the original rectangle — i.e. you want to cover the area
+// including all its corners — this function will make sure that the size is
+// recomputed taking into account the ceiling of the coordinates of the
+// bottom-right corner. If the difference between the original coordinates and
+// the coordinates of the rounded rectangle is greater than the difference
+// between the original size and and the rounded size, then the move of the
+// origin would not be compensated by a move in the anti-origin, leaving the
+// corners of the original rectangle outside the rounded one.
+func (r *Rect) RoundExtents() Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_round_extents(arg0, &arg1)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg1)
+
+	return ret0
+}
+
+// RoundToPixel rounds the origin and the size of the given rectangle to their
+// nearest integer values; the rounding is guaranteed to be large enough to
+// contain the original rectangle.
+func (r *Rect) RoundToPixel() *Rect {
+	var arg0 *C.graphene_rect_t
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+
+	ret := C.graphene_rect_round_to_pixel(arg0)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(ret)
+
+	return ret0
+}
+
+// Scale scales the size and origin of a rectangle horizontaly by @s_h, and
+// vertically by @s_v. The result @res is normalized.
+func (r *Rect) Scale(sH float32, sV float32) Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(r.Native())
+	arg1 = C.float(sH)
+	arg2 = C.float(sV)
+
+	ret := C.graphene_rect_scale(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg3)
+
+	return ret0
+}
+
+// Union computes the union of the two given rectangles.
+//
+// ! (rectangle-union.png)
+//
+// The union in the image above is the blue outline.
+func (a *Rect) Union(b *Rect) Rect {
+	var arg0 *C.graphene_rect_t
+	var arg1 *C.graphene_rect_t
+	var arg2 *C.graphene_rect_t // out
+
+	arg0 = (*C.graphene_rect_t)(a.Native())
+	arg1 = (*C.graphene_rect_t)(b.Native())
+
+	ret := C.graphene_rect_union(arg0, arg1, &arg2)
+
+	var ret0 *Rect
+
+	ret0 = WrapRect(arg2)
+
+	return ret0
 }
 
 type SIMD4F struct {
@@ -1076,6 +5493,108 @@ func (h *Size) Height() float32 {
 	return ret
 }
 
+// Equal checks whether the two give #graphene_size_t are equal.
+func (a *Size) Equal(b *Size) bool {
+	var arg0 *C.graphene_size_t
+	var arg1 *C.graphene_size_t
+
+	arg0 = (*C.graphene_size_t)(a.Native())
+	arg1 = (*C.graphene_size_t)(b.Native())
+
+	ret := C.graphene_size_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_size_alloc().
+func (s *Size) Free() {
+	var arg0 *C.graphene_size_t
+
+	arg0 = (*C.graphene_size_t)(s.Native())
+
+	C.graphene_size_free(arg0)
+}
+
+// Init initializes a #graphene_size_t using the given @width and @height.
+func (s *Size) Init(width float32, height float32) *Size {
+	var arg0 *C.graphene_size_t
+	var arg1 C.float
+	var arg2 C.float
+
+	arg0 = (*C.graphene_size_t)(s.Native())
+	arg1 = C.float(width)
+	arg2 = C.float(height)
+
+	ret := C.graphene_size_init(arg0, arg1, arg2)
+
+	var ret0 *Size
+
+	ret0 = WrapSize(ret)
+
+	return ret0
+}
+
+// InitFromSize initializes a #graphene_size_t using the width and height of the
+// given @src.
+func (s *Size) InitFromSize(src *Size) *Size {
+	var arg0 *C.graphene_size_t
+	var arg1 *C.graphene_size_t
+
+	arg0 = (*C.graphene_size_t)(s.Native())
+	arg1 = (*C.graphene_size_t)(src.Native())
+
+	ret := C.graphene_size_init_from_size(arg0, arg1)
+
+	var ret0 *Size
+
+	ret0 = WrapSize(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates the two given #graphene_size_t using the
+// given interpolation @factor.
+func (a *Size) Interpolate(b *Size, factor float64) Size {
+	var arg0 *C.graphene_size_t
+	var arg1 *C.graphene_size_t
+	var arg2 C.double
+	var arg3 *C.graphene_size_t // out
+
+	arg0 = (*C.graphene_size_t)(a.Native())
+	arg1 = (*C.graphene_size_t)(b.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_size_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Size
+
+	ret0 = WrapSize(arg3)
+
+	return ret0
+}
+
+// Scale scales the components of a #graphene_size_t using the given @factor.
+func (s *Size) Scale(factor float32) Size {
+	var arg0 *C.graphene_size_t
+	var arg1 C.float
+	var arg2 *C.graphene_size_t // out
+
+	arg0 = (*C.graphene_size_t)(s.Native())
+	arg1 = C.float(factor)
+
+	ret := C.graphene_size_scale(arg0, arg1, &arg2)
+
+	var ret0 *Size
+
+	ret0 = WrapSize(arg2)
+
+	return ret0
+}
+
 // Sphere: a sphere, represented by its center and radius.
 type Sphere struct {
 	native C.graphene_sphere_t
@@ -1113,6 +5632,170 @@ func NewSphereAlloc() *Sphere {
 	return ret0
 }
 
+// ContainsPoint checks whether the given @point is contained in the volume of a
+// #graphene_sphere_t.
+func (s *Sphere) ContainsPoint(point *Point3D) bool {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_sphere_contains_point(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Distance computes the distance of the given @point from the surface of a
+// #graphene_sphere_t.
+func (s *Sphere) Distance(point *Point3D) float32 {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_sphere_distance(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether two #graphene_sphere_t are equal.
+func (a *Sphere) Equal(b *Sphere) bool {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_sphere_t
+
+	arg0 = (*C.graphene_sphere_t)(a.Native())
+	arg1 = (*C.graphene_sphere_t)(b.Native())
+
+	ret := C.graphene_sphere_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_sphere_alloc().
+func (s *Sphere) Free() {
+	var arg0 *C.graphene_sphere_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+
+	C.graphene_sphere_free(arg0)
+}
+
+// BoundingBox computes the bounding box capable of containing the given
+// #graphene_sphere_t.
+func (s *Sphere) BoundingBox() Box {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_sphere_get_bounding_box(arg0, &arg1)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg1)
+
+	return ret0
+}
+
+// Center retrieves the coordinates of the center of a #graphene_sphere_t.
+func (s *Sphere) Center() Point3D {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_sphere_get_center(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// Radius retrieves the radius of a #graphene_sphere_t.
+func (s *Sphere) Radius() float32 {
+	var arg0 *C.graphene_sphere_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_sphere_get_radius(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes the given #graphene_sphere_t with the given @center and
+// @radius.
+func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+	arg1 = (*C.graphene_point3d_t)(center.Native())
+	arg2 = C.float(radius)
+
+	ret := C.graphene_sphere_init(arg0, arg1, arg2)
+
+	var ret0 *Sphere
+
+	ret0 = WrapSphere(ret)
+
+	return ret0
+}
+
+// IsEmpty checks whether the sphere has a zero radius.
+func (s *Sphere) IsEmpty() bool {
+	var arg0 *C.graphene_sphere_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+
+	ret := C.graphene_sphere_is_empty(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Translate translates the center of the given #graphene_sphere_t using the
+// @point coordinates as the delta of the translation.
+func (s *Sphere) Translate(point *Point3D) Sphere {
+	var arg0 *C.graphene_sphere_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_sphere_t // out
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+	arg1 = (*C.graphene_point3d_t)(point.Native())
+
+	ret := C.graphene_sphere_translate(arg0, arg1, &arg2)
+
+	var ret0 *Sphere
+
+	ret0 = WrapSphere(arg2)
+
+	return ret0
+}
+
 // Triangle: a triangle.
 type Triangle struct {
 	native C.graphene_triangle_t
@@ -1142,6 +5825,334 @@ func (t *Triangle) Native() unsafe.Pointer {
 func NewTriangleAlloc() *Triangle {
 
 	ret := C.graphene_triangle_alloc()
+
+	var ret0 *Triangle
+
+	ret0 = WrapTriangle(ret)
+
+	return ret0
+}
+
+// ContainsPoint checks whether the given triangle @t contains the point @p.
+func (t *Triangle) ContainsPoint(p *Point3D) bool {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_triangle_contains_point(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_triangle_t are equal.
+func (a *Triangle) Equal(b *Triangle) bool {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_triangle_t
+
+	arg0 = (*C.graphene_triangle_t)(a.Native())
+	arg1 = (*C.graphene_triangle_t)(b.Native())
+
+	ret := C.graphene_triangle_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by graphene_triangle_alloc().
+func (t *Triangle) Free() {
+	var arg0 *C.graphene_triangle_t
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	C.graphene_triangle_free(arg0)
+}
+
+// Area computes the area of the given #graphene_triangle_t.
+func (t *Triangle) Area() float32 {
+	var arg0 *C.graphene_triangle_t
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_area(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Barycoords computes the barycentric coordinates
+// (http://en.wikipedia.org/wiki/Barycentric_coordinate_system) of the given
+// point @p.
+//
+// The point @p must lie on the same plane as the triangle @t; if the point is
+// not coplanar, the result of this function is undefined.
+//
+// If we place the origin in the coordinates of the triangle's A point, the
+// barycentric coordinates are `u`, which is on the AC vector; and `v` which is
+// on the AB vector:
+//
+// ! (triangle-barycentric.png)
+//
+// The returned #graphene_vec2_t contains the following values, in order:
+//
+//    - `res.x = u`
+//    - `res.y = v`
+func (t *Triangle) Barycoords(p *Point3D) (res Vec2, ok bool) {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+
+	ret := C.graphene_triangle_get_barycoords(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+	var ret1 bool
+
+	ret0 = WrapVec2(arg2)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// BoundingBox computes the bounding box of the given #graphene_triangle_t.
+func (t *Triangle) BoundingBox() Box {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_box_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_bounding_box(arg0, &arg1)
+
+	var ret0 *Box
+
+	ret0 = WrapBox(arg1)
+
+	return ret0
+}
+
+// Midpoint computes the coordinates of the midpoint of the given
+// #graphene_triangle_t.
+//
+// The midpoint G is the centroid
+// (https://en.wikipedia.org/wiki/Centroid#Triangle_centroid) of the triangle,
+// i.e. the intersection of its medians.
+func (t *Triangle) Midpoint() Point3D {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_midpoint(arg0, &arg1)
+
+	var ret0 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	return ret0
+}
+
+// Normal computes the normal vector of the given #graphene_triangle_t.
+func (t *Triangle) Normal() Vec3 {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_normal(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// Plane computes the plane based on the vertices of the given
+// #graphene_triangle_t.
+func (t *Triangle) Plane() Plane {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_plane_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_plane(arg0, &arg1)
+
+	var ret0 *Plane
+
+	ret0 = WrapPlane(arg1)
+
+	return ret0
+}
+
+// Points retrieves the three vertices of the given #graphene_triangle_t and
+// returns their coordinates as #graphene_point3d_t.
+func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_point3d_t // out
+	var arg2 *C.graphene_point3d_t // out
+	var arg3 *C.graphene_point3d_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_points(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 *Point3D
+	var ret1 *Point3D
+	var ret2 *Point3D
+
+	ret0 = WrapPoint3D(arg1)
+
+	ret1 = WrapPoint3D(arg2)
+
+	ret2 = WrapPoint3D(arg3)
+
+	return ret0, ret1, ret2
+}
+
+// Uv computes the UV coordinates of the given point @p.
+//
+// The point @p must lie on the same plane as the triangle @t; if the point is
+// not coplanar, the result of this function is undefined. If @p is nil, the
+// point will be set in (0, 0, 0).
+//
+// The UV coordinates will be placed in the @res vector:
+//
+//    - `res.x = u`
+//    - `res.y = v`
+//
+// See also: graphene_triangle_get_barycoords()
+func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res Vec2, ok bool) {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_vec2_t
+	var arg3 *C.graphene_vec2_t
+	var arg4 *C.graphene_vec2_t
+	var arg5 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+	arg1 = (*C.graphene_point3d_t)(p.Native())
+	arg2 = (*C.graphene_vec2_t)(uvA.Native())
+	arg3 = (*C.graphene_vec2_t)(uvB.Native())
+	arg4 = (*C.graphene_vec2_t)(uvC.Native())
+
+	ret := C.graphene_triangle_get_uv(arg0, arg1, arg2, arg3, arg4, &arg5)
+
+	var ret0 *Vec2
+	var ret1 bool
+
+	ret0 = WrapVec2(arg5)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// Vertices retrieves the three vertices of the given #graphene_triangle_t.
+func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_vec3_t // out
+	var arg2 *C.graphene_vec3_t // out
+	var arg3 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+
+	ret := C.graphene_triangle_get_vertices(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 *Vec3
+	var ret1 *Vec3
+	var ret2 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	ret1 = WrapVec3(arg2)
+
+	ret2 = WrapVec3(arg3)
+
+	return ret0, ret1, ret2
+}
+
+// InitFromFloat initializes a #graphene_triangle_t using the three given arrays
+// of floating point values, each representing the coordinates of a point in 3D
+// space.
+func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.float
+	var arg2 *C.float
+	var arg3 *C.float
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+	{
+		arg1 = (*C.float)(&a)
+		defer runtime.KeepAlive(&a)
+	}
+	{
+		arg2 = (*C.float)(&b)
+		defer runtime.KeepAlive(&b)
+	}
+	{
+		arg3 = (*C.float)(&c)
+		defer runtime.KeepAlive(&c)
+	}
+
+	ret := C.graphene_triangle_init_from_float(arg0, arg1, arg2, arg3)
+
+	var ret0 *Triangle
+
+	ret0 = WrapTriangle(ret)
+
+	return ret0
+}
+
+// InitFromPoint3D initializes a #graphene_triangle_t using the three given 3D
+// points.
+func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_point3d_t
+	var arg2 *C.graphene_point3d_t
+	var arg3 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+	arg1 = (*C.graphene_point3d_t)(a.Native())
+	arg2 = (*C.graphene_point3d_t)(b.Native())
+	arg3 = (*C.graphene_point3d_t)(c.Native())
+
+	ret := C.graphene_triangle_init_from_point3d(arg0, arg1, arg2, arg3)
+
+	var ret0 *Triangle
+
+	ret0 = WrapTriangle(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes a #graphene_triangle_t using the three given
+// vectors.
+func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
+	var arg0 *C.graphene_triangle_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t
+	var arg3 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_triangle_t)(t.Native())
+	arg1 = (*C.graphene_vec3_t)(a.Native())
+	arg2 = (*C.graphene_vec3_t)(b.Native())
+	arg3 = (*C.graphene_vec3_t)(c.Native())
+
+	ret := C.graphene_triangle_init_from_vec3(arg0, arg1, arg2, arg3)
 
 	var ret0 *Triangle
 
@@ -1190,6 +6201,375 @@ func NewVec2Alloc() *Vec2 {
 	return ret0
 }
 
+// Add adds each component of the two passed vectors and places each result into
+// the components of @res.
+func (a *Vec2) Add(b *Vec2) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_add(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// Divide divides each component of the first operand @a by the corresponding
+// component of the second operand @b, and places the results into the vector
+// @res.
+func (a *Vec2) Divide(b *Vec2) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_divide(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// Dot computes the dot product of the two given vectors.
+func (a *Vec2) Dot(b *Vec2) float32 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_dot(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_vec2_t are equal.
+func (v1 *Vec2) Equal(v2 *Vec2) bool {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(v1.Native())
+	arg1 = (*C.graphene_vec2_t)(v2.Native())
+
+	ret := C.graphene_vec2_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by @v
+func (v *Vec2) Free() {
+	var arg0 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	C.graphene_vec2_free(arg0)
+}
+
+// X retrieves the X component of the #graphene_vec2_t.
+func (v *Vec2) X() float32 {
+	var arg0 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	ret := C.graphene_vec2_get_x(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Y retrieves the Y component of the #graphene_vec2_t.
+func (v *Vec2) Y() float32 {
+	var arg0 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	ret := C.graphene_vec2_get_y(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes a #graphene_vec2_t using the given values.
+//
+// This function can be called multiple times.
+func (v *Vec2) Init(x float32, y float32) *Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 C.float
+	var arg2 C.float
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+
+	ret := C.graphene_vec2_init(arg0, arg1, arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(ret)
+
+	return ret0
+}
+
+// InitFromFloat initializes @v with the contents of the given array.
+func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.float
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+	{
+		arg1 = (*C.float)(&src)
+		defer runtime.KeepAlive(&src)
+	}
+
+	ret := C.graphene_vec2_init_from_float(arg0, arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(ret)
+
+	return ret0
+}
+
+// InitFromVec2 copies the contents of @src into @v.
+func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+	arg1 = (*C.graphene_vec2_t)(src.Native())
+
+	ret := C.graphene_vec2_init_from_vec2(arg0, arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 C.double
+	var arg3 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(v1.Native())
+	arg1 = (*C.graphene_vec2_t)(v2.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_vec2_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg3)
+
+	return ret0
+}
+
+// Length computes the length of the given vector.
+func (v *Vec2) Length() float32 {
+	var arg0 *C.graphene_vec2_t
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	ret := C.graphene_vec2_length(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Max compares the two given vectors and places the maximum values of each
+// component into @res.
+func (a *Vec2) Max(b *Vec2) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_max(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// Min compares the two given vectors and places the minimum values of each
+// component into @res.
+func (a *Vec2) Min(b *Vec2) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_min(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// Multiply multiplies each component of the two passed vectors and places each
+// result into the components of @res.
+func (a *Vec2) Multiply(b *Vec2) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_multiply(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// Near compares the two given #graphene_vec2_t vectors and checks whether their
+// values are within the given @epsilon.
+func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_vec2_t)(v1.Native())
+	arg1 = (*C.graphene_vec2_t)(v2.Native())
+	arg2 = C.float(epsilon)
+
+	ret := C.graphene_vec2_near(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Negate negates the given #graphene_vec2_t.
+func (v *Vec2) Negate() Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	ret := C.graphene_vec2_negate(arg0, &arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg1)
+
+	return ret0
+}
+
+// Normalize computes the normalized vector for the given vector @v.
+func (v *Vec2) Normalize() Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	ret := C.graphene_vec2_normalize(arg0, &arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg1)
+
+	return ret0
+}
+
+// Scale multiplies all components of the given vector with the given scalar
+// @factor.
+func (v *Vec2) Scale(factor float32) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+	arg1 = C.float(factor)
+
+	ret := C.graphene_vec2_scale(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// Subtract subtracts from each component of the first operand @a the
+// corresponding component of the second operand @b and places each result into
+// the components of @res.
+func (a *Vec2) Subtract(b *Vec2) Vec2 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec2_t)(a.Native())
+	arg1 = (*C.graphene_vec2_t)(b.Native())
+
+	ret := C.graphene_vec2_subtract(arg0, arg1, &arg2)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg2)
+
+	return ret0
+}
+
+// ToFloat stores the components of @v into an array.
+func (v *Vec2) ToFloat() [2]float32 {
+	var arg0 *C.graphene_vec2_t
+	var arg1 *C.float // out
+
+	arg0 = (*C.graphene_vec2_t)(v.Native())
+
+	ret := C.graphene_vec2_to_float(arg0, &arg1)
+
+	var ret0 [2]float32
+
+	ret0 = [2]float32(arg1)
+
+	return ret0
+}
+
 // Vec3: a structure capable of holding a vector with three dimensions: x, y,
 // and z.
 //
@@ -1231,6 +6611,496 @@ func NewVec3Alloc() *Vec3 {
 	return ret0
 }
 
+// Add adds each component of the two given vectors.
+func (a *Vec3) Add(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_add(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Cross computes the cross product of the two given vectors.
+func (a *Vec3) Cross(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_cross(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Divide divides each component of the first operand @a by the corresponding
+// component of the second operand @b, and places the results into the vector
+// @res.
+func (a *Vec3) Divide(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_divide(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Dot computes the dot product of the two given vectors.
+func (a *Vec3) Dot(b *Vec3) float32 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_dot(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_vec3_t are equal.
+func (v1 *Vec3) Equal(v2 *Vec3) bool {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v1.Native())
+	arg1 = (*C.graphene_vec3_t)(v2.Native())
+
+	ret := C.graphene_vec3_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by @v
+func (v *Vec3) Free() {
+	var arg0 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	C.graphene_vec3_free(arg0)
+}
+
+// X retrieves the first component of the given vector @v.
+func (v *Vec3) X() float32 {
+	var arg0 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_x(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// XY creates a #graphene_vec2_t that contains the first and second components
+// of the given #graphene_vec3_t.
+func (v *Vec3) XY() Vec2 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_xy(arg0, &arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg1)
+
+	return ret0
+}
+
+// XY0 creates a #graphene_vec3_t that contains the first two components of the
+// given #graphene_vec3_t, and the third component set to 0.
+func (v *Vec3) XY0() Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_xy0(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// XYZ0 converts a #graphene_vec3_t in a #graphene_vec4_t using 0.0 as the value
+// for the fourth component of the resulting vector.
+func (v *Vec3) XYZ0() Vec4 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_xyz0(arg0, &arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg1)
+
+	return ret0
+}
+
+// XYZ1 converts a #graphene_vec3_t in a #graphene_vec4_t using 1.0 as the value
+// for the fourth component of the resulting vector.
+func (v *Vec3) XYZ1() Vec4 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_xyz1(arg0, &arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg1)
+
+	return ret0
+}
+
+// Xyzw converts a #graphene_vec3_t in a #graphene_vec4_t using @w as the value
+// of the fourth component of the resulting vector.
+func (v *Vec3) Xyzw(w float32) Vec4 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+	arg1 = C.float(w)
+
+	ret := C.graphene_vec3_get_xyzw(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Y retrieves the second component of the given vector @v.
+func (v *Vec3) Y() float32 {
+	var arg0 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_y(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Z retrieves the third component of the given vector @v.
+func (v *Vec3) Z() float32 {
+	var arg0 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_get_z(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes a #graphene_vec3_t using the given values.
+//
+// This function can be called multiple times.
+func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+
+	ret := C.graphene_vec3_init(arg0, arg1, arg2, arg3)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(ret)
+
+	return ret0
+}
+
+// InitFromFloat initializes a #graphene_vec3_t with the values from an array.
+func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.float
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+	{
+		arg1 = (*C.float)(&src)
+		defer runtime.KeepAlive(&src)
+	}
+
+	ret := C.graphene_vec3_init_from_float(arg0, arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes a #graphene_vec3_t with the values of another
+// #graphene_vec3_t.
+func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+	arg1 = (*C.graphene_vec3_t)(src.Native())
+
+	ret := C.graphene_vec3_init_from_vec3(arg0, arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 C.double
+	var arg3 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v1.Native())
+	arg1 = (*C.graphene_vec3_t)(v2.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_vec3_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg3)
+
+	return ret0
+}
+
+// Length retrieves the length of the given vector @v.
+func (v *Vec3) Length() float32 {
+	var arg0 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_length(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Max compares each component of the two given vectors and creates a vector
+// that contains the maximum values.
+func (a *Vec3) Max(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_max(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Min compares each component of the two given vectors and creates a vector
+// that contains the minimum values.
+func (a *Vec3) Min(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_min(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Multiply multiplies each component of the two given vectors.
+func (a *Vec3) Multiply(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_multiply(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Near compares the two given #graphene_vec3_t vectors and checks whether their
+// values are within the given @epsilon.
+func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_vec3_t)(v1.Native())
+	arg1 = (*C.graphene_vec3_t)(v2.Native())
+	arg2 = C.float(epsilon)
+
+	ret := C.graphene_vec3_near(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Negate negates the given #graphene_vec3_t.
+func (v *Vec3) Negate() Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_negate(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// Normalize normalizes the given #graphene_vec3_t.
+func (v *Vec3) Normalize() Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_normalize(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// Scale multiplies all components of the given vector with the given scalar
+// @factor.
+func (v *Vec3) Scale(factor float32) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+	arg1 = C.float(factor)
+
+	ret := C.graphene_vec3_scale(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// Subtract subtracts from each component of the first operand @a the
+// corresponding component of the second operand @b and places each result into
+// the components of @res.
+func (a *Vec3) Subtract(b *Vec3) Vec3 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec3_t)(a.Native())
+	arg1 = (*C.graphene_vec3_t)(b.Native())
+
+	ret := C.graphene_vec3_subtract(arg0, arg1, &arg2)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg2)
+
+	return ret0
+}
+
+// ToFloat copies the components of a #graphene_vec3_t into the given array.
+func (v *Vec3) ToFloat() [3]float32 {
+	var arg0 *C.graphene_vec3_t
+	var arg1 *C.float // out
+
+	arg0 = (*C.graphene_vec3_t)(v.Native())
+
+	ret := C.graphene_vec3_to_float(arg0, &arg1)
+
+	var ret0 [3]float32
+
+	ret0 = [3]float32(arg1)
+
+	return ret0
+}
+
 // Vec4: a structure capable of holding a vector with four dimensions: x, y, z,
 // and w.
 //
@@ -1268,6 +7138,486 @@ func NewVec4Alloc() *Vec4 {
 	var ret0 *Vec4
 
 	ret0 = WrapVec4(ret)
+
+	return ret0
+}
+
+// Add adds each component of the two given vectors.
+func (a *Vec4) Add(b *Vec4) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_add(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Divide divides each component of the first operand @a by the corresponding
+// component of the second operand @b, and places the results into the vector
+// @res.
+func (a *Vec4) Divide(b *Vec4) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_divide(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Dot computes the dot product of the two given vectors.
+func (a *Vec4) Dot(b *Vec4) float32 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_dot(arg0, arg1)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Equal checks whether the two given #graphene_vec4_t are equal.
+func (v1 *Vec4) Equal(v2 *Vec4) bool {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v1.Native())
+	arg1 = (*C.graphene_vec4_t)(v2.Native())
+
+	ret := C.graphene_vec4_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees the resources allocated by @v
+func (v *Vec4) Free() {
+	var arg0 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	C.graphene_vec4_free(arg0)
+}
+
+// W retrieves the value of the fourth component of the given #graphene_vec4_t.
+func (v *Vec4) W() float32 {
+	var arg0 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_get_w(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// X retrieves the value of the first component of the given #graphene_vec4_t.
+func (v *Vec4) X() float32 {
+	var arg0 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_get_x(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// XY creates a #graphene_vec2_t that contains the first two components of the
+// given #graphene_vec4_t.
+func (v *Vec4) XY() Vec2 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec2_t // out
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_get_xy(arg0, &arg1)
+
+	var ret0 *Vec2
+
+	ret0 = WrapVec2(arg1)
+
+	return ret0
+}
+
+// XYZ creates a #graphene_vec3_t that contains the first three components of
+// the given #graphene_vec4_t.
+func (v *Vec4) XYZ() Vec3 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec3_t // out
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_get_xyz(arg0, &arg1)
+
+	var ret0 *Vec3
+
+	ret0 = WrapVec3(arg1)
+
+	return ret0
+}
+
+// Y retrieves the value of the second component of the given #graphene_vec4_t.
+func (v *Vec4) Y() float32 {
+	var arg0 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_get_y(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Z retrieves the value of the third component of the given #graphene_vec4_t.
+func (v *Vec4) Z() float32 {
+	var arg0 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_get_z(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Init initializes a #graphene_vec4_t using the given values.
+//
+// This function can be called multiple times.
+func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 C.float
+	var arg2 C.float
+	var arg3 C.float
+	var arg4 C.float
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+	arg1 = C.float(x)
+	arg2 = C.float(y)
+	arg3 = C.float(z)
+	arg4 = C.float(w)
+
+	ret := C.graphene_vec4_init(arg0, arg1, arg2, arg3, arg4)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(ret)
+
+	return ret0
+}
+
+// InitFromFloat initializes a #graphene_vec4_t with the values inside the given
+// array.
+func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.float
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+	{
+		arg1 = (*C.float)(&src)
+		defer runtime.KeepAlive(&src)
+	}
+
+	ret := C.graphene_vec4_init_from_float(arg0, arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(ret)
+
+	return ret0
+}
+
+// InitFromVec2 initializes a #graphene_vec4_t using the components of a
+// #graphene_vec2_t and the values of @z and @w.
+func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec2_t
+	var arg2 C.float
+	var arg3 C.float
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+	arg1 = (*C.graphene_vec2_t)(src.Native())
+	arg2 = C.float(z)
+	arg3 = C.float(w)
+
+	ret := C.graphene_vec4_init_from_vec2(arg0, arg1, arg2, arg3)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(ret)
+
+	return ret0
+}
+
+// InitFromVec3 initializes a #graphene_vec4_t using the components of a
+// #graphene_vec3_t and the value of @w.
+func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec3_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+	arg1 = (*C.graphene_vec3_t)(src.Native())
+	arg2 = C.float(w)
+
+	ret := C.graphene_vec4_init_from_vec3(arg0, arg1, arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(ret)
+
+	return ret0
+}
+
+// InitFromVec4 initializes a #graphene_vec4_t using the components of another
+// #graphene_vec4_t.
+func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+	arg1 = (*C.graphene_vec4_t)(src.Native())
+
+	ret := C.graphene_vec4_init_from_vec4(arg0, arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(ret)
+
+	return ret0
+}
+
+// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 C.double
+	var arg3 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(v1.Native())
+	arg1 = (*C.graphene_vec4_t)(v2.Native())
+	arg2 = C.double(factor)
+
+	ret := C.graphene_vec4_interpolate(arg0, arg1, arg2, &arg3)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg3)
+
+	return ret0
+}
+
+// Length computes the length of the given #graphene_vec4_t.
+func (v *Vec4) Length() float32 {
+	var arg0 *C.graphene_vec4_t
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_length(arg0)
+
+	var ret0 float32
+
+	ret0 = float32(ret)
+
+	return ret0
+}
+
+// Max compares each component of the two given vectors and creates a vector
+// that contains the maximum values.
+func (a *Vec4) Max(b *Vec4) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_max(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Min compares each component of the two given vectors and creates a vector
+// that contains the minimum values.
+func (a *Vec4) Min(b *Vec4) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_min(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Multiply multiplies each component of the two given vectors.
+func (a *Vec4) Multiply(b *Vec4) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_multiply(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Near compares the two given #graphene_vec4_t vectors and checks whether their
+// values are within the given @epsilon.
+func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 C.float
+
+	arg0 = (*C.graphene_vec4_t)(v1.Native())
+	arg1 = (*C.graphene_vec4_t)(v2.Native())
+	arg2 = C.float(epsilon)
+
+	ret := C.graphene_vec4_near(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Negate negates the given #graphene_vec4_t.
+func (v *Vec4) Negate() Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_negate(arg0, &arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg1)
+
+	return ret0
+}
+
+// Normalize normalizes the given #graphene_vec4_t.
+func (v *Vec4) Normalize() Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_normalize(arg0, &arg1)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg1)
+
+	return ret0
+}
+
+// Scale multiplies all components of the given vector with the given scalar
+// @factor.
+func (v *Vec4) Scale(factor float32) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 C.float
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+	arg1 = C.float(factor)
+
+	ret := C.graphene_vec4_scale(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// Subtract subtracts from each component of the first operand @a the
+// corresponding component of the second operand @b and places each result into
+// the components of @res.
+func (a *Vec4) Subtract(b *Vec4) Vec4 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.graphene_vec4_t
+	var arg2 *C.graphene_vec4_t // out
+
+	arg0 = (*C.graphene_vec4_t)(a.Native())
+	arg1 = (*C.graphene_vec4_t)(b.Native())
+
+	ret := C.graphene_vec4_subtract(arg0, arg1, &arg2)
+
+	var ret0 *Vec4
+
+	ret0 = WrapVec4(arg2)
+
+	return ret0
+}
+
+// ToFloat stores the components of the given #graphene_vec4_t into an array of
+// floating point values.
+func (v *Vec4) ToFloat() [4]float32 {
+	var arg0 *C.graphene_vec4_t
+	var arg1 *C.float // out
+
+	arg0 = (*C.graphene_vec4_t)(v.Native())
+
+	ret := C.graphene_vec4_to_float(arg0, &arg1)
+
+	var ret0 [4]float32
+
+	ret0 = [4]float32(arg1)
 
 	return ret0
 }

@@ -133,19 +133,21 @@ func (rg *recordGenerator) UseConstructor(ctor gir.Constructor, className string
 
 	rg.Callable.Name = strings.TrimPrefix(rg.Callable.Name, "New")
 	rg.Callable.Name = "New" + rg.GoName + rg.Callable.Name
+	rg.Callable.Parent = rg.GoName
 
 	return true
 }
 
 func (rg *recordGenerator) methods() []callableGenerator {
-	callables := rg.Methods[:0]
+	callables := callableGrow(rg.Methods, len(rg.Record.Methods))
 
-	for _, method := range rg.Methods {
+	for _, method := range rg.Record.Methods {
 		cbgen := newCallableGenerator(rg.Ng)
 		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
 
+		cbgen.Parent = rg.GoName
 		callables = append(callables, cbgen)
 	}
 
@@ -197,6 +199,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 					// Assume we have the ownership of the C value, because we do.
 					TransferOwnership: "none",
 				},
+				ParentName: dots(rg.Ng.PackageName(), rg.Name, field.Name),
 			},
 		})
 		if convert == "" {

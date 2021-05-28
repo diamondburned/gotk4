@@ -97,39 +97,6 @@ func TagFromScript(script pango.Script) Tag {
 	return ret0
 }
 
-// TagToLanguage finds a Language corresponding to @language_tag.
-func TagToLanguage(languageTag Tag) *pango.Language {
-	var arg1 C.PangoOTTag
-
-	ret := C.pango_ot_tag_to_language(arg1)
-
-	var ret0 *pango.Language
-
-	ret0 = pango.WrapLanguage(ret)
-
-	return ret0
-}
-
-// TagToScript finds the Script corresponding to @script_tag.
-//
-// The 'DFLT' script tag is mapped to PANGO_SCRIPT_COMMON.
-//
-// Note that an OpenType script tag may correspond to multiple Script values. In
-// such cases, the Script value with the smallest value is returned. In
-// particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
-// OT tag 'kana'. This function will return PANGO_SCRIPT_HIRAGANA for 'kana'.
-func TagToScript(scriptTag Tag) pango.Script {
-	var arg1 C.PangoOTTag
-
-	ret := C.pango_ot_tag_to_script(arg1)
-
-	var ret0 pango.Script
-
-	ret0 = pango.Script(ret)
-
-	return ret0
-}
-
 type Buffer struct {
 	native C.PangoOTBuffer
 }
@@ -167,6 +134,107 @@ func NewBuffer(font pangofc.Font) *Buffer {
 	ret0 = WrapBuffer(ret)
 
 	return ret0
+}
+
+// AddGlyph appends a glyph to a OTBuffer, with @properties identifying which
+// features should be applied on this glyph. See pango_ot_ruleset_add_feature().
+func (buffer *Buffer) AddGlyph(glyph uint, properties uint, cluster uint) {
+	var arg0 *C.PangoOTBuffer
+	var arg1 C.guint
+	var arg2 C.guint
+	var arg3 C.guint
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+	arg1 = C.guint(glyph)
+	arg2 = C.guint(properties)
+	arg3 = C.guint(cluster)
+
+	C.pango_ot_buffer_add_glyph(arg0, arg1, arg2, arg3)
+}
+
+// Clear empties a OTBuffer, make it ready to add glyphs to.
+func (buffer *Buffer) Clear() {
+	var arg0 *C.PangoOTBuffer
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+
+	C.pango_ot_buffer_clear(arg0)
+}
+
+// Destroy destroys a OTBuffer and free all associated memory.
+func (buffer *Buffer) Destroy() {
+	var arg0 *C.PangoOTBuffer
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+
+	C.pango_ot_buffer_destroy(arg0)
+}
+
+// Glyphs gets the glyph array contained in a OTBuffer. The glyphs are owned by
+// the buffer and should not be freed, and are only valid as long as buffer is
+// not modified.
+func (buffer *Buffer) Glyphs() (glyphs []*Glyph, nGlyphs int) {
+	var arg0 *C.PangoOTBuffer
+	var arg1 **C.PangoOTGlyph // out
+	var arg2 *C.int           // out
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+
+	ret := C.pango_ot_buffer_get_glyphs(arg0, &arg1, &arg2)
+
+	var ret0 []*Glyph
+	var ret1 int
+
+	{
+		ret0 = make([]*Glyph, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (*C.PangoOTGlyph)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = WrapGlyph(src)
+		}
+	}
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
+// Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
+// used after the OpenType layout processing is over, to convert the resulting
+// glyphs into a generic Pango glyph string.
+func (buffer *Buffer) Output(glyphs *pango.GlyphString) {
+	var arg0 *C.PangoOTBuffer
+	var arg1 *C.PangoGlyphString
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+	arg1 = (*C.PangoGlyphString)(glyphs.Native())
+
+	C.pango_ot_buffer_output(arg0, arg1)
+}
+
+// SetRTL sets whether glyphs will be rendered right-to-left. This setting is
+// needed for proper horizontal positioning of right-to-left scripts.
+func (buffer *Buffer) SetRTL(rtl bool) {
+	var arg0 *C.PangoOTBuffer
+	var arg1 C.gboolean
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+	arg1 = gextras.Cbool(rtl)
+
+	C.pango_ot_buffer_set_rtl(arg0, arg1)
+}
+
+// SetZeroWidthMarks sets whether characters with a mark class should be forced
+// to zero width. This setting is needed for proper positioning of Arabic
+// accents, but will produce incorrect results with standard OpenType Indic
+// fonts.
+func (buffer *Buffer) SetZeroWidthMarks(zeroWidthMarks bool) {
+	var arg0 *C.PangoOTBuffer
+	var arg1 C.gboolean
+
+	arg0 = (*C.PangoOTBuffer)(buffer.Native())
+	arg1 = gextras.Cbool(zeroWidthMarks)
+
+	C.pango_ot_buffer_set_zero_width_marks(arg0, arg1)
 }
 
 // FeatureMap: the OTFeatureMap typedef is used to represent an OpenType feature
@@ -365,43 +433,76 @@ func (n *RulesetDescription) NOtherFeatures() uint {
 	return ret
 }
 
+// Copy creates a copy of @desc, which should be freed with
+// pango_ot_ruleset_description_free(). Primarily used internally by
+// pango_ot_ruleset_get_for_description() to cache rulesets for ruleset
+// descriptions.
+func (desc *RulesetDescription) Copy() *RulesetDescription {
+	var arg0 *C.PangoOTRulesetDescription
+
+	arg0 = (*C.PangoOTRulesetDescription)(desc.Native())
+
+	ret := C.pango_ot_ruleset_description_copy(arg0)
+
+	var ret0 *RulesetDescription
+
+	ret0 = WrapRulesetDescription(ret)
+
+	return ret0
+}
+
+// Equal compares two ruleset descriptions for equality. Two ruleset
+// descriptions are considered equal if the rulesets they describe are provably
+// identical. This means that their script, language, and all feature sets
+// should be equal. For static feature sets, the array addresses are compared
+// directly, while for other features, the list of features is compared one by
+// one. (Two ruleset descriptions may result in identical rulesets being
+// created, but still compare false.)
+func (desc1 *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
+	var arg0 *C.PangoOTRulesetDescription
+	var arg1 *C.PangoOTRulesetDescription
+
+	arg0 = (*C.PangoOTRulesetDescription)(desc1.Native())
+	arg1 = (*C.PangoOTRulesetDescription)(desc2.Native())
+
+	ret := C.pango_ot_ruleset_description_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees a ruleset description allocated by
+// pango_ot_ruleset_description_copy().
+func (desc *RulesetDescription) Free() {
+	var arg0 *C.PangoOTRulesetDescription
+
+	arg0 = (*C.PangoOTRulesetDescription)(desc.Native())
+
+	C.pango_ot_ruleset_description_free(arg0)
+}
+
+// Hash computes a hash of a OTRulesetDescription structure suitable to be used,
+// for example, as an argument to g_hash_table_new().
+func (desc *RulesetDescription) Hash() uint {
+	var arg0 *C.PangoOTRulesetDescription
+
+	arg0 = (*C.PangoOTRulesetDescription)(desc.Native())
+
+	ret := C.pango_ot_ruleset_description_hash(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
 type Info interface {
 	gextras.Objector
 
-	// FindFeature finds the index of a feature. If the feature is not found,
-	// sets @feature_index to PANGO_OT_NO_FEATURE, which is safe to pass to
-	// pango_ot_ruleset_add_feature() and similar functions.
-	//
-	// In the future, this may set @feature_index to an special value that if
-	// used in pango_ot_ruleset_add_feature() will ask Pango to synthesize the
-	// requested feature based on Unicode properties and data. However, this
-	// function will still return false in those cases. So, users may want to
-	// ignore the return value of this function in certain cases.
-	FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (featureIndex uint, ok bool)
-	// FindLanguage finds the index of a language and its required feature
-	// index. If the language is not found, sets @language_index to
-	// PANGO_OT_DEFAULT_LANGUAGE and the required feature of the default
-	// language system is returned in required_feature_index. For best
-	// compatibility with some fonts, also searches the language system tag
-	// 'dflt' before falling back to the default language system, but that is
-	// transparent to the user. The user can simply ignore the return value of
-	// this function to automatically fall back to the default language system.
-	FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (languageIndex uint, requiredFeatureIndex uint, ok bool)
-	// FindScript finds the index of a script. If not found, tries to find the
-	// 'DFLT' and then 'dflt' scripts and return the index of that in
-	// @script_index. If none of those is found either, PANGO_OT_NO_SCRIPT is
-	// placed in @script_index.
-	//
-	// All other functions taking an input script_index parameter know how to
-	// handle PANGO_OT_NO_SCRIPT, so one can ignore the return value of this
-	// function completely and proceed, to enjoy the automatic fallback to the
-	// 'DFLT'/'dflt' script.
-	FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool)
-	// ListFeatures obtains the list of features for the given language of the
-	// given script.
-	ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag
-	// ListLanguages obtains the list of available languages for a given script.
-	ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) *Tag
 	// ListScripts obtains the list of available scripts.
 	ListScripts(tableType TableType) *Tag
 }
@@ -420,156 +521,6 @@ func marshalInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapInfo(obj), nil
-}
-
-// FindFeature finds the index of a feature. If the feature is not found,
-// sets @feature_index to PANGO_OT_NO_FEATURE, which is safe to pass to
-// pango_ot_ruleset_add_feature() and similar functions.
-//
-// In the future, this may set @feature_index to an special value that if
-// used in pango_ot_ruleset_add_feature() will ask Pango to synthesize the
-// requested feature based on Unicode properties and data. However, this
-// function will still return false in those cases. So, users may want to
-// ignore the return value of this function in certain cases.
-func (info info) FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (featureIndex uint, ok bool) {
-	var arg0 *C.PangoOTInfo
-	var arg1 C.PangoOTTableType
-	var arg2 C.PangoOTTag
-	var arg3 C.guint
-	var arg4 C.guint
-	var arg5 *C.guint // out
-
-	arg0 = (*C.PangoOTInfo)(info.Native())
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg3 = C.guint(scriptIndex)
-	arg4 = C.guint(languageIndex)
-
-	ret := C.pango_ot_info_find_feature(arg0, arg1, arg2, arg3, arg4, &arg5)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg5)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// FindLanguage finds the index of a language and its required feature
-// index. If the language is not found, sets @language_index to
-// PANGO_OT_DEFAULT_LANGUAGE and the required feature of the default
-// language system is returned in required_feature_index. For best
-// compatibility with some fonts, also searches the language system tag
-// 'dflt' before falling back to the default language system, but that is
-// transparent to the user. The user can simply ignore the return value of
-// this function to automatically fall back to the default language system.
-func (info info) FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (languageIndex uint, requiredFeatureIndex uint, ok bool) {
-	var arg0 *C.PangoOTInfo
-	var arg1 C.PangoOTTableType
-	var arg2 C.guint
-	var arg3 C.PangoOTTag
-	var arg4 *C.guint // out
-	var arg5 *C.guint // out
-
-	arg0 = (*C.PangoOTInfo)(info.Native())
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg2 = C.guint(scriptIndex)
-
-	ret := C.pango_ot_info_find_language(arg0, arg1, arg2, arg3, &arg4, &arg5)
-
-	var ret0 uint
-	var ret1 uint
-	var ret2 bool
-
-	ret0 = uint(arg4)
-
-	ret1 = uint(arg5)
-
-	ret2 = gextras.Gobool(ret)
-
-	return ret0, ret1, ret2
-}
-
-// FindScript finds the index of a script. If not found, tries to find the
-// 'DFLT' and then 'dflt' scripts and return the index of that in
-// @script_index. If none of those is found either, PANGO_OT_NO_SCRIPT is
-// placed in @script_index.
-//
-// All other functions taking an input script_index parameter know how to
-// handle PANGO_OT_NO_SCRIPT, so one can ignore the return value of this
-// function completely and proceed, to enjoy the automatic fallback to the
-// 'DFLT'/'dflt' script.
-func (info info) FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool) {
-	var arg0 *C.PangoOTInfo
-	var arg1 C.PangoOTTableType
-	var arg2 C.PangoOTTag
-	var arg3 *C.guint // out
-
-	arg0 = (*C.PangoOTInfo)(info.Native())
-	arg1 = (C.PangoOTTableType)(tableType)
-
-	ret := C.pango_ot_info_find_script(arg0, arg1, arg2, &arg3)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg3)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// ListFeatures obtains the list of features for the given language of the
-// given script.
-func (info info) ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag {
-	var arg0 *C.PangoOTInfo
-	var arg1 C.PangoOTTableType
-	var arg2 C.PangoOTTag
-	var arg3 C.guint
-	var arg4 C.guint
-
-	arg0 = (*C.PangoOTInfo)(info.Native())
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg3 = C.guint(scriptIndex)
-	arg4 = C.guint(languageIndex)
-
-	ret := C.pango_ot_info_list_features(arg0, arg1, arg2, arg3, arg4)
-
-	var ret0 *Tag
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = *Tag(tmp)
-	}
-
-	return ret0
-}
-
-// ListLanguages obtains the list of available languages for a given script.
-func (info info) ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) *Tag {
-	var arg0 *C.PangoOTInfo
-	var arg1 C.PangoOTTableType
-	var arg2 C.guint
-	var arg3 C.PangoOTTag
-
-	arg0 = (*C.PangoOTInfo)(info.Native())
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg2 = C.guint(scriptIndex)
-
-	ret := C.pango_ot_info_list_languages(arg0, arg1, arg2, arg3)
-
-	var ret0 *Tag
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = *Tag(tmp)
-	}
-
-	return ret0
 }
 
 // ListScripts obtains the list of available scripts.
@@ -606,14 +557,6 @@ type Ruleset interface {
 	AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
 	// FeatureCount gets the number of GSUB and GPOS features in the ruleset.
 	FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint uint)
-	// MaybeAddFeature: this is a convenience function that first tries to find
-	// the feature using pango_ot_info_find_feature() and the ruleset script and
-	// language passed to pango_ot_ruleset_new_for(), and if the feature is
-	// found, adds it to the ruleset.
-	//
-	// If @ruleset was not created using pango_ot_ruleset_new_for(), this
-	// function does nothing.
-	MaybeAddFeature(tableType TableType, featureTag Tag, propertyBit uint32) bool
 	// MaybeAddFeatures: this is a convenience function that for each feature in
 	// the feature map array @features converts the feature name to a OTTag
 	// feature tag using PANGO_OT_TAG_MAKE() and calls
@@ -730,32 +673,6 @@ func (ruleset ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, g
 	ret2 = uint(ret)
 
 	return ret0, ret1, ret2
-}
-
-// MaybeAddFeature: this is a convenience function that first tries to find
-// the feature using pango_ot_info_find_feature() and the ruleset script and
-// language passed to pango_ot_ruleset_new_for(), and if the feature is
-// found, adds it to the ruleset.
-//
-// If @ruleset was not created using pango_ot_ruleset_new_for(), this
-// function does nothing.
-func (ruleset ruleset) MaybeAddFeature(tableType TableType, featureTag Tag, propertyBit uint32) bool {
-	var arg0 *C.PangoOTRuleset
-	var arg1 C.PangoOTTableType
-	var arg2 C.PangoOTTag
-	var arg3 C.gulong
-
-	arg0 = (*C.PangoOTRuleset)(ruleset.Native())
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg3 = C.gulong(propertyBit)
-
-	ret := C.pango_ot_ruleset_maybe_add_feature(arg0, arg1, arg2, arg3)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // MaybeAddFeatures: this is a convenience function that for each feature in

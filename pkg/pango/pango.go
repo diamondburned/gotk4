@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -1607,41 +1606,6 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 	return ret0
 }
 
-// Break determines possible line, word, and character breaks for a string of
-// Unicode text with a single analysis.
-//
-// For most purposes you may want to use pango_get_log_attrs().
-func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
-	var arg1 *C.gchar
-	var arg2 C.int
-	var arg3 *C.PangoAnalysis
-	var arg4 *C.PangoLogAttr
-	var arg5 C.int
-
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(length)
-	arg3 = (*C.PangoAnalysis)(analysis.Native())
-	{
-		var dst []C.PangoLogAttr
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_PangoLogAttr * len(attrs))))
-		sliceHeader.Len = len(attrs)
-		sliceHeader.Cap = len(attrs)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(attrs); i++ {
-			src := attrs[i]
-			dst[i] = (C.PangoLogAttr)(src.Native())
-		}
-
-		arg4 = (*C.PangoLogAttr)(unsafe.Pointer(sliceHeader.Data))
-		arg5 = len(attrs)
-	}
-
-	C.pango_break(arg1, arg2, arg3, arg4, arg5)
-}
-
 // DefaultBreak: this is the default break algorithm.
 //
 // It applies Unicode rules without language-specific tailoring, therefore the
@@ -1797,46 +1761,6 @@ func FontDescriptionFromString(str string) *FontDescription {
 	ret0 = WrapFontDescription(ret)
 
 	return ret0
-}
-
-// GetLogAttrs computes a `PangoLogAttr` for each character in @text.
-//
-// The @log_attrs array must have one `PangoLogAttr` for each position in @text;
-// if @text contains N characters, it has N+1 positions, including the last
-// position at the end of the text. @text should be an entire paragraph; logical
-// attributes can't be computed without context (for example you need to see
-// spaces on either side of a word to know the word is a word).
-func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
-	var arg1 *C.char
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 *C.PangoLanguage
-	var arg5 *C.PangoLogAttr
-	var arg6 C.int
-
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(length)
-	arg3 = C.int(level)
-	arg4 = (*C.PangoLanguage)(language.Native())
-	{
-		var dst []C.PangoLogAttr
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_PangoLogAttr * len(logAttrs))))
-		sliceHeader.Len = len(logAttrs)
-		sliceHeader.Cap = len(logAttrs)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(logAttrs); i++ {
-			src := logAttrs[i]
-			dst[i] = (C.PangoLogAttr)(src.Native())
-		}
-
-		arg5 = (*C.PangoLogAttr)(unsafe.Pointer(sliceHeader.Data))
-		arg6 = len(logAttrs)
-	}
-
-	C.pango_get_log_attrs(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // GetMirrorChar returns the mirrored character of a Unicode character.
@@ -2742,45 +2666,6 @@ func SplitFileList(str string) []string {
 	return ret0
 }
 
-// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
-//
-// The line breaks are assumed to have been produced by [func@default_break].
-//
-// If @offset is not -1, it is used to apply attributes from @analysis that are
-// relevant to line breaking.
-func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
-	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.PangoAnalysis
-	var arg4 C.int
-	var arg5 *C.PangoLogAttr
-	var arg6 C.int
-
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(length)
-	arg3 = (*C.PangoAnalysis)(analysis.Native())
-	arg4 = C.int(offset)
-	{
-		var dst []C.PangoLogAttr
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_PangoLogAttr * len(logAttrs))))
-		sliceHeader.Len = len(logAttrs)
-		sliceHeader.Cap = len(logAttrs)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(logAttrs); i++ {
-			src := logAttrs[i]
-			dst[i] = (C.PangoLogAttr)(src.Native())
-		}
-
-		arg5 = (*C.PangoLogAttr)(unsafe.Pointer(sliceHeader.Data))
-		arg6 = len(logAttrs)
-	}
-
-	C.pango_tailor_break(arg1, arg2, arg3, arg4, arg5, arg6)
-}
-
 // TrimString trims leading and trailing whitespace from a string.
 func TrimString(str string) string {
 	var arg1 *C.char
@@ -3242,6 +3127,117 @@ func (a *AttrIterator) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Copy: copy a `PangoAttrIterator`.
+func (iterator *AttrIterator) Copy() *AttrIterator {
+	var arg0 *C.PangoAttrIterator
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+
+	ret := C.pango_attr_iterator_copy(arg0)
+
+	var ret0 *AttrIterator
+
+	ret0 = WrapAttrIterator(ret)
+
+	return ret0
+}
+
+// Destroy: destroy a `PangoAttrIterator` and free all associated memory.
+func (iterator *AttrIterator) Destroy() {
+	var arg0 *C.PangoAttrIterator
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+
+	C.pango_attr_iterator_destroy(arg0)
+}
+
+// Get: find the current attribute of a particular type at the iterator
+// location. When multiple attributes of the same type overlap, the attribute
+// whose range starts closest to the current location is used.
+func (iterator *AttrIterator) Get(_type AttrType) *Attribute {
+	var arg0 *C.PangoAttrIterator
+	var arg1 C.PangoAttrType
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+	arg1 = (C.PangoAttrType)(_type)
+
+	ret := C.pango_attr_iterator_get(arg0, arg1)
+
+	var ret0 *Attribute
+
+	ret0 = WrapAttribute(ret)
+
+	return ret0
+}
+
+// Attrs gets a list of all attributes at the current position of the iterator.
+func (iterator *AttrIterator) Attrs() *glib.SList {
+	var arg0 *C.PangoAttrIterator
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+
+	ret := C.pango_attr_iterator_get_attrs(arg0)
+
+	var ret0 *glib.SList
+
+	ret0 = glib.WrapSList(ret)
+
+	return ret0
+}
+
+// Font: get the font and other attributes at the current iterator position.
+func (iterator *AttrIterator) Font(desc *FontDescription, language **Language, extraAttrs **glib.SList) {
+	var arg0 *C.PangoAttrIterator
+	var arg1 *C.PangoFontDescription
+	var arg2 **C.PangoLanguage
+	var arg3 **C.GSList
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+	arg1 = (*C.PangoFontDescription)(desc.Native())
+	arg2 = (**C.PangoLanguage)(language.Native())
+	arg3 = (**C.GSList)(extraAttrs.Native())
+
+	C.pango_attr_iterator_get_font(arg0, arg1, arg2, arg3)
+}
+
+// Next: advance the iterator until the next change of style.
+func (iterator *AttrIterator) Next() bool {
+	var arg0 *C.PangoAttrIterator
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+
+	ret := C.pango_attr_iterator_next(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Range: get the range of the current segment. Note that the stored return
+// values are signed, not unsigned like the values in `PangoAttribute`. To deal
+// with this API oversight, stored return values that wouldn't fit into a signed
+// integer are clamped to G_MAXINT.
+func (iterator *AttrIterator) Range() (start int, end int) {
+	var arg0 *C.PangoAttrIterator
+	var arg1 *C.gint // out
+	var arg2 *C.gint // out
+
+	arg0 = (*C.PangoAttrIterator)(iterator.Native())
+
+	ret := C.pango_attr_iterator_range(arg0, &arg1, &arg2)
+
+	var ret0 int
+	var ret1 int
+
+	ret0 = int(arg1)
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
 // AttrLanguage: the `PangoAttrLanguage` structure is used to represent
 // attributes that are languages.
 type AttrLanguage struct {
@@ -3327,6 +3323,212 @@ func NewAttrList() *AttrList {
 	ret0 = WrapAttrList(ret)
 
 	return ret0
+}
+
+// Change: insert the given attribute into the `PangoAttrList`.
+//
+// It will replace any attributes of the same type on that segment and be merged
+// with any adjoining attributes that are identical.
+//
+// This function is slower than [method@Pango.AttrList.insert] for creating an
+// attribute list in order (potentially much slower for large lists). However,
+// [method@Pango.AttrList.insert] is not suitable for continually changing a set
+// of attributes since it never removes or combines existing attributes.
+func (list *AttrList) Change(attr *Attribute) {
+	var arg0 *C.PangoAttrList
+	var arg1 *C.PangoAttribute
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = (*C.PangoAttribute)(attr.Native())
+
+	C.pango_attr_list_change(arg0, arg1)
+}
+
+// Copy: copy @list and return an identical new list.
+func (list *AttrList) Copy() *AttrList {
+	var arg0 *C.PangoAttrList
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+
+	ret := C.pango_attr_list_copy(arg0)
+
+	var ret0 *AttrList
+
+	ret0 = WrapAttrList(ret)
+
+	return ret0
+}
+
+// Equal checks whether @list and @other_list contain the same attributes and
+// whether those attributes apply to the same ranges. Beware that this will
+// return wrong values if any list contains duplicates.
+func (list *AttrList) Equal(otherList *AttrList) bool {
+	var arg0 *C.PangoAttrList
+	var arg1 *C.PangoAttrList
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = (*C.PangoAttrList)(otherList.Native())
+
+	ret := C.pango_attr_list_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Filter: given a `PangoAttrList` and callback function, removes any elements
+// of @list for which @func returns true and inserts them into a new list.
+func (list *AttrList) Filter(_func AttrFilterFunc) *AttrList {
+	var arg0 *C.PangoAttrList
+	var arg1 C.PangoAttrFilterFunc
+	arg2 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
+
+	ret := C.pango_attr_list_filter(arg0, arg1)
+
+	var ret0 *AttrList
+
+	ret0 = WrapAttrList(ret)
+
+	return ret0
+}
+
+// Attributes gets a list of all attributes in @list.
+func (list *AttrList) Attributes() *glib.SList {
+	var arg0 *C.PangoAttrList
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+
+	ret := C.pango_attr_list_get_attributes(arg0)
+
+	var ret0 *glib.SList
+
+	ret0 = glib.WrapSList(ret)
+
+	return ret0
+}
+
+// Iterator: create a iterator initialized to the beginning of the list. @list
+// must not be modified until this iterator is freed.
+func (list *AttrList) Iterator() *AttrIterator {
+	var arg0 *C.PangoAttrList
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+
+	ret := C.pango_attr_list_get_iterator(arg0)
+
+	var ret0 *AttrIterator
+
+	ret0 = WrapAttrIterator(ret)
+
+	return ret0
+}
+
+// Insert: insert the given attribute into the `PangoAttrList`.
+//
+// It will be inserted after all other attributes with a matching @start_index.
+func (list *AttrList) Insert(attr *Attribute) {
+	var arg0 *C.PangoAttrList
+	var arg1 *C.PangoAttribute
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = (*C.PangoAttribute)(attr.Native())
+
+	C.pango_attr_list_insert(arg0, arg1)
+}
+
+// InsertBefore: insert the given attribute into the `PangoAttrList`.
+//
+// It will be inserted before all other attributes with a matching @start_index.
+func (list *AttrList) InsertBefore(attr *Attribute) {
+	var arg0 *C.PangoAttrList
+	var arg1 *C.PangoAttribute
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = (*C.PangoAttribute)(attr.Native())
+
+	C.pango_attr_list_insert_before(arg0, arg1)
+}
+
+// Ref: increase the reference count of the given attribute list by one.
+func (list *AttrList) Ref() *AttrList {
+	var arg0 *C.PangoAttrList
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+
+	ret := C.pango_attr_list_ref(arg0)
+
+	var ret0 *AttrList
+
+	ret0 = WrapAttrList(ret)
+
+	return ret0
+}
+
+// Splice: this function opens up a hole in @list, fills it in with attributes
+// from the left, and then merges @other on top of the hole.
+//
+// This operation is equivalent to stretching every attribute that applies at
+// position @pos in @list by an amount @len, and then calling
+// [method@Pango.AttrList.change] with a copy of each attribute in @other in
+// sequence (offset in position by @pos).
+//
+// This operation proves useful for, for instance, inserting a pre-edit string
+// in the middle of an edit buffer.
+func (list *AttrList) Splice(other *AttrList, pos int, len int) {
+	var arg0 *C.PangoAttrList
+	var arg1 *C.PangoAttrList
+	var arg2 C.gint
+	var arg3 C.gint
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = (*C.PangoAttrList)(other.Native())
+	arg2 = C.gint(pos)
+	arg3 = C.gint(len)
+
+	C.pango_attr_list_splice(arg0, arg1, arg2, arg3)
+}
+
+// Unref: decrease the reference count of the given attribute list by one. If
+// the result is zero, free the attribute list and the attributes it contains.
+func (list *AttrList) Unref() {
+	var arg0 *C.PangoAttrList
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+
+	C.pango_attr_list_unref(arg0)
+}
+
+// Update: update indices of attributes in @list for a change in the text they
+// refer to.
+//
+// The change that this function applies is removing @remove bytes at position
+// @pos and inserting @add bytes instead.
+//
+// Attributes that fall entirely in the (@pos, @pos + @remove) range are
+// removed.
+//
+// Attributes that start or end inside the (@pos, @pos + @remove) range are
+// shortened to reflect the removal.
+//
+// Attributes start and end positions are updated if they are behind @pos +
+// @remove.
+func (list *AttrList) Update(pos int, remove int, add int) {
+	var arg0 *C.PangoAttrList
+	var arg1 C.int
+	var arg2 C.int
+	var arg3 C.int
+
+	arg0 = (*C.PangoAttrList)(list.Native())
+	arg1 = C.int(pos)
+	arg2 = C.int(remove)
+	arg3 = C.int(add)
+
+	C.pango_attr_list_update(arg0, arg1, arg2, arg3)
 }
 
 // AttrShape: the `PangoAttrShape` structure is used to represent attributes
@@ -3523,6 +3725,62 @@ func (e *Attribute) EndIndex() uint {
 	return ret
 }
 
+// Copy: make a copy of an attribute.
+func (attr *Attribute) Copy() *Attribute {
+	var arg0 *C.PangoAttribute
+
+	arg0 = (*C.PangoAttribute)(attr.Native())
+
+	ret := C.pango_attribute_copy(arg0)
+
+	var ret0 *Attribute
+
+	ret0 = WrapAttribute(ret)
+
+	return ret0
+}
+
+// Destroy: destroy a `PangoAttribute` and free all associated memory.
+func (attr *Attribute) Destroy() {
+	var arg0 *C.PangoAttribute
+
+	arg0 = (*C.PangoAttribute)(attr.Native())
+
+	C.pango_attribute_destroy(arg0)
+}
+
+// Equal: compare two attributes for equality. This compares only the actual
+// value of the two attributes and not the ranges that the attributes apply to.
+func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
+	var arg0 *C.PangoAttribute
+	var arg1 *C.PangoAttribute
+
+	arg0 = (*C.PangoAttribute)(attr1.Native())
+	arg1 = (*C.PangoAttribute)(attr2.Native())
+
+	ret := C.pango_attribute_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Init initializes @attr's klass to @klass, it's start_index to
+// PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING and end_index to
+// PANGO_ATTR_INDEX_TO_TEXT_END such that the attribute applies to the entire
+// text by default.
+func (attr *Attribute) Init(klass *AttrClass) {
+	var arg0 *C.PangoAttribute
+	var arg1 *C.PangoAttrClass
+
+	arg0 = (*C.PangoAttribute)(attr.Native())
+	arg1 = (*C.PangoAttrClass)(klass.Native())
+
+	C.pango_attribute_init(arg0, arg1)
+}
+
 // Color: the `PangoColor` structure is used to represent a color in an
 // uncalibrated RGB color-space.
 type Color struct {
@@ -3570,6 +3828,112 @@ func (b *Color) Blue() uint16 {
 	return ret
 }
 
+// Copy creates a copy of @src.
+//
+// The copy should be freed with pango_color_free(). Primarily used by language
+// bindings, not that useful otherwise (since colors can just be copied by
+// assignment in C).
+func (src *Color) Copy() *Color {
+	var arg0 *C.PangoColor
+
+	arg0 = (*C.PangoColor)(src.Native())
+
+	ret := C.pango_color_copy(arg0)
+
+	var ret0 *Color
+
+	ret0 = WrapColor(ret)
+
+	return ret0
+}
+
+// Free frees a color allocated by pango_color_copy().
+func (color *Color) Free() {
+	var arg0 *C.PangoColor
+
+	arg0 = (*C.PangoColor)(color.Native())
+
+	C.pango_color_free(arg0)
+}
+
+// Parse: fill in the fields of a color from a string specification.
+//
+// The string can either one of a large set of standard names. (Taken from the
+// CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors), or
+// it can be a value in the form `#rgb`, `#rrggbb`, `#rrrgggbbb` or
+// `#rrrrggggbbbb`, where `r`, `g` and `b` are hex digits of the red, green, and
+// blue components of the color, respectively. (White in the four forms is
+// `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.)
+func (color *Color) Parse(spec string) bool {
+	var arg0 *C.PangoColor
+	var arg1 *C.char
+
+	arg0 = (*C.PangoColor)(color.Native())
+	arg1 = (*C.gchar)(C.CString(spec))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.pango_color_parse(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ParseWithAlpha: fill in the fields of a color from a string specification.
+//
+// The string can either one of a large set of standard names. (Taken from the
+// CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors), or
+// it can be a hexadecimal value in the form `#rgb`, `#rrggbb`, `#rrrgggbbb` or
+// `#rrrrggggbbbb` where `r`, `g` and `b` are hex digits of the red, green, and
+// blue components of the color, respectively. (White in the four forms is
+// `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.)
+//
+// Additionally, parse strings of the form `#rgba`, `#rrggbbaa`,
+// `#rrrrggggbbbbaaaa`, if @alpha is not nil, and set @alpha to the value
+// specified by the hex digits for `a`. If no alpha component is found in @spec,
+// @alpha is set to 0xffff (for a solid color).
+func (color *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
+	var arg0 *C.PangoColor
+	var arg1 *C.guint16 // out
+	var arg2 *C.char
+
+	arg0 = (*C.PangoColor)(color.Native())
+	arg2 = (*C.gchar)(C.CString(spec))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.pango_color_parse_with_alpha(arg0, &arg1, arg2)
+
+	var ret0 uint16
+	var ret1 bool
+
+	ret0 = uint16(arg1)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// String returns a textual specification of @color.
+//
+// The string is in the hexadecimal form `#rrrrggggbbbb`, where `r`, `g` and `b`
+// are hex digits representing the red, green, and blue components respectively.
+func (color *Color) String() string {
+	var arg0 *C.PangoColor
+
+	arg0 = (*C.PangoColor)(color.Native())
+
+	ret := C.pango_color_to_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
 // FontDescription: a `PangoFontDescription` describes a font in an
 // implementation-independent manner.
 //
@@ -3612,6 +3976,571 @@ func NewFontDescription() *FontDescription {
 	return ret0
 }
 
+// BetterMatch determines if the style attributes of @new_match are a closer
+// match for @desc than those of @old_match are, or if @old_match is nil,
+// determines if @new_match is a match at all.
+//
+// Approximate matching is done for weight and style; other style attributes
+// must match exactly. Style attributes are all attributes other than family and
+// size-related attributes. Approximate matching for style considers
+// PANGO_STYLE_OBLIQUE and PANGO_STYLE_ITALIC as matches, but not as good a
+// match as when the styles are equal.
+//
+// Note that @old_match must match @desc.
+func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontDescription) bool {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.PangoFontDescription
+	var arg2 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.PangoFontDescription)(oldMatch.Native())
+	arg2 = (*C.PangoFontDescription)(newMatch.Native())
+
+	ret := C.pango_font_description_better_match(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Copy: make a copy of a `PangoFontDescription`.
+func (desc *FontDescription) Copy() *FontDescription {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_copy(arg0)
+
+	var ret0 *FontDescription
+
+	ret0 = WrapFontDescription(ret)
+
+	return ret0
+}
+
+// CopyStatic: make a copy of a `PangoFontDescription`, but don't duplicate
+// allocated fields.
+//
+// This is like [method@Pango.FontDescription.copy], but only a shallow copy is
+// made of the family name and other allocated fields. The result can only be
+// used until @desc is modified or freed. This is meant to be used when the copy
+// is only needed temporarily.
+func (desc *FontDescription) CopyStatic() *FontDescription {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_copy_static(arg0)
+
+	var ret0 *FontDescription
+
+	ret0 = WrapFontDescription(ret)
+
+	return ret0
+}
+
+// Equal compares two font descriptions for equality.
+//
+// Two font descriptions are considered equal if the fonts they describe are
+// provably identical. This means that their masks do not have to match, as long
+// as other fields are all the same. (Two font descriptions may result in
+// identical fonts being loaded, but still compare false.)
+func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc1.Native())
+	arg1 = (*C.PangoFontDescription)(desc2.Native())
+
+	ret := C.pango_font_description_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees a font description.
+func (desc *FontDescription) Free() {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	C.pango_font_description_free(arg0)
+}
+
+// Family gets the family name field of a font description.
+//
+// See [method@Pango.FontDescription.set_family].
+func (desc *FontDescription) Family() string {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_family(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Gravity gets the gravity field of a font description.
+//
+// See [method@Pango.FontDescription.set_gravity].
+func (desc *FontDescription) Gravity() Gravity {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_gravity(arg0)
+
+	var ret0 Gravity
+
+	ret0 = Gravity(ret)
+
+	return ret0
+}
+
+// SetFields determines which fields in a font description have been set.
+func (desc *FontDescription) SetFields() FontMask {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_set_fields(arg0)
+
+	var ret0 FontMask
+
+	ret0 = FontMask(ret)
+
+	return ret0
+}
+
+// Size gets the size field of a font description.
+//
+// See [method@Pango.FontDescription.set_size].
+func (desc *FontDescription) Size() int {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_size(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// SizeIsAbsolute determines whether the size of the font is in points (not
+// absolute) or device units (absolute).
+//
+// See [method@Pango.FontDescription.set_size] and
+// [method@Pango.FontDescription.set_absolute_size].
+func (desc *FontDescription) SizeIsAbsolute() bool {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_size_is_absolute(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Stretch gets the stretch field of a font description.
+//
+// See [method@Pango.FontDescription.set_stretch].
+func (desc *FontDescription) Stretch() Stretch {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_stretch(arg0)
+
+	var ret0 Stretch
+
+	ret0 = Stretch(ret)
+
+	return ret0
+}
+
+// Style gets the style field of a `PangoFontDescription`.
+//
+// See [method@Pango.FontDescription.set_style].
+func (desc *FontDescription) Style() Style {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_style(arg0)
+
+	var ret0 Style
+
+	ret0 = Style(ret)
+
+	return ret0
+}
+
+// Variant gets the variant field of a `PangoFontDescription`.
+//
+// See [method@Pango.FontDescription.set_variant].
+func (desc *FontDescription) Variant() Variant {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_variant(arg0)
+
+	var ret0 Variant
+
+	ret0 = Variant(ret)
+
+	return ret0
+}
+
+// Variations gets the variations field of a font description.
+//
+// See [method@Pango.FontDescription.set_variations].
+func (desc *FontDescription) Variations() string {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_variations(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Weight gets the weight field of a font description.
+//
+// See [method@Pango.FontDescription.set_weight].
+func (desc *FontDescription) Weight() Weight {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_get_weight(arg0)
+
+	var ret0 Weight
+
+	ret0 = Weight(ret)
+
+	return ret0
+}
+
+// Hash computes a hash of a `PangoFontDescription` structure.
+//
+// This is suitable to be used, for example, as an argument to
+// g_hash_table_new(). The hash value is independent of @desc->mask.
+func (desc *FontDescription) Hash() uint {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_hash(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Merge merges the fields that are set in @desc_to_merge into the fields in
+// @desc.
+//
+// If @replace_existing is false, only fields in @desc that are not already set
+// are affected. If true, then fields that are already set will be replaced as
+// well.
+//
+// If @desc_to_merge is nil, this function performs nothing.
+func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting bool) {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.PangoFontDescription
+	var arg2 C.gboolean
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.PangoFontDescription)(descToMerge.Native())
+	arg2 = gextras.Cbool(replaceExisting)
+
+	C.pango_font_description_merge(arg0, arg1, arg2)
+}
+
+// MergeStatic merges the fields that are set in @desc_to_merge into the fields
+// in @desc, without copying allocated fields.
+//
+// This is like [method@Pango.FontDescription.merge], but only a shallow copy is
+// made of the family name and other allocated fields. @desc can only be used
+// until @desc_to_merge is modified or freed. This is meant to be used when the
+// merged font description is only needed temporarily.
+func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceExisting bool) {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.PangoFontDescription
+	var arg2 C.gboolean
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.PangoFontDescription)(descToMerge.Native())
+	arg2 = gextras.Cbool(replaceExisting)
+
+	C.pango_font_description_merge_static(arg0, arg1, arg2)
+}
+
+// SetAbsoluteSize sets the size field of a font description, in device units.
+//
+// This is mutually exclusive with [method@Pango.FontDescription.set_size] which
+// sets the font size in points.
+func (desc *FontDescription) SetAbsoluteSize(size float64) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.double
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = C.double(size)
+
+	C.pango_font_description_set_absolute_size(arg0, arg1)
+}
+
+// SetFamily sets the family name field of a font description.
+//
+// The family name represents a family of related font styles, and will resolve
+// to a particular `PangoFontFamily`. In some uses of `PangoFontDescription`, it
+// is also possible to use a comma separated list of family names for this
+// field.
+func (desc *FontDescription) SetFamily(family string) {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.char
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.gchar)(C.CString(family))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.pango_font_description_set_family(arg0, arg1)
+}
+
+// SetFamilyStatic sets the family name field of a font description, without
+// copying the string.
+//
+// This is like [method@Pango.FontDescription.set_family], except that no copy
+// of @family is made. The caller must make sure that the string passed in stays
+// around until @desc has been freed or the name is set again. This function can
+// be used if @family is a static string such as a C string literal, or if @desc
+// is only needed temporarily.
+func (desc *FontDescription) SetFamilyStatic(family string) {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.char
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.gchar)(C.CString(family))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.pango_font_description_set_family_static(arg0, arg1)
+}
+
+// SetGravity sets the gravity field of a font description.
+//
+// The gravity field specifies how the glyphs should be rotated. If @gravity is
+// PANGO_GRAVITY_AUTO, this actually unsets the gravity mask on the font
+// description.
+//
+// This function is seldom useful to the user. Gravity should normally be set on
+// a `PangoContext`.
+func (desc *FontDescription) SetGravity(gravity Gravity) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.PangoGravity
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (C.PangoGravity)(gravity)
+
+	C.pango_font_description_set_gravity(arg0, arg1)
+}
+
+// SetSize sets the size field of a font description in fractional points.
+//
+// This is mutually exclusive with
+// [method@Pango.FontDescription.set_absolute_size].
+func (desc *FontDescription) SetSize(size int) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.gint
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = C.gint(size)
+
+	C.pango_font_description_set_size(arg0, arg1)
+}
+
+// SetStretch sets the stretch field of a font description.
+//
+// The [enum@Pango.Stretch] field specifies how narrow or wide the font should
+// be.
+func (desc *FontDescription) SetStretch(stretch Stretch) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.PangoStretch
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (C.PangoStretch)(stretch)
+
+	C.pango_font_description_set_stretch(arg0, arg1)
+}
+
+// SetStyle sets the style field of a `PangoFontDescription`.
+//
+// The [enum@Pango.Style] enumeration describes whether the font is slanted and
+// the manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
+// NGO_STYLE_ITALIC, or NGO_STYLE_OBLIQUE.
+//
+// Most fonts will either have a italic style or an oblique style, but not both,
+// and font matching in Pango will match italic specifications with oblique
+// fonts and vice-versa if an exact match is not found.
+func (desc *FontDescription) SetStyle(style Style) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.PangoStyle
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (C.PangoStyle)(style)
+
+	C.pango_font_description_set_style(arg0, arg1)
+}
+
+// SetVariant sets the variant field of a font description.
+//
+// The [enum@Pango.Variant] can either be PANGO_VARIANT_NORMAL or
+// PANGO_VARIANT_SMALL_CAPS.
+func (desc *FontDescription) SetVariant(variant Variant) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.PangoVariant
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (C.PangoVariant)(variant)
+
+	C.pango_font_description_set_variant(arg0, arg1)
+}
+
+// SetVariations sets the variations field of a font description.
+//
+// OpenType font variations allow to select a font instance by specifying values
+// for a number of axes, such as width or weight.
+//
+// The format of the variations string is
+//
+//    AXIS1=VALUE,AXIS2=VALUE...
+//
+// with each AXIS a 4 character tag that identifies a font axis, and each VALUE
+// a floating point number. Unknown axes are ignored, and values are clamped to
+// their allowed range.
+//
+// Pango does not currently have a way to find supported axes of a font. Both
+// harfbuzz or freetype have API for this.
+func (desc *FontDescription) SetVariations(variations string) {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.char
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.gchar)(C.CString(variations))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.pango_font_description_set_variations(arg0, arg1)
+}
+
+// SetVariationsStatic sets the variations field of a font description.
+//
+// This is like [method@Pango.FontDescription.set_variations], except that no
+// copy of @variations is made. The caller must make sure that the string passed
+// in stays around until @desc has been freed or the name is set again. This
+// function can be used if @variations is a static string such as a C string
+// literal, or if @desc is only needed temporarily.
+func (desc *FontDescription) SetVariationsStatic(variations string) {
+	var arg0 *C.PangoFontDescription
+	var arg1 *C.char
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (*C.gchar)(C.CString(variations))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.pango_font_description_set_variations_static(arg0, arg1)
+}
+
+// SetWeight sets the weight field of a font description.
+//
+// The weight field specifies how bold or light the font should be. In addition
+// to the values of the [enum@Pango.Weight] enumeration, other intermediate
+// numeric values are possible.
+func (desc *FontDescription) SetWeight(weight Weight) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.PangoWeight
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (C.PangoWeight)(weight)
+
+	C.pango_font_description_set_weight(arg0, arg1)
+}
+
+// ToFilename creates a filename representation of a font description.
+//
+// The filename is identical to the result from calling
+// [method@Pango.FontDescription.to_string], but with underscores instead of
+// characters that are untypical in filenames, and in lower case only.
+func (desc *FontDescription) ToFilename() string {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_to_filename(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// String creates a string representation of a font description.
+//
+// See [type_func@Pango.FontDescription.from_string] for a description of the
+// format of the string representation. The family list in the string
+// description will only have a terminating comma if the last word of the list
+// is a valid style option.
+func (desc *FontDescription) String() string {
+	var arg0 *C.PangoFontDescription
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+
+	ret := C.pango_font_description_to_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// UnsetFields unsets some of the fields in a `PangoFontDescription`.
+//
+// The unset fields will get back to their default values.
+func (desc *FontDescription) UnsetFields(toUnset FontMask) {
+	var arg0 *C.PangoFontDescription
+	var arg1 C.PangoFontMask
+
+	arg0 = (*C.PangoFontDescription)(desc.Native())
+	arg1 = (C.PangoFontMask)(toUnset)
+
+	C.pango_font_description_unset_fields(arg0, arg1)
+}
+
 // FontMetrics: a `PangoFontMetrics` structure holds the overall metric
 // information for a font.
 //
@@ -3641,6 +4570,198 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (f *FontMetrics) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
+}
+
+// ApproximateCharWidth gets the approximate character width for a font metrics
+// structure.
+//
+// This is merely a representative value useful, for example, for determining
+// the initial size for a window. Actual characters in text will be wider and
+// narrower than this.
+func (metrics *FontMetrics) ApproximateCharWidth() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_approximate_char_width(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// ApproximateDigitWidth gets the approximate digit width for a font metrics
+// structure.
+//
+// This is merely a representative value useful, for example, for determining
+// the initial size for a window. Actual digits in text can be wider or narrower
+// than this, though this value is generally somewhat more accurate than the
+// result of pango_font_metrics_get_approximate_char_width() for digits.
+func (metrics *FontMetrics) ApproximateDigitWidth() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_approximate_digit_width(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Ascent gets the ascent from a font metrics structure.
+//
+// The ascent is the distance from the baseline to the logical top of a line of
+// text. (The logical top may be above or below the top of the actual drawn ink.
+// It is necessary to lay out the text to figure where the ink will be.)
+func (metrics *FontMetrics) Ascent() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_ascent(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Descent gets the descent from a font metrics structure.
+//
+// The descent is the distance from the baseline to the logical bottom of a line
+// of text. (The logical bottom may be above or below the bottom of the actual
+// drawn ink. It is necessary to lay out the text to figure where the ink will
+// be.)
+func (metrics *FontMetrics) Descent() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_descent(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Height gets the line height from a font metrics structure.
+//
+// The line height is the distance between successive baselines in wrapped text.
+//
+// If the line height is not available, 0 is returned.
+func (metrics *FontMetrics) Height() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_height(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// StrikethroughPosition gets the suggested position to draw the strikethrough.
+//
+// The value returned is the distance *above* the baseline of the top of the
+// strikethrough.
+func (metrics *FontMetrics) StrikethroughPosition() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_strikethrough_position(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// StrikethroughThickness gets the suggested thickness to draw for the
+// strikethrough.
+func (metrics *FontMetrics) StrikethroughThickness() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_strikethrough_thickness(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// UnderlinePosition gets the suggested position to draw the underline.
+//
+// The value returned is the distance *above* the baseline of the top of the
+// underline. Since most fonts have underline positions beneath the baseline,
+// this value is typically negative.
+func (metrics *FontMetrics) UnderlinePosition() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_underline_position(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// UnderlineThickness gets the suggested thickness to draw for the underline.
+func (metrics *FontMetrics) UnderlineThickness() int {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_get_underline_thickness(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Ref: increase the reference count of a font metrics structure by one.
+func (metrics *FontMetrics) Ref() *FontMetrics {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	ret := C.pango_font_metrics_ref(arg0)
+
+	var ret0 *FontMetrics
+
+	ret0 = WrapFontMetrics(ret)
+
+	return ret0
+}
+
+// Unref: decrease the reference count of a font metrics structure by one. If
+// the result is zero, frees the structure and any associated memory.
+func (metrics *FontMetrics) Unref() {
+	var arg0 *C.PangoFontMetrics
+
+	arg0 = (*C.PangoFontMetrics)(metrics.Native())
+
+	C.pango_font_metrics_unref(arg0)
 }
 
 // GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
@@ -3797,6 +4918,136 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 	return ret
 }
 
+// ApplyAttrs splits a shaped item (`PangoGlyphItem`) into multiple items based
+// on an attribute list.
+//
+// The idea is that if you have attributes that don't affect shaping, such as
+// color or underline, to avoid affecting shaping, you filter them out
+// ([method@Pango.AttrList.filter]), apply the shaping process and then reapply
+// them to the result using this function.
+//
+// All attributes that start or end inside a cluster are applied to that
+// cluster; for instance, if half of a cluster is underlined and the other-half
+// strikethrough, then the cluster will end up with both underline and
+// strikethrough attributes. In these cases, it may happen that
+// @item->extra_attrs for some of the result items can have multiple attributes
+// of the same type.
+//
+// This function takes ownership of @glyph_item; it will be reused as one of the
+// elements in the list.
+func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) *glib.SList {
+	var arg0 *C.PangoGlyphItem
+	var arg1 *C.char
+	var arg2 *C.PangoAttrList
+
+	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.PangoAttrList)(list.Native())
+
+	ret := C.pango_glyph_item_apply_attrs(arg0, arg1, arg2)
+
+	var ret0 *glib.SList
+
+	ret0 = glib.WrapSList(ret)
+
+	return ret0
+}
+
+// Copy: make a deep copy of an existing `PangoGlyphItem` structure.
+func (orig *GlyphItem) Copy() *GlyphItem {
+	var arg0 *C.PangoGlyphItem
+
+	arg0 = (*C.PangoGlyphItem)(orig.Native())
+
+	ret := C.pango_glyph_item_copy(arg0)
+
+	var ret0 *GlyphItem
+
+	ret0 = WrapGlyphItem(ret)
+
+	return ret0
+}
+
+// Free frees a `PangoGlyphItem` and resources to which it points.
+func (glyphItem *GlyphItem) Free() {
+	var arg0 *C.PangoGlyphItem
+
+	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
+
+	C.pango_glyph_item_free(arg0)
+}
+
+// LogicalWidths: given a `PangoGlyphItem` and the corresponding text, determine
+// the width corresponding to each character.
+//
+// When multiple characters compose a single cluster, the width of the entire
+// cluster is divided equally among the characters.
+//
+// See also [method@Pango.GlyphString.get_logical_widths].
+func (glyphItem *GlyphItem) LogicalWidths(text string, logicalWidths []int) {
+	var arg0 *C.PangoGlyphItem
+	var arg1 *C.char
+	var arg2 *C.int
+
+	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	{
+
+	}
+
+	C.pango_glyph_item_get_logical_widths(arg0, arg1, arg2)
+}
+
+// LetterSpace adds spacing between the graphemes of @glyph_item to give the
+// effect of typographic letter spacing.
+func (glyphItem *GlyphItem) LetterSpace(text string, logAttrs []LogAttr, letterSpacing int) {
+	var arg0 *C.PangoGlyphItem
+	var arg1 *C.char
+	var arg2 *C.PangoLogAttr
+	var arg3 C.int
+
+	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	{
+
+	}
+	arg3 = C.int(letterSpacing)
+
+	C.pango_glyph_item_letter_space(arg0, arg1, arg2, arg3)
+}
+
+// Split modifies @orig to cover only the text after @split_index, and returns a
+// new item that covers the text before @split_index that used to be in @orig.
+//
+// You can think of @split_index as the length of the returned item.
+// @split_index may not be 0, and it may not be greater than or equal to the
+// length of @orig (that is, there must be at least one byte assigned to each
+// item, you can't create a zero-length item).
+//
+// This function is similar in function to pango_item_split() (and uses it
+// internally.)
+func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
+	var arg0 *C.PangoGlyphItem
+	var arg1 *C.char
+	var arg2 C.int
+
+	arg0 = (*C.PangoGlyphItem)(orig.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(splitIndex)
+
+	ret := C.pango_glyph_item_split(arg0, arg1, arg2)
+
+	var ret0 *GlyphItem
+
+	ret0 = WrapGlyphItem(ret)
+
+	return ret0
+}
+
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
 // `PangoGlyphItem`.
 //
@@ -3909,6 +5160,109 @@ func (e *GlyphItemIter) EndChar() int {
 	return ret
 }
 
+// Copy: make a shallow copy of an existing `PangoGlyphItemIter` structure.
+func (orig *GlyphItemIter) Copy() *GlyphItemIter {
+	var arg0 *C.PangoGlyphItemIter
+
+	arg0 = (*C.PangoGlyphItemIter)(orig.Native())
+
+	ret := C.pango_glyph_item_iter_copy(arg0)
+
+	var ret0 *GlyphItemIter
+
+	ret0 = WrapGlyphItemIter(ret)
+
+	return ret0
+}
+
+// Free frees a `PangoGlyphItem`Iter.
+func (iter *GlyphItemIter) Free() {
+	var arg0 *C.PangoGlyphItemIter
+
+	arg0 = (*C.PangoGlyphItemIter)(iter.Native())
+
+	C.pango_glyph_item_iter_free(arg0)
+}
+
+// InitEnd initializes a `PangoGlyphItemIter` structure to point to the last
+// cluster in a glyph item.
+//
+// See `PangoGlyphItemIter` for details of cluster orders.
+func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
+	var arg0 *C.PangoGlyphItemIter
+	var arg1 *C.PangoGlyphItem
+	var arg2 *C.char
+
+	arg0 = (*C.PangoGlyphItemIter)(iter.Native())
+	arg1 = (*C.PangoGlyphItem)(glyphItem.Native())
+	arg2 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.pango_glyph_item_iter_init_end(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// InitStart initializes a `PangoGlyphItemIter` structure to point to the first
+// cluster in a glyph item.
+//
+// See `PangoGlyphItemIter` for details of cluster orders.
+func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
+	var arg0 *C.PangoGlyphItemIter
+	var arg1 *C.PangoGlyphItem
+	var arg2 *C.char
+
+	arg0 = (*C.PangoGlyphItemIter)(iter.Native())
+	arg1 = (*C.PangoGlyphItem)(glyphItem.Native())
+	arg2 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.pango_glyph_item_iter_init_start(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// NextCluster advances the iterator to the next cluster in the glyph item.
+//
+// See `PangoGlyphItemIter` for details of cluster orders.
+func (iter *GlyphItemIter) NextCluster() bool {
+	var arg0 *C.PangoGlyphItemIter
+
+	arg0 = (*C.PangoGlyphItemIter)(iter.Native())
+
+	ret := C.pango_glyph_item_iter_next_cluster(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// PrevCluster moves the iterator to the preceding cluster in the glyph item.
+// See `PangoGlyphItemIter` for details of cluster orders.
+func (iter *GlyphItemIter) PrevCluster() bool {
+	var arg0 *C.PangoGlyphItemIter
+
+	arg0 = (*C.PangoGlyphItemIter)(iter.Native())
+
+	ret := C.pango_glyph_item_iter_prev_cluster(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -3975,6 +5329,211 @@ func (l *GlyphString) LogClusters() int {
 	var ret int
 	ret = int(g.native.log_clusters)
 	return ret
+}
+
+// Copy: copy a glyph string and associated storage.
+func (string *GlyphString) Copy() *GlyphString {
+	var arg0 *C.PangoGlyphString
+
+	arg0 = (*C.PangoGlyphString)(string.Native())
+
+	ret := C.pango_glyph_string_copy(arg0)
+
+	var ret0 *GlyphString
+
+	ret0 = WrapGlyphString(ret)
+
+	return ret0
+}
+
+// Extents: compute the logical and ink extents of a glyph string.
+//
+// See the documentation for [method@Pango.Font.get_glyph_extents] for details
+// about the interpretation of the rectangles.
+//
+// Examples of logical (red) and ink (green) rects:
+//
+// ! (rects1.png) ! (rects2.png)
+func (glyphs *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoGlyphString
+	var arg1 *C.PangoFont
+	var arg2 *C.PangoRectangle // out
+	var arg3 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoGlyphString)(glyphs.Native())
+	arg1 = (*C.PangoFont)(font.Native())
+
+	ret := C.pango_glyph_string_extents(arg0, arg1, &arg2, &arg3)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg2)
+
+	ret1 = WrapRectangle(arg3)
+
+	return ret0, ret1
+}
+
+// ExtentsRange computes the extents of a sub-portion of a glyph string.
+//
+// The extents are relative to the start of the glyph string range (the origin
+// of their coordinate system is at the start of the range, not at the start of
+// the entire glyph string).
+func (glyphs *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoGlyphString
+	var arg1 C.int
+	var arg2 C.int
+	var arg3 *C.PangoFont
+	var arg4 *C.PangoRectangle // out
+	var arg5 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoGlyphString)(glyphs.Native())
+	arg1 = C.int(start)
+	arg2 = C.int(end)
+	arg3 = (*C.PangoFont)(font.Native())
+
+	ret := C.pango_glyph_string_extents_range(arg0, arg1, arg2, arg3, &arg4, &arg5)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg4)
+
+	ret1 = WrapRectangle(arg5)
+
+	return ret0, ret1
+}
+
+// Free: free a glyph string and associated storage.
+func (string *GlyphString) Free() {
+	var arg0 *C.PangoGlyphString
+
+	arg0 = (*C.PangoGlyphString)(string.Native())
+
+	C.pango_glyph_string_free(arg0)
+}
+
+// LogicalWidths: given a `PangoGlyphString` and corresponding text, determine
+// the width corresponding to each character.
+//
+// When multiple characters compose a single cluster, the width of the entire
+// cluster is divided equally among the characters.
+//
+// See also [method@Pango.GlyphItem.get_logical_widths].
+func (glyphs *GlyphString) LogicalWidths(text string, length int, embeddingLevel int, logicalWidths []int) {
+	var arg0 *C.PangoGlyphString
+	var arg1 *C.char
+	var arg2 C.int
+	var arg3 C.int
+	var arg4 *C.int
+
+	arg0 = (*C.PangoGlyphString)(glyphs.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(length)
+	arg3 = C.int(embeddingLevel)
+	{
+
+	}
+
+	C.pango_glyph_string_get_logical_widths(arg0, arg1, arg2, arg3, arg4)
+}
+
+// Width computes the logical width of the glyph string.
+//
+// This can also be computed using [method@Pango.GlyphString.extents]. However,
+// since this only computes the width, it's much faster. This is in fact only a
+// convenience function that computes the sum of @geometry.width for each glyph
+// in the @glyphs.
+func (glyphs *GlyphString) Width() int {
+	var arg0 *C.PangoGlyphString
+
+	arg0 = (*C.PangoGlyphString)(glyphs.Native())
+
+	ret := C.pango_glyph_string_get_width(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// IndexToX converts from character position to x position.
+//
+// The X position is measured from the left edge of the run. Character positions
+// are computed by dividing up each cluster into equal portions.
+func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
+	var arg0 *C.PangoGlyphString
+	var arg1 *C.char
+	var arg2 C.int
+	var arg3 *C.PangoAnalysis
+	var arg4 C.int
+	var arg5 C.gboolean
+	var arg6 *C.int // out
+
+	arg0 = (*C.PangoGlyphString)(glyphs.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(length)
+	arg3 = (*C.PangoAnalysis)(analysis.Native())
+	arg4 = C.int(index_)
+	arg5 = gextras.Cbool(trailing)
+
+	ret := C.pango_glyph_string_index_to_x(arg0, arg1, arg2, arg3, arg4, arg5, &arg6)
+
+	var ret0 int
+
+	ret0 = int(arg6)
+
+	return ret0
+}
+
+// SetSize: resize a glyph string to the given length.
+func (string *GlyphString) SetSize(newLen int) {
+	var arg0 *C.PangoGlyphString
+	var arg1 C.gint
+
+	arg0 = (*C.PangoGlyphString)(string.Native())
+	arg1 = C.gint(newLen)
+
+	C.pango_glyph_string_set_size(arg0, arg1)
+}
+
+// XToIndex: convert from x offset to character position.
+//
+// Character positions are computed by dividing up each cluster into equal
+// portions. In scripts where positioning within a cluster is not allowed (such
+// as Thai), the returned value may not be a valid cursor position; the caller
+// must combine the result with the logical attributes for the text to compute
+// the valid cursor position.
+func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
+	var arg0 *C.PangoGlyphString
+	var arg1 *C.char
+	var arg2 C.int
+	var arg3 *C.PangoAnalysis
+	var arg4 C.int
+	var arg5 *C.int // out
+	var arg6 *C.int // out
+
+	arg0 = (*C.PangoGlyphString)(glyphs.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(length)
+	arg3 = (*C.PangoAnalysis)(analysis.Native())
+	arg4 = C.int(xPos)
+
+	ret := C.pango_glyph_string_x_to_index(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+
+	var ret0 int
+	var ret1 int
+
+	ret0 = int(arg5)
+
+	ret1 = int(arg6)
+
+	return ret0, ret1
 }
 
 // GlyphVisAttr: a `PangoGlyphVisAttr` structure communicates information
@@ -4081,6 +5640,78 @@ func (a *Item) Analysis() Analysis {
 	return ret
 }
 
+// ApplyAttrs: add attributes to a `PangoItem`.
+//
+// The idea is that you have attributes that don't affect itemization, such as
+// font features, so you filter them out using [method@Pango.AttrList.filter],
+// itemize your text, then reapply the attributes to the resulting items using
+// this function.
+//
+// The @iter should be positioned before the range of the item, and will be
+// advanced past it. This function is meant to be called in a loop over the
+// items resulting from itemization, while passing the iter to each call.
+func (item *Item) ApplyAttrs(iter *AttrIterator) {
+	var arg0 *C.PangoItem
+	var arg1 *C.PangoAttrIterator
+
+	arg0 = (*C.PangoItem)(item.Native())
+	arg1 = (*C.PangoAttrIterator)(iter.Native())
+
+	C.pango_item_apply_attrs(arg0, arg1)
+}
+
+// Copy: copy an existing `PangoItem` structure.
+func (item *Item) Copy() *Item {
+	var arg0 *C.PangoItem
+
+	arg0 = (*C.PangoItem)(item.Native())
+
+	ret := C.pango_item_copy(arg0)
+
+	var ret0 *Item
+
+	ret0 = WrapItem(ret)
+
+	return ret0
+}
+
+// Free: free a `PangoItem` and all associated memory.
+func (item *Item) Free() {
+	var arg0 *C.PangoItem
+
+	arg0 = (*C.PangoItem)(item.Native())
+
+	C.pango_item_free(arg0)
+}
+
+// Split modifies @orig to cover only the text after @split_index, and returns a
+// new item that covers the text before @split_index that used to be in @orig.
+//
+// You can think of @split_index as the length of the returned item.
+// @split_index may not be 0, and it may not be greater than or equal to the
+// length of @orig (that is, there must be at least one byte assigned to each
+// item, you can't create a zero-length item). @split_offset is the length of
+// the first item in chars, and must be provided because the text used to
+// generate the item isn't available, so `pango_item_split()` can't count the
+// char length of the split items itself.
+func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
+	var arg0 *C.PangoItem
+	var arg1 C.int
+	var arg2 C.int
+
+	arg0 = (*C.PangoItem)(orig.Native())
+	arg1 = C.int(splitIndex)
+	arg2 = C.int(splitOffset)
+
+	ret := C.pango_item_split(arg0, arg1, arg2)
+
+	var ret0 *Item
+
+	ret0 = WrapItem(ret)
+
+	return ret0
+}
+
 // Language: the `PangoLanguage` structure is used to represent a language.
 //
 // `PangoLanguage` pointers can be efficiently copied and compared with each
@@ -4107,6 +5738,146 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (l *Language) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)
+}
+
+// SampleString: get a string that is representative of the characters needed to
+// render a particular language.
+//
+// The sample text may be a pangram, but is not necessarily. It is chosen to be
+// demonstrative of normal text in the language, as well as exposing font
+// feature requirements unique to the language. It is suitable for use as sample
+// text in a font selection dialog.
+//
+// If @language is nil, the default language as found by
+// [type_func@Pango.Language.get_default] is used.
+//
+// If Pango does not have a sample string for @language, the classic "The quick
+// brown fox..." is returned. This can be detected by comparing the returned
+// pointer value to that returned for (non-existent) language code "xx". That
+// is, compare to:
+//
+// “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
+func (language *Language) SampleString() string {
+	var arg0 *C.PangoLanguage
+
+	arg0 = (*C.PangoLanguage)(language.Native())
+
+	ret := C.pango_language_get_sample_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Scripts determines the scripts used to to write @language.
+//
+// If nothing is known about the language tag @language, or if @language is nil,
+// then nil is returned. The list of scripts returned starts with the script
+// that the language uses most and continues to the one it uses least.
+//
+// The value @num_script points at will be set to the number of scripts in the
+// returned array (or zero if nil is returned).
+//
+// Most languages use only one script for writing, but there are some that use
+// two (Latin and Cyrillic for example), and a few use three (Japanese for
+// example). Applications should not make any assumptions on the maximum number
+// of scripts returned though, except that it is positive if the return value is
+// not nil, and it is a small number.
+//
+// The [method@Pango.Language.includes_script] function uses this function
+// internally.
+//
+// Note: while the return value is declared as `PangoScript`, the returned
+// values are from the `GUnicodeScript` enumeration, which may have more values.
+// Callers need to handle unknown values.
+func (language *Language) Scripts() (numScripts int, scripts []Script) {
+	var arg0 *C.PangoLanguage
+	var arg1 *C.int // out
+
+	arg0 = (*C.PangoLanguage)(language.Native())
+
+	ret := C.pango_language_get_scripts(arg0, &arg1)
+
+	var ret0 int
+	var ret1 []Script
+
+	ret0 = int(arg1)
+
+	{
+		ret1 = make([]Script, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.PangoScript)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = Script(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// IncludesScript determines if @script is one of the scripts used to write
+// @language. The returned value is conservative; if nothing is known about the
+// language tag @language, true will be returned, since, as far as Pango knows,
+// @script might be used to write @language.
+//
+// This routine is used in Pango's itemization process when determining if a
+// supplied language tag is relevant to a particular section of text. It
+// probably is not useful for applications in most circumstances.
+//
+// This function uses [method@Pango.Language.get_scripts] internally.
+func (language *Language) IncludesScript(script Script) bool {
+	var arg0 *C.PangoLanguage
+	var arg1 C.PangoScript
+
+	arg0 = (*C.PangoLanguage)(language.Native())
+	arg1 = (C.PangoScript)(script)
+
+	ret := C.pango_language_includes_script(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Matches checks if a language tag matches one of the elements in a list of
+// language ranges.
+//
+// A language tag is considered to match a range in the list if the range is
+// '*', the range is exactly the tag, or the range is a prefix of the tag, and
+// the character after it in the tag is '-'.
+func (language *Language) Matches(rangeList string) bool {
+	var arg0 *C.PangoLanguage
+	var arg1 *C.char
+
+	arg0 = (*C.PangoLanguage)(language.Native())
+	arg1 = (*C.gchar)(C.CString(rangeList))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.pango_language_matches(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// String gets the RFC-3066 format string representing the given language tag.
+func (language *Language) String() string {
+	var arg0 *C.PangoLanguage
+
+	arg0 = (*C.PangoLanguage)(language.Native())
+
+	ret := C.pango_language_to_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
 }
 
 // LayoutIter: a `PangoLayoutIter` can be used to iterate over the visual
@@ -4137,6 +5908,381 @@ func marshalLayoutIter(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (l *LayoutIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)
+}
+
+// AtLastLine determines whether @iter is on the last line of the layout.
+func (iter *LayoutIter) AtLastLine() bool {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_at_last_line(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Copy copies a `PangoLayoutIter`.
+func (iter *LayoutIter) Copy() *LayoutIter {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_copy(arg0)
+
+	var ret0 *LayoutIter
+
+	ret0 = WrapLayoutIter(ret)
+
+	return ret0
+}
+
+// Free frees an iterator that's no longer in use.
+func (iter *LayoutIter) Free() {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	C.pango_layout_iter_free(arg0)
+}
+
+// Baseline gets the Y position of the current line's baseline, in layout
+// coordinates (origin at top left of the entire layout).
+func (iter *LayoutIter) Baseline() int {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_baseline(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// CharExtents gets the extents of the current character, in layout coordinates
+// (origin is the top left of the entire layout). Only logical extents can
+// sensibly be obtained for characters; ink extents make sense only down to the
+// level of clusters.
+func (iter *LayoutIter) CharExtents() Rectangle {
+	var arg0 *C.PangoLayoutIter
+	var arg1 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_char_extents(arg0, &arg1)
+
+	var ret0 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	return ret0
+}
+
+// ClusterExtents gets the extents of the current cluster, in layout coordinates
+// (origin is the top left of the entire layout).
+func (iter *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoLayoutIter
+	var arg1 *C.PangoRectangle // out
+	var arg2 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_cluster_extents(arg0, &arg1, &arg2)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	ret1 = WrapRectangle(arg2)
+
+	return ret0, ret1
+}
+
+// Index gets the current byte index. Note that iterating forward by char moves
+// in visual order, not logical order, so indexes may not be sequential. Also,
+// the index may be equal to the length of the text in the layout, if on the nil
+// run (see [method@Pango.LayoutIter.get_run]).
+func (iter *LayoutIter) Index() int {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_index(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Layout gets the layout associated with a `PangoLayoutIter`.
+func (iter *LayoutIter) Layout() Layout {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_layout(arg0)
+
+	var ret0 Layout
+
+	ret0 = WrapLayout(externglib.Take(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// LayoutExtents obtains the extents of the `PangoLayout` being iterated over.
+// @ink_rect or @logical_rect can be nil if you aren't interested in them.
+func (iter *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoLayoutIter
+	var arg1 *C.PangoRectangle // out
+	var arg2 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_layout_extents(arg0, &arg1, &arg2)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	ret1 = WrapRectangle(arg2)
+
+	return ret0, ret1
+}
+
+// Line gets the current line.
+//
+// Use the faster [method@Pango.LayoutIter.get_line_readonly] if you do not plan
+// to modify the contents of the line (glyphs, glyph widths, etc.).
+func (iter *LayoutIter) Line() *LayoutLine {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_line(arg0)
+
+	var ret0 *LayoutLine
+
+	ret0 = WrapLayoutLine(ret)
+
+	return ret0
+}
+
+// LineExtents obtains the extents of the current line. @ink_rect or
+// @logical_rect can be nil if you aren't interested in them. Extents are in
+// layout coordinates (origin is the top-left corner of the entire
+// `PangoLayout`). Thus the extents returned by this function will be the same
+// width/height but not at the same x/y as the extents returned from
+// [method@Pango.LayoutLine.get_extents].
+func (iter *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoLayoutIter
+	var arg1 *C.PangoRectangle // out
+	var arg2 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_line_extents(arg0, &arg1, &arg2)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	ret1 = WrapRectangle(arg2)
+
+	return ret0, ret1
+}
+
+// LineReadonly gets the current line for read-only access.
+//
+// This is a faster alternative to [method@Pango.LayoutIter.get_line], but the
+// user is not expected to modify the contents of the line (glyphs, glyph
+// widths, etc.).
+func (iter *LayoutIter) LineReadonly() *LayoutLine {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_line_readonly(arg0)
+
+	var ret0 *LayoutLine
+
+	ret0 = WrapLayoutLine(ret)
+
+	return ret0
+}
+
+// LineYrange divides the vertical space in the `PangoLayout` being iterated
+// over between the lines in the layout, and returns the space belonging to the
+// current line. A line's range includes the line's logical extents, plus half
+// of the spacing above and below the line, if [method@Pango.Layout.set_spacing]
+// has been called to set layout spacing. The Y positions are in layout
+// coordinates (origin at top left of the entire layout).
+//
+// Note: Since 1.44, Pango uses line heights for placing lines, and there may be
+// gaps between the ranges returned by this function.
+func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
+	var arg0 *C.PangoLayoutIter
+	var arg1 *C.int // out
+	var arg2 *C.int // out
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_line_yrange(arg0, &arg1, &arg2)
+
+	var ret0 int
+	var ret1 int
+
+	ret0 = int(arg1)
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
+// Run gets the current run. When iterating by run, at the end of each line,
+// there's a position with a nil run, so this function can return nil. The nil
+// run at the end of each line ensures that all lines have at least one run,
+// even lines consisting of only a newline.
+//
+// Use the faster [method@Pango.LayoutIter.get_run_readonly] if you do not plan
+// to modify the contents of the run (glyphs, glyph widths, etc.).
+func (iter *LayoutIter) Run() *LayoutRun {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_run(arg0)
+
+	var ret0 *LayoutRun
+
+	{
+		var tmp GlyphItem
+		tmp = WrapGlyphItem(ret)
+		ret0 = *LayoutRun(tmp)
+	}
+
+	return ret0
+}
+
+// RunExtents gets the extents of the current run in layout coordinates (origin
+// is the top left of the entire layout).
+func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoLayoutIter
+	var arg1 *C.PangoRectangle // out
+	var arg2 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_run_extents(arg0, &arg1, &arg2)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	ret1 = WrapRectangle(arg2)
+
+	return ret0, ret1
+}
+
+// RunReadonly gets the current run. When iterating by run, at the end of each
+// line, there's a position with a nil run, so this function can return nil. The
+// nil run at the end of each line ensures that all lines have at least one run,
+// even lines consisting of only a newline.
+//
+// This is a faster alternative to [method@Pango.LayoutIter.get_run], but the
+// user is not expected to modify the contents of the run (glyphs, glyph widths,
+// etc.).
+func (iter *LayoutIter) RunReadonly() *LayoutRun {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_get_run_readonly(arg0)
+
+	var ret0 *LayoutRun
+
+	{
+		var tmp GlyphItem
+		tmp = WrapGlyphItem(ret)
+		ret0 = *LayoutRun(tmp)
+	}
+
+	return ret0
+}
+
+// NextChar moves @iter forward to the next character in visual order. If @iter
+// was already at the end of the layout, returns false.
+func (iter *LayoutIter) NextChar() bool {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_next_char(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// NextCluster moves @iter forward to the next cluster in visual order. If @iter
+// was already at the end of the layout, returns false.
+func (iter *LayoutIter) NextCluster() bool {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_next_cluster(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// NextLine moves @iter forward to the start of the next line. If @iter is
+// already on the last line, returns false.
+func (iter *LayoutIter) NextLine() bool {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_next_line(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// NextRun moves @iter forward to the next run in visual order. If @iter was
+// already at the end of the layout, returns false.
+func (iter *LayoutIter) NextRun() bool {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(iter.Native())
+
+	ret := C.pango_layout_iter_next_run(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
 }
 
 // LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
@@ -4209,6 +6355,184 @@ func (r *LayoutLine) ResolvedDir() uint {
 	var ret uint
 	ret = uint(l.native.resolved_dir)
 	return ret
+}
+
+// Extents computes the logical and ink extents of a layout line. See
+// [method@Pango.Font.get_glyph_extents] for details about the interpretation of
+// the rectangles.
+func (line *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoLayoutLine
+	var arg1 *C.PangoRectangle // out
+	var arg2 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+
+	ret := C.pango_layout_line_get_extents(arg0, &arg1, &arg2)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	ret1 = WrapRectangle(arg2)
+
+	return ret0, ret1
+}
+
+// Height computes the height of the line, i.e. the distance between this and
+// the previous lines baseline.
+func (line *LayoutLine) Height() int {
+	var arg0 *C.PangoLayoutLine
+	var arg1 *C.int // out
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+
+	ret := C.pango_layout_line_get_height(arg0, &arg1)
+
+	var ret0 int
+
+	ret0 = int(arg1)
+
+	return ret0
+}
+
+// PixelExtents computes the logical and ink extents of @layout_line in device
+// units.
+//
+// This function just calls [method@Pango.LayoutLine.get_extents] followed by
+// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect such
+// that the rounded rectangles fully contain the unrounded one (that is, passes
+// them as first argument to [func@extents_to_pixels]).
+func (layoutLine *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
+	var arg0 *C.PangoLayoutLine
+	var arg1 *C.PangoRectangle // out
+	var arg2 *C.PangoRectangle // out
+
+	arg0 = (*C.PangoLayoutLine)(layoutLine.Native())
+
+	ret := C.pango_layout_line_get_pixel_extents(arg0, &arg1, &arg2)
+
+	var ret0 *Rectangle
+	var ret1 *Rectangle
+
+	ret0 = WrapRectangle(arg1)
+
+	ret1 = WrapRectangle(arg2)
+
+	return ret0, ret1
+}
+
+// XRanges gets a list of visual ranges corresponding to a given logical range.
+// This list is not necessarily minimal - there may be consecutive ranges which
+// are adjacent. The ranges will be sorted from left to right. The ranges are
+// with respect to the left edge of the entire layout, not with respect to the
+// line.
+func (line *LayoutLine) XRanges(startIndex int, endIndex int) (ranges []int, nRanges int) {
+	var arg0 *C.PangoLayoutLine
+	var arg1 C.int
+	var arg2 C.int
+	var arg3 **C.int // out
+	var arg4 *C.int  // out
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+	arg1 = C.int(startIndex)
+	arg2 = C.int(endIndex)
+
+	ret := C.pango_layout_line_get_x_ranges(arg0, arg1, arg2, &arg3, &arg4)
+
+	var ret0 []int
+	var ret1 int
+
+	{
+		ret0 = make([]int, arg4)
+		for i := 0; i < uintptr(arg4); i++ {
+			src := (*C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = int(src)
+		}
+	}
+
+	ret1 = int(arg4)
+
+	return ret0, ret1
+}
+
+// IndexToX converts an index within a line to a X position.
+func (line *LayoutLine) IndexToX(index_ int, trailing bool) int {
+	var arg0 *C.PangoLayoutLine
+	var arg1 C.int
+	var arg2 C.gboolean
+	var arg3 *C.int // out
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+	arg1 = C.int(index_)
+	arg2 = gextras.Cbool(trailing)
+
+	ret := C.pango_layout_line_index_to_x(arg0, arg1, arg2, &arg3)
+
+	var ret0 int
+
+	ret0 = int(arg3)
+
+	return ret0
+}
+
+// Ref: increase the reference count of a `PangoLayoutLine` by one.
+func (line *LayoutLine) Ref() *LayoutLine {
+	var arg0 *C.PangoLayoutLine
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+
+	ret := C.pango_layout_line_ref(arg0)
+
+	var ret0 *LayoutLine
+
+	ret0 = WrapLayoutLine(ret)
+
+	return ret0
+}
+
+// Unref: decrease the reference count of a `PangoLayoutLine` by one. If the
+// result is zero, the line and all associated memory will be freed.
+func (line *LayoutLine) Unref() {
+	var arg0 *C.PangoLayoutLine
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+
+	C.pango_layout_line_unref(arg0)
+}
+
+// XToIndex converts from x offset to the byte index of the corresponding
+// character within the text of the layout. If @x_pos is outside the line,
+// @index_ and @trailing will point to the very first or very last position in
+// the line. This determination is based on the resolved direction of the
+// paragraph; for example, if the resolved direction is right-to-left, then an X
+// position to the right of the line (after it) results in 0 being stored in
+// @index_ and @trailing. An X position to the left of the line results in
+// @index_ pointing to the (logical) last grapheme in the line and @trailing
+// being set to the number of characters in that grapheme. The reverse is true
+// for a left-to-right line.
+func (line *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
+	var arg0 *C.PangoLayoutLine
+	var arg1 C.int
+	var arg2 *C.int // out
+	var arg3 *C.int // out
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+	arg1 = C.int(xPos)
+
+	ret := C.pango_layout_line_x_to_index(arg0, arg1, &arg2, &arg3)
+
+	var ret0 int
+	var ret1 int
+	var ret2 bool
+
+	ret0 = int(arg2)
+
+	ret1 = int(arg3)
+
+	ret2 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
@@ -4402,6 +6726,217 @@ func (y *Matrix) Y0() float64 {
 	return ret
 }
 
+// Concat changes the transformation represented by @matrix to be the
+// transformation given by first applying transformation given by @new_matrix
+// then applying the original transformation.
+func (matrix *Matrix) Concat(newMatrix *Matrix) {
+	var arg0 *C.PangoMatrix
+	var arg1 *C.PangoMatrix
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = (*C.PangoMatrix)(newMatrix.Native())
+
+	C.pango_matrix_concat(arg0, arg1)
+}
+
+// Copy copies a `PangoMatrix`.
+func (matrix *Matrix) Copy() *Matrix {
+	var arg0 *C.PangoMatrix
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+
+	ret := C.pango_matrix_copy(arg0)
+
+	var ret0 *Matrix
+
+	ret0 = WrapMatrix(ret)
+
+	return ret0
+}
+
+// Free: free a `PangoMatrix`.
+func (matrix *Matrix) Free() {
+	var arg0 *C.PangoMatrix
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+
+	C.pango_matrix_free(arg0)
+}
+
+// FontScaleFactor returns the scale factor of a matrix on the height of the
+// font.
+//
+// That is, the scale factor in the direction perpendicular to the vector that
+// the X coordinate is mapped to. If the scale in the X coordinate is needed as
+// well, use [method@Pango.Matrix.get_font_scale_factors].
+func (matrix *Matrix) FontScaleFactor() float64 {
+	var arg0 *C.PangoMatrix
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+
+	ret := C.pango_matrix_get_font_scale_factor(arg0)
+
+	var ret0 float64
+
+	ret0 = float64(ret)
+
+	return ret0
+}
+
+// FontScaleFactors calculates the scale factor of a matrix on the width and
+// height of the font.
+//
+// That is, @xscale is the scale factor in the direction of the X coordinate,
+// and @yscale is the scale factor in the direction perpendicular to the vector
+// that the X coordinate is mapped to.
+//
+// Note that output numbers will always be non-negative.
+func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
+	var arg0 *C.PangoMatrix
+	var arg1 *C.double // out
+	var arg2 *C.double // out
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+
+	ret := C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
+
+	var ret0 float64
+	var ret1 float64
+
+	ret0 = float64(arg1)
+
+	ret1 = float64(arg2)
+
+	return ret0, ret1
+}
+
+// Rotate changes the transformation represented by @matrix to be the
+// transformation given by first rotating by @degrees degrees counter-clockwise
+// then applying the original transformation.
+func (matrix *Matrix) Rotate(degrees float64) {
+	var arg0 *C.PangoMatrix
+	var arg1 C.double
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = C.double(degrees)
+
+	C.pango_matrix_rotate(arg0, arg1)
+}
+
+// Scale changes the transformation represented by @matrix to be the
+// transformation given by first scaling by @sx in the X direction and @sy in
+// the Y direction then applying the original transformation.
+func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
+	var arg0 *C.PangoMatrix
+	var arg1 C.double
+	var arg2 C.double
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = C.double(scaleX)
+	arg2 = C.double(scaleY)
+
+	C.pango_matrix_scale(arg0, arg1, arg2)
+}
+
+// TransformDistance transforms the distance vector (@dx,@dy) by @matrix.
+//
+// This is similar to [method@Pango.Matrix.transform_point], except that the
+// translation components of the transformation are ignored. The calculation of
+// the returned vector is as follows:
+//
+// “` dx2 = dx1 * xx + dy1 * xy; dy2 = dx1 * yx + dy1 * yy; “`
+//
+// Affine transformations are position invariant, so the same vector always
+// transforms to the same vector. If (@x1,@y1) transforms to (@x2,@y2) then
+// (@x1+@dx1,@y1+@dy1) will transform to (@x1+@dx2,@y1+@dy2) for all values of
+// @x1 and @x2.
+func (matrix *Matrix) TransformDistance(dx float64, dy float64) {
+	var arg0 *C.PangoMatrix
+	var arg1 *C.double
+	var arg2 *C.double
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = (*C.double)(dx)
+	arg2 = (*C.double)(dy)
+
+	C.pango_matrix_transform_distance(arg0, arg1, arg2)
+}
+
+// TransformPixelRectangle: first transforms the @rect using @matrix, then
+// calculates the bounding box of the transformed rectangle.
+//
+// This function is useful for example when you want to draw a rotated
+// @PangoLayout to an image buffer, and want to know how large the image should
+// be and how much you should shift the layout when rendering.
+//
+// For better accuracy, you should use [method@Pango.Matrix.transform_rectangle]
+// on original rectangle in Pango units and convert to pixels afterward using
+// [func@extents_to_pixels]'s first argument.
+func (matrix *Matrix) TransformPixelRectangle(rect *Rectangle) {
+	var arg0 *C.PangoMatrix
+	var arg1 *C.PangoRectangle
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = (*C.PangoRectangle)(rect.Native())
+
+	C.pango_matrix_transform_pixel_rectangle(arg0, arg1)
+}
+
+// TransformPoint transforms the point (@x, @y) by @matrix.
+func (matrix *Matrix) TransformPoint(x float64, y float64) {
+	var arg0 *C.PangoMatrix
+	var arg1 *C.double
+	var arg2 *C.double
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = (*C.double)(x)
+	arg2 = (*C.double)(y)
+
+	C.pango_matrix_transform_point(arg0, arg1, arg2)
+}
+
+// TransformRectangle: first transforms @rect using @matrix, then calculates the
+// bounding box of the transformed rectangle.
+//
+// This function is useful for example when you want to draw a rotated
+// @PangoLayout to an image buffer, and want to know how large the image should
+// be and how much you should shift the layout when rendering.
+//
+// If you have a rectangle in device units (pixels), use
+// [method@Pango.Matrix.transform_pixel_rectangle].
+//
+// If you have the rectangle in Pango units and want to convert to transformed
+// pixel bounding box, it is more accurate to transform it first (using this
+// function) and pass the result to pango_extents_to_pixels(), first argument,
+// for an inclusive rounded rectangle. However, there are valid reasons that you
+// may want to convert to pixels first and then transform, for example when the
+// transformed coordinates may overflow in Pango units (large matrix translation
+// for example).
+func (matrix *Matrix) TransformRectangle(rect *Rectangle) {
+	var arg0 *C.PangoMatrix
+	var arg1 *C.PangoRectangle
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = (*C.PangoRectangle)(rect.Native())
+
+	C.pango_matrix_transform_rectangle(arg0, arg1)
+}
+
+// Translate changes the transformation represented by @matrix to be the
+// transformation given by first translating by (@tx, @ty) then applying the
+// original transformation.
+func (matrix *Matrix) Translate(tx float64, ty float64) {
+	var arg0 *C.PangoMatrix
+	var arg1 C.double
+	var arg2 C.double
+
+	arg0 = (*C.PangoMatrix)(matrix.Native())
+	arg1 = C.double(tx)
+	arg2 = C.double(ty)
+
+	C.pango_matrix_translate(arg0, arg1, arg2)
+}
+
 // Rectangle: the `PangoRectangle` structure represents a rectangle.
 //
 // `PangoRectangle` is frequently used to represent the logical or ink extents
@@ -4503,6 +7038,63 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	return ret0
 }
 
+// Free frees a ScriptIter created with pango_script_iter_new().
+func (iter *ScriptIter) Free() {
+	var arg0 *C.PangoScriptIter
+
+	arg0 = (*C.PangoScriptIter)(iter.Native())
+
+	C.pango_script_iter_free(arg0)
+}
+
+// Range gets information about the range to which @iter currently points. The
+// range is the set of locations p where *start <= p < *end. (That is, it
+// doesn't include the character stored at *end)
+//
+// Note that while the type of the @script argument is declared as PangoScript,
+// as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
+// must be prepared to handle unknown values.
+func (iter *ScriptIter) Range() (start string, end string, script Script) {
+	var arg0 *C.PangoScriptIter
+	var arg1 **C.char       // out
+	var arg2 **C.char       // out
+	var arg3 *C.PangoScript // out
+
+	arg0 = (*C.PangoScriptIter)(iter.Native())
+
+	ret := C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 string
+	var ret1 string
+	var ret2 *Script
+
+	ret0 = C.GoString(arg1)
+	C.free(unsafe.Pointer(arg1))
+
+	ret1 = C.GoString(arg2)
+	C.free(unsafe.Pointer(arg2))
+
+	ret2 = (*Script)(arg3)
+
+	return ret0, ret1, ret2
+}
+
+// Next advances a ScriptIter to the next range. If @iter is already at the end,
+// it is left unchanged and false is returned.
+func (iter *ScriptIter) Next() bool {
+	var arg0 *C.PangoScriptIter
+
+	arg0 = (*C.PangoScriptIter)(iter.Native())
+
+	ret := C.pango_script_iter_next(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
 // TabArray: a `PangoTabArray` contains an array of tab stops.
 //
 // `PangoTabArray` can be used to set tab stops in a `PangoLayout`. Each tab
@@ -4546,6 +7138,136 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	ret0 = WrapTabArray(ret)
 
 	return ret0
+}
+
+// Copy copies a `PangoTabArray`.
+func (src *TabArray) Copy() *TabArray {
+	var arg0 *C.PangoTabArray
+
+	arg0 = (*C.PangoTabArray)(src.Native())
+
+	ret := C.pango_tab_array_copy(arg0)
+
+	var ret0 *TabArray
+
+	ret0 = WrapTabArray(ret)
+
+	return ret0
+}
+
+// Free frees a tab array and associated resources.
+func (tabArray *TabArray) Free() {
+	var arg0 *C.PangoTabArray
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+
+	C.pango_tab_array_free(arg0)
+}
+
+// PositionsInPixels returns true if the tab positions are in pixels, false if
+// they are in Pango units.
+func (tabArray *TabArray) PositionsInPixels() bool {
+	var arg0 *C.PangoTabArray
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+
+	ret := C.pango_tab_array_get_positions_in_pixels(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Size gets the number of tab stops in @tab_array.
+func (tabArray *TabArray) Size() int {
+	var arg0 *C.PangoTabArray
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+
+	ret := C.pango_tab_array_get_size(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Tab gets the alignment and position of a tab stop.
+func (tabArray *TabArray) Tab(tabIndex int) (alignment TabAlign, location int) {
+	var arg0 *C.PangoTabArray
+	var arg1 C.gint
+	var arg2 *C.PangoTabAlign // out
+	var arg3 *C.gint          // out
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+	arg1 = C.gint(tabIndex)
+
+	ret := C.pango_tab_array_get_tab(arg0, arg1, &arg2, &arg3)
+
+	var ret0 *TabAlign
+	var ret1 int
+
+	ret0 = (*TabAlign)(arg2)
+
+	ret1 = int(arg3)
+
+	return ret0, ret1
+}
+
+// Tabs: if non-nil, @alignments and @locations are filled with allocated
+// arrays.
+//
+// The arrays are of length [method@Pango.TabArray.get_size]. You must free the
+// returned array.
+func (tabArray *TabArray) Tabs() (alignments *TabAlign, locations []int) {
+	var arg0 *C.PangoTabArray
+	var arg1 **C.PangoTabAlign // out
+	var arg2 **C.gint          // out
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+
+	ret := C.pango_tab_array_get_tabs(arg0, &arg1, &arg2)
+
+	var ret0 **TabAlign
+	var ret1 []int
+
+	ret0 = (**TabAlign)(arg1)
+
+	return ret0, ret1
+}
+
+// Resize resizes a tab array.
+//
+// You must subsequently initialize any tabs that were added as a result of
+// growing the array.
+func (tabArray *TabArray) Resize(newSize int) {
+	var arg0 *C.PangoTabArray
+	var arg1 C.gint
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+	arg1 = C.gint(newSize)
+
+	C.pango_tab_array_resize(arg0, arg1)
+}
+
+// SetTab sets the alignment and location of a tab stop.
+//
+// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
+	var arg0 *C.PangoTabArray
+	var arg1 C.gint
+	var arg2 C.PangoTabAlign
+	var arg3 C.gint
+
+	arg0 = (*C.PangoTabArray)(tabArray.Native())
+	arg1 = C.gint(tabIndex)
+	arg2 = (C.PangoTabAlign)(alignment)
+	arg3 = C.gint(location)
+
+	C.pango_tab_array_set_tab(arg0, arg1, arg2, arg3)
 }
 
 // Context: a `PangoContext` stores global information used to control the
@@ -5323,18 +8045,6 @@ type Font interface {
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
 	FontMap() FontMap
-	// GlyphExtents gets the logical and ink extents of a glyph within a font.
-	//
-	// The coordinate system for each rectangle has its origin at the base line
-	// and horizontal origin of the character with increasing coordinates
-	// extending to the right and down. The macros PANGO_ASCENT(),
-	// PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to
-	// convert from the extents rectangle to more traditional font metrics. The
-	// units of the rectangles are in 1/PANGO_SCALE of a device unit.
-	//
-	// If @font is nil, this function gracefully sets some sane values in the
-	// output variables and returns.
-	GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -5456,37 +8166,6 @@ func (font font) FontMap() FontMap {
 	ret0 = WrapFontMap(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
-}
-
-// GlyphExtents gets the logical and ink extents of a glyph within a font.
-//
-// The coordinate system for each rectangle has its origin at the base line
-// and horizontal origin of the character with increasing coordinates
-// extending to the right and down. The macros PANGO_ASCENT(),
-// PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to
-// convert from the extents rectangle to more traditional font metrics. The
-// units of the rectangles are in 1/PANGO_SCALE of a device unit.
-//
-// If @font is nil, this function gracefully sets some sane values in the
-// output variables and returns.
-func (font font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle) {
-	var arg0 *C.PangoFont
-	var arg1 C.PangoGlyph
-	var arg2 *C.PangoRectangle // out
-	var arg3 *C.PangoRectangle // out
-
-	arg0 = (*C.PangoFont)(font.Native())
-
-	ret := C.pango_font_get_glyph_extents(arg0, arg1, &arg2, &arg3)
-
-	var ret0 *Rectangle
-	var ret1 *Rectangle
-
-	ret0 = WrapRectangle(arg2)
-
-	ret1 = WrapRectangle(arg3)
-
-	return ret0, ret1
 }
 
 // Metrics gets overall metric information for a font.
@@ -5663,7 +8342,7 @@ func (face fontFace) ListSizes() (sizes []int, nSizes int) {
 	{
 		ret0 = make([]int, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
-			src := (*C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret0[i] = int(src)
 		}
 	}
@@ -7909,8 +10588,6 @@ type Renderer interface {
 	// This should be called while @renderer is already active. Use
 	// [method@Pango.Renderer.activate] to activate a renderer.
 	DrawErrorUnderline(x int, y int, width int, height int)
-	// DrawGlyph draws a single glyph with coordinates in device space.
-	DrawGlyph(font Font, glyph Glyph, x float64, y float64)
 	// DrawGlyphItem draws the glyphs in @glyph_item with the specified
 	// `PangoRenderer`, embedding the text associated with the glyphs in the
 	// output if the output format supports it.
@@ -8059,22 +10736,6 @@ func (renderer renderer) DrawErrorUnderline(x int, y int, width int, height int)
 	arg4 = C.int(height)
 
 	C.pango_renderer_draw_error_underline(arg0, arg1, arg2, arg3, arg4)
-}
-
-// DrawGlyph draws a single glyph with coordinates in device space.
-func (renderer renderer) DrawGlyph(font Font, glyph Glyph, x float64, y float64) {
-	var arg0 *C.PangoRenderer
-	var arg1 *C.PangoFont
-	var arg2 C.PangoGlyph
-	var arg3 C.double
-	var arg4 C.double
-
-	arg0 = (*C.PangoRenderer)(renderer.Native())
-	arg1 = (*C.PangoFont)(font.Native())
-	arg3 = C.double(x)
-	arg4 = C.double(y)
-
-	C.pango_renderer_draw_glyph(arg0, arg1, arg2, arg3, arg4)
 }
 
 // DrawGlyphItem draws the glyphs in @glyph_item with the specified

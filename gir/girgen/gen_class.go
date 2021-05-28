@@ -63,14 +63,17 @@ type classGenerator struct {
 }
 
 func (cg *classGenerator) Use(class gir.Class) bool {
-	cg.TypeTree = cg.TypeTree[:0]
-	cg.Methods = cg.Methods[:0]
-
 	if class.Parent == "" {
 		// TODO: check what happens if a class has no parent. It should have a
 		// GObject parent, usually.
 		return false
 	}
+
+	cg.TypeTree = cg.TypeTree[:0]
+
+	cg.Class = class
+	cg.InterfaceName = PascalToGo(class.Name)
+	cg.StructName = UnexportPascal(cg.InterfaceName)
 
 	// Loop to resolve the parent type, the parent type of that parent type, and
 	// so on.
@@ -92,21 +95,20 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		parent = parentType.Parent
 	}
 
+	cg.Methods = callableGrow(cg.Methods, len(class.Methods))
+
 	for _, method := range class.Methods {
 		cbgen := newCallableGenerator(cg.Ng)
 		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
 
+		cbgen.Parent = cg.InterfaceName
 		cg.Methods = append(cg.Methods, cbgen)
 	}
 
 	// Use Go-idiomatic getter names, unless there's a duplicate.
 	callableRenameGetters(cg.Methods)
-
-	cg.Class = class
-	cg.InterfaceName = PascalToGo(class.Name)
-	cg.StructName = UnexportPascal(cg.InterfaceName)
 
 	// Treat StructEmbeds specially: we can only embed our own implementation
 	// types, since they're unexported, so we embed interface types if it's not
@@ -155,28 +157,9 @@ func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
 
 func (cg *classGenerator) UseConstructor(ctor gir.Constructor) bool {
 	ctor = bodgeClassCtor(cg.Class, ctor)
-	return cg.Callable.Use(ctor.CallableAttrs)
-
-	// if !cg.Callable.Use(ctor.CallableAttrs) {
-	// 	return false
-	// }
-
-	// cg.Callable.Name = strings.TrimPrefix(cg.Callable.Name, "New")
-	// cg.Callable.Name = "New" + className + cg.Callable.Name
-
-	// // Assume that constructors always return only the current class with no
-	// // output parameters, so we don't use FnReturns.
-
-	// arg, argOk := cg.Ng.FnArgs(ctor.CallableAttrs)
-	// ret, retOk := cg.Ng.ResolveAnyType(ctor.ReturnValue.AnyType, true)
-
-	// if !argOk || !retOk {
-	// 	return false
-	// }
-
-	// cg.Callable.Tail = fmt.Sprintf("(%s) %s", arg, ret)
-
-	// return true
+	ok := cg.Callable.Use(ctor.CallableAttrs)
+	cg.Callable.Parent = cg.InterfaceName
+	return ok
 }
 
 // Wrap returns the wrap string around the given variable name of type

@@ -149,24 +149,6 @@ func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom 
 	return ret0
 }
 
-// X11GetXatomNameForDisplay returns the name of an X atom for its display. This
-// function is meant mainly for debugging, so for convenience, unlike
-// XAtomName() and the result doesn’t need to be freed.
-func X11GetXatomNameForDisplay(display X11Display, xatom xlib.Atom) string {
-	var arg1 *C.GdkDisplay
-	var arg2 C.Atom
-
-	arg1 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_x11_get_xatom_name_for_display(arg1, arg2)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
 // X11LookupXdisplay: find the Display corresponding to @xdisplay, if any
 // exists.
 func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {

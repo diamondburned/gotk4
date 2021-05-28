@@ -77,25 +77,6 @@ func GetFontMap(display *xlib.Display, screen int) pango.FontMap {
 	return ret0
 }
 
-// PictureRender renders a GlyphString onto an Xrender Picture object.
-func PictureRender(display *xlib.Display, srcPicture xlib.Picture, destPicture xlib.Picture, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
-	var arg1 *C.Display
-	var arg2 C.Picture
-	var arg3 C.Picture
-	var arg4 *C.PangoFont
-	var arg5 *C.PangoGlyphString
-	var arg6 C.gint
-	var arg7 C.gint
-
-	arg1 = (*C.Display)(display.Native())
-	arg4 = (*C.PangoFont)(font.Native())
-	arg5 = (*C.PangoGlyphString)(glyphs.Native())
-	arg6 = C.gint(x)
-	arg7 = C.gint(y)
-
-	C.pango_xft_picture_render(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-}
-
 // Render renders a GlyphString onto an XftDraw object wrapping an X drawable.
 func Render(draw *xft.Draw, color *xft.Color, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg1 *C.XftDraw

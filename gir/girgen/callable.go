@@ -10,25 +10,46 @@ import (
 
 type callableGenerator struct {
 	gir.CallableAttrs
-	Name string
-	Tail string
+	Name  string
+	Tail  string
+	Block string
 
-	Ng *NamespaceGenerator
+	Converts []string
+
+	Parent string // optional
+	Ng     *NamespaceGenerator
 }
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
 	return callableGenerator{Ng: ng}
 }
 
+func (cg *callableGenerator) reset() {
+	*cg = callableGenerator{Ng: cg.Ng}
+}
+
 func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
+	// Skip this one. Hope the caller reaches the Shadows method, eventually.
+	if cattrs.ShadowedBy != "" {
+		cg.reset()
+		return false
+	}
+
 	call := cg.Ng.FnCall(cattrs)
 	if call == "" {
+		cg.reset()
 		return false
 	}
 
 	cg.Name = SnakeToGo(true, cattrs.Name)
 	cg.Tail = call
+	cg.Parent = ""
 	cg.CallableAttrs = cattrs
+
+	if cg.Block = cg.block(); cg.Block == "" {
+		cg.reset()
+		return false
+	}
 
 	return true
 }
@@ -43,12 +64,14 @@ func (cg *callableGenerator) Recv() string {
 	return "v"
 }
 
-// Block renders the function block.
-func (cg *callableGenerator) Block() string {
+// Block renders the function block. It returns an empty string if a conversion
+// cannot be generated.
+func (cg *callableGenerator) block() string {
 	type retVar struct {
-		Name  string
-		Type  gir.AnyType
-		Owner gir.TransferOwnership
+		Name      string
+		Type      gir.AnyType
+		Owner     gir.TransferOwnership
+		AllowNone bool
 	}
 
 	blocks := pen.NewBlockSections(1024, 4096)
@@ -75,7 +98,7 @@ func (cg *callableGenerator) Block() string {
 		var closure *int // user-data arg
 		var destroy *int
 
-		doParam := func(i int, param gir.ParameterAttrs, targ, valn string) {
+		doParam := func(i int, param gir.ParameterAttrs, targ, valn string) bool {
 			// Generate a zero-value variable regardless if we have the
 			// conversions or not.
 			blocks.Linef(0, "var %s %s", targ, anyTypeCGo(param.AnyType))
@@ -86,24 +109,32 @@ func (cg *callableGenerator) Block() string {
 			if !ignores.ignore(i) {
 				converter := cg.Ng.GoCConverter(TypeConversionToC{
 					TypeConversion: TypeConversion{
-						Value:  valn,
-						Target: targ,
-						Type:   param.AnyType,
-						Owner:  param.TransferOwnership,
-						ArgAt:  argNamer,
+						Value:      valn,
+						Target:     targ,
+						Type:       param.AnyType,
+						Owner:      param.TransferOwnership,
+						ArgAt:      argNamer,
+						ParentName: dots(cg.Ng.PackageName(), cg.Parent, cg.Name),
 					},
 					Closure: closure,
 					Destroy: destroy,
 				})
+
 				if converter != "" {
 					blocks.Line(1, converter)
+					return true
 				}
 			}
+
+			// If null is fine, then we're fine.
+			return param.AllowNone
 		}
 
 		if cg.Parameters.InstanceParameter != nil {
 			attrs := cg.Parameters.InstanceParameter.ParameterAttrs
-			doParam(-1, attrs, "arg0", cg.Recv())
+			if !doParam(-1, attrs, "arg0", cg.Recv()) {
+				return ""
+			}
 		}
 
 		for i, param := range cg.Parameters.Parameters {
@@ -126,9 +157,10 @@ func (cg *callableGenerator) Block() string {
 
 				args.Add("&" + targ)
 				rets = append(rets, retVar{
-					Name:  targ,
-					Type:  param.AnyType,
-					Owner: param.TransferOwnership,
+					Name:      targ,
+					Type:      param.AnyType,
+					Owner:     param.TransferOwnership,
+					AllowNone: param.AllowNone,
 				})
 				continue
 			}
@@ -163,7 +195,9 @@ func (cg *callableGenerator) Block() string {
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			doParam(i, param.ParameterAttrs, targ, valn)
+			if !doParam(i, param.ParameterAttrs, targ, valn) {
+				return ""
+			}
 		}
 	}
 
@@ -186,24 +220,33 @@ func (cg *callableGenerator) Block() string {
 	retvars := pen.NewJoints(", ", len(rets))
 
 	for i, ret := range rets {
-		resolved, _ := cg.Ng.ResolveAnyType(ret.Type, true)
+		goType, _ := cg.Ng.ResolveAnyType(ret.Type, true)
 		retName := fmt.Sprintf("ret%d", i)
 		retvars.Add(retName)
 
-		blocks.Linef(3, "var %s %s", retName, resolved)
+		blocks.Linef(3, "var %s %s", retName, goType)
 
 		converter := cg.Ng.CGoConverter(TypeConversionToGo{
 			TypeConversion: TypeConversion{
-				Value:  ret.Name,
-				Target: retName,
-				Type:   ret.Type,
-				Owner:  ret.Owner,
-				ArgAt:  argNamer,
+				Value:      ret.Name,
+				Target:     retName,
+				Type:       ret.Type,
+				Owner:      ret.Owner,
+				ArgAt:      argNamer,
+				ParentName: dots(cg.Ng.PackageName(), cg.Parent, cg.Name),
 			},
+			BoxCast: goType,
 		})
 
-		blocks.Line(4, converter)
-		blocks.EmptyLine(4)
+		if converter != "" {
+			blocks.Line(4, converter)
+			blocks.EmptyLine(4)
+			continue
+		}
+
+		if !ret.AllowNone {
+			return ""
+		}
 	}
 
 	blocks.Line(5, "return "+retvars.Join())
@@ -405,4 +448,13 @@ func callableRenameGetters(callables []callableGenerator) {
 
 		callables[i].Name = newName
 	}
+}
+
+// callableGrow grows or shrinks the callables slice to the given length. The
+// returned slice will have a length of 0.
+func callableGrow(callables []callableGenerator, n int) []callableGenerator {
+	if cap(callables) <= n {
+		return callables[:0]
+	}
+	return make([]callableGenerator, 0, n*2)
 }

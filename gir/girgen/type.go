@@ -25,6 +25,8 @@ type TypeConversion struct {
 
 	// ArgAt is used for array and closure generation.
 	ArgAt ArgAtFunc
+	// ParentName is used primarily for debugging.
+	ParentName string
 }
 
 // TypeConversionToC contains type information that is only useful when
@@ -245,8 +247,11 @@ func girPrimitiveGo(typ string) string {
 
 // cgoPrimitiveTypes contains edge cases for referencing C primitive types from
 // CGo.
+//
+// See https://gist.github.com/zchee/b9c99695463d8902cd33.
 var cgoPrimitiveTypes = map[string]string{
-	"long double": "longdouble",
+	"long double":  "longdouble",
+	"unsigned int": "uint",
 }
 
 // ResolvedType is a resolved type from a given gir.Type.

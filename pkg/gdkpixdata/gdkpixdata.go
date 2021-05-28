@@ -5,8 +5,10 @@ package gdkpixdata
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -178,20 +180,75 @@ func (h *Pixdata) Height() uint32 {
 	return ret
 }
 
-// PixelData gets the field inside the struct.
-func (p *Pixdata) PixelData() []byte {
-	var ret []byte
-	{
-		var length uint
-		for p := unsafe.Pointer(p.native.pixel_data); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
+// FromPixbuf converts a Pixbuf to a Pixdata. If @use_rle is true, the pixel
+// data is run-length encoded into newly-allocated memory and a pointer to that
+// memory is returned.
+func (pixdata *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
+	var arg0 *C.GdkPixdata
+	var arg1 *C.GdkPixbuf
+	var arg2 C.gboolean
 
-		ret = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.native.pixel_data)) + i))
-			ret[i] = byte(src)
+	arg0 = (*C.GdkPixdata)(pixdata.Native())
+	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
+	arg2 = gextras.Cbool(useRle)
+
+	ret := C.gdk_pixdata_from_pixbuf(arg0, arg1, arg2)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Serialize serializes a Pixdata structure into a byte stream. The byte stream
+// consists of a straightforward writeout of the Pixdata fields in network byte
+// order, plus the @pixel_data bytes the structure points to.
+func (pixdata *Pixdata) Serialize() (streamLengthP uint, guint8s []byte) {
+	var arg0 *C.GdkPixdata
+	var arg1 *C.guint // out
+
+	arg0 = (*C.GdkPixdata)(pixdata.Native())
+
+	ret := C.gdk_pixdata_serialize(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []byte
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]byte, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = byte(src)
 		}
 	}
-	return ret
+
+	return ret0, ret1
+}
+
+// ToCsource generates C source code suitable for compiling images directly into
+// programs.
+//
+// gdk-pixbuf ships with a program called
+// [gdk-pixbuf-csource][gdk-pixbuf-csource], which offers a command line
+// interface to this function.
+func (pixdata *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String {
+	var arg0 *C.GdkPixdata
+	var arg1 *C.gchar
+	var arg2 C.GdkPixdataDumpType
+
+	arg0 = (*C.GdkPixdata)(pixdata.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GdkPixdataDumpType)(dumpType)
+
+	ret := C.gdk_pixdata_to_csource(arg0, arg1, arg2)
+
+	var ret0 *glib.String
+
+	ret0 = glib.WrapString(ret)
+
+	return ret0
 }

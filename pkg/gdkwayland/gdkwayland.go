@@ -15,8 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
 //
-// extern void gotk4_WaylandToplevelExported(GdkToplevel*, const char*, gpointer)
 // // extern void callbackDelete(gpointer);
+// extern void gotk4_WaylandToplevelExported(GdkToplevel*, const char*, gpointer)
 import "C"
 
 //export callbackDelete
@@ -135,7 +135,7 @@ func (device waylandDevice) WlKeyboard() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -150,7 +150,7 @@ func (device waylandDevice) WlPointer() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -165,7 +165,7 @@ func (device waylandDevice) WlSeat() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -241,7 +241,7 @@ func (display waylandDisplay) WlCompositor() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -256,7 +256,7 @@ func (display waylandDisplay) WlDisplay() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -347,7 +347,7 @@ func (monitor waylandMonitor) WlOutput() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -405,7 +405,7 @@ func (seat waylandSeat) WlSeat() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -443,7 +443,7 @@ func (surface waylandSurface) WlSurface() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }

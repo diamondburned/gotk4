@@ -119,6 +119,21 @@ func cgoField(field string) string {
 	return field
 }
 
+// dots is a helper function to join strings in dots for debugging.
+func dots(parts ...string) string {
+	nonEmptyParts := parts[:0]
+
+	for _, part := range parts {
+		if strings.Contains(part, "*") {
+			part = "(" + part + ")"
+		}
+
+		nonEmptyParts = append(nonEmptyParts, part)
+	}
+
+	return strings.Join(nonEmptyParts, ".")
+}
+
 // PascalToGo converts regular Pascal case to Go.
 func PascalToGo(pascal string) string {
 	// Force constructors to have a New prefix instead of suffix.

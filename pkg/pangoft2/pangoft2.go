@@ -69,25 +69,6 @@ func FontGetFace(font pango.Font) freetype2.Face {
 	return ret0
 }
 
-// FontGetKerning retrieves kerning information for a combination of two glyphs.
-//
-// Use pango_fc_font_kern_glyphs() instead.
-func FontGetKerning(font pango.Font, left pango.Glyph, right pango.Glyph) int {
-	var arg1 *C.PangoFont
-	var arg2 C.PangoGlyph
-	var arg3 C.PangoGlyph
-
-	arg1 = (*C.PangoFont)(font.Native())
-
-	ret := C.pango_ft2_font_get_kerning(arg1, arg2, arg3)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
 // GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
 // pango_ft2_font_map_for_display()) and sets the resolution for the default
 // fontmap to @dpi_x by @dpi_y.

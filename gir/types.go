@@ -30,13 +30,17 @@ type Annotation struct {
 type Array struct {
 	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 array"`
 	Name           string   `xml:"name,attr"`
-	ZeroTerminated bool     `xml:"zero-terminated,attr"`
+	ZeroTerminated *bool    `xml:"zero-terminated,attr"`
 	FixedSize      int      `xml:"fixed-size,attr"`
 	Introspectable bool     `xml:"introspectable,attr"`
 	Length         *int     `xml:"length,attr"` // ix of .Parameters
 	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
 	AnyType
 }
+
+// IsZeroTerminated returns true if the Array is zero-terminated. It accounts
+// for edge cases of the structure.
+func (a Array) IsZeroTerminated() bool { return a.ZeroTerminated == nil || *a.ZeroTerminated }
 
 type Bitfield struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 bitfield"`
@@ -188,9 +192,10 @@ type Interface struct {
 	GLibGetType    string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
 	GLibTypeStruct string `xml:"http://www.gtk.org/introspection/glib/1.0 type-struct,attr"`
 
-	Functions     []Function     `xml:"http://www.gtk.org/introspection/core/1.0 function"`
-	Methods       []Method       `xml:"http://www.gtk.org/introspection/core/1.0 method"` // translated to Go fns
-	Prerequisites []Prerequisite `xml:"http://www.gtk.org/introspection/core/1.0 prerequisite"`
+	Functions      []Function      `xml:"http://www.gtk.org/introspection/core/1.0 function"`
+	Methods        []Method        `xml:"http://www.gtk.org/introspection/core/1.0 method"`
+	VirtualMethods []VirtualMethod `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
+	Prerequisites  []Prerequisite  `xml:"http://www.gtk.org/introspection/core/1.0 prerequisite"`
 
 	InfoAttrs
 	InfoElements

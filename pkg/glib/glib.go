@@ -3421,31 +3421,6 @@ func AssertionMessageCmpstr(domain string, file string, line int, _func string, 
 	C.g_assertion_message_cmpstr(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
-func AssertionMessageError(domain string, file string, line int, _func string, expr string, error *Error, errorDomain Quark, errorCode int) {
-	var arg1 *C.char
-	var arg2 *C.char
-	var arg3 C.int
-	var arg4 *C.char
-	var arg5 *C.char
-	var arg6 *C.GError
-	var arg7 C.GQuark
-	var arg8 C.int
-
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.gchar)(C.CString(expr))
-	defer C.free(unsafe.Pointer(arg5))
-	arg6 = (*C.GError)(error.Native())
-	arg8 = C.int(errorCode)
-
-	C.g_assertion_message_error(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
-}
-
 // AssertionMessageExpr: internal function used to print messages from the
 // public g_assert() and g_assert_not_reached() macros.
 func AssertionMessageExpr(domain string, file string, line int, _func string, expr string) {
@@ -3795,7 +3770,7 @@ func AtomicPointerGet(atomic interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -3871,7 +3846,7 @@ func AtomicRcBoxAcquire(memBlock interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -3892,7 +3867,7 @@ func AtomicRcBoxAlloc(blockSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -3915,7 +3890,7 @@ func AtomicRcBoxAlloc0(blockSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -3933,7 +3908,7 @@ func AtomicRcBoxDup(blockSize uint, memBlock interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -4056,205 +4031,6 @@ func Base64Decode(text string) (outLen uint, guint8s []byte) {
 			ret1[i] = byte(src)
 		}
 	}
-
-	return ret0, ret1
-}
-
-// Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
-// data by overwriting the input data.
-func Base64DecodeInplace(text []byte) byte {
-	var arg1 *C.gchar
-	var arg2 *C.gsize
-
-	{
-		var dst []C.guint8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(text))))
-		sliceHeader.Len = len(text)
-		sliceHeader.Cap = len(text)
-
-		for i := 0; i < len(text); i++ {
-			src := text[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.gchar)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(text)
-	}
-
-	ret := C.g_base64_decode_inplace(arg1, arg2)
-
-	var ret0 byte
-
-	ret0 = byte(ret)
-
-	return ret0
-}
-
-// Base64DecodeStep: incrementally decode a sequence of binary data from its
-// Base-64 stringified representation. By calling this function multiple times
-// you can convert data in chunks to avoid having to have the full encoded data
-// in memory.
-//
-// The output buffer must be large enough to fit all the data that will be
-// written to it. Since base64 encodes 3 bytes in 4 chars you need at least:
-// (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero state).
-func Base64DecodeStep(in []byte, state int, save uint) (out []byte, gsize uint) {
-	var arg1 *C.gchar
-	var arg2 C.gsize
-	var arg3 *C.guchar // out
-	var arg4 *C.gint
-	var arg5 *C.guint
-
-	{
-		arg1 = (*C.gchar)(&in[0])
-		arg2 = len(in)
-		defer runtime.KeepAlive(in)
-	}
-	arg4 = (*C.gint)(state)
-	arg5 = (*C.guint)(save)
-
-	ret := C.g_base64_decode_step(arg1, arg2, &arg3, arg4, arg5)
-
-	var ret0 []byte
-	var ret1 uint
-
-	{
-		var length uint
-		for p := unsafe.Pointer(arg3); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
-			ret0[i] = byte(src)
-		}
-	}
-
-	ret1 = uint(ret)
-
-	return ret0, ret1
-}
-
-// Base64Encode: encode a sequence of binary data into its Base-64 stringified
-// representation.
-func Base64Encode(data []byte) string {
-	var arg1 *C.guchar
-	var arg2 C.gsize
-
-	{
-		arg1 = (*C.guchar)(&data[0])
-		arg2 = len(data)
-		defer runtime.KeepAlive(data)
-	}
-
-	ret := C.g_base64_encode(arg1, arg2)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
-// Base64EncodeClose: flush the status from a sequence of calls to
-// g_base64_encode_step().
-//
-// The output buffer must be large enough to fit all the data that will be
-// written to it. It will need up to 4 bytes, or up to 5 bytes if line-breaking
-// is enabled.
-//
-// The @out array will not be automatically nul-terminated.
-func Base64EncodeClose(breakLines bool, state int, save int) (out []byte, gsize uint) {
-	var arg1 C.gboolean
-	var arg2 *C.gchar // out
-	var arg3 *C.gint
-	var arg4 *C.gint
-
-	arg1 = gextras.Cbool(breakLines)
-	arg3 = (*C.gint)(state)
-	arg4 = (*C.gint)(save)
-
-	ret := C.g_base64_encode_close(arg1, &arg2, arg3, arg4)
-
-	var ret0 []byte
-	var ret1 uint
-
-	{
-		var length uint
-		for p := unsafe.Pointer(arg2); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
-			ret0[i] = byte(src)
-		}
-	}
-
-	ret1 = uint(ret)
-
-	return ret0, ret1
-}
-
-// Base64EncodeStep: incrementally encode a sequence of binary data into its
-// Base-64 stringified representation. By calling this function multiple times
-// you can convert data in chunks to avoid having to have the full encoded data
-// in memory.
-//
-// When all of the data has been converted you must call g_base64_encode_close()
-// to flush the saved state.
-//
-// The output buffer must be large enough to fit all the data that will be
-// written to it. Due to the way base64 encodes you will need at least: (@len /
-// 3 + 1) * 4 + 4 bytes (+ 4 may be needed in case of non-zero state). If you
-// enable line-breaking you will need at least: ((@len / 3 + 1) * 4 + 4) / 76 +
-// 1 bytes of extra space.
-//
-// @break_lines is typically used when putting base64-encoded data in emails. It
-// breaks the lines at 76 columns instead of putting all of the text on the same
-// line. This avoids problems with long lines in the email system. Note however
-// that it breaks the lines with `LF` characters, not `CR LF` sequences, so the
-// result cannot be passed directly to SMTP or certain other protocols.
-func Base64EncodeStep(in []byte, breakLines bool, state int, save int) (out []byte, gsize uint) {
-	var arg1 *C.guchar
-	var arg2 C.gsize
-	var arg3 C.gboolean
-	var arg4 *C.gchar // out
-	var arg5 *C.gint
-	var arg6 *C.gint
-
-	{
-		arg1 = (*C.guchar)(&in[0])
-		arg2 = len(in)
-		defer runtime.KeepAlive(in)
-	}
-	arg3 = gextras.Cbool(breakLines)
-	arg5 = (*C.gint)(state)
-	arg6 = (*C.gint)(save)
-
-	ret := C.g_base64_encode_step(arg1, arg2, arg3, &arg4, arg5, arg6)
-
-	var ret0 []byte
-	var ret1 uint
-
-	{
-		var length uint
-		for p := unsafe.Pointer(arg4); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg4)) + i))
-			ret0[i] = byte(src)
-		}
-	}
-
-	ret1 = uint(ret)
 
 	return ret0, ret1
 }
@@ -4522,49 +4298,6 @@ func NewByteArray() []byte {
 	return ret0
 }
 
-// ByteArrayNewTake: create byte array containing the data. The data will be
-// owned by the array and will be freed with g_free(), i.e. it could be
-// allocated using g_strdup().
-func ByteArrayNewTake(data []byte) []byte {
-	var arg1 *C.guint8
-	var arg2 C.gsize
-
-	{
-		var dst []C.guint8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
-		sliceHeader.Len = len(data)
-		sliceHeader.Cap = len(data)
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(data)
-	}
-
-	ret := C.g_byte_array_new_take(arg1, arg2)
-
-	var ret0 []byte
-
-	{
-		var length uint
-		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = byte(src)
-		}
-	}
-
-	return ret0
-}
-
 // ByteArraySteal frees the data in the array and resets the size to zero, while
 // the underlying array is preserved for use elsewhere and returned to the
 // caller.
@@ -4700,121 +4433,6 @@ func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	return ret0
 }
 
-// ChildWatchAdd sets a function to be called when the child indicated by @pid
-// exits, at a default priority, PRIORITY_DEFAULT.
-//
-// If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() you
-// will need to pass SPAWN_DO_NOT_REAP_CHILD as flag to the spawn function for
-// the child watching to work.
-//
-// Note that on platforms where #GPid must be explicitly closed (see
-// g_spawn_close_pid()) @pid must not be closed while the source is still
-// active. Typically, you will want to call g_spawn_close_pid() in the callback
-// function for the source.
-//
-// GLib supports only a single callback per process id. On POSIX platforms, the
-// same restrictions mentioned for g_child_watch_source_new() apply to this
-// function.
-//
-// This internally creates a main loop source using g_child_watch_source_new()
-// and attaches it to the main loop context using g_source_attach(). You can do
-// these steps manually if you need greater control.
-func ChildWatchAdd(pid Pid, function ChildWatchFunc) uint {
-	var arg1 C.GPid
-	var arg2 C.GChildWatchFunc
-	arg3 := C.gpointer(box.Assign(data))
-
-	arg2 = (*[0]byte)(C.gotk4_ChildWatchFunc)
-
-	ret := C.g_child_watch_add(arg1, arg2)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// ChildWatchAddFull sets a function to be called when the child indicated by
-// @pid exits, at the priority @priority.
-//
-// If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() you
-// will need to pass SPAWN_DO_NOT_REAP_CHILD as flag to the spawn function for
-// the child watching to work.
-//
-// In many programs, you will want to call g_spawn_check_exit_status() in the
-// callback to determine whether or not the child exited successfully.
-//
-// Also, note that on platforms where #GPid must be explicitly closed (see
-// g_spawn_close_pid()) @pid must not be closed while the source is still
-// active. Typically, you should invoke g_spawn_close_pid() in the callback
-// function for the source.
-//
-// GLib supports only a single callback per process id. On POSIX platforms, the
-// same restrictions mentioned for g_child_watch_source_new() apply to this
-// function.
-//
-// This internally creates a main loop source using g_child_watch_source_new()
-// and attaches it to the main loop context using g_source_attach(). You can do
-// these steps manually if you need greater control.
-func ChildWatchAddFull(priority int, pid Pid, function ChildWatchFunc) uint {
-	var arg1 C.gint
-	var arg2 C.GPid
-	var arg3 C.GChildWatchFunc
-	arg4 := C.gpointer(box.Assign(data))
-
-	arg1 = C.gint(priority)
-	arg3 = (*[0]byte)(C.gotk4_ChildWatchFunc)
-
-	ret := C.g_child_watch_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// NewChildWatchSource creates a new child_watch source.
-//
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
-//
-// Note that child watch sources can only be used in conjunction with
-// `g_spawn...` when the G_SPAWN_DO_NOT_REAP_CHILD flag is used.
-//
-// Note that on platforms where #GPid must be explicitly closed (see
-// g_spawn_close_pid()) @pid must not be closed while the source is still
-// active. Typically, you will want to call g_spawn_close_pid() in the callback
-// function for the source.
-//
-// On POSIX platforms, the following restrictions apply to this API due to
-// limitations in POSIX process interfaces:
-//
-// * @pid must be a child of this process * @pid must be positive * the
-// application must not call `waitpid` with a non-positive first argument, for
-// instance in another thread * the application must not wait for @pid to exit
-// by any other mechanism, including `waitpid(pid, ...)` or a second child-watch
-// source for the same @pid * the application must not ignore SIGCHILD
-//
-// If any of those conditions are not met, this and related APIs will not work
-// correctly. This can often be diagnosed via a GLib warning stating that
-// `ECHILD` was received by `waitpid`.
-//
-// Calling `waitpid` for specific processes other than @pid remains a valid
-// thing to do.
-func NewChildWatchSource(pid Pid) *Source {
-	var arg1 C.GPid
-
-	ret := C.g_child_watch_source_new(arg1)
-
-	var ret0 *Source
-
-	ret0 = WrapSource(ret)
-
-	return ret0
-}
-
 // ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() {
@@ -4930,33 +4548,6 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	return ret0
 }
 
-// ComputeChecksumForData computes the checksum for a binary @data of @length.
-// This is a convenience wrapper for g_checksum_new(), g_checksum_get_string()
-// and g_checksum_free().
-//
-// The hexadecimal string returned will be in lower case.
-func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
-	var arg1 C.GChecksumType
-	var arg2 *C.guchar
-	var arg3 C.gsize
-
-	arg1 = (C.GChecksumType)(checksumType)
-	{
-		arg2 = (*C.guchar)(&data[0])
-		arg3 = len(data)
-		defer runtime.KeepAlive(data)
-	}
-
-	ret := C.g_compute_checksum_for_data(arg1, arg2, arg3)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
 // ComputeChecksumForString computes the checksum of a string.
 //
 // The hexadecimal string returned will be in lower case.
@@ -5003,121 +4594,6 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) strin
 	return ret0
 }
 
-// ComputeHMACForData computes the HMAC for a binary @data of @length. This is a
-// convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
-//
-// The hexadecimal string returned will be in lower case.
-func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
-	var arg1 C.GChecksumType
-	var arg2 *C.guchar
-	var arg3 C.gsize
-	var arg4 *C.guchar
-	var arg5 C.gsize
-
-	arg1 = (C.GChecksumType)(digestType)
-	{
-		arg2 = (*C.guchar)(&key[0])
-		arg3 = len(key)
-		defer runtime.KeepAlive(key)
-	}
-	{
-		arg4 = (*C.guchar)(&data[0])
-		arg5 = len(data)
-		defer runtime.KeepAlive(data)
-	}
-
-	ret := C.g_compute_hmac_for_data(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
-// ComputeHMACForString computes the HMAC for a string.
-//
-// The hexadecimal string returned will be in lower case.
-func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
-	var arg1 C.GChecksumType
-	var arg2 *C.guchar
-	var arg3 C.gsize
-	var arg4 *C.gchar
-	var arg5 C.gssize
-
-	arg1 = (C.GChecksumType)(digestType)
-	{
-		arg2 = (*C.guchar)(&key[0])
-		arg3 = len(key)
-		defer runtime.KeepAlive(key)
-	}
-	arg4 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = C.gssize(length)
-
-	ret := C.g_compute_hmac_for_string(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
-// Convert converts a string from one character set to another.
-//
-// Note that you should use g_iconv() for streaming conversions. Despite the
-// fact that @bytes_read can return information about partial characters, the
-// g_convert_... functions are not generally suitable for streaming. If the
-// underlying converter maintains internal state, then this won't be preserved
-// across successive calls to g_convert(), g_convert_with_iconv() or
-// g_convert_with_fallback(). (An example of this is the GNU C converter for
-// CP1255 which does not emit a base character until it knows that the next
-// character is not a mark that could combine with the base character.)
-//
-// Using extensions such as "//TRANSLIT" may not work (or may not work well) on
-// many platforms. Consider using g_str_to_ascii() instead.
-func Convert(str []byte, toCodeset string, fromCodeset string) (bytesRead uint, bytesWritten uint, guint8s []byte) {
-	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 *C.gchar
-	var arg4 *C.gchar
-	var arg5 *C.gsize // out
-	var arg6 *C.gsize // out
-
-	{
-		arg1 = (*C.gchar)(&str[0])
-		arg2 = len(str)
-		defer runtime.KeepAlive(str)
-	}
-	arg3 = (*C.gchar)(C.CString(toCodeset))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(fromCodeset))
-	defer C.free(unsafe.Pointer(arg4))
-
-	ret := C.g_convert(arg1, arg2, arg3, arg4, &arg5, &arg6)
-
-	var ret0 uint
-	var ret1 uint
-	var ret2 []byte
-
-	ret0 = uint(arg5)
-
-	ret1 = uint(arg6)
-
-	{
-		ret2 = make([]byte, arg6)
-		for i := 0; i < uintptr(arg6); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = byte(src)
-		}
-	}
-
-	return ret0, ret1, ret2
-}
-
 func ConvertErrorQuark() Quark {
 
 	ret := C.g_convert_error_quark()
@@ -5131,116 +4607,6 @@ func ConvertErrorQuark() Quark {
 	}
 
 	return ret0
-}
-
-// ConvertWithFallback converts a string from one character set to another,
-// possibly including fallback sequences for characters not representable in the
-// output. Note that it is not guaranteed that the specification for the
-// fallback sequences in @fallback will be honored. Some systems may do an
-// approximate conversion from @from_codeset to @to_codeset in their iconv()
-// functions, in which case GLib will simply return that approximate conversion.
-//
-// Note that you should use g_iconv() for streaming conversions. Despite the
-// fact that @bytes_read can return information about partial characters, the
-// g_convert_... functions are not generally suitable for streaming. If the
-// underlying converter maintains internal state, then this won't be preserved
-// across successive calls to g_convert(), g_convert_with_iconv() or
-// g_convert_with_fallback(). (An example of this is the GNU C converter for
-// CP1255 which does not emit a base character until it knows that the next
-// character is not a mark that could combine with the base character.)
-func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (bytesRead uint, bytesWritten uint, guint8s []byte) {
-	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 *C.gchar
-	var arg4 *C.gchar
-	var arg5 *C.gchar
-	var arg6 *C.gsize // out
-	var arg7 *C.gsize // out
-
-	{
-		arg1 = (*C.gchar)(&str[0])
-		arg2 = len(str)
-		defer runtime.KeepAlive(str)
-	}
-	arg3 = (*C.gchar)(C.CString(toCodeset))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(fromCodeset))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.gchar)(C.CString(fallback))
-	defer C.free(unsafe.Pointer(arg5))
-
-	ret := C.g_convert_with_fallback(arg1, arg2, arg3, arg4, arg5, &arg6, &arg7)
-
-	var ret0 uint
-	var ret1 uint
-	var ret2 []byte
-
-	ret0 = uint(arg6)
-
-	ret1 = uint(arg7)
-
-	{
-		ret2 = make([]byte, arg7)
-		for i := 0; i < uintptr(arg7); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = byte(src)
-		}
-	}
-
-	return ret0, ret1, ret2
-}
-
-// ConvertWithIconv converts a string from one character set to another.
-//
-// Note that you should use g_iconv() for streaming conversions. Despite the
-// fact that @bytes_read can return information about partial characters, the
-// g_convert_... functions are not generally suitable for streaming. If the
-// underlying converter maintains internal state, then this won't be preserved
-// across successive calls to g_convert(), g_convert_with_iconv() or
-// g_convert_with_fallback(). (An example of this is the GNU C converter for
-// CP1255 which does not emit a base character until it knows that the next
-// character is not a mark that could combine with the base character.)
-//
-// Characters which are valid in the input character set, but which have no
-// representation in the output character set will result in a
-// G_CONVERT_ERROR_ILLEGAL_SEQUENCE error. This is in contrast to the iconv()
-// specification, which leaves this behaviour implementation defined. Note that
-// this is the same error code as is returned for an invalid byte sequence in
-// the input character set. To get defined behaviour for conversion of
-// unrepresentable characters, use g_convert_with_fallback().
-func ConvertWithIconv(str []byte, converter IConv) (bytesRead uint, bytesWritten uint, guint8s []byte) {
-	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 C.GIConv
-	var arg4 *C.gsize // out
-	var arg5 *C.gsize // out
-
-	{
-		arg1 = (*C.gchar)(&str[0])
-		arg2 = len(str)
-		defer runtime.KeepAlive(str)
-	}
-	arg3 = (C.GIConv)(converter.Native())
-
-	ret := C.g_convert_with_iconv(arg1, arg2, arg3, &arg4, &arg5)
-
-	var ret0 uint
-	var ret1 uint
-	var ret2 []byte
-
-	ret0 = uint(arg4)
-
-	ret1 = uint(arg5)
-
-	{
-		ret2 = make([]byte, arg5)
-		for i := 0; i < uintptr(arg5); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = byte(src)
-		}
-	}
-
-	return ret0, ret1, ret2
 }
 
 // DatalistClear frees all the data elements of the datalist. The data elements'
@@ -5287,7 +4653,7 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -5306,117 +4672,6 @@ func DatalistGetFlags(datalist **Data) uint {
 	ret0 = uint(ret)
 
 	return ret0
-}
-
-// DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
-// returns a 'duplicate' of the value. @dup_func defines the meaning of
-// 'duplicate' in this context, it could e.g. take a reference on a ref-counted
-// object.
-//
-// If the @key_id is not set in the datalist then @dup_func will be called with
-// a nil argument.
-//
-// Note that @dup_func is called while the datalist is locked, so it is not
-// allowed to read or modify the datalist.
-//
-// This function can be useful to avoid races when multiple threads are using
-// the same datalist and the same key.
-func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) interface{} {
-	var arg1 **C.GData
-	var arg2 C.GQuark
-	var arg3 C.GDuplicateFunc
-	arg4 := C.gpointer(box.Assign(userData))
-
-	arg1 = (**C.GData)(datalist.Native())
-	arg3 = (*[0]byte)(C.gotk4_DuplicateFunc)
-
-	ret := C.g_datalist_id_dup_data(arg1, arg2, arg3)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret))
-
-	return ret0
-}
-
-// DatalistIDGetData retrieves the data element corresponding to @key_id.
-func DatalistIDGetData(datalist **Data, keyID Quark) interface{} {
-	var arg1 **C.GData
-	var arg2 C.GQuark
-
-	arg1 = (**C.GData)(datalist.Native())
-
-	ret := C.g_datalist_id_get_data(arg1, arg2)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret))
-
-	return ret0
-}
-
-// DatalistIDRemoveNoNotify removes an element, without calling its destroy
-// notification function.
-func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) interface{} {
-	var arg1 **C.GData
-	var arg2 C.GQuark
-
-	arg1 = (**C.GData)(datalist.Native())
-
-	ret := C.g_datalist_id_remove_no_notify(arg1, arg2)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret))
-
-	return ret0
-}
-
-// DatalistIDReplaceData compares the member that is associated with @key_id in
-// @datalist to @oldval, and if they are the same, replace @oldval with @newval.
-//
-// This is like a typical atomic compare-and-exchange operation, for a member of
-// @datalist.
-//
-// If the previous value was replaced then ownership of the old value (@oldval)
-// is passed to the caller, including the registered destroy notify for it
-// (passed out in @old_destroy). Its up to the caller to free this as he wishes,
-// which may or may not include using @old_destroy as sometimes replacement
-// should not destroy the object in the normal way.
-func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval interface{}, newval interface{}) (oldDestroy unsafe.Pointer, ok bool) {
-	var arg1 **C.GData
-	var arg2 C.GQuark
-	var arg3 C.gpointer
-	var arg4 C.gpointer
-	var arg6 *C.GDestroyNotify // out
-
-	arg1 = (**C.GData)(datalist.Native())
-	arg3 = C.gpointer(box.Assign(oldval))
-	arg4 = C.gpointer(box.Assign(newval))
-
-	ret := C.g_datalist_id_replace_data(arg1, arg2, arg3, arg4, (*[0]byte)(C.free), &arg6)
-
-	var ret0 unsafe.Pointer
-	var ret1 bool
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// DatalistIDSetDataFull sets the data corresponding to the given #GQuark id,
-// and the function to be called when the element is removed from the datalist.
-// Any previous data with the same key is removed, and its destroy function is
-// called.
-func DatalistIDSetDataFull(datalist **Data, keyID Quark, data interface{}) {
-	var arg1 **C.GData
-	var arg2 C.GQuark
-	var arg3 C.gpointer
-
-	arg1 = (**C.GData)(datalist.Native())
-	arg3 = C.gpointer(box.Assign(data))
-
-	C.g_datalist_id_set_data_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call
@@ -5483,124 +4738,6 @@ func DatasetForeach(datasetLocation interface{}, _func DataForeachFunc) {
 	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
 
 	C.g_dataset_foreach(arg1, arg2)
-}
-
-// DatasetIDGetData gets the data element corresponding to a #GQuark.
-func DatasetIDGetData(datasetLocation interface{}, keyID Quark) interface{} {
-	var arg1 C.gpointer
-	var arg2 C.GQuark
-
-	arg1 = C.gpointer(box.Assign(datasetLocation))
-
-	ret := C.g_dataset_id_get_data(arg1, arg2)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret))
-
-	return ret0
-}
-
-// DatasetIDRemoveNoNotify removes an element, without calling its destroy
-// notification function.
-func DatasetIDRemoveNoNotify(datasetLocation interface{}, keyID Quark) interface{} {
-	var arg1 C.gpointer
-	var arg2 C.GQuark
-
-	arg1 = C.gpointer(box.Assign(datasetLocation))
-
-	ret := C.g_dataset_id_remove_no_notify(arg1, arg2)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret))
-
-	return ret0
-}
-
-// DatasetIDSetDataFull sets the data element associated with the given #GQuark
-// id, and also the function to call when the data element is destroyed. Any
-// previous data with the same key is removed, and its destroy function is
-// called.
-func DatasetIDSetDataFull(datasetLocation interface{}, keyID Quark, data interface{}) {
-	var arg1 C.gpointer
-	var arg2 C.GQuark
-	var arg3 C.gpointer
-
-	arg1 = C.gpointer(box.Assign(datasetLocation))
-	arg3 = C.gpointer(box.Assign(data))
-
-	C.g_dataset_id_set_data_full(arg1, arg2, arg3, (*[0]byte)(C.free))
-}
-
-// DateGetDaysInMonth returns the number of days in a month, taking leap years
-// into account.
-func DateGetDaysInMonth(month DateMonth, year DateYear) byte {
-	var arg1 C.GDateMonth
-	var arg2 C.GDateYear
-
-	arg1 = (C.GDateMonth)(month)
-
-	ret := C.g_date_get_days_in_month(arg1, arg2)
-
-	var ret0 byte
-
-	ret0 = byte(ret)
-
-	return ret0
-}
-
-// DateGetMondayWeeksInYear returns the number of weeks in the year, where weeks
-// are taken to start on Monday. Will be 52 or 53. The date must be valid.
-// (Years always have 52 7-day periods, plus 1 or 2 extra days depending on
-// whether it's a leap year. This function is basically telling you how many
-// Mondays are in the year, i.e. there are 53 Mondays if one of the extra days
-// happens to be a Monday.)
-func DateGetMondayWeeksInYear(year DateYear) byte {
-	var arg1 C.GDateYear
-
-	ret := C.g_date_get_monday_weeks_in_year(arg1)
-
-	var ret0 byte
-
-	ret0 = byte(ret)
-
-	return ret0
-}
-
-// DateGetSundayWeeksInYear returns the number of weeks in the year, where weeks
-// are taken to start on Sunday. Will be 52 or 53. The date must be valid.
-// (Years always have 52 7-day periods, plus 1 or 2 extra days depending on
-// whether it's a leap year. This function is basically telling you how many
-// Sundays are in the year, i.e. there are 53 Sundays if one of the extra days
-// happens to be a Sunday.)
-func DateGetSundayWeeksInYear(year DateYear) byte {
-	var arg1 C.GDateYear
-
-	ret := C.g_date_get_sunday_weeks_in_year(arg1)
-
-	var ret0 byte
-
-	ret0 = byte(ret)
-
-	return ret0
-}
-
-// DateIsLeapYear returns true if the year is a leap year.
-//
-// For the purposes of this function, leap year is every year divisible by 4
-// unless that year is divisible by 100. If it is divisible by 100 it would be a
-// leap year only if that year is also divisible by 400.
-func DateIsLeapYear(year DateYear) bool {
-	var arg1 C.GDateYear
-
-	ret := C.g_date_is_leap_year(arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // DateStrftime generates a printed representation of the date, in a
@@ -5689,39 +4826,6 @@ func DateTimeHash(datetime interface{}) uint {
 	return ret0
 }
 
-// DateValidDay returns true if the day of the month is valid (a day is valid if
-// it's between 1 and 31 inclusive).
-func DateValidDay(day DateDay) bool {
-	var arg1 C.GDateDay
-
-	ret := C.g_date_valid_day(arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// DateValidDMY returns true if the day-month-year triplet forms a valid,
-// existing day in the range of days #GDate understands (Year 1 or later, no
-// more than a few thousand years in the future).
-func DateValidDMY(day DateDay, month DateMonth, year DateYear) bool {
-	var arg1 C.GDateDay
-	var arg2 C.GDateMonth
-	var arg3 C.GDateYear
-
-	arg2 = (C.GDateMonth)(month)
-
-	ret := C.g_date_valid_dmy(arg1, arg2, arg3)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // DateValidJulian returns true if the Julian day is valid. Anything greater
 // than zero is basically a valid Julian, though there is a 32-bit limit.
 func DateValidJulian(julianDate uint32) bool {
@@ -5762,20 +4866,6 @@ func DateValidWeekday(weekday DateWeekday) bool {
 	arg1 = (C.GDateWeekday)(weekday)
 
 	ret := C.g_date_valid_weekday(arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// DateValidYear returns true if the year is valid. Any year greater than 0 is
-// valid, though there is a 16-bit limit to what #GDate will understand.
-func DateValidYear(year DateYear) bool {
-	var arg1 C.GDateYear
-
-	ret := C.g_date_valid_year(arg1)
 
 	var ret0 bool
 
@@ -6270,113 +5360,6 @@ func FileReadLink(filename string) string {
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
-// FileSetContents writes all of @contents to a file named @filename. This is a
-// convenience wrapper around calling g_file_set_contents() with `flags` set to
-// `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
-// `mode` set to `0666`.
-func FileSetContents(filename string, contents []byte) bool {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 C.gssize
-
-	arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
-	{
-		arg2 = (*C.gchar)(&contents[0])
-		arg3 = len(contents)
-		defer runtime.KeepAlive(contents)
-	}
-
-	ret := C.g_file_set_contents(arg1, arg2, arg3)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// FileSetContentsFull writes all of @contents to a file named @filename, with
-// good error checking. If a file called @filename already exists it will be
-// overwritten.
-//
-// @flags control the properties of the write operation: whether it’s atomic,
-// and what the tradeoff is between returning quickly or being resilient to
-// system crashes.
-//
-// As this function performs file I/O, it is recommended to not call it anywhere
-// where blocking would cause problems, such as in the main loop of a graphical
-// application. In particular, if @flags has any value other than
-// G_FILE_SET_CONTENTS_NONE then this function may call `fsync()`.
-//
-// If G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the operation is atomic
-// in the sense that it is first written to a temporary file which is then
-// renamed to the final name.
-//
-// Notes:
-//
-// - On UNIX, if @filename already exists hard links to @filename will break.
-// Also since the file is recreated, existing permissions, access control lists,
-// metadata etc. may be lost. If @filename is a symbolic link, the link itself
-// will be replaced, not the linked file.
-//
-// - On UNIX, if @filename already exists and is non-empty, and if the system
-// supports it (via a journalling filesystem or equivalent), and if
-// G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the `fsync()` call (or
-// equivalent) will be used to ensure atomic replacement: @filename will contain
-// either its old contents or @contents, even in the face of system power loss,
-// the disk being unsafely removed, etc.
-//
-// - On UNIX, if @filename does not already exist or is empty, there is a
-// possibility that system power loss etc. after calling this function will
-// leave @filename empty or full of NUL bytes, depending on the underlying
-// filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
-// G_FILE_SET_CONTENTS_CONSISTENT are set in @flags.
-//
-// - On Windows renaming a file will not remove an existing file with the new
-// name, so on Windows there is a race condition between the existing file being
-// removed and the temporary file being renamed.
-//
-// - On Windows there is no way to remove a file that is open to some process,
-// or mapped into memory. Thus, this function will fail if @filename already
-// exists and is open.
-//
-// If the call was successful, it returns true. If the call was not successful,
-// it returns false and sets @error. The error domain is FILE_ERROR. Possible
-// error codes are those in the Error enumeration.
-//
-// Note that the name for the temporary file is constructed by appending up to 7
-// characters to @filename.
-//
-// If the file didn’t exist before and is created, it will be given the
-// permissions from @mode. Otherwise, the permissions of the existing file may
-// be changed to @mode depending on @flags, or they may remain unchanged.
-func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) bool {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 C.gssize
-	var arg4 C.GFileSetContentsFlags
-	var arg5 C.int
-
-	arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
-	{
-		arg2 = (*C.gchar)(&contents[0])
-		arg3 = len(contents)
-		defer runtime.KeepAlive(contents)
-	}
-	arg4 = (C.GFileSetContentsFlags)(flags)
-	arg5 = C.int(mode)
-
-	ret := C.g_file_set_contents_full(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -7581,7 +6564,7 @@ func HashTableLookup(hashTable *HashTable, key interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -7608,9 +6591,9 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origK
 	var ret1 interface{}
 	var ret2 bool
 
-	ret0 = box.Get(uintptr(arg3))
+	ret0 = box.Get(uintptr(arg3)).(interface{})
 
-	ret1 = box.Get(uintptr(arg4))
+	ret1 = box.Get(uintptr(arg4)).(interface{})
 
 	ret2 = gextras.Gobool(ret)
 
@@ -7746,9 +6729,9 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolen
 	var ret1 interface{}
 	var ret2 bool
 
-	ret0 = box.Get(uintptr(arg3))
+	ret0 = box.Get(uintptr(arg3)).(interface{})
 
-	ret1 = box.Get(uintptr(arg4))
+	ret1 = box.Get(uintptr(arg4)).(interface{})
 
 	ret2 = gextras.Gobool(ret)
 
@@ -8009,35 +6992,6 @@ func IconvOpen(toCodeset string, fromCodeset string) IConv {
 	return ret0
 }
 
-// IdleAdd adds a function to be called whenever there are no higher priority
-// events pending to the default main loop. The function is given the default
-// idle priority, PRIORITY_DEFAULT_IDLE. If the function returns false it is
-// automatically removed from the list of event sources and will not be called
-// again.
-//
-// See [memory management of sources][mainloop-memory-management] for details on
-// how to handle the return value and memory management of @data.
-//
-// This internally creates a main loop source using g_idle_source_new() and
-// attaches it to the global Context using g_source_attach(), so the callback
-// will be invoked in whichever thread is running that main context. You can do
-// these steps manually if you need greater control or to use a custom main
-// context.
-func IdleAdd(function SourceFunc) uint {
-	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(data))
-
-	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
-
-	ret := C.g_idle_add(arg1)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // IdleAddFull adds a function to be called whenever there are no higher
 // priority events pending. If the function returns false it is automatically
 // removed from the list of event sources and will not be called again.
@@ -8226,27 +7180,6 @@ func InternString(string string) string {
 	return ret0
 }
 
-// IOAddWatch adds the OChannel into the default main loop context with the
-// default priority.
-func IOAddWatch(channel *IOChannel, condition IOCondition, _func IOFunc) uint {
-	var arg1 *C.GIOChannel
-	var arg2 C.GIOCondition
-	var arg3 C.GIOFunc
-	arg4 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*C.GIOChannel)(channel.Native())
-	arg2 = (C.GIOCondition)(condition)
-	arg3 = (*[0]byte)(C.gotk4_IOFunc)
-
-	ret := C.g_io_add_watch(arg1, arg2, arg3)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // IOAddWatchFull adds the OChannel into the default main loop context with the
 // given priority.
 //
@@ -8419,44 +7352,6 @@ func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten ui
 	return ret0, ret1, ret2
 }
 
-// LocaleToUTF8 converts a string which is in the encoding used for strings by
-// the C runtime (usually the same as that used by the operating system) in the
-// [current locale][setlocale] into a UTF-8 string.
-//
-// If the source encoding is not UTF-8 and the conversion output contains a nul
-// character, the error G_CONVERT_ERROR_EMBEDDED_NUL is set and the function
-// returns nil. If the source encoding is UTF-8, an embedded nul character is
-// treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
-// compatibility with earlier versions of this library. Use g_convert() to
-// produce output that may contain embedded nul characters.
-func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string) {
-	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 *C.gsize // out
-	var arg4 *C.gsize // out
-
-	{
-		arg1 = (*C.gchar)(&opsysstring[0])
-		arg2 = len(opsysstring)
-		defer runtime.KeepAlive(opsysstring)
-	}
-
-	ret := C.g_locale_to_utf8(arg1, arg2, &arg3, &arg4)
-
-	var ret0 uint
-	var ret1 uint
-	var ret2 string
-
-	ret0 = uint(arg3)
-
-	ret1 = uint(arg4)
-
-	ret2 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0, ret1, ret2
-}
-
 // LogDefaultHandler: the default log handler set up by GLib;
 // g_log_set_default_handler() allows to install an alternate default log
 // handler. This is used if no log handler has been set for the particular log
@@ -8541,25 +7436,6 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	return ret0
 }
 
-// LogSetDefaultHandler installs a default log handler which is used if no log
-// handler has been set for the particular log domain and log level combination.
-// By default, GLib uses g_log_default_handler() as default log handler.
-//
-// This has no effect if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-func LogSetDefaultHandler(logFunc LogFunc) LogFunc {
-	var arg1 C.GLogFunc
-	arg2 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*[0]byte)(C.gotk4_LogFunc)
-
-	ret := C.g_log_set_default_handler(arg1)
-
-	var ret0 LogFunc
-
-	return ret0
-}
-
 // LogSetFatalMask sets the log levels which are fatal in the given domain.
 // G_LOG_LEVEL_ERROR is always fatal.
 //
@@ -8586,42 +7462,6 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var ret0 LogLevelFlags
 
 	ret0 = LogLevelFlags(ret)
-
-	return ret0
-}
-
-// LogSetHandler sets the log handler for a domain and a set of log levels. To
-// handle fatal and recursive messages the @log_levels parameter must be
-// combined with the LOG_FLAG_FATAL and LOG_FLAG_RECURSION bit flags.
-//
-// Note that since the LOG_LEVEL_ERROR log level is always fatal, if you want to
-// set a handler for this log level you must combine it with LOG_FLAG_FATAL.
-//
-// This has no effect if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-//
-// Here is an example for adding a log handler for all warning messages in the
-// default domain:
-//
-//    g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
-//                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
-//
-func LogSetHandler(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) uint {
-	var arg1 *C.gchar
-	var arg2 C.GLogLevelFlags
-	var arg3 C.GLogFunc
-	arg4 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GLogLevelFlags)(logLevels)
-	arg3 = (*[0]byte)(C.gotk4_LogFunc)
-
-	ret := C.g_log_set_handler(arg1, arg2, arg3)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -8667,41 +7507,6 @@ func LogSetWriterFunc(_func LogWriterFunc) {
 	C.g_log_set_writer_func(arg1, arg2, (*[0]byte)(C.free))
 }
 
-// LogStructuredArray: log a message with structured data. The message will be
-// passed through to the log writer set by the application using
-// g_log_set_writer_func(). If the message is fatal (i.e. its log level is
-// G_LOG_LEVEL_ERROR), the program will be aborted at the end of this function.
-//
-// See g_log_structured() for more documentation.
-//
-// This assumes that @log_level is already present in @fields (typically as the
-// `PRIORITY` field).
-func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.GLogField
-	var arg3 C.gsize
-
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	{
-		var dst []C.GLogField
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
-		sliceHeader.Len = len(fields)
-		sliceHeader.Cap = len(fields)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(fields); i++ {
-			src := fields[i]
-			dst[i] = (C.GLogField)(src.Native())
-		}
-
-		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(fields)
-	}
-
-	C.g_log_structured_array(arg1, arg2, arg3)
-}
-
 // LogVariant: log a message with structured data, accepting the data within a
 // #GVariant. This version is especially useful for use in other languages, via
 // introspection.
@@ -8732,99 +7537,6 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	C.g_log_variant(arg1, arg2, arg3)
 }
 
-// LogWriterDefault: format a structured log message and output it to the
-// default log destination for the platform. On Linux, this is typically the
-// systemd journal, falling back to `stdout` or `stderr` if running from the
-// terminal or if output is being redirected to a file.
-//
-// Support for other platform-specific logging mechanisms may be added in
-// future. Distributors of GLib may modify this function to impose their own
-// (documented) platform-specific log writing policies.
-//
-// This is suitable for use as a WriterFunc, and is the default writer used if
-// no other is set using g_log_set_writer_func().
-//
-// As with g_log_default_handler(), this function drops debug and informational
-// messages unless their log domain (or `all`) is listed in the space-separated
-// `G_MESSAGES_DEBUG` environment variable.
-func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.GLogField
-	var arg3 C.gsize
-	var arg4 C.gpointer
-
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	{
-		var dst []C.GLogField
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
-		sliceHeader.Len = len(fields)
-		sliceHeader.Cap = len(fields)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(fields); i++ {
-			src := fields[i]
-			dst[i] = (C.GLogField)(src.Native())
-		}
-
-		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(fields)
-	}
-	arg4 = C.gpointer(box.Assign(userData))
-
-	ret := C.g_log_writer_default(arg1, arg2, arg3, arg4)
-
-	var ret0 LogWriterOutput
-
-	ret0 = LogWriterOutput(ret)
-
-	return ret0
-}
-
-// LogWriterFormatFields: format a structured log message as a string suitable
-// for outputting to the terminal (or elsewhere). This will include the values
-// of all fields it knows how to interpret, which includes `MESSAGE` and
-// `GLIB_DOMAIN` (see the documentation for g_log_structured()). It does not
-// include values from unknown fields.
-//
-// The returned string does **not** have a trailing new-line character. It is
-// encoded in the character set of the current locale, which is not necessarily
-// UTF-8.
-func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.GLogField
-	var arg3 C.gsize
-	var arg4 C.gboolean
-
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	{
-		var dst []C.GLogField
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
-		sliceHeader.Len = len(fields)
-		sliceHeader.Cap = len(fields)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(fields); i++ {
-			src := fields[i]
-			dst[i] = (C.GLogField)(src.Native())
-		}
-
-		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(fields)
-	}
-	arg4 = gextras.Cbool(useColor)
-
-	ret := C.g_log_writer_format_fields(arg1, arg2, arg3, arg4)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
 // connection to the systemd journal, or something else (like a log file or
 // `stdout` or `stderr`).
@@ -8844,95 +7556,6 @@ func LogWriterIsJournald(outputFd int) bool {
 	var ret0 bool
 
 	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// LogWriterJournald: format a structured log message and send it to the systemd
-// journal as a set of key–value pairs. All fields are sent to the journal, but
-// if a field has length zero (indicating program-specific data) then only its
-// key will be sent.
-//
-// This is suitable for use as a WriterFunc.
-//
-// If GLib has been compiled without systemd support, this function is still
-// defined, but will always return G_LOG_WRITER_UNHANDLED.
-func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.GLogField
-	var arg3 C.gsize
-	var arg4 C.gpointer
-
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	{
-		var dst []C.GLogField
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
-		sliceHeader.Len = len(fields)
-		sliceHeader.Cap = len(fields)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(fields); i++ {
-			src := fields[i]
-			dst[i] = (C.GLogField)(src.Native())
-		}
-
-		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(fields)
-	}
-	arg4 = C.gpointer(box.Assign(userData))
-
-	ret := C.g_log_writer_journald(arg1, arg2, arg3, arg4)
-
-	var ret0 LogWriterOutput
-
-	ret0 = LogWriterOutput(ret)
-
-	return ret0
-}
-
-// LogWriterStandardStreams: format a structured log message and print it to
-// either `stdout` or `stderr`, depending on its log level. G_LOG_LEVEL_INFO and
-// G_LOG_LEVEL_DEBUG messages are sent to `stdout`; all other log levels are
-// sent to `stderr`. Only fields which are understood by this function are
-// included in the formatted string which is printed.
-//
-// If the output stream supports ANSI color escape sequences, they will be used
-// in the output.
-//
-// A trailing new-line character is added to the log message when it is printed.
-//
-// This is suitable for use as a WriterFunc.
-func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.GLogField
-	var arg3 C.gsize
-	var arg4 C.gpointer
-
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	{
-		var dst []C.GLogField
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
-		sliceHeader.Len = len(fields)
-		sliceHeader.Cap = len(fields)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(fields); i++ {
-			src := fields[i]
-			dst[i] = (C.GLogField)(src.Native())
-		}
-
-		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(fields)
-	}
-	arg4 = C.gpointer(box.Assign(userData))
-
-	ret := C.g_log_writer_standard_streams(arg1, arg2, arg3, arg4)
-
-	var ret0 LogWriterOutput
-
-	ret0 = LogWriterOutput(ret)
 
 	return ret0
 }
@@ -9098,7 +7721,7 @@ func Malloc(nBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -9114,7 +7737,7 @@ func Malloc0(nBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -9133,7 +7756,7 @@ func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -9152,7 +7775,7 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -9253,7 +7876,7 @@ func Memdup(mem interface{}, byteSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -9546,49 +8169,6 @@ func OptionErrorQuark() Quark {
 		tmp = uint32(ret)
 		ret0 = Quark(tmp)
 	}
-
-	return ret0
-}
-
-// ParseDebugString parses a string containing debugging options into a guint
-// containing bit flags. This is used within GDK and GTK+ to parse the debug
-// options passed on the command line or through environment variables.
-//
-// If @string is equal to "all", all flags are set. Any flags specified along
-// with "all" in @string are inverted; thus, "all,foo,bar" or "foo,bar,all" sets
-// all flags except those corresponding to "foo" and "bar".
-//
-// If @string is equal to "help", all the available keys in @keys are printed
-// out to standard error.
-func ParseDebugString(string string, keys []DebugKey) uint {
-	var arg1 *C.gchar
-	var arg2 *C.GDebugKey
-	var arg3 C.guint
-
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
-	{
-		var dst []C.GDebugKey
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GDebugKey * len(keys))))
-		sliceHeader.Len = len(keys)
-		sliceHeader.Cap = len(keys)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(keys); i++ {
-			src := keys[i]
-			dst[i] = (C.GDebugKey)(src.Native())
-		}
-
-		arg2 = (*C.GDebugKey)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(keys)
-	}
-
-	ret := C.g_parse_debug_string(arg1, arg2, arg3)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -10020,19 +8600,6 @@ func QuarkFromString(string string) Quark {
 	return ret0
 }
 
-// QuarkToString gets the string associated with the given #GQuark.
-func QuarkToString(quark Quark) string {
-	var arg1 C.GQuark
-
-	ret := C.g_quark_to_string(arg1)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
 // QuarkTryString gets the #GQuark associated with the given string, or 0 if
 // string is nil or it has no associated #GQuark.
 //
@@ -10142,7 +8709,7 @@ func RcBoxAcquire(memBlock interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10163,7 +8730,7 @@ func RcBoxAlloc(blockSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10186,7 +8753,7 @@ func RcBoxAlloc0(blockSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10204,7 +8771,7 @@ func RcBoxDup(blockSize uint, memBlock interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10266,7 +8833,7 @@ func Realloc(mem interface{}, nBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10287,7 +8854,7 @@ func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10514,44 +9081,6 @@ func RegexEscapeNUL(string string, length int) string {
 	return ret0
 }
 
-// RegexEscapeString escapes the special characters used for regular expressions
-// in @string, for instance "a.b*c" becomes "a\.b\*c". This function is useful
-// to dynamically generate regular expressions.
-//
-// @string can contain nul characters that are replaced with "\0", in this case
-// remember to specify the correct length of @string in @length.
-func RegexEscapeString(string []string) string {
-	var arg1 *C.gchar
-	var arg2 C.gint
-
-	{
-		var dst []C.gchar
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_gchar * len(string))))
-		sliceHeader.Len = len(string)
-		sliceHeader.Cap = len(string)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(string); i++ {
-			src := string[i]
-			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(dst[i]))
-		}
-
-		arg1 = (*C.gchar)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(string)
-	}
-
-	ret := C.g_regex_escape_string(arg1, arg2)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
 // RegexMatchSimple scans for a match in @string for @pattern.
 //
 // This function is equivalent to g_regex_match() but it does not require to
@@ -10703,7 +9232,7 @@ func SequenceGet(iter *SequenceIter) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -10853,30 +9382,6 @@ func SetApplicationName(applicationName string) {
 	C.g_set_application_name(arg1)
 }
 
-// SetErrorLiteral does nothing if @err is nil; if @err is non-nil, then *@err
-// must be nil. A new #GError is created and assigned to *@err. Unlike
-// g_set_error(), @message is not a printf()-style format string. Use this
-// function if @message contains text you don't have control over, that could
-// include printf() escape sequences.
-func SetErrorLiteral(domain Quark, code int, message string) *Error {
-	var arg1 **C.GError // out
-	var arg2 C.GQuark
-	var arg3 C.gint
-	var arg4 *C.gchar
-
-	arg3 = C.gint(code)
-	arg4 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(arg4))
-
-	ret := C.g_set_error_literal(&arg1, arg2, arg3, arg4)
-
-	var ret0 **Error
-
-	ret0 = WrapError(arg1)
-
-	return ret0
-}
-
 // SetPrgname sets the name of the program. This name should not be localized,
 // in contrast to g_set_application_name().
 //
@@ -10893,42 +9398,6 @@ func SetPrgname(prgname string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_set_prgname(arg1)
-}
-
-// SetPrintHandler sets the print handler.
-//
-// Any messages passed to g_print() will be output via the new handler. The
-// default handler simply outputs the message to stdout. By providing your own
-// handler you can redirect the output, to a GTK+ widget or a log file for
-// example.
-func SetPrintHandler(_func PrintFunc) PrintFunc {
-	var arg1 C.GPrintFunc
-
-	arg1 = (*[0]byte)(C.gotk4_PrintFunc)
-
-	ret := C.g_set_print_handler(arg1)
-
-	var ret0 PrintFunc
-
-	return ret0
-}
-
-// SetPrinterrHandler sets the handler for printing error messages.
-//
-// Any messages passed to g_printerr() will be output via the new handler. The
-// default handler simply outputs the message to stderr. By providing your own
-// handler you can redirect the output, to a GTK+ widget or a log file for
-// example.
-func SetPrinterrHandler(_func PrintFunc) PrintFunc {
-	var arg1 C.GPrintFunc
-
-	arg1 = (*[0]byte)(C.gotk4_PrintFunc)
-
-	ret := C.g_set_printerr_handler(arg1)
-
-	var ret0 PrintFunc
-
-	return ret0
 }
 
 // Setenv sets an environment variable. On UNIX, both the variable's name and
@@ -11093,7 +9562,7 @@ func SliceAlloc(blockSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -11111,7 +9580,7 @@ func SliceAlloc0(blockSize uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -11131,7 +9600,7 @@ func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -11694,16 +10163,6 @@ func SpawnCheckExitStatus(exitStatus int) bool {
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
-}
-
-// SpawnClosePid: on some platforms, notably Windows, the #GPid type represents
-// a resource which must be closed to prevent resource leaking.
-// g_spawn_close_pid() is provided for this purpose. It should be used on all
-// platforms, even though it doesn't do anything under UNIX.
-func SpawnClosePid(pid Pid) {
-	var arg1 C.GPid
-
-	C.g_spawn_close_pid(arg1)
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -13004,15 +11463,6 @@ func StrvEqual(strv1 string, strv2 string) bool {
 	return ret0
 }
 
-func StrvGetType() externglib.Type {
-
-	ret := C.g_strv_get_type()
-
-	var ret0 externglib.Type
-
-	return ret0
-}
-
 // StrvLength returns the length of the given nil-terminated string array
 // @str_array. @str_array must not be nil.
 func StrvLength(strArray string) uint {
@@ -13993,53 +12443,6 @@ func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
 	return ret0, ret1
 }
 
-// TimeoutAdd sets a function to be called at regular intervals, with the
-// default priority, PRIORITY_DEFAULT. The function is called repeatedly until
-// it returns false, at which point the timeout is automatically destroyed and
-// the function will not be called again. The first call to the function will be
-// at the end of the first @interval.
-//
-// Note that timeout functions may be delayed, due to the processing of other
-// event sources. Thus they should not be relied on for precise timing. After
-// each call to the timeout function, the time of the next timeout is
-// recalculated based on the current time and the given interval (it does not
-// try to 'catch up' time lost in delays).
-//
-// See [memory management of sources][mainloop-memory-management] for details on
-// how to handle the return value and memory management of @data.
-//
-// If you want to have a timer in the "seconds" range and do not care about the
-// exact time of the first call of the timer, use the g_timeout_add_seconds()
-// function; this function allows for more optimizations and more efficient
-// system power usage.
-//
-// This internally creates a main loop source using g_timeout_source_new() and
-// attaches it to the global Context using g_source_attach(), so the callback
-// will be invoked in whichever thread is running that main context. You can do
-// these steps manually if you need greater control or to use a custom main
-// context.
-//
-// It is safe to call this function from any thread.
-//
-// The interval given is in terms of monotonic time, not wall clock time. See
-// g_get_monotonic_time().
-func TimeoutAdd(interval uint, function SourceFunc) uint {
-	var arg1 C.guint
-	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(data))
-
-	arg1 = C.guint(interval)
-	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
-
-	ret := C.g_timeout_add(arg1, arg2)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // TimeoutAddFull sets a function to be called at regular intervals, with the
 // given priority. The function is called repeatedly until it returns false, at
 // which point the timeout is automatically destroyed and the function will not
@@ -14075,44 +12478,6 @@ func TimeoutAddFull(priority int, interval uint, function SourceFunc) uint {
 	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
 
 	ret := C.g_timeout_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// TimeoutAddSeconds sets a function to be called at regular intervals with the
-// default priority, PRIORITY_DEFAULT. The function is called repeatedly until
-// it returns false, at which point the timeout is automatically destroyed and
-// the function will not be called again.
-//
-// This internally creates a main loop source using
-// g_timeout_source_new_seconds() and attaches it to the main loop context using
-// g_source_attach(). You can do these steps manually if you need greater
-// control. Also see g_timeout_add_seconds_full().
-//
-// It is safe to call this function from any thread.
-//
-// Note that the first call of the timer may not be precise for timeouts of one
-// second. If you need finer precision and have such a timeout, you may want to
-// use g_timeout_add() instead.
-//
-// See [memory management of sources][mainloop-memory-management] for details on
-// how to handle the return value and memory management of @data.
-//
-// The interval given is in terms of monotonic time, not wall clock time. See
-// g_get_monotonic_time().
-func TimeoutAddSeconds(interval uint, function SourceFunc) uint {
-	var arg1 C.guint
-	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(data))
-
-	arg1 = C.guint(interval)
-	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
-
-	ret := C.g_timeout_add_seconds(arg1, arg2)
 
 	var ret0 uint
 
@@ -14251,7 +12616,7 @@ func TrashStackPeek(stackP **TrashStack) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14266,7 +12631,7 @@ func TrashStackPop(stackP **TrashStack) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14293,7 +12658,7 @@ func TryMalloc(nBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14309,7 +12674,7 @@ func TryMalloc0(nBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14328,7 +12693,7 @@ func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14347,7 +12712,7 @@ func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14367,7 +12732,7 @@ func TryRealloc(mem interface{}, nBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -14388,7 +12753,7 @@ func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -15250,7 +13615,7 @@ func UnixGetPasswdEntry(userName string) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -15294,26 +13659,6 @@ func UnixSetFdNonblocking(fd int, nonblock bool) bool {
 	var ret0 bool
 
 	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// UnixSignalAdd: a convenience function for g_unix_signal_source_new(), which
-// attaches to the default Context. You can remove the watch using
-// g_source_remove().
-func UnixSignalAdd(signum int, handler SourceFunc) uint {
-	var arg1 C.gint
-	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(userData))
-
-	arg1 = C.gint(signum)
-	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
-
-	ret := C.g_unix_signal_add(arg1, arg2)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -15519,39 +13864,6 @@ func URIErrorQuark() Quark {
 		tmp = uint32(ret)
 		ret0 = Quark(tmp)
 	}
-
-	return ret0
-}
-
-// URIEscapeBytes escapes arbitrary data for use in a URI.
-//
-// Normally all characters that are not ‘unreserved’ (i.e. ASCII alphanumerical
-// characters plus dash, dot, underscore and tilde) are escaped. But if you
-// specify characters in @reserved_chars_allowed they are not escaped. This is
-// useful for the ‘reserved’ characters in the URI specification, since those
-// are allowed unescaped in some portions of a URI.
-//
-// Though technically incorrect, this will also allow escaping nul bytes as
-// `%“00`.
-func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
-	var arg1 *C.guint8
-	var arg2 C.gsize
-	var arg3 *C.char
-
-	{
-		arg1 = (*C.guint8)(&unescaped[0])
-		arg2 = len(unescaped)
-		defer runtime.KeepAlive(unescaped)
-	}
-	arg3 = (*C.gchar)(C.CString(reservedCharsAllowed))
-	defer C.free(unsafe.Pointer(arg3))
-
-	ret := C.g_uri_escape_bytes(arg1, arg2, arg3)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16826,69 +15138,6 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 	return ret0, ret1, ret2
 }
 
-// UTF8Validate validates UTF-8 encoded text. @str is the text to validate; if
-// @str is nul-terminated, then @max_len can be -1, otherwise @max_len should be
-// the number of bytes to validate. If @end is non-nil, then the end of the
-// valid range will be stored there (i.e. the start of the first invalid
-// character if some bytes were invalid, or the end of the text being validated
-// otherwise).
-//
-// Note that g_utf8_validate() returns false if @max_len is positive and any of
-// the @max_len bytes are nul.
-//
-// Returns true if all of @str was valid. Many GLib and GTK+ routines require
-// valid UTF-8 as input; so data read from a file or the network should be
-// checked with g_utf8_validate() before doing anything else with it.
-func UTF8Validate(str []byte) (end string, ok bool) {
-	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 **C.gchar // out
-
-	{
-		arg1 = (*C.gchar)(&str[0])
-		arg2 = len(str)
-		defer runtime.KeepAlive(str)
-	}
-
-	ret := C.g_utf8_validate(arg1, arg2, &arg3)
-
-	var ret0 string
-	var ret1 bool
-
-	ret0 = C.GoString(arg3)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// UTF8ValidateLen validates UTF-8 encoded text.
-//
-// As with g_utf8_validate(), but @max_len must be set, and hence this function
-// will always return false if any of the bytes of @str are nul.
-func UTF8ValidateLen(str []byte) (end string, ok bool) {
-	var arg1 *C.gchar
-	var arg2 C.gsize
-	var arg3 **C.gchar // out
-
-	{
-		arg1 = (*C.gchar)(&str[0])
-		arg2 = len(str)
-		defer runtime.KeepAlive(str)
-	}
-
-	ret := C.g_utf8_validate_len(arg1, arg2, &arg3)
-
-	var ret0 string
-	var ret1 bool
-
-	ret0 = C.GoString(arg3)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
 // UUIDStringIsValid parses the string @str and verify if it is a UUID.
 //
 // The function accepts the following syntax:
@@ -16924,15 +15173,6 @@ func UUIDStringRandom() string {
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
-func VariantGetGType() externglib.Type {
-
-	ret := C.g_variant_get_gtype()
-
-	var ret0 externglib.Type
 
 	return ret0
 }
@@ -17343,18 +15583,142 @@ func (b *Bytes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// NewBytes constructs a struct Bytes.
-func NewBytes(data []byte) *Bytes {
+// Compare compares the two #GBytes values.
+//
+// This function can be used to sort GBytes instances in lexicographical order.
+//
+// If @bytes1 and @bytes2 have different length but the shorter one is a prefix
+// of the longer one then the shorter one is considered to be less than the
+// longer one. Otherwise the first byte where both differ is used for
+// comparison. If @bytes1 has a smaller value at that position it is considered
+// less, otherwise greater than @bytes2.
+func (bytes1 *Bytes) Compare(bytes2 Bytes) int {
+	var arg0 C.gpointer
 	var arg1 C.gpointer
-	var arg2 C.gsize
+
+	arg0 = (C.gpointer)(bytes1.Native())
+	arg1 = (C.gpointer)(bytes2.Native())
+
+	ret := C.g_bytes_compare(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Equal compares the two #GBytes values being pointed to and returns true if
+// they are equal.
+//
+// This function can be passed to g_hash_table_new() as the @key_equal_func
+// parameter, when using non-nil #GBytes pointers as keys in a Table.
+func (bytes1 *Bytes) Equal(bytes2 Bytes) bool {
+	var arg0 C.gpointer
+	var arg1 C.gpointer
+
+	arg0 = (C.gpointer)(bytes1.Native())
+	arg1 = (C.gpointer)(bytes2.Native())
+
+	ret := C.g_bytes_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Data: get the byte data in the #GBytes. This data should not be modified.
+//
+// This function will always return the same pointer for a given #GBytes.
+//
+// nil may be returned if @size is 0. This is not guaranteed, as the #GBytes may
+// represent an empty string with @data non-nil and @size as 0. nil will not be
+// returned if @size is non-zero.
+func (bytes *Bytes) Data() (size uint, guint8s []byte) {
+	var arg0 *C.GBytes
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GBytes)(bytes.Native())
+
+	ret := C.g_bytes_get_data(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []byte
+
+	ret0 = uint(arg1)
 
 	{
-		arg1 = (C.gpointer)(&data[0])
-		arg2 = len(data)
-		defer runtime.KeepAlive(data)
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
+		sliceHeader.Len = arg1
+		sliceHeader.Cap = arg1
+		runtime.SetFinalizer(&ret, func() {
+			C.free(unsafe.Pointer(ret))
+		})
+		defer runtime.KeepAlive(ret)
 	}
 
-	ret := C.g_bytes_new(arg1, arg2)
+	return ret0, ret1
+}
+
+// Size: get the size of the byte data in the #GBytes.
+//
+// This function will always return the same value for a given #GBytes.
+func (bytes *Bytes) Size() uint {
+	var arg0 *C.GBytes
+
+	arg0 = (*C.GBytes)(bytes.Native())
+
+	ret := C.g_bytes_get_size(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Hash creates an integer hash code for the byte data in the #GBytes.
+//
+// This function can be passed to g_hash_table_new() as the @key_hash_func
+// parameter, when using non-nil #GBytes pointers as keys in a Table.
+func (bytes *Bytes) Hash() uint {
+	var arg0 C.gpointer
+
+	arg0 = (C.gpointer)(bytes.Native())
+
+	ret := C.g_bytes_hash(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// NewFromBytes creates a #GBytes which is a subsection of another #GBytes. The
+// @offset + @length may not be longer than the size of @bytes.
+//
+// A reference to @bytes will be held by the newly created #GBytes until the
+// byte data is no longer needed.
+//
+// Since 2.56, if @offset is 0 and @length matches the size of @bytes, then
+// @bytes will be returned with the reference count incremented by 1. If @bytes
+// is a slice of another #GBytes, then the resulting #GBytes will reference the
+// same #GBytes instead of @bytes. This allows consumers to simplify the usage
+// of #GBytes when asynchronously writing to streams.
+func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
+	var arg0 *C.GBytes
+	var arg1 C.gsize
+	var arg2 C.gsize
+
+	arg0 = (*C.GBytes)(bytes.Native())
+	arg1 = C.gsize(offset)
+	arg2 = C.gsize(length)
+
+	ret := C.g_bytes_new_from_bytes(arg0, arg1, arg2)
 
 	var ret0 *Bytes
 
@@ -17363,86 +15727,92 @@ func NewBytes(data []byte) *Bytes {
 	return ret0
 }
 
-// NewBytesStatic constructs a struct Bytes.
-func NewBytesStatic(data []byte) *Bytes {
-	var arg1 C.gpointer
-	var arg2 C.gsize
+// Ref: increase the reference count on @bytes.
+func (bytes *Bytes) Ref() *Bytes {
+	var arg0 *C.GBytes
+
+	arg0 = (*C.GBytes)(bytes.Native())
+
+	ret := C.g_bytes_ref(arg0)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
+
+// Unref releases a reference on @bytes. This may result in the bytes being
+// freed. If @bytes is nil, it will return immediately.
+func (bytes *Bytes) Unref() {
+	var arg0 *C.GBytes
+
+	arg0 = (*C.GBytes)(bytes.Native())
+
+	C.g_bytes_unref(arg0)
+}
+
+// UnrefToArray unreferences the bytes, and returns a new mutable Array
+// containing the same byte data.
+//
+// As an optimization, the byte data is transferred to the array without copying
+// if this was the last reference to bytes and bytes was created with
+// g_bytes_new(), g_bytes_new_take() or g_byte_array_free_to_bytes(). In all
+// other cases the data is copied.
+func (bytes *Bytes) UnrefToArray() []byte {
+	var arg0 *C.GBytes
+
+	arg0 = (*C.GBytes)(bytes.Native())
+
+	ret := C.g_bytes_unref_to_array(arg0)
+
+	var ret0 []byte
 
 	{
-		var dst []C.guint8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
-		sliceHeader.Len = len(data)
-		sliceHeader.Cap = len(data)
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
 		}
 
-		arg1 = (C.gpointer)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(data)
-	}
-
-	ret := C.g_bytes_new_static(arg1, arg2)
-
-	var ret0 *Bytes
-
-	ret0 = WrapBytes(ret)
-
-	return ret0
-}
-
-// NewBytesTake constructs a struct Bytes.
-func NewBytesTake(data []byte) *Bytes {
-	var arg1 C.gpointer
-	var arg2 C.gsize
-
-	{
-		var dst []C.guint8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
-		sliceHeader.Len = len(data)
-		sliceHeader.Cap = len(data)
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
+		ret0 = make([]byte, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = byte(src)
 		}
-
-		arg1 = (C.gpointer)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(data)
 	}
-
-	ret := C.g_bytes_new_take(arg1, arg2)
-
-	var ret0 *Bytes
-
-	ret0 = WrapBytes(ret)
 
 	return ret0
 }
 
-// NewBytesWithFreeFunc constructs a struct Bytes.
-func NewBytesWithFreeFunc(data []byte, userData interface{}) *Bytes {
-	var arg1 C.gpointer
-	var arg2 C.gsize
-	var arg4 C.gpointer
+// UnrefToData unreferences the bytes, and returns a pointer the same byte data
+// contents.
+//
+// As an optimization, the byte data is returned without copying if this was the
+// last reference to bytes and bytes was created with g_bytes_new(),
+// g_bytes_new_take() or g_byte_array_free_to_bytes(). In all other cases the
+// data is copied.
+func (bytes *Bytes) UnrefToData() (size uint, guint8s []byte) {
+	var arg0 *C.GBytes
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GBytes)(bytes.Native())
+
+	ret := C.g_bytes_unref_to_data(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []byte
+
+	ret0 = uint(arg1)
 
 	{
-		arg1 = (C.gpointer)(&data[0])
-		arg2 = len(data)
-		defer runtime.KeepAlive(data)
+		ret1 = make([]byte, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = byte(src)
+		}
 	}
-	arg4 = C.gpointer(box.Assign(userData))
 
-	ret := C.g_bytes_new_with_free_func(arg1, arg2, (*[0]byte)(C.free), arg4)
-
-	var ret0 *Bytes
-
-	ret0 = WrapBytes(ret)
-
-	return ret0
+	return ret0, ret1
 }
 
 // Checksum: an opaque structure representing a checksumming operation. To
@@ -17485,6 +15855,61 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 	ret0 = WrapChecksum(ret)
 
 	return ret0
+}
+
+// Copy copies a #GChecksum. If @checksum has been closed, by calling
+// g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
+// be closed as well.
+func (checksum *Checksum) Copy() *Checksum {
+	var arg0 *C.GChecksum
+
+	arg0 = (*C.GChecksum)(checksum.Native())
+
+	ret := C.g_checksum_copy(arg0)
+
+	var ret0 *Checksum
+
+	ret0 = WrapChecksum(ret)
+
+	return ret0
+}
+
+// Free frees the memory allocated for @checksum.
+func (checksum *Checksum) Free() {
+	var arg0 *C.GChecksum
+
+	arg0 = (*C.GChecksum)(checksum.Native())
+
+	C.g_checksum_free(arg0)
+}
+
+// String gets the digest as a hexadecimal string.
+//
+// Once this function has been called the #GChecksum can no longer be updated
+// with g_checksum_update().
+//
+// The hexadecimal characters will be lower case.
+func (checksum *Checksum) String() string {
+	var arg0 *C.GChecksum
+
+	arg0 = (*C.GChecksum)(checksum.Native())
+
+	ret := C.g_checksum_get_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Reset resets the state of the @checksum back to its initial state.
+func (checksum *Checksum) Reset() {
+	var arg0 *C.GChecksum
+
+	arg0 = (*C.GChecksum)(checksum.Native())
+
+	C.g_checksum_reset(arg0)
 }
 
 // Cond: the #GCond struct is an opaque data structure that represents a
@@ -17574,6 +15999,64 @@ func (c *Cond) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
+// Broadcast: if threads are waiting for @cond, all of them are unblocked. If no
+// threads are waiting for @cond, this function has no effect. It is good
+// practice to lock the same mutex as the waiting threads while calling this
+// function, though not required.
+func (cond *Cond) Broadcast() {
+	var arg0 *C.GCond
+
+	arg0 = (*C.GCond)(cond.Native())
+
+	C.g_cond_broadcast(arg0)
+}
+
+// Clear frees the resources allocated to a #GCond with g_cond_init().
+//
+// This function should not be used with a #GCond that has been statically
+// allocated.
+//
+// Calling g_cond_clear() for a #GCond on which threads are blocking leads to
+// undefined behaviour.
+func (cond *Cond) Clear() {
+	var arg0 *C.GCond
+
+	arg0 = (*C.GCond)(cond.Native())
+
+	C.g_cond_clear(arg0)
+}
+
+// Init initialises a #GCond so that it can be used.
+//
+// This function is useful to initialise a #GCond that has been allocated as
+// part of a larger structure. It is not necessary to initialise a #GCond that
+// has been statically allocated.
+//
+// To undo the effect of g_cond_init() when a #GCond is no longer needed, use
+// g_cond_clear().
+//
+// Calling g_cond_init() on an already-initialised #GCond leads to undefined
+// behaviour.
+func (cond *Cond) Init() {
+	var arg0 *C.GCond
+
+	arg0 = (*C.GCond)(cond.Native())
+
+	C.g_cond_init(arg0)
+}
+
+// Signal: if threads are waiting for @cond, at least one of them is unblocked.
+// If no threads are waiting for @cond, this function has no effect. It is good
+// practice to hold the same lock as the waiting thread while calling this
+// function, though not required.
+func (cond *Cond) Signal() {
+	var arg0 *C.GCond
+
+	arg0 = (*C.GCond)(cond.Native())
+
+	C.g_cond_signal(arg0)
+}
+
 // Date represents a day between January 1, Year 1 and a few thousand years in
 // the future. None of its members should be accessed directly.
 //
@@ -17620,23 +16103,6 @@ func NewDate() *Date {
 	return ret0
 }
 
-// NewDateDMY constructs a struct Date.
-func NewDateDMY(day DateDay, month DateMonth, year DateYear) *Date {
-	var arg1 C.GDateDay
-	var arg2 C.GDateMonth
-	var arg3 C.GDateYear
-
-	arg2 = (C.GDateMonth)(month)
-
-	ret := C.g_date_new_dmy(arg1, arg2, arg3)
-
-	var ret0 *Date
-
-	ret0 = WrapDate(ret)
-
-	return ret0
-}
-
 // NewDateJulian constructs a struct Date.
 func NewDateJulian(julianDay uint32) *Date {
 	var arg1 C.guint32
@@ -17659,13 +16125,6 @@ func (j *Date) JulianDays() uint {
 	return ret
 }
 
-// Julian gets the field inside the struct.
-func (j *Date) Julian() uint {
-	var ret uint
-	ret = uint(d.native.julian)
-	return ret
-}
-
 // DMY gets the field inside the struct.
 func (d *Date) DMY() uint {
 	var ret uint
@@ -17673,25 +16132,478 @@ func (d *Date) DMY() uint {
 	return ret
 }
 
-// Day gets the field inside the struct.
-func (d *Date) Day() uint {
-	var ret uint
-	ret = uint(d.native.day)
-	return ret
+// AddDays increments a date some number of days. To move forward by weeks, add
+// weeks*7 days. The date must be valid.
+func (date *Date) AddDays(nDays uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nDays)
+
+	C.g_date_add_days(arg0, arg1)
 }
 
-// Month gets the field inside the struct.
-func (m *Date) Month() uint {
-	var ret uint
-	ret = uint(d.native.month)
-	return ret
+// AddMonths increments a date by some number of months. If the day of the month
+// is greater than 28, this routine may change the day of the month (because the
+// destination month may not have the current day in it). The date must be
+// valid.
+func (date *Date) AddMonths(nMonths uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nMonths)
+
+	C.g_date_add_months(arg0, arg1)
 }
 
-// Year gets the field inside the struct.
-func (y *Date) Year() uint {
-	var ret uint
-	ret = uint(d.native.year)
-	return ret
+// AddYears increments a date by some number of years. If the date is February
+// 29, and the destination year is not a leap year, the date will be changed to
+// February 28. The date must be valid.
+func (date *Date) AddYears(nYears uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nYears)
+
+	C.g_date_add_years(arg0, arg1)
+}
+
+// Clamp: if @date is prior to @min_date, sets @date equal to @min_date. If
+// @date falls after @max_date, sets @date equal to @max_date. Otherwise, @date
+// is unchanged. Either of @min_date and @max_date may be nil. All non-nil dates
+// must be valid.
+func (date *Date) Clamp(minDate *Date, maxDate *Date) {
+	var arg0 *C.GDate
+	var arg1 *C.GDate
+	var arg2 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = (*C.GDate)(minDate.Native())
+	arg2 = (*C.GDate)(maxDate.Native())
+
+	C.g_date_clamp(arg0, arg1, arg2)
+}
+
+// Clear initializes one or more #GDate structs to a safe but invalid state. The
+// cleared dates will not represent an existing date, but will not contain
+// garbage. Useful to init a date declared on the stack. Validity can be tested
+// with g_date_valid().
+func (date *Date) Clear(nDates uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nDates)
+
+	C.g_date_clear(arg0, arg1)
+}
+
+// Compare: qsort()-style comparison function for dates. Both dates must be
+// valid.
+func (lhs *Date) Compare(rhs *Date) int {
+	var arg0 *C.GDate
+	var arg1 *C.GDate
+
+	arg0 = (*C.GDate)(lhs.Native())
+	arg1 = (*C.GDate)(rhs.Native())
+
+	ret := C.g_date_compare(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Copy copies a GDate to a newly-allocated GDate. If the input was invalid (as
+// determined by g_date_valid()), the invalid state will be copied as is into
+// the new object.
+func (date *Date) Copy() *Date {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_copy(arg0)
+
+	var ret0 *Date
+
+	ret0 = WrapDate(ret)
+
+	return ret0
+}
+
+// DaysBetween computes the number of days between two dates. If @date2 is prior
+// to @date1, the returned value is negative. Both dates must be valid.
+func (date1 *Date) DaysBetween(date2 *Date) int {
+	var arg0 *C.GDate
+	var arg1 *C.GDate
+
+	arg0 = (*C.GDate)(date1.Native())
+	arg1 = (*C.GDate)(date2.Native())
+
+	ret := C.g_date_days_between(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Free frees a #GDate returned from g_date_new().
+func (date *Date) Free() {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	C.g_date_free(arg0)
+}
+
+// Day returns the day of the month. The date must be valid.
+func (date *Date) Day() DateDay {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_day(arg0)
+
+	var ret0 DateDay
+
+	{
+		var tmp byte
+		tmp = byte(ret)
+		ret0 = DateDay(tmp)
+	}
+
+	return ret0
+}
+
+// DayOfYear returns the day of the year, where Jan 1 is the first day of the
+// year. The date must be valid.
+func (date *Date) DayOfYear() uint {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_day_of_year(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Iso8601WeekOfYear returns the week of the year, where weeks are interpreted
+// according to ISO 8601.
+func (date *Date) Iso8601WeekOfYear() uint {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_iso8601_week_of_year(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Julian returns the Julian day or "serial number" of the #GDate. The Julian
+// day is simply the number of days since January 1, Year 1; i.e., January 1,
+// Year 1 is Julian day 1; January 2, Year 1 is Julian day 2, etc. The date must
+// be valid.
+func (date *Date) Julian() uint32 {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_julian(arg0)
+
+	var ret0 uint32
+
+	ret0 = uint32(ret)
+
+	return ret0
+}
+
+// MondayWeekOfYear returns the week of the year, where weeks are understood to
+// start on Monday. If the date is before the first Monday of the year, return
+// 0. The date must be valid.
+func (date *Date) MondayWeekOfYear() uint {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_monday_week_of_year(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Month returns the month of the year. The date must be valid.
+func (date *Date) Month() DateMonth {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_month(arg0)
+
+	var ret0 DateMonth
+
+	ret0 = DateMonth(ret)
+
+	return ret0
+}
+
+// SundayWeekOfYear returns the week of the year during which this date falls,
+// if weeks are understood to begin on Sunday. The date must be valid. Can
+// return 0 if the day is before the first Sunday of the year.
+func (date *Date) SundayWeekOfYear() uint {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_sunday_week_of_year(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Weekday returns the day of the week for a #GDate. The date must be valid.
+func (date *Date) Weekday() DateWeekday {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_weekday(arg0)
+
+	var ret0 DateWeekday
+
+	ret0 = DateWeekday(ret)
+
+	return ret0
+}
+
+// Year returns the year of a #GDate. The date must be valid.
+func (date *Date) Year() DateYear {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_get_year(arg0)
+
+	var ret0 DateYear
+
+	{
+		var tmp uint16
+		tmp = uint16(ret)
+		ret0 = DateYear(tmp)
+	}
+
+	return ret0
+}
+
+// IsFirstOfMonth returns true if the date is on the first of a month. The date
+// must be valid.
+func (date *Date) IsFirstOfMonth() bool {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_is_first_of_month(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsLastOfMonth returns true if the date is the last day of the month. The date
+// must be valid.
+func (date *Date) IsLastOfMonth() bool {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_is_last_of_month(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Order checks if @date1 is less than or equal to @date2, and swap the values
+// if this is not the case.
+func (date1 *Date) Order(date2 *Date) {
+	var arg0 *C.GDate
+	var arg1 *C.GDate
+
+	arg0 = (*C.GDate)(date1.Native())
+	arg1 = (*C.GDate)(date2.Native())
+
+	C.g_date_order(arg0, arg1)
+}
+
+// SetJulian sets the value of a #GDate from a Julian day number.
+func (date *Date) SetJulian(julianDate uint32) {
+	var arg0 *C.GDate
+	var arg1 C.guint32
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint32(julianDate)
+
+	C.g_date_set_julian(arg0, arg1)
+}
+
+// SetMonth sets the month of the year for a #GDate. If the resulting
+// day-month-year triplet is invalid, the date will be invalid.
+func (date *Date) SetMonth(month DateMonth) {
+	var arg0 *C.GDate
+	var arg1 C.GDateMonth
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = (C.GDateMonth)(month)
+
+	C.g_date_set_month(arg0, arg1)
+}
+
+// SetParse parses a user-inputted string @str, and try to figure out what date
+// it represents, taking the [current locale][setlocale] into account. If the
+// string is successfully parsed, the date will be valid after the call.
+// Otherwise, it will be invalid. You should check using g_date_valid() to see
+// whether the parsing succeeded.
+//
+// This function is not appropriate for file formats and the like; it isn't very
+// precise, and its exact behavior varies with the locale. It's intended to be a
+// heuristic routine that guesses what the user means by a given string (and it
+// does work pretty well in that capacity).
+func (date *Date) SetParse(str string) {
+	var arg0 *C.GDate
+	var arg1 *C.gchar
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.g_date_set_parse(arg0, arg1)
+}
+
+// SetTimeT sets the value of a date to the date corresponding to a time
+// specified as a time_t. The time to date conversion is done using the user's
+// current timezone.
+//
+// To set the value of a date to the current day, you could write:
+//
+//     time_t now = time (NULL);
+//     if (now == (time_t) -1)
+//       // handle the error
+//     g_date_set_time_t (date, now);
+//
+func (date *Date) SetTimeT(timet int32) {
+	var arg0 *C.GDate
+	var arg1 C.time_t
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.time_t(timet)
+
+	C.g_date_set_time_t(arg0, arg1)
+}
+
+// SetTimeVal sets the value of a date from a Val value. Note that the @tv_usec
+// member is ignored, because #GDate can't make use of the additional precision.
+//
+// The time to date conversion is done using the user's current timezone.
+func (date *Date) SetTimeVal(timeval *TimeVal) {
+	var arg0 *C.GDate
+	var arg1 *C.GTimeVal
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = (*C.GTimeVal)(timeval.Native())
+
+	C.g_date_set_time_val(arg0, arg1)
+}
+
+// SubtractDays moves a date some number of days into the past. To move by
+// weeks, just move by weeks*7 days. The date must be valid.
+func (date *Date) SubtractDays(nDays uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nDays)
+
+	C.g_date_subtract_days(arg0, arg1)
+}
+
+// SubtractMonths moves a date some number of months into the past. If the
+// current day of the month doesn't exist in the destination month, the day of
+// the month may change. The date must be valid.
+func (date *Date) SubtractMonths(nMonths uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nMonths)
+
+	C.g_date_subtract_months(arg0, arg1)
+}
+
+// SubtractYears moves a date some number of years into the past. If the current
+// day doesn't exist in the destination year (i.e. it's February 29 and you move
+// to a non-leap-year) then the day is changed to February 29. The date must be
+// valid.
+func (date *Date) SubtractYears(nYears uint) {
+	var arg0 *C.GDate
+	var arg1 C.guint
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.guint(nYears)
+
+	C.g_date_subtract_years(arg0, arg1)
+}
+
+// ToStructTm fills in the date-related bits of a struct tm using the @date
+// value. Initializes the non-date parts with something safe but meaningless.
+func (date *Date) ToStructTm(tm interface{}) {
+	var arg0 *C.GDate
+	var arg1 *C.tm
+
+	arg0 = (*C.GDate)(date.Native())
+	arg1 = C.gpointer(box.Assign(tm))
+
+	C.g_date_to_struct_tm(arg0, arg1)
+}
+
+// Valid returns true if the #GDate represents an existing day. The date must
+// not contain garbage; it should have been initialized with g_date_clear() if
+// it wasn't allocated by one of the g_date_new() variants.
+func (date *Date) Valid() bool {
+	var arg0 *C.GDate
+
+	arg0 = (*C.GDate)(date.Native())
+
+	ret := C.g_date_valid(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
 }
 
 // DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
@@ -17914,6 +16826,771 @@ func NewDateTimeUtc(year int, month int, day int, hour int, minute int, seconds 
 	return ret0
 }
 
+// AddDays creates a copy of @datetime and adds the specified number of days to
+// the copy. Add negative values to subtract days.
+func (datetime *DateTime) AddDays(days int) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(days)
+
+	ret := C.g_date_time_add_days(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddFull creates a new Time adding the specified values to the current date
+// and time in @datetime. Add negative values to subtract.
+func (datetime *DateTime) AddFull(years int, months int, days int, hours int, minutes int, seconds float64) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+	var arg2 C.gint
+	var arg3 C.gint
+	var arg4 C.gint
+	var arg5 C.gint
+	var arg6 C.gdouble
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(years)
+	arg2 = C.gint(months)
+	arg3 = C.gint(days)
+	arg4 = C.gint(hours)
+	arg5 = C.gint(minutes)
+	arg6 = C.gdouble(seconds)
+
+	ret := C.g_date_time_add_full(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddHours creates a copy of @datetime and adds the specified number of hours.
+// Add negative values to subtract hours.
+func (datetime *DateTime) AddHours(hours int) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(hours)
+
+	ret := C.g_date_time_add_hours(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddMinutes creates a copy of @datetime adding the specified number of
+// minutes. Add negative values to subtract minutes.
+func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(minutes)
+
+	ret := C.g_date_time_add_minutes(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddMonths creates a copy of @datetime and adds the specified number of months
+// to the copy. Add negative values to subtract months.
+//
+// The day of the month of the resulting Time is clamped to the number of days
+// in the updated calendar month. For example, if adding 1 month to 31st January
+// 2018, the result would be 28th February 2018. In 2020 (a leap year), the
+// result would be 29th February.
+func (datetime *DateTime) AddMonths(months int) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(months)
+
+	ret := C.g_date_time_add_months(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddSeconds creates a copy of @datetime and adds the specified number of
+// seconds. Add negative values to subtract seconds.
+func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gdouble
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gdouble(seconds)
+
+	ret := C.g_date_time_add_seconds(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddWeeks creates a copy of @datetime and adds the specified number of weeks
+// to the copy. Add negative values to subtract weeks.
+func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(weeks)
+
+	ret := C.g_date_time_add_weeks(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// AddYears creates a copy of @datetime and adds the specified number of years
+// to the copy. Add negative values to subtract years.
+//
+// As with g_date_time_add_months(), if the resulting date would be 29th
+// February on a non-leap year, the day will be clamped to 28th February.
+func (datetime *DateTime) AddYears(years int) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 C.gint
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = C.gint(years)
+
+	ret := C.g_date_time_add_years(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// Difference calculates the difference in time between @end and @begin. The
+// Span that is returned is effectively @end - @begin (ie: positive if the first
+// parameter is larger).
+func (end *DateTime) Difference(begin *DateTime) TimeSpan {
+	var arg0 *C.GDateTime
+	var arg1 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(end.Native())
+	arg1 = (*C.GDateTime)(begin.Native())
+
+	ret := C.g_date_time_difference(arg0, arg1)
+
+	var ret0 TimeSpan
+
+	{
+		var tmp int64
+		tmp = int64(ret)
+		ret0 = TimeSpan(tmp)
+	}
+
+	return ret0
+}
+
+// Format creates a newly allocated string representing the requested @format.
+//
+// The format strings understood by this function are a subset of the strftime()
+// format language as specified by C99. The \D, \U and \W conversions are not
+// supported, nor is the 'E' modifier. The GNU extensions \k, \l, \s and \P are
+// supported, however, as are the '0', '_' and '-' modifiers. The Python
+// extension \f is also supported.
+//
+// In contrast to strftime(), this function always produces a UTF-8 string,
+// regardless of the current locale. Note that the rendering of many formats is
+// locale-dependent and may not match the strftime() output exactly.
+//
+// The following format specifiers are supported:
+//
+// - \a: the abbreviated weekday name according to the current locale - \A: the
+// full weekday name according to the current locale - \b: the abbreviated month
+// name according to the current locale - \B: the full month name according to
+// the current locale - \c: the preferred date and time representation for the
+// current locale - \C: the century number (year/100) as a 2-digit integer
+// (00-99) - \d: the day of the month as a decimal number (range 01 to 31) - \e:
+// the day of the month as a decimal number (range 1 to 31) - \F: equivalent to
+// `Y-m-d` (the ISO 8601 date format) - \g: the last two digits of the ISO 8601
+// week-based year as a decimal number (00-99). This works well with \V and \u.
+// - \G: the ISO 8601 week-based year as a decimal number. This works well with
+// \V and \u. - \h: equivalent to \b - \H: the hour as a decimal number using a
+// 24-hour clock (range 00 to 23) - \I: the hour as a decimal number using a
+// 12-hour clock (range 01 to 12) - \j: the day of the year as a decimal number
+// (range 001 to 366) - \k: the hour (24-hour clock) as a decimal number (range
+// 0 to 23); single digits are preceded by a blank - \l: the hour (12-hour
+// clock) as a decimal number (range 1 to 12); single digits are preceded by a
+// blank - \m: the month as a decimal number (range 01 to 12) - \M: the minute
+// as a decimal number (range 00 to 59) - \f: the microsecond as a decimal
+// number (range 000000 to 999999) - \p: either "AM" or "PM" according to the
+// given time value, or the corresponding strings for the current locale. Noon
+// is treated as "PM" and midnight as "AM". Use of this format specifier is
+// discouraged, as many locales have no concept of AM/PM formatting. Use \c or
+// \X instead. - \P: like \p but lowercase: "am" or "pm" or a corresponding
+// string for the current locale. Use of this format specifier is discouraged,
+// as many locales have no concept of AM/PM formatting. Use \c or \X instead. -
+// \r: the time in a.m. or p.m. notation. Use of this format specifier is
+// discouraged, as many locales have no concept of AM/PM formatting. Use \c or
+// \X instead. - \R: the time in 24-hour notation (\H:\M) - \s: the number of
+// seconds since the Epoch, that is, since 1970-01-01 00:00:00 UTC - \S: the
+// second as a decimal number (range 00 to 60) - \t: a tab character - \T: the
+// time in 24-hour notation with seconds (\H:\M:\S) - \u: the ISO 8601 standard
+// day of the week as a decimal, range 1 to 7, Monday being 1. This works well
+// with \G and \V. - \V: the ISO 8601 standard week number of the current year
+// as a decimal number, range 01 to 53, where week 1 is the first week that has
+// at least 4 days in the new year. See g_date_time_get_week_of_year(). This
+// works well with \G and \u. - \w: the day of the week as a decimal, range 0 to
+// 6, Sunday being 0. This is not the ISO 8601 standard format -- use \u
+// instead. - \x: the preferred date representation for the current locale
+// without the time - \X: the preferred time representation for the current
+// locale without the date - \y: the year as a decimal number without the
+// century - \Y: the year as a decimal number including the century - \z: the
+// time zone as an offset from UTC (+hhmm) - \%:z: the time zone as an offset
+// from UTC (+hh:mm). This is a gnulib strftime() extension. Since: 2.38 -
+// \%::z: the time zone as an offset from UTC (+hh:mm:ss). This is a gnulib
+// strftime() extension. Since: 2.38 - \%:::z: the time zone as an offset from
+// UTC, with : to necessary precision (e.g., -04, +05:30). This is a gnulib
+// strftime() extension. Since: 2.38 - \Z: the time zone or name or abbreviation
+// - \%\%: a literal \% character
+//
+// Some conversion specifications can be modified by preceding the conversion
+// specifier by one or more modifier characters. The following modifiers are
+// supported for many of the numeric conversions:
+//
+// - O: Use alternative numeric symbols, if the current locale supports those. -
+// _: Pad a numeric result with spaces. This overrides the default padding for
+// the specifier. - -: Do not pad a numeric result. This overrides the default
+// padding for the specifier. - 0: Pad a numeric result with zeros. This
+// overrides the default padding for the specifier.
+//
+// Additionally, when O is used with B, b, or h, it produces the alternative
+// form of a month name. The alternative form should be used when the month name
+// is used without a day number (e.g., standalone). It is required in some
+// languages (Baltic, Slavic, Greek, and more) due to their grammatical rules.
+// For other languages there is no difference. \OB is a GNU and BSD strftime()
+// extension expected to be added to the future POSIX specification, \Ob and \Oh
+// are GNU strftime() extensions. Since: 2.56
+func (datetime *DateTime) Format(format string) string {
+	var arg0 *C.GDateTime
+	var arg1 *C.gchar
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = (*C.gchar)(C.CString(format))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_date_time_format(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// FormatIso8601: format @datetime in ISO 8601 format
+// (https://en.wikipedia.org/wiki/ISO_8601), including the date, time and time
+// zone, and return that as a UTF-8 encoded string.
+//
+// Since GLib 2.66, this will output to sub-second precision if needed.
+func (datetime *DateTime) FormatIso8601() string {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_format_iso8601(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// DayOfMonth retrieves the day of the month represented by @datetime in the
+// gregorian calendar.
+func (datetime *DateTime) DayOfMonth() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_day_of_month(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// DayOfWeek retrieves the ISO 8601 day of the week on which @datetime falls (1
+// is Monday, 2 is Tuesday... 7 is Sunday).
+func (datetime *DateTime) DayOfWeek() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_day_of_week(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// DayOfYear retrieves the day of the year represented by @datetime in the
+// Gregorian calendar.
+func (datetime *DateTime) DayOfYear() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_day_of_year(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Hour retrieves the hour of the day represented by @datetime
+func (datetime *DateTime) Hour() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_hour(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Microsecond retrieves the microsecond of the date represented by @datetime
+func (datetime *DateTime) Microsecond() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_microsecond(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Minute retrieves the minute of the hour represented by @datetime
+func (datetime *DateTime) Minute() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_minute(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Month retrieves the month of the year represented by @datetime in the
+// Gregorian calendar.
+func (datetime *DateTime) Month() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_month(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Second retrieves the second of the minute represented by @datetime
+func (datetime *DateTime) Second() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_second(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Seconds retrieves the number of seconds since the start of the last minute,
+// including the fractional part.
+func (datetime *DateTime) Seconds() float64 {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_seconds(arg0)
+
+	var ret0 float64
+
+	ret0 = float64(ret)
+
+	return ret0
+}
+
+// Timezone: get the time zone for this @datetime.
+func (datetime *DateTime) Timezone() *TimeZone {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_timezone(arg0)
+
+	var ret0 *TimeZone
+
+	ret0 = WrapTimeZone(ret)
+
+	return ret0
+}
+
+// TimezoneAbbreviation determines the time zone abbreviation to be used at the
+// time and in the time zone of @datetime.
+//
+// For example, in Toronto this is currently "EST" during the winter months and
+// "EDT" during the summer months when daylight savings time is in effect.
+func (datetime *DateTime) TimezoneAbbreviation() string {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_timezone_abbreviation(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// UtcOffset determines the offset to UTC in effect at the time and in the time
+// zone of @datetime.
+//
+// The offset is the number of microseconds that you add to UTC time to arrive
+// at local time for the time zone (ie: negative numbers for time zones west of
+// GMT, positive numbers for east).
+//
+// If @datetime represents UTC time, then the offset is always zero.
+func (datetime *DateTime) UtcOffset() TimeSpan {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_utc_offset(arg0)
+
+	var ret0 TimeSpan
+
+	{
+		var tmp int64
+		tmp = int64(ret)
+		ret0 = TimeSpan(tmp)
+	}
+
+	return ret0
+}
+
+// WeekNumberingYear returns the ISO 8601 week-numbering year in which the week
+// containing @datetime falls.
+//
+// This function, taken together with g_date_time_get_week_of_year() and
+// g_date_time_get_day_of_week() can be used to determine the full ISO week date
+// on which @datetime falls.
+//
+// This is usually equal to the normal Gregorian year (as returned by
+// g_date_time_get_year()), except as detailed below:
+//
+// For Thursday, the week-numbering year is always equal to the usual calendar
+// year. For other days, the number is such that every day within a complete
+// week (Monday to Sunday) is contained within the same week-numbering year.
+//
+// For Monday, Tuesday and Wednesday occurring near the end of the year, this
+// may mean that the week-numbering year is one greater than the calendar year
+// (so that these days have the same week-numbering year as the Thursday
+// occurring early in the next year).
+//
+// For Friday, Saturday and Sunday occurring near the start of the year, this
+// may mean that the week-numbering year is one less than the calendar year (so
+// that these days have the same week-numbering year as the Thursday occurring
+// late in the previous year).
+//
+// An equivalent description is that the week-numbering year is equal to the
+// calendar year containing the majority of the days in the current week (Monday
+// to Sunday).
+//
+// Note that January 1 0001 in the proleptic Gregorian calendar is a Monday, so
+// this function never returns 0.
+func (datetime *DateTime) WeekNumberingYear() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_week_numbering_year(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// WeekOfYear returns the ISO 8601 week number for the week containing
+// @datetime. The ISO 8601 week number is the same for every day of the week
+// (from Moday through Sunday). That can produce some unusual results (described
+// below).
+//
+// The first week of the year is week 1. This is the week that contains the
+// first Thursday of the year. Equivalently, this is the first week that has
+// more than 4 of its days falling within the calendar year.
+//
+// The value 0 is never returned by this function. Days contained within a year
+// but occurring before the first ISO 8601 week of that year are considered as
+// being contained in the last week of the previous year. Similarly, the final
+// days of a calendar year may be considered as being part of the first ISO 8601
+// week of the next year if 4 or more days of that week are contained within the
+// new year.
+func (datetime *DateTime) WeekOfYear() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_week_of_year(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Year retrieves the year represented by @datetime in the Gregorian calendar.
+func (datetime *DateTime) Year() int {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_year(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Ymd retrieves the Gregorian day, month, and year of a given Time.
+func (datetime *DateTime) Ymd() (year int, month int, day int) {
+	var arg0 *C.GDateTime
+	var arg1 *C.gint // out
+	var arg2 *C.gint // out
+	var arg3 *C.gint // out
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_get_ymd(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 int
+	var ret1 int
+	var ret2 int
+
+	ret0 = int(arg1)
+
+	ret1 = int(arg2)
+
+	ret2 = int(arg3)
+
+	return ret0, ret1, ret2
+}
+
+// IsDaylightSavings determines if daylight savings time is in effect at the
+// time and in the time zone of @datetime.
+func (datetime *DateTime) IsDaylightSavings() bool {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_is_daylight_savings(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Ref: atomically increments the reference count of @datetime by one.
+func (datetime *DateTime) Ref() *DateTime {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_ref(arg0)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// ToLocal creates a new Time corresponding to the same instant in time as
+// @datetime, but in the local time zone.
+//
+// This call is equivalent to calling g_date_time_to_timezone() with the time
+// zone returned by g_time_zone_new_local().
+func (datetime *DateTime) ToLocal() *DateTime {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_to_local(arg0)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// ToTimeval stores the instant in time that @datetime represents into @tv.
+//
+// The time contained in a Val is always stored in the form of seconds elapsed
+// since 1970-01-01 00:00:00 UTC, regardless of the time zone associated with
+// @datetime.
+//
+// On systems where 'long' is 32bit (ie: all 32bit systems and all Windows
+// systems), a Val is incapable of storing the entire range of values that Time
+// is capable of expressing. On those systems, this function returns false to
+// indicate that the time is out of range.
+//
+// On systems where 'long' is 64bit, this function never fails.
+func (datetime *DateTime) ToTimeval(tv *TimeVal) bool {
+	var arg0 *C.GDateTime
+	var arg1 *C.GTimeVal
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = (*C.GTimeVal)(tv.Native())
+
+	ret := C.g_date_time_to_timeval(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ToTimezone: create a new Time corresponding to the same instant in time as
+// @datetime, but in the time zone @tz.
+//
+// This call can fail in the case that the time goes out of bounds. For example,
+// converting 0001-01-01 00:00:00 UTC to a time zone west of Greenwich will fail
+// (due to the year 0 being out of range).
+func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
+	var arg0 *C.GDateTime
+	var arg1 *C.GTimeZone
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+	arg1 = (*C.GTimeZone)(tz.Native())
+
+	ret := C.g_date_time_to_timezone(arg0, arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// ToUnix gives the Unix time corresponding to @datetime, rounding down to the
+// nearest second.
+//
+// Unix time is the number of seconds that have elapsed since 1970-01-01
+// 00:00:00 UTC, regardless of the time zone associated with @datetime.
+func (datetime *DateTime) ToUnix() int64 {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_to_unix(arg0)
+
+	var ret0 int64
+
+	ret0 = int64(ret)
+
+	return ret0
+}
+
+// ToUtc creates a new Time corresponding to the same instant in time as
+// @datetime, but in UTC.
+//
+// This call is equivalent to calling g_date_time_to_timezone() with the time
+// zone returned by g_time_zone_new_utc().
+func (datetime *DateTime) ToUtc() *DateTime {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	ret := C.g_date_time_to_utc(arg0)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// Unref: atomically decrements the reference count of @datetime by one.
+//
+// When the reference count reaches zero, the resources allocated by @datetime
+// are freed
+func (datetime *DateTime) Unref() {
+	var arg0 *C.GDateTime
+
+	arg0 = (*C.GDateTime)(datetime.Native())
+
+	C.g_date_time_unref(arg0)
+}
+
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
 type DebugKey struct {
 	native C.GDebugKey
@@ -17979,25 +17656,6 @@ func (e *Error) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// NewErrorLiteral constructs a struct Error.
-func NewErrorLiteral(domain Quark, code int, message string) *Error {
-	var arg1 C.GQuark
-	var arg2 C.gint
-	var arg3 *C.gchar
-
-	arg2 = C.gint(code)
-	arg3 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(arg3))
-
-	ret := C.g_error_new_literal(arg1, arg2, arg3)
-
-	var ret0 *Error
-
-	ret0 = WrapError(ret)
-
-	return ret0
-}
-
 // Domain gets the field inside the struct.
 func (d *Error) Domain() Quark {
 	var ret Quark
@@ -18021,6 +17679,30 @@ func (m *Error) Message() string {
 	var ret string
 	ret = C.GoString(e.native.message)
 	return ret
+}
+
+// Copy makes a copy of @error.
+func (error *Error) Copy() *Error {
+	var arg0 *C.GError
+
+	arg0 = (*C.GError)(error.Native())
+
+	ret := C.g_error_copy(arg0)
+
+	var ret0 *Error
+
+	ret0 = WrapError(ret)
+
+	return ret0
+}
+
+// Free frees a #GError and associated resources.
+func (error *Error) Free() {
+	var arg0 *C.GError
+
+	arg0 = (*C.GError)(error.Native())
+
+	C.g_error_free(arg0)
 }
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
@@ -18079,6 +17761,125 @@ func marshalHashTableIter(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (h *HashTableIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&h.native)
+}
+
+// HashTable returns the Table associated with @iter.
+func (iter *HashTableIter) HashTable() *HashTable {
+	var arg0 *C.GHashTableIter
+
+	arg0 = (*C.GHashTableIter)(iter.Native())
+
+	ret := C.g_hash_table_iter_get_hash_table(arg0)
+
+	var ret0 *HashTable
+
+	ret0 = WrapHashTable(ret)
+
+	return ret0
+}
+
+// Init initializes a key/value pair iterator and associates it with
+// @hash_table. Modifying the hash table after calling this function invalidates
+// the returned iterator.
+//
+// The iteration order of a TableIter over the keys/values in a hash table is
+// not defined.
+//
+//    GHashTableIter iter;
+//    gpointer key, value;
+//
+//    g_hash_table_iter_init (&iter, hash_table);
+//    while (g_hash_table_iter_next (&iter, &key, &value))
+//      {
+//        // do something with key and value
+//      }
+//
+func (iter *HashTableIter) Init(hashTable *HashTable) {
+	var arg0 *C.GHashTableIter
+	var arg1 *C.GHashTable
+
+	arg0 = (*C.GHashTableIter)(iter.Native())
+	arg1 = (*C.GHashTable)(hashTable.Native())
+
+	C.g_hash_table_iter_init(arg0, arg1)
+}
+
+// Next advances @iter and retrieves the key and/or value that are now pointed
+// to as a result of this advancement. If false is returned, @key and @value are
+// not set, and the iterator becomes invalid.
+func (iter *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
+	var arg0 *C.GHashTableIter
+	var arg1 *C.gpointer // out
+	var arg2 *C.gpointer // out
+
+	arg0 = (*C.GHashTableIter)(iter.Native())
+
+	ret := C.g_hash_table_iter_next(arg0, &arg1, &arg2)
+
+	var ret0 interface{}
+	var ret1 interface{}
+	var ret2 bool
+
+	ret0 = box.Get(uintptr(arg1)).(interface{})
+
+	ret1 = box.Get(uintptr(arg2)).(interface{})
+
+	ret2 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2
+}
+
+// Remove removes the key/value pair currently pointed to by the iterator from
+// its associated Table. Can only be called after g_hash_table_iter_next()
+// returned true, and cannot be called more than once for the same key/value
+// pair.
+//
+// If the Table was created using g_hash_table_new_full(), the key and value are
+// freed using the supplied destroy functions, otherwise you have to make sure
+// that any dynamically allocated values are freed yourself.
+//
+// It is safe to continue iterating the Table afterward:
+//
+//    while (g_hash_table_iter_next (&iter, &key, &value))
+//      {
+//        if (condition)
+//          g_hash_table_iter_remove (&iter);
+//      }
+//
+func (iter *HashTableIter) Remove() {
+	var arg0 *C.GHashTableIter
+
+	arg0 = (*C.GHashTableIter)(iter.Native())
+
+	C.g_hash_table_iter_remove(arg0)
+}
+
+// Replace replaces the value currently pointed to by the iterator from its
+// associated Table. Can only be called after g_hash_table_iter_next() returned
+// true.
+//
+// If you supplied a @value_destroy_func when creating the Table, the old value
+// is freed using that function.
+func (iter *HashTableIter) Replace(value interface{}) {
+	var arg0 *C.GHashTableIter
+	var arg1 C.gpointer
+
+	arg0 = (*C.GHashTableIter)(iter.Native())
+	arg1 = C.gpointer(box.Assign(value))
+
+	C.g_hash_table_iter_replace(arg0, arg1)
+}
+
+// Steal removes the key/value pair currently pointed to by the iterator from
+// its associated Table, without calling the key and value destroy functions.
+// Can only be called after g_hash_table_iter_next() returned true, and cannot
+// be called more than once for the same key/value pair.
+func (iter *HashTableIter) Steal() {
+	var arg0 *C.GHashTableIter
+
+	arg0 = (*C.GHashTableIter)(iter.Native())
+
+	C.g_hash_table_iter_steal(arg0)
 }
 
 // Hook: the #GHook struct represents a single hook function in a List.
@@ -18155,6 +17956,24 @@ func (f *Hook) Func() interface{} {
 	return ret
 }
 
+// CompareIds compares the ids of two #GHook elements, returning a negative
+// value if the second id is greater than the first.
+func (newHook *Hook) CompareIds(sibling *Hook) int {
+	var arg0 *C.GHook
+	var arg1 *C.GHook
+
+	arg0 = (*C.GHook)(newHook.Native())
+	arg1 = (*C.GHook)(sibling.Native())
+
+	ret := C.g_hook_compare_ids(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
 // HookList: the List struct represents a list of hook functions.
 type HookList struct {
 	native C.GHookList
@@ -18229,6 +18048,78 @@ func (d *HookList) Dummy() [2]interface{} {
 	return ret
 }
 
+// Clear removes all the #GHook elements from a List.
+func (hookList *HookList) Clear() {
+	var arg0 *C.GHookList
+
+	arg0 = (*C.GHookList)(hookList.Native())
+
+	C.g_hook_list_clear(arg0)
+}
+
+// Init initializes a List. This must be called before the List is used.
+func (hookList *HookList) Init(hookSize uint) {
+	var arg0 *C.GHookList
+	var arg1 C.guint
+
+	arg0 = (*C.GHookList)(hookList.Native())
+	arg1 = C.guint(hookSize)
+
+	C.g_hook_list_init(arg0, arg1)
+}
+
+// Invoke calls all of the #GHook functions in a List.
+func (hookList *HookList) Invoke(mayRecurse bool) {
+	var arg0 *C.GHookList
+	var arg1 C.gboolean
+
+	arg0 = (*C.GHookList)(hookList.Native())
+	arg1 = gextras.Cbool(mayRecurse)
+
+	C.g_hook_list_invoke(arg0, arg1)
+}
+
+// InvokeCheck calls all of the #GHook functions in a List. Any function which
+// returns false is removed from the List.
+func (hookList *HookList) InvokeCheck(mayRecurse bool) {
+	var arg0 *C.GHookList
+	var arg1 C.gboolean
+
+	arg0 = (*C.GHookList)(hookList.Native())
+	arg1 = gextras.Cbool(mayRecurse)
+
+	C.g_hook_list_invoke_check(arg0, arg1)
+}
+
+// Marshal calls a function on each valid #GHook.
+func (hookList *HookList) Marshal(mayRecurse bool, marshaller HookMarshaller) {
+	var arg0 *C.GHookList
+	var arg1 C.gboolean
+	var arg2 C.GHookMarshaller
+	arg3 := C.gpointer(box.Assign(marshalData))
+
+	arg0 = (*C.GHookList)(hookList.Native())
+	arg1 = gextras.Cbool(mayRecurse)
+	arg2 = (*[0]byte)(C.gotk4_HookMarshaller)
+
+	C.g_hook_list_marshal(arg0, arg1, arg2)
+}
+
+// MarshalCheck calls a function on each valid #GHook and destroys it if the
+// function returns false.
+func (hookList *HookList) MarshalCheck(mayRecurse bool, marshaller HookCheckMarshaller) {
+	var arg0 *C.GHookList
+	var arg1 C.gboolean
+	var arg2 C.GHookCheckMarshaller
+	arg3 := C.gpointer(box.Assign(marshalData))
+
+	arg0 = (*C.GHookList)(hookList.Native())
+	arg1 = gextras.Cbool(mayRecurse)
+	arg2 = (*[0]byte)(C.gotk4_HookCheckMarshaller)
+
+	C.g_hook_list_marshal_check(arg0, arg1, arg2)
+}
+
 // IOChannel: a data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
 type IOChannel struct {
@@ -18289,6 +18180,592 @@ func NewIOChannelUnix(fd int) *IOChannel {
 	return ret0
 }
 
+// Close: close an IO channel. Any pending data to be written will be flushed,
+// ignoring errors. The channel will not be freed until the last reference is
+// dropped using g_io_channel_unref().
+func (channel *IOChannel) Close() {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	C.g_io_channel_close(arg0)
+}
+
+// Flush flushes the write buffer for the GIOChannel.
+func (channel *IOChannel) Flush() IOStatus {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_flush(arg0)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
+// BufferCondition: this function returns a OCondition depending on whether
+// there is data to be read/space to write data in the internal buffers in the
+// OChannel. Only the flags G_IO_IN and G_IO_OUT may be set.
+func (channel *IOChannel) BufferCondition() IOCondition {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_get_buffer_condition(arg0)
+
+	var ret0 IOCondition
+
+	ret0 = IOCondition(ret)
+
+	return ret0
+}
+
+// BufferSize gets the buffer size.
+func (channel *IOChannel) BufferSize() uint {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_get_buffer_size(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Buffered returns whether @channel is buffered.
+func (channel *IOChannel) Buffered() bool {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_get_buffered(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// CloseOnUnref returns whether the file/socket/whatever associated with
+// @channel will be closed when @channel receives its final unref and is
+// destroyed. The default value of this is true for channels created by
+// g_io_channel_new_file (), and false for all other channels.
+func (channel *IOChannel) CloseOnUnref() bool {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_get_close_on_unref(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Encoding gets the encoding for the input/output of the channel. The internal
+// encoding is always UTF-8. The encoding nil makes the channel safe for binary
+// data.
+func (channel *IOChannel) Encoding() string {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_get_encoding(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Flags gets the current flags for a OChannel, including read-only flags such
+// as G_IO_FLAG_IS_READABLE.
+//
+// The values of the flags G_IO_FLAG_IS_READABLE and G_IO_FLAG_IS_WRITABLE are
+// cached for internal use by the channel when it is created. If they should
+// change at some later point (e.g. partial shutdown of a socket with the UNIX
+// shutdown() function), the user should immediately call
+// g_io_channel_get_flags() to update the internal values of these flags.
+func (channel *IOChannel) Flags() IOFlags {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_get_flags(arg0)
+
+	var ret0 IOFlags
+
+	ret0 = IOFlags(ret)
+
+	return ret0
+}
+
+// LineTerm: this returns the string that OChannel uses to determine where in
+// the file a line break occurs. A value of nil indicates autodetection.
+func (channel *IOChannel) LineTerm(length int) string {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gint
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (*C.gint)(length)
+
+	ret := C.g_io_channel_get_line_term(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Init initializes a OChannel struct.
+//
+// This is called by each of the above functions when creating a OChannel, and
+// so is not often needed by the application programmer (unless you are creating
+// a new type of OChannel).
+func (channel *IOChannel) Init() {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	C.g_io_channel_init(arg0)
+}
+
+// Read reads data from a OChannel.
+func (channel *IOChannel) Read(buf string, count uint, bytesRead uint) IOError {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 *C.gsize
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (*C.gchar)(C.CString(buf))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(count)
+	arg3 = (*C.gsize)(bytesRead)
+
+	ret := C.g_io_channel_read(arg0, arg1, arg2, arg3)
+
+	var ret0 IOError
+
+	ret0 = IOError(ret)
+
+	return ret0
+}
+
+// ReadLine reads a line, including the terminating character(s), from a
+// OChannel into a newly-allocated string. @str_return will contain allocated
+// memory if the return is G_IO_STATUS_NORMAL.
+func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus) {
+	var arg0 *C.GIOChannel
+	var arg1 **C.gchar // out
+	var arg2 *C.gsize  // out
+	var arg3 *C.gsize  // out
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_read_line(arg0, &arg1, &arg2, &arg3)
+
+	var ret0 string
+	var ret1 uint
+	var ret2 uint
+	var ret3 IOStatus
+
+	ret0 = C.GoString(arg1)
+	C.free(unsafe.Pointer(arg1))
+
+	ret1 = uint(arg2)
+
+	ret2 = uint(arg3)
+
+	ret3 = IOStatus(ret)
+
+	return ret0, ret1, ret2, ret3
+}
+
+// ReadLineString reads a line from a OChannel, using a #GString as a buffer.
+func (channel *IOChannel) ReadLineString(buffer *String, terminatorPos uint) IOStatus {
+	var arg0 *C.GIOChannel
+	var arg1 *C.GString
+	var arg2 *C.gsize
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (*C.GString)(buffer.Native())
+	arg2 = (*C.gsize)(terminatorPos)
+
+	ret := C.g_io_channel_read_line_string(arg0, arg1, arg2)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
+// ReadToEnd reads all the remaining data from the file.
+func (channel *IOChannel) ReadToEnd() (strReturn []byte, length uint, ioStatus IOStatus) {
+	var arg0 *C.GIOChannel
+	var arg1 **C.gchar // out
+	var arg2 *C.gsize  // out
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_read_to_end(arg0, &arg1, &arg2)
+
+	var ret0 []byte
+	var ret1 uint
+	var ret2 IOStatus
+
+	{
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
+	}
+
+	ret1 = uint(arg2)
+
+	ret2 = IOStatus(ret)
+
+	return ret0, ret1, ret2
+}
+
+// ReadUnichar reads a Unicode character from @channel. This function cannot be
+// called on a channel with nil encoding.
+func (channel *IOChannel) ReadUnichar() (thechar uint32, ioStatus IOStatus) {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gunichar // out
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_read_unichar(arg0, &arg1)
+
+	var ret0 uint32
+	var ret1 IOStatus
+
+	ret0 = uint32(arg1)
+
+	ret1 = IOStatus(ret)
+
+	return ret0, ret1
+}
+
+// Ref increments the reference count of a OChannel.
+func (channel *IOChannel) Ref() *IOChannel {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_ref(arg0)
+
+	var ret0 *IOChannel
+
+	ret0 = WrapIOChannel(ret)
+
+	return ret0
+}
+
+// Seek sets the current position in the OChannel, similar to the standard
+// library function fseek().
+func (channel *IOChannel) Seek(offset int64, _type SeekType) IOError {
+	var arg0 *C.GIOChannel
+	var arg1 C.gint64
+	var arg2 C.GSeekType
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = C.gint64(offset)
+	arg2 = (C.GSeekType)(_type)
+
+	ret := C.g_io_channel_seek(arg0, arg1, arg2)
+
+	var ret0 IOError
+
+	ret0 = IOError(ret)
+
+	return ret0
+}
+
+// SeekPosition: replacement for g_io_channel_seek() with the new API.
+func (channel *IOChannel) SeekPosition(offset int64, _type SeekType) IOStatus {
+	var arg0 *C.GIOChannel
+	var arg1 C.gint64
+	var arg2 C.GSeekType
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = C.gint64(offset)
+	arg2 = (C.GSeekType)(_type)
+
+	ret := C.g_io_channel_seek_position(arg0, arg1, arg2)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
+// SetBufferSize sets the buffer size.
+func (channel *IOChannel) SetBufferSize(size uint) {
+	var arg0 *C.GIOChannel
+	var arg1 C.gsize
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = C.gsize(size)
+
+	C.g_io_channel_set_buffer_size(arg0, arg1)
+}
+
+// SetBuffered: the buffering state can only be set if the channel's encoding is
+// nil. For any other encoding, the channel must be buffered.
+//
+// A buffered channel can only be set unbuffered if the channel's internal
+// buffers have been flushed. Newly created channels or channels which have
+// returned G_IO_STATUS_EOF not require such a flush. For write-only channels, a
+// call to g_io_channel_flush () is sufficient. For all other channels, the
+// buffers may be flushed by a call to g_io_channel_seek_position (). This
+// includes the possibility of seeking with seek type G_SEEK_CUR and an offset
+// of zero. Note that this means that socket-based channels cannot be set
+// unbuffered once they have had data read from them.
+//
+// On unbuffered channels, it is safe to mix read and write calls from the new
+// and old APIs, if this is necessary for maintaining old code.
+//
+// The default state of the channel is buffered.
+func (channel *IOChannel) SetBuffered(buffered bool) {
+	var arg0 *C.GIOChannel
+	var arg1 C.gboolean
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = gextras.Cbool(buffered)
+
+	C.g_io_channel_set_buffered(arg0, arg1)
+}
+
+// SetCloseOnUnref: whether to close the channel on the final unref of the
+// OChannel data structure. The default value of this is true for channels
+// created by g_io_channel_new_file (), and false for all other channels.
+//
+// Setting this flag to true for a channel you have already closed can cause
+// problems when the final reference to the OChannel is dropped.
+func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
+	var arg0 *C.GIOChannel
+	var arg1 C.gboolean
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = gextras.Cbool(doClose)
+
+	C.g_io_channel_set_close_on_unref(arg0, arg1)
+}
+
+// SetEncoding sets the encoding for the input/output of the channel. The
+// internal encoding is always UTF-8. The default encoding for the external file
+// is UTF-8.
+//
+// The encoding nil is safe to use with binary data.
+//
+// The encoding can only be set if one of the following conditions is true:
+//
+// - The channel was just created, and has not been written to or read from yet.
+//
+// - The channel is write-only.
+//
+// - The channel is a file, and the file pointer was just repositioned by a call
+// to g_io_channel_seek_position(). (This flushes all the internal buffers.)
+//
+// - The current encoding is nil or UTF-8.
+//
+// - One of the (new API) read functions has just returned G_IO_STATUS_EOF (or,
+// in the case of g_io_channel_read_to_end(), G_IO_STATUS_NORMAL).
+//
+// - One of the functions g_io_channel_read_chars() or
+// g_io_channel_read_unichar() has returned G_IO_STATUS_AGAIN or
+// G_IO_STATUS_ERROR. This may be useful in the case of
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Returning one of these statuses from
+// g_io_channel_read_line(), g_io_channel_read_line_string(), or
+// g_io_channel_read_to_end() does not guarantee that the encoding can be
+// changed.
+//
+// Channels which do not meet one of the above conditions cannot call
+// g_io_channel_seek_position() with an offset of G_SEEK_CUR, and, if they are
+// "seekable", cannot call g_io_channel_write_chars() after calling one of the
+// API "read" functions.
+func (channel *IOChannel) SetEncoding(encoding string) IOStatus {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gchar
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (*C.gchar)(C.CString(encoding))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_io_channel_set_encoding(arg0, arg1)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
+// SetFlags sets the (writeable) flags in @channel to (@flags &
+// G_IO_FLAG_SET_MASK).
+func (channel *IOChannel) SetFlags(flags IOFlags) IOStatus {
+	var arg0 *C.GIOChannel
+	var arg1 C.GIOFlags
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (C.GIOFlags)(flags)
+
+	ret := C.g_io_channel_set_flags(arg0, arg1)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
+// SetLineTerm: this sets the string that OChannel uses to determine where in
+// the file a line break occurs.
+func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gchar
+	var arg2 C.gint
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (*C.gchar)(C.CString(lineTerm))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(length)
+
+	C.g_io_channel_set_line_term(arg0, arg1, arg2)
+}
+
+// Shutdown: close an IO channel. Any pending data to be written will be flushed
+// if @flush is true. The channel will not be freed until the last reference is
+// dropped using g_io_channel_unref().
+func (channel *IOChannel) Shutdown(flush bool) IOStatus {
+	var arg0 *C.GIOChannel
+	var arg1 C.gboolean
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = gextras.Cbool(flush)
+
+	ret := C.g_io_channel_shutdown(arg0, arg1)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
+// UnixGetFd returns the file descriptor of the OChannel.
+//
+// On Windows this function returns the file descriptor or socket of the
+// OChannel.
+func (channel *IOChannel) UnixGetFd() int {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_unix_get_fd(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Unref decrements the reference count of a OChannel.
+func (channel *IOChannel) Unref() {
+	var arg0 *C.GIOChannel
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	C.g_io_channel_unref(arg0)
+}
+
+// Write writes data to a OChannel.
+func (channel *IOChannel) Write(buf string, count uint, bytesWritten uint) IOError {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 *C.gsize
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = (*C.gchar)(C.CString(buf))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(count)
+	arg3 = (*C.gsize)(bytesWritten)
+
+	ret := C.g_io_channel_write(arg0, arg1, arg2, arg3)
+
+	var ret0 IOError
+
+	ret0 = IOError(ret)
+
+	return ret0
+}
+
+// WriteChars: replacement for g_io_channel_write() with the new API.
+//
+// On seekable channels with encodings other than nil or UTF-8, generic mixing
+// of reading and writing is not allowed. A call to g_io_channel_write_chars ()
+// may only be made on a channel from which data has been read in the cases
+// described in the documentation for g_io_channel_set_encoding ().
+func (channel *IOChannel) WriteChars(buf []byte, count int) (bytesWritten uint, ioStatus IOStatus) {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gsize // out
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	{
+
+	}
+	arg2 = C.gssize(count)
+
+	ret := C.g_io_channel_write_chars(arg0, arg1, arg2, &arg3)
+
+	var ret0 uint
+	var ret1 IOStatus
+
+	ret0 = uint(arg3)
+
+	ret1 = IOStatus(ret)
+
+	return ret0, ret1
+}
+
+// WriteUnichar writes a Unicode character to @channel. This function cannot be
+// called on a channel with nil encoding.
+func (channel *IOChannel) WriteUnichar(thechar uint32) IOStatus {
+	var arg0 *C.GIOChannel
+	var arg1 C.gunichar
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+	arg1 = C.gunichar(thechar)
+
+	ret := C.g_io_channel_write_unichar(arg0, arg1)
+
+	var ret0 IOStatus
+
+	ret0 = IOStatus(ret)
+
+	return ret0
+}
+
 // KeyFile: the GKeyFile struct contains only private data and should not be
 // accessed directly.
 type KeyFile struct {
@@ -18325,6 +18802,1089 @@ func NewKeyFile() *KeyFile {
 	ret0 = WrapKeyFile(ret)
 
 	return ret0
+}
+
+// Free clears all keys and groups from @key_file, and decreases the reference
+// count by 1. If the reference count reaches zero, frees the key file and all
+// its allocated memory.
+func (keyFile *KeyFile) Free() {
+	var arg0 *C.GKeyFile
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+
+	C.g_key_file_free(arg0)
+}
+
+// Boolean returns the value associated with @key under @group_name as a
+// boolean.
+//
+// If @key cannot be found then false is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
+// cannot be interpreted as a boolean then false is returned and @error is set
+// to KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) Boolean(groupName string, key string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_boolean(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// BooleanList returns the values associated with @key under @group_name as
+// booleans.
+//
+// If @key cannot be found then nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
+// cannot be interpreted as booleans then nil is returned and @error is set to
+// KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) BooleanList(groupName string, key string) (length uint, oks []bool) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_boolean_list(arg0, arg1, arg2, &arg3)
+
+	var ret0 uint
+	var ret1 []bool
+
+	ret0 = uint(arg3)
+
+	{
+		ret1 = make([]bool, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			src := (C.gboolean)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = gextras.Gobool(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Comment retrieves a comment above @key from @group_name. If @key is nil then
+// @comment will be read from above @group_name. If both @key and @group_name
+// are nil, then @comment will be read from above the first group in the file.
+//
+// Note that the returned string does not include the '#' comment markers, but
+// does include any whitespace after them (on each line). It includes the line
+// breaks between lines, but does not include the final line break.
+func (keyFile *KeyFile) Comment(groupName string, key string) string {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_comment(arg0, arg1, arg2)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Double returns the value associated with @key under @group_name as a double.
+// If @group_name is nil, the start_group is used.
+//
+// If @key cannot be found then 0.0 is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
+// cannot be interpreted as a double then 0.0 is returned and @error is set to
+// KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) Double(groupName string, key string) float64 {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_double(arg0, arg1, arg2)
+
+	var ret0 float64
+
+	ret0 = float64(ret)
+
+	return ret0
+}
+
+// DoubleList returns the values associated with @key under @group_name as
+// doubles.
+//
+// If @key cannot be found then nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
+// cannot be interpreted as doubles then nil is returned and @error is set to
+// KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) DoubleList(groupName string, key string) (length uint, gdoubles []float64) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_double_list(arg0, arg1, arg2, &arg3)
+
+	var ret0 uint
+	var ret1 []float64
+
+	ret0 = uint(arg3)
+
+	{
+		ret1 = make([]float64, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			src := (C.gdouble)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = float64(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Groups returns all groups in the key file loaded with @key_file. The array of
+// returned groups will be nil-terminated, so @length may optionally be nil.
+func (keyFile *KeyFile) Groups() (length uint, utf8s []string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+
+	ret := C.g_key_file_get_groups(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret1 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Int64 returns the value associated with @key under @group_name as a signed
+// 64-bit integer. This is similar to g_key_file_get_integer() but can return
+// 64-bit results without truncation.
+func (keyFile *KeyFile) Int64(groupName string, key string) int64 {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_int64(arg0, arg1, arg2)
+
+	var ret0 int64
+
+	ret0 = int64(ret)
+
+	return ret0
+}
+
+// Integer returns the value associated with @key under @group_name as an
+// integer.
+//
+// If @key cannot be found then 0 is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
+// cannot be interpreted as an integer, or is out of range for a #gint, then 0
+// is returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) Integer(groupName string, key string) int {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_integer(arg0, arg1, arg2)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// IntegerList returns the values associated with @key under @group_name as
+// integers.
+//
+// If @key cannot be found then nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
+// cannot be interpreted as integers, or are out of range for #gint, then nil is
+// returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
+func (keyFile *KeyFile) IntegerList(groupName string, key string) (length uint, gints []int) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_integer_list(arg0, arg1, arg2, &arg3)
+
+	var ret0 uint
+	var ret1 []int
+
+	ret0 = uint(arg3)
+
+	{
+		ret1 = make([]int, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			src := (C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = int(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Keys returns all keys for the group name @group_name. The array of returned
+// keys will be nil-terminated, so @length may optionally be nil. In the event
+// that the @group_name cannot be found, nil is returned and @error is set to
+// KEY_FILE_ERROR_GROUP_NOT_FOUND.
+func (keyFile *KeyFile) Keys(groupName string) (length uint, utf8s []string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_key_file_get_keys(arg0, arg1, &arg2)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg2)
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret1 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// LocaleForKey returns the actual locale which the result of
+// g_key_file_get_locale_string() or g_key_file_get_locale_string_list() came
+// from.
+//
+// If calling g_key_file_get_locale_string() or
+// g_key_file_get_locale_string_list() with exactly the same @key_file,
+// @group_name, @key and @locale, the result of those functions will have
+// originally been tagged with the locale that is the result of this function.
+func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string) string {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(arg3))
+
+	ret := C.g_key_file_get_locale_for_key(arg0, arg1, arg2, arg3)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// LocaleString returns the value associated with @key under @group_name
+// translated in the given @locale if available. If @locale is nil then the
+// current locale is assumed.
+//
+// If @locale is to be non-nil, or if the current locale will change over the
+// lifetime of the File, it must be loaded with G_KEY_FILE_KEEP_TRANSLATIONS in
+// order to load strings for all locales.
+//
+// If @key cannot be found then nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated with @key cannot be
+// interpreted or no suitable translation can be found then the untranslated
+// value is returned.
+func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string) string {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(arg3))
+
+	ret := C.g_key_file_get_locale_string(arg0, arg1, arg2, arg3)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// LocaleStringList returns the values associated with @key under @group_name
+// translated in the given @locale if available. If @locale is nil then the
+// current locale is assumed.
+//
+// If @locale is to be non-nil, or if the current locale will change over the
+// lifetime of the File, it must be loaded with G_KEY_FILE_KEEP_TRANSLATIONS in
+// order to load strings for all locales.
+//
+// If @key cannot be found then nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated with @key cannot be
+// interpreted or no suitable translations can be found then the untranslated
+// values are returned. The returned array is nil-terminated, so @length may
+// optionally be nil.
+func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) (length uint, utf8s []string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+	var arg4 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(arg3))
+
+	ret := C.g_key_file_get_locale_string_list(arg0, arg1, arg2, arg3, &arg4)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg4)
+
+	{
+		ret1 = make([]string, arg4)
+		for i := 0; i < uintptr(arg4); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// StartGroup returns the name of the start group of the file.
+func (keyFile *KeyFile) StartGroup() string {
+	var arg0 *C.GKeyFile
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+
+	ret := C.g_key_file_get_start_group(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// String returns the string value associated with @key under @group_name.
+// Unlike g_key_file_get_value(), this function handles escape sequences like
+// \s.
+//
+// In the event the key cannot be found, nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
+// found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
+func (keyFile *KeyFile) String(groupName string, key string) string {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_string(arg0, arg1, arg2)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// StringList returns the values associated with @key under @group_name.
+//
+// In the event the key cannot be found, nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
+// found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
+func (keyFile *KeyFile) StringList(groupName string, key string) (length uint, utf8s []string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_string_list(arg0, arg1, arg2, &arg3)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg3)
+
+	{
+		ret1 = make([]string, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Uint64 returns the value associated with @key under @group_name as an
+// unsigned 64-bit integer. This is similar to g_key_file_get_integer() but can
+// return large positive results without truncation.
+func (keyFile *KeyFile) Uint64(groupName string, key string) uint64 {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_uint64(arg0, arg1, arg2)
+
+	var ret0 uint64
+
+	ret0 = uint64(ret)
+
+	return ret0
+}
+
+// Value returns the raw value associated with @key under @group_name. Use
+// g_key_file_get_string() to retrieve an unescaped UTF-8 string.
+//
+// In the event the key cannot be found, nil is returned and @error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
+// found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
+func (keyFile *KeyFile) Value(groupName string, key string) string {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_get_value(arg0, arg1, arg2)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// HasGroup looks whether the key file has the group @group_name.
+func (keyFile *KeyFile) HasGroup(groupName string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_key_file_has_group(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// HasKey looks whether the key file has the key @key in the group @group_name.
+//
+// Note that this function does not follow the rules for #GError strictly; the
+// return value both carries meaning and signals an error. To use this function,
+// you must pass a #GError pointer in @error, and check whether it is not nil to
+// see if an error occurred.
+//
+// Language bindings should use g_key_file_get_value() to test whether or not a
+// key exists.
+func (keyFile *KeyFile) HasKey(groupName string, key string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_has_key(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// LoadFromBytes loads a key file from the data in @bytes into an empty File
+// structure. If the object cannot be created then error is set to a FileError.
+func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.GBytes
+	var arg2 C.GKeyFileFlags
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.GBytes)(bytes.Native())
+	arg2 = (C.GKeyFileFlags)(flags)
+
+	ret := C.g_key_file_load_from_bytes(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// LoadFromData loads a key file from memory into an empty File structure. If
+// the object cannot be created then error is set to a FileError.
+func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 C.GKeyFileFlags
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(data))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(length)
+	arg3 = (C.GKeyFileFlags)(flags)
+
+	ret := C.g_key_file_load_from_data(arg0, arg1, arg2, arg3)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// LoadFromDataDirs: this function looks for a key file named @file in the paths
+// returned from g_get_user_data_dir() and g_get_system_data_dirs(), loads the
+// file into @key_file and returns the file's full path in @full_path. If the
+// file could not be loaded then an error is set to either a Error or FileError.
+func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullPath string, ok bool) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
+	var arg3 C.GKeyFileFlags
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg1))
+	arg3 = (C.GKeyFileFlags)(flags)
+
+	ret := C.g_key_file_load_from_data_dirs(arg0, arg1, &arg2, arg3)
+
+	var ret0 string
+	var ret1 bool
+
+	ret0 = C.GoString(arg2)
+	C.free(unsafe.Pointer(arg2))
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// LoadFromDirs: this function looks for a key file named @file in the paths
+// specified in @search_dirs, loads the file into @key_file and returns the
+// file's full path in @full_path.
+//
+// If the file could not be found in any of the @search_dirs,
+// G_KEY_FILE_ERROR_NOT_FOUND is returned. If the file is found but the OS
+// returns an error when opening or reading the file, a G_FILE_ERROR is
+// returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
+// returned.
+func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (fullPath string, ok bool) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 **C.gchar
+	var arg3 **C.gchar // out
+	var arg4 C.GKeyFileFlags
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg1))
+	{
+
+	}
+	arg4 = (C.GKeyFileFlags)(flags)
+
+	ret := C.g_key_file_load_from_dirs(arg0, arg1, arg2, &arg3, arg4)
+
+	var ret0 string
+	var ret1 bool
+
+	ret0 = C.GoString(arg3)
+	C.free(unsafe.Pointer(arg3))
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// LoadFromFile loads a key file into an empty File structure.
+//
+// If the OS returns an error when opening or reading the file, a G_FILE_ERROR
+// is returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
+// returned.
+//
+// This function will never return a G_KEY_FILE_ERROR_NOT_FOUND error. If the
+// @file is not found, G_FILE_ERROR_NOENT is returned.
+func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 C.GKeyFileFlags
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GKeyFileFlags)(flags)
+
+	ret := C.g_key_file_load_from_file(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Ref increases the reference count of @key_file.
+func (keyFile *KeyFile) Ref() *KeyFile {
+	var arg0 *C.GKeyFile
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+
+	ret := C.g_key_file_ref(arg0)
+
+	var ret0 *KeyFile
+
+	ret0 = WrapKeyFile(ret)
+
+	return ret0
+}
+
+// RemoveComment removes a comment above @key from @group_name. If @key is nil
+// then @comment will be removed above @group_name. If both @key and @group_name
+// are nil, then @comment will be removed above the first group in the file.
+func (keyFile *KeyFile) RemoveComment(groupName string, key string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_remove_comment(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// RemoveGroup removes the specified group, @group_name, from the key file.
+func (keyFile *KeyFile) RemoveGroup(groupName string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_key_file_remove_group(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// RemoveKey removes @key in @group_name from the key file.
+func (keyFile *KeyFile) RemoveKey(groupName string, key string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_key_file_remove_key(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SaveToFile writes the contents of @key_file to @filename using
+// g_file_set_contents(). If you need stricter guarantees about durability of
+// the written file than are provided by g_file_set_contents(), use
+// g_file_set_contents_full() with the return value of g_key_file_to_data().
+//
+// This function can fail for any of the reasons that g_file_set_contents() may
+// fail.
+func (keyFile *KeyFile) SaveToFile(filename string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_key_file_save_to_file(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetBoolean associates a new boolean value with @key under @group_name. If
+// @key cannot be found then it is created.
+func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gboolean
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = gextras.Cbool(value)
+
+	C.g_key_file_set_boolean(arg0, arg1, arg2, arg3)
+}
+
+// SetComment places a comment above @key from @group_name.
+//
+// If @key is nil then @comment will be written above @group_name. If both @key
+// and @group_name are nil, then @comment will be written above the first group
+// in the file.
+//
+// Note that this function prepends a '#' comment marker to each line of
+// @comment.
+func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) bool {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(comment))
+	defer C.free(unsafe.Pointer(arg3))
+
+	ret := C.g_key_file_set_comment(arg0, arg1, arg2, arg3)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetDouble associates a new double value with @key under @group_name. If @key
+// cannot be found then it is created.
+func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gdouble
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gdouble(value)
+
+	C.g_key_file_set_double(arg0, arg1, arg2, arg3)
+}
+
+// SetInt64 associates a new integer value with @key under @group_name. If @key
+// cannot be found then it is created.
+func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gint64
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gint64(value)
+
+	C.g_key_file_set_int64(arg0, arg1, arg2, arg3)
+}
+
+// SetInteger associates a new integer value with @key under @group_name. If
+// @key cannot be found then it is created.
+func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gint
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gint(value)
+
+	C.g_key_file_set_integer(arg0, arg1, arg2, arg3)
+}
+
+// SetListSeparator sets the character which is used to separate values in
+// lists. Typically ';' or ',' are used as separators. The default list
+// separator is ';'.
+func (keyFile *KeyFile) SetListSeparator(separator byte) {
+	var arg0 *C.GKeyFile
+	var arg1 C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = C.gchar(separator)
+
+	C.g_key_file_set_list_separator(arg0, arg1)
+}
+
+// SetLocaleString associates a string value for @key and @locale under
+// @group_name. If the translation for @key cannot be found then it is created.
+func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale string, string string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+	var arg4 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg4))
+
+	C.g_key_file_set_locale_string(arg0, arg1, arg2, arg3, arg4)
+}
+
+// SetString associates a new string value with @key under @group_name. If @key
+// cannot be found then it is created. If @group_name cannot be found then it is
+// created. Unlike g_key_file_set_value(), this function handles characters that
+// need escaping, such as newlines.
+func (keyFile *KeyFile) SetString(groupName string, key string, string string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg3))
+
+	C.g_key_file_set_string(arg0, arg1, arg2, arg3)
+}
+
+// SetUint64 associates a new integer value with @key under @group_name. If @key
+// cannot be found then it is created.
+func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.guint64
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.guint64(value)
+
+	C.g_key_file_set_uint64(arg0, arg1, arg2, arg3)
+}
+
+// SetValue associates a new value with @key under @group_name.
+//
+// If @key cannot be found then it is created. If @group_name cannot be found
+// then it is created. To set an UTF-8 string which may contain characters that
+// need escaping (such as newlines or spaces), use g_key_file_set_string().
+func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(value))
+	defer C.free(unsafe.Pointer(arg3))
+
+	C.g_key_file_set_value(arg0, arg1, arg2, arg3)
+}
+
+// ToData: this function outputs @key_file as a string.
+//
+// Note that this function never reports an error, so it is safe to pass nil as
+// @error.
+func (keyFile *KeyFile) ToData() (length uint, utf8 string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+
+	ret := C.g_key_file_to_data(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 string
+
+	ret0 = uint(arg1)
+
+	ret1 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0, ret1
+}
+
+// Unref decreases the reference count of @key_file by 1. If the reference count
+// reaches zero, frees the key file and all its allocated memory.
+func (keyFile *KeyFile) Unref() {
+	var arg0 *C.GKeyFile
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+
+	C.g_key_file_unref(arg0)
 }
 
 // List: the #GList struct is used for each element in a doubly-linked list.
@@ -18463,6 +20023,396 @@ func NewMainContext() *MainContext {
 	return ret0
 }
 
+// Acquire tries to become the owner of the specified context. If some other
+// thread is the owner of the context, returns false immediately. Ownership is
+// properly recursive: the owner can require ownership again and will release
+// ownership when g_main_context_release() is called as many times as
+// g_main_context_acquire().
+//
+// You must be the owner of a context before you can call
+// g_main_context_prepare(), g_main_context_query(), g_main_context_check(),
+// g_main_context_dispatch().
+func (context *MainContext) Acquire() bool {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	ret := C.g_main_context_acquire(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// AddPoll adds a file descriptor to the set of file descriptors polled for this
+// context. This will very seldom be used directly. Instead a typical event
+// source will use g_source_add_unix_fd() instead.
+func (context *MainContext) AddPoll(fd *PollFD, priority int) {
+	var arg0 *C.GMainContext
+	var arg1 *C.GPollFD
+	var arg2 C.gint
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = (*C.GPollFD)(fd.Native())
+	arg2 = C.gint(priority)
+
+	C.g_main_context_add_poll(arg0, arg1, arg2)
+}
+
+// Dispatch dispatches all pending sources.
+//
+// You must have successfully acquired the context with g_main_context_acquire()
+// before you may call this function.
+func (context *MainContext) Dispatch() {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	C.g_main_context_dispatch(arg0)
+}
+
+// FindSourceByFuncsUserData finds a source with the given source functions and
+// user data. If multiple sources exist with the same source function and user
+// data, the first one found will be returned.
+func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData interface{}) *Source {
+	var arg0 *C.GMainContext
+	var arg1 *C.GSourceFuncs
+	var arg2 C.gpointer
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = (*C.GSourceFuncs)(funcs.Native())
+	arg2 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_main_context_find_source_by_funcs_user_data(arg0, arg1, arg2)
+
+	var ret0 *Source
+
+	ret0 = WrapSource(ret)
+
+	return ret0
+}
+
+// FindSourceByID finds a #GSource given a pair of context and ID.
+//
+// It is a programmer error to attempt to look up a non-existent source.
+//
+// More specifically: source IDs can be reissued after a source has been
+// destroyed and therefore it is never valid to use this function with a source
+// ID which may have already been removed. An example is when scheduling an idle
+// to run in another thread with g_idle_add(): the idle may already have run and
+// been removed by the time this function is called on its (now invalid) source
+// ID. This source ID may have been reissued, leading to the operation being
+// performed against the wrong source.
+func (context *MainContext) FindSourceByID(sourceID uint) *Source {
+	var arg0 *C.GMainContext
+	var arg1 C.guint
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = C.guint(sourceID)
+
+	ret := C.g_main_context_find_source_by_id(arg0, arg1)
+
+	var ret0 *Source
+
+	ret0 = WrapSource(ret)
+
+	return ret0
+}
+
+// FindSourceByUserData finds a source with the given user data for the
+// callback. If multiple sources exist with the same user data, the first one
+// found will be returned.
+func (context *MainContext) FindSourceByUserData(userData interface{}) *Source {
+	var arg0 *C.GMainContext
+	var arg1 C.gpointer
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_main_context_find_source_by_user_data(arg0, arg1)
+
+	var ret0 *Source
+
+	ret0 = WrapSource(ret)
+
+	return ret0
+}
+
+// Invoke invokes a function in such a way that @context is owned during the
+// invocation of @function.
+//
+// If @context is nil then the global default main context — as returned by
+// g_main_context_default() — is used.
+//
+// If @context is owned by the current thread, @function is called directly.
+// Otherwise, if @context is the thread-default main context of the current
+// thread and g_main_context_acquire() succeeds, then @function is called and
+// g_main_context_release() is called afterwards.
+//
+// In any other case, an idle source is created to call @function and that
+// source is attached to @context (presumably to be run in another thread). The
+// idle source is attached with PRIORITY_DEFAULT priority. If you want a
+// different priority, use g_main_context_invoke_full().
+//
+// Note that, as with normal idle functions, @function should probably return
+// false. If it returns true, it will be continuously run in a loop (and may
+// prevent this call from returning).
+func (context *MainContext) Invoke(function SourceFunc) {
+	var arg0 *C.GMainContext
+	var arg1 C.GSourceFunc
+	arg2 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+
+	C.g_main_context_invoke(arg0, arg1)
+}
+
+// InvokeFull invokes a function in such a way that @context is owned during the
+// invocation of @function.
+//
+// This function is the same as g_main_context_invoke() except that it lets you
+// specify the priority in case @function ends up being scheduled as an idle and
+// also lets you give a Notify for @data.
+//
+// @notify should not assume that it is called from any particular thread or
+// with any particular context acquired.
+func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
+	var arg0 *C.GMainContext
+	var arg1 C.gint
+	var arg2 C.GSourceFunc
+	arg3 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = C.gint(priority)
+	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
+
+	C.g_main_context_invoke_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+}
+
+// IsOwner determines whether this thread holds the (recursive) ownership of
+// this Context. This is useful to know before waiting on another thread that
+// may be blocking to get ownership of @context.
+func (context *MainContext) IsOwner() bool {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	ret := C.g_main_context_is_owner(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Iteration runs a single iteration for the given main loop. This involves
+// checking to see if any event sources are ready to be processed, then if no
+// events sources are ready and @may_block is true, waiting for a source to
+// become ready, then dispatching the highest priority events sources that are
+// ready. Otherwise, if @may_block is false sources are not waited to become
+// ready, only those highest priority events sources will be dispatched (if
+// any), that are ready at this given moment without further waiting.
+//
+// Note that even when @may_block is true, it is still possible for
+// g_main_context_iteration() to return false, since the wait may be interrupted
+// for other reasons than an event source becoming ready.
+func (context *MainContext) Iteration(mayBlock bool) bool {
+	var arg0 *C.GMainContext
+	var arg1 C.gboolean
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = gextras.Cbool(mayBlock)
+
+	ret := C.g_main_context_iteration(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Pending checks if any sources have pending events for the given context.
+func (context *MainContext) Pending() bool {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	ret := C.g_main_context_pending(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// PopThreadDefault pops @context off the thread-default context stack
+// (verifying that it was on the top of the stack).
+func (context *MainContext) PopThreadDefault() {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	C.g_main_context_pop_thread_default(arg0)
+}
+
+// Prepare prepares to poll sources within a main loop. The resulting
+// information for polling is determined by calling g_main_context_query ().
+//
+// You must have successfully acquired the context with g_main_context_acquire()
+// before you may call this function.
+func (context *MainContext) Prepare() (priority int, ok bool) {
+	var arg0 *C.GMainContext
+	var arg1 *C.gint // out
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	ret := C.g_main_context_prepare(arg0, &arg1)
+
+	var ret0 int
+	var ret1 bool
+
+	ret0 = int(arg1)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// PushThreadDefault acquires @context and sets it as the thread-default context
+// for the current thread. This will cause certain asynchronous operations (such
+// as most [gio][gio]-based I/O) which are started in this thread to run under
+// @context and deliver their results to its main loop, rather than running
+// under the global default context in the main thread. Note that calling this
+// function changes the context returned by g_main_context_get_thread_default(),
+// not the one returned by g_main_context_default(), so it does not affect the
+// context used by functions like g_idle_add().
+//
+// Normally you would call this function shortly after creating a new thread,
+// passing it a Context which will be run by a Loop in that thread, to set a new
+// default context for all async operations in that thread. In this case you may
+// not need to ever call g_main_context_pop_thread_default(), assuming you want
+// the new Context to be the default for the whole lifecycle of the thread.
+//
+// If you don't have control over how the new thread was created (e.g. in the
+// new thread isn't newly created, or if the thread life cycle is managed by a
+// Pool), it is always suggested to wrap the logic that needs to use the new
+// Context inside a g_main_context_push_thread_default() /
+// g_main_context_pop_thread_default() pair, otherwise threads that are re-used
+// will end up never explicitly releasing the Context reference they hold.
+//
+// In some cases you may want to schedule a single operation in a non-default
+// context, or temporarily use a non-default context in the main thread. In that
+// case, you can wrap the call to the asynchronous operation inside a
+// g_main_context_push_thread_default() / g_main_context_pop_thread_default()
+// pair, but it is up to you to ensure that no other asynchronous operations
+// accidentally get started while the non-default context is active.
+//
+// Beware that libraries that predate this function may not correctly handle
+// being used from a thread with a thread-default context. Eg, see
+// g_file_supports_thread_contexts().
+func (context *MainContext) PushThreadDefault() {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	C.g_main_context_push_thread_default(arg0)
+}
+
+// Ref increases the reference count on a Context object by one.
+func (context *MainContext) Ref() *MainContext {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	ret := C.g_main_context_ref(arg0)
+
+	var ret0 *MainContext
+
+	ret0 = WrapMainContext(ret)
+
+	return ret0
+}
+
+// Release releases ownership of a context previously acquired by this thread
+// with g_main_context_acquire(). If the context was acquired multiple times,
+// the ownership will be released only when g_main_context_release() is called
+// as many times as it was acquired.
+func (context *MainContext) Release() {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	C.g_main_context_release(arg0)
+}
+
+// RemovePoll removes file descriptor from the set of file descriptors to be
+// polled for a particular context.
+func (context *MainContext) RemovePoll(fd *PollFD) {
+	var arg0 *C.GMainContext
+	var arg1 *C.GPollFD
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = (*C.GPollFD)(fd.Native())
+
+	C.g_main_context_remove_poll(arg0, arg1)
+}
+
+// SetPollFunc sets the function to use to handle polling of file descriptors.
+// It will be used instead of the poll() system call (or GLib's replacement
+// function, which is used where poll() isn't available).
+//
+// This function could possibly be used to integrate the GLib event loop with an
+// external event loop.
+func (context *MainContext) SetPollFunc(_func PollFunc) {
+	var arg0 *C.GMainContext
+	var arg1 C.GPollFunc
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = (*[0]byte)(C.gotk4_PollFunc)
+
+	C.g_main_context_set_poll_func(arg0, arg1)
+}
+
+// Unref decreases the reference count on a Context object by one. If the result
+// is zero, free the context and free all associated memory.
+func (context *MainContext) Unref() {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	C.g_main_context_unref(arg0)
+}
+
+// Wakeup: if @context is currently blocking in g_main_context_iteration()
+// waiting for a source to become ready, cause it to stop blocking and return.
+// Otherwise, cause the next invocation of g_main_context_iteration() to return
+// without blocking.
+//
+// This API is useful for low-level control over Context; for example,
+// integrating it with main loop implementations such as Loop.
+//
+// Another related use for this function is when implementing a main loop with a
+// termination condition, computed from multiple threads:
+//
+//      perform_work();
+//
+//      if (g_atomic_int_dec_and_test (&tasks_remaining))
+//        g_main_context_wakeup (NULL);
+//
+func (context *MainContext) Wakeup() {
+	var arg0 *C.GMainContext
+
+	arg0 = (*C.GMainContext)(context.Native())
+
+	C.g_main_context_wakeup(arg0)
+}
+
 // MainLoop: the `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
@@ -18504,6 +20454,86 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	ret0 = WrapMainLoop(ret)
 
 	return ret0
+}
+
+// Context returns the Context of @loop.
+func (loop *MainLoop) Context() *MainContext {
+	var arg0 *C.GMainLoop
+
+	arg0 = (*C.GMainLoop)(loop.Native())
+
+	ret := C.g_main_loop_get_context(arg0)
+
+	var ret0 *MainContext
+
+	ret0 = WrapMainContext(ret)
+
+	return ret0
+}
+
+// IsRunning checks to see if the main loop is currently being run via
+// g_main_loop_run().
+func (loop *MainLoop) IsRunning() bool {
+	var arg0 *C.GMainLoop
+
+	arg0 = (*C.GMainLoop)(loop.Native())
+
+	ret := C.g_main_loop_is_running(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Quit stops a Loop from running. Any calls to g_main_loop_run() for the loop
+// will return.
+//
+// Note that sources that have already been dispatched when g_main_loop_quit()
+// is called will still be executed.
+func (loop *MainLoop) Quit() {
+	var arg0 *C.GMainLoop
+
+	arg0 = (*C.GMainLoop)(loop.Native())
+
+	C.g_main_loop_quit(arg0)
+}
+
+// Ref increases the reference count on a Loop object by one.
+func (loop *MainLoop) Ref() *MainLoop {
+	var arg0 *C.GMainLoop
+
+	arg0 = (*C.GMainLoop)(loop.Native())
+
+	ret := C.g_main_loop_ref(arg0)
+
+	var ret0 *MainLoop
+
+	ret0 = WrapMainLoop(ret)
+
+	return ret0
+}
+
+// Run runs a main loop until g_main_loop_quit() is called on the loop. If this
+// is called for the thread of the loop's Context, it will process events from
+// the loop, otherwise it will simply wait.
+func (loop *MainLoop) Run() {
+	var arg0 *C.GMainLoop
+
+	arg0 = (*C.GMainLoop)(loop.Native())
+
+	C.g_main_loop_run(arg0)
+}
+
+// Unref decreases the reference count on a Loop object by one. If the result is
+// zero, free the loop and free all associated memory.
+func (loop *MainLoop) Unref() {
+	var arg0 *C.GMainLoop
+
+	arg0 = (*C.GMainLoop)(loop.Native())
+
+	C.g_main_loop_unref(arg0)
 }
 
 // MappedFile: the File represents a file mapping created with
@@ -18568,6 +20598,99 @@ func NewMappedFileFromFd(fd int, writable bool) *MappedFile {
 	return ret0
 }
 
+// Free: this call existed before File had refcounting and is currently exactly
+// the same as g_mapped_file_unref().
+func (file *MappedFile) Free() {
+	var arg0 *C.GMappedFile
+
+	arg0 = (*C.GMappedFile)(file.Native())
+
+	C.g_mapped_file_free(arg0)
+}
+
+// Bytes creates a new #GBytes which references the data mapped from @file. The
+// mapped contents of the file must not be modified after creating this bytes
+// object, because a #GBytes should be immutable.
+func (file *MappedFile) Bytes() *Bytes {
+	var arg0 *C.GMappedFile
+
+	arg0 = (*C.GMappedFile)(file.Native())
+
+	ret := C.g_mapped_file_get_bytes(arg0)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
+
+// Contents returns the contents of a File.
+//
+// Note that the contents may not be zero-terminated, even if the File is backed
+// by a text file.
+//
+// If the file is empty then nil is returned.
+func (file *MappedFile) Contents() string {
+	var arg0 *C.GMappedFile
+
+	arg0 = (*C.GMappedFile)(file.Native())
+
+	ret := C.g_mapped_file_get_contents(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Length returns the length of the contents of a File.
+func (file *MappedFile) Length() uint {
+	var arg0 *C.GMappedFile
+
+	arg0 = (*C.GMappedFile)(file.Native())
+
+	ret := C.g_mapped_file_get_length(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Ref increments the reference count of @file by one. It is safe to call this
+// function from any thread.
+func (file *MappedFile) Ref() *MappedFile {
+	var arg0 *C.GMappedFile
+
+	arg0 = (*C.GMappedFile)(file.Native())
+
+	ret := C.g_mapped_file_ref(arg0)
+
+	var ret0 *MappedFile
+
+	ret0 = WrapMappedFile(ret)
+
+	return ret0
+}
+
+// Unref decrements the reference count of @file by one. If the reference count
+// drops to 0, unmaps the buffer of @file and frees it.
+//
+// It is safe to call this function from any thread.
+//
+// Since 2.22
+func (file *MappedFile) Unref() {
+	var arg0 *C.GMappedFile
+
+	arg0 = (*C.GMappedFile)(file.Native())
+
+	C.g_mapped_file_unref(arg0)
+}
+
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
 // you expect to contain marked-up text.
 //
@@ -18615,6 +20738,257 @@ func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userDat
 	return ret0
 }
 
+// EndParse signals to the ParseContext that all data has been fed into the
+// parse context with g_markup_parse_context_parse().
+//
+// This function reports an error if the document isn't complete, for example if
+// elements are still open.
+func (context *MarkupParseContext) EndParse() bool {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_end_parse(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Free frees a ParseContext.
+//
+// This function can't be called from inside one of the Parser functions or
+// while a subparser is pushed.
+func (context *MarkupParseContext) Free() {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	C.g_markup_parse_context_free(arg0)
+}
+
+// Element retrieves the name of the currently open element.
+//
+// If called from the start_element or end_element handlers this will give the
+// element_name as passed to those functions. For the parent elements, see
+// g_markup_parse_context_get_element_stack().
+func (context *MarkupParseContext) Element() string {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_get_element(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// ElementStack retrieves the element stack from the internal state of the
+// parser.
+//
+// The returned List is a list of strings where the first item is the currently
+// open tag (as would be returned by g_markup_parse_context_get_element()) and
+// the next item is its immediate parent.
+//
+// This function is intended to be used in the start_element and end_element
+// handlers where g_markup_parse_context_get_element() would merely return the
+// name of the element that is being processed.
+func (context *MarkupParseContext) ElementStack() *SList {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_get_element_stack(arg0)
+
+	var ret0 *SList
+
+	ret0 = WrapSList(ret)
+
+	return ret0
+}
+
+// Position retrieves the current line number and the number of the character on
+// that line. Intended for use in error messages; there are no strict semantics
+// for what constitutes the "current" line number other than "the best number we
+// could come up with for error messages."
+func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
+	var arg0 *C.GMarkupParseContext
+	var arg1 *C.gint // out
+	var arg2 *C.gint // out
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
+
+	var ret0 int
+	var ret1 int
+
+	ret0 = int(arg1)
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
+// UserData returns the user_data associated with @context.
+//
+// This will either be the user_data that was provided to
+// g_markup_parse_context_new() or to the most recent call of
+// g_markup_parse_context_push().
+func (context *MarkupParseContext) UserData() interface{} {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_get_user_data(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Parse: feed some data to the ParseContext.
+//
+// The data need not be valid UTF-8; an error will be signaled if it's invalid.
+// The data need not be an entire document; you can feed a document into the
+// parser incrementally, via multiple calls to this function. Typically, as you
+// receive data from a network connection or file, you feed each received chunk
+// of data into this function, aborting the process if an error occurs. Once an
+// error is reported, no further data may be fed to the ParseContext; all errors
+// are fatal.
+func (context *MarkupParseContext) Parse(text string, textLen int) bool {
+	var arg0 *C.GMarkupParseContext
+	var arg1 *C.gchar
+	var arg2 C.gssize
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(textLen)
+
+	ret := C.g_markup_parse_context_parse(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Pop completes the process of a temporary sub-parser redirection.
+//
+// This function exists to collect the user_data allocated by a matching call to
+// g_markup_parse_context_push(). It must be called in the end_element handler
+// corresponding to the start_element handler during which
+// g_markup_parse_context_push() was called. You must not call this function
+// from the error callback -- the @user_data is provided directly to the
+// callback in that case.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+func (context *MarkupParseContext) Pop() interface{} {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_pop(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Push: temporarily redirects markup data to a sub-parser.
+//
+// This function may only be called from the start_element handler of a Parser.
+// It must be matched with a corresponding call to g_markup_parse_context_pop()
+// in the matching end_element handler (except in the case that the parser
+// aborts due to an error).
+//
+// All tags, text and other data between the matching tags is redirected to the
+// subparser given by @parser. @user_data is used as the user_data for that
+// parser. @user_data is also passed to the error callback in the event that an
+// error occurs. This includes errors that occur in subparsers of the subparser.
+//
+// The end tag matching the start tag for which this call was made is handled by
+// the previous parser (which is given its own user_data) which is why
+// g_markup_parse_context_pop() is provided to allow "one last access" to the
+// @user_data provided to this function. In the case of error, the @user_data
+// provided here is passed directly to the error callback of the subparser and
+// g_markup_parse_context_pop() should not be called. In either case, if
+// @user_data was allocated then it ought to be freed from both of these
+// locations.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+//
+// As an example, see the following implementation of a simple parser that
+// counts the number of tags encountered.
+//
+//    static void start_element (context, element_name, ...)
+//    {
+//      if (strcmp (element_name, "count-these") == 0)
+//        start_counting (context);
+//
+//      // else, handle other tags...
+//    }
+//
+//    static void end_element (context, element_name, ...)
+//    {
+//      if (strcmp (element_name, "count-these") == 0)
+//        g_print ("Counted d tags\n", end_counting (context));
+//
+//      // else, handle other tags...
+//    }
+//
+func (context *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
+	var arg0 *C.GMarkupParseContext
+	var arg1 *C.GMarkupParser
+	var arg2 C.gpointer
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+	arg1 = (*C.GMarkupParser)(parser.Native())
+	arg2 = C.gpointer(box.Assign(userData))
+
+	C.g_markup_parse_context_push(arg0, arg1, arg2)
+}
+
+// Ref increases the reference count of @context.
+func (context *MarkupParseContext) Ref() *MarkupParseContext {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	ret := C.g_markup_parse_context_ref(arg0)
+
+	var ret0 *MarkupParseContext
+
+	ret0 = WrapMarkupParseContext(ret)
+
+	return ret0
+}
+
+// Unref decreases the reference count of @context. When its reference count
+// drops to 0, it is freed.
+func (context *MarkupParseContext) Unref() {
+	var arg0 *C.GMarkupParseContext
+
+	arg0 = (*C.GMarkupParseContext)(context.Native())
+
+	C.g_markup_parse_context_unref(arg0)
+}
+
 // MatchInfo: a GMatchInfo is an opaque struct used to return information about
 // matches.
 type MatchInfo struct {
@@ -18639,6 +21013,376 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (m *MatchInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
+}
+
+// ExpandReferences returns a new string containing the text in
+// @string_to_expand with references and escape sequences expanded. References
+// refer to the last match done with @string against @regex and have the same
+// syntax used by g_regex_replace().
+//
+// The @string_to_expand must be UTF-8 encoded even if REGEX_RAW was passed to
+// g_regex_new().
+//
+// The backreferences are extracted from the string passed to the match
+// function, so you cannot call this function after freeing the string.
+//
+// @match_info may be nil in which case @string_to_expand must not contain
+// references. For instance "foo\n" does not refer to an actual pattern and '\n'
+// merely will be replaced with \n character, while to expand "\0" (whole match)
+// one needs the result of a match. Use g_regex_check_replacement() to find out
+// whether @string_to_expand contains references.
+func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) string {
+	var arg0 *C.GMatchInfo
+	var arg1 *C.gchar
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+	arg1 = (*C.gchar)(C.CString(stringToExpand))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_match_info_expand_references(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Fetch retrieves the text matching the @match_num'th capturing parentheses. 0
+// is the full text of the match, 1 is the first paren set, 2 the second, and so
+// on.
+//
+// If @match_num is a valid sub pattern but it didn't match anything (e.g. sub
+// pattern 1, matching "b" against "(a)?b") then an empty string is returned.
+//
+// If the match was obtained using the DFA algorithm, that is using
+// g_regex_match_all() or g_regex_match_all_full(), the retrieved string is not
+// that of a set of parentheses but that of a matched substring. Substrings are
+// matched in reverse order of length, so 0 is the longest match.
+//
+// The string is fetched from the string passed to the match function, so you
+// cannot call this function after freeing the string.
+func (matchInfo *MatchInfo) Fetch(matchNum int) string {
+	var arg0 *C.GMatchInfo
+	var arg1 C.gint
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+	arg1 = C.gint(matchNum)
+
+	ret := C.g_match_info_fetch(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// FetchAll bundles up pointers to each of the matching substrings from a match
+// and stores them in an array of gchar pointers. The first element in the
+// returned array is the match number 0, i.e. the entire matched text.
+//
+// If a sub pattern didn't match anything (e.g. sub pattern 1, matching "b"
+// against "(a)?b") then an empty string is inserted.
+//
+// If the last match was obtained using the DFA algorithm, that is using
+// g_regex_match_all() or g_regex_match_all_full(), the retrieved strings are
+// not that matched by sets of parentheses but that of the matched substring.
+// Substrings are matched in reverse order of length, so the first one is the
+// longest match.
+//
+// The strings are fetched from the string passed to the match function, so you
+// cannot call this function after freeing the string.
+func (matchInfo *MatchInfo) FetchAll() []string {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_fetch_all(arg0)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// FetchNamed retrieves the text matching the capturing parentheses named @name.
+//
+// If @name is a valid sub pattern name but it didn't match anything (e.g. sub
+// pattern "X", matching "b" against "(?P<X>a)?b") then an empty string is
+// returned.
+//
+// The string is fetched from the string passed to the match function, so you
+// cannot call this function after freeing the string.
+func (matchInfo *MatchInfo) FetchNamed(name string) string {
+	var arg0 *C.GMatchInfo
+	var arg1 *C.gchar
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_match_info_fetch_named(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// FetchNamedPos retrieves the position in bytes of the capturing parentheses
+// named @name.
+//
+// If @name is a valid sub pattern name but it didn't match anything (e.g. sub
+// pattern "X", matching "b" against "(?P<X>a)?b") then @start_pos and @end_pos
+// are set to -1 and true is returned.
+func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
+	var arg0 *C.GMatchInfo
+	var arg1 *C.gchar
+	var arg2 *C.gint // out
+	var arg3 *C.gint // out
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_match_info_fetch_named_pos(arg0, arg1, &arg2, &arg3)
+
+	var ret0 int
+	var ret1 int
+	var ret2 bool
+
+	ret0 = int(arg2)
+
+	ret1 = int(arg3)
+
+	ret2 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2
+}
+
+// FetchPos retrieves the position in bytes of the @match_num'th capturing
+// parentheses. 0 is the full text of the match, 1 is the first paren set, 2 the
+// second, and so on.
+//
+// If @match_num is a valid sub pattern but it didn't match anything (e.g. sub
+// pattern 1, matching "b" against "(a)?b") then @start_pos and @end_pos are set
+// to -1 and true is returned.
+//
+// If the match was obtained using the DFA algorithm, that is using
+// g_regex_match_all() or g_regex_match_all_full(), the retrieved position is
+// not that of a set of parentheses but that of a matched substring. Substrings
+// are matched in reverse order of length, so 0 is the longest match.
+func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
+	var arg0 *C.GMatchInfo
+	var arg1 C.gint
+	var arg2 *C.gint // out
+	var arg3 *C.gint // out
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+	arg1 = C.gint(matchNum)
+
+	ret := C.g_match_info_fetch_pos(arg0, arg1, &arg2, &arg3)
+
+	var ret0 int
+	var ret1 int
+	var ret2 bool
+
+	ret0 = int(arg2)
+
+	ret1 = int(arg3)
+
+	ret2 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2
+}
+
+// Free: if @match_info is not nil, calls g_match_info_unref(); otherwise does
+// nothing.
+func (matchInfo *MatchInfo) Free() {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	C.g_match_info_free(arg0)
+}
+
+// MatchCount retrieves the number of matched substrings (including substring 0,
+// that is the whole matched text), so 1 is returned if the pattern has no
+// substrings in it and 0 is returned if the match failed.
+//
+// If the last match was obtained using the DFA algorithm, that is using
+// g_regex_match_all() or g_regex_match_all_full(), the retrieved count is not
+// that of the number of capturing parentheses but that of the number of matched
+// substrings.
+func (matchInfo *MatchInfo) MatchCount() int {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_get_match_count(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Regex returns #GRegex object used in @match_info. It belongs to Glib and must
+// not be freed. Use g_regex_ref() if you need to keep it after you free
+// @match_info object.
+func (matchInfo *MatchInfo) Regex() *Regex {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_get_regex(arg0)
+
+	var ret0 *Regex
+
+	ret0 = WrapRegex(ret)
+
+	return ret0
+}
+
+// String returns the string searched with @match_info. This is the string
+// passed to g_regex_match() or g_regex_replace() so you may not free it before
+// calling this function.
+func (matchInfo *MatchInfo) String() string {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_get_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// IsPartialMatch: usually if the string passed to g_regex_match*() matches as
+// far as it goes, but is too short to match the entire pattern, false is
+// returned. There are circumstances where it might be helpful to distinguish
+// this case from other cases in which there is no match.
+//
+// Consider, for example, an application where a human is required to type in
+// data for a field with specific formatting requirements. An example might be a
+// date in the form ddmmmyy, defined by the pattern
+// "^\d?\d(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\d\d$". If the
+// application sees the user’s keystrokes one by one, and can check that what
+// has been typed so far is potentially valid, it is able to raise an error as
+// soon as a mistake is made.
+//
+// GRegex supports the concept of partial matching by means of the
+// REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD flags. When they are
+// used, the return code for g_regex_match() or g_regex_match_full() is, as
+// usual, true for a complete match, false otherwise. But, when these functions
+// return false, you can check if the match was partial calling
+// g_match_info_is_partial_match().
+//
+// The difference between REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD
+// is that when a partial match is encountered with REGEX_MATCH_PARTIAL_SOFT,
+// matching continues to search for a possible complete match, while with
+// REGEX_MATCH_PARTIAL_HARD matching stops at the partial match. When both
+// REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD are set, the latter
+// takes precedence.
+//
+// There were formerly some restrictions on the pattern for partial matching.
+// The restrictions no longer apply.
+//
+// See pcrepartial(3) for more information on partial matching.
+func (matchInfo *MatchInfo) IsPartialMatch() bool {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_is_partial_match(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Matches returns whether the previous match operation succeeded.
+func (matchInfo *MatchInfo) Matches() bool {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_matches(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Next scans for the next match using the same parameters of the previous call
+// to g_regex_match_full() or g_regex_match() that returned @match_info.
+//
+// The match is done on the string passed to the match function, so you cannot
+// free it before calling this function.
+func (matchInfo *MatchInfo) Next() bool {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_next(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Ref increases reference count of @match_info by 1.
+func (matchInfo *MatchInfo) Ref() *MatchInfo {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	ret := C.g_match_info_ref(arg0)
+
+	var ret0 *MatchInfo
+
+	ret0 = WrapMatchInfo(ret)
+
+	return ret0
+}
+
+// Unref decreases reference count of @match_info by 1. When reference count
+// drops to zero, it frees all the memory associated with the match_info
+// structure.
+func (matchInfo *MatchInfo) Unref() {
+	var arg0 *C.GMatchInfo
+
+	arg0 = (*C.GMatchInfo)(matchInfo.Native())
+
+	C.g_match_info_unref(arg0)
 }
 
 // Node: the #GNode struct represents one node in a [n-ary
@@ -18702,6 +21446,425 @@ func (c *Node) Children() *Node {
 	return ret
 }
 
+// ChildIndex gets the position of the first child of a #GNode which contains
+// the given data.
+func (node *Node) ChildIndex(data interface{}) int {
+	var arg0 *C.GNode
+	var arg1 C.gpointer
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_node_child_index(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// ChildPosition gets the position of a #GNode with respect to its siblings.
+// @child must be a child of @node. The first child is numbered 0, the second 1,
+// and so on.
+func (node *Node) ChildPosition(child *Node) int {
+	var arg0 *C.GNode
+	var arg1 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = (*C.GNode)(child.Native())
+
+	ret := C.g_node_child_position(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// ChildrenForeach calls a function for each of the children of a #GNode. Note
+// that it doesn't descend beneath the child nodes. @func must not do anything
+// that would modify the structure of the tree.
+func (node *Node) ChildrenForeach(flags TraverseFlags, _func NodeForeachFunc) {
+	var arg0 *C.GNode
+	var arg1 C.GTraverseFlags
+	var arg2 C.GNodeForeachFunc
+	arg3 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = (C.GTraverseFlags)(flags)
+	arg2 = (*[0]byte)(C.gotk4_NodeForeachFunc)
+
+	C.g_node_children_foreach(arg0, arg1, arg2)
+}
+
+// Copy: recursively copies a #GNode (but does not deep-copy the data inside the
+// nodes, see g_node_copy_deep() if you need that).
+func (node *Node) Copy() *Node {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_copy(arg0)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// CopyDeep: recursively copies a #GNode and its data.
+func (node *Node) CopyDeep(copyFunc CopyFunc) *Node {
+	var arg0 *C.GNode
+	var arg1 C.GCopyFunc
+	arg2 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = (*[0]byte)(C.gotk4_CopyFunc)
+
+	ret := C.g_node_copy_deep(arg0, arg1)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// Depth gets the depth of a #GNode.
+//
+// If @node is nil the depth is 0. The root node has a depth of 1. For the
+// children of the root node the depth is 2. And so on.
+func (node *Node) Depth() uint {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_depth(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Destroy removes @root and its children from the tree, freeing any memory
+// allocated.
+func (root *Node) Destroy() {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(root.Native())
+
+	C.g_node_destroy(arg0)
+}
+
+// Find finds a #GNode in a tree.
+func (root *Node) Find(order TraverseType, flags TraverseFlags, data interface{}) *Node {
+	var arg0 *C.GNode
+	var arg1 C.GTraverseType
+	var arg2 C.GTraverseFlags
+	var arg3 C.gpointer
+
+	arg0 = (*C.GNode)(root.Native())
+	arg1 = (C.GTraverseType)(order)
+	arg2 = (C.GTraverseFlags)(flags)
+	arg3 = C.gpointer(box.Assign(data))
+
+	ret := C.g_node_find(arg0, arg1, arg2, arg3)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// FindChild finds the first child of a #GNode with the given data.
+func (node *Node) FindChild(flags TraverseFlags, data interface{}) *Node {
+	var arg0 *C.GNode
+	var arg1 C.GTraverseFlags
+	var arg2 C.gpointer
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = (C.GTraverseFlags)(flags)
+	arg2 = C.gpointer(box.Assign(data))
+
+	ret := C.g_node_find_child(arg0, arg1, arg2)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// FirstSibling gets the first sibling of a #GNode. This could possibly be the
+// node itself.
+func (node *Node) FirstSibling() *Node {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_first_sibling(arg0)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// Root gets the root of a tree.
+func (node *Node) Root() *Node {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_get_root(arg0)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// Insert inserts a #GNode beneath the parent at the given position.
+func (parent *Node) Insert(position int, node *Node) *Node {
+	var arg0 *C.GNode
+	var arg1 C.gint
+	var arg2 *C.GNode
+
+	arg0 = (*C.GNode)(parent.Native())
+	arg1 = C.gint(position)
+	arg2 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_insert(arg0, arg1, arg2)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// InsertAfter inserts a #GNode beneath the parent after the given sibling.
+func (parent *Node) InsertAfter(sibling *Node, node *Node) *Node {
+	var arg0 *C.GNode
+	var arg1 *C.GNode
+	var arg2 *C.GNode
+
+	arg0 = (*C.GNode)(parent.Native())
+	arg1 = (*C.GNode)(sibling.Native())
+	arg2 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_insert_after(arg0, arg1, arg2)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// InsertBefore inserts a #GNode beneath the parent before the given sibling.
+func (parent *Node) InsertBefore(sibling *Node, node *Node) *Node {
+	var arg0 *C.GNode
+	var arg1 *C.GNode
+	var arg2 *C.GNode
+
+	arg0 = (*C.GNode)(parent.Native())
+	arg1 = (*C.GNode)(sibling.Native())
+	arg2 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_insert_before(arg0, arg1, arg2)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// IsAncestor returns true if @node is an ancestor of @descendant. This is true
+// if node is the parent of @descendant, or if node is the grandparent of
+// @descendant etc.
+func (node *Node) IsAncestor(descendant *Node) bool {
+	var arg0 *C.GNode
+	var arg1 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = (*C.GNode)(descendant.Native())
+
+	ret := C.g_node_is_ancestor(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// LastChild gets the last child of a #GNode.
+func (node *Node) LastChild() *Node {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_last_child(arg0)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// LastSibling gets the last sibling of a #GNode. This could possibly be the
+// node itself.
+func (node *Node) LastSibling() *Node {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_last_sibling(arg0)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// MaxHeight gets the maximum height of all branches beneath a #GNode. This is
+// the maximum distance from the #GNode to all leaf nodes.
+//
+// If @root is nil, 0 is returned. If @root has no children, 1 is returned. If
+// @root has children, 2 is returned. And so on.
+func (root *Node) MaxHeight() uint {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(root.Native())
+
+	ret := C.g_node_max_height(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// NChildren gets the number of children of a #GNode.
+func (node *Node) NChildren() uint {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_n_children(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// NNodes gets the number of nodes in a tree.
+func (root *Node) NNodes(flags TraverseFlags) uint {
+	var arg0 *C.GNode
+	var arg1 C.GTraverseFlags
+
+	arg0 = (*C.GNode)(root.Native())
+	arg1 = (C.GTraverseFlags)(flags)
+
+	ret := C.g_node_n_nodes(arg0, arg1)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// NthChild gets a child of a #GNode, using the given index. The first child is
+// at index 0. If the index is too big, nil is returned.
+func (node *Node) NthChild(n uint) *Node {
+	var arg0 *C.GNode
+	var arg1 C.guint
+
+	arg0 = (*C.GNode)(node.Native())
+	arg1 = C.guint(n)
+
+	ret := C.g_node_nth_child(arg0, arg1)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// Prepend inserts a #GNode as the first child of the given parent.
+func (parent *Node) Prepend(node *Node) *Node {
+	var arg0 *C.GNode
+	var arg1 *C.GNode
+
+	arg0 = (*C.GNode)(parent.Native())
+	arg1 = (*C.GNode)(node.Native())
+
+	ret := C.g_node_prepend(arg0, arg1)
+
+	var ret0 *Node
+
+	ret0 = WrapNode(ret)
+
+	return ret0
+}
+
+// ReverseChildren reverses the order of the children of a #GNode. (It doesn't
+// change the order of the grandchildren.)
+func (node *Node) ReverseChildren() {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	C.g_node_reverse_children(arg0)
+}
+
+// Traverse traverses a tree starting at the given root #GNode. It calls the
+// given function for each node visited. The traversal can be halted at any
+// point by returning true from @func. @func must not do anything that would
+// modify the structure of the tree.
+func (root *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int, _func NodeTraverseFunc) {
+	var arg0 *C.GNode
+	var arg1 C.GTraverseType
+	var arg2 C.GTraverseFlags
+	var arg3 C.gint
+	var arg4 C.GNodeTraverseFunc
+	arg5 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GNode)(root.Native())
+	arg1 = (C.GTraverseType)(order)
+	arg2 = (C.GTraverseFlags)(flags)
+	arg3 = C.gint(maxDepth)
+	arg4 = (*[0]byte)(C.gotk4_NodeTraverseFunc)
+
+	C.g_node_traverse(arg0, arg1, arg2, arg3, arg4)
+}
+
+// Unlink unlinks a #GNode from a tree, resulting in two separate trees.
+func (node *Node) Unlink() {
+	var arg0 *C.GNode
+
+	arg0 = (*C.GNode)(node.Native())
+
+	C.g_node_unlink(arg0)
+}
+
 // Once: a #GOnce struct controls a one-time initialization function. Any
 // one-time initialization function must have its own unique #GOnce struct.
 type Once struct {
@@ -18740,6 +21903,24 @@ func (r *Once) Retval() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(o.native.retval))
 	return ret
+}
+
+func (once *Once) Impl(_func ThreadFunc, arg interface{}) interface{} {
+	var arg0 *C.GOnce
+	var arg1 C.GThreadFunc
+	var arg2 C.gpointer
+
+	arg0 = (*C.GOnce)(once.Native())
+	arg1 = (*[0]byte)(C.gotk4_ThreadFunc)
+	arg2 = C.gpointer(box.Assign(arg))
+
+	ret := C.g_once_impl(arg0, arg1, arg2)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
@@ -18873,6 +22054,118 @@ func NewOptionGroup(name string, description string, helpDescription string, use
 	return ret0
 }
 
+// AddEntries adds the options specified in @entries to @group.
+func (group *OptionGroup) AddEntries(entries []OptionEntry) {
+	var arg0 *C.GOptionGroup
+	var arg1 *C.GOptionEntry
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+	{
+
+	}
+
+	C.g_option_group_add_entries(arg0, arg1)
+}
+
+// Free frees a Group. Note that you must not free groups which have been added
+// to a Context.
+func (group *OptionGroup) Free() {
+	var arg0 *C.GOptionGroup
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+
+	C.g_option_group_free(arg0)
+}
+
+// Ref increments the reference count of @group by one.
+func (group *OptionGroup) Ref() *OptionGroup {
+	var arg0 *C.GOptionGroup
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+
+	ret := C.g_option_group_ref(arg0)
+
+	var ret0 *OptionGroup
+
+	ret0 = WrapOptionGroup(ret)
+
+	return ret0
+}
+
+// SetErrorHook associates a function with @group which will be called from
+// g_option_context_parse() when an error occurs.
+//
+// Note that the user data to be passed to @error_func can be specified when
+// constructing the group with g_option_group_new().
+func (group *OptionGroup) SetErrorHook(errorFunc OptionErrorFunc) {
+	var arg0 *C.GOptionGroup
+	var arg1 C.GOptionErrorFunc
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+	arg1 = (*[0]byte)(C.gotk4_OptionErrorFunc)
+
+	C.g_option_group_set_error_hook(arg0, arg1)
+}
+
+// SetParseHooks associates two functions with @group which will be called from
+// g_option_context_parse() before the first option is parsed and after the last
+// option has been parsed, respectively.
+//
+// Note that the user data to be passed to @pre_parse_func and @post_parse_func
+// can be specified when constructing the group with g_option_group_new().
+func (group *OptionGroup) SetParseHooks(preParseFunc OptionParseFunc, postParseFunc OptionParseFunc) {
+	var arg0 *C.GOptionGroup
+	var arg1 C.GOptionParseFunc
+	var arg2 C.GOptionParseFunc
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+	arg1 = (*[0]byte)(C.gotk4_OptionParseFunc)
+	arg2 = (*[0]byte)(C.gotk4_OptionParseFunc)
+
+	C.g_option_group_set_parse_hooks(arg0, arg1, arg2)
+}
+
+// SetTranslateFunc sets the function which is used to translate user-visible
+// strings, for `--help` output. Different groups can use different Funcs. If
+// @func is nil, strings are not translated.
+//
+// If you are using gettext(), you only need to set the translation domain, see
+// g_option_group_set_translation_domain().
+func (group *OptionGroup) SetTranslateFunc(_func TranslateFunc) {
+	var arg0 *C.GOptionGroup
+	var arg1 C.GTranslateFunc
+	arg2 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+	arg1 = (*[0]byte)(C.gotk4_TranslateFunc)
+
+	C.g_option_group_set_translate_func(arg0, arg1, (*[0]byte)(C.free))
+}
+
+// SetTranslationDomain: a convenience function to use gettext() for translating
+// user-visible strings.
+func (group *OptionGroup) SetTranslationDomain(domain string) {
+	var arg0 *C.GOptionGroup
+	var arg1 *C.gchar
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.g_option_group_set_translation_domain(arg0, arg1)
+}
+
+// Unref decrements the reference count of @group by one. If the reference count
+// drops to 0, the @group will be freed. and all memory allocated by the @group
+// is released.
+func (group *OptionGroup) Unref() {
+	var arg0 *C.GOptionGroup
+
+	arg0 = (*C.GOptionGroup)(group.Native())
+
+	C.g_option_group_unref(arg0)
+}
+
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
 type PollFD struct {
@@ -18961,6 +22254,54 @@ func (p *Private) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// Get returns the current value of the thread local variable @key.
+//
+// If the value has not yet been set in this thread, nil is returned. Values are
+// never copied between threads (when a new thread is created, for example).
+func (key *Private) Get() interface{} {
+	var arg0 *C.GPrivate
+
+	arg0 = (*C.GPrivate)(key.Native())
+
+	ret := C.g_private_get(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Replace sets the thread local variable @key to have the value @value in the
+// current thread.
+//
+// This function differs from g_private_set() in the following way: if the
+// previous value was non-nil then the Notify handler for @key is run on it.
+func (key *Private) Replace(value interface{}) {
+	var arg0 *C.GPrivate
+	var arg1 C.gpointer
+
+	arg0 = (*C.GPrivate)(key.Native())
+	arg1 = C.gpointer(box.Assign(value))
+
+	C.g_private_replace(arg0, arg1)
+}
+
+// Set sets the thread local variable @key to have the value @value in the
+// current thread.
+//
+// This function differs from g_private_replace() in the following way: the
+// Notify for @key is not called on the old value.
+func (key *Private) Set(value interface{}) {
+	var arg0 *C.GPrivate
+	var arg1 C.gpointer
+
+	arg0 = (*C.GPrivate)(key.Native())
+	arg1 = C.gpointer(box.Assign(value))
+
+	C.g_private_set(arg0, arg1)
+}
+
 // PtrArray contains the public fields of a pointer array.
 type PtrArray struct {
 	native C.GPtrArray
@@ -19039,11 +22380,617 @@ func (t *Queue) Tail() *List {
 	return ret
 }
 
-// Length gets the field inside the struct.
-func (l *Queue) Length() uint {
-	var ret uint
-	ret = uint(q.native.length)
-	return ret
+// Clear removes all the elements in @queue. If queue elements contain
+// dynamically-allocated memory, they should be freed first.
+func (queue *Queue) Clear() {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	C.g_queue_clear(arg0)
+}
+
+// ClearFull: convenience method, which frees all the memory used by a #GQueue,
+// and calls the provided @free_func on each item in the #GQueue.
+func (queue *Queue) ClearFull() {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	C.g_queue_clear_full(arg0, (*[0]byte)(C.free))
+}
+
+// Copy copies a @queue. Note that is a shallow copy. If the elements in the
+// queue consist of pointers to data, the pointers are copied, but the actual
+// data is not.
+func (queue *Queue) Copy() *Queue {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_copy(arg0)
+
+	var ret0 *Queue
+
+	ret0 = WrapQueue(ret)
+
+	return ret0
+}
+
+// DeleteLink removes @link_ from @queue and frees it.
+//
+// @link_ must be part of @queue.
+func (queue *Queue) DeleteLink(link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(link_.Native())
+
+	C.g_queue_delete_link(arg0, arg1)
+}
+
+// Find finds the first link in @queue which contains @data.
+func (queue *Queue) Find(data interface{}) *List {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_queue_find(arg0, arg1)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// FindCustom finds an element in a #GQueue, using a supplied function to find
+// the desired element. It iterates over the queue, calling the given function
+// which should return 0 when the desired element is found. The function takes
+// two gconstpointer arguments, the #GQueue element's data as the first argument
+// and the given user data as the second argument.
+func (queue *Queue) FindCustom(data interface{}, _func CompareFunc) *List {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+	var arg2 C.GCompareFunc
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+	arg2 = (*[0]byte)(C.gotk4_CompareFunc)
+
+	ret := C.g_queue_find_custom(arg0, arg1, arg2)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// Foreach calls @func for each element in the queue passing @user_data to the
+// function.
+//
+// It is safe for @func to remove the element from @queue, but it must not
+// modify any part of the queue after that element.
+func (queue *Queue) Foreach(_func Func) {
+	var arg0 *C.GQueue
+	var arg1 C.GFunc
+	arg2 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*[0]byte)(C.gotk4_Func)
+
+	C.g_queue_foreach(arg0, arg1)
+}
+
+// Free frees the memory allocated for the #GQueue. Only call this function if
+// @queue was created with g_queue_new(). If queue elements contain
+// dynamically-allocated memory, they should be freed first.
+//
+// If queue elements contain dynamically-allocated memory, you should either use
+// g_queue_free_full() or free them manually first.
+func (queue *Queue) Free() {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	C.g_queue_free(arg0)
+}
+
+// FreeFull: convenience method, which frees all the memory used by a #GQueue,
+// and calls the specified destroy function on every element's data.
+//
+// @free_func should not modify the queue (eg, by removing the freed element
+// from it).
+func (queue *Queue) FreeFull() {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	C.g_queue_free_full(arg0, (*[0]byte)(C.free))
+}
+
+// Length returns the number of items in @queue.
+func (queue *Queue) Length() uint {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_get_length(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Index returns the position of the first element in @queue which contains
+// @data.
+func (queue *Queue) Index(data interface{}) int {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_queue_index(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Init: a statically-allocated #GQueue must be initialized with this function
+// before it can be used. Alternatively you can initialize it with QUEUE_INIT.
+// It is not necessary to initialize queues created with g_queue_new().
+func (queue *Queue) Init() {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	C.g_queue_init(arg0)
+}
+
+// InsertAfter inserts @data into @queue after @sibling.
+//
+// @sibling must be part of @queue. Since GLib 2.44 a nil sibling pushes the
+// data at the head of the queue.
+func (queue *Queue) InsertAfter(sibling *List, data interface{}) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+	var arg2 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(sibling.Native())
+	arg2 = C.gpointer(box.Assign(data))
+
+	C.g_queue_insert_after(arg0, arg1, arg2)
+}
+
+// InsertAfterLink inserts @link_ into @queue after @sibling.
+//
+// @sibling must be part of @queue.
+func (queue *Queue) InsertAfterLink(sibling *List, link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+	var arg2 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(sibling.Native())
+	arg2 = (*C.GList)(link_.Native())
+
+	C.g_queue_insert_after_link(arg0, arg1, arg2)
+}
+
+// InsertBefore inserts @data into @queue before @sibling.
+//
+// @sibling must be part of @queue. Since GLib 2.44 a nil sibling pushes the
+// data at the tail of the queue.
+func (queue *Queue) InsertBefore(sibling *List, data interface{}) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+	var arg2 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(sibling.Native())
+	arg2 = C.gpointer(box.Assign(data))
+
+	C.g_queue_insert_before(arg0, arg1, arg2)
+}
+
+// InsertBeforeLink inserts @link_ into @queue before @sibling.
+//
+// @sibling must be part of @queue.
+func (queue *Queue) InsertBeforeLink(sibling *List, link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+	var arg2 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(sibling.Native())
+	arg2 = (*C.GList)(link_.Native())
+
+	C.g_queue_insert_before_link(arg0, arg1, arg2)
+}
+
+// InsertSorted inserts @data into @queue using @func to determine the new
+// position.
+func (queue *Queue) InsertSorted(data interface{}, _func CompareDataFunc) {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+	var arg2 C.GCompareDataFunc
+	arg3 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+	arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
+
+	C.g_queue_insert_sorted(arg0, arg1, arg2)
+}
+
+// IsEmpty returns true if the queue is empty.
+func (queue *Queue) IsEmpty() bool {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_is_empty(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// LinkIndex returns the position of @link_ in @queue.
+func (queue *Queue) LinkIndex(link_ *List) int {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(link_.Native())
+
+	ret := C.g_queue_link_index(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// PeekHead returns the first element of the queue.
+func (queue *Queue) PeekHead() interface{} {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_peek_head(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PeekHeadLink returns the first link in @queue.
+func (queue *Queue) PeekHeadLink() *List {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_peek_head_link(arg0)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// PeekNth returns the @n'th element of @queue.
+func (queue *Queue) PeekNth(n uint) interface{} {
+	var arg0 *C.GQueue
+	var arg1 C.guint
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.guint(n)
+
+	ret := C.g_queue_peek_nth(arg0, arg1)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PeekNthLink returns the link at the given position
+func (queue *Queue) PeekNthLink(n uint) *List {
+	var arg0 *C.GQueue
+	var arg1 C.guint
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.guint(n)
+
+	ret := C.g_queue_peek_nth_link(arg0, arg1)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// PeekTail returns the last element of the queue.
+func (queue *Queue) PeekTail() interface{} {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_peek_tail(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PeekTailLink returns the last link in @queue.
+func (queue *Queue) PeekTailLink() *List {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_peek_tail_link(arg0)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// PopHead removes the first element of the queue and returns its data.
+func (queue *Queue) PopHead() interface{} {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_pop_head(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PopHeadLink removes and returns the first element of the queue.
+func (queue *Queue) PopHeadLink() *List {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_pop_head_link(arg0)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// PopNth removes the @n'th element of @queue and returns its data.
+func (queue *Queue) PopNth(n uint) interface{} {
+	var arg0 *C.GQueue
+	var arg1 C.guint
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.guint(n)
+
+	ret := C.g_queue_pop_nth(arg0, arg1)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PopNthLink removes and returns the link at the given position.
+func (queue *Queue) PopNthLink(n uint) *List {
+	var arg0 *C.GQueue
+	var arg1 C.guint
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.guint(n)
+
+	ret := C.g_queue_pop_nth_link(arg0, arg1)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// PopTail removes the last element of the queue and returns its data.
+func (queue *Queue) PopTail() interface{} {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_pop_tail(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PopTailLink removes and returns the last element of the queue.
+func (queue *Queue) PopTailLink() *List {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	ret := C.g_queue_pop_tail_link(arg0)
+
+	var ret0 *List
+
+	ret0 = WrapList(ret)
+
+	return ret0
+}
+
+// PushHead adds a new element at the head of the queue.
+func (queue *Queue) PushHead(data interface{}) {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	C.g_queue_push_head(arg0, arg1)
+}
+
+// PushHeadLink adds a new element at the head of the queue.
+func (queue *Queue) PushHeadLink(link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(link_.Native())
+
+	C.g_queue_push_head_link(arg0, arg1)
+}
+
+// PushNth inserts a new element into @queue at the given position.
+func (queue *Queue) PushNth(data interface{}, n int) {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+	var arg2 C.gint
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+	arg2 = C.gint(n)
+
+	C.g_queue_push_nth(arg0, arg1, arg2)
+}
+
+// PushNthLink inserts @link into @queue at the given position.
+func (queue *Queue) PushNthLink(n int, link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 C.gint
+	var arg2 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gint(n)
+	arg2 = (*C.GList)(link_.Native())
+
+	C.g_queue_push_nth_link(arg0, arg1, arg2)
+}
+
+// PushTail adds a new element at the tail of the queue.
+func (queue *Queue) PushTail(data interface{}) {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	C.g_queue_push_tail(arg0, arg1)
+}
+
+// PushTailLink adds a new element at the tail of the queue.
+func (queue *Queue) PushTailLink(link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(link_.Native())
+
+	C.g_queue_push_tail_link(arg0, arg1)
+}
+
+// Remove removes the first element in @queue that contains @data.
+func (queue *Queue) Remove(data interface{}) bool {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_queue_remove(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// RemoveAll: remove all elements whose data equals @data from @queue.
+func (queue *Queue) RemoveAll(data interface{}) uint {
+	var arg0 *C.GQueue
+	var arg1 C.gpointer
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_queue_remove_all(arg0, arg1)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Reverse reverses the order of the items in @queue.
+func (queue *Queue) Reverse() {
+	var arg0 *C.GQueue
+
+	arg0 = (*C.GQueue)(queue.Native())
+
+	C.g_queue_reverse(arg0)
+}
+
+// Sort sorts @queue using @compare_func.
+func (queue *Queue) Sort(compareFunc CompareDataFunc) {
+	var arg0 *C.GQueue
+	var arg1 C.GCompareDataFunc
+	arg2 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+
+	C.g_queue_sort(arg0, arg1)
+}
+
+// Unlink unlinks @link_ so that it will no longer be part of @queue. The link
+// is not freed.
+//
+// @link_ must be part of @queue.
+func (queue *Queue) Unlink(link_ *List) {
+	var arg0 *C.GQueue
+	var arg1 *C.GList
+
+	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*C.GList)(link_.Native())
+
+	C.g_queue_unlink(arg0, arg1)
 }
 
 // RWLock: the GRWLock struct is an opaque data structure to represent a
@@ -19133,6 +23080,138 @@ func (r *RWLock) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// Clear frees the resources allocated to a lock with g_rw_lock_init().
+//
+// This function should not be used with a WLock that has been statically
+// allocated.
+//
+// Calling g_rw_lock_clear() when any thread holds the lock leads to undefined
+// behaviour.
+//
+// Sine: 2.32
+func (rwLock *RWLock) Clear() {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	C.g_rw_lock_clear(arg0)
+}
+
+// Init initializes a WLock so that it can be used.
+//
+// This function is useful to initialize a lock that has been allocated on the
+// stack, or as part of a larger structure. It is not necessary to initialise a
+// reader-writer lock that has been statically allocated.
+//
+//      typedef struct {
+//        GRWLock l;
+//        ...
+//      } Blob;
+//
+//    Blob *b;
+//
+//    b = g_new (Blob, 1);
+//    g_rw_lock_init (&b->l);
+//
+//
+// To undo the effect of g_rw_lock_init() when a lock is no longer needed, use
+// g_rw_lock_clear().
+//
+// Calling g_rw_lock_init() on an already initialized WLock leads to undefined
+// behaviour.
+func (rwLock *RWLock) Init() {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	C.g_rw_lock_init(arg0)
+}
+
+// ReaderLock: obtain a read lock on @rw_lock. If another thread currently holds
+// the write lock on @rw_lock, the current thread will block. If another thread
+// does not hold the write lock, but is waiting for it, it is implementation
+// defined whether the reader or writer will block. Read locks can be taken
+// recursively.
+//
+// It is implementation-defined how many threads are allowed to hold read locks
+// on the same lock simultaneously. If the limit is hit, or if a deadlock is
+// detected, a critical warning will be emitted.
+func (rwLock *RWLock) ReaderLock() {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	C.g_rw_lock_reader_lock(arg0)
+}
+
+// ReaderTrylock tries to obtain a read lock on @rw_lock and returns true if the
+// read lock was successfully obtained. Otherwise it returns false.
+func (rwLock *RWLock) ReaderTrylock() bool {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	ret := C.g_rw_lock_reader_trylock(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ReaderUnlock: release a read lock on @rw_lock.
+//
+// Calling g_rw_lock_reader_unlock() on a lock that is not held by the current
+// thread leads to undefined behaviour.
+func (rwLock *RWLock) ReaderUnlock() {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	C.g_rw_lock_reader_unlock(arg0)
+}
+
+// WriterLock: obtain a write lock on @rw_lock. If any thread already holds a
+// read or write lock on @rw_lock, the current thread will block until all other
+// threads have dropped their locks on @rw_lock.
+func (rwLock *RWLock) WriterLock() {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	C.g_rw_lock_writer_lock(arg0)
+}
+
+// WriterTrylock tries to obtain a write lock on @rw_lock. If any other thread
+// holds a read or write lock on @rw_lock, it immediately returns false.
+// Otherwise it locks @rw_lock and returns true.
+func (rwLock *RWLock) WriterTrylock() bool {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	ret := C.g_rw_lock_writer_trylock(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// WriterUnlock: release a write lock on @rw_lock.
+//
+// Calling g_rw_lock_writer_unlock() on a lock that is not held by the current
+// thread leads to undefined behaviour.
+func (rwLock *RWLock) WriterUnlock() {
+	var arg0 *C.GRWLock
+
+	arg0 = (*C.GRWLock)(rwLock.Native())
+
+	C.g_rw_lock_writer_unlock(arg0)
+}
+
 // RecMutex: the GRecMutex struct is an opaque data structure to represent a
 // recursive mutex. It is similar to a #GMutex with the difference that it is
 // possible to lock a GRecMutex multiple times in the same thread without
@@ -19166,6 +23245,100 @@ func marshalRecMutex(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RecMutex) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// Clear frees the resources allocated to a recursive mutex with
+// g_rec_mutex_init().
+//
+// This function should not be used with a Mutex that has been statically
+// allocated.
+//
+// Calling g_rec_mutex_clear() on a locked recursive mutex leads to undefined
+// behaviour.
+//
+// Sine: 2.32
+func (recMutex *RecMutex) Clear() {
+	var arg0 *C.GRecMutex
+
+	arg0 = (*C.GRecMutex)(recMutex.Native())
+
+	C.g_rec_mutex_clear(arg0)
+}
+
+// Init initializes a Mutex so that it can be used.
+//
+// This function is useful to initialize a recursive mutex that has been
+// allocated on the stack, or as part of a larger structure.
+//
+// It is not necessary to initialise a recursive mutex that has been statically
+// allocated.
+//
+//      typedef struct {
+//        GRecMutex m;
+//        ...
+//      } Blob;
+//
+//    Blob *b;
+//
+//    b = g_new (Blob, 1);
+//    g_rec_mutex_init (&b->m);
+//
+//
+// Calling g_rec_mutex_init() on an already initialized Mutex leads to undefined
+// behaviour.
+//
+// To undo the effect of g_rec_mutex_init() when a recursive mutex is no longer
+// needed, use g_rec_mutex_clear().
+func (recMutex *RecMutex) Init() {
+	var arg0 *C.GRecMutex
+
+	arg0 = (*C.GRecMutex)(recMutex.Native())
+
+	C.g_rec_mutex_init(arg0)
+}
+
+// Lock locks @rec_mutex. If @rec_mutex is already locked by another thread, the
+// current thread will block until @rec_mutex is unlocked by the other thread.
+// If @rec_mutex is already locked by the current thread, the 'lock count' of
+// @rec_mutex is increased. The mutex will only become available again when it
+// is unlocked as many times as it has been locked.
+func (recMutex *RecMutex) Lock() {
+	var arg0 *C.GRecMutex
+
+	arg0 = (*C.GRecMutex)(recMutex.Native())
+
+	C.g_rec_mutex_lock(arg0)
+}
+
+// Trylock tries to lock @rec_mutex. If @rec_mutex is already locked by another
+// thread, it immediately returns false. Otherwise it locks @rec_mutex and
+// returns true.
+func (recMutex *RecMutex) Trylock() bool {
+	var arg0 *C.GRecMutex
+
+	arg0 = (*C.GRecMutex)(recMutex.Native())
+
+	ret := C.g_rec_mutex_trylock(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Unlock unlocks @rec_mutex. If another thread is blocked in a
+// g_rec_mutex_lock() call for @rec_mutex, it will become unblocked and can lock
+// @rec_mutex itself.
+//
+// Calling g_rec_mutex_unlock() on a recursive mutex that is not locked by the
+// current thread leads to undefined behaviour.
+func (recMutex *RecMutex) Unlock() {
+	var arg0 *C.GRecMutex
+
+	arg0 = (*C.GRecMutex)(recMutex.Native())
+
+	C.g_rec_mutex_unlock(arg0)
 }
 
 // Regex: the g_regex_*() functions implement regular expression pattern
@@ -19268,6 +23441,307 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	ret0 = WrapRegex(ret)
 
 	return ret0
+}
+
+// CaptureCount returns the number of capturing subpatterns in the pattern.
+func (regex *Regex) CaptureCount() int {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_capture_count(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// CompileFlags returns the compile options that @regex was created with.
+//
+// Depending on the version of PCRE that is used, this may or may not include
+// flags set by option expressions such as `(?i)` found at the top-level within
+// the compiled pattern.
+func (regex *Regex) CompileFlags() RegexCompileFlags {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_compile_flags(arg0)
+
+	var ret0 RegexCompileFlags
+
+	ret0 = RegexCompileFlags(ret)
+
+	return ret0
+}
+
+// HasCrOrLf checks whether the pattern contains explicit CR or LF references.
+func (regex *Regex) HasCrOrLf() bool {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_has_cr_or_lf(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// MatchFlags returns the match options that @regex was created with.
+func (regex *Regex) MatchFlags() RegexMatchFlags {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_match_flags(arg0)
+
+	var ret0 RegexMatchFlags
+
+	ret0 = RegexMatchFlags(ret)
+
+	return ret0
+}
+
+// MaxBackref returns the number of the highest back reference in the pattern,
+// or 0 if the pattern does not contain back references.
+func (regex *Regex) MaxBackref() int {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_max_backref(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// MaxLookbehind gets the number of characters in the longest lookbehind
+// assertion in the pattern. This information is useful when doing multi-segment
+// matching using the partial matching facilities.
+func (regex *Regex) MaxLookbehind() int {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_max_lookbehind(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Pattern gets the pattern string associated with @regex, i.e. a copy of the
+// string passed to g_regex_new().
+func (regex *Regex) Pattern() string {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_get_pattern(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// StringNumber retrieves the number of the subexpression named @name.
+func (regex *Regex) StringNumber(name string) int {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+
+	arg0 = (*C.GRegex)(regex.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_regex_get_string_number(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Match scans for a match in @string for the pattern in @regex. The
+// @match_options are combined with the match options specified when the @regex
+// structure was created, letting you have more flexibility in reusing #GRegex
+// structures.
+//
+// Unless G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
+//
+// A Info structure, used to get information on the match, is stored in
+// @match_info if not nil. Note that if @match_info is not nil then it is
+// created even if the function returns false, i.e. you must free it regardless
+// if regular expression actually matched.
+//
+// To retrieve all the non-overlapping matches of the pattern in string you can
+// use g_match_info_next().
+//
+//    static void
+//    print_uppercase_words (const gchar *string)
+//    {
+//      // Print all uppercase-only words.
+//      GRegex *regex;
+//      GMatchInfo *match_info;
+//
+//      regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+//      g_regex_match (regex, string, 0, &match_info);
+//      while (g_match_info_matches (match_info))
+//        {
+//          gchar *word = g_match_info_fetch (match_info, 0);
+//          g_print ("Found: s\n", word);
+//          g_free (word);
+//          g_match_info_next (match_info, NULL);
+//        }
+//      g_match_info_free (match_info);
+//      g_regex_unref (regex);
+//    }
+//
+//
+// @string is not copied and is used in Info internally. If you use any Info
+// method (except g_match_info_free()) after freeing or modifying @string then
+// the behaviour is undefined.
+func (regex *Regex) Match(string string, matchOptions RegexMatchFlags) (matchInfo *MatchInfo, ok bool) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.GRegexMatchFlags
+	var arg3 **C.GMatchInfo // out
+
+	arg0 = (*C.GRegex)(regex.Native())
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_match(arg0, arg1, arg2, &arg3)
+
+	var ret0 **MatchInfo
+	var ret1 bool
+
+	ret0 = WrapMatchInfo(arg3)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// MatchAll: using the standard algorithm for regular expression matching only
+// the longest match in the string is retrieved. This function uses a different
+// algorithm so it can retrieve all the possible matches. For more documentation
+// see g_regex_match_all_full().
+//
+// A Info structure, used to get information on the match, is stored in
+// @match_info if not nil. Note that if @match_info is not nil then it is
+// created even if the function returns false, i.e. you must free it regardless
+// if regular expression actually matched.
+//
+// @string is not copied and is used in Info internally. If you use any Info
+// method (except g_match_info_free()) after freeing or modifying @string then
+// the behaviour is undefined.
+func (regex *Regex) MatchAll(string string, matchOptions RegexMatchFlags) (matchInfo *MatchInfo, ok bool) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.GRegexMatchFlags
+	var arg3 **C.GMatchInfo // out
+
+	arg0 = (*C.GRegex)(regex.Native())
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_match_all(arg0, arg1, arg2, &arg3)
+
+	var ret0 **MatchInfo
+	var ret1 bool
+
+	ret0 = WrapMatchInfo(arg3)
+
+	ret1 = gextras.Gobool(ret)
+
+	return ret0, ret1
+}
+
+// Ref increases reference count of @regex by 1.
+func (regex *Regex) Ref() *Regex {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	ret := C.g_regex_ref(arg0)
+
+	var ret0 *Regex
+
+	ret0 = WrapRegex(ret)
+
+	return ret0
+}
+
+// Split breaks the string on the pattern, and returns an array of the tokens.
+// If the pattern contains capturing parentheses, then the text for each of the
+// substrings will also be returned. If the pattern does not match anywhere in
+// the string, then the whole string is returned as the first token.
+//
+// As a special case, the result of splitting the empty string "" is an empty
+// vector, not a vector containing a single string. The reason for this special
+// case is that being able to represent an empty vector is typically more useful
+// than consistent handling of empty elements. If you do need to represent empty
+// elements, you'll need to check for the empty string before calling this
+// function.
+//
+// A pattern that can match empty strings splits @string into separate
+// characters wherever it matches the empty string between characters. For
+// example splitting "ab c" using as a separator "\s*", you will get "a", "b"
+// and "c".
+func (regex *Regex) Split(string string, matchOptions RegexMatchFlags) []string {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.GRegexMatchFlags
+
+	arg0 = (*C.GRegex)(regex.Native())
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_split(arg0, arg1, arg2)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// Unref decreases reference count of @regex by 1. When reference count drops to
+// zero, it frees all the memory associated with the regex structure.
+func (regex *Regex) Unref() {
+	var arg0 *C.GRegex
+
+	arg0 = (*C.GRegex)(regex.Native())
+
+	C.g_regex_unref(arg0)
 }
 
 // SList: the List struct is used for each element in the singly-linked list.
@@ -19407,13 +23881,6 @@ func (p *Scanner) Position() uint {
 	return ret
 }
 
-// NextToken gets the field inside the struct.
-func (n *Scanner) NextToken() TokenType {
-	var ret TokenType
-	ret = TokenType(s.native.next_token)
-	return ret
-}
-
 // NextLine gets the field inside the struct.
 func (n *Scanner) NextLine() uint {
 	var ret uint
@@ -19426,6 +23893,291 @@ func (n *Scanner) NextPosition() uint {
 	var ret uint
 	ret = uint(s.native.next_position)
 	return ret
+}
+
+// CurLine returns the current line in the input stream (counting from 1). This
+// is the line of the last token parsed via g_scanner_get_next_token().
+func (scanner *Scanner) CurLine() uint {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	ret := C.g_scanner_cur_line(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// CurPosition returns the current position in the current line (counting from
+// 0). This is the position of the last token parsed via
+// g_scanner_get_next_token().
+func (scanner *Scanner) CurPosition() uint {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	ret := C.g_scanner_cur_position(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// CurToken gets the current token type. This is simply the @token field in the
+// #GScanner structure.
+func (scanner *Scanner) CurToken() TokenType {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	ret := C.g_scanner_cur_token(arg0)
+
+	var ret0 TokenType
+
+	ret0 = TokenType(ret)
+
+	return ret0
+}
+
+// Destroy frees all memory used by the #GScanner.
+func (scanner *Scanner) Destroy() {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	C.g_scanner_destroy(arg0)
+}
+
+// EOF returns true if the scanner has reached the end of the file or text
+// buffer.
+func (scanner *Scanner) EOF() bool {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	ret := C.g_scanner_eof(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// NextToken parses the next token just like g_scanner_peek_next_token() and
+// also removes it from the input stream. The token data is placed in the
+// @token, @value, @line, and @position fields of the #GScanner structure.
+func (scanner *Scanner) NextToken() TokenType {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	ret := C.g_scanner_get_next_token(arg0)
+
+	var ret0 TokenType
+
+	ret0 = TokenType(ret)
+
+	return ret0
+}
+
+// InputFile prepares to scan a file.
+func (scanner *Scanner) InputFile(inputFd int) {
+	var arg0 *C.GScanner
+	var arg1 C.gint
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = C.gint(inputFd)
+
+	C.g_scanner_input_file(arg0, arg1)
+}
+
+// InputText prepares to scan a text buffer.
+func (scanner *Scanner) InputText(text string, textLen uint) {
+	var arg0 *C.GScanner
+	var arg1 *C.gchar
+	var arg2 C.guint
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.guint(textLen)
+
+	C.g_scanner_input_text(arg0, arg1, arg2)
+}
+
+// LookupSymbol looks up a symbol in the current scope and return its value. If
+// the symbol is not bound in the current scope, nil is returned.
+func (scanner *Scanner) LookupSymbol(symbol string) interface{} {
+	var arg0 *C.GScanner
+	var arg1 *C.gchar
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = (*C.gchar)(C.CString(symbol))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_scanner_lookup_symbol(arg0, arg1)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// PeekNextToken parses the next token, without removing it from the input
+// stream. The token data is placed in the @next_token, @next_value, @next_line,
+// and @next_position fields of the #GScanner structure.
+//
+// Note that, while the token is not removed from the input stream (i.e. the
+// next call to g_scanner_get_next_token() will return the same token), it will
+// not be reevaluated. This can lead to surprising results when changing scope
+// or the scanner configuration after peeking the next token. Getting the next
+// token after switching the scope or configuration will return whatever was
+// peeked before, regardless of any symbols that may have been added or removed
+// in the new scope.
+func (scanner *Scanner) PeekNextToken() TokenType {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	ret := C.g_scanner_peek_next_token(arg0)
+
+	var ret0 TokenType
+
+	ret0 = TokenType(ret)
+
+	return ret0
+}
+
+// ScopeAddSymbol adds a symbol to the given scope.
+func (scanner *Scanner) ScopeAddSymbol(scopeID uint, symbol string, value interface{}) {
+	var arg0 *C.GScanner
+	var arg1 C.guint
+	var arg2 *C.gchar
+	var arg3 C.gpointer
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = C.guint(scopeID)
+	arg2 = (*C.gchar)(C.CString(symbol))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gpointer(box.Assign(value))
+
+	C.g_scanner_scope_add_symbol(arg0, arg1, arg2, arg3)
+}
+
+// ScopeForeachSymbol calls the given function for each of the symbol/value
+// pairs in the given scope of the #GScanner. The function is passed the symbol
+// and value of each pair, and the given @user_data parameter.
+func (scanner *Scanner) ScopeForeachSymbol(scopeID uint, _func HFunc) {
+	var arg0 *C.GScanner
+	var arg1 C.guint
+	var arg2 C.GHFunc
+	arg3 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = C.guint(scopeID)
+	arg2 = (*[0]byte)(C.gotk4_HFunc)
+
+	C.g_scanner_scope_foreach_symbol(arg0, arg1, arg2)
+}
+
+// ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
+// symbol is not bound in the scope, nil is returned.
+func (scanner *Scanner) ScopeLookupSymbol(scopeID uint, symbol string) interface{} {
+	var arg0 *C.GScanner
+	var arg1 C.guint
+	var arg2 *C.gchar
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = C.guint(scopeID)
+	arg2 = (*C.gchar)(C.CString(symbol))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_scanner_scope_lookup_symbol(arg0, arg1, arg2)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// ScopeRemoveSymbol removes a symbol from a scope.
+func (scanner *Scanner) ScopeRemoveSymbol(scopeID uint, symbol string) {
+	var arg0 *C.GScanner
+	var arg1 C.guint
+	var arg2 *C.gchar
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = C.guint(scopeID)
+	arg2 = (*C.gchar)(C.CString(symbol))
+	defer C.free(unsafe.Pointer(arg2))
+
+	C.g_scanner_scope_remove_symbol(arg0, arg1, arg2)
+}
+
+// SetScope sets the current scope.
+func (scanner *Scanner) SetScope(scopeID uint) uint {
+	var arg0 *C.GScanner
+	var arg1 C.guint
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = C.guint(scopeID)
+
+	ret := C.g_scanner_set_scope(arg0, arg1)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// SyncFileOffset rewinds the filedescriptor to the current buffer position and
+// blows the file read ahead buffer. This is useful for third party uses of the
+// scanners filedescriptor, which hooks onto the current scanning position.
+func (scanner *Scanner) SyncFileOffset() {
+	var arg0 *C.GScanner
+
+	arg0 = (*C.GScanner)(scanner.Native())
+
+	C.g_scanner_sync_file_offset(arg0)
+}
+
+// UnexpToken outputs a message through the scanner's msg_handler, resulting
+// from an unexpected token in the input stream. Note that you should not call
+// g_scanner_peek_next_token() followed by g_scanner_unexp_token() without an
+// intermediate call to g_scanner_get_next_token(), as g_scanner_unexp_token()
+// evaluates the scanner's current token (not the peeked token) to construct
+// part of the message.
+func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
+	var arg0 *C.GScanner
+	var arg1 C.GTokenType
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+	var arg4 *C.gchar
+	var arg5 *C.gchar
+	var arg6 C.gint
+
+	arg0 = (*C.GScanner)(scanner.Native())
+	arg1 = (C.GTokenType)(expectedToken)
+	arg2 = (*C.gchar)(C.CString(identifierSpec))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(symbolSpec))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(symbolName))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(message))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = C.gint(isError)
+
+	C.g_scanner_unexp_token(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can
@@ -19680,6 +24432,605 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	return ret0
 }
 
+// AddChildSource adds @child_source to @source as a "polled" source; when
+// @source is added to a Context, @child_source will be automatically added with
+// the same priority, when @child_source is triggered, it will cause @source to
+// dispatch (in addition to calling its own callback), and when @source is
+// destroyed, it will destroy @child_source as well. (@source will also still be
+// dispatched if its own prepare/check functions indicate that it is ready.)
+//
+// If you don't need @child_source to do anything on its own when it triggers,
+// you can call g_source_set_dummy_callback() on it to set a callback that does
+// nothing (except return true if appropriate).
+//
+// @source will hold a reference on @child_source while @child_source is
+// attached to it.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+func (source *Source) AddChildSource(childSource *Source) {
+	var arg0 *C.GSource
+	var arg1 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GSource)(childSource.Native())
+
+	C.g_source_add_child_source(arg0, arg1)
+}
+
+// AddPoll adds a file descriptor to the set of file descriptors polled for this
+// source. This is usually combined with g_source_new() to add an event source.
+// The event source's check function will typically test the @revents field in
+// the FD struct and return true if events need to be processed.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// Using this API forces the linear scanning of event sources on each main loop
+// iteration. Newly-written event sources should try to use
+// g_source_add_unix_fd() instead of this API.
+func (source *Source) AddPoll(fd *PollFD) {
+	var arg0 *C.GSource
+	var arg1 *C.GPollFD
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GPollFD)(fd.Native())
+
+	C.g_source_add_poll(arg0, arg1)
+}
+
+// AddUnixFd monitors @fd for the IO events in @events.
+//
+// The tag returned by this function can be used to remove or modify the
+// monitoring of the fd using g_source_remove_unix_fd() or
+// g_source_modify_unix_fd().
+//
+// It is not necessary to remove the fd before destroying the source; it will be
+// cleaned up automatically.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// As the name suggests, this function is not available on Windows.
+func (source *Source) AddUnixFd(fd int, events IOCondition) interface{} {
+	var arg0 *C.GSource
+	var arg1 C.gint
+	var arg2 C.GIOCondition
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gint(fd)
+	arg2 = (C.GIOCondition)(events)
+
+	ret := C.g_source_add_unix_fd(arg0, arg1, arg2)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Attach adds a #GSource to a @context so that it will be executed within that
+// context. Remove it by calling g_source_destroy().
+//
+// This function is safe to call from any thread, regardless of which thread the
+// @context is running in.
+func (source *Source) Attach(context *MainContext) uint {
+	var arg0 *C.GSource
+	var arg1 *C.GMainContext
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GMainContext)(context.Native())
+
+	ret := C.g_source_attach(arg0, arg1)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Destroy removes a source from its Context, if any, and mark it as destroyed.
+// The source cannot be subsequently added to another context. It is safe to
+// call this on sources which have already been removed from their context.
+//
+// This does not unref the #GSource: if you still hold a reference, use
+// g_source_unref() to drop it.
+//
+// This function is safe to call from any thread, regardless of which thread the
+// Context is running in.
+func (source *Source) Destroy() {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	C.g_source_destroy(arg0)
+}
+
+// CanRecurse checks whether a source is allowed to be called recursively. see
+// g_source_set_can_recurse().
+func (source *Source) CanRecurse() bool {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_can_recurse(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Context gets the Context with which the source is associated.
+//
+// You can call this on a source that has been destroyed, provided that the
+// Context it was attached to still exists (in which case it will return that
+// Context). In particular, you can always call this function on the source
+// returned from g_main_current_source(). But calling this function on a source
+// whose Context has been destroyed is an error.
+func (source *Source) Context() *MainContext {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_context(arg0)
+
+	var ret0 *MainContext
+
+	ret0 = WrapMainContext(ret)
+
+	return ret0
+}
+
+// CurrentTime: this function ignores @source and is otherwise the same as
+// g_get_current_time().
+func (source *Source) CurrentTime(timeval *TimeVal) {
+	var arg0 *C.GSource
+	var arg1 *C.GTimeVal
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GTimeVal)(timeval.Native())
+
+	C.g_source_get_current_time(arg0, arg1)
+}
+
+// ID returns the numeric ID for a particular source. The ID of a source is a
+// positive integer which is unique within a particular main loop context. The
+// reverse mapping from ID to source is done by
+// g_main_context_find_source_by_id().
+//
+// You can only call this function while the source is associated to a Context
+// instance; calling this function before g_source_attach() or after
+// g_source_destroy() yields undefined behavior. The ID returned is unique
+// within the Context instance passed to g_source_attach().
+func (source *Source) ID() uint {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_id(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Name gets a name for the source, used in debugging and profiling. The name
+// may be LL if it has never been set with g_source_set_name().
+func (source *Source) Name() string {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Priority gets the priority of a source.
+func (source *Source) Priority() int {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_priority(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// ReadyTime gets the "ready time" of @source, as set by
+// g_source_set_ready_time().
+//
+// Any time before the current monotonic time (including 0) is an indication
+// that the source will fire immediately.
+func (source *Source) ReadyTime() int64 {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_ready_time(arg0)
+
+	var ret0 int64
+
+	ret0 = int64(ret)
+
+	return ret0
+}
+
+// Time gets the time to be used when checking this source. The advantage of
+// calling this function over calling g_get_monotonic_time() directly is that
+// when checking multiple sources, GLib can cache a single value instead of
+// having to repeatedly get the system monotonic time.
+//
+// The time here is the system monotonic time, if available, or some other
+// reasonable alternative otherwise. See g_get_monotonic_time().
+func (source *Source) Time() int64 {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_get_time(arg0)
+
+	var ret0 int64
+
+	ret0 = int64(ret)
+
+	return ret0
+}
+
+// IsDestroyed returns whether @source has been destroyed.
+//
+// This is important when you operate upon your objects from within idle
+// handlers, but may have freed the object before the dispatch of your idle
+// handler.
+//
+//    static gboolean
+//    idle_callback (gpointer data)
+//    {
+//      SomeWidget *self = data;
+//
+//      GDK_THREADS_ENTER ();
+//      if (!g_source_is_destroyed (g_main_current_source ()))
+//        {
+//          // do stuff with self
+//        }
+//      GDK_THREADS_LEAVE ();
+//
+//      return FALSE;
+//    }
+//
+//
+// Calls to this function from a thread other than the one acquired by the
+// Context the #GSource is attached to are typically redundant, as the source
+// could be destroyed immediately after this function returns. However, once a
+// source is destroyed it cannot be un-destroyed, so this function can be used
+// for opportunistic checks from any thread.
+func (source *Source) IsDestroyed() bool {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_is_destroyed(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ModifyUnixFd updates the event mask to watch for the fd identified by @tag.
+//
+// @tag is the tag returned from g_source_add_unix_fd().
+//
+// If you want to remove a fd, don't set its event mask to zero. Instead, call
+// g_source_remove_unix_fd().
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// As the name suggests, this function is not available on Windows.
+func (source *Source) ModifyUnixFd(tag interface{}, newEvents IOCondition) {
+	var arg0 *C.GSource
+	var arg1 C.gpointer
+	var arg2 C.GIOCondition
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gpointer(box.Assign(tag))
+	arg2 = (C.GIOCondition)(newEvents)
+
+	C.g_source_modify_unix_fd(arg0, arg1, arg2)
+}
+
+// QueryUnixFd queries the events reported for the fd corresponding to @tag on
+// @source during the last poll.
+//
+// The return value of this function is only defined when the function is called
+// from the check or dispatch functions for @source.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// As the name suggests, this function is not available on Windows.
+func (source *Source) QueryUnixFd(tag interface{}) IOCondition {
+	var arg0 *C.GSource
+	var arg1 C.gpointer
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gpointer(box.Assign(tag))
+
+	ret := C.g_source_query_unix_fd(arg0, arg1)
+
+	var ret0 IOCondition
+
+	ret0 = IOCondition(ret)
+
+	return ret0
+}
+
+// Ref increases the reference count on a source by one.
+func (source *Source) Ref() *Source {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	ret := C.g_source_ref(arg0)
+
+	var ret0 *Source
+
+	ret0 = WrapSource(ret)
+
+	return ret0
+}
+
+// RemoveChildSource detaches @child_source from @source and destroys it.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+func (source *Source) RemoveChildSource(childSource *Source) {
+	var arg0 *C.GSource
+	var arg1 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GSource)(childSource.Native())
+
+	C.g_source_remove_child_source(arg0, arg1)
+}
+
+// RemovePoll removes a file descriptor from the set of file descriptors polled
+// for this source.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+func (source *Source) RemovePoll(fd *PollFD) {
+	var arg0 *C.GSource
+	var arg1 *C.GPollFD
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GPollFD)(fd.Native())
+
+	C.g_source_remove_poll(arg0, arg1)
+}
+
+// RemoveUnixFd reverses the effect of a previous call to
+// g_source_add_unix_fd().
+//
+// You only need to call this if you want to remove an fd from being watched
+// while keeping the same source around. In the normal case you will just want
+// to destroy the source.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// As the name suggests, this function is not available on Windows.
+func (source *Source) RemoveUnixFd(tag interface{}) {
+	var arg0 *C.GSource
+	var arg1 C.gpointer
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gpointer(box.Assign(tag))
+
+	C.g_source_remove_unix_fd(arg0, arg1)
+}
+
+// SetCallback sets the callback function for a source. The callback for a
+// source is called from the source's dispatch function.
+//
+// The exact type of @func depends on the type of source; ie. you should not
+// count on @func being called with @data as its first parameter. Cast @func
+// with G_SOURCE_FUNC() to avoid warnings about incompatible function types.
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle memory management of @data.
+//
+// Typically, you won't use this function. Instead use functions specific to the
+// type of source you are using, such as g_idle_add() or g_timeout_add().
+//
+// It is safe to call this function multiple times on a source which has already
+// been attached to a context. The changes will take effect for the next time
+// the source is dispatched after this call returns.
+func (source *Source) SetCallback(_func SourceFunc) {
+	var arg0 *C.GSource
+	var arg1 C.GSourceFunc
+	arg2 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+
+	C.g_source_set_callback(arg0, arg1, (*[0]byte)(C.free))
+}
+
+// SetCallbackIndirect sets the callback function storing the data as a
+// refcounted callback "object". This is used internally. Note that calling
+// g_source_set_callback_indirect() assumes an initial reference count on
+// @callback_data, and thus @callback_funcs->unref will eventually be called
+// once more than @callback_funcs->ref.
+//
+// It is safe to call this function multiple times on a source which has already
+// been attached to a context. The changes will take effect for the next time
+// the source is dispatched after this call returns.
+func (source *Source) SetCallbackIndirect(callbackData interface{}, callbackFuncs *SourceCallbackFuncs) {
+	var arg0 *C.GSource
+	var arg1 C.gpointer
+	var arg2 *C.GSourceCallbackFuncs
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gpointer(box.Assign(callbackData))
+	arg2 = (*C.GSourceCallbackFuncs)(callbackFuncs.Native())
+
+	C.g_source_set_callback_indirect(arg0, arg1, arg2)
+}
+
+// SetCanRecurse sets whether a source can be called recursively. If
+// @can_recurse is true, then while the source is being dispatched then this
+// source will be processed normally. Otherwise, all processing of this source
+// is blocked until the dispatch function returns.
+func (source *Source) SetCanRecurse(canRecurse bool) {
+	var arg0 *C.GSource
+	var arg1 C.gboolean
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = gextras.Cbool(canRecurse)
+
+	C.g_source_set_can_recurse(arg0, arg1)
+}
+
+// SetDisposeFunction: set @dispose as dispose function on @source. @dispose
+// will be called once the reference count of @source reaches 0 but before any
+// of the state of the source is freed, especially before the finalize function
+// is called.
+//
+// This means that at this point @source is still a valid #GSource and it is
+// allow for the reference count to increase again until @dispose returns.
+//
+// The dispose function can be used to clear any "weak" references to the
+// @source in other data structures in a thread-safe way where it is possible
+// for another thread to increase the reference count of @source again while it
+// is being freed.
+//
+// The finalize function can not be used for this purpose as at that point
+// @source is already partially freed and not valid anymore.
+//
+// This should only ever be called from #GSource implementations.
+func (source *Source) SetDisposeFunction(dispose SourceDisposeFunc) {
+	var arg0 *C.GSource
+	var arg1 C.GSourceDisposeFunc
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*[0]byte)(C.gotk4_SourceDisposeFunc)
+
+	C.g_source_set_dispose_function(arg0, arg1)
+}
+
+// SetFuncs sets the source functions (can be used to override default
+// implementations) of an unattached source.
+func (source *Source) SetFuncs(funcs *SourceFuncs) {
+	var arg0 *C.GSource
+	var arg1 *C.GSourceFuncs
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.GSourceFuncs)(funcs.Native())
+
+	C.g_source_set_funcs(arg0, arg1)
+}
+
+// SetName sets a name for the source, used in debugging and profiling. The name
+// defaults to LL.
+//
+// The source name should describe in a human-readable way what the source does.
+// For example, "X11 event queue" or "GTK+ repaint idle handler" or whatever it
+// is.
+//
+// It is permitted to call this function multiple times, but is not recommended
+// due to the potential performance impact. For example, one could change the
+// name in the "check" function of a Funcs to include details like the event
+// type in the source name.
+//
+// Use caution if changing the name while another thread may be accessing it
+// with g_source_get_name(); that function does not copy the value, and changing
+// the value will free it while the other thread may be attempting to use it.
+func (source *Source) SetName(name string) {
+	var arg0 *C.GSource
+	var arg1 *C.char
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.g_source_set_name(arg0, arg1)
+}
+
+// SetPriority sets the priority of a source. While the main loop is being run,
+// a source will be dispatched if it is ready to be dispatched and no sources at
+// a higher (numerically smaller) priority are ready to be dispatched.
+//
+// A child source always has the same priority as its parent. It is not
+// permitted to change the priority of a source once it has been added as a
+// child of another source.
+func (source *Source) SetPriority(priority int) {
+	var arg0 *C.GSource
+	var arg1 C.gint
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gint(priority)
+
+	C.g_source_set_priority(arg0, arg1)
+}
+
+// SetReadyTime sets a #GSource to be dispatched when the given monotonic time
+// is reached (or passed). If the monotonic time is in the past (as it always
+// will be if @ready_time is 0) then the source will be dispatched immediately.
+//
+// If @ready_time is -1 then the source is never woken up on the basis of the
+// passage of time.
+//
+// Dispatching the source does not reset the ready time. You should do so
+// yourself, from the source dispatch function.
+//
+// Note that if you have a pair of sources where the ready time of one suggests
+// that it will be delivered first but the priority for the other suggests that
+// it would be delivered first, and the ready time for both sources is reached
+// during the same main context iteration, then the order of dispatch is
+// undefined.
+//
+// It is a no-op to call this function on a #GSource which has already been
+// destroyed with g_source_destroy().
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+func (source *Source) SetReadyTime(readyTime int64) {
+	var arg0 *C.GSource
+	var arg1 C.gint64
+
+	arg0 = (*C.GSource)(source.Native())
+	arg1 = C.gint64(readyTime)
+
+	C.g_source_set_ready_time(arg0, arg1)
+}
+
+// Unref decreases the reference count of a source by one. If the resulting
+// reference count is zero the source and associated memory will be destroyed.
+func (source *Source) Unref() {
+	var arg0 *C.GSource
+
+	arg0 = (*C.GSource)(source.Native())
+
+	C.g_source_unref(arg0)
+}
+
 // String: the GString struct contains the public fields of a GString.
 type String struct {
 	native C.GString
@@ -19724,6 +25075,537 @@ func (a *String) AllocatedLen() uint {
 	var ret uint
 	ret = uint(s.native.allocated_len)
 	return ret
+}
+
+// Append adds a string onto the end of a #GString, expanding it if necessary.
+func (string *String) Append(val string) *String {
+	var arg0 *C.GString
+	var arg1 *C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_string_append(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// AppendC adds a byte onto the end of a #GString, expanding it if necessary.
+func (string *String) AppendC(c byte) *String {
+	var arg0 *C.GString
+	var arg1 C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gchar(c)
+
+	ret := C.g_string_append_c(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// AppendLen appends @len bytes of @val to @string.
+//
+// If @len is positive, @val may contain embedded nuls and need not be
+// nul-terminated. It is the caller's responsibility to ensure that @val has at
+// least @len addressable bytes.
+//
+// If @len is negative, @val must be nul-terminated and @len is considered to
+// request the entire string length. This makes g_string_append_len() equivalent
+// to g_string_append().
+func (string *String) AppendLen(val string, len int) *String {
+	var arg0 *C.GString
+	var arg1 *C.gchar
+	var arg2 C.gssize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
+
+	ret := C.g_string_append_len(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// AppendUnichar converts a Unicode character into UTF-8, and appends it to the
+// string.
+func (string *String) AppendUnichar(wc uint32) *String {
+	var arg0 *C.GString
+	var arg1 C.gunichar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gunichar(wc)
+
+	ret := C.g_string_append_unichar(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// AppendURIEscaped appends @unescaped to @string, escaping any characters that
+// are reserved in URIs using URI-style escape sequences.
+func (string *String) AppendURIEscaped(unescaped string, reservedCharsAllowed string, allowUTF8 bool) *String {
+	var arg0 *C.GString
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gboolean
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = (*C.gchar)(C.CString(unescaped))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(reservedCharsAllowed))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = gextras.Cbool(allowUTF8)
+
+	ret := C.g_string_append_uri_escaped(arg0, arg1, arg2, arg3)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// ASCIIDown converts all uppercase ASCII letters to lowercase ASCII letters.
+func (string *String) ASCIIDown() *String {
+	var arg0 *C.GString
+
+	arg0 = (*C.GString)(string.Native())
+
+	ret := C.g_string_ascii_down(arg0)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// ASCIIUp converts all lowercase ASCII letters to uppercase ASCII letters.
+func (string *String) ASCIIUp() *String {
+	var arg0 *C.GString
+
+	arg0 = (*C.GString)(string.Native())
+
+	ret := C.g_string_ascii_up(arg0)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Assign copies the bytes from a string into a #GString, destroying any
+// previous contents. It is rather like the standard strcpy() function, except
+// that you do not have to worry about having enough space to copy the string.
+func (string *String) Assign(rval string) *String {
+	var arg0 *C.GString
+	var arg1 *C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = (*C.gchar)(C.CString(rval))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_string_assign(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Down converts a #GString to lowercase.
+func (string *String) Down() *String {
+	var arg0 *C.GString
+
+	arg0 = (*C.GString)(string.Native())
+
+	ret := C.g_string_down(arg0)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Equal compares two strings for equality, returning true if they are equal.
+// For use with Table.
+func (v *String) Equal(v2 *String) bool {
+	var arg0 *C.GString
+	var arg1 *C.GString
+
+	arg0 = (*C.GString)(v.Native())
+	arg1 = (*C.GString)(v2.Native())
+
+	ret := C.g_string_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Erase removes @len bytes from a #GString, starting at position @pos. The rest
+// of the #GString is shifted down to fill the gap.
+func (string *String) Erase(pos int, len int) *String {
+	var arg0 *C.GString
+	var arg1 C.gssize
+	var arg2 C.gssize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gssize(pos)
+	arg2 = C.gssize(len)
+
+	ret := C.g_string_erase(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Free frees the memory allocated for the #GString. If @free_segment is true it
+// also frees the character data. If it's false, the caller gains ownership of
+// the buffer and must free it after use with g_free().
+func (string *String) Free(freeSegment bool) string {
+	var arg0 *C.GString
+	var arg1 C.gboolean
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = gextras.Cbool(freeSegment)
+
+	ret := C.g_string_free(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// FreeToBytes transfers ownership of the contents of @string to a newly
+// allocated #GBytes. The #GString structure itself is deallocated, and it is
+// therefore invalid to use @string after invoking this function.
+//
+// Note that while #GString ensures that its buffer always has a trailing nul
+// character (not reflected in its "len"), the returned #GBytes does not include
+// this extra nul; i.e. it has length exactly equal to the "len" member.
+func (string *String) FreeToBytes() *Bytes {
+	var arg0 *C.GString
+
+	arg0 = (*C.GString)(string.Native())
+
+	ret := C.g_string_free_to_bytes(arg0)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
+
+// Hash creates a hash code for @str; for use with Table.
+func (str *String) Hash() uint {
+	var arg0 *C.GString
+
+	arg0 = (*C.GString)(str.Native())
+
+	ret := C.g_string_hash(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Insert inserts a copy of a string into a #GString, expanding it if necessary.
+func (string *String) Insert(pos int, val string) *String {
+	var arg0 *C.GString
+	var arg1 C.gssize
+	var arg2 *C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gssize(pos)
+	arg2 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_string_insert(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// InsertC inserts a byte into a #GString, expanding it if necessary.
+func (string *String) InsertC(pos int, c byte) *String {
+	var arg0 *C.GString
+	var arg1 C.gssize
+	var arg2 C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gssize(pos)
+	arg2 = C.gchar(c)
+
+	ret := C.g_string_insert_c(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// InsertLen inserts @len bytes of @val into @string at @pos.
+//
+// If @len is positive, @val may contain embedded nuls and need not be
+// nul-terminated. It is the caller's responsibility to ensure that @val has at
+// least @len addressable bytes.
+//
+// If @len is negative, @val must be nul-terminated and @len is considered to
+// request the entire string length.
+//
+// If @pos is -1, bytes are inserted at the end of the string.
+func (string *String) InsertLen(pos int, val string, len int) *String {
+	var arg0 *C.GString
+	var arg1 C.gssize
+	var arg2 *C.gchar
+	var arg3 C.gssize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gssize(pos)
+	arg2 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gssize(len)
+
+	ret := C.g_string_insert_len(arg0, arg1, arg2, arg3)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// InsertUnichar converts a Unicode character into UTF-8, and insert it into the
+// string at the given position.
+func (string *String) InsertUnichar(pos int, wc uint32) *String {
+	var arg0 *C.GString
+	var arg1 C.gssize
+	var arg2 C.gunichar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gssize(pos)
+	arg2 = C.gunichar(wc)
+
+	ret := C.g_string_insert_unichar(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Overwrite overwrites part of a string, lengthening it if necessary.
+func (string *String) Overwrite(pos uint, val string) *String {
+	var arg0 *C.GString
+	var arg1 C.gsize
+	var arg2 *C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gsize(pos)
+	arg2 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_string_overwrite(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// OverwriteLen overwrites part of a string, lengthening it if necessary. This
+// function will work with embedded nuls.
+func (string *String) OverwriteLen(pos uint, val string, len int) *String {
+	var arg0 *C.GString
+	var arg1 C.gsize
+	var arg2 *C.gchar
+	var arg3 C.gssize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gsize(pos)
+	arg2 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gssize(len)
+
+	ret := C.g_string_overwrite_len(arg0, arg1, arg2, arg3)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Prepend adds a string on to the start of a #GString, expanding it if
+// necessary.
+func (string *String) Prepend(val string) *String {
+	var arg0 *C.GString
+	var arg1 *C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_string_prepend(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// PrependC adds a byte onto the start of a #GString, expanding it if necessary.
+func (string *String) PrependC(c byte) *String {
+	var arg0 *C.GString
+	var arg1 C.gchar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gchar(c)
+
+	ret := C.g_string_prepend_c(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// PrependLen prepends @len bytes of @val to @string.
+//
+// If @len is positive, @val may contain embedded nuls and need not be
+// nul-terminated. It is the caller's responsibility to ensure that @val has at
+// least @len addressable bytes.
+//
+// If @len is negative, @val must be nul-terminated and @len is considered to
+// request the entire string length. This makes g_string_prepend_len()
+// equivalent to g_string_prepend().
+func (string *String) PrependLen(val string, len int) *String {
+	var arg0 *C.GString
+	var arg1 *C.gchar
+	var arg2 C.gssize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = (*C.gchar)(C.CString(val))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
+
+	ret := C.g_string_prepend_len(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// PrependUnichar converts a Unicode character into UTF-8, and prepends it to
+// the string.
+func (string *String) PrependUnichar(wc uint32) *String {
+	var arg0 *C.GString
+	var arg1 C.gunichar
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gunichar(wc)
+
+	ret := C.g_string_prepend_unichar(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// SetSize sets the length of a #GString. If the length is less than the current
+// length, the string will be truncated. If the length is greater than the
+// current length, the contents of the newly added area are undefined. (However,
+// as always, string->str[string->len] will be a nul byte.)
+func (string *String) SetSize(len uint) *String {
+	var arg0 *C.GString
+	var arg1 C.gsize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gsize(len)
+
+	ret := C.g_string_set_size(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Truncate cuts off the end of the GString, leaving the first @len bytes.
+func (string *String) Truncate(len uint) *String {
+	var arg0 *C.GString
+	var arg1 C.gsize
+
+	arg0 = (*C.GString)(string.Native())
+	arg1 = C.gsize(len)
+
+	ret := C.g_string_truncate(arg0, arg1)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Up converts a #GString to uppercase.
+func (string *String) Up() *String {
+	var arg0 *C.GString
+
+	arg0 = (*C.GString)(string.Native())
+
+	ret := C.g_string_up(arg0)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
 }
 
 type TestConfig struct {
@@ -19816,6 +25698,46 @@ func (t *TestLogBuffer) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+// Free: internal function for gtester to free test log messages, no ABI
+// guarantees provided.
+func (tbuffer *TestLogBuffer) Free() {
+	var arg0 *C.GTestLogBuffer
+
+	arg0 = (*C.GTestLogBuffer)(tbuffer.Native())
+
+	C.g_test_log_buffer_free(arg0)
+}
+
+// Pop: internal function for gtester to retrieve test log messages, no ABI
+// guarantees provided.
+func (tbuffer *TestLogBuffer) Pop() *TestLogMsg {
+	var arg0 *C.GTestLogBuffer
+
+	arg0 = (*C.GTestLogBuffer)(tbuffer.Native())
+
+	ret := C.g_test_log_buffer_pop(arg0)
+
+	var ret0 *TestLogMsg
+
+	ret0 = WrapTestLogMsg(ret)
+
+	return ret0
+}
+
+// Push: internal function for gtester to decode test log messages, no ABI
+// guarantees provided.
+func (tbuffer *TestLogBuffer) Push(nBytes uint, bytes byte) {
+	var arg0 *C.GTestLogBuffer
+	var arg1 C.guint
+	var arg2 *C.guint8
+
+	arg0 = (*C.GTestLogBuffer)(tbuffer.Native())
+	arg1 = C.guint(nBytes)
+	arg2 = (*C.guint8)(bytes)
+
+	C.g_test_log_buffer_push(arg0, arg1, arg2)
+}
+
 type TestLogMsg struct {
 	native C.GTestLogMsg
 }
@@ -19873,6 +25795,16 @@ func (n *TestLogMsg) Nums() float64 {
 	var ret float64
 	ret = float64(t.native.nums)
 	return ret
+}
+
+// Free: internal function for gtester to free test log messages, no ABI
+// guarantees provided.
+func (tmsg *TestLogMsg) Free() {
+	var arg0 *C.GTestLogMsg
+
+	arg0 = (*C.GTestLogMsg)(tmsg.Native())
+
+	C.g_test_log_msg_free(arg0)
 }
 
 // Thread: the #GThread struct represents a running thread. This struct is
@@ -19947,6 +25879,63 @@ func NewThreadTry(name string, _func ThreadFunc) *Thread {
 	return ret0
 }
 
+// Join waits until @thread finishes, i.e. the function @func, as given to
+// g_thread_new(), returns or g_thread_exit() is called. If @thread has already
+// terminated, then g_thread_join() returns immediately.
+//
+// Any thread can wait for any other thread by calling g_thread_join(), not just
+// its 'creator'. Calling g_thread_join() from multiple threads for the same
+// @thread leads to undefined behaviour.
+//
+// The value returned by @func or given to g_thread_exit() is returned by this
+// function.
+//
+// g_thread_join() consumes the reference to the passed-in @thread. This will
+// usually cause the #GThread struct and associated resources to be freed. Use
+// g_thread_ref() to obtain an extra reference if you want to keep the GThread
+// alive beyond the g_thread_join() call.
+func (thread *Thread) Join() interface{} {
+	var arg0 *C.GThread
+
+	arg0 = (*C.GThread)(thread.Native())
+
+	ret := C.g_thread_join(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Ref: increase the reference count on @thread.
+func (thread *Thread) Ref() *Thread {
+	var arg0 *C.GThread
+
+	arg0 = (*C.GThread)(thread.Native())
+
+	ret := C.g_thread_ref(arg0)
+
+	var ret0 *Thread
+
+	ret0 = WrapThread(ret)
+
+	return ret0
+}
+
+// Unref: decrease the reference count on @thread, possibly freeing all
+// resources associated with it.
+//
+// Note that each thread holds a reference to its #GThread while it is running,
+// so it is safe to drop your own reference to it if you don't need it anymore.
+func (thread *Thread) Unref() {
+	var arg0 *C.GThread
+
+	arg0 = (*C.GThread)(thread.Native())
+
+	C.g_thread_unref(arg0)
+}
+
 // ThreadPool: the Pool struct represents a thread pool. It has three public
 // read-only members, but the underlying struct is bigger, so you must not copy
 // this struct.
@@ -19986,6 +25975,174 @@ func (e *ThreadPool) Exclusive() bool {
 	var ret bool
 	ret = gextras.Gobool(t.native.exclusive)
 	return ret
+}
+
+// Free frees all resources allocated for @pool.
+//
+// If @immediate is true, no new task is processed for @pool. Otherwise @pool is
+// not freed before the last task is processed. Note however, that no thread of
+// this pool is interrupted while processing a task. Instead at least all still
+// running threads can finish their tasks before the @pool is freed.
+//
+// If @wait_ is true, this function does not return before all tasks to be
+// processed (dependent on @immediate, whether all or only the currently
+// running) are ready. Otherwise this function returns immediately.
+//
+// After calling this function @pool must not be used anymore.
+func (pool *ThreadPool) Free(immediate bool, wait_ bool) {
+	var arg0 *C.GThreadPool
+	var arg1 C.gboolean
+	var arg2 C.gboolean
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+	arg1 = gextras.Cbool(immediate)
+	arg2 = gextras.Cbool(wait_)
+
+	C.g_thread_pool_free(arg0, arg1, arg2)
+}
+
+// MaxThreads returns the maximal number of threads for @pool.
+func (pool *ThreadPool) MaxThreads() int {
+	var arg0 *C.GThreadPool
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+
+	ret := C.g_thread_pool_get_max_threads(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// NumThreads returns the number of threads currently running in @pool.
+func (pool *ThreadPool) NumThreads() uint {
+	var arg0 *C.GThreadPool
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+
+	ret := C.g_thread_pool_get_num_threads(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// MoveToFront moves the item to the front of the queue of unprocessed items, so
+// that it will be processed next.
+func (pool *ThreadPool) MoveToFront(data interface{}) bool {
+	var arg0 *C.GThreadPool
+	var arg1 C.gpointer
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_thread_pool_move_to_front(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Push inserts @data into the list of tasks to be executed by @pool.
+//
+// When the number of currently running threads is lower than the maximal
+// allowed number of threads, a new thread is started (or reused) with the
+// properties given to g_thread_pool_new(). Otherwise, @data stays in the queue
+// until a thread in this pool finishes its previous task and processes @data.
+//
+// @error can be nil to ignore errors, or non-nil to report errors. An error can
+// only occur when a new thread couldn't be created. In that case @data is
+// simply appended to the queue of work to do.
+//
+// Before version 2.32, this function did not return a success status.
+func (pool *ThreadPool) Push(data interface{}) bool {
+	var arg0 *C.GThreadPool
+	var arg1 C.gpointer
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	ret := C.g_thread_pool_push(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetMaxThreads sets the maximal allowed number of threads for @pool. A value
+// of -1 means that the maximal number of threads is unlimited. If @pool is an
+// exclusive thread pool, setting the maximal number of threads to -1 is not
+// allowed.
+//
+// Setting @max_threads to 0 means stopping all work for @pool. It is
+// effectively frozen until @max_threads is set to a non-zero value again.
+//
+// A thread is never terminated while calling @func, as supplied by
+// g_thread_pool_new(). Instead the maximal number of threads only has effect
+// for the allocation of new threads in g_thread_pool_push(). A new thread is
+// allocated, whenever the number of currently running threads in @pool is
+// smaller than the maximal number.
+//
+// @error can be nil to ignore errors, or non-nil to report errors. An error can
+// only occur when a new thread couldn't be created.
+//
+// Before version 2.32, this function did not return a success status.
+func (pool *ThreadPool) SetMaxThreads(maxThreads int) bool {
+	var arg0 *C.GThreadPool
+	var arg1 C.gint
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+	arg1 = C.gint(maxThreads)
+
+	ret := C.g_thread_pool_set_max_threads(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetSortFunction sets the function used to sort the list of tasks. This allows
+// the tasks to be processed by a priority determined by @func, and not just in
+// the order in which they were added to the pool.
+//
+// Note, if the maximum number of threads is more than 1, the order that threads
+// are executed cannot be guaranteed 100%. Threads are scheduled by the
+// operating system and are executed at random. It cannot be assumed that
+// threads are executed in the order they are created.
+func (pool *ThreadPool) SetSortFunction(_func CompareDataFunc) {
+	var arg0 *C.GThreadPool
+	var arg1 C.GCompareDataFunc
+	arg2 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+	arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+
+	C.g_thread_pool_set_sort_function(arg0, arg1)
+}
+
+// Unprocessed returns the number of tasks still unprocessed in @pool.
+func (pool *ThreadPool) Unprocessed() uint {
+	var arg0 *C.GThreadPool
+
+	arg0 = (*C.GThreadPool)(pool.Native())
+
+	ret := C.g_thread_pool_unprocessed(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
 }
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
@@ -20031,6 +26188,66 @@ func (t *TimeVal) TvUsec() int32 {
 	var ret int32
 	ret = int32(t.native.tv_usec)
 	return ret
+}
+
+// Add adds the given number of microseconds to @time_. @microseconds can also
+// be negative to decrease the value of @time_.
+func (time_ *TimeVal) Add(microseconds int32) {
+	var arg0 *C.GTimeVal
+	var arg1 C.glong
+
+	arg0 = (*C.GTimeVal)(time_.Native())
+	arg1 = C.glong(microseconds)
+
+	C.g_time_val_add(arg0, arg1)
+}
+
+// ToIso8601 converts @time_ into an RFC 3339 encoded string, relative to the
+// Coordinated Universal Time (UTC). This is one of the many formats allowed by
+// ISO 8601.
+//
+// ISO 8601 allows a large number of date/time formats, with or without
+// punctuation and optional elements. The format returned by this function is a
+// complete date and time, with optional punctuation included, the UTC time zone
+// represented as "Z", and the @tv_usec part included if and only if it is
+// nonzero, i.e. either "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.fffffZ".
+//
+// This corresponds to the Internet date/time format defined by RFC 3339
+// (https://www.ietf.org/rfc/rfc3339.txt), and to either of the two most-precise
+// formats defined by the W3C Note Date and Time Formats
+// (http://www.w3.org/TR/NOTE-datetime-19980827). Both of these documents are
+// profiles of ISO 8601.
+//
+// Use g_date_time_format() or g_strdup_printf() if a different variation of ISO
+// 8601 format is required.
+//
+// If @time_ represents a date which is too large to fit into a `struct tm`, nil
+// will be returned. This is platform dependent. Note also that since `GTimeVal`
+// stores the number of seconds as a `glong`, on 32-bit systems it is subject to
+// the year 2038 problem. Accordingly, since GLib 2.62, this function has been
+// deprecated. Equivalent functionality is available using:
+//
+//
+//    GDateTime *dt = g_date_time_new_from_unix_utc (time_val);
+//    iso8601_string = g_date_time_format_iso8601 (dt);
+//    g_date_time_unref (dt);
+//
+//
+// The return value of g_time_val_to_iso8601() has been nullable since GLib
+// 2.54; before then, GLib would crash under the same conditions.
+func (time_ *TimeVal) ToIso8601() string {
+	var arg0 *C.GTimeVal
+
+	arg0 = (*C.GTimeVal)(time_.Native())
+
+	ret := C.g_time_val_to_iso8601(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
 }
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
@@ -20111,6 +26328,179 @@ func NewTimeZoneUtc() *TimeZone {
 	ret0 = WrapTimeZone(ret)
 
 	return ret0
+}
+
+// AdjustTime finds an interval within @tz that corresponds to the given @time_,
+// possibly adjusting @time_ if required to fit into an interval. The meaning of
+// @time_ depends on @type.
+//
+// This function is similar to g_time_zone_find_interval(), with the difference
+// that it always succeeds (by making the adjustments described below).
+//
+// In any of the cases where g_time_zone_find_interval() succeeds then this
+// function returns the same value, without modifying @time_.
+//
+// This function may, however, modify @time_ in order to deal with non-existent
+// times. If the non-existent local @time_ of 02:30 were requested on March 14th
+// 2010 in Toronto then this function would adjust @time_ to be 03:00 and return
+// the interval containing the adjusted time.
+func (tz *TimeZone) AdjustTime(_type TimeType, time_ int64) int {
+	var arg0 *C.GTimeZone
+	var arg1 C.GTimeType
+	var arg2 *C.gint64
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+	arg1 = (C.GTimeType)(_type)
+	arg2 = (*C.gint64)(time_)
+
+	ret := C.g_time_zone_adjust_time(arg0, arg1, arg2)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// FindInterval finds an interval within @tz that corresponds to the given
+// @time_. The meaning of @time_ depends on @type.
+//
+// If @type is G_TIME_TYPE_UNIVERSAL then this function will always succeed
+// (since universal time is monotonic and continuous).
+//
+// Otherwise @time_ is treated as local time. The distinction between
+// G_TIME_TYPE_STANDARD and G_TIME_TYPE_DAYLIGHT is ignored except in the case
+// that the given @time_ is ambiguous. In Toronto, for example, 01:30 on
+// November 7th 2010 occurred twice (once inside of daylight savings time and
+// the next, an hour later, outside of daylight savings time). In this case, the
+// different value of @type would result in a different interval being returned.
+//
+// It is still possible for this function to fail. In Toronto, for example,
+// 02:00 on March 14th 2010 does not exist (due to the leap forward to begin
+// daylight savings time). -1 is returned in that case.
+func (tz *TimeZone) FindInterval(_type TimeType, time_ int64) int {
+	var arg0 *C.GTimeZone
+	var arg1 C.GTimeType
+	var arg2 C.gint64
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+	arg1 = (C.GTimeType)(_type)
+	arg2 = C.gint64(time_)
+
+	ret := C.g_time_zone_find_interval(arg0, arg1, arg2)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Abbreviation determines the time zone abbreviation to be used during a
+// particular @interval of time in the time zone @tz.
+//
+// For example, in Toronto this is currently "EST" during the winter months and
+// "EDT" during the summer months when daylight savings time is in effect.
+func (tz *TimeZone) Abbreviation(interval int) string {
+	var arg0 *C.GTimeZone
+	var arg1 C.gint
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+	arg1 = C.gint(interval)
+
+	ret := C.g_time_zone_get_abbreviation(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Identifier: get the identifier of this Zone, as passed to g_time_zone_new().
+// If the identifier passed at construction time was not recognised, `UTC` will
+// be returned. If it was nil, the identifier of the local timezone at
+// construction time will be returned.
+//
+// The identifier will be returned in the same format as provided at
+// construction time: if provided as a time offset, that will be returned by
+// this function.
+func (tz *TimeZone) Identifier() string {
+	var arg0 *C.GTimeZone
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+
+	ret := C.g_time_zone_get_identifier(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Offset determines the offset to UTC in effect during a particular @interval
+// of time in the time zone @tz.
+//
+// The offset is the number of seconds that you add to UTC time to arrive at
+// local time for @tz (ie: negative numbers for time zones west of GMT, positive
+// numbers for east).
+func (tz *TimeZone) Offset(interval int) int32 {
+	var arg0 *C.GTimeZone
+	var arg1 C.gint
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+	arg1 = C.gint(interval)
+
+	ret := C.g_time_zone_get_offset(arg0, arg1)
+
+	var ret0 int32
+
+	ret0 = int32(ret)
+
+	return ret0
+}
+
+// IsDst determines if daylight savings time is in effect during a particular
+// @interval of time in the time zone @tz.
+func (tz *TimeZone) IsDst(interval int) bool {
+	var arg0 *C.GTimeZone
+	var arg1 C.gint
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+	arg1 = C.gint(interval)
+
+	ret := C.g_time_zone_is_dst(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Ref increases the reference count on @tz.
+func (tz *TimeZone) Ref() *TimeZone {
+	var arg0 *C.GTimeZone
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+
+	ret := C.g_time_zone_ref(arg0)
+
+	var ret0 *TimeZone
+
+	ret0 = WrapTimeZone(ret)
+
+	return ret0
+}
+
+// Unref decreases the reference count on @tz.
+func (tz *TimeZone) Unref() {
+	var arg0 *C.GTimeZone
+
+	arg0 = (*C.GTimeZone)(tz.Native())
+
+	C.g_time_zone_unref(arg0)
 }
 
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
@@ -20276,6 +26666,292 @@ func (u *URI) Native() unsafe.Pointer {
 	return unsafe.Pointer(&u.native)
 }
 
+// AuthParams gets @uri's authentication parameters, which may contain
+// `%`-encoding, depending on the flags with which @uri was created. (If @uri
+// was not created with G_URI_FLAGS_HAS_AUTH_PARAMS then this will be nil.)
+//
+// Depending on the URI scheme, g_uri_parse_params() may be useful for further
+// parsing this information.
+func (uri *URI) AuthParams() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_auth_params(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Flags gets @uri's flags set upon construction.
+func (uri *URI) Flags() URIFlags {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_flags(arg0)
+
+	var ret0 URIFlags
+
+	ret0 = URIFlags(ret)
+
+	return ret0
+}
+
+// Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
+// the flags with which @uri was created.
+func (uri *URI) Fragment() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_fragment(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Host gets @uri's host. This will never have `%`-encoded characters, unless it
+// is non-UTF-8 (which can only be the case if @uri was created with
+// G_URI_FLAGS_NON_DNS).
+//
+// If @uri contained an IPv6 address literal, this value will be just that
+// address, without the brackets around it that are necessary in the string form
+// of the URI. Note that in this case there may also be a scope ID attached to
+// the address. Eg, `fe80::1234%“em1` (or `fe80::1234%“25em1` if the string is
+// still encoded).
+func (uri *URI) Host() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_host(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Password gets @uri's password, which may contain `%`-encoding, depending on
+// the flags with which @uri was created. (If @uri was not created with
+// G_URI_FLAGS_HAS_PASSWORD then this will be nil.)
+func (uri *URI) Password() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_password(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Path gets @uri's path, which may contain `%`-encoding, depending on the flags
+// with which @uri was created.
+func (uri *URI) Path() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_path(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Port gets @uri's port.
+func (uri *URI) Port() int {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_port(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Query gets @uri's query, which may contain `%`-encoding, depending on the
+// flags with which @uri was created.
+//
+// For queries consisting of a series of `name=value` parameters, ParamsIter or
+// g_uri_parse_params() may be useful.
+func (uri *URI) Query() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_query(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Scheme gets @uri's scheme. Note that this will always be all-lowercase,
+// regardless of the string or strings that @uri was created from.
+func (uri *URI) Scheme() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_scheme(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// User gets the ‘username’ component of @uri's userinfo, which may contain
+// `%`-encoding, depending on the flags with which @uri was created. If @uri was
+// not created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS,
+// this is the same as g_uri_get_userinfo().
+func (uri *URI) User() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_user(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
+// the flags with which @uri was created.
+func (uri *URI) Userinfo() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_get_userinfo(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// ParseRelative parses @uri_ref according to @flags and, if it is a [relative
+// URI][relative-absolute-uris], resolves it relative to @base_uri. If the
+// result is not a valid absolute URI, it will be discarded, and an error
+// returned.
+func (baseURI *URI) ParseRelative(uriRef string, flags URIFlags) *URI {
+	var arg0 *C.GUri
+	var arg1 *C.gchar
+	var arg2 C.GUriFlags
+
+	arg0 = (*C.GUri)(baseURI.Native())
+	arg1 = (*C.gchar)(C.CString(uriRef))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GUriFlags)(flags)
+
+	ret := C.g_uri_parse_relative(arg0, arg1, arg2)
+
+	var ret0 *URI
+
+	ret0 = WrapURI(ret)
+
+	return ret0
+}
+
+// Ref increments the reference count of @uri by one.
+func (uri *URI) Ref() *URI {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_ref(arg0)
+
+	var ret0 *URI
+
+	ret0 = WrapURI(ret)
+
+	return ret0
+}
+
+// String returns a string representing @uri.
+//
+// This is not guaranteed to return a string which is identical to the string
+// that @uri was parsed from. However, if the source URI was syntactically
+// correct (according to RFC 3986), and it was parsed with G_URI_FLAGS_ENCODED,
+// then g_uri_to_string() is guaranteed to return a string which is at least
+// semantically equivalent to the source URI (according to RFC 3986).
+//
+// If @uri might contain sensitive details, such as authentication parameters,
+// or private data in its query string, and the returned string is going to be
+// logged, then consider using g_uri_to_string_partial() to redact parts.
+func (uri *URI) String() string {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	ret := C.g_uri_to_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// ToStringPartial returns a string representing @uri, subject to the options in
+// @flags. See g_uri_to_string() and HideFlags for more details.
+func (uri *URI) ToStringPartial(flags URIHideFlags) string {
+	var arg0 *C.GUri
+	var arg1 C.GUriHideFlags
+
+	arg0 = (*C.GUri)(uri.Native())
+	arg1 = (C.GUriHideFlags)(flags)
+
+	ret := C.g_uri_to_string_partial(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Unref: atomically decrements the reference count of @uri by one.
+//
+// When the reference count reaches zero, the resources allocated by @uri are
+// freed
+func (uri *URI) Unref() {
+	var arg0 *C.GUri
+
+	arg0 = (*C.GUri)(uri.Native())
+
+	C.g_uri_unref(arg0)
+}
+
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
 // part of the URI value. For example
 // `scheme://server/path?query=string&is=there` has two attributes –
@@ -20308,6 +26984,88 @@ func marshalURIParamsIter(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (u *URIParamsIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&u.native)
+}
+
+// Init initializes an attribute/value pair iterator.
+//
+// The iterator keeps pointers to the @params and @separators arguments, those
+// variables must thus outlive the iterator and not be modified during the
+// iteration.
+//
+// If G_URI_PARAMS_WWW_FORM is passed in @flags, `+` characters in the param
+// string will be replaced with spaces in the output. For example, `foo=bar+baz`
+// will give attribute `foo` with value `bar baz`. This is commonly used on the
+// web (the `https` and `http` schemes only), but is deprecated in favour of the
+// equivalent of encoding spaces as `20`.
+//
+// Unlike with g_uri_parse_params(), G_URI_PARAMS_CASE_INSENSITIVE has no effect
+// if passed to @flags for g_uri_params_iter_init(). The caller is responsible
+// for doing their own case-insensitive comparisons.
+//
+//    GUriParamsIter iter;
+//    GError *error = NULL;
+//    gchar *unowned_attr, *unowned_value;
+//
+//    g_uri_params_iter_init (&iter, "foo=bar&baz=bar&Foo=frob&baz=bar2", -1, "&", G_URI_PARAMS_NONE);
+//    while (g_uri_params_iter_next (&iter, &unowned_attr, &unowned_value, &error))
+//      {
+//        g_autofree gchar *attr = g_steal_pointer (&unowned_attr);
+//        g_autofree gchar *value = g_steal_pointer (&unowned_value);
+//        // do something with attr and value; this code will be called 4 times
+//        // for the params string in this example: once with attr=foo and value=bar,
+//        // then with baz/bar, then Foo/frob, then baz/bar2.
+//      }
+//    if (error)
+//      // handle parsing error
+//
+func (iter *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
+	var arg0 *C.GUriParamsIter
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gchar
+	var arg4 C.GUriParamsFlags
+
+	arg0 = (*C.GUriParamsIter)(iter.Native())
+	arg1 = (*C.gchar)(C.CString(params))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(length)
+	arg3 = (*C.gchar)(C.CString(separators))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (C.GUriParamsFlags)(flags)
+
+	C.g_uri_params_iter_init(arg0, arg1, arg2, arg3, arg4)
+}
+
+// Next advances @iter and retrieves the next attribute/value. false is returned
+// if an error has occurred (in which case @error is set), or if the end of the
+// iteration is reached (in which case @attribute and @value are set to nil and
+// the iterator becomes invalid). If true is returned, g_uri_params_iter_next()
+// may be called again to receive another attribute/value pair.
+//
+// Note that the same @attribute may be returned multiple times, since URIs
+// allow repeated attributes.
+func (iter *URIParamsIter) Next() (attribute string, value string, ok bool) {
+	var arg0 *C.GUriParamsIter
+	var arg1 **C.gchar // out
+	var arg2 **C.gchar // out
+
+	arg0 = (*C.GUriParamsIter)(iter.Native())
+
+	ret := C.g_uri_params_iter_next(arg0, &arg1, &arg2)
+
+	var ret0 string
+	var ret1 string
+	var ret2 bool
+
+	ret0 = C.GoString(arg1)
+	C.free(unsafe.Pointer(arg1))
+
+	ret1 = C.GoString(arg2)
+	C.free(unsafe.Pointer(arg2))
+
+	ret2 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2
 }
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -20560,39 +27318,6 @@ func (v *Variant) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// NewVariantArray constructs a struct Variant.
-func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
-	var arg1 *C.GVariantType
-	var arg2 **C.GVariant
-	var arg3 C.gsize
-
-	arg1 = (*C.GVariantType)(childType.Native())
-	{
-		var dst []*C.GVariant
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(children))))
-		sliceHeader.Len = len(children)
-		sliceHeader.Cap = len(children)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(children); i++ {
-			src := children[i]
-			dst[i] = (*C.GVariant)(src.Native())
-		}
-
-		arg2 = (**C.GVariant)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(children)
-	}
-
-	ret := C.g_variant_new_array(arg1, arg2, arg3)
-
-	var ret0 *Variant
-
-	ret0 = WrapVariant(ret)
-
-	return ret0
-}
-
 // NewVariantBoolean constructs a struct Variant.
 func NewVariantBoolean(value bool) *Variant {
 	var arg1 C.gboolean
@@ -20632,38 +27357,6 @@ func NewVariantBytestring(string []byte) *Variant {
 	}
 
 	ret := C.g_variant_new_bytestring(arg1)
-
-	var ret0 *Variant
-
-	ret0 = WrapVariant(ret)
-
-	return ret0
-}
-
-// NewVariantBytestringArray constructs a struct Variant.
-func NewVariantBytestringArray(strv []string) *Variant {
-	var arg1 **C.gchar
-	var arg2 C.gssize
-
-	{
-		var dst []*C.gchar
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(strv))))
-		sliceHeader.Len = len(strv)
-		sliceHeader.Cap = len(strv)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(strv); i++ {
-			src := strv[i]
-			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(dst[i]))
-		}
-
-		arg1 = (**C.gchar)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(strv)
-	}
-
-	ret := C.g_variant_new_bytestring_array(arg1, arg2)
 
 	var ret0 *Variant
 
@@ -20736,32 +27429,6 @@ func NewVariantFromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Varian
 	arg3 = gextras.Cbool(trusted)
 
 	ret := C.g_variant_new_from_bytes(arg1, arg2, arg3)
-
-	var ret0 *Variant
-
-	ret0 = WrapVariant(ret)
-
-	return ret0
-}
-
-// NewVariantFromData constructs a struct Variant.
-func NewVariantFromData(_type *VariantType, data []byte, trusted bool, userData interface{}) *Variant {
-	var arg1 *C.GVariantType
-	var arg2 C.gpointer
-	var arg3 C.gsize
-	var arg4 C.gboolean
-	var arg6 C.gpointer
-
-	arg1 = (*C.GVariantType)(_type.Native())
-	{
-		arg2 = (C.gpointer)(&data[0])
-		arg3 = len(data)
-		defer runtime.KeepAlive(data)
-	}
-	arg4 = gextras.Cbool(trusted)
-	arg6 = C.gpointer(box.Assign(userData))
-
-	ret := C.g_variant_new_from_data(arg1, arg2, arg3, arg4, (*[0]byte)(C.free), arg6)
 
 	var ret0 *Variant
 
@@ -20863,38 +27530,6 @@ func NewVariantObjectPath(objectPath string) *Variant {
 	return ret0
 }
 
-// NewVariantObjv constructs a struct Variant.
-func NewVariantObjv(strv []string) *Variant {
-	var arg1 **C.gchar
-	var arg2 C.gssize
-
-	{
-		var dst []C.utf8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_utf8 * len(strv))))
-		sliceHeader.Len = len(strv)
-		sliceHeader.Cap = len(strv)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(strv); i++ {
-			src := strv[i]
-			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(dst[i]))
-		}
-
-		arg1 = (**C.gchar)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(strv)
-	}
-
-	ret := C.g_variant_new_objv(arg1, arg2)
-
-	var ret0 *Variant
-
-	ret0 = WrapVariant(ret)
-
-	return ret0
-}
-
 // NewVariantSignature constructs a struct Variant.
 func NewVariantSignature(signature string) *Variant {
 	var arg1 *C.gchar
@@ -20927,38 +27562,6 @@ func NewVariantString(string string) *Variant {
 	return ret0
 }
 
-// NewVariantStrv constructs a struct Variant.
-func NewVariantStrv(strv []string) *Variant {
-	var arg1 **C.gchar
-	var arg2 C.gssize
-
-	{
-		var dst []C.utf8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_utf8 * len(strv))))
-		sliceHeader.Len = len(strv)
-		sliceHeader.Cap = len(strv)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(strv); i++ {
-			src := strv[i]
-			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(dst[i]))
-		}
-
-		arg1 = (**C.gchar)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(strv)
-	}
-
-	ret := C.g_variant_new_strv(arg1, arg2)
-
-	var ret0 *Variant
-
-	ret0 = WrapVariant(ret)
-
-	return ret0
-}
-
 // NewVariantTakeString constructs a struct Variant.
 func NewVariantTakeString(string string) *Variant {
 	var arg1 *C.gchar
@@ -20967,37 +27570,6 @@ func NewVariantTakeString(string string) *Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_variant_new_take_string(arg1)
-
-	var ret0 *Variant
-
-	ret0 = WrapVariant(ret)
-
-	return ret0
-}
-
-// NewVariantTuple constructs a struct Variant.
-func NewVariantTuple(children []*Variant) *Variant {
-	var arg1 **C.GVariant
-	var arg2 C.gsize
-
-	{
-		var dst []*C.GVariant
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(children))))
-		sliceHeader.Len = len(children)
-		sliceHeader.Cap = len(children)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(children); i++ {
-			src := children[i]
-			dst[i] = (*C.GVariant)(src.Native())
-		}
-
-		arg1 = (**C.GVariant)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(children)
-	}
-
-	ret := C.g_variant_new_tuple(arg1, arg2)
 
 	var ret0 *Variant
 
@@ -21066,6 +27638,1272 @@ func NewVariantVariant(value *Variant) *Variant {
 	return ret0
 }
 
+// Byteswap performs a byteswapping operation on the contents of @value. The
+// result is that all multi-byte numeric data contained in @value is
+// byteswapped. That includes 16, 32, and 64bit signed and unsigned integers as
+// well as file handles and double precision floating point values.
+//
+// This function is an identity mapping on any value that does not contain
+// multi-byte numeric data. That include strings, booleans, bytes and containers
+// containing only these things (recursively).
+//
+// The returned value is always in normal form and is marked as trusted.
+func (value *Variant) Byteswap() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_byteswap(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// CheckFormatString checks if calling g_variant_get() with @format_string on
+// @value would be valid from a type-compatibility standpoint. @format_string is
+// assumed to be a valid format string (from a syntactic standpoint).
+//
+// If @copy_only is true then this function additionally checks that it would be
+// safe to call g_variant_unref() on @value immediately after the call to
+// g_variant_get() without invalidating the result. This is only possible if
+// deep copies are made (ie: there are no pointers to the data inside of the
+// soon-to-be-freed #GVariant instance). If this check fails then a g_critical()
+// is printed and false is returned.
+//
+// This function is meant to be used by functions that wish to provide varargs
+// accessors to #GVariant values of uncertain values (eg: g_variant_lookup() or
+// g_menu_model_get_item_attribute()).
+func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
+	var arg0 *C.GVariant
+	var arg1 *C.gchar
+	var arg2 C.gboolean
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg1 = (*C.gchar)(C.CString(formatString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = gextras.Cbool(copyOnly)
+
+	ret := C.g_variant_check_format_string(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Classify classifies @value according to its top-level type.
+func (value *Variant) Classify() VariantClass {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_classify(arg0)
+
+	var ret0 VariantClass
+
+	ret0 = VariantClass(ret)
+
+	return ret0
+}
+
+// Compare compares @one and @two.
+//
+// The types of @one and @two are #gconstpointer only to allow use of this
+// function with #GTree, Array, etc. They must each be a #GVariant.
+//
+// Comparison is only defined for basic types (ie: booleans, numbers, strings).
+// For booleans, false is less than true. Numbers are ordered in the usual way.
+// Strings are in ASCII lexographical order.
+//
+// It is a programmer error to attempt to compare container values or two values
+// that have types that are not exactly equal. For example, you cannot compare a
+// 32-bit signed integer with a 32-bit unsigned integer. Also note that this
+// function is not particularly well-behaved when it comes to comparison of
+// doubles; in particular, the handling of incomparable values (ie: NaN) is
+// undefined.
+//
+// If you only require an equality comparison, g_variant_equal() is more
+// general.
+func (one *Variant) Compare(two Variant) int {
+	var arg0 C.gpointer
+	var arg1 C.gpointer
+
+	arg0 = (C.gpointer)(one.Native())
+	arg1 = (C.gpointer)(two.Native())
+
+	ret := C.g_variant_compare(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// DupBytestring: similar to g_variant_get_bytestring() except that instead of
+// returning a constant string, the string is duplicated.
+//
+// The return value must be freed using g_free().
+func (value *Variant) DupBytestring() (length uint, guint8s []byte) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_dup_bytestring(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []byte
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]byte, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = byte(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// DupBytestringArray gets the contents of an array of array of bytes #GVariant.
+// This call makes a deep copy; the return result should be released with
+// g_strfreev().
+//
+// If @length is non-nil then the number of elements in the result is stored
+// there. In any case, the resulting array will be nil-terminated.
+//
+// For an empty array, @length will be set to 0 and a pointer to a nil pointer
+// will be returned.
+func (value *Variant) DupBytestringArray() (length uint, utf8s []string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_dup_bytestring_array(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]string, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// DupObjv gets the contents of an array of object paths #GVariant. This call
+// makes a deep copy; the return result should be released with g_strfreev().
+//
+// If @length is non-nil then the number of elements in the result is stored
+// there. In any case, the resulting array will be nil-terminated.
+//
+// For an empty array, @length will be set to 0 and a pointer to a nil pointer
+// will be returned.
+func (value *Variant) DupObjv() (length uint, utf8s []string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_dup_objv(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]string, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// DupString: similar to g_variant_get_string() except that instead of returning
+// a constant string, the string is duplicated.
+//
+// The string will always be UTF-8 encoded.
+//
+// The return value must be freed using g_free().
+func (value *Variant) DupString() (length uint, utf8 string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_dup_string(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 string
+
+	ret0 = uint(arg1)
+
+	ret1 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0, ret1
+}
+
+// DupStrv gets the contents of an array of strings #GVariant. This call makes a
+// deep copy; the return result should be released with g_strfreev().
+//
+// If @length is non-nil then the number of elements in the result is stored
+// there. In any case, the resulting array will be nil-terminated.
+//
+// For an empty array, @length will be set to 0 and a pointer to a nil pointer
+// will be returned.
+func (value *Variant) DupStrv() (length uint, utf8s []string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_dup_strv(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]string, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Equal checks if @one and @two have the same type and value.
+//
+// The types of @one and @two are #gconstpointer only to allow use of this
+// function with Table. They must each be a #GVariant.
+func (one *Variant) Equal(two Variant) bool {
+	var arg0 C.gpointer
+	var arg1 C.gpointer
+
+	arg0 = (C.gpointer)(one.Native())
+	arg1 = (C.gpointer)(two.Native())
+
+	ret := C.g_variant_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Boolean returns the boolean value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_BOOLEAN.
+func (value *Variant) Boolean() bool {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_boolean(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Byte returns the byte value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_BYTE.
+func (value *Variant) Byte() byte {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_byte(arg0)
+
+	var ret0 byte
+
+	ret0 = byte(ret)
+
+	return ret0
+}
+
+// Bytestring returns the string value of a #GVariant instance with an
+// array-of-bytes type. The string has no particular encoding.
+//
+// If the array does not end with a nul terminator character, the empty string
+// is returned. For this reason, you can always trust that a non-nil
+// nul-terminated string will be returned by this function.
+//
+// If the array contains a nul terminator character somewhere other than the
+// last byte then the returned string is the string, up to the first such nul
+// character.
+//
+// g_variant_get_fixed_array() should be used instead if the array contains
+// arbitrary data that could not be nul-terminated or could contain nul bytes.
+//
+// It is an error to call this function with a @value that is not an array of
+// bytes.
+//
+// The return value remains valid as long as @value exists.
+func (value *Variant) Bytestring() []byte {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_bytestring(arg0)
+
+	var ret0 []byte
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]byte, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = byte(src)
+		}
+	}
+
+	return ret0
+}
+
+// BytestringArray gets the contents of an array of array of bytes #GVariant.
+// This call makes a shallow copy; the return result should be released with
+// g_free(), but the individual strings must not be modified.
+//
+// If @length is non-nil then the number of elements in the result is stored
+// there. In any case, the resulting array will be nil-terminated.
+//
+// For an empty array, @length will be set to 0 and a pointer to a nil pointer
+// will be returned.
+func (value *Variant) BytestringArray() (length uint, utf8s []string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_bytestring_array(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]string, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// ChildValue reads a child item out of a container #GVariant instance. This
+// includes variants, maybes, arrays, tuples and dictionary entries. It is an
+// error to call this function on any other type of #GVariant.
+//
+// It is an error if @index_ is greater than the number of child items in the
+// container. See g_variant_n_children().
+//
+// The returned value is never floating. You should free it with
+// g_variant_unref() when you're done with it.
+//
+// Note that values borrowed from the returned child are not guaranteed to still
+// be valid after the child is freed even if you still hold a reference to
+// @value, if @value has not been serialised at the time this function is
+// called. To avoid this, you can serialize @value by calling
+// g_variant_get_data() and optionally ignoring the return value.
+//
+// There may be implementation specific restrictions on deeply nested values,
+// which would result in the unit tuple being returned as the child value,
+// instead of further nested children. #GVariant is guaranteed to handle nesting
+// up to at least 64 levels.
+//
+// This function is O(1).
+func (value *Variant) ChildValue(index_ uint) *Variant {
+	var arg0 *C.GVariant
+	var arg1 C.gsize
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg1 = C.gsize(index_)
+
+	ret := C.g_variant_get_child_value(arg0, arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Data returns a pointer to the serialised form of a #GVariant instance. The
+// returned data may not be in fully-normalised form if read from an untrusted
+// source. The returned data must not be freed; it remains valid for as long as
+// @value exists.
+//
+// If @value is a fixed-sized value that was deserialised from a corrupted
+// serialised container then nil may be returned. In this case, the proper thing
+// to do is typically to use the appropriate number of nul bytes in place of
+// @value. If @value is not fixed-sized then nil is never returned.
+//
+// In the case that @value is already in serialised form, this function is O(1).
+// If the value is not already in serialised form, serialisation occurs
+// implicitly and is approximately O(n) in the size of the result.
+//
+// To deserialise the data returned by this function, in addition to the
+// serialised data, you must know the type of the #GVariant, and (if the machine
+// might be different) the endianness of the machine that stored it. As a
+// result, file formats or network messages that incorporate serialised
+// #GVariants must include this information either implicitly (for instance "the
+// file always contains a G_VARIANT_TYPE_VARIANT and it is always in
+// little-endian order") or explicitly (by storing the type and/or endianness in
+// addition to the serialised data).
+func (value *Variant) Data() interface{} {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_data(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// DataAsBytes returns a pointer to the serialised form of a #GVariant instance.
+// The semantics of this function are exactly the same as g_variant_get_data(),
+// except that the returned #GBytes holds a reference to the variant data.
+func (value *Variant) DataAsBytes() *Bytes {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_data_as_bytes(arg0)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
+
+// Double returns the double precision floating point value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_DOUBLE.
+func (value *Variant) Double() float64 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_double(arg0)
+
+	var ret0 float64
+
+	ret0 = float64(ret)
+
+	return ret0
+}
+
+// FixedArray provides access to the serialised data for an array of fixed-sized
+// items.
+//
+// @value must be an array with fixed-sized elements. Numeric types are
+// fixed-size, as are tuples containing only other fixed-sized types.
+//
+// @element_size must be the size of a single element in the array, as given by
+// the section on [serialized data memory][gvariant-serialised-data-memory].
+//
+// In particular, arrays of these fixed-sized types can be interpreted as an
+// array of the given C type, with @element_size set to the size the appropriate
+// type: - G_VARIANT_TYPE_INT16 (etc.): #gint16 (etc.) - G_VARIANT_TYPE_BOOLEAN:
+// #guchar (not #gboolean!) - G_VARIANT_TYPE_BYTE: #guint8 -
+// G_VARIANT_TYPE_HANDLE: #guint32 - G_VARIANT_TYPE_DOUBLE: #gdouble
+//
+// For example, if calling this function for an array of 32-bit integers, you
+// might say `sizeof(gint32)`. This value isn't used except for the purpose of a
+// double-check that the form of the serialised data matches the caller's
+// expectation.
+//
+// @n_elements, which must be non-nil, is set equal to the number of items in
+// the array.
+func (value *Variant) FixedArray(elementSize uint) (nElements uint, gpointers []interface{}) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+	var arg2 C.gsize
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg2 = C.gsize(elementSize)
+
+	ret := C.g_variant_get_fixed_array(arg0, &arg1, arg2)
+
+	var ret0 uint
+	var ret1 []interface{}
+
+	ret0 = uint(arg1)
+
+	{
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
+		sliceHeader.Len = arg1
+		sliceHeader.Cap = arg1
+		runtime.SetFinalizer(&ret, func() {
+			C.free(unsafe.Pointer(ret))
+		})
+		defer runtime.KeepAlive(ret)
+	}
+
+	return ret0, ret1
+}
+
+// Handle returns the 32-bit signed integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_HANDLE.
+//
+// By convention, handles are indexes into an array of file descriptors that are
+// sent alongside a D-Bus message. If you're not interacting with D-Bus, you
+// probably don't need them.
+func (value *Variant) Handle() int32 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_handle(arg0)
+
+	var ret0 int32
+
+	ret0 = int32(ret)
+
+	return ret0
+}
+
+// Int16 returns the 16-bit signed integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_INT16.
+func (value *Variant) Int16() int16 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_int16(arg0)
+
+	var ret0 int16
+
+	ret0 = int16(ret)
+
+	return ret0
+}
+
+// Int32 returns the 32-bit signed integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_INT32.
+func (value *Variant) Int32() int32 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_int32(arg0)
+
+	var ret0 int32
+
+	ret0 = int32(ret)
+
+	return ret0
+}
+
+// Int64 returns the 64-bit signed integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_INT64.
+func (value *Variant) Int64() int64 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_int64(arg0)
+
+	var ret0 int64
+
+	ret0 = int64(ret)
+
+	return ret0
+}
+
+// Maybe: given a maybe-typed #GVariant instance, extract its value. If the
+// value is Nothing, then this function returns nil.
+func (value *Variant) Maybe() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_maybe(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// NormalForm gets a #GVariant instance that has the same value as @value and is
+// trusted to be in normal form.
+//
+// If @value is already trusted to be in normal form then a new reference to
+// @value is returned.
+//
+// If @value is not already trusted, then it is scanned to check if it is in
+// normal form. If it is found to be in normal form then it is marked as trusted
+// and a new reference to it is returned.
+//
+// If @value is found not to be in normal form then a new trusted #GVariant is
+// created with the same value as @value.
+//
+// It makes sense to call this function if you've received #GVariant data from
+// untrusted sources and you want to ensure your serialised output is definitely
+// in normal form.
+//
+// If @value is already in normal form, a new reference will be returned (which
+// will be floating if @value is floating). If it is not in normal form, the
+// newly created #GVariant will be returned with a single non-floating
+// reference. Typically, g_variant_take_ref() should be called on the return
+// value from this function to guarantee ownership of a single non-floating
+// reference to it.
+func (value *Variant) NormalForm() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_normal_form(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Objv gets the contents of an array of object paths #GVariant. This call makes
+// a shallow copy; the return result should be released with g_free(), but the
+// individual strings must not be modified.
+//
+// If @length is non-nil then the number of elements in the result is stored
+// there. In any case, the resulting array will be nil-terminated.
+//
+// For an empty array, @length will be set to 0 and a pointer to a nil pointer
+// will be returned.
+func (value *Variant) Objv() (length uint, utf8s []string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_objv(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]string, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Size determines the number of bytes that would be required to store @value
+// with g_variant_store().
+//
+// If @value has a fixed-sized type then this function always returned that
+// fixed size.
+//
+// In the case that @value is already in serialised form or the size has already
+// been calculated (ie: this function has been called before) then this function
+// is O(1). Otherwise, the size is calculated, an operation which is
+// approximately O(n) in the number of values involved.
+func (value *Variant) Size() uint {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_size(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// String returns the string value of a #GVariant instance with a string type.
+// This includes the types G_VARIANT_TYPE_STRING, G_VARIANT_TYPE_OBJECT_PATH and
+// G_VARIANT_TYPE_SIGNATURE.
+//
+// The string will always be UTF-8 encoded, will never be nil, and will never
+// contain nul bytes.
+//
+// If @length is non-nil then the length of the string (in bytes) is returned
+// there. For trusted values, this information is already known. Untrusted
+// values will be validated and, if valid, a strlen() will be performed. If
+// invalid, a default value will be returned — for G_VARIANT_TYPE_OBJECT_PATH,
+// this is `"/"`, and for other types it is the empty string.
+//
+// It is an error to call this function with a @value of any type other than
+// those three.
+//
+// The return value remains valid as long as @value exists.
+func (value *Variant) String() (length uint, utf8 string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_string(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 string
+
+	ret0 = uint(arg1)
+
+	ret1 = C.GoString(ret)
+
+	return ret0, ret1
+}
+
+// Strv gets the contents of an array of strings #GVariant. This call makes a
+// shallow copy; the return result should be released with g_free(), but the
+// individual strings must not be modified.
+//
+// If @length is non-nil then the number of elements in the result is stored
+// there. In any case, the resulting array will be nil-terminated.
+//
+// For an empty array, @length will be set to 0 and a pointer to a nil pointer
+// will be returned.
+func (value *Variant) Strv() (length uint, utf8s []string) {
+	var arg0 *C.GVariant
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_strv(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []string
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]string, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = C.GoString(src)
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Type determines the type of @value.
+//
+// The return value is valid for the lifetime of @value and must not be freed.
+func (value *Variant) Type() *VariantType {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_type(arg0)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// TypeString returns the type string of @value. Unlike the result of calling
+// g_variant_type_peek_string(), this string is nul-terminated. This string
+// belongs to #GVariant and must not be freed.
+func (value *Variant) TypeString() string {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_type_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Uint16 returns the 16-bit unsigned integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_UINT16.
+func (value *Variant) Uint16() uint16 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_uint16(arg0)
+
+	var ret0 uint16
+
+	ret0 = uint16(ret)
+
+	return ret0
+}
+
+// Uint32 returns the 32-bit unsigned integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_UINT32.
+func (value *Variant) Uint32() uint32 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_uint32(arg0)
+
+	var ret0 uint32
+
+	ret0 = uint32(ret)
+
+	return ret0
+}
+
+// Uint64 returns the 64-bit unsigned integer value of @value.
+//
+// It is an error to call this function with a @value of any type other than
+// G_VARIANT_TYPE_UINT64.
+func (value *Variant) Uint64() uint64 {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_uint64(arg0)
+
+	var ret0 uint64
+
+	ret0 = uint64(ret)
+
+	return ret0
+}
+
+// Variant unboxes @value. The result is the #GVariant instance that was
+// contained in @value.
+func (value *Variant) Variant() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_get_variant(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Hash generates a hash value for a #GVariant instance.
+//
+// The output of this function is guaranteed to be the same for a given value
+// only per-process. It may change between different processor architectures or
+// even different versions of GLib. Do not use this function as a basis for
+// building protocols or file formats.
+//
+// The type of @value is #gconstpointer only to allow use of this function with
+// Table. @value must be a #GVariant.
+func (value *Variant) Hash() uint {
+	var arg0 C.gpointer
+
+	arg0 = (C.gpointer)(value.Native())
+
+	ret := C.g_variant_hash(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// IsContainer checks if @value is a container.
+func (value *Variant) IsContainer() bool {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_is_container(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsFloating checks whether @value has a floating reference count.
+//
+// This function should only ever be used to assert that a given variant is or
+// is not floating, or for debug purposes. To acquire a reference to a variant
+// that might be floating, always use g_variant_ref_sink() or
+// g_variant_take_ref().
+//
+// See g_variant_ref_sink() for more information about floating reference
+// counts.
+func (value *Variant) IsFloating() bool {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_is_floating(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsNormalForm checks if @value is in normal form.
+//
+// The main reason to do this is to detect if a given chunk of serialised data
+// is in normal form: load the data into a #GVariant using
+// g_variant_new_from_data() and then use this function to check.
+//
+// If @value is found to be in normal form then it will be marked as being
+// trusted. If the value was already marked as being trusted then this function
+// will immediately return true.
+//
+// There may be implementation specific restrictions on deeply nested values.
+// GVariant is guaranteed to handle nesting up to at least 64 levels.
+func (value *Variant) IsNormalForm() bool {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_is_normal_form(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsOfType checks if a value has a type matching the provided type.
+func (value *Variant) IsOfType(_type *VariantType) bool {
+	var arg0 *C.GVariant
+	var arg1 *C.GVariantType
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg1 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_is_of_type(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// NewIter creates a heap-allocated Iter for iterating over the items in @value.
+//
+// Use g_variant_iter_free() to free the return value when you no longer need
+// it.
+//
+// A reference is taken to @value and will be released only when
+// g_variant_iter_free() is called.
+func (value *Variant) NewIter() *VariantIter {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_iter_new(arg0)
+
+	var ret0 *VariantIter
+
+	ret0 = WrapVariantIter(ret)
+
+	return ret0
+}
+
+// LookupValue looks up a value in a dictionary #GVariant.
+//
+// This function works with dictionaries of the type a{s*} (and equally well
+// with type a{o*}, but we only further discuss the string case for sake of
+// clarity).
+//
+// In the event that @dictionary has the type a{sv}, the @expected_type string
+// specifies what type of value is expected to be inside of the variant. If the
+// value inside the variant has a different type then nil is returned. In the
+// event that @dictionary has a value type other than v then @expected_type must
+// directly match the value type and it is used to unpack the value directly or
+// an error occurs.
+//
+// In either case, if @key is not found in @dictionary, nil is returned.
+//
+// If the key is found and the value has the correct type, it is returned. If
+// @expected_type was specified then any non-nil return value will have this
+// type.
+//
+// This function is currently implemented with a linear scan. If you plan to do
+// many lookups then Dict may be more efficient.
+func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
+	var arg0 *C.GVariant
+	var arg1 *C.gchar
+	var arg2 *C.GVariantType
+
+	arg0 = (*C.GVariant)(dictionary.Native())
+	arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.GVariantType)(expectedType.Native())
+
+	ret := C.g_variant_lookup_value(arg0, arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// NChildren determines the number of children in a container #GVariant
+// instance. This includes variants, maybes, arrays, tuples and dictionary
+// entries. It is an error to call this function on any other type of #GVariant.
+//
+// For variants, the return value is always 1. For values with maybe types, it
+// is always zero or one. For arrays, it is the length of the array. For tuples
+// it is the number of tuple items (which depends only on the type). For
+// dictionary entries, it is always 2
+//
+// This function is O(1).
+func (value *Variant) NChildren() uint {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_n_children(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Print pretty-prints @value in the format understood by g_variant_parse().
+//
+// The format is described [here][gvariant-text].
+//
+// If @type_annotate is true, then type information is included in the output.
+func (value *Variant) Print(typeAnnotate bool) string {
+	var arg0 *C.GVariant
+	var arg1 C.gboolean
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg1 = gextras.Cbool(typeAnnotate)
+
+	ret := C.g_variant_print(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// PrintString behaves as g_variant_print(), but operates on a #GString.
+//
+// If @string is non-nil then it is appended to and returned. Else, a new empty
+// #GString is allocated and it is returned.
+func (value *Variant) PrintString(string *String, typeAnnotate bool) *String {
+	var arg0 *C.GVariant
+	var arg1 *C.GString
+	var arg2 C.gboolean
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg1 = (*C.GString)(string.Native())
+	arg2 = gextras.Cbool(typeAnnotate)
+
+	ret := C.g_variant_print_string(arg0, arg1, arg2)
+
+	var ret0 *String
+
+	ret0 = WrapString(ret)
+
+	return ret0
+}
+
+// Ref increases the reference count of @value.
+func (value *Variant) Ref() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_ref(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// RefSink uses a floating reference count system. All functions with names
+// starting with `g_variant_new_` return floating references.
+//
+// Calling g_variant_ref_sink() on a #GVariant with a floating reference will
+// convert the floating reference into a full reference. Calling
+// g_variant_ref_sink() on a non-floating #GVariant results in an additional
+// normal reference being added.
+//
+// In other words, if the @value is floating, then this call "assumes ownership"
+// of the floating reference, converting it to a normal reference. If the @value
+// is not floating, then this call adds a new normal reference increasing the
+// reference count by one.
+//
+// All calls that result in a #GVariant instance being inserted into a container
+// will call g_variant_ref_sink() on the instance. This means that if the value
+// was just created (and has only its floating reference) then the container
+// will assume sole ownership of the value at that point and the caller will not
+// need to unreference it. This makes certain common styles of programming much
+// easier while still maintaining normal refcounting semantics in situations
+// where values are not floating.
+func (value *Variant) RefSink() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_ref_sink(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Store stores the serialised form of @value at @data. @data should be large
+// enough. See g_variant_get_size().
+//
+// The stored data is in machine native byte order but may not be in
+// fully-normalised form if read from an untrusted source. See
+// g_variant_get_normal_form() for a solution.
+//
+// As with g_variant_get_data(), to be able to deserialise the serialised
+// variant successfully, its type and (if the destination machine might be
+// different) its endianness must also be available.
+//
+// This function is approximately O(n) in the size of @data.
+func (value *Variant) Store(data interface{}) {
+	var arg0 *C.GVariant
+	var arg1 C.gpointer
+
+	arg0 = (*C.GVariant)(value.Native())
+	arg1 = C.gpointer(box.Assign(data))
+
+	C.g_variant_store(arg0, arg1)
+}
+
+// TakeRef: if @value is floating, sink it. Otherwise, do nothing.
+//
+// Typically you want to use g_variant_ref_sink() in order to automatically do
+// the correct thing with respect to floating or non-floating references, but
+// there is one specific scenario where this function is helpful.
+//
+// The situation where this function is helpful is when creating an API that
+// allows the user to provide a callback function that returns a #GVariant. We
+// certainly want to allow the user the flexibility to return a non-floating
+// reference from this callback (for the case where the value that is being
+// returned already exists).
+//
+// At the same time, the style of the #GVariant API makes it likely that for
+// newly-created #GVariant instances, the user can be saved some typing if they
+// are allowed to return a #GVariant with a floating reference.
+//
+// Using this function on the return value of the user's callback allows the
+// user to do whichever is more convenient for them. The caller will always
+// receives exactly one full reference to the value: either the one that was
+// returned in the first place, or a floating reference that has been converted
+// to a full reference.
+//
+// This function has an odd interaction when combined with g_variant_ref_sink()
+// running at the same time in another thread on the same #GVariant instance. If
+// g_variant_ref_sink() runs first then the result will be that the floating
+// reference is converted to a hard reference. If g_variant_take_ref() runs
+// first then the result will be that the floating reference is converted to a
+// hard reference and an additional reference on top of that one is added. It is
+// best to avoid this situation.
+func (value *Variant) TakeRef() *Variant {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_take_ref(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Unref decreases the reference count of @value. When its reference count drops
+// to 0, the memory used by the variant is freed.
+func (value *Variant) Unref() {
+	var arg0 *C.GVariant
+
+	arg0 = (*C.GVariant)(value.Native())
+
+	C.g_variant_unref(arg0)
+}
+
 // VariantBuilder: a utility type for constructing container-type #GVariant
 // instances.
 //
@@ -21111,6 +28949,202 @@ func NewVariantBuilder(_type *VariantType) *VariantBuilder {
 	ret0 = WrapVariantBuilder(ret)
 
 	return ret0
+}
+
+// AddValue adds @value to @builder.
+//
+// It is an error to call this function in any way that would create an
+// inconsistent value to be constructed. Some examples of this are putting
+// different types of items into an array, putting the wrong types or number of
+// items in a tuple, putting more than one value into a variant, etc.
+//
+// If @value is a floating reference (see g_variant_ref_sink()), the @builder
+// instance takes ownership of @value.
+func (builder *VariantBuilder) AddValue(value *Variant) {
+	var arg0 *C.GVariantBuilder
+	var arg1 *C.GVariant
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+	arg1 = (*C.GVariant)(value.Native())
+
+	C.g_variant_builder_add_value(arg0, arg1)
+}
+
+// Clear releases all memory associated with a Builder without freeing the
+// Builder structure itself.
+//
+// It typically only makes sense to do this on a stack-allocated Builder if you
+// want to abort building the value part-way through. This function need not be
+// called if you call g_variant_builder_end() and it also doesn't need to be
+// called on builders allocated with g_variant_builder_new() (see
+// g_variant_builder_unref() for that).
+//
+// This function leaves the Builder structure set to all-zeros. It is valid to
+// call this function on either an initialised Builder or one that is set to
+// all-zeros but it is not valid to call this function on uninitialised memory.
+func (builder *VariantBuilder) Clear() {
+	var arg0 *C.GVariantBuilder
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+
+	C.g_variant_builder_clear(arg0)
+}
+
+// Close closes the subcontainer inside the given @builder that was opened by
+// the most recent call to g_variant_builder_open().
+//
+// It is an error to call this function in any way that would create an
+// inconsistent value to be constructed (ie: too few values added to the
+// subcontainer).
+func (builder *VariantBuilder) Close() {
+	var arg0 *C.GVariantBuilder
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+
+	C.g_variant_builder_close(arg0)
+}
+
+// End ends the builder process and returns the constructed value.
+//
+// It is not permissible to use @builder in any way after this call except for
+// reference counting operations (in the case of a heap-allocated Builder) or by
+// reinitialising it with g_variant_builder_init() (in the case of
+// stack-allocated). This means that for the stack-allocated builders there is
+// no need to call g_variant_builder_clear() after the call to
+// g_variant_builder_end().
+//
+// It is an error to call this function in any way that would create an
+// inconsistent value to be constructed (ie: insufficient number of items added
+// to a container with a specific number of children required). It is also an
+// error to call this function if the builder was created with an indefinite
+// array or maybe type and no children have been added; in this case it is
+// impossible to infer the type of the empty array.
+func (builder *VariantBuilder) End() *Variant {
+	var arg0 *C.GVariantBuilder
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+
+	ret := C.g_variant_builder_end(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Init initialises a Builder structure.
+//
+// @type must be non-nil. It specifies the type of container to construct. It
+// can be an indefinite type such as G_VARIANT_TYPE_ARRAY or a definite type
+// such as "as" or "(ii)". Maybe, array, tuple, dictionary entry and
+// variant-typed values may be constructed.
+//
+// After the builder is initialised, values are added using
+// g_variant_builder_add_value() or g_variant_builder_add().
+//
+// After all the child values are added, g_variant_builder_end() frees the
+// memory associated with the builder and returns the #GVariant that was
+// created.
+//
+// This function completely ignores the previous contents of @builder. On one
+// hand this means that it is valid to pass in completely uninitialised memory.
+// On the other hand, this means that if you are initialising over top of an
+// existing Builder you need to first call g_variant_builder_clear() in order to
+// avoid leaking memory.
+//
+// You must not call g_variant_builder_ref() or g_variant_builder_unref() on a
+// Builder that was initialised with this function. If you ever pass a reference
+// to a Builder outside of the control of your own code then you should assume
+// that the person receiving that reference may try to use reference counting;
+// you should use g_variant_builder_new() instead of this function.
+func (builder *VariantBuilder) Init(_type *VariantType) {
+	var arg0 *C.GVariantBuilder
+	var arg1 *C.GVariantType
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+	arg1 = (*C.GVariantType)(_type.Native())
+
+	C.g_variant_builder_init(arg0, arg1)
+}
+
+// Open opens a subcontainer inside the given @builder. When done adding items
+// to the subcontainer, g_variant_builder_close() must be called. @type is the
+// type of the container: so to build a tuple of several values, @type must
+// include the tuple itself.
+//
+// It is an error to call this function in any way that would cause an
+// inconsistent value to be constructed (ie: adding too many values or a value
+// of an incorrect type).
+//
+// Example of building a nested variant:
+//
+//    GVariantBuilder builder;
+//    guint32 some_number = get_number ();
+//    g_autoptr (GHashTable) some_dict = get_dict ();
+//    GHashTableIter iter;
+//    const gchar *key;
+//    const GVariant *value;
+//    g_autoptr (GVariant) output = NULL;
+//
+//    g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ua{sv})"));
+//    g_variant_builder_add (&builder, "u", some_number);
+//    g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
+//
+//    g_hash_table_iter_init (&iter, some_dict);
+//    while (g_hash_table_iter_next (&iter, (gpointer *) &key, (gpointer *) &value))
+//      {
+//        g_variant_builder_open (&builder, G_VARIANT_TYPE ("{sv}"));
+//        g_variant_builder_add (&builder, "s", key);
+//        g_variant_builder_add (&builder, "v", value);
+//        g_variant_builder_close (&builder);
+//      }
+//
+//    g_variant_builder_close (&builder);
+//
+//    output = g_variant_builder_end (&builder);
+//
+func (builder *VariantBuilder) Open(_type *VariantType) {
+	var arg0 *C.GVariantBuilder
+	var arg1 *C.GVariantType
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+	arg1 = (*C.GVariantType)(_type.Native())
+
+	C.g_variant_builder_open(arg0, arg1)
+}
+
+// Ref increases the reference count on @builder.
+//
+// Don't call this on stack-allocated Builder instances or bad things will
+// happen.
+func (builder *VariantBuilder) Ref() *VariantBuilder {
+	var arg0 *C.GVariantBuilder
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+
+	ret := C.g_variant_builder_ref(arg0)
+
+	var ret0 *VariantBuilder
+
+	ret0 = WrapVariantBuilder(ret)
+
+	return ret0
+}
+
+// Unref decreases the reference count on @builder.
+//
+// In the event that there are no more references, releases all memory
+// associated with the Builder.
+//
+// Don't call this on stack-allocated Builder instances or bad things will
+// happen.
+func (builder *VariantBuilder) Unref() {
+	var arg0 *C.GVariantBuilder
+
+	arg0 = (*C.GVariantBuilder)(builder.Native())
+
+	C.g_variant_builder_unref(arg0)
 }
 
 // VariantDict is a mutable interface to #GVariant dictionaries.
@@ -21210,6 +29244,184 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	return ret0
 }
 
+// Clear releases all memory associated with a Dict without freeing the Dict
+// structure itself.
+//
+// It typically only makes sense to do this on a stack-allocated Dict if you
+// want to abort building the value part-way through. This function need not be
+// called if you call g_variant_dict_end() and it also doesn't need to be called
+// on dicts allocated with g_variant_dict_new (see g_variant_dict_unref() for
+// that).
+//
+// It is valid to call this function on either an initialised Dict or one that
+// was previously cleared by an earlier call to g_variant_dict_clear() but it is
+// not valid to call this function on uninitialised memory.
+func (dict *VariantDict) Clear() {
+	var arg0 *C.GVariantDict
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+
+	C.g_variant_dict_clear(arg0)
+}
+
+// Contains checks if @key exists in @dict.
+func (dict *VariantDict) Contains(key string) bool {
+	var arg0 *C.GVariantDict
+	var arg1 *C.gchar
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+	arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_dict_contains(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// End returns the current value of @dict as a #GVariant of type
+// G_VARIANT_TYPE_VARDICT, clearing it in the process.
+//
+// It is not permissible to use @dict in any way after this call except for
+// reference counting operations (in the case of a heap-allocated Dict) or by
+// reinitialising it with g_variant_dict_init() (in the case of
+// stack-allocated).
+func (dict *VariantDict) End() *Variant {
+	var arg0 *C.GVariantDict
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+
+	ret := C.g_variant_dict_end(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Init initialises a Dict structure.
+//
+// If @from_asv is given, it is used to initialise the dictionary.
+//
+// This function completely ignores the previous contents of @dict. On one hand
+// this means that it is valid to pass in completely uninitialised memory. On
+// the other hand, this means that if you are initialising over top of an
+// existing Dict you need to first call g_variant_dict_clear() in order to avoid
+// leaking memory.
+//
+// You must not call g_variant_dict_ref() or g_variant_dict_unref() on a Dict
+// that was initialised with this function. If you ever pass a reference to a
+// Dict outside of the control of your own code then you should assume that the
+// person receiving that reference may try to use reference counting; you should
+// use g_variant_dict_new() instead of this function.
+func (dict *VariantDict) Init(fromAsv *Variant) {
+	var arg0 *C.GVariantDict
+	var arg1 *C.GVariant
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+	arg1 = (*C.GVariant)(fromAsv.Native())
+
+	C.g_variant_dict_init(arg0, arg1)
+}
+
+// InsertValue inserts (or replaces) a key in a Dict.
+//
+// @value is consumed if it is floating.
+func (dict *VariantDict) InsertValue(key string, value *Variant) {
+	var arg0 *C.GVariantDict
+	var arg1 *C.gchar
+	var arg2 *C.GVariant
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+	arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.GVariant)(value.Native())
+
+	C.g_variant_dict_insert_value(arg0, arg1, arg2)
+}
+
+// LookupValue looks up a value in a Dict.
+//
+// If @key is not found in @dictionary, nil is returned.
+//
+// The @expected_type string specifies what type of value is expected. If the
+// value associated with @key has a different type then nil is returned.
+//
+// If the key is found and the value has the correct type, it is returned. If
+// @expected_type was specified then any non-nil return value will have this
+// type.
+func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Variant {
+	var arg0 *C.GVariantDict
+	var arg1 *C.gchar
+	var arg2 *C.GVariantType
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+	arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.GVariantType)(expectedType.Native())
+
+	ret := C.g_variant_dict_lookup_value(arg0, arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// Ref increases the reference count on @dict.
+//
+// Don't call this on stack-allocated Dict instances or bad things will happen.
+func (dict *VariantDict) Ref() *VariantDict {
+	var arg0 *C.GVariantDict
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+
+	ret := C.g_variant_dict_ref(arg0)
+
+	var ret0 *VariantDict
+
+	ret0 = WrapVariantDict(ret)
+
+	return ret0
+}
+
+// Remove removes a key and its associated value from a Dict.
+func (dict *VariantDict) Remove(key string) bool {
+	var arg0 *C.GVariantDict
+	var arg1 *C.gchar
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+	arg1 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_dict_remove(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Unref decreases the reference count on @dict.
+//
+// In the event that there are no more references, releases all memory
+// associated with the Dict.
+//
+// Don't call this on stack-allocated Dict instances or bad things will happen.
+func (dict *VariantDict) Unref() {
+	var arg0 *C.GVariantDict
+
+	arg0 = (*C.GVariantDict)(dict.Native())
+
+	C.g_variant_dict_unref(arg0)
+}
+
 // VariantIter is an opaque data structure and can only be accessed using the
 // following functions.
 type VariantIter struct {
@@ -21234,6 +29446,121 @@ func marshalVariantIter(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (v *VariantIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
+}
+
+// Copy creates a new heap-allocated Iter to iterate over the container that was
+// being iterated over by @iter. Iteration begins on the new iterator from the
+// current position of the old iterator but the two copies are independent past
+// that point.
+//
+// Use g_variant_iter_free() to free the return value when you no longer need
+// it.
+//
+// A reference is taken to the container that @iter is iterating over and will
+// be related only when g_variant_iter_free() is called.
+func (iter *VariantIter) Copy() *VariantIter {
+	var arg0 *C.GVariantIter
+
+	arg0 = (*C.GVariantIter)(iter.Native())
+
+	ret := C.g_variant_iter_copy(arg0)
+
+	var ret0 *VariantIter
+
+	ret0 = WrapVariantIter(ret)
+
+	return ret0
+}
+
+// Free frees a heap-allocated Iter. Only call this function on iterators that
+// were returned by g_variant_iter_new() or g_variant_iter_copy().
+func (iter *VariantIter) Free() {
+	var arg0 *C.GVariantIter
+
+	arg0 = (*C.GVariantIter)(iter.Native())
+
+	C.g_variant_iter_free(arg0)
+}
+
+// Init initialises (without allocating) a Iter. @iter may be completely
+// uninitialised prior to this call; its old value is ignored.
+//
+// The iterator remains valid for as long as @value exists, and need not be
+// freed in any way.
+func (iter *VariantIter) Init(value *Variant) uint {
+	var arg0 *C.GVariantIter
+	var arg1 *C.GVariant
+
+	arg0 = (*C.GVariantIter)(iter.Native())
+	arg1 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_iter_init(arg0, arg1)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// NChildren queries the number of child items in the container that we are
+// iterating over. This is the total number of items -- not the number of items
+// remaining.
+//
+// This function might be useful for preallocation of arrays.
+func (iter *VariantIter) NChildren() uint {
+	var arg0 *C.GVariantIter
+
+	arg0 = (*C.GVariantIter)(iter.Native())
+
+	ret := C.g_variant_iter_n_children(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// NextValue gets the next item in the container. If no more items remain then
+// nil is returned.
+//
+// Use g_variant_unref() to drop your reference on the return value when you no
+// longer need it.
+//
+// Here is an example for iterating with g_variant_iter_next_value():
+//
+//      // recursively iterate a container
+//      void
+//      iterate_container_recursive (GVariant *container)
+//      {
+//        GVariantIter iter;
+//        GVariant *child;
+//
+//        g_variant_iter_init (&iter, container);
+//        while ((child = g_variant_iter_next_value (&iter)))
+//          {
+//            g_print ("type 's'\n", g_variant_get_type_string (child));
+//
+//            if (g_variant_is_container (child))
+//              iterate_container_recursive (child);
+//
+//            g_variant_unref (child);
+//          }
+//      }
+//
+func (iter *VariantIter) NextValue() *Variant {
+	var arg0 *C.GVariantIter
+
+	arg0 = (*C.GVariantIter)(iter.Native())
+
+	ret := C.g_variant_iter_next_value(arg0)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,
@@ -21456,29 +29783,427 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	return ret0
 }
 
-// NewVariantTypeTuple constructs a struct VariantType.
-func NewVariantTypeTuple(items []*VariantType) *VariantType {
-	var arg1 **C.GVariantType
-	var arg2 C.gint
+// Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()
+// on the return value. @type may not be nil.
+func (_type *VariantType) Copy() *VariantType {
+	var arg0 *C.GVariantType
 
-	{
-		var dst []*C.GVariantType
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(items))))
-		sliceHeader.Len = len(items)
-		sliceHeader.Cap = len(items)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
+	arg0 = (*C.GVariantType)(_type.Native())
 
-		for i := 0; i < len(items); i++ {
-			src := items[i]
-			dst[i] = (*C.GVariantType)(src.Native())
-		}
+	ret := C.g_variant_type_copy(arg0)
 
-		arg1 = (**C.GVariantType)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(items)
-	}
+	var ret0 *VariantType
 
-	ret := C.g_variant_type_new_tuple(arg1, arg2)
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// DupString returns a newly-allocated copy of the type string corresponding to
+// @type. The returned string is nul-terminated. It is appropriate to call
+// g_free() on the return value.
+func (_type *VariantType) DupString() string {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_dup_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Element determines the element type of an array or maybe type.
+//
+// This function may only be used with array or maybe types.
+func (_type *VariantType) Element() *VariantType {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_element(arg0)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// Equal compares @type1 and @type2 for equality.
+//
+// Only returns true if the types are exactly equal. Even if one type is an
+// indefinite type and the other is a subtype of it, false will be returned if
+// they are not exactly equal. If you want to check for subtypes, use
+// g_variant_type_is_subtype_of().
+//
+// The argument types of @type1 and @type2 are only #gconstpointer to allow use
+// with Table without function pointer casting. For both arguments, a valid Type
+// must be provided.
+func (type1 *VariantType) Equal(type2 VariantType) bool {
+	var arg0 C.gpointer
+	var arg1 C.gpointer
+
+	arg0 = (C.gpointer)(type1.Native())
+	arg1 = (C.gpointer)(type2.Native())
+
+	ret := C.g_variant_type_equal(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// First determines the first item type of a tuple or dictionary entry type.
+//
+// This function may only be used with tuple or dictionary entry types, but must
+// not be used with the generic tuple type G_VARIANT_TYPE_TUPLE.
+//
+// In the case of a dictionary entry type, this returns the type of the key.
+//
+// nil is returned in case of @type being G_VARIANT_TYPE_UNIT.
+//
+// This call, together with g_variant_type_next() provides an iterator interface
+// over tuple and dictionary entry types.
+func (_type *VariantType) First() *VariantType {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_first(arg0)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// Free frees a Type that was allocated with g_variant_type_copy(),
+// g_variant_type_new() or one of the container type constructor functions.
+//
+// In the case that @type is nil, this function does nothing.
+//
+// Since 2.24
+func (_type *VariantType) Free() {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	C.g_variant_type_free(arg0)
+}
+
+// StringLength returns the length of the type string corresponding to the given
+// @type. This function must be used to determine the valid extent of the memory
+// region returned by g_variant_type_peek_string().
+func (_type *VariantType) StringLength() uint {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_get_string_length(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Hash hashes @type.
+//
+// The argument type of @type is only #gconstpointer to allow use with Table
+// without function pointer casting. A valid Type must be provided.
+func (_type *VariantType) Hash() uint {
+	var arg0 C.gpointer
+
+	arg0 = (C.gpointer)(_type.Native())
+
+	ret := C.g_variant_type_hash(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// IsArray determines if the given @type is an array type. This is true if the
+// type string for @type starts with an 'a'.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
+func (_type *VariantType) IsArray() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_array(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsBasic determines if the given @type is a basic type.
+//
+// Basic types are booleans, bytes, integers, doubles, strings, object paths and
+// signatures.
+//
+// Only a basic type may be used as the key of a dictionary entry.
+//
+// This function returns false for all indefinite types except
+// G_VARIANT_TYPE_BASIC.
+func (_type *VariantType) IsBasic() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_basic(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsContainer determines if the given @type is a container type.
+//
+// Container types are any array, maybe, tuple, or dictionary entry types plus
+// the variant type.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
+func (_type *VariantType) IsContainer() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_container(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsDefinite determines if the given @type is definite (ie: not indefinite).
+//
+// A type is definite if its type string does not contain any indefinite type
+// characters ('*', '?', or 'r').
+//
+// A #GVariant instance may not have an indefinite type, so calling this
+// function on the result of g_variant_get_type() will always result in true
+// being returned. Calling this function on an indefinite type like
+// G_VARIANT_TYPE_ARRAY, however, will result in false being returned.
+func (_type *VariantType) IsDefinite() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_definite(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsDictEntry determines if the given @type is a dictionary entry type. This is
+// true if the type string for @type starts with a '{'.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
+func (_type *VariantType) IsDictEntry() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_dict_entry(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsMaybe determines if the given @type is a maybe type. This is true if the
+// type string for @type starts with an 'm'.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
+func (_type *VariantType) IsMaybe() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_maybe(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsSubtypeOf checks if @type is a subtype of @supertype.
+//
+// This function returns true if @type is a subtype of @supertype. All types are
+// considered to be subtypes of themselves. Aside from that, only indefinite
+// types can have subtypes.
+func (_type *VariantType) IsSubtypeOf(supertype *VariantType) bool {
+	var arg0 *C.GVariantType
+	var arg1 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(supertype.Native())
+
+	ret := C.g_variant_type_is_subtype_of(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsTuple determines if the given @type is a tuple type. This is true if the
+// type string for @type starts with a '(' or if @type is G_VARIANT_TYPE_TUPLE.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
+func (_type *VariantType) IsTuple() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_tuple(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsVariant determines if the given @type is the variant type.
+func (_type *VariantType) IsVariant() bool {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_is_variant(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Key determines the key type of a dictionary entry type.
+//
+// This function may only be used with a dictionary entry type. Other than the
+// additional restriction, this call is equivalent to g_variant_type_first().
+func (_type *VariantType) Key() *VariantType {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_key(arg0)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// NItems determines the number of items contained in a tuple or dictionary
+// entry type.
+//
+// This function may only be used with tuple or dictionary entry types, but must
+// not be used with the generic tuple type G_VARIANT_TYPE_TUPLE.
+//
+// In the case of a dictionary entry type, this function will always return 2.
+func (_type *VariantType) NItems() uint {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_n_items(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Next determines the next item type of a tuple or dictionary entry type.
+//
+// @type must be the result of a previous call to g_variant_type_first() or
+// g_variant_type_next().
+//
+// If called on the key type of a dictionary entry then this call returns the
+// value type. If called on the value type of a dictionary entry then this call
+// returns nil.
+//
+// For tuples, nil is returned when @type is the last item in a tuple.
+func (_type *VariantType) Next() *VariantType {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_next(arg0)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// PeekString returns the type string corresponding to the given @type. The
+// result is not nul-terminated; in order to determine its length you must call
+// g_variant_type_get_string_length().
+//
+// To get a nul-terminated string, see g_variant_type_dup_string().
+func (_type *VariantType) PeekString() string {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_peek_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Value determines the value type of a dictionary entry type.
+//
+// This function may only be used with a dictionary entry type.
+func (_type *VariantType) Value() *VariantType {
+	var arg0 *C.GVariantType
+
+	arg0 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_type_value(arg0)
 
 	var ret0 *VariantType
 

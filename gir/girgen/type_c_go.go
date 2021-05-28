@@ -50,7 +50,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		return ""
 	}
 
-	var b pen.Block
+	b := pen.NewBlock()
 
 	switch {
 	case array.FixedSize > 0:
@@ -109,7 +109,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("  " + innerConv)
 		b.Linef("}")
 
-	default: // null-terminated
+	case array.IsZeroTerminated():
 		// Scan for the length.
 		b.Linef("var length uint")
 		b.Linef("for p := unsafe.Pointer(%s); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {", conv.Value)
@@ -124,6 +124,10 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s)) + i))", innerCGoType, conv.Value)
 		b.Linef("  " + innerConv)
 		b.Linef("}")
+
+	default:
+		ng.logln(logWarn, conv.ParentName+":", "weird array type")
+		return ""
 	}
 
 	return b.String()

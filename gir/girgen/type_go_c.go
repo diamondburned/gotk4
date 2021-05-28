@@ -51,7 +51,7 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 
 	switch {
 	case array.FixedSize > 0:
-		if t, ok := girToBuiltin[array.Type.Name]; ok && t != "string" {
+		if innerResolved.IsPrimitive() {
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
 			b.Linef("%s = (%s)(&%s)", conv.Target, outerCGoType, conv.Value)
@@ -61,6 +61,8 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 			return b.String()
 		}
 
+		// Target fixed array, so we can directly set the data over. The memory
+		// is ours, and allocation is handled by Go.
 		b.Linef("dst := &%s", conv.Target)
 		b.EmptyLine()
 		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
@@ -103,6 +105,23 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		b.EmptyLine()
 		b.Linef("%s = (%s)(unsafe.Pointer(sliceHeader.Data))", conv.Target, outerCGoType)
 		b.Linef("%s = %s", conv.ArgAt(*array.Length), length)
+
+	case array.Name == "GLib.Array":
+		length := fmt.Sprintf("len(%s)", conv.Value)
+
+		b.Linef(
+			"%s = C.g_array_sized_new(%v, false, C.guint(%s), %s)",
+			conv.Target, array.ZeroTerminated, csizeof(ng, innerResolved), length)
+
+		b.EmptyLine()
+		b.Linef("var dst []%s", innerCGoType)
+		b.Linef(goSliceFromPtr("dst", conv.Target+".data", length))
+		b.EmptyLine()
+
+		b.Linef("for i := 0; i < %s; i++ {", length)
+		b.Linef("  src := %s[i]", conv.Value)
+		b.Linef("  " + innerConv)
+		b.Linef("}")
 	}
 
 	return b.String()

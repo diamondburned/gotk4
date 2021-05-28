@@ -27,6 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
+// // extern void callbackDelete(gpointer);
 // extern void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer)
 // extern void gotk4_BusAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
 // extern void gotk4_BusNameAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
@@ -55,7 +56,6 @@ import (
 // extern gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer)
 // extern gboolean gotk4_SocketSourceFunc(GSocket*, GIOCondition, gpointer)
 // extern GFile* gotk4_VfsFileLookupFunc(GVfs*, const char*, gpointer)
-// // extern void callbackDelete(gpointer);
 import "C"
 
 //export callbackDelete
@@ -3419,32 +3419,6 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 	return ret0
 }
 
-// AppInfoCreateFromCommandline creates a new Info from the given information.
-//
-// Note that for @commandline, the quoting rules of the Exec key of the
-// freedesktop.org Desktop Entry Specification
-// (http://freedesktop.org/Standards/desktop-entry-spec) are applied. For
-// example, if the @commandline contains percent-encoded URIs, the
-// percent-character must be doubled in order to prevent it from being swallowed
-// by Exec key unquoting. See the specification for exact quoting rules.
-func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) AppInfo {
-	var arg1 *C.char
-	var arg2 *C.char
-	var arg3 C.GAppInfoCreateFlags
-
-	arg1 = (*C.gchar)(C.CString(commandline))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(applicationName))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GAppInfoCreateFlags)(flags)
-
-	ret := C.g_app_info_create_from_commandline(arg1, arg2, arg3)
-
-	var ret0 AppInfo
-
-	return ret0
-}
-
 // AppInfoGetAll gets a list of all of the applications currently registered on
 // this system.
 //
@@ -3477,38 +3451,6 @@ func AppInfoGetAllForType(contentType string) *glib.List {
 	var ret0 *glib.List
 
 	ret0 = glib.WrapList(ret)
-
-	return ret0
-}
-
-// AppInfoGetDefaultForType gets the default Info for a given content type.
-func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo {
-	var arg1 *C.char
-	var arg2 C.gboolean
-
-	arg1 = (*C.gchar)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(mustSupportUris)
-
-	ret := C.g_app_info_get_default_for_type(arg1, arg2)
-
-	var ret0 AppInfo
-
-	return ret0
-}
-
-// AppInfoGetDefaultForURIScheme gets the default application for handling URIs
-// with the given URI scheme. A URI scheme is the initial part of the URI, up to
-// but not including the ':', e.g. "http", "ftp" or "sip".
-func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo {
-	var arg1 *C.char
-
-	arg1 = (*C.gchar)(C.CString(uriScheme))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_app_info_get_default_for_uri_scheme(arg1)
-
-	var ret0 AppInfo
 
 	return ret0
 }
@@ -3601,20 +3543,6 @@ func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContext, cance
 	C.g_app_info_launch_default_for_uri_async(arg1, arg2, arg3, arg4)
 }
 
-// AppInfoLaunchDefaultForURIFinish finishes an asynchronous
-// launch-default-for-uri operation.
-func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_app_info_launch_default_for_uri_finish(arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // AppInfoResetTypeAssociations removes all changes to the type associations
 // done by g_app_info_set_as_default_for_type(),
 // g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
@@ -3648,27 +3576,6 @@ func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallbac
 	C.g_bus_get(arg1, arg2, arg3)
 }
 
-// BusGetFinish finishes an operation started with g_bus_get().
-//
-// The returned object is a singleton, that is, shared with other callers of
-// g_bus_get() and g_bus_get_sync() for @bus_type. In the event that you need a
-// private message bus connection, use g_dbus_address_get_for_bus_sync() and
-// g_dbus_connection_new_for_address().
-//
-// Note that the returned BusConnection object will (usually) have the
-// BusConnection:exit-on-close property set to true.
-func BusGetFinish(res AsyncResult) DBusConnection {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_bus_get_finish(arg1)
-
-	var ret0 DBusConnection
-
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // BusGetSync: synchronously connects to the message bus specified by @bus_type.
 // Note that the returned object may shared with other callers, e.g. if two
 // separate parts of a process calls this function with the same @bus_type, they
@@ -3696,107 +3603,6 @@ func BusGetSync(busType BusType, cancellable Cancellable) DBusConnection {
 	var ret0 DBusConnection
 
 	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// BusOwnName starts acquiring @name on the bus specified by @bus_type and calls
-// @name_acquired_handler and @name_lost_handler when the name is acquired
-// respectively lost. Callbacks will be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this function from.
-//
-// You are guaranteed that one of the @name_acquired_handler and
-// @name_lost_handler callbacks will be invoked after calling this function -
-// there are three possible cases:
-//
-// - @name_lost_handler with a nil connection (if a connection to the bus can't
-// be made).
-//
-// - @bus_acquired_handler then @name_lost_handler (if the name can't be
-// obtained)
-//
-// - @bus_acquired_handler then @name_acquired_handler (if the name was
-// obtained).
-//
-// When you are done owning the name, just call g_bus_unown_name() with the
-// owner id this function returns.
-//
-// If the name is acquired or lost (for example another application could
-// acquire the name if you allow replacement or the application currently owning
-// the name exits), the handlers are also invoked. If the BusConnection that is
-// used for attempting to own the name closes, then @name_lost_handler is
-// invoked since it is no longer possible for other processes to access the
-// process.
-//
-// You cannot use g_bus_own_name() several times for the same name (unless
-// interleaved with calls to g_bus_unown_name()) - only the first call will
-// work.
-//
-// Another guarantee is that invocations of @name_acquired_handler and
-// @name_lost_handler are guaranteed to alternate; that is, if
-// @name_acquired_handler is invoked then you are guaranteed that the next time
-// one of the handlers is invoked, it will be @name_lost_handler. The reverse is
-// also true.
-//
-// If you plan on exporting objects (using e.g.
-// g_dbus_connection_register_object()), note that it is generally too late to
-// export the objects in @name_acquired_handler. Instead, you can do this in
-// @bus_acquired_handler since you are guaranteed that this will run before
-// @name is requested from the bus.
-//
-// This behavior makes it very simple to write applications that wants to [own
-// names][gdbus-owning-names] and export objects. Simply register objects to be
-// exported in @bus_acquired_handler and unregister the objects (if any) in
-// @name_lost_handler.
-func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredHandler BusAcquiredCallback, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback) uint {
-	var arg1 C.GBusType
-	var arg2 *C.gchar
-	var arg3 C.GBusNameOwnerFlags
-	var arg4 C.GBusAcquiredCallback
-	var arg5 C.GBusNameAcquiredCallback
-	var arg6 C.GBusNameLostCallback
-	arg7 := C.gpointer(box.Assign(userData))
-
-	arg1 = (C.GBusType)(busType)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameOwnerFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_BusAcquiredCallback)
-	arg5 = (*[0]byte)(C.gotk4_BusNameAcquiredCallback)
-	arg6 = (*[0]byte)(C.gotk4_BusNameLostCallback)
-
-	ret := C.g_bus_own_name(arg1, arg2, arg3, arg4, arg5, arg6, (*[0]byte)(C.callbackDelete))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// BusOwnNameOnConnection: like g_bus_own_name() but takes a BusConnection
-// instead of a Type.
-func BusOwnNameOnConnection(connection DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback) uint {
-	var arg1 *C.GDBusConnection
-	var arg2 *C.gchar
-	var arg3 C.GBusNameOwnerFlags
-	var arg4 C.GBusNameAcquiredCallback
-	var arg5 C.GBusNameLostCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*C.GDBusConnection)(connection.Native())
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameOwnerFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_BusNameAcquiredCallback)
-	arg5 = (*[0]byte)(C.gotk4_BusNameLostCallback)
-
-	ret := C.g_bus_own_name_on_connection(arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.callbackDelete))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -3877,82 +3683,6 @@ func BusUnwatchName(watcherID uint) {
 	arg1 = C.guint(watcherID)
 
 	C.g_bus_unwatch_name(arg1)
-}
-
-// BusWatchName starts watching @name on the bus specified by @bus_type and
-// calls @name_appeared_handler and @name_vanished_handler when the name is
-// known to have an owner respectively known to lose its owner. Callbacks will
-// be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this function from.
-//
-// You are guaranteed that one of the handlers will be invoked after calling
-// this function. When you are done watching the name, just call
-// g_bus_unwatch_name() with the watcher id this function returns.
-//
-// If the name vanishes or appears (for example the application owning the name
-// could restart), the handlers are also invoked. If the BusConnection that is
-// used for watching the name disconnects, then @name_vanished_handler is
-// invoked since it is no longer possible to access the name.
-//
-// Another guarantee is that invocations of @name_appeared_handler and
-// @name_vanished_handler are guaranteed to alternate; that is, if
-// @name_appeared_handler is invoked then you are guaranteed that the next time
-// one of the handlers is invoked, it will be @name_vanished_handler. The
-// reverse is also true.
-//
-// This behavior makes it very simple to write applications that want to take
-// action when a certain [name exists][gdbus-watching-names]. Basically, the
-// application should create object proxies in @name_appeared_handler and
-// destroy them again (if any) in @name_vanished_handler.
-func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback) uint {
-	var arg1 C.GBusType
-	var arg2 *C.gchar
-	var arg3 C.GBusNameWatcherFlags
-	var arg4 C.GBusNameAppearedCallback
-	var arg5 C.GBusNameVanishedCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg1 = (C.GBusType)(busType)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameWatcherFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_BusNameAppearedCallback)
-	arg5 = (*[0]byte)(C.gotk4_BusNameVanishedCallback)
-
-	ret := C.g_bus_watch_name(arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.callbackDelete))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// BusWatchNameOnConnection: like g_bus_watch_name() but takes a BusConnection
-// instead of a Type.
-func BusWatchNameOnConnection(connection DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback) uint {
-	var arg1 *C.GDBusConnection
-	var arg2 *C.gchar
-	var arg3 C.GBusNameWatcherFlags
-	var arg4 C.GBusNameAppearedCallback
-	var arg5 C.GBusNameVanishedCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*C.GDBusConnection)(connection.Native())
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameWatcherFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_BusNameAppearedCallback)
-	arg5 = (*[0]byte)(C.gotk4_BusNameVanishedCallback)
-
-	ret := C.g_bus_watch_name_on_connection(arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.callbackDelete))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
 }
 
 // BusWatchNameOnConnectionWithClosures: version of
@@ -4096,20 +3826,6 @@ func ContentTypeGetGenericIconName(_type string) string {
 	return ret0
 }
 
-// ContentTypeGetIcon gets the icon for a content type.
-func ContentTypeGetIcon(_type string) Icon {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(_type))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_content_type_get_icon(arg1)
-
-	var ret0 Icon
-
-	return ret0
-}
-
 // ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
 // from. See g_content_type_set_mime_dirs() for details.
 func ContentTypeGetMIMEDirs() []string {
@@ -4148,87 +3864,6 @@ func ContentTypeGetMIMEType(_type string) string {
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
-// ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-func ContentTypeGetSymbolicIcon(_type string) Icon {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(_type))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_content_type_get_symbolic_icon(arg1)
-
-	var ret0 Icon
-
-	return ret0
-}
-
-// ContentTypeGuess guesses the content type based on example data. If the
-// function is uncertain, @result_uncertain will be set to true. Either
-// @filename or @data may be nil, in which case the guess will be based solely
-// on the other argument.
-func ContentTypeGuess(filename string, data []byte) (resultUncertain bool, utf8 string) {
-	var arg1 *C.gchar
-	var arg2 *C.guchar
-	var arg3 C.gsize
-	var arg4 *C.gboolean // out
-
-	arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
-	{
-		arg2 = (*C.guchar)(&data[0])
-		arg3 = len(data)
-		defer runtime.KeepAlive(data)
-	}
-
-	ret := C.g_content_type_guess(arg1, arg2, arg3, &arg4)
-
-	var ret0 bool
-	var ret1 string
-
-	ret0 = gextras.Gobool(arg4)
-
-	ret1 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0, ret1
-}
-
-// ContentTypeGuessForTree tries to guess the type of the tree with root @root,
-// by looking at the files it contains. The result is an array of content types,
-// with the best guess coming first.
-//
-// The types returned all have the form x-content/foo, e.g. x-content/audio-cdda
-// (for audio CDs) or x-content/image-dcf (for a camera memory card). See the
-// shared-mime-info
-// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-// specification for more on x-content types.
-//
-// This function is useful in the implementation of
-// g_mount_guess_content_type().
-func ContentTypeGuessForTree(root File) []string {
-	var arg1 *C.GFile
-
-	ret := C.g_content_type_guess_for_tree(arg1)
-
-	var ret0 []string
-
-	{
-		var length uint
-		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]string, length)
-		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = C.GoString(src)
-			C.free(unsafe.Pointer(src))
-		}
-	}
 
 	return ret0
 }
@@ -4406,25 +4041,6 @@ func DBusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 	C.g_dbus_address_get_stream(arg1, arg2, arg3)
 }
 
-// DBusAddressGetStreamFinish finishes an operation started with
-// g_dbus_address_get_stream().
-func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream) {
-	var arg1 *C.GAsyncResult
-	var arg2 **C.gchar // out
-
-	ret := C.g_dbus_address_get_stream_finish(arg1, &arg2)
-
-	var ret0 string
-	var ret1 IOStream
-
-	ret0 = C.GoString(arg2)
-	C.free(unsafe.Pointer(arg2))
-
-	ret1 = WrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0, ret1
-}
-
 // DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
 // @address and sets up the connection so it is in a state to run the
 // client-side of the D-Bus authentication conversation. @address must be in the
@@ -4599,60 +4215,6 @@ func DBusErrorQuark() glib.Quark {
 	return ret0
 }
 
-// DBusErrorRegisterError creates an association to map between @dbus_error_name
-// and #GErrors specified by @error_domain and @error_code.
-//
-// This is typically done in the routine that returns the #GQuark for an error
-// domain.
-func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
-	var arg1 C.GQuark
-	var arg2 C.gint
-	var arg3 *C.gchar
-
-	arg2 = C.gint(errorCode)
-	arg3 = (*C.gchar)(C.CString(dbusErrorName))
-	defer C.free(unsafe.Pointer(arg3))
-
-	ret := C.g_dbus_error_register_error(arg1, arg2, arg3)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// DBusErrorRegisterErrorDomain: helper function for associating a #GError error
-// domain with D-Bus error names.
-func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry) {
-	var arg1 *C.gchar
-	var arg2 *C.gsize
-	var arg3 *C.GDBusErrorEntry
-	var arg4 C.guint
-
-	arg1 = (*C.gchar)(C.CString(errorDomainQuarkName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gsize)(quarkVolatile)
-	{
-		var dst []C.GDBusErrorEntry
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GDBusErrorEntry * len(entries))))
-		sliceHeader.Len = len(entries)
-		sliceHeader.Cap = len(entries)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(entries); i++ {
-			src := entries[i]
-			dst[i] = (C.GDBusErrorEntry)(src.Native())
-		}
-
-		arg3 = (*C.GDBusErrorEntry)(unsafe.Pointer(sliceHeader.Data))
-		arg4 = len(entries)
-	}
-
-	C.g_dbus_error_register_error_domain(arg1, arg2, arg3, arg4)
-}
-
 // DBusErrorStripRemoteError looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
 // message field in @error will correspond exactly to what was received on the
@@ -4665,26 +4227,6 @@ func DBusErrorStripRemoteError(error *glib.Error) bool {
 	arg1 = (*C.GError)(error.Native())
 
 	ret := C.g_dbus_error_strip_remote_error(arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// DBusErrorUnregisterError destroys an association previously set up with
-// g_dbus_error_register_error().
-func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
-	var arg1 C.GQuark
-	var arg2 C.gint
-	var arg3 *C.gchar
-
-	arg2 = C.gint(errorCode)
-	arg3 = (*C.gchar)(C.CString(dbusErrorName))
-	defer C.free(unsafe.Pointer(arg3))
-
-	ret := C.g_dbus_error_unregister_error(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -4743,30 +4285,6 @@ func DBusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 	var ret0 *glib.Variant
 
 	ret0 = glib.WrapVariant(ret)
-
-	return ret0
-}
-
-// DBusGvariantToGValue converts a #GVariant to a #GValue. If @value is
-// floating, it is consumed.
-//
-// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
-// this function is essentially its reverse form. So, a #GVariant containing any
-// basic or string array type will be converted to a #GValue containing a basic
-// value or string array. Any other #GVariant (handle, variant, tuple, dict
-// entry) will be converted to a #GValue containing that #GVariant.
-//
-// The conversion never fails - a valid #GValue is always returned in
-// @out_gvalue.
-func DBusGvariantToGValue(value *glib.Variant) externglib.Value {
-	var arg1 *C.GVariant
-	var arg2 *C.GValue // out
-
-	arg1 = (*C.GVariant)(value.Native())
-
-	ret := C.g_dbus_gvariant_to_gvalue(arg1, &arg2)
-
-	var ret0 *externglib.Value
 
 	return ret0
 }
@@ -4895,177 +4413,6 @@ func DBusIsUniqueName(string string) bool {
 	return ret0
 }
 
-// NewDTLSClientConnection creates a new ClientConnection wrapping @base_socket
-// which is assumed to communicate with the server identified by
-// @server_identity.
-func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DTLSClientConnection {
-	var arg1 *C.GDatagramBased
-	var arg2 *C.GSocketConnectable
-
-	ret := C.g_dtls_client_connection_new(arg1, arg2)
-
-	var ret0 DTLSClientConnection
-
-	return ret0
-}
-
-// NewDTLSServerConnection creates a new ServerConnection wrapping @base_socket.
-func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificate) DTLSServerConnection {
-	var arg1 *C.GDatagramBased
-	var arg2 *C.GTlsCertificate
-
-	arg2 = (*C.GTlsCertificate)(certificate.Native())
-
-	ret := C.g_dtls_server_connection_new(arg1, arg2)
-
-	var ret0 DTLSServerConnection
-
-	return ret0
-}
-
-// FileNewForCommandlineArg creates a #GFile with the given argument from the
-// command line. The value of @arg can be either a URI, an absolute path or a
-// relative path resolved relative to the current working directory. This
-// operation never fails, but the returned object might not support any I/O
-// operation if @arg points to a malformed path.
-//
-// Note that on Windows, this function expects its argument to be in UTF-8 --
-// not the system code page. This means that you should not use this function
-// with string from argv as it is passed to main(). g_win32_get_command_line()
-// will return a UTF-8 version of the commandline. #GApplication also uses UTF-8
-// but g_application_command_line_create_file_for_arg() may be more useful for
-// you there. It is also always possible to use this function with Context
-// arguments of type G_OPTION_ARG_FILENAME.
-func FileNewForCommandlineArg(arg string) File {
-	var arg1 *C.char
-
-	arg1 = (*C.gchar)(C.CString(arg))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_file_new_for_commandline_arg(arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
-// FileNewForCommandlineArgAndCwd creates a #GFile with the given argument from
-// the command line.
-//
-// This function is similar to g_file_new_for_commandline_arg() except that it
-// allows for passing the current working directory as an argument instead of
-// using the current working directory of the process.
-//
-// This is useful if the commandline argument was given in a context other than
-// the invocation of the current process.
-//
-// See also g_application_command_line_create_file_for_arg().
-func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(arg))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(cwd))
-	defer C.free(unsafe.Pointer(arg2))
-
-	ret := C.g_file_new_for_commandline_arg_and_cwd(arg1, arg2)
-
-	var ret0 File
-
-	return ret0
-}
-
-// FileNewForPath constructs a #GFile for a given path. This operation never
-// fails, but the returned object might not support any I/O operation if @path
-// is malformed.
-func FileNewForPath(path string) File {
-	var arg1 *C.char
-
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_file_new_for_path(arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
-// FileNewForURI constructs a #GFile for a given URI. This operation never
-// fails, but the returned object might not support any I/O operation if @uri is
-// malformed or if the uri type is not supported.
-func FileNewForURI(uri string) File {
-	var arg1 *C.char
-
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_file_new_for_uri(arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
-// FileNewTmp opens a file in the preferred directory for temporary files (as
-// returned by g_get_tmp_dir()) and returns a #GFile and IOStream pointing to
-// it.
-//
-// @tmpl should be a string in the GLib file name encoding containing a sequence
-// of six 'X' characters, and containing no directory components. If it is nil,
-// a default template is used.
-//
-// Unlike the other #GFile constructors, this will return nil if a temporary
-// file could not be created.
-func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
-	var arg1 *C.char
-	var arg2 **C.GFileIOStream // out
-
-	arg1 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_file_new_tmp(arg1, &arg2)
-
-	var ret0 FileIOStream
-	var ret1 File
-
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native())))
-
-	return ret0, ret1
-}
-
-// FileParseName constructs a #GFile with the given @parse_name (i.e. something
-// given by g_file_get_parse_name()). This operation never fails, but the
-// returned object might not support any I/O operation if the @parse_name cannot
-// be parsed.
-func FileParseName(parseName string) File {
-	var arg1 *C.char
-
-	arg1 = (*C.gchar)(C.CString(parseName))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_file_parse_name(arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
-// IconDeserialize deserializes a #GIcon previously serialized using
-// g_icon_serialize().
-func IconDeserialize(value *glib.Variant) Icon {
-	var arg1 *C.GVariant
-
-	arg1 = (*C.GVariant)(value.Native())
-
-	ret := C.g_icon_deserialize(arg1)
-
-	var ret0 Icon
-
-	return ret0
-}
-
 // IconHash gets a hash for an icon.
 func IconHash(icon interface{}) uint {
 	var arg1 C.gpointer
@@ -5077,25 +4424,6 @@ func IconHash(icon interface{}) uint {
 	var ret0 uint
 
 	ret0 = uint(ret)
-
-	return ret0
-}
-
-// IconNewForString: generate a #GIcon instance from @str. This function can
-// fail if @str is not valid - see g_icon_to_string() for discussion.
-//
-// If your application or library provides one or more #GIcon implementations
-// you need to ensure that each #GType is registered with the type system prior
-// to calling g_icon_new_for_string().
-func IconNewForString(str string) Icon {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_icon_new_for_string(arg1)
-
-	var ret0 Icon
 
 	return ret0
 }
@@ -5376,17 +4704,6 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 	return ret0
 }
 
-// MemoryMonitorDupDefault gets a reference to the default Monitor for the
-// system.
-func MemoryMonitorDupDefault() MemoryMonitor {
-
-	ret := C.g_memory_monitor_dup_default()
-
-	var ret0 MemoryMonitor
-
-	return ret0
-}
-
 // NewMemorySettingsBackend creates a memory-backed Backend.
 //
 // This backend allows changes to settings, but does not write them to any
@@ -5399,16 +4716,6 @@ func NewMemorySettingsBackend() SettingsBackend {
 	var ret0 SettingsBackend
 
 	ret0 = WrapSettingsBackend(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NetworkMonitorGetDefault gets the default Monitor for the system.
-func NetworkMonitorGetDefault() NetworkMonitor {
-
-	ret := C.g_network_monitor_get_default()
-
-	var ret0 NetworkMonitor
 
 	return ret0
 }
@@ -5474,145 +4781,6 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 	var ret0 *glib.Source
 
 	ret0 = glib.WrapSource(ret)
-
-	return ret0
-}
-
-// PollableStreamRead tries to read from @stream, as with g_input_stream_read()
-// (if @blocking is true) or g_pollable_input_stream_read_nonblocking() (if
-// @blocking is false). This can be used to more easily share code between
-// blocking and non-blocking implementations of a method.
-//
-// If @blocking is false, then @stream must be a InputStream for which
-// g_pollable_input_stream_can_poll() returns true, or else the behavior is
-// undefined. If @blocking is true, then @stream does not need to be a
-// InputStream.
-func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancellable Cancellable) int {
-	var arg1 *C.GInputStream
-	var arg2 *C.void
-	var arg3 C.gsize
-	var arg4 C.gboolean
-	var arg5 *C.GCancellable
-
-	arg1 = (*C.GInputStream)(stream.Native())
-	{
-		arg2 = (*C.void)(&buffer[0])
-		arg3 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg4 = gextras.Cbool(blocking)
-	arg5 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_pollable_stream_read(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// PollableStreamWrite tries to write to @stream, as with
-// g_output_stream_write() (if @blocking is true) or
-// g_pollable_output_stream_write_nonblocking() (if @blocking is false). This
-// can be used to more easily share code between blocking and non-blocking
-// implementations of a method.
-//
-// If @blocking is false, then @stream must be a OutputStream for which
-// g_pollable_output_stream_can_poll() returns true or else the behavior is
-// undefined. If @blocking is true, then @stream does not need to be a
-// OutputStream.
-func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) int {
-	var arg1 *C.GOutputStream
-	var arg2 *C.void
-	var arg3 C.gsize
-	var arg4 C.gboolean
-	var arg5 *C.GCancellable
-
-	arg1 = (*C.GOutputStream)(stream.Native())
-	{
-		arg2 = (*C.void)(&buffer[0])
-		arg3 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg4 = gextras.Cbool(blocking)
-	arg5 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_pollable_stream_write(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// PollableStreamWriteAll tries to write @count bytes to @stream, as with
-// g_output_stream_write_all(), but using g_pollable_stream_write() rather than
-// g_output_stream_write().
-//
-// On a successful write of @count bytes, true is returned, and @bytes_written
-// is set to @count.
-//
-// If there is an error during the operation (including G_IO_ERROR_WOULD_BLOCK
-// in the non-blocking case), false is returned and @error is set to indicate
-// the error status, @bytes_written is updated to contain the number of bytes
-// written into the stream before the error occurred.
-//
-// As with g_pollable_stream_write(), if @blocking is false, then @stream must
-// be a OutputStream for which g_pollable_output_stream_can_poll() returns true
-// or else the behavior is undefined. If @blocking is true, then @stream does
-// not need to be a OutputStream.
-func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (bytesWritten uint, ok bool) {
-	var arg1 *C.GOutputStream
-	var arg2 *C.void
-	var arg3 C.gsize
-	var arg4 C.gboolean
-	var arg5 *C.gsize // out
-	var arg6 *C.GCancellable
-
-	arg1 = (*C.GOutputStream)(stream.Native())
-	{
-		arg2 = (*C.void)(&buffer[0])
-		arg3 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg4 = gextras.Cbool(blocking)
-	arg6 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_pollable_stream_write_all(arg1, arg2, arg3, arg4, &arg5, arg6)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg5)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// ProxyGetDefaultForProtocol: find the `gio-proxy` extension point for a proxy
-// implementation that supports the specified protocol.
-func ProxyGetDefaultForProtocol(protocol string) Proxy {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(protocol))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_proxy_get_default_for_protocol(arg1)
-
-	var ret0 Proxy
-
-	return ret0
-}
-
-// ProxyResolverGetDefault gets the default Resolver for the system.
-func ProxyResolverGetDefault() ProxyResolver {
-
-	ret := C.g_proxy_resolver_get_default()
-
-	var ret0 ProxyResolver
 
 	return ret0
 }
@@ -5881,16 +5049,6 @@ func SrvTargetListSort(targets *glib.List) *glib.List {
 	return ret0
 }
 
-// TLSBackendGetDefault gets the default Backend for the system.
-func TLSBackendGetDefault() TLSBackend {
-
-	ret := C.g_tls_backend_get_default()
-
-	var ret0 TLSBackend
-
-	return ret0
-}
-
 // TLSChannelBindingErrorQuark gets the TLS channel binding error quark.
 func TLSChannelBindingErrorQuark() glib.Quark {
 
@@ -5907,26 +5065,6 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 	return ret0
 }
 
-// NewTLSClientConnection creates a new ClientConnection wrapping
-// @base_io_stream (which must have pollable input and output streams) which is
-// assumed to communicate with the server identified by @server_identity.
-//
-// See the documentation for Connection:base-io-stream for restrictions on when
-// application code can run operations on the @base_io_stream after this
-// function has returned.
-func NewTLSClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) TLSClientConnection {
-	var arg1 *C.GIOStream
-	var arg2 *C.GSocketConnectable
-
-	arg1 = (*C.GIOStream)(baseIOStream.Native())
-
-	ret := C.g_tls_client_connection_new(arg1, arg2)
-
-	var ret0 TLSClientConnection
-
-	return ret0
-}
-
 // TLSErrorQuark gets the TLS error quark.
 func TLSErrorQuark() glib.Quark {
 
@@ -5939,43 +5077,6 @@ func TLSErrorQuark() glib.Quark {
 		tmp = uint32(ret)
 		ret0 = glib.Quark(tmp)
 	}
-
-	return ret0
-}
-
-// NewTLSFileDatabase creates a new FileDatabase which uses anchor certificate
-// authorities in @anchors to verify certificate chains.
-//
-// The certificates in @anchors must be PEM encoded.
-func NewTLSFileDatabase(anchors string) TLSFileDatabase {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(anchors))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_tls_file_database_new(arg1)
-
-	var ret0 TLSFileDatabase
-
-	return ret0
-}
-
-// NewTLSServerConnection creates a new ServerConnection wrapping
-// @base_io_stream (which must have pollable input and output streams).
-//
-// See the documentation for Connection:base-io-stream for restrictions on when
-// application code can run operations on the @base_io_stream after this
-// function has returned.
-func NewTLSServerConnection(baseIOStream IOStream, certificate TLSCertificate) TLSServerConnection {
-	var arg1 *C.GIOStream
-	var arg2 *C.GTlsCertificate
-
-	arg1 = (*C.GIOStream)(baseIOStream.Native())
-	arg2 = (*C.GTlsCertificate)(certificate.Native())
-
-	ret := C.g_tls_server_connection_new(arg1, arg2)
-
-	var ret0 TLSServerConnection
 
 	return ret0
 }
@@ -6231,19 +5332,6 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 	return ret0
 }
 
-// UnixMountGuessIcon guesses the icon of a Unix mount.
-func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
-	var arg1 *C.GUnixMountEntry
-
-	arg1 = (*C.GUnixMountEntry)(mountEntry.Native())
-
-	ret := C.g_unix_mount_guess_icon(arg1)
-
-	var ret0 Icon
-
-	return ret0
-}
-
 // UnixMountGuessName guesses the name of a Unix mount. The result is a
 // translated string.
 func UnixMountGuessName(mountEntry *UnixMountEntry) string {
@@ -6273,19 +5361,6 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 	var ret0 bool
 
 	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
-func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
-	var arg1 *C.GUnixMountEntry
-
-	arg1 = (*C.GUnixMountEntry)(mountEntry.Native())
-
-	ret := C.g_unix_mount_guess_symbolic_icon(arg1)
-
-	var ret0 Icon
 
 	return ret0
 }
@@ -6419,806 +5494,6 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 	return ret0, ret1
 }
 
-// Action represents a single named action.
-//
-// The main interface to an action is that it can be activated with
-// g_action_activate(). This results in the 'activate' signal being emitted. An
-// activation has a #GVariant parameter (which may be nil). The correct type for
-// the parameter is determined by a static parameter type (which is given at
-// construction time).
-//
-// An action may optionally have a state, in which case the state may be set
-// with g_action_change_state(). This call takes a #GVariant. The correct type
-// for the state is determined by a static state type (which is given at
-// construction time).
-//
-// The state may have a hint associated with it, specifying its valid range.
-//
-// #GAction is merely the interface to the concept of an action, as described
-// above. Various implementations of actions exist, including Action.
-//
-// In all cases, the implementing class is responsible for storing the name of
-// the action, the parameter type, the enabled state, the optional state type
-// and the state and emitting the appropriate signals when these change. The
-// implementor is responsible for filtering calls to g_action_activate() and
-// g_action_change_state() for type safety and for the state being enabled.
-//
-// Probably the only useful thing to do with a #GAction is to put it inside of a
-// ActionGroup.
-type Action interface {
-	Activate(parameter *glib.Variant)
-	ChangeState(value *glib.Variant)
-	Enabled() bool
-	Name() string
-	ParameterType() *glib.VariantType
-	State() *glib.Variant
-	StateHint() *glib.Variant
-	StateType() *glib.VariantType
-}
-
-// ActionGroup represents a group of actions. Actions can be used to expose
-// functionality in a structured way, either from one part of a program to
-// another, or to the outside world. Action groups are often used together with
-// a Model that provides additional representation data for displaying the
-// actions to the user, e.g. in a menu.
-//
-// The main way to interact with the actions in a GActionGroup is to activate
-// them with g_action_group_activate_action(). Activating an action may require
-// a #GVariant parameter. The required type of the parameter can be inquired
-// with g_action_group_get_action_parameter_type(). Actions may be disabled, see
-// g_action_group_get_action_enabled(). Activating a disabled action has no
-// effect.
-//
-// Actions may optionally have a state in the form of a #GVariant. The current
-// state of an action can be inquired with g_action_group_get_action_state().
-// Activating a stateful action may change its state, but it is also possible to
-// set the state by calling g_action_group_change_action_state().
-//
-// As typical example, consider a text editing application which has an option
-// to change the current font to 'bold'. A good way to represent this would be a
-// stateful action, with a boolean state. Activating the action would toggle the
-// state.
-//
-// Each action in the group has a unique name (which is a string). All method
-// calls, except g_action_group_list_actions() take the name of an action as an
-// argument.
-//
-// The Group API is meant to be the 'public' API to the action group. The calls
-// here are exactly the interaction that 'external forces' (eg: UI, incoming
-// D-Bus messages, etc.) are supposed to have with actions. 'Internal' APIs (ie:
-// ones meant only to be accessed by the action group implementation) are found
-// on subclasses. This is why you will find - for example -
-// g_action_group_get_action_enabled() but not an equivalent set() call.
-//
-// Signals are emitted on the action group in response to state changes on
-// individual actions.
-//
-// Implementations of Group should provide implementations for the virtual
-// functions g_action_group_list_actions() and g_action_group_query_action().
-// The other virtual functions should not be implemented - their "wrappers" are
-// actually implemented with calls to g_action_group_query_action().
-type ActionGroup interface {
-	ActionAdded(actionName string)
-	ActionEnabledChanged(actionName string, enabled bool)
-	ActionRemoved(actionName string)
-	ActionStateChanged(actionName string, state *glib.Variant)
-	ActivateAction(actionName string, parameter *glib.Variant)
-	ChangeActionState(actionName string, value *glib.Variant)
-	ActionEnabled(actionName string) bool
-	ActionParameterType(actionName string) *glib.VariantType
-	ActionState(actionName string) *glib.Variant
-	ActionStateHint(actionName string) *glib.Variant
-	ActionStateType(actionName string) *glib.VariantType
-	HasAction(actionName string) bool
-	ListActions() []string
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
-}
-
-// ActionMap: the GActionMap interface is implemented by Group implementations
-// that operate by containing a number of named #GAction instances, such as
-// ActionGroup.
-//
-// One useful application of this interface is to map the names of actions from
-// various action groups to unique, prefixed names (e.g. by prepending "app." or
-// "win."). This is the motivation for the 'Map' part of the interface name.
-type ActionMap interface {
-	AddAction(action Action)
-	LookupAction(actionName string) Action
-	RemoveAction(actionName string)
-}
-
-// AppInfo: Info and LaunchContext are used for describing and launching
-// applications installed on the system.
-//
-// As of GLib 2.20, URIs will always be converted to POSIX paths (using
-// g_file_get_path()) when using g_app_info_launch() even if the application
-// requested an URI and not a POSIX path. For example for a desktop-file based
-// application with Exec key `totem U` and a single URI, `sftp://foo/file.avi`,
-// then `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will only
-// work if a set of suitable GIO extensions (such as gvfs 2.26 compiled with
-// FUSE support), is available and operational; if this is not the case, the URI
-// will be passed unmodified to the application. Some URIs, such as `mailto:`,
-// of course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
-// it); such URIs will be passed unmodified to the application.
-//
-// Specifically for gvfs 2.26 and later, the POSIX URI will be mapped back to
-// the GIO URI in the #GFile constructors (since gvfs implements the #GVfs
-// extension point). As such, if the application needs to examine the URI, it
-// needs to use g_file_get_uri() or similar on #GFile. In other words, an
-// application cannot assume that the URI passed to e.g.
-// g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
-// The following snippet illustrates this:
-//
-//
-//    GFile *f;
-//    char *uri;
-//
-//    file = g_file_new_for_commandline_arg (uri_from_commandline);
-//
-//    uri = g_file_get_uri (file);
-//    strcmp (uri, uri_from_commandline) == 0;
-//    g_free (uri);
-//
-//    if (g_file_has_uri_scheme (file, "cdda"))
-//      {
-//        // do something special with uri
-//      }
-//    g_object_unref (file);
-//
-//
-// This code will work when both `cdda://sr0/Track 1.wav` and
-// `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the application. It
-// should be noted that it's generally not safe for applications to rely on the
-// format of a particular URIs. Different launcher applications (e.g. file
-// managers) may have different ideas of what a given URI means.
-type AppInfo interface {
-	AddSupportsType(contentType string) bool
-	CanDelete() bool
-	CanRemoveSupportsType() bool
-	Delete() bool
-	Dup() AppInfo
-	Equal(appinfo2 AppInfo) bool
-	Commandline() string
-	Description() string
-	DisplayName() string
-	Executable() string
-	Icon() Icon
-	ID() string
-	Name() string
-	SupportedTypes() []string
-	Launch(files *glib.List, context AppLaunchContext) bool
-	LaunchUris(uris *glib.List, context AppLaunchContext) bool
-	LaunchUrisAsync(uris *glib.List, context AppLaunchContext, cancellable Cancellable, callback AsyncReadyCallback)
-	LaunchUrisFinish(result AsyncResult) bool
-	RemoveSupportsType(contentType string) bool
-	SetAsDefaultForExtension(extension string) bool
-	SetAsDefaultForType(contentType string) bool
-	SetAsLastUsedForType(contentType string) bool
-	ShouldShow() bool
-	SupportsFiles() bool
-	SupportsUris() bool
-}
-
-// AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
-// same in all ways except that initialization is asynchronous. For more details
-// see the descriptions on #GInitable.
-//
-// A class may implement both the #GInitable and Initable interfaces.
-//
-// Users of objects implementing this are not intended to use the interface
-// method directly; instead it will be used automatically in various ways. For C
-// applications you generally just call g_async_initable_new_async() directly,
-// or indirectly via a foo_thing_new_async() wrapper. This will call
-// g_async_initable_init_async() under the cover, calling back with nil and a
-// set GError on failure.
-//
-// A typical implementation might look something like this:
-//
-//    enum {
-//       NOT_INITIALIZED,
-//       INITIALIZING,
-//       INITIALIZED
-//    };
-//
-//    static void
-//    _foo_ready_cb (Foo *self)
-//    {
-//      GList *l;
-//
-//      self->priv->state = INITIALIZED;
-//
-//      for (l = self->priv->init_results; l != NULL; l = l->next)
-//        {
-//          GTask *task = l->data;
-//
-//          if (self->priv->success)
-//            g_task_return_boolean (task, TRUE);
-//          else
-//            g_task_return_new_error (task, ...);
-//          g_object_unref (task);
-//        }
-//
-//      g_list_free (self->priv->init_results);
-//      self->priv->init_results = NULL;
-//    }
-//
-//    static void
-//    foo_init_async (GAsyncInitable       *initable,
-//                    int                   io_priority,
-//                    GCancellable         *cancellable,
-//                    GAsyncReadyCallback   callback,
-//                    gpointer              user_data)
-//    {
-//      Foo *self = FOO (initable);
-//      GTask *task;
-//
-//      task = g_task_new (initable, cancellable, callback, user_data);
-//      g_task_set_name (task, G_STRFUNC);
-//
-//      switch (self->priv->state)
-//        {
-//          case NOT_INITIALIZED:
-//            _foo_get_ready (self);
-//            self->priv->init_results = g_list_append (self->priv->init_results,
-//                                                      task);
-//            self->priv->state = INITIALIZING;
-//            break;
-//          case INITIALIZING:
-//            self->priv->init_results = g_list_append (self->priv->init_results,
-//                                                      task);
-//            break;
-//          case INITIALIZED:
-//            if (!self->priv->success)
-//              g_task_return_new_error (task, ...);
-//            else
-//              g_task_return_boolean (task, TRUE);
-//            g_object_unref (task);
-//            break;
-//        }
-//    }
-//
-//    static gboolean
-//    foo_init_finish (GAsyncInitable       *initable,
-//                     GAsyncResult         *result,
-//                     GError              **error)
-//    {
-//      g_return_val_if_fail (g_task_is_valid (result, initable), FALSE);
-//
-//      return g_task_propagate_boolean (G_TASK (result), error);
-//    }
-//
-//    static void
-//    foo_async_initable_iface_init (gpointer g_iface,
-//                                   gpointer data)
-//    {
-//      GAsyncInitableIface *iface = g_iface;
-//
-//      iface->init_async = foo_init_async;
-//      iface->init_finish = foo_init_finish;
-//    }
-//
-type AsyncInitable interface {
-	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	InitFinish(res AsyncResult) bool
-	NewFinish(res AsyncResult) gextras.Objector
-}
-
-// AsyncResult provides a base class for implementing asynchronous function
-// results.
-//
-// Asynchronous operations are broken up into two separate operations which are
-// chained together by a ReadyCallback. To begin an asynchronous operation,
-// provide a ReadyCallback to the asynchronous function. This callback will be
-// triggered when the operation has completed, and must be run in a later
-// iteration of the [thread-default main
-// context][g-main-context-push-thread-default] from where the operation was
-// initiated. It will be passed a Result instance filled with the details of the
-// operation's success or failure, the object the asynchronous function was
-// started for and any error codes returned. The asynchronous callback function
-// is then expected to call the corresponding "_finish()" function, passing the
-// object the function was called for, the Result instance, and (optionally) an
-// @error to grab any error conditions that may have occurred.
-//
-// The "_finish()" function for an operation takes the generic result (of type
-// Result) and returns the specific result that the operation in question yields
-// (e.g. a Enumerator for a "enumerate children" operation). If the result or
-// error status of the operation is not needed, there is no need to call the
-// "_finish()" function; GIO will take care of cleaning up the result and error
-// information after the ReadyCallback returns. You can pass nil for the
-// ReadyCallback if you don't need to take any action at all after the operation
-// completes. Applications may also take a reference to the Result and call
-// "_finish()" later; however, the "_finish()" function may be called at most
-// once.
-//
-// Example of a typical asynchronous operation flow:
-//
-//    void _theoretical_frobnitz_async (Theoretical         *t,
-//                                      GCancellable        *c,
-//                                      GAsyncReadyCallback  cb,
-//                                      gpointer             u);
-//
-//    gboolean _theoretical_frobnitz_finish (Theoretical   *t,
-//                                           GAsyncResult  *res,
-//                                           GError       **e);
-//
-//    static void
-//    frobnitz_result_func (GObject      *source_object,
-//    		 GAsyncResult *res,
-//    		 gpointer      user_data)
-//    {
-//      gboolean success = FALSE;
-//
-//      success = _theoretical_frobnitz_finish (source_object, res, NULL);
-//
-//      if (success)
-//        g_printf ("Hurray!\n");
-//      else
-//        g_printf ("Uh oh!\n");
-//
-//      ...
-//
-//    }
-//
-//    int main (int argc, void *argv[])
-//    {
-//       ...
-//
-//       _theoretical_frobnitz_async (theoretical_data,
-//                                    NULL,
-//                                    frobnitz_result_func,
-//                                    NULL);
-//
-//       ...
-//    }
-//
-//
-// The callback for an asynchronous operation is called only once, and is always
-// called, even in the case of a cancelled operation. On cancellation the result
-// is a G_IO_ERROR_CANCELLED error.
-//
-// I/O Priority
-//
-// Many I/O-related asynchronous operations have a priority parameter, which is
-// used in certain cases to determine the order in which operations are
-// executed. They are not used to determine system-wide I/O scheduling.
-// Priorities are integers, with lower numbers indicating higher priority. It is
-// recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
-// with G_PRIORITY_DEFAULT as a default.
-type AsyncResult interface {
-	SourceObject() gextras.Objector
-	UserData() interface{}
-	IsTagged(sourceTag interface{}) bool
-	LegacyPropagateError() bool
-}
-
-// Converter is implemented by objects that convert binary data in various ways.
-// The conversion can be stateful and may fail at any place.
-//
-// Some example conversions are: character set conversion, compression,
-// decompression and regular expression replace.
-type Converter interface {
-	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult)
-	Reset()
-}
-
-// DBusInterface: the BusInterface type is the base type for D-Bus interfaces
-// both on the service side (see BusInterfaceSkeleton) and client side (see
-// BusProxy).
-type DBusInterface interface {
-	DupObject() DBusObject
-	Info() *DBusInterfaceInfo
-	Object() DBusObject
-	SetObject(object DBusObject)
-}
-
-// DBusObject: the BusObject type is the base type for D-Bus objects on both the
-// service side (see BusObjectSkeleton) and the client side (see
-// BusObjectProxy). It is essentially just a container of interfaces.
-type DBusObject interface {
-	Interface(interfaceName string) DBusInterface
-	Interfaces() *glib.List
-	ObjectPath() string
-}
-
-// DBusObjectManager: the BusObjectManager type is the base type for service-
-// and client-side implementations of the standardized
-// org.freedesktop.DBus.ObjectManager
-// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
-// interface.
-//
-// See BusObjectManagerClient for the client-side implementation and
-// BusObjectManagerServer for the service-side implementation.
-type DBusObjectManager interface {
-	Interface(objectPath string, interfaceName string) DBusInterface
-	Object(objectPath string) DBusObject
-	ObjectPath() string
-	Objects() *glib.List
-}
-
-// DatagramBased: a Based is a networking interface for representing
-// datagram-based communications. It is a more or less direct mapping of the
-// core parts of the BSD socket API in a portable GObject interface. It is
-// implemented by #GSocket, which wraps the UNIX socket API on UNIX and winsock2
-// on Windows.
-//
-// Based is entirely platform independent, and is intended to be used alongside
-// higher-level networking APIs such as OStream.
-//
-// It uses vectored scatter/gather I/O by default, allowing for many messages to
-// be sent or received in a single call. Where possible, implementations of the
-// interface should take advantage of vectored I/O to minimise processing or
-// system calls. For example, #GSocket uses recvmmsg() and sendmmsg() where
-// possible. Callers should take advantage of scatter/gather I/O (the use of
-// multiple buffers per message) to avoid unnecessary copying of data to
-// assemble or disassemble a message.
-//
-// Each Based operation has a timeout parameter which may be negative for
-// blocking behaviour, zero for non-blocking behaviour, or positive for timeout
-// behaviour. A blocking operation blocks until finished or there is an error. A
-// non-blocking operation will return immediately with a G_IO_ERROR_WOULD_BLOCK
-// error if it cannot make progress. A timeout operation will block until the
-// operation is complete or the timeout expires; if the timeout expires it will
-// return what progress it made, or G_IO_ERROR_TIMED_OUT if no progress was
-// made. To know when a call would successfully run you can call
-// g_datagram_based_condition_check() or g_datagram_based_condition_wait(). You
-// can also use g_datagram_based_create_source() and attach it to a Context to
-// get callbacks when I/O is possible.
-//
-// When running a non-blocking operation applications should always be able to
-// handle getting a G_IO_ERROR_WOULD_BLOCK error even when some other function
-// said that I/O was possible. This can easily happen in case of a race
-// condition in the application, but it can also happen for other reasons. For
-// instance, on Windows a socket is always seen as writable until a write
-// returns G_IO_ERROR_WOULD_BLOCK.
-//
-// As with #GSocket, Baseds can be either connection oriented (for example,
-// SCTP) or connectionless (for example, UDP). Baseds must be datagram-based,
-// not stream-based. The interface does not cover connection establishment — use
-// methods on the underlying type to establish a connection before sending and
-// receiving data through the Based API. For connectionless socket types the
-// target/source address is specified or received in each I/O operation.
-//
-// Like most other APIs in GLib, Based is not inherently thread safe. To use a
-// Based concurrently from multiple threads, you must implement your own
-// locking.
-type DatagramBased interface {
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) bool
-	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
-	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) int
-	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) int
-}
-
-// DesktopAppInfoLookup is an opaque data structure and can only be accessed
-// using the following functions.
-type DesktopAppInfoLookup interface {
-	DefaultForURIScheme(uriScheme string) AppInfo
-}
-
-// Drive: #GDrive - this represent a piece of hardware connected to the machine.
-// It's generally only created for removable hardware or hardware with removable
-// media.
-//
-// #GDrive is a container class for #GVolume objects that stem from the same
-// piece of media. As such, #GDrive abstracts a drive with (or without)
-// removable media and provides operations for querying whether media is
-// available, determining whether media change is automatically detected and
-// ejecting the media.
-//
-// If the #GDrive reports that media isn't automatically detected, one can poll
-// for media; typically one should not do this periodically as a poll for media
-// operation is potentially expensive and may spin up the drive creating noise.
-//
-// #GDrive supports starting and stopping drives with authentication support for
-// the former. This can be used to support a diverse set of use cases including
-// connecting/disconnecting iSCSI devices, powering down external disk
-// enclosures and starting/stopping multi-disk devices such as RAID devices.
-// Note that the actual semantics and side-effects of starting/stopping a
-// #GDrive may vary according to implementation. To choose the correct verbs in
-// e.g. a file manager, use g_drive_get_start_stop_type().
-//
-// For porting from GnomeVFS note that there is no equivalent of #GDrive in that
-// API.
-type Drive interface {
-	CanEject() bool
-	CanPollForMedia() bool
-	CanStart() bool
-	CanStartDegraded() bool
-	CanStop() bool
-	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectFinish(result AsyncResult) bool
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectWithOperationFinish(result AsyncResult) bool
-	EnumerateIdentifiers() []string
-	Icon() Icon
-	Identifier(kind string) string
-	Name() string
-	SortKey() string
-	StartStopType() DriveStartStopType
-	SymbolicIcon() Icon
-	Volumes() *glib.List
-	HasMedia() bool
-	HasVolumes() bool
-	IsMediaCheckAutomatic() bool
-	IsMediaRemovable() bool
-	IsRemovable() bool
-	PollForMedia(cancellable Cancellable, callback AsyncReadyCallback)
-	PollForMediaFinish(result AsyncResult) bool
-	Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	StartFinish(result AsyncResult) bool
-	Stop(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	StopFinish(result AsyncResult) bool
-}
-
-// DTLSClientConnection is the client-side subclass of Connection, representing
-// a client-side DTLS connection.
-type DTLSClientConnection interface {
-	AcceptedCAS() *glib.List
-	ServerIdentity() SocketConnectable
-	ValidationFlags() TLSCertificateFlags
-	SetServerIdentity(identity SocketConnectable)
-	SetValidationFlags(flags TLSCertificateFlags)
-}
-
-// DTLSConnection is the base DTLS connection class type, which wraps a Based
-// and provides DTLS encryption on top of it. Its subclasses, ClientConnection
-// and ServerConnection, implement client-side and server-side DTLS,
-// respectively.
-//
-// For TLS support, see Connection.
-//
-// As DTLS is datagram based, Connection implements Based, presenting a
-// datagram-socket-like API for the encrypted connection. This operates over a
-// base datagram connection, which is also a Based (Connection:base-socket).
-//
-// To close a DTLS connection, use g_dtls_connection_close().
-//
-// Neither ServerConnection or ClientConnection set the peer address on their
-// base Based if it is a #GSocket — it is up to the caller to do that if they
-// wish. If they do not, and g_socket_close() is called on the base socket, the
-// Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
-type DTLSConnection interface {
-	Close(cancellable Cancellable) bool
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	CloseFinish(result AsyncResult) bool
-	EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
-	Certificate() TLSCertificate
-	ChannelBindingData(_type TLSChannelBindingType) (data []byte, ok bool)
-	Database() TLSDatabase
-	Interaction() TLSInteraction
-	NegotiatedProtocol() string
-	PeerCertificate() TLSCertificate
-	PeerCertificateErrors() TLSCertificateFlags
-	RehandshakeMode() TLSRehandshakeMode
-	RequireCloseNotify() bool
-	Handshake(cancellable Cancellable) bool
-	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	HandshakeFinish(result AsyncResult) bool
-	SetAdvertisedProtocols(protocols []string)
-	SetCertificate(certificate TLSCertificate)
-	SetDatabase(database TLSDatabase)
-	SetInteraction(interaction TLSInteraction)
-	SetRehandshakeMode(mode TLSRehandshakeMode)
-	SetRequireCloseNotify(requireCloseNotify bool)
-	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) bool
-	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	ShutdownFinish(result AsyncResult) bool
-}
-
-// File is a high level abstraction for manipulating files on a virtual file
-// system. #GFiles are lightweight, immutable objects that do no I/O upon
-// creation. It is necessary to understand that #GFile objects do not represent
-// files, merely an identifier for a file. All file content I/O is implemented
-// as streaming operations (see Stream and Stream).
-//
-// To construct a #GFile, you can use: - g_file_new_for_path() if you have a
-// path. - g_file_new_for_uri() if you have a URI. -
-// g_file_new_for_commandline_arg() for a command line argument. -
-// g_file_new_tmp() to create a temporary file from a template. -
-// g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
-// - g_file_new_build_filename() to create a file from path elements.
-//
-// One way to think of a #GFile is as an abstraction of a pathname. For normal
-// files the system pathname is what is stored internally, but as #GFiles are
-// extensible it could also be something else that corresponds to a pathname in
-// a userspace implementation of a filesystem.
-//
-// #GFiles make up hierarchies of directories and files that correspond to the
-// files on a filesystem. You can move through the file system with #GFile using
-// g_file_get_parent() to get an identifier for the parent directory,
-// g_file_get_child() to get a child within a directory,
-// g_file_resolve_relative_path() to resolve a relative path between two
-// #GFiles. There can be multiple hierarchies, so you may not end up at the same
-// root if you repeatedly call g_file_get_parent() on two different files.
-//
-// All #GFiles have a basename (get with g_file_get_basename()). These names are
-// byte strings that are used to identify the file on the filesystem (relative
-// to its parent directory) and there is no guarantees that they have any
-// particular charset encoding or even make any sense at all. If you want to use
-// filenames in a user interface you should use the display name that you can
-// get by requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME attribute with
-// g_file_query_info(). This is guaranteed to be in UTF-8 and can be used in a
-// user interface. But always store the real basename or the #GFile to use to
-// actually access the file, because there is no way to go from a display name
-// to the actual name.
-//
-// Using #GFile as an identifier has the same weaknesses as using a path in that
-// there may be multiple aliases for the same file. For instance, hard or soft
-// links may cause two different #GFiles to refer to the same file. Other
-// possible causes for aliases are: case insensitive filesystems, short and long
-// names on FAT/NTFS, or bind mounts in Linux. If you want to check if two
-// #GFiles point to the same file you can query for the G_FILE_ATTRIBUTE_ID_FILE
-// attribute. Note that #GFile does some trivial canonicalization of pathnames
-// passed in, so that trivial differences in the path string used at creation
-// (duplicated slashes, slash at end of path, "." or ".." path segments, etc)
-// does not create different #GFiles.
-//
-// Many #GFile operations have both synchronous and asynchronous versions to
-// suit your application. Asynchronous versions of synchronous functions simply
-// have _async() appended to their function names. The asynchronous I/O
-// functions call a ReadyCallback which is then used to finalize the operation,
-// producing a GAsyncResult which is then passed to the function's matching
-// _finish() operation.
-//
-// It is highly recommended to use asynchronous calls when running within a
-// shared main loop, such as in the main thread of an application. This avoids
-// I/O operations blocking other sources on the main loop from being dispatched.
-// Synchronous I/O operations should be performed from worker threads. See the
-// [introduction to asynchronous programming section][async-programming] for
-// more.
-//
-// Some #GFile operations almost always take a noticeable amount of time, and so
-// do not have synchronous analogs. Notable cases include: -
-// g_file_mount_mountable() to mount a mountable file. -
-// g_file_unmount_mountable_with_operation() to unmount a mountable file. -
-// g_file_eject_mountable_with_operation() to eject a mountable file.
-//
-//
-// Entity Tags
-//
-// One notable feature of #GFiles are entity tags, or "etags" for short. Entity
-// tags are somewhat like a more abstract version of the traditional mtime, and
-// can be used to quickly determine if the file has been modified from the
-// version on the file system. See the HTTP 1.1 specification
-// (http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for HTTP Etag
-// headers, which are a very similar concept.
-type File interface {
-	AppendTo(flags FileCreateFlags, cancellable Cancellable) FileOutputStream
-	AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	AppendToFinish(res AsyncResult) FileOutputStream
-	Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) bool
-	CopyAsync(destination File, flags FileCopyFlags, ioPriority int, cancellable Cancellable, progressCallback FileProgressCallback, callback AsyncReadyCallback)
-	CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) bool
-	CopyFinish(res AsyncResult) bool
-	Create(flags FileCreateFlags, cancellable Cancellable) FileOutputStream
-	CreateAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	CreateFinish(res AsyncResult) FileOutputStream
-	CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) FileIOStream
-	CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	CreateReadwriteFinish(res AsyncResult) FileIOStream
-	Delete(cancellable Cancellable) bool
-	DeleteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	DeleteFinish(result AsyncResult) bool
-	Dup() File
-	EjectMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectMountableFinish(result AsyncResult) bool
-	EjectMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectMountableWithOperationFinish(result AsyncResult) bool
-	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) FileEnumerator
-	EnumerateChildrenAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	EnumerateChildrenFinish(res AsyncResult) FileEnumerator
-	Equal(file2 File) bool
-	FindEnclosingMount(cancellable Cancellable) Mount
-	FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	FindEnclosingMountFinish(res AsyncResult) Mount
-	Basename() string
-	Child(name string) File
-	ChildForDisplayName(displayName string) File
-	Parent() File
-	ParseName() string
-	Path() string
-	RelativePath(descendant File) string
-	URI() string
-	URIScheme() string
-	HasParent(parent File) bool
-	HasPrefix(prefix File) bool
-	HasURIScheme(uriScheme string) bool
-	Hash() uint
-	IsNative() bool
-	LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes)
-	LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes)
-	LoadContents(cancellable Cancellable) (contents []byte, length uint, etagOut string, ok bool)
-	LoadContentsAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	LoadContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, ok bool)
-	LoadPartialContentsAsync(cancellable Cancellable, readMoreCallback FileReadMoreCallback, callback AsyncReadyCallback)
-	LoadPartialContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, ok bool)
-	MakeDirectory(cancellable Cancellable) bool
-	MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	MakeDirectoryFinish(result AsyncResult) bool
-	MakeDirectoryWithParents(cancellable Cancellable) bool
-	MakeSymbolicLink(symlinkValue string, cancellable Cancellable) bool
-	MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool)
-	MeasureDiskUsageAsync(flags FileMeasureFlags, ioPriority int, cancellable Cancellable, progressCallback FileMeasureProgressCallback, callback AsyncReadyCallback)
-	MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool)
-	Monitor(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
-	MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
-	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
-	MountEnclosingVolume(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	MountEnclosingVolumeFinish(result AsyncResult) bool
-	MountMountable(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	MountMountableFinish(result AsyncResult) File
-	Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) bool
-	OpenReadwrite(cancellable Cancellable) FileIOStream
-	OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	OpenReadwriteFinish(res AsyncResult) FileIOStream
-	PeekPath() string
-	PollMountable(cancellable Cancellable, callback AsyncReadyCallback)
-	PollMountableFinish(result AsyncResult) bool
-	QueryDefaultHandler(cancellable Cancellable) AppInfo
-	QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	QueryDefaultHandlerFinish(result AsyncResult) AppInfo
-	QueryExists(cancellable Cancellable) bool
-	QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) FileType
-	QueryFilesystemInfo(attributes string, cancellable Cancellable) FileInfo
-	QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	QueryFilesystemInfoFinish(res AsyncResult) FileInfo
-	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) FileInfo
-	QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	QueryInfoFinish(res AsyncResult) FileInfo
-	QuerySettableAttributes(cancellable Cancellable) *FileAttributeInfoList
-	QueryWritableNamespaces(cancellable Cancellable) *FileAttributeInfoList
-	Read(cancellable Cancellable) FileInputStream
-	ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	ReadFinish(res AsyncResult) FileInputStream
-	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileOutputStream
-	ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (newEtag string, ok bool)
-	ReplaceContentsAsync(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	ReplaceContentsBytesAsync(contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	ReplaceContentsFinish(res AsyncResult) (newEtag string, ok bool)
-	ReplaceFinish(res AsyncResult) FileOutputStream
-	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileIOStream
-	ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	ReplaceReadwriteFinish(res AsyncResult) FileIOStream
-	ResolveRelativePath(relativePath string) File
-	SetAttribute(attribute string, _type FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	SetAttributesFinish(result AsyncResult) (info FileInfo, ok bool)
-	SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) bool
-	SetDisplayName(displayName string, cancellable Cancellable) File
-	SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	SetDisplayNameFinish(res AsyncResult) File
-	StartMountable(flags DriveStartFlags, startOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	StartMountableFinish(result AsyncResult) bool
-	StopMountable(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	StopMountableFinish(result AsyncResult) bool
-	SupportsThreadContexts() bool
-	Trash(cancellable Cancellable) bool
-	TrashAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	TrashFinish(result AsyncResult) bool
-	UnmountMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	UnmountMountableFinish(result AsyncResult) bool
-	UnmountMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	UnmountMountableWithOperationFinish(result AsyncResult) bool
-}
-
-// FileDescriptorBased is implemented by streams (implementations of Stream or
-// Stream) that are based on file descriptors.
-//
-// Note that `<gio/gfiledescriptorbased.h>` belongs to the UNIX-specific GIO
-// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
-// using it.
-type FileDescriptorBased interface {
-	Fd() int
-}
-
 // Icon is a very minimal interface for icons. It provides functions for
 // checking the equality of two icons, hashing of icons and serializing an icon
 // to and from strings.
@@ -7245,387 +5520,10 @@ type FileDescriptorBased interface {
 // gives a result that is understood by g_icon_deserialize(), yielding one of
 // the built-in icon types.
 type Icon interface {
-	Equal(icon2 Icon) bool
-	Serialize() *glib.Variant
-	String() string
-}
+	gextras.Objector
 
-// Initable is implemented by objects that can fail during initialization. If an
-// object implements this interface then it must be initialized as the first
-// thing after construction, either via g_initable_init() or
-// g_async_initable_init_async() (the latter is only available if it also
-// implements Initable).
-//
-// If the object is not initialized, or initialization returns with an error,
-// then all operations on the object except g_object_ref() and g_object_unref()
-// are considered to be invalid, and have undefined behaviour. They will often
-// fail with g_critical() or g_warning(), but this must not be relied on.
-//
-// Users of objects implementing this are not intended to use the interface
-// method directly, instead it will be used automatically in various ways. For C
-// applications you generally just call g_initable_new() directly, or indirectly
-// via a foo_thing_new() wrapper. This will call g_initable_init() under the
-// cover, returning nil and setting a #GError on failure (at which point the
-// instance is unreferenced).
-//
-// For bindings in languages where the native constructor supports exceptions
-// the binding could check for objects implementing GInitable during normal
-// construction and automatically initialize them, throwing an exception on
-// failure.
-type Initable interface {
-	Init(cancellable Cancellable) bool
-}
-
-// ListModel is an interface that represents a mutable list of #GObjects. Its
-// main intention is as a model for various widgets in user interfaces, such as
-// list views, but it can also be used as a convenient method of returning lists
-// of data, with support for updates.
-//
-// Each object in the list may also report changes in itself via some mechanism
-// (normally the #GObject::notify signal). Taken together with the
-// Model::items-changed signal, this provides for a list that can change its
-// membership, and in which the members can change their individual properties.
-//
-// A good example would be the list of visible wireless network access points,
-// where each access point can report dynamic properties such as signal
-// strength.
-//
-// It is important to note that the Model itself does not report changes to the
-// individual items. It only reports changes to the list membership. If you want
-// to observe changes to the objects themselves then you need to connect signals
-// to the objects that you are interested in.
-//
-// All items in a Model are of (or derived from) the same type.
-// g_list_model_get_item_type() returns that type. The type may be an interface,
-// in which case all objects in the list must implement it.
-//
-// The semantics are close to that of an array: g_list_model_get_n_items()
-// returns the number of items in the list and g_list_model_get_item() returns
-// an item at a (0-based) position. In order to allow implementations to
-// calculate the list length lazily, you can also iterate over items: starting
-// from 0, repeatedly call g_list_model_get_item() until it returns nil.
-//
-// An implementation may create objects lazily, but must take care to return the
-// same object for a given position until all references to it are gone.
-//
-// On the other side, a consumer is expected only to hold references on objects
-// that are currently "user visible", in order to facilitate the maximum level
-// of laziness in the implementation of the list and to reduce the required
-// number of signal connections at a given time.
-//
-// This interface is intended only to be used from a single thread. The thread
-// in which it is appropriate to use it depends on the particular
-// implementation, but typically it will be from the thread that owns the
-// [thread-default main context][g-main-context-push-thread-default] in effect
-// at the time that the model was created.
-type ListModel interface {
-	Item(position uint) interface{}
-	ItemType() externglib.Type
-	NItems() uint
-	Object(position uint) gextras.Objector
-	ItemsChanged(position uint, removed uint, added uint)
-}
-
-// LoadableIcon extends the #GIcon interface and adds the ability to load icons
-// from streams.
-type LoadableIcon interface {
-	Load(size int, cancellable Cancellable) (_type string, inputStream InputStream)
-	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
-	LoadFinish(res AsyncResult) (_type string, inputStream InputStream)
-}
-
-// Mount: the #GMount interface represents user-visible mounts. Note, when
-// porting from GnomeVFS, #GMount is the moral equivalent of VFSVolume.
-//
-// #GMount is a "mounted" filesystem that you can access. Mounted is in quotes
-// because it's not the same as a unix mount, it might be a gvfs mount, but you
-// can still access the files on it if you use GIO. Might or might not be
-// related to a volume object.
-//
-// Unmounting a #GMount instance is an asynchronous operation. For more
-// information about asynchronous operations, see Result and #GTask. To unmount
-// a #GMount instance, first call g_mount_unmount_with_operation() with (at
-// least) the #GMount instance and a ReadyCallback. The callback will be fired
-// when the operation has resolved (either with success or failure), and a
-// Result structure will be passed to the callback. That callback should then
-// call g_mount_unmount_with_operation_finish() with the #GMount and the Result
-// data to see if the operation was completed successfully. If an @error is
-// present when g_mount_unmount_with_operation_finish() is called, then it will
-// be filled with any error information.
-type Mount interface {
-	CanEject() bool
-	CanUnmount() bool
-	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectFinish(result AsyncResult) bool
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectWithOperationFinish(result AsyncResult) bool
-	DefaultLocation() File
-	Drive() Drive
-	Icon() Icon
-	Name() string
-	Root() File
-	SortKey() string
-	SymbolicIcon() Icon
-	UUID() string
-	Volume() Volume
-	GuessContentType(forceRescan bool, cancellable Cancellable, callback AsyncReadyCallback)
-	GuessContentTypeFinish(result AsyncResult) []string
-	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) []string
-	IsShadowed() bool
-	Remount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	RemountFinish(result AsyncResult) bool
-	Shadow()
-	Unmount(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	UnmountFinish(result AsyncResult) bool
-	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	UnmountWithOperationFinish(result AsyncResult) bool
-	Unshadow()
-}
-
-// NetworkMonitor provides an easy-to-use cross-platform API for monitoring
-// network connectivity. On Linux, the available implementations are based on
-// the kernel's netlink interface and on NetworkManager.
-//
-// There is also an implementation for use inside Flatpak sandboxes.
-type NetworkMonitor interface {
-	CanReach(connectable SocketConnectable, cancellable Cancellable) bool
-	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
-	CanReachFinish(result AsyncResult) bool
-	Connectivity() NetworkConnectivity
-	NetworkAvailable() bool
-	NetworkMetered() bool
-}
-
-// PollableInputStream is implemented by Streams that can be polled for
-// readiness to read. This can be used when interfacing with a non-GIO API that
-// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
-type PollableInputStream interface {
-	CanPoll() bool
-	CreateSource(cancellable Cancellable) *glib.Source
-	IsReadable() bool
-	ReadNonblocking(buffer []byte, cancellable Cancellable) int
-}
-
-// PollableOutputStream is implemented by Streams that can be polled for
-// readiness to write. This can be used when interfacing with a non-GIO API that
-// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
-type PollableOutputStream interface {
-	CanPoll() bool
-	CreateSource(cancellable Cancellable) *glib.Source
-	IsWritable() bool
-	WriteNonblocking(buffer []byte, cancellable Cancellable) int
-	WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
-}
-
-// Proxy: a #GProxy handles connecting to a remote host via a given type of
-// proxy server. It is implemented by the 'gio-proxy' extension point. The
-// extensions are named after their proxy protocol name. As an example, a SOCKS5
-// proxy implementation can be retrieved with the name 'socks5' using the
-// function g_io_extension_point_get_extension_by_name().
-type Proxy interface {
-	Connect(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) IOStream
-	ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback)
-	ConnectFinish(result AsyncResult) IOStream
-	SupportsHostname() bool
-}
-
-// ProxyResolver provides synchronous and asynchronous network proxy resolution.
-// Resolver is used within Client through the method
-// g_socket_connectable_proxy_enumerate().
-//
-// Implementations of Resolver based on libproxy and GNOME settings can be found
-// in glib-networking. GIO comes with an implementation for use inside Flatpak
-// portals.
-type ProxyResolver interface {
-	IsSupported() bool
-	Lookup(uri string, cancellable Cancellable) []string
-	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
-	LookupFinish(result AsyncResult) []string
-}
-
-// RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
-// instances that either transmit action invocations to other processes or
-// receive action invocations in the local process from other processes.
-//
-// The interface has `_full` variants of the two methods on Group used to
-// activate actions: g_action_group_activate_action() and
-// g_action_group_change_action_state(). These variants allow a "platform data"
-// #GVariant to be specified: a dictionary providing context for the action
-// invocation (for example: timestamps, startup notification IDs, etc).
-//
-// BusActionGroup implements ActionGroup. This provides a mechanism to send
-// platform data for action invocations over D-Bus.
-//
-// Additionally, g_dbus_connection_export_action_group() will check if the
-// exported Group implements ActionGroup and use the `_full` variants of the
-// calls if available. This provides a mechanism by which to receive platform
-// data for action invocations that arrive by way of D-Bus.
-type RemoteActionGroup interface {
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
-}
-
-// Seekable is implemented by streams (implementations of Stream or Stream) that
-// support seeking.
-//
-// Seekable streams largely fall into two categories: resizable and fixed-size.
-//
-// #GSeekable on fixed-sized streams is approximately the same as POSIX lseek()
-// on a block device (for example: attempting to seek past the end of the device
-// is an error). Fixed streams typically cannot be truncated.
-//
-// #GSeekable on resizable streams is approximately the same as POSIX lseek() on
-// a normal file. Seeking past the end and writing data will usually cause the
-// stream to resize by introducing zero bytes.
-type Seekable interface {
-	CanSeek() bool
-	CanTruncate() bool
-	Seek(offset int64, _type glib.SeekType, cancellable Cancellable) bool
-	Tell() int64
-	Truncate(offset int64, cancellable Cancellable) bool
-}
-
-// SocketConnectable objects that describe one or more potential socket
-// endpoints implement Connectable. Callers can then use
-// g_socket_connectable_enumerate() to get a AddressEnumerator to try out each
-// socket address in turn until one succeeds, as shown in the sample code below.
-//
-//    MyConnectionType *
-//    connect_to_host (const char    *hostname,
-//                     guint16        port,
-//                     GCancellable  *cancellable,
-//                     GError       **error)
-//    {
-//      MyConnection *conn = NULL;
-//      GSocketConnectable *addr;
-//      GSocketAddressEnumerator *enumerator;
-//      GSocketAddress *sockaddr;
-//      GError *conn_error = NULL;
-//
-//      addr = g_network_address_new (hostname, port);
-//      enumerator = g_socket_connectable_enumerate (addr);
-//      g_object_unref (addr);
-//
-//      // Try each sockaddr until we succeed. Record the first connection error,
-//      // but not any further ones (since they'll probably be basically the same
-//      // as the first).
-//      while (!conn && (sockaddr = g_socket_address_enumerator_next (enumerator, cancellable, error))
-//        {
-//          conn = connect_to_sockaddr (sockaddr, conn_error ? NULL : &conn_error);
-//          g_object_unref (sockaddr);
-//        }
-//      g_object_unref (enumerator);
-//
-//      if (conn)
-//        {
-//          if (conn_error)
-//            {
-//              // We couldn't connect to the first address, but we succeeded
-//              // in connecting to a later address.
-//              g_error_free (conn_error);
-//            }
-//          return conn;
-//        }
-//      else if (error)
-//        {
-//          /// Either initial lookup failed, or else the caller cancelled us.
-//          if (conn_error)
-//            g_error_free (conn_error);
-//          return NULL;
-//        }
-//      else
-//        {
-//          g_error_propagate (error, conn_error);
-//          return NULL;
-//        }
-//    }
-//
-type SocketConnectable interface {
-	Enumerate() SocketAddressEnumerator
-	ProxyEnumerate() SocketAddressEnumerator
-	String() string
-}
-
-// TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
-type TLSBackend interface {
-	CertificateType() externglib.Type
-	ClientConnectionType() externglib.Type
-	DefaultDatabase() TLSDatabase
-	DTLSClientConnectionType() externglib.Type
-	DTLSServerConnectionType() externglib.Type
-	FileDatabaseType() externglib.Type
-	ServerConnectionType() externglib.Type
-	SetDefaultDatabase(database TLSDatabase)
-	SupportsDTLS() bool
-	SupportsTLS() bool
-}
-
-// TLSClientConnection is the client-side subclass of Connection, representing a
-// client-side TLS connection.
-type TLSClientConnection interface {
-	CopySessionState(source TLSClientConnection)
-	AcceptedCAS() *glib.List
-	ServerIdentity() SocketConnectable
-	UseSSL3() bool
-	ValidationFlags() TLSCertificateFlags
-	SetServerIdentity(identity SocketConnectable)
-	SetUseSSL3(useSSL3 bool)
-	SetValidationFlags(flags TLSCertificateFlags)
-}
-
-// Volume: the #GVolume interface represents user-visible objects that can be
-// mounted. Note, when porting from GnomeVFS, #GVolume is the moral equivalent
-// of VFSDrive.
-//
-// Mounting a #GVolume instance is an asynchronous operation. For more
-// information about asynchronous operations, see Result and #GTask. To mount a
-// #GVolume, first call g_volume_mount() with (at least) the #GVolume instance,
-// optionally a Operation object and a ReadyCallback.
-//
-// Typically, one will only want to pass nil for the Operation if automounting
-// all volumes when a desktop session starts since it's not desirable to put up
-// a lot of dialogs asking for credentials.
-//
-// The callback will be fired when the operation has resolved (either with
-// success or failure), and a Result instance will be passed to the callback.
-// That callback should then call g_volume_mount_finish() with the #GVolume
-// instance and the Result data to see if the operation was completed
-// successfully. If an @error is present when g_volume_mount_finish() is called,
-// then it will be filled with any error information.
-//
-//
-// Volume Identifiers
-//
-// It is sometimes necessary to directly access the underlying operating system
-// object behind a volume (e.g. for passing a volume to an application via the
-// commandline). For this purpose, GIO allows to obtain an 'identifier' for the
-// volume. There can be different kinds of identifiers, such as Hal UDIs,
-// filesystem labels, traditional Unix devices (e.g. `/dev/sda2`), UUIDs. GIO
-// uses predefined strings as names for the different kinds of identifiers:
-// VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
-// g_volume_get_identifier() to obtain an identifier for a volume.
-//
-//    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
-type Volume interface {
-	CanEject() bool
-	CanMount() bool
-	Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectFinish(result AsyncResult) bool
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	EjectWithOperationFinish(result AsyncResult) bool
-	EnumerateIdentifiers() []string
-	ActivationRoot() File
-	Drive() Drive
-	Icon() Icon
-	Identifier(kind string) string
-	GetMount() Mount
-	Name() string
-	SortKey() string
-	SymbolicIcon() Icon
-	UUID() string
-	Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
-	MountFinish(result AsyncResult) bool
-	ShouldAutomount() bool
+	// _ checks if two icons are equal.
+	_(icon2 Icon) bool
 }
 
 // DBusAnnotationInfo: information about an annotation.
@@ -7692,6 +5590,33 @@ func (a *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	return ret
 }
 
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
+	var arg0 *C.GDBusAnnotationInfo
+
+	arg0 = (*C.GDBusAnnotationInfo)(info.Native())
+
+	ret := C.g_dbus_annotation_info_ref(arg0)
+
+	var ret0 *DBusAnnotationInfo
+
+	ret0 = WrapDBusAnnotationInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusAnnotationInfo) Unref() {
+	var arg0 *C.GDBusAnnotationInfo
+
+	arg0 = (*C.GDBusAnnotationInfo)(info.Native())
+
+	C.g_dbus_annotation_info_unref(arg0)
+}
+
 // DBusArgInfo: information about an argument for a method or a signal.
 type DBusArgInfo struct {
 	native C.GDBusArgInfo
@@ -7754,6 +5679,33 @@ func (a *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return ret
+}
+
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusArgInfo) Ref() *DBusArgInfo {
+	var arg0 *C.GDBusArgInfo
+
+	arg0 = (*C.GDBusArgInfo)(info.Native())
+
+	ret := C.g_dbus_arg_info_ref(arg0)
+
+	var ret0 *DBusArgInfo
+
+	ret0 = WrapDBusArgInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusArgInfo) Unref() {
+	var arg0 *C.GDBusArgInfo
+
+	arg0 = (*C.GDBusArgInfo)(info.Native())
+
+	C.g_dbus_arg_info_unref(arg0)
 }
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
@@ -7904,6 +5856,142 @@ func (a *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return ret
+}
+
+// CacheBuild builds a lookup-cache to speed up
+// g_dbus_interface_info_lookup_method(), g_dbus_interface_info_lookup_signal()
+// and g_dbus_interface_info_lookup_property().
+//
+// If this has already been called with @info, the existing cache is used and
+// its use count is increased.
+//
+// Note that @info cannot be modified until
+// g_dbus_interface_info_cache_release() is called.
+func (info *DBusInterfaceInfo) CacheBuild() {
+	var arg0 *C.GDBusInterfaceInfo
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+
+	C.g_dbus_interface_info_cache_build(arg0)
+}
+
+// CacheRelease decrements the usage count for the cache for @info built by
+// g_dbus_interface_info_cache_build() (if any) and frees the resources used by
+// the cache if the usage count drops to zero.
+func (info *DBusInterfaceInfo) CacheRelease() {
+	var arg0 *C.GDBusInterfaceInfo
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+
+	C.g_dbus_interface_info_cache_release(arg0)
+}
+
+// GenerateXml appends an XML representation of @info (and its children) to
+// @string_builder.
+//
+// This function is typically used for generating introspection XML documents at
+// run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
+// method.
+func (info *DBusInterfaceInfo) GenerateXml(indent uint, stringBuilder *glib.String) {
+	var arg0 *C.GDBusInterfaceInfo
+	var arg1 C.guint
+	var arg2 *C.GString
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+	arg1 = C.guint(indent)
+	arg2 = (*C.GString)(stringBuilder.Native())
+
+	C.g_dbus_interface_info_generate_xml(arg0, arg1, arg2)
+}
+
+// LookupMethod looks up information about a method.
+//
+// The cost of this function is O(n) in number of methods unless
+// g_dbus_interface_info_cache_build() has been used on @info.
+func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
+	var arg0 *C.GDBusInterfaceInfo
+	var arg1 *C.gchar
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_dbus_interface_info_lookup_method(arg0, arg1)
+
+	var ret0 *DBusMethodInfo
+
+	ret0 = WrapDBusMethodInfo(ret)
+
+	return ret0
+}
+
+// LookupProperty looks up information about a property.
+//
+// The cost of this function is O(n) in number of properties unless
+// g_dbus_interface_info_cache_build() has been used on @info.
+func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
+	var arg0 *C.GDBusInterfaceInfo
+	var arg1 *C.gchar
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_dbus_interface_info_lookup_property(arg0, arg1)
+
+	var ret0 *DBusPropertyInfo
+
+	ret0 = WrapDBusPropertyInfo(ret)
+
+	return ret0
+}
+
+// LookupSignal looks up information about a signal.
+//
+// The cost of this function is O(n) in number of signals unless
+// g_dbus_interface_info_cache_build() has been used on @info.
+func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
+	var arg0 *C.GDBusInterfaceInfo
+	var arg1 *C.gchar
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_dbus_interface_info_lookup_signal(arg0, arg1)
+
+	var ret0 *DBusSignalInfo
+
+	ret0 = WrapDBusSignalInfo(ret)
+
+	return ret0
+}
+
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
+	var arg0 *C.GDBusInterfaceInfo
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+
+	ret := C.g_dbus_interface_info_ref(arg0)
+
+	var ret0 *DBusInterfaceInfo
+
+	ret0 = WrapDBusInterfaceInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusInterfaceInfo) Unref() {
+	var arg0 *C.GDBusInterfaceInfo
+
+	arg0 = (*C.GDBusInterfaceInfo)(info.Native())
+
+	C.g_dbus_interface_info_unref(arg0)
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls
@@ -8061,6 +6149,33 @@ func (a *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	return ret
 }
 
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusMethodInfo) Ref() *DBusMethodInfo {
+	var arg0 *C.GDBusMethodInfo
+
+	arg0 = (*C.GDBusMethodInfo)(info.Native())
+
+	ret := C.g_dbus_method_info_ref(arg0)
+
+	var ret0 *DBusMethodInfo
+
+	ret0 = WrapDBusMethodInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusMethodInfo) Unref() {
+	var arg0 *C.GDBusMethodInfo
+
+	arg0 = (*C.GDBusMethodInfo)(info.Native())
+
+	C.g_dbus_method_info_unref(arg0)
+}
+
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
 type DBusNodeInfo struct {
 	native C.GDBusNodeInfo
@@ -8170,6 +6285,71 @@ func (a *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	return ret
 }
 
+// GenerateXml appends an XML representation of @info (and its children) to
+// @string_builder.
+//
+// This function is typically used for generating introspection XML documents at
+// run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
+// method.
+func (info *DBusNodeInfo) GenerateXml(indent uint, stringBuilder *glib.String) {
+	var arg0 *C.GDBusNodeInfo
+	var arg1 C.guint
+	var arg2 *C.GString
+
+	arg0 = (*C.GDBusNodeInfo)(info.Native())
+	arg1 = C.guint(indent)
+	arg2 = (*C.GString)(stringBuilder.Native())
+
+	C.g_dbus_node_info_generate_xml(arg0, arg1, arg2)
+}
+
+// LookupInterface looks up information about an interface.
+//
+// The cost of this function is O(n) in number of interfaces.
+func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
+	var arg0 *C.GDBusNodeInfo
+	var arg1 *C.gchar
+
+	arg0 = (*C.GDBusNodeInfo)(info.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_dbus_node_info_lookup_interface(arg0, arg1)
+
+	var ret0 *DBusInterfaceInfo
+
+	ret0 = WrapDBusInterfaceInfo(ret)
+
+	return ret0
+}
+
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusNodeInfo) Ref() *DBusNodeInfo {
+	var arg0 *C.GDBusNodeInfo
+
+	arg0 = (*C.GDBusNodeInfo)(info.Native())
+
+	ret := C.g_dbus_node_info_ref(arg0)
+
+	var ret0 *DBusNodeInfo
+
+	ret0 = WrapDBusNodeInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusNodeInfo) Unref() {
+	var arg0 *C.GDBusNodeInfo
+
+	arg0 = (*C.GDBusNodeInfo)(info.Native())
+
+	C.g_dbus_node_info_unref(arg0)
+}
+
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
 type DBusPropertyInfo struct {
 	native C.GDBusPropertyInfo
@@ -8239,6 +6419,33 @@ func (a *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return ret
+}
+
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusPropertyInfo) Ref() *DBusPropertyInfo {
+	var arg0 *C.GDBusPropertyInfo
+
+	arg0 = (*C.GDBusPropertyInfo)(info.Native())
+
+	ret := C.g_dbus_property_info_ref(arg0)
+
+	var ret0 *DBusPropertyInfo
+
+	ret0 = WrapDBusPropertyInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusPropertyInfo) Unref() {
+	var arg0 *C.GDBusPropertyInfo
+
+	arg0 = (*C.GDBusPropertyInfo)(info.Native())
+
+	C.g_dbus_property_info_unref(arg0)
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
@@ -8314,6 +6521,33 @@ func (a *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return ret
+}
+
+// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// reference count.
+func (info *DBusSignalInfo) Ref() *DBusSignalInfo {
+	var arg0 *C.GDBusSignalInfo
+
+	arg0 = (*C.GDBusSignalInfo)(info.Native())
+
+	ret := C.g_dbus_signal_info_ref(arg0)
+
+	var ret0 *DBusSignalInfo
+
+	ret0 = WrapDBusSignalInfo(ret)
+
+	return ret0
+}
+
+// Unref: if @info is statically allocated, does nothing. Otherwise decreases
+// the reference count of @info. When its reference count drops to 0, the memory
+// used is freed.
+func (info *DBusSignalInfo) Unref() {
+	var arg0 *C.GDBusSignalInfo
+
+	arg0 = (*C.GDBusSignalInfo)(info.Native())
+
+	C.g_dbus_signal_info_unref(arg0)
 }
 
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
@@ -8440,6 +6674,81 @@ func (n *FileAttributeInfoList) NInfos() int {
 	return ret
 }
 
+// Add adds a new attribute with @name to the @list, setting its @type and
+// @flags.
+func (list *FileAttributeInfoList) Add(name string, _type FileAttributeType, flags FileAttributeInfoFlags) {
+	var arg0 *C.GFileAttributeInfoList
+	var arg1 *C.char
+	var arg2 C.GFileAttributeType
+	var arg3 C.GFileAttributeInfoFlags
+
+	arg0 = (*C.GFileAttributeInfoList)(list.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GFileAttributeType)(_type)
+	arg3 = (C.GFileAttributeInfoFlags)(flags)
+
+	C.g_file_attribute_info_list_add(arg0, arg1, arg2, arg3)
+}
+
+// Dup makes a duplicate of a file attribute info list.
+func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
+	var arg0 *C.GFileAttributeInfoList
+
+	arg0 = (*C.GFileAttributeInfoList)(list.Native())
+
+	ret := C.g_file_attribute_info_list_dup(arg0)
+
+	var ret0 *FileAttributeInfoList
+
+	ret0 = WrapFileAttributeInfoList(ret)
+
+	return ret0
+}
+
+// Lookup gets the file attribute with the name @name from @list.
+func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
+	var arg0 *C.GFileAttributeInfoList
+	var arg1 *C.char
+
+	arg0 = (*C.GFileAttributeInfoList)(list.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_file_attribute_info_list_lookup(arg0, arg1)
+
+	var ret0 *FileAttributeInfo
+
+	ret0 = WrapFileAttributeInfo(ret)
+
+	return ret0
+}
+
+// Ref references a file attribute info list.
+func (list *FileAttributeInfoList) Ref() *FileAttributeInfoList {
+	var arg0 *C.GFileAttributeInfoList
+
+	arg0 = (*C.GFileAttributeInfoList)(list.Native())
+
+	ret := C.g_file_attribute_info_list_ref(arg0)
+
+	var ret0 *FileAttributeInfoList
+
+	ret0 = WrapFileAttributeInfoList(ret)
+
+	return ret0
+}
+
+// Unref removes a reference from the given @list. If the reference count falls
+// to zero, the @list is deleted.
+func (list *FileAttributeInfoList) Unref() {
+	var arg0 *C.GFileAttributeInfoList
+
+	arg0 = (*C.GFileAttributeInfoList)(list.Native())
+
+	C.g_file_attribute_info_list_unref(arg0)
+}
+
 // FileAttributeMatcher determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
 	native C.GFileAttributeMatcher
@@ -8479,6 +6788,150 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	ret0 = WrapFileAttributeMatcher(ret)
 
 	return ret0
+}
+
+// EnumerateNamespace checks if the matcher will match all of the keys in a
+// given namespace. This will always return true if a wildcard character is in
+// use (e.g. if matcher was created with "standard::*" and @ns is "standard", or
+// if matcher was created using "*" and namespace is anything.)
+//
+// TODO: this is awkwardly worded.
+func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
+	var arg0 *C.GFileAttributeMatcher
+	var arg1 *C.char
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+	arg1 = (*C.gchar)(C.CString(ns))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_file_attribute_matcher_enumerate_namespace(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// EnumerateNext gets the next matched attribute from a AttributeMatcher.
+func (matcher *FileAttributeMatcher) EnumerateNext() string {
+	var arg0 *C.GFileAttributeMatcher
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+
+	ret := C.g_file_attribute_matcher_enumerate_next(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Matches checks if an attribute will be matched by an attribute matcher. If
+// the matcher was created with the "*" matching string, this function will
+// always return true.
+func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
+	var arg0 *C.GFileAttributeMatcher
+	var arg1 *C.char
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+	arg1 = (*C.gchar)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_file_attribute_matcher_matches(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// MatchesOnly checks if a attribute matcher only matches a given attribute.
+// Always returns false if "*" was used when creating the matcher.
+func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
+	var arg0 *C.GFileAttributeMatcher
+	var arg1 *C.char
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+	arg1 = (*C.gchar)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_file_attribute_matcher_matches_only(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Ref references a file attribute matcher.
+func (matcher *FileAttributeMatcher) Ref() *FileAttributeMatcher {
+	var arg0 *C.GFileAttributeMatcher
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+
+	ret := C.g_file_attribute_matcher_ref(arg0)
+
+	var ret0 *FileAttributeMatcher
+
+	ret0 = WrapFileAttributeMatcher(ret)
+
+	return ret0
+}
+
+// Subtract subtracts all attributes of @subtract from @matcher and returns a
+// matcher that supports those attributes.
+//
+// Note that currently it is not possible to remove a single attribute when the
+// @matcher matches the whole namespace - or remove a namespace or attribute
+// when the matcher matches everything. This is a limitation of the current
+// implementation, but may be fixed in the future.
+func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
+	var arg0 *C.GFileAttributeMatcher
+	var arg1 *C.GFileAttributeMatcher
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+	arg1 = (*C.GFileAttributeMatcher)(subtract.Native())
+
+	ret := C.g_file_attribute_matcher_subtract(arg0, arg1)
+
+	var ret0 *FileAttributeMatcher
+
+	ret0 = WrapFileAttributeMatcher(ret)
+
+	return ret0
+}
+
+// String prints what the matcher is matching against. The format will be equal
+// to the format passed to g_file_attribute_matcher_new(). The output however,
+// might not be identical, as the matcher may decide to use a different order or
+// omit needless parts.
+func (matcher *FileAttributeMatcher) String() string {
+	var arg0 *C.GFileAttributeMatcher
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+
+	ret := C.g_file_attribute_matcher_to_string(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Unref unreferences @matcher. If the reference count falls below 1, the
+// @matcher is automatically freed.
+func (matcher *FileAttributeMatcher) Unref() {
+	var arg0 *C.GFileAttributeMatcher
+
+	arg0 = (*C.GFileAttributeMatcher)(matcher.Native())
+
+	C.g_file_attribute_matcher_unref(arg0)
 }
 
 // InputMessage: structure used for scatter/gather data input when receiving
@@ -8902,6 +7355,177 @@ func NewResourceFromData(data *glib.Bytes) *Resource {
 	return ret0
 }
 
+// Register registers the resource with the process-global set of resources.
+// Once a resource is registered the files in it can be accessed with the global
+// resource lookup functions like g_resources_lookup_data().
+func (resource *Resource) Register() {
+	var arg0 *C.GResource
+
+	arg0 = (*C.GResource)(resource.Native())
+
+	C.g_resources_register(arg0)
+}
+
+// Unregister unregisters the resource from the process-global set of resources.
+func (resource *Resource) Unregister() {
+	var arg0 *C.GResource
+
+	arg0 = (*C.GResource)(resource.Native())
+
+	C.g_resources_unregister(arg0)
+}
+
+// EnumerateChildren returns all the names of children at the specified @path in
+// the resource. The return result is a nil terminated list of strings which
+// should be released with g_strfreev().
+//
+// If @path is invalid or does not exist in the #GResource,
+// G_RESOURCE_ERROR_NOT_FOUND will be returned.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) []string {
+	var arg0 *C.GResource
+	var arg1 *C.char
+	var arg2 C.GResourceLookupFlags
+
+	arg0 = (*C.GResource)(resource.Native())
+	arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+
+	ret := C.g_resource_enumerate_children(arg0, arg1, arg2)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// Info looks for a file at the specified @path in the resource and if found
+// returns information about it.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, ok bool) {
+	var arg0 *C.GResource
+	var arg1 *C.char
+	var arg2 C.GResourceLookupFlags
+	var arg3 *C.gsize   // out
+	var arg4 *C.guint32 // out
+
+	arg0 = (*C.GResource)(resource.Native())
+	arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+
+	ret := C.g_resource_get_info(arg0, arg1, arg2, &arg3, &arg4)
+
+	var ret0 uint
+	var ret1 uint32
+	var ret2 bool
+
+	ret0 = uint(arg3)
+
+	ret1 = uint32(arg4)
+
+	ret2 = gextras.Gobool(ret)
+
+	return ret0, ret1, ret2
+}
+
+// LookupData looks for a file at the specified @path in the resource and
+// returns a #GBytes that lets you directly access the data in memory.
+//
+// The data is always followed by a zero byte, so you can safely use the data as
+// a C string. However, that byte is not included in the size of the GBytes.
+//
+// For uncompressed resource files this is a pointer directly into the resource
+// bundle, which is typically in some readonly data section in the program
+// binary. For compressed files we allocate memory on the heap and automatically
+// uncompress the data.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) *glib.Bytes {
+	var arg0 *C.GResource
+	var arg1 *C.char
+	var arg2 C.GResourceLookupFlags
+
+	arg0 = (*C.GResource)(resource.Native())
+	arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+
+	ret := C.g_resource_lookup_data(arg0, arg1, arg2)
+
+	var ret0 *glib.Bytes
+
+	ret0 = glib.WrapBytes(ret)
+
+	return ret0
+}
+
+// OpenStream looks for a file at the specified @path in the resource and
+// returns a Stream that lets you read the data.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) InputStream {
+	var arg0 *C.GResource
+	var arg1 *C.char
+	var arg2 C.GResourceLookupFlags
+
+	arg0 = (*C.GResource)(resource.Native())
+	arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+
+	ret := C.g_resource_open_stream(arg0, arg1, arg2)
+
+	var ret0 InputStream
+
+	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// Ref: atomically increments the reference count of @resource by one. This
+// function is MT-safe and may be called from any thread.
+func (resource *Resource) Ref() *Resource {
+	var arg0 *C.GResource
+
+	arg0 = (*C.GResource)(resource.Native())
+
+	ret := C.g_resource_ref(arg0)
+
+	var ret0 *Resource
+
+	ret0 = WrapResource(ret)
+
+	return ret0
+}
+
+// Unref: atomically decrements the reference count of @resource by one. If the
+// reference count drops to 0, all memory allocated by the resource is released.
+// This function is MT-safe and may be called from any thread.
+func (resource *Resource) Unref() {
+	var arg0 *C.GResource
+
+	arg0 = (*C.GResource)(resource.Native())
+
+	C.g_resource_unref(arg0)
+}
+
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
 // advanced control over the loading of schemas and a mechanism for
 // introspecting their content.
@@ -8956,6 +7580,167 @@ func (s *SettingsSchema) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
+// ID: get the ID of @schema.
+func (schema *SettingsSchema) ID() string {
+	var arg0 *C.GSettingsSchema
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+
+	ret := C.g_settings_schema_get_id(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Key gets the key named @name from @schema.
+//
+// It is a programmer error to request a key that does not exist. See
+// g_settings_schema_list_keys().
+func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
+	var arg0 *C.GSettingsSchema
+	var arg1 *C.gchar
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_settings_schema_get_key(arg0, arg1)
+
+	var ret0 *SettingsSchemaKey
+
+	ret0 = WrapSettingsSchemaKey(ret)
+
+	return ret0
+}
+
+// Path gets the path associated with @schema, or nil.
+//
+// Schemas may be single-instance or relocatable. Single-instance schemas
+// correspond to exactly one set of keys in the backend database: those located
+// at the path returned by this function.
+//
+// Relocatable schemas can be referenced by other schemas and can therefore
+// describe multiple sets of keys at different locations. For relocatable
+// schemas, this function will return nil.
+func (schema *SettingsSchema) Path() string {
+	var arg0 *C.GSettingsSchema
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+
+	ret := C.g_settings_schema_get_path(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// HasKey checks if @schema has a key named @name.
+func (schema *SettingsSchema) HasKey(name string) bool {
+	var arg0 *C.GSettingsSchema
+	var arg1 *C.gchar
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_settings_schema_has_key(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// ListChildren gets the list of children in @schema.
+//
+// You should free the return value with g_strfreev() when you are done with it.
+func (schema *SettingsSchema) ListChildren() []string {
+	var arg0 *C.GSettingsSchema
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+
+	ret := C.g_settings_schema_list_children(arg0)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// ListKeys introspects the list of keys on @schema.
+//
+// You should probably not be calling this function from "normal" code (since
+// you should already know what keys are in your schema). This function is
+// intended for introspection reasons.
+func (schema *SettingsSchema) ListKeys() []string {
+	var arg0 *C.GSettingsSchema
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+
+	ret := C.g_settings_schema_list_keys(arg0)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0
+}
+
+// Ref: increase the reference count of @schema, returning a new reference.
+func (schema *SettingsSchema) Ref() *SettingsSchema {
+	var arg0 *C.GSettingsSchema
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+
+	ret := C.g_settings_schema_ref(arg0)
+
+	var ret0 *SettingsSchema
+
+	ret0 = WrapSettingsSchema(ret)
+
+	return ret0
+}
+
+// Unref: decrease the reference count of @schema, possibly freeing it.
+func (schema *SettingsSchema) Unref() {
+	var arg0 *C.GSettingsSchema
+
+	arg0 = (*C.GSettingsSchema)(schema.Native())
+
+	C.g_settings_schema_unref(arg0)
+}
+
 // SettingsSchemaKey is an opaque data structure and can only be accessed using
 // the following functions.
 type SettingsSchemaKey struct {
@@ -8980,6 +7765,198 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (s *SettingsSchemaKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// DefaultValue gets the default value for @key.
+//
+// Note that this is the default value according to the schema. System
+// administrator defaults and lockdown are not visible via this API.
+func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_get_default_value(arg0)
+
+	var ret0 *glib.Variant
+
+	ret0 = glib.WrapVariant(ret)
+
+	return ret0
+}
+
+// Description gets the description for @key.
+//
+// If no description has been provided in the schema for @key, returns nil.
+//
+// The description can be one sentence to several paragraphs in length.
+// Paragraphs are delimited with a double newline. Descriptions can be
+// translated and the value returned from this function is is the current
+// locale.
+//
+// This function is slow. The summary and description information for the
+// schemas is not stored in the compiled schema database so this function has to
+// parse all of the source XML files in the schema directory.
+func (key *SettingsSchemaKey) Description() string {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_get_description(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Name gets the name of @key.
+func (key *SettingsSchemaKey) Name() string {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_get_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Range queries the range of a key.
+//
+// This function will return a #GVariant that fully describes the range of
+// values that are valid for @key.
+//
+// The type of #GVariant returned is `(sv)`. The string describes the type of
+// range restriction in effect. The type and meaning of the value contained in
+// the variant depends on the string.
+//
+// If the string is `'type'` then the variant contains an empty array. The
+// element type of that empty array is the expected type of value and all values
+// of that type are valid.
+//
+// If the string is `'enum'` then the variant contains an array enumerating the
+// possible values. Each item in the array is a possible valid value and no
+// other values are valid.
+//
+// If the string is `'flags'` then the variant contains an array. Each item in
+// the array is a value that may appear zero or one times in an array to be used
+// as the value for this key. For example, if the variant contained the array
+// `['x', 'y']` then the valid values for the key would be `[]`, `['x']`,
+// `['y']`, `['x', 'y']` and `['y', 'x']`.
+//
+// Finally, if the string is `'range'` then the variant contains a pair of
+// like-typed values -- the minimum and maximum permissible values for this key.
+//
+// This information should not be used by normal programs. It is considered to
+// be a hint for introspection purposes. Normal programs should already know
+// what is permitted by their own schema. The format may change in any way in
+// the future -- but particularly, new forms may be added to the possibilities
+// described above.
+//
+// You should free the returned value with g_variant_unref() when it is no
+// longer needed.
+func (key *SettingsSchemaKey) Range() *glib.Variant {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_get_range(arg0)
+
+	var ret0 *glib.Variant
+
+	ret0 = glib.WrapVariant(ret)
+
+	return ret0
+}
+
+// Summary gets the summary for @key.
+//
+// If no summary has been provided in the schema for @key, returns nil.
+//
+// The summary is a short description of the purpose of the key; usually one
+// short sentence. Summaries can be translated and the value returned from this
+// function is is the current locale.
+//
+// This function is slow. The summary and description information for the
+// schemas is not stored in the compiled schema database so this function has to
+// parse all of the source XML files in the schema directory.
+func (key *SettingsSchemaKey) Summary() string {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_get_summary(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// ValueType gets the Type of @key.
+func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_get_value_type(arg0)
+
+	var ret0 *glib.VariantType
+
+	ret0 = glib.WrapVariantType(ret)
+
+	return ret0
+}
+
+// RangeCheck checks if the given @value is of the correct type and within the
+// permitted range for @key.
+//
+// It is a programmer error if @value is not of the correct type -- you must
+// check for this first.
+func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
+	var arg0 *C.GSettingsSchemaKey
+	var arg1 *C.GVariant
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+	arg1 = (*C.GVariant)(value.Native())
+
+	ret := C.g_settings_schema_key_range_check(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Ref: increase the reference count of @key, returning a new reference.
+func (key *SettingsSchemaKey) Ref() *SettingsSchemaKey {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	ret := C.g_settings_schema_key_ref(arg0)
+
+	var ret0 *SettingsSchemaKey
+
+	ret0 = WrapSettingsSchemaKey(ret)
+
+	return ret0
+}
+
+// Unref: decrease the reference count of @key, possibly freeing it.
+func (key *SettingsSchemaKey) Unref() {
+	var arg0 *C.GSettingsSchemaKey
+
+	arg0 = (*C.GSettingsSchemaKey)(key.Native())
+
+	C.g_settings_schema_key_unref(arg0)
 }
 
 // SettingsSchemaSource: this is an opaque structure type. You may not access it
@@ -9026,6 +8003,115 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	ret0 = WrapSettingsSchemaSource(ret)
 
 	return ret0
+}
+
+// ListSchemas lists the schemas in a given source.
+//
+// If @recursive is true then include parent sources. If false then only include
+// the schemas from one source (ie: one directory). You probably want true.
+//
+// Non-relocatable schemas are those for which you can call g_settings_new().
+// Relocatable schemas are those for which you must use
+// g_settings_new_with_path().
+//
+// Do not call this function from normal programs. This is designed for use by
+// database editors, commandline tools, etc.
+func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
+	var arg0 *C.GSettingsSchemaSource
+	var arg1 C.gboolean
+	var arg2 ***C.gchar // out
+	var arg3 ***C.gchar // out
+
+	arg0 = (*C.GSettingsSchemaSource)(source.Native())
+	arg1 = gextras.Cbool(recursive)
+
+	ret := C.g_settings_schema_source_list_schemas(arg0, arg1, &arg2, &arg3)
+
+	var ret0 []string
+	var ret1 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(arg2); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	{
+		var length uint
+		for p := unsafe.Pointer(arg3); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret1 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Lookup looks up a schema with the identifier @schema_id in @source.
+//
+// This function is not required for normal uses of #GSettings but it may be
+// useful to authors of plugin management systems or to those who want to
+// introspect the content of schemas.
+//
+// If the schema isn't found directly in @source and @recursive is true then the
+// parent sources will also be checked.
+//
+// If the schema isn't found, nil is returned.
+func (source *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *SettingsSchema {
+	var arg0 *C.GSettingsSchemaSource
+	var arg1 *C.gchar
+	var arg2 C.gboolean
+
+	arg0 = (*C.GSettingsSchemaSource)(source.Native())
+	arg1 = (*C.gchar)(C.CString(schemaID))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = gextras.Cbool(recursive)
+
+	ret := C.g_settings_schema_source_lookup(arg0, arg1, arg2)
+
+	var ret0 *SettingsSchema
+
+	ret0 = WrapSettingsSchema(ret)
+
+	return ret0
+}
+
+// Ref: increase the reference count of @source, returning a new reference.
+func (source *SettingsSchemaSource) Ref() *SettingsSchemaSource {
+	var arg0 *C.GSettingsSchemaSource
+
+	arg0 = (*C.GSettingsSchemaSource)(source.Native())
+
+	ret := C.g_settings_schema_source_ref(arg0)
+
+	var ret0 *SettingsSchemaSource
+
+	ret0 = WrapSettingsSchemaSource(ret)
+
+	return ret0
+}
+
+// Unref: decrease the reference count of @source, possibly freeing it.
+func (source *SettingsSchemaSource) Unref() {
+	var arg0 *C.GSettingsSchemaSource
+
+	arg0 = (*C.GSettingsSchemaSource)(source.Native())
+
+	C.g_settings_schema_source_unref(arg0)
 }
 
 // SrvTarget: SRV (service) records are used by some network protocols to
@@ -9086,6 +8172,95 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	return ret0
 }
 
+// Copy copies @target
+func (target *SrvTarget) Copy() *SrvTarget {
+	var arg0 *C.GSrvTarget
+
+	arg0 = (*C.GSrvTarget)(target.Native())
+
+	ret := C.g_srv_target_copy(arg0)
+
+	var ret0 *SrvTarget
+
+	ret0 = WrapSrvTarget(ret)
+
+	return ret0
+}
+
+// Free frees @target
+func (target *SrvTarget) Free() {
+	var arg0 *C.GSrvTarget
+
+	arg0 = (*C.GSrvTarget)(target.Native())
+
+	C.g_srv_target_free(arg0)
+}
+
+// Hostname gets @target's hostname (in ASCII form; if you are going to present
+// this to the user, you should use g_hostname_is_ascii_encoded() to check if it
+// contains encoded Unicode segments, and use g_hostname_to_unicode() to convert
+// it if it does.)
+func (target *SrvTarget) Hostname() string {
+	var arg0 *C.GSrvTarget
+
+	arg0 = (*C.GSrvTarget)(target.Native())
+
+	ret := C.g_srv_target_get_hostname(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Port gets @target's port
+func (target *SrvTarget) Port() uint16 {
+	var arg0 *C.GSrvTarget
+
+	arg0 = (*C.GSrvTarget)(target.Native())
+
+	ret := C.g_srv_target_get_port(arg0)
+
+	var ret0 uint16
+
+	ret0 = uint16(ret)
+
+	return ret0
+}
+
+// Priority gets @target's priority. You should not need to look at this;
+// #GResolver already sorts the targets according to the algorithm in RFC 2782.
+func (target *SrvTarget) Priority() uint16 {
+	var arg0 *C.GSrvTarget
+
+	arg0 = (*C.GSrvTarget)(target.Native())
+
+	ret := C.g_srv_target_get_priority(arg0)
+
+	var ret0 uint16
+
+	ret0 = uint16(ret)
+
+	return ret0
+}
+
+// Weight gets @target's weight. You should not need to look at this; #GResolver
+// already sorts the targets according to the algorithm in RFC 2782.
+func (target *SrvTarget) Weight() uint16 {
+	var arg0 *C.GSrvTarget
+
+	arg0 = (*C.GSrvTarget)(target.Native())
+
+	ret := C.g_srv_target_get_weight(arg0)
+
+	var ret0 uint16
+
+	ret0 = uint16(ret)
+
+	return ret0
+}
+
 // StaticResource is an opaque data structure and can only be accessed using the
 // following functions.
 type StaticResource struct {
@@ -9110,6 +8285,52 @@ func marshalStaticResource(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (s *StaticResource) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// Fini: finalized a GResource initialized by g_static_resource_init().
+//
+// This is normally used by code generated by
+// [glib-compile-resources][glib-compile-resources] and is not typically used by
+// other code.
+func (staticResource *StaticResource) Fini() {
+	var arg0 *C.GStaticResource
+
+	arg0 = (*C.GStaticResource)(staticResource.Native())
+
+	C.g_static_resource_fini(arg0)
+}
+
+// Resource gets the GResource that was registered by a call to
+// g_static_resource_init().
+//
+// This is normally used by code generated by
+// [glib-compile-resources][glib-compile-resources] and is not typically used by
+// other code.
+func (staticResource *StaticResource) Resource() *Resource {
+	var arg0 *C.GStaticResource
+
+	arg0 = (*C.GStaticResource)(staticResource.Native())
+
+	ret := C.g_static_resource_get_resource(arg0)
+
+	var ret0 *Resource
+
+	ret0 = WrapResource(ret)
+
+	return ret0
+}
+
+// Init initializes a GResource from static data using a GStaticResource.
+//
+// This is normally used by code generated by
+// [glib-compile-resources][glib-compile-resources] and is not typically used by
+// other code.
+func (staticResource *StaticResource) Init() {
+	var arg0 *C.GStaticResource
+
+	arg0 = (*C.GStaticResource)(staticResource.Native())
+
+	C.g_static_resource_init(arg0)
 }
 
 // UnixMountEntry defines a Unix mount entry (e.g.
@@ -9164,6 +8385,184 @@ func (u *UnixMountPoint) Native() unsafe.Pointer {
 	return unsafe.Pointer(&u.native)
 }
 
+// Compare compares two unix mount points.
+func (mount1 *UnixMountPoint) Compare(mount2 *UnixMountPoint) int {
+	var arg0 *C.GUnixMountPoint
+	var arg1 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mount1.Native())
+	arg1 = (*C.GUnixMountPoint)(mount2.Native())
+
+	ret := C.g_unix_mount_point_compare(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Copy makes a copy of @mount_point.
+func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_copy(arg0)
+
+	var ret0 *UnixMountPoint
+
+	ret0 = WrapUnixMountPoint(ret)
+
+	return ret0
+}
+
+// Free frees a unix mount point.
+func (mountPoint *UnixMountPoint) Free() {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	C.g_unix_mount_point_free(arg0)
+}
+
+// DevicePath gets the device path for a unix mount point.
+func (mountPoint *UnixMountPoint) DevicePath() string {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_get_device_path(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// FSType gets the file system type for the mount point.
+func (mountPoint *UnixMountPoint) FSType() string {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_get_fs_type(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// MountPath gets the mount path for a unix mount point.
+func (mountPoint *UnixMountPoint) MountPath() string {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_get_mount_path(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Options gets the options for the mount point.
+func (mountPoint *UnixMountPoint) Options() string {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_get_options(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// GuessCanEject guesses whether a Unix mount point can be ejected.
+func (mountPoint *UnixMountPoint) GuessCanEject() bool {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_guess_can_eject(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// GuessName guesses the name of a Unix mount point. The result is a translated
+// string.
+func (mountPoint *UnixMountPoint) GuessName() string {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_guess_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// IsLoopback checks if a unix mount point is a loopback device.
+func (mountPoint *UnixMountPoint) IsLoopback() bool {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_is_loopback(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsReadonly checks if a unix mount point is read only.
+func (mountPoint *UnixMountPoint) IsReadonly() bool {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_is_readonly(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// IsUserMountable checks if a unix mount point is mountable by the user.
+func (mountPoint *UnixMountPoint) IsUserMountable() bool {
+	var arg0 *C.GUnixMountPoint
+
+	arg0 = (*C.GUnixMountPoint)(mountPoint.Native())
+
+	ret := C.g_unix_mount_point_is_user_mountable(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
 // AppInfoMonitor is a very simple object used for monitoring the app info
 // database for changes (ie: newly installed or removed applications).
 //
@@ -9205,23 +8604,11 @@ func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 type AppLaunchContext interface {
 	gextras.Objector
 
-	// Display gets the display string for the @context. This is used to ensure
-	// new applications are started on the same display as the launching
-	// application, by setting the `DISPLAY` environment variable.
-	Display(info AppInfo, files *glib.List) string
 	// Environment gets the complete environment variable list to be passed to
 	// the child process when @context is used to launch an application. This is
 	// a nil-terminated array of strings, where each string has the form
 	// `KEY=VALUE`.
 	Environment() []string
-	// StartupNotifyID initiates startup notification for the application and
-	// returns the `DESKTOP_STARTUP_ID` for the launched operation, if
-	// supported.
-	//
-	// Startup notification IDs are defined in the FreeDesktop.Org Startup
-	// Notifications standard
-	// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
-	StartupNotifyID(info AppInfo, files *glib.List) string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
@@ -9262,27 +8649,6 @@ func NewAppLaunchContext() AppLaunchContext {
 	return ret0
 }
 
-// Display gets the display string for the @context. This is used to ensure
-// new applications are started on the same display as the launching
-// application, by setting the `DISPLAY` environment variable.
-func (context appLaunchContext) Display(info AppInfo, files *glib.List) string {
-	var arg0 *C.GAppLaunchContext
-	var arg1 *C.GAppInfo
-	var arg2 *C.GList
-
-	arg0 = (*C.GAppLaunchContext)(context.Native())
-	arg2 = (*C.GList)(files.Native())
-
-	ret := C.g_app_launch_context_get_display(arg0, arg1, arg2)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
 // Environment gets the complete environment variable list to be passed to
 // the child process when @context is used to launch an application. This is
 // a nil-terminated array of strings, where each string has the form
@@ -9309,31 +8675,6 @@ func (context appLaunchContext) Environment() []string {
 			C.free(unsafe.Pointer(src))
 		}
 	}
-
-	return ret0
-}
-
-// StartupNotifyID initiates startup notification for the application and
-// returns the `DESKTOP_STARTUP_ID` for the launched operation, if
-// supported.
-//
-// Startup notification IDs are defined in the FreeDesktop.Org Startup
-// Notifications standard
-// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
-func (context appLaunchContext) StartupNotifyID(info AppInfo, files *glib.List) string {
-	var arg0 *C.GAppLaunchContext
-	var arg1 *C.GAppInfo
-	var arg2 *C.GList
-
-	arg0 = (*C.GAppLaunchContext)(context.Native())
-	arg2 = (*C.GList)(files.Native())
-
-	ret := C.g_app_launch_context_get_startup_notify_id(arg0, arg1, arg2)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9629,21 +8970,6 @@ type Application interface {
 	//
 	// To cancel the busy indication, use g_application_unmark_busy().
 	MarkBusy()
-	// Open opens the given files.
-	//
-	// In essence, this results in the #GApplication::open signal being emitted
-	// in the primary instance.
-	//
-	// @n_files must be greater than zero.
-	//
-	// @hint is simply passed through to the ::open signal. It is intended to be
-	// used by applications that have multiple modes for opening files (eg:
-	// "view" vs "edit", etc). Unless you have a need for this functionality,
-	// you should use "".
-	//
-	// The application must be registered before calling this function and it
-	// must have the G_APPLICATION_HANDLES_OPEN flag set.
-	Open(files []File, hint string)
 	// Quit: immediately quits the application.
 	//
 	// Upon return to the mainloop, g_application_run() will return, calling
@@ -9693,80 +9019,6 @@ type Application interface {
 	// Never call this function except to cancel the effect of a previous call
 	// to g_application_hold().
 	Release()
-	// Run runs the application.
-	//
-	// This function is intended to be run from main() and its return value is
-	// intended to be returned by main(). Although you are expected to pass the
-	// @argc, @argv parameters from main() to this function, it is possible to
-	// pass nil if @argv is not available or commandline handling is not
-	// required. Note that on Windows, @argc and @argv are ignored, and
-	// g_win32_get_command_line() is called internally (for proper support of
-	// Unicode commandline arguments).
-	//
-	// #GApplication will attempt to parse the commandline arguments. You can
-	// add commandline flags to the list of recognised options by way of
-	// g_application_add_main_option_entries(). After this, the
-	// #GApplication::handle-local-options signal is emitted, from which the
-	// application can inspect the values of its Entrys.
-	//
-	// #GApplication::handle-local-options is a good place to handle options
-	// such as `--version`, where an immediate reply from the local process is
-	// desired (instead of communicating with an already-running instance). A
-	// #GApplication::handle-local-options handler can stop further processing
-	// by returning a non-negative value, which then becomes the exit status of
-	// the process.
-	//
-	// What happens next depends on the flags: if
-	// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
-	// commandline arguments are sent to the primary instance, where a
-	// #GApplication::command-line signal is emitted. Otherwise, the remaining
-	// commandline arguments are assumed to be a list of files. If there are no
-	// files listed, the application is activated via the
-	// #GApplication::activate signal. If there are one or more files, and
-	// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
-	// the #GApplication::open signal.
-	//
-	// If you are interested in doing more complicated local handling of the
-	// commandline then you should implement your own #GApplication subclass and
-	// override local_command_line(). In this case, you most likely want to
-	// return true from your local_command_line() implementation to suppress the
-	// default handling. See
-	// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
-	// example.
-	//
-	// If, after the above is done, the use count of the application is zero
-	// then the exit status is returned immediately. If the use count is
-	// non-zero then the default main context is iterated until the use count
-	// falls to zero, at which point 0 is returned.
-	//
-	// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
-	// for as much as 10 seconds with a use count of zero while waiting for the
-	// message that caused the activation to arrive. After that, if the use
-	// count falls to zero the application will exit immediately, except in the
-	// case that g_application_set_inactivity_timeout() is in use.
-	//
-	// This function sets the prgname (g_set_prgname()), if not already set, to
-	// the basename of argv[0].
-	//
-	// Much like g_main_loop_run(), this function will acquire the main context
-	// for the duration that the application is running.
-	//
-	// Since 2.40, applications that are not explicitly flagged as services or
-	// launchers (ie: neither G_APPLICATION_IS_SERVICE or
-	// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
-	// default handler for local_command_line) if "--gapplication-service" was
-	// given in the command line. If this flag is present then normal
-	// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
-	// flag is set. This provides a "compromise" solution whereby running an
-	// application directly from the commandline will invoke it in the normal
-	// way (which can be useful for debugging) while still allowing applications
-	// to be D-Bus activated in service mode. The D-Bus service file should
-	// invoke the executable with "--gapplication-service" as the sole
-	// commandline argument. This approach is suitable for use by most graphical
-	// applications but should not be used from applications like editors that
-	// need precise control over when processes invoked via the commandline will
-	// exit and what their exit status will be.
-	Run(argc int, argv []string) int
 	// SendNotification sends a notification on behalf of @application to the
 	// desktop shell. There is no guarantee that the notification is displayed
 	// immediately, or even at all.
@@ -10260,33 +9512,6 @@ func (application application) MarkBusy() {
 	C.g_application_mark_busy(arg0)
 }
 
-// Open opens the given files.
-//
-// In essence, this results in the #GApplication::open signal being emitted
-// in the primary instance.
-//
-// @n_files must be greater than zero.
-//
-// @hint is simply passed through to the ::open signal. It is intended to be
-// used by applications that have multiple modes for opening files (eg:
-// "view" vs "edit", etc). Unless you have a need for this functionality,
-// you should use "".
-//
-// The application must be registered before calling this function and it
-// must have the G_APPLICATION_HANDLES_OPEN flag set.
-func (application application) Open(files []File, hint string) {
-	var arg0 *C.GApplication
-	var arg1 **C.GFile
-	var arg2 C.gint
-	var arg3 *C.gchar
-
-	arg0 = (*C.GApplication)(application.Native())
-	arg3 = (*C.gchar)(C.CString(hint))
-	defer C.free(unsafe.Pointer(arg3))
-
-	C.g_application_open(arg0, arg1, arg2, arg3)
-}
-
 // Quit: immediately quits the application.
 //
 // Upon return to the mainloop, g_application_run() will return, calling
@@ -10363,112 +9588,6 @@ func (application application) Release() {
 	arg0 = (*C.GApplication)(application.Native())
 
 	C.g_application_release(arg0)
-}
-
-// Run runs the application.
-//
-// This function is intended to be run from main() and its return value is
-// intended to be returned by main(). Although you are expected to pass the
-// @argc, @argv parameters from main() to this function, it is possible to
-// pass nil if @argv is not available or commandline handling is not
-// required. Note that on Windows, @argc and @argv are ignored, and
-// g_win32_get_command_line() is called internally (for proper support of
-// Unicode commandline arguments).
-//
-// #GApplication will attempt to parse the commandline arguments. You can
-// add commandline flags to the list of recognised options by way of
-// g_application_add_main_option_entries(). After this, the
-// #GApplication::handle-local-options signal is emitted, from which the
-// application can inspect the values of its Entrys.
-//
-// #GApplication::handle-local-options is a good place to handle options
-// such as `--version`, where an immediate reply from the local process is
-// desired (instead of communicating with an already-running instance). A
-// #GApplication::handle-local-options handler can stop further processing
-// by returning a non-negative value, which then becomes the exit status of
-// the process.
-//
-// What happens next depends on the flags: if
-// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
-// commandline arguments are sent to the primary instance, where a
-// #GApplication::command-line signal is emitted. Otherwise, the remaining
-// commandline arguments are assumed to be a list of files. If there are no
-// files listed, the application is activated via the
-// #GApplication::activate signal. If there are one or more files, and
-// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
-// the #GApplication::open signal.
-//
-// If you are interested in doing more complicated local handling of the
-// commandline then you should implement your own #GApplication subclass and
-// override local_command_line(). In this case, you most likely want to
-// return true from your local_command_line() implementation to suppress the
-// default handling. See
-// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
-// example.
-//
-// If, after the above is done, the use count of the application is zero
-// then the exit status is returned immediately. If the use count is
-// non-zero then the default main context is iterated until the use count
-// falls to zero, at which point 0 is returned.
-//
-// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
-// for as much as 10 seconds with a use count of zero while waiting for the
-// message that caused the activation to arrive. After that, if the use
-// count falls to zero the application will exit immediately, except in the
-// case that g_application_set_inactivity_timeout() is in use.
-//
-// This function sets the prgname (g_set_prgname()), if not already set, to
-// the basename of argv[0].
-//
-// Much like g_main_loop_run(), this function will acquire the main context
-// for the duration that the application is running.
-//
-// Since 2.40, applications that are not explicitly flagged as services or
-// launchers (ie: neither G_APPLICATION_IS_SERVICE or
-// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
-// default handler for local_command_line) if "--gapplication-service" was
-// given in the command line. If this flag is present then normal
-// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
-// flag is set. This provides a "compromise" solution whereby running an
-// application directly from the commandline will invoke it in the normal
-// way (which can be useful for debugging) while still allowing applications
-// to be D-Bus activated in service mode. The D-Bus service file should
-// invoke the executable with "--gapplication-service" as the sole
-// commandline argument. This approach is suitable for use by most graphical
-// applications but should not be used from applications like editors that
-// need precise control over when processes invoked via the commandline will
-// exit and what their exit status will be.
-func (application application) Run(argc int, argv []string) int {
-	var arg0 *C.GApplication
-	var arg1 C.int
-	var arg2 **C.char
-
-	arg0 = (*C.GApplication)(application.Native())
-	{
-		var dst []C.filename
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_filename * len(argv))))
-		sliceHeader.Len = len(argv)
-		sliceHeader.Cap = len(argv)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(argv); i++ {
-			src := argv[i]
-			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(dst[i]))
-		}
-
-		arg2 = (**C.char)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(argv)
-	}
-
-	ret := C.g_application_run(arg0, arg1, arg2)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
 }
 
 // SendNotification sends a notification on behalf of @application to the
@@ -10810,13 +9929,6 @@ func (application application) WithdrawNotification(id string) {
 type ApplicationCommandLine interface {
 	gextras.Objector
 
-	// CreateFileForArg creates a #GFile corresponding to a filename that was
-	// given as part of the invocation of @cmdline.
-	//
-	// This differs from g_file_new_for_commandline_arg() in that it resolves
-	// relative pathnames using the current working directory of the invoking
-	// process rather than the local process.
-	CreateFileForArg(arg string) File
 	// Arguments gets the list of arguments that was passed on the command line.
 	//
 	// The strings in the array may contain non-UTF-8 data on UNIX (such as
@@ -10939,27 +10051,6 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapApplicationCommandLine(obj), nil
-}
-
-// CreateFileForArg creates a #GFile corresponding to a filename that was
-// given as part of the invocation of @cmdline.
-//
-// This differs from g_file_new_for_commandline_arg() in that it resolves
-// relative pathnames using the current working directory of the invoking
-// process rather than the local process.
-func (cmdline applicationCommandLine) CreateFileForArg(arg string) File {
-	var arg0 *C.GApplicationCommandLine
-	var arg1 *C.gchar
-
-	arg0 = (*C.GApplicationCommandLine)(cmdline.Native())
-	arg1 = (*C.gchar)(C.CString(arg))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_application_command_line_create_file_for_arg(arg0, arg1)
-
-	var ret0 File
-
-	return ret0
 }
 
 // Arguments gets the list of arguments that was passed on the command line.
@@ -11268,15 +10359,10 @@ type BufferedInputStream interface {
 	// If @count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
 	FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// FillFinish finishes an asynchronous read.
-	FillFinish(result AsyncResult) int
 	// Available gets the size of the available data within the stream.
 	Available() uint
 	// BufferSize gets the size of the input buffer.
 	BufferSize() uint
-	// Peek peeks in the buffer, copying data of size @count into @buffer,
-	// offset @offset bytes.
-	Peek(buffer []byte, offset uint) uint
 	// PeekBuffer returns the buffer with the currently available bytes. The
 	// returned buffer must not be modified and will become invalid when reading
 	// from the stream or filling the buffer.
@@ -11414,22 +10500,6 @@ func (stream bufferedInputStream) FillAsync(count int, ioPriority int, cancellab
 	C.g_buffered_input_stream_fill_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// FillFinish finishes an asynchronous read.
-func (stream bufferedInputStream) FillFinish(result AsyncResult) int {
-	var arg0 *C.GBufferedInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GBufferedInputStream)(stream.Native())
-
-	ret := C.g_buffered_input_stream_fill_finish(arg0, arg1)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
 // Available gets the size of the available data within the stream.
 func (stream bufferedInputStream) Available() uint {
 	var arg0 *C.GBufferedInputStream
@@ -11452,31 +10522,6 @@ func (stream bufferedInputStream) BufferSize() uint {
 	arg0 = (*C.GBufferedInputStream)(stream.Native())
 
 	ret := C.g_buffered_input_stream_get_buffer_size(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// Peek peeks in the buffer, copying data of size @count into @buffer,
-// offset @offset bytes.
-func (stream bufferedInputStream) Peek(buffer []byte, offset uint) uint {
-	var arg0 *C.GBufferedInputStream
-	var arg1 *C.void
-	var arg2 C.gsize
-	var arg3 C.gsize
-
-	arg0 = (*C.GBufferedInputStream)(stream.Native())
-	{
-		arg1 = (*C.void)(&buffer[0])
-		arg3 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg2 = C.gsize(offset)
-
-	ret := C.g_buffered_input_stream_peek(arg0, arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -11769,24 +10814,6 @@ type Cancellable interface {
 	// operation's ReadyCallback will not be invoked until the application
 	// returns to the main loop.
 	Cancel()
-	// Connect: convenience function to connect to the #GCancellable::cancelled
-	// signal. Also handles the race condition that may happen if the
-	// cancellable is cancelled right before connecting.
-	//
-	// @callback is called at most once, either directly at the time of the
-	// connect if @cancellable is already cancelled, or when @cancellable is
-	// cancelled in some thread.
-	//
-	// @data_destroy_func will be called when the handler is disconnected, or
-	// immediately if the cancellable is already cancelled.
-	//
-	// See #GCancellable::cancelled for details on how to use this.
-	//
-	// Since GLib 2.40, the lock protecting @cancellable is not held when
-	// @callback is invoked. This lifts a restriction in place for earlier GLib
-	// versions which now makes it easier to write cleanup code that
-	// unconditionally invokes e.g. g_cancellable_cancel().
-	Connect(callback interface{}) uint32
 	// Disconnect disconnects a handler from a cancellable instance similar to
 	// g_signal_handler_disconnect(). Additionally, in the event that a signal
 	// handler is currently running, this call will block until the handler has
@@ -11933,39 +10960,6 @@ func (cancellable cancellable) Cancel() {
 	arg0 = (*C.GCancellable)(cancellable.Native())
 
 	C.g_cancellable_cancel(arg0)
-}
-
-// Connect: convenience function to connect to the #GCancellable::cancelled
-// signal. Also handles the race condition that may happen if the
-// cancellable is cancelled right before connecting.
-//
-// @callback is called at most once, either directly at the time of the
-// connect if @cancellable is already cancelled, or when @cancellable is
-// cancelled in some thread.
-//
-// @data_destroy_func will be called when the handler is disconnected, or
-// immediately if the cancellable is already cancelled.
-//
-// See #GCancellable::cancelled for details on how to use this.
-//
-// Since GLib 2.40, the lock protecting @cancellable is not held when
-// @callback is invoked. This lifts a restriction in place for earlier GLib
-// versions which now makes it easier to write cleanup code that
-// unconditionally invokes e.g. g_cancellable_cancel().
-func (cancellable cancellable) Connect(callback interface{}) uint32 {
-	var arg0 *C.GCancellable
-	var arg1 C.GCallback
-	arg2 := C.gpointer(box.Assign(data))
-
-	arg0 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_cancellable_connect(arg0, arg1, (*[0]byte)(C.callbackDelete))
-
-	var ret0 uint32
-
-	ret0 = uint32(ret)
-
-	return ret0
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -12261,9 +11255,6 @@ func (converter charsetConverter) SetUseFallback(useFallback bool) {
 // As of GLib 2.34, InputStream implements InputStream.
 type ConverterInputStream interface {
 	FilterInputStream
-
-	// Converter gets the #GConverter that is used by @converter_stream.
-	Converter() Converter
 }
 
 type converterInputStream struct {
@@ -12282,44 +11273,12 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 	return WrapConverterInputStream(obj), nil
 }
 
-// NewConverterInputStream constructs a class ConverterInputStream.
-func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream {
-	var arg1 *C.GInputStream
-	var arg2 *C.GConverter
-
-	arg1 = (*C.GInputStream)(baseStream.Native())
-
-	ret := C.g_converter_input_stream_new(arg1, arg2)
-
-	var ret0 ConverterInputStream
-
-	ret0 = WrapConverterInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// Converter gets the #GConverter that is used by @converter_stream.
-func (converterStream converterInputStream) Converter() Converter {
-	var arg0 *C.GConverterInputStream
-
-	arg0 = (*C.GConverterInputStream)(converterStream.Native())
-
-	ret := C.g_converter_input_stream_get_converter(arg0)
-
-	var ret0 Converter
-
-	return ret0
-}
-
 // ConverterOutputStream: converter output stream implements Stream and allows
 // conversion of data of various types during reading.
 //
 // As of GLib 2.34, OutputStream implements OutputStream.
 type ConverterOutputStream interface {
 	FilterOutputStream
-
-	// Converter gets the #GConverter that is used by @converter_stream.
-	Converter() Converter
 }
 
 type converterOutputStream struct {
@@ -12336,35 +11295,6 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapConverterOutputStream(obj), nil
-}
-
-// NewConverterOutputStream constructs a class ConverterOutputStream.
-func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream {
-	var arg1 *C.GOutputStream
-	var arg2 *C.GConverter
-
-	arg1 = (*C.GOutputStream)(baseStream.Native())
-
-	ret := C.g_converter_output_stream_new(arg1, arg2)
-
-	var ret0 ConverterOutputStream
-
-	ret0 = WrapConverterOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// Converter gets the #GConverter that is used by @converter_stream.
-func (converterStream converterOutputStream) Converter() Converter {
-	var arg0 *C.GConverterOutputStream
-
-	arg0 = (*C.GConverterOutputStream)(converterStream.Native())
-
-	ret := C.g_converter_output_stream_get_converter(arg0)
-
-	var ret0 Converter
-
-	return ret0
 }
 
 // Credentials: the #GCredentials type is a reference-counted wrapper for native
@@ -12493,7 +11423,7 @@ func (credentials credentials) Native(nativeType CredentialsType) interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -12880,8 +11810,6 @@ type DBusConnection interface {
 	// If @callback is nil then the D-Bus method call message will be sent with
 	// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
 	Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CallFinish finishes an operation started with g_dbus_connection_call().
-	CallFinish(res AsyncResult) *glib.Variant
 	// CallSync: synchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
 	// owned by @bus_name.
@@ -12923,9 +11851,6 @@ type DBusConnection interface {
 	//
 	// This method is only available on UNIX.
 	CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
-	// CallWithUnixFdListFinish finishes an operation started with
-	// g_dbus_connection_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
 	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
 	// and returns FDList objects.
 	//
@@ -12955,8 +11880,6 @@ type DBusConnection interface {
 	// g_dbus_connection_close_finish() to get the result of the operation. See
 	// g_dbus_connection_close_sync() for the synchronous version.
 	Close(cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish finishes an operation started with g_dbus_connection_close().
-	CloseFinish(res AsyncResult) bool
 	// CloseSync: synchronously closes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_close() for the
 	// asynchronous version of this method and more details about what it does.
@@ -12969,27 +11892,6 @@ type DBusConnection interface {
 	// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
 	// (G_IO_ERROR_CLOSED).
 	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) bool
-	// ExportActionGroup exports @action_group on @connection at @object_path.
-	//
-	// The implemented D-Bus API should be considered private. It is subject to
-	// change in the future.
-	//
-	// A given object path can only have one action group exported on it. If
-	// this constraint is violated, the export will fail and 0 will be returned
-	// (with @error set accordingly).
-	//
-	// You can unexport the action group using
-	// g_dbus_connection_unexport_action_group() with the return value of this
-	// function.
-	//
-	// The thread default main context is taken at the time of this call. All
-	// incoming action activations and state change requests are reported from
-	// this context. Any changes on the action group that cause it to emit
-	// signals must also come from this same context. Since incoming action
-	// activations and state change requests are rather likely to cause changes
-	// on the action group, this effectively limits a given action group to
-	// being exported from only one main context.
-	ExportActionGroup(objectPath string, actionGroup ActionGroup) uint
 	// ExportMenuModel exports @menu on @connection at @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
@@ -13017,8 +11919,6 @@ type DBusConnection interface {
 	// g_dbus_connection_flush_finish() to get the result of the operation. See
 	// g_dbus_connection_flush_sync() for the synchronous version.
 	Flush(cancellable Cancellable, callback AsyncReadyCallback)
-	// FlushFinish finishes an operation started with g_dbus_connection_flush().
-	FlushFinish(res AsyncResult) bool
 	// FlushSync: synchronously flushes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_flush() for the
 	// asynchronous version of this method and more details about what it does.
@@ -13060,83 +11960,10 @@ type DBusConnection interface {
 	UniqueName() string
 	// IsClosed gets whether @connection is closed.
 	IsClosed() bool
-	// RegisterObject registers callbacks for exported objects at @object_path
-	// with the D-Bus interface that is described in @interface_info.
-	//
-	// Calls to functions in @vtable (and @user_data_free_func) will happen in
-	// the [thread-default main context][g-main-context-push-thread-default] of
-	// the thread you are calling this method from.
-	//
-	// Note that all #GVariant values passed to functions in @vtable will match
-	// the signature given in @interface_info - if a remote caller passes
-	// incorrect values, the `org.freedesktop.DBus.Error.InvalidArgs` is
-	// returned to the remote caller.
-	//
-	// Additionally, if the remote caller attempts to invoke methods or access
-	// properties not mentioned in @interface_info the
-	// `org.freedesktop.DBus.Error.UnknownMethod` resp.
-	// `org.freedesktop.DBus.Error.InvalidArgs` errors are returned to the
-	// caller.
-	//
-	// It is considered a programming error if the BusInterfaceGetPropertyFunc
-	// function in @vtable returns a #GVariant of incorrect type.
-	//
-	// If an existing callback is already registered at @object_path and
-	// @interface_name, then @error is set to IO_ERROR_EXISTS.
-	//
-	// GDBus automatically implements the standard D-Bus interfaces
-	// org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable and
-	// org.freedesktop.Peer, so you don't have to implement those for the
-	// objects you export. You can implement org.freedesktop.DBus.Properties
-	// yourself, e.g. to handle getting and setting of properties
-	// asynchronously.
-	//
-	// Note that the reference count on @interface_info will be incremented by 1
-	// (unless allocated statically, e.g. if the reference count is -1, see
-	// g_dbus_interface_info_ref()) for as long as the object is exported. Also
-	// note that @vtable will be copied.
-	//
-	// See this [server][gdbus-server] for an example of how to use this method.
-	RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, vtable *DBusInterfaceVTable, userData interface{}) uint
 	// RegisterObjectWithClosures: version of
 	// g_dbus_connection_register_object() using closures instead of a
 	// BusInterfaceVTable for easier binding in other languages.
 	RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) uint
-	// RegisterSubtree registers a whole subtree of dynamic objects.
-	//
-	// The @enumerate and @introspection functions in @vtable are used to
-	// convey, to remote callers, what nodes exist in the subtree rooted by
-	// @object_path.
-	//
-	// When handling remote calls into any node in the subtree, first the
-	// @enumerate function is used to check if the node exists. If the node
-	// exists or the DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is
-	// set the @introspection function is used to check if the node supports the
-	// requested method. If so, the @dispatch function is used to determine
-	// where to dispatch the call. The collected BusInterfaceVTable and
-	// #gpointer will be used to call into the interface vtable for processing
-	// the request.
-	//
-	// All calls into user-provided code will be invoked in the [thread-default
-	// main context][g-main-context-push-thread-default] of the thread you are
-	// calling this method from.
-	//
-	// If an existing subtree is already registered at @object_path or then
-	// @error is set to IO_ERROR_EXISTS.
-	//
-	// Note that it is valid to register regular objects (using
-	// g_dbus_connection_register_object()) in a subtree registered with
-	// g_dbus_connection_register_subtree() - if so, the subtree handler is
-	// tried as the last resort. One way to think about a subtree handler is to
-	// consider it a fallback handler for object paths not registered via
-	// g_dbus_connection_register_object() or other bindings.
-	//
-	// Note that @vtable will be copied so you cannot change it after
-	// registration.
-	//
-	// See this [server][gdbus-subtree-server] for an example of how to use this
-	// method.
-	RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}) uint
 	// RemoveFilter removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
@@ -13195,18 +12022,6 @@ type DBusConnection interface {
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
 	SendMessageWithReply(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) uint32
-	// SendMessageWithReplyFinish finishes an operation started with
-	// g_dbus_connection_send_message_with_reply().
-	//
-	// Note that @error is only set if a local in-process error occurred. That
-	// is to say that the returned BusMessage object may be of type
-	// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode
-	// this to a #GError.
-	//
-	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-	// example of how to use this low-level API to send and receive UNIX file
-	// descriptors.
-	SendMessageWithReplyFinish(res AsyncResult) DBusMessage
 	// SendMessageWithReplySync: synchronously sends @message to the peer
 	// represented by @connection and blocks the calling thread until a reply is
 	// received or the timeout is reached. See
@@ -13343,32 +12158,6 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusConnection(obj), nil
-}
-
-// NewDBusConnectionFinish constructs a class DBusConnection.
-func NewDBusConnectionFinish(res AsyncResult) DBusConnection {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_dbus_connection_new_finish(arg1)
-
-	var ret0 DBusConnection
-
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewDBusConnectionForAddressFinish constructs a class DBusConnection.
-func NewDBusConnectionForAddressFinish(res AsyncResult) DBusConnection {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_dbus_connection_new_for_address_finish(arg1)
-
-	var ret0 DBusConnection
-
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // NewDBusConnectionForAddressSync constructs a class DBusConnection.
@@ -13537,22 +12326,6 @@ func (connection dBusConnection) Call(busName string, objectPath string, interfa
 	C.g_dbus_connection_call(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
-// CallFinish finishes an operation started with g_dbus_connection_call().
-func (connection dBusConnection) CallFinish(res AsyncResult) *glib.Variant {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-
-	ret := C.g_dbus_connection_call_finish(arg0, arg1)
-
-	var ret0 *glib.Variant
-
-	ret0 = glib.WrapVariant(ret)
-
-	return ret0
-}
-
 // CallSync: synchronously invokes the @method_name method on the
 // @interface_name D-Bus interface on the remote object at @object_path
 // owned by @bus_name.
@@ -13663,27 +12436,6 @@ func (connection dBusConnection) CallWithUnixFdList(busName string, objectPath s
 	C.g_dbus_connection_call_with_unix_fd_list(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
 }
 
-// CallWithUnixFdListFinish finishes an operation started with
-// g_dbus_connection_call_with_unix_fd_list().
-func (connection dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant) {
-	var arg0 *C.GDBusConnection
-	var arg1 **C.GUnixFDList // out
-	var arg2 *C.GAsyncResult
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-
-	ret := C.g_dbus_connection_call_with_unix_fd_list_finish(arg0, &arg1, arg2)
-
-	var ret0 UnixFDList
-	var ret1 *glib.Variant
-
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
-
-	ret1 = glib.WrapVariant(ret)
-
-	return ret0, ret1
-}
-
 // CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
 // and returns FDList objects.
 //
@@ -13766,22 +12518,6 @@ func (connection dBusConnection) Close(cancellable Cancellable, callback AsyncRe
 	C.g_dbus_connection_close(arg0, arg1, arg2)
 }
 
-// CloseFinish finishes an operation started with g_dbus_connection_close().
-func (connection dBusConnection) CloseFinish(res AsyncResult) bool {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-
-	ret := C.g_dbus_connection_close_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // CloseSync: synchronously closes @connection. The calling thread is
 // blocked until this is done. See g_dbus_connection_close() for the
 // asynchronous version of this method and more details about what it does.
@@ -13832,44 +12568,6 @@ func (connection dBusConnection) EmitSignal(destinationBusName string, objectPat
 	var ret0 bool
 
 	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// ExportActionGroup exports @action_group on @connection at @object_path.
-//
-// The implemented D-Bus API should be considered private. It is subject to
-// change in the future.
-//
-// A given object path can only have one action group exported on it. If
-// this constraint is violated, the export will fail and 0 will be returned
-// (with @error set accordingly).
-//
-// You can unexport the action group using
-// g_dbus_connection_unexport_action_group() with the return value of this
-// function.
-//
-// The thread default main context is taken at the time of this call. All
-// incoming action activations and state change requests are reported from
-// this context. Any changes on the action group that cause it to emit
-// signals must also come from this same context. Since incoming action
-// activations and state change requests are rather likely to cause changes
-// on the action group, this effectively limits a given action group to
-// being exported from only one main context.
-func (connection dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) uint {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.gchar
-	var arg2 *C.GActionGroup
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_dbus_connection_export_action_group(arg0, arg1, arg2)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -13929,22 +12627,6 @@ func (connection dBusConnection) Flush(cancellable Cancellable, callback AsyncRe
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_dbus_connection_flush(arg0, arg1, arg2)
-}
-
-// FlushFinish finishes an operation started with g_dbus_connection_flush().
-func (connection dBusConnection) FlushFinish(res AsyncResult) bool {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-
-	ret := C.g_dbus_connection_flush_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // FlushSync: synchronously flushes @connection. The calling thread is
@@ -14120,67 +12802,6 @@ func (connection dBusConnection) IsClosed() bool {
 	return ret0
 }
 
-// RegisterObject registers callbacks for exported objects at @object_path
-// with the D-Bus interface that is described in @interface_info.
-//
-// Calls to functions in @vtable (and @user_data_free_func) will happen in
-// the [thread-default main context][g-main-context-push-thread-default] of
-// the thread you are calling this method from.
-//
-// Note that all #GVariant values passed to functions in @vtable will match
-// the signature given in @interface_info - if a remote caller passes
-// incorrect values, the `org.freedesktop.DBus.Error.InvalidArgs` is
-// returned to the remote caller.
-//
-// Additionally, if the remote caller attempts to invoke methods or access
-// properties not mentioned in @interface_info the
-// `org.freedesktop.DBus.Error.UnknownMethod` resp.
-// `org.freedesktop.DBus.Error.InvalidArgs` errors are returned to the
-// caller.
-//
-// It is considered a programming error if the BusInterfaceGetPropertyFunc
-// function in @vtable returns a #GVariant of incorrect type.
-//
-// If an existing callback is already registered at @object_path and
-// @interface_name, then @error is set to IO_ERROR_EXISTS.
-//
-// GDBus automatically implements the standard D-Bus interfaces
-// org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable and
-// org.freedesktop.Peer, so you don't have to implement those for the
-// objects you export. You can implement org.freedesktop.DBus.Properties
-// yourself, e.g. to handle getting and setting of properties
-// asynchronously.
-//
-// Note that the reference count on @interface_info will be incremented by 1
-// (unless allocated statically, e.g. if the reference count is -1, see
-// g_dbus_interface_info_ref()) for as long as the object is exported. Also
-// note that @vtable will be copied.
-//
-// See this [server][gdbus-server] for an example of how to use this method.
-func (connection dBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, vtable *DBusInterfaceVTable, userData interface{}) uint {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.gchar
-	var arg2 *C.GDBusInterfaceInfo
-	var arg3 *C.GDBusInterfaceVTable
-	var arg4 C.gpointer
-	var arg5 C.GDestroyNotify
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GDBusInterfaceInfo)(interfaceInfo.Native())
-	arg3 = (*C.GDBusInterfaceVTable)(vtable.Native())
-	arg4 = C.gpointer(box.Assign(userData))
-
-	ret := C.g_dbus_connection_register_object(arg0, arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // RegisterObjectWithClosures: version of
 // g_dbus_connection_register_object() using closures instead of a
 // BusInterfaceVTable for easier binding in other languages.
@@ -14198,64 +12819,6 @@ func (connection dBusConnection) RegisterObjectWithClosures(objectPath string, i
 	arg2 = (*C.GDBusInterfaceInfo)(interfaceInfo.Native())
 
 	ret := C.g_dbus_connection_register_object_with_closures(arg0, arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// RegisterSubtree registers a whole subtree of dynamic objects.
-//
-// The @enumerate and @introspection functions in @vtable are used to
-// convey, to remote callers, what nodes exist in the subtree rooted by
-// @object_path.
-//
-// When handling remote calls into any node in the subtree, first the
-// @enumerate function is used to check if the node exists. If the node
-// exists or the DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is
-// set the @introspection function is used to check if the node supports the
-// requested method. If so, the @dispatch function is used to determine
-// where to dispatch the call. The collected BusInterfaceVTable and
-// #gpointer will be used to call into the interface vtable for processing
-// the request.
-//
-// All calls into user-provided code will be invoked in the [thread-default
-// main context][g-main-context-push-thread-default] of the thread you are
-// calling this method from.
-//
-// If an existing subtree is already registered at @object_path or then
-// @error is set to IO_ERROR_EXISTS.
-//
-// Note that it is valid to register regular objects (using
-// g_dbus_connection_register_object()) in a subtree registered with
-// g_dbus_connection_register_subtree() - if so, the subtree handler is
-// tried as the last resort. One way to think about a subtree handler is to
-// consider it a fallback handler for object paths not registered via
-// g_dbus_connection_register_object() or other bindings.
-//
-// Note that @vtable will be copied so you cannot change it after
-// registration.
-//
-// See this [server][gdbus-subtree-server] for an example of how to use this
-// method.
-func (connection dBusConnection) RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}) uint {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.gchar
-	var arg2 *C.GDBusSubtreeVTable
-	var arg3 C.GDBusSubtreeFlags
-	var arg4 C.gpointer
-	var arg5 C.GDestroyNotify
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GDBusSubtreeVTable)(vtable.Native())
-	arg3 = (C.GDBusSubtreeFlags)(flags)
-	arg4 = C.gpointer(box.Assign(userData))
-
-	ret := C.g_dbus_connection_register_subtree(arg0, arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 uint
 
@@ -14373,32 +12936,6 @@ func (connection dBusConnection) SendMessageWithReply(message DBusMessage, flags
 	var ret0 uint32
 
 	ret0 = uint32(arg4)
-
-	return ret0
-}
-
-// SendMessageWithReplyFinish finishes an operation started with
-// g_dbus_connection_send_message_with_reply().
-//
-// Note that @error is only set if a local in-process error occurred. That
-// is to say that the returned BusMessage object may be of type
-// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode
-// this to a #GError.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
-func (connection dBusConnection) SendMessageWithReplyFinish(res AsyncResult) DBusMessage {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-
-	ret := C.g_dbus_connection_send_message_with_reply_finish(arg0, arg1)
-
-	var ret0 DBusMessage
-
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -15150,28 +13687,6 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 func NewDBusMessage() DBusMessage {
 
 	ret := C.g_dbus_message_new()
-
-	var ret0 DBusMessage
-
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewDBusMessageFromBlob constructs a class DBusMessage.
-func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) DBusMessage {
-	var arg1 *C.guchar
-	var arg2 C.gsize
-	var arg3 C.GDBusCapabilityFlags
-
-	{
-		arg1 = (*C.guchar)(&blob[0])
-		arg2 = len(blob)
-		defer runtime.KeepAlive(blob)
-	}
-	arg3 = (C.GDBusCapabilityFlags)(capabilities)
-
-	ret := C.g_dbus_message_new_from_blob(arg1, arg2, arg3)
 
 	var ret0 DBusMessage
 
@@ -15977,12 +14492,6 @@ type DBusMethodInvocation interface {
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
 	ReturnDBusError(errorName string, errorMessage string)
-	// ReturnErrorLiteral: like g_dbus_method_invocation_return_error() but
-	// without printf()-style formatting.
-	//
-	// This method will take ownership of @invocation. See BusInterfaceVTable
-	// for more information about the ownership of @invocation.
-	ReturnErrorLiteral(domain glib.Quark, code int, message string)
 	// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
 	// #GError instead of the error domain, error code and message.
 	//
@@ -16227,7 +14736,7 @@ func (invocation dBusMethodInvocation) UserData() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -16249,25 +14758,6 @@ func (invocation dBusMethodInvocation) ReturnDBusError(errorName string, errorMe
 	defer C.free(unsafe.Pointer(arg2))
 
 	C.g_dbus_method_invocation_return_dbus_error(arg0, arg1, arg2)
-}
-
-// ReturnErrorLiteral: like g_dbus_method_invocation_return_error() but
-// without printf()-style formatting.
-//
-// This method will take ownership of @invocation. See BusInterfaceVTable
-// for more information about the ownership of @invocation.
-func (invocation dBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
-	var arg0 *C.GDBusMethodInvocation
-	var arg1 C.GQuark
-	var arg2 C.gint
-	var arg3 *C.gchar
-
-	arg0 = (*C.GDBusMethodInvocation)(invocation.Native())
-	arg2 = C.gint(code)
-	arg3 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(arg3))
-
-	C.g_dbus_method_invocation_return_error_literal(arg0, arg1, arg2, arg3)
 }
 
 // ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
@@ -16453,32 +14943,6 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusObjectManagerClient(obj), nil
-}
-
-// NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientFinish(res AsyncResult) DBusObjectManagerClient {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_dbus_object_manager_client_new_finish(arg1)
-
-	var ret0 DBusObjectManagerClient
-
-	ret0 = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientForBusFinish(res AsyncResult) DBusObjectManagerClient {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_dbus_object_manager_client_new_for_bus_finish(arg1)
-
-	var ret0 DBusObjectManagerClient
-
-	ret0 = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // NewDBusObjectManagerClientForBusSync constructs a class DBusObjectManagerClient.
@@ -17059,8 +15523,6 @@ type DBusProxy interface {
 	// If @callback is nil then the D-Bus method call message will be sent with
 	// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
 	Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CallFinish finishes an operation started with g_dbus_proxy_call().
-	CallFinish(res AsyncResult) *glib.Variant
 	// CallSync: synchronously invokes the @method_name method on @proxy.
 	//
 	// If @method_name contains any dots, then @name is split into interface and
@@ -17099,9 +15561,6 @@ type DBusProxy interface {
 	//
 	// This method is only available on UNIX.
 	CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
-	// CallWithUnixFdListFinish finishes an operation started with
-	// g_dbus_proxy_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
 	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
 	// returns FDList objects.
 	//
@@ -17200,32 +15659,6 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusProxy(obj), nil
-}
-
-// NewDBusProxyFinish constructs a class DBusProxy.
-func NewDBusProxyFinish(res AsyncResult) DBusProxy {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_dbus_proxy_new_finish(arg1)
-
-	var ret0 DBusProxy
-
-	ret0 = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewDBusProxyForBusFinish constructs a class DBusProxy.
-func NewDBusProxyForBusFinish(res AsyncResult) DBusProxy {
-	var arg1 *C.GAsyncResult
-
-	ret := C.g_dbus_proxy_new_for_bus_finish(arg1)
-
-	var ret0 DBusProxy
-
-	ret0 = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // NewDBusProxyForBusSync constructs a class DBusProxy.
@@ -17350,22 +15783,6 @@ func (proxy dBusProxy) Call(methodName string, parameters *glib.Variant, flags D
 	C.g_dbus_proxy_call(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
-// CallFinish finishes an operation started with g_dbus_proxy_call().
-func (proxy dBusProxy) CallFinish(res AsyncResult) *glib.Variant {
-	var arg0 *C.GDBusProxy
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GDBusProxy)(proxy.Native())
-
-	ret := C.g_dbus_proxy_call_finish(arg0, arg1)
-
-	var ret0 *glib.Variant
-
-	ret0 = glib.WrapVariant(ret)
-
-	return ret0
-}
-
 // CallSync: synchronously invokes the @method_name method on @proxy.
 //
 // If @method_name contains any dots, then @name is split into interface and
@@ -17449,27 +15866,6 @@ func (proxy dBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Va
 	arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_dbus_proxy_call_with_unix_fd_list(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-}
-
-// CallWithUnixFdListFinish finishes an operation started with
-// g_dbus_proxy_call_with_unix_fd_list().
-func (proxy dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant) {
-	var arg0 *C.GDBusProxy
-	var arg1 **C.GUnixFDList // out
-	var arg2 *C.GAsyncResult
-
-	arg0 = (*C.GDBusProxy)(proxy.Native())
-
-	ret := C.g_dbus_proxy_call_with_unix_fd_list_finish(arg0, &arg1, arg2)
-
-	var ret0 UnixFDList
-	var ret1 *glib.Variant
-
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
-
-	ret1 = glib.WrapVariant(ret)
-
-	return ret0, ret1
 }
 
 // CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
@@ -17970,13 +16366,6 @@ type DataInputStream interface {
 	// call g_data_input_stream_read_line_finish() to get the result of the
 	// operation.
 	ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadLineFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_line_async(). Note the warning about string
-	// encoding in g_data_input_stream_read_line() applies here as well.
-	ReadLineFinish(result AsyncResult) (length uint, guint8s []byte)
-	// ReadLineFinishUTF8: finish an asynchronous call started by
-	// g_data_input_stream_read_line_async().
-	ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string)
 	// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
@@ -18037,9 +16426,6 @@ type DataInputStream interface {
 	// deprecated in a future release. Use g_data_input_stream_read_upto_async()
 	// instead.
 	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadUntilFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_until_async().
-	ReadUntilFinish(result AsyncResult) (length uint, utf8 string)
 	// ReadUpto reads a string from the data input stream, up to the first
 	// occurrence of any of the stop characters.
 	//
@@ -18067,15 +16453,6 @@ type DataInputStream interface {
 	// call g_data_input_stream_read_upto_finish() to get the result of the
 	// operation.
 	ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadUptoFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_upto_async().
-	//
-	// Note that this function does not consume the stop character. You have to
-	// use g_data_input_stream_read_byte() to get it before calling
-	// g_data_input_stream_read_upto_async() again.
-	//
-	// The returned string will always be nul-terminated on success.
-	ReadUptoFinish(result AsyncResult) (length uint, utf8 string)
 	// SetByteOrder: this function sets the byte order for the given @stream.
 	// All subsequent reads from the @stream will be read in the given @order.
 	SetByteOrder(order DataStreamByteOrder)
@@ -18297,61 +16674,6 @@ func (stream dataInputStream) ReadLineAsync(ioPriority int, cancellable Cancella
 	C.g_data_input_stream_read_line_async(arg0, arg1, arg2, arg3)
 }
 
-// ReadLineFinish: finish an asynchronous call started by
-// g_data_input_stream_read_line_async(). Note the warning about string
-// encoding in g_data_input_stream_read_line() applies here as well.
-func (stream dataInputStream) ReadLineFinish(result AsyncResult) (length uint, guint8s []byte) {
-	var arg0 *C.GDataInputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GDataInputStream)(stream.Native())
-
-	ret := C.g_data_input_stream_read_line_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 []byte
-
-	ret0 = uint(arg2)
-
-	{
-		var length uint
-		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret1 = make([]byte, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret1[i] = byte(src)
-		}
-	}
-
-	return ret0, ret1
-}
-
-// ReadLineFinishUTF8: finish an asynchronous call started by
-// g_data_input_stream_read_line_async().
-func (stream dataInputStream) ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string) {
-	var arg0 *C.GDataInputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GDataInputStream)(stream.Native())
-
-	ret := C.g_data_input_stream_read_line_finish_utf8(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 string
-
-	ret0 = uint(arg2)
-
-	ret1 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0, ret1
-}
-
 // ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
 //
 // If @cancellable is not nil, then the operation can be cancelled by
@@ -18517,28 +16839,6 @@ func (stream dataInputStream) ReadUntilAsync(stopChars string, ioPriority int, c
 	C.g_data_input_stream_read_until_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// ReadUntilFinish: finish an asynchronous call started by
-// g_data_input_stream_read_until_async().
-func (stream dataInputStream) ReadUntilFinish(result AsyncResult) (length uint, utf8 string) {
-	var arg0 *C.GDataInputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GDataInputStream)(stream.Native())
-
-	ret := C.g_data_input_stream_read_until_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 string
-
-	ret0 = uint(arg2)
-
-	ret1 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0, ret1
-}
-
 // ReadUpto reads a string from the data input stream, up to the first
 // occurrence of any of the stop characters.
 //
@@ -18608,34 +16908,6 @@ func (stream dataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, 
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_data_input_stream_read_upto_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// ReadUptoFinish: finish an asynchronous call started by
-// g_data_input_stream_read_upto_async().
-//
-// Note that this function does not consume the stop character. You have to
-// use g_data_input_stream_read_byte() to get it before calling
-// g_data_input_stream_read_upto_async() again.
-//
-// The returned string will always be nul-terminated on success.
-func (stream dataInputStream) ReadUptoFinish(result AsyncResult) (length uint, utf8 string) {
-	var arg0 *C.GDataInputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GDataInputStream)(stream.Native())
-
-	ret := C.g_data_input_stream_read_upto_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 string
-
-	ret0 = uint(arg2)
-
-	ret1 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0, ret1
 }
 
 // SetByteOrder: this function sets the byte order for the given @stream.
@@ -19512,8 +17784,6 @@ func (info desktopAppInfo) ListActions() []string {
 type Emblem interface {
 	gextras.Objector
 
-	// Icon gives back the icon from @emblem.
-	Icon() Icon
 	// Origin gets the origin of the emblem.
 	Origin() EmblemOrigin
 }
@@ -19532,48 +17802,6 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEmblem(obj), nil
-}
-
-// NewEmblem constructs a class Emblem.
-func NewEmblem(icon Icon) Emblem {
-	var arg1 *C.GIcon
-
-	ret := C.g_emblem_new(arg1)
-
-	var ret0 Emblem
-
-	ret0 = WrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewEmblemWithOrigin constructs a class Emblem.
-func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
-	var arg1 *C.GIcon
-	var arg2 C.GEmblemOrigin
-
-	arg2 = (C.GEmblemOrigin)(origin)
-
-	ret := C.g_emblem_new_with_origin(arg1, arg2)
-
-	var ret0 Emblem
-
-	ret0 = WrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// Icon gives back the icon from @emblem.
-func (emblem emblem) Icon() Icon {
-	var arg0 *C.GEmblem
-
-	arg0 = (*C.GEmblem)(emblem.Native())
-
-	ret := C.g_emblem_get_icon(arg0)
-
-	var ret0 Icon
-
-	return ret0
 }
 
 // Origin gets the origin of the emblem.
@@ -19606,8 +17834,6 @@ type EmblemedIcon interface {
 	ClearEmblems()
 	// Emblems gets the list of emblems for the @icon.
 	Emblems() *glib.List
-	// Icon gets the main icon for @emblemed.
-	Icon() Icon
 }
 
 type emblemedIcon struct {
@@ -19624,22 +17850,6 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEmblemedIcon(obj), nil
-}
-
-// NewEmblemedIcon constructs a class EmblemedIcon.
-func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
-	var arg1 *C.GIcon
-	var arg2 *C.GEmblem
-
-	arg2 = (*C.GEmblem)(emblem.Native())
-
-	ret := C.g_emblemed_icon_new(arg1, arg2)
-
-	var ret0 EmblemedIcon
-
-	ret0 = WrapEmblemedIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
@@ -19673,19 +17883,6 @@ func (emblemed emblemedIcon) Emblems() *glib.List {
 	var ret0 *glib.List
 
 	ret0 = glib.WrapList(ret)
-
-	return ret0
-}
-
-// Icon gets the main icon for @emblemed.
-func (emblemed emblemedIcon) Icon() Icon {
-	var arg0 *C.GEmblemedIcon
-
-	arg0 = (*C.GEmblemedIcon)(emblemed.Native())
-
-	ret := C.g_emblemed_icon_get_icon(arg0)
-
-	var ret0 Icon
 
 	return ret0
 }
@@ -19730,32 +17927,6 @@ type FileEnumerator interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
 	// g_file_enumerator_close_finish().
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish finishes closing a file enumerator, started from
-	// g_file_enumerator_close_async().
-	//
-	// If the file enumerator was already closed when
-	// g_file_enumerator_close_async() was called, then this function will
-	// report G_IO_ERROR_CLOSED in @error, and return false. If the file
-	// enumerator had pending operation when the close operation was started,
-	// then this function will report G_IO_ERROR_PENDING, and return false. If
-	// @cancellable was not nil, then the operation may have been cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
-	// be returned.
-	CloseFinish(result AsyncResult) bool
-	// Child: return a new #GFile which refers to the file named by @info in the
-	// source directory of @enumerator. This function is primarily intended to
-	// be used inside loops with g_file_enumerator_next_file().
-	//
-	// This is a convenience method that's equivalent to:
-	//
-	//      gchar *name = g_file_info_get_name (info);
-	//      GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-	//                                       name);
-	//
-	Child(info FileInfo) File
-	// Container: get the #GFile container which is being enumerated.
-	Container() File
 	// HasPending checks if the file enumerator has pending operations.
 	HasPending() bool
 	// IsClosed checks if the file enumerator has been closed.
@@ -19828,9 +17999,6 @@ type FileEnumerator interface {
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
 	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// NextFilesFinish finishes the asynchronous operation started with
-	// g_file_enumerator_next_files_async().
-	NextFilesFinish(result AsyncResult) *glib.List
 	// SetPending sets the file enumerator as having pending operations.
 	SetPending(pending bool)
 }
@@ -19892,70 +18060,6 @@ func (enumerator fileEnumerator) CloseAsync(ioPriority int, cancellable Cancella
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_file_enumerator_close_async(arg0, arg1, arg2, arg3)
-}
-
-// CloseFinish finishes closing a file enumerator, started from
-// g_file_enumerator_close_async().
-//
-// If the file enumerator was already closed when
-// g_file_enumerator_close_async() was called, then this function will
-// report G_IO_ERROR_CLOSED in @error, and return false. If the file
-// enumerator had pending operation when the close operation was started,
-// then this function will report G_IO_ERROR_PENDING, and return false. If
-// @cancellable was not nil, then the operation may have been cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
-// be returned.
-func (enumerator fileEnumerator) CloseFinish(result AsyncResult) bool {
-	var arg0 *C.GFileEnumerator
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GFileEnumerator)(enumerator.Native())
-
-	ret := C.g_file_enumerator_close_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// Child: return a new #GFile which refers to the file named by @info in the
-// source directory of @enumerator. This function is primarily intended to
-// be used inside loops with g_file_enumerator_next_file().
-//
-// This is a convenience method that's equivalent to:
-//
-//      gchar *name = g_file_info_get_name (info);
-//      GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-//                                       name);
-//
-func (enumerator fileEnumerator) Child(info FileInfo) File {
-	var arg0 *C.GFileEnumerator
-	var arg1 *C.GFileInfo
-
-	arg0 = (*C.GFileEnumerator)(enumerator.Native())
-	arg1 = (*C.GFileInfo)(info.Native())
-
-	ret := C.g_file_enumerator_get_child(arg0, arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
-// Container: get the #GFile container which is being enumerated.
-func (enumerator fileEnumerator) Container() File {
-	var arg0 *C.GFileEnumerator
-
-	arg0 = (*C.GFileEnumerator)(enumerator.Native())
-
-	ret := C.g_file_enumerator_get_container(arg0)
-
-	var ret0 File
-
-	return ret0
 }
 
 // HasPending checks if the file enumerator has pending operations.
@@ -20108,23 +18212,6 @@ func (enumerator fileEnumerator) NextFilesAsync(numFiles int, ioPriority int, ca
 	C.g_file_enumerator_next_files_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// NextFilesFinish finishes the asynchronous operation started with
-// g_file_enumerator_next_files_async().
-func (enumerator fileEnumerator) NextFilesFinish(result AsyncResult) *glib.List {
-	var arg0 *C.GFileEnumerator
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GFileEnumerator)(enumerator.Native())
-
-	ret := C.g_file_enumerator_next_files_finish(arg0, arg1)
-
-	var ret0 *glib.List
-
-	ret0 = glib.WrapList(ret)
-
-	return ret0
-}
-
 // SetPending sets the file enumerator as having pending operations.
 func (enumerator fileEnumerator) SetPending(pending bool) {
 	var arg0 *C.GFileEnumerator
@@ -20184,9 +18271,6 @@ type FileIOStream interface {
 	// For the synchronous version of this function, see
 	// g_file_io_stream_query_info().
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) FileInfo
 }
 
 type fileIOStream struct {
@@ -20282,29 +18366,9 @@ func (stream fileIOStream) QueryInfoAsync(attributes string, ioPriority int, can
 	C.g_file_io_stream_query_info_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// QueryInfoFinish finalizes the asynchronous query started by
-// g_file_io_stream_query_info_async().
-func (stream fileIOStream) QueryInfoFinish(result AsyncResult) FileInfo {
-	var arg0 *C.GFileIOStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GFileIOStream)(stream.Native())
-
-	ret := C.g_file_io_stream_query_info_finish(arg0, arg1)
-
-	var ret0 FileInfo
-
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon interface {
 	gextras.Objector
-
-	// File gets the #GFile associated with the given @icon.
-	File() File
 }
 
 type fileIcon struct {
@@ -20321,32 +18385,6 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileIcon(obj), nil
-}
-
-// NewFileIcon constructs a class FileIcon.
-func NewFileIcon(file File) FileIcon {
-	var arg1 *C.GFile
-
-	ret := C.g_file_icon_new(arg1)
-
-	var ret0 FileIcon
-
-	ret0 = WrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// File gets the #GFile associated with the given @icon.
-func (icon fileIcon) File() File {
-	var arg0 *C.GFileIcon
-
-	arg0 = (*C.GFileIcon)(icon.Native())
-
-	ret := C.g_file_icon_get_file(arg0)
-
-	var ret0 File
-
-	return ret0
 }
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
@@ -20442,8 +18480,6 @@ type FileInfo interface {
 	// This is different from the file's content type, see
 	// g_file_info_get_content_type().
 	FileType() FileType
-	// Icon gets the icon for a file.
-	Icon() Icon
 	// IsBackup checks if a file is a backup file.
 	IsBackup() bool
 	// IsHidden checks if a file is hidden.
@@ -20467,8 +18503,6 @@ type FileInfo interface {
 	// SortOrder gets the value of the sort_order attribute from the Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 	SortOrder() int32
-	// SymbolicIcon gets the symbolic icon for a file.
-	SymbolicIcon() Icon
 	// SymlinkTarget gets the symlink target for a given Info.
 	SymlinkTarget() string
 	// HasAttribute checks if a file info structure has an attribute named
@@ -20534,9 +18568,6 @@ type FileInfo interface {
 	// SetFileType sets the file type in a Info to @type. See
 	// G_FILE_ATTRIBUTE_STANDARD_TYPE.
 	SetFileType(_type FileType)
-	// SetIcon sets the icon for a given Info. See
-	// G_FILE_ATTRIBUTE_STANDARD_ICON.
-	SetIcon(icon Icon)
 	// SetIsHidden sets the "is_hidden" attribute in a Info according to
 	// @is_hidden. See G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
 	SetIsHidden(isHidden bool)
@@ -20560,9 +18591,6 @@ type FileInfo interface {
 	// SetSortOrder sets the sort order attribute in the file info structure.
 	// See G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 	SetSortOrder(sortOrder int32)
-	// SetSymbolicIcon sets the symbolic icon for a given Info. See
-	// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-	SetSymbolicIcon(icon Icon)
 	// SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET
 	// attribute in the file info to the given symlink target.
 	SetSymlinkTarget(symlinkTarget string)
@@ -20716,7 +18744,7 @@ func (info fileInfo) AttributeData(attribute string) (_type FileAttributeType, v
 
 	ret0 = (*FileAttributeType)(arg2)
 
-	ret1 = box.Get(uintptr(arg3))
+	ret1 = box.Get(uintptr(arg3)).(interface{})
 
 	ret2 = (*FileAttributeStatus)(arg4)
 
@@ -21005,19 +19033,6 @@ func (info fileInfo) FileType() FileType {
 	return ret0
 }
 
-// Icon gets the icon for a file.
-func (info fileInfo) Icon() Icon {
-	var arg0 *C.GFileInfo
-
-	arg0 = (*C.GFileInfo)(info.Native())
-
-	ret := C.g_file_info_get_icon(arg0)
-
-	var ret0 Icon
-
-	return ret0
-}
-
 // IsBackup checks if a file is a backup file.
 func (info fileInfo) IsBackup() bool {
 	var arg0 *C.GFileInfo
@@ -21142,19 +19157,6 @@ func (info fileInfo) SortOrder() int32 {
 	var ret0 int32
 
 	ret0 = int32(ret)
-
-	return ret0
-}
-
-// SymbolicIcon gets the symbolic icon for a file.
-func (info fileInfo) SymbolicIcon() Icon {
-	var arg0 *C.GFileInfo
-
-	arg0 = (*C.GFileInfo)(info.Native())
-
-	ret := C.g_file_info_get_symbolic_icon(arg0)
-
-	var ret0 Icon
 
 	return ret0
 }
@@ -21499,17 +19501,6 @@ func (info fileInfo) SetFileType(_type FileType) {
 	C.g_file_info_set_file_type(arg0, arg1)
 }
 
-// SetIcon sets the icon for a given Info. See
-// G_FILE_ATTRIBUTE_STANDARD_ICON.
-func (info fileInfo) SetIcon(icon Icon) {
-	var arg0 *C.GFileInfo
-	var arg1 *C.GIcon
-
-	arg0 = (*C.GFileInfo)(info.Native())
-
-	C.g_file_info_set_icon(arg0, arg1)
-}
-
 // SetIsHidden sets the "is_hidden" attribute in a Info according to
 // @is_hidden. See G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
 func (info fileInfo) SetIsHidden(isHidden bool) {
@@ -21597,17 +19588,6 @@ func (info fileInfo) SetSortOrder(sortOrder int32) {
 	C.g_file_info_set_sort_order(arg0, arg1)
 }
 
-// SetSymbolicIcon sets the symbolic icon for a given Info. See
-// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-func (info fileInfo) SetSymbolicIcon(icon Icon) {
-	var arg0 *C.GFileInfo
-	var arg1 *C.GIcon
-
-	arg0 = (*C.GFileInfo)(info.Native())
-
-	C.g_file_info_set_symbolic_icon(arg0, arg1)
-}
-
 // SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET
 // attribute in the file info to the given symlink target.
 func (info fileInfo) SetSymlinkTarget(symlinkTarget string) {
@@ -21662,8 +19642,6 @@ type FileInputStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finishes an asynchronous info query operation.
-	QueryInfoFinish(result AsyncResult) FileInfo
 }
 
 type fileInputStream struct {
@@ -21736,22 +19714,6 @@ func (stream fileInputStream) QueryInfoAsync(attributes string, ioPriority int, 
 	C.g_file_input_stream_query_info_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// QueryInfoFinish finishes an asynchronous info query operation.
-func (stream fileInputStream) QueryInfoFinish(result AsyncResult) FileInfo {
-	var arg0 *C.GFileInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GFileInputStream)(stream.Native())
-
-	ret := C.g_file_input_stream_query_info_finish(arg0, arg1)
-
-	var ret0 FileInfo
-
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // FileMonitor monitors a file or directory for changes.
 //
 // To obtain a Monitor for a file or directory, use g_file_monitor(),
@@ -21768,13 +19730,6 @@ type FileMonitor interface {
 
 	// Cancel cancels a file monitor.
 	Cancel() bool
-	// EmitEvent emits the Monitor::changed signal if a change has taken place.
-	// Should be called from file monitor implementations only.
-	//
-	// Implementations are responsible to call this method from the
-	// [thread-default main context][g-main-context-push-thread-default] of the
-	// thread that the monitor was created in.
-	EmitEvent(child File, otherFile File, eventType FileMonitorEvent)
 	// IsCancelled returns whether the monitor is canceled.
 	IsCancelled() bool
 	// SetRateLimit sets the rate limit to which the @monitor will report
@@ -21811,24 +19766,6 @@ func (monitor fileMonitor) Cancel() bool {
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
-}
-
-// EmitEvent emits the Monitor::changed signal if a change has taken place.
-// Should be called from file monitor implementations only.
-//
-// Implementations are responsible to call this method from the
-// [thread-default main context][g-main-context-push-thread-default] of the
-// thread that the monitor was created in.
-func (monitor fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
-	var arg0 *C.GFileMonitor
-	var arg1 *C.GFile
-	var arg2 *C.GFile
-	var arg3 C.GFileMonitorEvent
-
-	arg0 = (*C.GFileMonitor)(monitor.Native())
-	arg3 = (C.GFileMonitorEvent)(eventType)
-
-	C.g_file_monitor_emit_event(arg0, arg1, arg2, arg3)
 }
 
 // IsCancelled returns whether the monitor is canceled.
@@ -21901,9 +19838,6 @@ type FileOutputStream interface {
 	// For the synchronous version of this function, see
 	// g_file_output_stream_query_info().
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) FileInfo
 }
 
 type fileOutputStream struct {
@@ -21997,23 +19931,6 @@ func (stream fileOutputStream) QueryInfoAsync(attributes string, ioPriority int,
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_file_output_stream_query_info_async(arg0, arg1, arg2, arg3, arg4)
-}
-
-// QueryInfoFinish finalizes the asynchronous query started by
-// g_file_output_stream_query_info_async().
-func (stream fileOutputStream) QueryInfoFinish(result AsyncResult) FileInfo {
-	var arg0 *C.GFileOutputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GFileOutputStream)(stream.Native())
-
-	ret := C.g_file_output_stream_query_info_finish(arg0, arg1)
-
-	var ret0 FileInfo
-
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // FilenameCompleter completes partial file and directory names given a partial
@@ -22366,8 +20283,6 @@ type IOStream interface {
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) bool
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
 	InputStream() InputStream
@@ -22487,22 +20402,6 @@ func (stream ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callb
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_io_stream_close_async(arg0, arg1, arg2, arg3)
-}
-
-// CloseFinish closes a stream.
-func (stream ioStream) CloseFinish(result AsyncResult) bool {
-	var arg0 *C.GIOStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GIOStream)(stream.Native())
-
-	ret := C.g_io_stream_close_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // InputStream gets the input stream for this object. This is used for
@@ -23320,9 +21219,6 @@ type InputStream interface {
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish finishes closing a stream asynchronously, started from
-	// g_input_stream_close_async().
-	CloseFinish(result AsyncResult) bool
 	// HasPending checks if an input stream has pending actions.
 	HasPending() bool
 	// IsClosed checks if an input stream is closed.
@@ -23382,16 +21278,6 @@ type InputStream interface {
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
 	ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) (buffer []byte, count uint)
-	// ReadAllFinish finishes an asynchronous stream read operation started with
-	// g_input_stream_read_all_async().
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_read will be set to the number of bytes that were successfully
-	// read before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_input_stream_read_async().
-	ReadAllFinish(result AsyncResult) (bytesRead uint, ok bool)
 	// ReadAsync: request an asynchronous read of @count bytes from the stream
 	// into the buffer starting at @buffer. When the operation is finished
 	// @callback will be called. You can then call g_input_stream_read_finish()
@@ -23460,11 +21346,6 @@ type InputStream interface {
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
 	ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
-	// operation.
-	ReadBytesFinish(result AsyncResult) *glib.Bytes
-	// ReadFinish finishes an asynchronous stream read operation.
-	ReadFinish(result AsyncResult) int
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
 	SetPending() bool
@@ -23508,8 +21389,6 @@ type InputStream interface {
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one, you must override all.
 	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// SkipFinish finishes a stream skip operation.
-	SkipFinish(result AsyncResult) int
 }
 
 type inputStream struct {
@@ -23600,23 +21479,6 @@ func (stream inputStream) CloseAsync(ioPriority int, cancellable Cancellable, ca
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_input_stream_close_async(arg0, arg1, arg2, arg3)
-}
-
-// CloseFinish finishes closing a stream asynchronously, started from
-// g_input_stream_close_async().
-func (stream inputStream) CloseFinish(result AsyncResult) bool {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GInputStream)(stream.Native())
-
-	ret := C.g_input_stream_close_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // HasPending checks if an input stream has pending actions.
@@ -23806,34 +21668,6 @@ func (stream inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, 
 	return ret0, ret1
 }
 
-// ReadAllFinish finishes an asynchronous stream read operation started with
-// g_input_stream_read_all_async().
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then
-// @bytes_read will be set to the number of bytes that were successfully
-// read before the error was encountered. This functionality is only
-// available from C. If you need it from another language then you must
-// write your own loop around g_input_stream_read_async().
-func (stream inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, ok bool) {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GInputStream)(stream.Native())
-
-	ret := C.g_input_stream_read_all_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg2)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
 // ReadAsync: request an asynchronous read of @count bytes from the stream
 // into the buffer starting at @buffer. When the operation is finished
 // @callback will be called. You can then call g_input_stream_read_finish()
@@ -23969,39 +21803,6 @@ func (stream inputStream) ReadBytesAsync(count uint, ioPriority int, cancellable
 	C.g_input_stream_read_bytes_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
-// operation.
-func (stream inputStream) ReadBytesFinish(result AsyncResult) *glib.Bytes {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GInputStream)(stream.Native())
-
-	ret := C.g_input_stream_read_bytes_finish(arg0, arg1)
-
-	var ret0 *glib.Bytes
-
-	ret0 = glib.WrapBytes(ret)
-
-	return ret0
-}
-
-// ReadFinish finishes an asynchronous stream read operation.
-func (stream inputStream) ReadFinish(result AsyncResult) int {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GInputStream)(stream.Native())
-
-	ret := C.g_input_stream_read_finish(arg0, arg1)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
 func (stream inputStream) SetPending() bool {
@@ -24091,22 +21892,6 @@ func (stream inputStream) SkipAsync(count uint, ioPriority int, cancellable Canc
 	C.g_input_stream_skip_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// SkipFinish finishes a stream skip operation.
-func (stream inputStream) SkipFinish(result AsyncResult) int {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GInputStream)(stream.Native())
-
-	ret := C.g_input_stream_skip_finish(arg0, arg1)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
 // ListStore is a simple implementation of Model that stores all items in
 // memory.
 //
@@ -24162,20 +21947,6 @@ type ListStore interface {
 	RemoveAll()
 	// Sort: sort the items in @store according to @compare_func.
 	Sort(compareFunc glib.CompareDataFunc)
-	// Splice changes @store by removing @n_removals items and adding
-	// @n_additions items to it. @additions must contain @n_additions items of
-	// type Store:item-type. nil is not permitted.
-	//
-	// This function is more efficient than g_list_store_insert() and
-	// g_list_store_remove(), because it only emits Model::items-changed once
-	// for the change.
-	//
-	// This function takes a ref on each item in @additions.
-	//
-	// The parameters @position and @n_removals must be correct (ie: @position +
-	// @n_removals must be less than or equal to the length of the list at the
-	// time this function is called).
-	Splice(position uint, nRemovals uint, additions []gextras.Objector)
 }
 
 type listStore struct {
@@ -24360,49 +22131,6 @@ func (store listStore) Sort(compareFunc glib.CompareDataFunc) {
 	C.g_list_store_sort(arg0, arg1)
 }
 
-// Splice changes @store by removing @n_removals items and adding
-// @n_additions items to it. @additions must contain @n_additions items of
-// type Store:item-type. nil is not permitted.
-//
-// This function is more efficient than g_list_store_insert() and
-// g_list_store_remove(), because it only emits Model::items-changed once
-// for the change.
-//
-// This function takes a ref on each item in @additions.
-//
-// The parameters @position and @n_removals must be correct (ie: @position +
-// @n_removals must be less than or equal to the length of the list at the
-// time this function is called).
-func (store listStore) Splice(position uint, nRemovals uint, additions []gextras.Objector) {
-	var arg0 *C.GListStore
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 *C.gpointer
-	var arg4 C.guint
-
-	arg0 = (*C.GListStore)(store.Native())
-	arg1 = C.guint(position)
-	arg2 = C.guint(nRemovals)
-	{
-		var dst []*C.GObject
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(additions))))
-		sliceHeader.Len = len(additions)
-		sliceHeader.Cap = len(additions)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(additions); i++ {
-			src := additions[i]
-			dst[i] = (*C.GObject)(src.Native())
-		}
-
-		arg3 = (*C.gpointer)(unsafe.Pointer(sliceHeader.Data))
-		arg4 = len(additions)
-	}
-
-	C.g_list_store_splice(arg0, arg1, arg2, arg3, arg4)
-}
-
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
 // GIO streaming input operations.
 //
@@ -24412,8 +22140,6 @@ type MemoryInputStream interface {
 
 	// AddBytes appends @bytes to data that can be read from the input stream.
 	AddBytes(bytes *glib.Bytes)
-	// AddData appends @data to data that can be read from the input stream
-	AddData(data []byte)
 }
 
 type memoryInputStream struct {
@@ -24459,37 +22185,6 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream {
 	return ret0
 }
 
-// NewMemoryInputStreamFromData constructs a class MemoryInputStream.
-func NewMemoryInputStreamFromData(data []byte) MemoryInputStream {
-	var arg1 *C.void
-	var arg2 C.gssize
-	var arg3 C.GDestroyNotify
-
-	{
-		var dst []C.guint8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
-		sliceHeader.Len = len(data)
-		sliceHeader.Cap = len(data)
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.void)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(data)
-	}
-
-	ret := C.g_memory_input_stream_new_from_data(arg1, arg2, arg3)
-
-	var ret0 MemoryInputStream
-
-	ret0 = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // AddBytes appends @bytes to data that can be read from the input stream.
 func (stream memoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var arg0 *C.GMemoryInputStream
@@ -24499,33 +22194,6 @@ func (stream memoryInputStream) AddBytes(bytes *glib.Bytes) {
 	arg1 = (*C.GBytes)(bytes.Native())
 
 	C.g_memory_input_stream_add_bytes(arg0, arg1)
-}
-
-// AddData appends @data to data that can be read from the input stream
-func (stream memoryInputStream) AddData(data []byte) {
-	var arg0 *C.GMemoryInputStream
-	var arg1 *C.void
-	var arg2 C.gssize
-	var arg3 C.GDestroyNotify
-
-	arg0 = (*C.GMemoryInputStream)(stream.Native())
-	{
-		var dst []C.guint8
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
-		sliceHeader.Len = len(data)
-		sliceHeader.Cap = len(data)
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.void)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(data)
-	}
-
-	C.g_memory_input_stream_add_data(arg0, arg1, arg2, arg3)
 }
 
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
@@ -24631,7 +22299,7 @@ func (ostream memoryOutputStream) Data() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -24711,7 +22379,7 @@ func (ostream memoryOutputStream) StealData() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -25320,18 +22988,6 @@ type MenuItem interface {
 	// See also g_menu_item_set_action_and_target_value() for a description of
 	// the semantics of the action and target attributes.
 	SetDetailedAction(detailedAction string)
-	// SetIcon sets (or unsets) the icon on @menu_item.
-	//
-	// This call is the same as calling g_icon_serialize() and using the result
-	// as the value to g_menu_item_set_attribute_value() for
-	// G_MENU_ATTRIBUTE_ICON.
-	//
-	// This API is only intended for use with "noun" menu items; things like
-	// bookmarks or applications in an "Open With" menu. Don't use it on menu
-	// items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
-	//
-	// If @icon is nil then the icon is unset.
-	SetIcon(icon Icon)
 	// SetLabel sets or unsets the "label" attribute of @menu_item.
 	//
 	// If @label is non-nil it is used as the label for the menu item. If it is
@@ -25597,26 +23253,6 @@ func (menuItem menuItem) SetDetailedAction(detailedAction string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_menu_item_set_detailed_action(arg0, arg1)
-}
-
-// SetIcon sets (or unsets) the icon on @menu_item.
-//
-// This call is the same as calling g_icon_serialize() and using the result
-// as the value to g_menu_item_set_attribute_value() for
-// G_MENU_ATTRIBUTE_ICON.
-//
-// This API is only intended for use with "noun" menu items; things like
-// bookmarks or applications in an "Open With" menu. Don't use it on menu
-// items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
-//
-// If @icon is nil then the icon is unset.
-func (menuItem menuItem) SetIcon(icon Icon) {
-	var arg0 *C.GMenuItem
-	var arg1 *C.GIcon
-
-	arg0 = (*C.GMenuItem)(menuItem.Native())
-
-	C.g_menu_item_set_icon(arg0, arg1)
 }
 
 // SetLabel sets or unsets the "label" attribute of @menu_item.
@@ -26905,8 +24541,6 @@ type Notification interface {
 	// When no default action is set, the application that the notification was
 	// sent on is activated.
 	SetDefaultActionAndTargetValue(action string, target *glib.Variant)
-	// SetIcon sets the icon of @notification to @icon.
-	SetIcon(icon Icon)
 	// SetPriority sets the priority of @notification to @priority. See Priority
 	// for possible values.
 	SetPriority(priority NotificationPriority)
@@ -27048,16 +24682,6 @@ func (notification notification) SetDefaultActionAndTargetValue(action string, t
 	C.g_notification_set_default_action_and_target_value(arg0, arg1, arg2)
 }
 
-// SetIcon sets the icon of @notification to @icon.
-func (notification notification) SetIcon(icon Icon) {
-	var arg0 *C.GNotification
-	var arg1 *C.GIcon
-
-	arg0 = (*C.GNotification)(notification.Native())
-
-	C.g_notification_set_icon(arg0, arg1)
-}
-
 // SetPriority sets the priority of @notification to @priority. See Priority
 // for possible values.
 func (notification notification) SetPriority(priority NotificationPriority) {
@@ -27151,8 +24775,6 @@ type OutputStream interface {
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// CloseFinish closes an output stream.
-	CloseFinish(result AsyncResult) bool
 	// Flush forces a write of all user-space buffered data for the given
 	// @stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
@@ -27169,8 +24791,6 @@ type OutputStream interface {
 	// When the operation is finished @callback will be called. You can then
 	// call g_output_stream_flush_finish() to get the result of the operation.
 	FlushAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// FlushFinish finishes flushing an output stream.
-	FlushFinish(result AsyncResult) bool
 	// HasPending checks if an output stream has pending actions.
 	HasPending() bool
 	// IsClosed checks if an output stream has already been closed.
@@ -27191,109 +24811,6 @@ type OutputStream interface {
 	// For the synchronous, blocking version of this function, see
 	// g_output_stream_splice().
 	SpliceAsync(source InputStream, flags OutputStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// SpliceFinish finishes an asynchronous stream splice operation.
-	SpliceFinish(result AsyncResult) int
-	// Write tries to write @count bytes from @buffer into the stream. Will
-	// block during the operation.
-	//
-	// If count is 0, returns 0 and does nothing. A value of @count larger than
-	// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes written to the stream is returned. It is
-	// not an error if this is not the same as the requested size, as it can
-	// happen e.g. on a partial I/O error, or if there is not enough storage in
-	// the stream. All writes block until at least one byte is written or an
-	// error occurs; 0 is never returned (unless @count is 0).
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// On error -1 is returned and @error is set accordingly.
-	Write(buffer []byte, cancellable Cancellable) int
-	// WriteAll tries to write @count bytes from @buffer into the stream. Will
-	// block during the operation.
-	//
-	// This function is similar to g_output_stream_write(), except it tries to
-	// write as many bytes as requested, only stopping on an error.
-	//
-	// On a successful write of @count bytes, true is returned, and
-	// @bytes_written is set to @count.
-	//
-	// If there is an error during the operation false is returned and @error is
-	// set to indicate the error status.
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_written will be set to the number of bytes that were successfully
-	// written before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_output_stream_write().
-	WriteAll(buffer []byte, cancellable Cancellable) (bytesWritten uint, ok bool)
-	// WriteAllAsync: request an asynchronous write of @count bytes from @buffer
-	// into the stream. When the operation is finished @callback will be called.
-	// You can then call g_output_stream_write_all_finish() to get the result of
-	// the operation.
-	//
-	// This is the asynchronous version of g_output_stream_write_all().
-	//
-	// Call g_output_stream_write_all_finish() to collect the result.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// Note that no copy of @buffer will be made, so it must stay valid until
-	// @callback is called.
-	WriteAllAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// WriteAllFinish finishes an asynchronous stream write operation started
-	// with g_output_stream_write_all_async().
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_written will be set to the number of bytes that were successfully
-	// written before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_output_stream_write_async().
-	WriteAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
-	// WriteAsync: request an asynchronous write of @count bytes from @buffer
-	// into the stream. When the operation is finished @callback will be called.
-	// You can then call g_output_stream_write_finish() to get the result of the
-	// operation.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// A value of @count larger than G_MAXSSIZE will cause a
-	// G_IO_ERROR_INVALID_ARGUMENT error.
-	//
-	// On success, the number of bytes written will be passed to the @callback.
-	// It is not an error if this is not the same as the requested size, as it
-	// can happen e.g. on a partial I/O error, but generally we try to write as
-	// many bytes as requested.
-	//
-	// You are guaranteed that this method will never fail with
-	// G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the method
-	// will just wait until this changes.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// For the synchronous, blocking version of this function, see
-	// g_output_stream_write().
-	//
-	// Note that no copy of @buffer will be made, so it must stay valid until
-	// @callback is called. See g_output_stream_write_bytes_async() for a
-	// #GBytes version that will automatically hold a reference to the contents
-	// (without copying) for the duration of the call.
-	WriteAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WriteBytes: a wrapper function for g_output_stream_write() which takes a
 	// #GBytes as input. This can be more convenient for use by language
 	// bindings or in other cases where the refcounted nature of #GBytes is
@@ -27321,116 +24838,6 @@ type OutputStream interface {
 	// For the synchronous, blocking version of this function, see
 	// g_output_stream_write_bytes().
 	WriteBytesAsync(bytes *glib.Bytes, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
-	WriteBytesFinish(result AsyncResult) int
-	// WriteFinish finishes a stream write operation.
-	WriteFinish(result AsyncResult) int
-	// Writev tries to write the bytes contained in the @n_vectors @vectors into
-	// the stream. Will block during the operation.
-	//
-	// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
-	// and does nothing.
-	//
-	// On success, the number of bytes written to the stream is returned. It is
-	// not an error if this is not the same as the requested size, as it can
-	// happen e.g. on a partial I/O error, or if there is not enough storage in
-	// the stream. All writes block until at least one byte is written or an
-	// error occurs; 0 is never returned (unless @n_vectors is 0 or the sum of
-	// all bytes in @vectors is 0).
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// Some implementations of g_output_stream_writev() may have limitations on
-	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
-	// these are exceeded. For example, when writing to a local file on UNIX
-	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
-	// WritevAll tries to write the bytes contained in the @n_vectors @vectors
-	// into the stream. Will block during the operation.
-	//
-	// This function is similar to g_output_stream_writev(), except it tries to
-	// write as many bytes as requested, only stopping on an error.
-	//
-	// On a successful write of all @n_vectors vectors, true is returned, and
-	// @bytes_written is set to the sum of all the sizes of @vectors.
-	//
-	// If there is an error during the operation false is returned and @error is
-	// set to indicate the error status.
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_written will be set to the number of bytes that were successfully
-	// written before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_output_stream_write().
-	//
-	// The content of the individual elements of @vectors might be changed by
-	// this function.
-	WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
-	// WritevAllAsync: request an asynchronous write of the bytes contained in
-	// the @n_vectors @vectors into the stream. When the operation is finished
-	// @callback will be called. You can then call
-	// g_output_stream_writev_all_finish() to get the result of the operation.
-	//
-	// This is the asynchronous version of g_output_stream_writev_all().
-	//
-	// Call g_output_stream_writev_all_finish() to collect the result.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// Note that no copy of @vectors will be made, so it must stay valid until
-	// @callback is called. The content of the individual elements of @vectors
-	// might be changed by this function.
-	WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// WritevAllFinish finishes an asynchronous stream write operation started
-	// with g_output_stream_writev_all_async().
-	//
-	// As a special exception to the normal conventions for functions that use
-	// #GError, if this function returns false (and sets @error) then
-	// @bytes_written will be set to the number of bytes that were successfully
-	// written before the error was encountered. This functionality is only
-	// available from C. If you need it from another language then you must
-	// write your own loop around g_output_stream_writev_async().
-	WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
-	// WritevAsync: request an asynchronous write of the bytes contained in
-	// @n_vectors @vectors into the stream. When the operation is finished
-	// @callback will be called. You can then call
-	// g_output_stream_writev_finish() to get the result of the operation.
-	//
-	// During an async request no other sync and async calls are allowed, and
-	// will result in G_IO_ERROR_PENDING errors.
-	//
-	// On success, the number of bytes written will be passed to the @callback.
-	// It is not an error if this is not the same as the requested size, as it
-	// can happen e.g. on a partial I/O error, but generally we try to write as
-	// many bytes as requested.
-	//
-	// You are guaranteed that this method will never fail with
-	// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method
-	// will just wait until this changes.
-	//
-	// Any outstanding I/O request with higher priority (lower numerical value)
-	// will be executed before an outstanding request with lower priority.
-	// Default priority is G_PRIORITY_DEFAULT.
-	//
-	// The asynchronous methods have a default fallback that uses threads to
-	// implement asynchronicity, so they are optional for inheriting classes.
-	// However, if you override one you must override all.
-	//
-	// For the synchronous, blocking version of this function, see
-	// g_output_stream_writev().
-	//
-	// Note that no copy of @vectors will be made, so it must stay valid until
-	// @callback is called.
-	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// WritevFinish finishes a stream writev operation.
-	WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 }
 
 type outputStream struct {
@@ -27529,22 +24936,6 @@ func (stream outputStream) CloseAsync(ioPriority int, cancellable Cancellable, c
 	C.g_output_stream_close_async(arg0, arg1, arg2, arg3)
 }
 
-// CloseFinish closes an output stream.
-func (stream outputStream) CloseFinish(result AsyncResult) bool {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_close_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // Flush forces a write of all user-space buffered data for the given
 // @stream. Will block during the operation. Closing the stream will
 // implicitly cause a flush.
@@ -27588,22 +24979,6 @@ func (stream outputStream) FlushAsync(ioPriority int, cancellable Cancellable, c
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_output_stream_flush_async(arg0, arg1, arg2, arg3)
-}
-
-// FlushFinish finishes flushing an output stream.
-func (stream outputStream) FlushFinish(result AsyncResult) bool {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_flush_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // HasPending checks if an output stream has pending actions.
@@ -27715,231 +25090,6 @@ func (stream outputStream) SpliceAsync(source InputStream, flags OutputStreamSpl
 	C.g_output_stream_splice_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
-// SpliceFinish finishes an asynchronous stream splice operation.
-func (stream outputStream) SpliceFinish(result AsyncResult) int {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_splice_finish(arg0, arg1)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// Write tries to write @count bytes from @buffer into the stream. Will
-// block during the operation.
-//
-// If count is 0, returns 0 and does nothing. A value of @count larger than
-// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
-//
-// On success, the number of bytes written to the stream is returned. It is
-// not an error if this is not the same as the requested size, as it can
-// happen e.g. on a partial I/O error, or if there is not enough storage in
-// the stream. All writes block until at least one byte is written or an
-// error occurs; 0 is never returned (unless @count is 0).
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-// operation was partially finished when the operation was cancelled the
-// partial result will be returned, without an error.
-//
-// On error -1 is returned and @error is set accordingly.
-func (stream outputStream) Write(buffer []byte, cancellable Cancellable) int {
-	var arg0 *C.GOutputStream
-	var arg1 *C.void
-	var arg2 C.gsize
-	var arg3 *C.GCancellable
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		arg1 = (*C.void)(&buffer[0])
-		arg2 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg3 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_output_stream_write(arg0, arg1, arg2, arg3)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// WriteAll tries to write @count bytes from @buffer into the stream. Will
-// block during the operation.
-//
-// This function is similar to g_output_stream_write(), except it tries to
-// write as many bytes as requested, only stopping on an error.
-//
-// On a successful write of @count bytes, true is returned, and
-// @bytes_written is set to @count.
-//
-// If there is an error during the operation false is returned and @error is
-// set to indicate the error status.
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then
-// @bytes_written will be set to the number of bytes that were successfully
-// written before the error was encountered. This functionality is only
-// available from C. If you need it from another language then you must
-// write your own loop around g_output_stream_write().
-func (stream outputStream) WriteAll(buffer []byte, cancellable Cancellable) (bytesWritten uint, ok bool) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.void
-	var arg2 C.gsize
-	var arg3 *C.gsize // out
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		arg1 = (*C.void)(&buffer[0])
-		arg2 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_output_stream_write_all(arg0, arg1, arg2, &arg3, arg4)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg3)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// WriteAllAsync: request an asynchronous write of @count bytes from @buffer
-// into the stream. When the operation is finished @callback will be called.
-// You can then call g_output_stream_write_all_finish() to get the result of
-// the operation.
-//
-// This is the asynchronous version of g_output_stream_write_all().
-//
-// Call g_output_stream_write_all_finish() to collect the result.
-//
-// Any outstanding I/O request with higher priority (lower numerical value)
-// will be executed before an outstanding request with lower priority.
-// Default priority is G_PRIORITY_DEFAULT.
-//
-// Note that no copy of @buffer will be made, so it must stay valid until
-// @callback is called.
-func (stream outputStream) WriteAllAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.void
-	var arg2 C.gsize
-	var arg3 C.int
-	var arg4 *C.GCancellable
-	var arg5 C.GAsyncReadyCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		arg1 = (*C.void)(&buffer[0])
-		arg2 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg3 = C.int(ioPriority)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-
-	C.g_output_stream_write_all_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// WriteAllFinish finishes an asynchronous stream write operation started
-// with g_output_stream_write_all_async().
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then
-// @bytes_written will be set to the number of bytes that were successfully
-// written before the error was encountered. This functionality is only
-// available from C. If you need it from another language then you must
-// write your own loop around g_output_stream_write_async().
-func (stream outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, ok bool) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_write_all_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg2)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// WriteAsync: request an asynchronous write of @count bytes from @buffer
-// into the stream. When the operation is finished @callback will be called.
-// You can then call g_output_stream_write_finish() to get the result of the
-// operation.
-//
-// During an async request no other sync and async calls are allowed, and
-// will result in G_IO_ERROR_PENDING errors.
-//
-// A value of @count larger than G_MAXSSIZE will cause a
-// G_IO_ERROR_INVALID_ARGUMENT error.
-//
-// On success, the number of bytes written will be passed to the @callback.
-// It is not an error if this is not the same as the requested size, as it
-// can happen e.g. on a partial I/O error, but generally we try to write as
-// many bytes as requested.
-//
-// You are guaranteed that this method will never fail with
-// G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the method
-// will just wait until this changes.
-//
-// Any outstanding I/O request with higher priority (lower numerical value)
-// will be executed before an outstanding request with lower priority.
-// Default priority is G_PRIORITY_DEFAULT.
-//
-// The asynchronous methods have a default fallback that uses threads to
-// implement asynchronicity, so they are optional for inheriting classes.
-// However, if you override one you must override all.
-//
-// For the synchronous, blocking version of this function, see
-// g_output_stream_write().
-//
-// Note that no copy of @buffer will be made, so it must stay valid until
-// @callback is called. See g_output_stream_write_bytes_async() for a
-// #GBytes version that will automatically hold a reference to the contents
-// (without copying) for the duration of the call.
-func (stream outputStream) WriteAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.void
-	var arg2 C.gsize
-	var arg3 C.int
-	var arg4 *C.GCancellable
-	var arg5 C.GAsyncReadyCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		arg1 = (*C.void)(&buffer[0])
-		arg2 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg3 = C.int(ioPriority)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-
-	C.g_output_stream_write_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
 // WriteBytes: a wrapper function for g_output_stream_write() which takes a
 // #GBytes as input. This can be more convenient for use by language
 // bindings or in other cases where the refcounted nature of #GBytes is
@@ -28000,318 +25150,6 @@ func (stream outputStream) WriteBytesAsync(bytes *glib.Bytes, ioPriority int, ca
 	C.g_output_stream_write_bytes_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// WriteBytesFinish finishes a stream write-from-#GBytes operation.
-func (stream outputStream) WriteBytesFinish(result AsyncResult) int {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_write_bytes_finish(arg0, arg1)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// WriteFinish finishes a stream write operation.
-func (stream outputStream) WriteFinish(result AsyncResult) int {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_write_finish(arg0, arg1)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// Writev tries to write the bytes contained in the @n_vectors @vectors into
-// the stream. Will block during the operation.
-//
-// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
-// and does nothing.
-//
-// On success, the number of bytes written to the stream is returned. It is
-// not an error if this is not the same as the requested size, as it can
-// happen e.g. on a partial I/O error, or if there is not enough storage in
-// the stream. All writes block until at least one byte is written or an
-// error occurs; 0 is never returned (unless @n_vectors is 0 or the sum of
-// all bytes in @vectors is 0).
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-// operation was partially finished when the operation was cancelled the
-// partial result will be returned, without an error.
-//
-// Some implementations of g_output_stream_writev() may have limitations on
-// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
-// these are exceeded. For example, when writing to a local file on UNIX
-// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-func (stream outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GOutputVector
-	var arg2 C.gsize
-	var arg3 *C.gsize // out
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		var dst []C.GOutputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GOutputVector)(src.Native())
-		}
-
-		arg1 = (*C.GOutputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(vectors)
-	}
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_output_stream_writev(arg0, arg1, arg2, &arg3, arg4)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg3)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// WritevAll tries to write the bytes contained in the @n_vectors @vectors
-// into the stream. Will block during the operation.
-//
-// This function is similar to g_output_stream_writev(), except it tries to
-// write as many bytes as requested, only stopping on an error.
-//
-// On a successful write of all @n_vectors vectors, true is returned, and
-// @bytes_written is set to the sum of all the sizes of @vectors.
-//
-// If there is an error during the operation false is returned and @error is
-// set to indicate the error status.
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then
-// @bytes_written will be set to the number of bytes that were successfully
-// written before the error was encountered. This functionality is only
-// available from C. If you need it from another language then you must
-// write your own loop around g_output_stream_write().
-//
-// The content of the individual elements of @vectors might be changed by
-// this function.
-func (stream outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GOutputVector
-	var arg2 C.gsize
-	var arg3 *C.gsize // out
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		var dst []C.GOutputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GOutputVector)(src.Native())
-		}
-
-		arg1 = (*C.GOutputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(vectors)
-	}
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_output_stream_writev_all(arg0, arg1, arg2, &arg3, arg4)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg3)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// WritevAllAsync: request an asynchronous write of the bytes contained in
-// the @n_vectors @vectors into the stream. When the operation is finished
-// @callback will be called. You can then call
-// g_output_stream_writev_all_finish() to get the result of the operation.
-//
-// This is the asynchronous version of g_output_stream_writev_all().
-//
-// Call g_output_stream_writev_all_finish() to collect the result.
-//
-// Any outstanding I/O request with higher priority (lower numerical value)
-// will be executed before an outstanding request with lower priority.
-// Default priority is G_PRIORITY_DEFAULT.
-//
-// Note that no copy of @vectors will be made, so it must stay valid until
-// @callback is called. The content of the individual elements of @vectors
-// might be changed by this function.
-func (stream outputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GOutputVector
-	var arg2 C.gsize
-	var arg3 C.int
-	var arg4 *C.GCancellable
-	var arg5 C.GAsyncReadyCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		var dst []C.GOutputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GOutputVector)(src.Native())
-		}
-
-		arg1 = (*C.GOutputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(vectors)
-	}
-	arg3 = C.int(ioPriority)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-
-	C.g_output_stream_writev_all_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// WritevAllFinish finishes an asynchronous stream write operation started
-// with g_output_stream_writev_all_async().
-//
-// As a special exception to the normal conventions for functions that use
-// #GError, if this function returns false (and sets @error) then
-// @bytes_written will be set to the number of bytes that were successfully
-// written before the error was encountered. This functionality is only
-// available from C. If you need it from another language then you must
-// write your own loop around g_output_stream_writev_async().
-func (stream outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_writev_all_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg2)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
-// WritevAsync: request an asynchronous write of the bytes contained in
-// @n_vectors @vectors into the stream. When the operation is finished
-// @callback will be called. You can then call
-// g_output_stream_writev_finish() to get the result of the operation.
-//
-// During an async request no other sync and async calls are allowed, and
-// will result in G_IO_ERROR_PENDING errors.
-//
-// On success, the number of bytes written will be passed to the @callback.
-// It is not an error if this is not the same as the requested size, as it
-// can happen e.g. on a partial I/O error, but generally we try to write as
-// many bytes as requested.
-//
-// You are guaranteed that this method will never fail with
-// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method
-// will just wait until this changes.
-//
-// Any outstanding I/O request with higher priority (lower numerical value)
-// will be executed before an outstanding request with lower priority.
-// Default priority is G_PRIORITY_DEFAULT.
-//
-// The asynchronous methods have a default fallback that uses threads to
-// implement asynchronicity, so they are optional for inheriting classes.
-// However, if you override one you must override all.
-//
-// For the synchronous, blocking version of this function, see
-// g_output_stream_writev().
-//
-// Note that no copy of @vectors will be made, so it must stay valid until
-// @callback is called.
-func (stream outputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GOutputVector
-	var arg2 C.gsize
-	var arg3 C.int
-	var arg4 *C.GCancellable
-	var arg5 C.GAsyncReadyCallback
-	arg6 := C.gpointer(box.Assign(userData))
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-	{
-		var dst []C.GOutputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GOutputVector)(src.Native())
-		}
-
-		arg1 = (*C.GOutputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(vectors)
-	}
-	arg3 = C.int(ioPriority)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-
-	C.g_output_stream_writev_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// WritevFinish finishes a stream writev operation.
-func (stream outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, ok bool) {
-	var arg0 *C.GOutputStream
-	var arg1 *C.GAsyncResult
-	var arg2 *C.gsize // out
-
-	arg0 = (*C.GOutputStream)(stream.Native())
-
-	ret := C.g_output_stream_writev_finish(arg0, arg1, &arg2)
-
-	var ret0 uint
-	var ret1 bool
-
-	ret0 = uint(arg2)
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
-}
-
 // Permission: a #GPermission represents the status of the caller's permission
 // to perform a certain action.
 //
@@ -28350,12 +25188,6 @@ type Permission interface {
 	// This is the first half of the asynchronous version of
 	// g_permission_acquire().
 	AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcquireFinish collects the result of attempting to acquire the permission
-	// represented by @permission.
-	//
-	// This is the second half of the asynchronous version of
-	// g_permission_acquire().
-	AcquireFinish(result AsyncResult) bool
 	// Allowed gets the value of the 'allowed' property. This property is true
 	// if the caller currently has permission to perform the action that
 	// @permission represents the permission to perform.
@@ -28396,12 +25228,6 @@ type Permission interface {
 	// This is the first half of the asynchronous version of
 	// g_permission_release().
 	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// ReleaseFinish collects the result of attempting to release the permission
-	// represented by @permission.
-	//
-	// This is the second half of the asynchronous version of
-	// g_permission_release().
-	ReleaseFinish(result AsyncResult) bool
 }
 
 type permission struct {
@@ -28467,26 +25293,6 @@ func (permission permission) AcquireAsync(cancellable Cancellable, callback Asyn
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_permission_acquire_async(arg0, arg1, arg2)
-}
-
-// AcquireFinish collects the result of attempting to acquire the permission
-// represented by @permission.
-//
-// This is the second half of the asynchronous version of
-// g_permission_acquire().
-func (permission permission) AcquireFinish(result AsyncResult) bool {
-	var arg0 *C.GPermission
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GPermission)(permission.Native())
-
-	ret := C.g_permission_acquire_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // Allowed gets the value of the 'allowed' property. This property is true
@@ -28606,26 +25412,6 @@ func (permission permission) ReleaseAsync(cancellable Cancellable, callback Asyn
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_permission_release_async(arg0, arg1, arg2)
-}
-
-// ReleaseFinish collects the result of attempting to release the permission
-// represented by @permission.
-//
-// This is the second half of the asynchronous version of
-// g_permission_release().
-func (permission permission) ReleaseFinish(result AsyncResult) bool {
-	var arg0 *C.GPermission
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GPermission)(permission.Native())
-
-	ret := C.g_permission_release_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // PropertyAction: a Action is a way to get a #GAction with a state value
@@ -28951,13 +25737,6 @@ type Resolver interface {
 	// determine its associated hostname, and eventually calls @callback, which
 	// must call g_resolver_lookup_by_address_finish() to get the final result.
 	LookupByAddressAsync(address InetAddress, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupByAddressFinish retrieves the result of a previous call to
-	// g_resolver_lookup_by_address_async().
-	//
-	// If the DNS resolution failed, @error (if non-nil) will be set to a value
-	// from Error. If the operation was cancelled, @error will be set to
-	// G_IO_ERROR_CANCELLED.
-	LookupByAddressFinish(result AsyncResult) string
 	// LookupByName: synchronously resolves @hostname to determine its
 	// associated IP address(es). @hostname may be an ASCII-only or UTF-8
 	// hostname, or the textual form of an IP address (in which case this just
@@ -28985,13 +25764,6 @@ type Resolver interface {
 	// call g_resolver_lookup_by_name_finish() to get the result. See
 	// g_resolver_lookup_by_name() for more details.
 	LookupByNameAsync(hostname string, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupByNameFinish retrieves the result of a call to
-	// g_resolver_lookup_by_name_async().
-	//
-	// If the DNS resolution failed, @error (if non-nil) will be set to a value
-	// from Error. If the operation was cancelled, @error will be set to
-	// G_IO_ERROR_CANCELLED.
-	LookupByNameFinish(result AsyncResult) *glib.List
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with @flags. For example this can
 	// be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
@@ -29001,13 +25773,6 @@ type Resolver interface {
 	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
 	// result. See g_resolver_lookup_by_name() for more details.
 	LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupByNameWithFlagsFinish retrieves the result of a call to
-	// g_resolver_lookup_by_name_with_flags_async().
-	//
-	// If the DNS resolution failed, @error (if non-nil) will be set to a value
-	// from Error. If the operation was cancelled, @error will be set to
-	// G_IO_ERROR_CANCELLED.
-	LookupByNameWithFlagsFinish(result AsyncResult) *glib.List
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// @rrname and returns a list of records as #GVariant tuples. See RecordType
 	// for information on what the records contain for each @record_type.
@@ -29023,15 +25788,6 @@ type Resolver interface {
 	// g_resolver_lookup_records_finish() to get the final result. See
 	// g_resolver_lookup_records() for more details.
 	LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupRecordsFinish retrieves the result of a previous call to
-	// g_resolver_lookup_records_async(). Returns a non-empty list of records as
-	// #GVariant tuples. See RecordType for information on what the records
-	// contain.
-	//
-	// If the DNS resolution failed, @error (if non-nil) will be set to a value
-	// from Error. If the operation was cancelled, @error will be set to
-	// G_IO_ERROR_CANCELLED.
-	LookupRecordsFinish(result AsyncResult) *glib.List
 	// LookupService: synchronously performs a DNS SRV lookup for the given
 	// @service and @protocol in the given @domain and returns an array of
 	// Target. @domain may be an ASCII-only or UTF-8 hostname. Note also that
@@ -29057,13 +25813,6 @@ type Resolver interface {
 	// calls @callback, which must call g_resolver_lookup_service_finish() to
 	// get the final result. See g_resolver_lookup_service() for more details.
 	LookupServiceAsync(service string, protocol string, domain string, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupServiceFinish retrieves the result of a previous call to
-	// g_resolver_lookup_service_async().
-	//
-	// If the DNS resolution failed, @error (if non-nil) will be set to a value
-	// from Error. If the operation was cancelled, @error will be set to
-	// G_IO_ERROR_CANCELLED.
-	LookupServiceFinish(result AsyncResult) *glib.List
 	// SetDefault sets @resolver to be the application's default resolver
 	// (reffing @resolver, and unreffing the previous default resolver, if any).
 	// Future calls to g_resolver_get_default() will return this resolver.
@@ -29137,28 +25886,6 @@ func (resolver resolver) LookupByAddressAsync(address InetAddress, cancellable C
 	C.g_resolver_lookup_by_address_async(arg0, arg1, arg2, arg3)
 }
 
-// LookupByAddressFinish retrieves the result of a previous call to
-// g_resolver_lookup_by_address_async().
-//
-// If the DNS resolution failed, @error (if non-nil) will be set to a value
-// from Error. If the operation was cancelled, @error will be set to
-// G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByAddressFinish(result AsyncResult) string {
-	var arg0 *C.GResolver
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GResolver)(resolver.Native())
-
-	ret := C.g_resolver_lookup_by_address_finish(arg0, arg1)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-	C.free(unsafe.Pointer(ret))
-
-	return ret0
-}
-
 // LookupByName: synchronously resolves @hostname to determine its
 // associated IP address(es). @hostname may be an ASCII-only or UTF-8
 // hostname, or the textual form of an IP address (in which case this just
@@ -29219,27 +25946,6 @@ func (resolver resolver) LookupByNameAsync(hostname string, cancellable Cancella
 	C.g_resolver_lookup_by_name_async(arg0, arg1, arg2, arg3)
 }
 
-// LookupByNameFinish retrieves the result of a call to
-// g_resolver_lookup_by_name_async().
-//
-// If the DNS resolution failed, @error (if non-nil) will be set to a value
-// from Error. If the operation was cancelled, @error will be set to
-// G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByNameFinish(result AsyncResult) *glib.List {
-	var arg0 *C.GResolver
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GResolver)(resolver.Native())
-
-	ret := C.g_resolver_lookup_by_name_finish(arg0, arg1)
-
-	var ret0 *glib.List
-
-	ret0 = glib.WrapList(ret)
-
-	return ret0
-}
-
 // LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 // that you can modify the lookup behavior with @flags. For example this can
 // be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
@@ -29284,27 +25990,6 @@ func (resolver resolver) LookupByNameWithFlagsAsync(hostname string, flags Resol
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_resolver_lookup_by_name_with_flags_async(arg0, arg1, arg2, arg3, arg4)
-}
-
-// LookupByNameWithFlagsFinish retrieves the result of a call to
-// g_resolver_lookup_by_name_with_flags_async().
-//
-// If the DNS resolution failed, @error (if non-nil) will be set to a value
-// from Error. If the operation was cancelled, @error will be set to
-// G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByNameWithFlagsFinish(result AsyncResult) *glib.List {
-	var arg0 *C.GResolver
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GResolver)(resolver.Native())
-
-	ret := C.g_resolver_lookup_by_name_with_flags_finish(arg0, arg1)
-
-	var ret0 *glib.List
-
-	ret0 = glib.WrapList(ret)
-
-	return ret0
 }
 
 // LookupRecords: synchronously performs a DNS record lookup for the given
@@ -29357,29 +26042,6 @@ func (resolver resolver) LookupRecordsAsync(rrname string, recordType ResolverRe
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_resolver_lookup_records_async(arg0, arg1, arg2, arg3, arg4)
-}
-
-// LookupRecordsFinish retrieves the result of a previous call to
-// g_resolver_lookup_records_async(). Returns a non-empty list of records as
-// #GVariant tuples. See RecordType for information on what the records
-// contain.
-//
-// If the DNS resolution failed, @error (if non-nil) will be set to a value
-// from Error. If the operation was cancelled, @error will be set to
-// G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupRecordsFinish(result AsyncResult) *glib.List {
-	var arg0 *C.GResolver
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GResolver)(resolver.Native())
-
-	ret := C.g_resolver_lookup_records_finish(arg0, arg1)
-
-	var ret0 *glib.List
-
-	ret0 = glib.WrapList(ret)
-
-	return ret0
 }
 
 // LookupService: synchronously performs a DNS SRV lookup for the given
@@ -29450,27 +26112,6 @@ func (resolver resolver) LookupServiceAsync(service string, protocol string, dom
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_resolver_lookup_service_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// LookupServiceFinish retrieves the result of a previous call to
-// g_resolver_lookup_service_async().
-//
-// If the DNS resolution failed, @error (if non-nil) will be set to a value
-// from Error. If the operation was cancelled, @error will be set to
-// G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupServiceFinish(result AsyncResult) *glib.List {
-	var arg0 *C.GResolver
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GResolver)(resolver.Native())
-
-	ret := C.g_resolver_lookup_service_finish(arg0, arg1)
-
-	var ret0 *glib.List
-
-	ret0 = glib.WrapList(ret)
-
-	return ret0
 }
 
 // SetDefault sets @resolver to be the application's default resolver
@@ -29843,20 +26484,6 @@ type Settings interface {
 	// property twice on the same object, the second binding overrides the first
 	// one.
 	BindWritable(key string, object gextras.Objector, property string, inverted bool)
-	// CreateAction creates a #GAction corresponding to a given #GSettings key.
-	//
-	// The action has the same name as the key.
-	//
-	// The value of the key becomes the state of the action and the action is
-	// enabled when the key is writable. Changing the state of the action
-	// results in the key being written to. Changes to the value or writability
-	// of the key cause appropriate change notifications to be emitted for the
-	// action.
-	//
-	// For boolean-valued keys, action activations take no parameter and result
-	// in the toggling of the value. For all other types, activations take the
-	// new value for the key (which must have the correct type).
-	CreateAction(key string) Action
 	// Delay changes the #GSettings object into 'delay-apply' mode. In this
 	// mode, changes to @settings are not immediately propagated to the backend,
 	// but kept locally until g_settings_apply() is called.
@@ -30377,34 +27004,6 @@ func (settings settings) BindWritable(key string, object gextras.Objector, prope
 	C.g_settings_bind_writable(arg0, arg1, arg2, arg3, arg4)
 }
 
-// CreateAction creates a #GAction corresponding to a given #GSettings key.
-//
-// The action has the same name as the key.
-//
-// The value of the key becomes the state of the action and the action is
-// enabled when the key is writable. Changing the state of the action
-// results in the key being written to. Changes to the value or writability
-// of the key cause appropriate change notifications to be emitted for the
-// action.
-//
-// For boolean-valued keys, action activations take no parameter and result
-// in the toggling of the value. For all other types, activations take the
-// new value for the key (which must have the correct type).
-func (settings settings) CreateAction(key string) Action {
-	var arg0 *C.GSettings
-	var arg1 *C.gchar
-
-	arg0 = (*C.GSettings)(settings.Native())
-	arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_settings_create_action(arg0, arg1)
-
-	var ret0 Action
-
-	return ret0
-}
-
 // Delay changes the #GSettings object into 'delay-apply' mode. In this
 // mode, changes to @settings are not immediately propagated to the backend,
 // but kept locally until g_settings_apply() is called.
@@ -30681,7 +27280,7 @@ func (settings settings) Mapped(key string, mapping SettingsGetMapping) interfac
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -31707,20 +28306,6 @@ func (simple simpleAction) SetStateHint(stateHint *glib.Variant) {
 type SimpleActionGroup interface {
 	gextras.Objector
 
-	// AddEntries: a convenience function for creating multiple Action instances
-	// and adding them to the action group.
-	AddEntries(entries []ActionEntry, userData interface{})
-	// Insert adds an action to the action group.
-	//
-	// If the action group already contains an action with the same name as
-	// @action then the old action is dropped from the group.
-	//
-	// The action group takes its own reference on @action.
-	Insert(action Action)
-	// Lookup looks up the action with the name @action_name in the group.
-	//
-	// If no such action exists, returns nil.
-	Lookup(actionName string) Action
 	// Remove removes the named action from the action group.
 	//
 	// If no action of this name is in the group then nothing happens.
@@ -31751,69 +28336,6 @@ func NewSimpleActionGroup() SimpleActionGroup {
 	var ret0 SimpleActionGroup
 
 	ret0 = WrapSimpleActionGroup(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// AddEntries: a convenience function for creating multiple Action instances
-// and adding them to the action group.
-func (simple simpleActionGroup) AddEntries(entries []ActionEntry, userData interface{}) {
-	var arg0 *C.GSimpleActionGroup
-	var arg1 *C.GActionEntry
-	var arg2 C.gint
-	var arg3 C.gpointer
-
-	arg0 = (*C.GSimpleActionGroup)(simple.Native())
-	{
-		var dst []C.GActionEntry
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GActionEntry * len(entries))))
-		sliceHeader.Len = len(entries)
-		sliceHeader.Cap = len(entries)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(entries); i++ {
-			src := entries[i]
-			dst[i] = (C.GActionEntry)(src.Native())
-		}
-
-		arg1 = (*C.GActionEntry)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(entries)
-	}
-	arg3 = C.gpointer(box.Assign(userData))
-
-	C.g_simple_action_group_add_entries(arg0, arg1, arg2, arg3)
-}
-
-// Insert adds an action to the action group.
-//
-// If the action group already contains an action with the same name as
-// @action then the old action is dropped from the group.
-//
-// The action group takes its own reference on @action.
-func (simple simpleActionGroup) Insert(action Action) {
-	var arg0 *C.GSimpleActionGroup
-	var arg1 *C.GAction
-
-	arg0 = (*C.GSimpleActionGroup)(simple.Native())
-
-	C.g_simple_action_group_insert(arg0, arg1)
-}
-
-// Lookup looks up the action with the name @action_name in the group.
-//
-// If no such action exists, returns nil.
-func (simple simpleActionGroup) Lookup(actionName string) Action {
-	var arg0 *C.GSimpleActionGroup
-	var arg1 *C.gchar
-
-	arg0 = (*C.GSimpleActionGroup)(simple.Native())
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_simple_action_group_lookup(arg0, arg1)
-
-	var ret0 Action
 
 	return ret0
 }
@@ -32062,9 +28584,6 @@ type SimpleAsyncResult interface {
 	// SetOpResGboolean sets the operation result to a boolean within the
 	// asynchronous result.
 	SetOpResGboolean(opRes bool)
-	// SetOpResGpointer sets the operation result within the asynchronous result
-	// to a pointer.
-	SetOpResGpointer(opRes interface{})
 	// SetOpResGssize sets the operation result within the asynchronous result
 	// to the given @op_res.
 	SetOpResGssize(opRes int)
@@ -32206,7 +28725,7 @@ func (simple simpleAsyncResult) OpResGpointer() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -32236,7 +28755,7 @@ func (simple simpleAsyncResult) SourceTag() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -32344,19 +28863,6 @@ func (simple simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	arg1 = gextras.Cbool(opRes)
 
 	C.g_simple_async_result_set_op_res_gboolean(arg0, arg1)
-}
-
-// SetOpResGpointer sets the operation result within the asynchronous result
-// to a pointer.
-func (simple simpleAsyncResult) SetOpResGpointer(opRes interface{}) {
-	var arg0 *C.GSimpleAsyncResult
-	var arg1 C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg0 = (*C.GSimpleAsyncResult)(simple.Native())
-	arg1 = C.gpointer(box.Assign(opRes))
-
-	C.g_simple_async_result_set_op_res_gpointer(arg0, arg1, arg2)
 }
 
 // SetOpResGssize sets the operation result within the asynchronous result
@@ -32954,224 +29460,10 @@ type Socket interface {
 	//
 	// See g_socket_receive() for additional information.
 	ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []byte, size uint, gssize int)
-	// ReceiveMessage: receive data from a socket. For receiving multiple
-	// messages, see g_socket_receive_messages(); for easier use, see
-	// g_socket_receive() and g_socket_receive_from().
-	//
-	// If @address is non-nil then @address will be set equal to the source
-	// address of the received packet. @address is owned by the caller.
-	//
-	// @vector must point to an array of Vector structs and @num_vectors must be
-	// the length of this array. These structs describe the buffers that
-	// received data will be scattered into. If @num_vectors is -1, then
-	// @vectors is assumed to be terminated by a Vector with a nil buffer
-	// pointer.
-	//
-	// As a special case, if @num_vectors is 0 (in which case, @vectors may of
-	// course be nil), then a single byte is received and discarded. This is to
-	// facilitate the common practice of sending a single '\0' byte for the
-	// purposes of transferring ancillary data.
-	//
-	// @messages, if non-nil, will be set to point to a newly-allocated array of
-	// ControlMessage instances or nil if no such messages was received. These
-	// correspond to the control messages received from the kernel, one
-	// ControlMessage per message from the kernel. This array is nil-terminated
-	// and must be freed by the caller using g_free() after calling
-	// g_object_unref() on each element. If @messages is nil, any control
-	// messages received will be discarded.
-	//
-	// @num_messages, if non-nil, will be set to the number of control messages
-	// received.
-	//
-	// If both @messages and @num_messages are non-nil, then @num_messages gives
-	// the number of ControlMessage instances in @messages (ie: not including
-	// the nil terminator).
-	//
-	// @flags is an in/out parameter. The commonly available arguments for this
-	// are available in the MsgFlags enum, but the values there are the same as
-	// the system values, and the flags are passed in as-is, so you can pass in
-	// system-specific flags too (and g_socket_receive_message() may pass
-	// system-specific flags out). Flags passed in to the parameter affect the
-	// receive operation; flags returned out of it are relevant to the specific
-	// returned message.
-	//
-	// As with g_socket_receive(), data may be discarded if @socket is
-	// G_SOCKET_TYPE_DATAGRAM or G_SOCKET_TYPE_SEQPACKET and you do not provide
-	// enough buffer space to read a complete message. You can pass
-	// G_SOCKET_MSG_PEEK in @flags to peek at the current message without
-	// removing it from the receive queue, but there is no portable way to find
-	// out the length of the message other than by reading it into a
-	// sufficiently-large buffer.
-	//
-	// If the socket is in blocking mode the call will block until there is some
-	// data to receive, the connection is closed, or there is an error. If there
-	// is no data available and the socket is in non-blocking mode, a
-	// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
-	// is available, wait for the G_IO_IN condition.
-	//
-	// On error -1 is returned and @error is set accordingly.
-	ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []SocketControlMessage, numMessages int, gssize int)
-	// ReceiveMessages: receive multiple data messages from @socket in one go.
-	// This is the most complicated and fully-featured version of this call. For
-	// easier use, see g_socket_receive(), g_socket_receive_from(), and
-	// g_socket_receive_message().
-	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains a pointer to an
-	// array of Vector structs describing the buffers that the data received in
-	// each message will be written to. Using multiple Vectors is more
-	// memory-efficient than manually copying data out of a single buffer to
-	// multiple sources, and more system-call-efficient than making multiple
-	// calls to g_socket_receive(), such as in scenarios where a lot of data
-	// packets need to be received (e.g. high-bandwidth video streaming over
-	// RTP/UDP).
-	//
-	// @flags modify how all messages are received. The commonly available
-	// arguments for this are available in the MsgFlags enum, but the values
-	// there are the same as the system values, and the flags are passed in
-	// as-is, so you can pass in system-specific flags too. These flags affect
-	// the overall receive operation. Flags affecting individual messages are
-	// returned in Message.flags.
-	//
-	// The other members of Message are treated as described in its
-	// documentation.
-	//
-	// If #GSocket:blocking is true the call will block until @num_messages have
-	// been received, or the end of the stream is reached.
-	//
-	// If #GSocket:blocking is false the call will return up to @num_messages
-	// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in
-	// the operating system to be received.
-	//
-	// In blocking mode, if #GSocket:timeout is positive and is reached before
-	// any messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up
-	// to @num_messages are returned. (Note: This is effectively the behaviour
-	// of `MSG_WAITFORONE` with recvmmsg().)
-	//
-	// To be notified when messages are available, wait for the G_IO_IN
-	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-	// from g_socket_receive_messages() even if you were previously notified of
-	// a G_IO_IN condition.
-	//
-	// If the remote peer closes the connection, any messages queued in the
-	// operating system will be returned, and subsequent calls to
-	// g_socket_receive_messages() will return 0 (with no error set).
-	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be received; otherwise the number of
-	// messages successfully received before the error will be returned.
-	ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) int
 	// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
 	// except that the choice of blocking or non-blocking behavior is determined
 	// by the @blocking argument rather than by @socket's properties.
 	ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []byte, size uint, gssize int)
-	// Send tries to send @size bytes from @buffer on the socket. This is mainly
-	// used by connection-oriented sockets; it is identical to
-	// g_socket_send_to() with @address set to nil.
-	//
-	// If the socket is in blocking mode the call will block until there is
-	// space for the data in the socket queue. If there is no space available
-	// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
-	// will be returned. To be notified when space is available, wait for the
-	// G_IO_OUT condition. Note though that you may still receive
-	// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
-	//
-	// On error -1 is returned and @error is set accordingly.
-	Send(buffer []byte, cancellable Cancellable) int
-	// SendMessage: send data to @address on @socket. For sending multiple
-	// messages see g_socket_send_messages(); for easier use, see
-	// g_socket_send() and g_socket_send_to().
-	//
-	// If @address is nil then the message is sent to the default receiver (set
-	// by g_socket_connect()).
-	//
-	// @vectors must point to an array of Vector structs and @num_vectors must
-	// be the length of this array. (If @num_vectors is -1, then @vectors is
-	// assumed to be terminated by a Vector with a nil buffer pointer.) The
-	// Vector structs describe the buffers that the sent data will be gathered
-	// from. Using multiple Vectors is more memory-efficient than manually
-	// copying data from multiple sources into a single buffer, and more
-	// network-efficient than making multiple calls to g_socket_send().
-	//
-	// @messages, if non-nil, is taken to point to an array of @num_messages
-	// ControlMessage instances. These correspond to the control messages to be
-	// sent on the socket. If @num_messages is -1 then @messages is treated as a
-	// nil-terminated array.
-	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
-	//
-	// If the socket is in blocking mode the call will block until there is
-	// space for the data in the socket queue. If there is no space available
-	// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
-	// will be returned. To be notified when space is available, wait for the
-	// G_IO_OUT condition. Note though that you may still receive
-	// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
-	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-	// common due to the way the underlying APIs work.)
-	//
-	// On error -1 is returned and @error is set accordingly.
-	SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
-	// SendMessageWithTimeout: this behaves exactly the same as
-	// g_socket_send_message(), except that the choice of timeout behavior is
-	// determined by the @timeout_us argument rather than by @socket's
-	// properties.
-	//
-	// On error G_POLLABLE_RETURN_FAILED is returned and @error is set
-	// accordingly, or if the socket is currently not writable
-	// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
-	// in both cases.
-	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
-	// SendMessages: send multiple data messages from @socket in one go. This is
-	// the most complicated and fully-featured version of this call. For easier
-	// use, see g_socket_send(), g_socket_send_to(), and
-	// g_socket_send_message().
-	//
-	// @messages must point to an array of Message structs and @num_messages
-	// must be the length of this array. Each Message contains an address to
-	// send the data to, and a pointer to an array of Vector structs to describe
-	// the buffers that the data to be sent for each message will be gathered
-	// from. Using multiple Vectors is more memory-efficient than manually
-	// copying data from multiple sources into a single buffer, and more
-	// network-efficient than making multiple calls to g_socket_send(). Sending
-	// multiple messages in one go avoids the overhead of making a lot of
-	// syscalls in scenarios where a lot of data packets need to be sent (e.g.
-	// high-bandwidth video streaming over RTP/UDP), or where the same data
-	// needs to be sent to multiple recipients.
-	//
-	// @flags modify how the message is sent. The commonly available arguments
-	// for this are available in the MsgFlags enum, but the values there are the
-	// same as the system values, and the flags are passed in as-is, so you can
-	// pass in system-specific flags too.
-	//
-	// If the socket is in blocking mode the call will block until there is
-	// space for all the data in the socket queue. If there is no space
-	// available and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK
-	// error will be returned if no data was written at all, otherwise the
-	// number of messages sent will be returned. To be notified when space is
-	// available, wait for the G_IO_OUT condition. Note though that you may
-	// still receive G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you
-	// were previously notified of a G_IO_OUT condition. (On Windows in
-	// particular, this is very common due to the way the underlying APIs work.)
-	//
-	// On error -1 is returned and @error is set accordingly. An error will only
-	// be returned if zero messages could be sent; otherwise the number of
-	// messages successfully sent before the error will be returned.
-	SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) int
-	// SendTo tries to send @size bytes from @buffer to @address. If @address is
-	// nil then the message is sent to the default receiver (set by
-	// g_socket_connect()).
-	//
-	// See g_socket_send() for additional information.
-	SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) int
-	// SendWithBlocking: this behaves exactly the same as g_socket_send(),
-	// except that the choice of blocking or non-blocking behavior is determined
-	// by the @blocking argument rather than by @socket's properties.
-	SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) int
 	// SetBlocking sets the blocking mode of the socket. In blocking mode all
 	// operations (which don’t take an explicit blocking parameter) block until
 	// they succeed or there is an error. In non-blocking mode all functions
@@ -34230,201 +30522,6 @@ func (socket socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress
 	return ret0, ret1, ret2, ret3
 }
 
-// ReceiveMessage: receive data from a socket. For receiving multiple
-// messages, see g_socket_receive_messages(); for easier use, see
-// g_socket_receive() and g_socket_receive_from().
-//
-// If @address is non-nil then @address will be set equal to the source
-// address of the received packet. @address is owned by the caller.
-//
-// @vector must point to an array of Vector structs and @num_vectors must be
-// the length of this array. These structs describe the buffers that
-// received data will be scattered into. If @num_vectors is -1, then
-// @vectors is assumed to be terminated by a Vector with a nil buffer
-// pointer.
-//
-// As a special case, if @num_vectors is 0 (in which case, @vectors may of
-// course be nil), then a single byte is received and discarded. This is to
-// facilitate the common practice of sending a single '\0' byte for the
-// purposes of transferring ancillary data.
-//
-// @messages, if non-nil, will be set to point to a newly-allocated array of
-// ControlMessage instances or nil if no such messages was received. These
-// correspond to the control messages received from the kernel, one
-// ControlMessage per message from the kernel. This array is nil-terminated
-// and must be freed by the caller using g_free() after calling
-// g_object_unref() on each element. If @messages is nil, any control
-// messages received will be discarded.
-//
-// @num_messages, if non-nil, will be set to the number of control messages
-// received.
-//
-// If both @messages and @num_messages are non-nil, then @num_messages gives
-// the number of ControlMessage instances in @messages (ie: not including
-// the nil terminator).
-//
-// @flags is an in/out parameter. The commonly available arguments for this
-// are available in the MsgFlags enum, but the values there are the same as
-// the system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too (and g_socket_receive_message() may pass
-// system-specific flags out). Flags passed in to the parameter affect the
-// receive operation; flags returned out of it are relevant to the specific
-// returned message.
-//
-// As with g_socket_receive(), data may be discarded if @socket is
-// G_SOCKET_TYPE_DATAGRAM or G_SOCKET_TYPE_SEQPACKET and you do not provide
-// enough buffer space to read a complete message. You can pass
-// G_SOCKET_MSG_PEEK in @flags to peek at the current message without
-// removing it from the receive queue, but there is no portable way to find
-// out the length of the message other than by reading it into a
-// sufficiently-large buffer.
-//
-// If the socket is in blocking mode the call will block until there is some
-// data to receive, the connection is closed, or there is an error. If there
-// is no data available and the socket is in non-blocking mode, a
-// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
-// is available, wait for the G_IO_IN condition.
-//
-// On error -1 is returned and @error is set accordingly.
-func (socket socket) ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []SocketControlMessage, numMessages int, gssize int) {
-	var arg0 *C.GSocket
-	var arg1 **C.GSocketAddress // out
-	var arg2 *C.GInputVector
-	var arg3 C.gint
-	var arg4 ***C.GSocketControlMessage // out
-	var arg5 *C.gint                    // out
-	var arg6 *C.gint
-	var arg7 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	{
-		var dst []C.GInputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GInputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GInputVector)(src.Native())
-		}
-
-		arg2 = (*C.GInputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(vectors)
-	}
-	arg6 = (*C.gint)(flags)
-	arg7 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_receive_message(arg0, &arg1, arg2, arg3, &arg4, &arg5, arg6, arg7)
-
-	var ret0 SocketAddress
-	var ret1 []SocketControlMessage
-	var ret2 int
-	var ret3 int
-
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
-
-	{
-		ret1 = make([]SocketControlMessage, arg5)
-		for i := 0; i < uintptr(arg5); i++ {
-			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = WrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(src.Native())))
-		}
-	}
-
-	ret2 = int(arg5)
-
-	ret3 = int(ret)
-
-	return ret0, ret1, ret2, ret3
-}
-
-// ReceiveMessages: receive multiple data messages from @socket in one go.
-// This is the most complicated and fully-featured version of this call. For
-// easier use, see g_socket_receive(), g_socket_receive_from(), and
-// g_socket_receive_message().
-//
-// @messages must point to an array of Message structs and @num_messages
-// must be the length of this array. Each Message contains a pointer to an
-// array of Vector structs describing the buffers that the data received in
-// each message will be written to. Using multiple Vectors is more
-// memory-efficient than manually copying data out of a single buffer to
-// multiple sources, and more system-call-efficient than making multiple
-// calls to g_socket_receive(), such as in scenarios where a lot of data
-// packets need to be received (e.g. high-bandwidth video streaming over
-// RTP/UDP).
-//
-// @flags modify how all messages are received. The commonly available
-// arguments for this are available in the MsgFlags enum, but the values
-// there are the same as the system values, and the flags are passed in
-// as-is, so you can pass in system-specific flags too. These flags affect
-// the overall receive operation. Flags affecting individual messages are
-// returned in Message.flags.
-//
-// The other members of Message are treated as described in its
-// documentation.
-//
-// If #GSocket:blocking is true the call will block until @num_messages have
-// been received, or the end of the stream is reached.
-//
-// If #GSocket:blocking is false the call will return up to @num_messages
-// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in
-// the operating system to be received.
-//
-// In blocking mode, if #GSocket:timeout is positive and is reached before
-// any messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up
-// to @num_messages are returned. (Note: This is effectively the behaviour
-// of `MSG_WAITFORONE` with recvmmsg().)
-//
-// To be notified when messages are available, wait for the G_IO_IN
-// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
-// from g_socket_receive_messages() even if you were previously notified of
-// a G_IO_IN condition.
-//
-// If the remote peer closes the connection, any messages queued in the
-// operating system will be returned, and subsequent calls to
-// g_socket_receive_messages() will return 0 (with no error set).
-//
-// On error -1 is returned and @error is set accordingly. An error will only
-// be returned if zero messages could be received; otherwise the number of
-// messages successfully received before the error will be returned.
-func (socket socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) int {
-	var arg0 *C.GSocket
-	var arg1 *C.GInputMessage
-	var arg2 C.guint
-	var arg3 C.gint
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	{
-		var dst []C.GInputMessage
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GInputMessage * len(messages))))
-		sliceHeader.Len = len(messages)
-		sliceHeader.Cap = len(messages)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(messages); i++ {
-			src := messages[i]
-			dst[i] = (C.GInputMessage)(src.Native())
-		}
-
-		arg1 = (*C.GInputMessage)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(messages)
-	}
-	arg3 = C.gint(flags)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_receive_messages(arg0, arg1, arg2, arg3, arg4)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
 // ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
 // except that the choice of blocking or non-blocking behavior is determined
 // by the @blocking argument rather than by @socket's properties.
@@ -34461,334 +30558,6 @@ func (socket socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable)
 	ret2 = int(ret)
 
 	return ret0, ret1, ret2
-}
-
-// Send tries to send @size bytes from @buffer on the socket. This is mainly
-// used by connection-oriented sockets; it is identical to
-// g_socket_send_to() with @address set to nil.
-//
-// If the socket is in blocking mode the call will block until there is
-// space for the data in the socket queue. If there is no space available
-// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
-// will be returned. To be notified when space is available, wait for the
-// G_IO_OUT condition. Note though that you may still receive
-// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
-// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-// common due to the way the underlying APIs work.)
-//
-// On error -1 is returned and @error is set accordingly.
-func (socket socket) Send(buffer []byte, cancellable Cancellable) int {
-	var arg0 *C.GSocket
-	var arg1 *C.gchar
-	var arg2 C.gsize
-	var arg3 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	{
-		arg1 = (*C.gchar)(&buffer[0])
-		arg2 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg3 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_send(arg0, arg1, arg2, arg3)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// SendMessage: send data to @address on @socket. For sending multiple
-// messages see g_socket_send_messages(); for easier use, see
-// g_socket_send() and g_socket_send_to().
-//
-// If @address is nil then the message is sent to the default receiver (set
-// by g_socket_connect()).
-//
-// @vectors must point to an array of Vector structs and @num_vectors must
-// be the length of this array. (If @num_vectors is -1, then @vectors is
-// assumed to be terminated by a Vector with a nil buffer pointer.) The
-// Vector structs describe the buffers that the sent data will be gathered
-// from. Using multiple Vectors is more memory-efficient than manually
-// copying data from multiple sources into a single buffer, and more
-// network-efficient than making multiple calls to g_socket_send().
-//
-// @messages, if non-nil, is taken to point to an array of @num_messages
-// ControlMessage instances. These correspond to the control messages to be
-// sent on the socket. If @num_messages is -1 then @messages is treated as a
-// nil-terminated array.
-//
-// @flags modify how the message is sent. The commonly available arguments
-// for this are available in the MsgFlags enum, but the values there are the
-// same as the system values, and the flags are passed in as-is, so you can
-// pass in system-specific flags too.
-//
-// If the socket is in blocking mode the call will block until there is
-// space for the data in the socket queue. If there is no space available
-// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
-// will be returned. To be notified when space is available, wait for the
-// G_IO_OUT condition. Note though that you may still receive
-// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
-// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-// common due to the way the underlying APIs work.)
-//
-// On error -1 is returned and @error is set accordingly.
-func (socket socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int {
-	var arg0 *C.GSocket
-	var arg1 *C.GSocketAddress
-	var arg2 *C.GOutputVector
-	var arg3 C.gint
-	var arg4 **C.GSocketControlMessage
-	var arg5 C.gint
-	var arg6 C.gint
-	var arg7 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = (*C.GSocketAddress)(address.Native())
-	{
-		var dst []C.GOutputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GOutputVector)(src.Native())
-		}
-
-		arg2 = (*C.GOutputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(vectors)
-	}
-	{
-		var dst []*C.GSocketControlMessage
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(messages))))
-		sliceHeader.Len = len(messages)
-		sliceHeader.Cap = len(messages)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(messages); i++ {
-			src := messages[i]
-			dst[i] = (*C.GSocketControlMessage)(src.Native())
-		}
-
-		arg4 = (**C.GSocketControlMessage)(unsafe.Pointer(sliceHeader.Data))
-		arg5 = len(messages)
-	}
-	arg6 = C.gint(flags)
-	arg7 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_send_message(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// SendMessageWithTimeout: this behaves exactly the same as
-// g_socket_send_message(), except that the choice of timeout behavior is
-// determined by the @timeout_us argument rather than by @socket's
-// properties.
-//
-// On error G_POLLABLE_RETURN_FAILED is returned and @error is set
-// accordingly, or if the socket is currently not writable
-// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
-// in both cases.
-func (socket socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn) {
-	var arg0 *C.GSocket
-	var arg1 *C.GSocketAddress
-	var arg2 *C.GOutputVector
-	var arg3 C.gint
-	var arg4 **C.GSocketControlMessage
-	var arg5 C.gint
-	var arg6 C.gint
-	var arg7 C.gint64
-	var arg8 *C.gsize // out
-	var arg9 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = (*C.GSocketAddress)(address.Native())
-	{
-		var dst []C.GOutputVector
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputVector * len(vectors))))
-		sliceHeader.Len = len(vectors)
-		sliceHeader.Cap = len(vectors)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(vectors); i++ {
-			src := vectors[i]
-			dst[i] = (C.GOutputVector)(src.Native())
-		}
-
-		arg2 = (*C.GOutputVector)(unsafe.Pointer(sliceHeader.Data))
-		arg3 = len(vectors)
-	}
-	{
-		var dst []*C.GSocketControlMessage
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(messages))))
-		sliceHeader.Len = len(messages)
-		sliceHeader.Cap = len(messages)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(messages); i++ {
-			src := messages[i]
-			dst[i] = (*C.GSocketControlMessage)(src.Native())
-		}
-
-		arg4 = (**C.GSocketControlMessage)(unsafe.Pointer(sliceHeader.Data))
-		arg5 = len(messages)
-	}
-	arg6 = C.gint(flags)
-	arg7 = C.gint64(timeoutUs)
-	arg9 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_send_message_with_timeout(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, &arg8, arg9)
-
-	var ret0 uint
-	var ret1 PollableReturn
-
-	ret0 = uint(arg8)
-
-	ret1 = PollableReturn(ret)
-
-	return ret0, ret1
-}
-
-// SendMessages: send multiple data messages from @socket in one go. This is
-// the most complicated and fully-featured version of this call. For easier
-// use, see g_socket_send(), g_socket_send_to(), and
-// g_socket_send_message().
-//
-// @messages must point to an array of Message structs and @num_messages
-// must be the length of this array. Each Message contains an address to
-// send the data to, and a pointer to an array of Vector structs to describe
-// the buffers that the data to be sent for each message will be gathered
-// from. Using multiple Vectors is more memory-efficient than manually
-// copying data from multiple sources into a single buffer, and more
-// network-efficient than making multiple calls to g_socket_send(). Sending
-// multiple messages in one go avoids the overhead of making a lot of
-// syscalls in scenarios where a lot of data packets need to be sent (e.g.
-// high-bandwidth video streaming over RTP/UDP), or where the same data
-// needs to be sent to multiple recipients.
-//
-// @flags modify how the message is sent. The commonly available arguments
-// for this are available in the MsgFlags enum, but the values there are the
-// same as the system values, and the flags are passed in as-is, so you can
-// pass in system-specific flags too.
-//
-// If the socket is in blocking mode the call will block until there is
-// space for all the data in the socket queue. If there is no space
-// available and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK
-// error will be returned if no data was written at all, otherwise the
-// number of messages sent will be returned. To be notified when space is
-// available, wait for the G_IO_OUT condition. Note though that you may
-// still receive G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you
-// were previously notified of a G_IO_OUT condition. (On Windows in
-// particular, this is very common due to the way the underlying APIs work.)
-//
-// On error -1 is returned and @error is set accordingly. An error will only
-// be returned if zero messages could be sent; otherwise the number of
-// messages successfully sent before the error will be returned.
-func (socket socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) int {
-	var arg0 *C.GSocket
-	var arg1 *C.GOutputMessage
-	var arg2 C.guint
-	var arg3 C.gint
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	{
-		var dst []C.GOutputMessage
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GOutputMessage * len(messages))))
-		sliceHeader.Len = len(messages)
-		sliceHeader.Cap = len(messages)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(messages); i++ {
-			src := messages[i]
-			dst[i] = (C.GOutputMessage)(src.Native())
-		}
-
-		arg1 = (*C.GOutputMessage)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(messages)
-	}
-	arg3 = C.gint(flags)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_send_messages(arg0, arg1, arg2, arg3, arg4)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// SendTo tries to send @size bytes from @buffer to @address. If @address is
-// nil then the message is sent to the default receiver (set by
-// g_socket_connect()).
-//
-// See g_socket_send() for additional information.
-func (socket socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) int {
-	var arg0 *C.GSocket
-	var arg1 *C.GSocketAddress
-	var arg2 *C.gchar
-	var arg3 C.gsize
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = (*C.GSocketAddress)(address.Native())
-	{
-		arg2 = (*C.gchar)(&buffer[0])
-		arg3 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_send_to(arg0, arg1, arg2, arg3, arg4)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
-}
-
-// SendWithBlocking: this behaves exactly the same as g_socket_send(),
-// except that the choice of blocking or non-blocking behavior is determined
-// by the @blocking argument rather than by @socket's properties.
-func (socket socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) int {
-	var arg0 *C.GSocket
-	var arg1 *C.gchar
-	var arg2 C.gsize
-	var arg3 C.gboolean
-	var arg4 *C.GCancellable
-
-	arg0 = (*C.GSocket)(socket.Native())
-	{
-		arg1 = (*C.gchar)(&buffer[0])
-		arg2 = len(buffer)
-		defer runtime.KeepAlive(buffer)
-	}
-	arg3 = gextras.Cbool(blocking)
-	arg4 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_send_with_blocking(arg0, arg1, arg2, arg3, arg4)
-
-	var ret0 int
-
-	ret0 = int(ret)
-
-	return ret0
 }
 
 // SetBlocking sets the blocking mode of the socket. In blocking mode all
@@ -35154,11 +30923,6 @@ type SocketAddressEnumerator interface {
 	// It is an error to call this multiple times before the previous callback
 	// has finished.
 	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// NextFinish retrieves the result of a completed call to
-	// g_socket_address_enumerator_next_async(). See
-	// g_socket_address_enumerator_next() for more information about error
-	// handling.
-	NextFinish(result AsyncResult) SocketAddress
 }
 
 type socketAddressEnumerator struct {
@@ -35223,25 +30987,6 @@ func (enumerator socketAddressEnumerator) NextAsync(cancellable Cancellable, cal
 	C.g_socket_address_enumerator_next_async(arg0, arg1, arg2)
 }
 
-// NextFinish retrieves the result of a completed call to
-// g_socket_address_enumerator_next_async(). See
-// g_socket_address_enumerator_next() for more information about error
-// handling.
-func (enumerator socketAddressEnumerator) NextFinish(result AsyncResult) SocketAddress {
-	var arg0 *C.GSocketAddressEnumerator
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSocketAddressEnumerator)(enumerator.Native())
-
-	ret := C.g_socket_address_enumerator_next_finish(arg0, arg1)
-
-	var ret0 SocketAddress
-
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // SocketClient is a lightweight high-level utility class for connecting to a
 // network host using a connection oriented socket type.
 //
@@ -35276,36 +31021,6 @@ type SocketClient interface {
 	// will be skipped. This is required to let the application do the proxy
 	// specific handshake.
 	AddApplicationProxy(protocol string)
-	// Connect tries to resolve the @connectable and make a network connection
-	// to it.
-	//
-	// Upon a successful connection, a new Connection is constructed and
-	// returned. The caller owns this new object and must drop their reference
-	// to it when finished with it.
-	//
-	// The type of the Connection object returned depends on the type of the
-	// underlying socket that is used. For instance, for a TCP/IP connection it
-	// will be a Connection.
-	//
-	// The socket created will be the same family as the address that the
-	// @connectable resolves to, unless family is set with
-	// g_socket_client_set_family() or indirectly via
-	// g_socket_client_set_local_address(). The socket type defaults to
-	// G_SOCKET_TYPE_STREAM but can be set with
-	// g_socket_client_set_socket_type().
-	//
-	// If a local address is specified with g_socket_client_set_local_address()
-	// the socket will be bound to this address before connecting.
-	Connect(connectable SocketConnectable, cancellable Cancellable) SocketConnection
-	// ConnectAsync: this is the asynchronous version of
-	// g_socket_client_connect().
-	//
-	// When the operation is finished @callback will be called. You can then
-	// call g_socket_client_connect_finish() to get the result of the operation.
-	ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectFinish finishes an async connect operation. See
-	// g_socket_client_connect_async()
-	ConnectFinish(result AsyncResult) SocketConnection
 	// ConnectToHost: this is a helper function for g_socket_client_connect().
 	//
 	// Attempts to create a TCP connection to the named host.
@@ -35343,9 +31058,6 @@ type SocketClient interface {
 	// call g_socket_client_connect_to_host_finish() to get the result of the
 	// operation.
 	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectToHostFinish finishes an async connect operation. See
-	// g_socket_client_connect_to_host_async()
-	ConnectToHostFinish(result AsyncResult) SocketConnection
 	// ConnectToService attempts to create a TCP connection to a service.
 	//
 	// This call looks up the SRV record for @service at @domain for the "tcp"
@@ -35363,9 +31075,6 @@ type SocketClient interface {
 	// ConnectToServiceAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_service().
 	ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectToServiceFinish finishes an async connect operation. See
-	// g_socket_client_connect_to_service_async()
-	ConnectToServiceFinish(result AsyncResult) SocketConnection
 	// ConnectToURI: this is a helper function for g_socket_client_connect().
 	//
 	// Attempts to create a TCP connection with a network URI.
@@ -35393,9 +31102,6 @@ type SocketClient interface {
 	// call g_socket_client_connect_to_uri_finish() to get the result of the
 	// operation.
 	ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectToURIFinish finishes an async connect operation. See
-	// g_socket_client_connect_to_uri_async()
-	ConnectToURIFinish(result AsyncResult) SocketConnection
 	// EnableProxy gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
 	EnableProxy() bool
@@ -35411,10 +31117,6 @@ type SocketClient interface {
 	//
 	// See g_socket_client_set_protocol() for details.
 	Protocol() SocketProtocol
-	// ProxyResolver gets the Resolver being used by @client. Normally, this
-	// will be the resolver returned by g_proxy_resolver_get_default(), but you
-	// can override it with g_socket_client_set_proxy_resolver().
-	ProxyResolver() ProxyResolver
 	// SocketType gets the socket type of the socket client.
 	//
 	// See g_socket_client_set_socket_type() for details.
@@ -35558,79 +31260,6 @@ func (client socketClient) AddApplicationProxy(protocol string) {
 	C.g_socket_client_add_application_proxy(arg0, arg1)
 }
 
-// Connect tries to resolve the @connectable and make a network connection
-// to it.
-//
-// Upon a successful connection, a new Connection is constructed and
-// returned. The caller owns this new object and must drop their reference
-// to it when finished with it.
-//
-// The type of the Connection object returned depends on the type of the
-// underlying socket that is used. For instance, for a TCP/IP connection it
-// will be a Connection.
-//
-// The socket created will be the same family as the address that the
-// @connectable resolves to, unless family is set with
-// g_socket_client_set_family() or indirectly via
-// g_socket_client_set_local_address(). The socket type defaults to
-// G_SOCKET_TYPE_STREAM but can be set with
-// g_socket_client_set_socket_type().
-//
-// If a local address is specified with g_socket_client_set_local_address()
-// the socket will be bound to this address before connecting.
-func (client socketClient) Connect(connectable SocketConnectable, cancellable Cancellable) SocketConnection {
-	var arg0 *C.GSocketClient
-	var arg1 *C.GSocketConnectable
-	var arg2 *C.GCancellable
-
-	arg0 = (*C.GSocketClient)(client.Native())
-	arg2 = (*C.GCancellable)(cancellable.Native())
-
-	ret := C.g_socket_client_connect(arg0, arg1, arg2)
-
-	var ret0 SocketConnection
-
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// ConnectAsync: this is the asynchronous version of
-// g_socket_client_connect().
-//
-// When the operation is finished @callback will be called. You can then
-// call g_socket_client_connect_finish() to get the result of the operation.
-func (client socketClient) ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 *C.GSocketClient
-	var arg1 *C.GSocketConnectable
-	var arg2 *C.GCancellable
-	var arg3 C.GAsyncReadyCallback
-	arg4 := C.gpointer(box.Assign(userData))
-
-	arg0 = (*C.GSocketClient)(client.Native())
-	arg2 = (*C.GCancellable)(cancellable.Native())
-	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-
-	C.g_socket_client_connect_async(arg0, arg1, arg2, arg3)
-}
-
-// ConnectFinish finishes an async connect operation. See
-// g_socket_client_connect_async()
-func (client socketClient) ConnectFinish(result AsyncResult) SocketConnection {
-	var arg0 *C.GSocketClient
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSocketClient)(client.Native())
-
-	ret := C.g_socket_client_connect_finish(arg0, arg1)
-
-	var ret0 SocketConnection
-
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // ConnectToHost: this is a helper function for g_socket_client_connect().
 //
 // Attempts to create a TCP connection to the named host.
@@ -35705,23 +31334,6 @@ func (client socketClient) ConnectToHostAsync(hostAndPort string, defaultPort ui
 	C.g_socket_client_connect_to_host_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// ConnectToHostFinish finishes an async connect operation. See
-// g_socket_client_connect_to_host_async()
-func (client socketClient) ConnectToHostFinish(result AsyncResult) SocketConnection {
-	var arg0 *C.GSocketClient
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSocketClient)(client.Native())
-
-	ret := C.g_socket_client_connect_to_host_finish(arg0, arg1)
-
-	var ret0 SocketConnection
-
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // ConnectToService attempts to create a TCP connection to a service.
 //
 // This call looks up the SRV record for @service at @domain for the "tcp"
@@ -35776,23 +31388,6 @@ func (client socketClient) ConnectToServiceAsync(domain string, service string, 
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_socket_client_connect_to_service_async(arg0, arg1, arg2, arg3, arg4)
-}
-
-// ConnectToServiceFinish finishes an async connect operation. See
-// g_socket_client_connect_to_service_async()
-func (client socketClient) ConnectToServiceFinish(result AsyncResult) SocketConnection {
-	var arg0 *C.GSocketClient
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSocketClient)(client.Native())
-
-	ret := C.g_socket_client_connect_to_service_finish(arg0, arg1)
-
-	var ret0 SocketConnection
-
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // ConnectToURI: this is a helper function for g_socket_client_connect().
@@ -35859,23 +31454,6 @@ func (client socketClient) ConnectToURIAsync(uri string, defaultPort uint16, can
 	C.g_socket_client_connect_to_uri_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// ConnectToURIFinish finishes an async connect operation. See
-// g_socket_client_connect_to_uri_async()
-func (client socketClient) ConnectToURIFinish(result AsyncResult) SocketConnection {
-	var arg0 *C.GSocketClient
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSocketClient)(client.Native())
-
-	ret := C.g_socket_client_connect_to_uri_finish(arg0, arg1)
-
-	var ret0 SocketConnection
-
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // EnableProxy gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
 func (client socketClient) EnableProxy() bool {
@@ -35939,21 +31517,6 @@ func (client socketClient) Protocol() SocketProtocol {
 	var ret0 SocketProtocol
 
 	ret0 = SocketProtocol(ret)
-
-	return ret0
-}
-
-// ProxyResolver gets the Resolver being used by @client. Normally, this
-// will be the resolver returned by g_proxy_resolver_get_default(), but you
-// can override it with g_socket_client_set_proxy_resolver().
-func (client socketClient) ProxyResolver() ProxyResolver {
-	var arg0 *C.GSocketClient
-
-	arg0 = (*C.GSocketClient)(client.Native())
-
-	ret := C.g_socket_client_get_proxy_resolver(arg0)
-
-	var ret0 ProxyResolver
 
 	return ret0
 }
@@ -36202,9 +31765,6 @@ type SocketConnection interface {
 	//
 	// Use g_socket_connection_connect_finish() to retrieve the result.
 	ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
-	// ConnectFinish gets the result of a g_socket_connection_connect_async()
-	// call.
-	ConnectFinish(result AsyncResult) bool
 	// LocalAddress: try to get the local address of a socket connection.
 	LocalAddress() SocketAddress
 	// RemoteAddress: try to get the remote address of a socket connection.
@@ -36279,23 +31839,6 @@ func (connection socketConnection) ConnectAsync(address SocketAddress, cancellab
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_socket_connection_connect_async(arg0, arg1, arg2, arg3)
-}
-
-// ConnectFinish gets the result of a g_socket_connection_connect_async()
-// call.
-func (connection socketConnection) ConnectFinish(result AsyncResult) bool {
-	var arg0 *C.GSocketConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSocketConnection)(connection.Native())
-
-	ret := C.g_socket_connection_connect_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // LocalAddress: try to get the local address of a socket connection.
@@ -36517,9 +32060,6 @@ type SocketListener interface {
 	// call g_socket_listener_accept_socket() to get the result of the
 	// operation.
 	AcceptAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcceptFinish finishes an async accept operation. See
-	// g_socket_listener_accept_async()
-	AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection)
 	// AcceptSocket blocks waiting for a client to connect to any of the sockets
 	// added to the listener. Returns the #GSocket that was accepted.
 	//
@@ -36541,9 +32081,6 @@ type SocketListener interface {
 	// call g_socket_listener_accept_socket_finish() to get the result of the
 	// operation.
 	AcceptSocketAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// AcceptSocketFinish finishes an async accept operation. See
-	// g_socket_listener_accept_socket_async()
-	AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket)
 	// AddAddress creates a socket of type @type and protocol @protocol, binds
 	// it to @address and adds it to the set of sockets we're accepting sockets
 	// from.
@@ -36693,27 +32230,6 @@ func (listener socketListener) AcceptAsync(cancellable Cancellable, callback Asy
 	C.g_socket_listener_accept_async(arg0, arg1, arg2)
 }
 
-// AcceptFinish finishes an async accept operation. See
-// g_socket_listener_accept_async()
-func (listener socketListener) AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection) {
-	var arg0 *C.GSocketListener
-	var arg1 *C.GAsyncResult
-	var arg2 **C.GObject // out
-
-	arg0 = (*C.GSocketListener)(listener.Native())
-
-	ret := C.g_socket_listener_accept_finish(arg0, arg1, &arg2)
-
-	var ret0 gextras.Objector
-	var ret1 SocketConnection
-
-	ret0 = externglib.Take(unsafe.Pointer(arg2.Native()))
-
-	ret1 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0, ret1
-}
-
 // AcceptSocket blocks waiting for a client to connect to any of the sockets
 // added to the listener. Returns the #GSocket that was accepted.
 //
@@ -36764,27 +32280,6 @@ func (listener socketListener) AcceptSocketAsync(cancellable Cancellable, callba
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_socket_listener_accept_socket_async(arg0, arg1, arg2)
-}
-
-// AcceptSocketFinish finishes an async accept operation. See
-// g_socket_listener_accept_socket_async()
-func (listener socketListener) AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket) {
-	var arg0 *C.GSocketListener
-	var arg1 *C.GAsyncResult
-	var arg2 **C.GObject // out
-
-	arg0 = (*C.GSocketListener)(listener.Native())
-
-	ret := C.g_socket_listener_accept_socket_finish(arg0, arg1, &arg2)
-
-	var ret0 gextras.Objector
-	var ret1 Socket
-
-	ret0 = externglib.Take(unsafe.Pointer(arg2.Native()))
-
-	ret1 = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0, ret1
 }
 
 // AddAddress creates a socket of type @type and protocol @protocol, binds
@@ -37178,9 +32673,6 @@ type Subprocess interface {
 	// CommunicateAsync asynchronous version of g_subprocess_communicate().
 	// Complete invocation with g_subprocess_communicate_finish().
 	CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
-	// CommunicateFinish: complete an invocation of
-	// g_subprocess_communicate_async().
-	CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
@@ -37192,9 +32684,6 @@ type Subprocess interface {
 	// g_subprocess_communicate_utf8(). Complete invocation with
 	// g_subprocess_communicate_utf8_finish().
 	CommunicateUTF8Async(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback)
-	// CommunicateUTF8Finish: complete an invocation of
-	// g_subprocess_communicate_utf8_async().
-	CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, ok bool)
 	// ForceExit: use an operating-system specific method to attempt an
 	// immediate, forceful termination of the process. There is no mechanism to
 	// determine whether or not the request itself was successful; however, you
@@ -37304,12 +32793,6 @@ type Subprocess interface {
 	//
 	// This is the asynchronous version of g_subprocess_wait_check().
 	WaitCheckAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// WaitCheckFinish collects the result of a previous call to
-	// g_subprocess_wait_check_async().
-	WaitCheckFinish(result AsyncResult) bool
-	// WaitFinish collects the result of a previous call to
-	// g_subprocess_wait_async().
-	WaitFinish(result AsyncResult) bool
 }
 
 type subprocess struct {
@@ -37430,31 +32913,6 @@ func (subprocess subprocess) CommunicateAsync(stdinBuf *glib.Bytes, cancellable 
 	C.g_subprocess_communicate_async(arg0, arg1, arg2, arg3)
 }
 
-// CommunicateFinish: complete an invocation of
-// g_subprocess_communicate_async().
-func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool) {
-	var arg0 *C.GSubprocess
-	var arg1 *C.GAsyncResult
-	var arg2 **C.GBytes // out
-	var arg3 **C.GBytes // out
-
-	arg0 = (*C.GSubprocess)(subprocess.Native())
-
-	ret := C.g_subprocess_communicate_finish(arg0, arg1, &arg2, &arg3)
-
-	var ret0 **glib.Bytes
-	var ret1 **glib.Bytes
-	var ret2 bool
-
-	ret0 = glib.WrapBytes(arg2)
-
-	ret1 = glib.WrapBytes(arg3)
-
-	ret2 = gextras.Gobool(ret)
-
-	return ret0, ret1, ret2
-}
-
 // CommunicateUTF8: like g_subprocess_communicate(), but validates the
 // output of the process as UTF-8, and returns it as a regular NUL
 // terminated string.
@@ -37507,33 +32965,6 @@ func (subprocess subprocess) CommunicateUTF8Async(stdinBuf string, cancellable C
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_subprocess_communicate_utf8_async(arg0, arg1, arg2, arg3)
-}
-
-// CommunicateUTF8Finish: complete an invocation of
-// g_subprocess_communicate_utf8_async().
-func (subprocess subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, ok bool) {
-	var arg0 *C.GSubprocess
-	var arg1 *C.GAsyncResult
-	var arg2 **C.char // out
-	var arg3 **C.char // out
-
-	arg0 = (*C.GSubprocess)(subprocess.Native())
-
-	ret := C.g_subprocess_communicate_utf8_finish(arg0, arg1, &arg2, &arg3)
-
-	var ret0 string
-	var ret1 string
-	var ret2 bool
-
-	ret0 = C.GoString(arg2)
-	C.free(unsafe.Pointer(arg2))
-
-	ret1 = C.GoString(arg3)
-	C.free(unsafe.Pointer(arg3))
-
-	ret2 = gextras.Gobool(ret)
-
-	return ret0, ret1, ret2
 }
 
 // ForceExit: use an operating-system specific method to attempt an
@@ -37843,40 +33274,6 @@ func (subprocess subprocess) WaitCheckAsync(cancellable Cancellable, callback As
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_subprocess_wait_check_async(arg0, arg1, arg2)
-}
-
-// WaitCheckFinish collects the result of a previous call to
-// g_subprocess_wait_check_async().
-func (subprocess subprocess) WaitCheckFinish(result AsyncResult) bool {
-	var arg0 *C.GSubprocess
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSubprocess)(subprocess.Native())
-
-	ret := C.g_subprocess_wait_check_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// WaitFinish collects the result of a previous call to
-// g_subprocess_wait_async().
-func (subprocess subprocess) WaitFinish(result AsyncResult) bool {
-	var arg0 *C.GSubprocess
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GSubprocess)(subprocess.Native())
-
-	ret := C.g_subprocess_wait_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // SubprocessLauncher: this class contains a set of options for launching child
@@ -38674,17 +34071,6 @@ type Task interface {
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
 	PropagatePointer() interface{}
-	// PropagateValue gets the result of @task as a #GValue, and transfers
-	// ownership of that value to the caller. As with g_task_return_value(),
-	// this is a generic low-level method; g_task_propagate_pointer() and the
-	// like will usually be more useful for C code.
-	//
-	// If the task resulted in an error, or was cancelled, then this will
-	// instead set @error and return false.
-	//
-	// Since this method transfers ownership of the return value (or error) to
-	// the caller, you may only call it once.
-	PropagateValue() (value externglib.Value, ok bool)
 	// ReturnBoolean sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
@@ -39030,7 +34416,7 @@ func (task task) SourceTag() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -39045,7 +34431,7 @@ func (task task) TaskData() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
 }
@@ -39124,35 +34510,9 @@ func (task task) PropagatePointer() interface{} {
 
 	var ret0 interface{}
 
-	ret0 = box.Get(uintptr(ret))
+	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
-}
-
-// PropagateValue gets the result of @task as a #GValue, and transfers
-// ownership of that value to the caller. As with g_task_return_value(),
-// this is a generic low-level method; g_task_propagate_pointer() and the
-// like will usually be more useful for C code.
-//
-// If the task resulted in an error, or was cancelled, then this will
-// instead set @error and return false.
-//
-// Since this method transfers ownership of the return value (or error) to
-// the caller, you may only call it once.
-func (task task) PropagateValue() (value externglib.Value, ok bool) {
-	var arg0 *C.GTask
-	var arg1 *C.GValue // out
-
-	arg0 = (*C.GTask)(task.Native())
-
-	ret := C.g_task_propagate_value(arg0, &arg1)
-
-	var ret0 *externglib.Value
-	var ret1 bool
-
-	ret1 = gextras.Gobool(ret)
-
-	return ret0, ret1
 }
 
 // ReturnBoolean sets @task's result to @result and completes the task (see
@@ -39855,38 +35215,6 @@ func NewThemedIcon(iconname string) ThemedIcon {
 	return ret0
 }
 
-// NewThemedIconFromNames constructs a class ThemedIcon.
-func NewThemedIconFromNames(iconnames []string) ThemedIcon {
-	var arg1 **C.char
-	var arg2 C.int
-
-	{
-		var dst []*C.gchar
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(iconnames))))
-		sliceHeader.Len = len(iconnames)
-		sliceHeader.Cap = len(iconnames)
-		defer C.free(unsafe.Pointer(sliceHeader.Data))
-
-		for i := 0; i < len(iconnames); i++ {
-			src := iconnames[i]
-			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(dst[i]))
-		}
-
-		arg1 = (**C.char)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(iconnames)
-	}
-
-	ret := C.g_themed_icon_new_from_names(arg1, arg2)
-
-	var ret0 ThemedIcon
-
-	ret0 = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
 func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	var arg1 *C.char
@@ -40277,9 +35605,6 @@ type TLSConnection interface {
 	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
 	// g_tls_connection_handshake() for more information.
 	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-	// g_tls_connection_handshake() for more information.
-	HandshakeFinish(result AsyncResult) bool
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
 	// advertise that the caller is willing to speak on this connection. The
 	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
@@ -40661,23 +35986,6 @@ func (conn tlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellable
 	C.g_tls_connection_handshake_async(arg0, arg1, arg2, arg3)
 }
 
-// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-// g_tls_connection_handshake() for more information.
-func (conn tlsConnection) HandshakeFinish(result AsyncResult) bool {
-	var arg0 *C.GTlsConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsConnection)(conn.Native())
-
-	ret := C.g_tls_connection_handshake_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // SetAdvertisedProtocols sets the list of application-layer protocols to
 // advertise that the caller is willing to speak on this connection. The
 // Application-Layer Protocol Negotiation (ALPN) extension will be used to
@@ -40865,13 +36173,6 @@ type TLSDatabase interface {
 	// its handle in the database. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
 	LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-	// certificate by its handle. See
-	// g_tls_database_lookup_certificate_for_handle() for more information.
-	//
-	// If the handle is no longer valid, or does not point to a certificate in
-	// this database, then nil will be returned.
-	LookupCertificateForHandleFinish(result AsyncResult) TLSCertificate
 	// LookupCertificateIssuer: look up the issuer of @certificate in the
 	// database.
 	//
@@ -40886,10 +36187,6 @@ type TLSDatabase interface {
 	// @certificate in the database. See
 	// g_tls_database_lookup_certificate_issuer() for more information.
 	LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-	// operation. See g_tls_database_lookup_certificate_issuer() for more
-	// information.
-	LookupCertificateIssuerFinish(result AsyncResult) TLSCertificate
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
 	// the database.
 	//
@@ -40905,10 +36202,6 @@ type TLSDatabase interface {
 	// the duration of of this asynchronous operation. The byte array should not
 	// be modified during this time.
 	LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
-	// certificates. See g_tls_database_lookup_certificates_issued_by() for more
-	// information.
-	LookupCertificatesIssuedByFinish(result AsyncResult) *glib.List
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
 	//
@@ -40950,17 +36243,6 @@ type TLSDatabase interface {
 	// chain after looking up and adding any missing certificates to the chain.
 	// See g_tls_database_verify_chain() for more information.
 	VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// VerifyChainFinish: finish an asynchronous verify chain operation. See
-	// g_tls_database_verify_chain() for more information.
-	//
-	// If @chain is found to be valid, then the return value will be 0. If
-	// @chain is found to be invalid, then the return value will indicate the
-	// problems found. If the function is unable to determine whether @chain is
-	// valid or not (eg, because @cancellable is triggered before it completes)
-	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
-	// will be set accordingly. @error is not set when @chain is successfully
-	// analyzed but found to be invalid.
-	VerifyChainFinish(result AsyncResult) TLSCertificateFlags
 }
 
 type tlsDatabase struct {
@@ -41063,27 +36345,6 @@ func (self tlsDatabase) LookupCertificateForHandleAsync(handle string, interacti
 	C.g_tls_database_lookup_certificate_for_handle_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
-// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-// certificate by its handle. See
-// g_tls_database_lookup_certificate_for_handle() for more information.
-//
-// If the handle is no longer valid, or does not point to a certificate in
-// this database, then nil will be returned.
-func (self tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) TLSCertificate {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsDatabase)(self.Native())
-
-	ret := C.g_tls_database_lookup_certificate_for_handle_finish(arg0, arg1)
-
-	var ret0 TLSCertificate
-
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // LookupCertificateIssuer: look up the issuer of @certificate in the
 // database.
 //
@@ -41135,24 +36396,6 @@ func (self tlsDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate,
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_tls_database_lookup_certificate_issuer_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
-// operation. See g_tls_database_lookup_certificate_issuer() for more
-// information.
-func (self tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) TLSCertificate {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsDatabase)(self.Native())
-
-	ret := C.g_tls_database_lookup_certificate_issuer_finish(arg0, arg1)
-
-	var ret0 TLSCertificate
-
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // LookupCertificatesIssuedBy: look up certificates issued by this issuer in
@@ -41211,24 +36454,6 @@ func (self tlsDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, inte
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_tls_database_lookup_certificates_issued_by_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
-// certificates. See g_tls_database_lookup_certificates_issued_by() for more
-// information.
-func (self tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) *glib.List {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsDatabase)(self.Native())
-
-	ret := C.g_tls_database_lookup_certificates_issued_by_finish(arg0, arg1)
-
-	var ret0 *glib.List
-
-	ret0 = glib.WrapList(ret)
-
-	return ret0
 }
 
 // VerifyChain determines the validity of a certificate chain after looking
@@ -41319,31 +36544,6 @@ func (self tlsDatabase) VerifyChainAsync(chain TLSCertificate, purpose string, i
 	C.g_tls_database_verify_chain_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
-// VerifyChainFinish: finish an asynchronous verify chain operation. See
-// g_tls_database_verify_chain() for more information.
-//
-// If @chain is found to be valid, then the return value will be 0. If
-// @chain is found to be invalid, then the return value will indicate the
-// problems found. If the function is unable to determine whether @chain is
-// valid or not (eg, because @cancellable is triggered before it completes)
-// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
-// will be set accordingly. @error is not set when @chain is successfully
-// analyzed but found to be invalid.
-func (self tlsDatabase) VerifyChainFinish(result AsyncResult) TLSCertificateFlags {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsDatabase)(self.Native())
-
-	ret := C.g_tls_database_verify_chain_finish(arg0, arg1)
-
-	var ret0 TLSCertificateFlags
-
-	ret0 = TLSCertificateFlags(ret)
-
-	return ret0
-}
-
 // TLSInteraction provides a mechanism for the TLS connection and database code
 // to interact with the user. It can be used to ask the user for passwords.
 //
@@ -41398,17 +36598,6 @@ type TLSInteraction interface {
 	//
 	// Certain implementations may not support immediate cancellation.
 	AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback)
-	// AskPasswordFinish: complete an ask password user interaction request.
-	// This should be once the g_tls_interaction_ask_password_async() completion
-	// callback is called.
-	//
-	// If G_TLS_INTERACTION_HANDLED is returned, then the Password passed to
-	// g_tls_interaction_ask_password() will have its password filled in.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code.
-	AskPasswordFinish(result AsyncResult) TLSInteractionResult
 	// InvokeAskPassword: invoke the interaction to ask the user for a password.
 	// It invokes this interaction in the main loop, specifically the Context
 	// returned by g_main_context_get_thread_default() when the interaction is
@@ -41481,19 +36670,6 @@ type TLSInteraction interface {
 	// abort this certificate request, which will usually abort the TLS
 	// connection.
 	RequestCertificateAsync(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	// RequestCertificateFinish: complete a request certificate user interaction
-	// request. This should be once the
-	// g_tls_interaction_request_certificate_async() completion callback is
-	// called.
-	//
-	// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
-	// g_tls_interaction_request_certificate_async() will have had its
-	// Connection:certificate filled in.
-	//
-	// If the interaction is cancelled by the cancellation object, or by the
-	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-	// contains a G_IO_ERROR_CANCELLED error code.
-	RequestCertificateFinish(result AsyncResult) TLSInteractionResult
 }
 
 type tlsInteraction struct {
@@ -41573,31 +36749,6 @@ func (interaction tlsInteraction) AskPasswordAsync(password TLSPassword, cancell
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_tls_interaction_ask_password_async(arg0, arg1, arg2, arg3)
-}
-
-// AskPasswordFinish: complete an ask password user interaction request.
-// This should be once the g_tls_interaction_ask_password_async() completion
-// callback is called.
-//
-// If G_TLS_INTERACTION_HANDLED is returned, then the Password passed to
-// g_tls_interaction_ask_password() will have its password filled in.
-//
-// If the interaction is cancelled by the cancellation object, or by the
-// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-// contains a G_IO_ERROR_CANCELLED error code.
-func (interaction tlsInteraction) AskPasswordFinish(result AsyncResult) TLSInteractionResult {
-	var arg0 *C.GTlsInteraction
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsInteraction)(interaction.Native())
-
-	ret := C.g_tls_interaction_ask_password_finish(arg0, arg1)
-
-	var ret0 TLSInteractionResult
-
-	ret0 = TLSInteractionResult(ret)
-
-	return ret0
 }
 
 // InvokeAskPassword: invoke the interaction to ask the user for a password.
@@ -41743,33 +36894,6 @@ func (interaction tlsInteraction) RequestCertificateAsync(connection TLSConnecti
 	C.g_tls_interaction_request_certificate_async(arg0, arg1, arg2, arg3, arg4)
 }
 
-// RequestCertificateFinish: complete a request certificate user interaction
-// request. This should be once the
-// g_tls_interaction_request_certificate_async() completion callback is
-// called.
-//
-// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
-// g_tls_interaction_request_certificate_async() will have had its
-// Connection:certificate filled in.
-//
-// If the interaction is cancelled by the cancellation object, or by the
-// user then G_TLS_INTERACTION_FAILED will be returned with an error that
-// contains a G_IO_ERROR_CANCELLED error code.
-func (interaction tlsInteraction) RequestCertificateFinish(result AsyncResult) TLSInteractionResult {
-	var arg0 *C.GTlsInteraction
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GTlsInteraction)(interaction.Native())
-
-	ret := C.g_tls_interaction_request_certificate_finish(arg0, arg1)
-
-	var ret0 TLSInteractionResult
-
-	ret0 = TLSInteractionResult(ret)
-
-	return ret0
-}
-
 // TLSPassword holds a password used in TLS.
 type TLSPassword interface {
 	gextras.Objector
@@ -41793,24 +36917,6 @@ type TLSPassword interface {
 	SetDescription(description string)
 	// SetFlags: set flags about the password.
 	SetFlags(flags TLSPasswordFlags)
-	// SetValue: set the value for this password. The @value will be copied by
-	// the password object.
-	//
-	// Specify the @length, for a non-nul-terminated password. Pass -1 as
-	// @length if using a nul-terminated password, and @length will be
-	// calculated automatically. (Note that the terminating nul is not
-	// considered part of the password in this case.)
-	SetValue(value []byte)
-	// SetValueFull: provide the value for this password.
-	//
-	// The @value will be owned by the password object, and later freed using
-	// the @destroy function callback.
-	//
-	// Specify the @length, for a non-nul-terminated password. Pass -1 as
-	// @length if using a nul-terminated password, and @length will be
-	// calculated automatically. (Note that the terminating nul is not
-	// considered part of the password in this case.)
-	SetValueFull(value []byte)
 	// SetWarning: set a user readable translated warning. Usually this warning
 	// is a representation of the password flags returned from
 	// g_tls_password_get_flags().
@@ -41943,53 +37049,6 @@ func (password tlsPassword) SetFlags(flags TLSPasswordFlags) {
 	C.g_tls_password_set_flags(arg0, arg1)
 }
 
-// SetValue: set the value for this password. The @value will be copied by
-// the password object.
-//
-// Specify the @length, for a non-nul-terminated password. Pass -1 as
-// @length if using a nul-terminated password, and @length will be
-// calculated automatically. (Note that the terminating nul is not
-// considered part of the password in this case.)
-func (password tlsPassword) SetValue(value []byte) {
-	var arg0 *C.GTlsPassword
-	var arg1 *C.guchar
-	var arg2 C.gssize
-
-	arg0 = (*C.GTlsPassword)(password.Native())
-	{
-		arg1 = (*C.guchar)(&value[0])
-		arg2 = len(value)
-		defer runtime.KeepAlive(value)
-	}
-
-	C.g_tls_password_set_value(arg0, arg1, arg2)
-}
-
-// SetValueFull: provide the value for this password.
-//
-// The @value will be owned by the password object, and later freed using
-// the @destroy function callback.
-//
-// Specify the @length, for a non-nul-terminated password. Pass -1 as
-// @length if using a nul-terminated password, and @length will be
-// calculated automatically. (Note that the terminating nul is not
-// considered part of the password in this case.)
-func (password tlsPassword) SetValueFull(value []byte) {
-	var arg0 *C.GTlsPassword
-	var arg1 *C.guchar
-	var arg2 C.gssize
-	var arg3 C.GDestroyNotify
-
-	arg0 = (*C.GTlsPassword)(password.Native())
-	{
-		arg1 = (*C.guchar)(&value[0])
-		arg2 = len(value)
-		defer runtime.KeepAlive(value)
-	}
-
-	C.g_tls_password_set_value_full(arg0, arg1, arg2, arg3)
-}
-
 // SetWarning: set a user readable translated warning. Usually this warning
 // is a representation of the password flags returned from
 // g_tls_password_get_flags().
@@ -42042,9 +37101,6 @@ type UnixConnection interface {
 	// call g_unix_connection_receive_credentials_finish() to get the result of
 	// the operation.
 	ReceiveCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-	// operation started with g_unix_connection_receive_credentials_async().
-	ReceiveCredentialsFinish(result AsyncResult) Credentials
 	// ReceiveFd receives a file descriptor from the sending end of the
 	// connection. The sending end has to call g_unix_connection_send_fd() for
 	// this to work.
@@ -42079,9 +37135,6 @@ type UnixConnection interface {
 	// call g_unix_connection_send_credentials_finish() to get the result of the
 	// operation.
 	SendCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	// SendCredentialsFinish finishes an asynchronous send credentials operation
-	// started with g_unix_connection_send_credentials_async().
-	SendCredentialsFinish(result AsyncResult) bool
 	// SendFd passes a file descriptor to the receiving side of the connection.
 	// The receiving end has to call g_unix_connection_receive_fd() to accept
 	// the file descriptor.
@@ -42160,23 +37213,6 @@ func (connection unixConnection) ReceiveCredentialsAsync(cancellable Cancellable
 	C.g_unix_connection_receive_credentials_async(arg0, arg1, arg2)
 }
 
-// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-// operation started with g_unix_connection_receive_credentials_async().
-func (connection unixConnection) ReceiveCredentialsFinish(result AsyncResult) Credentials {
-	var arg0 *C.GUnixConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GUnixConnection)(connection.Native())
-
-	ret := C.g_unix_connection_receive_credentials_finish(arg0, arg1)
-
-	var ret0 Credentials
-
-	ret0 = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // ReceiveFd receives a file descriptor from the sending end of the
 // connection. The sending end has to call g_unix_connection_send_fd() for
 // this to work.
@@ -42251,23 +37287,6 @@ func (connection unixConnection) SendCredentialsAsync(cancellable Cancellable, c
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	C.g_unix_connection_send_credentials_async(arg0, arg1, arg2)
-}
-
-// SendCredentialsFinish finishes an asynchronous send credentials operation
-// started with g_unix_connection_send_credentials_async().
-func (connection unixConnection) SendCredentialsFinish(result AsyncResult) bool {
-	var arg0 *C.GUnixConnection
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GUnixConnection)(connection.Native())
-
-	ret := C.g_unix_connection_send_credentials_finish(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
 }
 
 // SendFd passes a file descriptor to the receiving side of the connection.
@@ -42460,26 +37479,6 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 func NewUnixFDList() UnixFDList {
 
 	ret := C.g_unix_fd_list_new()
-
-	var ret0 UnixFDList
-
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewUnixFDListFromArray constructs a class UnixFDList.
-func NewUnixFDListFromArray(fds []int) UnixFDList {
-	var arg1 *C.gint
-	var arg2 C.gint
-
-	{
-		arg1 = (*C.gint)(&fds[0])
-		arg2 = len(fds)
-		defer runtime.KeepAlive(fds)
-	}
-
-	ret := C.g_unix_fd_list_new_from_array(arg1, arg2)
 
 	var ret0 UnixFDList
 
@@ -43123,48 +38122,6 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 	return ret0
 }
 
-// NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
-func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
-	var arg1 *C.gchar
-	var arg2 C.gint
-
-	{
-		arg1 = (*C.gchar)(&path[0])
-		arg2 = len(path)
-		defer runtime.KeepAlive(path)
-	}
-
-	ret := C.g_unix_socket_address_new_abstract(arg1, arg2)
-
-	var ret0 UnixSocketAddress
-
-	ret0 = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewUnixSocketAddressWithType constructs a class UnixSocketAddress.
-func NewUnixSocketAddressWithType(path []byte, _type UnixSocketAddressType) UnixSocketAddress {
-	var arg1 *C.gchar
-	var arg2 C.gint
-	var arg3 C.GUnixSocketAddressType
-
-	{
-		arg1 = (*C.gchar)(&path[0])
-		arg2 = len(path)
-		defer runtime.KeepAlive(path)
-	}
-	arg3 = (C.GUnixSocketAddressType)(_type)
-
-	ret := C.g_unix_socket_address_new_with_type(arg1, arg2, arg3)
-
-	var ret0 UnixSocketAddress
-
-	ret0 = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // AddressType gets @address's type.
 func (address unixSocketAddress) AddressType() UnixSocketAddressType {
 	var arg0 *C.GUnixSocketAddress
@@ -43236,22 +38193,10 @@ func (address unixSocketAddress) PathLen() uint {
 type Vfs interface {
 	gextras.Objector
 
-	// FileForPath gets a #GFile for @path.
-	FileForPath(path string) File
-	// FileForURI gets a #GFile for @uri.
-	//
-	// This operation never fails, but the returned object might not support any
-	// I/O operation if the URI is malformed or if the URI scheme is not
-	// supported.
-	FileForURI(uri string) File
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
-	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the @parse_name cannot be parsed by the
-	// #GVfs module.
-	ParseName(parseName string) File
 	// RegisterURIScheme registers @uri_func and @parse_name_func as the #GFile
 	// URI and parse name lookup functions for URIs with a scheme matching
 	// @scheme. Note that @scheme is registered only within the running
@@ -43295,42 +38240,6 @@ func marshalVfs(p uintptr) (interface{}, error) {
 	return WrapVfs(obj), nil
 }
 
-// FileForPath gets a #GFile for @path.
-func (vfs vfs) FileForPath(path string) File {
-	var arg0 *C.GVfs
-	var arg1 *C.char
-
-	arg0 = (*C.GVfs)(vfs.Native())
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_vfs_get_file_for_path(arg0, arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
-// FileForURI gets a #GFile for @uri.
-//
-// This operation never fails, but the returned object might not support any
-// I/O operation if the URI is malformed or if the URI scheme is not
-// supported.
-func (vfs vfs) FileForURI(uri string) File {
-	var arg0 *C.GVfs
-	var arg1 *C.char
-
-	arg0 = (*C.GVfs)(vfs.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_vfs_get_file_for_uri(arg0, arg1)
-
-	var ret0 File
-
-	return ret0
-}
-
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
 func (vfs vfs) SupportedURISchemes() []string {
 	var arg0 *C.GVfs
@@ -43368,24 +38277,6 @@ func (vfs vfs) IsActive() bool {
 	var ret0 bool
 
 	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// ParseName: this operation never fails, but the returned object might not
-// support any I/O operations if the @parse_name cannot be parsed by the
-// #GVfs module.
-func (vfs vfs) ParseName(parseName string) File {
-	var arg0 *C.GVfs
-	var arg1 *C.char
-
-	arg0 = (*C.GVfs)(vfs.Native())
-	arg1 = (*C.gchar)(C.CString(parseName))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_vfs_parse_name(arg0, arg1)
-
-	var ret0 File
 
 	return ret0
 }
@@ -43471,16 +38362,11 @@ type VolumeMonitor interface {
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
 	ConnectedDrives() *glib.List
-	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) Mount
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
 	Mounts() *glib.List
-	// VolumeForUUID finds a #GVolume object by its UUID (see
-	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) Volume
 	// Volumes gets a list of the volumes on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -43522,22 +38408,6 @@ func (volumeMonitor volumeMonitor) ConnectedDrives() *glib.List {
 	return ret0
 }
 
-// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-func (volumeMonitor volumeMonitor) MountForUUID(uuid string) Mount {
-	var arg0 *C.GVolumeMonitor
-	var arg1 *C.char
-
-	arg0 = (*C.GVolumeMonitor)(volumeMonitor.Native())
-	arg1 = (*C.gchar)(C.CString(uuid))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_volume_monitor_get_mount_for_uuid(arg0, arg1)
-
-	var ret0 Mount
-
-	return ret0
-}
-
 // Mounts gets a list of the mounts on the system.
 //
 // The returned list should be freed with g_list_free(), after its elements
@@ -43552,23 +38422,6 @@ func (volumeMonitor volumeMonitor) Mounts() *glib.List {
 	var ret0 *glib.List
 
 	ret0 = glib.WrapList(ret)
-
-	return ret0
-}
-
-// VolumeForUUID finds a #GVolume object by its UUID (see
-// g_volume_get_uuid())
-func (volumeMonitor volumeMonitor) VolumeForUUID(uuid string) Volume {
-	var arg0 *C.GVolumeMonitor
-	var arg1 *C.char
-
-	arg0 = (*C.GVolumeMonitor)(volumeMonitor.Native())
-	arg1 = (*C.gchar)(C.CString(uuid))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.g_volume_monitor_get_volume_for_uuid(arg0, arg1)
-
-	var ret0 Volume
 
 	return ret0
 }

@@ -88,28 +88,6 @@ func ContextGetResolution(context pango.Context) float64 {
 	return ret0
 }
 
-// ContextGetShapeRenderer sets callback function for context to use for
-// rendering attributes of type PANGO_ATTR_SHAPE.
-//
-// See `PangoCairoShapeRendererFunc` for details.
-//
-// Retrieves callback function and associated user data for rendering attributes
-// of type PANGO_ATTR_SHAPE as set by
-// [func@PangoCairo.context_set_shape_renderer], if any.
-func ContextGetShapeRenderer(context pango.Context, data interface{}) ShapeRendererFunc {
-	var arg1 *C.PangoContext
-	var arg2 *C.gpointer
-
-	arg1 = (*C.PangoContext)(context.Native())
-	arg2 = C.gpointer(box.Assign(data))
-
-	ret := C.pango_cairo_context_get_shape_renderer(arg1, arg2)
-
-	var ret0 ShapeRendererFunc
-
-	return ret0
-}
-
 // ContextSetFontOptions sets the font options used when rendering text with
 // this context.
 //
@@ -459,25 +437,4 @@ func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
 	arg2 = (*C.PangoLayout)(layout.Native())
 
 	C.pango_cairo_update_layout(arg1, arg2)
-}
-
-// Font: `PangoCairoFont` is an interface exported by fonts for use with Cairo.
-//
-// The actual type of the font will depend on the particular font technology
-// Cairo was compiled to use.
-type Font interface {
-	ScaledFont() *cairo.ScaledFont
-}
-
-// FontMap: `PangoCairoFontMap` is an interface exported by font maps for use
-// with Cairo.
-//
-// The actual type of the font map will depend on the particular font technology
-// Cairo was compiled to use.
-type FontMap interface {
-	CreateContext() pango.Context
-	FontType() cairo.FontType
-	Resolution() float64
-	SetDefault()
-	SetResolution(dpi float64)
 }

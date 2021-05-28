@@ -16,8 +16,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
 //
-// extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
 // // extern void callbackDelete(gpointer);
+// extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
 import "C"
 
 //export callbackDelete

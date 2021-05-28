@@ -49,7 +49,7 @@ var recordTmpl = newGoTemplate(`
 	}
 
 	{{ range .Constructors }}
-	{{ if $.Callable.UseConstructor . }}
+	{{ if $.UseConstructor . $.GoName }}
 	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
@@ -126,10 +126,15 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 	return true
 }
 
-func (rg *recordGenerator) CtorName(ctor gir.Constructor) string {
-	name := SnakeToGo(true, ctor.Name)
-	name = strings.TrimPrefix(name, "New")
-	return "New" + rg.GoName + name
+func (rg *recordGenerator) UseConstructor(ctor gir.Constructor, className string) bool {
+	if !rg.Callable.Use(ctor.CallableAttrs) {
+		return false
+	}
+
+	rg.Callable.Name = strings.TrimPrefix(rg.Callable.Name, "New")
+	rg.Callable.Name = "New" + rg.GoName + rg.Callable.Name
+
+	return true
 }
 
 func (rg *recordGenerator) methods() []callableGenerator {

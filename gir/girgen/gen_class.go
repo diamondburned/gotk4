@@ -1,6 +1,8 @@
 package girgen
 
 import (
+	"strings"
+
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
 )
@@ -32,7 +34,7 @@ var classTmpl = newGoTemplate(`
 	}
 
 	{{ range .Constructors }}
-	{{ if $.Callable.UseConstructor . }}
+	{{ if $.UseConstructor . }}
 	// {{ $.Callable.Name }} constructs a class {{ $.InterfaceName }}.
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
@@ -116,6 +118,65 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	}
 
 	return true
+}
+
+// bodgeClassCtor bodges the given constructor to return exactly the class type
+// instead of any other. It returns the original ctor if the conditions don't
+// match for bodging.
+//
+// We have to do this to work around some cases where widget constructors would
+// return the widget class instead of the actual class.
+func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
+	if ctor.ReturnValue == nil || ctor.ReturnValue.Type == nil {
+		return ctor
+	}
+
+	retVal := *ctor.ReturnValue
+	retTyp := *retVal.AnyType.Type
+
+	retTyp.Name = class.Name
+	retTyp.CType = class.CType
+	retTyp.Introspectable = class.Introspectable
+	retTyp.AnyType = gir.AnyType{}
+
+	retVal.AnyType.Type = &retTyp
+	ctor.ReturnValue = &retVal
+
+	ctor.Name = strings.TrimPrefix(ctor.Name, "new")
+	ctor.Name = strings.TrimPrefix(ctor.Name, "_")
+	if ctor.Name != "" {
+		ctor.Name = "_" + ctor.Name
+	}
+
+	ctor.Name = "new_" + class.Name + ctor.Name
+
+	return ctor
+}
+
+func (cg *classGenerator) UseConstructor(ctor gir.Constructor) bool {
+	ctor = bodgeClassCtor(cg.Class, ctor)
+	return cg.Callable.Use(ctor.CallableAttrs)
+
+	// if !cg.Callable.Use(ctor.CallableAttrs) {
+	// 	return false
+	// }
+
+	// cg.Callable.Name = strings.TrimPrefix(cg.Callable.Name, "New")
+	// cg.Callable.Name = "New" + className + cg.Callable.Name
+
+	// // Assume that constructors always return only the current class with no
+	// // output parameters, so we don't use FnReturns.
+
+	// arg, argOk := cg.Ng.FnArgs(ctor.CallableAttrs)
+	// ret, retOk := cg.Ng.ResolveAnyType(ctor.ReturnValue.AnyType, true)
+
+	// if !argOk || !retOk {
+	// 	return false
+	// }
+
+	// cg.Callable.Tail = fmt.Sprintf("(%s) %s", arg, ret)
+
+	// return true
 }
 
 // Wrap returns the wrap string around the given variable name of type

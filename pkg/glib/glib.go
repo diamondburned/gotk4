@@ -17343,8 +17343,8 @@ func (b *Bytes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// New_ constructs a struct Bytes.
-func New_(data []byte) *Bytes {
+// NewBytes constructs a struct Bytes.
+func NewBytes(data []byte) *Bytes {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 
@@ -17363,8 +17363,8 @@ func New_(data []byte) *Bytes {
 	return ret0
 }
 
-// New_Static constructs a struct Bytes.
-func New_Static(data []byte) *Bytes {
+// NewBytesStatic constructs a struct Bytes.
+func NewBytesStatic(data []byte) *Bytes {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 
@@ -17393,8 +17393,8 @@ func New_Static(data []byte) *Bytes {
 	return ret0
 }
 
-// New_Take constructs a struct Bytes.
-func New_Take(data []byte) *Bytes {
+// NewBytesTake constructs a struct Bytes.
+func NewBytesTake(data []byte) *Bytes {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 
@@ -17423,8 +17423,8 @@ func New_Take(data []byte) *Bytes {
 	return ret0
 }
 
-// New_WithFreeFunc constructs a struct Bytes.
-func New_WithFreeFunc(data []byte, userData interface{}) *Bytes {
+// NewBytesWithFreeFunc constructs a struct Bytes.
+func NewBytesWithFreeFunc(data []byte, userData interface{}) *Bytes {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 	var arg4 C.gpointer
@@ -17472,8 +17472,8 @@ func (c *Checksum) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// New_ constructs a struct Checksum.
-func New_(checksumType ChecksumType) *Checksum {
+// NewChecksum constructs a struct Checksum.
+func NewChecksum(checksumType ChecksumType) *Checksum {
 	var arg1 C.GChecksumType
 
 	arg1 = (C.GChecksumType)(checksumType)
@@ -17608,8 +17608,8 @@ func (d *Date) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// New_ constructs a struct Date.
-func New_() *Date {
+// NewDate constructs a struct Date.
+func NewDate() *Date {
 
 	ret := C.g_date_new()
 
@@ -17620,8 +17620,8 @@ func New_() *Date {
 	return ret0
 }
 
-// New_DMY constructs a struct Date.
-func New_DMY(day DateDay, month DateMonth, year DateYear) *Date {
+// NewDateDMY constructs a struct Date.
+func NewDateDMY(day DateDay, month DateMonth, year DateYear) *Date {
 	var arg1 C.GDateDay
 	var arg2 C.GDateMonth
 	var arg3 C.GDateYear
@@ -17637,8 +17637,8 @@ func New_DMY(day DateDay, month DateMonth, year DateYear) *Date {
 	return ret0
 }
 
-// New_Julian constructs a struct Date.
-func New_Julian(julianDay uint32) *Date {
+// NewDateJulian constructs a struct Date.
+func NewDateJulian(julianDay uint32) *Date {
 	var arg1 C.guint32
 
 	arg1 = C.guint32(julianDay)
@@ -17720,8 +17720,8 @@ func (d *DateTime) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// New_ constructs a struct DateTime.
-func New_(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+// NewDateTime constructs a struct DateTime.
+func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
 	var arg1 *C.GTimeZone
 	var arg2 C.gint
 	var arg3 C.gint
@@ -17747,8 +17747,8 @@ func New_(tz *TimeZone, year int, month int, day int, hour int, minute int, seco
 	return ret0
 }
 
-// New_FromIso8601 constructs a struct DateTime.
-func New_FromIso8601(text string, defaultTz *TimeZone) *DateTime {
+// NewDateTimeFromIso8601 constructs a struct DateTime.
+func NewDateTimeFromIso8601(text string, defaultTz *TimeZone) *DateTime {
 	var arg1 *C.gchar
 	var arg2 *C.GTimeZone
 
@@ -17765,8 +17765,8 @@ func New_FromIso8601(text string, defaultTz *TimeZone) *DateTime {
 	return ret0
 }
 
-// New_FromTimevalLocal constructs a struct DateTime.
-func New_FromTimevalLocal(tv *TimeVal) *DateTime {
+// NewDateTimeFromTimevalLocal constructs a struct DateTime.
+func NewDateTimeFromTimevalLocal(tv *TimeVal) *DateTime {
 	var arg1 *C.GTimeVal
 
 	arg1 = (*C.GTimeVal)(tv.Native())
@@ -17780,8 +17780,8 @@ func New_FromTimevalLocal(tv *TimeVal) *DateTime {
 	return ret0
 }
 
-// New_FromTimevalUtc constructs a struct DateTime.
-func New_FromTimevalUtc(tv *TimeVal) *DateTime {
+// NewDateTimeFromTimevalUtc constructs a struct DateTime.
+func NewDateTimeFromTimevalUtc(tv *TimeVal) *DateTime {
 	var arg1 *C.GTimeVal
 
 	arg1 = (*C.GTimeVal)(tv.Native())
@@ -17795,8 +17795,8 @@ func New_FromTimevalUtc(tv *TimeVal) *DateTime {
 	return ret0
 }
 
-// New_FromUnixLocal constructs a struct DateTime.
-func New_FromUnixLocal(t int64) *DateTime {
+// NewDateTimeFromUnixLocal constructs a struct DateTime.
+func NewDateTimeFromUnixLocal(t int64) *DateTime {
 	var arg1 C.gint64
 
 	arg1 = C.gint64(t)
@@ -17810,8 +17810,8 @@ func New_FromUnixLocal(t int64) *DateTime {
 	return ret0
 }
 
-// New_FromUnixUtc constructs a struct DateTime.
-func New_FromUnixUtc(t int64) *DateTime {
+// NewDateTimeFromUnixUtc constructs a struct DateTime.
+func NewDateTimeFromUnixUtc(t int64) *DateTime {
 	var arg1 C.gint64
 
 	arg1 = C.gint64(t)
@@ -17825,8 +17825,8 @@ func New_FromUnixUtc(t int64) *DateTime {
 	return ret0
 }
 
-// New_Local constructs a struct DateTime.
-func New_Local(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+// NewDateTimeLocal constructs a struct DateTime.
+func NewDateTimeLocal(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gint
@@ -17850,8 +17850,8 @@ func New_Local(year int, month int, day int, hour int, minute int, seconds float
 	return ret0
 }
 
-// New_Now constructs a struct DateTime.
-func New_Now(tz *TimeZone) *DateTime {
+// NewDateTimeNow constructs a struct DateTime.
+func NewDateTimeNow(tz *TimeZone) *DateTime {
 	var arg1 *C.GTimeZone
 
 	arg1 = (*C.GTimeZone)(tz.Native())
@@ -17865,8 +17865,8 @@ func New_Now(tz *TimeZone) *DateTime {
 	return ret0
 }
 
-// New_NowLocal constructs a struct DateTime.
-func New_NowLocal() *DateTime {
+// NewDateTimeNowLocal constructs a struct DateTime.
+func NewDateTimeNowLocal() *DateTime {
 
 	ret := C.g_date_time_new_now_local()
 
@@ -17877,8 +17877,8 @@ func New_NowLocal() *DateTime {
 	return ret0
 }
 
-// New_NowUtc constructs a struct DateTime.
-func New_NowUtc() *DateTime {
+// NewDateTimeNowUtc constructs a struct DateTime.
+func NewDateTimeNowUtc() *DateTime {
 
 	ret := C.g_date_time_new_now_utc()
 
@@ -17889,8 +17889,8 @@ func New_NowUtc() *DateTime {
 	return ret0
 }
 
-// New_Utc constructs a struct DateTime.
-func New_Utc(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+// NewDateTimeUtc constructs a struct DateTime.
+func NewDateTimeUtc(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gint
@@ -17979,8 +17979,8 @@ func (e *Error) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// New_Literal constructs a struct Error.
-func New_Literal(domain Quark, code int, message string) *Error {
+// NewErrorLiteral constructs a struct Error.
+func NewErrorLiteral(domain Quark, code int, message string) *Error {
 	var arg1 C.GQuark
 	var arg2 C.gint
 	var arg3 *C.gchar
@@ -18255,8 +18255,8 @@ func (i *IOChannel) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// New_File constructs a struct IOChannel.
-func New_File(filename string, mode string) *IOChannel {
+// NewIOChannelFile constructs a struct IOChannel.
+func NewIOChannelFile(filename string, mode string) *IOChannel {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -18274,8 +18274,8 @@ func New_File(filename string, mode string) *IOChannel {
 	return ret0
 }
 
-// New_Unix constructs a struct IOChannel.
-func New_Unix(fd int) *IOChannel {
+// NewIOChannelUnix constructs a struct IOChannel.
+func NewIOChannelUnix(fd int) *IOChannel {
 	var arg1 C.int
 
 	arg1 = C.int(fd)
@@ -18315,8 +18315,8 @@ func (k *KeyFile) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
 }
 
-// New_ constructs a struct KeyFile.
-func New_() *KeyFile {
+// NewKeyFile constructs a struct KeyFile.
+func NewKeyFile() *KeyFile {
 
 	ret := C.g_key_file_new()
 
@@ -18451,8 +18451,8 @@ func (m *MainContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// New_ constructs a struct MainContext.
-func New_() *MainContext {
+// NewMainContext constructs a struct MainContext.
+func NewMainContext() *MainContext {
 
 	ret := C.g_main_context_new()
 
@@ -18489,8 +18489,8 @@ func (m *MainLoop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// New_ constructs a struct MainLoop.
-func New_(context *MainContext, isRunning bool) *MainLoop {
+// NewMainLoop constructs a struct MainLoop.
+func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var arg1 *C.GMainContext
 	var arg2 C.gboolean
 
@@ -18533,8 +18533,8 @@ func (m *MappedFile) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// New_ constructs a struct MappedFile.
-func New_(filename string, writable bool) *MappedFile {
+// NewMappedFile constructs a struct MappedFile.
+func NewMappedFile(filename string, writable bool) *MappedFile {
 	var arg1 *C.gchar
 	var arg2 C.gboolean
 
@@ -18551,8 +18551,8 @@ func New_(filename string, writable bool) *MappedFile {
 	return ret0
 }
 
-// New_FromFd constructs a struct MappedFile.
-func New_FromFd(fd int, writable bool) *MappedFile {
+// NewMappedFileFromFd constructs a struct MappedFile.
+func NewMappedFileFromFd(fd int, writable bool) *MappedFile {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -18596,8 +18596,8 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// New_ constructs a struct MarkupParseContext.
-func New_(parser *MarkupParser, flags MarkupParseFlags, userData interface{}) *MarkupParseContext {
+// NewMarkupParseContext constructs a struct MarkupParseContext.
+func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData interface{}) *MarkupParseContext {
 	var arg1 *C.GMarkupParser
 	var arg2 C.GMarkupParseFlags
 	var arg3 C.gpointer
@@ -18849,8 +18849,8 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// New_ constructs a struct OptionGroup.
-func New_(name string, description string, helpDescription string, userData interface{}) *OptionGroup {
+// NewOptionGroup constructs a struct OptionGroup.
+func NewOptionGroup(name string, description string, helpDescription string, userData interface{}) *OptionGroup {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -19250,8 +19250,8 @@ func (r *Regex) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// New_ constructs a struct Regex.
-func New_(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex {
+// NewRegex constructs a struct Regex.
+func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex {
 	var arg1 *C.gchar
 	var arg2 C.GRegexCompileFlags
 	var arg3 C.GRegexMatchFlags
@@ -19663,8 +19663,8 @@ func (s *Source) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_ constructs a struct Source.
-func New_(sourceFuncs *SourceFuncs, structSize uint) *Source {
+// NewSource constructs a struct Source.
+func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var arg1 *C.GSourceFuncs
 	var arg2 C.guint
 
@@ -19909,8 +19909,8 @@ func (t *Thread) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct Thread.
-func New_(name string, _func ThreadFunc) *Thread {
+// NewThread constructs a struct Thread.
+func NewThread(name string, _func ThreadFunc) *Thread {
 	var arg1 *C.gchar
 	var arg2 C.GThreadFunc
 	arg3 := C.gpointer(box.Assign(data))
@@ -19928,8 +19928,8 @@ func New_(name string, _func ThreadFunc) *Thread {
 	return ret0
 }
 
-// New_Try constructs a struct Thread.
-func New_Try(name string, _func ThreadFunc) *Thread {
+// NewThreadTry constructs a struct Thread.
+func NewThreadTry(name string, _func ThreadFunc) *Thread {
 	var arg1 *C.gchar
 	var arg2 C.GThreadFunc
 	arg3 := C.gpointer(box.Assign(data))
@@ -20058,8 +20058,8 @@ func (t *TimeZone) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct TimeZone.
-func New_(identifier string) *TimeZone {
+// NewTimeZone constructs a struct TimeZone.
+func NewTimeZone(identifier string) *TimeZone {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(identifier))
@@ -20074,8 +20074,8 @@ func New_(identifier string) *TimeZone {
 	return ret0
 }
 
-// New_Local constructs a struct TimeZone.
-func New_Local() *TimeZone {
+// NewTimeZoneLocal constructs a struct TimeZone.
+func NewTimeZoneLocal() *TimeZone {
 
 	ret := C.g_time_zone_new_local()
 
@@ -20086,8 +20086,8 @@ func New_Local() *TimeZone {
 	return ret0
 }
 
-// New_Offset constructs a struct TimeZone.
-func New_Offset(seconds int32) *TimeZone {
+// NewTimeZoneOffset constructs a struct TimeZone.
+func NewTimeZoneOffset(seconds int32) *TimeZone {
 	var arg1 C.gint32
 
 	arg1 = C.gint32(seconds)
@@ -20101,8 +20101,8 @@ func New_Offset(seconds int32) *TimeZone {
 	return ret0
 }
 
-// New_Utc constructs a struct TimeZone.
-func New_Utc() *TimeZone {
+// NewTimeZoneUtc constructs a struct TimeZone.
+func NewTimeZoneUtc() *TimeZone {
 
 	ret := C.g_time_zone_new_utc()
 
@@ -20560,8 +20560,8 @@ func (v *Variant) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_Array constructs a struct Variant.
-func New_Array(childType *VariantType, children []*Variant) *Variant {
+// NewVariantArray constructs a struct Variant.
+func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var arg1 *C.GVariantType
 	var arg2 **C.GVariant
 	var arg3 C.gsize
@@ -20593,8 +20593,8 @@ func New_Array(childType *VariantType, children []*Variant) *Variant {
 	return ret0
 }
 
-// New_Boolean constructs a struct Variant.
-func New_Boolean(value bool) *Variant {
+// NewVariantBoolean constructs a struct Variant.
+func NewVariantBoolean(value bool) *Variant {
 	var arg1 C.gboolean
 
 	arg1 = gextras.Cbool(value)
@@ -20608,8 +20608,8 @@ func New_Boolean(value bool) *Variant {
 	return ret0
 }
 
-// New_Byte constructs a struct Variant.
-func New_Byte(value byte) *Variant {
+// NewVariantByte constructs a struct Variant.
+func NewVariantByte(value byte) *Variant {
 	var arg1 C.guint8
 
 	arg1 = C.guint8(value)
@@ -20623,8 +20623,8 @@ func New_Byte(value byte) *Variant {
 	return ret0
 }
 
-// New_Bytestring constructs a struct Variant.
-func New_Bytestring(string []byte) *Variant {
+// NewVariantBytestring constructs a struct Variant.
+func NewVariantBytestring(string []byte) *Variant {
 	var arg1 *C.gchar
 
 	{
@@ -20640,8 +20640,8 @@ func New_Bytestring(string []byte) *Variant {
 	return ret0
 }
 
-// New_BytestringArray constructs a struct Variant.
-func New_BytestringArray(strv []string) *Variant {
+// NewVariantBytestringArray constructs a struct Variant.
+func NewVariantBytestringArray(strv []string) *Variant {
 	var arg1 **C.gchar
 	var arg2 C.gssize
 
@@ -20672,8 +20672,8 @@ func New_BytestringArray(strv []string) *Variant {
 	return ret0
 }
 
-// New_DictEntry constructs a struct Variant.
-func New_DictEntry(key *Variant, value *Variant) *Variant {
+// NewVariantDictEntry constructs a struct Variant.
+func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 	var arg1 *C.GVariant
 	var arg2 *C.GVariant
 
@@ -20689,8 +20689,8 @@ func New_DictEntry(key *Variant, value *Variant) *Variant {
 	return ret0
 }
 
-// New_Double constructs a struct Variant.
-func New_Double(value float64) *Variant {
+// NewVariantDouble constructs a struct Variant.
+func NewVariantDouble(value float64) *Variant {
 	var arg1 C.gdouble
 
 	arg1 = C.gdouble(value)
@@ -20704,8 +20704,8 @@ func New_Double(value float64) *Variant {
 	return ret0
 }
 
-// New_FixedArray constructs a struct Variant.
-func New_FixedArray(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant {
+// NewVariantFixedArray constructs a struct Variant.
+func NewVariantFixedArray(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant {
 	var arg1 *C.GVariantType
 	var arg2 C.gpointer
 	var arg3 C.gsize
@@ -20725,8 +20725,8 @@ func New_FixedArray(elementType *VariantType, elements interface{}, nElements ui
 	return ret0
 }
 
-// New_FromBytes constructs a struct Variant.
-func New_FromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Variant {
+// NewVariantFromBytes constructs a struct Variant.
+func NewVariantFromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Variant {
 	var arg1 *C.GVariantType
 	var arg2 *C.GBytes
 	var arg3 C.gboolean
@@ -20744,8 +20744,8 @@ func New_FromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Variant {
 	return ret0
 }
 
-// New_FromData constructs a struct Variant.
-func New_FromData(_type *VariantType, data []byte, trusted bool, userData interface{}) *Variant {
+// NewVariantFromData constructs a struct Variant.
+func NewVariantFromData(_type *VariantType, data []byte, trusted bool, userData interface{}) *Variant {
 	var arg1 *C.GVariantType
 	var arg2 C.gpointer
 	var arg3 C.gsize
@@ -20770,8 +20770,8 @@ func New_FromData(_type *VariantType, data []byte, trusted bool, userData interf
 	return ret0
 }
 
-// New_Handle constructs a struct Variant.
-func New_Handle(value int32) *Variant {
+// NewVariantHandle constructs a struct Variant.
+func NewVariantHandle(value int32) *Variant {
 	var arg1 C.gint32
 
 	arg1 = C.gint32(value)
@@ -20785,8 +20785,8 @@ func New_Handle(value int32) *Variant {
 	return ret0
 }
 
-// New_Int16 constructs a struct Variant.
-func New_Int16(value int16) *Variant {
+// NewVariantInt16 constructs a struct Variant.
+func NewVariantInt16(value int16) *Variant {
 	var arg1 C.gint16
 
 	arg1 = C.gint16(value)
@@ -20800,8 +20800,8 @@ func New_Int16(value int16) *Variant {
 	return ret0
 }
 
-// New_Int32 constructs a struct Variant.
-func New_Int32(value int32) *Variant {
+// NewVariantInt32 constructs a struct Variant.
+func NewVariantInt32(value int32) *Variant {
 	var arg1 C.gint32
 
 	arg1 = C.gint32(value)
@@ -20815,8 +20815,8 @@ func New_Int32(value int32) *Variant {
 	return ret0
 }
 
-// New_Int64 constructs a struct Variant.
-func New_Int64(value int64) *Variant {
+// NewVariantInt64 constructs a struct Variant.
+func NewVariantInt64(value int64) *Variant {
 	var arg1 C.gint64
 
 	arg1 = C.gint64(value)
@@ -20830,8 +20830,8 @@ func New_Int64(value int64) *Variant {
 	return ret0
 }
 
-// New_Maybe constructs a struct Variant.
-func New_Maybe(childType *VariantType, child *Variant) *Variant {
+// NewVariantMaybe constructs a struct Variant.
+func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 	var arg1 *C.GVariantType
 	var arg2 *C.GVariant
 
@@ -20847,8 +20847,8 @@ func New_Maybe(childType *VariantType, child *Variant) *Variant {
 	return ret0
 }
 
-// New_ObjectPath constructs a struct Variant.
-func New_ObjectPath(objectPath string) *Variant {
+// NewVariantObjectPath constructs a struct Variant.
+func NewVariantObjectPath(objectPath string) *Variant {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(objectPath))
@@ -20863,8 +20863,8 @@ func New_ObjectPath(objectPath string) *Variant {
 	return ret0
 }
 
-// New_Objv constructs a struct Variant.
-func New_Objv(strv []string) *Variant {
+// NewVariantObjv constructs a struct Variant.
+func NewVariantObjv(strv []string) *Variant {
 	var arg1 **C.gchar
 	var arg2 C.gssize
 
@@ -20895,8 +20895,8 @@ func New_Objv(strv []string) *Variant {
 	return ret0
 }
 
-// New_Signature constructs a struct Variant.
-func New_Signature(signature string) *Variant {
+// NewVariantSignature constructs a struct Variant.
+func NewVariantSignature(signature string) *Variant {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(signature))
@@ -20911,8 +20911,8 @@ func New_Signature(signature string) *Variant {
 	return ret0
 }
 
-// New_String constructs a struct Variant.
-func New_String(string string) *Variant {
+// NewVariantString constructs a struct Variant.
+func NewVariantString(string string) *Variant {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(string))
@@ -20927,8 +20927,8 @@ func New_String(string string) *Variant {
 	return ret0
 }
 
-// New_Strv constructs a struct Variant.
-func New_Strv(strv []string) *Variant {
+// NewVariantStrv constructs a struct Variant.
+func NewVariantStrv(strv []string) *Variant {
 	var arg1 **C.gchar
 	var arg2 C.gssize
 
@@ -20959,8 +20959,8 @@ func New_Strv(strv []string) *Variant {
 	return ret0
 }
 
-// New_TakeString constructs a struct Variant.
-func New_TakeString(string string) *Variant {
+// NewVariantTakeString constructs a struct Variant.
+func NewVariantTakeString(string string) *Variant {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(string))
@@ -20975,8 +20975,8 @@ func New_TakeString(string string) *Variant {
 	return ret0
 }
 
-// New_Tuple constructs a struct Variant.
-func New_Tuple(children []*Variant) *Variant {
+// NewVariantTuple constructs a struct Variant.
+func NewVariantTuple(children []*Variant) *Variant {
 	var arg1 **C.GVariant
 	var arg2 C.gsize
 
@@ -21006,8 +21006,8 @@ func New_Tuple(children []*Variant) *Variant {
 	return ret0
 }
 
-// New_Uint16 constructs a struct Variant.
-func New_Uint16(value uint16) *Variant {
+// NewVariantUint16 constructs a struct Variant.
+func NewVariantUint16(value uint16) *Variant {
 	var arg1 C.guint16
 
 	arg1 = C.guint16(value)
@@ -21021,8 +21021,8 @@ func New_Uint16(value uint16) *Variant {
 	return ret0
 }
 
-// New_Uint32 constructs a struct Variant.
-func New_Uint32(value uint32) *Variant {
+// NewVariantUint32 constructs a struct Variant.
+func NewVariantUint32(value uint32) *Variant {
 	var arg1 C.guint32
 
 	arg1 = C.guint32(value)
@@ -21036,8 +21036,8 @@ func New_Uint32(value uint32) *Variant {
 	return ret0
 }
 
-// New_Uint64 constructs a struct Variant.
-func New_Uint64(value uint64) *Variant {
+// NewVariantUint64 constructs a struct Variant.
+func NewVariantUint64(value uint64) *Variant {
 	var arg1 C.guint64
 
 	arg1 = C.guint64(value)
@@ -21051,8 +21051,8 @@ func New_Uint64(value uint64) *Variant {
 	return ret0
 }
 
-// New_Variant constructs a struct Variant.
-func New_Variant(value *Variant) *Variant {
+// NewVariantVariant constructs a struct Variant.
+func NewVariantVariant(value *Variant) *Variant {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(value.Native())
@@ -21098,8 +21098,8 @@ func (v *VariantBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_ constructs a struct VariantBuilder.
-func New_(_type *VariantType) *VariantBuilder {
+// NewVariantBuilder constructs a struct VariantBuilder.
+func NewVariantBuilder(_type *VariantType) *VariantBuilder {
 	var arg1 *C.GVariantType
 
 	arg1 = (*C.GVariantType)(_type.Native())
@@ -21195,8 +21195,8 @@ func (v *VariantDict) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_ constructs a struct VariantDict.
-func New_(fromAsv *Variant) *VariantDict {
+// NewVariantDict constructs a struct VariantDict.
+func NewVariantDict(fromAsv *Variant) *VariantDict {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(fromAsv.Native())
@@ -21393,8 +21393,8 @@ func (v *VariantType) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_ constructs a struct VariantType.
-func New_(typeString string) *VariantType {
+// NewVariantType constructs a struct VariantType.
+func NewVariantType(typeString string) *VariantType {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(typeString))
@@ -21409,8 +21409,8 @@ func New_(typeString string) *VariantType {
 	return ret0
 }
 
-// New_Array constructs a struct VariantType.
-func New_Array(element *VariantType) *VariantType {
+// NewVariantTypeArray constructs a struct VariantType.
+func NewVariantTypeArray(element *VariantType) *VariantType {
 	var arg1 *C.GVariantType
 
 	arg1 = (*C.GVariantType)(element.Native())
@@ -21424,8 +21424,8 @@ func New_Array(element *VariantType) *VariantType {
 	return ret0
 }
 
-// New_DictEntry constructs a struct VariantType.
-func New_DictEntry(key *VariantType, value *VariantType) *VariantType {
+// NewVariantTypeDictEntry constructs a struct VariantType.
+func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType {
 	var arg1 *C.GVariantType
 	var arg2 *C.GVariantType
 
@@ -21441,8 +21441,8 @@ func New_DictEntry(key *VariantType, value *VariantType) *VariantType {
 	return ret0
 }
 
-// New_Maybe constructs a struct VariantType.
-func New_Maybe(element *VariantType) *VariantType {
+// NewVariantTypeMaybe constructs a struct VariantType.
+func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	var arg1 *C.GVariantType
 
 	arg1 = (*C.GVariantType)(element.Native())
@@ -21456,8 +21456,8 @@ func New_Maybe(element *VariantType) *VariantType {
 	return ret0
 }
 
-// New_Tuple constructs a struct VariantType.
-func New_Tuple(items []*VariantType) *VariantType {
+// NewVariantTypeTuple constructs a struct VariantType.
+func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	var arg1 **C.GVariantType
 	var arg2 C.gint
 

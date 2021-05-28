@@ -286,14 +286,14 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return WrapFontMap(obj), nil
 }
 
-// NewPango constructs a class FontMap.
-func NewPango() pango.FontMap {
+// NewFontMap constructs a class FontMap.
+func NewFontMap() FontMap {
 
 	ret := C.pango_ft2_font_map_new()
 
-	var ret0 pango.FontMap
+	var ret0 FontMap
 
-	ret0 = pango.WrapFontMap(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFontMap(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }

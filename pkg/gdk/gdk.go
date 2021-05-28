@@ -1003,8 +1003,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 	C.gdk_cairo_set_source_pixbuf(arg1, arg2, arg3, arg4)
 }
 
-// CairoSetSourceRgba sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
+// CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
+func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var arg1 *C.cairo_t
 	var arg2 *C.GdkRGBA
 
@@ -1760,8 +1760,8 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// New_ constructs a struct ContentFormats.
-func New_(mimeTypes []string) *ContentFormats {
+// NewContentFormats constructs a struct ContentFormats.
+func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var arg1 **C.char
 	var arg2 C.guint
 
@@ -1792,8 +1792,8 @@ func New_(mimeTypes []string) *ContentFormats {
 	return ret0
 }
 
-// New_ForGType constructs a struct ContentFormats.
-func New_ForGType(_type externglib.Type) *ContentFormats {
+// NewContentFormatsForGType constructs a struct ContentFormats.
+func NewContentFormatsForGType(_type externglib.Type) *ContentFormats {
 	var arg1 C.GType
 
 	arg1 = C.GType(_type)
@@ -1834,8 +1834,8 @@ func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// New_ constructs a struct ContentFormatsBuilder.
-func New_() *ContentFormatsBuilder {
+// NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
+func NewContentFormatsBuilder() *ContentFormatsBuilder {
 
 	ret := C.gdk_content_formats_builder_new()
 
@@ -2004,8 +2004,8 @@ func (p *PopupLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// New_ constructs a struct PopupLayout.
-func New_(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout {
+// NewPopupLayout constructs a struct PopupLayout.
+func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout {
 	var arg1 *C.GdkRectangle
 	var arg2 C.GdkGravity
 	var arg3 C.GdkGravity
@@ -2206,8 +2206,8 @@ func (t *ToplevelLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct ToplevelLayout.
-func New_() *ToplevelLayout {
+// NewToplevelLayout constructs a struct ToplevelLayout.
+func NewToplevelLayout() *ToplevelLayout {
 
 	ret := C.gdk_toplevel_layout_new()
 
@@ -3192,8 +3192,8 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 	return WrapContentProvider(obj), nil
 }
 
-// New_ForBytes constructs a class ContentProvider.
-func New_ForBytes(mimeType string, bytes *glib.Bytes) ContentProvider {
+// NewContentProviderForBytes constructs a class ContentProvider.
+func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) ContentProvider {
 	var arg1 *C.char
 	var arg2 *C.GBytes
 
@@ -3210,8 +3210,8 @@ func New_ForBytes(mimeType string, bytes *glib.Bytes) ContentProvider {
 	return ret0
 }
 
-// New_ForValue constructs a class ContentProvider.
-func New_ForValue(value *externglib.Value) ContentProvider {
+// NewContentProviderForValue constructs a class ContentProvider.
+func NewContentProviderForValue(value *externglib.Value) ContentProvider {
 	var arg1 *C.GValue
 
 	arg1 = (*C.GValue)(value.GValue)
@@ -3225,8 +3225,8 @@ func New_ForValue(value *externglib.Value) ContentProvider {
 	return ret0
 }
 
-// New_Union constructs a class ContentProvider.
-func New_Union(providers []ContentProvider) ContentProvider {
+// NewContentProviderUnion constructs a class ContentProvider.
+func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 	var arg1 **C.GdkContentProvider
 	var arg2 C.gsize
 
@@ -3703,8 +3703,8 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	return WrapCursor(obj), nil
 }
 
-// New_FromName constructs a class Cursor.
-func New_FromName(name string, fallback Cursor) Cursor {
+// NewCursorFromName constructs a class Cursor.
+func NewCursorFromName(name string, fallback Cursor) Cursor {
 	var arg1 *C.char
 	var arg2 *C.GdkCursor
 
@@ -3721,8 +3721,8 @@ func New_FromName(name string, fallback Cursor) Cursor {
 	return ret0
 }
 
-// New_FromTexture constructs a class Cursor.
-func New_FromTexture(texture Texture, hotspotX int, hotspotY int, fallback Cursor) Cursor {
+// NewCursorFromTexture constructs a class Cursor.
+func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback Cursor) Cursor {
 	var arg1 *C.GdkTexture
 	var arg2 C.int
 	var arg3 C.int
@@ -4471,7 +4471,7 @@ type Display interface {
 	//
 	// On modern displays, this value is always true.
 	IsComposited() bool
-	// IsRgba returns whether surfaces on this @display are created with an
+	// IsRGBA returns whether surfaces on this @display are created with an
 	// alpha channel.
 	//
 	// Even if a true is returned, it is possible that the surface’s alpha
@@ -4481,7 +4481,7 @@ type Display interface {
 	// gdk_display_is_composited() to check if that is the case.
 	//
 	// On modern displays, this value is always true.
-	IsRgba() bool
+	IsRGBA() bool
 	// ListSeats returns the list of seats known to @display.
 	ListSeats() *glib.List
 	// MapKeycode returns the keyvals bound to @keycode. The Nth KeymapKey in
@@ -4820,7 +4820,7 @@ func (display display) IsComposited() bool {
 	return ret0
 }
 
-// IsRgba returns whether surfaces on this @display are created with an
+// IsRGBA returns whether surfaces on this @display are created with an
 // alpha channel.
 //
 // Even if a true is returned, it is possible that the surface’s alpha
@@ -4830,7 +4830,7 @@ func (display display) IsComposited() bool {
 // gdk_display_is_composited() to check if that is the case.
 //
 // On modern displays, this value is always true.
-func (display display) IsRgba() bool {
+func (display display) IsRGBA() bool {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(display.Native())
@@ -6682,8 +6682,8 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return WrapGLTexture(obj), nil
 }
 
-// New_ constructs a class GLTexture.
-func New_(context GLContext, id uint, width int, height int, data interface{}) Texture {
+// NewGLTexture constructs a class GLTexture.
+func NewGLTexture(context GLContext, id uint, width int, height int, data interface{}) GLTexture {
 	var arg1 *C.GdkGLContext
 	var arg2 C.guint
 	var arg3 C.int
@@ -6699,9 +6699,9 @@ func New_(context GLContext, id uint, width int, height int, data interface{}) T
 
 	ret := C.gdk_gl_texture_new(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	var ret0 Texture
+	var ret0 GLTexture
 
-	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGLTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -6976,8 +6976,8 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	return WrapMemoryTexture(obj), nil
 }
 
-// New_ constructs a class MemoryTexture.
-func New_(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) Texture {
+// NewMemoryTexture constructs a class MemoryTexture.
+func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) MemoryTexture {
 	var arg1 C.int
 	var arg2 C.int
 	var arg3 C.GdkMemoryFormat
@@ -6992,9 +6992,9 @@ func New_(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride 
 
 	ret := C.gdk_memory_texture_new(arg1, arg2, arg3, arg4, arg5)
 
-	var ret0 Texture
+	var ret0 MemoryTexture
 
-	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMemoryTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -7794,8 +7794,8 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return WrapSurface(obj), nil
 }
 
-// New_Popup constructs a class Surface.
-func New_Popup(parent Surface, autohide bool) Surface {
+// NewSurfacePopup constructs a class Surface.
+func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	var arg1 *C.GdkSurface
 	var arg2 C.gboolean
 
@@ -7811,8 +7811,8 @@ func New_Popup(parent Surface, autohide bool) Surface {
 	return ret0
 }
 
-// New_Toplevel constructs a class Surface.
-func New_Toplevel(display Display) Surface {
+// NewSurfaceToplevel constructs a class Surface.
+func NewSurfaceToplevel(display Display) Surface {
 	var arg1 *C.GdkDisplay
 
 	arg1 = (*C.GdkDisplay)(display.Native())
@@ -8322,8 +8322,8 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return WrapTexture(obj), nil
 }
 
-// New_ForPixbuf constructs a class Texture.
-func New_ForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
+// NewTextureForPixbuf constructs a class Texture.
+func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	var arg1 *C.GdkPixbuf
 
 	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
@@ -8337,8 +8337,8 @@ func New_ForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	return ret0
 }
 
-// New_FromFile constructs a class Texture.
-func New_FromFile(file gio.File) Texture {
+// NewTextureFromFile constructs a class Texture.
+func NewTextureFromFile(file gio.File) Texture {
 	var arg1 *C.GFile
 
 	ret := C.gdk_texture_new_from_file(arg1)
@@ -8350,8 +8350,8 @@ func New_FromFile(file gio.File) Texture {
 	return ret0
 }
 
-// New_FromResource constructs a class Texture.
-func New_FromResource(resourcePath string) Texture {
+// NewTextureFromResource constructs a class Texture.
+func NewTextureFromResource(resourcePath string) Texture {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))

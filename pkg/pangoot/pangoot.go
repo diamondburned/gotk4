@@ -154,8 +154,8 @@ func (b *Buffer) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// New_ constructs a struct Buffer.
-func New_(font pangofc.Font) *Buffer {
+// NewBuffer constructs a struct Buffer.
+func NewBuffer(font pangofc.Font) *Buffer {
 	var arg1 *C.PangoFcFont
 
 	arg1 = (*C.PangoFcFont)(font.Native())
@@ -643,8 +643,8 @@ func marshalRuleset(p uintptr) (interface{}, error) {
 	return WrapRuleset(obj), nil
 }
 
-// New_ constructs a class Ruleset.
-func New_(info Info) Ruleset {
+// NewRuleset constructs a class Ruleset.
+func NewRuleset(info Info) Ruleset {
 	var arg1 *C.PangoOTInfo
 
 	arg1 = (*C.PangoOTInfo)(info.Native())
@@ -658,8 +658,8 @@ func New_(info Info) Ruleset {
 	return ret0
 }
 
-// New_For constructs a class Ruleset.
-func New_For(info Info, script pango.Script, language *pango.Language) Ruleset {
+// NewRulesetFor constructs a class Ruleset.
+func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Ruleset {
 	var arg1 *C.PangoOTInfo
 	var arg2 C.PangoScript
 	var arg3 *C.PangoLanguage
@@ -677,8 +677,8 @@ func New_For(info Info, script pango.Script, language *pango.Language) Ruleset {
 	return ret0
 }
 
-// New_FromDescription constructs a class Ruleset.
-func New_FromDescription(info Info, desc *RulesetDescription) Ruleset {
+// NewRulesetFromDescription constructs a class Ruleset.
+func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
 	var arg1 *C.PangoOTInfo
 	var arg2 *C.PangoOTRulesetDescription
 

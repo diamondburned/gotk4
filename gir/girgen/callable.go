@@ -33,21 +33,6 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	return true
 }
 
-// UseConstructor sets cg.Callable to be generating the given constructor.
-func (cg *callableGenerator) UseConstructor(ctor gir.Constructor) bool {
-	if !cg.Use(ctor.CallableAttrs) {
-		return false
-	}
-
-	// Assumption: all constructors are for types of the same package.
-	ctorType, _ := gir.SplitGIRType(ctor.ReturnValue.Type.Name)
-
-	cg.Name = strings.TrimPrefix(cg.Name, "New")
-	cg.Name = "New" + SnakeToGo(true, ctorType) + cg.Name
-
-	return true
-}
-
 // Recv returns the receiver variable name. This method should only be called
 // for methods.
 func (cg *callableGenerator) Recv() string {

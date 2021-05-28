@@ -577,8 +577,8 @@ func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_ constructs a struct ShaderArgsBuilder.
-func New_(shader GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder {
+// NewShaderArgsBuilder constructs a struct ShaderArgsBuilder.
+func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder {
 	var arg1 *C.GskGLShader
 	var arg2 *C.GBytes
 
@@ -672,8 +672,8 @@ func (t *Transform) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct Transform.
-func New_() *Transform {
+// NewTransform constructs a struct Transform.
+func NewTransform() *Transform {
 
 	ret := C.gsk_transform_new()
 
@@ -713,8 +713,8 @@ func marshalBlendNode(p uintptr) (interface{}, error) {
 	return WrapBlendNode(obj), nil
 }
 
-// New_ constructs a class BlendNode.
-func New_(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendNode {
+// NewBlendNode constructs a class BlendNode.
+func NewBlendNode(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.GskRenderNode
 	var arg3 C.GskBlendMode
@@ -803,8 +803,8 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 	return WrapBlurNode(obj), nil
 }
 
-// New_ constructs a class BlurNode.
-func New_(child RenderNode, radius float32) BlurNode {
+// NewBlurNode constructs a class BlurNode.
+func NewBlurNode(child RenderNode, radius float32) BlurNode {
 	var arg1 *C.GskRenderNode
 	var arg2 C.float
 
@@ -878,8 +878,8 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 	return WrapBorderNode(obj), nil
 }
 
-// New_ constructs a class BorderNode.
-func New_(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode {
+// NewBorderNode constructs a class BorderNode.
+func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode {
 	var arg1 *C.GskRoundedRect
 	var arg2 *C.float
 	var arg3 *C.GdkRGBA
@@ -982,8 +982,8 @@ func marshalCairoNode(p uintptr) (interface{}, error) {
 	return WrapCairoNode(obj), nil
 }
 
-// New_ constructs a class CairoNode.
-func New_(bounds *graphene.Rect) CairoNode {
+// NewCairoNode constructs a class CairoNode.
+func NewCairoNode(bounds *graphene.Rect) CairoNode {
 	var arg1 *C.graphene_rect_t
 
 	arg1 = (*C.graphene_rect_t)(bounds.Native())
@@ -1051,14 +1051,14 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	return WrapCairoRenderer(obj), nil
 }
 
-// New_ constructs a class CairoRenderer.
-func New_() Renderer {
+// NewCairoRenderer constructs a class CairoRenderer.
+func NewCairoRenderer() CairoRenderer {
 
 	ret := C.gsk_cairo_renderer_new()
 
-	var ret0 Renderer
+	var ret0 CairoRenderer
 
-	ret0 = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -1089,8 +1089,8 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 	return WrapClipNode(obj), nil
 }
 
-// New_ constructs a class ClipNode.
-func New_(child RenderNode, clip *graphene.Rect) ClipNode {
+// NewClipNode constructs a class ClipNode.
+func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.graphene_rect_t
 
@@ -1166,8 +1166,8 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	return WrapColorMatrixNode(obj), nil
 }
 
-// New_ constructs a class ColorMatrixNode.
-func New_(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode {
+// NewColorMatrixNode constructs a class ColorMatrixNode.
+func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.graphene_matrix_t
 	var arg3 *C.graphene_vec4_t
@@ -1255,8 +1255,8 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 	return WrapColorNode(obj), nil
 }
 
-// New_ constructs a class ColorNode.
-func New_(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode {
+// NewColorNode constructs a class ColorNode.
+func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode {
 	var arg1 *C.GdkRGBA
 	var arg2 *C.graphene_rect_t
 
@@ -1317,8 +1317,8 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	return WrapConicGradientNode(obj), nil
 }
 
-// New_ constructs a class ConicGradientNode.
-func New_(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode {
+// NewConicGradientNode constructs a class ConicGradientNode.
+func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode {
 	var arg1 *C.graphene_rect_t
 	var arg2 *C.graphene_point_t
 	var arg3 C.float
@@ -1450,8 +1450,8 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 	return WrapContainerNode(obj), nil
 }
 
-// New_ constructs a class ContainerNode.
-func New_(children []RenderNode) ContainerNode {
+// NewContainerNode constructs a class ContainerNode.
+func NewContainerNode(children []RenderNode) ContainerNode {
 	var arg1 **C.GskRenderNode
 	var arg2 C.guint
 
@@ -1542,8 +1542,8 @@ func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	return WrapCrossFadeNode(obj), nil
 }
 
-// New_ constructs a class CrossFadeNode.
-func New_(start RenderNode, end RenderNode, progress float32) CrossFadeNode {
+// NewCrossFadeNode constructs a class CrossFadeNode.
+func NewCrossFadeNode(start RenderNode, end RenderNode, progress float32) CrossFadeNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.GskRenderNode
 	var arg3 C.float
@@ -1634,8 +1634,8 @@ func marshalDebugNode(p uintptr) (interface{}, error) {
 	return WrapDebugNode(obj), nil
 }
 
-// New_ constructs a class DebugNode.
-func New_(child RenderNode, message string) DebugNode {
+// NewDebugNode constructs a class DebugNode.
+func NewDebugNode(child RenderNode, message string) DebugNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.char
 
@@ -1701,14 +1701,14 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 	return WrapGLRenderer(obj), nil
 }
 
-// New_ constructs a class GLRenderer.
-func New_() Renderer {
+// NewGLRenderer constructs a class GLRenderer.
+func NewGLRenderer() GLRenderer {
 
 	ret := C.gsk_gl_renderer_new()
 
-	var ret0 Renderer
+	var ret0 GLRenderer
 
-	ret0 = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGLRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -1794,8 +1794,8 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 	return WrapGLShader(obj), nil
 }
 
-// New_FromBytes constructs a class GLShader.
-func New_FromBytes(sourcecode *glib.Bytes) GLShader {
+// NewGLShaderFromBytes constructs a class GLShader.
+func NewGLShaderFromBytes(sourcecode *glib.Bytes) GLShader {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(sourcecode.Native())
@@ -1809,8 +1809,8 @@ func New_FromBytes(sourcecode *glib.Bytes) GLShader {
 	return ret0
 }
 
-// New_FromResource constructs a class GLShader.
-func New_FromResource(resourcePath string) GLShader {
+// NewGLShaderFromResource constructs a class GLShader.
+func NewGLShaderFromResource(resourcePath string) GLShader {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -2163,8 +2163,8 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	return WrapGLShaderNode(obj), nil
 }
 
-// New_ constructs a class GLShaderNode.
-func New_(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode) GLShaderNode {
+// NewGLShaderNode constructs a class GLShaderNode.
+func NewGLShaderNode(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode) GLShaderNode {
 	var arg1 *C.GskGLShader
 	var arg2 *C.graphene_rect_t
 	var arg3 *C.GBytes
@@ -2296,8 +2296,8 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	return WrapInsetShadowNode(obj), nil
 }
 
-// New_ constructs a class InsetShadowNode.
-func New_(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode {
+// NewInsetShadowNode constructs a class InsetShadowNode.
+func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode {
 	var arg1 *C.GskRoundedRect
 	var arg2 *C.GdkRGBA
 	var arg3 C.float
@@ -2441,8 +2441,8 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	return WrapLinearGradientNode(obj), nil
 }
 
-// New_ constructs a class LinearGradientNode.
-func New_(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode {
+// NewLinearGradientNode constructs a class LinearGradientNode.
+func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode {
 	var arg1 *C.graphene_rect_t
 	var arg2 *C.graphene_point_t
 	var arg3 *C.graphene_point_t
@@ -2574,8 +2574,8 @@ func marshalOpacityNode(p uintptr) (interface{}, error) {
 	return WrapOpacityNode(obj), nil
 }
 
-// New_ constructs a class OpacityNode.
-func New_(child RenderNode, opacity float32) OpacityNode {
+// NewOpacityNode constructs a class OpacityNode.
+func NewOpacityNode(child RenderNode, opacity float32) OpacityNode {
 	var arg1 *C.GskRenderNode
 	var arg2 C.float
 
@@ -2655,8 +2655,8 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	return WrapOutsetShadowNode(obj), nil
 }
 
-// New_ constructs a class OutsetShadowNode.
-func New_(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode {
+// NewOutsetShadowNode constructs a class OutsetShadowNode.
+func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode {
 	var arg1 *C.GskRoundedRect
 	var arg2 *C.GdkRGBA
 	var arg3 C.float
@@ -2806,8 +2806,8 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	return WrapRadialGradientNode(obj), nil
 }
 
-// New_ constructs a class RadialGradientNode.
-func New_(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode {
+// NewRadialGradientNode constructs a class RadialGradientNode.
+func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode {
 	var arg1 *C.graphene_rect_t
 	var arg2 *C.graphene_point_t
 	var arg3 C.float
@@ -3017,8 +3017,8 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return WrapRenderer(obj), nil
 }
 
-// New_ForSurface constructs a class Renderer.
-func New_ForSurface(surface gdk.Surface) Renderer {
+// NewRendererForSurface constructs a class Renderer.
+func NewRendererForSurface(surface gdk.Surface) Renderer {
 	var arg1 *C.GdkSurface
 
 	arg1 = (*C.GdkSurface)(surface.Native())
@@ -3164,8 +3164,8 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 	return WrapRepeatNode(obj), nil
 }
 
-// New_ constructs a class RepeatNode.
-func New_(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode {
+// NewRepeatNode constructs a class RepeatNode.
+func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode {
 	var arg1 *C.graphene_rect_t
 	var arg2 *C.GskRenderNode
 	var arg3 *C.graphene_rect_t
@@ -3234,8 +3234,8 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	return WrapRepeatingLinearGradientNode(obj), nil
 }
 
-// New_ constructs a class RepeatingLinearGradientNode.
-func New_(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode {
+// NewRepeatingLinearGradientNode constructs a class RepeatingLinearGradientNode.
+func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode {
 	var arg1 *C.graphene_rect_t
 	var arg2 *C.graphene_point_t
 	var arg3 *C.graphene_point_t
@@ -3292,8 +3292,8 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	return WrapRepeatingRadialGradientNode(obj), nil
 }
 
-// New_ constructs a class RepeatingRadialGradientNode.
-func New_(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode {
+// NewRepeatingRadialGradientNode constructs a class RepeatingRadialGradientNode.
+func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode {
 	var arg1 *C.graphene_rect_t
 	var arg2 *C.graphene_point_t
 	var arg3 C.float
@@ -3363,8 +3363,8 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	return WrapRoundedClipNode(obj), nil
 }
 
-// New_ constructs a class RoundedClipNode.
-func New_(child RenderNode, clip *RoundedRect) RoundedClipNode {
+// NewRoundedClipNode constructs a class RoundedClipNode.
+func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.GskRoundedRect
 
@@ -3440,8 +3440,8 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 	return WrapShadowNode(obj), nil
 }
 
-// New_ constructs a class ShadowNode.
-func New_(child RenderNode, shadows []Shadow) ShadowNode {
+// NewShadowNode constructs a class ShadowNode.
+func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.GskShadow
 	var arg3 C.gsize
@@ -3554,8 +3554,8 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 	return WrapTextNode(obj), nil
 }
 
-// New_ constructs a class TextNode.
-func New_(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode {
+// NewTextNode constructs a class TextNode.
+func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode {
 	var arg1 *C.PangoFont
 	var arg2 *C.PangoGlyphString
 	var arg3 *C.GdkRGBA
@@ -3699,8 +3699,8 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 	return WrapTextureNode(obj), nil
 }
 
-// New_ constructs a class TextureNode.
-func New_(texture gdk.Texture, bounds *graphene.Rect) TextureNode {
+// NewTextureNode constructs a class TextureNode.
+func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode {
 	var arg1 *C.GdkTexture
 	var arg2 *C.graphene_rect_t
 
@@ -3757,8 +3757,8 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 	return WrapTransformNode(obj), nil
 }
 
-// New_ constructs a class TransformNode.
-func New_(child RenderNode, transform *Transform) TransformNode {
+// NewTransformNode constructs a class TransformNode.
+func NewTransformNode(child RenderNode, transform *Transform) TransformNode {
 	var arg1 *C.GskRenderNode
 	var arg2 *C.GskTransform
 
@@ -3824,14 +3824,14 @@ func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	return WrapVulkanRenderer(obj), nil
 }
 
-// New_ constructs a class VulkanRenderer.
-func New_() Renderer {
+// NewVulkanRenderer constructs a class VulkanRenderer.
+func NewVulkanRenderer() VulkanRenderer {
 
 	ret := C.gsk_vulkan_renderer_new()
 
-	var ret0 Renderer
+	var ret0 VulkanRenderer
 
-	ret0 = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVulkanRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }

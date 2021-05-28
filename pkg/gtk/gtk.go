@@ -1816,8 +1816,8 @@ const (
 	ImageTypeEmpty ImageType = 0
 	// ImageTypeIconName: the widget contains a named icon
 	ImageTypeIconName ImageType = 1
-	// ImageTypeGicon: the widget contains a #GIcon
-	ImageTypeGicon ImageType = 2
+	// ImageTypeGIcon: the widget contains a #GIcon
+	ImageTypeGIcon ImageType = 2
 	// ImageTypePaintable: the widget contains a Paintable
 	ImageTypePaintable ImageType = 3
 )
@@ -6097,9 +6097,9 @@ type CellLayout interface {
 // ColorChooserWidget, ColorChooserDialog and ColorButton.
 type ColorChooser interface {
 	AddPalette(orientation Orientation, colorsPerLine int, nColors int, colors []gdk.RGBA)
-	Rgba() gdk.RGBA
+	RGBA() gdk.RGBA
 	UseAlpha() bool
-	SetRgba(color *gdk.RGBA)
+	SetRGBA(color *gdk.RGBA)
 	SetUseAlpha(useAlpha bool)
 }
 
@@ -6710,8 +6710,8 @@ func (b *Bitset) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// New_Empty constructs a struct Bitset.
-func New_Empty() *Bitset {
+// NewBitsetEmpty constructs a struct Bitset.
+func NewBitsetEmpty() *Bitset {
 
 	ret := C.gtk_bitset_new_empty()
 
@@ -6722,8 +6722,8 @@ func New_Empty() *Bitset {
 	return ret0
 }
 
-// New_Range constructs a struct Bitset.
-func New_Range(start uint, nItems uint) *Bitset {
+// NewBitsetRange constructs a struct Bitset.
+func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var arg1 C.guint
 	var arg2 C.guint
 
@@ -6793,8 +6793,8 @@ func (b *Border) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// New_ constructs a struct Border.
-func New_() *Border {
+// NewBorder constructs a struct Border.
+func NewBorder() *Border {
 
 	ret := C.gtk_border_new()
 
@@ -6930,8 +6930,8 @@ func (c *CSSSection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// New_ constructs a struct CSSSection.
-func New_(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection {
+// NewCSSSection constructs a struct CSSSection.
+func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection {
 	var arg1 *C.GFile
 	var arg2 *C.GtkCssLocation
 	var arg3 *C.GtkCssLocation
@@ -7080,8 +7080,8 @@ func (p *PaperSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// New_ constructs a struct PaperSize.
-func New_(name string) *PaperSize {
+// NewPaperSize constructs a struct PaperSize.
+func NewPaperSize(name string) *PaperSize {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(name))
@@ -7096,8 +7096,8 @@ func New_(name string) *PaperSize {
 	return ret0
 }
 
-// New_Custom constructs a struct PaperSize.
-func New_Custom(name string, displayName string, width float64, height float64, unit Unit) *PaperSize {
+// NewPaperSizeCustom constructs a struct PaperSize.
+func NewPaperSizeCustom(name string, displayName string, width float64, height float64, unit Unit) *PaperSize {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.double
@@ -7121,8 +7121,8 @@ func New_Custom(name string, displayName string, width float64, height float64, 
 	return ret0
 }
 
-// New_FromGvariant constructs a struct PaperSize.
-func New_FromGvariant(variant *glib.Variant) *PaperSize {
+// NewPaperSizeFromGvariant constructs a struct PaperSize.
+func NewPaperSizeFromGvariant(variant *glib.Variant) *PaperSize {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -7136,8 +7136,8 @@ func New_FromGvariant(variant *glib.Variant) *PaperSize {
 	return ret0
 }
 
-// New_FromIpp constructs a struct PaperSize.
-func New_FromIpp(ippName string, width float64, height float64) *PaperSize {
+// NewPaperSizeFromIpp constructs a struct PaperSize.
+func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSize {
 	var arg1 *C.char
 	var arg2 C.double
 	var arg3 C.double
@@ -7156,8 +7156,8 @@ func New_FromIpp(ippName string, width float64, height float64) *PaperSize {
 	return ret0
 }
 
-// New_FromKeyFile constructs a struct PaperSize.
-func New_FromKeyFile(keyFile *glib.KeyFile, groupName string) *PaperSize {
+// NewPaperSizeFromKeyFile constructs a struct PaperSize.
+func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) *PaperSize {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
 
@@ -7174,8 +7174,8 @@ func New_FromKeyFile(keyFile *glib.KeyFile, groupName string) *PaperSize {
 	return ret0
 }
 
-// New_FromPpd constructs a struct PaperSize.
-func New_FromPpd(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
+// NewPaperSizeFromPpd constructs a struct PaperSize.
+func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.double
@@ -7387,8 +7387,8 @@ func (r *Requisition) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// New_ constructs a struct Requisition.
-func New_() *Requisition {
+// NewRequisition constructs a struct Requisition.
+func NewRequisition() *Requisition {
 
 	ret := C.gtk_requisition_new()
 
@@ -7550,8 +7550,8 @@ func (t *TreePath) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct TreePath.
-func New_() *TreePath {
+// NewTreePath constructs a struct TreePath.
+func NewTreePath() *TreePath {
 
 	ret := C.gtk_tree_path_new()
 
@@ -7562,8 +7562,8 @@ func New_() *TreePath {
 	return ret0
 }
 
-// New_First constructs a struct TreePath.
-func New_First() *TreePath {
+// NewTreePathFirst constructs a struct TreePath.
+func NewTreePathFirst() *TreePath {
 
 	ret := C.gtk_tree_path_new_first()
 
@@ -7574,8 +7574,8 @@ func New_First() *TreePath {
 	return ret0
 }
 
-// New_FromIndicesv constructs a struct TreePath.
-func New_FromIndicesv(indices []int) *TreePath {
+// NewTreePathFromIndicesv constructs a struct TreePath.
+func NewTreePathFromIndicesv(indices []int) *TreePath {
 	var arg1 *C.int
 	var arg2 C.gsize
 
@@ -7594,8 +7594,8 @@ func New_FromIndicesv(indices []int) *TreePath {
 	return ret0
 }
 
-// New_FromString constructs a struct TreePath.
-func New_FromString(path string) *TreePath {
+// NewTreePathFromString constructs a struct TreePath.
+func NewTreePathFromString(path string) *TreePath {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(path))
@@ -7637,8 +7637,8 @@ func (t *TreeRowReference) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct TreeRowReference.
-func New_(model TreeModel, path *TreePath) *TreeRowReference {
+// NewTreeRowReference constructs a struct TreeRowReference.
+func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
 	var arg1 *C.GtkTreeModel
 	var arg2 *C.GtkTreePath
 
@@ -7653,8 +7653,8 @@ func New_(model TreeModel, path *TreePath) *TreeRowReference {
 	return ret0
 }
 
-// New_Proxy constructs a struct TreeRowReference.
-func New_Proxy(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference {
+// NewTreeRowReferenceProxy constructs a struct TreeRowReference.
+func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference {
 	var arg1 *C.GObject
 	var arg2 *C.GtkTreeModel
 	var arg3 *C.GtkTreePath
@@ -7702,8 +7702,8 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	return WrapATContext(obj), nil
 }
 
-// New_Create constructs a class ATContext.
-func New_Create(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
+// NewATContextCreate constructs a class ATContext.
+func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
 	var arg1 C.GtkAccessibleRole
 	var arg2 *C.GtkAccessible
 	var arg3 *C.GdkDisplay
@@ -7916,14 +7916,14 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return WrapAboutDialog(obj), nil
 }
 
-// New_ constructs a class AboutDialog.
-func New_() Widget {
+// NewAboutDialog constructs a class AboutDialog.
+func NewAboutDialog() AboutDialog {
 
 	ret := C.gtk_about_dialog_new()
 
-	var ret0 Widget
+	var ret0 AboutDialog
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAboutDialog(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -8500,14 +8500,14 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return WrapActionBar(obj), nil
 }
 
-// New_ constructs a class ActionBar.
-func New_() Widget {
+// NewActionBar constructs a class ActionBar.
+func NewActionBar() ActionBar {
 
 	ret := C.gtk_action_bar_new()
 
-	var ret0 Widget
+	var ret0 ActionBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapActionBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -8731,8 +8731,8 @@ func marshalAdjustment(p uintptr) (interface{}, error) {
 	return WrapAdjustment(obj), nil
 }
 
-// New_ constructs a class Adjustment.
-func New_(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment {
+// NewAdjustment constructs a class Adjustment.
+func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment {
 	var arg1 C.double
 	var arg2 C.double
 	var arg3 C.double
@@ -9038,8 +9038,8 @@ func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 	return WrapAlternativeTrigger(obj), nil
 }
 
-// New_ constructs a class AlternativeTrigger.
-func New_(first ShortcutTrigger, second ShortcutTrigger) ShortcutTrigger {
+// NewAlternativeTrigger constructs a class AlternativeTrigger.
+func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) AlternativeTrigger {
 	var arg1 *C.GtkShortcutTrigger
 	var arg2 *C.GtkShortcutTrigger
 
@@ -9048,9 +9048,9 @@ func New_(first ShortcutTrigger, second ShortcutTrigger) ShortcutTrigger {
 
 	ret := C.gtk_alternative_trigger_new(arg1, arg2)
 
-	var ret0 ShortcutTrigger
+	var ret0 AlternativeTrigger
 
-	ret0 = WrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAlternativeTrigger(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -9107,8 +9107,8 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return WrapAnyFilter(obj), nil
 }
 
-// New_ constructs a class AnyFilter.
-func New_() AnyFilter {
+// NewAnyFilter constructs a class AnyFilter.
+func NewAnyFilter() AnyFilter {
 
 	ret := C.gtk_any_filter_new()
 
@@ -9203,8 +9203,8 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return WrapAppChooserButton(obj), nil
 }
 
-// New_ constructs a class AppChooserButton.
-func New_(contentType string) Widget {
+// NewAppChooserButton constructs a class AppChooserButton.
+func NewAppChooserButton(contentType string) AppChooserButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(contentType))
@@ -9212,9 +9212,9 @@ func New_(contentType string) Widget {
 
 	ret := C.gtk_app_chooser_button_new(arg1)
 
-	var ret0 Widget
+	var ret0 AppChooserButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAppChooserButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -9413,8 +9413,8 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
-// New_ constructs a class AppChooserDialog.
-func New_(parent Window, flags DialogFlags, file gio.File) Widget {
+// NewAppChooserDialog constructs a class AppChooserDialog.
+func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog {
 	var arg1 *C.GtkWindow
 	var arg2 C.GtkDialogFlags
 	var arg3 *C.GFile
@@ -9424,15 +9424,15 @@ func New_(parent Window, flags DialogFlags, file gio.File) Widget {
 
 	ret := C.gtk_app_chooser_dialog_new(arg1, arg2, arg3)
 
-	var ret0 Widget
+	var ret0 AppChooserDialog
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAppChooserDialog(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForContentType constructs a class AppChooserDialog.
-func New_ForContentType(parent Window, flags DialogFlags, contentType string) Widget {
+// NewAppChooserDialogForContentType constructs a class AppChooserDialog.
+func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
 	var arg1 *C.GtkWindow
 	var arg2 C.GtkDialogFlags
 	var arg3 *C.char
@@ -9444,9 +9444,9 @@ func New_ForContentType(parent Window, flags DialogFlags, contentType string) Wi
 
 	ret := C.gtk_app_chooser_dialog_new_for_content_type(arg1, arg2, arg3)
 
-	var ret0 Widget
+	var ret0 AppChooserDialog
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAppChooserDialog(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -9570,8 +9570,8 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return WrapAppChooserWidget(obj), nil
 }
 
-// New_ constructs a class AppChooserWidget.
-func New_(contentType string) Widget {
+// NewAppChooserWidget constructs a class AppChooserWidget.
+func NewAppChooserWidget(contentType string) AppChooserWidget {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(contentType))
@@ -9579,9 +9579,9 @@ func New_(contentType string) Widget {
 
 	ret := C.gtk_app_chooser_widget_new(arg1)
 
-	var ret0 Widget
+	var ret0 AppChooserWidget
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAppChooserWidget(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -9971,8 +9971,8 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// New_ constructs a class Application.
-func New_(applicationID string, flags gio.ApplicationFlags) Application {
+// NewApplication constructs a class Application.
+func NewApplication(applicationID string, flags gio.ApplicationFlags) Application {
 	var arg1 *C.char
 	var arg2 C.GApplicationFlags
 
@@ -10440,17 +10440,17 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return WrapApplicationWindow(obj), nil
 }
 
-// New_ constructs a class ApplicationWindow.
-func New_(application Application) Widget {
+// NewApplicationWindow constructs a class ApplicationWindow.
+func NewApplicationWindow(application Application) ApplicationWindow {
 	var arg1 *C.GtkApplication
 
 	arg1 = (*C.GtkApplication)(application.Native())
 
 	ret := C.gtk_application_window_new(arg1)
 
-	var ret0 Widget
+	var ret0 ApplicationWindow
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapApplicationWindow(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -10588,8 +10588,8 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return WrapAspectFrame(obj), nil
 }
 
-// New_ constructs a class AspectFrame.
-func New_(xalign float32, yalign float32, ratio float32, obeyChild bool) Widget {
+// NewAspectFrame constructs a class AspectFrame.
+func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
 	var arg1 C.float
 	var arg2 C.float
 	var arg3 C.float
@@ -10602,9 +10602,9 @@ func New_(xalign float32, yalign float32, ratio float32, obeyChild bool) Widget 
 
 	ret := C.gtk_aspect_frame_new(arg1, arg2, arg3, arg4)
 
-	var ret0 Widget
+	var ret0 AspectFrame
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAspectFrame(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -10890,14 +10890,14 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
-// New_ constructs a class Assistant.
-func New_() Widget {
+// NewAssistant constructs a class Assistant.
+func NewAssistant() Assistant {
 
 	ret := C.gtk_assistant_new()
 
-	var ret0 Widget
+	var ret0 Assistant
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapAssistant(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -11320,14 +11320,14 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 	return WrapBinLayout(obj), nil
 }
 
-// New_ constructs a class BinLayout.
-func New_() LayoutManager {
+// NewBinLayout constructs a class BinLayout.
+func NewBinLayout() BinLayout {
 
 	ret := C.gtk_bin_layout_new()
 
-	var ret0 LayoutManager
+	var ret0 BinLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBinLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -11381,8 +11381,8 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 	return WrapBookmarkList(obj), nil
 }
 
-// New_ constructs a class BookmarkList.
-func New_(filename string, attributes string) BookmarkList {
+// NewBookmarkList constructs a class BookmarkList.
+func NewBookmarkList(filename string, attributes string) BookmarkList {
 	var arg1 *C.char
 	var arg2 *C.char
 
@@ -11528,8 +11528,8 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 	return WrapBoolFilter(obj), nil
 }
 
-// New_ constructs a class BoolFilter.
-func New_(expression Expression) BoolFilter {
+// NewBoolFilter constructs a class BoolFilter.
+func NewBoolFilter(expression Expression) BoolFilter {
 	var arg1 *C.GtkExpression
 
 	arg1 = (*C.GtkExpression)(expression.Native())
@@ -11682,8 +11682,8 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
-// New_ constructs a class Box.
-func New_(orientation Orientation, spacing int) Widget {
+// NewBox constructs a class Box.
+func NewBox(orientation Orientation, spacing int) Box {
 	var arg1 C.GtkOrientation
 	var arg2 C.int
 
@@ -11692,9 +11692,9 @@ func New_(orientation Orientation, spacing int) Widget {
 
 	ret := C.gtk_box_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 Box
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -11899,17 +11899,17 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 	return WrapBoxLayout(obj), nil
 }
 
-// New_ constructs a class BoxLayout.
-func New_(orientation Orientation) LayoutManager {
+// NewBoxLayout constructs a class BoxLayout.
+func NewBoxLayout(orientation Orientation) BoxLayout {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
 	ret := C.gtk_box_layout_new(arg1)
 
-	var ret0 LayoutManager
+	var ret0 BoxLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -12335,8 +12335,8 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	return WrapBuilder(obj), nil
 }
 
-// New_ constructs a class Builder.
-func New_() Builder {
+// NewBuilder constructs a class Builder.
+func NewBuilder() Builder {
 
 	ret := C.gtk_builder_new()
 
@@ -12347,8 +12347,8 @@ func New_() Builder {
 	return ret0
 }
 
-// New_FromFile constructs a class Builder.
-func New_FromFile(filename string) Builder {
+// NewBuilderFromFile constructs a class Builder.
+func NewBuilderFromFile(filename string) Builder {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -12363,8 +12363,8 @@ func New_FromFile(filename string) Builder {
 	return ret0
 }
 
-// New_FromResource constructs a class Builder.
-func New_FromResource(resourcePath string) Builder {
+// NewBuilderFromResource constructs a class Builder.
+func NewBuilderFromResource(resourcePath string) Builder {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -12379,8 +12379,8 @@ func New_FromResource(resourcePath string) Builder {
 	return ret0
 }
 
-// New_FromString constructs a class Builder.
-func New_FromString(string string, length int) Builder {
+// NewBuilderFromString constructs a class Builder.
+func NewBuilderFromString(string string, length int) Builder {
 	var arg1 *C.char
 	var arg2 C.gssize
 
@@ -12866,8 +12866,8 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	return WrapBuilderCScope(obj), nil
 }
 
-// New_ constructs a class BuilderCScope.
-func New_() BuilderCScope {
+// NewBuilderCScope constructs a class BuilderCScope.
+func NewBuilderCScope() BuilderCScope {
 
 	ret := C.gtk_builder_cscope_new()
 
@@ -12965,8 +12965,8 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	return WrapBuilderListItemFactory(obj), nil
 }
 
-// New_FromBytes constructs a class BuilderListItemFactory.
-func New_FromBytes(scope BuilderScope, bytes *glib.Bytes) ListItemFactory {
+// NewBuilderListItemFactoryFromBytes constructs a class BuilderListItemFactory.
+func NewBuilderListItemFactoryFromBytes(scope BuilderScope, bytes *glib.Bytes) BuilderListItemFactory {
 	var arg1 *C.GtkBuilderScope
 	var arg2 *C.GBytes
 
@@ -12974,15 +12974,15 @@ func New_FromBytes(scope BuilderScope, bytes *glib.Bytes) ListItemFactory {
 
 	ret := C.gtk_builder_list_item_factory_new_from_bytes(arg1, arg2)
 
-	var ret0 ListItemFactory
+	var ret0 BuilderListItemFactory
 
-	ret0 = WrapListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromResource constructs a class BuilderListItemFactory.
-func New_FromResource(scope BuilderScope, resourcePath string) ListItemFactory {
+// NewBuilderListItemFactoryFromResource constructs a class BuilderListItemFactory.
+func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
 	var arg1 *C.GtkBuilderScope
 	var arg2 *C.char
 
@@ -12991,9 +12991,9 @@ func New_FromResource(scope BuilderScope, resourcePath string) ListItemFactory {
 
 	ret := C.gtk_builder_list_item_factory_new_from_resource(arg1, arg2)
 
-	var ret0 ListItemFactory
+	var ret0 BuilderListItemFactory
 
-	ret0 = WrapListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -13122,20 +13122,20 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
-// New_ constructs a class Button.
-func New_() Widget {
+// NewButton constructs a class Button.
+func NewButton() Button {
 
 	ret := C.gtk_button_new()
 
-	var ret0 Widget
+	var ret0 Button
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromIconName constructs a class Button.
-func New_FromIconName(iconName string) Widget {
+// NewButtonFromIconName constructs a class Button.
+func NewButtonFromIconName(iconName string) Button {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(iconName))
@@ -13143,15 +13143,15 @@ func New_FromIconName(iconName string) Widget {
 
 	ret := C.gtk_button_new_from_icon_name(arg1)
 
-	var ret0 Widget
+	var ret0 Button
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithLabel constructs a class Button.
-func New_WithLabel(label string) Widget {
+// NewButtonWithLabel constructs a class Button.
+func NewButtonWithLabel(label string) Button {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -13159,15 +13159,15 @@ func New_WithLabel(label string) Widget {
 
 	ret := C.gtk_button_new_with_label(arg1)
 
-	var ret0 Widget
+	var ret0 Button
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithMnemonic constructs a class Button.
-func New_WithMnemonic(label string) Widget {
+// NewButtonWithMnemonic constructs a class Button.
+func NewButtonWithMnemonic(label string) Button {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -13175,9 +13175,9 @@ func New_WithMnemonic(label string) Widget {
 
 	ret := C.gtk_button_new_with_mnemonic(arg1)
 
-	var ret0 Widget
+	var ret0 Button
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -13438,14 +13438,14 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return WrapCalendar(obj), nil
 }
 
-// New_ constructs a class Calendar.
-func New_() Widget {
+// NewCalendar constructs a class Calendar.
+func NewCalendar() Calendar {
 
 	ret := C.gtk_calendar_new()
 
-	var ret0 Widget
+	var ret0 Calendar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCalendar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -13629,8 +13629,8 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 	return WrapCallbackAction(obj), nil
 }
 
-// New_ constructs a class CallbackAction.
-func New_(callback ShortcutFunc) CallbackAction {
+// NewCallbackAction constructs a class CallbackAction.
+func NewCallbackAction(callback ShortcutFunc) CallbackAction {
 	var arg1 C.GtkShortcutFunc
 	var arg2 C.gpointer
 	var arg3 C.GDestroyNotify
@@ -14833,14 +14833,14 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return WrapCellAreaBox(obj), nil
 }
 
-// New_ constructs a class CellAreaBox.
-func New_() CellArea {
+// NewCellAreaBox constructs a class CellAreaBox.
+func NewCellAreaBox() CellAreaBox {
 
 	ret := C.gtk_cell_area_box_new()
 
-	var ret0 CellArea
+	var ret0 CellAreaBox
 
-	ret0 = WrapCellArea(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellAreaBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -15916,14 +15916,14 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return WrapCellRendererAccel(obj), nil
 }
 
-// New_ constructs a class CellRendererAccel.
-func New_() CellRenderer {
+// NewCellRendererAccel constructs a class CellRendererAccel.
+func NewCellRendererAccel() CellRendererAccel {
 
 	ret := C.gtk_cell_renderer_accel_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererAccel
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererAccel(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -15958,14 +15958,14 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	return WrapCellRendererCombo(obj), nil
 }
 
-// New_ constructs a class CellRendererCombo.
-func New_() CellRenderer {
+// NewCellRendererCombo constructs a class CellRendererCombo.
+func NewCellRendererCombo() CellRendererCombo {
 
 	ret := C.gtk_cell_renderer_combo_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererCombo
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererCombo(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16002,14 +16002,14 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	return WrapCellRendererPixbuf(obj), nil
 }
 
-// New_ constructs a class CellRendererPixbuf.
-func New_() CellRenderer {
+// NewCellRendererPixbuf constructs a class CellRendererPixbuf.
+func NewCellRendererPixbuf() CellRendererPixbuf {
 
 	ret := C.gtk_cell_renderer_pixbuf_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererPixbuf
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16036,14 +16036,14 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return WrapCellRendererProgress(obj), nil
 }
 
-// New_ constructs a class CellRendererProgress.
-func New_() CellRenderer {
+// NewCellRendererProgress constructs a class CellRendererProgress.
+func NewCellRendererProgress() CellRendererProgress {
 
 	ret := C.gtk_cell_renderer_progress_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererProgress
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererProgress(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16081,14 +16081,14 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 	return WrapCellRendererSpin(obj), nil
 }
 
-// New_ constructs a class CellRendererSpin.
-func New_() CellRenderer {
+// NewCellRendererSpin constructs a class CellRendererSpin.
+func NewCellRendererSpin() CellRendererSpin {
 
 	ret := C.gtk_cell_renderer_spin_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererSpin
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererSpin(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16123,14 +16123,14 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	return WrapCellRendererSpinner(obj), nil
 }
 
-// New_ constructs a class CellRendererSpinner.
-func New_() CellRenderer {
+// NewCellRendererSpinner constructs a class CellRendererSpinner.
+func NewCellRendererSpinner() CellRendererSpinner {
 
 	ret := C.gtk_cell_renderer_spinner_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererSpinner
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererSpinner(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16172,14 +16172,14 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 	return WrapCellRendererText(obj), nil
 }
 
-// New_ constructs a class CellRendererText.
-func New_() CellRenderer {
+// NewCellRendererText constructs a class CellRendererText.
+func NewCellRendererText() CellRendererText {
 
 	ret := C.gtk_cell_renderer_text_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererText
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererText(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16246,14 +16246,14 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return WrapCellRendererToggle(obj), nil
 }
 
-// New_ constructs a class CellRendererToggle.
-func New_() CellRenderer {
+// NewCellRendererToggle constructs a class CellRendererToggle.
+func NewCellRendererToggle() CellRendererToggle {
 
 	ret := C.gtk_cell_renderer_toggle_new()
 
-	var ret0 CellRenderer
+	var ret0 CellRendererToggle
 
-	ret0 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellRendererToggle(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16416,20 +16416,20 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return WrapCellView(obj), nil
 }
 
-// New_ constructs a class CellView.
-func New_() Widget {
+// NewCellView constructs a class CellView.
+func NewCellView() CellView {
 
 	ret := C.gtk_cell_view_new()
 
-	var ret0 Widget
+	var ret0 CellView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithContext constructs a class CellView.
-func New_WithContext(area CellArea, context CellAreaContext) Widget {
+// NewCellViewWithContext constructs a class CellView.
+func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	var arg1 *C.GtkCellArea
 	var arg2 *C.GtkCellAreaContext
 
@@ -16438,15 +16438,15 @@ func New_WithContext(area CellArea, context CellAreaContext) Widget {
 
 	ret := C.gtk_cell_view_new_with_context(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 CellView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithMarkup constructs a class CellView.
-func New_WithMarkup(markup string) Widget {
+// NewCellViewWithMarkup constructs a class CellView.
+func NewCellViewWithMarkup(markup string) CellView {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(markup))
@@ -16454,15 +16454,15 @@ func New_WithMarkup(markup string) Widget {
 
 	ret := C.gtk_cell_view_new_with_markup(arg1)
 
-	var ret0 Widget
+	var ret0 CellView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithText constructs a class CellView.
-func New_WithText(text string) Widget {
+// NewCellViewWithText constructs a class CellView.
+func NewCellViewWithText(text string) CellView {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(text))
@@ -16470,24 +16470,24 @@ func New_WithText(text string) Widget {
 
 	ret := C.gtk_cell_view_new_with_text(arg1)
 
-	var ret0 Widget
+	var ret0 CellView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithTexture constructs a class CellView.
-func New_WithTexture(texture gdk.Texture) Widget {
+// NewCellViewWithTexture constructs a class CellView.
+func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	var arg1 *C.GdkTexture
 
 	arg1 = (*C.GdkTexture)(texture.Native())
 
 	ret := C.gtk_cell_view_new_with_texture(arg1)
 
-	var ret0 Widget
+	var ret0 CellView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCellView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16689,14 +16689,14 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 	return WrapCenterBox(obj), nil
 }
 
-// New_ constructs a class CenterBox.
-func New_() Widget {
+// NewCenterBox constructs a class CenterBox.
+func NewCenterBox() CenterBox {
 
 	ret := C.gtk_center_box_new()
 
-	var ret0 Widget
+	var ret0 CenterBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCenterBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -16866,14 +16866,14 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 	return WrapCenterLayout(obj), nil
 }
 
-// New_ constructs a class CenterLayout.
-func New_() LayoutManager {
+// NewCenterLayout constructs a class CenterLayout.
+func NewCenterLayout() CenterLayout {
 
 	ret := C.gtk_center_layout_new()
 
-	var ret0 LayoutManager
+	var ret0 CenterLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCenterLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -17101,20 +17101,20 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return WrapCheckButton(obj), nil
 }
 
-// New_ constructs a class CheckButton.
-func New_() Widget {
+// NewCheckButton constructs a class CheckButton.
+func NewCheckButton() CheckButton {
 
 	ret := C.gtk_check_button_new()
 
-	var ret0 Widget
+	var ret0 CheckButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCheckButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithLabel constructs a class CheckButton.
-func New_WithLabel(label string) Widget {
+// NewCheckButtonWithLabel constructs a class CheckButton.
+func NewCheckButtonWithLabel(label string) CheckButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -17122,15 +17122,15 @@ func New_WithLabel(label string) Widget {
 
 	ret := C.gtk_check_button_new_with_label(arg1)
 
-	var ret0 Widget
+	var ret0 CheckButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCheckButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithMnemonic constructs a class CheckButton.
-func New_WithMnemonic(label string) Widget {
+// NewCheckButtonWithMnemonic constructs a class CheckButton.
+func NewCheckButtonWithMnemonic(label string) CheckButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -17138,9 +17138,9 @@ func New_WithMnemonic(label string) Widget {
 
 	ret := C.gtk_check_button_new_with_mnemonic(arg1)
 
-	var ret0 Widget
+	var ret0 CheckButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCheckButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -17311,8 +17311,8 @@ func marshalClosureExpression(p uintptr) (interface{}, error) {
 	return WrapClosureExpression(obj), nil
 }
 
-// New_ constructs a class ClosureExpression.
-func New_(valueType externglib.Type, closure *externglib.Closure, nParams uint, params []Expression) Expression {
+// NewClosureExpression constructs a class ClosureExpression.
+func NewClosureExpression(valueType externglib.Type, closure *externglib.Closure, nParams uint, params []Expression) ClosureExpression {
 	var arg1 C.GType
 	var arg2 *C.GClosure
 	var arg3 C.guint
@@ -17337,9 +17337,9 @@ func New_(valueType externglib.Type, closure *externglib.Closure, nParams uint, 
 
 	ret := C.gtk_closure_expression_new(arg1, arg2, arg3, arg4)
 
-	var ret0 Expression
+	var ret0 ClosureExpression
 
-	ret0 = WrapExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapClosureExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -17387,29 +17387,29 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
-// New_ constructs a class ColorButton.
-func New_() Widget {
+// NewColorButton constructs a class ColorButton.
+func NewColorButton() ColorButton {
 
 	ret := C.gtk_color_button_new()
 
-	var ret0 Widget
+	var ret0 ColorButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapColorButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithRgba constructs a class ColorButton.
-func New_WithRgba(rgba *gdk.RGBA) Widget {
+// NewColorButtonWithRGBA constructs a class ColorButton.
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	var arg1 *C.GdkRGBA
 
 	arg1 = (*C.GdkRGBA)(rgba.Native())
 
 	ret := C.gtk_color_button_new_with_rgba(arg1)
 
-	var ret0 Widget
+	var ret0 ColorButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapColorButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -17489,8 +17489,8 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	return WrapColorChooserDialog(obj), nil
 }
 
-// New_ constructs a class ColorChooserDialog.
-func New_(title string, parent Window) Widget {
+// NewColorChooserDialog constructs a class ColorChooserDialog.
+func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	var arg1 *C.char
 	var arg2 *C.GtkWindow
 
@@ -17500,9 +17500,9 @@ func New_(title string, parent Window) Widget {
 
 	ret := C.gtk_color_chooser_dialog_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 ColorChooserDialog
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapColorChooserDialog(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -17547,14 +17547,14 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	return WrapColorChooserWidget(obj), nil
 }
 
-// New_ constructs a class ColorChooserWidget.
-func New_() Widget {
+// NewColorChooserWidget constructs a class ColorChooserWidget.
+func NewColorChooserWidget() ColorChooserWidget {
 
 	ret := C.gtk_color_chooser_widget_new()
 
-	var ret0 Widget
+	var ret0 ColorChooserWidget
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapColorChooserWidget(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -17721,15 +17721,15 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 	return WrapColumnView(obj), nil
 }
 
-// New_ constructs a class ColumnView.
-func New_(model SelectionModel) Widget {
+// NewColumnView constructs a class ColumnView.
+func NewColumnView(model SelectionModel) ColumnView {
 	var arg1 *C.GtkSelectionModel
 
 	ret := C.gtk_column_view_new(arg1)
 
-	var ret0 Widget
+	var ret0 ColumnView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapColumnView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -18094,8 +18094,8 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 	return WrapColumnViewColumn(obj), nil
 }
 
-// New_ constructs a class ColumnViewColumn.
-func New_(title string, factory ListItemFactory) ColumnViewColumn {
+// NewColumnViewColumn constructs a class ColumnViewColumn.
+func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn {
 	var arg1 *C.char
 	var arg2 *C.GtkListItemFactory
 
@@ -18529,52 +18529,52 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return WrapComboBox(obj), nil
 }
 
-// New_ constructs a class ComboBox.
-func New_() Widget {
+// NewComboBox constructs a class ComboBox.
+func NewComboBox() ComboBox {
 
 	ret := C.gtk_combo_box_new()
 
-	var ret0 Widget
+	var ret0 ComboBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapComboBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithEntry constructs a class ComboBox.
-func New_WithEntry() Widget {
+// NewComboBoxWithEntry constructs a class ComboBox.
+func NewComboBoxWithEntry() ComboBox {
 
 	ret := C.gtk_combo_box_new_with_entry()
 
-	var ret0 Widget
+	var ret0 ComboBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapComboBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithModel constructs a class ComboBox.
-func New_WithModel(model TreeModel) Widget {
+// NewComboBoxWithModel constructs a class ComboBox.
+func NewComboBoxWithModel(model TreeModel) ComboBox {
 	var arg1 *C.GtkTreeModel
 
 	ret := C.gtk_combo_box_new_with_model(arg1)
 
-	var ret0 Widget
+	var ret0 ComboBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapComboBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithModelAndEntry constructs a class ComboBox.
-func New_WithModelAndEntry(model TreeModel) Widget {
+// NewComboBoxWithModelAndEntry constructs a class ComboBox.
+func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 	var arg1 *C.GtkTreeModel
 
 	ret := C.gtk_combo_box_new_with_model_and_entry(arg1)
 
-	var ret0 Widget
+	var ret0 ComboBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapComboBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -19067,26 +19067,26 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return WrapComboBoxText(obj), nil
 }
 
-// New_ constructs a class ComboBoxText.
-func New_() Widget {
+// NewComboBoxText constructs a class ComboBoxText.
+func NewComboBoxText() ComboBoxText {
 
 	ret := C.gtk_combo_box_text_new()
 
-	var ret0 Widget
+	var ret0 ComboBoxText
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapComboBoxText(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithEntry constructs a class ComboBoxText.
-func New_WithEntry() Widget {
+// NewComboBoxTextWithEntry constructs a class ComboBoxText.
+func NewComboBoxTextWithEntry() ComboBoxText {
 
 	ret := C.gtk_combo_box_text_new_with_entry()
 
-	var ret0 Widget
+	var ret0 ComboBoxText
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapComboBoxText(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -19262,17 +19262,17 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 	return WrapConstantExpression(obj), nil
 }
 
-// New_ForValue constructs a class ConstantExpression.
-func New_ForValue(value *externglib.Value) Expression {
+// NewConstantExpressionForValue constructs a class ConstantExpression.
+func NewConstantExpressionForValue(value *externglib.Value) ConstantExpression {
 	var arg1 *C.GValue
 
 	arg1 = (*C.GValue)(value.GValue)
 
 	ret := C.gtk_constant_expression_new_for_value(arg1)
 
-	var ret0 Expression
+	var ret0 ConstantExpression
 
-	ret0 = WrapExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapConstantExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -19358,8 +19358,8 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return WrapConstraint(obj), nil
 }
 
-// New_ constructs a class Constraint.
-func New_(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint {
+// NewConstraint constructs a class Constraint.
+func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint {
 	var arg1 C.gpointer
 	var arg2 C.GtkConstraintAttribute
 	var arg3 C.GtkConstraintRelation
@@ -19385,8 +19385,8 @@ func New_(target ConstraintTarget, targetAttribute ConstraintAttribute, relation
 	return ret0
 }
 
-// New_Constant constructs a class Constraint.
-func New_Constant(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint {
+// NewConstraintConstant constructs a class Constraint.
+func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint {
 	var arg1 C.gpointer
 	var arg2 C.GtkConstraintAttribute
 	var arg3 C.GtkConstraintRelation
@@ -19640,8 +19640,8 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 	return WrapConstraintGuide(obj), nil
 }
 
-// New_ constructs a class ConstraintGuide.
-func New_() ConstraintGuide {
+// NewConstraintGuide constructs a class ConstraintGuide.
+func NewConstraintGuide() ConstraintGuide {
 
 	ret := C.gtk_constraint_guide_new()
 
@@ -20076,14 +20076,14 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	return WrapConstraintLayout(obj), nil
 }
 
-// New_ constructs a class ConstraintLayout.
-func New_() LayoutManager {
+// NewConstraintLayout constructs a class ConstraintLayout.
+func NewConstraintLayout() ConstraintLayout {
 
 	ret := C.gtk_constraint_layout_new()
 
-	var ret0 LayoutManager
+	var ret0 ConstraintLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapConstraintLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -20376,8 +20376,8 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return WrapCSSProvider(obj), nil
 }
 
-// New_ constructs a class CSSProvider.
-func New_() CSSProvider {
+// NewCSSProvider constructs a class CSSProvider.
+func NewCSSProvider() CSSProvider {
 
 	ret := C.gtk_css_provider_new()
 
@@ -20516,8 +20516,8 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 	return WrapCustomFilter(obj), nil
 }
 
-// New_ constructs a class CustomFilter.
-func New_(matchFunc CustomFilterFunc) CustomFilter {
+// NewCustomFilter constructs a class CustomFilter.
+func NewCustomFilter(matchFunc CustomFilterFunc) CustomFilter {
 	var arg1 C.GtkCustomFilterFunc
 	arg2 := C.gpointer(box.Assign(userData))
 
@@ -20577,8 +20577,8 @@ func marshalCustomLayout(p uintptr) (interface{}, error) {
 	return WrapCustomLayout(obj), nil
 }
 
-// New_ constructs a class CustomLayout.
-func New_(requestMode CustomRequestModeFunc, measure CustomMeasureFunc, allocate CustomAllocateFunc) LayoutManager {
+// NewCustomLayout constructs a class CustomLayout.
+func NewCustomLayout(requestMode CustomRequestModeFunc, measure CustomMeasureFunc, allocate CustomAllocateFunc) CustomLayout {
 	var arg1 C.GtkCustomRequestModeFunc
 	var arg2 C.GtkCustomMeasureFunc
 	var arg3 C.GtkCustomAllocateFunc
@@ -20589,9 +20589,9 @@ func New_(requestMode CustomRequestModeFunc, measure CustomMeasureFunc, allocate
 
 	ret := C.gtk_custom_layout_new(arg1, arg2, arg3)
 
-	var ret0 LayoutManager
+	var ret0 CustomLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapCustomLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -20628,8 +20628,8 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 	return WrapCustomSorter(obj), nil
 }
 
-// New_ constructs a class CustomSorter.
-func New_(sortFunc glib.CompareDataFunc) CustomSorter {
+// NewCustomSorter constructs a class CustomSorter.
+func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter {
 	var arg1 C.GCompareDataFunc
 	arg2 := C.gpointer(box.Assign(userData))
 
@@ -20831,14 +20831,14 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return WrapDialog(obj), nil
 }
 
-// New_ constructs a class Dialog.
-func New_() Widget {
+// NewDialog constructs a class Dialog.
+func NewDialog() Dialog {
 
 	ret := C.gtk_dialog_new()
 
-	var ret0 Widget
+	var ret0 Dialog
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDialog(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -21085,8 +21085,8 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 	return WrapDirectoryList(obj), nil
 }
 
-// New_ constructs a class DirectoryList.
-func New_(attributes string, file gio.File) DirectoryList {
+// NewDirectoryList constructs a class DirectoryList.
+func NewDirectoryList(attributes string, file gio.File) DirectoryList {
 	var arg1 *C.char
 	var arg2 *C.GFile
 
@@ -21413,8 +21413,8 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 	return WrapDragSource(obj), nil
 }
 
-// New_ constructs a class DragSource.
-func New_() DragSource {
+// NewDragSource constructs a class DragSource.
+func NewDragSource() DragSource {
 
 	ret := C.gtk_drag_source_new()
 
@@ -21669,14 +21669,14 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return WrapDrawingArea(obj), nil
 }
 
-// New_ constructs a class DrawingArea.
-func New_() Widget {
+// NewDrawingArea constructs a class DrawingArea.
+func NewDrawingArea() DrawingArea {
 
 	ret := C.gtk_drawing_area_new()
 
-	var ret0 Widget
+	var ret0 DrawingArea
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDrawingArea(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -21807,14 +21807,14 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	return WrapDropControllerMotion(obj), nil
 }
 
-// New_ constructs a class DropControllerMotion.
-func New_() EventController {
+// NewDropControllerMotion constructs a class DropControllerMotion.
+func NewDropControllerMotion() DropControllerMotion {
 
 	ret := C.gtk_drop_controller_motion_new()
 
-	var ret0 EventController
+	var ret0 DropControllerMotion
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDropControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -21950,8 +21950,8 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 	return WrapDropDown(obj), nil
 }
 
-// New_ constructs a class DropDown.
-func New_(model gio.ListModel, expression Expression) Widget {
+// NewDropDown constructs a class DropDown.
+func NewDropDown(model gio.ListModel, expression Expression) DropDown {
 	var arg1 *C.GListModel
 	var arg2 *C.GtkExpression
 
@@ -21959,15 +21959,15 @@ func New_(model gio.ListModel, expression Expression) Widget {
 
 	ret := C.gtk_drop_down_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 DropDown
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDropDown(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromStrings constructs a class DropDown.
-func New_FromStrings(strings []string) Widget {
+// NewDropDownFromStrings constructs a class DropDown.
+func NewDropDownFromStrings(strings []string) DropDown {
 	var arg1 **C.char
 
 	{
@@ -21976,9 +21976,9 @@ func New_FromStrings(strings []string) Widget {
 
 	ret := C.gtk_drop_down_new_from_strings(arg1)
 
-	var ret0 Widget
+	var ret0 DropDown
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDropDown(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -22280,8 +22280,8 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 	return WrapDropTarget(obj), nil
 }
 
-// New_ constructs a class DropTarget.
-func New_(_type externglib.Type, actions gdk.DragAction) DropTarget {
+// NewDropTarget constructs a class DropTarget.
+func NewDropTarget(_type externglib.Type, actions gdk.DragAction) DropTarget {
 	var arg1 C.GType
 	var arg2 C.GdkDragAction
 
@@ -22522,8 +22522,8 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	return WrapDropTargetAsync(obj), nil
 }
 
-// New_ constructs a class DropTargetAsync.
-func New_(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync {
+// NewDropTargetAsync constructs a class DropTargetAsync.
+func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync {
 	var arg1 *C.GdkContentFormats
 	var arg2 C.GdkDragAction
 
@@ -22659,8 +22659,8 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 	return WrapEditableLabel(obj), nil
 }
 
-// New_ constructs a class EditableLabel.
-func New_(str string) Widget {
+// NewEditableLabel constructs a class EditableLabel.
+func NewEditableLabel(str string) EditableLabel {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(str))
@@ -22668,9 +22668,9 @@ func New_(str string) Widget {
 
 	ret := C.gtk_editable_label_new(arg1)
 
-	var ret0 Widget
+	var ret0 EditableLabel
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEditableLabel(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -22756,14 +22756,14 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	return WrapEmojiChooser(obj), nil
 }
 
-// New_ constructs a class EmojiChooser.
-func New_() Widget {
+// NewEmojiChooser constructs a class EmojiChooser.
+func NewEmojiChooser() EmojiChooser {
 
 	ret := C.gtk_emoji_chooser_new()
 
-	var ret0 Widget
+	var ret0 EmojiChooser
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEmojiChooser(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -22889,10 +22889,10 @@ type Entry interface {
 	// @x, @y doesn’t lie inside an icon, -1 is returned. This function is
 	// intended for use in a Widget::query-tooltip signal handler.
 	IconAtPos(x int, y int) int
-	// IconGicon retrieves the #GIcon used for the icon, or nil if there is no
+	// IconGIcon retrieves the #GIcon used for the icon, or nil if there is no
 	// icon or if the icon was set by some other method (e.g., by paintable or
 	// icon name).
-	IconGicon(iconPos EntryIconPosition) gio.Icon
+	IconGIcon(iconPos EntryIconPosition) gio.Icon
 	// IconName retrieves the icon name used for the icon, or nil if there is no
 	// icon or if the icon was set by some other method (e.g., by paintable or
 	// gicon).
@@ -22998,12 +22998,12 @@ type Entry interface {
 	// SetIconDragSource sets up the icon at the given position so that GTK will
 	// start a drag operation when the user clicks and drags the icon.
 	SetIconDragSource(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction)
-	// SetIconFromGicon sets the icon shown in the entry at the specified
+	// SetIconFromGIcon sets the icon shown in the entry at the specified
 	// position from the current icon theme. If the icon isn’t known, a “broken
 	// image” icon will be displayed instead.
 	//
 	// If @icon is nil, no icon will be shown in the specified position.
-	SetIconFromGicon(iconPos EntryIconPosition, icon gio.Icon)
+	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Icon)
 	// SetIconFromIconName sets the icon shown in the entry at the specified
 	// position from the current icon theme.
 	//
@@ -23116,29 +23116,29 @@ func marshalEntry(p uintptr) (interface{}, error) {
 	return WrapEntry(obj), nil
 }
 
-// New_ constructs a class Entry.
-func New_() Widget {
+// NewEntry constructs a class Entry.
+func NewEntry() Entry {
 
 	ret := C.gtk_entry_new()
 
-	var ret0 Widget
+	var ret0 Entry
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEntry(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithBuffer constructs a class Entry.
-func New_WithBuffer(buffer EntryBuffer) Widget {
+// NewEntryWithBuffer constructs a class Entry.
+func NewEntryWithBuffer(buffer EntryBuffer) Entry {
 	var arg1 *C.GtkEntryBuffer
 
 	arg1 = (*C.GtkEntryBuffer)(buffer.Native())
 
 	ret := C.gtk_entry_new_with_buffer(arg1)
 
-	var ret0 Widget
+	var ret0 Entry
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEntry(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -23330,10 +23330,10 @@ func (entry entry) IconAtPos(x int, y int) int {
 	return ret0
 }
 
-// IconGicon retrieves the #GIcon used for the icon, or nil if there is no
+// IconGIcon retrieves the #GIcon used for the icon, or nil if there is no
 // icon or if the icon was set by some other method (e.g., by paintable or
 // icon name).
-func (entry entry) IconGicon(iconPos EntryIconPosition) gio.Icon {
+func (entry entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
 	var arg0 *C.GtkEntry
 	var arg1 C.GtkEntryIconPosition
 
@@ -23799,12 +23799,12 @@ func (entry entry) SetIconDragSource(iconPos EntryIconPosition, provider gdk.Con
 	C.gtk_entry_set_icon_drag_source(arg0, arg1, arg2, arg3)
 }
 
-// SetIconFromGicon sets the icon shown in the entry at the specified
+// SetIconFromGIcon sets the icon shown in the entry at the specified
 // position from the current icon theme. If the icon isn’t known, a “broken
 // image” icon will be displayed instead.
 //
 // If @icon is nil, no icon will be shown in the specified position.
-func (entry entry) SetIconFromGicon(iconPos EntryIconPosition, icon gio.Icon) {
+func (entry entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Icon) {
 	var arg0 *C.GtkEntry
 	var arg1 C.GtkEntryIconPosition
 	var arg2 *C.GIcon
@@ -24143,8 +24143,8 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return WrapEntryBuffer(obj), nil
 }
 
-// New_ constructs a class EntryBuffer.
-func New_(initialChars string, nInitialChars int) EntryBuffer {
+// NewEntryBuffer constructs a class EntryBuffer.
+func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 	var arg1 *C.char
 	var arg2 C.int
 
@@ -24475,8 +24475,8 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return WrapEntryCompletion(obj), nil
 }
 
-// New_ constructs a class EntryCompletion.
-func New_() EntryCompletion {
+// NewEntryCompletion constructs a class EntryCompletion.
+func NewEntryCompletion() EntryCompletion {
 
 	ret := C.gtk_entry_completion_new()
 
@@ -24487,8 +24487,8 @@ func New_() EntryCompletion {
 	return ret0
 }
 
-// New_WithArea constructs a class EntryCompletion.
-func New_WithArea(area CellArea) EntryCompletion {
+// NewEntryCompletionWithArea constructs a class EntryCompletion.
+func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 	var arg1 *C.GtkCellArea
 
 	arg1 = (*C.GtkCellArea)(area.Native())
@@ -25095,14 +25095,14 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return WrapEventControllerFocus(obj), nil
 }
 
-// New_ constructs a class EventControllerFocus.
-func New_() EventController {
+// NewEventControllerFocus constructs a class EventControllerFocus.
+func NewEventControllerFocus() EventControllerFocus {
 
 	ret := C.gtk_event_controller_focus_new()
 
-	var ret0 EventController
+	var ret0 EventControllerFocus
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEventControllerFocus(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -25175,14 +25175,14 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return WrapEventControllerKey(obj), nil
 }
 
-// New_ constructs a class EventControllerKey.
-func New_() EventController {
+// NewEventControllerKey constructs a class EventControllerKey.
+func NewEventControllerKey() EventControllerKey {
 
 	ret := C.gtk_event_controller_key_new()
 
-	var ret0 EventController
+	var ret0 EventControllerKey
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEventControllerKey(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -25273,14 +25273,14 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	return WrapEventControllerLegacy(obj), nil
 }
 
-// New_ constructs a class EventControllerLegacy.
-func New_() EventController {
+// NewEventControllerLegacy constructs a class EventControllerLegacy.
+func NewEventControllerLegacy() EventControllerLegacy {
 
 	ret := C.gtk_event_controller_legacy_new()
 
-	var ret0 EventController
+	var ret0 EventControllerLegacy
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEventControllerLegacy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -25314,14 +25314,14 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return WrapEventControllerMotion(obj), nil
 }
 
-// New_ constructs a class EventControllerMotion.
-func New_() EventController {
+// NewEventControllerMotion constructs a class EventControllerMotion.
+func NewEventControllerMotion() EventControllerMotion {
 
 	ret := C.gtk_event_controller_motion_new()
 
-	var ret0 EventController
+	var ret0 EventControllerMotion
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -25415,17 +25415,17 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	return WrapEventControllerScroll(obj), nil
 }
 
-// New_ constructs a class EventControllerScroll.
-func New_(flags EventControllerScrollFlags) EventController {
+// NewEventControllerScroll constructs a class EventControllerScroll.
+func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll {
 	var arg1 C.GtkEventControllerScrollFlags
 
 	arg1 = (C.GtkEventControllerScrollFlags)(flags)
 
 	ret := C.gtk_event_controller_scroll_new(arg1)
 
-	var ret0 EventController
+	var ret0 EventControllerScroll
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapEventControllerScroll(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -25476,8 +25476,8 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 	return WrapEveryFilter(obj), nil
 }
 
-// New_ constructs a class EveryFilter.
-func New_() EveryFilter {
+// NewEveryFilter constructs a class EveryFilter.
+func NewEveryFilter() EveryFilter {
 
 	ret := C.gtk_every_filter_new()
 
@@ -25598,8 +25598,8 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
-// New_ constructs a class Expander.
-func New_(label string) Widget {
+// NewExpander constructs a class Expander.
+func NewExpander(label string) Expander {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -25607,15 +25607,15 @@ func New_(label string) Widget {
 
 	ret := C.gtk_expander_new(arg1)
 
-	var ret0 Widget
+	var ret0 Expander
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapExpander(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithMnemonic constructs a class Expander.
-func New_WithMnemonic(label string) Widget {
+// NewExpanderWithMnemonic constructs a class Expander.
+func NewExpanderWithMnemonic(label string) Expander {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -25623,9 +25623,9 @@ func New_WithMnemonic(label string) Widget {
 
 	ret := C.gtk_expander_new_with_mnemonic(arg1)
 
-	var ret0 Widget
+	var ret0 Expander
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapExpander(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -26183,8 +26183,8 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return WrapFileChooserNative(obj), nil
 }
 
-// New_ constructs a class FileChooserNative.
-func New_(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
+// NewFileChooserNative constructs a class FileChooserNative.
+func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
 	var arg1 *C.char
 	var arg2 *C.GtkWindow
 	var arg3 C.GtkFileChooserAction
@@ -26303,17 +26303,17 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFileChooserWidget(obj), nil
 }
 
-// New_ constructs a class FileChooserWidget.
-func New_(action FileChooserAction) Widget {
+// NewFileChooserWidget constructs a class FileChooserWidget.
+func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	var arg1 C.GtkFileChooserAction
 
 	arg1 = (C.GtkFileChooserAction)(action)
 
 	ret := C.gtk_file_chooser_widget_new(arg1)
 
-	var ret0 Widget
+	var ret0 FileChooserWidget
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFileChooserWidget(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -26402,8 +26402,8 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	return WrapFileFilter(obj), nil
 }
 
-// New_ constructs a class FileFilter.
-func New_() FileFilter {
+// NewFileFilter constructs a class FileFilter.
+func NewFileFilter() FileFilter {
 
 	ret := C.gtk_file_filter_new()
 
@@ -26414,8 +26414,8 @@ func New_() FileFilter {
 	return ret0
 }
 
-// New_FromGvariant constructs a class FileFilter.
-func New_FromGvariant(variant *glib.Variant) FileFilter {
+// NewFileFilterFromGvariant constructs a class FileFilter.
+func NewFileFilterFromGvariant(variant *glib.Variant) FileFilter {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -26731,8 +26731,8 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 	return WrapFilterListModel(obj), nil
 }
 
-// New_ constructs a class FilterListModel.
-func New_(model gio.ListModel, filter Filter) FilterListModel {
+// NewFilterListModel constructs a class FilterListModel.
+func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
 	var arg1 *C.GListModel
 	var arg2 *C.GtkFilter
 
@@ -26947,14 +26947,14 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return WrapFixed(obj), nil
 }
 
-// New_ constructs a class Fixed.
-func New_() Widget {
+// NewFixed constructs a class Fixed.
+func NewFixed() Fixed {
 
 	ret := C.gtk_fixed_new()
 
-	var ret0 Widget
+	var ret0 Fixed
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFixed(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -27112,14 +27112,14 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 	return WrapFixedLayout(obj), nil
 }
 
-// New_ constructs a class FixedLayout.
-func New_() LayoutManager {
+// NewFixedLayout constructs a class FixedLayout.
+func NewFixedLayout() FixedLayout {
 
 	ret := C.gtk_fixed_layout_new()
 
-	var ret0 LayoutManager
+	var ret0 FixedLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFixedLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -27207,8 +27207,8 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 	return WrapFlattenListModel(obj), nil
 }
 
-// New_ constructs a class FlattenListModel.
-func New_(model gio.ListModel) FlattenListModel {
+// NewFlattenListModel constructs a class FlattenListModel.
+func NewFlattenListModel(model gio.ListModel) FlattenListModel {
 	var arg1 *C.GListModel
 
 	ret := C.gtk_flatten_list_model_new(arg1)
@@ -27463,14 +27463,14 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 	return WrapFlowBox(obj), nil
 }
 
-// New_ constructs a class FlowBox.
-func New_() Widget {
+// NewFlowBox constructs a class FlowBox.
+func NewFlowBox() FlowBox {
 
 	ret := C.gtk_flow_box_new()
 
-	var ret0 Widget
+	var ret0 FlowBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFlowBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -27985,14 +27985,14 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	return WrapFlowBoxChild(obj), nil
 }
 
-// New_ constructs a class FlowBoxChild.
-func New_() Widget {
+// NewFlowBoxChild constructs a class FlowBoxChild.
+func NewFlowBoxChild() FlowBoxChild {
 
 	ret := C.gtk_flow_box_child_new()
 
-	var ret0 Widget
+	var ret0 FlowBoxChild
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFlowBoxChild(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -28129,20 +28129,20 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
-// New_ constructs a class FontButton.
-func New_() Widget {
+// NewFontButton constructs a class FontButton.
+func NewFontButton() FontButton {
 
 	ret := C.gtk_font_button_new()
 
-	var ret0 Widget
+	var ret0 FontButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFontButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithFont constructs a class FontButton.
-func New_WithFont(fontname string) Widget {
+// NewFontButtonWithFont constructs a class FontButton.
+func NewFontButtonWithFont(fontname string) FontButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(fontname))
@@ -28150,9 +28150,9 @@ func New_WithFont(fontname string) Widget {
 
 	ret := C.gtk_font_button_new_with_font(arg1)
 
-	var ret0 Widget
+	var ret0 FontButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFontButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -28292,8 +28292,8 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFontChooserDialog(obj), nil
 }
 
-// New_ constructs a class FontChooserDialog.
-func New_(title string, parent Window) Widget {
+// NewFontChooserDialog constructs a class FontChooserDialog.
+func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	var arg1 *C.char
 	var arg2 *C.GtkWindow
 
@@ -28303,9 +28303,9 @@ func New_(title string, parent Window) Widget {
 
 	ret := C.gtk_font_chooser_dialog_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 FontChooserDialog
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFontChooserDialog(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -28347,14 +28347,14 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFontChooserWidget(obj), nil
 }
 
-// New_ constructs a class FontChooserWidget.
-func New_() Widget {
+// NewFontChooserWidget constructs a class FontChooserWidget.
+func NewFontChooserWidget() FontChooserWidget {
 
 	ret := C.gtk_font_chooser_widget_new()
 
-	var ret0 Widget
+	var ret0 FontChooserWidget
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFontChooserWidget(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -28446,8 +28446,8 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return WrapFrame(obj), nil
 }
 
-// New_ constructs a class Frame.
-func New_(label string) Widget {
+// NewFrame constructs a class Frame.
+func NewFrame(label string) Frame {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -28455,9 +28455,9 @@ func New_(label string) Widget {
 
 	ret := C.gtk_frame_new(arg1)
 
-	var ret0 Widget
+	var ret0 Frame
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapFrame(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -28720,14 +28720,14 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return WrapGLArea(obj), nil
 }
 
-// New_ constructs a class GLArea.
-func New_() Widget {
+// NewGLArea constructs a class GLArea.
+func NewGLArea() GLArea {
 
 	ret := C.gtk_gl_area_new()
 
-	var ret0 Widget
+	var ret0 GLArea
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGLArea(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -29565,14 +29565,14 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 	return WrapGestureClick(obj), nil
 }
 
-// New_ constructs a class GestureClick.
-func New_() Gesture {
+// NewGestureClick constructs a class GestureClick.
+func NewGestureClick() GestureClick {
 
 	ret := C.gtk_gesture_click_new()
 
-	var ret0 Gesture
+	var ret0 GestureClick
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -29611,14 +29611,14 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 	return WrapGestureDrag(obj), nil
 }
 
-// New_ constructs a class GestureDrag.
-func New_() Gesture {
+// NewGestureDrag constructs a class GestureDrag.
+func NewGestureDrag() GestureDrag {
 
 	ret := C.gtk_gesture_drag_new()
 
-	var ret0 Gesture
+	var ret0 GestureDrag
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureDrag(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -29707,14 +29707,14 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return WrapGestureLongPress(obj), nil
 }
 
-// New_ constructs a class GestureLongPress.
-func New_() Gesture {
+// NewGestureLongPress constructs a class GestureLongPress.
+func NewGestureLongPress() GestureLongPress {
 
 	ret := C.gtk_gesture_long_press_new()
 
-	var ret0 Gesture
+	var ret0 GestureLongPress
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -29786,17 +29786,17 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 	return WrapGesturePan(obj), nil
 }
 
-// New_ constructs a class GesturePan.
-func New_(orientation Orientation) Gesture {
+// NewGesturePan constructs a class GesturePan.
+func NewGesturePan(orientation Orientation) GesturePan {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
 	ret := C.gtk_gesture_pan_new(arg1)
 
-	var ret0 Gesture
+	var ret0 GesturePan
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGesturePan(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -29856,14 +29856,14 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 	return WrapGestureRotate(obj), nil
 }
 
-// New_ constructs a class GestureRotate.
-func New_() Gesture {
+// NewGestureRotate constructs a class GestureRotate.
+func NewGestureRotate() GestureRotate {
 
 	ret := C.gtk_gesture_rotate_new()
 
-	var ret0 Gesture
+	var ret0 GestureRotate
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureRotate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -30115,14 +30115,14 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return WrapGestureStylus(obj), nil
 }
 
-// New_ constructs a class GestureStylus.
-func New_() Gesture {
+// NewGestureStylus constructs a class GestureStylus.
+func NewGestureStylus() GestureStylus {
 
 	ret := C.gtk_gesture_stylus_new()
 
-	var ret0 Gesture
+	var ret0 GestureStylus
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureStylus(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -30281,14 +30281,14 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return WrapGestureSwipe(obj), nil
 }
 
-// New_ constructs a class GestureSwipe.
-func New_() Gesture {
+// NewGestureSwipe constructs a class GestureSwipe.
+func NewGestureSwipe() GestureSwipe {
 
 	ret := C.gtk_gesture_swipe_new()
 
-	var ret0 Gesture
+	var ret0 GestureSwipe
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureSwipe(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -30346,14 +30346,14 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return WrapGestureZoom(obj), nil
 }
 
-// New_ constructs a class GestureZoom.
-func New_() Gesture {
+// NewGestureZoom constructs a class GestureZoom.
+func NewGestureZoom() GestureZoom {
 
 	ret := C.gtk_gesture_zoom_new()
 
-	var ret0 Gesture
+	var ret0 GestureZoom
 
-	ret0 = WrapGesture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGestureZoom(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -30501,14 +30501,14 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return WrapGrid(obj), nil
 }
 
-// New_ constructs a class Grid.
-func New_() Widget {
+// NewGrid constructs a class Grid.
+func NewGrid() Grid {
 
 	ret := C.gtk_grid_new()
 
-	var ret0 Widget
+	var ret0 Grid
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGrid(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -30947,14 +30947,14 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 	return WrapGridLayout(obj), nil
 }
 
-// New_ constructs a class GridLayout.
-func New_() LayoutManager {
+// NewGridLayout constructs a class GridLayout.
+func NewGridLayout() GridLayout {
 
 	ret := C.gtk_grid_layout_new()
 
-	var ret0 LayoutManager
+	var ret0 GridLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGridLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -31371,8 +31371,8 @@ func marshalGridView(p uintptr) (interface{}, error) {
 	return WrapGridView(obj), nil
 }
 
-// New_ constructs a class GridView.
-func New_(model SelectionModel, factory ListItemFactory) Widget {
+// NewGridView constructs a class GridView.
+func NewGridView(model SelectionModel, factory ListItemFactory) GridView {
 	var arg1 *C.GtkSelectionModel
 	var arg2 *C.GtkListItemFactory
 
@@ -31380,9 +31380,9 @@ func New_(model SelectionModel, factory ListItemFactory) Widget {
 
 	ret := C.gtk_grid_view_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 GridView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapGridView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -31689,14 +31689,14 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
-// New_ constructs a class HeaderBar.
-func New_() Widget {
+// NewHeaderBar constructs a class HeaderBar.
+func NewHeaderBar() HeaderBar {
 
 	ret := C.gtk_header_bar_new()
 
-	var ret0 Widget
+	var ret0 HeaderBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapHeaderBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -32264,14 +32264,14 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	return WrapIMContextSimple(obj), nil
 }
 
-// New_ constructs a class IMContextSimple.
-func New_() IMContext {
+// NewIMContextSimple constructs a class IMContextSimple.
+func NewIMContextSimple() IMContextSimple {
 
 	ret := C.gtk_im_context_simple_new()
 
-	var ret0 IMContext
+	var ret0 IMContextSimple
 
-	ret0 = WrapIMContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapIMContextSimple(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -32340,14 +32340,14 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return WrapIMMulticontext(obj), nil
 }
 
-// New_ constructs a class IMMulticontext.
-func New_() IMContext {
+// NewIMMulticontext constructs a class IMMulticontext.
+func NewIMMulticontext() IMMulticontext {
 
 	ret := C.gtk_im_multicontext_new()
 
-	var ret0 IMContext
+	var ret0 IMMulticontext
 
-	ret0 = WrapIMContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapIMMulticontext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -32424,8 +32424,8 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 	return WrapIconPaintable(obj), nil
 }
 
-// New_ForFile constructs a class IconPaintable.
-func New_ForFile(file gio.File, size int, scale int) IconPaintable {
+// NewIconPaintableForFile constructs a class IconPaintable.
+func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
 	var arg1 *C.GFile
 	var arg2 C.int
 	var arg3 C.int
@@ -32564,10 +32564,10 @@ type IconTheme interface {
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
-	// LookupByGicon looks up a icon for a desired size and window scale,
+	// LookupByGIcon looks up a icon for a desired size and window scale,
 	// returning a IconPaintable. The icon can then be rendered by using it as a
 	// Paintable, or you can get information such as the filename and size.
-	LookupByGicon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
+	LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// LookupIcon looks up a named icon for a desired size and window scale,
 	// returning a IconPaintable. The icon can then be rendered by using it as a
 	// Paintable, or you can get information such as the filename and size.
@@ -32631,8 +32631,8 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 	return WrapIconTheme(obj), nil
 }
 
-// New_ constructs a class IconTheme.
-func New_() IconTheme {
+// NewIconTheme constructs a class IconTheme.
+func NewIconTheme() IconTheme {
 
 	ret := C.gtk_icon_theme_new()
 
@@ -32841,10 +32841,10 @@ func (self iconTheme) HasIcon(iconName string) bool {
 	return ret0
 }
 
-// LookupByGicon looks up a icon for a desired size and window scale,
+// LookupByGIcon looks up a icon for a desired size and window scale,
 // returning a IconPaintable. The icon can then be rendered by using it as a
 // Paintable, or you can get information such as the filename and size.
-func (self iconTheme) LookupByGicon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
+func (self iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
 	var arg0 *C.GtkIconTheme
 	var arg1 *C.GIcon
 	var arg2 C.int
@@ -33245,42 +33245,42 @@ func marshalIconView(p uintptr) (interface{}, error) {
 	return WrapIconView(obj), nil
 }
 
-// New_ constructs a class IconView.
-func New_() Widget {
+// NewIconView constructs a class IconView.
+func NewIconView() IconView {
 
 	ret := C.gtk_icon_view_new()
 
-	var ret0 Widget
+	var ret0 IconView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapIconView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithArea constructs a class IconView.
-func New_WithArea(area CellArea) Widget {
+// NewIconViewWithArea constructs a class IconView.
+func NewIconViewWithArea(area CellArea) IconView {
 	var arg1 *C.GtkCellArea
 
 	arg1 = (*C.GtkCellArea)(area.Native())
 
 	ret := C.gtk_icon_view_new_with_area(arg1)
 
-	var ret0 Widget
+	var ret0 IconView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapIconView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithModel constructs a class IconView.
-func New_WithModel(model TreeModel) Widget {
+// NewIconViewWithModel constructs a class IconView.
+func NewIconViewWithModel(model TreeModel) IconView {
 	var arg1 *C.GtkTreeModel
 
 	ret := C.gtk_icon_view_new_with_model(arg1)
 
-	var ret0 Widget
+	var ret0 IconView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapIconView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -34307,7 +34307,7 @@ type Image interface {
 
 	// Clear resets the image to be empty.
 	Clear()
-	// Gicon gets the #GIcon and size being displayed by the Image. The storage
+	// GIcon gets the #GIcon and size being displayed by the Image. The storage
 	// type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 	// gtk_image_get_storage_type()). The caller of this function does not own a
 	// reference to the returned #GIcon.
@@ -34315,7 +34315,7 @@ type Image interface {
 	// Note: This function was changed in 3.94 not to use out parameters
 	// anymore, but return the GIcon directly. See gtk_image_get_icon_size() for
 	// a way to get the icon size.
-	Gicon() gio.Icon
+	GIcon() gio.Icon
 	// IconName gets the icon name and size being displayed by the Image. The
 	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
 	// (see gtk_image_get_storage_type()). The returned string is owned by the
@@ -34340,11 +34340,11 @@ type Image interface {
 	StorageType() ImageType
 	// SetFromFile: see gtk_image_new_from_file() for details.
 	SetFromFile(filename string)
-	// SetFromGicon: see gtk_image_new_from_gicon() for details.
+	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
 	//
 	// Note: Before 3.94, this function was taking an extra icon size argument.
 	// See gtk_image_set_icon_size() for another way to set the icon size.
-	SetFromGicon(icon gio.Icon)
+	SetFromGIcon(icon gio.Icon)
 	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 	//
 	// Note: Before 3.94, this function was taking an extra icon size argument.
@@ -34383,20 +34383,20 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return WrapImage(obj), nil
 }
 
-// New_ constructs a class Image.
-func New_() Widget {
+// NewImage constructs a class Image.
+func NewImage() Image {
 
 	ret := C.gtk_image_new()
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromFile constructs a class Image.
-func New_FromFile(filename string) Widget {
+// NewImageFromFile constructs a class Image.
+func NewImageFromFile(filename string) Image {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -34404,28 +34404,28 @@ func New_FromFile(filename string) Widget {
 
 	ret := C.gtk_image_new_from_file(arg1)
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromGicon constructs a class Image.
-func New_FromGicon(icon gio.Icon) Widget {
+// NewImageFromGIcon constructs a class Image.
+func NewImageFromGIcon(icon gio.Icon) Image {
 	var arg1 *C.GIcon
 
 	ret := C.gtk_image_new_from_gicon(arg1)
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromIconName constructs a class Image.
-func New_FromIconName(iconName string) Widget {
+// NewImageFromIconName constructs a class Image.
+func NewImageFromIconName(iconName string) Image {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(iconName))
@@ -34433,43 +34433,43 @@ func New_FromIconName(iconName string) Widget {
 
 	ret := C.gtk_image_new_from_icon_name(arg1)
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromPaintable constructs a class Image.
-func New_FromPaintable(paintable gdk.Paintable) Widget {
+// NewImageFromPaintable constructs a class Image.
+func NewImageFromPaintable(paintable gdk.Paintable) Image {
 	var arg1 *C.GdkPaintable
 
 	ret := C.gtk_image_new_from_paintable(arg1)
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromPixbuf constructs a class Image.
-func New_FromPixbuf(pixbuf gdkpixbuf.Pixbuf) Widget {
+// NewImageFromPixbuf constructs a class Image.
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	var arg1 *C.GdkPixbuf
 
 	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
 
 	ret := C.gtk_image_new_from_pixbuf(arg1)
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromResource constructs a class Image.
-func New_FromResource(resourcePath string) Widget {
+// NewImageFromResource constructs a class Image.
+func NewImageFromResource(resourcePath string) Image {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -34477,9 +34477,9 @@ func New_FromResource(resourcePath string) Widget {
 
 	ret := C.gtk_image_new_from_resource(arg1)
 
-	var ret0 Widget
+	var ret0 Image
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapImage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -34493,7 +34493,7 @@ func (image image) Clear() {
 	C.gtk_image_clear(arg0)
 }
 
-// Gicon gets the #GIcon and size being displayed by the Image. The storage
+// GIcon gets the #GIcon and size being displayed by the Image. The storage
 // type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned #GIcon.
@@ -34501,7 +34501,7 @@ func (image image) Clear() {
 // Note: This function was changed in 3.94 not to use out parameters
 // anymore, but return the GIcon directly. See gtk_image_get_icon_size() for
 // a way to get the icon size.
-func (image image) Gicon() gio.Icon {
+func (image image) GIcon() gio.Icon {
 	var arg0 *C.GtkImage
 
 	arg0 = (*C.GtkImage)(image.Native())
@@ -34610,11 +34610,11 @@ func (image image) SetFromFile(filename string) {
 	C.gtk_image_set_from_file(arg0, arg1)
 }
 
-// SetFromGicon: see gtk_image_new_from_gicon() for details.
+// SetFromGIcon: see gtk_image_new_from_gicon() for details.
 //
 // Note: Before 3.94, this function was taking an extra icon size argument.
 // See gtk_image_set_icon_size() for another way to set the icon size.
-func (image image) SetFromGicon(icon gio.Icon) {
+func (image image) SetFromGIcon(icon gio.Icon) {
 	var arg0 *C.GtkImage
 	var arg1 *C.GIcon
 
@@ -34842,14 +34842,14 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
-// New_ constructs a class InfoBar.
-func New_() Widget {
+// NewInfoBar constructs a class InfoBar.
+func NewInfoBar() InfoBar {
 
 	ret := C.gtk_info_bar_new()
 
-	var ret0 Widget
+	var ret0 InfoBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapInfoBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -35086,8 +35086,8 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	return WrapKeyvalTrigger(obj), nil
 }
 
-// New_ constructs a class KeyvalTrigger.
-func New_(keyval uint, modifiers gdk.ModifierType) ShortcutTrigger {
+// NewKeyvalTrigger constructs a class KeyvalTrigger.
+func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
 
@@ -35096,9 +35096,9 @@ func New_(keyval uint, modifiers gdk.ModifierType) ShortcutTrigger {
 
 	ret := C.gtk_keyval_trigger_new(arg1, arg2)
 
-	var ret0 ShortcutTrigger
+	var ret0 KeyvalTrigger
 
-	ret0 = WrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapKeyvalTrigger(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -35388,8 +35388,8 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
-// New_ constructs a class Label.
-func New_(str string) Widget {
+// NewLabel constructs a class Label.
+func NewLabel(str string) Label {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(str))
@@ -35397,15 +35397,15 @@ func New_(str string) Widget {
 
 	ret := C.gtk_label_new(arg1)
 
-	var ret0 Widget
+	var ret0 Label
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLabel(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithMnemonic constructs a class Label.
-func New_WithMnemonic(str string) Widget {
+// NewLabelWithMnemonic constructs a class Label.
+func NewLabelWithMnemonic(str string) Label {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(str))
@@ -35413,9 +35413,9 @@ func New_WithMnemonic(str string) Widget {
 
 	ret := C.gtk_label_new_with_mnemonic(arg1)
 
-	var ret0 Widget
+	var ret0 Label
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLabel(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -36535,20 +36535,20 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
-// New_ constructs a class LevelBar.
-func New_() Widget {
+// NewLevelBar constructs a class LevelBar.
+func NewLevelBar() LevelBar {
 
 	ret := C.gtk_level_bar_new()
 
-	var ret0 Widget
+	var ret0 LevelBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLevelBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForInterval constructs a class LevelBar.
-func New_ForInterval(minValue float64, maxValue float64) Widget {
+// NewLevelBarForInterval constructs a class LevelBar.
+func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	var arg1 C.double
 	var arg2 C.double
 
@@ -36557,9 +36557,9 @@ func New_ForInterval(minValue float64, maxValue float64) Widget {
 
 	ret := C.gtk_level_bar_new_for_interval(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 LevelBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLevelBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -36815,8 +36815,8 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return WrapLinkButton(obj), nil
 }
 
-// New_ constructs a class LinkButton.
-func New_(uri string) Widget {
+// NewLinkButton constructs a class LinkButton.
+func NewLinkButton(uri string) LinkButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(uri))
@@ -36824,15 +36824,15 @@ func New_(uri string) Widget {
 
 	ret := C.gtk_link_button_new(arg1)
 
-	var ret0 Widget
+	var ret0 LinkButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLinkButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithLabel constructs a class LinkButton.
-func New_WithLabel(uri string, label string) Widget {
+// NewLinkButtonWithLabel constructs a class LinkButton.
+func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var arg1 *C.char
 	var arg2 *C.char
 
@@ -36843,9 +36843,9 @@ func New_WithLabel(uri string, label string) Widget {
 
 	ret := C.gtk_link_button_new_with_label(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 LinkButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLinkButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -37154,14 +37154,14 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	return WrapListBox(obj), nil
 }
 
-// New_ constructs a class ListBox.
-func New_() Widget {
+// NewListBox constructs a class ListBox.
+func NewListBox() ListBox {
 
 	ret := C.gtk_list_box_new()
 
-	var ret0 Widget
+	var ret0 ListBox
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapListBox(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -37698,14 +37698,14 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 	return WrapListBoxRow(obj), nil
 }
 
-// New_ constructs a class ListBoxRow.
-func New_() Widget {
+// NewListBoxRow constructs a class ListBoxRow.
+func NewListBoxRow() ListBoxRow {
 
 	ret := C.gtk_list_box_row_new()
 
-	var ret0 Widget
+	var ret0 ListBoxRow
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapListBoxRow(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -38296,8 +38296,8 @@ func marshalListStore(p uintptr) (interface{}, error) {
 	return WrapListStore(obj), nil
 }
 
-// New_v constructs a class ListStore.
-func New_v(nColumns int, types []externglib.Type) ListStore {
+// NewListStoreV constructs a class ListStore.
+func NewListStoreV(nColumns int, types []externglib.Type) ListStore {
 	var arg1 C.int
 	var arg2 *C.GType
 
@@ -38812,8 +38812,8 @@ func marshalListView(p uintptr) (interface{}, error) {
 	return WrapListView(obj), nil
 }
 
-// New_ constructs a class ListView.
-func New_(model SelectionModel, factory ListItemFactory) Widget {
+// NewListView constructs a class ListView.
+func NewListView(model SelectionModel, factory ListItemFactory) ListView {
 	var arg1 *C.GtkSelectionModel
 	var arg2 *C.GtkListItemFactory
 
@@ -38821,9 +38821,9 @@ func New_(model SelectionModel, factory ListItemFactory) Widget {
 
 	ret := C.gtk_list_view_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 ListView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapListView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -39016,17 +39016,17 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	return WrapLockButton(obj), nil
 }
 
-// New_ constructs a class LockButton.
-func New_(permission gio.Permission) Widget {
+// NewLockButton constructs a class LockButton.
+func NewLockButton(permission gio.Permission) LockButton {
 	var arg1 *C.GPermission
 
 	arg1 = (*C.GPermission)(permission.Native())
 
 	ret := C.gtk_lock_button_new(arg1)
 
-	var ret0 Widget
+	var ret0 LockButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapLockButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -39127,8 +39127,8 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 	return WrapMapListModel(obj), nil
 }
 
-// New_ constructs a class MapListModel.
-func New_(model gio.ListModel, mapFunc MapListModelMapFunc) MapListModel {
+// NewMapListModel constructs a class MapListModel.
+func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc) MapListModel {
 	var arg1 *C.GListModel
 	var arg2 C.GtkMapListModelMapFunc
 	arg3 := C.gpointer(box.Assign(userData))
@@ -39234,17 +39234,17 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 	return WrapMediaControls(obj), nil
 }
 
-// New_ constructs a class MediaControls.
-func New_(stream MediaStream) Widget {
+// NewMediaControls constructs a class MediaControls.
+func NewMediaControls(stream MediaStream) MediaControls {
 	var arg1 *C.GtkMediaStream
 
 	arg1 = (*C.GtkMediaStream)(stream.Native())
 
 	ret := C.gtk_media_controls_new(arg1)
 
-	var ret0 Widget
+	var ret0 MediaControls
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMediaControls(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -39329,8 +39329,8 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 	return WrapMediaFile(obj), nil
 }
 
-// New_ constructs a class MediaFile.
-func New_() MediaFile {
+// NewMediaFile constructs a class MediaFile.
+func NewMediaFile() MediaFile {
 
 	ret := C.gtk_media_file_new()
 
@@ -39341,8 +39341,8 @@ func New_() MediaFile {
 	return ret0
 }
 
-// New_ForFile constructs a class MediaFile.
-func New_ForFile(file gio.File) MediaFile {
+// NewMediaFileForFile constructs a class MediaFile.
+func NewMediaFileForFile(file gio.File) MediaFile {
 	var arg1 *C.GFile
 
 	ret := C.gtk_media_file_new_for_file(arg1)
@@ -39354,8 +39354,8 @@ func New_ForFile(file gio.File) MediaFile {
 	return ret0
 }
 
-// New_ForFilename constructs a class MediaFile.
-func New_ForFilename(filename string) MediaFile {
+// NewMediaFileForFilename constructs a class MediaFile.
+func NewMediaFileForFilename(filename string) MediaFile {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -39370,8 +39370,8 @@ func New_ForFilename(filename string) MediaFile {
 	return ret0
 }
 
-// New_ForInputStream constructs a class MediaFile.
-func New_ForInputStream(stream gio.InputStream) MediaFile {
+// NewMediaFileForInputStream constructs a class MediaFile.
+func NewMediaFileForInputStream(stream gio.InputStream) MediaFile {
 	var arg1 *C.GInputStream
 
 	arg1 = (*C.GInputStream)(stream.Native())
@@ -39385,8 +39385,8 @@ func New_ForInputStream(stream gio.InputStream) MediaFile {
 	return ret0
 }
 
-// New_ForResource constructs a class MediaFile.
-func New_ForResource(resourcePath string) MediaFile {
+// NewMediaFileForResource constructs a class MediaFile.
+func NewMediaFileForResource(resourcePath string) MediaFile {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -40327,14 +40327,14 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
-// New_ constructs a class MenuButton.
-func New_() Widget {
+// NewMenuButton constructs a class MenuButton.
+func NewMenuButton() MenuButton {
 
 	ret := C.gtk_menu_button_new()
 
-	var ret0 Widget
+	var ret0 MenuButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMenuButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -40729,8 +40729,8 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 	return WrapMnemonicTrigger(obj), nil
 }
 
-// New_ constructs a class MnemonicTrigger.
-func New_(keyval uint) MnemonicTrigger {
+// NewMnemonicTrigger constructs a class MnemonicTrigger.
+func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 	var arg1 C.guint
 
 	arg1 = C.guint(keyval)
@@ -40795,17 +40795,17 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
-// NewGio constructs a class MountOperation.
-func NewGio(parent Window) gio.MountOperation {
+// NewMountOperation constructs a class MountOperation.
+func NewMountOperation(parent Window) MountOperation {
 	var arg1 *C.GtkWindow
 
 	arg1 = (*C.GtkWindow)(parent.Native())
 
 	ret := C.gtk_mount_operation_new(arg1)
 
-	var ret0 gio.MountOperation
+	var ret0 MountOperation
 
-	ret0 = gio.WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -40967,8 +40967,8 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 	return WrapMultiSelection(obj), nil
 }
 
-// New_ constructs a class MultiSelection.
-func New_(model gio.ListModel) MultiSelection {
+// NewMultiSelection constructs a class MultiSelection.
+func NewMultiSelection(model gio.ListModel) MultiSelection {
 	var arg1 *C.GListModel
 
 	ret := C.gtk_multi_selection_new(arg1)
@@ -41036,8 +41036,8 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 	return WrapMultiSorter(obj), nil
 }
 
-// New_ constructs a class MultiSorter.
-func New_() MultiSorter {
+// NewMultiSorter constructs a class MultiSorter.
+func NewMultiSorter() MultiSorter {
 
 	ret := C.gtk_multi_sorter_new()
 
@@ -41098,8 +41098,8 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 	return WrapNamedAction(obj), nil
 }
 
-// New_ constructs a class NamedAction.
-func New_(name string) NamedAction {
+// NewNamedAction constructs a class NamedAction.
+func NewNamedAction(name string) NamedAction {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(name))
@@ -41415,8 +41415,8 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 	return WrapNoSelection(obj), nil
 }
 
-// New_ constructs a class NoSelection.
-func New_(model gio.ListModel) NoSelection {
+// NewNoSelection constructs a class NoSelection.
+func NewNoSelection(model gio.ListModel) NoSelection {
 	var arg1 *C.GListModel
 
 	ret := C.gtk_no_selection_new(arg1)
@@ -41742,14 +41742,14 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return WrapNotebook(obj), nil
 }
 
-// New_ constructs a class Notebook.
-func New_() Widget {
+// NewNotebook constructs a class Notebook.
+func NewNotebook() Notebook {
 
 	ret := C.gtk_notebook_new()
 
-	var ret0 Widget
+	var ret0 Notebook
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapNotebook(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -42586,8 +42586,8 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 	return WrapNumericSorter(obj), nil
 }
 
-// New_ constructs a class NumericSorter.
-func New_(expression Expression) NumericSorter {
+// NewNumericSorter constructs a class NumericSorter.
+func NewNumericSorter(expression Expression) NumericSorter {
 	var arg1 *C.GtkExpression
 
 	arg1 = (*C.GtkExpression)(expression.Native())
@@ -42684,17 +42684,17 @@ func marshalObjectExpression(p uintptr) (interface{}, error) {
 	return WrapObjectExpression(obj), nil
 }
 
-// New_ constructs a class ObjectExpression.
-func New_(object gextras.Objector) Expression {
+// NewObjectExpression constructs a class ObjectExpression.
+func NewObjectExpression(object gextras.Objector) ObjectExpression {
 	var arg1 *C.GObject
 
 	arg1 = (*C.GObject)(object.Native())
 
 	ret := C.gtk_object_expression_new(arg1)
 
-	var ret0 Expression
+	var ret0 ObjectExpression
 
-	ret0 = WrapExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapObjectExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -42792,14 +42792,14 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
-// New_ constructs a class Overlay.
-func New_() Widget {
+// NewOverlay constructs a class Overlay.
+func NewOverlay() Overlay {
 
 	ret := C.gtk_overlay_new()
 
-	var ret0 Widget
+	var ret0 Overlay
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapOverlay(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -42950,14 +42950,14 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	return WrapOverlayLayout(obj), nil
 }
 
-// New_ constructs a class OverlayLayout.
-func New_() LayoutManager {
+// NewOverlayLayout constructs a class OverlayLayout.
+func NewOverlayLayout() OverlayLayout {
 
 	ret := C.gtk_overlay_layout_new()
 
-	var ret0 LayoutManager
+	var ret0 OverlayLayout
 
-	ret0 = WrapLayoutManager(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapOverlayLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -43119,8 +43119,8 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	return WrapPadController(obj), nil
 }
 
-// New_ constructs a class PadController.
-func New_(group gio.ActionGroup, pad gdk.Device) PadController {
+// NewPadController constructs a class PadController.
+func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController {
 	var arg1 *C.GActionGroup
 	var arg2 *C.GdkDevice
 
@@ -43315,8 +43315,8 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 	return WrapPageSetup(obj), nil
 }
 
-// New_ constructs a class PageSetup.
-func New_() PageSetup {
+// NewPageSetup constructs a class PageSetup.
+func NewPageSetup() PageSetup {
 
 	ret := C.gtk_page_setup_new()
 
@@ -43327,8 +43327,8 @@ func New_() PageSetup {
 	return ret0
 }
 
-// New_FromFile constructs a class PageSetup.
-func New_FromFile(fileName string) PageSetup {
+// NewPageSetupFromFile constructs a class PageSetup.
+func NewPageSetupFromFile(fileName string) PageSetup {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(fileName))
@@ -43343,8 +43343,8 @@ func New_FromFile(fileName string) PageSetup {
 	return ret0
 }
 
-// New_FromGvariant constructs a class PageSetup.
-func New_FromGvariant(variant *glib.Variant) PageSetup {
+// NewPageSetupFromGvariant constructs a class PageSetup.
+func NewPageSetupFromGvariant(variant *glib.Variant) PageSetup {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -43358,8 +43358,8 @@ func New_FromGvariant(variant *glib.Variant) PageSetup {
 	return ret0
 }
 
-// New_FromKeyFile constructs a class PageSetup.
-func New_FromKeyFile(keyFile *glib.KeyFile, groupName string) PageSetup {
+// NewPageSetupFromKeyFile constructs a class PageSetup.
+func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) PageSetup {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
 
@@ -43843,17 +43843,17 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
-// New_ constructs a class Paned.
-func New_(orientation Orientation) Widget {
+// NewPaned constructs a class Paned.
+func NewPaned(orientation Orientation) Paned {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
 	ret := C.gtk_paned_new(arg1)
 
-	var ret0 Widget
+	var ret0 Paned
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPaned(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -44134,14 +44134,14 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return WrapPasswordEntry(obj), nil
 }
 
-// New_ constructs a class PasswordEntry.
-func New_() Widget {
+// NewPasswordEntry constructs a class PasswordEntry.
+func NewPasswordEntry() PasswordEntry {
 
 	ret := C.gtk_password_entry_new()
 
-	var ret0 Widget
+	var ret0 PasswordEntry
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPasswordEntry(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -44331,33 +44331,33 @@ func marshalPicture(p uintptr) (interface{}, error) {
 	return WrapPicture(obj), nil
 }
 
-// New_ constructs a class Picture.
-func New_() Widget {
+// NewPicture constructs a class Picture.
+func NewPicture() Picture {
 
 	ret := C.gtk_picture_new()
 
-	var ret0 Widget
+	var ret0 Picture
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPicture(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForFile constructs a class Picture.
-func New_ForFile(file gio.File) Widget {
+// NewPictureForFile constructs a class Picture.
+func NewPictureForFile(file gio.File) Picture {
 	var arg1 *C.GFile
 
 	ret := C.gtk_picture_new_for_file(arg1)
 
-	var ret0 Widget
+	var ret0 Picture
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPicture(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForFilename constructs a class Picture.
-func New_ForFilename(filename string) Widget {
+// NewPictureForFilename constructs a class Picture.
+func NewPictureForFilename(filename string) Picture {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -44365,43 +44365,43 @@ func New_ForFilename(filename string) Widget {
 
 	ret := C.gtk_picture_new_for_filename(arg1)
 
-	var ret0 Widget
+	var ret0 Picture
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPicture(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForPaintable constructs a class Picture.
-func New_ForPaintable(paintable gdk.Paintable) Widget {
+// NewPictureForPaintable constructs a class Picture.
+func NewPictureForPaintable(paintable gdk.Paintable) Picture {
 	var arg1 *C.GdkPaintable
 
 	ret := C.gtk_picture_new_for_paintable(arg1)
 
-	var ret0 Widget
+	var ret0 Picture
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPicture(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForPixbuf constructs a class Picture.
-func New_ForPixbuf(pixbuf gdkpixbuf.Pixbuf) Widget {
+// NewPictureForPixbuf constructs a class Picture.
+func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 	var arg1 *C.GdkPixbuf
 
 	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
 
 	ret := C.gtk_picture_new_for_pixbuf(arg1)
 
-	var ret0 Widget
+	var ret0 Picture
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPicture(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForResource constructs a class Picture.
-func New_ForResource(resourcePath string) Widget {
+// NewPictureForResource constructs a class Picture.
+func NewPictureForResource(resourcePath string) Picture {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -44409,9 +44409,9 @@ func New_ForResource(resourcePath string) Widget {
 
 	ret := C.gtk_picture_new_for_resource(arg1)
 
-	var ret0 Widget
+	var ret0 Picture
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPicture(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -44778,14 +44778,14 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return WrapPopover(obj), nil
 }
 
-// New_ constructs a class Popover.
-func New_() Widget {
+// NewPopover constructs a class Popover.
+func NewPopover() Popover {
 
 	ret := C.gtk_popover_new()
 
-	var ret0 Widget
+	var ret0 Popover
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPopover(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -45201,23 +45201,23 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return WrapPopoverMenu(obj), nil
 }
 
-// New_FromModel constructs a class PopoverMenu.
-func New_FromModel(model gio.MenuModel) Widget {
+// NewPopoverMenuFromModel constructs a class PopoverMenu.
+func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 	var arg1 *C.GMenuModel
 
 	arg1 = (*C.GMenuModel)(model.Native())
 
 	ret := C.gtk_popover_menu_new_from_model(arg1)
 
-	var ret0 Widget
+	var ret0 PopoverMenu
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPopoverMenu(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromModelFull constructs a class PopoverMenu.
-func New_FromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Widget {
+// NewPopoverMenuFromModelFull constructs a class PopoverMenu.
+func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) PopoverMenu {
 	var arg1 *C.GMenuModel
 	var arg2 C.GtkPopoverMenuFlags
 
@@ -45226,9 +45226,9 @@ func New_FromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Widget {
 
 	ret := C.gtk_popover_menu_new_from_model_full(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 PopoverMenu
 
-	ret0 = WrapWidget(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPopoverMenu(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -45361,17 +45361,17 @@ func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 	return WrapPopoverMenuBar(obj), nil
 }
 
-// New_FromModel constructs a class PopoverMenuBar.
-func New_FromModel(model gio.MenuModel) Widget {
+// NewPopoverMenuBarFromModel constructs a class PopoverMenuBar.
+func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 	var arg1 *C.GMenuModel
 
 	arg1 = (*C.GMenuModel)(model.Native())
 
 	ret := C.gtk_popover_menu_bar_new_from_model(arg1)
 
-	var ret0 Widget
+	var ret0 PopoverMenuBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPopoverMenuBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -46041,8 +46041,8 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 	return WrapPrintOperation(obj), nil
 }
 
-// New_ constructs a class PrintOperation.
-func New_() PrintOperation {
+// NewPrintOperation constructs a class PrintOperation.
+func NewPrintOperation() PrintOperation {
 
 	ret := C.gtk_print_operation_new()
 
@@ -46765,8 +46765,8 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 	return WrapPrintSettings(obj), nil
 }
 
-// New_ constructs a class PrintSettings.
-func New_() PrintSettings {
+// NewPrintSettings constructs a class PrintSettings.
+func NewPrintSettings() PrintSettings {
 
 	ret := C.gtk_print_settings_new()
 
@@ -46777,8 +46777,8 @@ func New_() PrintSettings {
 	return ret0
 }
 
-// New_FromFile constructs a class PrintSettings.
-func New_FromFile(fileName string) PrintSettings {
+// NewPrintSettingsFromFile constructs a class PrintSettings.
+func NewPrintSettingsFromFile(fileName string) PrintSettings {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(fileName))
@@ -46793,8 +46793,8 @@ func New_FromFile(fileName string) PrintSettings {
 	return ret0
 }
 
-// New_FromGvariant constructs a class PrintSettings.
-func New_FromGvariant(variant *glib.Variant) PrintSettings {
+// NewPrintSettingsFromGvariant constructs a class PrintSettings.
+func NewPrintSettingsFromGvariant(variant *glib.Variant) PrintSettings {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -46808,8 +46808,8 @@ func New_FromGvariant(variant *glib.Variant) PrintSettings {
 	return ret0
 }
 
-// New_FromKeyFile constructs a class PrintSettings.
-func New_FromKeyFile(keyFile *glib.KeyFile, groupName string) PrintSettings {
+// NewPrintSettingsFromKeyFile constructs a class PrintSettings.
+func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) PrintSettings {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
 
@@ -48028,14 +48028,14 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return WrapProgressBar(obj), nil
 }
 
-// New_ constructs a class ProgressBar.
-func New_() Widget {
+// NewProgressBar constructs a class ProgressBar.
+func NewProgressBar() ProgressBar {
 
 	ret := C.gtk_progress_bar_new()
 
-	var ret0 Widget
+	var ret0 ProgressBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapProgressBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -48258,8 +48258,8 @@ func marshalPropertyExpression(p uintptr) (interface{}, error) {
 	return WrapPropertyExpression(obj), nil
 }
 
-// New_ constructs a class PropertyExpression.
-func New_(thisType externglib.Type, expression Expression, propertyName string) Expression {
+// NewPropertyExpression constructs a class PropertyExpression.
+func NewPropertyExpression(thisType externglib.Type, expression Expression, propertyName string) PropertyExpression {
 	var arg1 C.GType
 	var arg2 *C.GtkExpression
 	var arg3 *C.char
@@ -48271,9 +48271,9 @@ func New_(thisType externglib.Type, expression Expression, propertyName string) 
 
 	ret := C.gtk_property_expression_new(arg1, arg2, arg3)
 
-	var ret0 Expression
+	var ret0 PropertyExpression
 
-	ret0 = WrapExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapPropertyExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -48879,8 +48879,8 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 	return WrapRecentManager(obj), nil
 }
 
-// New_ constructs a class RecentManager.
-func New_() RecentManager {
+// NewRecentManager constructs a class RecentManager.
+func NewRecentManager() RecentManager {
 
 	ret := C.gtk_recent_manager_new()
 
@@ -49141,14 +49141,14 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return WrapRevealer(obj), nil
 }
 
-// New_ constructs a class Revealer.
-func New_() Widget {
+// NewRevealer constructs a class Revealer.
+func NewRevealer() Revealer {
 
 	ret := C.gtk_revealer_new()
 
-	var ret0 Widget
+	var ret0 Revealer
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapRevealer(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -49444,8 +49444,8 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return WrapScale(obj), nil
 }
 
-// New_ constructs a class Scale.
-func New_(orientation Orientation, adjustment Adjustment) Widget {
+// NewScale constructs a class Scale.
+func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	var arg1 C.GtkOrientation
 	var arg2 *C.GtkAdjustment
 
@@ -49454,15 +49454,15 @@ func New_(orientation Orientation, adjustment Adjustment) Widget {
 
 	ret := C.gtk_scale_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 Scale
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapScale(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithRange constructs a class Scale.
-func New_WithRange(orientation Orientation, min float64, max float64, step float64) Widget {
+// NewScaleWithRange constructs a class Scale.
+func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
 	var arg1 C.GtkOrientation
 	var arg2 C.double
 	var arg3 C.double
@@ -49475,9 +49475,9 @@ func New_WithRange(orientation Orientation, min float64, max float64, step float
 
 	ret := C.gtk_scale_new_with_range(arg1, arg2, arg3, arg4)
 
-	var ret0 Widget
+	var ret0 Scale
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapScale(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -49746,8 +49746,8 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return WrapScaleButton(obj), nil
 }
 
-// New_ constructs a class ScaleButton.
-func New_(min float64, max float64, step float64, icons []string) Widget {
+// NewScaleButton constructs a class ScaleButton.
+func NewScaleButton(min float64, max float64, step float64, icons []string) ScaleButton {
 	var arg1 C.double
 	var arg2 C.double
 	var arg3 C.double
@@ -49762,9 +49762,9 @@ func New_(min float64, max float64, step float64, icons []string) Widget {
 
 	ret := C.gtk_scale_button_new(arg1, arg2, arg3, arg4)
 
-	var ret0 Widget
+	var ret0 ScaleButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapScaleButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -49947,8 +49947,8 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return WrapScrollbar(obj), nil
 }
 
-// New_ constructs a class Scrollbar.
-func New_(orientation Orientation, adjustment Adjustment) Widget {
+// NewScrollbar constructs a class Scrollbar.
+func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var arg1 C.GtkOrientation
 	var arg2 *C.GtkAdjustment
 
@@ -49957,9 +49957,9 @@ func New_(orientation Orientation, adjustment Adjustment) Widget {
 
 	ret := C.gtk_scrollbar_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 Scrollbar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapScrollbar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -50221,14 +50221,14 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return WrapScrolledWindow(obj), nil
 }
 
-// New_ constructs a class ScrolledWindow.
-func New_() Widget {
+// NewScrolledWindow constructs a class ScrolledWindow.
+func NewScrolledWindow() ScrolledWindow {
 
 	ret := C.gtk_scrolled_window_new()
 
-	var ret0 Widget
+	var ret0 ScrolledWindow
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapScrolledWindow(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -50795,14 +50795,14 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
-// New_ constructs a class SearchBar.
-func New_() Widget {
+// NewSearchBar constructs a class SearchBar.
+func NewSearchBar() SearchBar {
 
 	ret := C.gtk_search_bar_new()
 
-	var ret0 Widget
+	var ret0 SearchBar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSearchBar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -50999,14 +50999,14 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return WrapSearchEntry(obj), nil
 }
 
-// New_ constructs a class SearchEntry.
-func New_() Widget {
+// NewSearchEntry constructs a class SearchEntry.
+func NewSearchEntry() SearchEntry {
 
 	ret := C.gtk_search_entry_new()
 
-	var ret0 Widget
+	var ret0 SearchEntry
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSearchEntry(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -51077,8 +51077,8 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	return WrapSelectionFilterModel(obj), nil
 }
 
-// New_ constructs a class SelectionFilterModel.
-func New_(model SelectionModel) SelectionFilterModel {
+// NewSelectionFilterModel constructs a class SelectionFilterModel.
+func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
 	var arg1 *C.GtkSelectionModel
 
 	ret := C.gtk_selection_filter_model_new(arg1)
@@ -51152,17 +51152,17 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	return WrapSeparator(obj), nil
 }
 
-// New_ constructs a class Separator.
-func New_(orientation Orientation) Widget {
+// NewSeparator constructs a class Separator.
+func NewSeparator(orientation Orientation) Separator {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
 	ret := C.gtk_separator_new(arg1)
 
-	var ret0 Widget
+	var ret0 Separator
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSeparator(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -51281,8 +51281,8 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 	return WrapShortcut(obj), nil
 }
 
-// New_ constructs a class Shortcut.
-func New_(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
+// NewShortcut constructs a class Shortcut.
+func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 	var arg1 *C.GtkShortcutTrigger
 	var arg2 *C.GtkShortcutAction
 
@@ -51440,8 +51440,8 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 	return WrapShortcutAction(obj), nil
 }
 
-// New_ParseString constructs a class ShortcutAction.
-func New_ParseString(string string) ShortcutAction {
+// NewShortcutActionParseString constructs a class ShortcutAction.
+func NewShortcutActionParseString(string string) ShortcutAction {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(string))
@@ -51619,27 +51619,27 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 	return WrapShortcutController(obj), nil
 }
 
-// New_ constructs a class ShortcutController.
-func New_() EventController {
+// NewShortcutController constructs a class ShortcutController.
+func NewShortcutController() ShortcutController {
 
 	ret := C.gtk_shortcut_controller_new()
 
-	var ret0 EventController
+	var ret0 ShortcutController
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForModel constructs a class ShortcutController.
-func New_ForModel(model gio.ListModel) EventController {
+// NewShortcutControllerForModel constructs a class ShortcutController.
+func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
 	var arg1 *C.GListModel
 
 	ret := C.gtk_shortcut_controller_new_for_model(arg1)
 
-	var ret0 EventController
+	var ret0 ShortcutController
 
-	ret0 = WrapEventController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -51781,8 +51781,8 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return WrapShortcutLabel(obj), nil
 }
 
-// New_ constructs a class ShortcutLabel.
-func New_(accelerator string) Widget {
+// NewShortcutLabel constructs a class ShortcutLabel.
+func NewShortcutLabel(accelerator string) ShortcutLabel {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(accelerator))
@@ -51790,9 +51790,9 @@ func New_(accelerator string) Widget {
 
 	ret := C.gtk_shortcut_label_new(arg1)
 
-	var ret0 Widget
+	var ret0 ShortcutLabel
 
-	ret0 = WrapWidget(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapShortcutLabel(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -51937,8 +51937,8 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 	return WrapShortcutTrigger(obj), nil
 }
 
-// New_ParseString constructs a class ShortcutTrigger.
-func New_ParseString(string string) ShortcutTrigger {
+// NewShortcutTriggerParseString constructs a class ShortcutTrigger.
+func NewShortcutTriggerParseString(string string) ShortcutTrigger {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(string))
@@ -52291,8 +52291,8 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 	return WrapSignalAction(obj), nil
 }
 
-// New_ constructs a class SignalAction.
-func New_(signalName string) SignalAction {
+// NewSignalAction constructs a class SignalAction.
+func NewSignalAction(signalName string) SignalAction {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(signalName))
@@ -52381,14 +52381,14 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	return WrapSignalListItemFactory(obj), nil
 }
 
-// New_ constructs a class SignalListItemFactory.
-func New_() ListItemFactory {
+// NewSignalListItemFactory constructs a class SignalListItemFactory.
+func NewSignalListItemFactory() SignalListItemFactory {
 
 	ret := C.gtk_signal_list_item_factory_new()
 
-	var ret0 ListItemFactory
+	var ret0 SignalListItemFactory
 
-	ret0 = WrapListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSignalListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -52459,8 +52459,8 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 	return WrapSingleSelection(obj), nil
 }
 
-// New_ constructs a class SingleSelection.
-func New_(model gio.ListModel) SingleSelection {
+// NewSingleSelection constructs a class SingleSelection.
+func NewSingleSelection(model gio.ListModel) SingleSelection {
 	var arg1 *C.GListModel
 
 	ret := C.gtk_single_selection_new(arg1)
@@ -52715,8 +52715,8 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
-// New_ constructs a class SizeGroup.
-func New_(mode SizeGroupMode) SizeGroup {
+// NewSizeGroup constructs a class SizeGroup.
+func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var arg1 C.GtkSizeGroupMode
 
 	arg1 = (C.GtkSizeGroupMode)(mode)
@@ -52851,8 +52851,8 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 	return WrapSliceListModel(obj), nil
 }
 
-// New_ constructs a class SliceListModel.
-func New_(model gio.ListModel, offset uint, size uint) SliceListModel {
+// NewSliceListModel constructs a class SliceListModel.
+func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListModel {
 	var arg1 *C.GListModel
 	var arg2 C.guint
 	var arg3 C.guint
@@ -53185,18 +53185,6 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSnapshot(obj), nil
-}
-
-// New_ constructs a class Snapshot.
-func New_() Snapshot {
-
-	ret := C.gtk_snapshot_new()
-
-	var ret0 Snapshot
-
-	ret0 = WrapSnapshot(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
 }
 
 // AppendBorder appends a stroked border rectangle inside the given
@@ -54116,8 +54104,8 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 	return WrapSortListModel(obj), nil
 }
 
-// New_ constructs a class SortListModel.
-func New_(model gio.ListModel, sorter Sorter) SortListModel {
+// NewSortListModel constructs a class SortListModel.
+func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel {
 	var arg1 *C.GListModel
 	var arg2 *C.GtkSorter
 
@@ -54511,8 +54499,8 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return WrapSpinButton(obj), nil
 }
 
-// New_ constructs a class SpinButton.
-func New_(adjustment Adjustment, climbRate float64, digits uint) Widget {
+// NewSpinButton constructs a class SpinButton.
+func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton {
 	var arg1 *C.GtkAdjustment
 	var arg2 C.double
 	var arg3 C.guint
@@ -54523,15 +54511,15 @@ func New_(adjustment Adjustment, climbRate float64, digits uint) Widget {
 
 	ret := C.gtk_spin_button_new(arg1, arg2, arg3)
 
-	var ret0 Widget
+	var ret0 SpinButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSpinButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithRange constructs a class SpinButton.
-func New_WithRange(min float64, max float64, step float64) Widget {
+// NewSpinButtonWithRange constructs a class SpinButton.
+func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	var arg1 C.double
 	var arg2 C.double
 	var arg3 C.double
@@ -54542,9 +54530,9 @@ func New_WithRange(min float64, max float64, step float64) Widget {
 
 	ret := C.gtk_spin_button_new_with_range(arg1, arg2, arg3)
 
-	var ret0 Widget
+	var ret0 SpinButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSpinButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -54941,14 +54929,14 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	return WrapSpinner(obj), nil
 }
 
-// New_ constructs a class Spinner.
-func New_() Widget {
+// NewSpinner constructs a class Spinner.
+func NewSpinner() Spinner {
 
 	ret := C.gtk_spinner_new()
 
-	var ret0 Widget
+	var ret0 Spinner
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSpinner(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -55155,14 +55143,14 @@ func marshalStack(p uintptr) (interface{}, error) {
 	return WrapStack(obj), nil
 }
 
-// New_ constructs a class Stack.
-func New_() Widget {
+// NewStack constructs a class Stack.
+func NewStack() Stack {
 
 	ret := C.gtk_stack_new()
 
-	var ret0 Widget
+	var ret0 Stack
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapStack(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -55827,14 +55815,14 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return WrapStackSidebar(obj), nil
 }
 
-// New_ constructs a class StackSidebar.
-func New_() Widget {
+// NewStackSidebar constructs a class StackSidebar.
+func NewStackSidebar() StackSidebar {
 
 	ret := C.gtk_stack_sidebar_new()
 
-	var ret0 Widget
+	var ret0 StackSidebar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapStackSidebar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -55918,14 +55906,14 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	return WrapStackSwitcher(obj), nil
 }
 
-// New_ constructs a class StackSwitcher.
-func New_() Widget {
+// NewStackSwitcher constructs a class StackSwitcher.
+func NewStackSwitcher() StackSwitcher {
 
 	ret := C.gtk_stack_switcher_new()
 
-	var ret0 Widget
+	var ret0 StackSwitcher
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapStackSwitcher(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -56026,14 +56014,14 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
-// New_ constructs a class Statusbar.
-func New_() Widget {
+// NewStatusbar constructs a class Statusbar.
+func NewStatusbar() Statusbar {
 
 	ret := C.gtk_statusbar_new()
 
-	var ret0 Widget
+	var ret0 Statusbar
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapStatusbar(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -56163,8 +56151,8 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 	return WrapStringFilter(obj), nil
 }
 
-// New_ constructs a class StringFilter.
-func New_(expression Expression) StringFilter {
+// NewStringFilter constructs a class StringFilter.
+func NewStringFilter(expression Expression) StringFilter {
 	var arg1 *C.GtkExpression
 
 	arg1 = (*C.GtkExpression)(expression.Native())
@@ -56368,8 +56356,8 @@ func marshalStringList(p uintptr) (interface{}, error) {
 	return WrapStringList(obj), nil
 }
 
-// New_ constructs a class StringList.
-func New_(strings []string) StringList {
+// NewStringList constructs a class StringList.
+func NewStringList(strings []string) StringList {
 	var arg1 **C.char
 
 	{
@@ -56502,8 +56490,8 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 	return WrapStringObject(obj), nil
 }
 
-// New_ constructs a class StringObject.
-func New_(string string) StringObject {
+// NewStringObject constructs a class StringObject.
+func NewStringObject(string string) StringObject {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(string))
@@ -56572,8 +56560,8 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 	return WrapStringSorter(obj), nil
 }
 
-// New_ constructs a class StringSorter.
-func New_(expression Expression) StringSorter {
+// NewStringSorter constructs a class StringSorter.
+func NewStringSorter(expression Expression) StringSorter {
 	var arg1 *C.GtkExpression
 
 	arg1 = (*C.GtkExpression)(expression.Native())
@@ -57162,14 +57150,14 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return WrapSwitch(obj), nil
 }
 
-// New_ constructs a class Switch.
-func New_() Widget {
+// NewSwitch constructs a class Switch.
+func NewSwitch() Switch {
 
 	ret := C.gtk_switch_new()
 
-	var ret0 Widget
+	var ret0 Switch
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSwitch(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -57443,29 +57431,29 @@ func marshalText(p uintptr) (interface{}, error) {
 	return WrapText(obj), nil
 }
 
-// New_ constructs a class Text.
-func New_() Widget {
+// NewText constructs a class Text.
+func NewText() Text {
 
 	ret := C.gtk_text_new()
 
-	var ret0 Widget
+	var ret0 Text
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapText(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithBuffer constructs a class Text.
-func New_WithBuffer(buffer EntryBuffer) Widget {
+// NewTextWithBuffer constructs a class Text.
+func NewTextWithBuffer(buffer EntryBuffer) Text {
 	var arg1 *C.GtkEntryBuffer
 
 	arg1 = (*C.GtkEntryBuffer)(buffer.Native())
 
 	ret := C.gtk_text_new_with_buffer(arg1)
 
-	var ret0 Widget
+	var ret0 Text
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapText(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -58383,8 +58371,8 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 	return WrapTextBuffer(obj), nil
 }
 
-// New_ constructs a class TextBuffer.
-func New_(table TextTagTable) TextBuffer {
+// NewTextBuffer constructs a class TextBuffer.
+func NewTextBuffer(table TextTagTable) TextBuffer {
 	var arg1 *C.GtkTextTagTable
 
 	arg1 = (*C.GtkTextTagTable)(table.Native())
@@ -59719,8 +59707,8 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return WrapTextChildAnchor(obj), nil
 }
 
-// New_ constructs a class TextChildAnchor.
-func New_() TextChildAnchor {
+// NewTextChildAnchor constructs a class TextChildAnchor.
+func NewTextChildAnchor() TextChildAnchor {
 
 	ret := C.gtk_text_child_anchor_new()
 
@@ -59841,8 +59829,8 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 	return WrapTextMark(obj), nil
 }
 
-// New_ constructs a class TextMark.
-func New_(name string, leftGravity bool) TextMark {
+// NewTextMark constructs a class TextMark.
+func NewTextMark(name string, leftGravity bool) TextMark {
 	var arg1 *C.char
 	var arg2 C.gboolean
 
@@ -60002,8 +59990,8 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return WrapTextTag(obj), nil
 }
 
-// New_ constructs a class TextTag.
-func New_(name string) TextTag {
+// NewTextTag constructs a class TextTag.
+func NewTextTag(name string) TextTag {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(name))
@@ -60127,8 +60115,8 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return WrapTextTagTable(obj), nil
 }
 
-// New_ constructs a class TextTagTable.
-func New_() TextTagTable {
+// NewTextTagTable constructs a class TextTagTable.
+func NewTextTagTable() TextTagTable {
 
 	ret := C.gtk_text_tag_table_new()
 
@@ -60627,29 +60615,29 @@ func marshalTextView(p uintptr) (interface{}, error) {
 	return WrapTextView(obj), nil
 }
 
-// New_ constructs a class TextView.
-func New_() Widget {
+// NewTextView constructs a class TextView.
+func NewTextView() TextView {
 
 	ret := C.gtk_text_view_new()
 
-	var ret0 Widget
+	var ret0 TextView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapTextView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithBuffer constructs a class TextView.
-func New_WithBuffer(buffer TextBuffer) Widget {
+// NewTextViewWithBuffer constructs a class TextView.
+func NewTextViewWithBuffer(buffer TextBuffer) TextView {
 	var arg1 *C.GtkTextBuffer
 
 	arg1 = (*C.GtkTextBuffer)(buffer.Native())
 
 	ret := C.gtk_text_view_new_with_buffer(arg1)
 
-	var ret0 Widget
+	var ret0 TextView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapTextView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -61998,20 +61986,20 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 	return WrapToggleButton(obj), nil
 }
 
-// New_ constructs a class ToggleButton.
-func New_() Widget {
+// NewToggleButton constructs a class ToggleButton.
+func NewToggleButton() ToggleButton {
 
 	ret := C.gtk_toggle_button_new()
 
-	var ret0 Widget
+	var ret0 ToggleButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapToggleButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithLabel constructs a class ToggleButton.
-func New_WithLabel(label string) Widget {
+// NewToggleButtonWithLabel constructs a class ToggleButton.
+func NewToggleButtonWithLabel(label string) ToggleButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -62019,15 +62007,15 @@ func New_WithLabel(label string) Widget {
 
 	ret := C.gtk_toggle_button_new_with_label(arg1)
 
-	var ret0 Widget
+	var ret0 ToggleButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapToggleButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithMnemonic constructs a class ToggleButton.
-func New_WithMnemonic(label string) Widget {
+// NewToggleButtonWithMnemonic constructs a class ToggleButton.
+func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(label))
@@ -62035,9 +62023,9 @@ func New_WithMnemonic(label string) Widget {
 
 	ret := C.gtk_toggle_button_new_with_mnemonic(arg1)
 
-	var ret0 Widget
+	var ret0 ToggleButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapToggleButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -62133,10 +62121,10 @@ type Tooltip interface {
 	// SetIcon sets the icon of the tooltip (which is in front of the text) to
 	// be @paintable. If @paintable is nil, the image will be hidden.
 	SetIcon(paintable gdk.Paintable)
-	// SetIconFromGicon sets the icon of the tooltip (which is in front of the
+	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 	// text) to be the icon indicated by @gicon with the size indicated by
 	// @size. If @gicon is nil, the image will be hidden.
-	SetIconFromGicon(gicon gio.Icon)
+	SetIconFromGIcon(gicon gio.Icon)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by @icon_name with the size indicated
 	// by @size. If @icon_name is nil, the image will be hidden.
@@ -62201,10 +62189,10 @@ func (tooltip tooltip) SetIcon(paintable gdk.Paintable) {
 	C.gtk_tooltip_set_icon(arg0, arg1)
 }
 
-// SetIconFromGicon sets the icon of the tooltip (which is in front of the
+// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 // text) to be the icon indicated by @gicon with the size indicated by
 // @size. If @gicon is nil, the image will be hidden.
-func (tooltip tooltip) SetIconFromGicon(gicon gio.Icon) {
+func (tooltip tooltip) SetIconFromGIcon(gicon gio.Icon) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.GIcon
 
@@ -62346,14 +62334,14 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 	return WrapTreeExpander(obj), nil
 }
 
-// New_ constructs a class TreeExpander.
-func New_() Widget {
+// NewTreeExpander constructs a class TreeExpander.
+func NewTreeExpander() TreeExpander {
 
 	ret := C.gtk_tree_expander_new()
 
-	var ret0 Widget
+	var ret0 TreeExpander
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapTreeExpander(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -62494,8 +62482,8 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 	return WrapTreeListModel(obj), nil
 }
 
-// New_ constructs a class TreeListModel.
-func New_(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) TreeListModel {
+// NewTreeListModel constructs a class TreeListModel.
+func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) TreeListModel {
 	var arg1 *C.GListModel
 	var arg2 C.gboolean
 	var arg3 C.gboolean
@@ -62915,8 +62903,8 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	return WrapTreeListRowSorter(obj), nil
 }
 
-// New_ constructs a class TreeListRowSorter.
-func New_(sorter Sorter) TreeListRowSorter {
+// NewTreeListRowSorter constructs a class TreeListRowSorter.
+func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
 	var arg1 *C.GtkSorter
 
 	arg1 = (*C.GtkSorter)(sorter.Native())
@@ -63467,8 +63455,8 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	return WrapTreeModelSort(obj), nil
 }
 
-// New_WithModel constructs a class TreeModelSort.
-func New_WithModel(childModel TreeModel) TreeModelSort {
+// NewTreeModelSortWithModel constructs a class TreeModelSort.
+func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort {
 	var arg1 *C.GtkTreeModel
 
 	ret := C.gtk_tree_model_sort_new_with_model(arg1)
@@ -64168,8 +64156,8 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 	return WrapTreeStore(obj), nil
 }
 
-// New_v constructs a class TreeStore.
-func New_v(nColumns int, types []externglib.Type) TreeStore {
+// NewTreeStoreV constructs a class TreeStore.
+func NewTreeStoreV(nColumns int, types []externglib.Type) TreeStore {
 	var arg1 C.int
 	var arg2 *C.GType
 
@@ -65151,27 +65139,27 @@ func marshalTreeView(p uintptr) (interface{}, error) {
 	return WrapTreeView(obj), nil
 }
 
-// New_ constructs a class TreeView.
-func New_() Widget {
+// NewTreeView constructs a class TreeView.
+func NewTreeView() TreeView {
 
 	ret := C.gtk_tree_view_new()
 
-	var ret0 Widget
+	var ret0 TreeView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapTreeView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithModel constructs a class TreeView.
-func New_WithModel(model TreeModel) Widget {
+// NewTreeViewWithModel constructs a class TreeView.
+func NewTreeViewWithModel(model TreeModel) TreeView {
 	var arg1 *C.GtkTreeModel
 
 	ret := C.gtk_tree_view_new_with_model(arg1)
 
-	var ret0 Widget
+	var ret0 TreeView
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapTreeView(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -67016,8 +67004,8 @@ func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 	return WrapTreeViewColumn(obj), nil
 }
 
-// New_ constructs a class TreeViewColumn.
-func New_() TreeViewColumn {
+// NewTreeViewColumn constructs a class TreeViewColumn.
+func NewTreeViewColumn() TreeViewColumn {
 
 	ret := C.gtk_tree_view_column_new()
 
@@ -67028,8 +67016,8 @@ func New_() TreeViewColumn {
 	return ret0
 }
 
-// New_WithArea constructs a class TreeViewColumn.
-func New_WithArea(area CellArea) TreeViewColumn {
+// NewTreeViewColumnWithArea constructs a class TreeViewColumn.
+func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
 	var arg1 *C.GtkCellArea
 
 	arg1 = (*C.GtkCellArea)(area.Native())
@@ -67855,33 +67843,33 @@ func marshalVideo(p uintptr) (interface{}, error) {
 	return WrapVideo(obj), nil
 }
 
-// New_ constructs a class Video.
-func New_() Widget {
+// NewVideo constructs a class Video.
+func NewVideo() Video {
 
 	ret := C.gtk_video_new()
 
-	var ret0 Widget
+	var ret0 Video
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVideo(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForFile constructs a class Video.
-func New_ForFile(file gio.File) Widget {
+// NewVideoForFile constructs a class Video.
+func NewVideoForFile(file gio.File) Video {
 	var arg1 *C.GFile
 
 	ret := C.gtk_video_new_for_file(arg1)
 
-	var ret0 Widget
+	var ret0 Video
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVideo(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForFilename constructs a class Video.
-func New_ForFilename(filename string) Widget {
+// NewVideoForFilename constructs a class Video.
+func NewVideoForFilename(filename string) Video {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -67889,30 +67877,30 @@ func New_ForFilename(filename string) Widget {
 
 	ret := C.gtk_video_new_for_filename(arg1)
 
-	var ret0 Widget
+	var ret0 Video
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVideo(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForMediaStream constructs a class Video.
-func New_ForMediaStream(stream MediaStream) Widget {
+// NewVideoForMediaStream constructs a class Video.
+func NewVideoForMediaStream(stream MediaStream) Video {
 	var arg1 *C.GtkMediaStream
 
 	arg1 = (*C.GtkMediaStream)(stream.Native())
 
 	ret := C.gtk_video_new_for_media_stream(arg1)
 
-	var ret0 Widget
+	var ret0 Video
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVideo(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_ForResource constructs a class Video.
-func New_ForResource(resourcePath string) Widget {
+// NewVideoForResource constructs a class Video.
+func NewVideoForResource(resourcePath string) Video {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -67920,9 +67908,9 @@ func New_ForResource(resourcePath string) Widget {
 
 	ret := C.gtk_video_new_for_resource(arg1)
 
-	var ret0 Widget
+	var ret0 Video
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVideo(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -68111,8 +68099,8 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return WrapViewport(obj), nil
 }
 
-// New_ constructs a class Viewport.
-func New_(hadjustment Adjustment, vadjustment Adjustment) Widget {
+// NewViewport constructs a class Viewport.
+func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var arg1 *C.GtkAdjustment
 	var arg2 *C.GtkAdjustment
 
@@ -68121,9 +68109,9 @@ func New_(hadjustment Adjustment, vadjustment Adjustment) Widget {
 
 	ret := C.gtk_viewport_new(arg1, arg2)
 
-	var ret0 Widget
+	var ret0 Viewport
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapViewport(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -68204,14 +68192,14 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return WrapVolumeButton(obj), nil
 }
 
-// New_ constructs a class VolumeButton.
-func New_() Widget {
+// NewVolumeButton constructs a class VolumeButton.
+func NewVolumeButton() VolumeButton {
 
 	ret := C.gtk_volume_button_new()
 
-	var ret0 Widget
+	var ret0 VolumeButton
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapVolumeButton(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -72428,8 +72416,8 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	return WrapWidgetPaintable(obj), nil
 }
 
-// New_ constructs a class WidgetPaintable.
-func New_(widget Widget) WidgetPaintable {
+// NewWidgetPaintable constructs a class WidgetPaintable.
+func NewWidgetPaintable(widget Widget) WidgetPaintable {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(widget.Native())
@@ -72876,14 +72864,14 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return WrapWindow(obj), nil
 }
 
-// New_ constructs a class Window.
-func New_() Widget {
+// NewWindow constructs a class Window.
+func NewWindow() Window {
 
 	ret := C.gtk_window_new()
 
-	var ret0 Widget
+	var ret0 Window
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapWindow(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -73875,17 +73863,17 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 	return WrapWindowControls(obj), nil
 }
 
-// New_ constructs a class WindowControls.
-func New_(side PackType) Widget {
+// NewWindowControls constructs a class WindowControls.
+func NewWindowControls(side PackType) WindowControls {
 	var arg1 C.GtkPackType
 
 	arg1 = (C.GtkPackType)(side)
 
 	ret := C.gtk_window_controls_new(arg1)
 
-	var ret0 Widget
+	var ret0 WindowControls
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapWindowControls(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -74015,8 +74003,8 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return WrapWindowGroup(obj), nil
 }
 
-// New_ constructs a class WindowGroup.
-func New_() WindowGroup {
+// NewWindowGroup constructs a class WindowGroup.
+func NewWindowGroup() WindowGroup {
 
 	ret := C.gtk_window_group_new()
 
@@ -74102,14 +74090,14 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 	return WrapWindowHandle(obj), nil
 }
 
-// New_ constructs a class WindowHandle.
-func New_() Widget {
+// NewWindowHandle constructs a class WindowHandle.
+func NewWindowHandle() WindowHandle {
 
 	ret := C.gtk_window_handle_new()
 
-	var ret0 Widget
+	var ret0 WindowHandle
 
-	ret0 = WrapWidget(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapWindowHandle(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }

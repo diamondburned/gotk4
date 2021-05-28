@@ -432,8 +432,8 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return WrapRenderer(obj), nil
 }
 
-// NewPango constructs a class Renderer.
-func NewPango(display *xlib.Display, screen int) pango.Renderer {
+// NewRenderer constructs a class Renderer.
+func NewRenderer(display *xlib.Display, screen int) Renderer {
 	var arg1 *C.Display
 	var arg2 C.int
 
@@ -442,9 +442,9 @@ func NewPango(display *xlib.Display, screen int) pango.Renderer {
 
 	ret := C.pango_xft_renderer_new(arg1, arg2)
 
-	var ret0 pango.Renderer
+	var ret0 Renderer
 
-	ret0 = pango.WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }

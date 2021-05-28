@@ -40,6 +40,7 @@ var (
 		"Simd",
 		"Hmac",
 		"Mime",
+		"Rgba",
 		"Ascii",
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,
@@ -51,6 +52,7 @@ var (
 		"Toupper", "ToUpper",
 		"Xdigit", "XDigit",
 		"Dbus", "DBus",
+		"Gicon", "GIcon",
 		"Gtype", "GType",
 		"Gvalue", "GValue",
 	)

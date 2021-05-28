@@ -526,8 +526,8 @@ func (b *Box) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// New_Alloc constructs a struct Box.
-func New_Alloc() *Box {
+// NewBoxAlloc constructs a struct Box.
+func NewBoxAlloc() *Box {
 
 	ret := C.graphene_box_alloc()
 
@@ -566,8 +566,8 @@ func (e *Euler) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// New_Alloc constructs a struct Euler.
-func New_Alloc() *Euler {
+// NewEulerAlloc constructs a struct Euler.
+func NewEulerAlloc() *Euler {
 
 	ret := C.graphene_euler_alloc()
 
@@ -606,8 +606,8 @@ func (f *Frustum) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// New_Alloc constructs a struct Frustum.
-func New_Alloc() *Frustum {
+// NewFrustumAlloc constructs a struct Frustum.
+func NewFrustumAlloc() *Frustum {
 
 	ret := C.graphene_frustum_alloc()
 
@@ -646,8 +646,8 @@ func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// New_Alloc constructs a struct Matrix.
-func New_Alloc() *Matrix {
+// NewMatrixAlloc constructs a struct Matrix.
+func NewMatrixAlloc() *Matrix {
 
 	ret := C.graphene_matrix_alloc()
 
@@ -686,8 +686,8 @@ func (p *Plane) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// New_Alloc constructs a struct Plane.
-func New_Alloc() *Plane {
+// NewPlaneAlloc constructs a struct Plane.
+func NewPlaneAlloc() *Plane {
 
 	ret := C.graphene_plane_alloc()
 
@@ -723,8 +723,8 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// New_Alloc constructs a struct Point.
-func New_Alloc() *Point {
+// NewPointAlloc constructs a struct Point.
+func NewPointAlloc() *Point {
 
 	ret := C.graphene_point_alloc()
 
@@ -774,8 +774,8 @@ func (p *Point3D) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// New_Alloc constructs a struct Point3D.
-func New_Alloc() *Point3D {
+// NewPoint3DAlloc constructs a struct Point3D.
+func NewPoint3DAlloc() *Point3D {
 
 	ret := C.graphene_point3d_alloc()
 
@@ -835,8 +835,8 @@ func (q *Quad) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
 }
 
-// New_Alloc constructs a struct Quad.
-func New_Alloc() *Quad {
+// NewQuadAlloc constructs a struct Quad.
+func NewQuadAlloc() *Quad {
 
 	ret := C.graphene_quad_alloc()
 
@@ -875,8 +875,8 @@ func (q *Quaternion) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
 }
 
-// New_Alloc constructs a struct Quaternion.
-func New_Alloc() *Quaternion {
+// NewQuaternionAlloc constructs a struct Quaternion.
+func NewQuaternionAlloc() *Quaternion {
 
 	ret := C.graphene_quaternion_alloc()
 
@@ -915,8 +915,8 @@ func (r *Ray) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// New_Alloc constructs a struct Ray.
-func New_Alloc() *Ray {
+// NewRayAlloc constructs a struct Ray.
+func NewRayAlloc() *Ray {
 
 	ret := C.graphene_ray_alloc()
 
@@ -1050,8 +1050,8 @@ func (s *Size) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_Alloc constructs a struct Size.
-func New_Alloc() *Size {
+// NewSizeAlloc constructs a struct Size.
+func NewSizeAlloc() *Size {
 
 	ret := C.graphene_size_alloc()
 
@@ -1101,8 +1101,8 @@ func (s *Sphere) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_Alloc constructs a struct Sphere.
-func New_Alloc() *Sphere {
+// NewSphereAlloc constructs a struct Sphere.
+func NewSphereAlloc() *Sphere {
 
 	ret := C.graphene_sphere_alloc()
 
@@ -1138,8 +1138,8 @@ func (t *Triangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_Alloc constructs a struct Triangle.
-func New_Alloc() *Triangle {
+// NewTriangleAlloc constructs a struct Triangle.
+func NewTriangleAlloc() *Triangle {
 
 	ret := C.graphene_triangle_alloc()
 
@@ -1178,8 +1178,8 @@ func (v *Vec2) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_Alloc constructs a struct Vec2.
-func New_Alloc() *Vec2 {
+// NewVec2Alloc constructs a struct Vec2.
+func NewVec2Alloc() *Vec2 {
 
 	ret := C.graphene_vec2_alloc()
 
@@ -1219,8 +1219,8 @@ func (v *Vec3) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_Alloc constructs a struct Vec3.
-func New_Alloc() *Vec3 {
+// NewVec3Alloc constructs a struct Vec3.
+func NewVec3Alloc() *Vec3 {
 
 	ret := C.graphene_vec3_alloc()
 
@@ -1260,8 +1260,8 @@ func (v *Vec4) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
-// New_Alloc constructs a struct Vec4.
-func New_Alloc() *Vec4 {
+// NewVec4Alloc constructs a struct Vec4.
+func NewVec4Alloc() *Vec4 {
 
 	ret := C.graphene_vec4_alloc()
 

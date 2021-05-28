@@ -70,9 +70,9 @@ type PixdataType int
 const (
 	// PixdataTypeColorTypeRGB: each pixel has red, green and blue samples.
 	PixdataTypeColorTypeRGB PixdataType = 0b1
-	// PixdataTypeColorTypeRgba: each pixel has red, green and blue samples and
+	// PixdataTypeColorTypeRGBA: each pixel has red, green and blue samples and
 	// an alpha value.
-	PixdataTypeColorTypeRgba PixdataType = 0b10
+	PixdataTypeColorTypeRGBA PixdataType = 0b10
 	// PixdataTypeColorTypeMask: mask for the colortype flags of the enum.
 	PixdataTypeColorTypeMask PixdataType = 0b11111111
 	// PixdataTypeSampleWidth8: each sample has 8 bits.

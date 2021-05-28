@@ -8086,8 +8086,8 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// New_ForXml constructs a struct DBusNodeInfo.
-func New_ForXml(xmlData string) *DBusNodeInfo {
+// NewDBusNodeInfoForXml constructs a struct DBusNodeInfo.
+func NewDBusNodeInfoForXml(xmlData string) *DBusNodeInfo {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(xmlData))
@@ -8414,8 +8414,8 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// New_ constructs a struct FileAttributeInfoList.
-func New_() *FileAttributeInfoList {
+// NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
+func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 	ret := C.g_file_attribute_info_list_new()
 
@@ -8465,8 +8465,8 @@ func (f *FileAttributeMatcher) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// New_ constructs a struct FileAttributeMatcher.
-func New_(attributes string) *FileAttributeMatcher {
+// NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
+func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(attributes))
@@ -8887,8 +8887,8 @@ func (r *Resource) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// New_FromData constructs a struct Resource.
-func New_FromData(data *glib.Bytes) *Resource {
+// NewResourceFromData constructs a struct Resource.
+func NewResourceFromData(data *glib.Bytes) *Resource {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(data.Native())
@@ -9008,8 +9008,8 @@ func (s *SettingsSchemaSource) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_FromDirectory constructs a struct SettingsSchemaSource.
-func New_FromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) *SettingsSchemaSource {
+// NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.
+func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) *SettingsSchemaSource {
 	var arg1 *C.gchar
 	var arg2 *C.GSettingsSchemaSource
 	var arg3 C.gboolean
@@ -9064,8 +9064,8 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_ constructs a struct SrvTarget.
-func New_(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
+// NewSrvTarget constructs a struct SrvTarget.
+func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
 	var arg1 *C.gchar
 	var arg2 C.guint16
 	var arg3 C.guint16
@@ -9250,8 +9250,8 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return WrapAppLaunchContext(obj), nil
 }
 
-// New_ constructs a class AppLaunchContext.
-func New_() AppLaunchContext {
+// NewAppLaunchContext constructs a class AppLaunchContext.
+func NewAppLaunchContext() AppLaunchContext {
 
 	ret := C.g_app_launch_context_new()
 
@@ -9925,8 +9925,8 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// New_ constructs a class Application.
-func New_(applicationID string, flags ApplicationFlags) Application {
+// NewApplication constructs a class Application.
+func NewApplication(applicationID string, flags ApplicationFlags) Application {
 	var arg1 *C.gchar
 	var arg2 C.GApplicationFlags
 
@@ -11317,23 +11317,23 @@ func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedInputStream(obj), nil
 }
 
-// New_ constructs a class BufferedInputStream.
-func New_(baseStream InputStream) InputStream {
+// NewBufferedInputStream constructs a class BufferedInputStream.
+func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 	var arg1 *C.GInputStream
 
 	arg1 = (*C.GInputStream)(baseStream.Native())
 
 	ret := C.g_buffered_input_stream_new(arg1)
 
-	var ret0 InputStream
+	var ret0 BufferedInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_Sized constructs a class BufferedInputStream.
-func New_Sized(baseStream InputStream, size uint) InputStream {
+// NewBufferedInputStreamSized constructs a class BufferedInputStream.
+func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInputStream {
 	var arg1 *C.GInputStream
 	var arg2 C.gsize
 
@@ -11342,9 +11342,9 @@ func New_Sized(baseStream InputStream, size uint) InputStream {
 
 	ret := C.g_buffered_input_stream_new_sized(arg1, arg2)
 
-	var ret0 InputStream
+	var ret0 BufferedInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -11603,23 +11603,23 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedOutputStream(obj), nil
 }
 
-// New_ constructs a class BufferedOutputStream.
-func New_(baseStream OutputStream) OutputStream {
+// NewBufferedOutputStream constructs a class BufferedOutputStream.
+func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 	var arg1 *C.GOutputStream
 
 	arg1 = (*C.GOutputStream)(baseStream.Native())
 
 	ret := C.g_buffered_output_stream_new(arg1)
 
-	var ret0 OutputStream
+	var ret0 BufferedOutputStream
 
-	ret0 = WrapOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_Sized constructs a class BufferedOutputStream.
-func New_Sized(baseStream OutputStream, size uint) OutputStream {
+// NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
+func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
 	var arg1 *C.GOutputStream
 	var arg2 C.gsize
 
@@ -11628,9 +11628,9 @@ func New_Sized(baseStream OutputStream, size uint) OutputStream {
 
 	ret := C.g_buffered_output_stream_new_sized(arg1, arg2)
 
-	var ret0 OutputStream
+	var ret0 BufferedOutputStream
 
-	ret0 = WrapOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -11715,8 +11715,8 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 	return WrapBytesIcon(obj), nil
 }
 
-// New_ constructs a class BytesIcon.
-func New_(bytes *glib.Bytes) BytesIcon {
+// NewBytesIcon constructs a class BytesIcon.
+func NewBytesIcon(bytes *glib.Bytes) BytesIcon {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(bytes.Native())
@@ -11898,8 +11898,8 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 	return WrapCancellable(obj), nil
 }
 
-// New_ constructs a class Cancellable.
-func New_() Cancellable {
+// NewCancellable constructs a class Cancellable.
+func NewCancellable() Cancellable {
 
 	ret := C.g_cancellable_new()
 
@@ -12194,8 +12194,8 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	return WrapCharsetConverter(obj), nil
 }
 
-// New_ constructs a class CharsetConverter.
-func New_(toCharset string, fromCharset string) CharsetConverter {
+// NewCharsetConverter constructs a class CharsetConverter.
+func NewCharsetConverter(toCharset string, fromCharset string) CharsetConverter {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -12282,8 +12282,8 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 	return WrapConverterInputStream(obj), nil
 }
 
-// New_ constructs a class ConverterInputStream.
-func New_(baseStream InputStream, converter Converter) InputStream {
+// NewConverterInputStream constructs a class ConverterInputStream.
+func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream {
 	var arg1 *C.GInputStream
 	var arg2 *C.GConverter
 
@@ -12291,9 +12291,9 @@ func New_(baseStream InputStream, converter Converter) InputStream {
 
 	ret := C.g_converter_input_stream_new(arg1, arg2)
 
-	var ret0 InputStream
+	var ret0 ConverterInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapConverterInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -12338,8 +12338,8 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 	return WrapConverterOutputStream(obj), nil
 }
 
-// New_ constructs a class ConverterOutputStream.
-func New_(baseStream OutputStream, converter Converter) OutputStream {
+// NewConverterOutputStream constructs a class ConverterOutputStream.
+func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream {
 	var arg1 *C.GOutputStream
 	var arg2 *C.GConverter
 
@@ -12347,9 +12347,9 @@ func New_(baseStream OutputStream, converter Converter) OutputStream {
 
 	ret := C.g_converter_output_stream_new(arg1, arg2)
 
-	var ret0 OutputStream
+	var ret0 ConverterOutputStream
 
-	ret0 = WrapOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapConverterOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -12464,8 +12464,8 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 	return WrapCredentials(obj), nil
 }
 
-// New_ constructs a class Credentials.
-func New_() Credentials {
+// NewCredentials constructs a class Credentials.
+func NewCredentials() Credentials {
 
 	ret := C.g_credentials_new()
 
@@ -12703,8 +12703,8 @@ func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 	return WrapDBusAuthObserver(obj), nil
 }
 
-// New_ constructs a class DBusAuthObserver.
-func New_() DBusAuthObserver {
+// NewDBusAuthObserver constructs a class DBusAuthObserver.
+func NewDBusAuthObserver() DBusAuthObserver {
 
 	ret := C.g_dbus_auth_observer_new()
 
@@ -13345,8 +13345,8 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 	return WrapDBusConnection(obj), nil
 }
 
-// New_Finish constructs a class DBusConnection.
-func New_Finish(res AsyncResult) DBusConnection {
+// NewDBusConnectionFinish constructs a class DBusConnection.
+func NewDBusConnectionFinish(res AsyncResult) DBusConnection {
 	var arg1 *C.GAsyncResult
 
 	ret := C.g_dbus_connection_new_finish(arg1)
@@ -13358,8 +13358,8 @@ func New_Finish(res AsyncResult) DBusConnection {
 	return ret0
 }
 
-// New_ForAddressFinish constructs a class DBusConnection.
-func New_ForAddressFinish(res AsyncResult) DBusConnection {
+// NewDBusConnectionForAddressFinish constructs a class DBusConnection.
+func NewDBusConnectionForAddressFinish(res AsyncResult) DBusConnection {
 	var arg1 *C.GAsyncResult
 
 	ret := C.g_dbus_connection_new_for_address_finish(arg1)
@@ -13371,8 +13371,8 @@ func New_ForAddressFinish(res AsyncResult) DBusConnection {
 	return ret0
 }
 
-// New_ForAddressSync constructs a class DBusConnection.
-func New_ForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) DBusConnection {
+// NewDBusConnectionForAddressSync constructs a class DBusConnection.
+func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) DBusConnection {
 	var arg1 *C.gchar
 	var arg2 C.GDBusConnectionFlags
 	var arg3 *C.GDBusAuthObserver
@@ -13393,8 +13393,8 @@ func New_ForAddressSync(address string, flags DBusConnectionFlags, observer DBus
 	return ret0
 }
 
-// New_Sync constructs a class DBusConnection.
-func New_Sync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) DBusConnection {
+// NewDBusConnectionSync constructs a class DBusConnection.
+func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) DBusConnection {
 	var arg1 *C.GIOStream
 	var arg2 *C.gchar
 	var arg3 C.GDBusConnectionFlags
@@ -15146,8 +15146,8 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 	return WrapDBusMessage(obj), nil
 }
 
-// New_ constructs a class DBusMessage.
-func New_() DBusMessage {
+// NewDBusMessage constructs a class DBusMessage.
+func NewDBusMessage() DBusMessage {
 
 	ret := C.g_dbus_message_new()
 
@@ -15158,8 +15158,8 @@ func New_() DBusMessage {
 	return ret0
 }
 
-// New_FromBlob constructs a class DBusMessage.
-func New_FromBlob(blob []byte, capabilities DBusCapabilityFlags) DBusMessage {
+// NewDBusMessageFromBlob constructs a class DBusMessage.
+func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) DBusMessage {
 	var arg1 *C.guchar
 	var arg2 C.gsize
 	var arg3 C.GDBusCapabilityFlags
@@ -15180,8 +15180,8 @@ func New_FromBlob(blob []byte, capabilities DBusCapabilityFlags) DBusMessage {
 	return ret0
 }
 
-// New_MethodCall constructs a class DBusMessage.
-func New_MethodCall(name string, path string, interface_ string, method string) DBusMessage {
+// NewDBusMessageMethodCall constructs a class DBusMessage.
+func NewDBusMessageMethodCall(name string, path string, interface_ string, method string) DBusMessage {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -15205,8 +15205,8 @@ func New_MethodCall(name string, path string, interface_ string, method string) 
 	return ret0
 }
 
-// New_Signal constructs a class DBusMessage.
-func New_Signal(path string, interface_ string, signal string) DBusMessage {
+// NewDBusMessageSignal constructs a class DBusMessage.
+func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMessage {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -16455,8 +16455,8 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerClient(obj), nil
 }
 
-// New_Finish constructs a class DBusObjectManagerClient.
-func New_Finish(res AsyncResult) DBusObjectManagerClient {
+// NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
+func NewDBusObjectManagerClientFinish(res AsyncResult) DBusObjectManagerClient {
 	var arg1 *C.GAsyncResult
 
 	ret := C.g_dbus_object_manager_client_new_finish(arg1)
@@ -16468,8 +16468,8 @@ func New_Finish(res AsyncResult) DBusObjectManagerClient {
 	return ret0
 }
 
-// New_ForBusFinish constructs a class DBusObjectManagerClient.
-func New_ForBusFinish(res AsyncResult) DBusObjectManagerClient {
+// NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
+func NewDBusObjectManagerClientForBusFinish(res AsyncResult) DBusObjectManagerClient {
 	var arg1 *C.GAsyncResult
 
 	ret := C.g_dbus_object_manager_client_new_for_bus_finish(arg1)
@@ -16481,8 +16481,8 @@ func New_ForBusFinish(res AsyncResult) DBusObjectManagerClient {
 	return ret0
 }
 
-// New_ForBusSync constructs a class DBusObjectManagerClient.
-func New_ForBusSync(busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient {
+// NewDBusObjectManagerClientForBusSync constructs a class DBusObjectManagerClient.
+func NewDBusObjectManagerClientForBusSync(busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient {
 	var arg1 C.GBusType
 	var arg2 C.GDBusObjectManagerClientFlags
 	var arg3 *C.gchar
@@ -16509,8 +16509,8 @@ func New_ForBusSync(busType BusType, flags DBusObjectManagerClientFlags, name st
 	return ret0
 }
 
-// New_Sync constructs a class DBusObjectManagerClient.
-func New_Sync(connection DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient {
+// NewDBusObjectManagerClientSync constructs a class DBusObjectManagerClient.
+func NewDBusObjectManagerClientSync(connection DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient {
 	var arg1 *C.GDBusConnection
 	var arg2 C.GDBusObjectManagerClientFlags
 	var arg3 *C.gchar
@@ -16672,8 +16672,8 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerServer(obj), nil
 }
 
-// New_ constructs a class DBusObjectManagerServer.
-func New_(objectPath string) DBusObjectManagerServer {
+// NewDBusObjectManagerServer constructs a class DBusObjectManagerServer.
+func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(objectPath))
@@ -16815,8 +16815,8 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	return WrapDBusObjectProxy(obj), nil
 }
 
-// New_ constructs a class DBusObjectProxy.
-func New_(connection DBusConnection, objectPath string) DBusObjectProxy {
+// NewDBusObjectProxy constructs a class DBusObjectProxy.
+func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy {
 	var arg1 *C.GDBusConnection
 	var arg2 *C.gchar
 
@@ -16896,8 +16896,8 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	return WrapDBusObjectSkeleton(obj), nil
 }
 
-// New_ constructs a class DBusObjectSkeleton.
-func New_(objectPath string) DBusObjectSkeleton {
+// NewDBusObjectSkeleton constructs a class DBusObjectSkeleton.
+func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(objectPath))
@@ -17202,8 +17202,8 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 	return WrapDBusProxy(obj), nil
 }
 
-// New_Finish constructs a class DBusProxy.
-func New_Finish(res AsyncResult) DBusProxy {
+// NewDBusProxyFinish constructs a class DBusProxy.
+func NewDBusProxyFinish(res AsyncResult) DBusProxy {
 	var arg1 *C.GAsyncResult
 
 	ret := C.g_dbus_proxy_new_finish(arg1)
@@ -17215,8 +17215,8 @@ func New_Finish(res AsyncResult) DBusProxy {
 	return ret0
 }
 
-// New_ForBusFinish constructs a class DBusProxy.
-func New_ForBusFinish(res AsyncResult) DBusProxy {
+// NewDBusProxyForBusFinish constructs a class DBusProxy.
+func NewDBusProxyForBusFinish(res AsyncResult) DBusProxy {
 	var arg1 *C.GAsyncResult
 
 	ret := C.g_dbus_proxy_new_for_bus_finish(arg1)
@@ -17228,8 +17228,8 @@ func New_ForBusFinish(res AsyncResult) DBusProxy {
 	return ret0
 }
 
-// New_ForBusSync constructs a class DBusProxy.
-func New_ForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) DBusProxy {
+// NewDBusProxyForBusSync constructs a class DBusProxy.
+func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) DBusProxy {
 	var arg1 C.GBusType
 	var arg2 C.GDBusProxyFlags
 	var arg3 *C.GDBusInterfaceInfo
@@ -17258,8 +17258,8 @@ func New_ForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceIn
 	return ret0
 }
 
-// New_Sync constructs a class DBusProxy.
-func New_Sync(connection DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) DBusProxy {
+// NewDBusProxySync constructs a class DBusProxy.
+func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) DBusProxy {
 	var arg1 *C.GDBusConnection
 	var arg2 C.GDBusProxyFlags
 	var arg3 *C.GDBusInterfaceInfo
@@ -17812,8 +17812,8 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 	return WrapDBusServer(obj), nil
 }
 
-// New_Sync constructs a class DBusServer.
-func New_Sync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) DBusServer {
+// NewDBusServerSync constructs a class DBusServer.
+func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) DBusServer {
 	var arg1 *C.gchar
 	var arg2 C.GDBusServerFlags
 	var arg3 *C.gchar
@@ -18104,8 +18104,8 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 	return WrapDataInputStream(obj), nil
 }
 
-// New_ constructs a class DataInputStream.
-func New_(baseStream InputStream) DataInputStream {
+// NewDataInputStream constructs a class DataInputStream.
+func NewDataInputStream(baseStream InputStream) DataInputStream {
 	var arg1 *C.GInputStream
 
 	arg1 = (*C.GInputStream)(baseStream.Native())
@@ -18709,8 +18709,8 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	return WrapDataOutputStream(obj), nil
 }
 
-// New_ constructs a class DataOutputStream.
-func New_(baseStream OutputStream) DataOutputStream {
+// NewDataOutputStream constructs a class DataOutputStream.
+func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 	var arg1 *C.GOutputStream
 
 	arg1 = (*C.GOutputStream)(baseStream.Native())
@@ -19035,8 +19035,8 @@ func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	return WrapDesktopAppInfo(obj), nil
 }
 
-// New_ constructs a class DesktopAppInfo.
-func New_(desktopID string) DesktopAppInfo {
+// NewDesktopAppInfo constructs a class DesktopAppInfo.
+func NewDesktopAppInfo(desktopID string) DesktopAppInfo {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(desktopID))
@@ -19051,8 +19051,8 @@ func New_(desktopID string) DesktopAppInfo {
 	return ret0
 }
 
-// New_FromFilename constructs a class DesktopAppInfo.
-func New_FromFilename(filename string) DesktopAppInfo {
+// NewDesktopAppInfoFromFilename constructs a class DesktopAppInfo.
+func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -19067,8 +19067,8 @@ func New_FromFilename(filename string) DesktopAppInfo {
 	return ret0
 }
 
-// New_FromKeyfile constructs a class DesktopAppInfo.
-func New_FromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
+// NewDesktopAppInfoFromKeyfile constructs a class DesktopAppInfo.
+func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	var arg1 *C.GKeyFile
 
 	arg1 = (*C.GKeyFile)(keyFile.Native())
@@ -19534,8 +19534,8 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 	return WrapEmblem(obj), nil
 }
 
-// New_ constructs a class Emblem.
-func New_(icon Icon) Emblem {
+// NewEmblem constructs a class Emblem.
+func NewEmblem(icon Icon) Emblem {
 	var arg1 *C.GIcon
 
 	ret := C.g_emblem_new(arg1)
@@ -19547,8 +19547,8 @@ func New_(icon Icon) Emblem {
 	return ret0
 }
 
-// New_WithOrigin constructs a class Emblem.
-func New_WithOrigin(icon Icon, origin EmblemOrigin) Emblem {
+// NewEmblemWithOrigin constructs a class Emblem.
+func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	var arg1 *C.GIcon
 	var arg2 C.GEmblemOrigin
 
@@ -19626,8 +19626,8 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return WrapEmblemedIcon(obj), nil
 }
 
-// New_ constructs a class EmblemedIcon.
-func New_(icon Icon, emblem Emblem) EmblemedIcon {
+// NewEmblemedIcon constructs a class EmblemedIcon.
+func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	var arg1 *C.GIcon
 	var arg2 *C.GEmblem
 
@@ -20323,8 +20323,8 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 	return WrapFileIcon(obj), nil
 }
 
-// New_ constructs a class FileIcon.
-func New_(file File) FileIcon {
+// NewFileIcon constructs a class FileIcon.
+func NewFileIcon(file File) FileIcon {
 	var arg1 *C.GFile
 
 	ret := C.g_file_icon_new(arg1)
@@ -20587,8 +20587,8 @@ func marshalFileInfo(p uintptr) (interface{}, error) {
 	return WrapFileInfo(obj), nil
 }
 
-// New_ constructs a class FileInfo.
-func New_() FileInfo {
+// NewFileInfo constructs a class FileInfo.
+func NewFileInfo() FileInfo {
 
 	ret := C.g_file_info_new()
 
@@ -22047,8 +22047,8 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return WrapFilenameCompleter(obj), nil
 }
 
-// New_ constructs a class FilenameCompleter.
-func New_() FilenameCompleter {
+// NewFilenameCompleter constructs a class FilenameCompleter.
+func NewFilenameCompleter() FilenameCompleter {
 
 	ret := C.g_filename_completer_new()
 
@@ -22673,8 +22673,8 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 	return WrapInetAddress(obj), nil
 }
 
-// New_Any constructs a class InetAddress.
-func New_Any(family SocketFamily) InetAddress {
+// NewInetAddressAny constructs a class InetAddress.
+func NewInetAddressAny(family SocketFamily) InetAddress {
 	var arg1 C.GSocketFamily
 
 	arg1 = (C.GSocketFamily)(family)
@@ -22688,8 +22688,8 @@ func New_Any(family SocketFamily) InetAddress {
 	return ret0
 }
 
-// New_FromBytes constructs a class InetAddress.
-func New_FromBytes(bytes []byte, family SocketFamily) InetAddress {
+// NewInetAddressFromBytes constructs a class InetAddress.
+func NewInetAddressFromBytes(bytes []byte, family SocketFamily) InetAddress {
 	var arg1 *C.guint8
 	var arg2 C.GSocketFamily
 
@@ -22707,8 +22707,8 @@ func New_FromBytes(bytes []byte, family SocketFamily) InetAddress {
 	return ret0
 }
 
-// New_FromString constructs a class InetAddress.
-func New_FromString(string string) InetAddress {
+// NewInetAddressFromString constructs a class InetAddress.
+func NewInetAddressFromString(string string) InetAddress {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(string))
@@ -22723,8 +22723,8 @@ func New_FromString(string string) InetAddress {
 	return ret0
 }
 
-// New_Loopback constructs a class InetAddress.
-func New_Loopback(family SocketFamily) InetAddress {
+// NewInetAddressLoopback constructs a class InetAddress.
+func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	var arg1 C.GSocketFamily
 
 	arg1 = (C.GSocketFamily)(family)
@@ -23010,8 +23010,8 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	return WrapInetAddressMask(obj), nil
 }
 
-// New_ constructs a class InetAddressMask.
-func New_(addr InetAddress, length uint) InetAddressMask {
+// NewInetAddressMask constructs a class InetAddressMask.
+func NewInetAddressMask(addr InetAddress, length uint) InetAddressMask {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint
 
@@ -23027,8 +23027,8 @@ func New_(addr InetAddress, length uint) InetAddressMask {
 	return ret0
 }
 
-// New_FromString constructs a class InetAddressMask.
-func New_FromString(maskString string) InetAddressMask {
+// NewInetAddressMaskFromString constructs a class InetAddressMask.
+func NewInetAddressMaskFromString(maskString string) InetAddressMask {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(maskString))
@@ -23171,8 +23171,8 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	return WrapInetSocketAddress(obj), nil
 }
 
-// New_ constructs a class InetSocketAddress.
-func New_(address InetAddress, port uint16) SocketAddress {
+// NewInetSocketAddress constructs a class InetSocketAddress.
+func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint16
 
@@ -23181,15 +23181,15 @@ func New_(address InetAddress, port uint16) SocketAddress {
 
 	ret := C.g_inet_socket_address_new(arg1, arg2)
 
-	var ret0 SocketAddress
+	var ret0 InetSocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromString constructs a class InetSocketAddress.
-func New_FromString(address string, port uint) SocketAddress {
+// NewInetSocketAddressFromString constructs a class InetSocketAddress.
+func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
 	var arg1 *C.char
 	var arg2 C.guint
 
@@ -23199,9 +23199,9 @@ func New_FromString(address string, port uint) SocketAddress {
 
 	ret := C.g_inet_socket_address_new_from_string(arg1, arg2)
 
-	var ret0 SocketAddress
+	var ret0 InetSocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -24194,8 +24194,8 @@ func marshalListStore(p uintptr) (interface{}, error) {
 	return WrapListStore(obj), nil
 }
 
-// New_ constructs a class ListStore.
-func New_(itemType externglib.Type) ListStore {
+// NewListStore constructs a class ListStore.
+func NewListStore(itemType externglib.Type) ListStore {
 	var arg1 C.GType
 
 	arg1 = C.GType(itemType)
@@ -24432,35 +24432,35 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryInputStream(obj), nil
 }
 
-// New_ constructs a class MemoryInputStream.
-func New_() InputStream {
+// NewMemoryInputStream constructs a class MemoryInputStream.
+func NewMemoryInputStream() MemoryInputStream {
 
 	ret := C.g_memory_input_stream_new()
 
-	var ret0 InputStream
+	var ret0 MemoryInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromBytes constructs a class MemoryInputStream.
-func New_FromBytes(bytes *glib.Bytes) InputStream {
+// NewMemoryInputStreamFromBytes constructs a class MemoryInputStream.
+func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(bytes.Native())
 
 	ret := C.g_memory_input_stream_new_from_bytes(arg1)
 
-	var ret0 InputStream
+	var ret0 MemoryInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_FromData constructs a class MemoryInputStream.
-func New_FromData(data []byte) InputStream {
+// NewMemoryInputStreamFromData constructs a class MemoryInputStream.
+func NewMemoryInputStreamFromData(data []byte) MemoryInputStream {
 	var arg1 *C.void
 	var arg2 C.gssize
 	var arg3 C.GDestroyNotify
@@ -24483,9 +24483,9 @@ func New_FromData(data []byte) InputStream {
 
 	ret := C.g_memory_input_stream_new_from_data(arg1, arg2, arg3)
 
-	var ret0 InputStream
+	var ret0 MemoryInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -24587,8 +24587,8 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryOutputStream(obj), nil
 }
 
-// New_ constructs a class MemoryOutputStream.
-func New_(data interface{}, size uint, reallocFunction ReallocFunc) OutputStream {
+// NewMemoryOutputStream constructs a class MemoryOutputStream.
+func NewMemoryOutputStream(data interface{}, size uint, reallocFunction ReallocFunc) MemoryOutputStream {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 	var arg3 C.GReallocFunc
@@ -24599,21 +24599,21 @@ func New_(data interface{}, size uint, reallocFunction ReallocFunc) OutputStream
 
 	ret := C.g_memory_output_stream_new(arg1, arg2, arg3, (*[0]byte)(C.callbackDelete))
 
-	var ret0 OutputStream
+	var ret0 MemoryOutputStream
 
-	ret0 = WrapOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_Resizable constructs a class MemoryOutputStream.
-func New_Resizable() OutputStream {
+// NewMemoryOutputStreamResizable constructs a class MemoryOutputStream.
+func NewMemoryOutputStreamResizable() MemoryOutputStream {
 
 	ret := C.g_memory_output_stream_new_resizable()
 
-	var ret0 OutputStream
+	var ret0 MemoryOutputStream
 
-	ret0 = WrapOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -24826,8 +24826,8 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	return WrapMenu(obj), nil
 }
 
-// New_ constructs a class Menu.
-func New_() Menu {
+// NewMenu constructs a class Menu.
+func NewMenu() Menu {
 
 	ret := C.g_menu_new()
 
@@ -25382,8 +25382,8 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 	return WrapMenuItem(obj), nil
 }
 
-// New_ constructs a class MenuItem.
-func New_(label string, detailedAction string) MenuItem {
+// NewMenuItem constructs a class MenuItem.
+func NewMenuItem(label string, detailedAction string) MenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -25401,8 +25401,8 @@ func New_(label string, detailedAction string) MenuItem {
 	return ret0
 }
 
-// New_FromModel constructs a class MenuItem.
-func New_FromModel(model MenuModel, itemIndex int) MenuItem {
+// NewMenuItemFromModel constructs a class MenuItem.
+func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 	var arg1 *C.GMenuModel
 	var arg2 C.gint
 
@@ -25418,8 +25418,8 @@ func New_FromModel(model MenuModel, itemIndex int) MenuItem {
 	return ret0
 }
 
-// New_Section constructs a class MenuItem.
-func New_Section(label string, section MenuModel) MenuItem {
+// NewMenuItemSection constructs a class MenuItem.
+func NewMenuItemSection(label string, section MenuModel) MenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
 
@@ -25436,8 +25436,8 @@ func New_Section(label string, section MenuModel) MenuItem {
 	return ret0
 }
 
-// New_Submenu constructs a class MenuItem.
-func New_Submenu(label string, submenu MenuModel) MenuItem {
+// NewMenuItemSubmenu constructs a class MenuItem.
+func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
 
@@ -26264,8 +26264,8 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
-// New_ constructs a class MountOperation.
-func New_() MountOperation {
+// NewMountOperation constructs a class MountOperation.
+func NewMountOperation() MountOperation {
 
 	ret := C.g_mount_operation_new()
 
@@ -26552,8 +26552,8 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	return WrapNativeSocketAddress(obj), nil
 }
 
-// New_ constructs a class NativeSocketAddress.
-func New_(native interface{}, len uint) SocketAddress {
+// NewNativeSocketAddress constructs a class NativeSocketAddress.
+func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 
@@ -26562,9 +26562,9 @@ func New_(native interface{}, len uint) SocketAddress {
 
 	ret := C.g_native_socket_address_new(arg1, arg2)
 
-	var ret0 SocketAddress
+	var ret0 NativeSocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapNativeSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -26625,8 +26625,8 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return WrapNetworkAddress(obj), nil
 }
 
-// New_ constructs a class NetworkAddress.
-func New_(hostname string, port uint16) NetworkAddress {
+// NewNetworkAddress constructs a class NetworkAddress.
+func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 	var arg1 *C.gchar
 	var arg2 C.guint16
 
@@ -26643,8 +26643,8 @@ func New_(hostname string, port uint16) NetworkAddress {
 	return ret0
 }
 
-// New_Loopback constructs a class NetworkAddress.
-func New_Loopback(port uint16) NetworkAddress {
+// NewNetworkAddressLoopback constructs a class NetworkAddress.
+func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	var arg1 C.guint16
 
 	arg1 = C.guint16(port)
@@ -26745,8 +26745,8 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 	return WrapNetworkService(obj), nil
 }
 
-// New_ constructs a class NetworkService.
-func New_(service string, protocol string, domain string) NetworkService {
+// NewNetworkService constructs a class NetworkService.
+func NewNetworkService(service string, protocol string, domain string) NetworkService {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -26932,8 +26932,8 @@ func marshalNotification(p uintptr) (interface{}, error) {
 	return WrapNotification(obj), nil
 }
 
-// New_ constructs a class Notification.
-func New_(title string) Notification {
+// NewNotification constructs a class Notification.
+func NewNotification(title string) Notification {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(title))
@@ -28696,8 +28696,8 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 	return WrapPropertyAction(obj), nil
 }
 
-// New_ constructs a class PropertyAction.
-func New_(name string, object gextras.Objector, propertyName string) PropertyAction {
+// NewPropertyAction constructs a class PropertyAction.
+func NewPropertyAction(name string, object gextras.Objector, propertyName string) PropertyAction {
 	var arg1 *C.gchar
 	var arg2 C.gpointer
 	var arg3 *C.gchar
@@ -28758,8 +28758,8 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 	return WrapProxyAddress(obj), nil
 }
 
-// New_ constructs a class ProxyAddress.
-func New_(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) SocketAddress {
+// NewProxyAddress constructs a class ProxyAddress.
+func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint16
 	var arg3 *C.gchar
@@ -28782,9 +28782,9 @@ func New_(inetaddr InetAddress, port uint16, protocol string, destHostname strin
 
 	ret := C.g_proxy_address_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
-	var ret0 SocketAddress
+	var ret0 ProxyAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -30166,8 +30166,8 @@ func marshalSettings(p uintptr) (interface{}, error) {
 	return WrapSettings(obj), nil
 }
 
-// New_ constructs a class Settings.
-func New_(schemaID string) Settings {
+// NewSettings constructs a class Settings.
+func NewSettings(schemaID string) Settings {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(schemaID))
@@ -30182,8 +30182,8 @@ func New_(schemaID string) Settings {
 	return ret0
 }
 
-// New_Full constructs a class Settings.
-func New_Full(schema *SettingsSchema, backend SettingsBackend, path string) Settings {
+// NewSettingsFull constructs a class Settings.
+func NewSettingsFull(schema *SettingsSchema, backend SettingsBackend, path string) Settings {
 	var arg1 *C.GSettingsSchema
 	var arg2 *C.GSettingsBackend
 	var arg3 *C.gchar
@@ -30202,8 +30202,8 @@ func New_Full(schema *SettingsSchema, backend SettingsBackend, path string) Sett
 	return ret0
 }
 
-// New_WithBackend constructs a class Settings.
-func New_WithBackend(schemaID string, backend SettingsBackend) Settings {
+// NewSettingsWithBackend constructs a class Settings.
+func NewSettingsWithBackend(schemaID string, backend SettingsBackend) Settings {
 	var arg1 *C.gchar
 	var arg2 *C.GSettingsBackend
 
@@ -30220,8 +30220,8 @@ func New_WithBackend(schemaID string, backend SettingsBackend) Settings {
 	return ret0
 }
 
-// New_WithBackendAndPath constructs a class Settings.
-func New_WithBackendAndPath(schemaID string, backend SettingsBackend, path string) Settings {
+// NewSettingsWithBackendAndPath constructs a class Settings.
+func NewSettingsWithBackendAndPath(schemaID string, backend SettingsBackend, path string) Settings {
 	var arg1 *C.gchar
 	var arg2 *C.GSettingsBackend
 	var arg3 *C.gchar
@@ -30241,8 +30241,8 @@ func New_WithBackendAndPath(schemaID string, backend SettingsBackend, path strin
 	return ret0
 }
 
-// New_WithPath constructs a class Settings.
-func New_WithPath(schemaID string, path string) Settings {
+// NewSettingsWithPath constructs a class Settings.
+func NewSettingsWithPath(schemaID string, path string) Settings {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -31614,8 +31614,8 @@ func marshalSimpleAction(p uintptr) (interface{}, error) {
 	return WrapSimpleAction(obj), nil
 }
 
-// New_ constructs a class SimpleAction.
-func New_(name string, parameterType *glib.VariantType) SimpleAction {
+// NewSimpleAction constructs a class SimpleAction.
+func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction {
 	var arg1 *C.gchar
 	var arg2 *C.GVariantType
 
@@ -31632,8 +31632,8 @@ func New_(name string, parameterType *glib.VariantType) SimpleAction {
 	return ret0
 }
 
-// New_Stateful constructs a class SimpleAction.
-func New_Stateful(name string, parameterType *glib.VariantType, state *glib.Variant) SimpleAction {
+// NewSimpleActionStateful constructs a class SimpleAction.
+func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) SimpleAction {
 	var arg1 *C.gchar
 	var arg2 *C.GVariantType
 	var arg3 *C.GVariant
@@ -31743,8 +31743,8 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	return WrapSimpleActionGroup(obj), nil
 }
 
-// New_ constructs a class SimpleActionGroup.
-func New_() SimpleActionGroup {
+// NewSimpleActionGroup constructs a class SimpleActionGroup.
+func NewSimpleActionGroup() SimpleActionGroup {
 
 	ret := C.g_simple_action_group_new()
 
@@ -32089,8 +32089,8 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	return WrapSimpleAsyncResult(obj), nil
 }
 
-// New_ constructs a class SimpleAsyncResult.
-func New_(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) SimpleAsyncResult {
+// NewSimpleAsyncResult constructs a class SimpleAsyncResult.
+func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) SimpleAsyncResult {
 	var arg1 *C.GObject
 	var arg2 C.GAsyncReadyCallback
 	arg3 := C.gpointer(box.Assign(userData))
@@ -32109,8 +32109,8 @@ func New_(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag 
 	return ret0
 }
 
-// New_FromError constructs a class SimpleAsyncResult.
-func New_FromError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult {
+// NewSimpleAsyncResultFromError constructs a class SimpleAsyncResult.
+func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult {
 	var arg1 *C.GObject
 	var arg2 C.GAsyncReadyCallback
 	arg3 := C.gpointer(box.Assign(userData))
@@ -32129,8 +32129,8 @@ func New_FromError(sourceObject gextras.Objector, callback AsyncReadyCallback, e
 	return ret0
 }
 
-// New_TakeError constructs a class SimpleAsyncResult.
-func New_TakeError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult {
+// NewSimpleAsyncResultTakeError constructs a class SimpleAsyncResult.
+func NewSimpleAsyncResultTakeError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult {
 	var arg1 *C.GObject
 	var arg2 C.GAsyncReadyCallback
 	arg3 := C.gpointer(box.Assign(userData))
@@ -32411,8 +32411,8 @@ func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 	return WrapSimpleIOStream(obj), nil
 }
 
-// New_ constructs a class SimpleIOStream.
-func New_(inputStream InputStream, outputStream OutputStream) IOStream {
+// NewSimpleIOStream constructs a class SimpleIOStream.
+func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) SimpleIOStream {
 	var arg1 *C.GInputStream
 	var arg2 *C.GOutputStream
 
@@ -32421,9 +32421,9 @@ func New_(inputStream InputStream, outputStream OutputStream) IOStream {
 
 	ret := C.g_simple_io_stream_new(arg1, arg2)
 
-	var ret0 IOStream
+	var ret0 SimpleIOStream
 
-	ret0 = WrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSimpleIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -32453,17 +32453,17 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 	return WrapSimplePermission(obj), nil
 }
 
-// New_ constructs a class SimplePermission.
-func New_(allowed bool) Permission {
+// NewSimplePermission constructs a class SimplePermission.
+func NewSimplePermission(allowed bool) SimplePermission {
 	var arg1 C.gboolean
 
 	arg1 = gextras.Cbool(allowed)
 
 	ret := C.g_simple_permission_new(arg1)
 
-	var ret0 Permission
+	var ret0 SimplePermission
 
-	ret0 = WrapPermission(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSimplePermission(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -33290,8 +33290,8 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return WrapSocket(obj), nil
 }
 
-// New_ constructs a class Socket.
-func New_(family SocketFamily, _type SocketType, protocol SocketProtocol) Socket {
+// NewSocket constructs a class Socket.
+func NewSocket(family SocketFamily, _type SocketType, protocol SocketProtocol) Socket {
 	var arg1 C.GSocketFamily
 	var arg2 C.GSocketType
 	var arg3 C.GSocketProtocol
@@ -33309,8 +33309,8 @@ func New_(family SocketFamily, _type SocketType, protocol SocketProtocol) Socket
 	return ret0
 }
 
-// New_FromFd constructs a class Socket.
-func New_FromFd(fd int) Socket {
+// NewSocketFromFd constructs a class Socket.
+func NewSocketFromFd(fd int) Socket {
 	var arg1 C.gint
 
 	arg1 = C.gint(fd)
@@ -35048,8 +35048,8 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 	return WrapSocketAddress(obj), nil
 }
 
-// New_FromNative constructs a class SocketAddress.
-func New_FromNative(native interface{}, len uint) SocketAddress {
+// NewSocketAddressFromNative constructs a class SocketAddress.
+func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 	var arg1 C.gpointer
 	var arg2 C.gsize
 
@@ -35517,8 +35517,8 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 	return WrapSocketClient(obj), nil
 }
 
-// New_ constructs a class SocketClient.
-func New_() SocketClient {
+// NewSocketClient constructs a class SocketClient.
+func NewSocketClient() SocketClient {
 
 	ret := C.g_socket_client_new()
 
@@ -36632,8 +36632,8 @@ func marshalSocketListener(p uintptr) (interface{}, error) {
 	return WrapSocketListener(obj), nil
 }
 
-// New_ constructs a class SocketListener.
-func New_() SocketListener {
+// NewSocketListener constructs a class SocketListener.
+func NewSocketListener() SocketListener {
 
 	ret := C.g_socket_listener_new()
 
@@ -37017,8 +37017,8 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 	return WrapSocketService(obj), nil
 }
 
-// New_ constructs a class SocketService.
-func New_() SocketService {
+// NewSocketService constructs a class SocketService.
+func NewSocketService() SocketService {
 
 	ret := C.g_socket_service_new()
 
@@ -37328,8 +37328,8 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 	return WrapSubprocess(obj), nil
 }
 
-// New_v constructs a class Subprocess.
-func New_v(argv []string, flags SubprocessFlags) Subprocess {
+// NewSubprocessV constructs a class Subprocess.
+func NewSubprocessV(argv []string, flags SubprocessFlags) Subprocess {
 	var arg1 **C.gchar
 	var arg2 C.GSubprocessFlags
 
@@ -38089,8 +38089,8 @@ func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 	return WrapSubprocessLauncher(obj), nil
 }
 
-// New_ constructs a class SubprocessLauncher.
-func New_(flags SubprocessFlags) SubprocessLauncher {
+// NewSubprocessLauncher constructs a class SubprocessLauncher.
+func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	var arg1 C.GSubprocessFlags
 
 	arg1 = (C.GSubprocessFlags)(flags)
@@ -38848,8 +38848,8 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return WrapTask(obj), nil
 }
 
-// New_ constructs a class Task.
-func New_(sourceObject gextras.Objector, cancellable Cancellable, callback AsyncReadyCallback) Task {
+// NewTask constructs a class Task.
+func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback AsyncReadyCallback) Task {
 	var arg1 C.gpointer
 	var arg2 *C.GCancellable
 	var arg3 C.GAsyncReadyCallback
@@ -39539,8 +39539,8 @@ func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 	return WrapTcpWrapperConnection(obj), nil
 }
 
-// New_ constructs a class TcpWrapperConnection.
-func New_(baseIOStream IOStream, socket Socket) SocketConnection {
+// NewTcpWrapperConnection constructs a class TcpWrapperConnection.
+func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) TcpWrapperConnection {
 	var arg1 *C.GIOStream
 	var arg2 *C.GSocket
 
@@ -39549,9 +39549,9 @@ func New_(baseIOStream IOStream, socket Socket) SocketConnection {
 
 	ret := C.g_tcp_wrapper_connection_new(arg1, arg2)
 
-	var ret0 SocketConnection
+	var ret0 TcpWrapperConnection
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapTcpWrapperConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -39696,8 +39696,8 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 	return WrapTestDBus(obj), nil
 }
 
-// New_ constructs a class TestDBus.
-func New_(flags TestDBusFlags) TestDBus {
+// NewTestDBus constructs a class TestDBus.
+func NewTestDBus(flags TestDBusFlags) TestDBus {
 	var arg1 C.GTestDBusFlags
 
 	arg1 = (C.GTestDBusFlags)(flags)
@@ -39839,8 +39839,8 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 	return WrapThemedIcon(obj), nil
 }
 
-// New_ constructs a class ThemedIcon.
-func New_(iconname string) ThemedIcon {
+// NewThemedIcon constructs a class ThemedIcon.
+func NewThemedIcon(iconname string) ThemedIcon {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(iconname))
@@ -39855,8 +39855,8 @@ func New_(iconname string) ThemedIcon {
 	return ret0
 }
 
-// New_FromNames constructs a class ThemedIcon.
-func New_FromNames(iconnames []string) ThemedIcon {
+// NewThemedIconFromNames constructs a class ThemedIcon.
+func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 	var arg1 **C.char
 	var arg2 C.int
 
@@ -39887,8 +39887,8 @@ func New_FromNames(iconnames []string) ThemedIcon {
 	return ret0
 }
 
-// New_WithDefaultFallbacks constructs a class ThemedIcon.
-func New_WithDefaultFallbacks(iconname string) ThemedIcon {
+// NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
+func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(iconname))
@@ -39992,17 +39992,17 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	return WrapThreadedSocketService(obj), nil
 }
 
-// New_ constructs a class ThreadedSocketService.
-func New_(maxThreads int) SocketService {
+// NewThreadedSocketService constructs a class ThreadedSocketService.
+func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 	var arg1 C.int
 
 	arg1 = C.int(maxThreads)
 
 	ret := C.g_threaded_socket_service_new(arg1)
 
-	var ret0 SocketService
+	var ret0 ThreadedSocketService
 
-	ret0 = WrapSocketService(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapThreadedSocketService(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -40058,8 +40058,8 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 	return WrapTLSCertificate(obj), nil
 }
 
-// New_FromFile constructs a class TLSCertificate.
-func New_FromFile(file string) TLSCertificate {
+// NewTLSCertificateFromFile constructs a class TLSCertificate.
+func NewTLSCertificateFromFile(file string) TLSCertificate {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(file))
@@ -40074,8 +40074,8 @@ func New_FromFile(file string) TLSCertificate {
 	return ret0
 }
 
-// New_FromFiles constructs a class TLSCertificate.
-func New_FromFiles(certFile string, keyFile string) TLSCertificate {
+// NewTLSCertificateFromFiles constructs a class TLSCertificate.
+func NewTLSCertificateFromFiles(certFile string, keyFile string) TLSCertificate {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -40093,8 +40093,8 @@ func New_FromFiles(certFile string, keyFile string) TLSCertificate {
 	return ret0
 }
 
-// New_FromPem constructs a class TLSCertificate.
-func New_FromPem(data string, length int) TLSCertificate {
+// NewTLSCertificateFromPem constructs a class TLSCertificate.
+func NewTLSCertificateFromPem(data string, length int) TLSCertificate {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 
@@ -41833,8 +41833,8 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return WrapTLSPassword(obj), nil
 }
 
-// New_ constructs a class TLSPassword.
-func New_(flags TLSPasswordFlags, description string) TLSPassword {
+// NewTLSPassword constructs a class TLSPassword.
+func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	var arg1 C.GTlsPasswordFlags
 	var arg2 *C.gchar
 
@@ -42326,29 +42326,29 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 	return WrapUnixCredentialsMessage(obj), nil
 }
 
-// New_ constructs a class UnixCredentialsMessage.
-func New_() SocketControlMessage {
+// NewUnixCredentialsMessage constructs a class UnixCredentialsMessage.
+func NewUnixCredentialsMessage() UnixCredentialsMessage {
 
 	ret := C.g_unix_credentials_message_new()
 
-	var ret0 SocketControlMessage
+	var ret0 UnixCredentialsMessage
 
-	ret0 = WrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithCredentials constructs a class UnixCredentialsMessage.
-func New_WithCredentials(credentials Credentials) SocketControlMessage {
+// NewUnixCredentialsMessageWithCredentials constructs a class UnixCredentialsMessage.
+func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
 	var arg1 *C.GCredentials
 
 	arg1 = (*C.GCredentials)(credentials.Native())
 
 	ret := C.g_unix_credentials_message_new_with_credentials(arg1)
 
-	var ret0 SocketControlMessage
+	var ret0 UnixCredentialsMessage
 
-	ret0 = WrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -42456,8 +42456,8 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 	return WrapUnixFDList(obj), nil
 }
 
-// New_ constructs a class UnixFDList.
-func New_() UnixFDList {
+// NewUnixFDList constructs a class UnixFDList.
+func NewUnixFDList() UnixFDList {
 
 	ret := C.g_unix_fd_list_new()
 
@@ -42468,8 +42468,8 @@ func New_() UnixFDList {
 	return ret0
 }
 
-// New_FromArray constructs a class UnixFDList.
-func New_FromArray(fds []int) UnixFDList {
+// NewUnixFDListFromArray constructs a class UnixFDList.
+func NewUnixFDListFromArray(fds []int) UnixFDList {
 	var arg1 *C.gint
 	var arg2 C.gint
 
@@ -42700,29 +42700,29 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	return WrapUnixFDMessage(obj), nil
 }
 
-// New_ constructs a class UnixFDMessage.
-func New_() SocketControlMessage {
+// NewUnixFDMessage constructs a class UnixFDMessage.
+func NewUnixFDMessage() UnixFDMessage {
 
 	ret := C.g_unix_fd_message_new()
 
-	var ret0 SocketControlMessage
+	var ret0 UnixFDMessage
 
-	ret0 = WrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithFdList constructs a class UnixFDMessage.
-func New_WithFdList(fdList UnixFDList) SocketControlMessage {
+// NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
+func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	var arg1 *C.GUnixFDList
 
 	arg1 = (*C.GUnixFDList)(fdList.Native())
 
 	ret := C.g_unix_fd_message_new_with_fd_list(arg1)
 
-	var ret0 SocketControlMessage
+	var ret0 UnixFDMessage
 
-	ret0 = WrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -42844,8 +42844,8 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 	return WrapUnixInputStream(obj), nil
 }
 
-// New_ constructs a class UnixInputStream.
-func New_(fd int, closeFd bool) InputStream {
+// NewUnixInputStream constructs a class UnixInputStream.
+func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -42854,9 +42854,9 @@ func New_(fd int, closeFd bool) InputStream {
 
 	ret := C.g_unix_input_stream_new(arg1, arg2)
 
-	var ret0 InputStream
+	var ret0 UnixInputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -42933,8 +42933,8 @@ func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 	return WrapUnixMountMonitor(obj), nil
 }
 
-// New_ constructs a class UnixMountMonitor.
-func New_() UnixMountMonitor {
+// NewUnixMountMonitor constructs a class UnixMountMonitor.
+func NewUnixMountMonitor() UnixMountMonitor {
 
 	ret := C.g_unix_mount_monitor_new()
 
@@ -42998,8 +42998,8 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 	return WrapUnixOutputStream(obj), nil
 }
 
-// New_ constructs a class UnixOutputStream.
-func New_(fd int, closeFd bool) OutputStream {
+// NewUnixOutputStream constructs a class UnixOutputStream.
+func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -43008,9 +43008,9 @@ func New_(fd int, closeFd bool) OutputStream {
 
 	ret := C.g_unix_output_stream_new(arg1, arg2)
 
-	var ret0 OutputStream
+	var ret0 UnixOutputStream
 
-	ret0 = WrapOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -43107,8 +43107,8 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	return WrapUnixSocketAddress(obj), nil
 }
 
-// New_ constructs a class UnixSocketAddress.
-func New_(path string) SocketAddress {
+// NewUnixSocketAddress constructs a class UnixSocketAddress.
+func NewUnixSocketAddress(path string) UnixSocketAddress {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(path))
@@ -43116,15 +43116,15 @@ func New_(path string) SocketAddress {
 
 	ret := C.g_unix_socket_address_new(arg1)
 
-	var ret0 SocketAddress
+	var ret0 UnixSocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_Abstract constructs a class UnixSocketAddress.
-func New_Abstract(path []byte) SocketAddress {
+// NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
+func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 	var arg1 *C.gchar
 	var arg2 C.gint
 
@@ -43136,15 +43136,15 @@ func New_Abstract(path []byte) SocketAddress {
 
 	ret := C.g_unix_socket_address_new_abstract(arg1, arg2)
 
-	var ret0 SocketAddress
+	var ret0 UnixSocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
 
-// New_WithType constructs a class UnixSocketAddress.
-func New_WithType(path []byte, _type UnixSocketAddressType) SocketAddress {
+// NewUnixSocketAddressWithType constructs a class UnixSocketAddress.
+func NewUnixSocketAddressWithType(path []byte, _type UnixSocketAddressType) UnixSocketAddress {
 	var arg1 *C.gchar
 	var arg2 C.gint
 	var arg3 C.GUnixSocketAddressType
@@ -43158,9 +43158,9 @@ func New_WithType(path []byte, _type UnixSocketAddressType) SocketAddress {
 
 	ret := C.g_unix_socket_address_new_with_type(arg1, arg2, arg3)
 
-	var ret0 SocketAddress
+	var ret0 UnixSocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -43624,8 +43624,8 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	return WrapZlibCompressor(obj), nil
 }
 
-// New_ constructs a class ZlibCompressor.
-func New_(format ZlibCompressorFormat, level int) ZlibCompressor {
+// NewZlibCompressor constructs a class ZlibCompressor.
+func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	var arg1 C.GZlibCompressorFormat
 	var arg2 C.int
 
@@ -43702,8 +43702,8 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	return WrapZlibDecompressor(obj), nil
 }
 
-// New_ constructs a class ZlibDecompressor.
-func New_(format ZlibCompressorFormat) ZlibDecompressor {
+// NewZlibDecompressor constructs a class ZlibDecompressor.
+func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	var arg1 C.GZlibCompressorFormat
 
 	arg1 = (C.GZlibCompressorFormat)(format)

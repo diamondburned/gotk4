@@ -3317,8 +3317,8 @@ func (a *AttrList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// New_ constructs a struct AttrList.
-func New_() *AttrList {
+// NewAttrList constructs a struct AttrList.
+func NewAttrList() *AttrList {
 
 	ret := C.pango_attr_list_new()
 
@@ -3600,8 +3600,8 @@ func (f *FontDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// New_ constructs a struct FontDescription.
-func New_() *FontDescription {
+// NewFontDescription constructs a struct FontDescription.
+func NewFontDescription() *FontDescription {
 
 	ret := C.pango_font_description_new()
 
@@ -3938,8 +3938,8 @@ func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// New_ constructs a struct GlyphString.
-func New_() *GlyphString {
+// NewGlyphString constructs a struct GlyphString.
+func NewGlyphString() *GlyphString {
 
 	ret := C.pango_glyph_string_new()
 
@@ -4041,8 +4041,8 @@ func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// New_ constructs a struct Item.
-func New_() *Item {
+// NewItem constructs a struct Item.
+func NewItem() *Item {
 
 	ret := C.pango_item_new()
 
@@ -4485,8 +4485,8 @@ func (s *ScriptIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// New_ constructs a struct ScriptIter.
-func New_(text string, length int) *ScriptIter {
+// NewScriptIter constructs a struct ScriptIter.
+func NewScriptIter(text string, length int) *ScriptIter {
 	var arg1 *C.char
 	var arg2 C.int
 
@@ -4531,8 +4531,8 @@ func (t *TabArray) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// New_ constructs a struct TabArray.
-func New_(initialSize int, positionsInPixels bool) *TabArray {
+// NewTabArray constructs a struct TabArray.
+func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -4704,8 +4704,8 @@ func marshalContext(p uintptr) (interface{}, error) {
 	return WrapContext(obj), nil
 }
 
-// New_ constructs a class Context.
-func New_() Context {
+// NewContext constructs a class Context.
+func NewContext() Context {
 
 	ret := C.pango_context_new()
 
@@ -5171,8 +5171,8 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 	return WrapCoverage(obj), nil
 }
 
-// New_ constructs a class Coverage.
-func New_() Coverage {
+// NewCoverage constructs a class Coverage.
+func NewCoverage() Coverage {
 
 	ret := C.pango_coverage_new()
 
@@ -5663,7 +5663,7 @@ func (face fontFace) ListSizes() (sizes []int, nSizes int) {
 	{
 		ret0 = make([]int, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
-			src := (*C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret0[i] = int(src)
 		}
 	}
@@ -6169,8 +6169,8 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 	return WrapFontsetSimple(obj), nil
 }
 
-// New_ constructs a class FontsetSimple.
-func New_(language *Language) FontsetSimple {
+// NewFontsetSimple constructs a class FontsetSimple.
+func NewFontsetSimple(language *Language) FontsetSimple {
 	var arg1 *C.PangoLanguage
 
 	arg1 = (*C.PangoLanguage)(language.Native())
@@ -6657,8 +6657,8 @@ func marshalLayout(p uintptr) (interface{}, error) {
 	return WrapLayout(obj), nil
 }
 
-// New_ constructs a class Layout.
-func New_(context Context) Layout {
+// NewLayout constructs a class Layout.
+func NewLayout(context Context) Layout {
 	var arg1 *C.PangoContext
 
 	arg1 = (*C.PangoContext)(context.Native())

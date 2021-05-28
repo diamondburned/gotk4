@@ -473,8 +473,8 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 	return WrapPixbuf(obj), nil
 }
 
-// New_ constructs a class Pixbuf.
-func New_(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) Pixbuf {
+// NewPixbuf constructs a class Pixbuf.
+func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) Pixbuf {
 	var arg1 C.GdkColorspace
 	var arg2 C.gboolean
 	var arg3 C.int
@@ -496,8 +496,8 @@ func New_(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, he
 	return ret0
 }
 
-// New_FromBytes constructs a class Pixbuf.
-func New_FromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf {
+// NewPixbufFromBytes constructs a class Pixbuf.
+func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf {
 	var arg1 *C.GBytes
 	var arg2 C.GdkColorspace
 	var arg3 C.gboolean
@@ -523,8 +523,8 @@ func New_FromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsP
 	return ret0
 }
 
-// New_FromData constructs a class Pixbuf.
-func New_FromData(data []byte, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf {
+// NewPixbufFromData constructs a class Pixbuf.
+func NewPixbufFromData(data []byte, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf {
 	var arg1 *C.guchar
 	var arg2 C.GdkColorspace
 	var arg3 C.gboolean
@@ -553,8 +553,8 @@ func New_FromData(data []byte, colorspace Colorspace, hasAlpha bool, bitsPerSamp
 	return ret0
 }
 
-// New_FromFile constructs a class Pixbuf.
-func New_FromFile(filename string) Pixbuf {
+// NewPixbufFromFile constructs a class Pixbuf.
+func NewPixbufFromFile(filename string) Pixbuf {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -569,8 +569,8 @@ func New_FromFile(filename string) Pixbuf {
 	return ret0
 }
 
-// New_FromFileAtScale constructs a class Pixbuf.
-func New_FromFileAtScale(filename string, width int, height int, preserveAspectRatio bool) Pixbuf {
+// NewPixbufFromFileAtScale constructs a class Pixbuf.
+func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAspectRatio bool) Pixbuf {
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.int
@@ -591,8 +591,8 @@ func New_FromFileAtScale(filename string, width int, height int, preserveAspectR
 	return ret0
 }
 
-// New_FromFileAtSize constructs a class Pixbuf.
-func New_FromFileAtSize(filename string, width int, height int) Pixbuf {
+// NewPixbufFromFileAtSize constructs a class Pixbuf.
+func NewPixbufFromFileAtSize(filename string, width int, height int) Pixbuf {
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.int
@@ -611,8 +611,8 @@ func New_FromFileAtSize(filename string, width int, height int) Pixbuf {
 	return ret0
 }
 
-// New_FromInline constructs a class Pixbuf.
-func New_FromInline(dataLength int, data []byte, copyPixels bool) Pixbuf {
+// NewPixbufFromInline constructs a class Pixbuf.
+func NewPixbufFromInline(dataLength int, data []byte, copyPixels bool) Pixbuf {
 	var arg1 C.gint
 	var arg2 *C.guint8
 	var arg3 C.gboolean
@@ -633,8 +633,8 @@ func New_FromInline(dataLength int, data []byte, copyPixels bool) Pixbuf {
 	return ret0
 }
 
-// New_FromResource constructs a class Pixbuf.
-func New_FromResource(resourcePath string) Pixbuf {
+// NewPixbufFromResource constructs a class Pixbuf.
+func NewPixbufFromResource(resourcePath string) Pixbuf {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -649,8 +649,8 @@ func New_FromResource(resourcePath string) Pixbuf {
 	return ret0
 }
 
-// New_FromResourceAtScale constructs a class Pixbuf.
-func New_FromResourceAtScale(resourcePath string, width int, height int, preserveAspectRatio bool) Pixbuf {
+// NewPixbufFromResourceAtScale constructs a class Pixbuf.
+func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, preserveAspectRatio bool) Pixbuf {
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.int
@@ -671,8 +671,8 @@ func New_FromResourceAtScale(resourcePath string, width int, height int, preserv
 	return ret0
 }
 
-// New_FromStream constructs a class Pixbuf.
-func New_FromStream(stream gio.InputStream, cancellable gio.Cancellable) Pixbuf {
+// NewPixbufFromStream constructs a class Pixbuf.
+func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) Pixbuf {
 	var arg1 *C.GInputStream
 	var arg2 *C.GCancellable
 
@@ -688,8 +688,8 @@ func New_FromStream(stream gio.InputStream, cancellable gio.Cancellable) Pixbuf 
 	return ret0
 }
 
-// New_FromStreamAtScale constructs a class Pixbuf.
-func New_FromStreamAtScale(stream gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellable) Pixbuf {
+// NewPixbufFromStreamAtScale constructs a class Pixbuf.
+func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellable) Pixbuf {
 	var arg1 *C.GInputStream
 	var arg2 C.gint
 	var arg3 C.gint
@@ -711,8 +711,8 @@ func New_FromStreamAtScale(stream gio.InputStream, width int, height int, preser
 	return ret0
 }
 
-// New_FromStreamFinish constructs a class Pixbuf.
-func New_FromStreamFinish(asyncResult gio.AsyncResult) Pixbuf {
+// NewPixbufFromStreamFinish constructs a class Pixbuf.
+func NewPixbufFromStreamFinish(asyncResult gio.AsyncResult) Pixbuf {
 	var arg1 *C.GAsyncResult
 
 	ret := C.gdk_pixbuf_new_from_stream_finish(arg1)
@@ -724,8 +724,8 @@ func New_FromStreamFinish(asyncResult gio.AsyncResult) Pixbuf {
 	return ret0
 }
 
-// New_FromXpmData constructs a class Pixbuf.
-func New_FromXpmData(data []string) Pixbuf {
+// NewPixbufFromXpmData constructs a class Pixbuf.
+func NewPixbufFromXpmData(data []string) Pixbuf {
 	var arg1 **C.char
 
 	{
@@ -1731,8 +1731,8 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 	return WrapPixbufAnimation(obj), nil
 }
 
-// New_FromFile constructs a class PixbufAnimation.
-func New_FromFile(filename string) PixbufAnimation {
+// NewPixbufAnimationFromFile constructs a class PixbufAnimation.
+func NewPixbufAnimationFromFile(filename string) PixbufAnimation {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -1747,8 +1747,8 @@ func New_FromFile(filename string) PixbufAnimation {
 	return ret0
 }
 
-// New_FromResource constructs a class PixbufAnimation.
-func New_FromResource(resourcePath string) PixbufAnimation {
+// NewPixbufAnimationFromResource constructs a class PixbufAnimation.
+func NewPixbufAnimationFromResource(resourcePath string) PixbufAnimation {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -1763,8 +1763,8 @@ func New_FromResource(resourcePath string) PixbufAnimation {
 	return ret0
 }
 
-// New_FromStream constructs a class PixbufAnimation.
-func New_FromStream(stream gio.InputStream, cancellable gio.Cancellable) PixbufAnimation {
+// NewPixbufAnimationFromStream constructs a class PixbufAnimation.
+func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) PixbufAnimation {
 	var arg1 *C.GInputStream
 	var arg2 *C.GCancellable
 
@@ -1780,8 +1780,8 @@ func New_FromStream(stream gio.InputStream, cancellable gio.Cancellable) PixbufA
 	return ret0
 }
 
-// New_FromStreamFinish constructs a class PixbufAnimation.
-func New_FromStreamFinish(asyncResult gio.AsyncResult) PixbufAnimation {
+// NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
+func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) PixbufAnimation {
 	var arg1 *C.GAsyncResult
 
 	ret := C.gdk_pixbuf_animation_new_from_stream_finish(arg1)
@@ -2178,8 +2178,8 @@ func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	return WrapPixbufLoader(obj), nil
 }
 
-// New_ constructs a class PixbufLoader.
-func New_() PixbufLoader {
+// NewPixbufLoader constructs a class PixbufLoader.
+func NewPixbufLoader() PixbufLoader {
 
 	ret := C.gdk_pixbuf_loader_new()
 
@@ -2190,8 +2190,8 @@ func New_() PixbufLoader {
 	return ret0
 }
 
-// New_WithMIMEType constructs a class PixbufLoader.
-func New_WithMIMEType(mimeType string) PixbufLoader {
+// NewPixbufLoaderWithMIMEType constructs a class PixbufLoader.
+func NewPixbufLoaderWithMIMEType(mimeType string) PixbufLoader {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(mimeType))
@@ -2206,8 +2206,8 @@ func New_WithMIMEType(mimeType string) PixbufLoader {
 	return ret0
 }
 
-// New_WithType constructs a class PixbufLoader.
-func New_WithType(imageType string) PixbufLoader {
+// NewPixbufLoaderWithType constructs a class PixbufLoader.
+func NewPixbufLoaderWithType(imageType string) PixbufLoader {
 	var arg1 *C.char
 
 	arg1 = (*C.gchar)(C.CString(imageType))
@@ -2406,8 +2406,8 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	return WrapPixbufSimpleAnim(obj), nil
 }
 
-// New_ constructs a class PixbufSimpleAnim.
-func New_(width int, height int, rate float32) PixbufSimpleAnim {
+// NewPixbufSimpleAnim constructs a class PixbufSimpleAnim.
+func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gfloat

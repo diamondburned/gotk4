@@ -25,37 +25,17 @@ var recordIgnoreSuffixes = []string{
 var recordTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} struct {
-		{{ if .PublicFields -}}
-		{{ range .PublicFields -}}
-		{{ GoDoc .Doc 1 .GoName }}
-		{{ .GoName }} {{ .GoType }}
-		{{ end }}
-		{{ end }}
-
-		{{ if .NeedsNative }}
-		native *C.{{ .CType }}
-		{{ end }}
+		native C.{{ .CType }}
 	}
 
 	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
 	// primarily used internally.
 	func Wrap{{ .GoName }}(ptr unsafe.Pointer) *{{ .GoName }} {
-		p := (*C.{{ .CType }})(ptr)
-		{{ if .NeedsNative -}}
-		v := {{ .GoName }}{native: p}
-		{{ else -}}
-		var v {{ .GoName }}
-		{{ end }}
+		if ptr == nil {
+			return nil
+		}
 
-		{{ range .PublicFields -}}
-		{{ $.Convert . "p" "v" }}
-		{{ end }}
-
-		{{ if .NeedsNative }}
-		runtime.SetFinalizer(&v, nil)
-		runtime.SetFinalizer(&v, (*{{ .GoName }}).free)
-		{{ end }}
-		return &v
+		return (*{{ .GoName }})(ptr)
 	}
 
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
@@ -63,49 +43,54 @@ var recordTmpl = newGoTemplate(`
 		return Wrap{{ .GoName }}(unsafe.Pointer(b))
 	}
 
-	{{ $recv := (FirstLetter .GoName) }}
-
-	{{ if .NeedsNative }}
-	func ({{ $recv }} *{{ .GoName }}) free() {
-		C.free({{ $recv }}.Native())
-	}
-
-	// Native returns the underlying source pointer.
-	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
-		return unsafe.Pointer({{ $recv }}.native)
-	}
-	{{ end }}
-
-	// Native returns the pointer to *C.{{ .CType }}. The caller is expected to
-	// cast.
-	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
-		return unsafe.Pointer({{ $recv }}.native)
+	// Native returns the underlying C source pointer.
+	func ({{ FirstLetter .GoName }} *{{ .GoName }}) Native() unsafe.Pointer {
+		return unsafe.Pointer(&{{ FirstLetter .GoName }}.native)
 	}
 
 	{{ range .Constructors }}
-	{{ with $tail := ($.Ng.FnCall .CallableAttrs) }}
-	func New{{ $.GoName }}{{ $tail }}
+	{{ if $.Callable.UseConstructor . }}
+	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
+	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
+	{{ end }}
+
+	{{ range .Getters }}
+	// {{ .GoName }} gets the field inside the struct.
+	func ({{ FirstLetter .GoName }} *{{ $.GoName }}) {{ .GoName }}() {{ .GoType }} {
+		var ret {{ .GoType }}
+		{{ .Convert }}
+		return ret
+	}
+	{{ end }}
+
+	{{ range .Methods }}
+	{{ GoDoc .Doc 0 .Name }}
+	func ({{ .Recv }} *{{ $.GoName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
 type recordGenerator struct {
 	gir.Record
-	GoName       string
-	NeedsNative  bool
-	PublicFields []recordField
+	GoName  string
+	Methods []callableGenerator
+	Getters []recordGetter
+
+	Callable callableGenerator
 
 	Ng *NamespaceGenerator
 }
 
-type recordField struct {
+type recordGetter struct {
 	gir.Field
-	Name   string
-	GoName string
-	GoType string
+	Name    string
+	GoName  string
+	GoType  string
+	Convert string // assume first_letter -> "ret"
 }
 
-func (rg *recordGenerator) Use(rec gir.Record) bool {
+// canRecord returns true if this record is allowed.
+func (ng *NamespaceGenerator) canRecord(rec gir.Record) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
 	if rec.Disguised || rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
@@ -118,33 +103,64 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 		}
 	}
 
-	rg.Record = rec
-	rg.GoName = PascalToGo(rec.Name)
-	// rg.NeedsNative = rg.needsNative()
-	rg.NeedsNative = true
-	rg.PublicFields = rg.publicFields()
+	// Ignore non-type/array fields.
+	for _, field := range rec.Fields {
+		if field.Type == nil && field.Array == nil {
+			return false
+		}
+	}
 
 	return true
 }
 
-func (rg *recordGenerator) Convert(field recordField, cStruct, goStruct string) string {
-	argAt := func(i int) string {
-		return cStruct + "." + cgoField(rg.Fields[i].Name)
+func (rg *recordGenerator) Use(rec gir.Record) bool {
+	if !rg.Ng.canRecord(rec) {
+		return false
 	}
 
-	return rg.Ng.CGoConverter(TypeConversionToGo{
-		TypeConversion: TypeConversion{
-			Value:  cStruct + "." + field.Name,
-			Target: goStruct + "." + field.GoName,
-			Type:   field.AnyType,
-			ArgAt:  argAt,
-		},
-	})
+	rg.Record = rec
+	rg.GoName = PascalToGo(rec.Name)
+	rg.Methods = rg.methods()
+	rg.Getters = rg.getters()
+
+	return true
 }
 
-func (rg *recordGenerator) publicFields() []recordField {
-	fields := make([]recordField, 0, len(rg.Fields))
+func (rg *recordGenerator) CtorName(ctor gir.Constructor) string {
+	name := SnakeToGo(true, ctor.Name)
+	name = strings.TrimPrefix(name, "New")
+	return "New" + rg.GoName + name
+}
+
+func (rg *recordGenerator) methods() []callableGenerator {
+	callables := rg.Methods[:0]
+
+	for _, method := range rg.Methods {
+		cbgen := newCallableGenerator(rg.Ng)
+		if !cbgen.Use(method.CallableAttrs) {
+			continue
+		}
+
+		callables = append(callables, cbgen)
+	}
+
+	callableRenameGetters(callables)
+	return callables
+}
+
+func (rg *recordGenerator) getters() []recordGetter {
+	getters := rg.Getters[:0]
 	var ignores ignoreIxs
+
+	methodNames := make(map[string]struct{}, len(rg.Methods))
+	for _, method := range rg.Methods {
+		methodNames[method.Name] = struct{}{}
+	}
+
+	recv := FirstLetter(rg.GoName)
+	fieldAt := func(i int) string {
+		return recv + ".native." + cgoField(rg.Fields[i].Name)
+	}
 
 	for i, field := range rg.Fields {
 		ignores.fieldIgnore(field)
@@ -153,20 +169,45 @@ func (rg *recordGenerator) publicFields() []recordField {
 			continue
 		}
 
+		goName := SnakeToGo(true, field.Name)
+
+		// Check if we have a method with the existing name.
+		if _, collides := methodNames[goName]; collides {
+			// Skip generating the getter if we have a colliding method.
+			continue
+		}
+
 		typ, ok := rg.Ng.ResolveAnyType(field.AnyType, true)
 		if !ok {
 			continue
 		}
 
-		fields = append(fields, recordField{
-			Field:  field,
-			Name:   cgoField(field.Name),
-			GoName: SnakeToGo(true, field.Name),
-			GoType: typ,
+		convert := rg.Ng.CGoConverter(TypeConversionToGo{
+			TypeConversion: TypeConversion{
+				Value:  fieldAt(i),
+				Target: "ret",
+				Type:   field.AnyType,
+				ArgAt:  fieldAt,
+				Owner: gir.TransferOwnership{
+					// Assume we have the ownership of the C value, because we do.
+					TransferOwnership: "none",
+				},
+			},
+		})
+		if convert == "" {
+			continue
+		}
+
+		getters = append(getters, recordGetter{
+			Field:   field,
+			Name:    cgoField(field.Name),
+			GoName:  goName,
+			GoType:  typ,
+			Convert: convert,
 		})
 	}
 
-	return fields
+	return getters
 }
 
 // needsNative returns true if the record needs a private C field for
@@ -182,11 +223,15 @@ func (rg *recordGenerator) needsNative() bool {
 }
 
 func (ng *NamespaceGenerator) generateRecords() {
-	rg := recordGenerator{Ng: ng}
+	rg := recordGenerator{
+		Callable: callableGenerator{Ng: ng},
+		Ng:       ng,
+	}
 	imported := false
 
 	for _, record := range ng.current.Namespace.Records {
 		if !rg.Use(record) {
+			ng.logln(logInfo, "record", record.Name, "skipped")
 			continue
 		}
 

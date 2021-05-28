@@ -3,7 +3,6 @@
 package fontconfig
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -30,19 +29,17 @@ func Init() {
 }
 
 type Pattern struct {
-	native *C.FcPattern
+	native C.FcPattern
 }
 
 // WrapPattern wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPattern(ptr unsafe.Pointer) *Pattern {
-	p := (*C.FcPattern)(ptr)
-	v := Pattern{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Pattern).free)
-
-	return &v
+	return (*Pattern)(ptr)
 }
 
 func marshalPattern(p uintptr) (interface{}, error) {
@@ -50,35 +47,23 @@ func marshalPattern(p uintptr) (interface{}, error) {
 	return WrapPattern(unsafe.Pointer(b))
 }
 
-func (p *Pattern) free() {
-	C.free(p.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (p *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
-}
-
-// Native returns the pointer to *C.FcPattern. The caller is expected to
-// cast.
-func (p *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+	return unsafe.Pointer(&p.native)
 }
 
 type CharSet struct {
-	native *C.FcCharSet
+	native C.FcCharSet
 }
 
 // WrapCharSet wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapCharSet(ptr unsafe.Pointer) *CharSet {
-	p := (*C.FcCharSet)(ptr)
-	v := CharSet{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*CharSet).free)
-
-	return &v
+	return (*CharSet)(ptr)
 }
 
 func marshalCharSet(p uintptr) (interface{}, error) {
@@ -86,17 +71,7 @@ func marshalCharSet(p uintptr) (interface{}, error) {
 	return WrapCharSet(unsafe.Pointer(b))
 }
 
-func (c *CharSet) free() {
-	C.free(c.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (c *CharSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
-}
-
-// Native returns the pointer to *C.FcCharSet. The caller is expected to
-// cast.
-func (c *CharSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+	return unsafe.Pointer(&c.native)
 }

@@ -158,7 +158,7 @@ func init() {
 
 // DateDay: integer representing a day of the month; between 1 and 31.
 // DATE_BAD_DAY represents an invalid day of the month.
-type DateDay uint8
+type DateDay byte
 
 // DateYear: integer representing a year; DATE_BAD_YEAR is the invalid value.
 // The year must be 1 or higher; negative (BC) years are not allowed. The year
@@ -2639,13 +2639,11 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	var logLevel LogLevelFlags
 	var message string
 
-	arg0 = C.GoString(logDomain)
-	defer C.free(unsafe.Pointer(arg0))
+	logDomain = C.GoString(arg0)
 
 	logLevel = LogLevelFlags(arg1)
 
-	arg2 = C.GoString(message)
-	defer C.free(unsafe.Pointer(arg2))
+	message = C.GoString(arg2)
 
 	v.(LogFunc)(logDomain, logLevel, message)
 }
@@ -2826,13 +2824,11 @@ func gotk4_TestLogFatalFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar,
 	var logLevel LogLevelFlags
 	var message string
 
-	arg0 = C.GoString(logDomain)
-	defer C.free(unsafe.Pointer(arg0))
+	logDomain = C.GoString(arg0)
 
 	logLevel = LogLevelFlags(arg1)
 
-	arg2 = C.GoString(message)
-	defer C.free(unsafe.Pointer(arg2))
+	message = C.GoString(arg2)
 
 	ok := v.(TestLogFatalFunc)(logDomain, logLevel, message)
 }
@@ -2870,14 +2866,14 @@ func gotk4_UnixFDSourceFunc(arg0 C.gint, arg1 C.GIOCondition, arg2 C.gpointer) C
 //
 // See your C library manual for more details about access().
 func Access(filename string, mode int) int {
-	var arg0 *C.gchar
-	var arg1 C.int
+	var arg1 *C.gchar
+	var arg2 C.int
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
-	arg1 = C.int(mode)
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(mode)
 
-	ret := C.g_access(arg0, arg1)
+	ret := C.g_access(arg1, arg2)
 
 	var ret0 int
 
@@ -2890,11 +2886,11 @@ func Access(filename string, mode int) int {
 // digit. Differs from g_unichar_digit_value() because it takes a char, so
 // there's no worry about sign extension if characters are signed.
 func ASCIIDigitValue(c byte) int {
-	var arg0 C.gchar
+	var arg1 C.gchar
 
-	arg0 = C.gchar(c)
+	arg1 = C.gchar(c)
 
-	ret := C.g_ascii_digit_value(arg0)
+	ret := C.g_ascii_digit_value(arg1)
 
 	var ret0 int
 
@@ -2911,21 +2907,21 @@ func ASCIIDigitValue(c byte) int {
 // string will never be larger than @G_ASCII_DTOSTR_BUF_SIZE bytes, including
 // the terminating nul character, which is always added.
 func ASCIIDtostr(buffer string, bufLen int, d float64) string {
-	var arg0 *C.gchar
-	var arg1 C.gint
-	var arg2 C.gdouble
+	var arg1 *C.gchar
+	var arg2 C.gint
+	var arg3 C.gdouble
 
-	arg0 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(buffer))
-	arg1 = C.gint(bufLen)
-	arg2 = C.gdouble(d)
+	arg1 = (*C.gchar)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(bufLen)
+	arg3 = C.gdouble(d)
 
-	ret := C.g_ascii_dtostr(arg0, arg1, arg2)
+	ret := C.g_ascii_dtostr(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -2939,24 +2935,24 @@ func ASCIIDtostr(buffer string, bufLen int, d float64) string {
 // If you just want to want to serialize the value into a string, use
 // g_ascii_dtostr().
 func ASCIIFormatd(buffer string, bufLen int, format string, d float64) string {
-	var arg0 *C.gchar
-	var arg1 C.gint
-	var arg2 *C.gchar
-	var arg3 C.gdouble
+	var arg1 *C.gchar
+	var arg2 C.gint
+	var arg3 *C.gchar
+	var arg4 C.gdouble
 
-	arg0 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(buffer))
-	arg1 = C.gint(bufLen)
-	arg2 = (*C.gchar)(C.CString(format))
-	defer C.free(unsafe.Pointer(format))
-	arg3 = C.gdouble(d)
+	arg1 = (*C.gchar)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(bufLen)
+	arg3 = (*C.gchar)(C.CString(format))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = C.gdouble(d)
 
-	ret := C.g_ascii_formatd(arg0, arg1, arg2, arg3)
+	ret := C.g_ascii_formatd(arg1, arg2, arg3, arg4)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -2976,15 +2972,15 @@ func ASCIIFormatd(buffer string, bufLen int, format string, d float64) string {
 //
 // Both @s1 and @s2 must be non-nil.
 func ASCIIStrcasecmp(s1 string, s2 string) int {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(s1))
-	defer C.free(unsafe.Pointer(s1))
-	arg1 = (*C.gchar)(C.CString(s2))
-	defer C.free(unsafe.Pointer(s2))
+	arg1 = (*C.gchar)(C.CString(s1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(s2))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_ascii_strcasecmp(arg0, arg1)
+	ret := C.g_ascii_strcasecmp(arg1, arg2)
 
 	var ret0 int
 
@@ -2996,19 +2992,19 @@ func ASCIIStrcasecmp(s1 string, s2 string) int {
 // ASCIIStrdown converts all upper case ASCII letters to lower case ASCII
 // letters.
 func ASCIIStrdown(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_ascii_strdown(arg0, arg1)
+	ret := C.g_ascii_strdown(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -3034,24 +3030,24 @@ func ASCIIStrdown(str string, len int) string {
 // See g_ascii_strtoll() if you have more complex needs such as parsing a string
 // which starts with a number, but then has other characters.
 func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum int64, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.guint
-	var arg2 C.gint64
+	var arg1 *C.gchar
+	var arg2 C.guint
 	var arg3 C.gint64
-	var arg4 *C.gint64 // out
+	var arg4 C.gint64
+	var arg5 *C.gint64 // out
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.guint(base)
-	arg2 = C.gint64(min)
-	arg3 = C.gint64(max)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.guint(base)
+	arg3 = C.gint64(min)
+	arg4 = C.gint64(max)
 
-	ret := C.g_ascii_string_to_signed(arg0, arg1, arg2, arg3, &arg4)
+	ret := C.g_ascii_string_to_signed(arg1, arg2, arg3, arg4, &arg5)
 
 	var ret0 int64
 	var ret1 bool
 
-	ret0 = int64(arg4)
+	ret0 = int64(arg5)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -3080,24 +3076,24 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum in
 // See g_ascii_strtoull() if you have more complex needs such as parsing a
 // string which starts with a number, but then has other characters.
 func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNum uint64, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.guint
-	var arg2 C.guint64
+	var arg1 *C.gchar
+	var arg2 C.guint
 	var arg3 C.guint64
-	var arg4 *C.guint64 // out
+	var arg4 C.guint64
+	var arg5 *C.guint64 // out
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.guint(base)
-	arg2 = C.guint64(min)
-	arg3 = C.guint64(max)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.guint(base)
+	arg3 = C.guint64(min)
+	arg4 = C.guint64(max)
 
-	ret := C.g_ascii_string_to_unsigned(arg0, arg1, arg2, arg3, &arg4)
+	ret := C.g_ascii_string_to_unsigned(arg1, arg2, arg3, arg4, &arg5)
 
 	var ret0 uint64
 	var ret1 bool
 
-	ret0 = uint64(arg4)
+	ret0 = uint64(arg5)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -3115,17 +3111,17 @@ func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNu
 // on strings known to be in encodings where bytes corresponding to ASCII
 // letters always represent themselves.
 func ASCIIStrncasecmp(s1 string, s2 string, n uint) int {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gsize
+	var arg2 *C.gchar
+	var arg3 C.gsize
 
-	arg0 = (*C.gchar)(C.CString(s1))
-	defer C.free(unsafe.Pointer(s1))
-	arg1 = (*C.gchar)(C.CString(s2))
-	defer C.free(unsafe.Pointer(s2))
-	arg2 = C.gsize(n)
+	arg1 = (*C.gchar)(C.CString(s1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(s2))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gsize(n)
 
-	ret := C.g_ascii_strncasecmp(arg0, arg1, arg2)
+	ret := C.g_ascii_strncasecmp(arg1, arg2, arg3)
 
 	var ret0 int
 
@@ -3156,19 +3152,18 @@ func ASCIIStrncasecmp(s1 string, s2 string, n uint) int {
 // This function resets errno before calling strtod() so that you can reliably
 // detect overflow and underflow.
 func ASCIIStrtod(nptr string) (endptr string, gdouble float64) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(nptr))
-	defer C.free(unsafe.Pointer(nptr))
+	arg1 = (*C.gchar)(C.CString(nptr))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_ascii_strtod(arg0, &arg1)
+	ret := C.g_ascii_strtod(arg1, &arg2)
 
 	var ret0 string
 	var ret1 float64
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
 
 	ret1 = float64(ret)
 
@@ -3189,22 +3184,20 @@ func ASCIIStrtod(nptr string) (endptr string, gdouble float64) {
 // conversion fails, zero is returned, and @endptr returns @nptr (if @endptr is
 // non-nil).
 func ASCIIStrtoll(nptr string, base uint) (endptr string, gint64 int64) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
+	var arg3 C.guint
 
-	var arg2 C.guint
+	arg1 = (*C.gchar)(C.CString(nptr))
+	defer C.free(unsafe.Pointer(arg1))
+	arg3 = C.guint(base)
 
-	arg0 = (*C.gchar)(C.CString(nptr))
-	defer C.free(unsafe.Pointer(nptr))
-	arg2 = C.guint(base)
-
-	ret := C.g_ascii_strtoll(arg0, &arg1, arg2)
+	ret := C.g_ascii_strtoll(arg1, &arg2, arg3)
 
 	var ret0 string
 	var ret1 int64
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
 
 	ret1 = int64(ret)
 
@@ -3230,22 +3223,20 @@ func ASCIIStrtoll(nptr string, base uint) (endptr string, gint64 int64) {
 // is returned, and `EINVAL` is stored in `errno`. If the string conversion
 // fails, zero is returned, and @endptr returns @nptr (if @endptr is non-nil).
 func ASCIIStrtoull(nptr string, base uint) (endptr string, guint64 uint64) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
+	var arg3 C.guint
 
-	var arg2 C.guint
+	arg1 = (*C.gchar)(C.CString(nptr))
+	defer C.free(unsafe.Pointer(arg1))
+	arg3 = C.guint(base)
 
-	arg0 = (*C.gchar)(C.CString(nptr))
-	defer C.free(unsafe.Pointer(nptr))
-	arg2 = C.guint(base)
-
-	ret := C.g_ascii_strtoull(arg0, &arg1, arg2)
+	ret := C.g_ascii_strtoull(arg1, &arg2, arg3)
 
 	var ret0 string
 	var ret1 uint64
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
 
 	ret1 = uint64(ret)
 
@@ -3254,19 +3245,19 @@ func ASCIIStrtoull(nptr string, base uint) (endptr string, guint64 uint64) {
 
 // ASCIIStrup converts all lower case ASCII letters to upper case ASCII letters.
 func ASCIIStrup(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_ascii_strup(arg0, arg1)
+	ret := C.g_ascii_strup(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -3280,11 +3271,11 @@ func ASCIIStrup(str string, len int) string {
 // returns a char, not an int, so don't call it on EOF but no need to worry
 // about casting to #guchar before passing a possibly non-ASCII character in.
 func ASCIIToLower(c byte) byte {
-	var arg0 C.gchar
+	var arg1 C.gchar
 
-	arg0 = C.gchar(c)
+	arg1 = C.gchar(c)
 
-	ret := C.g_ascii_tolower(arg0)
+	ret := C.g_ascii_tolower(arg1)
 
 	var ret0 byte
 
@@ -3302,11 +3293,11 @@ func ASCIIToLower(c byte) byte {
 // returns a char, not an int, so don't call it on EOF but no need to worry
 // about casting to #guchar before passing a possibly non-ASCII character in.
 func ASCIIToUpper(c byte) byte {
-	var arg0 C.gchar
+	var arg1 C.gchar
 
-	arg0 = C.gchar(c)
+	arg1 = C.gchar(c)
 
-	ret := C.g_ascii_toupper(arg0)
+	ret := C.g_ascii_toupper(arg1)
 
 	var ret0 byte
 
@@ -3319,11 +3310,11 @@ func ASCIIToUpper(c byte) byte {
 // digit. Differs from g_unichar_xdigit_value() because it takes a char, so
 // there's no worry about sign extension if characters are signed.
 func ASCIIXDigitValue(c byte) int {
-	var arg0 C.gchar
+	var arg1 C.gchar
 
-	arg0 = C.gchar(c)
+	arg1 = C.gchar(c)
 
-	ret := C.g_ascii_xdigit_value(arg0)
+	ret := C.g_ascii_xdigit_value(arg1)
 
 	var ret0 int
 
@@ -3333,148 +3324,148 @@ func ASCIIXDigitValue(c byte) int {
 }
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
+	var arg5 *C.char
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(prettyFunction))
-	defer C.free(unsafe.Pointer(prettyFunction))
-	arg4 = (*C.gchar)(C.CString(expression))
-	defer C.free(unsafe.Pointer(expression))
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(prettyFunction))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(expression))
+	defer C.free(unsafe.Pointer(arg5))
 
-	C.g_assert_warning(arg0, arg1, arg2, arg3, arg4)
+	C.g_assert_warning(arg1, arg2, arg3, arg4, arg5)
 }
 
 func AssertionMessage(domain string, file string, line int, _func string, message string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
+	var arg5 *C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(message))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(message))
+	defer C.free(unsafe.Pointer(arg5))
 
-	C.g_assertion_message(arg0, arg1, arg2, arg3, arg4)
+	C.g_assertion_message(arg1, arg2, arg3, arg4, arg5)
 }
 
 func AssertionMessageCmpnum(domain string, file string, line int, _func string, expr string, arg1 float64, cmp string, arg2 float64, numtype byte) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
-	var arg5 C.longdouble
-	var arg6 *C.char
-	var arg7 C.longdouble
-	var arg8 C.char
+	var arg5 *C.char
+	var arg6 C.longdouble
+	var arg7 *C.char
+	var arg8 C.longdouble
+	var arg9 C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = (*C.gchar)(C.CString(expr))
-	defer C.free(unsafe.Pointer(expr))
-	arg5 = C.longdouble(arg1)
-	arg6 = (*C.gchar)(C.CString(cmp))
-	defer C.free(unsafe.Pointer(cmp))
-	arg7 = C.longdouble(arg2)
-	arg8 = C.char(numtype)
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(expr))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = C.longdouble(arg1)
+	arg7 = (*C.gchar)(C.CString(cmp))
+	defer C.free(unsafe.Pointer(arg7))
+	arg8 = C.longdouble(arg2)
+	arg9 = C.char(numtype)
 
-	C.g_assertion_message_cmpnum(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+	C.g_assertion_message_cmpnum(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 func AssertionMessageCmpstr(domain string, file string, line int, _func string, expr string, arg1 string, cmp string, arg2 string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
 	var arg5 *C.char
 	var arg6 *C.char
 	var arg7 *C.char
+	var arg8 *C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = (*C.gchar)(C.CString(expr))
-	defer C.free(unsafe.Pointer(expr))
-	arg5 = (*C.gchar)(C.CString(arg1))
+	arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(arg1))
-	arg6 = (*C.gchar)(C.CString(cmp))
-	defer C.free(unsafe.Pointer(cmp))
-	arg7 = (*C.gchar)(C.CString(arg2))
+	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(expr))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = (*C.gchar)(C.CString(arg1))
+	defer C.free(unsafe.Pointer(arg6))
+	arg7 = (*C.gchar)(C.CString(cmp))
+	defer C.free(unsafe.Pointer(arg7))
+	arg8 = (*C.gchar)(C.CString(arg2))
+	defer C.free(unsafe.Pointer(arg8))
 
-	C.g_assertion_message_cmpstr(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	C.g_assertion_message_cmpstr(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 func AssertionMessageError(domain string, file string, line int, _func string, expr string, error *Error, errorDomain Quark, errorCode int) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
-	var arg5 *C.GError
-	var arg6 C.GQuark
-	var arg7 C.int
+	var arg5 *C.char
+	var arg6 *C.GError
+	var arg7 C.GQuark
+	var arg8 C.int
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = (*C.gchar)(C.CString(expr))
-	defer C.free(unsafe.Pointer(expr))
-	arg5 = (*C.GError)(error.Native())
-	arg7 = C.int(errorCode)
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(expr))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = (*C.GError)(error.Native())
+	arg8 = C.int(errorCode)
 
-	C.g_assertion_message_error(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	C.g_assertion_message_error(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // AssertionMessageExpr: internal function used to print messages from the
 // public g_assert() and g_assert_not_reached() macros.
 func AssertionMessageExpr(domain string, file string, line int, _func string, expr string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
+	var arg5 *C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = (*C.gchar)(C.CString(expr))
-	defer C.free(unsafe.Pointer(expr))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(expr))
+	defer C.free(unsafe.Pointer(arg5))
 
-	C.g_assertion_message_expr(arg0, arg1, arg2, arg3, arg4)
+	C.g_assertion_message_expr(arg1, arg2, arg3, arg4, arg5)
 }
 
 // Atexit specifies a function to be called at normal program termination.
@@ -3506,11 +3497,11 @@ func AssertionMessageExpr(domain string, file string, line int, _func string, ex
 // As can be seen from the above, for portability it's best to avoid calling
 // g_atexit() (or atexit()) except in the main executable of a program.
 func Atexit(_func VoidFunc) {
-	var arg0 C.GVoidFunc
+	var arg1 C.GVoidFunc
 
-	arg0 = (*[0]byte)(C.gotk4_VoidFunc)
+	arg1 = (*[0]byte)(C.gotk4_VoidFunc)
 
-	C.g_atexit(arg0)
+	C.g_atexit(arg1)
 }
 
 // AtomicIntAdd: atomically adds @val to the value of @atomic.
@@ -3523,13 +3514,13 @@ func Atexit(_func VoidFunc) {
 // Before version 2.30, this function did not return a value (but
 // g_atomic_int_exchange_and_add() did, and had the same meaning).
 func AtomicIntAdd(atomic int, val int) int {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(atomic)
-	arg1 = C.gint(val)
+	arg1 = (*C.gint)(atomic)
+	arg2 = C.gint(val)
 
-	ret := C.g_atomic_int_add(arg0, arg1)
+	ret := C.g_atomic_int_add(arg1, arg2)
 
 	var ret0 int
 
@@ -3546,13 +3537,13 @@ func AtomicIntAdd(atomic int, val int) int {
 // Think of this operation as an atomic version of `{ tmp = *atomic; *atomic &=
 // val; return tmp; }`.
 func AtomicIntAnd(atomic uint, val uint) uint {
-	var arg0 *C.guint
-	var arg1 C.guint
+	var arg1 *C.guint
+	var arg2 C.guint
 
-	arg0 = (*C.guint)(atomic)
-	arg1 = C.guint(val)
+	arg1 = (*C.guint)(atomic)
+	arg2 = C.guint(val)
 
-	ret := C.g_atomic_int_and(arg0, arg1)
+	ret := C.g_atomic_int_and(arg1, arg2)
 
 	var ret0 uint
 
@@ -3571,15 +3562,15 @@ func AtomicIntAnd(atomic uint, val uint) uint {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicIntCompareAndExchange(atomic int, oldval int, newval int) bool {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
 	var arg2 C.gint
+	var arg3 C.gint
 
-	arg0 = (*C.gint)(atomic)
-	arg1 = C.gint(oldval)
-	arg2 = C.gint(newval)
+	arg1 = (*C.gint)(atomic)
+	arg2 = C.gint(oldval)
+	arg3 = C.gint(newval)
 
-	ret := C.g_atomic_int_compare_and_exchange(arg0, arg1, arg2)
+	ret := C.g_atomic_int_compare_and_exchange(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -3595,11 +3586,11 @@ func AtomicIntCompareAndExchange(atomic int, oldval int, newval int) bool {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicIntDecAndTest(atomic int) bool {
-	var arg0 *C.gint
+	var arg1 *C.gint
 
-	arg0 = (*C.gint)(atomic)
+	arg1 = (*C.gint)(atomic)
 
-	ret := C.g_atomic_int_dec_and_test(arg0)
+	ret := C.g_atomic_int_dec_and_test(arg1)
 
 	var ret0 bool
 
@@ -3612,13 +3603,13 @@ func AtomicIntDecAndTest(atomic int) bool {
 // returned the prior value of the integer (which it now does). It is retained
 // only for compatibility reasons. Don't use this function in new code.
 func AtomicIntExchangeAndAdd(atomic int, val int) int {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(atomic)
-	arg1 = C.gint(val)
+	arg1 = (*C.gint)(atomic)
+	arg2 = C.gint(val)
 
-	ret := C.g_atomic_int_exchange_and_add(arg0, arg1)
+	ret := C.g_atomic_int_exchange_and_add(arg1, arg2)
 
 	var ret0 int
 
@@ -3632,11 +3623,11 @@ func AtomicIntExchangeAndAdd(atomic int, val int) int {
 // This call acts as a full compiler and hardware memory barrier (before the
 // get).
 func AtomicIntGet(atomic int) int {
-	var arg0 *C.gint
+	var arg1 *C.gint
 
-	arg0 = (*C.gint)(atomic)
+	arg1 = (*C.gint)(atomic)
 
-	ret := C.g_atomic_int_get(arg0)
+	ret := C.g_atomic_int_get(arg1)
 
 	var ret0 int
 
@@ -3651,11 +3642,11 @@ func AtomicIntGet(atomic int) int {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicIntInc(atomic int) {
-	var arg0 *C.gint
+	var arg1 *C.gint
 
-	arg0 = (*C.gint)(atomic)
+	arg1 = (*C.gint)(atomic)
 
-	C.g_atomic_int_inc(arg0)
+	C.g_atomic_int_inc(arg1)
 }
 
 // AtomicIntOr performs an atomic bitwise 'or' of the value of @atomic and @val,
@@ -3666,13 +3657,13 @@ func AtomicIntInc(atomic int) {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicIntOr(atomic uint, val uint) uint {
-	var arg0 *C.guint
-	var arg1 C.guint
+	var arg1 *C.guint
+	var arg2 C.guint
 
-	arg0 = (*C.guint)(atomic)
-	arg1 = C.guint(val)
+	arg1 = (*C.guint)(atomic)
+	arg2 = C.guint(val)
 
-	ret := C.g_atomic_int_or(arg0, arg1)
+	ret := C.g_atomic_int_or(arg1, arg2)
 
 	var ret0 uint
 
@@ -3686,13 +3677,13 @@ func AtomicIntOr(atomic uint, val uint) uint {
 // This call acts as a full compiler and hardware memory barrier (after the
 // set).
 func AtomicIntSet(atomic int, newval int) {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(atomic)
-	arg1 = C.gint(newval)
+	arg1 = (*C.gint)(atomic)
+	arg2 = C.gint(newval)
 
-	C.g_atomic_int_set(arg0, arg1)
+	C.g_atomic_int_set(arg1, arg2)
 }
 
 // AtomicIntXor performs an atomic bitwise 'xor' of the value of @atomic and
@@ -3703,13 +3694,13 @@ func AtomicIntSet(atomic int, newval int) {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicIntXor(atomic uint, val uint) uint {
-	var arg0 *C.guint
-	var arg1 C.guint
+	var arg1 *C.guint
+	var arg2 C.guint
 
-	arg0 = (*C.guint)(atomic)
-	arg1 = C.guint(val)
+	arg1 = (*C.guint)(atomic)
+	arg2 = C.guint(val)
 
-	ret := C.g_atomic_int_xor(arg0, arg1)
+	ret := C.g_atomic_int_xor(arg1, arg2)
 
 	var ret0 uint
 
@@ -3725,13 +3716,13 @@ func AtomicIntXor(atomic uint, val uint) uint {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerAdd(atomic interface{}, val int) int {
-	var arg0 *C.void
-	var arg1 C.gssize
+	var arg1 *C.void
+	var arg2 C.gssize
 
-	arg0 = C.gpointer(box.Assign(atomic))
-	arg1 = C.gssize(val)
+	arg1 = C.gpointer(box.Assign(atomic))
+	arg2 = C.gssize(val)
 
-	ret := C.g_atomic_pointer_add(arg0, arg1)
+	ret := C.g_atomic_pointer_add(arg1, arg2)
 
 	var ret0 int
 
@@ -3748,13 +3739,13 @@ func AtomicPointerAdd(atomic interface{}, val int) int {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerAnd(atomic interface{}, val uint) uint {
-	var arg0 *C.void
-	var arg1 C.gsize
+	var arg1 *C.void
+	var arg2 C.gsize
 
-	arg0 = C.gpointer(box.Assign(atomic))
-	arg1 = C.gsize(val)
+	arg1 = C.gpointer(box.Assign(atomic))
+	arg2 = C.gsize(val)
 
-	ret := C.g_atomic_pointer_and(arg0, arg1)
+	ret := C.g_atomic_pointer_and(arg1, arg2)
 
 	var ret0 uint
 
@@ -3774,15 +3765,15 @@ func AtomicPointerAnd(atomic interface{}, val uint) uint {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerCompareAndExchange(atomic interface{}, oldval interface{}, newval interface{}) bool {
-	var arg0 *C.void
-	var arg1 C.gpointer
+	var arg1 *C.void
 	var arg2 C.gpointer
+	var arg3 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(atomic))
-	arg1 = C.gpointer(box.Assign(oldval))
-	arg2 = C.gpointer(box.Assign(newval))
+	arg1 = C.gpointer(box.Assign(atomic))
+	arg2 = C.gpointer(box.Assign(oldval))
+	arg3 = C.gpointer(box.Assign(newval))
 
-	ret := C.g_atomic_pointer_compare_and_exchange(arg0, arg1, arg2)
+	ret := C.g_atomic_pointer_compare_and_exchange(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -3796,11 +3787,11 @@ func AtomicPointerCompareAndExchange(atomic interface{}, oldval interface{}, new
 // This call acts as a full compiler and hardware memory barrier (before the
 // get).
 func AtomicPointerGet(atomic interface{}) interface{} {
-	var arg0 *C.void
+	var arg1 *C.void
 
-	arg0 = C.gpointer(box.Assign(atomic))
+	arg1 = C.gpointer(box.Assign(atomic))
 
-	ret := C.g_atomic_pointer_get(arg0)
+	ret := C.g_atomic_pointer_get(arg1)
 
 	var ret0 interface{}
 
@@ -3817,13 +3808,13 @@ func AtomicPointerGet(atomic interface{}) interface{} {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerOr(atomic interface{}, val uint) uint {
-	var arg0 *C.void
-	var arg1 C.gsize
+	var arg1 *C.void
+	var arg2 C.gsize
 
-	arg0 = C.gpointer(box.Assign(atomic))
-	arg1 = C.gsize(val)
+	arg1 = C.gpointer(box.Assign(atomic))
+	arg2 = C.gsize(val)
 
-	ret := C.g_atomic_pointer_or(arg0, arg1)
+	ret := C.g_atomic_pointer_or(arg1, arg2)
 
 	var ret0 uint
 
@@ -3837,13 +3828,13 @@ func AtomicPointerOr(atomic interface{}, val uint) uint {
 // This call acts as a full compiler and hardware memory barrier (after the
 // set).
 func AtomicPointerSet(atomic interface{}, newval interface{}) {
-	var arg0 *C.void
-	var arg1 C.gpointer
+	var arg1 *C.void
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(atomic))
-	arg1 = C.gpointer(box.Assign(newval))
+	arg1 = C.gpointer(box.Assign(atomic))
+	arg2 = C.gpointer(box.Assign(newval))
 
-	C.g_atomic_pointer_set(arg0, arg1)
+	C.g_atomic_pointer_set(arg1, arg2)
 }
 
 // AtomicPointerXor performs an atomic bitwise 'xor' of the value of @atomic and
@@ -3854,13 +3845,13 @@ func AtomicPointerSet(atomic interface{}, newval interface{}) {
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerXor(atomic interface{}, val uint) uint {
-	var arg0 *C.void
-	var arg1 C.gsize
+	var arg1 *C.void
+	var arg2 C.gsize
 
-	arg0 = C.gpointer(box.Assign(atomic))
-	arg1 = C.gsize(val)
+	arg1 = C.gpointer(box.Assign(atomic))
+	arg2 = C.gsize(val)
 
-	ret := C.g_atomic_pointer_xor(arg0, arg1)
+	ret := C.g_atomic_pointer_xor(arg1, arg2)
 
 	var ret0 uint
 
@@ -3872,11 +3863,11 @@ func AtomicPointerXor(atomic interface{}, val uint) uint {
 // AtomicRcBoxAcquire: atomically acquires a reference on the data pointed by
 // @mem_block.
 func AtomicRcBoxAcquire(memBlock interface{}) interface{} {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_atomic_rc_box_acquire(arg0)
+	ret := C.g_atomic_rc_box_acquire(arg1)
 
 	var ret0 interface{}
 
@@ -3893,11 +3884,11 @@ func AtomicRcBoxAcquire(memBlock interface{}) interface{} {
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
 func AtomicRcBoxAlloc(blockSize uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(blockSize)
+	arg1 = C.gsize(blockSize)
 
-	ret := C.g_atomic_rc_box_alloc(arg0)
+	ret := C.g_atomic_rc_box_alloc(arg1)
 
 	var ret0 interface{}
 
@@ -3916,11 +3907,11 @@ func AtomicRcBoxAlloc(blockSize uint) interface{} {
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
 func AtomicRcBoxAlloc0(blockSize uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(blockSize)
+	arg1 = C.gsize(blockSize)
 
-	ret := C.g_atomic_rc_box_alloc0(arg0)
+	ret := C.g_atomic_rc_box_alloc0(arg1)
 
 	var ret0 interface{}
 
@@ -3932,13 +3923,13 @@ func AtomicRcBoxAlloc0(blockSize uint) interface{} {
 // AtomicRcBoxDup allocates a new block of data with atomic reference counting
 // semantics, and copies @block_size bytes of @mem_block into it.
 func AtomicRcBoxDup(blockSize uint, memBlock interface{}) interface{} {
-	var arg0 C.gsize
-	var arg1 C.gpointer
+	var arg1 C.gsize
+	var arg2 C.gpointer
 
-	arg0 = C.gsize(blockSize)
-	arg1 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gsize(blockSize)
+	arg2 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_atomic_rc_box_dup(arg0, arg1)
+	ret := C.g_atomic_rc_box_dup(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -3950,11 +3941,11 @@ func AtomicRcBoxDup(blockSize uint, memBlock interface{}) interface{} {
 // AtomicRcBoxGetSize retrieves the size of the reference counted data pointed
 // by @mem_block.
 func AtomicRcBoxGetSize(memBlock interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_atomic_rc_box_get_size(arg0)
+	ret := C.g_atomic_rc_box_get_size(arg1)
 
 	var ret0 uint
 
@@ -3969,11 +3960,11 @@ func AtomicRcBoxGetSize(memBlock interface{}) uint {
 // If the reference was the last one, it will free the resources allocated for
 // @mem_block.
 func AtomicRcBoxRelease(memBlock interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	C.g_atomic_rc_box_release(arg0)
+	C.g_atomic_rc_box_release(arg1)
 }
 
 // AtomicRcBoxReleaseFull: atomically releases a reference on the data pointed
@@ -3983,23 +3974,23 @@ func AtomicRcBoxRelease(memBlock interface{}) {
 // contents of @mem_block, and then will free the resources allocated for
 // @mem_block.
 func AtomicRcBoxReleaseFull(memBlock interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	C.g_atomic_rc_box_release_full(arg0, (*[0]byte)(C.free))
+	C.g_atomic_rc_box_release_full(arg1, (*[0]byte)(C.free))
 }
 
 // AtomicRefCountCompare: atomically compares the current value of @arc with
 // @val.
 func AtomicRefCountCompare(arc int, val int) bool {
-	var arg0 *C.gatomicrefcount
-	var arg1 C.gint
+	var arg1 *C.gatomicrefcount
+	var arg2 C.gint
 
-	arg0 = (*C.gatomicrefcount)(arc)
-	arg1 = C.gint(val)
+	arg1 = (*C.gatomicrefcount)(arc)
+	arg2 = C.gint(val)
 
-	ret := C.g_atomic_ref_count_compare(arg0, arg1)
+	ret := C.g_atomic_ref_count_compare(arg1, arg2)
 
 	var ret0 bool
 
@@ -4010,11 +4001,11 @@ func AtomicRefCountCompare(arc int, val int) bool {
 
 // AtomicRefCountDec: atomically decreases the reference count.
 func AtomicRefCountDec(arc int) bool {
-	var arg0 *C.gatomicrefcount
+	var arg1 *C.gatomicrefcount
 
-	arg0 = (*C.gatomicrefcount)(arc)
+	arg1 = (*C.gatomicrefcount)(arc)
 
-	ret := C.g_atomic_ref_count_dec(arg0)
+	ret := C.g_atomic_ref_count_dec(arg1)
 
 	var ret0 bool
 
@@ -4025,44 +4016,44 @@ func AtomicRefCountDec(arc int) bool {
 
 // AtomicRefCountInc: atomically increases the reference count.
 func AtomicRefCountInc(arc int) {
-	var arg0 *C.gatomicrefcount
+	var arg1 *C.gatomicrefcount
 
-	arg0 = (*C.gatomicrefcount)(arc)
+	arg1 = (*C.gatomicrefcount)(arc)
 
-	C.g_atomic_ref_count_inc(arg0)
+	C.g_atomic_ref_count_inc(arg1)
 }
 
 // AtomicRefCountInit initializes a reference count variable.
 func AtomicRefCountInit(arc int) {
-	var arg0 *C.gatomicrefcount
+	var arg1 *C.gatomicrefcount
 
-	arg0 = (*C.gatomicrefcount)(arc)
+	arg1 = (*C.gatomicrefcount)(arc)
 
-	C.g_atomic_ref_count_init(arg0)
+	C.g_atomic_ref_count_init(arg1)
 }
 
 // Base64Decode: decode a sequence of Base-64 encoded text into binary data.
 // Note that the returned binary data is not necessarily zero-terminated, so it
 // should not be used as a character string.
-func Base64Decode(text string) (outLen uint, guint8s []uint8) {
-	var arg0 *C.gchar
-	var arg1 *C.gsize // out
+func Base64Decode(text string) (outLen uint, guint8s []byte) {
+	var arg1 *C.gchar
+	var arg2 *C.gsize // out
 
-	arg0 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(text))
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_base64_decode(arg0, &arg1)
+	ret := C.g_base64_decode(arg1, &arg2)
 
 	var ret0 uint
-	var ret1 []uint8
+	var ret1 []byte
 
-	ret0 = uint(arg1)
+	ret0 = uint(arg2)
 
 	{
-		ret1 = make([]uint8, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
+		ret1 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = uint8(src)
+			ret1[i] = byte(src)
 		}
 	}
 
@@ -4071,32 +4062,31 @@ func Base64Decode(text string) (outLen uint, guint8s []uint8) {
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
-func Base64DecodeInplace(text []uint8) uint8 {
-	var arg0 *C.gchar
-	var arg1 *C.gsize
+func Base64DecodeInplace(text []byte) byte {
+	var arg1 *C.gchar
+	var arg2 *C.gsize
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(text))),
-			Len:  len(text),
-			Cap:  len(text),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
+		var dst []C.guint8
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(text))))
+		sliceHeader.Len = len(text)
+		sliceHeader.Cap = len(text)
 
 		for i := 0; i < len(text); i++ {
 			src := text[i]
 			dst[i] = C.guint8(src)
 		}
 
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(text)
+		arg1 = (*C.gchar)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(text)
 	}
 
-	ret := C.g_base64_decode_inplace(arg0, arg1)
+	ret := C.g_base64_decode_inplace(arg1, arg2)
 
-	var ret0 uint8
+	var ret0 byte
 
-	ret0 = uint8(ret)
+	ret0 = byte(ret)
 
 	return ret0
 }
@@ -4109,48 +4099,36 @@ func Base64DecodeInplace(text []uint8) uint8 {
 // The output buffer must be large enough to fit all the data that will be
 // written to it. Since base64 encodes 3 bytes in 4 chars you need at least:
 // (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero state).
-func Base64DecodeStep(in []uint8, state int, save uint) (out []uint8, gsize uint) {
-	var arg0 *C.gchar
-	var arg1 C.gsize
-	var arg2 *C.guchar // out
-
-	var arg3 *C.gint
-	var arg4 *C.guint
+func Base64DecodeStep(in []byte, state int, save uint) (out []byte, gsize uint) {
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 *C.guchar // out
+	var arg4 *C.gint
+	var arg5 *C.guint
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(in))),
-			Len:  len(in),
-			Cap:  len(in),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(in); i++ {
-			src := in[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(in)
+		arg1 = (*C.gchar)(&in[0])
+		arg2 = len(in)
+		defer runtime.KeepAlive(in)
 	}
-	arg3 = (*C.gint)(state)
-	arg4 = (*C.guint)(save)
+	arg4 = (*C.gint)(state)
+	arg5 = (*C.guint)(save)
 
-	ret := C.g_base64_decode_step(arg0, arg1, &arg2, arg3, arg4)
+	ret := C.g_base64_decode_step(arg1, arg2, &arg3, arg4, arg5)
 
-	var ret0 []uint8
+	var ret0 []byte
 	var ret1 uint
 
 	{
 		var length uint
-		for p := unsafe.Pointer(arg2); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+		for p := unsafe.Pointer(arg3); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
 			length++
 		}
 
-		ret0 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
-			ret0[i] = uint8(src)
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			ret0[i] = byte(src)
 		}
 	}
 
@@ -4161,33 +4139,22 @@ func Base64DecodeStep(in []uint8, state int, save uint) (out []uint8, gsize uint
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
-func Base64Encode(data []uint8) string {
-	var arg0 *C.guchar
-	var arg1 C.gsize
+func Base64Encode(data []byte) string {
+	var arg1 *C.guchar
+	var arg2 C.gsize
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(data))),
-			Len:  len(data),
-			Cap:  len(data),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(data)
+		arg1 = (*C.guchar)(&data[0])
+		arg2 = len(data)
+		defer runtime.KeepAlive(data)
 	}
 
-	ret := C.g_base64_encode(arg0, arg1)
+	ret := C.g_base64_encode(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -4200,32 +4167,31 @@ func Base64Encode(data []uint8) string {
 // is enabled.
 //
 // The @out array will not be automatically nul-terminated.
-func Base64EncodeClose(breakLines bool, state int, save int) (out []uint8, gsize uint) {
-	var arg0 C.gboolean
-	var arg1 *C.gchar // out
-
-	var arg2 *C.gint
+func Base64EncodeClose(breakLines bool, state int, save int) (out []byte, gsize uint) {
+	var arg1 C.gboolean
+	var arg2 *C.gchar // out
 	var arg3 *C.gint
+	var arg4 *C.gint
 
-	arg0 = gextras.Cbool(breakLines)
-	arg2 = (*C.gint)(state)
-	arg3 = (*C.gint)(save)
+	arg1 = gextras.Cbool(breakLines)
+	arg3 = (*C.gint)(state)
+	arg4 = (*C.gint)(save)
 
-	ret := C.g_base64_encode_close(arg0, &arg1, arg2, arg3)
+	ret := C.g_base64_encode_close(arg1, &arg2, arg3, arg4)
 
-	var ret0 []uint8
+	var ret0 []byte
 	var ret1 uint
 
 	{
 		var length uint
-		for p := unsafe.Pointer(arg1); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+		for p := unsafe.Pointer(arg2); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
 			length++
 		}
 
-		ret0 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
-			ret0[i] = uint8(src)
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
+			ret0[i] = byte(src)
 		}
 	}
 
@@ -4253,50 +4219,38 @@ func Base64EncodeClose(breakLines bool, state int, save int) (out []uint8, gsize
 // line. This avoids problems with long lines in the email system. Note however
 // that it breaks the lines with `LF` characters, not `CR LF` sequences, so the
 // result cannot be passed directly to SMTP or certain other protocols.
-func Base64EncodeStep(in []uint8, breakLines bool, state int, save int) (out []uint8, gsize uint) {
-	var arg0 *C.guchar
-	var arg1 C.gsize
-	var arg2 C.gboolean
-	var arg3 *C.gchar // out
-
-	var arg4 *C.gint
+func Base64EncodeStep(in []byte, breakLines bool, state int, save int) (out []byte, gsize uint) {
+	var arg1 *C.guchar
+	var arg2 C.gsize
+	var arg3 C.gboolean
+	var arg4 *C.gchar // out
 	var arg5 *C.gint
+	var arg6 *C.gint
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(in))),
-			Len:  len(in),
-			Cap:  len(in),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(in); i++ {
-			src := in[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(in)
+		arg1 = (*C.guchar)(&in[0])
+		arg2 = len(in)
+		defer runtime.KeepAlive(in)
 	}
-	arg2 = gextras.Cbool(breakLines)
-	arg4 = (*C.gint)(state)
-	arg5 = (*C.gint)(save)
+	arg3 = gextras.Cbool(breakLines)
+	arg5 = (*C.gint)(state)
+	arg6 = (*C.gint)(save)
 
-	ret := C.g_base64_encode_step(arg0, arg1, arg2, &arg3, arg4, arg5)
+	ret := C.g_base64_encode_step(arg1, arg2, arg3, &arg4, arg5, arg6)
 
-	var ret0 []uint8
+	var ret0 []byte
 	var ret1 uint
 
 	{
 		var length uint
-		for p := unsafe.Pointer(arg3); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+		for p := unsafe.Pointer(arg4); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
 			length++
 		}
 
-		ret0 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
-			ret0[i] = uint8(src)
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg4)) + i))
+			ret0[i] = byte(src)
 		}
 	}
 
@@ -4308,17 +4262,16 @@ func Base64EncodeStep(in []uint8, breakLines bool, state int, save int) (out []u
 // Basename gets the name of the file without any leading directory components.
 // It returns a pointer into the given file name string.
 func Basename(fileName string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(fileName))
+	arg1 = (*C.gchar)(C.CString(fileName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_basename(arg0)
+	ret := C.g_basename(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -4335,13 +4288,13 @@ func Basename(fileName string) string {
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
 func BitLock(address int, lockBit int) {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(address)
-	arg1 = C.gint(lockBit)
+	arg1 = (*C.gint)(address)
+	arg2 = C.gint(lockBit)
 
-	C.g_bit_lock(arg0, arg1)
+	C.g_bit_lock(arg1, arg2)
 }
 
 // BitNthLsf: find the position of the first bit set in @mask, searching from
@@ -4349,13 +4302,13 @@ func BitLock(address int, lockBit int) {
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the 0th bit, set @nth_bit to -1.
 func BitNthLsf(mask uint32, nthBit int) int {
-	var arg0 C.gulong
-	var arg1 C.gint
+	var arg1 C.gulong
+	var arg2 C.gint
 
-	arg0 = C.gulong(mask)
-	arg1 = C.gint(nthBit)
+	arg1 = C.gulong(mask)
+	arg2 = C.gint(nthBit)
 
-	ret := C.g_bit_nth_lsf(arg0, arg1)
+	ret := C.g_bit_nth_lsf(arg1, arg2)
 
 	var ret0 int
 
@@ -4369,13 +4322,13 @@ func BitNthLsf(mask uint32, nthBit int) int {
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
 func BitNthMsf(mask uint32, nthBit int) int {
-	var arg0 C.gulong
-	var arg1 C.gint
+	var arg1 C.gulong
+	var arg2 C.gint
 
-	arg0 = C.gulong(mask)
-	arg1 = C.gint(nthBit)
+	arg1 = C.gulong(mask)
+	arg2 = C.gint(nthBit)
 
-	ret := C.g_bit_nth_msf(arg0, arg1)
+	ret := C.g_bit_nth_msf(arg1, arg2)
 
 	var ret0 int
 
@@ -4387,11 +4340,11 @@ func BitNthMsf(mask uint32, nthBit int) int {
 // BitStorage gets the number of bits used to hold @number, e.g. if @number is
 // 4, 3 bits are needed.
 func BitStorage(number uint32) uint {
-	var arg0 C.gulong
+	var arg1 C.gulong
 
-	arg0 = C.gulong(number)
+	arg1 = C.gulong(number)
 
-	ret := C.g_bit_storage(arg0)
+	ret := C.g_bit_storage(arg1)
 
 	var ret0 uint
 
@@ -4412,13 +4365,13 @@ func BitStorage(number uint32) uint {
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
 func BitTrylock(address int, lockBit int) bool {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(address)
-	arg1 = C.gint(lockBit)
+	arg1 = (*C.gint)(address)
+	arg2 = C.gint(lockBit)
 
-	ret := C.g_bit_trylock(arg0, arg1)
+	ret := C.g_bit_trylock(arg1, arg2)
 
 	var ret0 bool
 
@@ -4433,13 +4386,13 @@ func BitTrylock(address int, lockBit int) bool {
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
 func BitUnlock(address int, lockBit int) {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(address)
-	arg1 = C.gint(lockBit)
+	arg1 = (*C.gint)(address)
+	arg2 = C.gint(lockBit)
 
-	C.g_bit_unlock(arg0, arg1)
+	C.g_bit_unlock(arg1, arg2)
 }
 
 func BookmarkFileErrorQuark() Quark {
@@ -4461,18 +4414,18 @@ func BookmarkFileErrorQuark() Quark {
 // elements as a string array, instead of varargs. This function is mainly meant
 // for language bindings.
 func BuildFilenamev(args []string) string {
-	var arg0 **C.gchar
+	var arg1 **C.gchar
 
 	{
 
 	}
 
-	ret := C.g_build_filenamev(arg0)
+	ret := C.g_build_filenamev(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -4481,21 +4434,21 @@ func BuildFilenamev(args []string) string {
 // as a string array, instead of varargs. This function is mainly meant for
 // language bindings.
 func BuildPathv(separator string, args []string) string {
-	var arg0 *C.gchar
-	var arg1 **C.gchar
+	var arg1 *C.gchar
+	var arg2 **C.gchar
 
-	arg0 = (*C.gchar)(C.CString(separator))
-	defer C.free(unsafe.Pointer(separator))
+	arg1 = (*C.gchar)(C.CString(separator))
+	defer C.free(unsafe.Pointer(arg1))
 	{
 
 	}
 
-	ret := C.g_build_pathv(arg0, arg1)
+	ret := C.g_build_pathv(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -4504,20 +4457,20 @@ func BuildPathv(separator string, args []string) string {
 // true it frees the actual byte data. If the reference count of @array is
 // greater than one, the Array wrapper is preserved but the size of @array will
 // be set to zero.
-func ByteArrayFree(array []uint8, freeSegment bool) uint8 {
-	var arg0 *C.GByteArray
-	var arg1 C.gboolean
+func ByteArrayFree(array []byte, freeSegment bool) byte {
+	var arg1 *C.GByteArray
+	var arg2 C.gboolean
 
 	{
 
 	}
-	arg1 = gextras.Cbool(freeSegment)
+	arg2 = gextras.Cbool(freeSegment)
 
-	ret := C.g_byte_array_free(arg0, arg1)
+	ret := C.g_byte_array_free(arg1, arg2)
 
-	var ret0 uint8
+	var ret0 byte
 
-	ret0 = uint8(ret)
+	ret0 = byte(ret)
 
 	return ret0
 }
@@ -4530,14 +4483,14 @@ func ByteArrayFree(array []uint8, freeSegment bool) uint8 {
 //
 // This is identical to using g_bytes_new_take() and g_byte_array_free()
 // together.
-func ByteArrayFreeToBytes(array []uint8) *Bytes {
-	var arg0 *C.GByteArray
+func ByteArrayFreeToBytes(array []byte) *Bytes {
+	var arg1 *C.GByteArray
 
 	{
 
 	}
 
-	ret := C.g_byte_array_free_to_bytes(arg0)
+	ret := C.g_byte_array_free_to_bytes(arg1)
 
 	var ret0 *Bytes
 
@@ -4547,11 +4500,11 @@ func ByteArrayFreeToBytes(array []uint8) *Bytes {
 }
 
 // NewByteArray creates a new Array with a reference count of 1.
-func NewByteArray() []uint8 {
+func NewByteArray() []byte {
 
 	ret := C.g_byte_array_new()
 
-	var ret0 []uint8
+	var ret0 []byte
 
 	{
 		var length uint
@@ -4559,10 +4512,10 @@ func NewByteArray() []uint8 {
 			length++
 		}
 
-		ret0 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = uint8(src)
+			ret0[i] = byte(src)
 		}
 	}
 
@@ -4572,30 +4525,29 @@ func NewByteArray() []uint8 {
 // ByteArrayNewTake: create byte array containing the data. The data will be
 // owned by the array and will be freed with g_free(), i.e. it could be
 // allocated using g_strdup().
-func ByteArrayNewTake(data []uint8) []uint8 {
-	var arg0 *C.guint8
-	var arg1 C.gsize
+func ByteArrayNewTake(data []byte) []byte {
+	var arg1 *C.guint8
+	var arg2 C.gsize
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(data))),
-			Len:  len(data),
-			Cap:  len(data),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
+		var dst []C.guint8
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
 
 		for i := 0; i < len(data); i++ {
 			src := data[i]
 			dst[i] = C.guint8(src)
 		}
 
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(data)
+		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(data)
 	}
 
-	ret := C.g_byte_array_new_take(arg0, arg1)
+	ret := C.g_byte_array_new_take(arg1, arg2)
 
-	var ret0 []uint8
+	var ret0 []byte
 
 	{
 		var length uint
@@ -4603,10 +4555,10 @@ func ByteArrayNewTake(data []uint8) []uint8 {
 			length++
 		}
 
-		ret0 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = uint8(src)
+			ret0[i] = byte(src)
 		}
 	}
 
@@ -4616,22 +4568,22 @@ func ByteArrayNewTake(data []uint8) []uint8 {
 // ByteArraySteal frees the data in the array and resets the size to zero, while
 // the underlying array is preserved for use elsewhere and returned to the
 // caller.
-func ByteArraySteal(array []uint8) (len uint, guint8 uint8) {
-	var arg0 *C.GByteArray
-	var arg1 *C.gsize // out
+func ByteArraySteal(array []byte) (len uint, guint8 byte) {
+	var arg1 *C.GByteArray
+	var arg2 *C.gsize // out
 
 	{
 
 	}
 
-	ret := C.g_byte_array_steal(arg0, &arg1)
+	ret := C.g_byte_array_steal(arg1, &arg2)
 
 	var ret0 uint
-	var ret1 uint8
+	var ret1 byte
 
-	ret0 = uint(arg1)
+	ret0 = uint(arg2)
 
-	ret1 = uint8(ret)
+	ret1 = byte(ret)
 
 	return ret0, ret1
 }
@@ -4639,14 +4591,14 @@ func ByteArraySteal(array []uint8) (len uint, guint8 uint8) {
 // ByteArrayUnref: atomically decrements the reference count of @array by one.
 // If the reference count drops to 0, all memory allocated by the array is
 // released. This function is thread-safe and may be called from any thread.
-func ByteArrayUnref(array []uint8) {
-	var arg0 *C.GByteArray
+func ByteArrayUnref(array []byte) {
+	var arg1 *C.GByteArray
 
 	{
 
 	}
 
-	C.g_byte_array_unref(arg0)
+	C.g_byte_array_unref(arg1)
 }
 
 // CanonicalizeFilename gets the canonical file name from @filename. All triple
@@ -4666,20 +4618,20 @@ func ByteArrayUnref(array []uint8) {
 //
 // No file system I/O is done.
 func CanonicalizeFilename(filename string, relativeTo string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
-	arg1 = (*C.gchar)(C.CString(relativeTo))
-	defer C.free(unsafe.Pointer(relativeTo))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(relativeTo))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_canonicalize_filename(arg0, arg1)
+	ret := C.g_canonicalize_filename(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -4689,12 +4641,12 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 //
 // See your C library manual for more details about chdir().
 func Chdir(path string) int {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(path))
+	arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_chdir(arg0)
+	ret := C.g_chdir(arg1)
 
 	var ret0 int
 
@@ -4715,20 +4667,19 @@ func Chdir(path string) int {
 // must be binary compatible with the version
 // @required_major.required_minor.@required_micro (same major version.)
 func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
-	var arg0 C.guint
 	var arg1 C.guint
 	var arg2 C.guint
+	var arg3 C.guint
 
-	arg0 = C.guint(requiredMajor)
-	arg1 = C.guint(requiredMinor)
-	arg2 = C.guint(requiredMicro)
+	arg1 = C.guint(requiredMajor)
+	arg2 = C.guint(requiredMinor)
+	arg3 = C.guint(requiredMicro)
 
-	ret := C.glib_check_version(arg0, arg1, arg2)
+	ret := C.glib_check_version(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -4736,11 +4687,11 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 // ChecksumTypeGetLength gets the length in bytes of digests of type
 // @checksum_type
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
-	var arg0 C.GChecksumType
+	var arg1 C.GChecksumType
 
-	arg0 = (C.GChecksumType)(checksumType)
+	arg1 = (C.GChecksumType)(checksumType)
 
-	ret := C.g_checksum_type_get_length(arg0)
+	ret := C.g_checksum_type_get_length(arg1)
 
 	var ret0 int
 
@@ -4769,13 +4720,13 @@ func ChecksumTypeGetLength(checksumType ChecksumType) int {
 // and attaches it to the main loop context using g_source_attach(). You can do
 // these steps manually if you need greater control.
 func ChildWatchAdd(pid Pid, function ChildWatchFunc) uint {
-	var arg0 C.GPid
-	var arg1 C.GChildWatchFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg1 C.GPid
+	var arg2 C.GChildWatchFunc
+	arg3 := C.gpointer(box.Assign(data))
 
-	arg1 = (*[0]byte)(C.gotk4_ChildWatchFunc)
+	arg2 = (*[0]byte)(C.gotk4_ChildWatchFunc)
 
-	ret := C.g_child_watch_add(arg0, arg1)
+	ret := C.g_child_watch_add(arg1, arg2)
 
 	var ret0 uint
 
@@ -4807,15 +4758,15 @@ func ChildWatchAdd(pid Pid, function ChildWatchFunc) uint {
 // and attaches it to the main loop context using g_source_attach(). You can do
 // these steps manually if you need greater control.
 func ChildWatchAddFull(priority int, pid Pid, function ChildWatchFunc) uint {
-	var arg0 C.gint
-	var arg1 C.GPid
-	var arg2 C.GChildWatchFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg1 C.gint
+	var arg2 C.GPid
+	var arg3 C.GChildWatchFunc
+	arg4 := C.gpointer(box.Assign(data))
 
-	arg0 = C.gint(priority)
-	arg2 = (*[0]byte)(C.gotk4_ChildWatchFunc)
+	arg1 = C.gint(priority)
+	arg3 = (*[0]byte)(C.gotk4_ChildWatchFunc)
 
-	ret := C.g_child_watch_add_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	ret := C.g_child_watch_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -4853,9 +4804,9 @@ func ChildWatchAddFull(priority int, pid Pid, function ChildWatchFunc) uint {
 // Calling `waitpid` for specific processes other than @pid remains a valid
 // thing to do.
 func NewChildWatchSource(pid Pid) *Source {
-	var arg0 C.GPid
+	var arg1 C.GPid
 
-	ret := C.g_child_watch_source_new(arg0)
+	ret := C.g_child_watch_source_new(arg1)
 
 	var ret0 *Source
 
@@ -4881,13 +4832,13 @@ func ClearError() {
 // A macro is also included that allows this function to be used without pointer
 // casts.
 func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc) {
-	var arg0 *C.guint
-	var arg1 C.GClearHandleFunc
+	var arg1 *C.guint
+	var arg2 C.GClearHandleFunc
 
-	arg0 = (*C.guint)(tagPtr)
-	arg1 = (*[0]byte)(C.gotk4_ClearHandleFunc)
+	arg1 = (*C.guint)(tagPtr)
+	arg2 = (*[0]byte)(C.gotk4_ClearHandleFunc)
 
-	C.g_clear_handle_id(arg0, arg1)
+	C.g_clear_handle_id(arg1, arg2)
 }
 
 // ClearList clears a pointer to a #GList, freeing it and, optionally, freeing
@@ -4896,11 +4847,11 @@ func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc) {
 // @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this
 // does nothing.
 func ClearList(listPtr **List) {
-	var arg0 **C.GList
+	var arg1 **C.GList
 
-	arg0 = (**C.GList)(listPtr.Native())
+	arg1 = (**C.GList)(listPtr.Native())
 
-	C.g_clear_list(arg0, (*[0]byte)(C.free))
+	C.g_clear_list(arg1, (*[0]byte)(C.free))
 }
 
 // ClearPointer clears a reference to a variable.
@@ -4917,11 +4868,11 @@ func ClearList(listPtr **List) {
 // convention for the platform that GLib was compiled for; otherwise the program
 // will experience undefined behaviour.
 func ClearPointer(pp interface{}) {
-	var arg0 *C.gpointer
+	var arg1 *C.gpointer
 
-	arg0 = C.gpointer(box.Assign(pp))
+	arg1 = C.gpointer(box.Assign(pp))
 
-	C.g_clear_pointer(arg0, (*[0]byte)(C.free))
+	C.g_clear_pointer(arg1, (*[0]byte)(C.free))
 }
 
 // ClearSlist clears a pointer to a List, freeing it and, optionally, freeing
@@ -4930,11 +4881,11 @@ func ClearPointer(pp interface{}) {
 // @slist_ptr must be a valid pointer. If @slist_ptr points to a null List, this
 // does nothing.
 func ClearSlist(slistPtr **SList) {
-	var arg0 **C.GSList
+	var arg1 **C.GSList
 
-	arg0 = (**C.GSList)(slistPtr.Native())
+	arg1 = (**C.GSList)(slistPtr.Native())
 
-	C.g_clear_slist(arg0, (*[0]byte)(C.free))
+	C.g_clear_slist(arg1, (*[0]byte)(C.free))
 }
 
 // Close: this wraps the close() call; in case of error, errno will be
@@ -4944,11 +4895,11 @@ func ClearSlist(slistPtr **SList) {
 // over the call provided by the system; on Unix, it will attempt to correctly
 // handle EINTR, which has platform-specific semantics.
 func Close(fd int) bool {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(fd)
+	arg1 = C.gint(fd)
 
-	ret := C.g_close(arg0)
+	ret := C.g_close(arg1)
 
 	var ret0 bool
 
@@ -4963,18 +4914,18 @@ func Close(fd int) bool {
 //
 // The hexadecimal string returned will be in lower case.
 func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
-	var arg0 C.GChecksumType
-	var arg1 *C.GBytes
+	var arg1 C.GChecksumType
+	var arg2 *C.GBytes
 
-	arg0 = (C.GChecksumType)(checksumType)
-	arg1 = (*C.GBytes)(data.Native())
+	arg1 = (C.GChecksumType)(checksumType)
+	arg2 = (*C.GBytes)(data.Native())
 
-	ret := C.g_compute_checksum_for_bytes(arg0, arg1)
+	ret := C.g_compute_checksum_for_bytes(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -4984,35 +4935,24 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 // and g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeChecksumForData(checksumType ChecksumType, data []uint8) string {
-	var arg0 C.GChecksumType
-	var arg1 *C.guchar
-	var arg2 C.gsize
+func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
+	var arg1 C.GChecksumType
+	var arg2 *C.guchar
+	var arg3 C.gsize
 
-	arg0 = (C.GChecksumType)(checksumType)
+	arg1 = (C.GChecksumType)(checksumType)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(data))),
-			Len:  len(data),
-			Cap:  len(data),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(data)
+		arg2 = (*C.guchar)(&data[0])
+		arg3 = len(data)
+		defer runtime.KeepAlive(data)
 	}
 
-	ret := C.g_compute_checksum_for_data(arg0, arg1, arg2)
+	ret := C.g_compute_checksum_for_data(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5021,21 +4961,21 @@ func ComputeChecksumForData(checksumType ChecksumType, data []uint8) string {
 //
 // The hexadecimal string returned will be in lower case.
 func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
-	var arg0 C.GChecksumType
-	var arg1 *C.gchar
-	var arg2 C.gssize
+	var arg1 C.GChecksumType
+	var arg2 *C.gchar
+	var arg3 C.gssize
 
-	arg0 = (C.GChecksumType)(checksumType)
-	arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg2 = C.gssize(length)
+	arg1 = (C.GChecksumType)(checksumType)
+	arg2 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gssize(length)
 
-	ret := C.g_compute_checksum_for_string(arg0, arg1, arg2)
+	ret := C.g_compute_checksum_for_string(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5045,20 +4985,20 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 //
 // The hexadecimal string returned will be in lower case.
 func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) string {
-	var arg0 C.GChecksumType
-	var arg1 *C.GBytes
+	var arg1 C.GChecksumType
 	var arg2 *C.GBytes
+	var arg3 *C.GBytes
 
-	arg0 = (C.GChecksumType)(digestType)
-	arg1 = (*C.GBytes)(key.Native())
-	arg2 = (*C.GBytes)(data.Native())
+	arg1 = (C.GChecksumType)(digestType)
+	arg2 = (*C.GBytes)(key.Native())
+	arg3 = (*C.GBytes)(data.Native())
 
-	ret := C.g_compute_hmac_for_bytes(arg0, arg1, arg2)
+	ret := C.g_compute_hmac_for_bytes(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5067,53 +5007,31 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) strin
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForData(digestType ChecksumType, key []uint8, data []uint8) string {
-	var arg0 C.GChecksumType
-	var arg1 *C.guchar
-	var arg2 C.gsize
-	var arg3 *C.guchar
-	var arg4 C.gsize
+func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
+	var arg1 C.GChecksumType
+	var arg2 *C.guchar
+	var arg3 C.gsize
+	var arg4 *C.guchar
+	var arg5 C.gsize
 
-	arg0 = (C.GChecksumType)(digestType)
+	arg1 = (C.GChecksumType)(digestType)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(key))),
-			Len:  len(key),
-			Cap:  len(key),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(key); i++ {
-			src := key[i]
-			dst[i] = C.guchar(src)
-		}
-
-		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(key)
+		arg2 = (*C.guchar)(&key[0])
+		arg3 = len(key)
+		defer runtime.KeepAlive(key)
 	}
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(data))),
-			Len:  len(data),
-			Cap:  len(data),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(data); i++ {
-			src := data[i]
-			dst[i] = C.guchar(src)
-		}
-
-		arg3 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg4 = len(data)
+		arg4 = (*C.guchar)(&data[0])
+		arg5 = len(data)
+		defer runtime.KeepAlive(data)
 	}
 
-	ret := C.g_compute_hmac_for_data(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_compute_hmac_for_data(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5121,40 +5039,29 @@ func ComputeHMACForData(digestType ChecksumType, key []uint8, data []uint8) stri
 // ComputeHMACForString computes the HMAC for a string.
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForString(digestType ChecksumType, key []uint8, str string, length int) string {
-	var arg0 C.GChecksumType
-	var arg1 *C.guchar
-	var arg2 C.gsize
-	var arg3 *C.gchar
-	var arg4 C.gssize
+func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
+	var arg1 C.GChecksumType
+	var arg2 *C.guchar
+	var arg3 C.gsize
+	var arg4 *C.gchar
+	var arg5 C.gssize
 
-	arg0 = (C.GChecksumType)(digestType)
+	arg1 = (C.GChecksumType)(digestType)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(key))),
-			Len:  len(key),
-			Cap:  len(key),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(key); i++ {
-			src := key[i]
-			dst[i] = C.guchar(src)
-		}
-
-		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(key)
+		arg2 = (*C.guchar)(&key[0])
+		arg3 = len(key)
+		defer runtime.KeepAlive(key)
 	}
-	arg3 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg4 = C.gssize(length)
+	arg4 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = C.gssize(length)
 
-	ret := C.g_compute_hmac_for_string(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_compute_hmac_for_string(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5172,51 +5079,39 @@ func ComputeHMACForString(digestType ChecksumType, key []uint8, str string, leng
 //
 // Using extensions such as "//TRANSLIT" may not work (or may not work well) on
 // many platforms. Consider using g_str_to_ascii() instead.
-func Convert(str []uint8, toCodeset string, fromCodeset string) (bytesRead uint, bytesWritten uint, guint8s []uint8) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gchar
+func Convert(str []byte, toCodeset string, fromCodeset string) (bytesRead uint, bytesWritten uint, guint8s []byte) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
 	var arg3 *C.gchar
-	var arg4 *C.gsize // out
-
+	var arg4 *C.gchar
 	var arg5 *C.gsize // out
+	var arg6 *C.gsize // out
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(str))),
-			Len:  len(str),
-			Cap:  len(str),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(str); i++ {
-			src := str[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(str)
+		arg1 = (*C.gchar)(&str[0])
+		arg2 = len(str)
+		defer runtime.KeepAlive(str)
 	}
-	arg2 = (*C.gchar)(C.CString(toCodeset))
-	defer C.free(unsafe.Pointer(toCodeset))
-	arg3 = (*C.gchar)(C.CString(fromCodeset))
-	defer C.free(unsafe.Pointer(fromCodeset))
+	arg3 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(arg4))
 
-	ret := C.g_convert(arg0, arg1, arg2, arg3, &arg4, &arg5)
+	ret := C.g_convert(arg1, arg2, arg3, arg4, &arg5, &arg6)
 
 	var ret0 uint
 	var ret1 uint
-	var ret2 []uint8
+	var ret2 []byte
 
-	ret0 = uint(arg4)
+	ret0 = uint(arg5)
 
-	ret1 = uint(arg5)
+	ret1 = uint(arg6)
 
 	{
-		ret2 = make([]uint8, arg5)
-		for i := 0; i < uintptr(arg5); i++ {
+		ret2 = make([]byte, arg6)
+		for i := 0; i < uintptr(arg6); i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = uint8(src)
+			ret2[i] = byte(src)
 		}
 	}
 
@@ -5253,54 +5148,42 @@ func ConvertErrorQuark() Quark {
 // g_convert_with_fallback(). (An example of this is the GNU C converter for
 // CP1255 which does not emit a base character until it knows that the next
 // character is not a mark that could combine with the base character.)
-func ConvertWithFallback(str []uint8, toCodeset string, fromCodeset string, fallback string) (bytesRead uint, bytesWritten uint, guint8s []uint8) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gchar
+func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (bytesRead uint, bytesWritten uint, guint8s []byte) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
 	var arg3 *C.gchar
 	var arg4 *C.gchar
-	var arg5 *C.gsize // out
-
+	var arg5 *C.gchar
 	var arg6 *C.gsize // out
+	var arg7 *C.gsize // out
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(str))),
-			Len:  len(str),
-			Cap:  len(str),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(str); i++ {
-			src := str[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(str)
+		arg1 = (*C.gchar)(&str[0])
+		arg2 = len(str)
+		defer runtime.KeepAlive(str)
 	}
-	arg2 = (*C.gchar)(C.CString(toCodeset))
-	defer C.free(unsafe.Pointer(toCodeset))
-	arg3 = (*C.gchar)(C.CString(fromCodeset))
-	defer C.free(unsafe.Pointer(fromCodeset))
-	arg4 = (*C.gchar)(C.CString(fallback))
-	defer C.free(unsafe.Pointer(fallback))
+	arg3 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(fallback))
+	defer C.free(unsafe.Pointer(arg5))
 
-	ret := C.g_convert_with_fallback(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+	ret := C.g_convert_with_fallback(arg1, arg2, arg3, arg4, arg5, &arg6, &arg7)
 
 	var ret0 uint
 	var ret1 uint
-	var ret2 []uint8
+	var ret2 []byte
 
-	ret0 = uint(arg5)
+	ret0 = uint(arg6)
 
-	ret1 = uint(arg6)
+	ret1 = uint(arg7)
 
 	{
-		ret2 = make([]uint8, arg6)
-		for i := 0; i < uintptr(arg6); i++ {
+		ret2 = make([]byte, arg7)
+		for i := 0; i < uintptr(arg7); i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = uint8(src)
+			ret2[i] = byte(src)
 		}
 	}
 
@@ -5325,47 +5208,35 @@ func ConvertWithFallback(str []uint8, toCodeset string, fromCodeset string, fall
 // this is the same error code as is returned for an invalid byte sequence in
 // the input character set. To get defined behaviour for conversion of
 // unrepresentable characters, use g_convert_with_fallback().
-func ConvertWithIconv(str []uint8, converter IConv) (bytesRead uint, bytesWritten uint, guint8s []uint8) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 C.GIConv
-	var arg3 *C.gsize // out
-
+func ConvertWithIconv(str []byte, converter IConv) (bytesRead uint, bytesWritten uint, guint8s []byte) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.GIConv
 	var arg4 *C.gsize // out
+	var arg5 *C.gsize // out
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(str))),
-			Len:  len(str),
-			Cap:  len(str),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(str); i++ {
-			src := str[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(str)
+		arg1 = (*C.gchar)(&str[0])
+		arg2 = len(str)
+		defer runtime.KeepAlive(str)
 	}
-	arg2 = (C.GIConv)(converter.Native())
+	arg3 = (C.GIConv)(converter.Native())
 
-	ret := C.g_convert_with_iconv(arg0, arg1, arg2, &arg3, &arg4)
+	ret := C.g_convert_with_iconv(arg1, arg2, arg3, &arg4, &arg5)
 
 	var ret0 uint
 	var ret1 uint
-	var ret2 []uint8
+	var ret2 []byte
 
-	ret0 = uint(arg3)
+	ret0 = uint(arg4)
 
-	ret1 = uint(arg4)
+	ret1 = uint(arg5)
 
 	{
-		ret2 = make([]uint8, arg4)
-		for i := 0; i < uintptr(arg4); i++ {
+		ret2 = make([]byte, arg5)
+		for i := 0; i < uintptr(arg5); i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = uint8(src)
+			ret2[i] = byte(src)
 		}
 	}
 
@@ -5375,11 +5246,11 @@ func ConvertWithIconv(str []uint8, converter IConv) (bytesRead uint, bytesWritte
 // DatalistClear frees all the data elements of the datalist. The data elements'
 // destroy functions are called if they have been set.
 func DatalistClear(datalist **Data) {
-	var arg0 **C.GData
+	var arg1 **C.GData
 
-	arg0 = (**C.GData)(datalist.Native())
+	arg1 = (**C.GData)(datalist.Native())
 
-	C.g_datalist_clear(arg0)
+	C.g_datalist_clear(arg1)
 }
 
 // DatalistForeach calls the given function for each data element of the
@@ -5392,27 +5263,27 @@ func DatalistClear(datalist **Data) {
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
 func DatalistForeach(datalist **Data, _func DataForeachFunc) {
-	var arg0 **C.GData
-	var arg1 C.GDataForeachFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg1 **C.GData
+	var arg2 C.GDataForeachFunc
+	arg3 := C.gpointer(box.Assign(userData))
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg1 = (*[0]byte)(C.gotk4_DataForeachFunc)
+	arg1 = (**C.GData)(datalist.Native())
+	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
 
-	C.g_datalist_foreach(arg0, arg1)
+	C.g_datalist_foreach(arg1, arg2)
 }
 
 // DatalistGetData gets a data element, using its string identifier. This is
 // slower than g_datalist_id_get_data() because it compares strings.
 func DatalistGetData(datalist **Data, key string) interface{} {
-	var arg0 **C.GData
-	var arg1 *C.gchar
+	var arg1 **C.GData
+	var arg2 *C.gchar
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg1 = (*C.gchar)(C.CString(key))
-	defer C.free(unsafe.Pointer(key))
+	arg1 = (**C.GData)(datalist.Native())
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_datalist_get_data(arg0, arg1)
+	ret := C.g_datalist_get_data(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -5424,11 +5295,11 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 // DatalistGetFlags gets flags values packed in together with the datalist. See
 // g_datalist_set_flags().
 func DatalistGetFlags(datalist **Data) uint {
-	var arg0 **C.GData
+	var arg1 **C.GData
 
-	arg0 = (**C.GData)(datalist.Native())
+	arg1 = (**C.GData)(datalist.Native())
 
-	ret := C.g_datalist_get_flags(arg0)
+	ret := C.g_datalist_get_flags(arg1)
 
 	var ret0 uint
 
@@ -5451,15 +5322,15 @@ func DatalistGetFlags(datalist **Data) uint {
 // This function can be useful to avoid races when multiple threads are using
 // the same datalist and the same key.
 func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) interface{} {
-	var arg0 **C.GData
-	var arg1 C.GQuark
-	var arg2 C.GDuplicateFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg1 **C.GData
+	var arg2 C.GQuark
+	var arg3 C.GDuplicateFunc
+	arg4 := C.gpointer(box.Assign(userData))
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg2 = (*[0]byte)(C.gotk4_DuplicateFunc)
+	arg1 = (**C.GData)(datalist.Native())
+	arg3 = (*[0]byte)(C.gotk4_DuplicateFunc)
 
-	ret := C.g_datalist_id_dup_data(arg0, arg1, arg2)
+	ret := C.g_datalist_id_dup_data(arg1, arg2, arg3)
 
 	var ret0 interface{}
 
@@ -5470,12 +5341,12 @@ func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) inte
 
 // DatalistIDGetData retrieves the data element corresponding to @key_id.
 func DatalistIDGetData(datalist **Data, keyID Quark) interface{} {
-	var arg0 **C.GData
-	var arg1 C.GQuark
+	var arg1 **C.GData
+	var arg2 C.GQuark
 
-	arg0 = (**C.GData)(datalist.Native())
+	arg1 = (**C.GData)(datalist.Native())
 
-	ret := C.g_datalist_id_get_data(arg0, arg1)
+	ret := C.g_datalist_id_get_data(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -5487,12 +5358,12 @@ func DatalistIDGetData(datalist **Data, keyID Quark) interface{} {
 // DatalistIDRemoveNoNotify removes an element, without calling its destroy
 // notification function.
 func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) interface{} {
-	var arg0 **C.GData
-	var arg1 C.GQuark
+	var arg1 **C.GData
+	var arg2 C.GQuark
 
-	arg0 = (**C.GData)(datalist.Native())
+	arg1 = (**C.GData)(datalist.Native())
 
-	ret := C.g_datalist_id_remove_no_notify(arg0, arg1)
+	ret := C.g_datalist_id_remove_no_notify(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -5513,17 +5384,17 @@ func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) interface{} {
 // which may or may not include using @old_destroy as sometimes replacement
 // should not destroy the object in the normal way.
 func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval interface{}, newval interface{}) (oldDestroy unsafe.Pointer, ok bool) {
-	var arg0 **C.GData
-	var arg1 C.GQuark
-	var arg2 C.gpointer
+	var arg1 **C.GData
+	var arg2 C.GQuark
 	var arg3 C.gpointer
-	var arg5 *C.GDestroyNotify // out
+	var arg4 C.gpointer
+	var arg6 *C.GDestroyNotify // out
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg2 = C.gpointer(box.Assign(oldval))
-	arg3 = C.gpointer(box.Assign(newval))
+	arg1 = (**C.GData)(datalist.Native())
+	arg3 = C.gpointer(box.Assign(oldval))
+	arg4 = C.gpointer(box.Assign(newval))
 
-	ret := C.g_datalist_id_replace_data(arg0, arg1, arg2, arg3, (*[0]byte)(C.free), &arg5)
+	ret := C.g_datalist_id_replace_data(arg1, arg2, arg3, arg4, (*[0]byte)(C.free), &arg6)
 
 	var ret0 unsafe.Pointer
 	var ret1 bool
@@ -5538,24 +5409,24 @@ func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval interface{}, new
 // Any previous data with the same key is removed, and its destroy function is
 // called.
 func DatalistIDSetDataFull(datalist **Data, keyID Quark, data interface{}) {
-	var arg0 **C.GData
-	var arg1 C.GQuark
-	var arg2 C.gpointer
+	var arg1 **C.GData
+	var arg2 C.GQuark
+	var arg3 C.gpointer
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg2 = C.gpointer(box.Assign(data))
+	arg1 = (**C.GData)(datalist.Native())
+	arg3 = C.gpointer(box.Assign(data))
 
-	C.g_datalist_id_set_data_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	C.g_datalist_id_set_data_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call
 // any destroy functions.
 func DatalistInit(datalist **Data) {
-	var arg0 **C.GData
+	var arg1 **C.GData
 
-	arg0 = (**C.GData)(datalist.Native())
+	arg1 = (**C.GData)(datalist.Native())
 
-	C.g_datalist_init(arg0)
+	C.g_datalist_init(arg1)
 }
 
 // DatalistSetFlags turns on flag values for a data list. This function is used
@@ -5564,35 +5435,35 @@ func DatalistInit(datalist **Data) {
 // circumstances where space is very tight. (It is used in the base #GObject
 // type, for example.)
 func DatalistSetFlags(datalist **Data, flags uint) {
-	var arg0 **C.GData
-	var arg1 C.guint
+	var arg1 **C.GData
+	var arg2 C.guint
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg1 = C.guint(flags)
+	arg1 = (**C.GData)(datalist.Native())
+	arg2 = C.guint(flags)
 
-	C.g_datalist_set_flags(arg0, arg1)
+	C.g_datalist_set_flags(arg1, arg2)
 }
 
 // DatalistUnsetFlags turns off flag values for a data list. See
 // g_datalist_unset_flags()
 func DatalistUnsetFlags(datalist **Data, flags uint) {
-	var arg0 **C.GData
-	var arg1 C.guint
+	var arg1 **C.GData
+	var arg2 C.guint
 
-	arg0 = (**C.GData)(datalist.Native())
-	arg1 = C.guint(flags)
+	arg1 = (**C.GData)(datalist.Native())
+	arg2 = C.guint(flags)
 
-	C.g_datalist_unset_flags(arg0, arg1)
+	C.g_datalist_unset_flags(arg1, arg2)
 }
 
 // DatasetDestroy destroys the dataset, freeing all memory allocated, and
 // calling any destroy functions set for data elements.
 func DatasetDestroy(datasetLocation interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(datasetLocation))
+	arg1 = C.gpointer(box.Assign(datasetLocation))
 
-	C.g_dataset_destroy(arg0)
+	C.g_dataset_destroy(arg1)
 }
 
 // DatasetForeach calls the given function for each data element which is
@@ -5604,24 +5475,24 @@ func DatasetDestroy(datasetLocation interface{}) {
 // changes made during the g_dataset_foreach() call, other than skipping over
 // elements that are removed.
 func DatasetForeach(datasetLocation interface{}, _func DataForeachFunc) {
-	var arg0 C.gpointer
-	var arg1 C.GDataForeachFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg1 C.gpointer
+	var arg2 C.GDataForeachFunc
+	arg3 := C.gpointer(box.Assign(userData))
 
-	arg0 = C.gpointer(box.Assign(datasetLocation))
-	arg1 = (*[0]byte)(C.gotk4_DataForeachFunc)
+	arg1 = C.gpointer(box.Assign(datasetLocation))
+	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
 
-	C.g_dataset_foreach(arg0, arg1)
+	C.g_dataset_foreach(arg1, arg2)
 }
 
 // DatasetIDGetData gets the data element corresponding to a #GQuark.
 func DatasetIDGetData(datasetLocation interface{}, keyID Quark) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.GQuark
+	var arg1 C.gpointer
+	var arg2 C.GQuark
 
-	arg0 = C.gpointer(box.Assign(datasetLocation))
+	arg1 = C.gpointer(box.Assign(datasetLocation))
 
-	ret := C.g_dataset_id_get_data(arg0, arg1)
+	ret := C.g_dataset_id_get_data(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -5633,12 +5504,12 @@ func DatasetIDGetData(datasetLocation interface{}, keyID Quark) interface{} {
 // DatasetIDRemoveNoNotify removes an element, without calling its destroy
 // notification function.
 func DatasetIDRemoveNoNotify(datasetLocation interface{}, keyID Quark) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.GQuark
+	var arg1 C.gpointer
+	var arg2 C.GQuark
 
-	arg0 = C.gpointer(box.Assign(datasetLocation))
+	arg1 = C.gpointer(box.Assign(datasetLocation))
 
-	ret := C.g_dataset_id_remove_no_notify(arg0, arg1)
+	ret := C.g_dataset_id_remove_no_notify(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -5652,29 +5523,29 @@ func DatasetIDRemoveNoNotify(datasetLocation interface{}, keyID Quark) interface
 // previous data with the same key is removed, and its destroy function is
 // called.
 func DatasetIDSetDataFull(datasetLocation interface{}, keyID Quark, data interface{}) {
-	var arg0 C.gpointer
-	var arg1 C.GQuark
-	var arg2 C.gpointer
+	var arg1 C.gpointer
+	var arg2 C.GQuark
+	var arg3 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(datasetLocation))
-	arg2 = C.gpointer(box.Assign(data))
+	arg1 = C.gpointer(box.Assign(datasetLocation))
+	arg3 = C.gpointer(box.Assign(data))
 
-	C.g_dataset_id_set_data_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	C.g_dataset_id_set_data_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 }
 
 // DateGetDaysInMonth returns the number of days in a month, taking leap years
 // into account.
-func DateGetDaysInMonth(month DateMonth, year DateYear) uint8 {
-	var arg0 C.GDateMonth
-	var arg1 C.GDateYear
+func DateGetDaysInMonth(month DateMonth, year DateYear) byte {
+	var arg1 C.GDateMonth
+	var arg2 C.GDateYear
 
-	arg0 = (C.GDateMonth)(month)
+	arg1 = (C.GDateMonth)(month)
 
-	ret := C.g_date_get_days_in_month(arg0, arg1)
+	ret := C.g_date_get_days_in_month(arg1, arg2)
 
-	var ret0 uint8
+	var ret0 byte
 
-	ret0 = uint8(ret)
+	ret0 = byte(ret)
 
 	return ret0
 }
@@ -5685,14 +5556,14 @@ func DateGetDaysInMonth(month DateMonth, year DateYear) uint8 {
 // whether it's a leap year. This function is basically telling you how many
 // Mondays are in the year, i.e. there are 53 Mondays if one of the extra days
 // happens to be a Monday.)
-func DateGetMondayWeeksInYear(year DateYear) uint8 {
-	var arg0 C.GDateYear
+func DateGetMondayWeeksInYear(year DateYear) byte {
+	var arg1 C.GDateYear
 
-	ret := C.g_date_get_monday_weeks_in_year(arg0)
+	ret := C.g_date_get_monday_weeks_in_year(arg1)
 
-	var ret0 uint8
+	var ret0 byte
 
-	ret0 = uint8(ret)
+	ret0 = byte(ret)
 
 	return ret0
 }
@@ -5703,14 +5574,14 @@ func DateGetMondayWeeksInYear(year DateYear) uint8 {
 // whether it's a leap year. This function is basically telling you how many
 // Sundays are in the year, i.e. there are 53 Sundays if one of the extra days
 // happens to be a Sunday.)
-func DateGetSundayWeeksInYear(year DateYear) uint8 {
-	var arg0 C.GDateYear
+func DateGetSundayWeeksInYear(year DateYear) byte {
+	var arg1 C.GDateYear
 
-	ret := C.g_date_get_sunday_weeks_in_year(arg0)
+	ret := C.g_date_get_sunday_weeks_in_year(arg1)
 
-	var ret0 uint8
+	var ret0 byte
 
-	ret0 = uint8(ret)
+	ret0 = byte(ret)
 
 	return ret0
 }
@@ -5721,9 +5592,9 @@ func DateGetSundayWeeksInYear(year DateYear) uint8 {
 // unless that year is divisible by 100. If it is divisible by 100 it would be a
 // leap year only if that year is also divisible by 400.
 func DateIsLeapYear(year DateYear) bool {
-	var arg0 C.GDateYear
+	var arg1 C.GDateYear
 
-	ret := C.g_date_is_leap_year(arg0)
+	ret := C.g_date_is_leap_year(arg1)
 
 	var ret0 bool
 
@@ -5744,19 +5615,19 @@ func DateIsLeapYear(year DateYear) bool {
 // g_date_strftime() would make the \F provided by the C99 strftime() work on
 // Windows where the C library only complies to C89.
 func DateStrftime(s string, slen uint, format string, date *Date) uint {
-	var arg0 *C.gchar
-	var arg1 C.gsize
-	var arg2 *C.gchar
-	var arg3 *C.GDate
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 *C.gchar
+	var arg4 *C.GDate
 
-	arg0 = (*C.gchar)(C.CString(s))
-	defer C.free(unsafe.Pointer(s))
-	arg1 = C.gsize(slen)
-	arg2 = (*C.gchar)(C.CString(format))
-	defer C.free(unsafe.Pointer(format))
-	arg3 = (*C.GDate)(date.Native())
+	arg1 = (*C.gchar)(C.CString(s))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(slen)
+	arg3 = (*C.gchar)(C.CString(format))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.GDate)(date.Native())
 
-	ret := C.g_date_strftime(arg0, arg1, arg2, arg3)
+	ret := C.g_date_strftime(arg1, arg2, arg3, arg4)
 
 	var ret0 uint
 
@@ -5768,13 +5639,13 @@ func DateStrftime(s string, slen uint, format string, date *Date) uint {
 // DateTimeCompare: a comparison function for Times that is suitable as a Func.
 // Both Times must be non-nil.
 func DateTimeCompare(dt1 interface{}, dt2 interface{}) int {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(dt1))
-	arg1 = C.gpointer(box.Assign(dt2))
+	arg1 = C.gpointer(box.Assign(dt1))
+	arg2 = C.gpointer(box.Assign(dt2))
 
-	ret := C.g_date_time_compare(arg0, arg1)
+	ret := C.g_date_time_compare(arg1, arg2)
 
 	var ret0 int
 
@@ -5788,13 +5659,13 @@ func DateTimeCompare(dt1 interface{}, dt2 interface{}) int {
 // Equal here means that they represent the same moment after converting them to
 // the same time zone.
 func DateTimeEqual(dt1 interface{}, dt2 interface{}) bool {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(dt1))
-	arg1 = C.gpointer(box.Assign(dt2))
+	arg1 = C.gpointer(box.Assign(dt1))
+	arg2 = C.gpointer(box.Assign(dt2))
 
-	ret := C.g_date_time_equal(arg0, arg1)
+	ret := C.g_date_time_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -5805,11 +5676,11 @@ func DateTimeEqual(dt1 interface{}, dt2 interface{}) bool {
 
 // DateTimeHash hashes @datetime into a #guint, suitable for use within Table.
 func DateTimeHash(datetime interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(datetime))
+	arg1 = C.gpointer(box.Assign(datetime))
 
-	ret := C.g_date_time_hash(arg0)
+	ret := C.g_date_time_hash(arg1)
 
 	var ret0 uint
 
@@ -5821,9 +5692,9 @@ func DateTimeHash(datetime interface{}) uint {
 // DateValidDay returns true if the day of the month is valid (a day is valid if
 // it's between 1 and 31 inclusive).
 func DateValidDay(day DateDay) bool {
-	var arg0 C.GDateDay
+	var arg1 C.GDateDay
 
-	ret := C.g_date_valid_day(arg0)
+	ret := C.g_date_valid_day(arg1)
 
 	var ret0 bool
 
@@ -5836,13 +5707,13 @@ func DateValidDay(day DateDay) bool {
 // existing day in the range of days #GDate understands (Year 1 or later, no
 // more than a few thousand years in the future).
 func DateValidDMY(day DateDay, month DateMonth, year DateYear) bool {
-	var arg0 C.GDateDay
-	var arg1 C.GDateMonth
-	var arg2 C.GDateYear
+	var arg1 C.GDateDay
+	var arg2 C.GDateMonth
+	var arg3 C.GDateYear
 
-	arg1 = (C.GDateMonth)(month)
+	arg2 = (C.GDateMonth)(month)
 
-	ret := C.g_date_valid_dmy(arg0, arg1, arg2)
+	ret := C.g_date_valid_dmy(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -5854,11 +5725,11 @@ func DateValidDMY(day DateDay, month DateMonth, year DateYear) bool {
 // DateValidJulian returns true if the Julian day is valid. Anything greater
 // than zero is basically a valid Julian, though there is a 32-bit limit.
 func DateValidJulian(julianDate uint32) bool {
-	var arg0 C.guint32
+	var arg1 C.guint32
 
-	arg0 = C.guint32(julianDate)
+	arg1 = C.guint32(julianDate)
 
-	ret := C.g_date_valid_julian(arg0)
+	ret := C.g_date_valid_julian(arg1)
 
 	var ret0 bool
 
@@ -5870,11 +5741,11 @@ func DateValidJulian(julianDate uint32) bool {
 // DateValidMonth returns true if the month value is valid. The 12 Month
 // enumeration values are the only valid months.
 func DateValidMonth(month DateMonth) bool {
-	var arg0 C.GDateMonth
+	var arg1 C.GDateMonth
 
-	arg0 = (C.GDateMonth)(month)
+	arg1 = (C.GDateMonth)(month)
 
-	ret := C.g_date_valid_month(arg0)
+	ret := C.g_date_valid_month(arg1)
 
 	var ret0 bool
 
@@ -5886,11 +5757,11 @@ func DateValidMonth(month DateMonth) bool {
 // DateValidWeekday returns true if the weekday is valid. The seven Weekday
 // enumeration values are the only valid weekdays.
 func DateValidWeekday(weekday DateWeekday) bool {
-	var arg0 C.GDateWeekday
+	var arg1 C.GDateWeekday
 
-	arg0 = (C.GDateWeekday)(weekday)
+	arg1 = (C.GDateWeekday)(weekday)
 
-	ret := C.g_date_valid_weekday(arg0)
+	ret := C.g_date_valid_weekday(arg1)
 
 	var ret0 bool
 
@@ -5902,9 +5773,9 @@ func DateValidWeekday(weekday DateWeekday) bool {
 // DateValidYear returns true if the year is valid. Any year greater than 0 is
 // valid, though there is a 16-bit limit to what #GDate will understand.
 func DateValidYear(year DateYear) bool {
-	var arg0 C.GDateYear
+	var arg1 C.GDateYear
 
-	ret := C.g_date_valid_year(arg0)
+	ret := C.g_date_valid_year(arg1)
 
 	var ret0 bool
 
@@ -5918,22 +5789,21 @@ func DateValidYear(year DateYear) bool {
 // information about how this functions differs from calling dcgettext()
 // directly.
 func Dcgettext(domain string, msgid string, category int) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gint
+	var arg2 *C.gchar
+	var arg3 C.gint
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(msgid))
-	arg2 = C.gint(category)
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gint(category)
 
-	ret := C.g_dcgettext(arg0, arg1, arg2)
+	ret := C.g_dcgettext(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -5970,20 +5840,19 @@ func Dcgettext(domain string, msgid string, category int) string {
 // Applications should normally not use this function directly, but use the _()
 // macro for translations.
 func Dgettext(domain string, msgid string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(msgid))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_dgettext(arg0, arg1)
+	ret := C.g_dgettext(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -5999,17 +5868,17 @@ func Dgettext(domain string, msgid string) string {
 // Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not modified,
 // and might thus be a read-only literal string.
 func DirMakeTmp(tmpl string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(tmpl))
+	arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_dir_make_tmp(arg0)
+	ret := C.g_dir_make_tmp(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6022,13 +5891,13 @@ func DirMakeTmp(tmpl string) string {
 // This equality function is also appropriate for keys that are integers stored
 // in pointers, such as `GINT_TO_POINTER (n)`.
 func DirectEqual(v1 interface{}, v2 interface{}) bool {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v1))
-	arg1 = C.gpointer(box.Assign(v2))
+	arg1 = C.gpointer(box.Assign(v1))
+	arg2 = C.gpointer(box.Assign(v2))
 
-	ret := C.g_direct_equal(arg0, arg1)
+	ret := C.g_direct_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -6044,11 +5913,11 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 // This hash function is also appropriate for keys that are integers stored in
 // pointers, such as `GINT_TO_POINTER (n)`.
 func DirectHash(v interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v))
+	arg1 = C.gpointer(box.Assign(v))
 
-	ret := C.g_direct_hash(arg0)
+	ret := C.g_direct_hash(arg1)
 
 	var ret0 uint
 
@@ -6063,25 +5932,24 @@ func DirectHash(v interface{}) uint {
 //
 // See g_dgettext() for details of how this differs from dngettext() proper.
 func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
 	var arg2 *C.gchar
-	var arg3 C.gulong
+	var arg3 *C.gchar
+	var arg4 C.gulong
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(msgid))
-	arg2 = (*C.gchar)(C.CString(msgidPlural))
-	defer C.free(unsafe.Pointer(msgidPlural))
-	arg3 = C.gulong(n)
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(msgidPlural))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = C.gulong(n)
 
-	ret := C.g_dngettext(arg0, arg1, arg2, arg3)
+	ret := C.g_dngettext(arg1, arg2, arg3, arg4)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -6091,13 +5959,13 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 // @key_equal_func parameter, when using non-nil pointers to doubles as keys in
 // a Table.
 func DoubleEqual(v1 interface{}, v2 interface{}) bool {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v1))
-	arg1 = C.gpointer(box.Assign(v2))
+	arg1 = C.gpointer(box.Assign(v1))
+	arg2 = C.gpointer(box.Assign(v2))
 
-	ret := C.g_double_equal(arg0, arg1)
+	ret := C.g_double_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -6111,11 +5979,11 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 // g_hash_table_new() as the @hash_func parameter, when using non-nil pointers
 // to doubles as keys in a Table.
 func DoubleHash(v interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v))
+	arg1 = C.gpointer(box.Assign(v))
 
-	ret := C.g_double_hash(arg0)
+	ret := C.g_double_hash(arg1)
 
 	var ret0 uint
 
@@ -6136,22 +6004,21 @@ func DoubleHash(v interface{}) uint {
 // Applications should normally not use this function directly, but use the C_()
 // macro for translations with context.
 func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gsize
+	var arg2 *C.gchar
+	var arg3 C.gsize
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(msgctxtid))
-	defer C.free(unsafe.Pointer(msgctxtid))
-	arg2 = C.gsize(msgidoffset)
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(msgctxtid))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gsize(msgidoffset)
 
-	ret := C.g_dpgettext(arg0, arg1, arg2)
+	ret := C.g_dpgettext(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -6166,23 +6033,22 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 // This function differs from C_() in that it is not a macro and thus you may
 // use non-string-literals as context and msgid arguments.
 func Dpgettext2(domain string, context string, msgid string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var arg3 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(context))
-	defer C.free(unsafe.Pointer(context))
-	arg2 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(msgid))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(context))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_dpgettext2(arg0, arg1, arg2)
+	ret := C.g_dpgettext2(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -6190,21 +6056,20 @@ func Dpgettext2(domain string, context string, msgid string) string {
 // EnvironGetenv returns the value of the environment variable @variable in the
 // provided list @envp.
 func EnvironGetenv(envp []string, variable string) string {
-	var arg0 **C.gchar
-	var arg1 *C.gchar
+	var arg1 **C.gchar
+	var arg2 *C.gchar
 
 	{
 
 	}
-	arg1 = (*C.gchar)(C.CString(variable))
-	defer C.free(unsafe.Pointer(variable))
+	arg2 = (*C.gchar)(C.CString(variable))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_environ_getenv(arg0, arg1)
+	ret := C.g_environ_getenv(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -6212,21 +6077,21 @@ func EnvironGetenv(envp []string, variable string) string {
 // EnvironSetenv sets the environment variable @variable in the provided list
 // @envp to @value.
 func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
-	var arg0 **C.gchar
-	var arg1 *C.gchar
+	var arg1 **C.gchar
 	var arg2 *C.gchar
-	var arg3 C.gboolean
+	var arg3 *C.gchar
+	var arg4 C.gboolean
 
 	{
 
 	}
-	arg1 = (*C.gchar)(C.CString(variable))
-	defer C.free(unsafe.Pointer(variable))
-	arg2 = (*C.gchar)(C.CString(value))
-	defer C.free(unsafe.Pointer(value))
-	arg3 = gextras.Cbool(overwrite)
+	arg2 = (*C.gchar)(C.CString(variable))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(value))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = gextras.Cbool(overwrite)
 
-	ret := C.g_environ_setenv(arg0, arg1, arg2, arg3)
+	ret := C.g_environ_setenv(arg1, arg2, arg3, arg4)
 
 	var ret0 []string
 
@@ -6239,8 +6104,8 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -6250,16 +6115,16 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 // EnvironUnsetenv removes the environment variable @variable from the provided
 // environment @envp.
 func EnvironUnsetenv(envp []string, variable string) []string {
-	var arg0 **C.gchar
-	var arg1 *C.gchar
+	var arg1 **C.gchar
+	var arg2 *C.gchar
 
 	{
 
 	}
-	arg1 = (*C.gchar)(C.CString(variable))
-	defer C.free(unsafe.Pointer(variable))
+	arg2 = (*C.gchar)(C.CString(variable))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_environ_unsetenv(arg0, arg1)
+	ret := C.g_environ_unsetenv(arg1, arg2)
 
 	var ret0 []string
 
@@ -6272,8 +6137,8 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -6289,11 +6154,11 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 // manipulates files. So you would use g_file_error_from_errno() when
 // constructing a #GError.
 func FileErrorFromErrno(errNo int) FileError {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(errNo)
+	arg1 = C.gint(errNo)
 
-	ret := C.g_file_error_from_errno(arg0)
+	ret := C.g_file_error_from_errno(arg1)
 
 	var ret0 FileError
 
@@ -6327,30 +6192,29 @@ func FileErrorQuark() Quark {
 // false and sets @error. The error domain is FILE_ERROR. Possible error codes
 // are those in the Error enumeration. In the error case, @contents is set to
 // nil and @length is set to zero.
-func FileGetContents(filename string) (contents []uint8, length uint, ok bool) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+func FileGetContents(filename string) (contents []byte, length uint, ok bool) {
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
+	var arg3 *C.gsize  // out
 
-	var arg2 *C.gsize // out
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	ret := C.g_file_get_contents(arg1, &arg2, &arg3)
 
-	ret := C.g_file_get_contents(arg0, &arg1, &arg2)
-
-	var ret0 []uint8
+	var ret0 []byte
 	var ret1 uint
 	var ret2 bool
 
 	{
-		ret0 = make([]uint8, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
+		ret0 = make([]byte, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = uint8(src)
+			ret0[i] = byte(src)
 		}
 	}
 
-	ret1 = uint(arg2)
+	ret1 = uint(arg3)
 
 	ret2 = gextras.Gobool(ret)
 
@@ -6372,19 +6236,19 @@ func FileGetContents(filename string) (contents []uint8, length uint, ok bool) {
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
 func FileOpenTmp(tmpl string) (nameUsed string, gint int) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(tmpl))
+	arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_open_tmp(arg0, &arg1)
+	ret := C.g_file_open_tmp(arg1, &arg2)
 
 	var ret0 string
 	var ret1 int
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
+	C.free(unsafe.Pointer(arg2))
 
 	ret1 = int(ret)
 
@@ -6395,17 +6259,17 @@ func FileOpenTmp(tmpl string) (nameUsed string, gint int) {
 // readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
 func FileReadLink(filename string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_read_link(arg0)
+	ret := C.g_file_read_link(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6414,31 +6278,20 @@ func FileReadLink(filename string) string {
 // convenience wrapper around calling g_file_set_contents() with `flags` set to
 // `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
 // `mode` set to `0666`.
-func FileSetContents(filename string, contents []uint8) bool {
-	var arg0 *C.gchar
+func FileSetContents(filename string, contents []byte) bool {
 	var arg1 *C.gchar
-	var arg2 C.gssize
+	var arg2 *C.gchar
+	var arg3 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(contents))),
-			Len:  len(contents),
-			Cap:  len(contents),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(contents); i++ {
-			src := contents[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(contents)
+		arg2 = (*C.gchar)(&contents[0])
+		arg3 = len(contents)
+		defer runtime.KeepAlive(contents)
 	}
 
-	ret := C.g_file_set_contents(arg0, arg1, arg2)
+	ret := C.g_file_set_contents(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -6502,35 +6355,24 @@ func FileSetContents(filename string, contents []uint8) bool {
 // If the file didn’t exist before and is created, it will be given the
 // permissions from @mode. Otherwise, the permissions of the existing file may
 // be changed to @mode depending on @flags, or they may remain unchanged.
-func FileSetContentsFull(filename string, contents []uint8, flags FileSetContentsFlags, mode int) bool {
-	var arg0 *C.gchar
+func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) bool {
 	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 C.GFileSetContentsFlags
-	var arg4 C.int
+	var arg2 *C.gchar
+	var arg3 C.gssize
+	var arg4 C.GFileSetContentsFlags
+	var arg5 C.int
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(contents))),
-			Len:  len(contents),
-			Cap:  len(contents),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(contents); i++ {
-			src := contents[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg1 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(contents)
+		arg2 = (*C.gchar)(&contents[0])
+		arg3 = len(contents)
+		defer runtime.KeepAlive(contents)
 	}
-	arg3 = (C.GFileSetContentsFlags)(flags)
-	arg4 = C.int(mode)
+	arg4 = (C.GFileSetContentsFlags)(flags)
+	arg5 = C.int(mode)
 
-	ret := C.g_file_set_contents_full(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_contents_full(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 bool
 
@@ -6579,14 +6421,14 @@ func FileSetContentsFull(filename string, contents []uint8, flags FileSetContent
 // for well-known extensions and those listed in the `PATHEXT` environment
 // variable.
 func FileTest(filename string, test FileTest) bool {
-	var arg0 *C.gchar
-	var arg1 C.GFileTest
+	var arg1 *C.gchar
+	var arg2 C.GFileTest
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
-	arg1 = (C.GFileTest)(test)
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GFileTest)(test)
 
-	ret := C.g_file_test(arg0, arg1)
+	ret := C.g_file_test(arg1, arg2)
 
 	var ret0 bool
 
@@ -6612,17 +6454,17 @@ func FileTest(filename string, test FileTest) bool {
 // This function is preferred over g_filename_display_name() if you know the
 // whole path, as it allows translation.
 func FilenameDisplayBasename(filename string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_filename_display_basename(arg0)
+	ret := C.g_filename_display_basename(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6643,17 +6485,17 @@ func FilenameDisplayBasename(filename string) string {
 // g_filename_display_basename(), since that allows location-based translation
 // of filenames.
 func FilenameDisplayName(filename string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_filename_display_name(arg0)
+	ret := C.g_filename_display_name(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6661,22 +6503,22 @@ func FilenameDisplayName(filename string) string {
 // FilenameFromURI converts an escaped ASCII-encoded URI to a local filename in
 // the encoding used for filenames.
 func FilenameFromURI(uri string) (hostname string, filename string) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(uri))
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_filename_from_uri(arg0, &arg1)
+	ret := C.g_filename_from_uri(arg1, &arg2)
 
 	var ret0 string
 	var ret1 string
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
+	C.free(unsafe.Pointer(arg2))
 
-	ret = C.GoString(ret1)
-	defer C.free(unsafe.Pointer(ret))
+	ret1 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1
 }
@@ -6692,28 +6534,27 @@ func FilenameFromURI(uri string) (hostname string, filename string) {
 // the conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil.
 func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gsize // out
-
+	var arg1 *C.gchar
+	var arg2 C.gssize
 	var arg3 *C.gsize // out
+	var arg4 *C.gsize // out
 
-	arg0 = (*C.gchar)(C.CString(utf8String))
-	defer C.free(unsafe.Pointer(utf8String))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(utf8String))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_filename_from_utf8(arg0, arg1, &arg2, &arg3)
+	ret := C.g_filename_from_utf8(arg1, arg2, &arg3, &arg4)
 
 	var ret0 uint
 	var ret1 uint
 	var ret2 string
 
-	ret0 = uint(arg2)
+	ret0 = uint(arg3)
 
-	ret1 = uint(arg3)
+	ret1 = uint(arg4)
 
-	ret = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(ret))
+	ret2 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1, ret2
 }
@@ -6721,20 +6562,20 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 // FilenameToURI converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
 func FilenameToURI(filename string, hostname string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
-	arg1 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(hostname))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_filename_to_uri(arg0, arg1)
+	ret := C.g_filename_to_uri(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6751,28 +6592,27 @@ func FilenameToURI(filename string, hostname string) string {
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil. Use
 // g_convert() to produce output that may contain embedded nul characters.
 func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gsize // out
-
+	var arg1 *C.gchar
+	var arg2 C.gssize
 	var arg3 *C.gsize // out
+	var arg4 *C.gsize // out
 
-	arg0 = (*C.gchar)(C.CString(opsysstring))
-	defer C.free(unsafe.Pointer(opsysstring))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(opsysstring))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_filename_to_utf8(arg0, arg1, &arg2, &arg3)
+	ret := C.g_filename_to_utf8(arg1, arg2, &arg3, &arg4)
 
 	var ret0 uint
 	var ret1 uint
 	var ret2 string
 
-	ret0 = uint(arg2)
+	ret0 = uint(arg3)
 
-	ret1 = uint(arg3)
+	ret1 = uint(arg4)
 
-	ret = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(ret))
+	ret2 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1, ret2
 }
@@ -6792,17 +6632,17 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 // the `PATH` environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
 func FindProgramInPath(program string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(program))
-	defer C.free(unsafe.Pointer(program))
+	arg1 = (*C.gchar)(C.CString(program))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_find_program_in_path(arg0)
+	ret := C.g_find_program_in_path(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6821,16 +6661,16 @@ func FindProgramInPath(program string) string {
 // See g_format_size_full() for more options about how the size might be
 // formatted.
 func FormatSize(size uint64) string {
-	var arg0 C.guint64
+	var arg1 C.guint64
 
-	arg0 = C.guint64(size)
+	arg1 = C.guint64(size)
 
-	ret := C.g_format_size(arg0)
+	ret := C.g_format_size(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6844,16 +6684,16 @@ func FormatSize(size uint64) string {
 //
 // This string should be freed with g_free() when not needed any longer.
 func FormatSizeForDisplay(size int64) string {
-	var arg0 C.goffset
+	var arg1 C.goffset
 
-	arg0 = C.goffset(size)
+	arg1 = C.goffset(size)
 
-	ret := C.g_format_size_for_display(arg0)
+	ret := C.g_format_size_for_display(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6863,18 +6703,18 @@ func FormatSizeForDisplay(size int64) string {
 // This function is similar to g_format_size() but allows for flags that modify
 // the output. See SizeFlags.
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
-	var arg0 C.guint64
-	var arg1 C.GFormatSizeFlags
+	var arg1 C.guint64
+	var arg2 C.GFormatSizeFlags
 
-	arg0 = C.guint64(size)
-	arg1 = (C.GFormatSizeFlags)(flags)
+	arg1 = C.guint64(size)
+	arg2 = (C.GFormatSizeFlags)(flags)
 
-	ret := C.g_format_size_full(arg0, arg1)
+	ret := C.g_format_size_full(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6884,11 +6724,11 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // If @mem is nil it simply returns, so there is no need to check @mem against
 // nil before calling this function.
 func Free(mem interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(mem))
+	arg1 = C.gpointer(box.Assign(mem))
 
-	C.g_free(arg0)
+	C.g_free(arg1)
 }
 
 // GetApplicationName gets a human-readable name for the application, as set by
@@ -6903,8 +6743,7 @@ func GetApplicationName() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -6928,15 +6767,14 @@ func GetApplicationName() string {
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetCharset() (charset string, ok bool) {
-	var arg0 **C.char // out
+	var arg1 **C.char // out
 
-	ret := C.g_get_charset(&arg0)
+	ret := C.g_get_charset(&arg1)
 
 	var ret0 string
 	var ret1 bool
 
-	arg0 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg0))
+	ret0 = C.GoString(arg1)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -6950,8 +6788,8 @@ func GetCodeset() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -6973,15 +6811,14 @@ func GetCodeset() string {
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetConsoleCharset() (charset string, ok bool) {
-	var arg0 **C.char // out
+	var arg1 **C.char // out
 
-	ret := C.g_get_console_charset(&arg0)
+	ret := C.g_get_console_charset(&arg1)
 
 	var ret0 string
 	var ret1 bool
 
-	arg0 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg0))
+	ret0 = C.GoString(arg1)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -7003,8 +6840,8 @@ func GetCurrentDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -7013,11 +6850,11 @@ func GetCurrentDir() string {
 //
 // You may find g_get_real_time() to be more convenient.
 func GetCurrentTime(result *TimeVal) {
-	var arg0 *C.GTimeVal
+	var arg1 *C.GTimeVal
 
-	arg0 = (*C.GTimeVal)(result.Native())
+	arg1 = (*C.GTimeVal)(result.Native())
 
-	C.g_get_current_time(arg0)
+	C.g_get_current_time(arg1)
 }
 
 // GetEnviron gets the list of environment variables for the current process.
@@ -7045,8 +6882,8 @@ func GetEnviron() []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -7077,24 +6914,23 @@ func GetEnviron() []string {
 // `G_FILENAME_ENCODING` value, the actual file names present on a system might
 // be in any random encoding or just gibberish.
 func GetFilenameCharsets() (filenameCharsets []string, ok bool) {
-	var arg0 ***C.gchar // out
+	var arg1 ***C.gchar // out
 
-	ret := C.g_get_filename_charsets(&arg0)
+	ret := C.g_get_filename_charsets(&arg1)
 
 	var ret0 []string
 	var ret1 bool
 
 	{
 		var length uint
-		for p := unsafe.Pointer(arg0); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+		for p := unsafe.Pointer(arg1); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
 			length++
 		}
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg0)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -7129,8 +6965,7 @@ func GetHomeDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7153,8 +6988,7 @@ func GetHostName() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7184,8 +7018,7 @@ func GetLanguageNames() []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -7203,12 +7036,12 @@ func GetLanguageNames() []string {
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
 func GetLanguageNamesWithCategory(categoryName string) []string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(categoryName))
-	defer C.free(unsafe.Pointer(categoryName))
+	arg1 = (*C.gchar)(C.CString(categoryName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_get_language_names_with_category(arg0)
+	ret := C.g_get_language_names_with_category(arg1)
 
 	var ret0 []string
 
@@ -7221,8 +7054,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -7245,12 +7077,12 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 // If you need the list of variants for the current locale, use
 // g_get_language_names().
 func GetLocaleVariants(locale string) []string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(locale))
-	defer C.free(unsafe.Pointer(locale))
+	arg1 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_get_locale_variants(arg0)
+	ret := C.g_get_locale_variants(arg1)
 
 	var ret0 []string
 
@@ -7263,8 +7095,8 @@ func GetLocaleVariants(locale string) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -7314,17 +7146,17 @@ func GetNumProcessors() uint {
 // may be useful. No key is guaranteed to be provided, so the caller should
 // always check if the result is nil.
 func GetOsInfo(keyName string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(keyName))
-	defer C.free(unsafe.Pointer(keyName))
+	arg1 = (*C.gchar)(C.CString(keyName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_get_os_info(arg0)
+	ret := C.g_get_os_info(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -7342,8 +7174,7 @@ func GetPrgname() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7358,8 +7189,7 @@ func GetRealName() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7414,8 +7244,7 @@ func GetSystemConfigDirs() []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -7465,8 +7294,7 @@ func GetSystemDataDirs() []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -7490,8 +7318,7 @@ func GetTmpDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7516,8 +7343,7 @@ func GetUserCacheDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7543,8 +7369,7 @@ func GetUserConfigDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7570,8 +7395,7 @@ func GetUserDataDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7586,8 +7410,7 @@ func GetUserName() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7606,8 +7429,7 @@ func GetUserRuntimeDir() string {
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7623,16 +7445,15 @@ func GetUserRuntimeDir() string {
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
 func GetUserSpecialDir(directory UserDirectory) string {
-	var arg0 C.GUserDirectory
+	var arg1 C.GUserDirectory
 
-	arg0 = (C.GUserDirectory)(directory)
+	arg1 = (C.GUserDirectory)(directory)
 
-	ret := C.g_get_user_special_dir(arg0)
+	ret := C.g_get_user_special_dir(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7644,17 +7465,16 @@ func GetUserSpecialDir(directory UserDirectory) string {
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
 func Getenv(variable string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(variable))
-	defer C.free(unsafe.Pointer(variable))
+	arg1 = (*C.gchar)(C.CString(variable))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_getenv(arg0)
+	ret := C.g_getenv(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -7674,13 +7494,13 @@ func Getenv(variable string) string {
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
 func HashTableAdd(hashTable *HashTable, key interface{}) bool {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
 
-	ret := C.g_hash_table_add(arg0, arg1)
+	ret := C.g_hash_table_add(arg1, arg2)
 
 	var ret0 bool
 
@@ -7691,13 +7511,13 @@ func HashTableAdd(hashTable *HashTable, key interface{}) bool {
 
 // HashTableContains checks if @key is in @hash_table.
 func HashTableContains(hashTable *HashTable, key interface{}) bool {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
 
-	ret := C.g_hash_table_contains(arg0, arg1)
+	ret := C.g_hash_table_contains(arg1, arg2)
 
 	var ret0 bool
 
@@ -7712,11 +7532,11 @@ func HashTableContains(hashTable *HashTable, key interface{}) bool {
 // using g_hash_table_new_full(). In the latter case the destroy functions you
 // supplied will be called on all keys and values during the destruction phase.
 func HashTableDestroy(hashTable *HashTable) {
-	var arg0 *C.GHashTable
+	var arg1 *C.GHashTable
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
+	arg1 = (*C.GHashTable)(hashTable.Native())
 
-	C.g_hash_table_destroy(arg0)
+	C.g_hash_table_destroy(arg1)
 }
 
 // HashTableInsert inserts a new key and value into a Table.
@@ -7729,15 +7549,15 @@ func HashTableDestroy(hashTable *HashTable) {
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
 func HashTableInsert(hashTable *HashTable, key interface{}, value interface{}) bool {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
 	var arg2 C.gpointer
+	var arg3 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
-	arg2 = C.gpointer(box.Assign(value))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
+	arg3 = C.gpointer(box.Assign(value))
 
-	ret := C.g_hash_table_insert(arg0, arg1, arg2)
+	ret := C.g_hash_table_insert(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -7751,13 +7571,13 @@ func HashTableInsert(hashTable *HashTable, key interface{}, value interface{}) b
 // has the value nil. If you need this distinction, use
 // g_hash_table_lookup_extended().
 func HashTableLookup(hashTable *HashTable, key interface{}) interface{} {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
 
-	ret := C.g_hash_table_lookup(arg0, arg1)
+	ret := C.g_hash_table_lookup(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -7774,24 +7594,23 @@ func HashTableLookup(hashTable *HashTable, key interface{}) interface{} {
 // You can actually pass nil for @lookup_key to test whether the nil key exists,
 // provided the hash and equal functions of @hash_table are nil-safe.
 func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
-	var arg2 *C.gpointer // out
-
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 	var arg3 *C.gpointer // out
+	var arg4 *C.gpointer // out
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(lookupKey))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(lookupKey))
 
-	ret := C.g_hash_table_lookup_extended(arg0, arg1, &arg2, &arg3)
+	ret := C.g_hash_table_lookup_extended(arg1, arg2, &arg3, &arg4)
 
 	var ret0 interface{}
 	var ret1 interface{}
 	var ret2 bool
 
-	ret0 = box.Get(uintptr(arg2))
+	ret0 = box.Get(uintptr(arg3))
 
-	ret1 = box.Get(uintptr(arg3))
+	ret1 = box.Get(uintptr(arg4))
 
 	ret2 = gextras.Gobool(ret)
 
@@ -7804,13 +7623,13 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origK
 // freed using the supplied destroy functions, otherwise you have to make sure
 // that any dynamically allocated values are freed yourself.
 func HashTableRemove(hashTable *HashTable, key interface{}) bool {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
 
-	ret := C.g_hash_table_remove(arg0, arg1)
+	ret := C.g_hash_table_remove(arg1, arg2)
 
 	var ret0 bool
 
@@ -7825,11 +7644,11 @@ func HashTableRemove(hashTable *HashTable, key interface{}) bool {
 // are freed using the supplied destroy functions, otherwise you have to make
 // sure that any dynamically allocated values are freed yourself.
 func HashTableRemoveAll(hashTable *HashTable) {
-	var arg0 *C.GHashTable
+	var arg1 *C.GHashTable
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
+	arg1 = (*C.GHashTable)(hashTable.Native())
 
-	C.g_hash_table_remove_all(arg0)
+	C.g_hash_table_remove_all(arg1)
 }
 
 // HashTableReplace inserts a new key and value into a Table similar to
@@ -7842,15 +7661,15 @@ func HashTableRemoveAll(hashTable *HashTable) {
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
 func HashTableReplace(hashTable *HashTable, key interface{}, value interface{}) bool {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
 	var arg2 C.gpointer
+	var arg3 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
-	arg2 = C.gpointer(box.Assign(value))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
+	arg3 = C.gpointer(box.Assign(value))
 
-	ret := C.g_hash_table_replace(arg0, arg1, arg2)
+	ret := C.g_hash_table_replace(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -7861,11 +7680,11 @@ func HashTableReplace(hashTable *HashTable, key interface{}, value interface{}) 
 
 // HashTableSize returns the number of elements contained in the Table.
 func HashTableSize(hashTable *HashTable) uint {
-	var arg0 *C.GHashTable
+	var arg1 *C.GHashTable
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
+	arg1 = (*C.GHashTable)(hashTable.Native())
 
-	ret := C.g_hash_table_size(arg0)
+	ret := C.g_hash_table_size(arg1)
 
 	var ret0 uint
 
@@ -7877,13 +7696,13 @@ func HashTableSize(hashTable *HashTable) uint {
 // HashTableSteal removes a key and its associated value from a Table without
 // calling the key and value destroy functions.
 func HashTableSteal(hashTable *HashTable, key interface{}) bool {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(key))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(key))
 
-	ret := C.g_hash_table_steal(arg0, arg1)
+	ret := C.g_hash_table_steal(arg1, arg2)
 
 	var ret0 bool
 
@@ -7895,11 +7714,11 @@ func HashTableSteal(hashTable *HashTable, key interface{}) bool {
 // HashTableStealAll removes all keys and their associated values from a Table
 // without calling the key and value destroy functions.
 func HashTableStealAll(hashTable *HashTable) {
-	var arg0 *C.GHashTable
+	var arg1 *C.GHashTable
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
+	arg1 = (*C.GHashTable)(hashTable.Native())
 
-	C.g_hash_table_steal_all(arg0)
+	C.g_hash_table_steal_all(arg1)
 }
 
 // HashTableStealExtended looks up a key in the Table, stealing the original key
@@ -7913,24 +7732,23 @@ func HashTableStealAll(hashTable *HashTable) {
 // You can pass nil for @lookup_key, provided the hash and equal functions of
 // @hash_table are nil-safe.
 func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolenKey interface{}, stolenValue interface{}, ok bool) {
-	var arg0 *C.GHashTable
-	var arg1 C.gpointer
-	var arg2 *C.gpointer // out
-
+	var arg1 *C.GHashTable
+	var arg2 C.gpointer
 	var arg3 *C.gpointer // out
+	var arg4 *C.gpointer // out
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
-	arg1 = C.gpointer(box.Assign(lookupKey))
+	arg1 = (*C.GHashTable)(hashTable.Native())
+	arg2 = C.gpointer(box.Assign(lookupKey))
 
-	ret := C.g_hash_table_steal_extended(arg0, arg1, &arg2, &arg3)
+	ret := C.g_hash_table_steal_extended(arg1, arg2, &arg3, &arg4)
 
 	var ret0 interface{}
 	var ret1 interface{}
 	var ret2 bool
 
-	ret0 = box.Get(uintptr(arg2))
+	ret0 = box.Get(uintptr(arg3))
 
-	ret1 = box.Get(uintptr(arg3))
+	ret1 = box.Get(uintptr(arg4))
 
 	ret2 = gextras.Gobool(ret)
 
@@ -7942,22 +7760,22 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolen
 // destroyed, and all memory allocated by the hash table is released. This
 // function is MT-safe and may be called from any thread.
 func HashTableUnref(hashTable *HashTable) {
-	var arg0 *C.GHashTable
+	var arg1 *C.GHashTable
 
-	arg0 = (*C.GHashTable)(hashTable.Native())
+	arg1 = (*C.GHashTable)(hashTable.Native())
 
-	C.g_hash_table_unref(arg0)
+	C.g_hash_table_unref(arg1)
 }
 
 // HookDestroy destroys a #GHook, given its ID.
 func HookDestroy(hookList *HookList, hookID uint32) bool {
-	var arg0 *C.GHookList
-	var arg1 C.gulong
+	var arg1 *C.GHookList
+	var arg2 C.gulong
 
-	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = C.gulong(hookID)
+	arg1 = (*C.GHookList)(hookList.Native())
+	arg2 = C.gulong(hookID)
 
-	ret := C.g_hook_destroy(arg0, arg1)
+	ret := C.g_hook_destroy(arg1, arg2)
 
 	var ret0 bool
 
@@ -7969,62 +7787,62 @@ func HookDestroy(hookList *HookList, hookID uint32) bool {
 // HookDestroyLink removes one #GHook from a List, marking it inactive and
 // calling g_hook_unref() on it.
 func HookDestroyLink(hookList *HookList, hook *Hook) {
-	var arg0 *C.GHookList
-	var arg1 *C.GHook
+	var arg1 *C.GHookList
+	var arg2 *C.GHook
 
-	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = (*C.GHook)(hook.Native())
+	arg1 = (*C.GHookList)(hookList.Native())
+	arg2 = (*C.GHook)(hook.Native())
 
-	C.g_hook_destroy_link(arg0, arg1)
+	C.g_hook_destroy_link(arg1, arg2)
 }
 
 // HookFree calls the List @finalize_hook function if it exists, and frees the
 // memory allocated for the #GHook.
 func HookFree(hookList *HookList, hook *Hook) {
-	var arg0 *C.GHookList
-	var arg1 *C.GHook
+	var arg1 *C.GHookList
+	var arg2 *C.GHook
 
-	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = (*C.GHook)(hook.Native())
+	arg1 = (*C.GHookList)(hookList.Native())
+	arg2 = (*C.GHook)(hook.Native())
 
-	C.g_hook_free(arg0, arg1)
+	C.g_hook_free(arg1, arg2)
 }
 
 // HookInsertBefore inserts a #GHook into a List, before a given #GHook.
 func HookInsertBefore(hookList *HookList, sibling *Hook, hook *Hook) {
-	var arg0 *C.GHookList
-	var arg1 *C.GHook
+	var arg1 *C.GHookList
 	var arg2 *C.GHook
+	var arg3 *C.GHook
 
-	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = (*C.GHook)(sibling.Native())
-	arg2 = (*C.GHook)(hook.Native())
+	arg1 = (*C.GHookList)(hookList.Native())
+	arg2 = (*C.GHook)(sibling.Native())
+	arg3 = (*C.GHook)(hook.Native())
 
-	C.g_hook_insert_before(arg0, arg1, arg2)
+	C.g_hook_insert_before(arg1, arg2, arg3)
 }
 
 // HookPrepend prepends a #GHook on the start of a List.
 func HookPrepend(hookList *HookList, hook *Hook) {
-	var arg0 *C.GHookList
-	var arg1 *C.GHook
+	var arg1 *C.GHookList
+	var arg2 *C.GHook
 
-	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = (*C.GHook)(hook.Native())
+	arg1 = (*C.GHookList)(hookList.Native())
+	arg2 = (*C.GHook)(hook.Native())
 
-	C.g_hook_prepend(arg0, arg1)
+	C.g_hook_prepend(arg1, arg2)
 }
 
 // HookUnref decrements the reference count of a #GHook. If the reference count
 // falls to 0, the #GHook is removed from the List and g_hook_free() is called
 // to free it.
 func HookUnref(hookList *HookList, hook *Hook) {
-	var arg0 *C.GHookList
-	var arg1 *C.GHook
+	var arg1 *C.GHookList
+	var arg2 *C.GHook
 
-	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = (*C.GHook)(hook.Native())
+	arg1 = (*C.GHookList)(hookList.Native())
+	arg2 = (*C.GHook)(hook.Native())
 
-	C.g_hook_unref(arg0, arg1)
+	C.g_hook_unref(arg1, arg2)
 }
 
 // HostnameIsASCIIEncoded tests if @hostname contains segments with an
@@ -8036,12 +7854,12 @@ func HookUnref(hookList *HookList, hook *Hook) {
 // and so it is possible for g_hostname_is_non_ascii() and
 // g_hostname_is_ascii_encoded() to both return true for a name.
 func HostnameIsASCIIEncoded(hostname string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(hostname))
+	arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_hostname_is_ascii_encoded(arg0)
+	ret := C.g_hostname_is_ascii_encoded(arg1)
 
 	var ret0 bool
 
@@ -8055,12 +7873,12 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 //
 // Since 2.66, IPv6 addresses with a zone-id are accepted (RFC6874).
 func HostnameIsIpAddress(hostname string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(hostname))
+	arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_hostname_is_ip_address(arg0)
+	ret := C.g_hostname_is_ip_address(arg1)
 
 	var ret0 bool
 
@@ -8077,12 +7895,12 @@ func HostnameIsIpAddress(hostname string) bool {
 // and so it is possible for g_hostname_is_non_ascii() and
 // g_hostname_is_ascii_encoded() to both return true for a name.
 func HostnameIsNonASCII(hostname string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(hostname))
+	arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_hostname_is_non_ascii(arg0)
+	ret := C.g_hostname_is_non_ascii(arg1)
 
 	var ret0 bool
 
@@ -8094,17 +7912,17 @@ func HostnameIsNonASCII(hostname string) bool {
 // HostnameToASCII converts @hostname to its canonical ASCII form; an ASCII-only
 // string containing no uppercase letters and not ending with a trailing dot.
 func HostnameToASCII(hostname string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(hostname))
+	arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_hostname_to_ascii(arg0)
+	ret := C.g_hostname_to_ascii(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -8117,17 +7935,17 @@ func HostnameToASCII(hostname string) string {
 // Of course if @hostname is not an internationalized hostname, then the
 // canonical presentation form will be entirely ASCII.
 func HostnameToUnicode(hostname string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(hostname))
+	arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_hostname_to_unicode(arg0)
+	ret := C.g_hostname_to_unicode(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -8145,21 +7963,21 @@ func HostnameToUnicode(hostname string) string {
 // used), or it may return -1 and set an error such as EILSEQ, in such a
 // situation.
 func Iconv(converter IConv, inbuf string, inbytesLeft uint, outbuf string, outbytesLeft uint) uint {
-	var arg0 C.GIConv
-	var arg1 **C.gchar
-	var arg2 *C.gsize
-	var arg3 **C.gchar
-	var arg4 *C.gsize
+	var arg1 C.GIConv
+	var arg2 **C.gchar
+	var arg3 *C.gsize
+	var arg4 **C.gchar
+	var arg5 *C.gsize
 
-	arg0 = (C.GIConv)(converter.Native())
-	arg1 = (*C.gchar)(C.CString(inbuf))
-	defer C.free(unsafe.Pointer(inbuf))
-	arg2 = (*C.gsize)(inbytesLeft)
-	arg3 = (*C.gchar)(C.CString(outbuf))
-	defer C.free(unsafe.Pointer(outbuf))
-	arg4 = (*C.gsize)(outbytesLeft)
+	arg1 = (C.GIConv)(converter.Native())
+	arg2 = (*C.gchar)(C.CString(inbuf))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gsize)(inbytesLeft)
+	arg4 = (*C.gchar)(C.CString(outbuf))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gsize)(outbytesLeft)
 
-	ret := C.g_iconv(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_iconv(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 uint
 
@@ -8174,15 +7992,15 @@ func Iconv(converter IConv, inbuf string, inbytesLeft uint, outbuf string, outby
 // GLib provides g_convert() and g_locale_to_utf8() which are likely more
 // convenient than the raw iconv wrappers.
 func IconvOpen(toCodeset string, fromCodeset string) IConv {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(toCodeset))
-	defer C.free(unsafe.Pointer(toCodeset))
-	arg1 = (*C.gchar)(C.CString(fromCodeset))
-	defer C.free(unsafe.Pointer(fromCodeset))
+	arg1 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_iconv_open(arg0, arg1)
+	ret := C.g_iconv_open(arg1, arg2)
 
 	var ret0 IConv
 
@@ -8206,12 +8024,12 @@ func IconvOpen(toCodeset string, fromCodeset string) IConv {
 // these steps manually if you need greater control or to use a custom main
 // context.
 func IdleAdd(function SourceFunc) uint {
-	var arg0 C.GSourceFunc
-	arg1 := C.gpointer(box.Assign(data))
+	var arg1 C.GSourceFunc
+	arg2 := C.gpointer(box.Assign(data))
 
-	arg0 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_idle_add(arg0)
+	ret := C.g_idle_add(arg1)
 
 	var ret0 uint
 
@@ -8233,14 +8051,14 @@ func IdleAdd(function SourceFunc) uint {
 // these steps manually if you need greater control or to use a custom main
 // context.
 func IdleAddFull(priority int, function SourceFunc) uint {
-	var arg0 C.gint
-	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg1 C.gint
+	var arg2 C.GSourceFunc
+	arg3 := C.gpointer(box.Assign(data))
 
-	arg0 = C.gint(priority)
-	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.gint(priority)
+	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_idle_add_full(arg0, arg1, (*[0]byte)(C.free))
+	ret := C.g_idle_add_full(arg1, arg2, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -8251,11 +8069,11 @@ func IdleAddFull(priority int, function SourceFunc) uint {
 
 // IdleRemoveByData removes the idle function with the given data.
 func IdleRemoveByData(data interface{}) bool {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(data))
+	arg1 = C.gpointer(box.Assign(data))
 
-	ret := C.g_idle_remove_by_data(arg0)
+	ret := C.g_idle_remove_by_data(arg1)
 
 	var ret0 bool
 
@@ -8286,13 +8104,13 @@ func NewIdleSource() *Source {
 // @key_equal_func parameter, when using non-nil pointers to 64-bit integers as
 // keys in a Table.
 func Int64Equal(v1 interface{}, v2 interface{}) bool {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v1))
-	arg1 = C.gpointer(box.Assign(v2))
+	arg1 = C.gpointer(box.Assign(v1))
+	arg2 = C.gpointer(box.Assign(v2))
 
-	ret := C.g_int64_equal(arg0, arg1)
+	ret := C.g_int64_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -8306,11 +8124,11 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 // It can be passed to g_hash_table_new() as the @hash_func parameter, when
 // using non-nil pointers to 64-bit integer values as keys in a Table.
 func Int64Hash(v interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v))
+	arg1 = C.gpointer(box.Assign(v))
 
-	ret := C.g_int64_hash(arg0)
+	ret := C.g_int64_hash(arg1)
 
 	var ret0 uint
 
@@ -8327,13 +8145,13 @@ func Int64Hash(v interface{}) uint {
 // your hash table's keys are of the form `GINT_TO_POINTER (n)`, use
 // g_direct_equal() instead.
 func IntEqual(v1 interface{}, v2 interface{}) bool {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v1))
-	arg1 = C.gpointer(box.Assign(v2))
+	arg1 = C.gpointer(box.Assign(v1))
+	arg2 = C.gpointer(box.Assign(v2))
 
-	ret := C.g_int_equal(arg0, arg1)
+	ret := C.g_int_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -8350,11 +8168,11 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 // your hash table's keys are of the form `GINT_TO_POINTER (n)`, use
 // g_direct_hash() instead.
 func IntHash(v interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v))
+	arg1 = C.gpointer(box.Assign(v))
 
-	ret := C.g_int_hash(arg0)
+	ret := C.g_int_hash(arg1)
 
 	var ret0 uint
 
@@ -8372,17 +8190,16 @@ func IntHash(v interface{}) uint {
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
 func InternStaticString(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_intern_static_string(arg0)
+	ret := C.g_intern_static_string(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -8395,17 +8212,16 @@ func InternStaticString(string string) string {
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
 func InternString(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_intern_string(arg0)
+	ret := C.g_intern_string(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -8413,16 +8229,16 @@ func InternString(string string) string {
 // IOAddWatch adds the OChannel into the default main loop context with the
 // default priority.
 func IOAddWatch(channel *IOChannel, condition IOCondition, _func IOFunc) uint {
-	var arg0 *C.GIOChannel
-	var arg1 C.GIOCondition
-	var arg2 C.GIOFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg1 *C.GIOChannel
+	var arg2 C.GIOCondition
+	var arg3 C.GIOFunc
+	arg4 := C.gpointer(box.Assign(userData))
 
-	arg0 = (*C.GIOChannel)(channel.Native())
-	arg1 = (C.GIOCondition)(condition)
-	arg2 = (*[0]byte)(C.gotk4_IOFunc)
+	arg1 = (*C.GIOChannel)(channel.Native())
+	arg2 = (C.GIOCondition)(condition)
+	arg3 = (*[0]byte)(C.gotk4_IOFunc)
 
-	ret := C.g_io_add_watch(arg0, arg1, arg2)
+	ret := C.g_io_add_watch(arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -8438,18 +8254,18 @@ func IOAddWatch(channel *IOChannel, condition IOCondition, _func IOFunc) uint {
 // attaches it to the main loop context with g_source_attach(). You can do these
 // steps manually if you need greater control.
 func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, _func IOFunc) uint {
-	var arg0 *C.GIOChannel
-	var arg1 C.gint
-	var arg2 C.GIOCondition
-	var arg3 C.GIOFunc
-	arg4 := C.gpointer(box.Assign(userData))
+	var arg1 *C.GIOChannel
+	var arg2 C.gint
+	var arg3 C.GIOCondition
+	var arg4 C.GIOFunc
+	arg5 := C.gpointer(box.Assign(userData))
 
-	arg0 = (*C.GIOChannel)(channel.Native())
-	arg1 = C.gint(priority)
-	arg2 = (C.GIOCondition)(condition)
-	arg3 = (*[0]byte)(C.gotk4_IOFunc)
+	arg1 = (*C.GIOChannel)(channel.Native())
+	arg2 = C.gint(priority)
+	arg3 = (C.GIOCondition)(condition)
+	arg4 = (*[0]byte)(C.gotk4_IOFunc)
 
-	ret := C.g_io_add_watch_full(arg0, arg1, arg2, arg3, (*[0]byte)(C.free))
+	ret := C.g_io_add_watch_full(arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -8460,11 +8276,11 @@ func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, _fu
 
 // IOChannelErrorFromErrno converts an `errno` error number to a OChannelError.
 func IOChannelErrorFromErrno(en int) IOChannelError {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(en)
+	arg1 = C.gint(en)
 
-	ret := C.g_io_channel_error_from_errno(arg0)
+	ret := C.g_io_channel_error_from_errno(arg1)
 
 	var ret0 IOChannelError
 
@@ -8503,13 +8319,13 @@ func IOChannelErrorQuark() Quark {
 // the socket in non-blocking mode. This is a side-effect of the implementation
 // and unavoidable.
 func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
-	var arg0 *C.GIOChannel
-	var arg1 C.GIOCondition
+	var arg1 *C.GIOChannel
+	var arg2 C.GIOCondition
 
-	arg0 = (*C.GIOChannel)(channel.Native())
-	arg1 = (C.GIOCondition)(condition)
+	arg1 = (*C.GIOChannel)(channel.Native())
+	arg2 = (C.GIOCondition)(condition)
 
-	ret := C.g_io_create_watch(arg0, arg1)
+	ret := C.g_io_create_watch(arg1, arg2)
 
 	var ret0 *Source
 
@@ -8556,8 +8372,8 @@ func Listenv() []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -8572,32 +8388,31 @@ func Listenv() []string {
 // is positive. A nul character found inside the string will result in error
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
 // contain embedded nul characters.
-func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, guint8s []uint8) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gsize // out
-
+func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, guint8s []byte) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
 	var arg3 *C.gsize // out
+	var arg4 *C.gsize // out
 
-	arg0 = (*C.gchar)(C.CString(utf8String))
-	defer C.free(unsafe.Pointer(utf8String))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(utf8String))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_locale_from_utf8(arg0, arg1, &arg2, &arg3)
+	ret := C.g_locale_from_utf8(arg1, arg2, &arg3, &arg4)
 
 	var ret0 uint
 	var ret1 uint
-	var ret2 []uint8
+	var ret2 []byte
 
-	ret0 = uint(arg2)
+	ret0 = uint(arg3)
 
-	ret1 = uint(arg3)
+	ret1 = uint(arg4)
 
 	{
-		ret2 = make([]uint8, arg3)
-		for i := 0; i < uintptr(arg3); i++ {
+		ret2 = make([]byte, arg4)
+		for i := 0; i < uintptr(arg4); i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = uint8(src)
+			ret2[i] = byte(src)
 		}
 	}
 
@@ -8614,42 +8429,30 @@ func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten ui
 // treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
 // compatibility with earlier versions of this library. Use g_convert() to
 // produce output that may contain embedded nul characters.
-func LocaleToUTF8(opsysstring []uint8) (bytesRead uint, bytesWritten uint, utf8 string) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gsize // out
-
+func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
 	var arg3 *C.gsize // out
+	var arg4 *C.gsize // out
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(opsysstring))),
-			Len:  len(opsysstring),
-			Cap:  len(opsysstring),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(opsysstring); i++ {
-			src := opsysstring[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(opsysstring)
+		arg1 = (*C.gchar)(&opsysstring[0])
+		arg2 = len(opsysstring)
+		defer runtime.KeepAlive(opsysstring)
 	}
 
-	ret := C.g_locale_to_utf8(arg0, arg1, &arg2, &arg3)
+	ret := C.g_locale_to_utf8(arg1, arg2, &arg3, &arg4)
 
 	var ret0 uint
 	var ret1 uint
 	var ret2 string
 
-	ret0 = uint(arg2)
+	ret0 = uint(arg3)
 
-	ret1 = uint(arg3)
+	ret1 = uint(arg4)
 
-	ret = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(ret))
+	ret2 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1, ret2
 }
@@ -8678,19 +8481,19 @@ func LocaleToUTF8(opsysstring []uint8) (bytesRead uint, bytesWritten uint, utf8 
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData interface{}) {
-	var arg0 *C.gchar
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.gchar
-	var arg3 C.gpointer
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
+	var arg3 *C.gchar
+	var arg4 C.gpointer
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	arg2 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(message))
-	arg3 = C.gpointer(box.Assign(unusedData))
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(logLevel)
+	arg3 = (*C.gchar)(C.CString(message))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = C.gpointer(box.Assign(unusedData))
 
-	C.g_log_default_handler(arg0, arg1, arg2, arg3)
+	C.g_log_default_handler(arg1, arg2, arg3, arg4)
 }
 
 // LogRemoveHandler removes the log handler.
@@ -8698,14 +8501,14 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogRemoveHandler(logDomain string, handlerID uint) {
-	var arg0 *C.gchar
-	var arg1 C.guint
+	var arg1 *C.gchar
+	var arg2 C.guint
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = C.guint(handlerID)
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.guint(handlerID)
 
-	C.g_log_remove_handler(arg0, arg1)
+	C.g_log_remove_handler(arg1, arg2)
 }
 
 // LogSetAlwaysFatal sets the message levels which are always fatal, in any log
@@ -8725,11 +8528,11 @@ func LogRemoveHandler(logDomain string, handlerID uint) {
 // otherwise it is up to the writer function to determine which log messages are
 // fatal. See [Using Structured Logging][using-structured-logging].
 func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
-	var arg0 C.GLogLevelFlags
+	var arg1 C.GLogLevelFlags
 
-	arg0 = (C.GLogLevelFlags)(fatalMask)
+	arg1 = (C.GLogLevelFlags)(fatalMask)
 
-	ret := C.g_log_set_always_fatal(arg0)
+	ret := C.g_log_set_always_fatal(arg1)
 
 	var ret0 LogLevelFlags
 
@@ -8745,12 +8548,12 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogSetDefaultHandler(logFunc LogFunc) LogFunc {
-	var arg0 C.GLogFunc
-	arg1 := C.gpointer(box.Assign(userData))
+	var arg1 C.GLogFunc
+	arg2 := C.gpointer(box.Assign(userData))
 
-	arg0 = (*[0]byte)(C.gotk4_LogFunc)
+	arg1 = (*[0]byte)(C.gotk4_LogFunc)
 
-	ret := C.g_log_set_default_handler(arg0)
+	ret := C.g_log_set_default_handler(arg1)
 
 	var ret0 LogFunc
 
@@ -8771,14 +8574,14 @@ func LogSetDefaultHandler(logFunc LogFunc) LogFunc {
 // G_LOG_LEVEL_INFO or G_LOG_LEVEL_DEBUG as fatal except inside of test
 // programs.
 func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
-	var arg0 *C.gchar
-	var arg1 C.GLogLevelFlags
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (C.GLogLevelFlags)(fatalMask)
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(fatalMask)
 
-	ret := C.g_log_set_fatal_mask(arg0, arg1)
+	ret := C.g_log_set_fatal_mask(arg1, arg2)
 
 	var ret0 LogLevelFlags
 
@@ -8804,17 +8607,17 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 //                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
 //
 func LogSetHandler(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) uint {
-	var arg0 *C.gchar
-	var arg1 C.GLogLevelFlags
-	var arg2 C.GLogFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
+	var arg3 C.GLogFunc
+	arg4 := C.gpointer(box.Assign(userData))
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (C.GLogLevelFlags)(logLevels)
-	arg2 = (*[0]byte)(C.gotk4_LogFunc)
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(logLevels)
+	arg3 = (*[0]byte)(C.gotk4_LogFunc)
 
-	ret := C.g_log_set_handler(arg0, arg1, arg2)
+	ret := C.g_log_set_handler(arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -8829,17 +8632,17 @@ func LogSetHandler(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) u
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) uint {
-	var arg0 *C.gchar
-	var arg1 C.GLogLevelFlags
-	var arg2 C.GLogFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
+	var arg3 C.GLogFunc
+	arg4 := C.gpointer(box.Assign(userData))
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (C.GLogLevelFlags)(logLevels)
-	arg2 = (*[0]byte)(C.gotk4_LogFunc)
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(logLevels)
+	arg3 = (*[0]byte)(C.gotk4_LogFunc)
 
-	ret := C.g_log_set_handler_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	ret := C.g_log_set_handler_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -8858,12 +8661,10 @@ func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFun
 //
 // There can only be one writer function. It is an error to set more than one.
 func LogSetWriterFunc(_func LogWriterFunc) {
-	var arg0 C.GLogWriterFunc
-	var arg1 C.gpointer
+	var arg1 C.GLogWriterFunc
+	var arg2 C.gpointer
 
-	arg0 = (*[0]byte)(C.gotk4_LogWriterFunc)
-
-	C.g_log_set_writer_func(arg0, arg1, (*[0]byte)(C.free))
+	C.g_log_set_writer_func(arg1, arg2, (*[0]byte)(C.free))
 }
 
 // LogStructuredArray: log a message with structured data. The message will be
@@ -8876,29 +8677,29 @@ func LogSetWriterFunc(_func LogWriterFunc) {
 // This assumes that @log_level is already present in @fields (typically as the
 // `PRIORITY` field).
 func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
-	var arg0 C.GLogLevelFlags
-	var arg1 *C.GLogField
-	var arg2 C.gsize
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
 
-	arg0 = (C.GLogLevelFlags)(logLevel)
+	arg1 = (C.GLogLevelFlags)(logLevel)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_GLogField * len(fields))),
-			Len:  len(fields),
-			Cap:  len(fields),
-		}
-		dst := *(*[]C.GLogField)(unsafe.Pointer(&sliceHeader))
+		var dst []C.GLogField
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(fields); i++ {
 			src := fields[i]
 			dst[i] = (C.GLogField)(src.Native())
 		}
 
-		arg1 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(fields)
+		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(fields)
 	}
 
-	C.g_log_structured_array(arg0, arg1, arg2)
+	C.g_log_structured_array(arg1, arg2, arg3)
 }
 
 // LogVariant: log a message with structured data, accepting the data within a
@@ -8919,16 +8720,16 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 // For more details on its usage and about the parameters, see
 // g_log_structured().
 func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
-	var arg0 *C.gchar
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.GVariant
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
+	var arg3 *C.GVariant
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	arg2 = (*C.GVariant)(fields.Native())
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(logLevel)
+	arg3 = (*C.GVariant)(fields.Native())
 
-	C.g_log_variant(arg0, arg1, arg2)
+	C.g_log_variant(arg1, arg2, arg3)
 }
 
 // LogWriterDefault: format a structured log message and output it to the
@@ -8947,31 +8748,31 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 // messages unless their log domain (or `all`) is listed in the space-separated
 // `G_MESSAGES_DEBUG` environment variable.
 func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var arg0 C.GLogLevelFlags
-	var arg1 *C.GLogField
-	var arg2 C.gsize
-	var arg3 C.gpointer
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gpointer
 
-	arg0 = (C.GLogLevelFlags)(logLevel)
+	arg1 = (C.GLogLevelFlags)(logLevel)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_GLogField * len(fields))),
-			Len:  len(fields),
-			Cap:  len(fields),
-		}
-		dst := *(*[]C.GLogField)(unsafe.Pointer(&sliceHeader))
+		var dst []C.GLogField
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(fields); i++ {
 			src := fields[i]
 			dst[i] = (C.GLogField)(src.Native())
 		}
 
-		arg1 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(fields)
+		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(fields)
 	}
-	arg3 = C.gpointer(box.Assign(userData))
+	arg4 = C.gpointer(box.Assign(userData))
 
-	ret := C.g_log_writer_default(arg0, arg1, arg2, arg3)
+	ret := C.g_log_writer_default(arg1, arg2, arg3, arg4)
 
 	var ret0 LogWriterOutput
 
@@ -8990,36 +8791,36 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interf
 // encoded in the character set of the current locale, which is not necessarily
 // UTF-8.
 func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
-	var arg0 C.GLogLevelFlags
-	var arg1 *C.GLogField
-	var arg2 C.gsize
-	var arg3 C.gboolean
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gboolean
 
-	arg0 = (C.GLogLevelFlags)(logLevel)
+	arg1 = (C.GLogLevelFlags)(logLevel)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_GLogField * len(fields))),
-			Len:  len(fields),
-			Cap:  len(fields),
-		}
-		dst := *(*[]C.GLogField)(unsafe.Pointer(&sliceHeader))
+		var dst []C.GLogField
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(fields); i++ {
 			src := fields[i]
 			dst[i] = (C.GLogField)(src.Native())
 		}
 
-		arg1 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(fields)
+		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(fields)
 	}
-	arg3 = gextras.Cbool(useColor)
+	arg4 = gextras.Cbool(useColor)
 
-	ret := C.g_log_writer_format_fields(arg0, arg1, arg2, arg3)
+	ret := C.g_log_writer_format_fields(arg1, arg2, arg3, arg4)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9034,11 +8835,11 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 //      is_journald = g_log_writer_is_journald (fileno (stderr));
 //
 func LogWriterIsJournald(outputFd int) bool {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(outputFd)
+	arg1 = C.gint(outputFd)
 
-	ret := C.g_log_writer_is_journald(arg0)
+	ret := C.g_log_writer_is_journald(arg1)
 
 	var ret0 bool
 
@@ -9057,31 +8858,31 @@ func LogWriterIsJournald(outputFd int) bool {
 // If GLib has been compiled without systemd support, this function is still
 // defined, but will always return G_LOG_WRITER_UNHANDLED.
 func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var arg0 C.GLogLevelFlags
-	var arg1 *C.GLogField
-	var arg2 C.gsize
-	var arg3 C.gpointer
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gpointer
 
-	arg0 = (C.GLogLevelFlags)(logLevel)
+	arg1 = (C.GLogLevelFlags)(logLevel)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_GLogField * len(fields))),
-			Len:  len(fields),
-			Cap:  len(fields),
-		}
-		dst := *(*[]C.GLogField)(unsafe.Pointer(&sliceHeader))
+		var dst []C.GLogField
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(fields); i++ {
 			src := fields[i]
 			dst[i] = (C.GLogField)(src.Native())
 		}
 
-		arg1 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(fields)
+		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(fields)
 	}
-	arg3 = C.gpointer(box.Assign(userData))
+	arg4 = C.gpointer(box.Assign(userData))
 
-	ret := C.g_log_writer_journald(arg0, arg1, arg2, arg3)
+	ret := C.g_log_writer_journald(arg1, arg2, arg3, arg4)
 
 	var ret0 LogWriterOutput
 
@@ -9103,31 +8904,31 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData inter
 //
 // This is suitable for use as a WriterFunc.
 func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
-	var arg0 C.GLogLevelFlags
-	var arg1 *C.GLogField
-	var arg2 C.gsize
-	var arg3 C.gpointer
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gpointer
 
-	arg0 = (C.GLogLevelFlags)(logLevel)
+	arg1 = (C.GLogLevelFlags)(logLevel)
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_GLogField * len(fields))),
-			Len:  len(fields),
-			Cap:  len(fields),
-		}
-		dst := *(*[]C.GLogField)(unsafe.Pointer(&sliceHeader))
+		var dst []C.GLogField
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GLogField * len(fields))))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(fields); i++ {
 			src := fields[i]
 			dst[i] = (C.GLogField)(src.Native())
 		}
 
-		arg1 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(fields)
+		arg2 = (*C.GLogField)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(fields)
 	}
-	arg3 = C.gpointer(box.Assign(userData))
+	arg4 = C.gpointer(box.Assign(userData))
 
-	ret := C.g_log_writer_standard_streams(arg0, arg1, arg2, arg3)
+	ret := C.g_log_writer_standard_streams(arg1, arg2, arg3, arg4)
 
 	var ret0 LogWriterOutput
 
@@ -9140,11 +8941,11 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 // supports ANSI color escape sequences. If so, they can safely be used when
 // formatting log messages.
 func LogWriterSupportsColor(outputFd int) bool {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(outputFd)
+	arg1 = C.gint(outputFd)
 
-	ret := C.g_log_writer_supports_color(arg0)
+	ret := C.g_log_writer_supports_color(arg1)
 
 	var ret0 bool
 
@@ -9289,11 +9090,11 @@ func MainDepth() int {
 
 // Malloc allocates @n_bytes bytes of memory. If @n_bytes is 0 it returns nil.
 func Malloc(nBytes uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(nBytes)
+	arg1 = C.gsize(nBytes)
 
-	ret := C.g_malloc(arg0)
+	ret := C.g_malloc(arg1)
 
 	var ret0 interface{}
 
@@ -9305,11 +9106,11 @@ func Malloc(nBytes uint) interface{} {
 // Malloc0 allocates @n_bytes bytes of memory, initialized to 0's. If @n_bytes
 // is 0 it returns nil.
 func Malloc0(nBytes uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(nBytes)
+	arg1 = C.gsize(nBytes)
 
-	ret := C.g_malloc0(arg0)
+	ret := C.g_malloc0(arg1)
 
 	var ret0 interface{}
 
@@ -9322,13 +9123,13 @@ func Malloc0(nBytes uint) interface{} {
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg0 C.gsize
 	var arg1 C.gsize
+	var arg2 C.gsize
 
-	arg0 = C.gsize(nBlocks)
-	arg1 = C.gsize(nBlockBytes)
+	arg1 = C.gsize(nBlocks)
+	arg2 = C.gsize(nBlockBytes)
 
-	ret := C.g_malloc0_n(arg0, arg1)
+	ret := C.g_malloc0_n(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -9341,13 +9142,13 @@ func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg0 C.gsize
 	var arg1 C.gsize
+	var arg2 C.gsize
 
-	arg0 = C.gsize(nBlocks)
-	arg1 = C.gsize(nBlockBytes)
+	arg1 = C.gsize(nBlocks)
+	arg2 = C.gsize(nBlockBytes)
 
-	ret := C.g_malloc_n(arg0, arg1)
+	ret := C.g_malloc_n(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -9385,19 +9186,19 @@ func MarkupErrorQuark() Quark {
 // carriage return. The character references in this range are not valid XML
 // 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup parser.
 func MarkupEscapeText(text string, length int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(text))
-	arg1 = C.gssize(length)
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(length)
 
-	ret := C.g_markup_escape_text(arg0, arg1)
+	ret := C.g_markup_escape_text(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9432,23 +9233,23 @@ func MemProfile() {
 // main is reached. Therefore this function is now deprecated and is just a
 // stub.
 func MemSetVtable(vtable *MemVTable) {
-	var arg0 *C.GMemVTable
+	var arg1 *C.GMemVTable
 
-	arg0 = (*C.GMemVTable)(vtable.Native())
+	arg1 = (*C.GMemVTable)(vtable.Native())
 
-	C.g_mem_set_vtable(arg0)
+	C.g_mem_set_vtable(arg1)
 }
 
 // Memdup allocates @byte_size bytes of memory, and copies @byte_size bytes into
 // it from @mem. If @mem is nil it returns nil.
 func Memdup(mem interface{}, byteSize uint) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.guint
+	var arg1 C.gpointer
+	var arg2 C.guint
 
-	arg0 = C.gpointer(box.Assign(mem))
-	arg1 = C.guint(byteSize)
+	arg1 = C.gpointer(box.Assign(mem))
+	arg2 = C.guint(byteSize)
 
-	ret := C.g_memdup(arg0, arg1)
+	ret := C.g_memdup(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -9460,14 +9261,14 @@ func Memdup(mem interface{}, byteSize uint) interface{} {
 // MkdirWithParents: create a directory if it doesn't already exist. Create
 // intermediate parent directories as needed, too.
 func MkdirWithParents(pathname string, mode int) int {
-	var arg0 *C.gchar
-	var arg1 C.gint
+	var arg1 *C.gchar
+	var arg2 C.gint
 
-	arg0 = (*C.gchar)(C.CString(pathname))
-	defer C.free(unsafe.Pointer(pathname))
-	arg1 = C.gint(mode)
+	arg1 = (*C.gchar)(C.CString(pathname))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(mode)
 
-	ret := C.g_mkdir_with_parents(arg0, arg1)
+	ret := C.g_mkdir_with_parents(arg1, arg2)
 
 	var ret0 int
 
@@ -9489,17 +9290,17 @@ func MkdirWithParents(pathname string, mode int) int {
 // If you are going to be creating a temporary directory inside the directory
 // returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
 func Mkdtemp(tmpl string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(tmpl))
+	arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_mkdtemp(arg0)
+	ret := C.g_mkdtemp(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9518,19 +9319,19 @@ func Mkdtemp(tmpl string) string {
 // If you are going to be creating a temporary directory inside the directory
 // returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
 func MkdtempFull(tmpl string, mode int) string {
-	var arg0 *C.gchar
-	var arg1 C.gint
+	var arg1 *C.gchar
+	var arg2 C.gint
 
-	arg0 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(tmpl))
-	arg1 = C.gint(mode)
+	arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(mode)
 
-	ret := C.g_mkdtemp_full(arg0, arg1)
+	ret := C.g_mkdtemp_full(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9545,12 +9346,12 @@ func MkdtempFull(tmpl string, mode int) string {
 // file that didn't exist. The string should be in the GLib file name encoding.
 // Most importantly, on Windows it should be in UTF-8.
 func Mkstemp(tmpl string) int {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(tmpl))
+	arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_mkstemp(arg0)
+	ret := C.g_mkstemp(arg1)
 
 	var ret0 int
 
@@ -9570,16 +9371,16 @@ func Mkstemp(tmpl string) int {
 // The string should be in the GLib file name encoding. Most importantly, on
 // Windows it should be in UTF-8.
 func MkstempFull(tmpl string, flags int, mode int) int {
-	var arg0 *C.gchar
-	var arg1 C.gint
+	var arg1 *C.gchar
 	var arg2 C.gint
+	var arg3 C.gint
 
-	arg0 = (*C.gchar)(C.CString(tmpl))
-	defer C.free(unsafe.Pointer(tmpl))
-	arg1 = C.gint(flags)
-	arg2 = C.gint(mode)
+	arg1 = (*C.gchar)(C.CString(tmpl))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(flags)
+	arg3 = C.gint(mode)
 
-	ret := C.g_mkstemp_full(arg0, arg1, arg2)
+	ret := C.g_mkstemp_full(arg1, arg2, arg3)
 
 	var ret0 int
 
@@ -9590,11 +9391,11 @@ func MkstempFull(tmpl string, flags int, mode int) int {
 
 // NullifyPointer: set the pointer at the specified location to nil.
 func NullifyPointer(nullifyLocation interface{}) {
-	var arg0 *C.gpointer
+	var arg1 *C.gpointer
 
-	arg0 = C.gpointer(box.Assign(nullifyLocation))
+	arg1 = C.gpointer(box.Assign(nullifyLocation))
 
-	C.g_nullify_pointer(arg0)
+	C.g_nullify_pointer(arg1)
 }
 
 func NumberParserErrorQuark() Quark {
@@ -9656,12 +9457,12 @@ func NumberParserErrorQuark() Quark {
 // GLib Applications (glib-running.html)) and calling g_on_error_stack_trace()
 // instead.
 func OnErrorQuery(prgName string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(prgName))
-	defer C.free(unsafe.Pointer(prgName))
+	arg1 = (*C.gchar)(C.CString(prgName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_on_error_query(arg0)
+	C.g_on_error_query(arg1)
 }
 
 // OnErrorStackTrace invokes gdb, which attaches to the current process and
@@ -9677,12 +9478,12 @@ func OnErrorQuery(prgName string) {
 // to attach and handle that exception (see Running GLib Applications
 // (glib-running.html)).
 func OnErrorStackTrace(prgName string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(prgName))
-	defer C.free(unsafe.Pointer(prgName))
+	arg1 = (*C.gchar)(C.CString(prgName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_on_error_stack_trace(arg0)
+	C.g_on_error_stack_trace(arg1)
 }
 
 // OnceInitEnter: function to be called when starting a critical initialization
@@ -9706,11 +9507,11 @@ func OnErrorStackTrace(prgName string) {
 //      // use initialization_value here
 //
 func OnceInitEnter(location interface{}) bool {
-	var arg0 *C.void
+	var arg1 *C.void
 
-	arg0 = C.gpointer(box.Assign(location))
+	arg1 = C.gpointer(box.Assign(location))
 
-	ret := C.g_once_init_enter(arg0)
+	ret := C.g_once_init_enter(arg1)
 
 	var ret0 bool
 
@@ -9725,13 +9526,13 @@ func OnceInitEnter(location interface{}) bool {
 // concurrent threads blocking in g_once_init_enter() on this initialization
 // variable.
 func OnceInitLeave(location interface{}, result uint) {
-	var arg0 *C.void
-	var arg1 C.gsize
+	var arg1 *C.void
+	var arg2 C.gsize
 
-	arg0 = C.gpointer(box.Assign(location))
-	arg1 = C.gsize(result)
+	arg1 = C.gpointer(box.Assign(location))
+	arg2 = C.gsize(result)
 
-	C.g_once_init_leave(arg0, arg1)
+	C.g_once_init_leave(arg1, arg2)
 }
 
 func OptionErrorQuark() Quark {
@@ -9760,30 +9561,30 @@ func OptionErrorQuark() Quark {
 // If @string is equal to "help", all the available keys in @keys are printed
 // out to standard error.
 func ParseDebugString(string string, keys []DebugKey) uint {
-	var arg0 *C.gchar
-	var arg1 *C.GDebugKey
-	var arg2 C.guint
+	var arg1 *C.gchar
+	var arg2 *C.GDebugKey
+	var arg3 C.guint
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_GDebugKey * len(keys))),
-			Len:  len(keys),
-			Cap:  len(keys),
-		}
-		dst := *(*[]C.GDebugKey)(unsafe.Pointer(&sliceHeader))
+		var dst []C.GDebugKey
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_GDebugKey * len(keys))))
+		sliceHeader.Len = len(keys)
+		sliceHeader.Cap = len(keys)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(keys); i++ {
 			src := keys[i]
 			dst[i] = (C.GDebugKey)(src.Native())
 		}
 
-		arg1 = (*C.GDebugKey)(unsafe.Pointer(sliceHeader.Data))
-		arg2 = len(keys)
+		arg2 = (*C.GDebugKey)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(keys)
 	}
 
-	ret := C.g_parse_debug_string(arg0, arg1, arg2)
+	ret := C.g_parse_debug_string(arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -9799,17 +9600,17 @@ func ParseDebugString(string string, keys []DebugKey) uint {
 // Windows, possibly a drive letter), a single separator is returned. If
 // @file_name is empty, it gets ".".
 func PathGetBasename(fileName string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(fileName))
+	arg1 = (*C.gchar)(C.CString(fileName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_path_get_basename(arg0)
+	ret := C.g_path_get_basename(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9821,17 +9622,17 @@ func PathGetBasename(fileName string) string {
 // If the file name has no directory components "." is returned. The returned
 // string should be freed when no longer needed.
 func PathGetDirname(fileName string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(fileName))
+	arg1 = (*C.gchar)(C.CString(fileName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_path_get_dirname(arg0)
+	ret := C.g_path_get_dirname(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -9859,12 +9660,12 @@ func PathGetDirname(fileName string) string {
 // getcwd() or g_get_current_dir() either. Such paths should be avoided, or need
 // to be handled using Windows-specific code.
 func PathIsAbsolute(fileName string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(fileName))
+	arg1 = (*C.gchar)(C.CString(fileName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_path_is_absolute(arg0)
+	ret := C.g_path_is_absolute(arg1)
 
 	var ret0 bool
 
@@ -9877,17 +9678,16 @@ func PathIsAbsolute(fileName string) bool {
 // after the "/" in UNIX or "C:\" under Windows. If @file_name is not an
 // absolute path it returns nil.
 func PathSkipRoot(fileName string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(fileName))
+	arg1 = (*C.gchar)(C.CString(fileName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_path_skip_root(arg0)
+	ret := C.g_path_skip_root(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -9909,19 +9709,19 @@ func PathSkipRoot(fileName string) string {
 // any multibyte characters. GLib offers the g_utf8_strreverse() function to
 // reverse UTF-8 encoded strings.
 func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringReversed string) bool {
-	var arg0 *C.GPatternSpec
-	var arg1 C.guint
-	var arg2 *C.gchar
+	var arg1 *C.GPatternSpec
+	var arg2 C.guint
 	var arg3 *C.gchar
+	var arg4 *C.gchar
 
-	arg0 = (*C.GPatternSpec)(pspec.Native())
-	arg1 = C.guint(stringLength)
-	arg2 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg3 = (*C.gchar)(C.CString(stringReversed))
-	defer C.free(unsafe.Pointer(stringReversed))
+	arg1 = (*C.GPatternSpec)(pspec.Native())
+	arg2 = C.guint(stringLength)
+	arg3 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(stringReversed))
+	defer C.free(unsafe.Pointer(arg4))
 
-	ret := C.g_pattern_match(arg0, arg1, arg2, arg3)
+	ret := C.g_pattern_match(arg1, arg2, arg3, arg4)
 
 	var ret0 bool
 
@@ -9935,15 +9735,15 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
 func PatternMatchSimple(pattern string, string string) bool {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(pattern))
-	defer C.free(unsafe.Pointer(pattern))
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_pattern_match_simple(arg0, arg1)
+	ret := C.g_pattern_match_simple(arg1, arg2)
 
 	var ret0 bool
 
@@ -9956,14 +9756,14 @@ func PatternMatchSimple(pattern string, string string) bool {
 // is to be matched against more than one pattern, consider using
 // g_pattern_match() instead while supplying the reversed string.
 func PatternMatchString(pspec *PatternSpec, string string) bool {
-	var arg0 *C.GPatternSpec
-	var arg1 *C.gchar
+	var arg1 *C.GPatternSpec
+	var arg2 *C.gchar
 
-	arg0 = (*C.GPatternSpec)(pspec.Native())
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.GPatternSpec)(pspec.Native())
+	arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_pattern_match_string(arg0, arg1)
+	ret := C.g_pattern_match_string(arg1, arg2)
 
 	var ret0 bool
 
@@ -9978,13 +9778,13 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
 func PointerBitLock(address interface{}, lockBit int) {
-	var arg0 *C.void
-	var arg1 C.gint
+	var arg1 *C.void
+	var arg2 C.gint
 
-	arg0 = C.gpointer(box.Assign(address))
-	arg1 = C.gint(lockBit)
+	arg1 = C.gpointer(box.Assign(address))
+	arg2 = C.gint(lockBit)
 
-	C.g_pointer_bit_lock(arg0, arg1)
+	C.g_pointer_bit_lock(arg1, arg2)
 }
 
 // PointerBitTrylock: this is equivalent to g_bit_trylock, but working on
@@ -9993,13 +9793,13 @@ func PointerBitLock(address interface{}, lockBit int) {
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
 func PointerBitTrylock(address interface{}, lockBit int) bool {
-	var arg0 *C.void
-	var arg1 C.gint
+	var arg1 *C.void
+	var arg2 C.gint
 
-	arg0 = C.gpointer(box.Assign(address))
-	arg1 = C.gint(lockBit)
+	arg1 = C.gpointer(box.Assign(address))
+	arg2 = C.gint(lockBit)
 
-	ret := C.g_pointer_bit_trylock(arg0, arg1)
+	ret := C.g_pointer_bit_trylock(arg1, arg2)
 
 	var ret0 bool
 
@@ -10014,13 +9814,13 @@ func PointerBitTrylock(address interface{}, lockBit int) bool {
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
 func PointerBitUnlock(address interface{}, lockBit int) {
-	var arg0 *C.void
-	var arg1 C.gint
+	var arg1 *C.void
+	var arg2 C.gint
 
-	arg0 = C.gpointer(box.Assign(address))
-	arg1 = C.gint(lockBit)
+	arg1 = C.gpointer(box.Assign(address))
+	arg2 = C.gint(lockBit)
 
-	C.g_pointer_bit_unlock(arg0, arg1)
+	C.g_pointer_bit_unlock(arg1, arg2)
 }
 
 // Poll polls @fds, as with the poll() system call, but portably. (On systems
@@ -10038,15 +9838,15 @@ func PointerBitUnlock(address interface{}, lockBit int) {
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
 func Poll(fds *PollFD, nfds uint, timeout int) int {
-	var arg0 *C.GPollFD
-	var arg1 C.guint
-	var arg2 C.gint
+	var arg1 *C.GPollFD
+	var arg2 C.guint
+	var arg3 C.gint
 
-	arg0 = (*C.GPollFD)(fds.Native())
-	arg1 = C.guint(nfds)
-	arg2 = C.gint(timeout)
+	arg1 = (*C.GPollFD)(fds.Native())
+	arg2 = C.guint(nfds)
+	arg3 = C.gint(timeout)
 
-	ret := C.g_poll(arg0, arg1, arg2)
+	ret := C.g_poll(arg1, arg2, arg3)
 
 	var ret0 int
 
@@ -10064,17 +9864,16 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 // the same GError*, you need to set it to nil after calling this function on
 // it.
 func PropagateError(src *Error) *Error {
-	var arg0 **C.GError // out
+	var arg1 **C.GError // out
+	var arg2 *C.GError
 
-	var arg1 *C.GError
+	arg2 = (*C.GError)(src.Native())
 
-	arg1 = (*C.GError)(src.Native())
-
-	ret := C.g_propagate_error(&arg0, arg1)
+	ret := C.g_propagate_error(&arg1, arg2)
 
 	var ret0 **Error
 
-	ret0 = WrapError(arg0)
+	ret0 = WrapError(arg1)
 
 	return ret0
 }
@@ -10088,21 +9887,21 @@ func PropagateError(src *Error) *Error {
 // This does pointer comparisons only. If you want to use more complex equality
 // checks, such as string comparisons, use g_ptr_array_find_with_equal_func().
 func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok bool) {
-	var arg0 *C.GPtrArray
-	var arg1 C.gpointer
-	var arg2 *C.guint // out
+	var arg1 *C.GPtrArray
+	var arg2 C.gpointer
+	var arg3 *C.guint // out
 
 	{
 
 	}
-	arg1 = C.gpointer(box.Assign(needle))
+	arg2 = C.gpointer(box.Assign(needle))
 
-	ret := C.g_ptr_array_find(arg0, arg1, &arg2)
+	ret := C.g_ptr_array_find(arg1, arg2, &arg3)
 
 	var ret0 uint
 	var ret1 bool
 
-	ret0 = uint(arg2)
+	ret0 = uint(arg3)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10119,23 +9918,23 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 // and @needle as its second parameter. If @equal_func is nil, pointer equality
 // is used.
 func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equalFunc EqualFunc) (index_ uint, ok bool) {
-	var arg0 *C.GPtrArray
-	var arg1 C.gpointer
-	var arg2 C.GEqualFunc
-	var arg3 *C.guint // out
+	var arg1 *C.GPtrArray
+	var arg2 C.gpointer
+	var arg3 C.GEqualFunc
+	var arg4 *C.guint // out
 
 	{
 
 	}
-	arg1 = C.gpointer(box.Assign(needle))
-	arg2 = (*[0]byte)(C.gotk4_EqualFunc)
+	arg2 = C.gpointer(box.Assign(needle))
+	arg3 = (*[0]byte)(C.gotk4_EqualFunc)
 
-	ret := C.g_ptr_array_find_with_equal_func(arg0, arg1, arg2, &arg3)
+	ret := C.g_ptr_array_find_with_equal_func(arg1, arg2, arg3, &arg4)
 
 	var ret0 uint
 	var ret1 bool
 
-	ret0 = uint(arg3)
+	ret0 = uint(arg4)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10147,18 +9946,18 @@ func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equal
 //
 // This is guaranteed to be a stable sort since version 2.32.
 func QsortWithData(pbase interface{}, totalElems int, size uint, compareFunc CompareDataFunc) {
-	var arg0 C.gpointer
-	var arg1 C.gint
-	var arg2 C.gsize
-	var arg3 C.GCompareDataFunc
-	arg4 := C.gpointer(box.Assign(userData))
+	var arg1 C.gpointer
+	var arg2 C.gint
+	var arg3 C.gsize
+	var arg4 C.GCompareDataFunc
+	arg5 := C.gpointer(box.Assign(userData))
 
-	arg0 = C.gpointer(box.Assign(pbase))
-	arg1 = C.gint(totalElems)
-	arg2 = C.gsize(size)
-	arg3 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	arg1 = C.gpointer(box.Assign(pbase))
+	arg2 = C.gint(totalElems)
+	arg3 = C.gsize(size)
+	arg4 = (*[0]byte)(C.gotk4_CompareDataFunc)
 
-	C.g_qsort_with_data(arg0, arg1, arg2, arg3)
+	C.g_qsort_with_data(arg1, arg2, arg3, arg4)
 }
 
 // QuarkFromStaticString gets the #GQuark identifying the given (static) string.
@@ -10177,12 +9976,12 @@ func QsortWithData(pbase interface{}, totalElems int, size uint, compareFunc Com
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
 func QuarkFromStaticString(string string) Quark {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_quark_from_static_string(arg0)
+	ret := C.g_quark_from_static_string(arg1)
 
 	var ret0 Quark
 
@@ -10203,12 +10002,12 @@ func QuarkFromStaticString(string string) Quark {
 // running. In particular, this means it cannot be used to initialize global
 // variables in C++.
 func QuarkFromString(string string) Quark {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_quark_from_string(arg0)
+	ret := C.g_quark_from_string(arg1)
 
 	var ret0 Quark
 
@@ -10223,14 +10022,13 @@ func QuarkFromString(string string) Quark {
 
 // QuarkToString gets the string associated with the given #GQuark.
 func QuarkToString(quark Quark) string {
-	var arg0 C.GQuark
+	var arg1 C.GQuark
 
-	ret := C.g_quark_to_string(arg0)
+	ret := C.g_quark_to_string(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -10244,12 +10042,12 @@ func QuarkToString(quark Quark) string {
 // This function must not be used before library constructors have finished
 // running.
 func QuarkTryString(string string) Quark {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_quark_try_string(arg0)
+	ret := C.g_quark_try_string(arg1)
 
 	var ret0 Quark
 
@@ -10278,13 +10076,13 @@ func RandomDouble() float64 {
 // RandomDoubleRange returns a random #gdouble equally distributed over the
 // range [@begin..@end).
 func RandomDoubleRange(begin float64, end float64) float64 {
-	var arg0 C.gdouble
 	var arg1 C.gdouble
+	var arg2 C.gdouble
 
-	arg0 = C.gdouble(begin)
-	arg1 = C.gdouble(end)
+	arg1 = C.gdouble(begin)
+	arg2 = C.gdouble(end)
 
-	ret := C.g_random_double_range(arg0, arg1)
+	ret := C.g_random_double_range(arg1, arg2)
 
 	var ret0 float64
 
@@ -10309,13 +10107,13 @@ func RandomInt() uint32 {
 // RandomIntRange returns a random #gint32 equally distributed over the range
 // [@begin..@end-1].
 func RandomIntRange(begin int32, end int32) int32 {
-	var arg0 C.gint32
 	var arg1 C.gint32
+	var arg2 C.gint32
 
-	arg0 = C.gint32(begin)
-	arg1 = C.gint32(end)
+	arg1 = C.gint32(begin)
+	arg2 = C.gint32(end)
 
-	ret := C.g_random_int_range(arg0, arg1)
+	ret := C.g_random_int_range(arg1, arg2)
 
 	var ret0 int32
 
@@ -10327,20 +10125,20 @@ func RandomIntRange(begin int32, end int32) int32 {
 // RandomSetSeed sets the seed for the global random number generator, which is
 // used by the g_random_* functions, to @seed.
 func RandomSetSeed(seed uint32) {
-	var arg0 C.guint32
+	var arg1 C.guint32
 
-	arg0 = C.guint32(seed)
+	arg1 = C.guint32(seed)
 
-	C.g_random_set_seed(arg0)
+	C.g_random_set_seed(arg1)
 }
 
 // RcBoxAcquire acquires a reference on the data pointed by @mem_block.
 func RcBoxAcquire(memBlock interface{}) interface{} {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_rc_box_acquire(arg0)
+	ret := C.g_rc_box_acquire(arg1)
 
 	var ret0 interface{}
 
@@ -10357,11 +10155,11 @@ func RcBoxAcquire(memBlock interface{}) interface{} {
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
 func RcBoxAlloc(blockSize uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(blockSize)
+	arg1 = C.gsize(blockSize)
 
-	ret := C.g_rc_box_alloc(arg0)
+	ret := C.g_rc_box_alloc(arg1)
 
 	var ret0 interface{}
 
@@ -10380,11 +10178,11 @@ func RcBoxAlloc(blockSize uint) interface{} {
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
 func RcBoxAlloc0(blockSize uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(blockSize)
+	arg1 = C.gsize(blockSize)
 
-	ret := C.g_rc_box_alloc0(arg0)
+	ret := C.g_rc_box_alloc0(arg1)
 
 	var ret0 interface{}
 
@@ -10396,13 +10194,13 @@ func RcBoxAlloc0(blockSize uint) interface{} {
 // RcBoxDup allocates a new block of data with reference counting semantics, and
 // copies @block_size bytes of @mem_block into it.
 func RcBoxDup(blockSize uint, memBlock interface{}) interface{} {
-	var arg0 C.gsize
-	var arg1 C.gpointer
+	var arg1 C.gsize
+	var arg2 C.gpointer
 
-	arg0 = C.gsize(blockSize)
-	arg1 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gsize(blockSize)
+	arg2 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_rc_box_dup(arg0, arg1)
+	ret := C.g_rc_box_dup(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -10414,11 +10212,11 @@ func RcBoxDup(blockSize uint, memBlock interface{}) interface{} {
 // RcBoxGetSize retrieves the size of the reference counted data pointed by
 // @mem_block.
 func RcBoxGetSize(memBlock interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_rc_box_get_size(arg0)
+	ret := C.g_rc_box_get_size(arg1)
 
 	var ret0 uint
 
@@ -10432,11 +10230,11 @@ func RcBoxGetSize(memBlock interface{}) uint {
 // If the reference was the last one, it will free the resources allocated for
 // @mem_block.
 func RcBoxRelease(memBlock interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	C.g_rc_box_release(arg0)
+	C.g_rc_box_release(arg1)
 }
 
 // RcBoxReleaseFull releases a reference on the data pointed by @mem_block.
@@ -10445,11 +10243,11 @@ func RcBoxRelease(memBlock interface{}) {
 // contents of @mem_block, and then will free the resources allocated for
 // @mem_block.
 func RcBoxReleaseFull(memBlock interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gpointer(box.Assign(memBlock))
 
-	C.g_rc_box_release_full(arg0, (*[0]byte)(C.free))
+	C.g_rc_box_release_full(arg1, (*[0]byte)(C.free))
 }
 
 // Realloc reallocates the memory pointed to by @mem, so that it now has space
@@ -10458,13 +10256,13 @@ func RcBoxReleaseFull(memBlock interface{}) {
 // zero-length. @n_bytes may be 0, in which case nil will be returned and @mem
 // will be freed unless it is nil.
 func Realloc(mem interface{}, nBytes uint) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.gsize
+	var arg1 C.gpointer
+	var arg2 C.gsize
 
-	arg0 = C.gpointer(box.Assign(mem))
-	arg1 = C.gsize(nBytes)
+	arg1 = C.gpointer(box.Assign(mem))
+	arg2 = C.gsize(nBytes)
 
-	ret := C.g_realloc(arg0, arg1)
+	ret := C.g_realloc(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -10477,15 +10275,15 @@ func Realloc(mem interface{}, nBytes uint) interface{} {
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.gsize
+	var arg1 C.gpointer
 	var arg2 C.gsize
+	var arg3 C.gsize
 
-	arg0 = C.gpointer(box.Assign(mem))
-	arg1 = C.gsize(nBlocks)
-	arg2 = C.gsize(nBlockBytes)
+	arg1 = C.gpointer(box.Assign(mem))
+	arg2 = C.gsize(nBlocks)
+	arg3 = C.gsize(nBlockBytes)
 
-	ret := C.g_realloc_n(arg0, arg1, arg2)
+	ret := C.g_realloc_n(arg1, arg2, arg3)
 
 	var ret0 interface{}
 
@@ -10496,13 +10294,13 @@ func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 
 // RefCountCompare compares the current value of @rc with @val.
 func RefCountCompare(rc int, val int) bool {
-	var arg0 *C.grefcount
-	var arg1 C.gint
+	var arg1 *C.grefcount
+	var arg2 C.gint
 
-	arg0 = (*C.grefcount)(rc)
-	arg1 = C.gint(val)
+	arg1 = (*C.grefcount)(rc)
+	arg2 = C.gint(val)
 
-	ret := C.g_ref_count_compare(arg0, arg1)
+	ret := C.g_ref_count_compare(arg1, arg2)
 
 	var ret0 bool
 
@@ -10513,11 +10311,11 @@ func RefCountCompare(rc int, val int) bool {
 
 // RefCountDec decreases the reference count.
 func RefCountDec(rc int) bool {
-	var arg0 *C.grefcount
+	var arg1 *C.grefcount
 
-	arg0 = (*C.grefcount)(rc)
+	arg1 = (*C.grefcount)(rc)
 
-	ret := C.g_ref_count_dec(arg0)
+	ret := C.g_ref_count_dec(arg1)
 
 	var ret0 bool
 
@@ -10528,47 +10326,47 @@ func RefCountDec(rc int) bool {
 
 // RefCountInc increases the reference count.
 func RefCountInc(rc int) {
-	var arg0 *C.grefcount
+	var arg1 *C.grefcount
 
-	arg0 = (*C.grefcount)(rc)
+	arg1 = (*C.grefcount)(rc)
 
-	C.g_ref_count_inc(arg0)
+	C.g_ref_count_inc(arg1)
 }
 
 // RefCountInit initializes a reference count variable.
 func RefCountInit(rc int) {
-	var arg0 *C.grefcount
+	var arg1 *C.grefcount
 
-	arg0 = (*C.grefcount)(rc)
+	arg1 = (*C.grefcount)(rc)
 
-	C.g_ref_count_init(arg0)
+	C.g_ref_count_init(arg1)
 }
 
 // RefStringAcquire acquires a reference on a string.
 func RefStringAcquire(str string) string {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_ref_string_acquire(arg0)
+	ret := C.g_ref_string_acquire(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
 
 // RefStringLength retrieves the length of @str.
 func RefStringLength(str string) uint {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_ref_string_length(arg0)
+	ret := C.g_ref_string_length(arg1)
 
 	var ret0 uint
 
@@ -10580,17 +10378,17 @@ func RefStringLength(str string) uint {
 // NewRefString creates a new reference counted string and copies the contents
 // of @str into it.
 func NewRefString(str string) string {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_ref_string_new(arg0)
+	ret := C.g_ref_string_new(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -10602,17 +10400,17 @@ func NewRefString(str string) string {
 // contents of @str, it will return a new reference, instead of creating a new
 // string.
 func RefStringNewIntern(str string) string {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_ref_string_new_intern(arg0)
+	ret := C.g_ref_string_new_intern(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -10623,19 +10421,19 @@ func RefStringNewIntern(str string) string {
 // Since this function does not stop at nul bytes, it is the caller's
 // responsibility to ensure that @str has at least @len addressable bytes.
 func RefStringNewLen(str string, len int) string {
-	var arg0 *C.char
-	var arg1 C.gssize
+	var arg1 *C.char
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_ref_string_new_len(arg0, arg1)
+	ret := C.g_ref_string_new_len(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -10643,12 +10441,12 @@ func RefStringNewLen(str string, len int) string {
 // RefStringRelease releases a reference on a string; if it was the last
 // reference, the resources allocated by the string are freed as well.
 func RefStringRelease(str string) {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_ref_string_release(arg0)
+	C.g_ref_string_release(arg1)
 }
 
 // RegexCheckReplacement checks whether @replacement is a valid replacement
@@ -10660,18 +10458,18 @@ func RefStringRelease(str string) {
 // references and may be evaluated without information about actual match, but
 // '\0\1' (whole match followed by first subpattern) requires valid Info object.
 func RegexCheckReplacement(replacement string) (hasReferences bool, ok bool) {
-	var arg0 *C.gchar
-	var arg1 *C.gboolean // out
+	var arg1 *C.gchar
+	var arg2 *C.gboolean // out
 
-	arg0 = (*C.gchar)(C.CString(replacement))
-	defer C.free(unsafe.Pointer(replacement))
+	arg1 = (*C.gchar)(C.CString(replacement))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_regex_check_replacement(arg0, &arg1)
+	ret := C.g_regex_check_replacement(arg1, &arg2)
 
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = gextras.Gobool(arg1)
+	ret0 = gextras.Gobool(arg2)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10699,19 +10497,19 @@ func RegexErrorQuark() Quark {
 // For completeness, @length can be -1 for a nul-terminated string. In this case
 // the output string will be of course equal to @string.
 func RegexEscapeNUL(string string, length int) string {
-	var arg0 *C.gchar
-	var arg1 C.gint
+	var arg1 *C.gchar
+	var arg2 C.gint
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = C.gint(length)
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gint(length)
 
-	ret := C.g_regex_escape_nul(arg0, arg1)
+	ret := C.g_regex_escape_nul(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -10723,33 +10521,33 @@ func RegexEscapeNUL(string string, length int) string {
 // @string can contain nul characters that are replaced with "\0", in this case
 // remember to specify the correct length of @string in @length.
 func RegexEscapeString(string []string) string {
-	var arg0 *C.gchar
-	var arg1 C.gint
+	var arg1 *C.gchar
+	var arg2 C.gint
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_utf8 * len(string))),
-			Len:  len(string),
-			Cap:  len(string),
-		}
-		dst := *(*[]C.utf8)(unsafe.Pointer(&sliceHeader))
+		var dst []C.gchar
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_gchar * len(string))))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
 		for i := 0; i < len(string); i++ {
 			src := string[i]
 			dst[i] = (*C.gchar)(C.CString(src))
-			defer C.free(unsafe.Pointer(src))
+			defer C.free(unsafe.Pointer(dst[i]))
 		}
 
-		arg0 = (*C.utf8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(string)
+		arg1 = (*C.gchar)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(string)
 	}
 
-	ret := C.g_regex_escape_string(arg0, arg1)
+	ret := C.g_regex_escape_string(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -10765,19 +10563,19 @@ func RegexEscapeString(string []string) string {
 // more efficient to compile the pattern once with g_regex_new() and then use
 // g_regex_match().
 func RegexMatchSimple(pattern string, string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.GRegexCompileFlags
-	var arg3 C.GRegexMatchFlags
+	var arg2 *C.gchar
+	var arg3 C.GRegexCompileFlags
+	var arg4 C.GRegexMatchFlags
 
-	arg0 = (*C.gchar)(C.CString(pattern))
-	defer C.free(unsafe.Pointer(pattern))
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg2 = (C.GRegexCompileFlags)(compileOptions)
-	arg3 = (C.GRegexMatchFlags)(matchOptions)
+	arg1 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (C.GRegexCompileFlags)(compileOptions)
+	arg4 = (C.GRegexMatchFlags)(matchOptions)
 
-	ret := C.g_regex_match_simple(arg0, arg1, arg2, arg3)
+	ret := C.g_regex_match_simple(arg1, arg2, arg3, arg4)
 
 	var ret0 bool
 
@@ -10812,19 +10610,19 @@ func RegexMatchSimple(pattern string, string string, compileOptions RegexCompile
 // example splitting "ab c" using as a separator "\s*", you will get "a", "b"
 // and "c".
 func RegexSplitSimple(pattern string, string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.GRegexCompileFlags
-	var arg3 C.GRegexMatchFlags
+	var arg2 *C.gchar
+	var arg3 C.GRegexCompileFlags
+	var arg4 C.GRegexMatchFlags
 
-	arg0 = (*C.gchar)(C.CString(pattern))
-	defer C.free(unsafe.Pointer(pattern))
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg2 = (C.GRegexCompileFlags)(compileOptions)
-	arg3 = (C.GRegexMatchFlags)(matchOptions)
+	arg1 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (C.GRegexCompileFlags)(compileOptions)
+	arg4 = (C.GRegexMatchFlags)(matchOptions)
 
-	ret := C.g_regex_split_simple(arg0, arg1, arg2, arg3)
+	ret := C.g_regex_split_simple(arg1, arg2, arg3, arg4)
 
 	var ret0 []string
 
@@ -10837,8 +10635,8 @@ func RegexSplitSimple(pattern string, string string, compileOptions RegexCompile
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -10861,18 +10659,18 @@ func ReloadUserSpecialDirsCache() {
 // ReturnIfFailWarning: internal function used to print messages from the public
 // g_return_if_fail() and g_return_val_if_fail() macros.
 func ReturnIfFailWarning(logDomain string, prettyFunction string, expression string) {
-	var arg0 *C.char
 	var arg1 *C.char
 	var arg2 *C.char
+	var arg3 *C.char
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (*C.gchar)(C.CString(prettyFunction))
-	defer C.free(unsafe.Pointer(prettyFunction))
-	arg2 = (*C.gchar)(C.CString(expression))
-	defer C.free(unsafe.Pointer(expression))
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(prettyFunction))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(expression))
+	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_return_if_fail_warning(arg0, arg1, arg2)
+	C.g_return_if_fail_warning(arg1, arg2, arg3)
 }
 
 // Rmdir: a wrapper for the POSIX rmdir() function. The rmdir() function deletes
@@ -10881,12 +10679,12 @@ func ReturnIfFailWarning(logDomain string, prettyFunction string, expression str
 // See your C library manual for more details about how rmdir() works on your
 // system.
 func Rmdir(filename string) int {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_rmdir(arg0)
+	ret := C.g_rmdir(arg1)
 
 	var ret0 int
 
@@ -10897,11 +10695,11 @@ func Rmdir(filename string) int {
 
 // SequenceGet returns the data that @iter points to.
 func SequenceGet(iter *SequenceIter) interface{} {
-	var arg0 *C.GSequenceIter
+	var arg1 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(iter.Native())
+	arg1 = (*C.GSequenceIter)(iter.Native())
 
-	ret := C.g_sequence_get(arg0)
+	ret := C.g_sequence_get(arg1)
 
 	var ret0 interface{}
 
@@ -10913,13 +10711,13 @@ func SequenceGet(iter *SequenceIter) interface{} {
 // SequenceInsertBefore inserts a new item just before the item pointed to by
 // @iter.
 func SequenceInsertBefore(iter *SequenceIter, data interface{}) *SequenceIter {
-	var arg0 *C.GSequenceIter
-	var arg1 C.gpointer
+	var arg1 *C.GSequenceIter
+	var arg2 C.gpointer
 
-	arg0 = (*C.GSequenceIter)(iter.Native())
-	arg1 = C.gpointer(box.Assign(data))
+	arg1 = (*C.GSequenceIter)(iter.Native())
+	arg2 = C.gpointer(box.Assign(data))
 
-	ret := C.g_sequence_insert_before(arg0, arg1)
+	ret := C.g_sequence_insert_before(arg1, arg2)
 
 	var ret0 *SequenceIter
 
@@ -10933,13 +10731,13 @@ func SequenceInsertBefore(iter *SequenceIter, data interface{}) *SequenceIter {
 // immediately after @src. It is allowed for @src and @dest to point into
 // different sequences.
 func SequenceMove(src *SequenceIter, dest *SequenceIter) {
-	var arg0 *C.GSequenceIter
 	var arg1 *C.GSequenceIter
+	var arg2 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(src.Native())
-	arg1 = (*C.GSequenceIter)(dest.Native())
+	arg1 = (*C.GSequenceIter)(src.Native())
+	arg2 = (*C.GSequenceIter)(dest.Native())
 
-	C.g_sequence_move(arg0, arg1)
+	C.g_sequence_move(arg1, arg2)
 }
 
 // SequenceMoveRange inserts the (@begin, @end) range at the destination pointed
@@ -10951,15 +10749,15 @@ func SequenceMove(src *SequenceIter, dest *SequenceIter) {
 // sequence. If @dest points to a place within the (@begin, @end) range, the
 // range does not move.
 func SequenceMoveRange(dest *SequenceIter, begin *SequenceIter, end *SequenceIter) {
-	var arg0 *C.GSequenceIter
 	var arg1 *C.GSequenceIter
 	var arg2 *C.GSequenceIter
+	var arg3 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(dest.Native())
-	arg1 = (*C.GSequenceIter)(begin.Native())
-	arg2 = (*C.GSequenceIter)(end.Native())
+	arg1 = (*C.GSequenceIter)(dest.Native())
+	arg2 = (*C.GSequenceIter)(begin.Native())
+	arg3 = (*C.GSequenceIter)(end.Native())
 
-	C.g_sequence_move_range(arg0, arg1, arg2)
+	C.g_sequence_move_range(arg1, arg2, arg3)
 }
 
 // SequenceRangeGetMidpoint finds an iterator somewhere in the range (@begin,
@@ -10969,13 +10767,13 @@ func SequenceMoveRange(dest *SequenceIter, begin *SequenceIter, end *SequenceIte
 // The @begin and @end iterators must both point to the same sequence and @begin
 // must come before or be equal to @end in the sequence.
 func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) *SequenceIter {
-	var arg0 *C.GSequenceIter
 	var arg1 *C.GSequenceIter
+	var arg2 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(begin.Native())
-	arg1 = (*C.GSequenceIter)(end.Native())
+	arg1 = (*C.GSequenceIter)(begin.Native())
+	arg2 = (*C.GSequenceIter)(end.Native())
 
-	ret := C.g_sequence_range_get_midpoint(arg0, arg1)
+	ret := C.g_sequence_range_get_midpoint(arg1, arg2)
 
 	var ret0 *SequenceIter
 
@@ -10990,11 +10788,11 @@ func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) *SequenceI
 // If the sequence has a data destroy function associated with it, this function
 // is called on the data for the removed item.
 func SequenceRemove(iter *SequenceIter) {
-	var arg0 *C.GSequenceIter
+	var arg1 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(iter.Native())
+	arg1 = (*C.GSequenceIter)(iter.Native())
 
-	C.g_sequence_remove(arg0)
+	C.g_sequence_remove(arg1)
 }
 
 // SequenceRemoveRange removes all items in the (@begin, @end) range.
@@ -11002,38 +10800,38 @@ func SequenceRemove(iter *SequenceIter) {
 // If the sequence has a data destroy function associated with it, this function
 // is called on the data for the removed items.
 func SequenceRemoveRange(begin *SequenceIter, end *SequenceIter) {
-	var arg0 *C.GSequenceIter
 	var arg1 *C.GSequenceIter
+	var arg2 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(begin.Native())
-	arg1 = (*C.GSequenceIter)(end.Native())
+	arg1 = (*C.GSequenceIter)(begin.Native())
+	arg2 = (*C.GSequenceIter)(end.Native())
 
-	C.g_sequence_remove_range(arg0, arg1)
+	C.g_sequence_remove_range(arg1, arg2)
 }
 
 // SequenceSet changes the data for the item pointed to by @iter to be @data. If
 // the sequence has a data destroy function associated with it, that function is
 // called on the existing data that @iter pointed to.
 func SequenceSet(iter *SequenceIter, data interface{}) {
-	var arg0 *C.GSequenceIter
-	var arg1 C.gpointer
+	var arg1 *C.GSequenceIter
+	var arg2 C.gpointer
 
-	arg0 = (*C.GSequenceIter)(iter.Native())
-	arg1 = C.gpointer(box.Assign(data))
+	arg1 = (*C.GSequenceIter)(iter.Native())
+	arg2 = C.gpointer(box.Assign(data))
 
-	C.g_sequence_set(arg0, arg1)
+	C.g_sequence_set(arg1, arg2)
 }
 
 // SequenceSwap swaps the items pointed to by @a and @b. It is allowed for @a
 // and @b to point into difference sequences.
 func SequenceSwap(a *SequenceIter, b *SequenceIter) {
-	var arg0 *C.GSequenceIter
 	var arg1 *C.GSequenceIter
+	var arg2 *C.GSequenceIter
 
-	arg0 = (*C.GSequenceIter)(a.Native())
-	arg1 = (*C.GSequenceIter)(b.Native())
+	arg1 = (*C.GSequenceIter)(a.Native())
+	arg2 = (*C.GSequenceIter)(b.Native())
 
-	C.g_sequence_swap(arg0, arg1)
+	C.g_sequence_swap(arg1, arg2)
 }
 
 // SetApplicationName sets a human-readable name for the application. This name
@@ -11047,12 +10845,12 @@ func SequenceSwap(a *SequenceIter, b *SequenceIter) {
 // The application name will be used in contexts such as error messages, or when
 // displaying an application's name in the task list.
 func SetApplicationName(applicationName string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(applicationName))
-	defer C.free(unsafe.Pointer(applicationName))
+	arg1 = (*C.gchar)(C.CString(applicationName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_set_application_name(arg0)
+	C.g_set_application_name(arg1)
 }
 
 // SetErrorLiteral does nothing if @err is nil; if @err is non-nil, then *@err
@@ -11061,21 +10859,20 @@ func SetApplicationName(applicationName string) {
 // function if @message contains text you don't have control over, that could
 // include printf() escape sequences.
 func SetErrorLiteral(domain Quark, code int, message string) *Error {
-	var arg0 **C.GError // out
+	var arg1 **C.GError // out
+	var arg2 C.GQuark
+	var arg3 C.gint
+	var arg4 *C.gchar
 
-	var arg1 C.GQuark
-	var arg2 C.gint
-	var arg3 *C.gchar
+	arg3 = C.gint(code)
+	arg4 = (*C.gchar)(C.CString(message))
+	defer C.free(unsafe.Pointer(arg4))
 
-	arg2 = C.gint(code)
-	arg3 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(message))
-
-	ret := C.g_set_error_literal(&arg0, arg1, arg2, arg3)
+	ret := C.g_set_error_literal(&arg1, arg2, arg3, arg4)
 
 	var ret0 **Error
 
-	ret0 = WrapError(arg0)
+	ret0 = WrapError(arg1)
 
 	return ret0
 }
@@ -11090,12 +10887,12 @@ func SetErrorLiteral(domain Quark, code int, message string) *Error {
 //
 // Note that for thread-safety reasons this function can only be called once.
 func SetPrgname(prgname string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(prgname))
-	defer C.free(unsafe.Pointer(prgname))
+	arg1 = (*C.gchar)(C.CString(prgname))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_set_prgname(arg0)
+	C.g_set_prgname(arg1)
 }
 
 // SetPrintHandler sets the print handler.
@@ -11105,11 +10902,11 @@ func SetPrgname(prgname string) {
 // handler you can redirect the output, to a GTK+ widget or a log file for
 // example.
 func SetPrintHandler(_func PrintFunc) PrintFunc {
-	var arg0 C.GPrintFunc
+	var arg1 C.GPrintFunc
 
-	arg0 = (*[0]byte)(C.gotk4_PrintFunc)
+	arg1 = (*[0]byte)(C.gotk4_PrintFunc)
 
-	ret := C.g_set_print_handler(arg0)
+	ret := C.g_set_print_handler(arg1)
 
 	var ret0 PrintFunc
 
@@ -11123,11 +10920,11 @@ func SetPrintHandler(_func PrintFunc) PrintFunc {
 // handler you can redirect the output, to a GTK+ widget or a log file for
 // example.
 func SetPrinterrHandler(_func PrintFunc) PrintFunc {
-	var arg0 C.GPrintFunc
+	var arg1 C.GPrintFunc
 
-	arg0 = (*[0]byte)(C.gotk4_PrintFunc)
+	arg1 = (*[0]byte)(C.gotk4_PrintFunc)
 
-	ret := C.g_set_printerr_handler(arg0)
+	ret := C.g_set_printerr_handler(arg1)
 
 	var ret0 PrintFunc
 
@@ -11153,17 +10950,17 @@ func SetPrinterrHandler(_func PrintFunc) PrintFunc {
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
 func Setenv(variable string, value string, overwrite bool) bool {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gboolean
+	var arg2 *C.gchar
+	var arg3 C.gboolean
 
-	arg0 = (*C.gchar)(C.CString(variable))
-	defer C.free(unsafe.Pointer(variable))
-	arg1 = (*C.gchar)(C.CString(value))
-	defer C.free(unsafe.Pointer(value))
-	arg2 = gextras.Cbool(overwrite)
+	arg1 = (*C.gchar)(C.CString(variable))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(value))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = gextras.Cbool(overwrite)
 
-	ret := C.g_setenv(arg0, arg1, arg2)
+	ret := C.g_setenv(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -11196,28 +10993,27 @@ func ShellErrorQuark() Quark {
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
 func ShellParseArgv(commandLine string) (argcp int, argvp []string, ok bool) {
-	var arg0 *C.gchar
-	var arg1 *C.gint // out
+	var arg1 *C.gchar
+	var arg2 *C.gint    // out
+	var arg3 ***C.gchar // out
 
-	var arg2 ***C.gchar // out
+	arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(arg1))
 
-	arg0 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(commandLine))
-
-	ret := C.g_shell_parse_argv(arg0, &arg1, &arg2)
+	ret := C.g_shell_parse_argv(arg1, &arg2, &arg3)
 
 	var ret0 int
 	var ret1 []string
 	var ret2 bool
 
-	ret0 = int(arg1)
+	ret0 = int(arg2)
 
 	{
-		ret1 = make([]string, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
+		ret1 = make([]string, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
 			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			src = C.GoString(ret1[i])
-			defer C.free(unsafe.Pointer(src))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -11232,17 +11028,17 @@ func ShellParseArgv(commandLine string) (argcp int, argvp []string, ok bool) {
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
 func ShellQuote(unquotedString string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(unquotedString))
-	defer C.free(unsafe.Pointer(unquotedString))
+	arg1 = (*C.gchar)(C.CString(unquotedString))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_shell_quote(arg0)
+	ret := C.g_shell_quote(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -11266,17 +11062,17 @@ func ShellQuote(unquotedString string) string {
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
 func ShellUnquote(quotedString string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(quotedString))
-	defer C.free(unsafe.Pointer(quotedString))
+	arg1 = (*C.gchar)(C.CString(quotedString))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_shell_unquote(arg0)
+	ret := C.g_shell_unquote(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -11289,11 +11085,11 @@ func ShellUnquote(quotedString string) string {
 // allocation mechanism can be changed with the
 // [`G_SLICE=always-malloc`][G_SLICE] environment variable.
 func SliceAlloc(blockSize uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(blockSize)
+	arg1 = C.gsize(blockSize)
 
-	ret := C.g_slice_alloc(arg0)
+	ret := C.g_slice_alloc(arg1)
 
 	var ret0 interface{}
 
@@ -11307,11 +11103,11 @@ func SliceAlloc(blockSize uint) interface{} {
 // can be changed with the [`G_SLICE=always-malloc`][G_SLICE] environment
 // variable.
 func SliceAlloc0(blockSize uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(blockSize)
+	arg1 = C.gsize(blockSize)
 
-	ret := C.g_slice_alloc0(arg0)
+	ret := C.g_slice_alloc0(arg1)
 
 	var ret0 interface{}
 
@@ -11325,13 +11121,13 @@ func SliceAlloc0(blockSize uint) interface{} {
 //
 // @mem_block must be non-nil if @block_size is non-zero.
 func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
-	var arg0 C.gsize
-	var arg1 C.gpointer
+	var arg1 C.gsize
+	var arg2 C.gpointer
 
-	arg0 = C.gsize(blockSize)
-	arg1 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gsize(blockSize)
+	arg2 = C.gpointer(box.Assign(memBlock))
 
-	ret := C.g_slice_copy(arg0, arg1)
+	ret := C.g_slice_copy(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -11350,13 +11146,13 @@ func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 //
 // If @mem_block is nil, this function does nothing.
 func SliceFree1(blockSize uint, memBlock interface{}) {
-	var arg0 C.gsize
-	var arg1 C.gpointer
+	var arg1 C.gsize
+	var arg2 C.gpointer
 
-	arg0 = C.gsize(blockSize)
-	arg1 = C.gpointer(box.Assign(memBlock))
+	arg1 = C.gsize(blockSize)
+	arg2 = C.gpointer(box.Assign(memBlock))
 
-	C.g_slice_free1(arg0, arg1)
+	C.g_slice_free1(arg1, arg2)
 }
 
 // SliceFreeChainWithOffset frees a linked list of memory blocks of structure
@@ -11371,23 +11167,23 @@ func SliceFree1(blockSize uint, memBlock interface{}) {
 //
 // If @mem_chain is nil, this function does nothing.
 func SliceFreeChainWithOffset(blockSize uint, memChain interface{}, nextOffset uint) {
-	var arg0 C.gsize
-	var arg1 C.gpointer
-	var arg2 C.gsize
+	var arg1 C.gsize
+	var arg2 C.gpointer
+	var arg3 C.gsize
 
-	arg0 = C.gsize(blockSize)
-	arg1 = C.gpointer(box.Assign(memChain))
-	arg2 = C.gsize(nextOffset)
+	arg1 = C.gsize(blockSize)
+	arg2 = C.gpointer(box.Assign(memChain))
+	arg3 = C.gsize(nextOffset)
 
-	C.g_slice_free_chain_with_offset(arg0, arg1, arg2)
+	C.g_slice_free_chain_with_offset(arg1, arg2, arg3)
 }
 
 func SliceGetConfig(ckey SliceConfig) int64 {
-	var arg0 C.GSliceConfig
+	var arg1 C.GSliceConfig
 
-	arg0 = (C.GSliceConfig)(ckey)
+	arg1 = (C.GSliceConfig)(ckey)
 
-	ret := C.g_slice_get_config(arg0)
+	ret := C.g_slice_get_config(arg1)
 
 	var ret0 int64
 
@@ -11397,15 +11193,15 @@ func SliceGetConfig(ckey SliceConfig) int64 {
 }
 
 func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
-	var arg0 C.GSliceConfig
-	var arg1 C.gint64
-	var arg2 *C.guint
+	var arg1 C.GSliceConfig
+	var arg2 C.gint64
+	var arg3 *C.guint
 
-	arg0 = (C.GSliceConfig)(ckey)
-	arg1 = C.gint64(address)
-	arg2 = (*C.guint)(nValues)
+	arg1 = (C.GSliceConfig)(ckey)
+	arg2 = C.gint64(address)
+	arg3 = (*C.guint)(nValues)
 
-	ret := C.g_slice_get_config_state(arg0, arg1, arg2)
+	ret := C.g_slice_get_config_state(arg1, arg2, arg3)
 
 	var ret0 int64
 
@@ -11415,13 +11211,13 @@ func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
 }
 
 func SliceSetConfig(ckey SliceConfig, value int64) {
-	var arg0 C.GSliceConfig
-	var arg1 C.gint64
+	var arg1 C.GSliceConfig
+	var arg2 C.gint64
 
-	arg0 = (C.GSliceConfig)(ckey)
-	arg1 = C.gint64(value)
+	arg1 = (C.GSliceConfig)(ckey)
+	arg2 = C.gint64(value)
 
-	C.g_slice_set_config(arg0, arg1)
+	C.g_slice_set_config(arg1, arg2)
 }
 
 // SourceRemove removes the source with the given ID from the default main
@@ -11443,11 +11239,11 @@ func SliceSetConfig(ckey SliceConfig, value int64) {
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
 func SourceRemove(tag uint) bool {
-	var arg0 C.guint
+	var arg1 C.guint
 
-	arg0 = C.guint(tag)
+	arg1 = C.guint(tag)
 
-	ret := C.g_source_remove(arg0)
+	ret := C.g_source_remove(arg1)
 
 	var ret0 bool
 
@@ -11460,13 +11256,13 @@ func SourceRemove(tag uint) bool {
 // context given the source functions and user data. If multiple sources exist
 // with the same source functions and user data, only one will be destroyed.
 func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData interface{}) bool {
-	var arg0 *C.GSourceFuncs
-	var arg1 C.gpointer
+	var arg1 *C.GSourceFuncs
+	var arg2 C.gpointer
 
-	arg0 = (*C.GSourceFuncs)(funcs.Native())
-	arg1 = C.gpointer(box.Assign(userData))
+	arg1 = (*C.GSourceFuncs)(funcs.Native())
+	arg2 = C.gpointer(box.Assign(userData))
 
-	ret := C.g_source_remove_by_funcs_user_data(arg0, arg1)
+	ret := C.g_source_remove_by_funcs_user_data(arg1, arg2)
 
 	var ret0 bool
 
@@ -11479,11 +11275,11 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData interface{}) bool 
 // given the user data for the callback. If multiple sources exist with the same
 // user data, only one will be destroyed.
 func SourceRemoveByUserData(userData interface{}) bool {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(userData))
+	arg1 = C.gpointer(box.Assign(userData))
 
-	ret := C.g_source_remove_by_user_data(arg0)
+	ret := C.g_source_remove_by_user_data(arg1)
 
 	var ret0 bool
 
@@ -11507,14 +11303,14 @@ func SourceRemoveByUserData(userData interface{}) bool {
 // ID. This source ID may have been reissued, leading to the operation being
 // performed against the wrong source.
 func SourceSetNameByID(tag uint, name string) {
-	var arg0 C.guint
-	var arg1 *C.char
+	var arg1 C.guint
+	var arg2 *C.char
 
-	arg0 = C.guint(tag)
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(name))
+	arg1 = C.guint(tag)
+	arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_source_set_name_by_id(arg0, arg1)
+	C.g_source_set_name_by_id(arg1, arg2)
 }
 
 // SpacedPrimesClosest gets the smallest prime number from a built-in array of
@@ -11524,11 +11320,11 @@ func SourceSetNameByID(tag uint, name string) {
 // The built-in array of primes ranges from 11 to 13845163 such that each prime
 // is approximately 1.5-2 times the previous prime.
 func SpacedPrimesClosest(num uint) uint {
-	var arg0 C.guint
+	var arg1 C.guint
 
-	arg0 = C.guint(num)
+	arg1 = C.guint(num)
 
-	ret := C.g_spaced_primes_closest(arg0)
+	ret := C.g_spaced_primes_closest(arg1)
 
 	var ret0 uint
 
@@ -11552,33 +11348,33 @@ func SpacedPrimesClosest(num uint) uint {
 // and not its identifier. Process handles and process identifiers are different
 // concepts on Windows.
 func SpawnAsync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, ok bool) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar
+	var arg1 *C.gchar
 	var arg2 **C.gchar
-	var arg3 C.GSpawnFlags
-	var arg4 C.GSpawnChildSetupFunc
-	arg5 := C.gpointer(box.Assign(userData))
-	var arg6 *C.GPid // out
+	var arg3 **C.gchar
+	var arg4 C.GSpawnFlags
+	var arg5 C.GSpawnChildSetupFunc
+	arg6 := C.gpointer(box.Assign(userData))
+	var arg7 *C.GPid // out
 
-	arg0 = (*C.gchar)(C.CString(workingDirectory))
-	defer C.free(unsafe.Pointer(workingDirectory))
+	arg1 = (*C.gchar)(C.CString(workingDirectory))
+	defer C.free(unsafe.Pointer(arg1))
 	{
 
 	}
 	{
 
 	}
-	arg3 = (C.GSpawnFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg4 = (C.GSpawnFlags)(flags)
+	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
 
-	ret := C.g_spawn_async(arg0, arg1, arg2, arg3, arg4, &arg6)
+	ret := C.g_spawn_async(arg1, arg2, arg3, arg4, arg5, &arg7)
 
 	var ret0 *Pid
 	var ret1 bool
 
 	{
 		var tmp int
-		tmp = int(arg6)
+		tmp = int(arg7)
 		ret0 = *Pid(tmp)
 	}
 
@@ -11606,40 +11402,39 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 // It is valid to pass the same fd in multiple parameters (e.g. you can pass a
 // single fd for both stdout and stderr).
 func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int) (childPid Pid, ok bool) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar
+	var arg1 *C.gchar
 	var arg2 **C.gchar
-	var arg3 C.GSpawnFlags
-	var arg4 C.GSpawnChildSetupFunc
-	arg5 := C.gpointer(box.Assign(userData))
-	var arg6 *C.GPid // out
-
-	var arg7 C.gint
+	var arg3 **C.gchar
+	var arg4 C.GSpawnFlags
+	var arg5 C.GSpawnChildSetupFunc
+	arg6 := C.gpointer(box.Assign(userData))
+	var arg7 *C.GPid // out
 	var arg8 C.gint
 	var arg9 C.gint
+	var arg10 C.gint
 
-	arg0 = (*C.gchar)(C.CString(workingDirectory))
-	defer C.free(unsafe.Pointer(workingDirectory))
+	arg1 = (*C.gchar)(C.CString(workingDirectory))
+	defer C.free(unsafe.Pointer(arg1))
 	{
 
 	}
 	{
 
 	}
-	arg3 = (C.GSpawnFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
-	arg7 = C.gint(stdinFd)
-	arg8 = C.gint(stdoutFd)
-	arg9 = C.gint(stderrFd)
+	arg4 = (C.GSpawnFlags)(flags)
+	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg8 = C.gint(stdinFd)
+	arg9 = C.gint(stdoutFd)
+	arg10 = C.gint(stderrFd)
 
-	ret := C.g_spawn_async_with_fds(arg0, arg1, arg2, arg3, arg4, &arg6, arg7, arg8, arg9)
+	ret := C.g_spawn_async_with_fds(arg1, arg2, arg3, arg4, arg5, &arg7, arg8, arg9, arg10)
 
 	var ret0 *Pid
 	var ret1 bool
 
 	{
 		var tmp int
-		tmp = int(arg6)
+		tmp = int(arg7)
 		ret0 = *Pid(tmp)
 	}
 
@@ -11805,32 +11600,29 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
 func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, ok bool) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar
+	var arg1 *C.gchar
 	var arg2 **C.gchar
-	var arg3 C.GSpawnFlags
-	var arg4 C.GSpawnChildSetupFunc
-	arg5 := C.gpointer(box.Assign(userData))
-	var arg6 *C.GPid // out
+	var arg3 **C.gchar
+	var arg4 C.GSpawnFlags
+	var arg5 C.GSpawnChildSetupFunc
+	arg6 := C.gpointer(box.Assign(userData))
+	var arg7 *C.GPid  // out
+	var arg8 *C.gint  // out
+	var arg9 *C.gint  // out
+	var arg10 *C.gint // out
 
-	var arg7 *C.gint // out
-
-	var arg8 *C.gint // out
-
-	var arg9 *C.gint // out
-
-	arg0 = (*C.gchar)(C.CString(workingDirectory))
-	defer C.free(unsafe.Pointer(workingDirectory))
+	arg1 = (*C.gchar)(C.CString(workingDirectory))
+	defer C.free(unsafe.Pointer(arg1))
 	{
 
 	}
 	{
 
 	}
-	arg3 = (C.GSpawnFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg4 = (C.GSpawnFlags)(flags)
+	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
 
-	ret := C.g_spawn_async_with_pipes(arg0, arg1, arg2, arg3, arg4, &arg6, &arg7, &arg8, &arg9)
+	ret := C.g_spawn_async_with_pipes(arg1, arg2, arg3, arg4, arg5, &arg7, &arg8, &arg9, &arg10)
 
 	var ret0 *Pid
 	var ret1 int
@@ -11840,15 +11632,15 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 
 	{
 		var tmp int
-		tmp = int(arg6)
+		tmp = int(arg7)
 		ret0 = *Pid(tmp)
 	}
 
-	ret1 = int(arg7)
+	ret1 = int(arg8)
 
-	ret2 = int(arg8)
+	ret2 = int(arg9)
 
-	ret3 = int(arg9)
+	ret3 = int(arg10)
 
 	ret4 = gextras.Gobool(ret)
 
@@ -11891,11 +11683,11 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 // error message string; it may be translated and/or change in future versions
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) bool {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(exitStatus)
+	arg1 = C.gint(exitStatus)
 
-	ret := C.g_spawn_check_exit_status(arg0)
+	ret := C.g_spawn_check_exit_status(arg1)
 
 	var ret0 bool
 
@@ -11909,9 +11701,9 @@ func SpawnCheckExitStatus(exitStatus int) bool {
 // g_spawn_close_pid() is provided for this purpose. It should be used on all
 // platforms, even though it doesn't do anything under UNIX.
 func SpawnClosePid(pid Pid) {
-	var arg0 C.GPid
+	var arg1 C.GPid
 
-	C.g_spawn_close_pid(arg0)
+	C.g_spawn_close_pid(arg1)
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -11924,12 +11716,12 @@ func SpawnClosePid(pid Pid) {
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
 func SpawnCommandLineAsync(commandLine string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(commandLine))
+	arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_spawn_command_line_async(arg0)
+	ret := C.g_spawn_command_line_async(arg1)
 
 	var ret0 bool
 
@@ -11958,36 +11750,21 @@ func SpawnCommandLineAsync(commandLine string) bool {
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
-func SpawnCommandLineSync(commandLine string) (standardOutput []uint8, standardError []uint8, exitStatus int, ok bool) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
-
+func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, ok bool) {
+	var arg1 *C.gchar
 	var arg2 **C.gchar // out
+	var arg3 **C.gchar // out
+	var arg4 *C.gint   // out
 
-	var arg3 *C.gint // out
+	arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(arg1))
 
-	arg0 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(commandLine))
+	ret := C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4)
 
-	ret := C.g_spawn_command_line_sync(arg0, &arg1, &arg2, &arg3)
-
-	var ret0 []uint8
-	var ret1 []uint8
+	var ret0 []byte
+	var ret1 []byte
 	var ret2 int
 	var ret3 bool
-
-	{
-		var length uint
-		for p := unsafe.Pointer(arg1); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]uint8, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
-			ret0[i] = uint8(src)
-		}
-	}
 
 	{
 		var length uint
@@ -11995,14 +11772,27 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []uint8, standardE
 			length++
 		}
 
-		ret1 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
-			ret1[i] = uint8(src)
+			ret0[i] = byte(src)
 		}
 	}
 
-	ret2 = int(arg3)
+	{
+		var length uint
+		for p := unsafe.Pointer(arg3); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret1 = make([]byte, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			ret1[i] = byte(src)
+		}
+	}
+
+	ret2 = int(arg4)
 
 	ret3 = gextras.Gobool(ret)
 
@@ -12057,49 +11847,34 @@ func SpawnExitErrorQuark() Quark {
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
-func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []uint8, standardError []uint8, exitStatus int, ok bool) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar
+func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, ok bool) {
+	var arg1 *C.gchar
 	var arg2 **C.gchar
-	var arg3 C.GSpawnFlags
-	var arg4 C.GSpawnChildSetupFunc
-	arg5 := C.gpointer(box.Assign(userData))
-	var arg6 **C.gchar // out
-
+	var arg3 **C.gchar
+	var arg4 C.GSpawnFlags
+	var arg5 C.GSpawnChildSetupFunc
+	arg6 := C.gpointer(box.Assign(userData))
 	var arg7 **C.gchar // out
+	var arg8 **C.gchar // out
+	var arg9 *C.gint   // out
 
-	var arg8 *C.gint // out
-
-	arg0 = (*C.gchar)(C.CString(workingDirectory))
-	defer C.free(unsafe.Pointer(workingDirectory))
+	arg1 = (*C.gchar)(C.CString(workingDirectory))
+	defer C.free(unsafe.Pointer(arg1))
 	{
 
 	}
 	{
 
 	}
-	arg3 = (C.GSpawnFlags)(flags)
-	arg4 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg4 = (C.GSpawnFlags)(flags)
+	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
 
-	ret := C.g_spawn_sync(arg0, arg1, arg2, arg3, arg4, &arg6, &arg7, &arg8)
+	ret := C.g_spawn_sync(arg1, arg2, arg3, arg4, arg5, &arg7, &arg8, &arg9)
 
-	var ret0 []uint8
-	var ret1 []uint8
+	var ret0 []byte
+	var ret1 []byte
 	var ret2 int
 	var ret3 bool
-
-	{
-		var length uint
-		for p := unsafe.Pointer(arg6); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		ret0 = make([]uint8, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg6)) + i))
-			ret0[i] = uint8(src)
-		}
-	}
 
 	{
 		var length uint
@@ -12107,14 +11882,27 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 			length++
 		}
 
-		ret1 = make([]uint8, length)
+		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
 			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg7)) + i))
-			ret1[i] = uint8(src)
+			ret0[i] = byte(src)
 		}
 	}
 
-	ret2 = int(arg8)
+	{
+		var length uint
+		for p := unsafe.Pointer(arg8); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret1 = make([]byte, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg8)) + i))
+			ret1[i] = byte(src)
+		}
+	}
+
+	ret2 = int(arg9)
 
 	ret3 = gextras.Gobool(ret)
 
@@ -12126,20 +11914,20 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 // for concatenating multiple strings together without having to repeatedly scan
 // for the end.
 func Stpcpy(dest string, src string) string {
-	var arg0 *C.gchar
-	var arg1 *C.char
+	var arg1 *C.gchar
+	var arg2 *C.char
 
-	arg0 = (*C.gchar)(C.CString(dest))
-	defer C.free(unsafe.Pointer(dest))
-	arg1 = (*C.gchar)(C.CString(src))
-	defer C.free(unsafe.Pointer(src))
+	arg1 = (*C.gchar)(C.CString(dest))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(src))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_stpcpy(arg0, arg1)
+	ret := C.g_stpcpy(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12152,13 +11940,13 @@ func Stpcpy(dest string, src string) string {
 // for general purpose comparisons of non-nil strings. For a nil-safe string
 // comparison function, see g_strcmp0().
 func StrEqual(v1 interface{}, v2 interface{}) bool {
-	var arg0 C.gpointer
 	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v1))
-	arg1 = C.gpointer(box.Assign(v2))
+	arg1 = C.gpointer(box.Assign(v1))
+	arg2 = C.gpointer(box.Assign(v2))
 
-	ret := C.g_str_equal(arg0, arg1)
+	ret := C.g_str_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -12169,15 +11957,15 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 
 // StrHasPrefix looks whether the string @str begins with @prefix.
 func StrHasPrefix(str string, prefix string) bool {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = (*C.gchar)(C.CString(prefix))
-	defer C.free(unsafe.Pointer(prefix))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(prefix))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_str_has_prefix(arg0, arg1)
+	ret := C.g_str_has_prefix(arg1, arg2)
 
 	var ret0 bool
 
@@ -12188,15 +11976,15 @@ func StrHasPrefix(str string, prefix string) bool {
 
 // StrHasSuffix looks whether the string @str ends with @suffix.
 func StrHasSuffix(str string, suffix string) bool {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = (*C.gchar)(C.CString(suffix))
-	defer C.free(unsafe.Pointer(suffix))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(suffix))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_str_has_suffix(arg0, arg1)
+	ret := C.g_str_has_suffix(arg1, arg2)
 
 	var ret0 bool
 
@@ -12218,11 +12006,11 @@ func StrHasSuffix(str string, suffix string) bool {
 // Note that this function may not be a perfect fit for all use cases. For
 // example, it produces some hash collisions with strings as short as 2.
 func StrHash(v interface{}) uint {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(v))
+	arg1 = C.gpointer(box.Assign(v))
 
-	ret := C.g_str_hash(arg0)
+	ret := C.g_str_hash(arg1)
 
 	var ret0 uint
 
@@ -12234,12 +12022,12 @@ func StrHash(v interface{}) uint {
 // StrIsASCII determines if a string is pure ASCII. A string is pure ASCII if it
 // contains no bytes with the high bit set.
 func StrIsASCII(str string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_str_is_ascii(arg0)
+	ret := C.g_str_is_ascii(arg1)
 
 	var ret0 bool
 
@@ -12269,17 +12057,17 @@ func StrIsASCII(str string) bool {
 // Searching ‘fo’ would match ‘Foo’ and ‘Bar Foo Baz’, but not ‘SFO’ (because no
 // word has ‘fo’ as a prefix).
 func StrMatchString(searchTerm string, potentialHit string, acceptAlternates bool) bool {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gboolean
+	var arg2 *C.gchar
+	var arg3 C.gboolean
 
-	arg0 = (*C.gchar)(C.CString(searchTerm))
-	defer C.free(unsafe.Pointer(searchTerm))
-	arg1 = (*C.gchar)(C.CString(potentialHit))
-	defer C.free(unsafe.Pointer(potentialHit))
-	arg2 = gextras.Cbool(acceptAlternates)
+	arg1 = (*C.gchar)(C.CString(searchTerm))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(potentialHit))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = gextras.Cbool(acceptAlternates)
 
-	ret := C.g_str_match_string(arg0, arg1, arg2)
+	ret := C.g_str_match_string(arg1, arg2, arg3)
 
 	var ret0 bool
 
@@ -12305,20 +12093,20 @@ func StrMatchString(searchTerm string, potentialHit string, acceptAlternates boo
 // If you want to do translation for no specific locale, and you want it to be
 // done independently of the currently locale, specify `"C"` for @from_locale.
 func StrToASCII(str string, fromLocale string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = (*C.gchar)(C.CString(fromLocale))
-	defer C.free(unsafe.Pointer(fromLocale))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(fromLocale))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_str_to_ascii(arg0, arg1)
+	ret := C.g_str_to_ascii(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12338,31 +12126,31 @@ func StrToASCII(str string, fromLocale string) string {
 // so is unspecified, but @translit_locale (if specified) may improve the
 // transliteration if the language of the source string is known.
 func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates []string, utf8s []string) {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 ***C.gchar // out
+	var arg2 *C.gchar
+	var arg3 ***C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = (*C.gchar)(C.CString(translitLocale))
-	defer C.free(unsafe.Pointer(translitLocale))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(translitLocale))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_str_tokenize_and_fold(arg0, arg1, &arg2)
+	ret := C.g_str_tokenize_and_fold(arg1, arg2, &arg3)
 
 	var ret0 []string
 	var ret1 []string
 
 	{
 		var length uint
-		for p := unsafe.Pointer(arg2); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+		for p := unsafe.Pointer(arg3); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
 			length++
 		}
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -12375,8 +12163,8 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 		ret1 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret1[i])
-			defer C.free(unsafe.Pointer(src))
+			ret1[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -12393,22 +12181,22 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 //      g_free (reformatted);
 //
 func Strcanon(string string, validChars string, substitutor byte) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = (*C.gchar)(C.CString(validChars))
-	defer C.free(unsafe.Pointer(validChars))
-	arg2 = C.gchar(substitutor)
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(validChars))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gchar(substitutor)
 
-	ret := C.g_strcanon(arg0, arg1, arg2)
+	ret := C.g_strcanon(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12416,15 +12204,15 @@ func Strcanon(string string, validChars string, substitutor byte) string {
 // Strcasecmp: a case-insensitive string comparison, corresponding to the
 // standard strcasecmp() function on platforms which support it.
 func Strcasecmp(s1 string, s2 string) int {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(s1))
-	defer C.free(unsafe.Pointer(s1))
-	arg1 = (*C.gchar)(C.CString(s2))
-	defer C.free(unsafe.Pointer(s2))
+	arg1 = (*C.gchar)(C.CString(s1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(s2))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strcasecmp(arg0, arg1)
+	ret := C.g_strcasecmp(arg1, arg2)
 
 	var ret0 int
 
@@ -12442,17 +12230,17 @@ func Strcasecmp(s1 string, s2 string) int {
 //
 // Also see g_strchug() and g_strstrip().
 func Strchomp(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strchomp(arg0)
+	ret := C.g_strchomp(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12467,17 +12255,17 @@ func Strchomp(string string) string {
 //
 // Also see g_strchomp() and g_strstrip().
 func Strchug(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strchug(arg0)
+	ret := C.g_strchug(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12485,15 +12273,15 @@ func Strchug(string string) string {
 // Strcmp0 compares @str1 and @str2 like strcmp(). Handles nil gracefully by
 // sorting it before non-nil strings. Comparing two nil pointers returns 0.
 func Strcmp0(str1 string, str2 string) int {
-	var arg0 *C.char
 	var arg1 *C.char
+	var arg2 *C.char
 
-	arg0 = (*C.gchar)(C.CString(str1))
-	defer C.free(unsafe.Pointer(str1))
-	arg1 = (*C.gchar)(C.CString(str2))
-	defer C.free(unsafe.Pointer(str2))
+	arg1 = (*C.gchar)(C.CString(str1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(str2))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strcmp0(arg0, arg1)
+	ret := C.g_strcmp0(arg1, arg2)
 
 	var ret0 int
 
@@ -12506,17 +12294,17 @@ func Strcmp0(str1 string, str2 string) int {
 //
 // This function does the reverse conversion of g_strescape().
 func Strcompress(source string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(source))
-	defer C.free(unsafe.Pointer(source))
+	arg1 = (*C.gchar)(C.CString(source))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strcompress(arg0)
+	ret := C.g_strcompress(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12531,39 +12319,39 @@ func Strcompress(source string) string {
 //      g_free (reformatted);
 //
 func Strdelimit(string string, delimiters string, newDelimiter byte) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = (*C.gchar)(C.CString(delimiters))
-	defer C.free(unsafe.Pointer(delimiters))
-	arg2 = C.gchar(newDelimiter)
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(delimiters))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gchar(newDelimiter)
 
-	ret := C.g_strdelimit(arg0, arg1, arg2)
+	ret := C.g_strdelimit(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
 
 // Strdown converts a string to lower case.
 func Strdown(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strdown(arg0)
+	ret := C.g_strdown(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12571,17 +12359,17 @@ func Strdown(string string) string {
 // Strdup duplicates a string. If @str is nil it returns nil. The returned
 // string should be freed with g_free() when no longer needed.
 func Strdup(str string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strdup(arg0)
+	ret := C.g_strdup(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12591,12 +12379,12 @@ func Strdup(str string) string {
 // itself. g_strfreev() does this for you. If called on a nil value, g_strdupv()
 // simply returns nil.
 func Strdupv(strArray string) []string {
-	var arg0 **C.gchar
+	var arg1 **C.gchar
 
-	arg0 = (*C.gchar)(C.CString(strArray))
-	defer C.free(unsafe.Pointer(strArray))
+	arg1 = (*C.gchar)(C.CString(strArray))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strdupv(arg0)
+	ret := C.g_strdupv(arg1)
 
 	var ret0 []string
 
@@ -12609,8 +12397,7 @@ func Strdupv(strArray string) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -12637,16 +12424,15 @@ func Strdupv(strArray string) []string {
 //      g_strerror (saved_errno);
 //
 func Strerror(errnum int) string {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(errnum)
+	arg1 = C.gint(errnum)
 
-	ret := C.g_strerror(arg0)
+	ret := C.g_strerror(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -12660,20 +12446,20 @@ func Strerror(errnum int) string {
 //
 // g_strcompress() does the reverse conversion.
 func Strescape(source string, exceptions string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(source))
-	defer C.free(unsafe.Pointer(source))
-	arg1 = (*C.gchar)(C.CString(exceptions))
-	defer C.free(unsafe.Pointer(exceptions))
+	arg1 = (*C.gchar)(C.CString(source))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(exceptions))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strescape(arg0, arg1)
+	ret := C.g_strescape(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12683,22 +12469,22 @@ func Strescape(source string, exceptions string) string {
 //
 // If @str_array is nil, this function simply returns.
 func Strfreev(strArray string) {
-	var arg0 **C.gchar
+	var arg1 **C.gchar
 
-	arg0 = (*C.gchar)(C.CString(strArray))
-	defer C.free(unsafe.Pointer(strArray))
+	arg1 = (*C.gchar)(C.CString(strArray))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_strfreev(arg0)
+	C.g_strfreev(arg1)
 }
 
 // NewString creates a new #GString, initialized with the given string.
 func NewString(init string) *String {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(init))
-	defer C.free(unsafe.Pointer(init))
+	arg1 = (*C.gchar)(C.CString(init))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_string_new(arg0)
+	ret := C.g_string_new(arg1)
 
 	var ret0 *String
 
@@ -12714,14 +12500,14 @@ func NewString(init string) *String {
 // Since this function does not stop at nul bytes, it is the caller's
 // responsibility to ensure that @init has at least @len addressable bytes.
 func StringNewLen(init string, len int) *String {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(init))
-	defer C.free(unsafe.Pointer(init))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(init))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_string_new_len(arg0, arg1)
+	ret := C.g_string_new_len(arg1, arg2)
 
 	var ret0 *String
 
@@ -12734,11 +12520,11 @@ func StringNewLen(init string, len int) *String {
 // This is useful if you are going to add a lot of text to the string and don't
 // want it to be reallocated too often.
 func NewStringSized(dflSize uint) *String {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(dflSize)
+	arg1 = C.gsize(dflSize)
 
-	ret := C.g_string_sized_new(arg0)
+	ret := C.g_string_sized_new(arg1)
 
 	var ret0 *String
 
@@ -12749,20 +12535,19 @@ func NewStringSized(dflSize uint) *String {
 
 // StripContext: an auxiliary function for gettext() support (see Q_()).
 func StripContext(msgid string, msgval string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(msgid))
-	arg1 = (*C.gchar)(C.CString(msgval))
-	defer C.free(unsafe.Pointer(msgval))
+	arg1 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(msgval))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strip_context(arg0, arg1)
+	ret := C.g_strip_context(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -12775,20 +12560,20 @@ func StripContext(msgid string, msgval string) string {
 // @str_array contains a single item, @separator will not appear in the
 // resulting string.
 func Strjoinv(separator string, strArray string) string {
-	var arg0 *C.gchar
-	var arg1 **C.gchar
+	var arg1 *C.gchar
+	var arg2 **C.gchar
 
-	arg0 = (*C.gchar)(C.CString(separator))
-	defer C.free(unsafe.Pointer(separator))
-	arg1 = (*C.gchar)(C.CString(strArray))
-	defer C.free(unsafe.Pointer(strArray))
+	arg1 = (*C.gchar)(C.CString(separator))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(strArray))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strjoinv(arg0, arg1)
+	ret := C.g_strjoinv(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12807,17 +12592,17 @@ func Strjoinv(separator string, strArray string) string {
 // Caveat: this is supposedly a more secure alternative to strcat() or
 // strncat(), but for real security g_strconcat() is harder to mess up.
 func Strlcat(dest string, src string, destSize uint) uint {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gsize
+	var arg2 *C.gchar
+	var arg3 C.gsize
 
-	arg0 = (*C.gchar)(C.CString(dest))
-	defer C.free(unsafe.Pointer(dest))
-	arg1 = (*C.gchar)(C.CString(src))
-	defer C.free(unsafe.Pointer(src))
-	arg2 = C.gsize(destSize)
+	arg1 = (*C.gchar)(C.CString(dest))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(src))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gsize(destSize)
 
-	ret := C.g_strlcat(arg0, arg1, arg2)
+	ret := C.g_strlcat(arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -12840,17 +12625,17 @@ func Strlcat(dest string, src string, destSize uint) uint {
 // Caveat: strlcpy() is supposedly more secure than strcpy() or strncpy(), but
 // if you really want to avoid screwups, g_strdup() is an even better idea.
 func Strlcpy(dest string, src string, destSize uint) uint {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gsize
+	var arg2 *C.gchar
+	var arg3 C.gsize
 
-	arg0 = (*C.gchar)(C.CString(dest))
-	defer C.free(unsafe.Pointer(dest))
-	arg1 = (*C.gchar)(C.CString(src))
-	defer C.free(unsafe.Pointer(src))
-	arg2 = C.gsize(destSize)
+	arg1 = (*C.gchar)(C.CString(dest))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(src))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gsize(destSize)
 
-	ret := C.g_strlcpy(arg0, arg1, arg2)
+	ret := C.g_strlcpy(arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -12864,17 +12649,17 @@ func Strlcpy(dest string, src string, destSize uint) uint {
 // to g_strcasecmp() except it only compares the first @n characters of the
 // strings.
 func Strncasecmp(s1 string, s2 string, n uint) int {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.guint
+	var arg2 *C.gchar
+	var arg3 C.guint
 
-	arg0 = (*C.gchar)(C.CString(s1))
-	defer C.free(unsafe.Pointer(s1))
-	arg1 = (*C.gchar)(C.CString(s2))
-	defer C.free(unsafe.Pointer(s2))
-	arg2 = C.guint(n)
+	arg1 = (*C.gchar)(C.CString(s1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(s2))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.guint(n)
 
-	ret := C.g_strncasecmp(arg0, arg1, arg2)
+	ret := C.g_strncasecmp(arg1, arg2, arg3)
 
 	var ret0 int
 
@@ -12891,19 +12676,19 @@ func Strncasecmp(s1 string, s2 string, n uint) int {
 // To copy a number of characters from a UTF-8 encoded string, use
 // g_utf8_strncpy() instead.
 func Strndup(str string, n uint) string {
-	var arg0 *C.gchar
-	var arg1 C.gsize
+	var arg1 *C.gchar
+	var arg2 C.gsize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gsize(n)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(n)
 
-	ret := C.g_strndup(arg0, arg1)
+	ret := C.g_strndup(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12911,18 +12696,18 @@ func Strndup(str string, n uint) string {
 // Strnfill creates a new string @length bytes long filled with @fill_char. The
 // returned string should be freed when no longer needed.
 func Strnfill(length uint, fillChar byte) string {
-	var arg0 C.gsize
-	var arg1 C.gchar
+	var arg1 C.gsize
+	var arg2 C.gchar
 
-	arg0 = C.gsize(length)
-	arg1 = C.gchar(fillChar)
+	arg1 = C.gsize(length)
+	arg2 = C.gchar(fillChar)
 
-	ret := C.g_strnfill(arg0, arg1)
+	ret := C.g_strnfill(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12933,17 +12718,17 @@ func Strnfill(length uint, fillChar byte) string {
 // Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte
 // characters. For that purpose, use g_utf8_strreverse().
 func Strreverse(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strreverse(arg0)
+	ret := C.g_strreverse(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12951,20 +12736,20 @@ func Strreverse(string string) string {
 // Strrstr searches the string @haystack for the last occurrence of the string
 // @needle.
 func Strrstr(haystack string, needle string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(haystack))
-	defer C.free(unsafe.Pointer(haystack))
-	arg1 = (*C.gchar)(C.CString(needle))
-	defer C.free(unsafe.Pointer(needle))
+	arg1 = (*C.gchar)(C.CString(haystack))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(needle))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strrstr(arg0, arg1)
+	ret := C.g_strrstr(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12972,22 +12757,22 @@ func Strrstr(haystack string, needle string) string {
 // StrrstrLen searches the string @haystack for the last occurrence of the
 // string @needle, limiting the length of the search to @haystack_len.
 func StrrstrLen(haystack string, haystackLen int, needle string) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gchar
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(haystack))
-	defer C.free(unsafe.Pointer(haystack))
-	arg1 = C.gssize(haystackLen)
-	arg2 = (*C.gchar)(C.CString(needle))
-	defer C.free(unsafe.Pointer(needle))
+	arg1 = (*C.gchar)(C.CString(haystack))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(haystackLen)
+	arg3 = (*C.gchar)(C.CString(needle))
+	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_strrstr_len(arg0, arg1, arg2)
+	ret := C.g_strrstr_len(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -12997,16 +12782,15 @@ func StrrstrLen(haystack string, haystackLen int, needle string) string {
 // returns a string in UTF-8 encoding, and since not all platforms support the
 // strsignal() function.
 func Strsignal(signum int) string {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(signum)
+	arg1 = C.gint(signum)
 
-	ret := C.g_strsignal(arg0)
+	ret := C.g_strsignal(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -13026,17 +12810,17 @@ func Strsignal(signum int) string {
 // elements, you'll need to check for the empty string before calling
 // g_strsplit().
 func Strsplit(string string, delimiter string, maxTokens int) []string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gint
+	var arg2 *C.gchar
+	var arg3 C.gint
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = (*C.gchar)(C.CString(delimiter))
-	defer C.free(unsafe.Pointer(delimiter))
-	arg2 = C.gint(maxTokens)
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(delimiter))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gint(maxTokens)
 
-	ret := C.g_strsplit(arg0, arg1, arg2)
+	ret := C.g_strsplit(arg1, arg2, arg3)
 
 	var ret0 []string
 
@@ -13049,8 +12833,7 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -13078,17 +12861,17 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 // Note that this function works on bytes not characters, so it can't be used to
 // delimit UTF-8 strings for anything but ASCII characters.
 func StrsplitSet(string string, delimiters string, maxTokens int) []string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gint
+	var arg2 *C.gchar
+	var arg3 C.gint
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = (*C.gchar)(C.CString(delimiters))
-	defer C.free(unsafe.Pointer(delimiters))
-	arg2 = C.gint(maxTokens)
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(delimiters))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gint(maxTokens)
 
-	ret := C.g_strsplit_set(arg0, arg1, arg2)
+	ret := C.g_strsplit_set(arg1, arg2, arg3)
 
 	var ret0 []string
 
@@ -13101,8 +12884,7 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
 		}
 	}
 
@@ -13112,22 +12894,22 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 // StrstrLen searches the string @haystack for the first occurrence of the
 // string @needle, limiting the length of the search to @haystack_len.
 func StrstrLen(haystack string, haystackLen int, needle string) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gchar
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(haystack))
-	defer C.free(unsafe.Pointer(haystack))
-	arg1 = C.gssize(haystackLen)
-	arg2 = (*C.gchar)(C.CString(needle))
-	defer C.free(unsafe.Pointer(needle))
+	arg1 = (*C.gchar)(C.CString(haystack))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(haystackLen)
+	arg3 = (*C.gchar)(C.CString(needle))
+	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_strstr_len(arg0, arg1, arg2)
+	ret := C.g_strstr_len(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -13144,19 +12926,18 @@ func StrstrLen(haystack string, haystackLen int, needle string) string {
 // separated lists of values, since the commas may be interpreted as a decimal
 // point in some locales, causing unexpected results.
 func Strtod(nptr string) (endptr string, gdouble float64) {
-	var arg0 *C.gchar
-	var arg1 **C.gchar // out
+	var arg1 *C.gchar
+	var arg2 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(nptr))
-	defer C.free(unsafe.Pointer(nptr))
+	arg1 = (*C.gchar)(C.CString(nptr))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strtod(arg0, &arg1)
+	ret := C.g_strtod(arg1, &arg2)
 
 	var ret0 string
 	var ret1 float64
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
 
 	ret1 = float64(ret)
 
@@ -13165,32 +12946,32 @@ func Strtod(nptr string) (endptr string, gdouble float64) {
 
 // Strup converts a string to upper case.
 func Strup(string string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strup(arg0)
+	ret := C.g_strup(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
 
 // StrvContains checks if @strv contains @str. @strv must not be nil.
 func StrvContains(strv string, str string) bool {
-	var arg0 **C.gchar
-	var arg1 *C.gchar
+	var arg1 **C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(strv))
-	defer C.free(unsafe.Pointer(strv))
-	arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(strv))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strv_contains(arg0, arg1)
+	ret := C.g_strv_contains(arg1, arg2)
 
 	var ret0 bool
 
@@ -13206,15 +12987,15 @@ func StrvContains(strv string, str string) bool {
 //
 // Two empty arrays are considered equal. Neither @strv1 not @strv2 may be nil.
 func StrvEqual(strv1 string, strv2 string) bool {
-	var arg0 **C.gchar
 	var arg1 **C.gchar
+	var arg2 **C.gchar
 
-	arg0 = (*C.gchar)(C.CString(strv1))
-	defer C.free(unsafe.Pointer(strv1))
-	arg1 = (*C.gchar)(C.CString(strv2))
-	defer C.free(unsafe.Pointer(strv2))
+	arg1 = (*C.gchar)(C.CString(strv1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(strv2))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_strv_equal(arg0, arg1)
+	ret := C.g_strv_equal(arg1, arg2)
 
 	var ret0 bool
 
@@ -13235,12 +13016,12 @@ func StrvGetType() externglib.Type {
 // StrvLength returns the length of the given nil-terminated string array
 // @str_array. @str_array must not be nil.
 func StrvLength(strArray string) uint {
-	var arg0 **C.gchar
+	var arg1 **C.gchar
 
-	arg0 = (*C.gchar)(C.CString(strArray))
-	defer C.free(unsafe.Pointer(strArray))
+	arg1 = (*C.gchar)(C.CString(strArray))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_strv_length(arg0)
+	ret := C.g_strv_length(arg1)
 
 	var ret0 uint
 
@@ -13263,31 +13044,31 @@ func StrvLength(strArray string) uint {
 // G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
 // so even if it isn’t.
 func TestAddDataFunc(testpath string, testData interface{}, testFunc TestDataFunc) {
-	var arg0 *C.char
-	var arg1 C.gpointer
-	var arg2 C.GTestDataFunc
+	var arg1 *C.char
+	var arg2 C.gpointer
+	var arg3 C.GTestDataFunc
 
-	arg0 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(testpath))
-	arg1 = C.gpointer(box.Assign(testData))
-	arg2 = (*[0]byte)(C.gotk4_TestDataFunc)
+	arg1 = (*C.gchar)(C.CString(testpath))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gpointer(box.Assign(testData))
+	arg3 = (*[0]byte)(C.gotk4_TestDataFunc)
 
-	C.g_test_add_data_func(arg0, arg1, arg2)
+	C.g_test_add_data_func(arg1, arg2, arg3)
 }
 
 // TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
 // but freeing @test_data after the test run is complete.
 func TestAddDataFuncFull(testpath string, testData interface{}, testFunc TestDataFunc) {
-	var arg0 *C.char
-	var arg1 C.gpointer
-	var arg2 C.GTestDataFunc
+	var arg1 *C.char
+	var arg2 C.gpointer
+	var arg3 C.GTestDataFunc
 
-	arg0 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(testpath))
-	arg1 = C.gpointer(box.Assign(testData))
-	arg2 = (*[0]byte)(C.gotk4_TestDataFunc)
+	arg1 = (*C.gchar)(C.CString(testpath))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gpointer(box.Assign(testData))
+	arg3 = (*[0]byte)(C.gotk4_TestDataFunc)
 
-	C.g_test_add_data_func_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	C.g_test_add_data_func_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 }
 
 // TestAddFunc: create a new test case, similar to g_test_create_case(). However
@@ -13303,50 +13084,50 @@ func TestAddDataFuncFull(testpath string, testData interface{}, testFunc TestDat
 // G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
 // so even if it isn’t.
 func TestAddFunc(testpath string, testFunc TestFunc) {
-	var arg0 *C.char
-	var arg1 C.GTestFunc
+	var arg1 *C.char
+	var arg2 C.GTestFunc
 
-	arg0 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(testpath))
-	arg1 = (*[0]byte)(C.gotk4_TestFunc)
+	arg1 = (*C.gchar)(C.CString(testpath))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*[0]byte)(C.gotk4_TestFunc)
 
-	C.g_test_add_func(arg0, arg1)
+	C.g_test_add_func(arg1, arg2)
 }
 
 func TestAddVtable(testpath string, dataSize uint, testData interface{}, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc) {
-	var arg0 *C.char
-	var arg1 C.gsize
-	var arg2 C.gpointer
-	var arg3 C.GTestFixtureFunc
+	var arg1 *C.char
+	var arg2 C.gsize
+	var arg3 C.gpointer
 	var arg4 C.GTestFixtureFunc
 	var arg5 C.GTestFixtureFunc
+	var arg6 C.GTestFixtureFunc
 
-	arg0 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(testpath))
-	arg1 = C.gsize(dataSize)
-	arg2 = C.gpointer(box.Assign(testData))
-	arg3 = (*[0]byte)(C.gotk4_TestFixtureFunc)
+	arg1 = (*C.gchar)(C.CString(testpath))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(dataSize)
+	arg3 = C.gpointer(box.Assign(testData))
 	arg4 = (*[0]byte)(C.gotk4_TestFixtureFunc)
 	arg5 = (*[0]byte)(C.gotk4_TestFixtureFunc)
+	arg6 = (*[0]byte)(C.gotk4_TestFixtureFunc)
 
-	C.g_test_add_vtable(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.g_test_add_vtable(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 func TestAssertExpectedMessagesInternal(domain string, file string, line int, _func string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
+	var arg4 *C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
 
-	C.g_test_assert_expected_messages_internal(arg0, arg1, arg2, arg3)
+	C.g_test_assert_expected_messages_internal(arg1, arg2, arg3, arg4)
 }
 
 // TestBug: this function adds a message to test reports that associates a bug
@@ -13355,12 +13136,12 @@ func TestAssertExpectedMessagesInternal(domain string, file string, line int, _f
 // called, it is assumed to be the empty string, so a full URI can be provided
 // to g_test_bug() instead.
 func TestBug(bugURISnippet string) {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(bugURISnippet))
-	defer C.free(unsafe.Pointer(bugURISnippet))
+	arg1 = (*C.gchar)(C.CString(bugURISnippet))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_bug(arg0)
+	C.g_test_bug(arg1)
 }
 
 // TestBugBase: specify the base URI for bug reports.
@@ -13375,12 +13156,12 @@ func TestBug(bugURISnippet string) {
 // If g_test_bug_base() is not called, bug URIs are formed solely from the value
 // provided by g_test_bug().
 func TestBugBase(uriPattern string) {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(uriPattern))
-	defer C.free(unsafe.Pointer(uriPattern))
+	arg1 = (*C.gchar)(C.CString(uriPattern))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_bug_base(arg0)
+	C.g_test_bug_base(arg1)
 }
 
 // TestCreateCase: create a new Case, named @test_name.
@@ -13401,22 +13182,22 @@ func TestBugBase(uriPattern string) {
 // fixture (the @data_size argument), but varying @test_name and @data_test
 // arguments.
 func TestCreateCase(testName string, dataSize uint, testData interface{}, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc) *TestCase {
-	var arg0 *C.char
-	var arg1 C.gsize
-	var arg2 C.gpointer
-	var arg3 C.GTestFixtureFunc
+	var arg1 *C.char
+	var arg2 C.gsize
+	var arg3 C.gpointer
 	var arg4 C.GTestFixtureFunc
 	var arg5 C.GTestFixtureFunc
+	var arg6 C.GTestFixtureFunc
 
-	arg0 = (*C.gchar)(C.CString(testName))
-	defer C.free(unsafe.Pointer(testName))
-	arg1 = C.gsize(dataSize)
-	arg2 = C.gpointer(box.Assign(testData))
-	arg3 = (*[0]byte)(C.gotk4_TestFixtureFunc)
+	arg1 = (*C.gchar)(C.CString(testName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gsize(dataSize)
+	arg3 = C.gpointer(box.Assign(testData))
 	arg4 = (*[0]byte)(C.gotk4_TestFixtureFunc)
 	arg5 = (*[0]byte)(C.gotk4_TestFixtureFunc)
+	arg6 = (*[0]byte)(C.gotk4_TestFixtureFunc)
 
-	ret := C.g_test_create_case(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_test_create_case(arg1, arg2, arg3, arg4, arg5, arg6)
 
 	var ret0 *TestCase
 
@@ -13427,12 +13208,12 @@ func TestCreateCase(testName string, dataSize uint, testData interface{}, dataSe
 
 // TestCreateSuite: create a new test suite with the name @suite_name.
 func TestCreateSuite(suiteName string) *TestSuite {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(suiteName))
-	defer C.free(unsafe.Pointer(suiteName))
+	arg1 = (*C.gchar)(C.CString(suiteName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_test_create_suite(arg0)
+	ret := C.g_test_create_suite(arg1)
 
 	var ret0 *TestSuite
 
@@ -13474,17 +13255,17 @@ func TestCreateSuite(suiteName string) *TestSuite {
 // If messages at G_LOG_LEVEL_DEBUG are emitted, but not explicitly expected via
 // g_test_expect_message() then they will be ignored.
 func TestExpectMessage(logDomain string, logLevel LogLevelFlags, pattern string) {
-	var arg0 *C.gchar
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.gchar
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
+	var arg3 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(logDomain))
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	arg2 = (*C.gchar)(C.CString(pattern))
-	defer C.free(unsafe.Pointer(pattern))
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(logLevel)
+	arg3 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_test_expect_message(arg0, arg1, arg2)
+	C.g_test_expect_message(arg1, arg2, arg3)
 }
 
 // TestFail indicates that a test failed. This function can be called multiple
@@ -13530,16 +13311,15 @@ func TestFailed() bool {
 // This is approximately the same as calling g_test_build_filename("."), but you
 // don't need to free the return value.
 func TestGetDir(fileType TestFileType) string {
-	var arg0 C.GTestFileType
+	var arg1 C.GTestFileType
 
-	arg0 = (C.GTestFileType)(fileType)
+	arg1 = (C.GTestFileType)(fileType)
 
-	ret := C.g_test_get_dir(arg0)
+	ret := C.g_test_get_dir(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -13565,12 +13345,12 @@ func TestGetRoot() *TestSuite {
 //
 // If not called from inside a test, this function does nothing.
 func TestIncomplete(msg string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(msg))
-	defer C.free(unsafe.Pointer(msg))
+	arg1 = (*C.gchar)(C.CString(msg))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_incomplete(arg0)
+	C.g_test_incomplete(arg1)
 }
 
 // TestLogSetFatalHandler installs a non-error fatal log handler which can be
@@ -13593,25 +13373,24 @@ func TestIncomplete(msg string) {
 // writer function using g_log_set_writer_func().See [Using Structured
 // Logging][using-structured-logging].
 func TestLogSetFatalHandler(logFunc TestLogFatalFunc) {
-	var arg0 C.GTestLogFatalFunc
-	arg1 := C.gpointer(box.Assign(userData))
+	var arg1 C.GTestLogFatalFunc
+	arg2 := C.gpointer(box.Assign(userData))
 
-	arg0 = (*[0]byte)(C.gotk4_TestLogFatalFunc)
+	arg1 = (*[0]byte)(C.gotk4_TestLogFatalFunc)
 
-	C.g_test_log_set_fatal_handler(arg0)
+	C.g_test_log_set_fatal_handler(arg1)
 }
 
 func TestLogTypeName(logType TestLogType) string {
-	var arg0 C.GTestLogType
+	var arg1 C.GTestLogType
 
-	arg0 = (C.GTestLogType)(logType)
+	arg1 = (C.GTestLogType)(logType)
 
-	ret := C.g_test_log_type_name(arg0)
+	ret := C.g_test_log_type_name(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -13622,22 +13401,22 @@ func TestLogTypeName(logType TestLogType) string {
 // are released in reverse queue order, that means enqueueing callback A before
 // callback B will cause B() to be called before A() during teardown.
 func TestQueueDestroy(destroyData interface{}) {
-	var arg1 C.gpointer
+	var arg2 C.gpointer
 
-	arg1 = C.gpointer(box.Assign(destroyData))
+	arg2 = C.gpointer(box.Assign(destroyData))
 
-	C.g_test_queue_destroy((*[0]byte)(C.free), arg1)
+	C.g_test_queue_destroy((*[0]byte)(C.free), arg2)
 }
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
 // teardown phase. This is equivalent to calling g_test_queue_destroy() with a
 // destroy callback of g_free().
 func TestQueueFree(gfreePointer interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(gfreePointer))
+	arg1 = C.gpointer(box.Assign(gfreePointer))
 
-	C.g_test_queue_free(arg0)
+	C.g_test_queue_free(arg1)
 }
 
 // TestRandDouble: get a reproducible random floating point number, see
@@ -13657,13 +13436,13 @@ func TestRandDouble() float64 {
 // a specified range, see g_test_rand_int() for details on test case random
 // numbers.
 func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64 {
-	var arg0 C.double
 	var arg1 C.double
+	var arg2 C.double
 
-	arg0 = C.double(rangeStart)
-	arg1 = C.double(rangeEnd)
+	arg1 = C.double(rangeStart)
+	arg2 = C.double(rangeEnd)
 
-	ret := C.g_test_rand_double_range(arg0, arg1)
+	ret := C.g_test_rand_double_range(arg1, arg2)
 
 	var ret0 float64
 
@@ -13695,13 +13474,13 @@ func TestRandInt() int32 {
 // TestRandIntRange: get a reproducible random integer number out of a specified
 // range, see g_test_rand_int() for details on test case random numbers.
 func TestRandIntRange(begin int32, end int32) int32 {
-	var arg0 C.gint32
 	var arg1 C.gint32
+	var arg2 C.gint32
 
-	arg0 = C.gint32(begin)
-	arg1 = C.gint32(end)
+	arg1 = C.gint32(begin)
+	arg2 = C.gint32(end)
 
-	ret := C.g_test_rand_int_range(arg0, arg1)
+	ret := C.g_test_rand_int_range(arg1, arg2)
 
 	var ret0 int32
 
@@ -13757,11 +13536,11 @@ func TestRun() int {
 //
 // g_test_run_suite() or g_test_run() may only be called once in a program.
 func TestRunSuite(suite *TestSuite) int {
-	var arg0 *C.GTestSuite
+	var arg1 *C.GTestSuite
 
-	arg0 = (*C.GTestSuite)(suite.Native())
+	arg1 = (*C.GTestSuite)(suite.Native())
 
-	ret := C.g_test_run_suite(arg0)
+	ret := C.g_test_run_suite(arg1)
 
 	var ret0 int
 
@@ -13794,12 +13573,12 @@ func TestSetNonfatalAssertions() {
 //
 // If not called from inside a test, this function does nothing.
 func TestSkip(msg string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(msg))
-	defer C.free(unsafe.Pointer(msg))
+	arg1 = (*C.gchar)(C.CString(msg))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_skip(arg0)
+	C.g_test_skip(arg1)
 }
 
 // TestSubprocess returns true (after g_test_init() has been called) if the test
@@ -13834,12 +13613,12 @@ func TestSubprocess() bool {
 //    }
 //
 func TestSummary(summary string) {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(summary))
-	defer C.free(unsafe.Pointer(summary))
+	arg1 = (*C.gchar)(C.CString(summary))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_summary(arg0)
+	C.g_test_summary(arg1)
 }
 
 // TestTimerElapsed: get the time since the last start of the timer with
@@ -13875,25 +13654,25 @@ func TestTimerStart() {
 }
 
 func TestTrapAssertions(domain string, file string, line int, _func string, assertionFlags uint64, pattern string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
-	var arg4 C.guint64
-	var arg5 *C.char
+	var arg2 *C.char
+	var arg3 C.int
+	var arg4 *C.char
+	var arg5 C.guint64
+	var arg6 *C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = C.guint64(assertionFlags)
-	arg5 = (*C.gchar)(C.CString(pattern))
-	defer C.free(unsafe.Pointer(pattern))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = C.guint64(assertionFlags)
+	arg6 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(arg6))
 
-	C.g_test_trap_assertions(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.g_test_trap_assertions(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // TestTrapFork: fork the current test program to execute a test case that might
@@ -13924,13 +13703,13 @@ func TestTrapAssertions(domain string, file string, line int, _func string, asse
 //      }
 //
 func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
-	var arg0 C.guint64
-	var arg1 C.GTestTrapFlags
+	var arg1 C.guint64
+	var arg2 C.GTestTrapFlags
 
-	arg0 = C.guint64(usecTimeout)
-	arg1 = (C.GTestTrapFlags)(testTrapFlags)
+	arg1 = C.guint64(usecTimeout)
+	arg2 = (C.GTestTrapFlags)(testTrapFlags)
 
-	ret := C.g_test_trap_fork(arg0, arg1)
+	ret := C.g_test_trap_fork(arg1, arg2)
 
 	var ret0 bool
 
@@ -14022,16 +13801,16 @@ func TestTrapReachedTimeout() bool {
 //      }
 //
 func TestTrapSubprocess(testPath string, usecTimeout uint64, testFlags TestSubprocessFlags) {
-	var arg0 *C.char
-	var arg1 C.guint64
-	var arg2 C.GTestSubprocessFlags
+	var arg1 *C.char
+	var arg2 C.guint64
+	var arg3 C.GTestSubprocessFlags
 
-	arg0 = (*C.gchar)(C.CString(testPath))
-	defer C.free(unsafe.Pointer(testPath))
-	arg1 = C.guint64(usecTimeout)
-	arg2 = (C.GTestSubprocessFlags)(testFlags)
+	arg1 = (*C.gchar)(C.CString(testPath))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.guint64(usecTimeout)
+	arg3 = (C.GTestSubprocessFlags)(testFlags)
 
-	C.g_test_trap_subprocess(arg0, arg1, arg2)
+	C.g_test_trap_subprocess(arg1, arg2, arg3)
 }
 
 func ThreadErrorQuark() Quark {
@@ -14062,11 +13841,11 @@ func ThreadErrorQuark() Quark {
 // with g_thread_new() or related APIs. You must not call this function from a
 // thread created with another threading library or or from within a Pool.
 func ThreadExit(retval interface{}) {
-	var arg0 C.gpointer
+	var arg1 C.gpointer
 
-	arg0 = C.gpointer(box.Assign(retval))
+	arg1 = C.gpointer(box.Assign(retval))
 
-	C.g_thread_exit(arg0)
+	C.g_thread_exit(arg1)
 }
 
 // ThreadPoolGetMaxIdleTime: this function will return the maximum @interval
@@ -14121,11 +13900,11 @@ func ThreadPoolGetNumUnusedThreads() uint {
 //
 // The default value is 15000 (15 seconds).
 func ThreadPoolSetMaxIdleTime(interval uint) {
-	var arg0 C.guint
+	var arg1 C.guint
 
-	arg0 = C.guint(interval)
+	arg1 = C.guint(interval)
 
-	C.g_thread_pool_set_max_idle_time(arg0)
+	C.g_thread_pool_set_max_idle_time(arg1)
 }
 
 // ThreadPoolSetMaxUnusedThreads sets the maximal number of unused threads to
@@ -14134,11 +13913,11 @@ func ThreadPoolSetMaxIdleTime(interval uint) {
 //
 // The default value is 2.
 func ThreadPoolSetMaxUnusedThreads(maxThreads int) {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(maxThreads)
+	arg1 = C.gint(maxThreads)
 
-	C.g_thread_pool_set_max_unused_threads(arg0)
+	C.g_thread_pool_set_max_unused_threads(arg1)
 }
 
 // ThreadPoolStopUnusedThreads stops all currently unused threads. This does not
@@ -14196,18 +13975,18 @@ func ThreadYield() {
 //    g_date_time_unref (dt);
 //
 func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
-	var arg0 *C.gchar
-	var arg1 *C.GTimeVal // out
+	var arg1 *C.gchar
+	var arg2 *C.GTimeVal // out
 
-	arg0 = (*C.gchar)(C.CString(isoDate))
-	defer C.free(unsafe.Pointer(isoDate))
+	arg1 = (*C.gchar)(C.CString(isoDate))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_time_val_from_iso8601(arg0, &arg1)
+	ret := C.g_time_val_from_iso8601(arg1, &arg2)
 
 	var ret0 *TimeVal
 	var ret1 bool
 
-	ret0 = WrapTimeVal(arg1)
+	ret0 = WrapTimeVal(arg2)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -14245,14 +14024,14 @@ func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func TimeoutAdd(interval uint, function SourceFunc) uint {
-	var arg0 C.guint
-	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg1 C.guint
+	var arg2 C.GSourceFunc
+	arg3 := C.gpointer(box.Assign(data))
 
-	arg0 = C.guint(interval)
-	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.guint(interval)
+	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_timeout_add(arg0, arg1)
+	ret := C.g_timeout_add(arg1, arg2)
 
 	var ret0 uint
 
@@ -14286,16 +14065,16 @@ func TimeoutAdd(interval uint, function SourceFunc) uint {
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func TimeoutAddFull(priority int, interval uint, function SourceFunc) uint {
-	var arg0 C.gint
-	var arg1 C.guint
-	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg1 C.gint
+	var arg2 C.guint
+	var arg3 C.GSourceFunc
+	arg4 := C.gpointer(box.Assign(data))
 
-	arg0 = C.gint(priority)
-	arg1 = C.guint(interval)
-	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.gint(priority)
+	arg2 = C.guint(interval)
+	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_timeout_add_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	ret := C.g_timeout_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -14326,14 +14105,14 @@ func TimeoutAddFull(priority int, interval uint, function SourceFunc) uint {
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func TimeoutAddSeconds(interval uint, function SourceFunc) uint {
-	var arg0 C.guint
-	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg1 C.guint
+	var arg2 C.GSourceFunc
+	arg3 := C.gpointer(box.Assign(data))
 
-	arg0 = C.guint(interval)
-	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.guint(interval)
+	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_timeout_add_seconds(arg0, arg1)
+	ret := C.g_timeout_add_seconds(arg1, arg2)
 
 	var ret0 uint
 
@@ -14381,16 +14160,16 @@ func TimeoutAddSeconds(interval uint, function SourceFunc) uint {
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func TimeoutAddSecondsFull(priority int, interval uint, function SourceFunc) uint {
-	var arg0 C.gint
-	var arg1 C.guint
-	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg1 C.gint
+	var arg2 C.guint
+	var arg3 C.GSourceFunc
+	arg4 := C.gpointer(box.Assign(data))
 
-	arg0 = C.gint(priority)
-	arg1 = C.guint(interval)
-	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.gint(priority)
+	arg2 = C.guint(interval)
+	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_timeout_add_seconds_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	ret := C.g_timeout_add_seconds_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -14407,11 +14186,11 @@ func TimeoutAddSecondsFull(priority int, interval uint, function SourceFunc) uin
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func NewTimeoutSource(interval uint) *Source {
-	var arg0 C.guint
+	var arg1 C.guint
 
-	arg0 = C.guint(interval)
+	arg1 = C.guint(interval)
 
-	ret := C.g_timeout_source_new(arg0)
+	ret := C.g_timeout_source_new(arg1)
 
 	var ret0 *Source
 
@@ -14431,11 +14210,11 @@ func NewTimeoutSource(interval uint) *Source {
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func TimeoutSourceNewSeconds(interval uint) *Source {
-	var arg0 C.guint
+	var arg1 C.guint
 
-	arg0 = C.guint(interval)
+	arg1 = C.guint(interval)
 
-	ret := C.g_timeout_source_new_seconds(arg0)
+	ret := C.g_timeout_source_new_seconds(arg1)
 
 	var ret0 *Source
 
@@ -14449,11 +14228,11 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 // Note that execution of this function is of O(N) complexity where N denotes
 // the number of items on the stack.
 func TrashStackHeight(stackP **TrashStack) uint {
-	var arg0 **C.GTrashStack
+	var arg1 **C.GTrashStack
 
-	arg0 = (**C.GTrashStack)(stackP.Native())
+	arg1 = (**C.GTrashStack)(stackP.Native())
 
-	ret := C.g_trash_stack_height(arg0)
+	ret := C.g_trash_stack_height(arg1)
 
 	var ret0 uint
 
@@ -14464,11 +14243,11 @@ func TrashStackHeight(stackP **TrashStack) uint {
 
 // TrashStackPeek returns the element at the top of a Stack which may be nil.
 func TrashStackPeek(stackP **TrashStack) interface{} {
-	var arg0 **C.GTrashStack
+	var arg1 **C.GTrashStack
 
-	arg0 = (**C.GTrashStack)(stackP.Native())
+	arg1 = (**C.GTrashStack)(stackP.Native())
 
-	ret := C.g_trash_stack_peek(arg0)
+	ret := C.g_trash_stack_peek(arg1)
 
 	var ret0 interface{}
 
@@ -14479,11 +14258,11 @@ func TrashStackPeek(stackP **TrashStack) interface{} {
 
 // TrashStackPop pops a piece of memory off a Stack.
 func TrashStackPop(stackP **TrashStack) interface{} {
-	var arg0 **C.GTrashStack
+	var arg1 **C.GTrashStack
 
-	arg0 = (**C.GTrashStack)(stackP.Native())
+	arg1 = (**C.GTrashStack)(stackP.Native())
 
-	ret := C.g_trash_stack_pop(arg0)
+	ret := C.g_trash_stack_pop(arg1)
 
 	var ret0 interface{}
 
@@ -14494,23 +14273,23 @@ func TrashStackPop(stackP **TrashStack) interface{} {
 
 // TrashStackPush pushes a piece of memory onto a Stack.
 func TrashStackPush(stackP **TrashStack, dataP interface{}) {
-	var arg0 **C.GTrashStack
-	var arg1 C.gpointer
+	var arg1 **C.GTrashStack
+	var arg2 C.gpointer
 
-	arg0 = (**C.GTrashStack)(stackP.Native())
-	arg1 = C.gpointer(box.Assign(dataP))
+	arg1 = (**C.GTrashStack)(stackP.Native())
+	arg2 = C.gpointer(box.Assign(dataP))
 
-	C.g_trash_stack_push(arg0, arg1)
+	C.g_trash_stack_push(arg1, arg2)
 }
 
 // TryMalloc attempts to allocate @n_bytes, and returns nil on failure. Contrast
 // with g_malloc(), which aborts the program on failure.
 func TryMalloc(nBytes uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(nBytes)
+	arg1 = C.gsize(nBytes)
 
-	ret := C.g_try_malloc(arg0)
+	ret := C.g_try_malloc(arg1)
 
 	var ret0 interface{}
 
@@ -14522,11 +14301,11 @@ func TryMalloc(nBytes uint) interface{} {
 // TryMalloc0 attempts to allocate @n_bytes, initialized to 0's, and returns nil
 // on failure. Contrast with g_malloc0(), which aborts the program on failure.
 func TryMalloc0(nBytes uint) interface{} {
-	var arg0 C.gsize
+	var arg1 C.gsize
 
-	arg0 = C.gsize(nBytes)
+	arg1 = C.gsize(nBytes)
 
-	ret := C.g_try_malloc0(arg0)
+	ret := C.g_try_malloc0(arg1)
 
 	var ret0 interface{}
 
@@ -14539,13 +14318,13 @@ func TryMalloc0(nBytes uint) interface{} {
 // (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
 // overflow during multiplication.
 func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg0 C.gsize
 	var arg1 C.gsize
+	var arg2 C.gsize
 
-	arg0 = C.gsize(nBlocks)
-	arg1 = C.gsize(nBlockBytes)
+	arg1 = C.gsize(nBlocks)
+	arg2 = C.gsize(nBlockBytes)
 
-	ret := C.g_try_malloc0_n(arg0, arg1)
+	ret := C.g_try_malloc0_n(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -14558,13 +14337,13 @@ func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 // * @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg0 C.gsize
 	var arg1 C.gsize
+	var arg2 C.gsize
 
-	arg0 = C.gsize(nBlocks)
-	arg1 = C.gsize(nBlockBytes)
+	arg1 = C.gsize(nBlocks)
+	arg2 = C.gsize(nBlockBytes)
 
-	ret := C.g_try_malloc_n(arg0, arg1)
+	ret := C.g_try_malloc_n(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -14578,13 +14357,13 @@ func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
 //
 // If @mem is nil, behaves the same as g_try_malloc().
 func TryRealloc(mem interface{}, nBytes uint) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.gsize
+	var arg1 C.gpointer
+	var arg2 C.gsize
 
-	arg0 = C.gpointer(box.Assign(mem))
-	arg1 = C.gsize(nBytes)
+	arg1 = C.gpointer(box.Assign(mem))
+	arg2 = C.gsize(nBytes)
 
-	ret := C.g_try_realloc(arg0, arg1)
+	ret := C.g_try_realloc(arg1, arg2)
 
 	var ret0 interface{}
 
@@ -14597,15 +14376,15 @@ func TryRealloc(mem interface{}, nBytes uint) interface{} {
 // (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
 // overflow during multiplication.
 func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
-	var arg0 C.gpointer
-	var arg1 C.gsize
+	var arg1 C.gpointer
 	var arg2 C.gsize
+	var arg3 C.gsize
 
-	arg0 = C.gpointer(box.Assign(mem))
-	arg1 = C.gsize(nBlocks)
-	arg2 = C.gsize(nBlockBytes)
+	arg1 = C.gpointer(box.Assign(mem))
+	arg2 = C.gsize(nBlocks)
+	arg3 = C.gsize(nBlockBytes)
 
-	ret := C.g_try_realloc_n(arg0, arg1, arg2)
+	ret := C.g_try_realloc_n(arg1, arg2, arg3)
 
 	var ret0 interface{}
 
@@ -14617,24 +14396,23 @@ func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 // Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
 func Ucs4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16) {
-	var arg0 *C.gunichar
-	var arg1 C.glong
-	var arg2 *C.glong // out
-
+	var arg1 *C.gunichar
+	var arg2 C.glong
 	var arg3 *C.glong // out
+	var arg4 *C.glong // out
 
-	arg0 = (*C.gunichar)(str)
-	arg1 = C.glong(len)
+	arg1 = (*C.gunichar)(str)
+	arg2 = C.glong(len)
 
-	ret := C.g_ucs4_to_utf16(arg0, arg1, &arg2, &arg3)
+	ret := C.g_ucs4_to_utf16(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint16
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
-	ret1 = int32(arg3)
+	ret1 = int32(arg4)
 
 	ret2 = uint16(ret)
 
@@ -14644,27 +14422,26 @@ func Ucs4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, gu
 // Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
 func Ucs4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string) {
-	var arg0 *C.gunichar
-	var arg1 C.glong
-	var arg2 *C.glong // out
-
+	var arg1 *C.gunichar
+	var arg2 C.glong
 	var arg3 *C.glong // out
+	var arg4 *C.glong // out
 
-	arg0 = (*C.gunichar)(str)
-	arg1 = C.glong(len)
+	arg1 = (*C.gunichar)(str)
+	arg2 = C.glong(len)
 
-	ret := C.g_ucs4_to_utf8(arg0, arg1, &arg2, &arg3)
+	ret := C.g_ucs4_to_utf8(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 string
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
-	ret1 = int32(arg3)
+	ret1 = int32(arg4)
 
-	ret = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(ret))
+	ret2 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1, ret2
 }
@@ -14676,11 +14453,11 @@ func Ucs4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf
 // algorithms and normally you would use a function such as pango_break()
 // instead of caring about break types yourself.
 func UnicharBreakType(c uint32) UnicodeBreakType {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_break_type(arg0)
+	ret := C.g_unichar_break_type(arg1)
 
 	var ret0 UnicodeBreakType
 
@@ -14692,11 +14469,11 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 // UnicharCombiningClass determines the canonical combining class of a Unicode
 // character.
 func UnicharCombiningClass(uc uint32) int {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(uc)
+	arg1 = C.gunichar(uc)
 
-	ret := C.g_unichar_combining_class(arg0)
+	ret := C.g_unichar_combining_class(arg1)
 
 	var ret0 int
 
@@ -14719,19 +14496,19 @@ func UnicharCombiningClass(uc uint32) int {
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 func UnicharCompose(a uint32, b uint32) (ch uint32, ok bool) {
-	var arg0 C.gunichar
 	var arg1 C.gunichar
-	var arg2 *C.gunichar // out
+	var arg2 C.gunichar
+	var arg3 *C.gunichar // out
 
-	arg0 = C.gunichar(a)
-	arg1 = C.gunichar(b)
+	arg1 = C.gunichar(a)
+	arg2 = C.gunichar(b)
 
-	ret := C.g_unichar_compose(arg0, arg1, &arg2)
+	ret := C.g_unichar_compose(arg1, arg2, &arg3)
 
 	var ret0 uint32
 	var ret1 bool
 
-	ret0 = uint32(arg2)
+	ret0 = uint32(arg3)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -14755,22 +14532,21 @@ func UnicharCompose(a uint32, b uint32) (ch uint32, ok bool) {
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
-	var arg0 C.gunichar
-	var arg1 *C.gunichar // out
-
+	var arg1 C.gunichar
 	var arg2 *C.gunichar // out
+	var arg3 *C.gunichar // out
 
-	arg0 = C.gunichar(ch)
+	arg1 = C.gunichar(ch)
 
-	ret := C.g_unichar_decompose(arg0, &arg1, &arg2)
+	ret := C.g_unichar_decompose(arg1, &arg2, &arg3)
 
 	var ret0 uint32
 	var ret1 uint32
 	var ret2 bool
 
-	ret0 = uint32(arg1)
+	ret0 = uint32(arg2)
 
-	ret1 = uint32(arg2)
+	ret1 = uint32(arg3)
 
 	ret2 = gextras.Gobool(ret)
 
@@ -14780,11 +14556,11 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 // UnicharDigitValue determines the numeric value of a character as a decimal
 // digit.
 func UnicharDigitValue(c uint32) int {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_digit_value(arg0)
+	ret := C.g_unichar_digit_value(arg1)
 
 	var ret0 int
 
@@ -14808,22 +14584,21 @@ func UnicharDigitValue(c uint32) int {
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (result uint32, gsize uint) {
-	var arg0 C.gunichar
-	var arg1 C.gboolean
-	var arg2 *C.gunichar // out
+	var arg1 C.gunichar
+	var arg2 C.gboolean
+	var arg3 *C.gunichar // out
+	var arg4 C.gsize
 
-	var arg3 C.gsize
+	arg1 = C.gunichar(ch)
+	arg2 = gextras.Cbool(compat)
+	arg4 = C.gsize(resultLen)
 
-	arg0 = C.gunichar(ch)
-	arg1 = gextras.Cbool(compat)
-	arg3 = C.gsize(resultLen)
-
-	ret := C.g_unichar_fully_decompose(arg0, arg1, &arg2, arg3)
+	ret := C.g_unichar_fully_decompose(arg1, arg2, &arg3, arg4)
 
 	var ret0 uint32
 	var ret1 uint
 
-	ret0 = uint32(arg2)
+	ret0 = uint32(arg3)
 
 	ret1 = uint(ret)
 
@@ -14840,13 +14615,13 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (result uint3
 // and @mirrored_ch is set, it puts that character in the address pointed to by
 // @mirrored_ch. Otherwise the original character is put.
 func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
-	var arg0 C.gunichar
-	var arg1 *C.gunichar
+	var arg1 C.gunichar
+	var arg2 *C.gunichar
 
-	arg0 = C.gunichar(ch)
-	arg1 = (*C.gunichar)(mirroredCh)
+	arg1 = C.gunichar(ch)
+	arg2 = (*C.gunichar)(mirroredCh)
 
-	ret := C.g_unichar_get_mirror_char(arg0, arg1)
+	ret := C.g_unichar_get_mirror_char(arg1, arg2)
 
 	var ret0 bool
 
@@ -14862,11 +14637,11 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
 // This function is equivalent to pango_script_for_unichar() and the two are
 // interchangeable.
 func UnicharGetScript(ch uint32) UnicodeScript {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(ch)
+	arg1 = C.gunichar(ch)
 
-	ret := C.g_unichar_get_script(arg0)
+	ret := C.g_unichar_get_script(arg1)
 
 	var ret0 UnicodeScript
 
@@ -14878,11 +14653,11 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 // UnicharIsalnum determines whether a character is alphanumeric. Given some
 // UTF-8 text, obtain a character value with g_utf8_get_char().
 func UnicharIsalnum(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isalnum(arg0)
+	ret := C.g_unichar_isalnum(arg1)
 
 	var ret0 bool
 
@@ -14894,11 +14669,11 @@ func UnicharIsalnum(c uint32) bool {
 // UnicharIsalpha determines whether a character is alphabetic (i.e. a letter).
 // Given some UTF-8 text, obtain a character value with g_utf8_get_char().
 func UnicharIsalpha(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isalpha(arg0)
+	ret := C.g_unichar_isalpha(arg1)
 
 	var ret0 bool
 
@@ -14910,11 +14685,11 @@ func UnicharIsalpha(c uint32) bool {
 // UnicharIscntrl determines whether a character is a control character. Given
 // some UTF-8 text, obtain a character value with g_utf8_get_char().
 func UnicharIscntrl(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_iscntrl(arg0)
+	ret := C.g_unichar_iscntrl(arg1)
 
 	var ret0 bool
 
@@ -14926,11 +14701,11 @@ func UnicharIscntrl(c uint32) bool {
 // UnicharIsdefined determines if a given character is assigned in the Unicode
 // standard.
 func UnicharIsdefined(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isdefined(arg0)
+	ret := C.g_unichar_isdefined(arg1)
 
 	var ret0 bool
 
@@ -14943,11 +14718,11 @@ func UnicharIsdefined(c uint32) bool {
 // covers ASCII 0-9 and also digits in other languages/scripts. Given some UTF-8
 // text, obtain a character value with g_utf8_get_char().
 func UnicharIsdigit(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isdigit(arg0)
+	ret := C.g_unichar_isdigit(arg1)
 
 	var ret0 bool
 
@@ -14961,11 +14736,11 @@ func UnicharIsdigit(c uint32) bool {
 // g_unichar_isprint() is similar, but returns true for spaces. Given some UTF-8
 // text, obtain a character value with g_utf8_get_char().
 func UnicharIsgraph(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isgraph(arg0)
+	ret := C.g_unichar_isgraph(arg1)
 
 	var ret0 bool
 
@@ -14977,11 +14752,11 @@ func UnicharIsgraph(c uint32) bool {
 // UnicharIslower determines whether a character is a lowercase letter. Given
 // some UTF-8 text, obtain a character value with g_utf8_get_char().
 func UnicharIslower(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_islower(arg0)
+	ret := C.g_unichar_islower(arg1)
 
 	var ret0 bool
 
@@ -14998,11 +14773,11 @@ func UnicharIslower(c uint32) bool {
 // should be allowed to as they are essential for writing most European
 // languages as well as many non-Latin scripts.
 func UnicharIsmark(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_ismark(arg0)
+	ret := C.g_unichar_ismark(arg1)
 
 	var ret0 bool
 
@@ -15015,11 +14790,11 @@ func UnicharIsmark(c uint32) bool {
 // g_unichar_isgraph(), returns true for spaces. Given some UTF-8 text, obtain a
 // character value with g_utf8_get_char().
 func UnicharIsprint(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isprint(arg0)
+	ret := C.g_unichar_isprint(arg1)
 
 	var ret0 bool
 
@@ -15031,11 +14806,11 @@ func UnicharIsprint(c uint32) bool {
 // UnicharIspunct determines whether a character is punctuation or a symbol.
 // Given some UTF-8 text, obtain a character value with g_utf8_get_char().
 func UnicharIspunct(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_ispunct(arg0)
+	ret := C.g_unichar_ispunct(arg1)
 
 	var ret0 bool
 
@@ -15051,11 +14826,11 @@ func UnicharIspunct(c uint32) bool {
 // (Note: don't use this to do word breaking; you have to use Pango or
 // equivalent to get word breaking right, the algorithm is fairly complex.)
 func UnicharIsspace(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isspace(arg0)
+	ret := C.g_unichar_isspace(arg1)
 
 	var ret0 bool
 
@@ -15070,11 +14845,11 @@ func UnicharIsspace(c uint32) bool {
 // where only the first letter is capitalized. The titlecase form of the DZ
 // digraph is U+01F2 LATIN CAPITAL LETTTER D WITH SMALL LETTER Z.
 func UnicharIstitle(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_istitle(arg0)
+	ret := C.g_unichar_istitle(arg1)
 
 	var ret0 bool
 
@@ -15085,11 +14860,11 @@ func UnicharIstitle(c uint32) bool {
 
 // UnicharIsupper determines if a character is uppercase.
 func UnicharIsupper(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isupper(arg0)
+	ret := C.g_unichar_isupper(arg1)
 
 	var ret0 bool
 
@@ -15101,11 +14876,11 @@ func UnicharIsupper(c uint32) bool {
 // UnicharIswide determines if a character is typically rendered in a
 // double-width cell.
 func UnicharIswide(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_iswide(arg0)
+	ret := C.g_unichar_iswide(arg1)
 
 	var ret0 bool
 
@@ -15124,11 +14899,11 @@ func UnicharIswide(c uint32) bool {
 // test, but not the other way around. Note that some characters may pass both
 // this test and g_unichar_iszerowidth().
 func UnicharIswideCjk(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_iswide_cjk(arg0)
+	ret := C.g_unichar_iswide_cjk(arg1)
 
 	var ret0 bool
 
@@ -15139,11 +14914,11 @@ func UnicharIswideCjk(c uint32) bool {
 
 // UnicharIsxdigit determines if a character is a hexadecimal digit.
 func UnicharIsxdigit(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_isxdigit(arg0)
+	ret := C.g_unichar_isxdigit(arg1)
 
 	var ret0 bool
 
@@ -15162,11 +14937,11 @@ func UnicharIsxdigit(c uint32) bool {
 // when displayed on a grid display (terminals). However, note that not all
 // terminals support zero-width rendering of zero-width marks.
 func UnicharIszerowidth(c uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_iszerowidth(arg0)
+	ret := C.g_unichar_iszerowidth(arg1)
 
 	var ret0 bool
 
@@ -15177,18 +14952,17 @@ func UnicharIszerowidth(c uint32) bool {
 
 // UnicharToUTF8 converts a single character to UTF-8.
 func UnicharToUTF8(c uint32) (outbuf string, gint int) {
-	var arg0 C.gunichar
-	var arg1 *C.gchar // out
+	var arg1 C.gunichar
+	var arg2 *C.gchar // out
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_to_utf8(arg0, &arg1)
+	ret := C.g_unichar_to_utf8(arg1, &arg2)
 
 	var ret0 string
 	var ret1 int
 
-	arg1 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg1))
+	ret0 = C.GoString(arg2)
 
 	ret1 = int(ret)
 
@@ -15197,11 +14971,11 @@ func UnicharToUTF8(c uint32) (outbuf string, gint int) {
 
 // UnicharToLower converts a character to lower case.
 func UnicharToLower(c uint32) uint32 {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_tolower(arg0)
+	ret := C.g_unichar_tolower(arg1)
 
 	var ret0 uint32
 
@@ -15212,11 +14986,11 @@ func UnicharToLower(c uint32) uint32 {
 
 // UnicharTotitle converts a character to the titlecase.
 func UnicharTotitle(c uint32) uint32 {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_totitle(arg0)
+	ret := C.g_unichar_totitle(arg1)
 
 	var ret0 uint32
 
@@ -15227,11 +15001,11 @@ func UnicharTotitle(c uint32) uint32 {
 
 // UnicharToUpper converts a character to uppercase.
 func UnicharToUpper(c uint32) uint32 {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_toupper(arg0)
+	ret := C.g_unichar_toupper(arg1)
 
 	var ret0 uint32
 
@@ -15242,11 +15016,11 @@ func UnicharToUpper(c uint32) uint32 {
 
 // UnicharType classifies a Unicode character by type.
 func UnicharType(c uint32) UnicodeType {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_type(arg0)
+	ret := C.g_unichar_type(arg1)
 
 	var ret0 UnicodeType
 
@@ -15259,11 +15033,11 @@ func UnicharType(c uint32) UnicodeType {
 // possible integer values of @ch will not be valid. 0 is considered a valid
 // character, though it's normally a string terminator.
 func UnicharValidate(ch uint32) bool {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(ch)
+	arg1 = C.gunichar(ch)
 
-	ret := C.g_unichar_validate(arg0)
+	ret := C.g_unichar_validate(arg1)
 
 	var ret0 bool
 
@@ -15275,11 +15049,11 @@ func UnicharValidate(ch uint32) bool {
 // UnicharXDigitValue determines the numeric value of a character as a
 // hexadecimal digit.
 func UnicharXDigitValue(c uint32) int {
-	var arg0 C.gunichar
+	var arg1 C.gunichar
 
-	arg0 = C.gunichar(c)
+	arg1 = C.gunichar(c)
 
-	ret := C.g_unichar_xdigit_value(arg0)
+	ret := C.g_unichar_xdigit_value(arg1)
 
 	var ret0 int
 
@@ -15291,13 +15065,13 @@ func UnicharXDigitValue(c uint32) int {
 // UnicodeCanonicalDecomposition computes the canonical decomposition of a
 // Unicode character.
 func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32 {
-	var arg0 C.gunichar
-	var arg1 *C.gsize
+	var arg1 C.gunichar
+	var arg2 *C.gsize
 
-	arg0 = C.gunichar(ch)
-	arg1 = (*C.gsize)(resultLen)
+	arg1 = C.gunichar(ch)
+	arg2 = (*C.gsize)(resultLen)
 
-	ret := C.g_unicode_canonical_decomposition(arg0, arg1)
+	ret := C.g_unicode_canonical_decomposition(arg1, arg2)
 
 	var ret0 uint32
 
@@ -15310,13 +15084,13 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32 {
 // in-place. This rearranges decomposed characters in the string according to
 // their combining classes. See the Unicode manual for more information.
 func UnicodeCanonicalOrdering(string uint32, len uint) {
-	var arg0 *C.gunichar
-	var arg1 C.gsize
+	var arg1 *C.gunichar
+	var arg2 C.gsize
 
-	arg0 = (*C.gunichar)(string)
-	arg1 = C.gsize(len)
+	arg1 = (*C.gunichar)(string)
+	arg2 = C.gsize(len)
 
-	C.g_unicode_canonical_ordering(arg0, arg1)
+	C.g_unicode_canonical_ordering(arg1, arg2)
 }
 
 // UnicodeScriptFromIso15924 looks up the Unicode script for @iso15924. ISO
@@ -15328,11 +15102,11 @@ func UnicodeCanonicalOrdering(string uint32, len uint) {
 // See Codes for the representation of names of scripts
 // (http://unicode.org/iso15924/codelists.html) for details.
 func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
-	var arg0 C.guint32
+	var arg1 C.guint32
 
-	arg0 = C.guint32(iso15924)
+	arg1 = C.guint32(iso15924)
 
-	ret := C.g_unicode_script_from_iso15924(arg0)
+	ret := C.g_unicode_script_from_iso15924(arg1)
 
 	var ret0 UnicodeScript
 
@@ -15350,11 +15124,11 @@ func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
 // See Codes for the representation of names of scripts
 // (http://unicode.org/iso15924/codelists.html) for details.
 func UnicodeScriptToIso15924(script UnicodeScript) uint32 {
-	var arg0 C.GUnicodeScript
+	var arg1 C.GUnicodeScript
 
-	arg0 = (C.GUnicodeScript)(script)
+	arg1 = (C.GUnicodeScript)(script)
 
-	ret := C.g_unicode_script_to_iso15924(arg0)
+	ret := C.g_unicode_script_to_iso15924(arg1)
 
 	var ret0 uint32
 
@@ -15391,16 +15165,16 @@ func UnixErrorQuark() Quark {
 //
 // The source will never close the fd -- you must do it yourself.
 func UnixFdAdd(fd int, condition IOCondition, function UnixFDSourceFunc) uint {
-	var arg0 C.gint
-	var arg1 C.GIOCondition
-	var arg2 C.GUnixFDSourceFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg1 C.gint
+	var arg2 C.GIOCondition
+	var arg3 C.GUnixFDSourceFunc
+	arg4 := C.gpointer(box.Assign(userData))
 
-	arg0 = C.gint(fd)
-	arg1 = (C.GIOCondition)(condition)
-	arg2 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
+	arg1 = C.gint(fd)
+	arg2 = (C.GIOCondition)(condition)
+	arg3 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
 
-	ret := C.g_unix_fd_add(arg0, arg1, arg2)
+	ret := C.g_unix_fd_add(arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -15415,18 +15189,18 @@ func UnixFdAdd(fd int, condition IOCondition, function UnixFDSourceFunc) uint {
 // This is the same as g_unix_fd_add(), except that it allows you to specify a
 // non-default priority and a provide a Notify for @user_data.
 func UnixFdAddFull(priority int, fd int, condition IOCondition, function UnixFDSourceFunc) uint {
-	var arg0 C.gint
 	var arg1 C.gint
-	var arg2 C.GIOCondition
-	var arg3 C.GUnixFDSourceFunc
-	arg4 := C.gpointer(box.Assign(userData))
+	var arg2 C.gint
+	var arg3 C.GIOCondition
+	var arg4 C.GUnixFDSourceFunc
+	arg5 := C.gpointer(box.Assign(userData))
 
-	arg0 = C.gint(priority)
-	arg1 = C.gint(fd)
-	arg2 = (C.GIOCondition)(condition)
-	arg3 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
+	arg1 = C.gint(priority)
+	arg2 = C.gint(fd)
+	arg3 = (C.GIOCondition)(condition)
+	arg4 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
 
-	ret := C.g_unix_fd_add_full(arg0, arg1, arg2, arg3, (*[0]byte)(C.free))
+	ret := C.g_unix_fd_add_full(arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -15440,13 +15214,13 @@ func UnixFdAddFull(priority int, fd int, condition IOCondition, function UnixFDS
 //
 // The source will never close the fd -- you must do it yourself.
 func NewUnixFdSource(fd int, condition IOCondition) *Source {
-	var arg0 C.gint
-	var arg1 C.GIOCondition
+	var arg1 C.gint
+	var arg2 C.GIOCondition
 
-	arg0 = C.gint(fd)
-	arg1 = (C.GIOCondition)(condition)
+	arg1 = C.gint(fd)
+	arg2 = (C.GIOCondition)(condition)
 
-	ret := C.g_unix_fd_source_new(arg0, arg1)
+	ret := C.g_unix_fd_source_new(arg1, arg2)
 
 	var ret0 *Source
 
@@ -15467,12 +15241,12 @@ func NewUnixFdSource(fd int, condition IOCondition) *Source {
 //
 // You will need to include `pwd.h` to get the definition of `struct passwd`.
 func UnixGetPasswdEntry(userName string) interface{} {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(userName))
-	defer C.free(unsafe.Pointer(userName))
+	arg1 = (*C.gchar)(C.CString(userName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_unix_get_passwd_entry(arg0)
+	ret := C.g_unix_get_passwd_entry(arg1)
 
 	var ret0 interface{}
 
@@ -15490,13 +15264,13 @@ func UnixGetPasswdEntry(userName string) interface{} {
 // This function does not take O_CLOEXEC, it takes FD_CLOEXEC as if for fcntl();
 // these are different on Linux/glibc.
 func UnixOpenPipe(fds int, flags int) bool {
-	var arg0 *C.gint
-	var arg1 C.gint
+	var arg1 *C.gint
+	var arg2 C.gint
 
-	arg0 = (*C.gint)(fds)
-	arg1 = C.gint(flags)
+	arg1 = (*C.gint)(fds)
+	arg2 = C.gint(flags)
 
-	ret := C.g_unix_open_pipe(arg0, arg1)
+	ret := C.g_unix_open_pipe(arg1, arg2)
 
 	var ret0 bool
 
@@ -15509,13 +15283,13 @@ func UnixOpenPipe(fds int, flags int) bool {
 // descriptor, according to @nonblock. On most systems this uses O_NONBLOCK, but
 // on some older ones may use O_NDELAY.
 func UnixSetFdNonblocking(fd int, nonblock bool) bool {
-	var arg0 C.gint
-	var arg1 C.gboolean
+	var arg1 C.gint
+	var arg2 C.gboolean
 
-	arg0 = C.gint(fd)
-	arg1 = gextras.Cbool(nonblock)
+	arg1 = C.gint(fd)
+	arg2 = gextras.Cbool(nonblock)
 
-	ret := C.g_unix_set_fd_nonblocking(arg0, arg1)
+	ret := C.g_unix_set_fd_nonblocking(arg1, arg2)
 
 	var ret0 bool
 
@@ -15528,14 +15302,14 @@ func UnixSetFdNonblocking(fd int, nonblock bool) bool {
 // attaches to the default Context. You can remove the watch using
 // g_source_remove().
 func UnixSignalAdd(signum int, handler SourceFunc) uint {
-	var arg0 C.gint
-	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg1 C.gint
+	var arg2 C.GSourceFunc
+	arg3 := C.gpointer(box.Assign(userData))
 
-	arg0 = C.gint(signum)
-	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.gint(signum)
+	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_unix_signal_add(arg0, arg1)
+	ret := C.g_unix_signal_add(arg1, arg2)
 
 	var ret0 uint
 
@@ -15548,16 +15322,16 @@ func UnixSignalAdd(signum int, handler SourceFunc) uint {
 // which attaches to the default Context. You can remove the watch using
 // g_source_remove().
 func UnixSignalAddFull(priority int, signum int, handler SourceFunc) uint {
-	var arg0 C.gint
 	var arg1 C.gint
-	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg2 C.gint
+	var arg3 C.GSourceFunc
+	arg4 := C.gpointer(box.Assign(userData))
 
-	arg0 = C.gint(priority)
-	arg1 = C.gint(signum)
-	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg1 = C.gint(priority)
+	arg2 = C.gint(signum)
+	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
 
-	ret := C.g_unix_signal_add_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	ret := C.g_unix_signal_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
 
 	var ret0 uint
 
@@ -15588,11 +15362,11 @@ func UnixSignalAddFull(priority int, signum int, handler SourceFunc) uint {
 // The source will not initially be associated with any Context and must be
 // added to one with g_source_attach() before it will be executed.
 func NewUnixSignalSource(signum int) *Source {
-	var arg0 C.gint
+	var arg1 C.gint
 
-	arg0 = C.gint(signum)
+	arg1 = C.gint(signum)
 
-	ret := C.g_unix_signal_source_new(arg0)
+	ret := C.g_unix_signal_source_new(arg1)
 
 	var ret0 *Source
 
@@ -15609,12 +15383,12 @@ func NewUnixSignalSource(signum int) *Source {
 // Windows, it is in general not possible to delete files that are open to some
 // process, or mapped into memory.
 func Unlink(filename string) int {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(filename))
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_unlink(arg0)
+	ret := C.g_unlink(arg1)
 
 	var ret0 int
 
@@ -15640,12 +15414,12 @@ func Unlink(filename string) int {
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
 func Unsetenv(variable string) {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(variable))
-	defer C.free(unsafe.Pointer(variable))
+	arg1 = (*C.gchar)(C.CString(variable))
+	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_unsetenv(arg0)
+	C.g_unsetenv(arg1)
 }
 
 // URIBuild creates a new #GUri from the given components according to @flags.
@@ -15653,31 +15427,31 @@ func Unsetenv(variable string) {
 // See also g_uri_build_with_user(), which allows specifying the components of
 // the "userinfo" separately.
 func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *URI {
-	var arg0 C.GUriFlags
-	var arg1 *C.gchar
+	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
-	var arg4 C.gint
-	var arg5 *C.gchar
+	var arg4 *C.gchar
+	var arg5 C.gint
 	var arg6 *C.gchar
 	var arg7 *C.gchar
+	var arg8 *C.gchar
 
-	arg0 = (C.GUriFlags)(flags)
-	arg1 = (*C.gchar)(C.CString(scheme))
-	defer C.free(unsafe.Pointer(scheme))
-	arg2 = (*C.gchar)(C.CString(userinfo))
-	defer C.free(unsafe.Pointer(userinfo))
-	arg3 = (*C.gchar)(C.CString(host))
-	defer C.free(unsafe.Pointer(host))
-	arg4 = C.gint(port)
-	arg5 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(path))
-	arg6 = (*C.gchar)(C.CString(query))
-	defer C.free(unsafe.Pointer(query))
-	arg7 = (*C.gchar)(C.CString(fragment))
-	defer C.free(unsafe.Pointer(fragment))
+	arg1 = (C.GUriFlags)(flags)
+	arg2 = (*C.gchar)(C.CString(scheme))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(userinfo))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(host))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = C.gint(port)
+	arg6 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg6))
+	arg7 = (*C.gchar)(C.CString(query))
+	defer C.free(unsafe.Pointer(arg7))
+	arg8 = (*C.gchar)(C.CString(fragment))
+	defer C.free(unsafe.Pointer(arg8))
 
-	ret := C.g_uri_build(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	ret := C.g_uri_build(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 
 	var ret0 *URI
 
@@ -15695,37 +15469,37 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 // ‘userinfo’ field separately. Note that @user must be non-nil if either
 // @password or @auth_params is non-nil.
 func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI {
-	var arg0 C.GUriFlags
-	var arg1 *C.gchar
+	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 *C.gchar
 	var arg5 *C.gchar
-	var arg6 C.gint
-	var arg7 *C.gchar
+	var arg6 *C.gchar
+	var arg7 C.gint
 	var arg8 *C.gchar
 	var arg9 *C.gchar
+	var arg10 *C.gchar
 
-	arg0 = (C.GUriFlags)(flags)
-	arg1 = (*C.gchar)(C.CString(scheme))
-	defer C.free(unsafe.Pointer(scheme))
-	arg2 = (*C.gchar)(C.CString(user))
-	defer C.free(unsafe.Pointer(user))
-	arg3 = (*C.gchar)(C.CString(password))
-	defer C.free(unsafe.Pointer(password))
-	arg4 = (*C.gchar)(C.CString(authParams))
-	defer C.free(unsafe.Pointer(authParams))
-	arg5 = (*C.gchar)(C.CString(host))
-	defer C.free(unsafe.Pointer(host))
-	arg6 = C.gint(port)
-	arg7 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(path))
-	arg8 = (*C.gchar)(C.CString(query))
-	defer C.free(unsafe.Pointer(query))
-	arg9 = (*C.gchar)(C.CString(fragment))
-	defer C.free(unsafe.Pointer(fragment))
+	arg1 = (C.GUriFlags)(flags)
+	arg2 = (*C.gchar)(C.CString(scheme))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(user))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(password))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(authParams))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = (*C.gchar)(C.CString(host))
+	defer C.free(unsafe.Pointer(arg6))
+	arg7 = C.gint(port)
+	arg8 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg8))
+	arg9 = (*C.gchar)(C.CString(query))
+	defer C.free(unsafe.Pointer(arg9))
+	arg10 = (*C.gchar)(C.CString(fragment))
+	defer C.free(unsafe.Pointer(arg10))
 
-	ret := C.g_uri_build_with_user(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+	ret := C.g_uri_build_with_user(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 
 	var ret0 *URI
 
@@ -15759,36 +15533,25 @@ func URIErrorQuark() Quark {
 //
 // Though technically incorrect, this will also allow escaping nul bytes as
 // `%“00`.
-func URIEscapeBytes(unescaped []uint8, reservedCharsAllowed string) string {
-	var arg0 *C.guint8
-	var arg1 C.gsize
-	var arg2 *C.char
+func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
+	var arg1 *C.guint8
+	var arg2 C.gsize
+	var arg3 *C.char
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(unescaped))),
-			Len:  len(unescaped),
-			Cap:  len(unescaped),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(unescaped); i++ {
-			src := unescaped[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(unescaped)
+		arg1 = (*C.guint8)(&unescaped[0])
+		arg2 = len(unescaped)
+		defer runtime.KeepAlive(unescaped)
 	}
-	arg2 = (*C.gchar)(C.CString(reservedCharsAllowed))
-	defer C.free(unsafe.Pointer(reservedCharsAllowed))
+	arg3 = (*C.gchar)(C.CString(reservedCharsAllowed))
+	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_uri_escape_bytes(arg0, arg1, arg2)
+	ret := C.g_uri_escape_bytes(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -15801,22 +15564,22 @@ func URIEscapeBytes(unescaped []uint8, reservedCharsAllowed string) string {
 // useful for the "reserved" characters in the URI specification, since those
 // are allowed unescaped in some portions of a URI.
 func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bool) string {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.gboolean
+	var arg2 *C.char
+	var arg3 C.gboolean
 
-	arg0 = (*C.gchar)(C.CString(unescaped))
-	defer C.free(unsafe.Pointer(unescaped))
-	arg1 = (*C.gchar)(C.CString(reservedCharsAllowed))
-	defer C.free(unsafe.Pointer(reservedCharsAllowed))
-	arg2 = gextras.Cbool(allowUTF8)
+	arg1 = (*C.gchar)(C.CString(unescaped))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(reservedCharsAllowed))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = gextras.Cbool(allowUTF8)
 
-	ret := C.g_uri_escape_string(arg0, arg1, arg2)
+	ret := C.g_uri_escape_string(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -15830,14 +15593,14 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bo
 // See g_uri_split(), and the definition of Flags, for more information on the
 // effect of @flags.
 func URIIsValid(uriString string, flags URIFlags) bool {
-	var arg0 *C.gchar
-	var arg1 C.GUriFlags
+	var arg1 *C.gchar
+	var arg2 C.GUriFlags
 
-	arg0 = (*C.gchar)(C.CString(uriString))
-	defer C.free(unsafe.Pointer(uriString))
-	arg1 = (C.GUriFlags)(flags)
+	arg1 = (*C.gchar)(C.CString(uriString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_is_valid(arg0, arg1)
+	ret := C.g_uri_is_valid(arg1, arg2)
 
 	var ret0 bool
 
@@ -15861,36 +15624,36 @@ func URIIsValid(uriString string, flags URIFlags) bool {
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in @flags.
 func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string {
-	var arg0 C.GUriFlags
-	var arg1 *C.gchar
+	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
-	var arg4 C.gint
-	var arg5 *C.gchar
+	var arg4 *C.gchar
+	var arg5 C.gint
 	var arg6 *C.gchar
 	var arg7 *C.gchar
+	var arg8 *C.gchar
 
-	arg0 = (C.GUriFlags)(flags)
-	arg1 = (*C.gchar)(C.CString(scheme))
-	defer C.free(unsafe.Pointer(scheme))
-	arg2 = (*C.gchar)(C.CString(userinfo))
-	defer C.free(unsafe.Pointer(userinfo))
-	arg3 = (*C.gchar)(C.CString(host))
-	defer C.free(unsafe.Pointer(host))
-	arg4 = C.gint(port)
-	arg5 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(path))
-	arg6 = (*C.gchar)(C.CString(query))
-	defer C.free(unsafe.Pointer(query))
-	arg7 = (*C.gchar)(C.CString(fragment))
-	defer C.free(unsafe.Pointer(fragment))
+	arg1 = (C.GUriFlags)(flags)
+	arg2 = (*C.gchar)(C.CString(scheme))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(userinfo))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(host))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = C.gint(port)
+	arg6 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg6))
+	arg7 = (*C.gchar)(C.CString(query))
+	defer C.free(unsafe.Pointer(arg7))
+	arg8 = (*C.gchar)(C.CString(fragment))
+	defer C.free(unsafe.Pointer(arg8))
 
-	ret := C.g_uri_join(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	ret := C.g_uri_join(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -15905,42 +15668,42 @@ func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in @flags.
 func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string {
-	var arg0 C.GUriFlags
-	var arg1 *C.gchar
+	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 *C.gchar
 	var arg5 *C.gchar
-	var arg6 C.gint
-	var arg7 *C.gchar
+	var arg6 *C.gchar
+	var arg7 C.gint
 	var arg8 *C.gchar
 	var arg9 *C.gchar
+	var arg10 *C.gchar
 
-	arg0 = (C.GUriFlags)(flags)
-	arg1 = (*C.gchar)(C.CString(scheme))
-	defer C.free(unsafe.Pointer(scheme))
-	arg2 = (*C.gchar)(C.CString(user))
-	defer C.free(unsafe.Pointer(user))
-	arg3 = (*C.gchar)(C.CString(password))
-	defer C.free(unsafe.Pointer(password))
-	arg4 = (*C.gchar)(C.CString(authParams))
-	defer C.free(unsafe.Pointer(authParams))
-	arg5 = (*C.gchar)(C.CString(host))
-	defer C.free(unsafe.Pointer(host))
-	arg6 = C.gint(port)
-	arg7 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(path))
-	arg8 = (*C.gchar)(C.CString(query))
-	defer C.free(unsafe.Pointer(query))
-	arg9 = (*C.gchar)(C.CString(fragment))
-	defer C.free(unsafe.Pointer(fragment))
+	arg1 = (C.GUriFlags)(flags)
+	arg2 = (*C.gchar)(C.CString(scheme))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(user))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(password))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(authParams))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = (*C.gchar)(C.CString(host))
+	defer C.free(unsafe.Pointer(arg6))
+	arg7 = C.gint(port)
+	arg8 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(arg8))
+	arg9 = (*C.gchar)(C.CString(query))
+	defer C.free(unsafe.Pointer(arg9))
+	arg10 = (*C.gchar)(C.CString(fragment))
+	defer C.free(unsafe.Pointer(arg10))
 
-	ret := C.g_uri_join_with_user(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+	ret := C.g_uri_join_with_user(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -15949,12 +15712,12 @@ func URIJoinWithUser(flags URIFlags, scheme string, user string, password string
 // type defined in RFC 2483 into individual URIs, discarding any comments. The
 // URIs are not validated.
 func URIListExtractUris(uriList string) []string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(uriList))
-	defer C.free(unsafe.Pointer(uriList))
+	arg1 = (*C.gchar)(C.CString(uriList))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_uri_list_extract_uris(arg0)
+	ret := C.g_uri_list_extract_uris(arg1)
 
 	var ret0 []string
 
@@ -15967,8 +15730,8 @@ func URIListExtractUris(uriList string) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			src = C.GoString(ret0[i])
-			defer C.free(unsafe.Pointer(src))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
 		}
 	}
 
@@ -15979,14 +15742,14 @@ func URIListExtractUris(uriList string) []string {
 // [absolute URI][relative-absolute-uris], it will be discarded, and an error
 // returned.
 func URIParse(uriString string, flags URIFlags) *URI {
-	var arg0 *C.gchar
-	var arg1 C.GUriFlags
+	var arg1 *C.gchar
+	var arg2 C.GUriFlags
 
-	arg0 = (*C.gchar)(C.CString(uriString))
-	defer C.free(unsafe.Pointer(uriString))
-	arg1 = (C.GUriFlags)(flags)
+	arg1 = (*C.gchar)(C.CString(uriString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_parse(arg0, arg1)
+	ret := C.g_uri_parse(arg1, arg2)
 
 	var ret0 *URI
 
@@ -16020,19 +15783,19 @@ func URIParse(uriString string, flags URIFlags) *URI {
 // If @params cannot be parsed (for example, it contains two @separators
 // characters in a row), then @error is set and nil is returned.
 func URIParseParams(params string, length int, separators string, flags URIParamsFlags) *HashTable {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 *C.gchar
-	var arg3 C.GUriParamsFlags
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gchar
+	var arg4 C.GUriParamsFlags
 
-	arg0 = (*C.gchar)(C.CString(params))
-	defer C.free(unsafe.Pointer(params))
-	arg1 = C.gssize(length)
-	arg2 = (*C.gchar)(C.CString(separators))
-	defer C.free(unsafe.Pointer(separators))
-	arg3 = (C.GUriParamsFlags)(flags)
+	arg1 = (*C.gchar)(C.CString(params))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(length)
+	arg3 = (*C.gchar)(C.CString(separators))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (C.GUriParamsFlags)(flags)
 
-	ret := C.g_uri_parse_params(arg0, arg1, arg2, arg3)
+	ret := C.g_uri_parse_params(arg1, arg2, arg3, arg4)
 
 	var ret0 *HashTable
 
@@ -16050,17 +15813,17 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 //
 // Common schemes include `file`, `https`, `svn+ssh`, etc.
 func URIParseScheme(uri string) string {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(uri))
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_uri_parse_scheme(arg0)
+	ret := C.g_uri_parse_scheme(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16077,17 +15840,16 @@ func URIParseScheme(uri string) string {
 // Unlike g_uri_parse_scheme(), the returned scheme is normalized to
 // all-lowercase and does not need to be freed.
 func URIPeekScheme(uri string) string {
-	var arg0 *C.char
+	var arg1 *C.char
 
-	arg0 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(uri))
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_uri_peek_scheme(arg0)
+	ret := C.g_uri_peek_scheme(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16100,22 +15862,22 @@ func URIPeekScheme(uri string) string {
 // (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
 // is invalid or not absolute.)
 func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.GUriFlags
+	var arg2 *C.gchar
+	var arg3 C.GUriFlags
 
-	arg0 = (*C.gchar)(C.CString(baseURIString))
-	defer C.free(unsafe.Pointer(baseURIString))
-	arg1 = (*C.gchar)(C.CString(uriRef))
-	defer C.free(unsafe.Pointer(uriRef))
-	arg2 = (C.GUriFlags)(flags)
+	arg1 = (*C.gchar)(C.CString(baseURIString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(uriRef))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_resolve_relative(arg0, arg1, arg2)
+	ret := C.g_uri_resolve_relative(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16136,27 +15898,21 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) str
 // are ignored by g_uri_split(), since it always returns only the full userinfo;
 // use g_uri_split_with_user() if you want it split up.
 func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.GUriFlags
-	var arg2 **C.gchar // out
-
+	var arg1 *C.gchar
+	var arg2 C.GUriFlags
 	var arg3 **C.gchar // out
-
 	var arg4 **C.gchar // out
-
-	var arg5 *C.gint // out
-
-	var arg6 **C.gchar // out
-
+	var arg5 **C.gchar // out
+	var arg6 *C.gint   // out
 	var arg7 **C.gchar // out
-
 	var arg8 **C.gchar // out
+	var arg9 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(uriRef))
-	defer C.free(unsafe.Pointer(uriRef))
-	arg1 = (C.GUriFlags)(flags)
+	arg1 = (*C.gchar)(C.CString(uriRef))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_split(arg0, arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8)
+	ret := C.g_uri_split(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9)
 
 	var ret0 string
 	var ret1 string
@@ -16167,25 +15923,25 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	var ret6 string
 	var ret7 bool
 
-	arg2 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg2))
+	ret0 = C.GoString(arg3)
+	C.free(unsafe.Pointer(arg3))
 
-	arg3 = C.GoString(ret1)
-	defer C.free(unsafe.Pointer(arg3))
+	ret1 = C.GoString(arg4)
+	C.free(unsafe.Pointer(arg4))
 
-	arg4 = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(arg4))
+	ret2 = C.GoString(arg5)
+	C.free(unsafe.Pointer(arg5))
 
-	ret3 = int(arg5)
+	ret3 = int(arg6)
 
-	arg6 = C.GoString(ret4)
-	defer C.free(unsafe.Pointer(arg6))
+	ret4 = C.GoString(arg7)
+	C.free(unsafe.Pointer(arg7))
 
-	arg7 = C.GoString(ret5)
-	defer C.free(unsafe.Pointer(arg7))
+	ret5 = C.GoString(arg8)
+	C.free(unsafe.Pointer(arg8))
 
-	arg8 = C.GoString(ret6)
-	defer C.free(unsafe.Pointer(arg8))
+	ret6 = C.GoString(arg9)
+	C.free(unsafe.Pointer(arg9))
 
 	ret7 = gextras.Gobool(ret)
 
@@ -16199,32 +15955,30 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 // arguments. However, it will return an error if @uri_string is a relative URI,
 // or does not contain a hostname component.
 func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.GUriFlags
-	var arg2 **C.gchar // out
-
+	var arg1 *C.gchar
+	var arg2 C.GUriFlags
 	var arg3 **C.gchar // out
+	var arg4 **C.gchar // out
+	var arg5 *C.gint   // out
 
-	var arg4 *C.gint // out
+	arg1 = (*C.gchar)(C.CString(uriString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GUriFlags)(flags)
 
-	arg0 = (*C.gchar)(C.CString(uriString))
-	defer C.free(unsafe.Pointer(uriString))
-	arg1 = (C.GUriFlags)(flags)
-
-	ret := C.g_uri_split_network(arg0, arg1, &arg2, &arg3, &arg4)
+	ret := C.g_uri_split_network(arg1, arg2, &arg3, &arg4, &arg5)
 
 	var ret0 string
 	var ret1 string
 	var ret2 int
 	var ret3 bool
 
-	arg2 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg2))
+	ret0 = C.GoString(arg3)
+	C.free(unsafe.Pointer(arg3))
 
-	arg3 = C.GoString(ret1)
-	defer C.free(unsafe.Pointer(arg3))
+	ret1 = C.GoString(arg4)
+	C.free(unsafe.Pointer(arg4))
 
-	ret2 = int(arg4)
+	ret2 = int(arg5)
 
 	ret3 = gextras.Gobool(ret)
 
@@ -16242,31 +15996,23 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 // contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
 // if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
 func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.GUriFlags
-	var arg2 **C.gchar // out
-
-	var arg3 **C.gchar // out
-
-	var arg4 **C.gchar // out
-
-	var arg5 **C.gchar // out
-
-	var arg6 **C.gchar // out
-
-	var arg7 *C.gint // out
-
-	var arg8 **C.gchar // out
-
-	var arg9 **C.gchar // out
-
+	var arg1 *C.gchar
+	var arg2 C.GUriFlags
+	var arg3 **C.gchar  // out
+	var arg4 **C.gchar  // out
+	var arg5 **C.gchar  // out
+	var arg6 **C.gchar  // out
+	var arg7 **C.gchar  // out
+	var arg8 *C.gint    // out
+	var arg9 **C.gchar  // out
 	var arg10 **C.gchar // out
+	var arg11 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(uriRef))
-	defer C.free(unsafe.Pointer(uriRef))
-	arg1 = (C.GUriFlags)(flags)
+	arg1 = (*C.gchar)(C.CString(uriRef))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_split_with_user(arg0, arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10)
+	ret := C.g_uri_split_with_user(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11)
 
 	var ret0 string
 	var ret1 string
@@ -16279,31 +16025,31 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	var ret8 string
 	var ret9 bool
 
-	arg2 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg2))
+	ret0 = C.GoString(arg3)
+	C.free(unsafe.Pointer(arg3))
 
-	arg3 = C.GoString(ret1)
-	defer C.free(unsafe.Pointer(arg3))
+	ret1 = C.GoString(arg4)
+	C.free(unsafe.Pointer(arg4))
 
-	arg4 = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(arg4))
+	ret2 = C.GoString(arg5)
+	C.free(unsafe.Pointer(arg5))
 
-	arg5 = C.GoString(ret3)
-	defer C.free(unsafe.Pointer(arg5))
+	ret3 = C.GoString(arg6)
+	C.free(unsafe.Pointer(arg6))
 
-	arg6 = C.GoString(ret4)
-	defer C.free(unsafe.Pointer(arg6))
+	ret4 = C.GoString(arg7)
+	C.free(unsafe.Pointer(arg7))
 
-	ret5 = int(arg7)
+	ret5 = int(arg8)
 
-	arg8 = C.GoString(ret6)
-	defer C.free(unsafe.Pointer(arg8))
+	ret6 = C.GoString(arg9)
+	C.free(unsafe.Pointer(arg9))
 
-	arg9 = C.GoString(ret7)
-	defer C.free(unsafe.Pointer(arg9))
+	ret7 = C.GoString(arg10)
+	C.free(unsafe.Pointer(arg10))
 
-	arg10 = C.GoString(ret8)
-	defer C.free(unsafe.Pointer(arg10))
+	ret8 = C.GoString(arg11)
+	C.free(unsafe.Pointer(arg11))
 
 	ret9 = gextras.Gobool(ret)
 
@@ -16320,17 +16066,17 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 // This is useful if you want to avoid for instance having a slash being
 // expanded in an escaped path element, which might confuse pathname handling.
 func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) *Bytes {
-	var arg0 *C.char
-	var arg1 C.gssize
-	var arg2 *C.char
+	var arg1 *C.char
+	var arg2 C.gssize
+	var arg3 *C.char
 
-	arg0 = (*C.gchar)(C.CString(escapedString))
-	defer C.free(unsafe.Pointer(escapedString))
-	arg1 = C.gssize(length)
-	arg2 = (*C.gchar)(C.CString(illegalCharacters))
-	defer C.free(unsafe.Pointer(illegalCharacters))
+	arg1 = (*C.gchar)(C.CString(escapedString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(length)
+	arg3 = (*C.gchar)(C.CString(illegalCharacters))
+	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_uri_unescape_bytes(arg0, arg1, arg2)
+	ret := C.g_uri_unescape_bytes(arg1, arg2, arg3)
 
 	var ret0 *Bytes
 
@@ -16350,23 +16096,23 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 // Note: `NUL` byte is not accepted in the output, in contrast to
 // g_uri_unescape_bytes().
 func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) string {
-	var arg0 *C.char
 	var arg1 *C.char
 	var arg2 *C.char
+	var arg3 *C.char
 
-	arg0 = (*C.gchar)(C.CString(escapedString))
-	defer C.free(unsafe.Pointer(escapedString))
-	arg1 = (*C.gchar)(C.CString(escapedStringEnd))
-	defer C.free(unsafe.Pointer(escapedStringEnd))
-	arg2 = (*C.gchar)(C.CString(illegalCharacters))
-	defer C.free(unsafe.Pointer(illegalCharacters))
+	arg1 = (*C.gchar)(C.CString(escapedString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(escapedStringEnd))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(illegalCharacters))
+	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_uri_unescape_segment(arg0, arg1, arg2)
+	ret := C.g_uri_unescape_segment(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16379,20 +16125,20 @@ func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 // slash being expanded in an escaped path element, which might confuse pathname
 // handling.
 func URIUnescapeString(escapedString string, illegalCharacters string) string {
-	var arg0 *C.char
 	var arg1 *C.char
+	var arg2 *C.char
 
-	arg0 = (*C.gchar)(C.CString(escapedString))
-	defer C.free(unsafe.Pointer(escapedString))
-	arg1 = (*C.gchar)(C.CString(illegalCharacters))
-	defer C.free(unsafe.Pointer(illegalCharacters))
+	arg1 = (*C.gchar)(C.CString(escapedString))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(illegalCharacters))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_uri_unescape_string(arg0, arg1)
+	ret := C.g_uri_unescape_string(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16403,34 +16149,33 @@ func URIUnescapeString(escapedString string, illegalCharacters string) string {
 // macro). g_usleep() may have limited precision, depending on hardware and
 // operating system; don't rely on the exact length of the sleep.
 func Usleep(microseconds uint32) {
-	var arg0 C.gulong
+	var arg1 C.gulong
 
-	arg0 = C.gulong(microseconds)
+	arg1 = C.gulong(microseconds)
 
-	C.g_usleep(arg0)
+	C.g_usleep(arg1)
 }
 
 // UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
 func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32) {
-	var arg0 *C.gunichar2
-	var arg1 C.glong
-	var arg2 *C.glong // out
-
+	var arg1 *C.gunichar2
+	var arg2 C.glong
 	var arg3 *C.glong // out
+	var arg4 *C.glong // out
 
-	arg0 = (*C.gunichar2)(str)
-	arg1 = C.glong(len)
+	arg1 = (*C.gunichar2)(str)
+	arg2 = C.glong(len)
 
-	ret := C.g_utf16_to_ucs4(arg0, arg1, &arg2, &arg3)
+	ret := C.g_utf16_to_ucs4(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint32
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
-	ret1 = int32(arg3)
+	ret1 = int32(arg4)
 
 	ret2 = uint32(ret)
 
@@ -16449,27 +16194,26 @@ func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gu
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
 func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string) {
-	var arg0 *C.gunichar2
-	var arg1 C.glong
-	var arg2 *C.glong // out
-
+	var arg1 *C.gunichar2
+	var arg2 C.glong
 	var arg3 *C.glong // out
+	var arg4 *C.glong // out
 
-	arg0 = (*C.gunichar2)(str)
-	arg1 = C.glong(len)
+	arg1 = (*C.gunichar2)(str)
+	arg2 = C.glong(len)
 
-	ret := C.g_utf16_to_utf8(arg0, arg1, &arg2, &arg3)
+	ret := C.g_utf16_to_utf8(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 string
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
-	ret1 = int32(arg3)
+	ret1 = int32(arg4)
 
-	ret = C.GoString(ret2)
-	defer C.free(unsafe.Pointer(ret))
+	ret2 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1, ret2
 }
@@ -16485,19 +16229,19 @@ func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, ut
 // sophisticated collation function that takes case sensitivity into account.
 // GLib does not currently provide such a function.
 func UTF8Casefold(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_casefold(arg0, arg1)
+	ret := C.g_utf8_casefold(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16508,15 +16252,15 @@ func UTF8Casefold(str string, len int) string {
 // with g_utf8_collate_key() and compare the keys with strcmp() when sorting
 // instead of sorting the original strings.
 func UTF8Collate(str1 string, str2 string) int {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str1))
-	defer C.free(unsafe.Pointer(str1))
-	arg1 = (*C.gchar)(C.CString(str2))
-	defer C.free(unsafe.Pointer(str2))
+	arg1 = (*C.gchar)(C.CString(str1))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(str2))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_utf8_collate(arg0, arg1)
+	ret := C.g_utf8_collate(arg1, arg2)
 
 	var ret0 int
 
@@ -16533,19 +16277,19 @@ func UTF8Collate(str1 string, str2 string) int {
 //
 // Note that this function depends on the [current locale][setlocale].
 func UTF8CollateKey(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_collate_key(arg0, arg1)
+	ret := C.g_utf8_collate_key(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16563,19 +16307,19 @@ func UTF8CollateKey(str string, len int) string {
 //
 // Note that this function depends on the [current locale][setlocale].
 func UTF8CollateKeyForFilename(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_collate_key_for_filename(arg0, arg1)
+	ret := C.g_utf8_collate_key_for_filename(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16591,20 +16335,19 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 // is reached, a pointer to the terminating nul byte is returned. If @end is
 // non-nil, the return value will be nil if the end of the string is reached.
 func UTF8FindNextChar(p string, end string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
-	arg1 = (*C.gchar)(C.CString(end))
-	defer C.free(unsafe.Pointer(end))
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(end))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_utf8_find_next_char(arg0, arg1)
+	ret := C.g_utf8_find_next_char(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16617,20 +16360,19 @@ func UTF8FindNextChar(p string, end string) string {
 // made to see if the character found is actually valid other than it starts
 // with an appropriate byte.
 func UTF8FindPrevChar(str string, p string) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_utf8_find_prev_char(arg0, arg1)
+	ret := C.g_utf8_find_prev_char(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16642,12 +16384,12 @@ func UTF8FindPrevChar(str string, p string) string {
 // undefined. If you are not sure that the bytes are complete valid Unicode
 // characters, you should use g_utf8_get_char_validated() instead.
 func UTF8GetChar(p string) uint32 {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_utf8_get_char(arg0)
+	ret := C.g_utf8_get_char(arg1)
 
 	var ret0 uint32
 
@@ -16664,14 +16406,14 @@ func UTF8GetChar(p string) uint32 {
 // Note that g_utf8_get_char_validated() returns (gunichar)-2 if @max_len is
 // positive and any of the bytes in the first UTF-8 character sequence are nul.
 func UTF8GetCharValidated(p string, maxLen int) uint32 {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
-	arg1 = C.gssize(maxLen)
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(maxLen)
 
-	ret := C.g_utf8_get_char_validated(arg0, arg1)
+	ret := C.g_utf8_get_char_validated(arg1, arg2)
 
 	var ret0 uint32
 
@@ -16690,19 +16432,19 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 // assumption that it is close enough to ASCII or UTF-8 to be mostly readable
 // as-is.
 func UTF8MakeValid(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_make_valid(arg0, arg1)
+	ret := C.g_utf8_make_valid(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16726,21 +16468,21 @@ func UTF8MakeValid(str string, len int) string {
 // intend to convert the string to a legacy encoding or pass it to a system with
 // less capable Unicode handling.
 func UTF8Normalize(str string, len int, mode NormalizeMode) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 C.GNormalizeMode
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.GNormalizeMode
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
-	arg2 = (C.GNormalizeMode)(mode)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
+	arg3 = (C.GNormalizeMode)(mode)
 
-	ret := C.g_utf8_normalize(arg0, arg1, arg2)
+	ret := C.g_utf8_normalize(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16759,19 +16501,18 @@ func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 // exists as this function is called frequently during text rendering and
 // therefore has to be as fast as possible.
 func UTF8OffsetToPointer(str string, offset int32) string {
-	var arg0 *C.gchar
-	var arg1 C.glong
+	var arg1 *C.gchar
+	var arg2 C.glong
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.glong(offset)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.glong(offset)
 
-	ret := C.g_utf8_offset_to_pointer(arg0, arg1)
+	ret := C.g_utf8_offset_to_pointer(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16782,15 +16523,15 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 // Since 2.10, this function allows @pos to be before @str, and returns a
 // negative offset in this case.
 func UTF8PointerToOffset(str string, pos string) int32 {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
+	var arg2 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = (*C.gchar)(C.CString(pos))
-	defer C.free(unsafe.Pointer(pos))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(pos))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_utf8_pointer_to_offset(arg0, arg1)
+	ret := C.g_utf8_pointer_to_offset(arg1, arg2)
 
 	var ret0 int32
 
@@ -16806,17 +16547,16 @@ func UTF8PointerToOffset(str string, pos string) int32 {
 // with an appropriate byte. If @p might be the first character of the string,
 // you must use g_utf8_find_prev_char() instead.
 func UTF8PrevChar(p string) string {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_utf8_prev_char(arg0)
+	ret := C.g_utf8_prev_char(arg1)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16825,21 +16565,20 @@ func UTF8PrevChar(p string) string {
 // UTF-8 encoded string, while limiting the search to @len bytes. If @len is -1,
 // allow unbounded search.
 func UTF8Strchr(p string, len int, c uint32) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 C.gunichar
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gunichar
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
-	arg1 = C.gssize(len)
-	arg2 = C.gunichar(c)
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
+	arg3 = C.gunichar(c)
 
-	ret := C.g_utf8_strchr(arg0, arg1, arg2)
+	ret := C.g_utf8_strchr(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16848,19 +16587,19 @@ func UTF8Strchr(p string, len int, c uint32) string {
 // lowercase. The exact manner that this is done depends on the current locale,
 // and may result in the number of characters in the string changing.
 func UTF8Strdown(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_strdown(arg0, arg1)
+	ret := C.g_utf8_strdown(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16869,14 +16608,14 @@ func UTF8Strdown(str string, len int) string {
 // terminating nul character. If the @max'th byte falls in the middle of a
 // character, the last (partial) character is not counted.
 func UTF8Strlen(p string, max int) int32 {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
-	arg1 = C.gssize(max)
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(max)
 
-	ret := C.g_utf8_strlen(arg0, arg1)
+	ret := C.g_utf8_strlen(arg1, arg2)
 
 	var ret0 int32
 
@@ -16893,22 +16632,21 @@ func UTF8Strlen(p string, max int) int32 {
 // Note you must ensure @dest is at least 4 * @n to fit the largest possible
 // UTF-8 characters
 func UTF8Strncpy(dest string, src string, n uint) string {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 C.gsize
+	var arg2 *C.gchar
+	var arg3 C.gsize
 
-	arg0 = (*C.gchar)(C.CString(dest))
-	defer C.free(unsafe.Pointer(dest))
-	arg1 = (*C.gchar)(C.CString(src))
-	defer C.free(unsafe.Pointer(src))
-	arg2 = C.gsize(n)
+	arg1 = (*C.gchar)(C.CString(dest))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(src))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.gsize(n)
 
-	ret := C.g_utf8_strncpy(arg0, arg1, arg2)
+	ret := C.g_utf8_strncpy(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16917,21 +16655,20 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 // a UTF-8 encoded string, while limiting the search to @len bytes. If @len is
 // -1, allow unbounded search.
 func UTF8Strrchr(p string, len int, c uint32) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 C.gunichar
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gunichar
 
-	arg0 = (*C.gchar)(C.CString(p))
-	defer C.free(unsafe.Pointer(p))
-	arg1 = C.gssize(len)
-	arg2 = C.gunichar(c)
+	arg1 = (*C.gchar)(C.CString(p))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
+	arg3 = C.gunichar(c)
 
-	ret := C.g_utf8_strrchr(arg0, arg1, arg2)
+	ret := C.g_utf8_strrchr(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
 
 	return ret0
 }
@@ -16948,19 +16685,19 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 // Note that unlike g_strreverse(), this function returns newly-allocated
 // memory, which should be freed with g_free() when no longer needed.
 func UTF8Strreverse(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_strreverse(arg0, arg1)
+	ret := C.g_utf8_strreverse(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16970,19 +16707,19 @@ func UTF8Strreverse(str string, len int) string {
 // and may result in the number of characters in the string increasing. (For
 // instance, the German ess-zet will be changed to SS.)
 func UTF8Strup(str string, len int) string {
-	var arg0 *C.gchar
-	var arg1 C.gssize
+	var arg1 *C.gchar
+	var arg2 C.gssize
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.gssize(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.gssize(len)
 
-	ret := C.g_utf8_strup(arg0, arg1)
+	ret := C.g_utf8_strup(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -16990,21 +16727,21 @@ func UTF8Strup(str string, len int) string {
 // UTF8Substring copies a substring out of a UTF-8 encoded string. The substring
 // will contain @end_pos - @start_pos characters.
 func UTF8Substring(str string, startPos int32, endPos int32) string {
-	var arg0 *C.gchar
-	var arg1 C.glong
+	var arg1 *C.gchar
 	var arg2 C.glong
+	var arg3 C.glong
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.glong(startPos)
-	arg2 = C.glong(endPos)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.glong(startPos)
+	arg3 = C.glong(endPos)
 
-	ret := C.g_utf8_substring(arg0, arg1, arg2)
+	ret := C.g_utf8_substring(arg1, arg2, arg3)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -17013,25 +16750,24 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
 func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32) {
-	var arg0 *C.gchar
-	var arg1 C.glong
-	var arg2 *C.glong // out
-
+	var arg1 *C.gchar
+	var arg2 C.glong
 	var arg3 *C.glong // out
+	var arg4 *C.glong // out
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.glong(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.glong(len)
 
-	ret := C.g_utf8_to_ucs4(arg0, arg1, &arg2, &arg3)
+	ret := C.g_utf8_to_ucs4(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint32
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
-	ret1 = int32(arg3)
+	ret1 = int32(arg4)
 
 	ret2 = uint32(ret)
 
@@ -17043,20 +16779,20 @@ func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
 func UTF8ToUcs4Fast(str string, len int32) (itemsWritten int32, gunichar uint32) {
-	var arg0 *C.gchar
-	var arg1 C.glong
-	var arg2 *C.glong // out
+	var arg1 *C.gchar
+	var arg2 C.glong
+	var arg3 *C.glong // out
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.glong(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.glong(len)
 
-	ret := C.g_utf8_to_ucs4_fast(arg0, arg1, &arg2)
+	ret := C.g_utf8_to_ucs4_fast(arg1, arg2, &arg3)
 
 	var ret0 int32
 	var ret1 uint32
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
 	ret1 = uint32(ret)
 
@@ -17066,25 +16802,24 @@ func UTF8ToUcs4Fast(str string, len int32) (itemsWritten int32, gunichar uint32)
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
 func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16) {
-	var arg0 *C.gchar
-	var arg1 C.glong
-	var arg2 *C.glong // out
-
+	var arg1 *C.gchar
+	var arg2 C.glong
 	var arg3 *C.glong // out
+	var arg4 *C.glong // out
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
-	arg1 = C.glong(len)
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.glong(len)
 
-	ret := C.g_utf8_to_utf16(arg0, arg1, &arg2, &arg3)
+	ret := C.g_utf8_to_utf16(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint16
 
-	ret0 = int32(arg2)
+	ret0 = int32(arg3)
 
-	ret1 = int32(arg3)
+	ret1 = int32(arg4)
 
 	ret2 = uint16(ret)
 
@@ -17104,35 +16839,23 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 // Returns true if all of @str was valid. Many GLib and GTK+ routines require
 // valid UTF-8 as input; so data read from a file or the network should be
 // checked with g_utf8_validate() before doing anything else with it.
-func UTF8Validate(str []uint8) (end string, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.gssize
-	var arg2 **C.gchar // out
+func UTF8Validate(str []byte) (end string, ok bool) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 **C.gchar // out
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(str))),
-			Len:  len(str),
-			Cap:  len(str),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(str); i++ {
-			src := str[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(str)
+		arg1 = (*C.gchar)(&str[0])
+		arg2 = len(str)
+		defer runtime.KeepAlive(str)
 	}
 
-	ret := C.g_utf8_validate(arg0, arg1, &arg2)
+	ret := C.g_utf8_validate(arg1, arg2, &arg3)
 
 	var ret0 string
 	var ret1 bool
 
-	arg2 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg2))
+	ret0 = C.GoString(arg3)
 
 	ret1 = gextras.Gobool(ret)
 
@@ -17143,42 +16866,30 @@ func UTF8Validate(str []uint8) (end string, ok bool) {
 //
 // As with g_utf8_validate(), but @max_len must be set, and hence this function
 // will always return false if any of the bytes of @str are nul.
-func UTF8ValidateLen(str []uint8) (end string, ok bool) {
-	var arg0 *C.gchar
-	var arg1 C.gsize
-	var arg2 **C.gchar // out
+func UTF8ValidateLen(str []byte) (end string, ok bool) {
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 **C.gchar // out
 
 	{
-		sliceHeader := reflect.SliceHeader{
-			Data: uintptr(C.malloc(C.sizeof_guint8 * len(str))),
-			Len:  len(str),
-			Cap:  len(str),
-		}
-		dst := *(*[]C.guint8)(unsafe.Pointer(&sliceHeader))
-
-		for i := 0; i < len(str); i++ {
-			src := str[i]
-			dst[i] = C.guint8(src)
-		}
-
-		arg0 = (*C.guint8)(unsafe.Pointer(sliceHeader.Data))
-		arg1 = len(str)
+		arg1 = (*C.gchar)(&str[0])
+		arg2 = len(str)
+		defer runtime.KeepAlive(str)
 	}
 
-	ret := C.g_utf8_validate_len(arg0, arg1, &arg2)
+	ret := C.g_utf8_validate_len(arg1, arg2, &arg3)
 
 	var ret0 string
 	var ret1 bool
 
-	arg2 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg2))
+	ret0 = C.GoString(arg3)
 
 	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1
 }
 
-// UuidStringIsValid parses the string @str and verify if it is a UUID.
+// UUIDStringIsValid parses the string @str and verify if it is a UUID.
 //
 // The function accepts the following syntax:
 //
@@ -17186,13 +16897,13 @@ func UTF8ValidateLen(str []uint8) (end string, ok bool) {
 //
 // Note that hyphens are required within the UUID string itself, as per the
 // aforementioned RFC.
-func UuidStringIsValid(str string) bool {
-	var arg0 *C.gchar
+func UUIDStringIsValid(str string) bool {
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(str))
+	arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_uuid_string_is_valid(arg0)
+	ret := C.g_uuid_string_is_valid(arg1)
 
 	var ret0 bool
 
@@ -17201,18 +16912,18 @@ func UuidStringIsValid(str string) bool {
 	return ret0
 }
 
-// UuidStringRandom generates a random UUID (RFC 4122 version 4) as a string. It
+// UUIDStringRandom generates a random UUID (RFC 4122 version 4) as a string. It
 // has the same randomness guarantees as #GRand, so must not be used for
 // cryptographic purposes such as key generation, nonces, salts or one-time
 // pads.
-func UuidStringRandom() string {
+func UUIDStringRandom() string {
 
 	ret := C.g_uuid_string_random()
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -17235,12 +16946,12 @@ func VariantGetGType() externglib.Type {
 // characters `[A-Z][a-z][0-9]_`. No sequence (including the one following the
 // final `/` character) may be empty.
 func VariantIsObjectPath(string string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_variant_is_object_path(arg0)
+	ret := C.g_variant_is_object_path(arg1)
 
 	var ret0 bool
 
@@ -17256,12 +16967,12 @@ func VariantIsObjectPath(string string) bool {
 // D-Bus type signatures consist of zero or more definite Type strings in
 // sequence.
 func VariantIsSignature(string string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_variant_is_signature(arg0)
+	ret := C.g_variant_is_signature(arg1)
 
 	var ret0 bool
 
@@ -17303,20 +17014,20 @@ func VariantIsSignature(string string) bool {
 // which would result in a G_VARIANT_PARSE_ERROR_RECURSION error. #GVariant is
 // guaranteed to handle nesting up to at least 64 levels.
 func VariantParse(_type *VariantType, text string, limit string, endptr string) *Variant {
-	var arg0 *C.GVariantType
-	var arg1 *C.gchar
+	var arg1 *C.GVariantType
 	var arg2 *C.gchar
-	var arg3 **C.gchar
+	var arg3 *C.gchar
+	var arg4 **C.gchar
 
-	arg0 = (*C.GVariantType)(_type.Native())
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(text))
-	arg2 = (*C.gchar)(C.CString(limit))
-	defer C.free(unsafe.Pointer(limit))
-	arg3 = (*C.gchar)(C.CString(endptr))
-	defer C.free(unsafe.Pointer(endptr))
+	arg1 = (*C.GVariantType)(_type.Native())
+	arg2 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(limit))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(endptr))
+	defer C.free(unsafe.Pointer(arg4))
 
-	ret := C.g_variant_parse(arg0, arg1, arg2, arg3)
+	ret := C.g_variant_parse(arg1, arg2, arg3, arg4)
 
 	var ret0 *Variant
 
@@ -17354,19 +17065,19 @@ func VariantParse(_type *VariantType, text string, limit string, endptr string) 
 // @source_str was not nul-terminated when you passed it to g_variant_parse()
 // then you must add nul termination before using this function.
 func VariantParseErrorPrintContext(error *Error, sourceStr string) string {
-	var arg0 *C.GError
-	var arg1 *C.gchar
+	var arg1 *C.GError
+	var arg2 *C.gchar
 
-	arg0 = (*C.GError)(error.Native())
-	arg1 = (*C.gchar)(C.CString(sourceStr))
-	defer C.free(unsafe.Pointer(sourceStr))
+	arg1 = (*C.GError)(error.Native())
+	arg2 = (*C.gchar)(C.CString(sourceStr))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_variant_parse_error_print_context(arg0, arg1)
+	ret := C.g_variant_parse_error_print_context(arg1, arg2)
 
 	var ret0 string
 
-	ret = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(ret))
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -17403,12 +17114,12 @@ func VariantParserGetErrorQuark() Quark {
 }
 
 func VariantTypeChecked_(arg0 string) *VariantType {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(arg0))
-	defer C.free(unsafe.Pointer(arg0))
+	arg1 = (*C.gchar)(C.CString(arg0))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_variant_type_checked_(arg0)
+	ret := C.g_variant_type_checked_(arg1)
 
 	var ret0 *VariantType
 
@@ -17418,12 +17129,12 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 }
 
 func VariantTypeStringGetDepth_(typeString string) uint {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(typeString))
-	defer C.free(unsafe.Pointer(typeString))
+	arg1 = (*C.gchar)(C.CString(typeString))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_variant_type_string_get_depth_(arg0)
+	ret := C.g_variant_type_string_get_depth_(arg1)
 
 	var ret0 uint
 
@@ -17436,12 +17147,12 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 // string. This call is equivalent to calling g_variant_type_string_scan() and
 // confirming that the following character is a nul terminator.
 func VariantTypeStringIsValid(typeString string) bool {
-	var arg0 *C.gchar
+	var arg1 *C.gchar
 
-	arg0 = (*C.gchar)(C.CString(typeString))
-	defer C.free(unsafe.Pointer(typeString))
+	arg1 = (*C.gchar)(C.CString(typeString))
+	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_variant_type_string_is_valid(arg0)
+	ret := C.g_variant_type_string_is_valid(arg1)
 
 	var ret0 bool
 
@@ -17463,22 +17174,22 @@ func VariantTypeStringIsValid(typeString string) bool {
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().
 func VariantTypeStringScan(string string, limit string) (endptr string, ok bool) {
-	var arg0 *C.gchar
 	var arg1 *C.gchar
-	var arg2 **C.gchar // out
+	var arg2 *C.gchar
+	var arg3 **C.gchar // out
 
-	arg0 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(string))
-	arg1 = (*C.gchar)(C.CString(limit))
-	defer C.free(unsafe.Pointer(limit))
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(limit))
+	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_variant_type_string_scan(arg0, arg1, &arg2)
+	ret := C.g_variant_type_string_scan(arg1, arg2, &arg3)
 
 	var ret0 string
 	var ret1 bool
 
-	arg2 = C.GoString(ret0)
-	defer C.free(unsafe.Pointer(arg2))
+	ret0 = C.GoString(arg3)
+	C.free(unsafe.Pointer(arg3))
 
 	ret1 = gextras.Gobool(ret)
 
@@ -17488,51 +17199,38 @@ func VariantTypeStringScan(string string, limit string) (endptr string, ok bool)
 // WarnMessage: internal function used to print messages from the public
 // g_warn_if_reached() and g_warn_if_fail() macros.
 func WarnMessage(domain string, file string, line int, _func string, warnexpr string) {
-	var arg0 *C.char
 	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.char
+	var arg2 *C.char
+	var arg3 C.int
 	var arg4 *C.char
+	var arg5 *C.char
 
-	arg0 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(domain))
-	arg1 = (*C.gchar)(C.CString(file))
-	defer C.free(unsafe.Pointer(file))
-	arg2 = C.int(line)
-	arg3 = (*C.gchar)(C.CString(_func))
-	defer C.free(unsafe.Pointer(_func))
-	arg4 = (*C.gchar)(C.CString(warnexpr))
-	defer C.free(unsafe.Pointer(warnexpr))
+	arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.gchar)(C.CString(_func))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(warnexpr))
+	defer C.free(unsafe.Pointer(arg5))
 
-	C.g_warn_message(arg0, arg1, arg2, arg3, arg4)
+	C.g_warn_message(arg1, arg2, arg3, arg4, arg5)
 }
 
 // Array contains the public fields of a GArray.
 type Array struct {
-	// Data: a pointer to the element data. The data may be moved as elements
-	// are added to the #GArray.
-	Data string
-	// Len: the number of elements in the #GArray not including the possible
-	// terminating zero element.
-	Len uint
-
-	native *C.GArray
+	native C.GArray
 }
 
 // WrapArray wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapArray(ptr unsafe.Pointer) *Array {
-	p := (*C.GArray)(ptr)
-	v := Array{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	p.data = C.GoString(v.Data)
-	defer C.free(unsafe.Pointer(p.data))
-	v.Len = uint(p.len)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Array).free)
-
-	return &v
+	return (*Array)(ptr)
 }
 
 func marshalArray(p uintptr) (interface{}, error) {
@@ -17540,45 +17238,38 @@ func marshalArray(p uintptr) (interface{}, error) {
 	return WrapArray(unsafe.Pointer(b))
 }
 
-func (a *Array) free() {
-	C.free(a.Native())
+// Native returns the underlying C source pointer.
+func (a *Array) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
 }
 
-// Native returns the underlying source pointer.
-func (a *Array) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+// Data gets the field inside the struct.
+func (d *Array) Data() string {
+	var ret string
+	ret = C.GoString(a.native.data)
+	return ret
 }
 
-// Native returns the pointer to *C.GArray. The caller is expected to
-// cast.
-func (a *Array) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+// Len gets the field inside the struct.
+func (l *Array) Len() uint {
+	var ret uint
+	ret = uint(a.native.len)
+	return ret
 }
 
 // ByteArray contains the public fields of a GByteArray.
 type ByteArray struct {
-	// Data: a pointer to the element data. The data may be moved as elements
-	// are added to the Array
-	Data uint8
-	// Len: the number of elements in the Array
-	Len uint
-
-	native *C.GByteArray
+	native C.GByteArray
 }
 
 // WrapByteArray wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapByteArray(ptr unsafe.Pointer) *ByteArray {
-	p := (*C.GByteArray)(ptr)
-	v := ByteArray{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Data = uint8(p.data)
-	v.Len = uint(p.len)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*ByteArray).free)
-
-	return &v
+	return (*ByteArray)(ptr)
 }
 
 func marshalByteArray(p uintptr) (interface{}, error) {
@@ -17586,19 +17277,23 @@ func marshalByteArray(p uintptr) (interface{}, error) {
 	return WrapByteArray(unsafe.Pointer(b))
 }
 
-func (b *ByteArray) free() {
-	C.free(b.Native())
+// Native returns the underlying C source pointer.
+func (b *ByteArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
 }
 
-// Native returns the underlying source pointer.
-func (b *ByteArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+// Data gets the field inside the struct.
+func (d *ByteArray) Data() byte {
+	var ret byte
+	ret = byte(b.native.data)
+	return ret
 }
 
-// Native returns the pointer to *C.GByteArray. The caller is expected to
-// cast.
-func (b *ByteArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+// Len gets the field inside the struct.
+func (l *ByteArray) Len() uint {
+	var ret uint
+	ret = uint(b.native.len)
+	return ret
 }
 
 // Bytes: a simple refcounted data type representing an immutable sequence of
@@ -17625,19 +17320,17 @@ func (b *ByteArray) Native() unsafe.Pointer {
 // for a #GBytes sequence. To create an immutable #GBytes from a mutable Array,
 // use the g_byte_array_free_to_bytes() function.
 type Bytes struct {
-	native *C.GBytes
+	native C.GBytes
 }
 
 // WrapBytes wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapBytes(ptr unsafe.Pointer) *Bytes {
-	p := (*C.GBytes)(ptr)
-	v := Bytes{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Bytes).free)
-
-	return &v
+	return (*Bytes)(ptr)
 }
 
 func marshalBytes(p uintptr) (interface{}, error) {
@@ -17645,46 +17338,128 @@ func marshalBytes(p uintptr) (interface{}, error) {
 	return WrapBytes(unsafe.Pointer(b))
 }
 
-func (b *Bytes) free() {
-	C.free(b.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (b *Bytes) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+	return unsafe.Pointer(&b.native)
 }
 
-// Native returns the pointer to *C.GBytes. The caller is expected to
-// cast.
-func (b *Bytes) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+// New_ constructs a struct Bytes.
+func New_(data []byte) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
+
+	{
+		arg1 = (C.gpointer)(&data[0])
+		arg2 = len(data)
+		defer runtime.KeepAlive(data)
+	}
+
+	ret := C.g_bytes_new(arg1, arg2)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
 }
 
-func NewBytes(data []uint8) *Bytes
+// New_Static constructs a struct Bytes.
+func New_Static(data []byte) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
 
-func NewBytes(data []uint8) *Bytes
+	{
+		var dst []C.guint8
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
 
-func NewBytes(data []uint8) *Bytes
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
 
-func NewBytes(data []uint8, userData interface{}) *Bytes
+		arg1 = (C.gpointer)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(data)
+	}
+
+	ret := C.g_bytes_new_static(arg1, arg2)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
+
+// New_Take constructs a struct Bytes.
+func New_Take(data []byte) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
+
+	{
+		var dst []C.guint8
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_guint8 * len(data))))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
+
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (C.gpointer)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(data)
+	}
+
+	ret := C.g_bytes_new_take(arg1, arg2)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
+
+// New_WithFreeFunc constructs a struct Bytes.
+func New_WithFreeFunc(data []byte, userData interface{}) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
+	var arg4 C.gpointer
+
+	{
+		arg1 = (C.gpointer)(&data[0])
+		arg2 = len(data)
+		defer runtime.KeepAlive(data)
+	}
+	arg4 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_bytes_new_with_free_func(arg1, arg2, (*[0]byte)(C.free), arg4)
+
+	var ret0 *Bytes
+
+	ret0 = WrapBytes(ret)
+
+	return ret0
+}
 
 // Checksum: an opaque structure representing a checksumming operation. To
 // create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
 type Checksum struct {
-	native *C.GChecksum
+	native C.GChecksum
 }
 
 // WrapChecksum wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapChecksum(ptr unsafe.Pointer) *Checksum {
-	p := (*C.GChecksum)(ptr)
-	v := Checksum{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Checksum).free)
-
-	return &v
+	return (*Checksum)(ptr)
 }
 
 func marshalChecksum(p uintptr) (interface{}, error) {
@@ -17692,22 +17467,25 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 	return WrapChecksum(unsafe.Pointer(b))
 }
 
-func (c *Checksum) free() {
-	C.free(c.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (c *Checksum) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+	return unsafe.Pointer(&c.native)
 }
 
-// Native returns the pointer to *C.GChecksum. The caller is expected to
-// cast.
-func (c *Checksum) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
-}
+// New_ constructs a struct Checksum.
+func New_(checksumType ChecksumType) *Checksum {
+	var arg1 C.GChecksumType
 
-func NewChecksum(checksumType ChecksumType) *Checksum
+	arg1 = (C.GChecksumType)(checksumType)
+
+	ret := C.g_checksum_new(arg1)
+
+	var ret0 *Checksum
+
+	ret0 = WrapChecksum(ret)
+
+	return ret0
+}
 
 // Cond: the #GCond struct is an opaque data structure that represents a
 // condition. Threads can block on a #GCond if they find a certain condition to
@@ -17773,19 +17551,17 @@ func NewChecksum(checksumType ChecksumType) *Checksum
 //
 // A #GCond should only be accessed via the g_cond_ functions.
 type Cond struct {
-	native *C.GCond
+	native C.GCond
 }
 
 // WrapCond wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapCond(ptr unsafe.Pointer) *Cond {
-	p := (*C.GCond)(ptr)
-	v := Cond{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Cond).free)
-
-	return &v
+	return (*Cond)(ptr)
 }
 
 func marshalCond(p uintptr) (interface{}, error) {
@@ -17793,19 +17569,9 @@ func marshalCond(p uintptr) (interface{}, error) {
 	return WrapCond(unsafe.Pointer(b))
 }
 
-func (c *Cond) free() {
-	C.free(c.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (c *Cond) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
-}
-
-// Native returns the pointer to *C.GCond. The caller is expected to
-// cast.
-func (c *Cond) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+	return unsafe.Pointer(&c.native)
 }
 
 // Date represents a day between January 1, Year 1 and a few thousand years in
@@ -17819,41 +17585,17 @@ func (c *Cond) Native() unsafe.Pointer {
 // invalid date doesn't represent a day, it's "empty." A date becomes valid
 // after you set it to a Julian day or you set a day, month, and year.
 type Date struct {
-	// JulianDays: the Julian representation of the date
-	JulianDays uint
-	// Julian: bit is set if @julian_days is valid
-	Julian uint
-	// DMY: is set if @day, @month and @year are valid
-	DMY uint
-	// Day: the day of the day-month-year representation of the date, as a
-	// number between 1 and 31
-	Day uint
-	// Month: the day of the day-month-year representation of the date, as a
-	// number between 1 and 12
-	Month uint
-	// Year: the day of the day-month-year representation of the date
-	Year uint
-
-	native *C.GDate
+	native C.GDate
 }
 
 // WrapDate wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDate(ptr unsafe.Pointer) *Date {
-	p := (*C.GDate)(ptr)
-	v := Date{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.JulianDays = uint(p.julian_days)
-	v.Julian = uint(p.julian)
-	v.DMY = uint(p.dmy)
-	v.Day = uint(p.day)
-	v.Month = uint(p.month)
-	v.Year = uint(p.year)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Date).free)
-
-	return &v
+	return (*Date)(ptr)
 }
 
 func marshalDate(p uintptr) (interface{}, error) {
@@ -17861,43 +17603,111 @@ func marshalDate(p uintptr) (interface{}, error) {
 	return WrapDate(unsafe.Pointer(b))
 }
 
-func (d *Date) free() {
-	C.free(d.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (d *Date) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+	return unsafe.Pointer(&d.native)
 }
 
-// Native returns the pointer to *C.GDate. The caller is expected to
-// cast.
-func (d *Date) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+// New_ constructs a struct Date.
+func New_() *Date {
+
+	ret := C.g_date_new()
+
+	var ret0 *Date
+
+	ret0 = WrapDate(ret)
+
+	return ret0
 }
 
-func NewDate() *Date
+// New_DMY constructs a struct Date.
+func New_DMY(day DateDay, month DateMonth, year DateYear) *Date {
+	var arg1 C.GDateDay
+	var arg2 C.GDateMonth
+	var arg3 C.GDateYear
 
-func NewDate(day DateDay, month DateMonth, year DateYear) *Date
+	arg2 = (C.GDateMonth)(month)
 
-func NewDate(julianDay uint32) *Date
+	ret := C.g_date_new_dmy(arg1, arg2, arg3)
+
+	var ret0 *Date
+
+	ret0 = WrapDate(ret)
+
+	return ret0
+}
+
+// New_Julian constructs a struct Date.
+func New_Julian(julianDay uint32) *Date {
+	var arg1 C.guint32
+
+	arg1 = C.guint32(julianDay)
+
+	ret := C.g_date_new_julian(arg1)
+
+	var ret0 *Date
+
+	ret0 = WrapDate(ret)
+
+	return ret0
+}
+
+// JulianDays gets the field inside the struct.
+func (j *Date) JulianDays() uint {
+	var ret uint
+	ret = uint(d.native.julian_days)
+	return ret
+}
+
+// Julian gets the field inside the struct.
+func (j *Date) Julian() uint {
+	var ret uint
+	ret = uint(d.native.julian)
+	return ret
+}
+
+// DMY gets the field inside the struct.
+func (d *Date) DMY() uint {
+	var ret uint
+	ret = uint(d.native.dmy)
+	return ret
+}
+
+// Day gets the field inside the struct.
+func (d *Date) Day() uint {
+	var ret uint
+	ret = uint(d.native.day)
+	return ret
+}
+
+// Month gets the field inside the struct.
+func (m *Date) Month() uint {
+	var ret uint
+	ret = uint(d.native.month)
+	return ret
+}
+
+// Year gets the field inside the struct.
+func (y *Date) Year() uint {
+	var ret uint
+	ret = uint(d.native.year)
+	return ret
+}
 
 // DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
 // directly.
 type DateTime struct {
-	native *C.GDateTime
+	native C.GDateTime
 }
 
 // WrapDateTime wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDateTime(ptr unsafe.Pointer) *DateTime {
-	p := (*C.GDateTime)(ptr)
-	v := DateTime{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*DateTime).free)
-
-	return &v
+	return (*DateTime)(ptr)
 }
 
 func marshalDateTime(p uintptr) (interface{}, error) {
@@ -17905,67 +17715,218 @@ func marshalDateTime(p uintptr) (interface{}, error) {
 	return WrapDateTime(unsafe.Pointer(b))
 }
 
-func (d *DateTime) free() {
-	C.free(d.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (d *DateTime) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+	return unsafe.Pointer(&d.native)
 }
 
-// Native returns the pointer to *C.GDateTime. The caller is expected to
-// cast.
-func (d *DateTime) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+// New_ constructs a struct DateTime.
+func New_(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+	var arg1 *C.GTimeZone
+	var arg2 C.gint
+	var arg3 C.gint
+	var arg4 C.gint
+	var arg5 C.gint
+	var arg6 C.gint
+	var arg7 C.gdouble
+
+	arg1 = (*C.GTimeZone)(tz.Native())
+	arg2 = C.gint(year)
+	arg3 = C.gint(month)
+	arg4 = C.gint(day)
+	arg5 = C.gint(hour)
+	arg6 = C.gint(minute)
+	arg7 = C.gdouble(seconds)
+
+	ret := C.g_date_time_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
 }
 
-func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime
+// New_FromIso8601 constructs a struct DateTime.
+func New_FromIso8601(text string, defaultTz *TimeZone) *DateTime {
+	var arg1 *C.gchar
+	var arg2 *C.GTimeZone
 
-func NewDateTime(text string, defaultTz *TimeZone) *DateTime
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.GTimeZone)(defaultTz.Native())
 
-func NewDateTime(tv *TimeVal) *DateTime
+	ret := C.g_date_time_new_from_iso8601(arg1, arg2)
 
-func NewDateTime(tv *TimeVal) *DateTime
+	var ret0 *DateTime
 
-func NewDateTime(t int64) *DateTime
+	ret0 = WrapDateTime(ret)
 
-func NewDateTime(t int64) *DateTime
+	return ret0
+}
 
-func NewDateTime(year int, month int, day int, hour int, minute int, seconds float64) *DateTime
+// New_FromTimevalLocal constructs a struct DateTime.
+func New_FromTimevalLocal(tv *TimeVal) *DateTime {
+	var arg1 *C.GTimeVal
 
-func NewDateTime(tz *TimeZone) *DateTime
+	arg1 = (*C.GTimeVal)(tv.Native())
 
-func NewDateTime() *DateTime
+	ret := C.g_date_time_new_from_timeval_local(arg1)
 
-func NewDateTime() *DateTime
+	var ret0 *DateTime
 
-func NewDateTime(year int, month int, day int, hour int, minute int, seconds float64) *DateTime
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_FromTimevalUtc constructs a struct DateTime.
+func New_FromTimevalUtc(tv *TimeVal) *DateTime {
+	var arg1 *C.GTimeVal
+
+	arg1 = (*C.GTimeVal)(tv.Native())
+
+	ret := C.g_date_time_new_from_timeval_utc(arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_FromUnixLocal constructs a struct DateTime.
+func New_FromUnixLocal(t int64) *DateTime {
+	var arg1 C.gint64
+
+	arg1 = C.gint64(t)
+
+	ret := C.g_date_time_new_from_unix_local(arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_FromUnixUtc constructs a struct DateTime.
+func New_FromUnixUtc(t int64) *DateTime {
+	var arg1 C.gint64
+
+	arg1 = C.gint64(t)
+
+	ret := C.g_date_time_new_from_unix_utc(arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_Local constructs a struct DateTime.
+func New_Local(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+	var arg1 C.gint
+	var arg2 C.gint
+	var arg3 C.gint
+	var arg4 C.gint
+	var arg5 C.gint
+	var arg6 C.gdouble
+
+	arg1 = C.gint(year)
+	arg2 = C.gint(month)
+	arg3 = C.gint(day)
+	arg4 = C.gint(hour)
+	arg5 = C.gint(minute)
+	arg6 = C.gdouble(seconds)
+
+	ret := C.g_date_time_new_local(arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_Now constructs a struct DateTime.
+func New_Now(tz *TimeZone) *DateTime {
+	var arg1 *C.GTimeZone
+
+	arg1 = (*C.GTimeZone)(tz.Native())
+
+	ret := C.g_date_time_new_now(arg1)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_NowLocal constructs a struct DateTime.
+func New_NowLocal() *DateTime {
+
+	ret := C.g_date_time_new_now_local()
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_NowUtc constructs a struct DateTime.
+func New_NowUtc() *DateTime {
+
+	ret := C.g_date_time_new_now_utc()
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
+
+// New_Utc constructs a struct DateTime.
+func New_Utc(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+	var arg1 C.gint
+	var arg2 C.gint
+	var arg3 C.gint
+	var arg4 C.gint
+	var arg5 C.gint
+	var arg6 C.gdouble
+
+	arg1 = C.gint(year)
+	arg2 = C.gint(month)
+	arg3 = C.gint(day)
+	arg4 = C.gint(hour)
+	arg5 = C.gint(minute)
+	arg6 = C.gdouble(seconds)
+
+	ret := C.g_date_time_new_utc(arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 *DateTime
+
+	ret0 = WrapDateTime(ret)
+
+	return ret0
+}
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
 type DebugKey struct {
-	// Key: the string
-	Key string
-	// Value: the flag
-	Value uint
-
-	native *C.GDebugKey
+	native C.GDebugKey
 }
 
 // WrapDebugKey wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDebugKey(ptr unsafe.Pointer) *DebugKey {
-	p := (*C.GDebugKey)(ptr)
-	v := DebugKey{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	p.key = C.GoString(v.Key)
-	defer C.free(unsafe.Pointer(p.key))
-	v.Value = uint(p.value)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*DebugKey).free)
-
-	return &v
+	return (*DebugKey)(ptr)
 }
 
 func marshalDebugKey(p uintptr) (interface{}, error) {
@@ -17973,53 +17934,39 @@ func marshalDebugKey(p uintptr) (interface{}, error) {
 	return WrapDebugKey(unsafe.Pointer(b))
 }
 
-func (d *DebugKey) free() {
-	C.free(d.Native())
+// Native returns the underlying C source pointer.
+func (d *DebugKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
 }
 
-// Native returns the underlying source pointer.
-func (d *DebugKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+// Key gets the field inside the struct.
+func (k *DebugKey) Key() string {
+	var ret string
+	ret = C.GoString(d.native.key)
+	return ret
 }
 
-// Native returns the pointer to *C.GDebugKey. The caller is expected to
-// cast.
-func (d *DebugKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+// Value gets the field inside the struct.
+func (v *DebugKey) Value() uint {
+	var ret uint
+	ret = uint(d.native.value)
+	return ret
 }
 
 // Error: the `GError` structure contains information about an error that has
 // occurred.
 type Error struct {
-	// Domain: error domain, e.g. FILE_ERROR
-	Domain Quark
-	// Code: error code, e.g. G_FILE_ERROR_NOENT
-	Code int
-	// Message: human-readable informative error message
-	Message string
-
-	native *C.GError
+	native C.GError
 }
 
 // WrapError wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapError(ptr unsafe.Pointer) *Error {
-	p := (*C.GError)(ptr)
-	v := Error{native: p}
-
-	{
-		var tmp uint32
-		tmp = uint32(p.domain)
-		v.Domain = Quark(tmp)
+	if ptr == nil {
+		return nil
 	}
-	v.Code = int(p.code)
-	p.message = C.GoString(v.Message)
-	defer C.free(unsafe.Pointer(p.message))
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Error).free)
-
-	return &v
+	return (*Error)(ptr)
 }
 
 func marshalError(p uintptr) (interface{}, error) {
@@ -18027,40 +17974,70 @@ func marshalError(p uintptr) (interface{}, error) {
 	return WrapError(unsafe.Pointer(b))
 }
 
-func (e *Error) free() {
-	C.free(e.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (e *Error) Native() unsafe.Pointer {
-	return unsafe.Pointer(e.native)
+	return unsafe.Pointer(&e.native)
 }
 
-// Native returns the pointer to *C.GError. The caller is expected to
-// cast.
-func (e *Error) Native() unsafe.Pointer {
-	return unsafe.Pointer(e.native)
+// New_Literal constructs a struct Error.
+func New_Literal(domain Quark, code int, message string) *Error {
+	var arg1 C.GQuark
+	var arg2 C.gint
+	var arg3 *C.gchar
+
+	arg2 = C.gint(code)
+	arg3 = (*C.gchar)(C.CString(message))
+	defer C.free(unsafe.Pointer(arg3))
+
+	ret := C.g_error_new_literal(arg1, arg2, arg3)
+
+	var ret0 *Error
+
+	ret0 = WrapError(ret)
+
+	return ret0
 }
 
-func NewError(domain Quark, code int, message string) *Error
+// Domain gets the field inside the struct.
+func (d *Error) Domain() Quark {
+	var ret Quark
+	{
+		var tmp uint32
+		tmp = uint32(e.native.domain)
+		ret = Quark(tmp)
+	}
+	return ret
+}
+
+// Code gets the field inside the struct.
+func (c *Error) Code() int {
+	var ret int
+	ret = int(e.native.code)
+	return ret
+}
+
+// Message gets the field inside the struct.
+func (m *Error) Message() string {
+	var ret string
+	ret = C.GoString(e.native.message)
+	return ret
+}
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
 type HashTable struct {
-	native *C.GHashTable
+	native C.GHashTable
 }
 
 // WrapHashTable wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHashTable(ptr unsafe.Pointer) *HashTable {
-	p := (*C.GHashTable)(ptr)
-	v := HashTable{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*HashTable).free)
-
-	return &v
+	return (*HashTable)(ptr)
 }
 
 func marshalHashTable(p uintptr) (interface{}, error) {
@@ -18068,19 +18045,9 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 	return WrapHashTable(unsafe.Pointer(b))
 }
 
-func (h *HashTable) free() {
-	C.free(h.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (h *HashTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
-}
-
-// Native returns the pointer to *C.GHashTable. The caller is expected to
-// cast.
-func (h *HashTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+	return unsafe.Pointer(&h.native)
 }
 
 // HashTableIter: a GHashTableIter structure represents an iterator that can be
@@ -18091,19 +18058,17 @@ func (h *HashTable) Native() unsafe.Pointer {
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
 type HashTableIter struct {
-	native *C.GHashTableIter
+	native C.GHashTableIter
 }
 
 // WrapHashTableIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHashTableIter(ptr unsafe.Pointer) *HashTableIter {
-	p := (*C.GHashTableIter)(ptr)
-	v := HashTableIter{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*HashTableIter).free)
-
-	return &v
+	return (*HashTableIter)(ptr)
 }
 
 func marshalHashTableIter(p uintptr) (interface{}, error) {
@@ -18111,64 +18076,24 @@ func marshalHashTableIter(p uintptr) (interface{}, error) {
 	return WrapHashTableIter(unsafe.Pointer(b))
 }
 
-func (h *HashTableIter) free() {
-	C.free(h.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (h *HashTableIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
-}
-
-// Native returns the pointer to *C.GHashTableIter. The caller is expected to
-// cast.
-func (h *HashTableIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+	return unsafe.Pointer(&h.native)
 }
 
 // Hook: the #GHook struct represents a single hook function in a List.
 type Hook struct {
-	// Data: data which is passed to func when this hook is invoked
-	Data interface{}
-	// Next: pointer to the next hook in the list
-	Next *Hook
-	// Prev: pointer to the previous hook in the list
-	Prev *Hook
-	// RefCount: the reference count of this hook
-	RefCount uint
-	// HookID: the id of this hook, which is unique within its list
-	HookID uint32
-	// Flags flags which are set for this hook. See FlagMask for predefined
-	// flags
-	Flags uint
-	// Func: the function to call when this hook is invoked. The possible
-	// signatures for this function are Func and CheckFunc
-	Func interface{}
-	// Destroy: the default @finalize_hook function of a List calls this member
-	// of the hook that is being finalized
-	Destroy unsafe.Pointer
-
-	native *C.GHook
+	native C.GHook
 }
 
 // WrapHook wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHook(ptr unsafe.Pointer) *Hook {
-	p := (*C.GHook)(ptr)
-	v := Hook{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Data = box.Get(uintptr(p.data))
-	v.Next = WrapHook(p.next)
-	v.Prev = WrapHook(p.prev)
-	v.RefCount = uint(p.ref_count)
-	v.HookID = uint32(p.hook_id)
-	v.Flags = uint(p.flags)
-	v.Func = box.Get(uintptr(p._func))
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Hook).free)
-
-	return &v
+	return (*Hook)(ptr)
 }
 
 func marshalHook(p uintptr) (interface{}, error) {
@@ -18176,67 +18101,73 @@ func marshalHook(p uintptr) (interface{}, error) {
 	return WrapHook(unsafe.Pointer(b))
 }
 
-func (h *Hook) free() {
-	C.free(h.Native())
+// Native returns the underlying C source pointer.
+func (h *Hook) Native() unsafe.Pointer {
+	return unsafe.Pointer(&h.native)
 }
 
-// Native returns the underlying source pointer.
-func (h *Hook) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+// Data gets the field inside the struct.
+func (d *Hook) Data() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(h.native.data))
+	return ret
 }
 
-// Native returns the pointer to *C.GHook. The caller is expected to
-// cast.
-func (h *Hook) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+// Next gets the field inside the struct.
+func (n *Hook) Next() *Hook {
+	var ret *Hook
+	ret = WrapHook(h.native.next)
+	return ret
+}
+
+// Prev gets the field inside the struct.
+func (p *Hook) Prev() *Hook {
+	var ret *Hook
+	ret = WrapHook(h.native.prev)
+	return ret
+}
+
+// RefCount gets the field inside the struct.
+func (r *Hook) RefCount() uint {
+	var ret uint
+	ret = uint(h.native.ref_count)
+	return ret
+}
+
+// HookID gets the field inside the struct.
+func (h *Hook) HookID() uint32 {
+	var ret uint32
+	ret = uint32(h.native.hook_id)
+	return ret
+}
+
+// Flags gets the field inside the struct.
+func (f *Hook) Flags() uint {
+	var ret uint
+	ret = uint(h.native.flags)
+	return ret
+}
+
+// Func gets the field inside the struct.
+func (f *Hook) Func() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(h.native._func))
+	return ret
 }
 
 // HookList: the List struct represents a list of hook functions.
 type HookList struct {
-	// SeqID: the next free #GHook id
-	SeqID uint32
-	// HookSize: the size of the List elements, in bytes
-	HookSize uint
-	// IsSetup: 1 if the List has been initialized
-	IsSetup uint
-	// Hooks: the first #GHook element in the list
-	Hooks *Hook
-	// Dummy3: unused
-	Dummy3 interface{}
-	// FinalizeHook: the function to call to finalize a #GHook element. The
-	// default behaviour is to call the hooks @destroy function
-	FinalizeHook HookFinalizeFunc
-	// Dummy: unused
-	Dummy [2]interface{}
-
-	native *C.GHookList
+	native C.GHookList
 }
 
 // WrapHookList wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapHookList(ptr unsafe.Pointer) *HookList {
-	p := (*C.GHookList)(ptr)
-	v := HookList{native: p}
-
-	v.SeqID = uint32(p.seq_id)
-	v.HookSize = uint(p.hook_size)
-	v.IsSetup = uint(p.is_setup)
-	v.Hooks = WrapHook(p.hooks)
-	v.Dummy3 = box.Get(uintptr(p.dummy3))
-
-	{
-		cArray := ([2]gpointer)(p.dummy)
-
-		for i := 0; i < 2; i++ {
-			src := cArray[i]
-			v.Dummy[i] = box.Get(uintptr(src))
-		}
+	if ptr == nil {
+		return nil
 	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*HookList).free)
-
-	return &v
+	return (*HookList)(ptr)
 }
 
 func marshalHookList(p uintptr) (interface{}, error) {
@@ -18244,37 +18175,74 @@ func marshalHookList(p uintptr) (interface{}, error) {
 	return WrapHookList(unsafe.Pointer(b))
 }
 
-func (h *HookList) free() {
-	C.free(h.Native())
+// Native returns the underlying C source pointer.
+func (h *HookList) Native() unsafe.Pointer {
+	return unsafe.Pointer(&h.native)
 }
 
-// Native returns the underlying source pointer.
-func (h *HookList) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+// SeqID gets the field inside the struct.
+func (s *HookList) SeqID() uint32 {
+	var ret uint32
+	ret = uint32(h.native.seq_id)
+	return ret
 }
 
-// Native returns the pointer to *C.GHookList. The caller is expected to
-// cast.
-func (h *HookList) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+// HookSize gets the field inside the struct.
+func (h *HookList) HookSize() uint {
+	var ret uint
+	ret = uint(h.native.hook_size)
+	return ret
+}
+
+// IsSetup gets the field inside the struct.
+func (i *HookList) IsSetup() uint {
+	var ret uint
+	ret = uint(h.native.is_setup)
+	return ret
+}
+
+// Hooks gets the field inside the struct.
+func (h *HookList) Hooks() *Hook {
+	var ret *Hook
+	ret = WrapHook(h.native.hooks)
+	return ret
+}
+
+// Dummy3 gets the field inside the struct.
+func (d *HookList) Dummy3() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(h.native.dummy3))
+	return ret
+}
+
+// Dummy gets the field inside the struct.
+func (d *HookList) Dummy() [2]interface{} {
+	var ret [2]interface{}
+	{
+		cArray := ([2]gpointer)(h.native.dummy)
+
+		for i := 0; i < 2; i++ {
+			src := cArray[i]
+			ret[i] = box.Get(uintptr(src))
+		}
+	}
+	return ret
 }
 
 // IOChannel: a data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
 type IOChannel struct {
-	native *C.GIOChannel
+	native C.GIOChannel
 }
 
 // WrapIOChannel wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapIOChannel(ptr unsafe.Pointer) *IOChannel {
-	p := (*C.GIOChannel)(ptr)
-	v := IOChannel{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*IOChannel).free)
-
-	return &v
+	return (*IOChannel)(ptr)
 }
 
 func marshalIOChannel(p uintptr) (interface{}, error) {
@@ -18282,79 +18250,59 @@ func marshalIOChannel(p uintptr) (interface{}, error) {
 	return WrapIOChannel(unsafe.Pointer(b))
 }
 
-func (i *IOChannel) free() {
-	C.free(i.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (i *IOChannel) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
+	return unsafe.Pointer(&i.native)
 }
 
-// Native returns the pointer to *C.GIOChannel. The caller is expected to
-// cast.
-func (i *IOChannel) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
+// New_File constructs a struct IOChannel.
+func New_File(filename string, mode string) *IOChannel {
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(mode))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.g_io_channel_new_file(arg1, arg2)
+
+	var ret0 *IOChannel
+
+	ret0 = WrapIOChannel(ret)
+
+	return ret0
 }
 
-func NewIOChannel(filename string, mode string) *IOChannel
+// New_Unix constructs a struct IOChannel.
+func New_Unix(fd int) *IOChannel {
+	var arg1 C.int
 
-func NewIOChannel(fd int) *IOChannel
+	arg1 = C.int(fd)
 
-// IOFuncs: a table of functions used to handle different types of OChannel in a
-// generic way.
-type IOFuncs struct {
-	native *C.GIOFuncs
-}
+	ret := C.g_io_channel_unix_new(arg1)
 
-// WrapIOFuncs wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIOFuncs(ptr unsafe.Pointer) *IOFuncs {
-	p := (*C.GIOFuncs)(ptr)
-	v := IOFuncs{native: p}
+	var ret0 *IOChannel
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*IOFuncs).free)
+	ret0 = WrapIOChannel(ret)
 
-	return &v
-}
-
-func marshalIOFuncs(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIOFuncs(unsafe.Pointer(b))
-}
-
-func (i *IOFuncs) free() {
-	C.free(i.Native())
-}
-
-// Native returns the underlying source pointer.
-func (i *IOFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
-}
-
-// Native returns the pointer to *C.GIOFuncs. The caller is expected to
-// cast.
-func (i *IOFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
+	return ret0
 }
 
 // KeyFile: the GKeyFile struct contains only private data and should not be
 // accessed directly.
 type KeyFile struct {
-	native *C.GKeyFile
+	native C.GKeyFile
 }
 
 // WrapKeyFile wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapKeyFile(ptr unsafe.Pointer) *KeyFile {
-	p := (*C.GKeyFile)(ptr)
-	v := KeyFile{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*KeyFile).free)
-
-	return &v
+	return (*KeyFile)(ptr)
 }
 
 func marshalKeyFile(p uintptr) (interface{}, error) {
@@ -18362,51 +18310,36 @@ func marshalKeyFile(p uintptr) (interface{}, error) {
 	return WrapKeyFile(unsafe.Pointer(b))
 }
 
-func (k *KeyFile) free() {
-	C.free(k.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (k *KeyFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(k.native)
+	return unsafe.Pointer(&k.native)
 }
 
-// Native returns the pointer to *C.GKeyFile. The caller is expected to
-// cast.
-func (k *KeyFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(k.native)
-}
+// New_ constructs a struct KeyFile.
+func New_() *KeyFile {
 
-func NewKeyFile() *KeyFile
+	ret := C.g_key_file_new()
+
+	var ret0 *KeyFile
+
+	ret0 = WrapKeyFile(ret)
+
+	return ret0
+}
 
 // List: the #GList struct is used for each element in a doubly-linked list.
 type List struct {
-	// Data holds the element's data, which can be a pointer to any kind of
-	// data, or any integer value using the [Type Conversion
-	// Macros][glib-Type-Conversion-Macros]
-	Data interface{}
-	// Next contains the link to the next element in the list
-	Next *List
-	// Prev contains the link to the previous element in the list
-	Prev *List
-
-	native *C.GList
+	native C.GList
 }
 
 // WrapList wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapList(ptr unsafe.Pointer) *List {
-	p := (*C.GList)(ptr)
-	v := List{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Data = box.Get(uintptr(p.data))
-	v.Next = WrapList(p.next)
-	v.Prev = WrapList(p.prev)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*List).free)
-
-	return &v
+	return (*List)(ptr)
 }
 
 func marshalList(p uintptr) (interface{}, error) {
@@ -18414,19 +18347,30 @@ func marshalList(p uintptr) (interface{}, error) {
 	return WrapList(unsafe.Pointer(b))
 }
 
-func (l *List) free() {
-	C.free(l.Native())
+// Native returns the underlying C source pointer.
+func (l *List) Native() unsafe.Pointer {
+	return unsafe.Pointer(&l.native)
 }
 
-// Native returns the underlying source pointer.
-func (l *List) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+// Data gets the field inside the struct.
+func (d *List) Data() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(l.native.data))
+	return ret
 }
 
-// Native returns the pointer to *C.GList. The caller is expected to
-// cast.
-func (l *List) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+// Next gets the field inside the struct.
+func (n *List) Next() *List {
+	var ret *List
+	ret = WrapList(l.native.next)
+	return ret
+}
+
+// Prev gets the field inside the struct.
+func (p *List) Prev() *List {
+	var ret *List
+	ret = WrapList(l.native.prev)
+	return ret
 }
 
 // LogField: structure representing a single field in a structured log entry.
@@ -18437,31 +18381,17 @@ func (l *List) Native() unsafe.Pointer {
 // have a trailing nul byte. Otherwise, @length must be set to a non-negative
 // value.
 type LogField struct {
-	// Key: field name (UTF-8 string)
-	Key string
-	// Value: field value (arbitrary bytes)
-	Value interface{}
-	// Length: length of @value, in bytes, or -1 if it is nul-terminated
-	Length int
-
-	native *C.GLogField
+	native C.GLogField
 }
 
 // WrapLogField wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapLogField(ptr unsafe.Pointer) *LogField {
-	p := (*C.GLogField)(ptr)
-	v := LogField{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	p.key = C.GoString(v.Key)
-	defer C.free(unsafe.Pointer(p.key))
-	v.Value = box.Get(uintptr(p.value))
-	v.Length = int(p.length)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*LogField).free)
-
-	return &v
+	return (*LogField)(ptr)
 }
 
 func marshalLogField(p uintptr) (interface{}, error) {
@@ -18469,37 +18399,46 @@ func marshalLogField(p uintptr) (interface{}, error) {
 	return WrapLogField(unsafe.Pointer(b))
 }
 
-func (l *LogField) free() {
-	C.free(l.Native())
+// Native returns the underlying C source pointer.
+func (l *LogField) Native() unsafe.Pointer {
+	return unsafe.Pointer(&l.native)
 }
 
-// Native returns the underlying source pointer.
-func (l *LogField) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+// Key gets the field inside the struct.
+func (k *LogField) Key() string {
+	var ret string
+	ret = C.GoString(l.native.key)
+	return ret
 }
 
-// Native returns the pointer to *C.GLogField. The caller is expected to
-// cast.
-func (l *LogField) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+// Value gets the field inside the struct.
+func (v *LogField) Value() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(l.native.value))
+	return ret
+}
+
+// Length gets the field inside the struct.
+func (l *LogField) Length() int {
+	var ret int
+	ret = int(l.native.length)
+	return ret
 }
 
 // MainContext: the `GMainContext` struct is an opaque data type representing a
 // set of sources to be handled in a main loop.
 type MainContext struct {
-	native *C.GMainContext
+	native C.GMainContext
 }
 
 // WrapMainContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMainContext(ptr unsafe.Pointer) *MainContext {
-	p := (*C.GMainContext)(ptr)
-	v := MainContext{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MainContext).free)
-
-	return &v
+	return (*MainContext)(ptr)
 }
 
 func marshalMainContext(p uintptr) (interface{}, error) {
@@ -18507,39 +18446,37 @@ func marshalMainContext(p uintptr) (interface{}, error) {
 	return WrapMainContext(unsafe.Pointer(b))
 }
 
-func (m *MainContext) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (m *MainContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return unsafe.Pointer(&m.native)
 }
 
-// Native returns the pointer to *C.GMainContext. The caller is expected to
-// cast.
-func (m *MainContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
+// New_ constructs a struct MainContext.
+func New_() *MainContext {
 
-func NewMainContext() *MainContext
+	ret := C.g_main_context_new()
+
+	var ret0 *MainContext
+
+	ret0 = WrapMainContext(ret)
+
+	return ret0
+}
 
 // MainLoop: the `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
-	native *C.GMainLoop
+	native C.GMainLoop
 }
 
 // WrapMainLoop wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMainLoop(ptr unsafe.Pointer) *MainLoop {
-	p := (*C.GMainLoop)(ptr)
-	v := MainLoop{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MainLoop).free)
-
-	return &v
+	return (*MainLoop)(ptr)
 }
 
 func marshalMainLoop(p uintptr) (interface{}, error) {
@@ -18547,40 +18484,43 @@ func marshalMainLoop(p uintptr) (interface{}, error) {
 	return WrapMainLoop(unsafe.Pointer(b))
 }
 
-func (m *MainLoop) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (m *MainLoop) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return unsafe.Pointer(&m.native)
 }
 
-// Native returns the pointer to *C.GMainLoop. The caller is expected to
-// cast.
-func (m *MainLoop) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
+// New_ constructs a struct MainLoop.
+func New_(context *MainContext, isRunning bool) *MainLoop {
+	var arg1 *C.GMainContext
+	var arg2 C.gboolean
 
-func NewMainLoop(context *MainContext, isRunning bool) *MainLoop
+	arg1 = (*C.GMainContext)(context.Native())
+	arg2 = gextras.Cbool(isRunning)
+
+	ret := C.g_main_loop_new(arg1, arg2)
+
+	var ret0 *MainLoop
+
+	ret0 = WrapMainLoop(ret)
+
+	return ret0
+}
 
 // MappedFile: the File represents a file mapping created with
 // g_mapped_file_new(). It has only private members and should not be accessed
 // directly.
 type MappedFile struct {
-	native *C.GMappedFile
+	native C.GMappedFile
 }
 
 // WrapMappedFile wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMappedFile(ptr unsafe.Pointer) *MappedFile {
-	p := (*C.GMappedFile)(ptr)
-	v := MappedFile{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MappedFile).free)
-
-	return &v
+	return (*MappedFile)(ptr)
 }
 
 func marshalMappedFile(p uintptr) (interface{}, error) {
@@ -18588,43 +18528,62 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 	return WrapMappedFile(unsafe.Pointer(b))
 }
 
-func (m *MappedFile) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (m *MappedFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return unsafe.Pointer(&m.native)
 }
 
-// Native returns the pointer to *C.GMappedFile. The caller is expected to
-// cast.
-func (m *MappedFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+// New_ constructs a struct MappedFile.
+func New_(filename string, writable bool) *MappedFile {
+	var arg1 *C.gchar
+	var arg2 C.gboolean
+
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = gextras.Cbool(writable)
+
+	ret := C.g_mapped_file_new(arg1, arg2)
+
+	var ret0 *MappedFile
+
+	ret0 = WrapMappedFile(ret)
+
+	return ret0
 }
 
-func NewMappedFile(filename string, writable bool) *MappedFile
+// New_FromFd constructs a struct MappedFile.
+func New_FromFd(fd int, writable bool) *MappedFile {
+	var arg1 C.gint
+	var arg2 C.gboolean
 
-func NewMappedFile(fd int, writable bool) *MappedFile
+	arg1 = C.gint(fd)
+	arg2 = gextras.Cbool(writable)
+
+	ret := C.g_mapped_file_new_from_fd(arg1, arg2)
+
+	var ret0 *MappedFile
+
+	ret0 = WrapMappedFile(ret)
+
+	return ret0
+}
 
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
 // you expect to contain marked-up text.
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
 type MarkupParseContext struct {
-	native *C.GMarkupParseContext
+	native C.GMarkupParseContext
 }
 
 // WrapMarkupParseContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMarkupParseContext(ptr unsafe.Pointer) *MarkupParseContext {
-	p := (*C.GMarkupParseContext)(ptr)
-	v := MarkupParseContext{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MarkupParseContext).free)
-
-	return &v
+	return (*MarkupParseContext)(ptr)
 }
 
 func marshalMarkupParseContext(p uintptr) (interface{}, error) {
@@ -18632,82 +18591,44 @@ func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	return WrapMarkupParseContext(unsafe.Pointer(b))
 }
 
-func (m *MarkupParseContext) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (m *MarkupParseContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return unsafe.Pointer(&m.native)
 }
 
-// Native returns the pointer to *C.GMarkupParseContext. The caller is expected to
-// cast.
-func (m *MarkupParseContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
+// New_ constructs a struct MarkupParseContext.
+func New_(parser *MarkupParser, flags MarkupParseFlags, userData interface{}) *MarkupParseContext {
+	var arg1 *C.GMarkupParser
+	var arg2 C.GMarkupParseFlags
+	var arg3 C.gpointer
 
-func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData interface{}) *MarkupParseContext
+	arg1 = (*C.GMarkupParser)(parser.Native())
+	arg2 = (C.GMarkupParseFlags)(flags)
+	arg3 = C.gpointer(box.Assign(userData))
 
-// MarkupParser: any of the fields in Parser can be nil, in which case they will
-// be ignored. Except for the @error function, any of these callbacks can set an
-// error; in particular the G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-// G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE, and G_MARKUP_ERROR_INVALID_CONTENT errors
-// are intended to be set from these callbacks. If you set an error from a
-// callback, g_markup_parse_context_parse() will report that error back to its
-// caller.
-type MarkupParser struct {
-	native *C.GMarkupParser
-}
+	ret := C.g_markup_parse_context_new(arg1, arg2, arg3, (*[0]byte)(C.free))
 
-// WrapMarkupParser wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMarkupParser(ptr unsafe.Pointer) *MarkupParser {
-	p := (*C.GMarkupParser)(ptr)
-	v := MarkupParser{native: p}
+	var ret0 *MarkupParseContext
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MarkupParser).free)
+	ret0 = WrapMarkupParseContext(ret)
 
-	return &v
-}
-
-func marshalMarkupParser(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMarkupParser(unsafe.Pointer(b))
-}
-
-func (m *MarkupParser) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
-func (m *MarkupParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
-
-// Native returns the pointer to *C.GMarkupParser. The caller is expected to
-// cast.
-func (m *MarkupParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return ret0
 }
 
 // MatchInfo: a GMatchInfo is an opaque struct used to return information about
 // matches.
 type MatchInfo struct {
-	native *C.GMatchInfo
+	native C.GMatchInfo
 }
 
 // WrapMatchInfo wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMatchInfo(ptr unsafe.Pointer) *MatchInfo {
-	p := (*C.GMatchInfo)(ptr)
-	v := MatchInfo{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MatchInfo).free)
-
-	return &v
+	return (*MatchInfo)(ptr)
 }
 
 func marshalMatchInfo(p uintptr) (interface{}, error) {
@@ -18715,99 +18636,25 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 	return WrapMatchInfo(unsafe.Pointer(b))
 }
 
-func (m *MatchInfo) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (m *MatchInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
-
-// Native returns the pointer to *C.GMatchInfo. The caller is expected to
-// cast.
-func (m *MatchInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
-
-// MemVTable: a set of functions used to perform memory allocation. The same
-// VTable must be used for all allocations in the same program; a call to
-// g_mem_set_vtable(), if it exists, should be prior to any use of GLib.
-//
-// This functions related to this has been deprecated in 2.46, and no longer
-// work.
-type MemVTable struct {
-	native *C.GMemVTable
-}
-
-// WrapMemVTable wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMemVTable(ptr unsafe.Pointer) *MemVTable {
-	p := (*C.GMemVTable)(ptr)
-	v := MemVTable{native: p}
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*MemVTable).free)
-
-	return &v
-}
-
-func marshalMemVTable(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMemVTable(unsafe.Pointer(b))
-}
-
-func (m *MemVTable) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
-func (m *MemVTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
-
-// Native returns the pointer to *C.GMemVTable. The caller is expected to
-// cast.
-func (m *MemVTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return unsafe.Pointer(&m.native)
 }
 
 // Node: the #GNode struct represents one node in a [n-ary
 // tree][glib-N-ary-Trees].
 type Node struct {
-	// Data contains the actual data of the node.
-	Data interface{}
-	// Next points to the node's next sibling (a sibling is another #GNode with
-	// the same parent).
-	Next *Node
-	// Prev points to the node's previous sibling.
-	Prev *Node
-	// Parent points to the parent of the #GNode, or is nil if the #GNode is the
-	// root of the tree.
-	Parent *Node
-	// Children points to the first child of the #GNode. The other children are
-	// accessed by using the @next pointer of each child.
-	Children *Node
-
-	native *C.GNode
+	native C.GNode
 }
 
 // WrapNode wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapNode(ptr unsafe.Pointer) *Node {
-	p := (*C.GNode)(ptr)
-	v := Node{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Data = box.Get(uintptr(p.data))
-	v.Next = WrapNode(p.next)
-	v.Prev = WrapNode(p.prev)
-	v.Parent = WrapNode(p.parent)
-	v.Children = WrapNode(p.children)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Node).free)
-
-	return &v
+	return (*Node)(ptr)
 }
 
 func marshalNode(p uintptr) (interface{}, error) {
@@ -18815,46 +18662,60 @@ func marshalNode(p uintptr) (interface{}, error) {
 	return WrapNode(unsafe.Pointer(b))
 }
 
-func (n *Node) free() {
-	C.free(n.Native())
+// Native returns the underlying C source pointer.
+func (n *Node) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
 }
 
-// Native returns the underlying source pointer.
-func (n *Node) Native() unsafe.Pointer {
-	return unsafe.Pointer(n.native)
+// Data gets the field inside the struct.
+func (d *Node) Data() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(n.native.data))
+	return ret
 }
 
-// Native returns the pointer to *C.GNode. The caller is expected to
-// cast.
-func (n *Node) Native() unsafe.Pointer {
-	return unsafe.Pointer(n.native)
+// Next gets the field inside the struct.
+func (n *Node) Next() *Node {
+	var ret *Node
+	ret = WrapNode(n.native.next)
+	return ret
+}
+
+// Prev gets the field inside the struct.
+func (p *Node) Prev() *Node {
+	var ret *Node
+	ret = WrapNode(n.native.prev)
+	return ret
+}
+
+// Parent gets the field inside the struct.
+func (p *Node) Parent() *Node {
+	var ret *Node
+	ret = WrapNode(n.native.parent)
+	return ret
+}
+
+// Children gets the field inside the struct.
+func (c *Node) Children() *Node {
+	var ret *Node
+	ret = WrapNode(n.native.children)
+	return ret
 }
 
 // Once: a #GOnce struct controls a one-time initialization function. Any
 // one-time initialization function must have its own unique #GOnce struct.
 type Once struct {
-	// Status: the status of the #GOnce
-	Status OnceStatus
-	// Retval: the value returned by the call to the function, if @status is
-	// G_ONCE_STATUS_READY
-	Retval interface{}
-
-	native *C.GOnce
+	native C.GOnce
 }
 
 // WrapOnce wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOnce(ptr unsafe.Pointer) *Once {
-	p := (*C.GOnce)(ptr)
-	v := Once{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Status = OnceStatus(p.status)
-	v.Retval = box.Get(uintptr(p.retval))
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Once).free)
-
-	return &v
+	return (*Once)(ptr)
 }
 
 func marshalOnce(p uintptr) (interface{}, error) {
@@ -18862,85 +18723,40 @@ func marshalOnce(p uintptr) (interface{}, error) {
 	return WrapOnce(unsafe.Pointer(b))
 }
 
-func (o *Once) free() {
-	C.free(o.Native())
+// Native returns the underlying C source pointer.
+func (o *Once) Native() unsafe.Pointer {
+	return unsafe.Pointer(&o.native)
 }
 
-// Native returns the underlying source pointer.
-func (o *Once) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+// Status gets the field inside the struct.
+func (s *Once) Status() OnceStatus {
+	var ret OnceStatus
+	ret = OnceStatus(o.native.status)
+	return ret
 }
 
-// Native returns the pointer to *C.GOnce. The caller is expected to
-// cast.
-func (o *Once) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+// Retval gets the field inside the struct.
+func (r *Once) Retval() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(o.native.retval))
+	return ret
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
 // effect, they must be added to a Group with
 // g_option_context_add_main_entries() or g_option_group_add_entries().
 type OptionEntry struct {
-	// LongName: the long name of an option can be used to specify it in a
-	// commandline as `--long_name`. Every option must have a long name. To
-	// resolve conflicts if multiple option groups contain the same long name,
-	// it is also possible to specify the option as `--groupname-long_name`.
-	LongName string
-	// ShortName: if an option has a short name, it can be specified
-	// `-short_name` in a commandline. @short_name must be a printable ASCII
-	// character different from '-', or zero if the option has no short name.
-	ShortName byte
-	// Flags flags from Flags
-	Flags int
-	// Arg: the type of the option, as a Arg
-	Arg OptionArg
-	// ArgData: if the @arg type is G_OPTION_ARG_CALLBACK, then @arg_data must
-	// point to a ArgFunc callback function, which will be called to handle the
-	// extra argument. Otherwise, @arg_data is a pointer to a location to store
-	// the value, the required type of the location depends on the @arg type: -
-	// G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING: gchar* -
-	// G_OPTION_ARG_INT: gint - G_OPTION_ARG_FILENAME: gchar* -
-	// G_OPTION_ARG_STRING_ARRAY: gchar** - G_OPTION_ARG_FILENAME_ARRAY: gchar**
-	// - G_OPTION_ARG_DOUBLE: gdouble If @arg type is G_OPTION_ARG_STRING or
-	// G_OPTION_ARG_FILENAME, the location will contain a newly allocated string
-	// if the option was given. That string needs to be freed by the callee
-	// using g_free(). Likewise if @arg type is G_OPTION_ARG_STRING_ARRAY or
-	// G_OPTION_ARG_FILENAME_ARRAY, the data should be freed using g_strfreev().
-	ArgData interface{}
-	// Description: the description for the option in `--help` output. The
-	// @description is translated using the @translate_func of the group, see
-	// g_option_group_set_translation_domain().
-	Description string
-	// ArgDescription: the placeholder to use for the extra argument parsed by
-	// the option in `--help` output. The @arg_description is translated using
-	// the @translate_func of the group, see
-	// g_option_group_set_translation_domain().
-	ArgDescription string
-
-	native *C.GOptionEntry
+	native C.GOptionEntry
 }
 
 // WrapOptionEntry wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOptionEntry(ptr unsafe.Pointer) *OptionEntry {
-	p := (*C.GOptionEntry)(ptr)
-	v := OptionEntry{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	p.long_name = C.GoString(v.LongName)
-	defer C.free(unsafe.Pointer(p.long_name))
-	v.ShortName = byte(p.short_name)
-	v.Flags = int(p.flags)
-	v.Arg = OptionArg(p.arg)
-	v.ArgData = box.Get(uintptr(p.arg_data))
-	p.description = C.GoString(v.Description)
-	defer C.free(unsafe.Pointer(p.description))
-	p.arg_description = C.GoString(v.ArgDescription)
-	defer C.free(unsafe.Pointer(p.arg_description))
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*OptionEntry).free)
-
-	return &v
+	return (*OptionEntry)(ptr)
 }
 
 func marshalOptionEntry(p uintptr) (interface{}, error) {
@@ -18948,19 +18764,58 @@ func marshalOptionEntry(p uintptr) (interface{}, error) {
 	return WrapOptionEntry(unsafe.Pointer(b))
 }
 
-func (o *OptionEntry) free() {
-	C.free(o.Native())
+// Native returns the underlying C source pointer.
+func (o *OptionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&o.native)
 }
 
-// Native returns the underlying source pointer.
-func (o *OptionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+// LongName gets the field inside the struct.
+func (l *OptionEntry) LongName() string {
+	var ret string
+	ret = C.GoString(o.native.long_name)
+	return ret
 }
 
-// Native returns the pointer to *C.GOptionEntry. The caller is expected to
-// cast.
-func (o *OptionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+// ShortName gets the field inside the struct.
+func (s *OptionEntry) ShortName() byte {
+	var ret byte
+	ret = byte(o.native.short_name)
+	return ret
+}
+
+// Flags gets the field inside the struct.
+func (f *OptionEntry) Flags() int {
+	var ret int
+	ret = int(o.native.flags)
+	return ret
+}
+
+// Arg gets the field inside the struct.
+func (a *OptionEntry) Arg() OptionArg {
+	var ret OptionArg
+	ret = OptionArg(o.native.arg)
+	return ret
+}
+
+// ArgData gets the field inside the struct.
+func (a *OptionEntry) ArgData() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(o.native.arg_data))
+	return ret
+}
+
+// Description gets the field inside the struct.
+func (d *OptionEntry) Description() string {
+	var ret string
+	ret = C.GoString(o.native.description)
+	return ret
+}
+
+// ArgDescription gets the field inside the struct.
+func (a *OptionEntry) ArgDescription() string {
+	var ret string
+	ret = C.GoString(o.native.arg_description)
+	return ret
 }
 
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
@@ -18971,19 +18826,17 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 // getting a `GOptionGroup` holding their options, which the application can
 // then add to its Context.
 type OptionGroup struct {
-	native *C.GOptionGroup
+	native C.GOptionGroup
 }
 
 // WrapOptionGroup wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapOptionGroup(ptr unsafe.Pointer) *OptionGroup {
-	p := (*C.GOptionGroup)(ptr)
-	v := OptionGroup{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*OptionGroup).free)
-
-	return &v
+	return (*OptionGroup)(ptr)
 }
 
 func marshalOptionGroup(p uintptr) (interface{}, error) {
@@ -18991,54 +18844,49 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 	return WrapOptionGroup(unsafe.Pointer(b))
 }
 
-func (o *OptionGroup) free() {
-	C.free(o.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (o *OptionGroup) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+	return unsafe.Pointer(&o.native)
 }
 
-// Native returns the pointer to *C.GOptionGroup. The caller is expected to
-// cast.
-func (o *OptionGroup) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
-}
+// New_ constructs a struct OptionGroup.
+func New_(name string, description string, helpDescription string, userData interface{}) *OptionGroup {
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+	var arg4 C.gpointer
 
-func NewOptionGroup(name string, description string, helpDescription string, userData interface{}) *OptionGroup
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(description))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(helpDescription))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_option_group_new(arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
+
+	var ret0 *OptionGroup
+
+	ret0 = WrapOptionGroup(ret)
+
+	return ret0
+}
 
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
 type PollFD struct {
-	// Fd: the file descriptor to poll (or a HANDLE on Win32)
-	Fd int
-	// Events: a bitwise combination from OCondition, specifying which events
-	// should be polled for. Typically for reading from a file descriptor you
-	// would use G_IO_IN | G_IO_HUP | G_IO_ERR, and for writing you would use
-	// G_IO_OUT | G_IO_ERR.
-	Events uint16
-	// Revents: a bitwise combination of flags from OCondition, returned from
-	// the poll() function to indicate which events occurred.
-	Revents uint16
-
-	native *C.GPollFD
+	native C.GPollFD
 }
 
 // WrapPollFD wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPollFD(ptr unsafe.Pointer) *PollFD {
-	p := (*C.GPollFD)(ptr)
-	v := PollFD{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Fd = int(p.fd)
-	v.Events = uint16(p.events)
-	v.Revents = uint16(p.revents)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*PollFD).free)
-
-	return &v
+	return (*PollFD)(ptr)
 }
 
 func marshalPollFD(p uintptr) (interface{}, error) {
@@ -19046,19 +18894,30 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 	return WrapPollFD(unsafe.Pointer(b))
 }
 
-func (p *PollFD) free() {
-	C.free(p.Native())
+// Native returns the underlying C source pointer.
+func (p *PollFD) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }
 
-// Native returns the underlying source pointer.
-func (p *PollFD) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+// Fd gets the field inside the struct.
+func (f *PollFD) Fd() int {
+	var ret int
+	ret = int(p.native.fd)
+	return ret
 }
 
-// Native returns the pointer to *C.GPollFD. The caller is expected to
-// cast.
-func (p *PollFD) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+// Events gets the field inside the struct.
+func (e *PollFD) Events() uint16 {
+	var ret uint16
+	ret = uint16(p.native.events)
+	return ret
+}
+
+// Revents gets the field inside the struct.
+func (r *PollFD) Revents() uint16 {
+	var ret uint16
+	ret = uint16(p.native.revents)
+	return ret
 }
 
 // Private: the #GPrivate struct is an opaque data structure to represent a
@@ -19079,19 +18938,17 @@ func (p *PollFD) Native() unsafe.Pointer {
 // The #GPrivate structure should be considered opaque. It should only be
 // accessed via the g_private_ functions.
 type Private struct {
-	native *C.GPrivate
+	native C.GPrivate
 }
 
 // WrapPrivate wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPrivate(ptr unsafe.Pointer) *Private {
-	p := (*C.GPrivate)(ptr)
-	v := Private{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Private).free)
-
-	return &v
+	return (*Private)(ptr)
 }
 
 func marshalPrivate(p uintptr) (interface{}, error) {
@@ -19099,45 +18956,24 @@ func marshalPrivate(p uintptr) (interface{}, error) {
 	return WrapPrivate(unsafe.Pointer(b))
 }
 
-func (p *Private) free() {
-	C.free(p.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (p *Private) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
-}
-
-// Native returns the pointer to *C.GPrivate. The caller is expected to
-// cast.
-func (p *Private) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+	return unsafe.Pointer(&p.native)
 }
 
 // PtrArray contains the public fields of a pointer array.
 type PtrArray struct {
-	// Pdata points to the array of pointers, which may be moved when the array
-	// grows
-	Pdata interface{}
-	// Len: number of pointers in the array
-	Len uint
-
-	native *C.GPtrArray
+	native C.GPtrArray
 }
 
 // WrapPtrArray wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPtrArray(ptr unsafe.Pointer) *PtrArray {
-	p := (*C.GPtrArray)(ptr)
-	v := PtrArray{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Pdata = box.Get(uintptr(p.pdata))
-	v.Len = uint(p.len)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*PtrArray).free)
-
-	return &v
+	return (*PtrArray)(ptr)
 }
 
 func marshalPtrArray(p uintptr) (interface{}, error) {
@@ -19145,47 +18981,38 @@ func marshalPtrArray(p uintptr) (interface{}, error) {
 	return WrapPtrArray(unsafe.Pointer(b))
 }
 
-func (p *PtrArray) free() {
-	C.free(p.Native())
+// Native returns the underlying C source pointer.
+func (p *PtrArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }
 
-// Native returns the underlying source pointer.
-func (p *PtrArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+// Pdata gets the field inside the struct.
+func (p *PtrArray) Pdata() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(p.native.pdata))
+	return ret
 }
 
-// Native returns the pointer to *C.GPtrArray. The caller is expected to
-// cast.
-func (p *PtrArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+// Len gets the field inside the struct.
+func (l *PtrArray) Len() uint {
+	var ret uint
+	ret = uint(p.native.len)
+	return ret
 }
 
 // Queue contains the public fields of a [Queue][glib-Double-ended-Queues].
 type Queue struct {
-	// Head: a pointer to the first element of the queue
-	Head *List
-	// Tail: a pointer to the last element of the queue
-	Tail *List
-	// Length: the number of elements in the queue
-	Length uint
-
-	native *C.GQueue
+	native C.GQueue
 }
 
 // WrapQueue wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapQueue(ptr unsafe.Pointer) *Queue {
-	p := (*C.GQueue)(ptr)
-	v := Queue{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Head = WrapList(p.head)
-	v.Tail = WrapList(p.tail)
-	v.Length = uint(p.length)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Queue).free)
-
-	return &v
+	return (*Queue)(ptr)
 }
 
 func marshalQueue(p uintptr) (interface{}, error) {
@@ -19193,19 +19020,30 @@ func marshalQueue(p uintptr) (interface{}, error) {
 	return WrapQueue(unsafe.Pointer(b))
 }
 
-func (q *Queue) free() {
-	C.free(q.Native())
+// Native returns the underlying C source pointer.
+func (q *Queue) Native() unsafe.Pointer {
+	return unsafe.Pointer(&q.native)
 }
 
-// Native returns the underlying source pointer.
-func (q *Queue) Native() unsafe.Pointer {
-	return unsafe.Pointer(q.native)
+// Head gets the field inside the struct.
+func (h *Queue) Head() *List {
+	var ret *List
+	ret = WrapList(q.native.head)
+	return ret
 }
 
-// Native returns the pointer to *C.GQueue. The caller is expected to
-// cast.
-func (q *Queue) Native() unsafe.Pointer {
-	return unsafe.Pointer(q.native)
+// Tail gets the field inside the struct.
+func (t *Queue) Tail() *List {
+	var ret *List
+	ret = WrapList(q.native.tail)
+	return ret
+}
+
+// Length gets the field inside the struct.
+func (l *Queue) Length() uint {
+	var ret uint
+	ret = uint(q.native.length)
+	return ret
 }
 
 // RWLock: the GRWLock struct is an opaque data structure to represent a
@@ -19272,19 +19110,17 @@ func (q *Queue) Native() unsafe.Pointer {
 //
 // A GRWLock should only be accessed with the g_rw_lock_ functions.
 type RWLock struct {
-	native *C.GRWLock
+	native C.GRWLock
 }
 
 // WrapRWLock wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRWLock(ptr unsafe.Pointer) *RWLock {
-	p := (*C.GRWLock)(ptr)
-	v := RWLock{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*RWLock).free)
-
-	return &v
+	return (*RWLock)(ptr)
 }
 
 func marshalRWLock(p uintptr) (interface{}, error) {
@@ -19292,19 +19128,9 @@ func marshalRWLock(p uintptr) (interface{}, error) {
 	return WrapRWLock(unsafe.Pointer(b))
 }
 
-func (r *RWLock) free() {
-	C.free(r.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (r *RWLock) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
-}
-
-// Native returns the pointer to *C.GRWLock. The caller is expected to
-// cast.
-func (r *RWLock) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+	return unsafe.Pointer(&r.native)
 }
 
 // RecMutex: the GRecMutex struct is an opaque data structure to represent a
@@ -19319,19 +19145,17 @@ func (r *RWLock) Native() unsafe.Pointer {
 //
 // A GRecMutex should only be accessed with the g_rec_mutex_ functions.
 type RecMutex struct {
-	native *C.GRecMutex
+	native C.GRecMutex
 }
 
 // WrapRecMutex wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRecMutex(ptr unsafe.Pointer) *RecMutex {
-	p := (*C.GRecMutex)(ptr)
-	v := RecMutex{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*RecMutex).free)
-
-	return &v
+	return (*RecMutex)(ptr)
 }
 
 func marshalRecMutex(p uintptr) (interface{}, error) {
@@ -19339,19 +19163,9 @@ func marshalRecMutex(p uintptr) (interface{}, error) {
 	return WrapRecMutex(unsafe.Pointer(b))
 }
 
-func (r *RecMutex) free() {
-	C.free(r.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (r *RecMutex) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
-}
-
-// Native returns the pointer to *C.GRecMutex. The caller is expected to
-// cast.
-func (r *RecMutex) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+	return unsafe.Pointer(&r.native)
 }
 
 // Regex: the g_regex_*() functions implement regular expression pattern
@@ -19413,19 +19227,17 @@ func (r *RecMutex) Native() unsafe.Pointer {
 // The regular expressions low-level functionalities are obtained through the
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
 type Regex struct {
-	native *C.GRegex
+	native C.GRegex
 }
 
 // WrapRegex wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRegex(ptr unsafe.Pointer) *Regex {
-	p := (*C.GRegex)(ptr)
-	v := Regex{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Regex).free)
-
-	return &v
+	return (*Regex)(ptr)
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {
@@ -19433,48 +19245,44 @@ func marshalRegex(p uintptr) (interface{}, error) {
 	return WrapRegex(unsafe.Pointer(b))
 }
 
-func (r *Regex) free() {
-	C.free(r.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (r *Regex) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+	return unsafe.Pointer(&r.native)
 }
 
-// Native returns the pointer to *C.GRegex. The caller is expected to
-// cast.
-func (r *Regex) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
-}
+// New_ constructs a struct Regex.
+func New_(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex {
+	var arg1 *C.gchar
+	var arg2 C.GRegexCompileFlags
+	var arg3 C.GRegexMatchFlags
 
-func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex
+	arg1 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GRegexCompileFlags)(compileOptions)
+	arg3 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_new(arg1, arg2, arg3)
+
+	var ret0 *Regex
+
+	ret0 = WrapRegex(ret)
+
+	return ret0
+}
 
 // SList: the List struct is used for each element in the singly-linked list.
 type SList struct {
-	// Data holds the element's data, which can be a pointer to any kind of
-	// data, or any integer value using the [Type Conversion
-	// Macros][glib-Type-Conversion-Macros]
-	Data interface{}
-	// Next contains the link to the next element in the list.
-	Next *SList
-
-	native *C.GSList
+	native C.GSList
 }
 
 // WrapSList wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSList(ptr unsafe.Pointer) *SList {
-	p := (*C.GSList)(ptr)
-	v := SList{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Data = box.Get(uintptr(p.data))
-	v.Next = WrapSList(p.next)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*SList).free)
-
-	return &v
+	return (*SList)(ptr)
 }
 
 func marshalSList(p uintptr) (interface{}, error) {
@@ -19482,19 +19290,23 @@ func marshalSList(p uintptr) (interface{}, error) {
 	return WrapSList(unsafe.Pointer(b))
 }
 
-func (s *SList) free() {
-	C.free(s.Native())
+// Native returns the underlying C source pointer.
+func (s *SList) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }
 
-// Native returns the underlying source pointer.
-func (s *SList) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// Data gets the field inside the struct.
+func (d *SList) Data() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(s.native.data))
+	return ret
 }
 
-// Native returns the pointer to *C.GSList. The caller is expected to
-// cast.
-func (s *SList) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// Next gets the field inside the struct.
+func (n *SList) Next() *SList {
+	var ret *SList
+	ret = WrapSList(s.native.next)
+	return ret
 }
 
 // Scanner: the data structure representing a lexical scanner.
@@ -19509,67 +19321,17 @@ func (s *SList) Native() unsafe.Pointer {
 // If you want to use your own message handler you can set the @msg_handler
 // field. The type of the message handler function is declared by MsgFunc.
 type Scanner struct {
-	// UserData: unused
-	UserData interface{}
-	// MaxParseErrors: unused
-	MaxParseErrors uint
-	// ParseErrors: g_scanner_error() increments this field
-	ParseErrors uint
-	// InputName: name of input stream, featured by the default message handler
-	InputName string
-	// Qdata: quarked data
-	Qdata *Data
-	// Config: link into the scanner configuration
-	Config *ScannerConfig
-	// Token: token parsed by the last g_scanner_get_next_token()
-	Token TokenType
-	// Value: value of the last token from g_scanner_get_next_token()
-	Value TokenValue
-	// Line: line number of the last token from g_scanner_get_next_token()
-	Line uint
-	// Position: char number of the last token from g_scanner_get_next_token()
-	Position uint
-	// NextToken: token parsed by the last g_scanner_peek_next_token()
-	NextToken TokenType
-	// NextValue: value of the last token from g_scanner_peek_next_token()
-	NextValue TokenValue
-	// NextLine: line number of the last token from g_scanner_peek_next_token()
-	NextLine uint
-	// NextPosition: char number of the last token from
-	// g_scanner_peek_next_token()
-	NextPosition uint
-	// MsgHandler: handler function for _warn and _error
-	MsgHandler ScannerMsgFunc
-
-	native *C.GScanner
+	native C.GScanner
 }
 
 // WrapScanner wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapScanner(ptr unsafe.Pointer) *Scanner {
-	p := (*C.GScanner)(ptr)
-	v := Scanner{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.UserData = box.Get(uintptr(p.user_data))
-	v.MaxParseErrors = uint(p.max_parse_errors)
-	v.ParseErrors = uint(p.parse_errors)
-	p.input_name = C.GoString(v.InputName)
-	defer C.free(unsafe.Pointer(p.input_name))
-	v.Qdata = WrapData(p.qdata)
-	v.Config = WrapScannerConfig(p.config)
-	v.Token = TokenType(p.token)
-
-	v.Line = uint(p.line)
-	v.Position = uint(p.position)
-	v.NextToken = TokenType(p.next_token)
-
-	v.NextLine = uint(p.next_line)
-	v.NextPosition = uint(p.next_position)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Scanner).free)
-
-	return &v
+	return (*Scanner)(ptr)
 }
 
 func marshalScanner(p uintptr) (interface{}, error) {
@@ -19577,149 +19339,110 @@ func marshalScanner(p uintptr) (interface{}, error) {
 	return WrapScanner(unsafe.Pointer(b))
 }
 
-func (s *Scanner) free() {
-	C.free(s.Native())
+// Native returns the underlying C source pointer.
+func (s *Scanner) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }
 
-// Native returns the underlying source pointer.
-func (s *Scanner) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// UserData gets the field inside the struct.
+func (u *Scanner) UserData() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(s.native.user_data))
+	return ret
 }
 
-// Native returns the pointer to *C.GScanner. The caller is expected to
-// cast.
-func (s *Scanner) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// MaxParseErrors gets the field inside the struct.
+func (m *Scanner) MaxParseErrors() uint {
+	var ret uint
+	ret = uint(s.native.max_parse_errors)
+	return ret
+}
+
+// ParseErrors gets the field inside the struct.
+func (p *Scanner) ParseErrors() uint {
+	var ret uint
+	ret = uint(s.native.parse_errors)
+	return ret
+}
+
+// InputName gets the field inside the struct.
+func (i *Scanner) InputName() string {
+	var ret string
+	ret = C.GoString(s.native.input_name)
+	return ret
+}
+
+// Qdata gets the field inside the struct.
+func (q *Scanner) Qdata() *Data {
+	var ret *Data
+	ret = WrapData(s.native.qdata)
+	return ret
+}
+
+// Config gets the field inside the struct.
+func (c *Scanner) Config() *ScannerConfig {
+	var ret *ScannerConfig
+	ret = WrapScannerConfig(s.native.config)
+	return ret
+}
+
+// Token gets the field inside the struct.
+func (t *Scanner) Token() TokenType {
+	var ret TokenType
+	ret = TokenType(s.native.token)
+	return ret
+}
+
+// Line gets the field inside the struct.
+func (l *Scanner) Line() uint {
+	var ret uint
+	ret = uint(s.native.line)
+	return ret
+}
+
+// Position gets the field inside the struct.
+func (p *Scanner) Position() uint {
+	var ret uint
+	ret = uint(s.native.position)
+	return ret
+}
+
+// NextToken gets the field inside the struct.
+func (n *Scanner) NextToken() TokenType {
+	var ret TokenType
+	ret = TokenType(s.native.next_token)
+	return ret
+}
+
+// NextLine gets the field inside the struct.
+func (n *Scanner) NextLine() uint {
+	var ret uint
+	ret = uint(s.native.next_line)
+	return ret
+}
+
+// NextPosition gets the field inside the struct.
+func (n *Scanner) NextPosition() uint {
+	var ret uint
+	ret = uint(s.native.next_position)
+	return ret
 }
 
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can
 // be changed during the parsing phase and will affect the lexical parsing of
 // the next unpeeked token.
 type ScannerConfig struct {
-	// CsetSkipCharacters specifies which characters should be skipped by the
-	// scanner (the default is the whitespace characters: space, tab,
-	// carriage-return and line-feed).
-	CsetSkipCharacters string
-	// CsetIdentifierFirst specifies the characters which can start identifiers
-	// (the default is CSET_a_2_z, "_", and CSET_A_2_Z).
-	CsetIdentifierFirst string
-	// CsetIdentifierNth specifies the characters which can be used in
-	// identifiers, after the first character (the default is CSET_a_2_z,
-	// "_0123456789", CSET_A_2_Z, CSET_LATINS, CSET_LATINC).
-	CsetIdentifierNth string
-	// CpairCommentSingle specifies the characters at the start and end of
-	// single-line comments. The default is "#\n" which means that single-line
-	// comments start with a '#' and continue until a '\n' (end of line).
-	CpairCommentSingle string
-	// CaseSensitive specifies if symbols are case sensitive (the default is
-	// false).
-	CaseSensitive uint
-	// SkipCommentMulti specifies if multi-line comments are skipped and not
-	// returned as tokens (the default is true).
-	SkipCommentMulti uint
-	// SkipCommentSingle specifies if single-line comments are skipped and not
-	// returned as tokens (the default is true).
-	SkipCommentSingle uint
-	// ScanCommentMulti specifies if multi-line comments are recognized (the
-	// default is true).
-	ScanCommentMulti uint
-	// ScanIdentifier specifies if identifiers are recognized (the default is
-	// true).
-	ScanIdentifier uint
-	// ScanIdentifier1Char specifies if single-character identifiers are
-	// recognized (the default is false).
-	ScanIdentifier1Char uint
-	// ScanIdentifierNULL specifies if nil is reported as
-	// G_TOKEN_IDENTIFIER_NULL (the default is false).
-	ScanIdentifierNULL uint
-	// ScanSymbols specifies if symbols are recognized (the default is true).
-	ScanSymbols uint
-	// ScanBinary specifies if binary numbers are recognized (the default is
-	// false).
-	ScanBinary uint
-	// ScanOctal specifies if octal numbers are recognized (the default is
-	// true).
-	ScanOctal uint
-	// ScanFloat specifies if floating point numbers are recognized (the default
-	// is true).
-	ScanFloat uint
-	// ScanHex specifies if hexadecimal numbers are recognized (the default is
-	// true).
-	ScanHex uint
-	// ScanHexDollar specifies if '$' is recognized as a prefix for hexadecimal
-	// numbers (the default is false).
-	ScanHexDollar uint
-	// ScanStringSq specifies if strings can be enclosed in single quotes (the
-	// default is true).
-	ScanStringSq uint
-	// ScanStringDq specifies if strings can be enclosed in double quotes (the
-	// default is true).
-	ScanStringDq uint
-	// Numbers2Int specifies if binary, octal and hexadecimal numbers are
-	// reported as TOKEN_INT (the default is true).
-	Numbers2Int uint
-	// Int2Float specifies if all numbers are reported as G_TOKEN_FLOAT (the
-	// default is false).
-	Int2Float uint
-	// Identifier2String specifies if identifiers are reported as strings (the
-	// default is false).
-	Identifier2String uint
-	// Char2Token specifies if characters are reported by setting `token = ch`
-	// or as G_TOKEN_CHAR (the default is true).
-	Char2Token uint
-	// Symbol2Token specifies if symbols are reported by setting `token =
-	// v_symbol` or as G_TOKEN_SYMBOL (the default is false).
-	Symbol2Token uint
-	// Scope0Fallback specifies if a symbol is searched for in the default scope
-	// in addition to the current scope (the default is false).
-	Scope0Fallback uint
-	// StoreInt64: use value.v_int64 rather than v_int
-	StoreInt64 uint
-
-	native *C.GScannerConfig
+	native C.GScannerConfig
 }
 
 // WrapScannerConfig wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapScannerConfig(ptr unsafe.Pointer) *ScannerConfig {
-	p := (*C.GScannerConfig)(ptr)
-	v := ScannerConfig{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	p.cset_skip_characters = C.GoString(v.CsetSkipCharacters)
-	defer C.free(unsafe.Pointer(p.cset_skip_characters))
-	p.cset_identifier_first = C.GoString(v.CsetIdentifierFirst)
-	defer C.free(unsafe.Pointer(p.cset_identifier_first))
-	p.cset_identifier_nth = C.GoString(v.CsetIdentifierNth)
-	defer C.free(unsafe.Pointer(p.cset_identifier_nth))
-	p.cpair_comment_single = C.GoString(v.CpairCommentSingle)
-	defer C.free(unsafe.Pointer(p.cpair_comment_single))
-	v.CaseSensitive = uint(p.case_sensitive)
-	v.SkipCommentMulti = uint(p.skip_comment_multi)
-	v.SkipCommentSingle = uint(p.skip_comment_single)
-	v.ScanCommentMulti = uint(p.scan_comment_multi)
-	v.ScanIdentifier = uint(p.scan_identifier)
-	v.ScanIdentifier1Char = uint(p.scan_identifier_1char)
-	v.ScanIdentifierNULL = uint(p.scan_identifier_NULL)
-	v.ScanSymbols = uint(p.scan_symbols)
-	v.ScanBinary = uint(p.scan_binary)
-	v.ScanOctal = uint(p.scan_octal)
-	v.ScanFloat = uint(p.scan_float)
-	v.ScanHex = uint(p.scan_hex)
-	v.ScanHexDollar = uint(p.scan_hex_dollar)
-	v.ScanStringSq = uint(p.scan_string_sq)
-	v.ScanStringDq = uint(p.scan_string_dq)
-	v.Numbers2Int = uint(p.numbers_2_int)
-	v.Int2Float = uint(p.int_2_float)
-	v.Identifier2String = uint(p.identifier_2_string)
-	v.Char2Token = uint(p.char_2_token)
-	v.Symbol2Token = uint(p.symbol_2_token)
-	v.Scope0Fallback = uint(p.scope_0_fallback)
-	v.StoreInt64 = uint(p.store_int64)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*ScannerConfig).free)
-
-	return &v
+	return (*ScannerConfig)(ptr)
 }
 
 func marshalScannerConfig(p uintptr) (interface{}, error) {
@@ -19727,37 +19450,207 @@ func marshalScannerConfig(p uintptr) (interface{}, error) {
 	return WrapScannerConfig(unsafe.Pointer(b))
 }
 
-func (s *ScannerConfig) free() {
-	C.free(s.Native())
+// Native returns the underlying C source pointer.
+func (s *ScannerConfig) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }
 
-// Native returns the underlying source pointer.
-func (s *ScannerConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// CsetSkipCharacters gets the field inside the struct.
+func (c *ScannerConfig) CsetSkipCharacters() string {
+	var ret string
+	ret = C.GoString(s.native.cset_skip_characters)
+	return ret
 }
 
-// Native returns the pointer to *C.GScannerConfig. The caller is expected to
-// cast.
-func (s *ScannerConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// CsetIdentifierFirst gets the field inside the struct.
+func (c *ScannerConfig) CsetIdentifierFirst() string {
+	var ret string
+	ret = C.GoString(s.native.cset_identifier_first)
+	return ret
+}
+
+// CsetIdentifierNth gets the field inside the struct.
+func (c *ScannerConfig) CsetIdentifierNth() string {
+	var ret string
+	ret = C.GoString(s.native.cset_identifier_nth)
+	return ret
+}
+
+// CpairCommentSingle gets the field inside the struct.
+func (c *ScannerConfig) CpairCommentSingle() string {
+	var ret string
+	ret = C.GoString(s.native.cpair_comment_single)
+	return ret
+}
+
+// CaseSensitive gets the field inside the struct.
+func (c *ScannerConfig) CaseSensitive() uint {
+	var ret uint
+	ret = uint(s.native.case_sensitive)
+	return ret
+}
+
+// SkipCommentMulti gets the field inside the struct.
+func (s *ScannerConfig) SkipCommentMulti() uint {
+	var ret uint
+	ret = uint(s.native.skip_comment_multi)
+	return ret
+}
+
+// SkipCommentSingle gets the field inside the struct.
+func (s *ScannerConfig) SkipCommentSingle() uint {
+	var ret uint
+	ret = uint(s.native.skip_comment_single)
+	return ret
+}
+
+// ScanCommentMulti gets the field inside the struct.
+func (s *ScannerConfig) ScanCommentMulti() uint {
+	var ret uint
+	ret = uint(s.native.scan_comment_multi)
+	return ret
+}
+
+// ScanIdentifier gets the field inside the struct.
+func (s *ScannerConfig) ScanIdentifier() uint {
+	var ret uint
+	ret = uint(s.native.scan_identifier)
+	return ret
+}
+
+// ScanIdentifier1Char gets the field inside the struct.
+func (s *ScannerConfig) ScanIdentifier1Char() uint {
+	var ret uint
+	ret = uint(s.native.scan_identifier_1char)
+	return ret
+}
+
+// ScanIdentifierNULL gets the field inside the struct.
+func (s *ScannerConfig) ScanIdentifierNULL() uint {
+	var ret uint
+	ret = uint(s.native.scan_identifier_NULL)
+	return ret
+}
+
+// ScanSymbols gets the field inside the struct.
+func (s *ScannerConfig) ScanSymbols() uint {
+	var ret uint
+	ret = uint(s.native.scan_symbols)
+	return ret
+}
+
+// ScanBinary gets the field inside the struct.
+func (s *ScannerConfig) ScanBinary() uint {
+	var ret uint
+	ret = uint(s.native.scan_binary)
+	return ret
+}
+
+// ScanOctal gets the field inside the struct.
+func (s *ScannerConfig) ScanOctal() uint {
+	var ret uint
+	ret = uint(s.native.scan_octal)
+	return ret
+}
+
+// ScanFloat gets the field inside the struct.
+func (s *ScannerConfig) ScanFloat() uint {
+	var ret uint
+	ret = uint(s.native.scan_float)
+	return ret
+}
+
+// ScanHex gets the field inside the struct.
+func (s *ScannerConfig) ScanHex() uint {
+	var ret uint
+	ret = uint(s.native.scan_hex)
+	return ret
+}
+
+// ScanHexDollar gets the field inside the struct.
+func (s *ScannerConfig) ScanHexDollar() uint {
+	var ret uint
+	ret = uint(s.native.scan_hex_dollar)
+	return ret
+}
+
+// ScanStringSq gets the field inside the struct.
+func (s *ScannerConfig) ScanStringSq() uint {
+	var ret uint
+	ret = uint(s.native.scan_string_sq)
+	return ret
+}
+
+// ScanStringDq gets the field inside the struct.
+func (s *ScannerConfig) ScanStringDq() uint {
+	var ret uint
+	ret = uint(s.native.scan_string_dq)
+	return ret
+}
+
+// Numbers2Int gets the field inside the struct.
+func (n *ScannerConfig) Numbers2Int() uint {
+	var ret uint
+	ret = uint(s.native.numbers_2_int)
+	return ret
+}
+
+// Int2Float gets the field inside the struct.
+func (i *ScannerConfig) Int2Float() uint {
+	var ret uint
+	ret = uint(s.native.int_2_float)
+	return ret
+}
+
+// Identifier2String gets the field inside the struct.
+func (i *ScannerConfig) Identifier2String() uint {
+	var ret uint
+	ret = uint(s.native.identifier_2_string)
+	return ret
+}
+
+// Char2Token gets the field inside the struct.
+func (c *ScannerConfig) Char2Token() uint {
+	var ret uint
+	ret = uint(s.native.char_2_token)
+	return ret
+}
+
+// Symbol2Token gets the field inside the struct.
+func (s *ScannerConfig) Symbol2Token() uint {
+	var ret uint
+	ret = uint(s.native.symbol_2_token)
+	return ret
+}
+
+// Scope0Fallback gets the field inside the struct.
+func (s *ScannerConfig) Scope0Fallback() uint {
+	var ret uint
+	ret = uint(s.native.scope_0_fallback)
+	return ret
+}
+
+// StoreInt64 gets the field inside the struct.
+func (s *ScannerConfig) StoreInt64() uint {
+	var ret uint
+	ret = uint(s.native.store_int64)
+	return ret
 }
 
 // Source: the `GSource` struct is an opaque data type representing an event
 // source.
 type Source struct {
-	native *C.GSource
+	native C.GSource
 }
 
 // WrapSource wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSource(ptr unsafe.Pointer) *Source {
-	p := (*C.GSource)(ptr)
-	v := Source{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Source).free)
-
-	return &v
+	return (*Source)(ptr)
 }
 
 func marshalSource(p uintptr) (interface{}, error) {
@@ -19765,147 +19658,41 @@ func marshalSource(p uintptr) (interface{}, error) {
 	return WrapSource(unsafe.Pointer(b))
 }
 
-func (s *Source) free() {
-	C.free(s.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (s *Source) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+	return unsafe.Pointer(&s.native)
 }
 
-// Native returns the pointer to *C.GSource. The caller is expected to
-// cast.
-func (s *Source) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
-}
+// New_ constructs a struct Source.
+func New_(sourceFuncs *SourceFuncs, structSize uint) *Source {
+	var arg1 *C.GSourceFuncs
+	var arg2 C.guint
 
-func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source
+	arg1 = (*C.GSourceFuncs)(sourceFuncs.Native())
+	arg2 = C.guint(structSize)
 
-// SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
-// managing callback objects.
-type SourceCallbackFuncs struct {
-	native *C.GSourceCallbackFuncs
-}
+	ret := C.g_source_new(arg1, arg2)
 
-// WrapSourceCallbackFuncs wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSourceCallbackFuncs(ptr unsafe.Pointer) *SourceCallbackFuncs {
-	p := (*C.GSourceCallbackFuncs)(ptr)
-	v := SourceCallbackFuncs{native: p}
+	var ret0 *Source
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*SourceCallbackFuncs).free)
+	ret0 = WrapSource(ret)
 
-	return &v
-}
-
-func marshalSourceCallbackFuncs(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSourceCallbackFuncs(unsafe.Pointer(b))
-}
-
-func (s *SourceCallbackFuncs) free() {
-	C.free(s.Native())
-}
-
-// Native returns the underlying source pointer.
-func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
-}
-
-// Native returns the pointer to *C.GSourceCallbackFuncs. The caller is expected to
-// cast.
-func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
-}
-
-// SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
-// handle event sources in a generic manner.
-//
-// For idle sources, the prepare and check functions always return true to
-// indicate that the source is always ready to be processed. The prepare
-// function also returns a timeout value of 0 to ensure that the poll() call
-// doesn't block (since that would be time wasted which could have been spent
-// running the idle function).
-//
-// For timeout sources, the prepare and check functions both return true if the
-// timeout interval has expired. The prepare function also returns a timeout
-// value to ensure that the poll() call doesn't block too long and miss the next
-// timeout.
-//
-// For file descriptor sources, the prepare function typically returns false,
-// since it must wait until poll() has been called before it knows whether any
-// events need to be processed. It sets the returned timeout to -1 to indicate
-// that it doesn't mind how long the poll() call blocks. In the check function,
-// it tests the results of the poll() call to see if the required condition has
-// been met, and returns true if so.
-type SourceFuncs struct {
-	native *C.GSourceFuncs
-}
-
-// WrapSourceFuncs wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSourceFuncs(ptr unsafe.Pointer) *SourceFuncs {
-	p := (*C.GSourceFuncs)(ptr)
-	v := SourceFuncs{native: p}
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*SourceFuncs).free)
-
-	return &v
-}
-
-func marshalSourceFuncs(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSourceFuncs(unsafe.Pointer(b))
-}
-
-func (s *SourceFuncs) free() {
-	C.free(s.Native())
-}
-
-// Native returns the underlying source pointer.
-func (s *SourceFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
-}
-
-// Native returns the pointer to *C.GSourceFuncs. The caller is expected to
-// cast.
-func (s *SourceFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+	return ret0
 }
 
 // String: the GString struct contains the public fields of a GString.
 type String struct {
-	// Str points to the character data. It may move as text is added. The @str
-	// field is null-terminated and so can be used as an ordinary C string.
-	Str string
-	// Len contains the length of the string, not including the terminating nul
-	// byte.
-	Len uint
-	// AllocatedLen: the number of bytes that can be stored in the string before
-	// it needs to be reallocated. May be larger than @len.
-	AllocatedLen uint
-
-	native *C.GString
+	native C.GString
 }
 
 // WrapString wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapString(ptr unsafe.Pointer) *String {
-	p := (*C.GString)(ptr)
-	v := String{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	p.str = C.GoString(v.Str)
-	defer C.free(unsafe.Pointer(p.str))
-	v.Len = uint(p.len)
-	v.AllocatedLen = uint(p.allocated_len)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*String).free)
-
-	return &v
+	return (*String)(ptr)
 }
 
 func marshalString(p uintptr) (interface{}, error) {
@@ -19913,54 +19700,44 @@ func marshalString(p uintptr) (interface{}, error) {
 	return WrapString(unsafe.Pointer(b))
 }
 
-func (s *String) free() {
-	C.free(s.Native())
+// Native returns the underlying C source pointer.
+func (s *String) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }
 
-// Native returns the underlying source pointer.
-func (s *String) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// Str gets the field inside the struct.
+func (s *String) Str() string {
+	var ret string
+	ret = C.GoString(s.native.str)
+	return ret
 }
 
-// Native returns the pointer to *C.GString. The caller is expected to
-// cast.
-func (s *String) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+// Len gets the field inside the struct.
+func (l *String) Len() uint {
+	var ret uint
+	ret = uint(s.native.len)
+	return ret
+}
+
+// AllocatedLen gets the field inside the struct.
+func (a *String) AllocatedLen() uint {
+	var ret uint
+	ret = uint(s.native.allocated_len)
+	return ret
 }
 
 type TestConfig struct {
-	TestInitialized bool
-
-	TestQuick bool
-
-	TestPerf bool
-
-	TestVerbose bool
-
-	TestQuiet bool
-
-	TestUndefined bool
-
-	native *C.GTestConfig
+	native C.GTestConfig
 }
 
 // WrapTestConfig wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTestConfig(ptr unsafe.Pointer) *TestConfig {
-	p := (*C.GTestConfig)(ptr)
-	v := TestConfig{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.TestInitialized = gextras.Gobool(p.test_initialized)
-	v.TestQuick = gextras.Gobool(p.test_quick)
-	v.TestPerf = gextras.Gobool(p.test_perf)
-	v.TestVerbose = gextras.Gobool(p.test_verbose)
-	v.TestQuiet = gextras.Gobool(p.test_quiet)
-	v.TestUndefined = gextras.Gobool(p.test_undefined)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*TestConfig).free)
-
-	return &v
+	return (*TestConfig)(ptr)
 }
 
 func marshalTestConfig(p uintptr) (interface{}, error) {
@@ -19968,35 +19745,65 @@ func marshalTestConfig(p uintptr) (interface{}, error) {
 	return WrapTestConfig(unsafe.Pointer(b))
 }
 
-func (t *TestConfig) free() {
-	C.free(t.Native())
+// Native returns the underlying C source pointer.
+func (t *TestConfig) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the underlying source pointer.
-func (t *TestConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// TestInitialized gets the field inside the struct.
+func (t *TestConfig) TestInitialized() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.test_initialized)
+	return ret
 }
 
-// Native returns the pointer to *C.GTestConfig. The caller is expected to
-// cast.
-func (t *TestConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// TestQuick gets the field inside the struct.
+func (t *TestConfig) TestQuick() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.test_quick)
+	return ret
+}
+
+// TestPerf gets the field inside the struct.
+func (t *TestConfig) TestPerf() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.test_perf)
+	return ret
+}
+
+// TestVerbose gets the field inside the struct.
+func (t *TestConfig) TestVerbose() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.test_verbose)
+	return ret
+}
+
+// TestQuiet gets the field inside the struct.
+func (t *TestConfig) TestQuiet() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.test_quiet)
+	return ret
+}
+
+// TestUndefined gets the field inside the struct.
+func (t *TestConfig) TestUndefined() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.test_undefined)
+	return ret
 }
 
 type TestLogBuffer struct {
-	native *C.GTestLogBuffer
+	native C.GTestLogBuffer
 }
 
 // WrapTestLogBuffer wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTestLogBuffer(ptr unsafe.Pointer) *TestLogBuffer {
-	p := (*C.GTestLogBuffer)(ptr)
-	v := TestLogBuffer{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*TestLogBuffer).free)
-
-	return &v
+	return (*TestLogBuffer)(ptr)
 }
 
 func marshalTestLogBuffer(p uintptr) (interface{}, error) {
@@ -20004,52 +19811,23 @@ func marshalTestLogBuffer(p uintptr) (interface{}, error) {
 	return WrapTestLogBuffer(unsafe.Pointer(b))
 }
 
-func (t *TestLogBuffer) free() {
-	C.free(t.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (t *TestLogBuffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
-}
-
-// Native returns the pointer to *C.GTestLogBuffer. The caller is expected to
-// cast.
-func (t *TestLogBuffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+	return unsafe.Pointer(&t.native)
 }
 
 type TestLogMsg struct {
-	LogType TestLogType
-
-	NStrings uint
-
-	Strings string
-
-	NNums uint
-
-	Nums float64
-
-	native *C.GTestLogMsg
+	native C.GTestLogMsg
 }
 
 // WrapTestLogMsg wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTestLogMsg(ptr unsafe.Pointer) *TestLogMsg {
-	p := (*C.GTestLogMsg)(ptr)
-	v := TestLogMsg{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.LogType = TestLogType(p.log_type)
-	v.NStrings = uint(p.n_strings)
-	p.strings = C.GoString(v.Strings)
-	defer C.free(unsafe.Pointer(p.strings))
-	v.NNums = uint(p.n_nums)
-	v.Nums = float64(p.nums)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*TestLogMsg).free)
-
-	return &v
+	return (*TestLogMsg)(ptr)
 }
 
 func marshalTestLogMsg(p uintptr) (interface{}, error) {
@@ -20057,19 +19835,44 @@ func marshalTestLogMsg(p uintptr) (interface{}, error) {
 	return WrapTestLogMsg(unsafe.Pointer(b))
 }
 
-func (t *TestLogMsg) free() {
-	C.free(t.Native())
+// Native returns the underlying C source pointer.
+func (t *TestLogMsg) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the underlying source pointer.
-func (t *TestLogMsg) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// LogType gets the field inside the struct.
+func (l *TestLogMsg) LogType() TestLogType {
+	var ret TestLogType
+	ret = TestLogType(t.native.log_type)
+	return ret
 }
 
-// Native returns the pointer to *C.GTestLogMsg. The caller is expected to
-// cast.
-func (t *TestLogMsg) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// NStrings gets the field inside the struct.
+func (n *TestLogMsg) NStrings() uint {
+	var ret uint
+	ret = uint(t.native.n_strings)
+	return ret
+}
+
+// Strings gets the field inside the struct.
+func (s *TestLogMsg) Strings() string {
+	var ret string
+	ret = C.GoString(t.native.strings)
+	return ret
+}
+
+// NNums gets the field inside the struct.
+func (n *TestLogMsg) NNums() uint {
+	var ret uint
+	ret = uint(t.native.n_nums)
+	return ret
+}
+
+// Nums gets the field inside the struct.
+func (n *TestLogMsg) Nums() float64 {
+	var ret float64
+	ret = float64(t.native.nums)
+	return ret
 }
 
 // Thread: the #GThread struct represents a running thread. This struct is
@@ -20083,19 +19886,17 @@ func (t *TestLogMsg) Native() unsafe.Pointer {
 //
 // The structure is opaque -- none of its fields may be directly accessed.
 type Thread struct {
-	native *C.GThread
+	native C.GThread
 }
 
 // WrapThread wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapThread(ptr unsafe.Pointer) *Thread {
-	p := (*C.GThread)(ptr)
-	v := Thread{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Thread).free)
-
-	return &v
+	return (*Thread)(ptr)
 }
 
 func marshalThread(p uintptr) (interface{}, error) {
@@ -20103,52 +19904,64 @@ func marshalThread(p uintptr) (interface{}, error) {
 	return WrapThread(unsafe.Pointer(b))
 }
 
-func (t *Thread) free() {
-	C.free(t.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (t *Thread) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the pointer to *C.GThread. The caller is expected to
-// cast.
-func (t *Thread) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// New_ constructs a struct Thread.
+func New_(name string, _func ThreadFunc) *Thread {
+	var arg1 *C.gchar
+	var arg2 C.GThreadFunc
+	arg3 := C.gpointer(box.Assign(data))
+
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*[0]byte)(C.gotk4_ThreadFunc)
+
+	ret := C.g_thread_new(arg1, arg2)
+
+	var ret0 *Thread
+
+	ret0 = WrapThread(ret)
+
+	return ret0
 }
 
-func NewThread(name string, _func ThreadFunc) *Thread
+// New_Try constructs a struct Thread.
+func New_Try(name string, _func ThreadFunc) *Thread {
+	var arg1 *C.gchar
+	var arg2 C.GThreadFunc
+	arg3 := C.gpointer(box.Assign(data))
 
-func NewThread(name string, _func ThreadFunc) *Thread
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*[0]byte)(C.gotk4_ThreadFunc)
+
+	ret := C.g_thread_try_new(arg1, arg2)
+
+	var ret0 *Thread
+
+	ret0 = WrapThread(ret)
+
+	return ret0
+}
 
 // ThreadPool: the Pool struct represents a thread pool. It has three public
 // read-only members, but the underlying struct is bigger, so you must not copy
 // this struct.
 type ThreadPool struct {
-	// Func: the function to execute in the threads of this pool
-	Func Func
-	// UserData: the user data for the threads of this pool
-	UserData interface{}
-	// Exclusive: are all threads exclusive to this pool
-	Exclusive bool
-
-	native *C.GThreadPool
+	native C.GThreadPool
 }
 
 // WrapThreadPool wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapThreadPool(ptr unsafe.Pointer) *ThreadPool {
-	p := (*C.GThreadPool)(ptr)
-	v := ThreadPool{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.UserData = box.Get(uintptr(p.user_data))
-	v.Exclusive = gextras.Gobool(p.exclusive)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*ThreadPool).free)
-
-	return &v
+	return (*ThreadPool)(ptr)
 }
 
 func marshalThreadPool(p uintptr) (interface{}, error) {
@@ -20156,19 +19969,23 @@ func marshalThreadPool(p uintptr) (interface{}, error) {
 	return WrapThreadPool(unsafe.Pointer(b))
 }
 
-func (t *ThreadPool) free() {
-	C.free(t.Native())
+// Native returns the underlying C source pointer.
+func (t *ThreadPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the underlying source pointer.
-func (t *ThreadPool) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// UserData gets the field inside the struct.
+func (u *ThreadPool) UserData() interface{} {
+	var ret interface{}
+	ret = box.Get(uintptr(t.native.user_data))
+	return ret
 }
 
-// Native returns the pointer to *C.GThreadPool. The caller is expected to
-// cast.
-func (t *ThreadPool) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// Exclusive gets the field inside the struct.
+func (e *ThreadPool) Exclusive() bool {
+	var ret bool
+	ret = gextras.Gobool(t.native.exclusive)
+	return ret
 }
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
@@ -20179,27 +19996,17 @@ func (t *ThreadPool) Native() unsafe.Pointer {
 // version of GLib. A consequence of using `glong` for `tv_sec` is that on
 // 32-bit systems `GTimeVal` is subject to the year 2038 problem.
 type TimeVal struct {
-	// TvSec: seconds
-	TvSec int32
-	// TvUsec: microseconds
-	TvUsec int32
-
-	native *C.GTimeVal
+	native C.GTimeVal
 }
 
 // WrapTimeVal wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTimeVal(ptr unsafe.Pointer) *TimeVal {
-	p := (*C.GTimeVal)(ptr)
-	v := TimeVal{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.TvSec = int32(p.tv_sec)
-	v.TvUsec = int32(p.tv_usec)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*TimeVal).free)
-
-	return &v
+	return (*TimeVal)(ptr)
 }
 
 func marshalTimeVal(p uintptr) (interface{}, error) {
@@ -20207,36 +20014,38 @@ func marshalTimeVal(p uintptr) (interface{}, error) {
 	return WrapTimeVal(unsafe.Pointer(b))
 }
 
-func (t *TimeVal) free() {
-	C.free(t.Native())
+// Native returns the underlying C source pointer.
+func (t *TimeVal) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the underlying source pointer.
-func (t *TimeVal) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// TvSec gets the field inside the struct.
+func (t *TimeVal) TvSec() int32 {
+	var ret int32
+	ret = int32(t.native.tv_sec)
+	return ret
 }
 
-// Native returns the pointer to *C.GTimeVal. The caller is expected to
-// cast.
-func (t *TimeVal) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// TvUsec gets the field inside the struct.
+func (t *TimeVal) TvUsec() int32 {
+	var ret int32
+	ret = int32(t.native.tv_usec)
+	return ret
 }
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
 type TimeZone struct {
-	native *C.GTimeZone
+	native C.GTimeZone
 }
 
 // WrapTimeZone wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTimeZone(ptr unsafe.Pointer) *TimeZone {
-	p := (*C.GTimeZone)(ptr)
-	v := TimeZone{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*TimeZone).free)
-
-	return &v
+	return (*TimeZone)(ptr)
 }
 
 func marshalTimeZone(p uintptr) (interface{}, error) {
@@ -20244,51 +20053,80 @@ func marshalTimeZone(p uintptr) (interface{}, error) {
 	return WrapTimeZone(unsafe.Pointer(b))
 }
 
-func (t *TimeZone) free() {
-	C.free(t.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (t *TimeZone) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the pointer to *C.GTimeZone. The caller is expected to
-// cast.
-func (t *TimeZone) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// New_ constructs a struct TimeZone.
+func New_(identifier string) *TimeZone {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(identifier))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_time_zone_new(arg1)
+
+	var ret0 *TimeZone
+
+	ret0 = WrapTimeZone(ret)
+
+	return ret0
 }
 
-func NewTimeZone(identifier string) *TimeZone
+// New_Local constructs a struct TimeZone.
+func New_Local() *TimeZone {
 
-func NewTimeZone() *TimeZone
+	ret := C.g_time_zone_new_local()
 
-func NewTimeZone(seconds int32) *TimeZone
+	var ret0 *TimeZone
 
-func NewTimeZone() *TimeZone
+	ret0 = WrapTimeZone(ret)
+
+	return ret0
+}
+
+// New_Offset constructs a struct TimeZone.
+func New_Offset(seconds int32) *TimeZone {
+	var arg1 C.gint32
+
+	arg1 = C.gint32(seconds)
+
+	ret := C.g_time_zone_new_offset(arg1)
+
+	var ret0 *TimeZone
+
+	ret0 = WrapTimeZone(ret)
+
+	return ret0
+}
+
+// New_Utc constructs a struct TimeZone.
+func New_Utc() *TimeZone {
+
+	ret := C.g_time_zone_new_utc()
+
+	var ret0 *TimeZone
+
+	ret0 = WrapTimeZone(ret)
+
+	return ret0
+}
 
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
 // GTrashStack*.
 type TrashStack struct {
-	// Next: pointer to the previous element of the stack, gets stored in the
-	// first `sizeof (gpointer)` bytes of the element
-	Next *TrashStack
-
-	native *C.GTrashStack
+	native C.GTrashStack
 }
 
 // WrapTrashStack wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapTrashStack(ptr unsafe.Pointer) *TrashStack {
-	p := (*C.GTrashStack)(ptr)
-	v := TrashStack{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.Next = WrapTrashStack(p.next)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*TrashStack).free)
-
-	return &v
+	return (*TrashStack)(ptr)
 }
 
 func marshalTrashStack(p uintptr) (interface{}, error) {
@@ -20296,19 +20134,16 @@ func marshalTrashStack(p uintptr) (interface{}, error) {
 	return WrapTrashStack(unsafe.Pointer(b))
 }
 
-func (t *TrashStack) free() {
-	C.free(t.Native())
+// Native returns the underlying C source pointer.
+func (t *TrashStack) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
-// Native returns the underlying source pointer.
-func (t *TrashStack) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
-}
-
-// Native returns the pointer to *C.GTrashStack. The caller is expected to
-// cast.
-func (t *TrashStack) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+// Next gets the field inside the struct.
+func (n *TrashStack) Next() *TrashStack {
+	var ret *TrashStack
+	ret = WrapTrashStack(t.native.next)
+	return ret
 }
 
 // URI: the #GUri type and related functions can be used to parse URIs into
@@ -20418,19 +20253,17 @@ func (t *TrashStack) Native() unsafe.Pointer {
 // `data:;base64,Zm9v` resolve to the same thing according to the `data:` URI
 // specification.
 type URI struct {
-	native *C.GUri
+	native C.GUri
 }
 
 // WrapURI wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapURI(ptr unsafe.Pointer) *URI {
-	p := (*C.GUri)(ptr)
-	v := URI{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*URI).free)
-
-	return &v
+	return (*URI)(ptr)
 }
 
 func marshalURI(p uintptr) (interface{}, error) {
@@ -20438,19 +20271,9 @@ func marshalURI(p uintptr) (interface{}, error) {
 	return WrapURI(unsafe.Pointer(b))
 }
 
-func (u *URI) free() {
-	C.free(u.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (u *URI) Native() unsafe.Pointer {
-	return unsafe.Pointer(u.native)
-}
-
-// Native returns the pointer to *C.GUri. The caller is expected to
-// cast.
-func (u *URI) Native() unsafe.Pointer {
-	return unsafe.Pointer(u.native)
+	return unsafe.Pointer(&u.native)
 }
 
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
@@ -20464,19 +20287,17 @@ func (u *URI) Native() unsafe.Pointer {
 // g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
 // for a usage example.
 type URIParamsIter struct {
-	native *C.GUriParamsIter
+	native C.GUriParamsIter
 }
 
 // WrapURIParamsIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapURIParamsIter(ptr unsafe.Pointer) *URIParamsIter {
-	p := (*C.GUriParamsIter)(ptr)
-	v := URIParamsIter{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*URIParamsIter).free)
-
-	return &v
+	return (*URIParamsIter)(ptr)
 }
 
 func marshalURIParamsIter(p uintptr) (interface{}, error) {
@@ -20484,19 +20305,9 @@ func marshalURIParamsIter(p uintptr) (interface{}, error) {
 	return WrapURIParamsIter(unsafe.Pointer(b))
 }
 
-func (u *URIParamsIter) free() {
-	C.free(u.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (u *URIParamsIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(u.native)
-}
-
-// Native returns the pointer to *C.GUriParamsIter. The caller is expected to
-// cast.
-func (u *URIParamsIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(u.native)
+	return unsafe.Pointer(&u.native)
 }
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -20726,19 +20537,17 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 // type, we would use more memory for the serialised data and buffer management
 // for those dictionaries, but the type information would be shared.
 type Variant struct {
-	native *C.GVariant
+	native C.GVariant
 }
 
 // WrapVariant wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariant(ptr unsafe.Pointer) *Variant {
-	p := (*C.GVariant)(ptr)
-	v := Variant{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Variant).free)
-
-	return &v
+	return (*Variant)(ptr)
 }
 
 func marshalVariant(p uintptr) (interface{}, error) {
@@ -20746,72 +20555,516 @@ func marshalVariant(p uintptr) (interface{}, error) {
 	return WrapVariant(unsafe.Pointer(b))
 }
 
-func (v *Variant) free() {
-	C.free(v.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (v *Variant) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+	return unsafe.Pointer(&v.native)
 }
 
-// Native returns the pointer to *C.GVariant. The caller is expected to
-// cast.
-func (v *Variant) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+// New_Array constructs a struct Variant.
+func New_Array(childType *VariantType, children []*Variant) *Variant {
+	var arg1 *C.GVariantType
+	var arg2 **C.GVariant
+	var arg3 C.gsize
+
+	arg1 = (*C.GVariantType)(childType.Native())
+	{
+		var dst []*C.GVariant
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(children))))
+		sliceHeader.Len = len(children)
+		sliceHeader.Cap = len(children)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
+
+		for i := 0; i < len(children); i++ {
+			src := children[i]
+			dst[i] = (*C.GVariant)(src.Native())
+		}
+
+		arg2 = (**C.GVariant)(unsafe.Pointer(sliceHeader.Data))
+		arg3 = len(children)
+	}
+
+	ret := C.g_variant_new_array(arg1, arg2, arg3)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
 }
 
-func NewVariant(childType *VariantType, children []*Variant) *Variant
+// New_Boolean constructs a struct Variant.
+func New_Boolean(value bool) *Variant {
+	var arg1 C.gboolean
 
-func NewVariant(value bool) *Variant
+	arg1 = gextras.Cbool(value)
 
-func NewVariant(value uint8) *Variant
+	ret := C.g_variant_new_boolean(arg1)
 
-func NewVariant(string []uint8) *Variant
+	var ret0 *Variant
 
-func NewVariant(strv []string) *Variant
+	ret0 = WrapVariant(ret)
 
-func NewVariant(key *Variant, value *Variant) *Variant
+	return ret0
+}
 
-func NewVariant(value float64) *Variant
+// New_Byte constructs a struct Variant.
+func New_Byte(value byte) *Variant {
+	var arg1 C.guint8
 
-func NewVariant(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant
+	arg1 = C.guint8(value)
 
-func NewVariant(_type *VariantType, bytes *Bytes, trusted bool) *Variant
+	ret := C.g_variant_new_byte(arg1)
 
-func NewVariant(_type *VariantType, data []uint8, trusted bool, userData interface{}) *Variant
+	var ret0 *Variant
 
-func NewVariant(value int32) *Variant
+	ret0 = WrapVariant(ret)
 
-func NewVariant(value int16) *Variant
+	return ret0
+}
 
-func NewVariant(value int32) *Variant
+// New_Bytestring constructs a struct Variant.
+func New_Bytestring(string []byte) *Variant {
+	var arg1 *C.gchar
 
-func NewVariant(value int64) *Variant
+	{
 
-func NewVariant(childType *VariantType, child *Variant) *Variant
+	}
 
-func NewVariant(objectPath string) *Variant
+	ret := C.g_variant_new_bytestring(arg1)
 
-func NewVariant(strv []string) *Variant
+	var ret0 *Variant
 
-func NewVariant(signature string) *Variant
+	ret0 = WrapVariant(ret)
 
-func NewVariant(string string) *Variant
+	return ret0
+}
 
-func NewVariant(strv []string) *Variant
+// New_BytestringArray constructs a struct Variant.
+func New_BytestringArray(strv []string) *Variant {
+	var arg1 **C.gchar
+	var arg2 C.gssize
 
-func NewVariant(string string) *Variant
+	{
+		var dst []*C.gchar
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(strv))))
+		sliceHeader.Len = len(strv)
+		sliceHeader.Cap = len(strv)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
 
-func NewVariant(children []*Variant) *Variant
+		for i := 0; i < len(strv); i++ {
+			src := strv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
 
-func NewVariant(value uint16) *Variant
+		arg1 = (**C.gchar)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(strv)
+	}
 
-func NewVariant(value uint32) *Variant
+	ret := C.g_variant_new_bytestring_array(arg1, arg2)
 
-func NewVariant(value uint64) *Variant
+	var ret0 *Variant
 
-func NewVariant(value *Variant) *Variant
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_DictEntry constructs a struct Variant.
+func New_DictEntry(key *Variant, value *Variant) *Variant {
+	var arg1 *C.GVariant
+	var arg2 *C.GVariant
+
+	arg1 = (*C.GVariant)(key.Native())
+	arg2 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_new_dict_entry(arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Double constructs a struct Variant.
+func New_Double(value float64) *Variant {
+	var arg1 C.gdouble
+
+	arg1 = C.gdouble(value)
+
+	ret := C.g_variant_new_double(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_FixedArray constructs a struct Variant.
+func New_FixedArray(elementType *VariantType, elements interface{}, nElements uint, elementSize uint) *Variant {
+	var arg1 *C.GVariantType
+	var arg2 C.gpointer
+	var arg3 C.gsize
+	var arg4 C.gsize
+
+	arg1 = (*C.GVariantType)(elementType.Native())
+	arg2 = C.gpointer(box.Assign(elements))
+	arg3 = C.gsize(nElements)
+	arg4 = C.gsize(elementSize)
+
+	ret := C.g_variant_new_fixed_array(arg1, arg2, arg3, arg4)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_FromBytes constructs a struct Variant.
+func New_FromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Variant {
+	var arg1 *C.GVariantType
+	var arg2 *C.GBytes
+	var arg3 C.gboolean
+
+	arg1 = (*C.GVariantType)(_type.Native())
+	arg2 = (*C.GBytes)(bytes.Native())
+	arg3 = gextras.Cbool(trusted)
+
+	ret := C.g_variant_new_from_bytes(arg1, arg2, arg3)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_FromData constructs a struct Variant.
+func New_FromData(_type *VariantType, data []byte, trusted bool, userData interface{}) *Variant {
+	var arg1 *C.GVariantType
+	var arg2 C.gpointer
+	var arg3 C.gsize
+	var arg4 C.gboolean
+	var arg6 C.gpointer
+
+	arg1 = (*C.GVariantType)(_type.Native())
+	{
+		arg2 = (C.gpointer)(&data[0])
+		arg3 = len(data)
+		defer runtime.KeepAlive(data)
+	}
+	arg4 = gextras.Cbool(trusted)
+	arg6 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_variant_new_from_data(arg1, arg2, arg3, arg4, (*[0]byte)(C.free), arg6)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Handle constructs a struct Variant.
+func New_Handle(value int32) *Variant {
+	var arg1 C.gint32
+
+	arg1 = C.gint32(value)
+
+	ret := C.g_variant_new_handle(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Int16 constructs a struct Variant.
+func New_Int16(value int16) *Variant {
+	var arg1 C.gint16
+
+	arg1 = C.gint16(value)
+
+	ret := C.g_variant_new_int16(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Int32 constructs a struct Variant.
+func New_Int32(value int32) *Variant {
+	var arg1 C.gint32
+
+	arg1 = C.gint32(value)
+
+	ret := C.g_variant_new_int32(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Int64 constructs a struct Variant.
+func New_Int64(value int64) *Variant {
+	var arg1 C.gint64
+
+	arg1 = C.gint64(value)
+
+	ret := C.g_variant_new_int64(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Maybe constructs a struct Variant.
+func New_Maybe(childType *VariantType, child *Variant) *Variant {
+	var arg1 *C.GVariantType
+	var arg2 *C.GVariant
+
+	arg1 = (*C.GVariantType)(childType.Native())
+	arg2 = (*C.GVariant)(child.Native())
+
+	ret := C.g_variant_new_maybe(arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_ObjectPath constructs a struct Variant.
+func New_ObjectPath(objectPath string) *Variant {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_new_object_path(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Objv constructs a struct Variant.
+func New_Objv(strv []string) *Variant {
+	var arg1 **C.gchar
+	var arg2 C.gssize
+
+	{
+		var dst []C.utf8
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_utf8 * len(strv))))
+		sliceHeader.Len = len(strv)
+		sliceHeader.Cap = len(strv)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
+
+		for i := 0; i < len(strv); i++ {
+			src := strv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(strv)
+	}
+
+	ret := C.g_variant_new_objv(arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Signature constructs a struct Variant.
+func New_Signature(signature string) *Variant {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(signature))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_new_signature(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_String constructs a struct Variant.
+func New_String(string string) *Variant {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_new_string(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Strv constructs a struct Variant.
+func New_Strv(strv []string) *Variant {
+	var arg1 **C.gchar
+	var arg2 C.gssize
+
+	{
+		var dst []C.utf8
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(C.sizeof_utf8 * len(strv))))
+		sliceHeader.Len = len(strv)
+		sliceHeader.Cap = len(strv)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
+
+		for i := 0; i < len(strv); i++ {
+			src := strv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(strv)
+	}
+
+	ret := C.g_variant_new_strv(arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_TakeString constructs a struct Variant.
+func New_TakeString(string string) *Variant {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_new_take_string(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Tuple constructs a struct Variant.
+func New_Tuple(children []*Variant) *Variant {
+	var arg1 **C.GVariant
+	var arg2 C.gsize
+
+	{
+		var dst []*C.GVariant
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(children))))
+		sliceHeader.Len = len(children)
+		sliceHeader.Cap = len(children)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
+
+		for i := 0; i < len(children); i++ {
+			src := children[i]
+			dst[i] = (*C.GVariant)(src.Native())
+		}
+
+		arg1 = (**C.GVariant)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(children)
+	}
+
+	ret := C.g_variant_new_tuple(arg1, arg2)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Uint16 constructs a struct Variant.
+func New_Uint16(value uint16) *Variant {
+	var arg1 C.guint16
+
+	arg1 = C.guint16(value)
+
+	ret := C.g_variant_new_uint16(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Uint32 constructs a struct Variant.
+func New_Uint32(value uint32) *Variant {
+	var arg1 C.guint32
+
+	arg1 = C.guint32(value)
+
+	ret := C.g_variant_new_uint32(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Uint64 constructs a struct Variant.
+func New_Uint64(value uint64) *Variant {
+	var arg1 C.guint64
+
+	arg1 = C.guint64(value)
+
+	ret := C.g_variant_new_uint64(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
+
+// New_Variant constructs a struct Variant.
+func New_Variant(value *Variant) *Variant {
+	var arg1 *C.GVariant
+
+	arg1 = (*C.GVariant)(value.Native())
+
+	ret := C.g_variant_new_variant(arg1)
+
+	var ret0 *Variant
+
+	ret0 = WrapVariant(ret)
+
+	return ret0
+}
 
 // VariantBuilder: a utility type for constructing container-type #GVariant
 // instances.
@@ -20822,19 +21075,17 @@ func NewVariant(value *Variant) *Variant
 // Builder is not threadsafe in any way. Do not attempt to access it from more
 // than one thread.
 type VariantBuilder struct {
-	native *C.GVariantBuilder
+	native C.GVariantBuilder
 }
 
 // WrapVariantBuilder wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantBuilder(ptr unsafe.Pointer) *VariantBuilder {
-	p := (*C.GVariantBuilder)(ptr)
-	v := VariantBuilder{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*VariantBuilder).free)
-
-	return &v
+	return (*VariantBuilder)(ptr)
 }
 
 func marshalVariantBuilder(p uintptr) (interface{}, error) {
@@ -20842,22 +21093,25 @@ func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	return WrapVariantBuilder(unsafe.Pointer(b))
 }
 
-func (v *VariantBuilder) free() {
-	C.free(v.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (v *VariantBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+	return unsafe.Pointer(&v.native)
 }
 
-// Native returns the pointer to *C.GVariantBuilder. The caller is expected to
-// cast.
-func (v *VariantBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
-}
+// New_ constructs a struct VariantBuilder.
+func New_(_type *VariantType) *VariantBuilder {
+	var arg1 *C.GVariantType
 
-func NewVariantBuilder(_type *VariantType) *VariantBuilder
+	arg1 = (*C.GVariantType)(_type.Native())
+
+	ret := C.g_variant_builder_new(arg1)
+
+	var ret0 *VariantBuilder
+
+	ret0 = WrapVariantBuilder(ret)
+
+	return ret0
+}
 
 // VariantDict is a mutable interface to #GVariant dictionaries.
 //
@@ -20918,19 +21172,17 @@ func NewVariantBuilder(_type *VariantType) *VariantBuilder
 //      }
 //
 type VariantDict struct {
-	native *C.GVariantDict
+	native C.GVariantDict
 }
 
 // WrapVariantDict wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantDict(ptr unsafe.Pointer) *VariantDict {
-	p := (*C.GVariantDict)(ptr)
-	v := VariantDict{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*VariantDict).free)
-
-	return &v
+	return (*VariantDict)(ptr)
 }
 
 func marshalVariantDict(p uintptr) (interface{}, error) {
@@ -20938,39 +21190,40 @@ func marshalVariantDict(p uintptr) (interface{}, error) {
 	return WrapVariantDict(unsafe.Pointer(b))
 }
 
-func (v *VariantDict) free() {
-	C.free(v.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (v *VariantDict) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+	return unsafe.Pointer(&v.native)
 }
 
-// Native returns the pointer to *C.GVariantDict. The caller is expected to
-// cast.
-func (v *VariantDict) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
-}
+// New_ constructs a struct VariantDict.
+func New_(fromAsv *Variant) *VariantDict {
+	var arg1 *C.GVariant
 
-func NewVariantDict(fromAsv *Variant) *VariantDict
+	arg1 = (*C.GVariant)(fromAsv.Native())
+
+	ret := C.g_variant_dict_new(arg1)
+
+	var ret0 *VariantDict
+
+	ret0 = WrapVariantDict(ret)
+
+	return ret0
+}
 
 // VariantIter is an opaque data structure and can only be accessed using the
 // following functions.
 type VariantIter struct {
-	native *C.GVariantIter
+	native C.GVariantIter
 }
 
 // WrapVariantIter wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantIter(ptr unsafe.Pointer) *VariantIter {
-	p := (*C.GVariantIter)(ptr)
-	v := VariantIter{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*VariantIter).free)
-
-	return &v
+	return (*VariantIter)(ptr)
 }
 
 func marshalVariantIter(p uintptr) (interface{}, error) {
@@ -20978,19 +21231,9 @@ func marshalVariantIter(p uintptr) (interface{}, error) {
 	return WrapVariantIter(unsafe.Pointer(b))
 }
 
-func (v *VariantIter) free() {
-	C.free(v.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (v *VariantIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
-}
-
-// Native returns the pointer to *C.GVariantIter. The caller is expected to
-// cast.
-func (v *VariantIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+	return unsafe.Pointer(&v.native)
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,
@@ -21127,19 +21370,17 @@ func (v *VariantIter) Native() unsafe.Pointer {
 // of a dictionary entry must be a basic type, "{**}" is not a valid type
 // string.
 type VariantType struct {
-	native *C.GVariantType
+	native C.GVariantType
 }
 
 // WrapVariantType wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapVariantType(ptr unsafe.Pointer) *VariantType {
-	p := (*C.GVariantType)(ptr)
-	v := VariantType{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*VariantType).free)
-
-	return &v
+	return (*VariantType)(ptr)
 }
 
 func marshalVariantType(p uintptr) (interface{}, error) {
@@ -21147,27 +21388,101 @@ func marshalVariantType(p uintptr) (interface{}, error) {
 	return WrapVariantType(unsafe.Pointer(b))
 }
 
-func (v *VariantType) free() {
-	C.free(v.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (v *VariantType) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+	return unsafe.Pointer(&v.native)
 }
 
-// Native returns the pointer to *C.GVariantType. The caller is expected to
-// cast.
-func (v *VariantType) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+// New_ constructs a struct VariantType.
+func New_(typeString string) *VariantType {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(typeString))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_variant_type_new(arg1)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
 }
 
-func NewVariantType(typeString string) *VariantType
+// New_Array constructs a struct VariantType.
+func New_Array(element *VariantType) *VariantType {
+	var arg1 *C.GVariantType
 
-func NewVariantType(element *VariantType) *VariantType
+	arg1 = (*C.GVariantType)(element.Native())
 
-func NewVariantType(key *VariantType, value *VariantType) *VariantType
+	ret := C.g_variant_type_new_array(arg1)
 
-func NewVariantType(element *VariantType) *VariantType
+	var ret0 *VariantType
 
-func NewVariantType(items []*VariantType) *VariantType
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// New_DictEntry constructs a struct VariantType.
+func New_DictEntry(key *VariantType, value *VariantType) *VariantType {
+	var arg1 *C.GVariantType
+	var arg2 *C.GVariantType
+
+	arg1 = (*C.GVariantType)(key.Native())
+	arg2 = (*C.GVariantType)(value.Native())
+
+	ret := C.g_variant_type_new_dict_entry(arg1, arg2)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// New_Maybe constructs a struct VariantType.
+func New_Maybe(element *VariantType) *VariantType {
+	var arg1 *C.GVariantType
+
+	arg1 = (*C.GVariantType)(element.Native())
+
+	ret := C.g_variant_type_new_maybe(arg1)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}
+
+// New_Tuple constructs a struct VariantType.
+func New_Tuple(items []*VariantType) *VariantType {
+	var arg1 **C.GVariantType
+	var arg2 C.gint
+
+	{
+		var dst []*C.GVariantType
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(items))))
+		sliceHeader.Len = len(items)
+		sliceHeader.Cap = len(items)
+		defer C.free(unsafe.Pointer(sliceHeader.Data))
+
+		for i := 0; i < len(items); i++ {
+			src := items[i]
+			dst[i] = (*C.GVariantType)(src.Native())
+		}
+
+		arg1 = (**C.GVariantType)(unsafe.Pointer(sliceHeader.Data))
+		arg2 = len(items)
+	}
+
+	ret := C.g_variant_type_new_tuple(arg1, arg2)
+
+	var ret0 *VariantType
+
+	ret0 = WrapVariantType(ret)
+
+	return ret0
+}

@@ -17,7 +17,13 @@ import (
 // #include <pango/pangofc-fontmap.h>
 //
 // extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -97,9 +103,55 @@ func marshalDecoder(p uintptr) (interface{}, error) {
 	return WrapDecoder(obj), nil
 }
 
-func (d decoder) Charset(fcfont Font) *fontconfig.CharSet
+// Charset generates an `FcCharSet` of supported characters for the @fcfont
+// given.
+//
+// The returned `FcCharSet` will be a reference to an internal value stored
+// by the `PangoFcDecoder` and must not be modified or freed.
+func (decoder decoder) Charset(fcfont Font) *fontconfig.CharSet {
+	var arg0 *C.PangoFcDecoder
+	var arg1 *C.PangoFcFont
 
-func (d decoder) Glyph(fcfont Font, wc uint32) pango.Glyph
+	arg0 = (*C.PangoFcDecoder)(decoder.Native())
+	arg1 = (*C.PangoFcFont)(fcfont.Native())
+
+	ret := C.pango_fc_decoder_get_charset(arg0, arg1)
+
+	var ret0 *fontconfig.CharSet
+
+	ret0 = fontconfig.WrapCharSet(ret)
+
+	return ret0
+}
+
+// Glyph generates a `PangoGlyph` for the given Unicode point using the
+// custom decoder.
+//
+// For complex scripts where there can be multiple glyphs for a single
+// character, the decoder will return whatever glyph is most convenient for
+// it. (Usually whatever glyph is directly in the fonts character map
+// table.)
+func (decoder decoder) Glyph(fcfont Font, wc uint32) pango.Glyph {
+	var arg0 *C.PangoFcDecoder
+	var arg1 *C.PangoFcFont
+	var arg2 C.guint32
+
+	arg0 = (*C.PangoFcDecoder)(decoder.Native())
+	arg1 = (*C.PangoFcFont)(fcfont.Native())
+	arg2 = C.guint32(wc)
+
+	ret := C.pango_fc_decoder_get_glyph(arg0, arg1, arg2)
+
+	var ret0 pango.Glyph
+
+	{
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = pango.Glyph(tmp)
+	}
+
+	return ret0
+}
 
 // Font: `PangoFcFont` is a base class for font implementations using the
 // Fontconfig and FreeType libraries.
@@ -158,19 +210,125 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return WrapFont(obj), nil
 }
 
-func (f font) Glyph(wc uint32) uint
+// Glyph gets the glyph index for a given Unicode character for @font.
+//
+// If you only want to determine whether the font has the glyph, use
+// [method@PangoFc.Font.has_char].
+func (font font) Glyph(wc uint32) uint {
+	var arg0 *C.PangoFcFont
+	var arg1 C.gunichar
 
-func (f font) Languages() **pango.Language
+	arg0 = (*C.PangoFcFont)(font.Native())
+	arg1 = C.gunichar(wc)
 
-func (f font) Pattern() *fontconfig.Pattern
+	ret := C.pango_fc_font_get_glyph(arg0, arg1)
 
-func (f font) UnknownGlyph(wc uint32) pango.Glyph
+	var ret0 uint
 
-func (f font) HasChar(wc uint32) bool
+	ret0 = uint(ret)
 
-func (f font) KernGlyphs(glyphs *pango.GlyphString)
+	return ret0
+}
 
-func (f font) UnlockFace()
+// Languages returns the languages that are supported by @font.
+//
+// This corresponds to the FC_LANG member of the FcPattern.
+//
+// The returned array is only valid as long as the font and its fontmap are
+// valid.
+func (font font) Languages() **pango.Language {
+	var arg0 *C.PangoFcFont
+
+	arg0 = (*C.PangoFcFont)(font.Native())
+
+	ret := C.pango_fc_font_get_languages(arg0)
+
+	var ret0 **pango.Language
+
+	ret0 = pango.WrapLanguage(ret)
+
+	return ret0
+}
+
+// Pattern returns the FcPattern that @font is based on.
+func (font font) Pattern() *fontconfig.Pattern {
+	var arg0 *C.PangoFcFont
+
+	arg0 = (*C.PangoFcFont)(font.Native())
+
+	ret := C.pango_fc_font_get_pattern(arg0)
+
+	var ret0 *fontconfig.Pattern
+
+	ret0 = fontconfig.WrapPattern(ret)
+
+	return ret0
+}
+
+// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
+// unknown character.
+//
+// Use PANGO_GET_UNKNOWN_GLYPH() instead.
+func (font font) UnknownGlyph(wc uint32) pango.Glyph {
+	var arg0 *C.PangoFcFont
+	var arg1 C.gunichar
+
+	arg0 = (*C.PangoFcFont)(font.Native())
+	arg1 = C.gunichar(wc)
+
+	ret := C.pango_fc_font_get_unknown_glyph(arg0, arg1)
+
+	var ret0 pango.Glyph
+
+	{
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = pango.Glyph(tmp)
+	}
+
+	return ret0
+}
+
+// HasChar determines whether @font has a glyph for the codepoint @wc.
+func (font font) HasChar(wc uint32) bool {
+	var arg0 *C.PangoFcFont
+	var arg1 C.gunichar
+
+	arg0 = (*C.PangoFcFont)(font.Native())
+	arg1 = C.gunichar(wc)
+
+	ret := C.pango_fc_font_has_char(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
+// @glyphs according to kerning information in @font.
+//
+// Since 1.44, it does nothing.
+func (font font) KernGlyphs(glyphs *pango.GlyphString) {
+	var arg0 *C.PangoFcFont
+	var arg1 *C.PangoGlyphString
+
+	arg0 = (*C.PangoFcFont)(font.Native())
+	arg1 = (*C.PangoGlyphString)(glyphs.Native())
+
+	C.pango_fc_font_kern_glyphs(arg0, arg1)
+}
+
+// UnlockFace releases a font previously obtained with
+// [method@PangoFc.Font.lock_face].
+func (font font) UnlockFace() {
+	var arg0 *C.PangoFcFont
+
+	arg0 = (*C.PangoFcFont)(font.Native())
+
+	C.pango_fc_font_unlock_face(arg0)
+}
 
 // FontMap: `PangoFcFontMap` is a base class for font map implementations using
 // the Fontconfig and FreeType libraries.
@@ -256,18 +414,134 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return WrapFontMap(obj), nil
 }
 
-func (f fontMap) AddDecoderFindFunc(findfunc DecoderFindFunc)
+// AddDecoderFindFunc: this function saves a callback method in the
+// `PangoFcFontMap` that will be called whenever new fonts are created.
+//
+// If the function returns a `PangoFcDecoder`, that decoder will be used to
+// determine both coverage via a `FcCharSet` and a one-to-one mapping of
+// characters to glyphs. This will allow applications to have
+// application-specific encodings for various fonts.
+func (fcfontmap fontMap) AddDecoderFindFunc(findfunc DecoderFindFunc) {
+	var arg0 *C.PangoFcFontMap
+	var arg1 C.PangoFcDecoderFindFunc
+	arg2 := C.gpointer(box.Assign(userData))
 
-func (f fontMap) CacheClear()
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
+	arg1 = (*[0]byte)(C.gotk4_DecoderFindFunc)
 
-func (f fontMap) ConfigChanged()
+	C.pango_fc_font_map_add_decoder_find_func(arg0, arg1, (*[0]byte)(C.callbackDelete))
+}
 
-func (f fontMap) CreateContext() pango.Context
+// CacheClear: clear all cached information and fontsets for this font map.
+//
+// This should be called whenever there is a change in the output of the
+// default_substitute() virtual function of the font map, or if fontconfig
+// has been reinitialized to new configuration.
+func (fcfontmap fontMap) CacheClear() {
+	var arg0 *C.PangoFcFontMap
 
-func (f fontMap) FindDecoder(pattern *fontconfig.Pattern) Decoder
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
 
-func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc)
+	C.pango_fc_font_map_cache_clear(arg0)
+}
 
-func (f fontMap) Shutdown()
+// ConfigChanged informs font map that the fontconfig configuration (i.e.,
+// FcConfig object) used by this font map has changed.
+//
+// This currently calls [method@PangoFc.FontMap.cache_clear] which ensures
+// that list of fonts, etc will be regenerated using the updated
+// configuration.
+func (fcfontmap fontMap) ConfigChanged() {
+	var arg0 *C.PangoFcFontMap
 
-func (f fontMap) SubstituteChanged()
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
+
+	C.pango_fc_font_map_config_changed(arg0)
+}
+
+// CreateContext creates a new context for this fontmap.
+//
+// This function is intended only for backend implementations deriving from
+// `PangoFcFontMap`; it is possible that a backend will store additional
+// information needed for correct operation on the `PangoContext` after
+// calling this function.
+func (fcfontmap fontMap) CreateContext() pango.Context {
+	var arg0 *C.PangoFcFontMap
+
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
+
+	ret := C.pango_fc_font_map_create_context(arg0)
+
+	var ret0 pango.Context
+
+	ret0 = pango.WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// FindDecoder finds the decoder to use for @pattern.
+//
+// Decoders can be added to a font map using
+// [method@PangoFc.FontMap.add_decoder_find_func].
+func (fcfontmap fontMap) FindDecoder(pattern *fontconfig.Pattern) Decoder {
+	var arg0 *C.PangoFcFontMap
+	var arg1 *C.FcPattern
+
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
+	arg1 = (*C.FcPattern)(pattern.Native())
+
+	ret := C.pango_fc_font_map_find_decoder(arg0, arg1)
+
+	var ret0 Decoder
+
+	ret0 = WrapDecoder(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// SetDefaultSubstitute sets a function that will be called to do final
+// configuration substitution on a `FcPattern` before it is used to load the
+// font.
+//
+// This function can be used to do things like set hinting and antialiasing
+// options.
+func (fontmap fontMap) SetDefaultSubstitute(_func SubstituteFunc) {
+	var arg0 *C.PangoFcFontMap
+	var arg1 C.PangoFcSubstituteFunc
+	arg2 := C.gpointer(box.Assign(data))
+
+	arg0 = (*C.PangoFcFontMap)(fontmap.Native())
+	arg1 = (*[0]byte)(C.gotk4_SubstituteFunc)
+
+	C.pango_fc_font_map_set_default_substitute(arg0, arg1, (*[0]byte)(C.callbackDelete))
+}
+
+// Shutdown clears all cached information for the fontmap and marks all
+// fonts open for the fontmap as dead.
+//
+// See the shutdown() virtual function of `PangoFcFont`.
+//
+// This function might be used by a backend when the underlying windowing
+// system for the font map exits. This function is only intended to be
+// called only for backend implementations deriving from `PangoFcFontMap`.
+func (fcfontmap fontMap) Shutdown() {
+	var arg0 *C.PangoFcFontMap
+
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
+
+	C.pango_fc_font_map_shutdown(arg0)
+}
+
+// SubstituteChanged: call this function any time the results of the default
+// substitution function set with
+// [method@PangoFc.FontMap.set_default_substitute] change.
+//
+// That is, if your substitution function will return different results for
+// the same input pattern, you must call this function.
+func (fontmap fontMap) SubstituteChanged() {
+	var arg0 *C.PangoFcFontMap
+
+	arg0 = (*C.PangoFcFontMap)(fontmap.Native())
+
+	C.pango_fc_font_map_substitute_changed(arg0)
+}

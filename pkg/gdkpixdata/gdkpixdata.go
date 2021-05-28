@@ -3,7 +3,6 @@
 package gdkpixdata
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -96,17 +95,17 @@ const (
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
-	var arg0 *C.GdkPixdata
-	var arg1 C.gboolean
+	var arg1 *C.GdkPixdata
+	var arg2 C.gboolean
 
-	arg0 = (*C.GdkPixdata)(pixdata.Native())
-	arg1 = gextras.Cbool(copyPixels)
+	arg1 = (*C.GdkPixdata)(pixdata.Native())
+	arg2 = gextras.Cbool(copyPixels)
 
-	ret := C.gdk_pixbuf_from_pixdata(arg0, arg1)
+	ret := C.gdk_pixbuf_from_pixdata(arg1, arg2)
 
 	var ret0 gdkpixbuf.Pixbuf
 
-	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gdkpixbuf.WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -114,57 +113,17 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
 // serialization and streaming.
 type Pixdata struct {
-	// Magic: magic number. A valid Pixdata structure must have
-	// K_PIXBUF_MAGIC_NUMBER here.
-	Magic uint32
-	// Length less than 1 to disable length checks, otherwise
-	// K_PIXDATA_HEADER_LENGTH + length of @pixel_data.
-	Length int32
-	// PixdataType: information about colorspace, sample width and encoding, in
-	// a PixdataType.
-	PixdataType uint32
-	// Rowstride: distance in bytes between rows.
-	Rowstride uint32
-	// Width: width of the image in pixels.
-	Width uint32
-	// Height: height of the image in pixels.
-	Height uint32
-	// PixelData: @width x @height pixels, encoded according to @pixdata_type
-	// and @rowstride.
-	PixelData []uint8
-
-	native *C.GdkPixdata
+	native C.GdkPixdata
 }
 
 // WrapPixdata wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
-	p := (*C.GdkPixdata)(ptr)
-	v := Pixdata{native: p}
-
-	v.Magic = uint32(p.magic)
-	v.Length = int32(p.length)
-	v.PixdataType = uint32(p.pixdata_type)
-	v.Rowstride = uint32(p.rowstride)
-	v.Width = uint32(p.width)
-	v.Height = uint32(p.height)
-	{
-		var length uint
-		for p := unsafe.Pointer(p.pixel_data); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
-
-		v.PixelData = make([]uint8, length)
-		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
-			v.PixelData[i] = uint8(src)
-		}
+	if ptr == nil {
+		return nil
 	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Pixdata).free)
-
-	return &v
+	return (*Pixdata)(ptr)
 }
 
 func marshalPixdata(p uintptr) (interface{}, error) {
@@ -172,17 +131,67 @@ func marshalPixdata(p uintptr) (interface{}, error) {
 	return WrapPixdata(unsafe.Pointer(b))
 }
 
-func (p *Pixdata) free() {
-	C.free(p.Native())
+// Native returns the underlying C source pointer.
+func (p *Pixdata) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }
 
-// Native returns the underlying source pointer.
-func (p *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+// Magic gets the field inside the struct.
+func (m *Pixdata) Magic() uint32 {
+	var ret uint32
+	ret = uint32(p.native.magic)
+	return ret
 }
 
-// Native returns the pointer to *C.GdkPixdata. The caller is expected to
-// cast.
-func (p *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+// Length gets the field inside the struct.
+func (l *Pixdata) Length() int32 {
+	var ret int32
+	ret = int32(p.native.length)
+	return ret
+}
+
+// PixdataType gets the field inside the struct.
+func (p *Pixdata) PixdataType() uint32 {
+	var ret uint32
+	ret = uint32(p.native.pixdata_type)
+	return ret
+}
+
+// Rowstride gets the field inside the struct.
+func (r *Pixdata) Rowstride() uint32 {
+	var ret uint32
+	ret = uint32(p.native.rowstride)
+	return ret
+}
+
+// Width gets the field inside the struct.
+func (w *Pixdata) Width() uint32 {
+	var ret uint32
+	ret = uint32(p.native.width)
+	return ret
+}
+
+// Height gets the field inside the struct.
+func (h *Pixdata) Height() uint32 {
+	var ret uint32
+	ret = uint32(p.native.height)
+	return ret
+}
+
+// PixelData gets the field inside the struct.
+func (p *Pixdata) PixelData() []byte {
+	var ret []byte
+	{
+		var length uint
+		for p := unsafe.Pointer(p.native.pixel_data); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret = make([]byte, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.native.pixel_data)) + i))
+			ret[i] = byte(src)
+		}
+	}
+	return ret
 }

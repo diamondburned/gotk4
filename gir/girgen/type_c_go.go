@@ -34,7 +34,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		return ""
 	}
 
-	innerResolved := ng.ResolveType(*array.Type)
+	innerResolved := ng.ResolveType(*array.AnyType.Type)
 	if innerResolved == nil {
 		return ""
 	}
@@ -43,9 +43,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 
 	// Generate a type converter from "src" to "${target}[i]" variables.
 	innerTypeConv := conv
-	innerTypeConv.Value = "src"
-	innerTypeConv.Target = conv.Target + "[i]"
-	innerTypeConv.Type = array.AnyType
+	innerTypeConv.TypeConversion = conv.inner("src", conv.Target+"[i]")
 
 	innerConv := ng.CGoConverter(innerTypeConv)
 	if innerConv == "" {
@@ -58,8 +56,8 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 	case array.FixedSize > 0:
 		// Detect if the underlying is a compatible Go primitive type that isn't
 		// a string. If it is, then we can directly cast a fixed-size array.
-		if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok && primitiveGo != "string" {
-			return conv.callf("[%d]%s", array.FixedSize, primitiveGo)
+		if p := girPrimitiveGo(array.Type.Name); p != "" {
+			return conv.callf("[%d]%s", array.FixedSize, p)
 		}
 
 		// TODO: nested array support
@@ -72,6 +70,29 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 
 	case array.Length != nil:
 		lengthArg := conv.ArgAt(*array.Length)
+
+		// If the code explicitly doesn't want us to own the data, then we will
+		// have to directly use the C backing array, but we can only do this if
+		// the underlying type is a by-value primitive type. Any other types
+		// will have to be copied or otherwise converted somehow.
+		//
+		// TODO: record conversion should handle ownership: if
+		// transfer-ownership is none, then the native pointer should probably
+		// not be freed.
+		if !conv.isTransferring() && innerResolved.IsPrimitive() {
+			b.Linef(goSliceFromPtr(conv.Target, conv.Value, lengthArg))
+
+			// Ensure that Go's GC doesn't touch the pointer within the duration
+			// of the function.
+			// See: https://golang.org/misc/cgo/gmp/gmp.go?s=3086:3757#L87
+			ng.addImport("runtime")
+			b.Linef("runtime.SetFinalizer(&%s, func() {", conv.Value)
+			b.Linef("  C.free(unsafe.Pointer(%s))", conv.Value)
+			b.Linef("})")
+			b.Linef("defer runtime.KeepAlive(%s)", conv.Value)
+			return b.String()
+		}
+
 		b.Linef("%s = make([]%s, %s)", conv.Target, innerType, lengthArg)
 		b.Linef("for i := 0; i < uintptr(%s); i++ {", lengthArg)
 		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))", innerCGoType)
@@ -108,21 +129,40 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 	return b.String()
 }
 
+// goSliceFromPtr crafts a typ slice from the given ptr as the backing array
+// with the given len, then set it into target. typ should be innerType. A
+// temporary variable named sliceHeader is made.
+func goSliceFromPtr(target, ptr, len string) string {
+	return pen.NewPiece().
+		Linef("sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&%s))", target).
+		Linef("sliceHeader.Data = uintptr(unsafe.Pointer(%s))", ptr).
+		Linef("sliceHeader.Len = %s", len).
+		Linef("sliceHeader.Cap = %s", len).
+		String()
+}
+
 func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	typ := conv.Type.Type
 
 	// Resolve primitive types.
-	if prim, ok := girPrimitiveGo[typ.Name]; ok {
+	if prim, ok := girToBuiltin[typ.Name]; ok {
 		// Edge cases.
 		switch prim {
 		case "string":
 			p := pen.NewPiece()
-			p.Linef("%s = C.GoString(%s)", conv.Value, conv.Target)
-			p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Value)
+			p.Linef("%s = C.GoString(%s)", conv.Target, conv.Value)
+
+			// Only free this if C is transferring ownership to us.
+			if conv.isTransferring() {
+				p.Linef("C.free(unsafe.Pointer(%s))", conv.Value)
+			}
+
 			return p.String()
+
 		case "bool":
 			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
 			return directCall(conv.Value, conv.Target, "gextras.Gobool")
+
 		default:
 			return directCall(conv.Value, conv.Target, prim)
 		}
@@ -213,6 +253,16 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		case result.Class != nil:
 			return cgoTakeObject(conv.TypeConversion, wrapName)
 		case result.Record != nil:
+			b := pen.NewBlock()
+			b.Linef(conv.call(wrapName))
+
+			// If we don't own the record, then we shouldn't free it when we
+			// don't need it anymore.
+			if !conv.isTransferring() {
+				ng.addImport("runtime")
+				b.Linef("runtime.SetFinalizer(&%s, nil)", conv.Target)
+			}
+
 			return conv.call(wrapName)
 		}
 	}
@@ -240,12 +290,11 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 // cgoTakeObject generates a glib.Take or glib.AssumeOwnership.
 func cgoTakeObject(conv TypeConversion, wrap string) string {
 	var gobjectFunction string
-	switch conv.Owner.TransferOwnership {
-	case "full", "container":
+	if conv.isTransferring() {
 		// Full or container means we implicitly own the object, so we must
 		// not take another reference.
 		gobjectFunction = "AssumeOwnership"
-	default:
+	} else {
 		// Else the object is either unowned by us or it's a floating
 		// reference. Take our own or sink the object.
 		gobjectFunction = "Take"

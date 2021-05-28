@@ -63,10 +63,11 @@ func (p *Piece) Line(line string) *Piece {
 }
 
 // Linef writes a line using Sprintf.
-func (p *Piece) Linef(f string, v ...interface{}) {
+func (p *Piece) Linef(f string, v ...interface{}) *Piece {
 	p.ensureCap()
 	p.Writef(f, v...)
 	p.str.WriteByte('\n')
+	return p
 }
 
 // String returns the inner string block.

@@ -5,6 +5,8 @@ import (
 	"io"
 	"log"
 	"path"
+	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"text/template"
@@ -15,7 +17,10 @@ import (
 )
 
 func newGoTemplate(block string) *template.Template {
-	t := template.New("")
+	_, file, _, _ := runtime.Caller(1)
+	base := filepath.Base(file)
+
+	t := template.New(base)
 	t.Funcs(template.FuncMap{
 		"PascalToGo":  PascalToGo,
 		"SnakeToGo":   SnakeToGo,
@@ -133,7 +138,7 @@ func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
 	}
 }
 
-// ignoreIxs is a map of indexes to ignore.
+// ignoreIxs is a map of indexes to ignore in the function signature.
 type ignoreIxs map[int]struct{}
 
 func (ig *ignoreIxs) init() {
@@ -149,6 +154,15 @@ func (ig *ignoreIxs) set(i int) {
 
 func (ig *ignoreIxs) fieldIgnore(field gir.Field) {
 	ig.typeIgnore(field.AnyType)
+}
+
+func (ig *ignoreIxs) paramsIgnore(params *gir.Parameters) {
+	if params == nil {
+		return
+	}
+	for _, param := range params.Parameters {
+		ig.paramIgnore(param)
+	}
 }
 
 func (ig *ignoreIxs) paramIgnore(param gir.Parameter) {
@@ -287,7 +301,7 @@ func (ng *NamespaceGenerator) needsCallbackDelete() {
 // fullGIR returns the full GIR type name if it doesn't contain a namespace.
 func (ng *NamespaceGenerator) fullGIR(girType string) string {
 	// Skip builtin types.
-	_, isBuiltin := girPrimitiveGo[girType]
+	_, isBuiltin := girToBuiltin[girType]
 	if isBuiltin {
 		return girType
 	}

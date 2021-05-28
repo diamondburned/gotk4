@@ -1,12 +1,14 @@
 package girgen
 
-import "github.com/diamondburned/gotk4/gir"
+import (
+	"github.com/diamondburned/gotk4/gir"
+)
 
 var interfaceTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} interface {
 		{{ range .Calls -}}
-		{{ . }}
+		{{ .Name }}{{ .Tail }}
 		{{ end }}
 	}
 `)
@@ -14,7 +16,7 @@ var interfaceTmpl = newGoTemplate(`
 type ifaceGenerator struct {
 	gir.Interface
 	GoName string
-	Calls  []string // functions
+	Calls  []callableGenerator // functions
 
 	Ng *NamespaceGenerator
 }
@@ -30,13 +32,15 @@ func (ig *ifaceGenerator) updateMethods() {
 	ig.Calls = ig.Calls[:0]
 
 	for _, method := range ig.Interface.Methods {
-		call := ig.Ng.FnCall(method.CallableAttrs)
-		if call == "" {
+		cbgen := newCallableGenerator(ig.Ng)
+		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
 
-		ig.Calls = append(ig.Calls, SnakeToGo(true, method.Name)+call)
+		ig.Calls = append(ig.Calls, cbgen)
 	}
+
+	callableRenameGetters(ig.Calls)
 }
 
 func (ng *NamespaceGenerator) generateIfaces() {

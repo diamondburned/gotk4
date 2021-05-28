@@ -125,6 +125,7 @@ func (fg *callbackGenerator) CBlock() string {
 				Value:  argAt(i),
 				Target: goName,
 				Type:   param.AnyType,
+				Owner:  param.TransferOwnership,
 				ArgAt:  argAt,
 			},
 		})

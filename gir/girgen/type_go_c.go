@@ -34,14 +34,13 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	if innerResolved == nil {
 		return ""
 	}
-	// innerType := ng.PublicType(innerResolved)
+
+	outerCGoType := anyTypeCGo(conv.Type)
 	innerCGoType := innerResolved.CGoType()
 
-	// Generate a type converter from "src" to "${target}[i]" variables.
+	// Generate a type converter from "src" to "dst[i]" variables.
 	innerTypeConv := conv
-	innerTypeConv.Value = "src"
-	innerTypeConv.Target = "dst[i]"
-	innerTypeConv.Type = array.AnyType
+	innerTypeConv.TypeConversion = conv.inner("src", "dst[i]")
 
 	innerConv := ng.GoCConverter(innerTypeConv)
 	if innerConv == "" {
@@ -52,8 +51,14 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 
 	switch {
 	case array.FixedSize > 0:
-		if t, ok := girPrimitiveGo[array.Type.Name]; ok && t != "string" {
-			return conv.callf("[%d]%s", array.FixedSize, innerCGoType)
+		if t, ok := girToBuiltin[array.Type.Name]; ok && t != "string" {
+			// We can directly use Go's array as a pointer, as long as we defer
+			// properly.
+			b.Linef("%s = (%s)(&%s)", conv.Target, outerCGoType, conv.Value)
+
+			ng.addImport("runtime")
+			b.Linef("defer runtime.KeepAlive(&%s)", conv.Value)
+			return b.String()
 		}
 
 		b.Linef("dst := &%s", conv.Target)
@@ -64,21 +69,40 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		b.Linef("}")
 
 	case array.Length != nil:
-		// Avoid pointer arithmetic.
-		b.Linef("sliceHeader := reflect.SliceHeader{")
-		b.Linef("  Data: uintptr(C.malloc(%s * len(%s))),", csizeof(ng, innerResolved), conv.Value)
-		b.Linef("  Len:  len(%s),", conv.Value)
-		b.Linef("  Cap:  len(%s),", conv.Value)
-		b.Linef("}")
-		b.Linef("dst := *(*[]%s)(unsafe.Pointer(&sliceHeader))", innerCGoType)
+		length := fmt.Sprintf("len(%s)", conv.Value)
+
+		// Use the backing array with the appropriate transfer-ownership rule
+		// for primitive types; see type_c_go.go.
+		if !conv.isTransferring() && innerResolved.IsPrimitive() {
+			b.Linef("%s = (%s)(&%s[0])", conv.Target, outerCGoType, conv.Value)
+			b.Linef("%s = %s", conv.ArgAt(*array.Length), length)
+
+			ng.addImport("runtime")
+			b.Linef("defer runtime.KeepAlive(%s)", conv.Value)
+			return b.String()
+		}
+
+		// Copying is pretty much required here, since the C code will store the
+		// pointer, so we can't reliably do this with Go's memory.
+
+		ptr := fmt.Sprintf("C.malloc(%s * len(%s))", csizeof(ng, innerResolved), conv.Value)
+
+		b.Linef("var dst []%s", innerCGoType)
+		b.Linef(goSliceFromPtr("dst", ptr, length))
+
+		// C.malloc will allocate on the C side, so we'll have to free it.
+		if !conv.isTransferring() {
+			b.Linef("defer C.free(unsafe.Pointer(sliceHeader.Data))")
+		}
+
 		b.EmptyLine()
-		b.Linef("for i := 0; i < len(%s); i++ {", conv.Value)
+		b.Linef("for i := 0; i < %s; i++ {", length)
 		b.Linef("  src := %s[i]", conv.Value)
 		b.Linef("  " + innerConv)
 		b.Linef("}")
 		b.EmptyLine()
-		b.Linef("%s = (*%s)(unsafe.Pointer(sliceHeader.Data))", conv.Target, innerCGoType)
-		b.Linef("%s = len(%s)", conv.ArgAt(*array.Length), conv.Value)
+		b.Linef("%s = (%s)(unsafe.Pointer(sliceHeader.Data))", conv.Target, outerCGoType)
+		b.Linef("%s = %s", conv.ArgAt(*array.Length), length)
 	}
 
 	return b.String()
@@ -96,12 +120,18 @@ func csizeof(ng *NamespaceGenerator, resolved *ResolvedType) string {
 func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	typ := conv.Type.Type
 
-	if prim, ok := girPrimitiveGo[typ.Name]; ok {
+	if prim, ok := girToBuiltin[typ.Name]; ok {
 		switch prim {
 		case "string":
 			p := pen.NewPiece()
 			p.Linef("%s = (*C.gchar)(C.CString(%s))", conv.Target, conv.Value)
-			p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Value)
+
+			// If we're not giving ownership this C-allocated string, then we
+			// can free it once done.
+			if !conv.isTransferring() {
+				p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Target)
+			}
+
 			return p.String()
 
 		case "bool":

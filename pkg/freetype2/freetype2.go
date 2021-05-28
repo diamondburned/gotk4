@@ -3,7 +3,6 @@
 package freetype2
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -33,19 +32,17 @@ func LibraryVersion() {
 }
 
 type Bitmap struct {
-	native *C.FT_Bitmap
+	native C.FT_Bitmap
 }
 
 // WrapBitmap wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapBitmap(ptr unsafe.Pointer) *Bitmap {
-	p := (*C.FT_Bitmap)(ptr)
-	v := Bitmap{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Bitmap).free)
-
-	return &v
+	return (*Bitmap)(ptr)
 }
 
 func marshalBitmap(p uintptr) (interface{}, error) {
@@ -53,35 +50,23 @@ func marshalBitmap(p uintptr) (interface{}, error) {
 	return WrapBitmap(unsafe.Pointer(b))
 }
 
-func (b *Bitmap) free() {
-	C.free(b.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (b *Bitmap) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
-}
-
-// Native returns the pointer to *C.FT_Bitmap. The caller is expected to
-// cast.
-func (b *Bitmap) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+	return unsafe.Pointer(&b.native)
 }
 
 type Face struct {
-	native *C.FT_Face
+	native C.FT_Face
 }
 
 // WrapFace wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapFace(ptr unsafe.Pointer) *Face {
-	p := (*C.FT_Face)(ptr)
-	v := Face{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Face).free)
-
-	return &v
+	return (*Face)(ptr)
 }
 
 func marshalFace(p uintptr) (interface{}, error) {
@@ -89,35 +74,23 @@ func marshalFace(p uintptr) (interface{}, error) {
 	return WrapFace(unsafe.Pointer(b))
 }
 
-func (f *Face) free() {
-	C.free(f.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (f *Face) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
-}
-
-// Native returns the pointer to *C.FT_Face. The caller is expected to
-// cast.
-func (f *Face) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+	return unsafe.Pointer(&f.native)
 }
 
 type Library struct {
-	native *C.FT_Library
+	native C.FT_Library
 }
 
 // WrapLibrary wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapLibrary(ptr unsafe.Pointer) *Library {
-	p := (*C.FT_Library)(ptr)
-	v := Library{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Library).free)
-
-	return &v
+	return (*Library)(ptr)
 }
 
 func marshalLibrary(p uintptr) (interface{}, error) {
@@ -125,17 +98,7 @@ func marshalLibrary(p uintptr) (interface{}, error) {
 	return WrapLibrary(unsafe.Pointer(b))
 }
 
-func (l *Library) free() {
-	C.free(l.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (l *Library) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
-}
-
-// Native returns the pointer to *C.FT_Library. The caller is expected to
-// cast.
-func (l *Library) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+	return unsafe.Pointer(&l.native)
 }

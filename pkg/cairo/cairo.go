@@ -3,7 +3,6 @@
 package cairo
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -587,19 +586,17 @@ func ImageSurfaceCreate() {
 }
 
 type Context struct {
-	native *C.cairo_t
+	native C.cairo_t
 }
 
 // WrapContext wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapContext(ptr unsafe.Pointer) *Context {
-	p := (*C.cairo_t)(ptr)
-	v := Context{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Context).free)
-
-	return &v
+	return (*Context)(ptr)
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
@@ -607,35 +604,23 @@ func marshalContext(p uintptr) (interface{}, error) {
 	return WrapContext(unsafe.Pointer(b))
 }
 
-func (c *Context) free() {
-	C.free(c.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (c *Context) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
-}
-
-// Native returns the pointer to *C.cairo_t. The caller is expected to
-// cast.
-func (c *Context) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+	return unsafe.Pointer(&c.native)
 }
 
 type Device struct {
-	native *C.cairo_device_t
+	native C.cairo_device_t
 }
 
 // WrapDevice wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapDevice(ptr unsafe.Pointer) *Device {
-	p := (*C.cairo_device_t)(ptr)
-	v := Device{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Device).free)
-
-	return &v
+	return (*Device)(ptr)
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
@@ -643,35 +628,23 @@ func marshalDevice(p uintptr) (interface{}, error) {
 	return WrapDevice(unsafe.Pointer(b))
 }
 
-func (d *Device) free() {
-	C.free(d.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (d *Device) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
-}
-
-// Native returns the pointer to *C.cairo_device_t. The caller is expected to
-// cast.
-func (d *Device) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+	return unsafe.Pointer(&d.native)
 }
 
 type Surface struct {
-	native *C.cairo_surface_t
+	native C.cairo_surface_t
 }
 
 // WrapSurface wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapSurface(ptr unsafe.Pointer) *Surface {
-	p := (*C.cairo_surface_t)(ptr)
-	v := Surface{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Surface).free)
-
-	return &v
+	return (*Surface)(ptr)
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
@@ -679,35 +652,23 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return WrapSurface(unsafe.Pointer(b))
 }
 
-func (s *Surface) free() {
-	C.free(s.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (s *Surface) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
-}
-
-// Native returns the pointer to *C.cairo_surface_t. The caller is expected to
-// cast.
-func (s *Surface) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+	return unsafe.Pointer(&s.native)
 }
 
 type Matrix struct {
-	native *C.cairo_matrix_t
+	native C.cairo_matrix_t
 }
 
 // WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapMatrix(ptr unsafe.Pointer) *Matrix {
-	p := (*C.cairo_matrix_t)(ptr)
-	v := Matrix{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Matrix).free)
-
-	return &v
+	return (*Matrix)(ptr)
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
@@ -715,35 +676,23 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	return WrapMatrix(unsafe.Pointer(b))
 }
 
-func (m *Matrix) free() {
-	C.free(m.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
-}
-
-// Native returns the pointer to *C.cairo_matrix_t. The caller is expected to
-// cast.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+	return unsafe.Pointer(&m.native)
 }
 
 type Pattern struct {
-	native *C.cairo_pattern_t
+	native C.cairo_pattern_t
 }
 
 // WrapPattern wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPattern(ptr unsafe.Pointer) *Pattern {
-	p := (*C.cairo_pattern_t)(ptr)
-	v := Pattern{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Pattern).free)
-
-	return &v
+	return (*Pattern)(ptr)
 }
 
 func marshalPattern(p uintptr) (interface{}, error) {
@@ -751,35 +700,23 @@ func marshalPattern(p uintptr) (interface{}, error) {
 	return WrapPattern(unsafe.Pointer(b))
 }
 
-func (p *Pattern) free() {
-	C.free(p.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (p *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
-}
-
-// Native returns the pointer to *C.cairo_pattern_t. The caller is expected to
-// cast.
-func (p *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+	return unsafe.Pointer(&p.native)
 }
 
 type Region struct {
-	native *C.cairo_region_t
+	native C.cairo_region_t
 }
 
 // WrapRegion wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRegion(ptr unsafe.Pointer) *Region {
-	p := (*C.cairo_region_t)(ptr)
-	v := Region{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Region).free)
-
-	return &v
+	return (*Region)(ptr)
 }
 
 func marshalRegion(p uintptr) (interface{}, error) {
@@ -787,35 +724,23 @@ func marshalRegion(p uintptr) (interface{}, error) {
 	return WrapRegion(unsafe.Pointer(b))
 }
 
-func (r *Region) free() {
-	C.free(r.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (r *Region) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
-}
-
-// Native returns the pointer to *C.cairo_region_t. The caller is expected to
-// cast.
-func (r *Region) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+	return unsafe.Pointer(&r.native)
 }
 
 type FontOptions struct {
-	native *C.cairo_font_options_t
+	native C.cairo_font_options_t
 }
 
 // WrapFontOptions wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapFontOptions(ptr unsafe.Pointer) *FontOptions {
-	p := (*C.cairo_font_options_t)(ptr)
-	v := FontOptions{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*FontOptions).free)
-
-	return &v
+	return (*FontOptions)(ptr)
 }
 
 func marshalFontOptions(p uintptr) (interface{}, error) {
@@ -823,35 +748,23 @@ func marshalFontOptions(p uintptr) (interface{}, error) {
 	return WrapFontOptions(unsafe.Pointer(b))
 }
 
-func (f *FontOptions) free() {
-	C.free(f.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (f *FontOptions) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
-}
-
-// Native returns the pointer to *C.cairo_font_options_t. The caller is expected to
-// cast.
-func (f *FontOptions) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+	return unsafe.Pointer(&f.native)
 }
 
 type FontFace struct {
-	native *C.cairo_font_face_t
+	native C.cairo_font_face_t
 }
 
 // WrapFontFace wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapFontFace(ptr unsafe.Pointer) *FontFace {
-	p := (*C.cairo_font_face_t)(ptr)
-	v := FontFace{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*FontFace).free)
-
-	return &v
+	return (*FontFace)(ptr)
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
@@ -859,35 +772,23 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 	return WrapFontFace(unsafe.Pointer(b))
 }
 
-func (f *FontFace) free() {
-	C.free(f.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (f *FontFace) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
-}
-
-// Native returns the pointer to *C.cairo_font_face_t. The caller is expected to
-// cast.
-func (f *FontFace) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+	return unsafe.Pointer(&f.native)
 }
 
 type ScaledFont struct {
-	native *C.cairo_scaled_font_t
+	native C.cairo_scaled_font_t
 }
 
 // WrapScaledFont wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapScaledFont(ptr unsafe.Pointer) *ScaledFont {
-	p := (*C.cairo_scaled_font_t)(ptr)
-	v := ScaledFont{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*ScaledFont).free)
-
-	return &v
+	return (*ScaledFont)(ptr)
 }
 
 func marshalScaledFont(p uintptr) (interface{}, error) {
@@ -895,35 +796,23 @@ func marshalScaledFont(p uintptr) (interface{}, error) {
 	return WrapScaledFont(unsafe.Pointer(b))
 }
 
-func (s *ScaledFont) free() {
-	C.free(s.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (s *ScaledFont) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
-}
-
-// Native returns the pointer to *C.cairo_scaled_font_t. The caller is expected to
-// cast.
-func (s *ScaledFont) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+	return unsafe.Pointer(&s.native)
 }
 
 type Path struct {
-	native *C.cairo_path_t
+	native C.cairo_path_t
 }
 
 // WrapPath wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapPath(ptr unsafe.Pointer) *Path {
-	p := (*C.cairo_path_t)(ptr)
-	v := Path{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Path).free)
-
-	return &v
+	return (*Path)(ptr)
 }
 
 func marshalPath(p uintptr) (interface{}, error) {
@@ -931,48 +820,23 @@ func marshalPath(p uintptr) (interface{}, error) {
 	return WrapPath(unsafe.Pointer(b))
 }
 
-func (p *Path) free() {
-	C.free(p.Native())
-}
-
-// Native returns the underlying source pointer.
+// Native returns the underlying C source pointer.
 func (p *Path) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
-}
-
-// Native returns the pointer to *C.cairo_path_t. The caller is expected to
-// cast.
-func (p *Path) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+	return unsafe.Pointer(&p.native)
 }
 
 type Rectangle struct {
-	X float64
-
-	Y float64
-
-	Width float64
-
-	Height float64
-
-	native *C.cairo_rectangle_t
+	native C.cairo_rectangle_t
 }
 
 // WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
-	p := (*C.cairo_rectangle_t)(ptr)
-	v := Rectangle{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.Width = float64(p.width)
-	v.Height = float64(p.height)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*Rectangle).free)
-
-	return &v
+	return (*Rectangle)(ptr)
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
@@ -980,48 +844,51 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return WrapRectangle(unsafe.Pointer(b))
 }
 
-func (r *Rectangle) free() {
-	C.free(r.Native())
+// Native returns the underlying C source pointer.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }
 
-// Native returns the underlying source pointer.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+// X gets the field inside the struct.
+func (x *Rectangle) X() float64 {
+	var ret float64
+	ret = float64(r.native.x)
+	return ret
 }
 
-// Native returns the pointer to *C.cairo_rectangle_t. The caller is expected to
-// cast.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+// Y gets the field inside the struct.
+func (y *Rectangle) Y() float64 {
+	var ret float64
+	ret = float64(r.native.y)
+	return ret
+}
+
+// Width gets the field inside the struct.
+func (w *Rectangle) Width() float64 {
+	var ret float64
+	ret = float64(r.native.width)
+	return ret
+}
+
+// Height gets the field inside the struct.
+func (h *Rectangle) Height() float64 {
+	var ret float64
+	ret = float64(r.native.height)
+	return ret
 }
 
 type RectangleInt struct {
-	X int
-
-	Y int
-
-	Width int
-
-	Height int
-
-	native *C.cairo_rectangle_int_t
+	native C.cairo_rectangle_int_t
 }
 
 // WrapRectangleInt wraps the C unsafe.Pointer to be the right type. It is
 // primarily used internally.
 func WrapRectangleInt(ptr unsafe.Pointer) *RectangleInt {
-	p := (*C.cairo_rectangle_int_t)(ptr)
-	v := RectangleInt{native: p}
+	if ptr == nil {
+		return nil
+	}
 
-	v.X = int(p.x)
-	v.Y = int(p.y)
-	v.Width = int(p.width)
-	v.Height = int(p.height)
-
-	runtime.SetFinalizer(&v, nil)
-	runtime.SetFinalizer(&v, (*RectangleInt).free)
-
-	return &v
+	return (*RectangleInt)(ptr)
 }
 
 func marshalRectangleInt(p uintptr) (interface{}, error) {
@@ -1029,17 +896,35 @@ func marshalRectangleInt(p uintptr) (interface{}, error) {
 	return WrapRectangleInt(unsafe.Pointer(b))
 }
 
-func (r *RectangleInt) free() {
-	C.free(r.Native())
+// Native returns the underlying C source pointer.
+func (r *RectangleInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }
 
-// Native returns the underlying source pointer.
-func (r *RectangleInt) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+// X gets the field inside the struct.
+func (x *RectangleInt) X() int {
+	var ret int
+	ret = int(r.native.x)
+	return ret
 }
 
-// Native returns the pointer to *C.cairo_rectangle_int_t. The caller is expected to
-// cast.
-func (r *RectangleInt) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+// Y gets the field inside the struct.
+func (y *RectangleInt) Y() int {
+	var ret int
+	ret = int(r.native.y)
+	return ret
+}
+
+// Width gets the field inside the struct.
+func (w *RectangleInt) Width() int {
+	var ret int
+	ret = int(r.native.width)
+	return ret
+}
+
+// Height gets the field inside the struct.
+func (h *RectangleInt) Height() int {
+	var ret int
+	ret = int(r.native.height)
+	return ret
 }

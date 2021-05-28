@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -15,7 +16,13 @@ import (
 // #include <gdk/wayland/gdkwayland.h>
 //
 // extern void gotk4_WaylandToplevelExported(GdkToplevel*, const char*, gpointer)
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -57,8 +64,7 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 
 	toplevel = WrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	arg1 = C.GoString(handle)
-	defer C.free(unsafe.Pointer(arg1))
+	handle = C.GoString(arg1)
 
 	v.(WaylandToplevelExported)(toplevel, handle)
 }
@@ -98,13 +104,71 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 	return WrapWaylandDevice(obj), nil
 }
 
-func (w waylandDevice) NodePath() string
+// NodePath returns the `/dev/input/event*` path of this device.
+//
+// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
+// keyboard, touch,...), this function will return nil.
+//
+// This is most notably implemented for devices of type GDK_SOURCE_PEN,
+// GDK_SOURCE_TABLET_PAD.
+func (device waylandDevice) NodePath() string {
+	var arg0 *C.GdkDevice
 
-func (w waylandDevice) WlKeyboard() interface{}
+	arg0 = (*C.GdkDevice)(device.Native())
 
-func (w waylandDevice) WlPointer() interface{}
+	ret := C.gdk_wayland_device_get_node_path(arg0)
 
-func (w waylandDevice) WlSeat() interface{}
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// WlKeyboard returns the Wayland wl_keyboard of a Device.
+func (device waylandDevice) WlKeyboard() interface{} {
+	var arg0 *C.GdkDevice
+
+	arg0 = (*C.GdkDevice)(device.Native())
+
+	ret := C.gdk_wayland_device_get_wl_keyboard(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
+
+// WlPointer returns the Wayland wl_pointer of a Device.
+func (device waylandDevice) WlPointer() interface{} {
+	var arg0 *C.GdkDevice
+
+	arg0 = (*C.GdkDevice)(device.Native())
+
+	ret := C.gdk_wayland_device_get_wl_pointer(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
+
+// WlSeat returns the Wayland wl_seat of a Device.
+func (device waylandDevice) WlSeat() interface{} {
+	var arg0 *C.GdkDevice
+
+	arg0 = (*C.GdkDevice)(device.Native())
+
+	ret := C.gdk_wayland_device_get_wl_seat(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
 
 type WaylandDisplay interface {
 	gdk.Display
@@ -150,17 +214,105 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 	return WrapWaylandDisplay(obj), nil
 }
 
-func (w waylandDisplay) StartupNotificationID() string
+// StartupNotificationID gets the startup notification ID for a Wayland
+// display, or nil if no ID has been defined.
+func (display waylandDisplay) StartupNotificationID() string {
+	var arg0 *C.GdkDisplay
 
-func (w waylandDisplay) WlCompositor() interface{}
+	arg0 = (*C.GdkDisplay)(display.Native())
 
-func (w waylandDisplay) WlDisplay() interface{}
+	ret := C.gdk_wayland_display_get_startup_notification_id(arg0)
 
-func (w waylandDisplay) QueryRegistry(global string) bool
+	var ret0 string
 
-func (w waylandDisplay) SetCursorTheme(name string, size int)
+	ret0 = C.GoString(ret)
 
-func (w waylandDisplay) SetStartupNotificationID(startupID string)
+	return ret0
+}
+
+// WlCompositor returns the Wayland global singleton compositor of a
+// Display.
+func (display waylandDisplay) WlCompositor() interface{} {
+	var arg0 *C.GdkDisplay
+
+	arg0 = (*C.GdkDisplay)(display.Native())
+
+	ret := C.gdk_wayland_display_get_wl_compositor(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
+
+// WlDisplay returns the Wayland wl_display of a Display.
+func (display waylandDisplay) WlDisplay() interface{} {
+	var arg0 *C.GdkDisplay
+
+	arg0 = (*C.GdkDisplay)(display.Native())
+
+	ret := C.gdk_wayland_display_get_wl_display(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
+
+// QueryRegistry returns true if the the interface was found in the display
+// `wl_registry.global` handler.
+func (display waylandDisplay) QueryRegistry(global string) bool {
+	var arg0 *C.GdkDisplay
+	var arg1 *C.char
+
+	arg0 = (*C.GdkDisplay)(display.Native())
+	arg1 = (*C.gchar)(C.CString(global))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gdk_wayland_display_query_registry(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetCursorTheme sets the cursor theme for the given @display.
+func (display waylandDisplay) SetCursorTheme(name string, size int) {
+	var arg0 *C.GdkDisplay
+	var arg1 *C.char
+	var arg2 C.int
+
+	arg0 = (*C.GdkDisplay)(display.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(size)
+
+	C.gdk_wayland_display_set_cursor_theme(arg0, arg1, arg2)
+}
+
+// SetStartupNotificationID sets the startup notification ID for a display.
+//
+// This is usually taken from the value of the DESKTOP_STARTUP_ID
+// environment variable, but in some cases (such as the application not
+// being launched using exec()) it can come from other sources.
+//
+// The startup ID is also what is used to signal that the startup is
+// complete (for example, when opening a window or when calling
+// gdk_display_notify_startup_complete()).
+func (display waylandDisplay) SetStartupNotificationID(startupID string) {
+	var arg0 *C.GdkDisplay
+	var arg1 *C.char
+
+	arg0 = (*C.GdkDisplay)(display.Native())
+	arg1 = (*C.gchar)(C.CString(startupID))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.gdk_wayland_display_set_startup_notification_id(arg0, arg1)
+}
 
 type WaylandMonitor interface {
 	gdk.Monitor
@@ -185,7 +337,20 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	return WrapWaylandMonitor(obj), nil
 }
 
-func (w waylandMonitor) WlOutput() interface{}
+// WlOutput returns the Wayland wl_output of a Monitor.
+func (monitor waylandMonitor) WlOutput() interface{} {
+	var arg0 *C.GdkMonitor
+
+	arg0 = (*C.GdkMonitor)(monitor.Native())
+
+	ret := C.gdk_wayland_monitor_get_wl_output(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
 
 type WaylandPopup interface {
 	WaylandSurface
@@ -230,7 +395,20 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	return WrapWaylandSeat(obj), nil
 }
 
-func (w waylandSeat) WlSeat() interface{}
+// WlSeat returns the Wayland `wl_seat` of a Seat.
+func (seat waylandSeat) WlSeat() interface{} {
+	var arg0 *C.GdkSeat
+
+	arg0 = (*C.GdkSeat)(seat.Native())
+
+	ret := C.gdk_wayland_seat_get_wl_seat(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
 
 type WaylandSurface interface {
 	gdk.Surface
@@ -255,7 +433,20 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return WrapWaylandSurface(obj), nil
 }
 
-func (w waylandSurface) WlSurface() interface{}
+// WlSurface returns the Wayland surface of a Surface.
+func (surface waylandSurface) WlSurface() interface{} {
+	var arg0 *C.GdkSurface
+
+	arg0 = (*C.GdkSurface)(surface.Native())
+
+	ret := C.gdk_wayland_surface_get_wl_surface(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret))
+
+	return ret0
+}
 
 type WaylandToplevel interface {
 	WaylandSurface
@@ -315,10 +506,88 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	return WrapWaylandToplevel(obj), nil
 }
 
-func (w waylandToplevel) ExportHandle(callback WaylandToplevelExported) bool
+// ExportHandle: asynchronously obtains a handle for a surface that can be
+// passed to other processes. When the handle has been obtained, @callback
+// will be called.
+//
+// It is an error to call this function on a surface that is already
+// exported.
+//
+// When the handle is no longer needed,
+// gdk_wayland_toplevel_unexport_handle() should be called to clean up
+// resources.
+//
+// The main purpose for obtaining a handle is to mark a surface from another
+// surface as transient for this one, see
+// gdk_wayland_toplevel_set_transient_for_exported().
+//
+// Note that this API depends on an unstable Wayland protocol, and thus may
+// require changes in the future.
+func (toplevel waylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
+	var arg0 *C.GdkToplevel
+	var arg1 C.GdkWaylandToplevelExported
+	arg2 := C.gpointer(box.Assign(userData))
 
-func (w waylandToplevel) SetApplicationID(applicationID string)
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*[0]byte)(C.gotk4_WaylandToplevelExported)
 
-func (w waylandToplevel) SetTransientForExported(parentHandleStr string) bool
+	ret := C.gdk_wayland_toplevel_export_handle(arg0, arg1, (*[0]byte)(C.callbackDelete))
 
-func (w waylandToplevel) UnexportHandle()
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SetApplicationID sets the application id on a Toplevel.
+func (toplevel waylandToplevel) SetApplicationID(applicationID string) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.char
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.gchar)(C.CString(applicationID))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.gdk_wayland_toplevel_set_application_id(arg0, arg1)
+}
+
+// SetTransientForExported marks @toplevel as transient for the surface to
+// which the given @parent_handle_str refers. Typically, the handle will
+// originate from a gdk_wayland_toplevel_export_handle() call in another
+// process.
+//
+// Note that this API depends on an unstable Wayland protocol, and thus may
+// require changes in the future.
+func (toplevel waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.char
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.gchar)(C.CString(parentHandleStr))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gdk_wayland_toplevel_set_transient_for_exported(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// UnexportHandle destroys the handle that was obtained with
+// gdk_wayland_toplevel_export_handle().
+//
+// It is an error to call this function on a surface that does not have a
+// handle.
+//
+// Note that this API depends on an unstable Wayland protocol, and thus may
+// require changes in the future.
+func (toplevel waylandToplevel) UnexportHandle() {
+	var arg0 *C.GdkToplevel
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+
+	C.gdk_wayland_toplevel_unexport_handle(arg0)
+}

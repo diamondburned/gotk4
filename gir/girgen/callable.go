@@ -33,26 +33,93 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	return true
 }
 
+// UseConstructor sets cg.Callable to be generating the given constructor.
+func (cg *callableGenerator) UseConstructor(ctor gir.Constructor) bool {
+	if !cg.Use(ctor.CallableAttrs) {
+		return false
+	}
+
+	// Assumption: all constructors are for types of the same package.
+	ctorType, _ := gir.SplitGIRType(ctor.ReturnValue.Type.Name)
+
+	cg.Name = strings.TrimPrefix(cg.Name, "New")
+	cg.Name = "New" + SnakeToGo(true, ctorType) + cg.Name
+
+	return true
+}
+
+// Recv returns the receiver variable name. This method should only be called
+// for methods.
+func (cg *callableGenerator) Recv() string {
+	if cg.Parameters != nil && cg.Parameters.InstanceParameter != nil {
+		return SnakeToGo(false, cg.Parameters.InstanceParameter.Name)
+	}
+
+	return "v"
+}
+
 // Block renders the function block.
 func (cg *callableGenerator) Block() string {
 	type retVar struct {
-		Name string
-		Type gir.AnyType
+		Name  string
+		Type  gir.AnyType
+		Owner gir.TransferOwnership
 	}
 
 	blocks := pen.NewBlockSections(1024, 4096)
 
-	var ignores ignoreIxs
-	var args []string
+	var args *pen.Joints
 	var rets []retVar
 
-	argNamer := func(i int) string { return fmt.Sprintf("arg%d", i) }
+	// argNamer returns arg with a +1 offset, except for when i is negative,
+	// then the method receiver is returned.
+	argNamer := func(i int) string {
+		if i < 0 {
+			return cg.Recv()
+		}
+
+		return fmt.Sprintf("arg%d", i+1)
+	}
 
 	if cg.Parameters != nil {
-		args = make([]string, 0, len(cg.Parameters.Parameters))
+		var ignores ignoreIxs
+		ignores.paramsIgnore(cg.Parameters)
+
+		args = pen.NewJoints(", ", len(cg.Parameters.Parameters))
 
 		var closure *int // user-data arg
 		var destroy *int
+
+		doParam := func(i int, param gir.ParameterAttrs, targ, valn string) {
+			// Generate a zero-value variable regardless if we have the
+			// conversions or not.
+			blocks.Linef(0, "var %s %s", targ, anyTypeCGo(param.AnyType))
+			args.Add(targ)
+
+			// Ignored arguments may be covered by GoCConverter if the
+			// attributes are part of the type and not the parameter attributes.
+			if !ignores.ignore(i) {
+				converter := cg.Ng.GoCConverter(TypeConversionToC{
+					TypeConversion: TypeConversion{
+						Value:  valn,
+						Target: targ,
+						Type:   param.AnyType,
+						Owner:  param.TransferOwnership,
+						ArgAt:  argNamer,
+					},
+					Closure: closure,
+					Destroy: destroy,
+				})
+				if converter != "" {
+					blocks.Line(1, converter)
+				}
+			}
+		}
+
+		if cg.Parameters.InstanceParameter != nil {
+			attrs := cg.Parameters.InstanceParameter.ParameterAttrs
+			doParam(-1, attrs, "arg0", cg.Recv())
+		}
 
 		for i, param := range cg.Parameters.Parameters {
 			if param.Closure != nil {
@@ -62,18 +129,21 @@ func (cg *callableGenerator) Block() string {
 				destroy = param.Destroy
 			}
 
+			// Be careful with using the index `i`, since the name is different
+			// from the index within the slice.
+
 			ignores.paramIgnore(param)
 			targ := argNamer(i)
 			valn := SnakeToGo(false, param.Name)
 
 			if param.Direction == "out" {
 				blocks.Linef(0, "var %s %s // out", targ, anyTypeCGo(param.AnyType))
-				blocks.EmptyLine(0)
 
-				args = append(args, "&"+targ)
+				args.Add("&" + targ)
 				rets = append(rets, retVar{
-					Name: targ,
-					Type: param.AnyType,
+					Name:  targ,
+					Type:  param.AnyType,
+					Owner: param.TransferOwnership,
 				})
 				continue
 			}
@@ -85,7 +155,7 @@ func (cg *callableGenerator) Block() string {
 				strings.HasSuffix(param.Type.Name, "DestroyNotify") {
 
 				// https://github.com/golang/go/issues/19835
-				args = append(args, "(*[0]byte)(C.free)")
+				args.Add("(*[0]byte)(C.free)")
 				continue
 			}
 
@@ -101,53 +171,31 @@ func (cg *callableGenerator) Block() string {
 				cg.Ng.needsCallbackDelete()
 				// TODO: this is probably not always true.
 				// https://github.com/golang/go/issues/19835
-				args = append(args, "(*[0]byte)(C.callbackDelete)")
+				args.Add("(*[0]byte)(C.callbackDelete)")
 				continue
 			}
 
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			// Generate a zero-value variable regardless if we have the
-			// conversions or not.
-			blocks.Linef(0, "var %s %s", targ, anyTypeCGo(param.AnyType))
-			args = append(args, targ)
-
-			// Ignored arguments may be covered by GoCConverter if the
-			// attributes are part of the type and not the parameter attributes.
-			if !ignores.ignore(i) {
-				converter := cg.Ng.GoCConverter(TypeConversionToC{
-					TypeConversion: TypeConversion{
-						Value:  valn,
-						Target: targ,
-						Type:   param.AnyType,
-						ArgAt:  argNamer,
-					},
-					Closure: closure,
-					Destroy: destroy,
-				})
-				if converter != "" {
-					blocks.Line(1, converter)
-				}
-			}
+			doParam(i, param.ParameterAttrs, targ, valn)
 		}
 	}
 
 	if !returnIsVoid(cg.ReturnValue) {
 		rets = append(rets, retVar{
-			Name: "ret",
-			Type: cg.ReturnValue.AnyType,
+			Name:  "ret",
+			Type:  cg.ReturnValue.AnyType,
+			Owner: cg.ReturnValue.TransferOwnership,
 		})
 	}
 
-	callArgs := strings.Join(args, ", ")
-
 	if len(rets) == 0 {
-		blocks.Linef(2, "C.%s(%s)", cg.CIdentifier, callArgs)
+		blocks.Linef(2, "C.%s(%s)", cg.CIdentifier, args.Join())
 		return blocks.String()
 	}
 
-	blocks.Linef(2, "ret := C.%s(%s)", cg.CIdentifier, callArgs)
+	blocks.Linef(2, "ret := C.%s(%s)", cg.CIdentifier, args.Join())
 	blocks.EmptyLine(2)
 
 	retvars := pen.NewJoints(", ", len(rets))
@@ -164,6 +212,7 @@ func (cg *callableGenerator) Block() string {
 				Value:  ret.Name,
 				Target: retName,
 				Type:   ret.Type,
+				Owner:  ret.Owner,
 				ArgAt:  argNamer,
 			},
 		})
@@ -335,5 +384,40 @@ func anyTypeName(typ gir.AnyType, or string) string {
 
 	default:
 		return or
+	}
+}
+
+// callableRenameGetters renames the given list of callables to have idiomatic
+// Go getter names.
+func callableRenameGetters(callables []callableGenerator) {
+	methodNames := make(map[string]struct{}, len(callables))
+	for _, callable := range callables {
+		methodNames[callable.Name] = struct{}{}
+	}
+
+	for i, callable := range callables {
+		var newName string
+
+		switch callable.Name {
+		case "ToString":
+			newName = "String"
+
+		default:
+			if !strings.HasPrefix(callable.Name, "Get") || callable.Name == "Get" {
+				continue
+			}
+
+			newName = strings.TrimPrefix(callable.Name, "Get")
+		}
+
+		_, dup := methodNames[newName]
+		if dup {
+			continue // skip
+		}
+
+		delete(methodNames, callable.Name)
+		methodNames[newName] = struct{}{}
+
+		callables[i].Name = newName
 	}
 }

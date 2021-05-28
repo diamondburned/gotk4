@@ -31,4 +31,10 @@ func (j *Joints) Addf(f string, v ...interface{}) {
 func (j *Joints) Len() int { return len(j.strs) }
 
 // Join joins the joints.
-func (j *Joints) Join() string { return strings.Join(j.strs, j.sep) }
+func (j *Joints) Join() string {
+	if j == nil {
+		return ""
+	}
+
+	return strings.Join(j.strs, j.sep)
+}

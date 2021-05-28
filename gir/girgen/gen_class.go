@@ -1,8 +1,6 @@
 package girgen
 
 import (
-	"strings"
-
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
 )
@@ -34,14 +32,17 @@ var classTmpl = newGoTemplate(`
 	}
 
 	{{ range .Constructors }}
-	{{ $tail := ($.CtorCall .CallableAttrs) }}
-	{{ if $tail }}
-	func {{ $.CtorName . }}{{ $tail }}
+	{{ if $.Callable.UseConstructor . }}
+	// {{ $.Callable.Name }} constructs a class {{ $.InterfaceName }}.
+	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
 	{{ end }}
 
+	{{ $recv := (FirstLetter $.StructName) }}
+
 	{{ range .Methods }}
-	func ({{ FirstLetter $.StructName }} {{ $.StructName }}) {{ .Name }}{{ .Tail }}
+	{{ GoDoc .Doc 1 .Name }}
+	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
 	{{ end }}
 `)
 
@@ -53,6 +54,8 @@ type classGenerator struct {
 
 	TypeTree []*ResolvedType
 	Methods  []callableGenerator
+
+	Callable callableGenerator
 
 	Ng *NamespaceGenerator
 }
@@ -87,7 +90,6 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		parent = parentType.Parent
 	}
 
-	methodNames := make(map[string]struct{}, len(class.Methods))
 	for _, method := range class.Methods {
 		cbgen := newCallableGenerator(cg.Ng)
 		if !cbgen.Use(method.CallableAttrs) {
@@ -95,27 +97,10 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		}
 
 		cg.Methods = append(cg.Methods, cbgen)
-		methodNames[cbgen.Name] = struct{}{}
 	}
 
 	// Use Go-idiomatic getter names, unless there's a duplicate.
-	for i, cbgen := range cg.Methods {
-		if !strings.HasPrefix(cbgen.Name, "Get") || cbgen.Name == "Get" {
-			continue
-		}
-
-		newName := strings.TrimPrefix(cbgen.Name, "Get")
-		_, dup := methodNames[newName]
-		if dup {
-			cg.Ng.logln(logInfo, "not renaming cbgen", cbgen.Name, "in class", class.Name)
-			continue // skip
-		}
-
-		delete(methodNames, cbgen.Name)
-		methodNames[newName] = struct{}{}
-
-		cg.Methods[i].Name = newName
-	}
+	callableRenameGetters(cg.Methods)
 
 	cg.Class = class
 	cg.InterfaceName = PascalToGo(class.Name)
@@ -131,22 +116,6 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	}
 
 	return true
-}
-
-func (cg *classGenerator) CtorName(ctor gir.Constructor) string {
-	name := SnakeToGo(true, ctor.Name)
-	name = strings.TrimPrefix(name, "New")
-	return "New" + cg.InterfaceName + name
-}
-
-// CtorCall generates a FnCall for a constructor.
-func (cg *classGenerator) CtorCall(attrs gir.CallableAttrs) string {
-	args, ok := cg.Ng.FnArgs(attrs)
-	if !ok {
-		return ""
-	}
-
-	return "(" + args + ") " + cg.InterfaceName
 }
 
 // Wrap returns the wrap string around the given variable name of type
@@ -185,6 +154,7 @@ func (cg *classGenerator) Wrap(objName string) string {
 func (ng *NamespaceGenerator) generateClasses() {
 	cg := classGenerator{
 		TypeTree: make([]*ResolvedType, 15),
+		Callable: callableGenerator{Ng: ng},
 		Ng:       ng,
 	}
 

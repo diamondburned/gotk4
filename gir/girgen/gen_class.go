@@ -86,9 +86,6 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.StructName = UnexportPascal(cg.InterfaceName)
 
 	resolved := TypeFromResult(cg.Ng, gir.TypeFindResult{Class: &class})
-	if resolved == nil {
-	}
-
 	if !cg.TypeTree.ResolveFromType(resolved) {
 		return false
 	}

@@ -5522,10 +5522,12 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 type Icon interface {
 	gextras.Objector
 
-	// _ checks if two icons are equal.
-	_(icon2 Icon) bool
+	// Equal checks if two icons are equal.
+	Equal(icon2 Icon) bool
 }
 
+// WrapIcon wraps a GObject to a type that implements interface
+// Icon. It is primarily used internally.
 func WrapIcon(obj *externglib.Object) Icon {
 }
 

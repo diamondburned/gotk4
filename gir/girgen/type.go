@@ -241,7 +241,11 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 func TypeFromResult(ng *NamespaceGenerator, res gir.TypeFindResult) *ResolvedType {
 	res.NamespaceFindResult = ng.current
 	name, ctype := res.Info()
-	return typeFromResult(ng.gen, gir.Type{Name: name, CType: ctype}, &res)
+	t := typeFromResult(ng.gen, gir.Type{Name: name, CType: ctype}, &res)
+	if t == nil {
+		ng.logln(logError, "typeFromResult returned nil for", name)
+	}
+	return t
 }
 
 // IsExternGLib checks that the ResolvedType is exactly the gotk3/glib type with

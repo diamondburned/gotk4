@@ -353,6 +353,6 @@ type VarArgs struct {
 type VirtualMethod struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
 
-	Invoker string `xml:"name,attr"`
+	Invoker string `xml:"invoker,attr"`
 	CallableAttrs
 }

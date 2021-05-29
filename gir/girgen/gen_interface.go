@@ -24,8 +24,8 @@ var interfaceTmpl = newGoTemplate(`
 		{{ end }}
 	}
 
-	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements
-	// interface {{ .GoName }}. It is primarily used internally.
+	// Wrap{{ .GoName }} wraps a GObject to a type that implements interface
+	// {{ .GoName }}. It is primarily used internally.
 	func Wrap{{ .GoName }}(obj *externglib.Object) {{ .GoName }} {
 	}
 `)

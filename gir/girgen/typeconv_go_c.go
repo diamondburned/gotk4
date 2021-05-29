@@ -170,7 +170,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	case "GLib.DestroyNotify", "DestroyNotify":
 		// This should never be called, because the caller should never see a
 		// DestroyNotify, so there's no use to convert from Go to C.
-		ng.logln(logError, "unexpected DestroyNotify conversion from Go to C")
+		ng.logln(logWarn, "unexpected DestroyNotify conversion from Go to C")
 		return ""
 
 	case "GType":

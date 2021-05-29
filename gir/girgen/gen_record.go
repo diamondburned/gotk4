@@ -89,6 +89,13 @@ type recordGetter struct {
 	Convert string // assume first_letter -> "ret"
 }
 
+func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
+	return &recordGenerator{
+		Callable: callableGenerator{Ng: ng},
+		Ng:       ng,
+	}
+}
+
 // canRecord returns true if this record is allowed.
 func (ng *NamespaceGenerator) canRecord(rec gir.Record) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
@@ -231,10 +238,7 @@ func (rg *recordGenerator) needsNative() bool {
 }
 
 func (ng *NamespaceGenerator) generateRecords() {
-	rg := recordGenerator{
-		Callable: callableGenerator{Ng: ng},
-		Ng:       ng,
-	}
+	rg := newRecordGenerator(ng)
 	imported := false
 
 	for _, record := range ng.current.Namespace.Records {

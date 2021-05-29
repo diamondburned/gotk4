@@ -12,18 +12,28 @@ import (
 var interfaceTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} interface {
+		{{- range .TypeTree.PublicChildren }}
+		{{ . }}
+		{{- else }}
 		gextras.Objector
+		{{ end }}
 
 		{{ range .Virtuals -}}
 		{{ GoDoc .Doc 1 .Name }}
 		{{ .Name }}{{ .Tail }}
 		{{ end }}
 	}
+
+	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements
+	// interface {{ .GoName }}. It is primarily used internally.
+	func Wrap{{ .GoName }}(obj *externglib.Object) {{ .GoName }} {
+	}
 `)
 
 type ifaceGenerator struct {
 	gir.Interface
 	GoName   string
+	TypeTree TypeTree
 	Virtuals []callableGenerator // for interface
 	Methods  []callableGenerator // for object implementation
 
@@ -35,7 +45,16 @@ func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.GoName = PascalToGo(iface.Name)
 
 	ig.updateMethods()
-	return len(ig.Virtuals) > 0
+	if len(ig.Virtuals) == 0 {
+		return false
+	}
+
+	resolved := TypeFromResult(ig.Ng, gir.TypeFindResult{Interface: &iface})
+	if !ig.TypeTree.ResolveFromType(resolved) {
+		return false
+	}
+
+	return true
 }
 
 func (ig *ifaceGenerator) updateMethods() {

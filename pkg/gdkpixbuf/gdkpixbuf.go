@@ -670,14 +670,17 @@ type Pixbuf interface {
 	Unref()
 }
 
+// pixbuf implements the Pixbuf interface.
 type pixbuf struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPixbuf wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbuf(obj *externglib.Object) Pixbuf {
-	return pixbuf{*externglib.Object{obj}}
+	return Pixbuf{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
@@ -1867,14 +1870,17 @@ type PixbufAnimation interface {
 	Unref()
 }
 
+// pixbufAnimation implements the PixbufAnimation interface.
 type pixbufAnimation struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPixbufAnimation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
-	return pixbufAnimation{*externglib.Object{obj}}
+	return PixbufAnimation{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
@@ -2124,14 +2130,17 @@ type PixbufAnimationIter interface {
 	OnCurrentlyLoadingFrame() bool
 }
 
+// pixbufAnimationIter implements the PixbufAnimationIter interface.
 type pixbufAnimationIter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPixbufAnimationIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
-	return pixbufAnimationIter{*externglib.Object{obj}}
+	return PixbufAnimationIter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
@@ -2295,14 +2304,17 @@ type PixbufLoader interface {
 	WriteBytes(buffer *glib.Bytes) bool
 }
 
+// pixbufLoader implements the PixbufLoader interface.
 type pixbufLoader struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPixbufLoader wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufLoader(obj *externglib.Object) PixbufLoader {
-	return pixbufLoader{*externglib.Object{obj}}
+	return PixbufLoader{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
@@ -2497,14 +2509,17 @@ type PixbufSimpleAnim interface {
 	SetLoop(loop bool)
 }
 
+// pixbufSimpleAnim implements the PixbufSimpleAnim interface.
 type pixbufSimpleAnim struct {
-	pixbufAnimation
+	PixbufAnimation
 }
 
 // WrapPixbufSimpleAnim wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
-	return pixbufSimpleAnim{pixbufAnimation{*externglib.Object{obj}}}
+	return PixbufSimpleAnim{
+		PixbufAnimation: WrapPixbufAnimation(obj),
+	}
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
@@ -2576,14 +2591,17 @@ type PixbufSimpleAnimIter interface {
 	PixbufAnimationIter
 }
 
+// pixbufSimpleAnimIter implements the PixbufSimpleAnimIter interface.
 type pixbufSimpleAnimIter struct {
-	pixbufAnimationIter
+	PixbufAnimationIter
 }
 
 // WrapPixbufSimpleAnimIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIter {
-	return pixbufSimpleAnimIter{pixbufAnimationIter{*externglib.Object{obj}}}
+	return PixbufSimpleAnimIter{
+		PixbufAnimationIter: WrapPixbufAnimationIter(obj),
+	}
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {

@@ -251,6 +251,7 @@ type FontMap interface {
 	SubstituteChanged()
 }
 
+// fontMap implements the FontMap interface.
 type fontMap struct {
 	pangofc.FontMap
 }
@@ -258,7 +259,9 @@ type fontMap struct {
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{pangofc.WrapFontMap(obj)}
+	return FontMap{
+		pangofc.FontMap: pangofc.WrapFontMap(obj),
+	}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {

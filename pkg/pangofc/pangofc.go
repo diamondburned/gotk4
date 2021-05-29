@@ -87,14 +87,17 @@ type Decoder interface {
 	Glyph(fcfont Font, wc uint32) pango.Glyph
 }
 
+// decoder implements the Decoder interface.
 type decoder struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDecoder wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDecoder(obj *externglib.Object) Decoder {
-	return decoder{*externglib.Object{obj}}
+	return Decoder{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDecoder(p uintptr) (interface{}, error) {
@@ -194,6 +197,7 @@ type Font interface {
 	UnlockFace()
 }
 
+// font implements the Font interface.
 type font struct {
 	pango.Font
 }
@@ -201,7 +205,9 @@ type font struct {
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return font{pango.WrapFont(obj)}
+	return Font{
+		pango.Font: pango.WrapFont(obj),
+	}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -398,6 +404,7 @@ type FontMap interface {
 	SubstituteChanged()
 }
 
+// fontMap implements the FontMap interface.
 type fontMap struct {
 	pango.FontMap
 }
@@ -405,7 +412,9 @@ type fontMap struct {
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{pango.WrapFontMap(obj)}
+	return FontMap{
+		pango.FontMap: pango.WrapFontMap(obj),
+	}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {

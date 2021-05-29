@@ -7410,14 +7410,17 @@ type Context interface {
 	SetRoundGlyphPositions(roundPositions bool)
 }
 
+// context implements the Context interface.
 type context struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContext(obj *externglib.Object) Context {
-	return context{*externglib.Object{obj}}
+	return Context{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
@@ -7877,14 +7880,17 @@ type Coverage interface {
 	Unref()
 }
 
+// coverage implements the Coverage interface.
 type coverage struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCoverage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCoverage(obj *externglib.Object) Coverage {
-	return coverage{*externglib.Object{obj}}
+	return Coverage{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCoverage(p uintptr) (interface{}, error) {
@@ -8060,14 +8066,17 @@ type Font interface {
 	HasChar(wc uint32) bool
 }
 
+// font implements the Font interface.
 type font struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return font{*externglib.Object{obj}}
+	return Font{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -8239,14 +8248,17 @@ type FontFace interface {
 	ListSizes() (sizes []int, nSizes int)
 }
 
+// fontFace implements the FontFace interface.
 type fontFace struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFontFace wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontFace(obj *externglib.Object) FontFace {
-	return fontFace{*externglib.Object{obj}}
+	return FontFace{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
@@ -8392,14 +8404,17 @@ type FontFamily interface {
 	ListFaces() (faces []FontFace, nFaces int)
 }
 
+// fontFamily implements the FontFamily interface.
 type fontFamily struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFontFamily wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontFamily(obj *externglib.Object) FontFamily {
-	return fontFamily{*externglib.Object{obj}}
+	return FontFamily{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFontFamily(p uintptr) (interface{}, error) {
@@ -8567,14 +8582,17 @@ type FontMap interface {
 	LoadFontset(context Context, desc *FontDescription, language *Language) Fontset
 }
 
+// fontMap implements the FontMap interface.
 type fontMap struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{*externglib.Object{obj}}
+	return FontMap{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -8754,14 +8772,17 @@ type Fontset interface {
 	Metrics() *FontMetrics
 }
 
+// fontset implements the Fontset interface.
 type fontset struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFontset wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontset(obj *externglib.Object) Fontset {
-	return fontset{*externglib.Object{obj}}
+	return Fontset{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFontset(p uintptr) (interface{}, error) {
@@ -8832,14 +8853,17 @@ type FontsetSimple interface {
 	Size() int
 }
 
+// fontsetSimple implements the FontsetSimple interface.
 type fontsetSimple struct {
-	fontset
+	Fontset
 }
 
 // WrapFontsetSimple wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontsetSimple(obj *externglib.Object) FontsetSimple {
-	return fontsetSimple{fontset{*externglib.Object{obj}}}
+	return FontsetSimple{
+		Fontset: WrapFontset(obj),
+	}
 }
 
 func marshalFontsetSimple(p uintptr) (interface{}, error) {
@@ -9320,14 +9344,17 @@ type Layout interface {
 	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 }
 
+// layout implements the Layout interface.
 type layout struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayout(obj *externglib.Object) Layout {
-	return layout{*externglib.Object{obj}}
+	return Layout{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalLayout(p uintptr) (interface{}, error) {
@@ -10670,14 +10697,17 @@ type Renderer interface {
 	SetMatrix(matrix *Matrix)
 }
 
+// renderer implements the Renderer interface.
 type renderer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{*externglib.Object{obj}}
+	return Renderer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {

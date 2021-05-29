@@ -184,6 +184,7 @@ type X11AppLaunchContext interface {
 	gdk.AppLaunchContext
 }
 
+// x11AppLaunchContext implements the X11AppLaunchContext interface.
 type x11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
@@ -191,7 +192,9 @@ type x11AppLaunchContext struct {
 // WrapX11AppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
-	return x11AppLaunchContext{gdk.WrapAppLaunchContext(obj)}
+	return X11AppLaunchContext{
+		gdk.AppLaunchContext: gdk.WrapAppLaunchContext(obj),
+	}
 }
 
 func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
@@ -204,14 +207,17 @@ type X11DeviceManagerXI2 interface {
 	gextras.Objector
 }
 
+// x11DeviceManagerXI2 implements the X11DeviceManagerXI2 interface.
 type x11DeviceManagerXI2 struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapX11DeviceManagerXI2 wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
-	return x11DeviceManagerXI2{*externglib.Object{obj}}
+	return X11DeviceManagerXI2{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
@@ -224,6 +230,7 @@ type X11DeviceXI2 interface {
 	gdk.Device
 }
 
+// x11DeviceXI2 implements the X11DeviceXI2 interface.
 type x11DeviceXI2 struct {
 	gdk.Device
 }
@@ -231,7 +238,9 @@ type x11DeviceXI2 struct {
 // WrapX11DeviceXI2 wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11DeviceXI2(obj *externglib.Object) X11DeviceXI2 {
-	return x11DeviceXI2{gdk.WrapDevice(obj)}
+	return X11DeviceXI2{
+		gdk.Device: gdk.WrapDevice(obj),
+	}
 }
 
 func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
@@ -353,6 +362,7 @@ type X11Display interface {
 	UTF8ToCompoundText(str string) (encoding string, format int, ctext []byte, length int, ok bool)
 }
 
+// x11Display implements the X11Display interface.
 type x11Display struct {
 	gdk.Display
 }
@@ -360,7 +370,9 @@ type x11Display struct {
 // WrapX11Display wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Display(obj *externglib.Object) X11Display {
-	return x11Display{gdk.WrapDisplay(obj)}
+	return X11Display{
+		gdk.Display: gdk.WrapDisplay(obj),
+	}
 }
 
 func marshalX11Display(p uintptr) (interface{}, error) {
@@ -802,6 +814,7 @@ type X11Drag interface {
 	gdk.Drag
 }
 
+// x11Drag implements the X11Drag interface.
 type x11Drag struct {
 	gdk.Drag
 }
@@ -809,7 +822,9 @@ type x11Drag struct {
 // WrapX11Drag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Drag(obj *externglib.Object) X11Drag {
-	return x11Drag{gdk.WrapDrag(obj)}
+	return X11Drag{
+		gdk.Drag: gdk.WrapDrag(obj),
+	}
 }
 
 func marshalX11Drag(p uintptr) (interface{}, error) {
@@ -830,6 +845,7 @@ type X11Monitor interface {
 	Workarea() gdk.Rectangle
 }
 
+// x11Monitor implements the X11Monitor interface.
 type x11Monitor struct {
 	gdk.Monitor
 }
@@ -837,7 +853,9 @@ type x11Monitor struct {
 // WrapX11Monitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Monitor(obj *externglib.Object) X11Monitor {
-	return x11Monitor{gdk.WrapMonitor(obj)}
+	return X11Monitor{
+		gdk.Monitor: gdk.WrapMonitor(obj),
+	}
 }
 
 func marshalX11Monitor(p uintptr) (interface{}, error) {
@@ -923,14 +941,17 @@ type X11Screen interface {
 	SupportsNetWmHint(propertyName string) bool
 }
 
+// x11Screen implements the X11Screen interface.
 type x11Screen struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapX11Screen wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Screen(obj *externglib.Object) X11Screen {
-	return x11Screen{*externglib.Object{obj}}
+	return X11Screen{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalX11Screen(p uintptr) (interface{}, error) {
@@ -1142,6 +1163,7 @@ type X11Surface interface {
 	SetUTF8Property(name string, value string)
 }
 
+// x11Surface implements the X11Surface interface.
 type x11Surface struct {
 	gdk.Surface
 }
@@ -1149,7 +1171,9 @@ type x11Surface struct {
 // WrapX11Surface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Surface(obj *externglib.Object) X11Surface {
-	return x11Surface{gdk.WrapSurface(obj)}
+	return X11Surface{
+		gdk.Surface: gdk.WrapSurface(obj),
+	}
 }
 
 func marshalX11Surface(p uintptr) (interface{}, error) {

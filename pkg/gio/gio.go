@@ -5526,6 +5526,9 @@ type Icon interface {
 	_(icon2 Icon) bool
 }
 
+func WrapIcon(obj *externglib.Object) Icon {
+}
+
 // DBusAnnotationInfo: information about an annotation.
 type DBusAnnotationInfo struct {
 	native C.GDBusAnnotationInfo
@@ -8582,14 +8585,17 @@ type AppInfoMonitor interface {
 	gextras.Objector
 }
 
+// appInfoMonitor implements the AppInfoMonitor interface.
 type appInfoMonitor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapAppInfoMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitor {
-	return appInfoMonitor{*externglib.Object{obj}}
+	return AppInfoMonitor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
@@ -8621,14 +8627,17 @@ type AppLaunchContext interface {
 	Unsetenv(variable string)
 }
 
+// appLaunchContext implements the AppLaunchContext interface.
 type appLaunchContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapAppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return appLaunchContext{*externglib.Object{obj}}
+	return AppLaunchContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
@@ -9161,14 +9170,17 @@ type Application interface {
 	WithdrawNotification(id string)
 }
 
+// application implements the Application interface.
 type application struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapApplication wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
-	return application{*externglib.Object{obj}}
+	return Application{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
@@ -10037,14 +10049,17 @@ type ApplicationCommandLine interface {
 	SetExitStatus(exitStatus int)
 }
 
+// applicationCommandLine implements the ApplicationCommandLine interface.
 type applicationCommandLine struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapApplicationCommandLine wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLine {
-	return applicationCommandLine{*externglib.Object{obj}}
+	return ApplicationCommandLine{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
@@ -10387,14 +10402,17 @@ type BufferedInputStream interface {
 	SetBufferSize(size uint)
 }
 
+// bufferedInputStream implements the BufferedInputStream interface.
 type bufferedInputStream struct {
-	filterInputStream
+	FilterInputStream
 }
 
 // WrapBufferedInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBufferedInputStream(obj *externglib.Object) BufferedInputStream {
-	return bufferedInputStream{filterInputStream{inputStream{*externglib.Object{obj}}}}
+	return BufferedInputStream{
+		FilterInputStream: WrapFilterInputStream(obj),
+	}
 }
 
 func marshalBufferedInputStream(p uintptr) (interface{}, error) {
@@ -10632,14 +10650,17 @@ type BufferedOutputStream interface {
 	SetBufferSize(size uint)
 }
 
+// bufferedOutputStream implements the BufferedOutputStream interface.
 type bufferedOutputStream struct {
-	filterOutputStream
+	FilterOutputStream
 }
 
 // WrapBufferedOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
-	return bufferedOutputStream{filterOutputStream{outputStream{*externglib.Object{obj}}}}
+	return BufferedOutputStream{
+		FilterOutputStream: WrapFilterOutputStream(obj),
+	}
 }
 
 func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
@@ -10744,14 +10765,17 @@ type BytesIcon interface {
 	Bytes() *glib.Bytes
 }
 
+// bytesIcon implements the BytesIcon interface.
 type bytesIcon struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapBytesIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBytesIcon(obj *externglib.Object) BytesIcon {
-	return bytesIcon{*externglib.Object{obj}}
+	return BytesIcon{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
@@ -10909,14 +10933,17 @@ type Cancellable interface {
 	NewSource() *glib.Source
 }
 
+// cancellable implements the Cancellable interface.
 type cancellable struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCancellable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCancellable(obj *externglib.Object) Cancellable {
-	return cancellable{*externglib.Object{obj}}
+	return Cancellable{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCancellable(p uintptr) (interface{}, error) {
@@ -11172,14 +11199,17 @@ type CharsetConverter interface {
 	SetUseFallback(useFallback bool)
 }
 
+// charsetConverter implements the CharsetConverter interface.
 type charsetConverter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCharsetConverter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCharsetConverter(obj *externglib.Object) CharsetConverter {
-	return charsetConverter{*externglib.Object{obj}}
+	return CharsetConverter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCharsetConverter(p uintptr) (interface{}, error) {
@@ -11257,14 +11287,17 @@ type ConverterInputStream interface {
 	FilterInputStream
 }
 
+// converterInputStream implements the ConverterInputStream interface.
 type converterInputStream struct {
-	filterInputStream
+	FilterInputStream
 }
 
 // WrapConverterInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConverterInputStream(obj *externglib.Object) ConverterInputStream {
-	return converterInputStream{filterInputStream{inputStream{*externglib.Object{obj}}}}
+	return ConverterInputStream{
+		FilterInputStream: WrapFilterInputStream(obj),
+	}
 }
 
 func marshalConverterInputStream(p uintptr) (interface{}, error) {
@@ -11281,14 +11314,17 @@ type ConverterOutputStream interface {
 	FilterOutputStream
 }
 
+// converterOutputStream implements the ConverterOutputStream interface.
 type converterOutputStream struct {
-	filterOutputStream
+	FilterOutputStream
 }
 
 // WrapConverterOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConverterOutputStream(obj *externglib.Object) ConverterOutputStream {
-	return converterOutputStream{filterOutputStream{outputStream{*externglib.Object{obj}}}}
+	return ConverterOutputStream{
+		FilterOutputStream: WrapFilterOutputStream(obj),
+	}
 }
 
 func marshalConverterOutputStream(p uintptr) (interface{}, error) {
@@ -11378,14 +11414,17 @@ type Credentials interface {
 	String() string
 }
 
+// credentials implements the Credentials interface.
 type credentials struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCredentials wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCredentials(obj *externglib.Object) Credentials {
-	return credentials{*externglib.Object{obj}}
+	return Credentials{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCredentials(p uintptr) (interface{}, error) {
@@ -11555,14 +11594,17 @@ type DBusActionGroup interface {
 	gextras.Objector
 }
 
+// dBusActionGroup implements the DBusActionGroup interface.
 type dBusActionGroup struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusActionGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
-	return dBusActionGroup{*externglib.Object{obj}}
+	return DBusActionGroup{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
@@ -11617,14 +11659,17 @@ type DBusAuthObserver interface {
 	AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool
 }
 
+// dBusAuthObserver implements the DBusAuthObserver interface.
 type dBusAuthObserver struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusAuthObserver wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserver {
-	return dBusAuthObserver{*externglib.Object{obj}}
+	return DBusAuthObserver{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
@@ -12144,14 +12189,17 @@ type DBusConnection interface {
 	UnregisterSubtree(registrationID uint) bool
 }
 
+// dBusConnection implements the DBusConnection interface.
 type dBusConnection struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusConnection(obj *externglib.Object) DBusConnection {
-	return dBusConnection{*externglib.Object{obj}}
+	return DBusConnection{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
@@ -13249,14 +13297,17 @@ type DBusInterfaceSkeleton interface {
 	UnexportFromConnection(connection DBusConnection)
 }
 
+// dBusInterfaceSkeleton implements the DBusInterfaceSkeleton interface.
 type dBusInterfaceSkeleton struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusInterfaceSkeleton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeleton {
-	return dBusInterfaceSkeleton{*externglib.Object{obj}}
+	return DBusInterfaceSkeleton{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
@@ -13479,14 +13530,17 @@ type DBusMenuModel interface {
 	MenuModel
 }
 
+// dBusMenuModel implements the DBusMenuModel interface.
 type dBusMenuModel struct {
-	menuModel
+	MenuModel
 }
 
 // WrapDBusMenuModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusMenuModel(obj *externglib.Object) DBusMenuModel {
-	return dBusMenuModel{menuModel{*externglib.Object{obj}}}
+	return DBusMenuModel{
+		MenuModel: WrapMenuModel(obj),
+	}
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
@@ -13667,14 +13721,17 @@ type DBusMessage interface {
 	ToGerror() bool
 }
 
+// dBusMessage implements the DBusMessage interface.
 type dBusMessage struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusMessage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusMessage(obj *externglib.Object) DBusMessage {
-	return dBusMessage{*externglib.Object{obj}}
+	return DBusMessage{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
@@ -14545,14 +14602,17 @@ type DBusMethodInvocation interface {
 	TakeError(error *glib.Error)
 }
 
+// dBusMethodInvocation implements the DBusMethodInvocation interface.
 type dBusMethodInvocation struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusMethodInvocation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocation {
-	return dBusMethodInvocation{*externglib.Object{obj}}
+	return DBusMethodInvocation{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
@@ -14929,14 +14989,17 @@ type DBusObjectManagerClient interface {
 	NameOwner() string
 }
 
+// dBusObjectManagerClient implements the DBusObjectManagerClient interface.
 type dBusObjectManagerClient struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusObjectManagerClient wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
-	return dBusObjectManagerClient{*externglib.Object{obj}}
+	return DBusObjectManagerClient{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
@@ -15120,14 +15183,17 @@ type DBusObjectManagerServer interface {
 	Unexport(objectPath string) bool
 }
 
+// dBusObjectManagerServer implements the DBusObjectManagerServer interface.
 type dBusObjectManagerServer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusObjectManagerServer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
-	return dBusObjectManagerServer{*externglib.Object{obj}}
+	return DBusObjectManagerServer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
@@ -15263,14 +15329,17 @@ type DBusObjectProxy interface {
 	Connection() DBusConnection
 }
 
+// dBusObjectProxy implements the DBusObjectProxy interface.
 type dBusObjectProxy struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusObjectProxy wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
-	return dBusObjectProxy{*externglib.Object{obj}}
+	return DBusObjectProxy{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
@@ -15344,14 +15413,17 @@ type DBusObjectSkeleton interface {
 	SetObjectPath(objectPath string)
 }
 
+// dBusObjectSkeleton implements the DBusObjectSkeleton interface.
 type dBusObjectSkeleton struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusObjectSkeleton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
-	return dBusObjectSkeleton{*externglib.Object{obj}}
+	return DBusObjectSkeleton{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
@@ -15645,14 +15717,17 @@ type DBusProxy interface {
 	SetInterfaceInfo(info *DBusInterfaceInfo)
 }
 
+// dBusProxy implements the DBusProxy interface.
 type dBusProxy struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusProxy wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusProxy(obj *externglib.Object) DBusProxy {
-	return dBusProxy{*externglib.Object{obj}}
+	return DBusProxy{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusProxy(p uintptr) (interface{}, error) {
@@ -16192,14 +16267,17 @@ type DBusServer interface {
 	Stop()
 }
 
+// dBusServer implements the DBusServer interface.
 type dBusServer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDBusServer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDBusServer(obj *externglib.Object) DBusServer {
-	return dBusServer{*externglib.Object{obj}}
+	return DBusServer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
@@ -16465,14 +16543,17 @@ type DataInputStream interface {
 	SetNewlineType(_type DataStreamNewlineType)
 }
 
+// dataInputStream implements the DataInputStream interface.
 type dataInputStream struct {
-	bufferedInputStream
+	BufferedInputStream
 }
 
 // WrapDataInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDataInputStream(obj *externglib.Object) DataInputStream {
-	return dataInputStream{bufferedInputStream{filterInputStream{inputStream{*externglib.Object{obj}}}}}
+	return DataInputStream{
+		BufferedInputStream: WrapBufferedInputStream(obj),
+	}
 }
 
 func marshalDataInputStream(p uintptr) (interface{}, error) {
@@ -16965,14 +17046,17 @@ type DataOutputStream interface {
 	SetByteOrder(order DataStreamByteOrder)
 }
 
+// dataOutputStream implements the DataOutputStream interface.
 type dataOutputStream struct {
-	filterOutputStream
+	FilterOutputStream
 }
 
 // WrapDataOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDataOutputStream(obj *externglib.Object) DataOutputStream {
-	return dataOutputStream{filterOutputStream{outputStream{*externglib.Object{obj}}}}
+	return DataOutputStream{
+		FilterOutputStream: WrapFilterOutputStream(obj),
+	}
 }
 
 func marshalDataOutputStream(p uintptr) (interface{}, error) {
@@ -17291,14 +17375,17 @@ type DesktopAppInfo interface {
 	ListActions() []string
 }
 
+// desktopAppInfo implements the DesktopAppInfo interface.
 type desktopAppInfo struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDesktopAppInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
-	return desktopAppInfo{*externglib.Object{obj}}
+	return DesktopAppInfo{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
@@ -17788,14 +17875,17 @@ type Emblem interface {
 	Origin() EmblemOrigin
 }
 
+// emblem implements the Emblem interface.
 type emblem struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapEmblem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEmblem(obj *externglib.Object) Emblem {
-	return emblem{*externglib.Object{obj}}
+	return Emblem{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalEmblem(p uintptr) (interface{}, error) {
@@ -17836,14 +17926,17 @@ type EmblemedIcon interface {
 	Emblems() *glib.List
 }
 
+// emblemedIcon implements the EmblemedIcon interface.
 type emblemedIcon struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapEmblemedIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
-	return emblemedIcon{*externglib.Object{obj}}
+	return EmblemedIcon{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalEmblemedIcon(p uintptr) (interface{}, error) {
@@ -18003,14 +18096,17 @@ type FileEnumerator interface {
 	SetPending(pending bool)
 }
 
+// fileEnumerator implements the FileEnumerator interface.
 type fileEnumerator struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFileEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileEnumerator(obj *externglib.Object) FileEnumerator {
-	return fileEnumerator{*externglib.Object{obj}}
+	return FileEnumerator{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFileEnumerator(p uintptr) (interface{}, error) {
@@ -18273,14 +18369,17 @@ type FileIOStream interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// fileIOStream implements the FileIOStream interface.
 type fileIOStream struct {
-	ioStream
+	IOStream
 }
 
 // WrapFileIOStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileIOStream(obj *externglib.Object) FileIOStream {
-	return fileIOStream{ioStream{*externglib.Object{obj}}}
+	return FileIOStream{
+		IOStream: WrapIOStream(obj),
+	}
 }
 
 func marshalFileIOStream(p uintptr) (interface{}, error) {
@@ -18371,14 +18470,17 @@ type FileIcon interface {
 	gextras.Objector
 }
 
+// fileIcon implements the FileIcon interface.
 type fileIcon struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFileIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileIcon(obj *externglib.Object) FileIcon {
-	return fileIcon{*externglib.Object{obj}}
+	return FileIcon{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFileIcon(p uintptr) (interface{}, error) {
@@ -18599,14 +18701,17 @@ type FileInfo interface {
 	UnsetAttributeMask()
 }
 
+// fileInfo implements the FileInfo interface.
 type fileInfo struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFileInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileInfo(obj *externglib.Object) FileInfo {
-	return fileInfo{*externglib.Object{obj}}
+	return FileInfo{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFileInfo(p uintptr) (interface{}, error) {
@@ -19644,14 +19749,17 @@ type FileInputStream interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// fileInputStream implements the FileInputStream interface.
 type fileInputStream struct {
-	inputStream
+	InputStream
 }
 
 // WrapFileInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileInputStream(obj *externglib.Object) FileInputStream {
-	return fileInputStream{inputStream{*externglib.Object{obj}}}
+	return FileInputStream{
+		InputStream: WrapInputStream(obj),
+	}
 }
 
 func marshalFileInputStream(p uintptr) (interface{}, error) {
@@ -19737,14 +19845,17 @@ type FileMonitor interface {
 	SetRateLimit(limitMsecs int)
 }
 
+// fileMonitor implements the FileMonitor interface.
 type fileMonitor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFileMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileMonitor(obj *externglib.Object) FileMonitor {
-	return fileMonitor{*externglib.Object{obj}}
+	return FileMonitor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFileMonitor(p uintptr) (interface{}, error) {
@@ -19840,14 +19951,17 @@ type FileOutputStream interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// fileOutputStream implements the FileOutputStream interface.
 type fileOutputStream struct {
-	outputStream
+	OutputStream
 }
 
 // WrapFileOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileOutputStream(obj *externglib.Object) FileOutputStream {
-	return fileOutputStream{outputStream{*externglib.Object{obj}}}
+	return FileOutputStream{
+		OutputStream: WrapOutputStream(obj),
+	}
 }
 
 func marshalFileOutputStream(p uintptr) (interface{}, error) {
@@ -19948,14 +20062,17 @@ type FilenameCompleter interface {
 	SetDirsOnly(dirsOnly bool)
 }
 
+// filenameCompleter implements the FilenameCompleter interface.
 type filenameCompleter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFilenameCompleter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
-	return filenameCompleter{*externglib.Object{obj}}
+	return FilenameCompleter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
@@ -20054,14 +20171,17 @@ type FilterInputStream interface {
 	SetCloseBaseStream(closeBase bool)
 }
 
+// filterInputStream implements the FilterInputStream interface.
 type filterInputStream struct {
-	inputStream
+	InputStream
 }
 
 // WrapFilterInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilterInputStream(obj *externglib.Object) FilterInputStream {
-	return filterInputStream{inputStream{*externglib.Object{obj}}}
+	return FilterInputStream{
+		InputStream: WrapInputStream(obj),
+	}
 }
 
 func marshalFilterInputStream(p uintptr) (interface{}, error) {
@@ -20130,14 +20250,17 @@ type FilterOutputStream interface {
 	SetCloseBaseStream(closeBase bool)
 }
 
+// filterOutputStream implements the FilterOutputStream interface.
 type filterOutputStream struct {
-	outputStream
+	OutputStream
 }
 
 // WrapFilterOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilterOutputStream(obj *externglib.Object) FilterOutputStream {
-	return filterOutputStream{outputStream{*externglib.Object{obj}}}
+	return FilterOutputStream{
+		OutputStream: WrapOutputStream(obj),
+	}
 }
 
 func marshalFilterOutputStream(p uintptr) (interface{}, error) {
@@ -20305,14 +20428,17 @@ type IOStream interface {
 	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// ioStream implements the IOStream interface.
 type ioStream struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapIOStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIOStream(obj *externglib.Object) IOStream {
-	return ioStream{*externglib.Object{obj}}
+	return IOStream{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalIOStream(p uintptr) (interface{}, error) {
@@ -20556,14 +20682,17 @@ type InetAddress interface {
 	String() string
 }
 
+// inetAddress implements the InetAddress interface.
 type inetAddress struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapInetAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInetAddress(obj *externglib.Object) InetAddress {
-	return inetAddress{*externglib.Object{obj}}
+	return InetAddress{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalInetAddress(p uintptr) (interface{}, error) {
@@ -20893,14 +21022,17 @@ type InetAddressMask interface {
 	String() string
 }
 
+// inetAddressMask implements the InetAddressMask interface.
 type inetAddressMask struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapInetAddressMask wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInetAddressMask(obj *externglib.Object) InetAddressMask {
-	return inetAddressMask{*externglib.Object{obj}}
+	return InetAddressMask{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalInetAddressMask(p uintptr) (interface{}, error) {
@@ -21054,14 +21186,17 @@ type InetSocketAddress interface {
 	ScopeID() uint32
 }
 
+// inetSocketAddress implements the InetSocketAddress interface.
 type inetSocketAddress struct {
-	socketAddress
+	SocketAddress
 }
 
 // WrapInetSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
-	return inetSocketAddress{socketAddress{*externglib.Object{obj}}}
+	return InetSocketAddress{
+		SocketAddress: WrapSocketAddress(obj),
+	}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
@@ -21391,14 +21526,17 @@ type InputStream interface {
 	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// inputStream implements the InputStream interface.
 type inputStream struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInputStream(obj *externglib.Object) InputStream {
-	return inputStream{*externglib.Object{obj}}
+	return InputStream{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalInputStream(p uintptr) (interface{}, error) {
@@ -21949,14 +22087,17 @@ type ListStore interface {
 	Sort(compareFunc glib.CompareDataFunc)
 }
 
+// listStore implements the ListStore interface.
 type listStore struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapListStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListStore(obj *externglib.Object) ListStore {
-	return listStore{*externglib.Object{obj}}
+	return ListStore{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
@@ -22142,14 +22283,17 @@ type MemoryInputStream interface {
 	AddBytes(bytes *glib.Bytes)
 }
 
+// memoryInputStream implements the MemoryInputStream interface.
 type memoryInputStream struct {
-	inputStream
+	InputStream
 }
 
 // WrapMemoryInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryInputStream(obj *externglib.Object) MemoryInputStream {
-	return memoryInputStream{inputStream{*externglib.Object{obj}}}
+	return MemoryInputStream{
+		InputStream: WrapInputStream(obj),
+	}
 }
 
 func marshalMemoryInputStream(p uintptr) (interface{}, error) {
@@ -22239,14 +22383,17 @@ type MemoryOutputStream interface {
 	StealData() interface{}
 }
 
+// memoryOutputStream implements the MemoryOutputStream interface.
 type memoryOutputStream struct {
-	outputStream
+	OutputStream
 }
 
 // WrapMemoryOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
-	return memoryOutputStream{outputStream{*externglib.Object{obj}}}
+	return MemoryOutputStream{
+		OutputStream: WrapOutputStream(obj),
+	}
 }
 
 func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
@@ -22478,14 +22625,17 @@ type Menu interface {
 	RemoveAll()
 }
 
+// menu implements the Menu interface.
 type menu struct {
-	menuModel
+	MenuModel
 }
 
 // WrapMenu wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenu(obj *externglib.Object) Menu {
-	return menu{menuModel{*externglib.Object{obj}}}
+	return Menu{
+		MenuModel: WrapMenuModel(obj),
+	}
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
@@ -22797,14 +22947,17 @@ type MenuAttributeIter interface {
 	Next() bool
 }
 
+// menuAttributeIter implements the MenuAttributeIter interface.
 type menuAttributeIter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMenuAttributeIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
-	return menuAttributeIter{*externglib.Object{obj}}
+	return MenuAttributeIter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
@@ -23022,14 +23175,17 @@ type MenuItem interface {
 	SetSubmenu(submenu MenuModel)
 }
 
+// menuItem implements the MenuItem interface.
 type menuItem struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMenuItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuItem(obj *externglib.Object) MenuItem {
-	return menuItem{*externglib.Object{obj}}
+	return MenuItem{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
@@ -23365,14 +23521,17 @@ type MenuLinkIter interface {
 	Next() bool
 }
 
+// menuLinkIter implements the MenuLinkIter interface.
 type menuLinkIter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMenuLinkIter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
-	return menuLinkIter{*externglib.Object{obj}}
+	return MenuLinkIter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMenuLinkIter(p uintptr) (interface{}, error) {
@@ -23639,14 +23798,17 @@ type MenuModel interface {
 	IterateItemLinks(itemIndex int) MenuLinkIter
 }
 
+// menuModel implements the MenuModel interface.
 type menuModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMenuModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuModel(obj *externglib.Object) MenuModel {
-	return menuModel{*externglib.Object{obj}}
+	return MenuModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMenuModel(p uintptr) (interface{}, error) {
@@ -23884,14 +24046,17 @@ type MountOperation interface {
 	SetUsername(username string)
 }
 
+// mountOperation implements the MountOperation interface.
 type mountOperation struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMountOperation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMountOperation(obj *externglib.Object) MountOperation {
-	return mountOperation{*externglib.Object{obj}}
+	return MountOperation{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
@@ -24172,14 +24337,17 @@ type NativeSocketAddress interface {
 	SocketAddress
 }
 
+// nativeSocketAddress implements the NativeSocketAddress interface.
 type nativeSocketAddress struct {
-	socketAddress
+	SocketAddress
 }
 
 // WrapNativeSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
-	return nativeSocketAddress{socketAddress{*externglib.Object{obj}}}
+	return NativeSocketAddress{
+		SocketAddress: WrapSocketAddress(obj),
+	}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
@@ -24209,14 +24377,17 @@ type NativeVolumeMonitor interface {
 	VolumeMonitor
 }
 
+// nativeVolumeMonitor implements the NativeVolumeMonitor interface.
 type nativeVolumeMonitor struct {
-	volumeMonitor
+	VolumeMonitor
 }
 
 // WrapNativeVolumeMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitor {
-	return nativeVolumeMonitor{volumeMonitor{*externglib.Object{obj}}}
+	return NativeVolumeMonitor{
+		VolumeMonitor: WrapVolumeMonitor(obj),
+	}
 }
 
 func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
@@ -24245,14 +24416,17 @@ type NetworkAddress interface {
 	Scheme() string
 }
 
+// networkAddress implements the NetworkAddress interface.
 type networkAddress struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapNetworkAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNetworkAddress(obj *externglib.Object) NetworkAddress {
-	return networkAddress{*externglib.Object{obj}}
+	return NetworkAddress{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
@@ -24365,14 +24539,17 @@ type NetworkService interface {
 	SetScheme(scheme string)
 }
 
+// networkService implements the NetworkService interface.
 type networkService struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapNetworkService wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNetworkService(obj *externglib.Object) NetworkService {
-	return networkService{*externglib.Object{obj}}
+	return NetworkService{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalNetworkService(p uintptr) (interface{}, error) {
@@ -24550,14 +24727,17 @@ type Notification interface {
 	SetUrgent(urgent bool)
 }
 
+// notification implements the Notification interface.
 type notification struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapNotification wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNotification(obj *externglib.Object) Notification {
-	return notification{*externglib.Object{obj}}
+	return Notification{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
@@ -24840,14 +25020,17 @@ type OutputStream interface {
 	WriteBytesAsync(bytes *glib.Bytes, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// outputStream implements the OutputStream interface.
 type outputStream struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOutputStream(obj *externglib.Object) OutputStream {
-	return outputStream{*externglib.Object{obj}}
+	return OutputStream{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalOutputStream(p uintptr) (interface{}, error) {
@@ -25230,14 +25413,17 @@ type Permission interface {
 	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// permission implements the Permission interface.
 type permission struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPermission wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPermission(obj *externglib.Object) Permission {
-	return permission{*externglib.Object{obj}}
+	return Permission{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPermission(p uintptr) (interface{}, error) {
@@ -25466,14 +25652,17 @@ type PropertyAction interface {
 	gextras.Objector
 }
 
+// propertyAction implements the PropertyAction interface.
 type propertyAction struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPropertyAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPropertyAction(obj *externglib.Object) PropertyAction {
-	return propertyAction{*externglib.Object{obj}}
+	return PropertyAction{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
@@ -25528,14 +25717,17 @@ type ProxyAddress interface {
 	Username() string
 }
 
+// proxyAddress implements the ProxyAddress interface.
 type proxyAddress struct {
-	inetSocketAddress
+	InetSocketAddress
 }
 
 // WrapProxyAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapProxyAddress(obj *externglib.Object) ProxyAddress {
-	return proxyAddress{inetSocketAddress{socketAddress{*externglib.Object{obj}}}}
+	return ProxyAddress{
+		InetSocketAddress: WrapInetSocketAddress(obj),
+	}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
@@ -25697,14 +25889,17 @@ type ProxyAddressEnumerator interface {
 	SocketAddressEnumerator
 }
 
+// proxyAddressEnumerator implements the ProxyAddressEnumerator interface.
 type proxyAddressEnumerator struct {
-	socketAddressEnumerator
+	SocketAddressEnumerator
 }
 
 // WrapProxyAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
-	return proxyAddressEnumerator{socketAddressEnumerator{*externglib.Object{obj}}}
+	return ProxyAddressEnumerator{
+		SocketAddressEnumerator: WrapSocketAddressEnumerator(obj),
+	}
 }
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
@@ -25825,14 +26020,17 @@ type Resolver interface {
 	SetDefault()
 }
 
+// resolver implements the Resolver interface.
 type resolver struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapResolver wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapResolver(obj *externglib.Object) Resolver {
-	return resolver{*externglib.Object{obj}}
+	return Resolver{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalResolver(p uintptr) (interface{}, error) {
@@ -26777,14 +26975,17 @@ type Settings interface {
 	SetValue(key string, value *glib.Variant) bool
 }
 
+// settings implements the Settings interface.
 type settings struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSettings wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return settings{*externglib.Object{obj}}
+	return Settings{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -27997,14 +28198,17 @@ type SettingsBackend interface {
 	WritableChanged(key string)
 }
 
+// settingsBackend implements the SettingsBackend interface.
 type settingsBackend struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSettingsBackend wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSettingsBackend(obj *externglib.Object) SettingsBackend {
-	return settingsBackend{*externglib.Object{obj}}
+	return SettingsBackend{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSettingsBackend(p uintptr) (interface{}, error) {
@@ -28197,14 +28401,17 @@ type SimpleAction interface {
 	SetStateHint(stateHint *glib.Variant)
 }
 
+// simpleAction implements the SimpleAction interface.
 type simpleAction struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSimpleAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleAction(obj *externglib.Object) SimpleAction {
-	return simpleAction{*externglib.Object{obj}}
+	return SimpleAction{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
@@ -28312,14 +28519,17 @@ type SimpleActionGroup interface {
 	Remove(actionName string)
 }
 
+// simpleActionGroup implements the SimpleActionGroup interface.
 type simpleActionGroup struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSimpleActionGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleActionGroup(obj *externglib.Object) SimpleActionGroup {
-	return simpleActionGroup{*externglib.Object{obj}}
+	return SimpleActionGroup{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
@@ -28592,14 +28802,17 @@ type SimpleAsyncResult interface {
 	TakeError(error *glib.Error)
 }
 
+// simpleAsyncResult implements the SimpleAsyncResult interface.
 type simpleAsyncResult struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSimpleAsyncResult wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
-	return simpleAsyncResult{*externglib.Object{obj}}
+	return SimpleAsyncResult{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
@@ -28901,14 +29114,17 @@ type SimpleIOStream interface {
 	IOStream
 }
 
+// simpleIOStream implements the SimpleIOStream interface.
 type simpleIOStream struct {
-	ioStream
+	IOStream
 }
 
 // WrapSimpleIOStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleIOStream(obj *externglib.Object) SimpleIOStream {
-	return simpleIOStream{ioStream{*externglib.Object{obj}}}
+	return SimpleIOStream{
+		IOStream: WrapIOStream(obj),
+	}
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
@@ -28943,14 +29159,17 @@ type SimplePermission interface {
 	Permission
 }
 
+// simplePermission implements the SimplePermission interface.
 type simplePermission struct {
-	permission
+	Permission
 }
 
 // WrapSimplePermission wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimplePermission(obj *externglib.Object) SimplePermission {
-	return simplePermission{permission{*externglib.Object{obj}}}
+	return SimplePermission{
+		Permission: WrapPermission(obj),
+	}
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
@@ -29006,14 +29225,17 @@ type SimpleProxyResolver interface {
 	SetURIProxy(uriScheme string, proxy string)
 }
 
+// simpleProxyResolver implements the SimpleProxyResolver interface.
 type simpleProxyResolver struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSimpleProxyResolver wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
-	return simpleProxyResolver{*externglib.Object{obj}}
+	return SimpleProxyResolver{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
@@ -29566,14 +29788,17 @@ type Socket interface {
 	SpeaksIpv4() bool
 }
 
+// socket implements the Socket interface.
 type socket struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSocket wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocket(obj *externglib.Object) Socket {
-	return socket{*externglib.Object{obj}}
+	return Socket{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSocket(p uintptr) (interface{}, error) {
@@ -30801,14 +31026,17 @@ type SocketAddress interface {
 	ToNative(dest interface{}, destlen uint) bool
 }
 
+// socketAddress implements the SocketAddress interface.
 type socketAddress struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketAddress(obj *externglib.Object) SocketAddress {
-	return socketAddress{*externglib.Object{obj}}
+	return SocketAddress{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSocketAddress(p uintptr) (interface{}, error) {
@@ -30925,14 +31153,17 @@ type SocketAddressEnumerator interface {
 	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// socketAddressEnumerator implements the SocketAddressEnumerator interface.
 type socketAddressEnumerator struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSocketAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
-	return socketAddressEnumerator{*externglib.Object{obj}}
+	return SocketAddressEnumerator{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
@@ -31203,14 +31434,17 @@ type SocketClient interface {
 	SetTLSValidationFlags(flags TLSCertificateFlags)
 }
 
+// socketClient implements the SocketClient interface.
 type socketClient struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSocketClient wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketClient(obj *externglib.Object) SocketClient {
-	return socketClient{*externglib.Object{obj}}
+	return SocketClient{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSocketClient(p uintptr) (interface{}, error) {
@@ -31784,14 +32018,17 @@ type SocketConnection interface {
 	IsConnected() bool
 }
 
+// socketConnection implements the SocketConnection interface.
 type socketConnection struct {
-	ioStream
+	IOStream
 }
 
 // WrapSocketConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketConnection(obj *externglib.Object) SocketConnection {
-	return socketConnection{ioStream{*externglib.Object{obj}}}
+	return SocketConnection{
+		IOStream: WrapIOStream(obj),
+	}
 }
 
 func marshalSocketConnection(p uintptr) (interface{}, error) {
@@ -31948,14 +32185,17 @@ type SocketControlMessage interface {
 	Serialize(data interface{})
 }
 
+// socketControlMessage implements the SocketControlMessage interface.
 type socketControlMessage struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSocketControlMessage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
-	return socketControlMessage{*externglib.Object{obj}}
+	return SocketControlMessage{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSocketControlMessage(p uintptr) (interface{}, error) {
@@ -32153,14 +32393,17 @@ type SocketListener interface {
 	SetBacklog(listenBacklog int)
 }
 
+// socketListener implements the SocketListener interface.
 type socketListener struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSocketListener wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketListener(obj *externglib.Object) SocketListener {
-	return socketListener{*externglib.Object{obj}}
+	return SocketListener{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSocketListener(p uintptr) (interface{}, error) {
@@ -32496,14 +32739,17 @@ type SocketService interface {
 	Stop()
 }
 
+// socketService implements the SocketService interface.
 type socketService struct {
-	socketListener
+	SocketListener
 }
 
 // WrapSocketService wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSocketService(obj *externglib.Object) SocketService {
-	return socketService{socketListener{*externglib.Object{obj}}}
+	return SocketService{
+		SocketListener: WrapSocketListener(obj),
+	}
 }
 
 func marshalSocketService(p uintptr) (interface{}, error) {
@@ -32795,14 +33041,17 @@ type Subprocess interface {
 	WaitCheckAsync(cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// subprocess implements the Subprocess interface.
 type subprocess struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSubprocess wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSubprocess(obj *externglib.Object) Subprocess {
-	return subprocess{*externglib.Object{obj}}
+	return Subprocess{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSubprocess(p uintptr) (interface{}, error) {
@@ -33470,14 +33719,17 @@ type SubprocessLauncher interface {
 	Unsetenv(variable string)
 }
 
+// subprocessLauncher implements the SubprocessLauncher interface.
 type subprocessLauncher struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSubprocessLauncher wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncher {
-	return subprocessLauncher{*externglib.Object{obj}}
+	return SubprocessLauncher{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
@@ -34218,14 +34470,17 @@ type Task interface {
 	SetTaskData(taskData interface{})
 }
 
+// task implements the Task interface.
 type task struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTask wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTask(obj *externglib.Object) Task {
-	return task{*externglib.Object{obj}}
+	return Task{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTask(p uintptr) (interface{}, error) {
@@ -34820,14 +35075,17 @@ type TcpConnection interface {
 	SetGracefulDisconnect(gracefulDisconnect bool)
 }
 
+// tcpConnection implements the TcpConnection interface.
 type tcpConnection struct {
-	socketConnection
+	SocketConnection
 }
 
 // WrapTcpConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTcpConnection(obj *externglib.Object) TcpConnection {
-	return tcpConnection{socketConnection{ioStream{*externglib.Object{obj}}}}
+	return TcpConnection{
+		SocketConnection: WrapSocketConnection(obj),
+	}
 }
 
 func marshalTcpConnection(p uintptr) (interface{}, error) {
@@ -34883,14 +35141,17 @@ type TcpWrapperConnection interface {
 	BaseIOStream() IOStream
 }
 
+// tcpWrapperConnection implements the TcpWrapperConnection interface.
 type tcpWrapperConnection struct {
-	tcpConnection
+	TcpConnection
 }
 
 // WrapTcpWrapperConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTcpWrapperConnection(obj *externglib.Object) TcpWrapperConnection {
-	return tcpWrapperConnection{tcpConnection{socketConnection{ioStream{*externglib.Object{obj}}}}}
+	return TcpWrapperConnection{
+		TcpConnection: WrapTcpConnection(obj),
+	}
 }
 
 func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
@@ -35040,14 +35301,17 @@ type TestDBus interface {
 	Up()
 }
 
+// testDBus implements the TestDBus interface.
 type testDBus struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTestDBus wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTestDBus(obj *externglib.Object) TestDBus {
-	return testDBus{*externglib.Object{obj}}
+	return TestDBus{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
@@ -35183,14 +35447,17 @@ type ThemedIcon interface {
 	PrependName(iconname string)
 }
 
+// themedIcon implements the ThemedIcon interface.
 type themedIcon struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapThemedIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapThemedIcon(obj *externglib.Object) ThemedIcon {
-	return themedIcon{*externglib.Object{obj}}
+	return ThemedIcon{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalThemedIcon(p uintptr) (interface{}, error) {
@@ -35304,14 +35571,17 @@ type ThreadedSocketService interface {
 	SocketService
 }
 
+// threadedSocketService implements the ThreadedSocketService interface.
 type threadedSocketService struct {
-	socketService
+	SocketService
 }
 
 // WrapThreadedSocketService wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapThreadedSocketService(obj *externglib.Object) ThreadedSocketService {
-	return threadedSocketService{socketService{socketListener{*externglib.Object{obj}}}}
+	return ThreadedSocketService{
+		SocketService: WrapSocketService(obj),
+	}
 }
 
 func marshalThreadedSocketService(p uintptr) (interface{}, error) {
@@ -35370,14 +35640,17 @@ type TLSCertificate interface {
 	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
 }
 
+// tlsCertificate implements the TLSCertificate interface.
 type tlsCertificate struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTLSCertificate wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTLSCertificate(obj *externglib.Object) TLSCertificate {
-	return tlsCertificate{*externglib.Object{obj}}
+	return TLSCertificate{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTLSCertificate(p uintptr) (interface{}, error) {
@@ -35690,14 +35963,17 @@ type TLSConnection interface {
 	SetUseSystemCertdb(useSystemCertdb bool)
 }
 
+// tlsConnection implements the TLSConnection interface.
 type tlsConnection struct {
-	ioStream
+	IOStream
 }
 
 // WrapTLSConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTLSConnection(obj *externglib.Object) TLSConnection {
-	return tlsConnection{ioStream{*externglib.Object{obj}}}
+	return TLSConnection{
+		IOStream: WrapIOStream(obj),
+	}
 }
 
 func marshalTLSConnection(p uintptr) (interface{}, error) {
@@ -36245,14 +36521,17 @@ type TLSDatabase interface {
 	VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// tlsDatabase implements the TLSDatabase interface.
 type tlsDatabase struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTLSDatabase wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTLSDatabase(obj *externglib.Object) TLSDatabase {
-	return tlsDatabase{*externglib.Object{obj}}
+	return TLSDatabase{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTLSDatabase(p uintptr) (interface{}, error) {
@@ -36672,14 +36951,17 @@ type TLSInteraction interface {
 	RequestCertificateAsync(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
+// tlsInteraction implements the TLSInteraction interface.
 type tlsInteraction struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTLSInteraction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTLSInteraction(obj *externglib.Object) TLSInteraction {
-	return tlsInteraction{*externglib.Object{obj}}
+	return TLSInteraction{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTLSInteraction(p uintptr) (interface{}, error) {
@@ -36923,14 +37205,17 @@ type TLSPassword interface {
 	SetWarning(warning string)
 }
 
+// tlsPassword implements the TLSPassword interface.
 type tlsPassword struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTLSPassword wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTLSPassword(obj *externglib.Object) TLSPassword {
-	return tlsPassword{*externglib.Object{obj}}
+	return TLSPassword{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTLSPassword(p uintptr) (interface{}, error) {
@@ -37144,14 +37429,17 @@ type UnixConnection interface {
 	SendFd(fd int, cancellable Cancellable) bool
 }
 
+// unixConnection implements the UnixConnection interface.
 type unixConnection struct {
-	socketConnection
+	SocketConnection
 }
 
 // WrapUnixConnection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixConnection(obj *externglib.Object) UnixConnection {
-	return unixConnection{socketConnection{ioStream{*externglib.Object{obj}}}}
+	return UnixConnection{
+		SocketConnection: WrapSocketConnection(obj),
+	}
 }
 
 func marshalUnixConnection(p uintptr) (interface{}, error) {
@@ -37329,14 +37617,17 @@ type UnixCredentialsMessage interface {
 	Credentials() Credentials
 }
 
+// unixCredentialsMessage implements the UnixCredentialsMessage interface.
 type unixCredentialsMessage struct {
-	socketControlMessage
+	SocketControlMessage
 }
 
 // WrapUnixCredentialsMessage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
-	return unixCredentialsMessage{socketControlMessage{*externglib.Object{obj}}}
+	return UnixCredentialsMessage{
+		SocketControlMessage: WrapSocketControlMessage(obj),
+	}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
@@ -37459,14 +37750,17 @@ type UnixFDList interface {
 	StealFds() (length int, gints []int)
 }
 
+// unixFDList implements the UnixFDList interface.
 type unixFDList struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapUnixFDList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixFDList(obj *externglib.Object) UnixFDList {
-	return unixFDList{*externglib.Object{obj}}
+	return UnixFDList{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalUnixFDList(p uintptr) (interface{}, error) {
@@ -37683,14 +37977,17 @@ type UnixFDMessage interface {
 	StealFds() (length int, gints []int)
 }
 
+// unixFDMessage implements the UnixFDMessage interface.
 type unixFDMessage struct {
-	socketControlMessage
+	SocketControlMessage
 }
 
 // WrapUnixFDMessage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return unixFDMessage{socketControlMessage{*externglib.Object{obj}}}
+	return UnixFDMessage{
+		SocketControlMessage: WrapSocketControlMessage(obj),
+	}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
@@ -37827,14 +38124,17 @@ type UnixInputStream interface {
 	SetCloseFd(closeFd bool)
 }
 
+// unixInputStream implements the UnixInputStream interface.
 type unixInputStream struct {
-	inputStream
+	InputStream
 }
 
 // WrapUnixInputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixInputStream(obj *externglib.Object) UnixInputStream {
-	return unixInputStream{inputStream{*externglib.Object{obj}}}
+	return UnixInputStream{
+		InputStream: WrapInputStream(obj),
+	}
 }
 
 func marshalUnixInputStream(p uintptr) (interface{}, error) {
@@ -37916,14 +38216,17 @@ type UnixMountMonitor interface {
 	SetRateLimit(limitMsec int)
 }
 
+// unixMountMonitor implements the UnixMountMonitor interface.
 type unixMountMonitor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapUnixMountMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
-	return unixMountMonitor{*externglib.Object{obj}}
+	return UnixMountMonitor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
@@ -37981,14 +38284,17 @@ type UnixOutputStream interface {
 	SetCloseFd(closeFd bool)
 }
 
+// unixOutputStream implements the UnixOutputStream interface.
 type unixOutputStream struct {
-	outputStream
+	OutputStream
 }
 
 // WrapUnixOutputStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixOutputStream(obj *externglib.Object) UnixOutputStream {
-	return unixOutputStream{outputStream{*externglib.Object{obj}}}
+	return UnixOutputStream{
+		OutputStream: WrapOutputStream(obj),
+	}
 }
 
 func marshalUnixOutputStream(p uintptr) (interface{}, error) {
@@ -38090,14 +38396,17 @@ type UnixSocketAddress interface {
 	PathLen() uint
 }
 
+// unixSocketAddress implements the UnixSocketAddress interface.
 type unixSocketAddress struct {
-	socketAddress
+	SocketAddress
 }
 
 // WrapUnixSocketAddress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return unixSocketAddress{socketAddress{*externglib.Object{obj}}}
+	return UnixSocketAddress{
+		SocketAddress: WrapSocketAddress(obj),
+	}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
@@ -38224,14 +38533,17 @@ type Vfs interface {
 	UnregisterURIScheme(scheme string) bool
 }
 
+// vfs implements the Vfs interface.
 type vfs struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapVfs wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVfs(obj *externglib.Object) Vfs {
-	return vfs{*externglib.Object{obj}}
+	return Vfs{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalVfs(p uintptr) (interface{}, error) {
@@ -38374,14 +38686,17 @@ type VolumeMonitor interface {
 	Volumes() *glib.List
 }
 
+// volumeMonitor implements the VolumeMonitor interface.
 type volumeMonitor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapVolumeMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
-	return volumeMonitor{*externglib.Object{obj}}
+	return VolumeMonitor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalVolumeMonitor(p uintptr) (interface{}, error) {
@@ -38461,14 +38776,17 @@ type ZlibCompressor interface {
 	SetFileInfo(fileInfo FileInfo)
 }
 
+// zlibCompressor implements the ZlibCompressor interface.
 type zlibCompressor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapZlibCompressor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapZlibCompressor(obj *externglib.Object) ZlibCompressor {
-	return zlibCompressor{*externglib.Object{obj}}
+	return ZlibCompressor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalZlibCompressor(p uintptr) (interface{}, error) {
@@ -38539,14 +38857,17 @@ type ZlibDecompressor interface {
 	FileInfo() FileInfo
 }
 
+// zlibDecompressor implements the ZlibDecompressor interface.
 type zlibDecompressor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapZlibDecompressor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapZlibDecompressor(obj *externglib.Object) ZlibDecompressor {
-	return zlibDecompressor{*externglib.Object{obj}}
+	return ZlibDecompressor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalZlibDecompressor(p uintptr) (interface{}, error) {

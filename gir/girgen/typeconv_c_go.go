@@ -244,18 +244,12 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	}
 
 	if result.Class != nil || result.Record != nil {
-		// externName doesn't contain the pointer.
-		externName, _ := resolved.Extern.Result.Info()
-		externName = PascalToGo(externName)
-
-		wrapName := "Wrap" + externName
-		if resolved.NeedsNamespace(ng.current) {
-			wrapName = resolved.Package + "." + wrapName
-		}
+		wrapName := resolved.WrapName(resolved.NeedsNamespace(ng.current))
 
 		switch {
 		case result.Class != nil:
 			return cgoTakeObject(conv.TypeConversion, wrapName)
+
 		case result.Record != nil:
 			b := pen.NewBlock()
 			b.Linef(conv.call(wrapName))
@@ -272,7 +266,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	}
 
 	if result.Callback != nil {
-		ng.logln(logError, "idk what to do with C->Go callback", goName)
+		ng.logln(logWarn, "idk what to do with C->Go callback", goName)
 		return ""
 	}
 

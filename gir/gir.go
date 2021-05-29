@@ -219,7 +219,7 @@ func (res *TypeFindResult) Info() (name, ctype string) {
 	case res.Alias != nil:
 		return res.Alias.Name, res.Alias.CType
 	case res.Class != nil:
-		return res.Class.Name, res.Class.CType
+		return res.Class.Name, res.Class.GLibTypeName
 	case res.Interface != nil:
 		return res.Interface.Name, res.Interface.CType
 	case res.Record != nil:

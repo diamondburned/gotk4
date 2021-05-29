@@ -50,10 +50,13 @@ type initGenerator struct {
 
 func (ng *NamespaceGenerator) generateInit() {
 	ng.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
+
 	ng.pen.BlockTmpl(initTmpl, initGenerator{
 		Namespace: ng.current.Namespace,
-		C:         &classGenerator{Ng: ng},
-		R:         &recordGenerator{Ng: ng},
-		Ng:        ng,
+
+		Ng: ng,
+
+		C: newClassGenerator(ng),
+		R: newRecordGenerator(ng),
 	})
 }

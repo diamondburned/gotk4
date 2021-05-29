@@ -54,6 +54,13 @@ func (p *Piece) Char(b byte) *Piece {
 	return p
 }
 
+// EmptyLine writes a new line.
+func (p *Piece) EmptyLine() *Piece {
+	p.ensureCap()
+	p.str.WriteByte('\n')
+	return p
+}
+
 // Line writes a line.
 func (p *Piece) Line(line string) *Piece {
 	p.ensureCap()

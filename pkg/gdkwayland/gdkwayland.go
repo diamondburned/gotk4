@@ -88,6 +88,7 @@ type WaylandDevice interface {
 	WlSeat() interface{}
 }
 
+// waylandDevice implements the WaylandDevice interface.
 type waylandDevice struct {
 	gdk.Device
 }
@@ -95,7 +96,9 @@ type waylandDevice struct {
 // WrapWaylandDevice wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandDevice(obj *externglib.Object) WaylandDevice {
-	return waylandDevice{gdk.WrapDevice(obj)}
+	return WaylandDevice{
+		gdk.Device: gdk.WrapDevice(obj),
+	}
 }
 
 func marshalWaylandDevice(p uintptr) (interface{}, error) {
@@ -198,6 +201,7 @@ type WaylandDisplay interface {
 	SetStartupNotificationID(startupID string)
 }
 
+// waylandDisplay implements the WaylandDisplay interface.
 type waylandDisplay struct {
 	gdk.Display
 }
@@ -205,7 +209,9 @@ type waylandDisplay struct {
 // WrapWaylandDisplay wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
-	return waylandDisplay{gdk.WrapDisplay(obj)}
+	return WaylandDisplay{
+		gdk.Display: gdk.WrapDisplay(obj),
+	}
 }
 
 func marshalWaylandDisplay(p uintptr) (interface{}, error) {
@@ -321,6 +327,7 @@ type WaylandMonitor interface {
 	WlOutput() interface{}
 }
 
+// waylandMonitor implements the WaylandMonitor interface.
 type waylandMonitor struct {
 	gdk.Monitor
 }
@@ -328,7 +335,9 @@ type waylandMonitor struct {
 // WrapWaylandMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
-	return waylandMonitor{gdk.WrapMonitor(obj)}
+	return WaylandMonitor{
+		gdk.Monitor: gdk.WrapMonitor(obj),
+	}
 }
 
 func marshalWaylandMonitor(p uintptr) (interface{}, error) {
@@ -356,14 +365,17 @@ type WaylandPopup interface {
 	WaylandSurface
 }
 
+// waylandPopup implements the WaylandPopup interface.
 type waylandPopup struct {
-	waylandSurface
+	WaylandSurface
 }
 
 // WrapWaylandPopup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandPopup(obj *externglib.Object) WaylandPopup {
-	return waylandPopup{waylandSurface{gdk.WrapSurface(obj)}}
+	return WaylandPopup{
+		WaylandSurface: WrapWaylandSurface(obj),
+	}
 }
 
 func marshalWaylandPopup(p uintptr) (interface{}, error) {
@@ -379,6 +391,7 @@ type WaylandSeat interface {
 	WlSeat() interface{}
 }
 
+// waylandSeat implements the WaylandSeat interface.
 type waylandSeat struct {
 	gdk.Seat
 }
@@ -386,7 +399,9 @@ type waylandSeat struct {
 // WrapWaylandSeat wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandSeat(obj *externglib.Object) WaylandSeat {
-	return waylandSeat{gdk.WrapSeat(obj)}
+	return WaylandSeat{
+		gdk.Seat: gdk.WrapSeat(obj),
+	}
 }
 
 func marshalWaylandSeat(p uintptr) (interface{}, error) {
@@ -417,6 +432,7 @@ type WaylandSurface interface {
 	WlSurface() interface{}
 }
 
+// waylandSurface implements the WaylandSurface interface.
 type waylandSurface struct {
 	gdk.Surface
 }
@@ -424,7 +440,9 @@ type waylandSurface struct {
 // WrapWaylandSurface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandSurface(obj *externglib.Object) WaylandSurface {
-	return waylandSurface{gdk.WrapSurface(obj)}
+	return WaylandSurface{
+		gdk.Surface: gdk.WrapSurface(obj),
+	}
 }
 
 func marshalWaylandSurface(p uintptr) (interface{}, error) {
@@ -490,14 +508,17 @@ type WaylandToplevel interface {
 	UnexportHandle()
 }
 
+// waylandToplevel implements the WaylandToplevel interface.
 type waylandToplevel struct {
-	waylandSurface
+	WaylandSurface
 }
 
 // WrapWaylandToplevel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWaylandToplevel(obj *externglib.Object) WaylandToplevel {
-	return waylandToplevel{waylandSurface{gdk.WrapSurface(obj)}}
+	return WaylandToplevel{
+		WaylandSurface: WrapWaylandSurface(obj),
+	}
 }
 
 func marshalWaylandToplevel(p uintptr) (interface{}, error) {

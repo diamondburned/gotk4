@@ -14,6 +14,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
+	"github.com/diamondburned/gotk4/pkg/gsk"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -418,7 +419,7 @@ func init() {
 		{T: externglib.Type(C.gtk_builder_cscope_get_type()), F: marshalBuilderCScope},
 		{T: externglib.Type(C.gtk_builder_list_item_factory_get_type()), F: marshalBuilderListItemFactory},
 		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButton},
-		{T: externglib.Type(C.gtk_cclosure_expression_get_type()), F: marshalCClosureExpression},
+		// Skipped CClosureExpression.
 		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendar},
 		{T: externglib.Type(C.gtk_callback_action_get_type()), F: marshalCallbackAction},
 		{T: externglib.Type(C.gtk_cell_area_get_type()), F: marshalCellArea},
@@ -437,7 +438,7 @@ func init() {
 		{T: externglib.Type(C.gtk_center_box_get_type()), F: marshalCenterBox},
 		{T: externglib.Type(C.gtk_center_layout_get_type()), F: marshalCenterLayout},
 		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButton},
-		{T: externglib.Type(C.gtk_closure_expression_get_type()), F: marshalClosureExpression},
+		// Skipped ClosureExpression.
 		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButton},
 		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialog},
 		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidget},
@@ -445,7 +446,7 @@ func init() {
 		{T: externglib.Type(C.gtk_column_view_column_get_type()), F: marshalColumnViewColumn},
 		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBox},
 		{T: externglib.Type(C.gtk_combo_box_text_get_type()), F: marshalComboBoxText},
-		{T: externglib.Type(C.gtk_constant_expression_get_type()), F: marshalConstantExpression},
+		// Skipped ConstantExpression.
 		{T: externglib.Type(C.gtk_constraint_get_type()), F: marshalConstraint},
 		{T: externglib.Type(C.gtk_constraint_guide_get_type()), F: marshalConstraintGuide},
 		{T: externglib.Type(C.gtk_constraint_layout_get_type()), F: marshalConstraintLayout},
@@ -551,7 +552,7 @@ func init() {
 		{T: externglib.Type(C.gtk_notebook_page_get_type()), F: marshalNotebookPage},
 		{T: externglib.Type(C.gtk_nothing_action_get_type()), F: marshalNothingAction},
 		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorter},
-		{T: externglib.Type(C.gtk_object_expression_get_type()), F: marshalObjectExpression},
+		// Skipped ObjectExpression.
 		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlay},
 		{T: externglib.Type(C.gtk_overlay_layout_get_type()), F: marshalOverlayLayout},
 		{T: externglib.Type(C.gtk_overlay_layout_child_get_type()), F: marshalOverlayLayoutChild},
@@ -568,7 +569,7 @@ func init() {
 		{T: externglib.Type(C.gtk_print_operation_get_type()), F: marshalPrintOperation},
 		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettings},
 		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBar},
-		{T: externglib.Type(C.gtk_property_expression_get_type()), F: marshalPropertyExpression},
+		// Skipped PropertyExpression.
 		{T: externglib.Type(C.gtk_range_get_type()), F: marshalRange},
 		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManager},
 		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealer},
@@ -9979,14 +9980,17 @@ type ATContext interface {
 	AccessibleRole() AccessibleRole
 }
 
+// atContext implements the ATContext interface.
 type atContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapATContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapATContext(obj *externglib.Object) ATContext {
-	return atContext{*externglib.Object{obj}}
+	return ATContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalATContext(p uintptr) (interface{}, error) {
@@ -10160,14 +10164,17 @@ type AboutDialog interface {
 	SetWrapLicense(wrapLicense bool)
 }
 
+// aboutDialog implements the AboutDialog interface.
 type aboutDialog struct {
-	window
+	Window
 }
 
 // WrapAboutDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAboutDialog(obj *externglib.Object) AboutDialog {
-	return aboutDialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return AboutDialog{
+		Window: WrapWindow(obj),
+	}
 }
 
 func marshalAboutDialog(p uintptr) (interface{}, error) {
@@ -10731,14 +10738,17 @@ type ActionBar interface {
 	SetRevealed(revealed bool)
 }
 
+// actionBar implements the ActionBar interface.
 type actionBar struct {
-	widget
+	Widget
 }
 
 // WrapActionBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapActionBar(obj *externglib.Object) ActionBar {
-	return actionBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ActionBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalActionBar(p uintptr) (interface{}, error) {
@@ -10856,14 +10866,17 @@ type ActivateAction interface {
 	ShortcutAction
 }
 
+// activateAction implements the ActivateAction interface.
 type activateAction struct {
-	shortcutAction
+	ShortcutAction
 }
 
 // WrapActivateAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapActivateAction(obj *externglib.Object) ActivateAction {
-	return activateAction{shortcutAction{*externglib.Object{obj}}}
+	return ActivateAction{
+		ShortcutAction: WrapShortcutAction(obj),
+	}
 }
 
 func marshalActivateAction(p uintptr) (interface{}, error) {
@@ -10962,14 +10975,17 @@ type Adjustment interface {
 	SetValue(value float64)
 }
 
+// adjustment implements the Adjustment interface.
 type adjustment struct {
-	externglib.InitiallyUnowned
+	gextras.Objector
 }
 
 // WrapAdjustment wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAdjustment(obj *externglib.Object) Adjustment {
-	return adjustment{externglib.InitiallyUnowned{*externglib.Object{obj}}}
+	return Adjustment{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
@@ -11269,14 +11285,17 @@ type AlternativeTrigger interface {
 	Second() ShortcutTrigger
 }
 
+// alternativeTrigger implements the AlternativeTrigger interface.
 type alternativeTrigger struct {
-	shortcutTrigger
+	ShortcutTrigger
 }
 
 // WrapAlternativeTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAlternativeTrigger(obj *externglib.Object) AlternativeTrigger {
-	return alternativeTrigger{shortcutTrigger{*externglib.Object{obj}}}
+	return AlternativeTrigger{
+		ShortcutTrigger: WrapShortcutTrigger(obj),
+	}
 }
 
 func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
@@ -11338,14 +11357,17 @@ type AnyFilter interface {
 	MultiFilter
 }
 
+// anyFilter implements the AnyFilter interface.
 type anyFilter struct {
-	multiFilter
+	MultiFilter
 }
 
 // WrapAnyFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAnyFilter(obj *externglib.Object) AnyFilter {
-	return anyFilter{multiFilter{filter{*externglib.Object{obj}}}}
+	return AnyFilter{
+		MultiFilter: WrapMultiFilter(obj),
+	}
 }
 
 func marshalAnyFilter(p uintptr) (interface{}, error) {
@@ -11427,14 +11449,17 @@ type AppChooserButton interface {
 	SetShowDialogItem(setting bool)
 }
 
+// appChooserButton implements the AppChooserButton interface.
 type appChooserButton struct {
-	widget
+	Widget
 }
 
 // WrapAppChooserButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppChooserButton(obj *externglib.Object) AppChooserButton {
-	return appChooserButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return AppChooserButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalAppChooserButton(p uintptr) (interface{}, error) {
@@ -11616,14 +11641,17 @@ type AppChooserDialog interface {
 	SetHeading(heading string)
 }
 
+// appChooserDialog implements the AppChooserDialog interface.
 type appChooserDialog struct {
-	dialog
+	Dialog
 }
 
 // WrapAppChooserDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppChooserDialog(obj *externglib.Object) AppChooserDialog {
-	return appChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
+	return AppChooserDialog{
+		Dialog: WrapDialog(obj),
+	}
 }
 
 func marshalAppChooserDialog(p uintptr) (interface{}, error) {
@@ -11755,14 +11783,17 @@ type AppChooserWidget interface {
 	SetShowRecommended(setting bool)
 }
 
+// appChooserWidget implements the AppChooserWidget interface.
 type appChooserWidget struct {
-	widget
+	Widget
 }
 
 // WrapAppChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
-	return appChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return AppChooserWidget{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalAppChooserWidget(p uintptr) (interface{}, error) {
@@ -12156,6 +12187,7 @@ type Application interface {
 	Uninhibit(cookie uint)
 }
 
+// application implements the Application interface.
 type application struct {
 	gio.Application
 }
@@ -12163,7 +12195,9 @@ type application struct {
 // WrapApplication wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplication(obj *externglib.Object) Application {
-	return application{gio.WrapApplication(obj)}
+	return Application{
+		gio.Application: gio.WrapApplication(obj),
+	}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
@@ -12625,14 +12659,17 @@ type ApplicationWindow interface {
 	SetShowMenubar(showMenubar bool)
 }
 
+// applicationWindow implements the ApplicationWindow interface.
 type applicationWindow struct {
-	window
+	Window
 }
 
 // WrapApplicationWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
-	return applicationWindow{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ApplicationWindow{
+		Window: WrapWindow(obj),
+	}
 }
 
 func marshalApplicationWindow(p uintptr) (interface{}, error) {
@@ -12773,14 +12810,17 @@ type AspectFrame interface {
 	SetYalign(yalign float32)
 }
 
+// aspectFrame implements the AspectFrame interface.
 type aspectFrame struct {
-	widget
+	Widget
 }
 
 // WrapAspectFrame wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAspectFrame(obj *externglib.Object) AspectFrame {
-	return aspectFrame{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return AspectFrame{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalAspectFrame(p uintptr) (interface{}, error) {
@@ -13073,14 +13113,17 @@ type Assistant interface {
 	UpdateButtonsState()
 }
 
+// assistant implements the Assistant interface.
 type assistant struct {
-	window
+	Window
 }
 
 // WrapAssistant wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAssistant(obj *externglib.Object) Assistant {
-	return assistant{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return Assistant{
+		Window: WrapWindow(obj),
+	}
 }
 
 func marshalAssistant(p uintptr) (interface{}, error) {
@@ -13450,14 +13493,17 @@ type AssistantPage interface {
 	Child() Widget
 }
 
+// assistantPage implements the AssistantPage interface.
 type assistantPage struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapAssistantPage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAssistantPage(obj *externglib.Object) AssistantPage {
-	return assistantPage{*externglib.Object{obj}}
+	return AssistantPage{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalAssistantPage(p uintptr) (interface{}, error) {
@@ -13490,14 +13536,17 @@ type BinLayout interface {
 	LayoutManager
 }
 
+// binLayout implements the BinLayout interface.
 type binLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapBinLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBinLayout(obj *externglib.Object) BinLayout {
-	return binLayout{layoutManager{*externglib.Object{obj}}}
+	return BinLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalBinLayout(p uintptr) (interface{}, error) {
@@ -13551,14 +13600,17 @@ type BookmarkList interface {
 	SetIOPriority(ioPriority int)
 }
 
+// bookmarkList implements the BookmarkList interface.
 type bookmarkList struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapBookmarkList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBookmarkList(obj *externglib.Object) BookmarkList {
-	return bookmarkList{*externglib.Object{obj}}
+	return BookmarkList{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalBookmarkList(p uintptr) (interface{}, error) {
@@ -13698,14 +13750,17 @@ type BoolFilter interface {
 	SetInvert(invert bool)
 }
 
+// boolFilter implements the BoolFilter interface.
 type boolFilter struct {
-	filter
+	Filter
 }
 
 // WrapBoolFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBoolFilter(obj *externglib.Object) BoolFilter {
-	return boolFilter{filter{*externglib.Object{obj}}}
+	return BoolFilter{
+		Filter: WrapFilter(obj),
+	}
 }
 
 func marshalBoolFilter(p uintptr) (interface{}, error) {
@@ -13852,14 +13907,17 @@ type Box interface {
 	SetSpacing(spacing int)
 }
 
+// box implements the Box interface.
 type box struct {
-	widget
+	Widget
 }
 
 // WrapBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBox(obj *externglib.Object) Box {
-	return box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Box{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
@@ -14069,14 +14127,17 @@ type BoxLayout interface {
 	SetSpacing(spacing uint)
 }
 
+// boxLayout implements the BoxLayout interface.
 type boxLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapBoxLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBoxLayout(obj *externglib.Object) BoxLayout {
-	return boxLayout{layoutManager{*externglib.Object{obj}}}
+	return BoxLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
@@ -14482,14 +14543,17 @@ type Builder interface {
 	SetTranslationDomain(domain string)
 }
 
+// builder implements the Builder interface.
 type builder struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapBuilder wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBuilder(obj *externglib.Object) Builder {
-	return builder{*externglib.Object{obj}}
+	return Builder{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalBuilder(p uintptr) (interface{}, error) {
@@ -14915,14 +14979,17 @@ type BuilderCScope interface {
 	gextras.Objector
 }
 
+// builderCScope implements the BuilderCScope interface.
 type builderCScope struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapBuilderCScope wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBuilderCScope(obj *externglib.Object) BuilderCScope {
-	return builderCScope{*externglib.Object{obj}}
+	return BuilderCScope{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
@@ -14976,14 +15043,17 @@ type BuilderListItemFactory interface {
 	Resource() string
 }
 
+// builderListItemFactory implements the BuilderListItemFactory interface.
 type builderListItemFactory struct {
-	listItemFactory
+	ListItemFactory
 }
 
 // WrapBuilderListItemFactory wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
-	return builderListItemFactory{listItemFactory{*externglib.Object{obj}}}
+	return BuilderListItemFactory{
+		ListItemFactory: WrapListItemFactory(obj),
+	}
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
@@ -15120,14 +15190,17 @@ type Button interface {
 	SetUseUnderline(useUnderline bool)
 }
 
+// button implements the Button interface.
 type button struct {
-	widget
+	Widget
 }
 
 // WrapButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapButton(obj *externglib.Object) Button {
-	return button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Button{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalButton(p uintptr) (interface{}, error) {
@@ -15339,26 +15412,6 @@ func (button button) SetUseUnderline(useUnderline bool) {
 	C.gtk_button_set_use_underline(arg0, arg1)
 }
 
-type CClosureExpression interface {
-	Expression
-}
-
-type cClosureExpression struct {
-	expression
-}
-
-// WrapCClosureExpression wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapCClosureExpression(obj *externglib.Object) CClosureExpression {
-	return cClosureExpression{expression{obj}}
-}
-
-func marshalCClosureExpression(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCClosureExpression(obj), nil
-}
-
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
 // It can be created with gtk_calendar_new().
 //
@@ -15436,14 +15489,17 @@ type Calendar interface {
 	UnmarkDay(day uint)
 }
 
+// calendar implements the Calendar interface.
 type calendar struct {
-	widget
+	Widget
 }
 
 // WrapCalendar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCalendar(obj *externglib.Object) Calendar {
-	return calendar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Calendar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalCalendar(p uintptr) (interface{}, error) {
@@ -15627,14 +15683,17 @@ type CallbackAction interface {
 	ShortcutAction
 }
 
+// callbackAction implements the CallbackAction interface.
 type callbackAction struct {
-	shortcutAction
+	ShortcutAction
 }
 
 // WrapCallbackAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCallbackAction(obj *externglib.Object) CallbackAction {
-	return callbackAction{shortcutAction{*externglib.Object{obj}}}
+	return CallbackAction{
+		ShortcutAction: WrapShortcutAction(obj),
+	}
 }
 
 func marshalCallbackAction(p uintptr) (interface{}, error) {
@@ -15948,14 +16007,17 @@ type CellArea interface {
 	StopEditing(canceled bool)
 }
 
+// cellArea implements the CellArea interface.
 type cellArea struct {
-	externglib.InitiallyUnowned
+	gextras.Objector
 }
 
 // WrapCellArea wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellArea(obj *externglib.Object) CellArea {
-	return cellArea{externglib.InitiallyUnowned{*externglib.Object{obj}}}
+	return CellArea{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCellArea(p uintptr) (interface{}, error) {
@@ -16779,14 +16841,17 @@ type CellAreaBox interface {
 	SetSpacing(spacing int)
 }
 
+// cellAreaBox implements the CellAreaBox interface.
 type cellAreaBox struct {
-	cellArea
+	CellArea
 }
 
 // WrapCellAreaBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellAreaBox(obj *externglib.Object) CellAreaBox {
-	return cellAreaBox{cellArea{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellAreaBox{
+		CellArea: WrapCellArea(obj),
+	}
 }
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
@@ -16975,14 +17040,17 @@ type CellAreaContext interface {
 	Reset()
 }
 
+// cellAreaContext implements the CellAreaContext interface.
 type cellAreaContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCellAreaContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellAreaContext(obj *externglib.Object) CellAreaContext {
-	return cellAreaContext{*externglib.Object{obj}}
+	return CellAreaContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {
@@ -17337,14 +17405,17 @@ type CellRenderer interface {
 	StopEditing(canceled bool)
 }
 
+// cellRenderer implements the CellRenderer interface.
 type cellRenderer struct {
-	externglib.InitiallyUnowned
+	gextras.Objector
 }
 
 // WrapCellRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRenderer(obj *externglib.Object) CellRenderer {
-	return cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}
+	return CellRenderer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {
@@ -17830,14 +17901,17 @@ type CellRendererAccel interface {
 	CellRendererText
 }
 
+// cellRendererAccel implements the CellRendererAccel interface.
 type cellRendererAccel struct {
-	cellRendererText
+	CellRendererText
 }
 
 // WrapCellRendererAccel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
-	return cellRendererAccel{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return CellRendererAccel{
+		CellRendererText: WrapCellRendererText(obj),
+	}
 }
 
 func marshalCellRendererAccel(p uintptr) (interface{}, error) {
@@ -17872,14 +17946,17 @@ type CellRendererCombo interface {
 	CellRendererText
 }
 
+// cellRendererCombo implements the CellRendererCombo interface.
 type cellRendererCombo struct {
-	cellRendererText
+	CellRendererText
 }
 
 // WrapCellRendererCombo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
-	return cellRendererCombo{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return CellRendererCombo{
+		CellRendererText: WrapCellRendererText(obj),
+	}
 }
 
 func marshalCellRendererCombo(p uintptr) (interface{}, error) {
@@ -17916,14 +17993,17 @@ type CellRendererPixbuf interface {
 	CellRenderer
 }
 
+// cellRendererPixbuf implements the CellRendererPixbuf interface.
 type cellRendererPixbuf struct {
-	cellRenderer
+	CellRenderer
 }
 
 // WrapCellRendererPixbuf wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
-	return cellRendererPixbuf{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellRendererPixbuf{
+		CellRenderer: WrapCellRenderer(obj),
+	}
 }
 
 func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
@@ -17950,14 +18030,17 @@ type CellRendererProgress interface {
 	CellRenderer
 }
 
+// cellRendererProgress implements the CellRendererProgress interface.
 type cellRendererProgress struct {
-	cellRenderer
+	CellRenderer
 }
 
 // WrapCellRendererProgress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
-	return cellRendererProgress{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellRendererProgress{
+		CellRenderer: WrapCellRenderer(obj),
+	}
 }
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
@@ -17995,14 +18078,17 @@ type CellRendererSpin interface {
 	CellRendererText
 }
 
+// cellRendererSpin implements the CellRendererSpin interface.
 type cellRendererSpin struct {
-	cellRendererText
+	CellRendererText
 }
 
 // WrapCellRendererSpin wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererSpin(obj *externglib.Object) CellRendererSpin {
-	return cellRendererSpin{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return CellRendererSpin{
+		CellRendererText: WrapCellRendererText(obj),
+	}
 }
 
 func marshalCellRendererSpin(p uintptr) (interface{}, error) {
@@ -18037,14 +18123,17 @@ type CellRendererSpinner interface {
 	CellRenderer
 }
 
+// cellRendererSpinner implements the CellRendererSpinner interface.
 type cellRendererSpinner struct {
-	cellRenderer
+	CellRenderer
 }
 
 // WrapCellRendererSpinner wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
-	return cellRendererSpinner{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellRendererSpinner{
+		CellRenderer: WrapCellRenderer(obj),
+	}
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
@@ -18086,14 +18175,17 @@ type CellRendererText interface {
 	SetFixedHeightFromFont(numberOfRows int)
 }
 
+// cellRendererText implements the CellRendererText interface.
 type cellRendererText struct {
-	cellRenderer
+	CellRenderer
 }
 
 // WrapCellRendererText wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererText(obj *externglib.Object) CellRendererText {
-	return cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellRendererText{
+		CellRenderer: WrapCellRenderer(obj),
+	}
 }
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
@@ -18160,14 +18252,17 @@ type CellRendererToggle interface {
 	SetRadio(radio bool)
 }
 
+// cellRendererToggle implements the CellRendererToggle interface.
 type cellRendererToggle struct {
-	cellRenderer
+	CellRenderer
 }
 
 // WrapCellRendererToggle wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellRendererToggle(obj *externglib.Object) CellRendererToggle {
-	return cellRendererToggle{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellRendererToggle{
+		CellRenderer: WrapCellRenderer(obj),
+	}
 }
 
 func marshalCellRendererToggle(p uintptr) (interface{}, error) {
@@ -18327,14 +18422,17 @@ type CellView interface {
 	SetModel(model TreeModel)
 }
 
+// cellView implements the CellView interface.
 type cellView struct {
-	widget
+	Widget
 }
 
 // WrapCellView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCellView(obj *externglib.Object) CellView {
-	return cellView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CellView{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalCellView(p uintptr) (interface{}, error) {
@@ -18586,14 +18684,17 @@ type CenterBox interface {
 	SetStartWidget(child Widget)
 }
 
+// centerBox implements the CenterBox interface.
 type centerBox struct {
-	widget
+	Widget
 }
 
 // WrapCenterBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCenterBox(obj *externglib.Object) CenterBox {
-	return centerBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CenterBox{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalCenterBox(p uintptr) (interface{}, error) {
@@ -18763,14 +18864,17 @@ type CenterLayout interface {
 	SetStartWidget(widget Widget)
 }
 
+// centerLayout implements the CenterLayout interface.
 type centerLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapCenterLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCenterLayout(obj *externglib.Object) CenterLayout {
-	return centerLayout{layoutManager{*externglib.Object{obj}}}
+	return CenterLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
@@ -18998,14 +19102,17 @@ type CheckButton interface {
 	SetUseUnderline(setting bool)
 }
 
+// checkButton implements the CheckButton interface.
 type checkButton struct {
-	widget
+	Widget
 }
 
 // WrapCheckButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCheckButton(obj *externglib.Object) CheckButton {
-	return checkButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return CheckButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalCheckButton(p uintptr) (interface{}, error) {
@@ -19204,26 +19311,6 @@ func (self checkButton) SetUseUnderline(setting bool) {
 	C.gtk_check_button_set_use_underline(arg0, arg1)
 }
 
-type ClosureExpression interface {
-	Expression
-}
-
-type closureExpression struct {
-	expression
-}
-
-// WrapClosureExpression wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapClosureExpression(obj *externglib.Object) ClosureExpression {
-	return closureExpression{expression{obj}}
-}
-
-func marshalClosureExpression(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapClosureExpression(obj), nil
-}
-
 // ColorButton: the ColorButton is a button which displays the currently
 // selected color and allows to open a color selection dialog to change the
 // color. It is suitable widget for selecting a color in a preference dialog.
@@ -19251,14 +19338,17 @@ type ColorButton interface {
 	SetTitle(title string)
 }
 
+// colorButton implements the ColorButton interface.
 type colorButton struct {
-	widget
+	Widget
 }
 
 // WrapColorButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColorButton(obj *externglib.Object) ColorButton {
-	return colorButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ColorButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalColorButton(p uintptr) (interface{}, error) {
@@ -19353,14 +19443,17 @@ type ColorChooserDialog interface {
 	Dialog
 }
 
+// colorChooserDialog implements the ColorChooserDialog interface.
 type colorChooserDialog struct {
-	dialog
+	Dialog
 }
 
 // WrapColorChooserDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
-	return colorChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
+	return ColorChooserDialog{
+		Dialog: WrapDialog(obj),
+	}
 }
 
 func marshalColorChooserDialog(p uintptr) (interface{}, error) {
@@ -19411,14 +19504,17 @@ type ColorChooserWidget interface {
 	Widget
 }
 
+// colorChooserWidget implements the ColorChooserWidget interface.
 type colorChooserWidget struct {
-	widget
+	Widget
 }
 
 // WrapColorChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
-	return colorChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ColorChooserWidget{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalColorChooserWidget(p uintptr) (interface{}, error) {
@@ -19579,14 +19675,17 @@ type ColumnView interface {
 	SortByColumn(column ColumnViewColumn, direction SortType)
 }
 
+// columnView implements the ColumnView interface.
 type columnView struct {
-	widget
+	Widget
 }
 
 // WrapColumnView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColumnView(obj *externglib.Object) ColumnView {
-	return columnView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ColumnView{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalColumnView(p uintptr) (interface{}, error) {
@@ -19924,14 +20023,17 @@ type ColumnViewColumn interface {
 	SetVisible(visible bool)
 }
 
+// columnViewColumn implements the ColumnViewColumn interface.
 type columnViewColumn struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapColumnViewColumn wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapColumnViewColumn(obj *externglib.Object) ColumnViewColumn {
-	return columnViewColumn{*externglib.Object{obj}}
+	return ColumnViewColumn{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalColumnViewColumn(p uintptr) (interface{}, error) {
@@ -20354,14 +20456,17 @@ type ComboBox interface {
 	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 }
 
+// comboBox implements the ComboBox interface.
 type comboBox struct {
-	widget
+	Widget
 }
 
 // WrapComboBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapComboBox(obj *externglib.Object) ComboBox {
-	return comboBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ComboBox{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalComboBox(p uintptr) (interface{}, error) {
@@ -20839,14 +20944,17 @@ type ComboBoxText interface {
 	RemoveAll()
 }
 
+// comboBoxText implements the ComboBoxText interface.
 type comboBoxText struct {
-	comboBox
+	ComboBox
 }
 
 // WrapComboBoxText wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapComboBoxText(obj *externglib.Object) ComboBoxText {
-	return comboBoxText{comboBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ComboBoxText{
+		ComboBox: WrapComboBox(obj),
+	}
 }
 
 func marshalComboBoxText(p uintptr) (interface{}, error) {
@@ -21027,41 +21135,6 @@ func (comboBox comboBoxText) RemoveAll() {
 	C.gtk_combo_box_text_remove_all(arg0)
 }
 
-type ConstantExpression interface {
-	Expression
-}
-
-type constantExpression struct {
-	expression
-}
-
-// WrapConstantExpression wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapConstantExpression(obj *externglib.Object) ConstantExpression {
-	return constantExpression{expression{obj}}
-}
-
-func marshalConstantExpression(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapConstantExpression(obj), nil
-}
-
-// NewConstantExpressionForValue constructs a class ConstantExpression.
-func NewConstantExpressionForValue(value *externglib.Value) ConstantExpression {
-	var arg1 *C.GValue
-
-	arg1 = (*C.GValue)(value.GValue)
-
-	ret := C.gtk_constant_expression_new_for_value(arg1)
-
-	var ret0 ConstantExpression
-
-	ret0 = WrapConstantExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // Constraint describes a constraint between an attribute on a widget and
 // another attribute on another widget, expressed as a linear equation like:
 //
@@ -21104,14 +21177,17 @@ type Constraint interface {
 	IsRequired() bool
 }
 
+// constraint implements the Constraint interface.
 type constraint struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapConstraint wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraint(obj *externglib.Object) Constraint {
-	return constraint{*externglib.Object{obj}}
+	return Constraint{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalConstraint(p uintptr) (interface{}, error) {
@@ -21354,14 +21430,17 @@ type ConstraintGuide interface {
 	SetStrength(strength ConstraintStrength)
 }
 
+// constraintGuide implements the ConstraintGuide interface.
 type constraintGuide struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapConstraintGuide wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraintGuide(obj *externglib.Object) ConstraintGuide {
-	return constraintGuide{*externglib.Object{obj}}
+	return ConstraintGuide{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalConstraintGuide(p uintptr) (interface{}, error) {
@@ -21724,14 +21803,17 @@ type ConstraintLayout interface {
 	RemoveGuide(guide ConstraintGuide)
 }
 
+// constraintLayout implements the ConstraintLayout interface.
 type constraintLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapConstraintLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
-	return constraintLayout{layoutManager{*externglib.Object{obj}}}
+	return ConstraintLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalConstraintLayout(p uintptr) (interface{}, error) {
@@ -21827,14 +21909,17 @@ type ConstraintLayoutChild interface {
 	LayoutChild
 }
 
+// constraintLayoutChild implements the ConstraintLayoutChild interface.
 type constraintLayoutChild struct {
-	layoutChild
+	LayoutChild
 }
 
 // WrapConstraintLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
-	return constraintLayoutChild{layoutChild{*externglib.Object{obj}}}
+	return ConstraintLayoutChild{
+		LayoutChild: WrapLayoutChild(obj),
+	}
 }
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
@@ -21892,14 +21977,17 @@ type CSSProvider interface {
 	String() string
 }
 
+// cssProvider implements the CSSProvider interface.
 type cssProvider struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCSSProvider wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCSSProvider(obj *externglib.Object) CSSProvider {
-	return cssProvider{*externglib.Object{obj}}
+	return CSSProvider{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
@@ -22004,14 +22092,17 @@ type CustomFilter interface {
 	SetFilterFunc(matchFunc CustomFilterFunc)
 }
 
+// customFilter implements the CustomFilter interface.
 type customFilter struct {
-	filter
+	Filter
 }
 
 // WrapCustomFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCustomFilter(obj *externglib.Object) CustomFilter {
-	return customFilter{filter{*externglib.Object{obj}}}
+	return CustomFilter{
+		Filter: WrapFilter(obj),
+	}
 }
 
 func marshalCustomFilter(p uintptr) (interface{}, error) {
@@ -22065,14 +22156,17 @@ type CustomLayout interface {
 	LayoutManager
 }
 
+// customLayout implements the CustomLayout interface.
 type customLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapCustomLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCustomLayout(obj *externglib.Object) CustomLayout {
-	return customLayout{layoutManager{*externglib.Object{obj}}}
+	return CustomLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
@@ -22116,14 +22210,17 @@ type CustomSorter interface {
 	SetSortFunc(sortFunc glib.CompareDataFunc)
 }
 
+// customSorter implements the CustomSorter interface.
 type customSorter struct {
-	sorter
+	Sorter
 }
 
 // WrapCustomSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCustomSorter(obj *externglib.Object) CustomSorter {
-	return customSorter{sorter{*externglib.Object{obj}}}
+	return CustomSorter{
+		Sorter: WrapSorter(obj),
+	}
 }
 
 func marshalCustomSorter(p uintptr) (interface{}, error) {
@@ -22319,14 +22416,17 @@ type Dialog interface {
 	SetResponseSensitive(responseID int, setting bool)
 }
 
+// dialog implements the Dialog interface.
 type dialog struct {
-	window
+	Window
 }
 
 // WrapDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDialog(obj *externglib.Object) Dialog {
-	return dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return Dialog{
+		Window: WrapWindow(obj),
+	}
 }
 
 func marshalDialog(p uintptr) (interface{}, error) {
@@ -22571,14 +22671,17 @@ type DirectoryList interface {
 	SetMonitored(monitored bool)
 }
 
+// directoryList implements the DirectoryList interface.
 type directoryList struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDirectoryList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDirectoryList(obj *externglib.Object) DirectoryList {
-	return directoryList{*externglib.Object{obj}}
+	return DirectoryList{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDirectoryList(p uintptr) (interface{}, error) {
@@ -22775,14 +22878,17 @@ type DragIcon interface {
 	SetChild(child Widget)
 }
 
+// dragIcon implements the DragIcon interface.
 type dragIcon struct {
-	widget
+	Widget
 }
 
 // WrapDragIcon wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDragIcon(obj *externglib.Object) DragIcon {
-	return dragIcon{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return DragIcon{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
@@ -22886,14 +22992,17 @@ type DragSource interface {
 	SetIcon(paintable gdk.Paintable, hotX int, hotY int)
 }
 
+// dragSource implements the DragSource interface.
 type dragSource struct {
-	gestureSingle
+	GestureSingle
 }
 
 // WrapDragSource wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDragSource(obj *externglib.Object) DragSource {
-	return dragSource{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
+	return DragSource{
+		GestureSingle: WrapGestureSingle(obj),
+	}
 }
 
 func marshalDragSource(p uintptr) (interface{}, error) {
@@ -23142,14 +23251,17 @@ type DrawingArea interface {
 	SetDrawFunc(drawFunc DrawingAreaDrawFunc)
 }
 
+// drawingArea implements the DrawingArea interface.
 type drawingArea struct {
-	widget
+	Widget
 }
 
 // WrapDrawingArea wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrawingArea(obj *externglib.Object) DrawingArea {
-	return drawingArea{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return DrawingArea{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
@@ -23280,14 +23392,17 @@ type DropControllerMotion interface {
 	IsPointer() bool
 }
 
+// dropControllerMotion implements the DropControllerMotion interface.
 type dropControllerMotion struct {
-	eventController
+	EventController
 }
 
 // WrapDropControllerMotion wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
-	return dropControllerMotion{eventController{*externglib.Object{obj}}}
+	return DropControllerMotion{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalDropControllerMotion(p uintptr) (interface{}, error) {
@@ -23421,14 +23536,17 @@ type DropDown interface {
 	SetSelected(position uint)
 }
 
+// dropDown implements the DropDown interface.
 type dropDown struct {
-	widget
+	Widget
 }
 
 // WrapDropDown wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropDown(obj *externglib.Object) DropDown {
-	return dropDown{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return DropDown{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalDropDown(p uintptr) (interface{}, error) {
@@ -23731,14 +23849,17 @@ type DropTarget interface {
 	SetPreload(preload bool)
 }
 
+// dropTarget implements the DropTarget interface.
 type dropTarget struct {
-	eventController
+	EventController
 }
 
 // WrapDropTarget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropTarget(obj *externglib.Object) DropTarget {
-	return dropTarget{eventController{*externglib.Object{obj}}}
+	return DropTarget{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalDropTarget(p uintptr) (interface{}, error) {
@@ -23915,14 +24036,17 @@ type DropTargetAsync interface {
 	SetFormats(formats *gdk.ContentFormats)
 }
 
+// dropTargetAsync implements the DropTargetAsync interface.
 type dropTargetAsync struct {
-	eventController
+	EventController
 }
 
 // WrapDropTargetAsync wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
-	return dropTargetAsync{eventController{*externglib.Object{obj}}}
+	return DropTargetAsync{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalDropTargetAsync(p uintptr) (interface{}, error) {
@@ -24052,14 +24176,17 @@ type EditableLabel interface {
 	StopEditing(commit bool)
 }
 
+// editableLabel implements the EditableLabel interface.
 type editableLabel struct {
-	widget
+	Widget
 }
 
 // WrapEditableLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEditableLabel(obj *externglib.Object) EditableLabel {
-	return editableLabel{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return EditableLabel{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalEditableLabel(p uintptr) (interface{}, error) {
@@ -24149,14 +24276,17 @@ type EmojiChooser interface {
 	Popover
 }
 
+// emojiChooser implements the EmojiChooser interface.
 type emojiChooser struct {
-	popover
+	Popover
 }
 
 // WrapEmojiChooser wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEmojiChooser(obj *externglib.Object) EmojiChooser {
-	return emojiChooser{popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return EmojiChooser{
+		Popover: WrapPopover(obj),
+	}
 }
 
 func marshalEmojiChooser(p uintptr) (interface{}, error) {
@@ -24501,14 +24631,17 @@ type Entry interface {
 	UnsetInvisibleChar()
 }
 
+// entry implements the Entry interface.
 type entry struct {
-	widget
+	Widget
 }
 
 // WrapEntry wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEntry(obj *externglib.Object) Entry {
-	return entry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Entry{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalEntry(p uintptr) (interface{}, error) {
@@ -25494,14 +25627,17 @@ type EntryBuffer interface {
 	SetText(chars string, nChars int)
 }
 
+// entryBuffer implements the EntryBuffer interface.
 type entryBuffer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapEntryBuffer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEntryBuffer(obj *externglib.Object) EntryBuffer {
-	return entryBuffer{*externglib.Object{obj}}
+	return EntryBuffer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalEntryBuffer(p uintptr) (interface{}, error) {
@@ -25823,14 +25959,17 @@ type EntryCompletion interface {
 	SetTextColumn(column int)
 }
 
+// entryCompletion implements the EntryCompletion interface.
 type entryCompletion struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapEntryCompletion wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEntryCompletion(obj *externglib.Object) EntryCompletion {
-	return entryCompletion{*externglib.Object{obj}}
+	return EntryCompletion{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalEntryCompletion(p uintptr) (interface{}, error) {
@@ -26220,14 +26359,17 @@ type EventController interface {
 	SetPropagationPhase(phase PropagationPhase)
 }
 
+// eventController implements the EventController interface.
 type eventController struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapEventController wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventController(obj *externglib.Object) EventController {
-	return eventController{*externglib.Object{obj}}
+	return EventController{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalEventController(p uintptr) (interface{}, error) {
@@ -26429,14 +26571,17 @@ type EventControllerFocus interface {
 	IsFocus() bool
 }
 
+// eventControllerFocus implements the EventControllerFocus interface.
 type eventControllerFocus struct {
-	eventController
+	EventController
 }
 
 // WrapEventControllerFocus wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerFocus(obj *externglib.Object) EventControllerFocus {
-	return eventControllerFocus{eventController{*externglib.Object{obj}}}
+	return EventControllerFocus{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalEventControllerFocus(p uintptr) (interface{}, error) {
@@ -26509,14 +26654,17 @@ type EventControllerKey interface {
 	SetImContext(imContext IMContext)
 }
 
+// eventControllerKey implements the EventControllerKey interface.
 type eventControllerKey struct {
-	eventController
+	EventController
 }
 
 // WrapEventControllerKey wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerKey(obj *externglib.Object) EventControllerKey {
-	return eventControllerKey{eventController{*externglib.Object{obj}}}
+	return EventControllerKey{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
@@ -26607,14 +26755,17 @@ type EventControllerLegacy interface {
 	EventController
 }
 
+// eventControllerLegacy implements the EventControllerLegacy interface.
 type eventControllerLegacy struct {
-	eventController
+	EventController
 }
 
 // WrapEventControllerLegacy wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
-	return eventControllerLegacy{eventController{*externglib.Object{obj}}}
+	return EventControllerLegacy{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
@@ -26648,14 +26799,17 @@ type EventControllerMotion interface {
 	IsPointer() bool
 }
 
+// eventControllerMotion implements the EventControllerMotion interface.
 type eventControllerMotion struct {
-	eventController
+	EventController
 }
 
 // WrapEventControllerMotion wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
-	return eventControllerMotion{eventController{*externglib.Object{obj}}}
+	return EventControllerMotion{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
@@ -26749,14 +26903,17 @@ type EventControllerScroll interface {
 	SetFlags(flags EventControllerScrollFlags)
 }
 
+// eventControllerScroll implements the EventControllerScroll interface.
 type eventControllerScroll struct {
-	eventController
+	EventController
 }
 
 // WrapEventControllerScroll wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
-	return eventControllerScroll{eventController{*externglib.Object{obj}}}
+	return EventControllerScroll{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
@@ -26810,14 +26967,17 @@ type EveryFilter interface {
 	MultiFilter
 }
 
+// everyFilter implements the EveryFilter interface.
 type everyFilter struct {
-	multiFilter
+	MultiFilter
 }
 
 // WrapEveryFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapEveryFilter(obj *externglib.Object) EveryFilter {
-	return everyFilter{multiFilter{filter{*externglib.Object{obj}}}}
+	return EveryFilter{
+		MultiFilter: WrapMultiFilter(obj),
+	}
 }
 
 func marshalEveryFilter(p uintptr) (interface{}, error) {
@@ -26932,14 +27092,17 @@ type Expander interface {
 	SetUseUnderline(useUnderline bool)
 }
 
+// expander implements the Expander interface.
 type expander struct {
-	widget
+	Widget
 }
 
 // WrapExpander wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapExpander(obj *externglib.Object) Expander {
-	return expander{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Expander{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalExpander(p uintptr) (interface{}, error) {
@@ -27363,14 +27526,17 @@ type FileChooserDialog interface {
 	Dialog
 }
 
+// fileChooserDialog implements the FileChooserDialog interface.
 type fileChooserDialog struct {
-	dialog
+	Dialog
 }
 
 // WrapFileChooserDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
-	return fileChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
+	return FileChooserDialog{
+		Dialog: WrapDialog(obj),
+	}
 }
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
@@ -27517,14 +27683,17 @@ type FileChooserNative interface {
 	SetCancelLabel(cancelLabel string)
 }
 
+// fileChooserNative implements the FileChooserNative interface.
 type fileChooserNative struct {
-	nativeDialog
+	NativeDialog
 }
 
 // WrapFileChooserNative wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileChooserNative(obj *externglib.Object) FileChooserNative {
-	return fileChooserNative{nativeDialog{*externglib.Object{obj}}}
+	return FileChooserNative{
+		NativeDialog: WrapNativeDialog(obj),
+	}
 }
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
@@ -27637,14 +27806,17 @@ type FileChooserWidget interface {
 	Widget
 }
 
+// fileChooserWidget implements the FileChooserWidget interface.
 type fileChooserWidget struct {
-	widget
+	Widget
 }
 
 // WrapFileChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
-	return fileChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return FileChooserWidget{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFileChooserWidget(p uintptr) (interface{}, error) {
@@ -27736,14 +27908,17 @@ type FileFilter interface {
 	ToGvariant() *glib.Variant
 }
 
+// fileFilter implements the FileFilter interface.
 type fileFilter struct {
-	filter
+	Filter
 }
 
 // WrapFileFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFileFilter(obj *externglib.Object) FileFilter {
-	return fileFilter{filter{*externglib.Object{obj}}}
+	return FileFilter{
+		Filter: WrapFilter(obj),
+	}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
@@ -27934,14 +28109,17 @@ type Filter interface {
 	Match(item gextras.Objector) bool
 }
 
+// filter implements the Filter interface.
 type filter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilter(obj *externglib.Object) Filter {
-	return filter{*externglib.Object{obj}}
+	return Filter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFilter(p uintptr) (interface{}, error) {
@@ -28063,14 +28241,17 @@ type FilterListModel interface {
 	SetModel(model gio.ListModel)
 }
 
+// filterListModel implements the FilterListModel interface.
 type filterListModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFilterListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFilterListModel(obj *externglib.Object) FilterListModel {
-	return filterListModel{*externglib.Object{obj}}
+	return FilterListModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFilterListModel(p uintptr) (interface{}, error) {
@@ -28266,14 +28447,17 @@ type Fixed interface {
 	SetChildTransform(widget Widget, transform *gsk.Transform)
 }
 
+// fixed implements the Fixed interface.
 type fixed struct {
-	widget
+	Widget
 }
 
 // WrapFixed wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixed(obj *externglib.Object) Fixed {
-	return fixed{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Fixed{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFixed(p uintptr) (interface{}, error) {
@@ -28431,14 +28615,17 @@ type FixedLayout interface {
 	LayoutManager
 }
 
+// fixedLayout implements the FixedLayout interface.
 type fixedLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapFixedLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixedLayout(obj *externglib.Object) FixedLayout {
-	return fixedLayout{layoutManager{*externglib.Object{obj}}}
+	return FixedLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalFixedLayout(p uintptr) (interface{}, error) {
@@ -28468,14 +28655,17 @@ type FixedLayoutChild interface {
 	SetTransform(transform *gsk.Transform)
 }
 
+// fixedLayoutChild implements the FixedLayoutChild interface.
 type fixedLayoutChild struct {
-	layoutChild
+	LayoutChild
 }
 
 // WrapFixedLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
-	return fixedLayoutChild{layoutChild{*externglib.Object{obj}}}
+	return FixedLayoutChild{
+		LayoutChild: WrapLayoutChild(obj),
+	}
 }
 
 func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
@@ -28522,14 +28712,17 @@ type FlattenListModel interface {
 	SetModel(model gio.ListModel)
 }
 
+// flattenListModel implements the FlattenListModel interface.
 type flattenListModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFlattenListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFlattenListModel(obj *externglib.Object) FlattenListModel {
-	return flattenListModel{*externglib.Object{obj}}
+	return FlattenListModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFlattenListModel(p uintptr) (interface{}, error) {
@@ -28750,14 +28943,17 @@ type FlowBox interface {
 	UnselectChild(child FlowBoxChild)
 }
 
+// flowBox implements the FlowBox interface.
 type flowBox struct {
-	widget
+	Widget
 }
 
 // WrapFlowBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFlowBox(obj *externglib.Object) FlowBox {
-	return flowBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return FlowBox{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFlowBox(p uintptr) (interface{}, error) {
@@ -29272,14 +29468,17 @@ type FlowBoxChild interface {
 	SetChild(child Widget)
 }
 
+// flowBoxChild implements the FlowBoxChild interface.
 type flowBoxChild struct {
-	widget
+	Widget
 }
 
 // WrapFlowBoxChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFlowBoxChild(obj *externglib.Object) FlowBoxChild {
-	return flowBoxChild{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return FlowBoxChild{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFlowBoxChild(p uintptr) (interface{}, error) {
@@ -29416,14 +29615,17 @@ type FontButton interface {
 	SetUseSize(useSize bool)
 }
 
+// fontButton implements the FontButton interface.
 type fontButton struct {
-	widget
+	Widget
 }
 
 // WrapFontButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontButton(obj *externglib.Object) FontButton {
-	return fontButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return FontButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFontButton(p uintptr) (interface{}, error) {
@@ -29579,14 +29781,17 @@ type FontChooserDialog interface {
 	Dialog
 }
 
+// fontChooserDialog implements the FontChooserDialog interface.
 type fontChooserDialog struct {
-	dialog
+	Dialog
 }
 
 // WrapFontChooserDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
-	return fontChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
+	return FontChooserDialog{
+		Dialog: WrapDialog(obj),
+	}
 }
 
 func marshalFontChooserDialog(p uintptr) (interface{}, error) {
@@ -29634,14 +29839,17 @@ type FontChooserWidget interface {
 	Widget
 }
 
+// fontChooserWidget implements the FontChooserWidget interface.
 type fontChooserWidget struct {
-	widget
+	Widget
 }
 
 // WrapFontChooserWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
-	return fontChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return FontChooserWidget{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFontChooserWidget(p uintptr) (interface{}, error) {
@@ -29733,14 +29941,17 @@ type Frame interface {
 	SetLabelWidget(labelWidget Widget)
 }
 
+// frame implements the Frame interface.
 type frame struct {
-	widget
+	Widget
 }
 
 // WrapFrame wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFrame(obj *externglib.Object) Frame {
-	return frame{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Frame{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalFrame(p uintptr) (interface{}, error) {
@@ -30007,14 +30218,17 @@ type GLArea interface {
 	SetUseES(useES bool)
 }
 
+// glArea implements the GLArea interface.
 type glArea struct {
-	widget
+	Widget
 }
 
 // WrapGLArea wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLArea(obj *externglib.Object) GLArea {
-	return glArea{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return GLArea{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalGLArea(p uintptr) (interface{}, error) {
@@ -30472,14 +30686,17 @@ type Gesture interface {
 	Ungroup()
 }
 
+// gesture implements the Gesture interface.
 type gesture struct {
-	eventController
+	EventController
 }
 
 // WrapGesture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGesture(obj *externglib.Object) Gesture {
-	return gesture{eventController{*externglib.Object{obj}}}
+	return Gesture{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalGesture(p uintptr) (interface{}, error) {
@@ -30852,14 +31069,17 @@ type GestureClick interface {
 	GestureSingle
 }
 
+// gestureClick implements the GestureClick interface.
 type gestureClick struct {
-	gestureSingle
+	GestureSingle
 }
 
 // WrapGestureClick wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureClick(obj *externglib.Object) GestureClick {
-	return gestureClick{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
+	return GestureClick{
+		GestureSingle: WrapGestureSingle(obj),
+	}
 }
 
 func marshalGestureClick(p uintptr) (interface{}, error) {
@@ -30898,14 +31118,17 @@ type GestureDrag interface {
 	StartPoint() (x float64, y float64, ok bool)
 }
 
+// gestureDrag implements the GestureDrag interface.
 type gestureDrag struct {
-	gestureSingle
+	GestureSingle
 }
 
 // WrapGestureDrag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureDrag(obj *externglib.Object) GestureDrag {
-	return gestureDrag{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
+	return GestureDrag{
+		GestureSingle: WrapGestureSingle(obj),
+	}
 }
 
 func marshalGestureDrag(p uintptr) (interface{}, error) {
@@ -30994,14 +31217,17 @@ type GestureLongPress interface {
 	SetDelayFactor(delayFactor float64)
 }
 
+// gestureLongPress implements the GestureLongPress interface.
 type gestureLongPress struct {
-	gestureSingle
+	GestureSingle
 }
 
 // WrapGestureLongPress wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureLongPress(obj *externglib.Object) GestureLongPress {
-	return gestureLongPress{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
+	return GestureLongPress{
+		GestureSingle: WrapGestureSingle(obj),
+	}
 }
 
 func marshalGestureLongPress(p uintptr) (interface{}, error) {
@@ -31073,14 +31299,17 @@ type GesturePan interface {
 	SetOrientation(orientation Orientation)
 }
 
+// gesturePan implements the GesturePan interface.
 type gesturePan struct {
-	gestureDrag
+	GestureDrag
 }
 
 // WrapGesturePan wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGesturePan(obj *externglib.Object) GesturePan {
-	return gesturePan{gestureDrag{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}}
+	return GesturePan{
+		GestureDrag: WrapGestureDrag(obj),
+	}
 }
 
 func marshalGesturePan(p uintptr) (interface{}, error) {
@@ -31143,14 +31372,17 @@ type GestureRotate interface {
 	AngleDelta() float64
 }
 
+// gestureRotate implements the GestureRotate interface.
 type gestureRotate struct {
-	gesture
+	Gesture
 }
 
 // WrapGestureRotate wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureRotate(obj *externglib.Object) GestureRotate {
-	return gestureRotate{gesture{eventController{*externglib.Object{obj}}}}
+	return GestureRotate{
+		Gesture: WrapGesture(obj),
+	}
 }
 
 func marshalGestureRotate(p uintptr) (interface{}, error) {
@@ -31232,14 +31464,17 @@ type GestureSingle interface {
 	SetTouchOnly(touchOnly bool)
 }
 
+// gestureSingle implements the GestureSingle interface.
 type gestureSingle struct {
-	gesture
+	Gesture
 }
 
 // WrapGestureSingle wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureSingle(obj *externglib.Object) GestureSingle {
-	return gestureSingle{gesture{eventController{*externglib.Object{obj}}}}
+	return GestureSingle{
+		Gesture: WrapGesture(obj),
+	}
 }
 
 func marshalGestureSingle(p uintptr) (interface{}, error) {
@@ -31397,14 +31632,17 @@ type GestureStylus interface {
 	DeviceTool() gdk.DeviceTool
 }
 
+// gestureStylus implements the GestureStylus interface.
 type gestureStylus struct {
-	gestureSingle
+	GestureSingle
 }
 
 // WrapGestureStylus wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureStylus(obj *externglib.Object) GestureStylus {
-	return gestureStylus{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
+	return GestureStylus{
+		GestureSingle: WrapGestureSingle(obj),
+	}
 }
 
 func marshalGestureStylus(p uintptr) (interface{}, error) {
@@ -31526,14 +31764,17 @@ type GestureSwipe interface {
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
+// gestureSwipe implements the GestureSwipe interface.
 type gestureSwipe struct {
-	gestureSingle
+	GestureSingle
 }
 
 // WrapGestureSwipe wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureSwipe(obj *externglib.Object) GestureSwipe {
-	return gestureSwipe{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
+	return GestureSwipe{
+		GestureSingle: WrapGestureSingle(obj),
+	}
 }
 
 func marshalGestureSwipe(p uintptr) (interface{}, error) {
@@ -31591,14 +31832,17 @@ type GestureZoom interface {
 	ScaleDelta() float64
 }
 
+// gestureZoom implements the GestureZoom interface.
 type gestureZoom struct {
-	gesture
+	Gesture
 }
 
 // WrapGestureZoom wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGestureZoom(obj *externglib.Object) GestureZoom {
-	return gestureZoom{gesture{eventController{*externglib.Object{obj}}}}
+	return GestureZoom{
+		Gesture: WrapGesture(obj),
+	}
 }
 
 func marshalGestureZoom(p uintptr) (interface{}, error) {
@@ -31746,14 +31990,17 @@ type Grid interface {
 	SetRowSpacing(spacing uint)
 }
 
+// grid implements the Grid interface.
 type grid struct {
-	widget
+	Widget
 }
 
 // WrapGrid wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGrid(obj *externglib.Object) Grid {
-	return grid{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Grid{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalGrid(p uintptr) (interface{}, error) {
@@ -32192,14 +32439,17 @@ type GridLayout interface {
 	SetRowSpacing(spacing uint)
 }
 
+// gridLayout implements the GridLayout interface.
 type gridLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapGridLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGridLayout(obj *externglib.Object) GridLayout {
-	return gridLayout{layoutManager{*externglib.Object{obj}}}
+	return GridLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalGridLayout(p uintptr) (interface{}, error) {
@@ -32420,14 +32670,17 @@ type GridLayoutChild interface {
 	SetRowSpan(span int)
 }
 
+// gridLayoutChild implements the GridLayoutChild interface.
 type gridLayoutChild struct {
-	layoutChild
+	LayoutChild
 }
 
 // WrapGridLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
-	return gridLayoutChild{layoutChild{*externglib.Object{obj}}}
+	return GridLayoutChild{
+		LayoutChild: WrapLayoutChild(obj),
+	}
 }
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
@@ -32614,14 +32867,17 @@ type GridView interface {
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
+// gridView implements the GridView interface.
 type gridView struct {
-	listBase
+	ListBase
 }
 
 // WrapGridView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGridView(obj *externglib.Object) GridView {
-	return gridView{listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return GridView{
+		ListBase: WrapListBase(obj),
+	}
 }
 
 func marshalGridView(p uintptr) (interface{}, error) {
@@ -32919,14 +33175,17 @@ type HeaderBar interface {
 	SetTitleWidget(titleWidget Widget)
 }
 
+// headerBar implements the HeaderBar interface.
 type headerBar struct {
-	widget
+	Widget
 }
 
 // WrapHeaderBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapHeaderBar(obj *externglib.Object) HeaderBar {
-	return headerBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return HeaderBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalHeaderBar(p uintptr) (interface{}, error) {
@@ -33207,14 +33466,17 @@ type IMContext interface {
 	SetUsePreedit(usePreedit bool)
 }
 
+// imContext implements the IMContext interface.
 type imContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapIMContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIMContext(obj *externglib.Object) IMContext {
-	return imContext{*externglib.Object{obj}}
+	return IMContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {
@@ -33494,14 +33756,17 @@ type IMContextSimple interface {
 	AddTable(data []uint16, maxSeqLen int, nSeqs int)
 }
 
+// imContextSimple implements the IMContextSimple interface.
 type imContextSimple struct {
-	imContext
+	IMContext
 }
 
 // WrapIMContextSimple wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIMContextSimple(obj *externglib.Object) IMContextSimple {
-	return imContextSimple{imContext{*externglib.Object{obj}}}
+	return IMContextSimple{
+		IMContext: WrapIMContext(obj),
+	}
 }
 
 func marshalIMContextSimple(p uintptr) (interface{}, error) {
@@ -33570,14 +33835,17 @@ type IMMulticontext interface {
 	SetContextID(contextID string)
 }
 
+// imMulticontext implements the IMMulticontext interface.
 type imMulticontext struct {
-	imContext
+	IMContext
 }
 
 // WrapIMMulticontext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIMMulticontext(obj *externglib.Object) IMMulticontext {
-	return imMulticontext{imContext{*externglib.Object{obj}}}
+	return IMMulticontext{
+		IMContext: WrapIMContext(obj),
+	}
 }
 
 func marshalIMMulticontext(p uintptr) (interface{}, error) {
@@ -33651,14 +33919,17 @@ type IconPaintable interface {
 	IsSymbolic() bool
 }
 
+// iconPaintable implements the IconPaintable interface.
 type iconPaintable struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapIconPaintable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIconPaintable(obj *externglib.Object) IconPaintable {
-	return iconPaintable{*externglib.Object{obj}}
+	return IconPaintable{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalIconPaintable(p uintptr) (interface{}, error) {
@@ -33822,14 +34093,17 @@ type IconTheme interface {
 	SetThemeName(themeName string)
 }
 
+// iconTheme implements the IconTheme interface.
 type iconTheme struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapIconTheme wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIconTheme(obj *externglib.Object) IconTheme {
-	return iconTheme{*externglib.Object{obj}}
+	return IconTheme{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalIconTheme(p uintptr) (interface{}, error) {
@@ -34404,14 +34678,17 @@ type IconView interface {
 	UnsetModelDragSource()
 }
 
+// iconView implements the IconView interface.
 type iconView struct {
-	widget
+	Widget
 }
 
 // WrapIconView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapIconView(obj *externglib.Object) IconView {
-	return iconView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return IconView{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalIconView(p uintptr) (interface{}, error) {
@@ -35480,14 +35757,17 @@ type Image interface {
 	SetPixelSize(pixelSize int)
 }
 
+// image implements the Image interface.
 type image struct {
-	widget
+	Widget
 }
 
 // WrapImage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapImage(obj *externglib.Object) Image {
-	return image{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Image{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {
@@ -35877,14 +36157,17 @@ type InfoBar interface {
 	SetShowCloseButton(setting bool)
 }
 
+// infoBar implements the InfoBar interface.
 type infoBar struct {
-	widget
+	Widget
 }
 
 // WrapInfoBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInfoBar(obj *externglib.Object) InfoBar {
-	return infoBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return InfoBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalInfoBar(p uintptr) (interface{}, error) {
@@ -36121,14 +36404,17 @@ type KeyvalTrigger interface {
 	Modifiers() gdk.ModifierType
 }
 
+// keyvalTrigger implements the KeyvalTrigger interface.
 type keyvalTrigger struct {
-	shortcutTrigger
+	ShortcutTrigger
 }
 
 // WrapKeyvalTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapKeyvalTrigger(obj *externglib.Object) KeyvalTrigger {
-	return keyvalTrigger{shortcutTrigger{*externglib.Object{obj}}}
+	return KeyvalTrigger{
+		ShortcutTrigger: WrapShortcutTrigger(obj),
+	}
 }
 
 func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
@@ -36423,14 +36709,17 @@ type Label interface {
 	SetYalign(yalign float32)
 }
 
+// label implements the Label interface.
 type label struct {
-	widget
+	Widget
 }
 
 // WrapLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLabel(obj *externglib.Object) Label {
-	return label{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Label{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalLabel(p uintptr) (interface{}, error) {
@@ -37222,14 +37511,17 @@ type LayoutChild interface {
 	LayoutManager() LayoutManager
 }
 
+// layoutChild implements the LayoutChild interface.
 type layoutChild struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayoutChild(obj *externglib.Object) LayoutChild {
-	return layoutChild{*externglib.Object{obj}}
+	return LayoutChild{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {
@@ -37348,14 +37640,17 @@ type LayoutManager interface {
 	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
+// layoutManager implements the LayoutManager interface.
 type layoutManager struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapLayoutManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayoutManager(obj *externglib.Object) LayoutManager {
-	return layoutManager{*externglib.Object{obj}}
+	return LayoutManager{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalLayoutManager(p uintptr) (interface{}, error) {
@@ -37570,14 +37865,17 @@ type LevelBar interface {
 	SetValue(value float64)
 }
 
+// levelBar implements the LevelBar interface.
 type levelBar struct {
-	widget
+	Widget
 }
 
 // WrapLevelBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLevelBar(obj *externglib.Object) LevelBar {
-	return levelBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return LevelBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalLevelBar(p uintptr) (interface{}, error) {
@@ -37850,14 +38148,17 @@ type LinkButton interface {
 	SetVisited(visited bool)
 }
 
+// linkButton implements the LinkButton interface.
 type linkButton struct {
-	button
+	Button
 }
 
 // WrapLinkButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLinkButton(obj *externglib.Object) LinkButton {
-	return linkButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return LinkButton{
+		Button: WrapButton(obj),
+	}
 }
 
 func marshalLinkButton(p uintptr) (interface{}, error) {
@@ -37965,14 +38266,17 @@ type ListBase interface {
 	Widget
 }
 
+// listBase implements the ListBase interface.
 type listBase struct {
-	widget
+	Widget
 }
 
 // WrapListBase wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBase(obj *externglib.Object) ListBase {
-	return listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ListBase{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalListBase(p uintptr) (interface{}, error) {
@@ -38189,14 +38493,17 @@ type ListBox interface {
 	UnselectRow(row ListBoxRow)
 }
 
+// listBox implements the ListBox interface.
 type listBox struct {
-	widget
+	Widget
 }
 
 // WrapListBox wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBox(obj *externglib.Object) ListBox {
-	return listBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ListBox{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalListBox(p uintptr) (interface{}, error) {
@@ -38733,14 +39040,17 @@ type ListBoxRow interface {
 	SetSelectable(selectable bool)
 }
 
+// listBoxRow implements the ListBoxRow interface.
 type listBoxRow struct {
-	widget
+	Widget
 }
 
 // WrapListBoxRow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListBoxRow(obj *externglib.Object) ListBoxRow {
-	return listBoxRow{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ListBoxRow{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalListBoxRow(p uintptr) (interface{}, error) {
@@ -38991,14 +39301,17 @@ type ListItem interface {
 	SetSelectable(selectable bool)
 }
 
+// listItem implements the ListItem interface.
 type listItem struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapListItem wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListItem(obj *externglib.Object) ListItem {
-	return listItem{*externglib.Object{obj}}
+	return ListItem{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalListItem(p uintptr) (interface{}, error) {
@@ -39203,14 +39516,17 @@ type ListItemFactory interface {
 	gextras.Objector
 }
 
+// listItemFactory implements the ListItemFactory interface.
 type listItemFactory struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapListItemFactory wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListItemFactory(obj *externglib.Object) ListItemFactory {
-	return listItemFactory{*externglib.Object{obj}}
+	return ListItemFactory{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {
@@ -39317,14 +39633,17 @@ type ListStore interface {
 	Swap(a *TreeIter, b *TreeIter)
 }
 
+// listStore implements the ListStore interface.
 type listStore struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapListStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListStore(obj *externglib.Object) ListStore {
-	return listStore{*externglib.Object{obj}}
+	return ListStore{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
@@ -39688,14 +40007,17 @@ type ListView interface {
 	SetSingleClickActivate(singleClickActivate bool)
 }
 
+// listView implements the ListView interface.
 type listView struct {
-	listBase
+	ListBase
 }
 
 // WrapListView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapListView(obj *externglib.Object) ListView {
-	return listView{listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ListView{
+		ListBase: WrapListBase(obj),
+	}
 }
 
 func marshalListView(p uintptr) (interface{}, error) {
@@ -39879,14 +40201,17 @@ type LockButton interface {
 	SetPermission(permission gio.Permission)
 }
 
+// lockButton implements the LockButton interface.
 type lockButton struct {
-	button
+	Button
 }
 
 // WrapLockButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLockButton(obj *externglib.Object) LockButton {
-	return lockButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return LockButton{
+		Button: WrapButton(obj),
+	}
 }
 
 func marshalLockButton(p uintptr) (interface{}, error) {
@@ -39988,14 +40313,17 @@ type MapListModel interface {
 	SetModel(model gio.ListModel)
 }
 
+// mapListModel implements the MapListModel interface.
 type mapListModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMapListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMapListModel(obj *externglib.Object) MapListModel {
-	return mapListModel{*externglib.Object{obj}}
+	return MapListModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMapListModel(p uintptr) (interface{}, error) {
@@ -40082,14 +40410,17 @@ type MediaControls interface {
 	SetMediaStream(stream MediaStream)
 }
 
+// mediaControls implements the MediaControls interface.
 type mediaControls struct {
-	widget
+	Widget
 }
 
 // WrapMediaControls wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMediaControls(obj *externglib.Object) MediaControls {
-	return mediaControls{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return MediaControls{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalMediaControls(p uintptr) (interface{}, error) {
@@ -40173,14 +40504,17 @@ type MediaFile interface {
 	SetResource(resourcePath string)
 }
 
+// mediaFile implements the MediaFile interface.
 type mediaFile struct {
-	mediaStream
+	MediaStream
 }
 
 // WrapMediaFile wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMediaFile(obj *externglib.Object) MediaFile {
-	return mediaFile{mediaStream{*externglib.Object{obj}}}
+	return MediaFile{
+		MediaStream: WrapMediaStream(obj),
+	}
 }
 
 func marshalMediaFile(p uintptr) (interface{}, error) {
@@ -40500,14 +40834,17 @@ type MediaStream interface {
 	Update(timestamp int64)
 }
 
+// mediaStream implements the MediaStream interface.
 type mediaStream struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMediaStream wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMediaStream(obj *externglib.Object) MediaStream {
-	return mediaStream{*externglib.Object{obj}}
+	return MediaStream{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMediaStream(p uintptr) (interface{}, error) {
@@ -41143,14 +41480,17 @@ type MenuButton interface {
 	SetUseUnderline(useUnderline bool)
 }
 
+// menuButton implements the MenuButton interface.
 type menuButton struct {
-	widget
+	Widget
 }
 
 // WrapMenuButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMenuButton(obj *externglib.Object) MenuButton {
-	return menuButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return MenuButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalMenuButton(p uintptr) (interface{}, error) {
@@ -41467,14 +41807,17 @@ type MessageDialog interface {
 	SetMarkup(str string)
 }
 
+// messageDialog implements the MessageDialog interface.
 type messageDialog struct {
-	dialog
+	Dialog
 }
 
 // WrapMessageDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMessageDialog(obj *externglib.Object) MessageDialog {
-	return messageDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
+	return MessageDialog{
+		Dialog: WrapDialog(obj),
+	}
 }
 
 func marshalMessageDialog(p uintptr) (interface{}, error) {
@@ -41520,14 +41863,17 @@ type MnemonicAction interface {
 	ShortcutAction
 }
 
+// mnemonicAction implements the MnemonicAction interface.
 type mnemonicAction struct {
-	shortcutAction
+	ShortcutAction
 }
 
 // WrapMnemonicAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMnemonicAction(obj *externglib.Object) MnemonicAction {
-	return mnemonicAction{shortcutAction{*externglib.Object{obj}}}
+	return MnemonicAction{
+		ShortcutAction: WrapShortcutAction(obj),
+	}
 }
 
 func marshalMnemonicAction(p uintptr) (interface{}, error) {
@@ -41545,14 +41891,17 @@ type MnemonicTrigger interface {
 	Keyval() uint
 }
 
+// mnemonicTrigger implements the MnemonicTrigger interface.
 type mnemonicTrigger struct {
-	shortcutTrigger
+	ShortcutTrigger
 }
 
 // WrapMnemonicTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMnemonicTrigger(obj *externglib.Object) MnemonicTrigger {
-	return mnemonicTrigger{shortcutTrigger{*externglib.Object{obj}}}
+	return MnemonicTrigger{
+		ShortcutTrigger: WrapShortcutTrigger(obj),
+	}
 }
 
 func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
@@ -41611,6 +41960,7 @@ type MountOperation interface {
 	SetParent(parent Window)
 }
 
+// mountOperation implements the MountOperation interface.
 type mountOperation struct {
 	gio.MountOperation
 }
@@ -41618,7 +41968,9 @@ type mountOperation struct {
 // WrapMountOperation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMountOperation(obj *externglib.Object) MountOperation {
-	return mountOperation{gio.WrapMountOperation(obj)}
+	return MountOperation{
+		gio.MountOperation: gio.WrapMountOperation(obj),
+	}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
@@ -41731,14 +42083,17 @@ type MultiFilter interface {
 	Remove(position uint)
 }
 
+// multiFilter implements the MultiFilter interface.
 type multiFilter struct {
-	filter
+	Filter
 }
 
 // WrapMultiFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMultiFilter(obj *externglib.Object) MultiFilter {
-	return multiFilter{filter{*externglib.Object{obj}}}
+	return MultiFilter{
+		Filter: WrapFilter(obj),
+	}
 }
 
 func marshalMultiFilter(p uintptr) (interface{}, error) {
@@ -41781,14 +42136,17 @@ type MultiSelection interface {
 	SetModel(model gio.ListModel)
 }
 
+// multiSelection implements the MultiSelection interface.
 type multiSelection struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMultiSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMultiSelection(obj *externglib.Object) MultiSelection {
-	return multiSelection{*externglib.Object{obj}}
+	return MultiSelection{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMultiSelection(p uintptr) (interface{}, error) {
@@ -41837,14 +42195,17 @@ type MultiSorter interface {
 	Remove(position uint)
 }
 
+// multiSorter implements the MultiSorter interface.
 type multiSorter struct {
-	sorter
+	Sorter
 }
 
 // WrapMultiSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMultiSorter(obj *externglib.Object) MultiSorter {
-	return multiSorter{sorter{*externglib.Object{obj}}}
+	return MultiSorter{
+		Sorter: WrapSorter(obj),
+	}
 }
 
 func marshalMultiSorter(p uintptr) (interface{}, error) {
@@ -41899,14 +42260,17 @@ type NamedAction interface {
 	ActionName() string
 }
 
+// namedAction implements the NamedAction interface.
 type namedAction struct {
-	shortcutAction
+	ShortcutAction
 }
 
 // WrapNamedAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNamedAction(obj *externglib.Object) NamedAction {
-	return namedAction{shortcutAction{*externglib.Object{obj}}}
+	return NamedAction{
+		ShortcutAction: WrapShortcutAction(obj),
+	}
 }
 
 func marshalNamedAction(p uintptr) (interface{}, error) {
@@ -42014,14 +42378,17 @@ type NativeDialog interface {
 	Show()
 }
 
+// nativeDialog implements the NativeDialog interface.
 type nativeDialog struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapNativeDialog wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNativeDialog(obj *externglib.Object) NativeDialog {
-	return nativeDialog{*externglib.Object{obj}}
+	return NativeDialog{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalNativeDialog(p uintptr) (interface{}, error) {
@@ -42185,14 +42552,17 @@ type NeverTrigger interface {
 	ShortcutTrigger
 }
 
+// neverTrigger implements the NeverTrigger interface.
 type neverTrigger struct {
-	shortcutTrigger
+	ShortcutTrigger
 }
 
 // WrapNeverTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNeverTrigger(obj *externglib.Object) NeverTrigger {
-	return neverTrigger{shortcutTrigger{*externglib.Object{obj}}}
+	return NeverTrigger{
+		ShortcutTrigger: WrapShortcutTrigger(obj),
+	}
 }
 
 func marshalNeverTrigger(p uintptr) (interface{}, error) {
@@ -42214,14 +42584,17 @@ type NoSelection interface {
 	SetModel(model gio.ListModel)
 }
 
+// noSelection implements the NoSelection interface.
 type noSelection struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapNoSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNoSelection(obj *externglib.Object) NoSelection {
-	return noSelection{*externglib.Object{obj}}
+	return NoSelection{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalNoSelection(p uintptr) (interface{}, error) {
@@ -42525,14 +42898,17 @@ type Notebook interface {
 	SetTabReorderable(child Widget, reorderable bool)
 }
 
+// notebook implements the Notebook interface.
 type notebook struct {
-	widget
+	Widget
 }
 
 // WrapNotebook wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNotebook(obj *externglib.Object) Notebook {
-	return notebook{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Notebook{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalNotebook(p uintptr) (interface{}, error) {
@@ -43279,14 +43655,17 @@ type NotebookPage interface {
 	Child() Widget
 }
 
+// notebookPage implements the NotebookPage interface.
 type notebookPage struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapNotebookPage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNotebookPage(obj *externglib.Object) NotebookPage {
-	return notebookPage{*externglib.Object{obj}}
+	return NotebookPage{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalNotebookPage(p uintptr) (interface{}, error) {
@@ -43315,14 +43694,17 @@ type NothingAction interface {
 	ShortcutAction
 }
 
+// nothingAction implements the NothingAction interface.
 type nothingAction struct {
-	shortcutAction
+	ShortcutAction
 }
 
 // WrapNothingAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNothingAction(obj *externglib.Object) NothingAction {
-	return nothingAction{shortcutAction{*externglib.Object{obj}}}
+	return NothingAction{
+		ShortcutAction: WrapShortcutAction(obj),
+	}
 }
 
 func marshalNothingAction(p uintptr) (interface{}, error) {
@@ -43355,14 +43737,17 @@ type NumericSorter interface {
 	SetSortOrder(sortOrder SortType)
 }
 
+// numericSorter implements the NumericSorter interface.
 type numericSorter struct {
-	sorter
+	Sorter
 }
 
 // WrapNumericSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapNumericSorter(obj *externglib.Object) NumericSorter {
-	return numericSorter{sorter{*externglib.Object{obj}}}
+	return NumericSorter{
+		Sorter: WrapSorter(obj),
+	}
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
@@ -43446,59 +43831,6 @@ func (self numericSorter) SetSortOrder(sortOrder SortType) {
 	C.gtk_numeric_sorter_set_sort_order(arg0, arg1)
 }
 
-type ObjectExpression interface {
-	Expression
-
-	// Object gets the object that the expression evaluates to.
-	Object() gextras.Objector
-}
-
-type objectExpression struct {
-	expression
-}
-
-// WrapObjectExpression wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapObjectExpression(obj *externglib.Object) ObjectExpression {
-	return objectExpression{expression{obj}}
-}
-
-func marshalObjectExpression(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapObjectExpression(obj), nil
-}
-
-// NewObjectExpression constructs a class ObjectExpression.
-func NewObjectExpression(object gextras.Objector) ObjectExpression {
-	var arg1 *C.GObject
-
-	arg1 = (*C.GObject)(object.Native())
-
-	ret := C.gtk_object_expression_new(arg1)
-
-	var ret0 ObjectExpression
-
-	ret0 = WrapObjectExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// Object gets the object that the expression evaluates to.
-func (expression objectExpression) Object() gextras.Objector {
-	var arg0 *C.GtkExpression
-
-	arg0 = (*C.GtkExpression)(expression.Native())
-
-	ret := C.gtk_object_expression_get_object(arg0)
-
-	var ret0 gextras.Objector
-
-	ret0 = externglib.Take(unsafe.Pointer(ret.Native()))
-
-	return ret0
-}
-
 // Overlay: gtkOverlay is a container which contains a single main child, on top
 // of which it can place “overlay” widgets. The position of each overlay widget
 // is determined by its Widget:halign and Widget:valign properties. E.g. a
@@ -43561,14 +43893,17 @@ type Overlay interface {
 	SetMeasureOverlay(widget Widget, measure bool)
 }
 
+// overlay implements the Overlay interface.
 type overlay struct {
-	widget
+	Widget
 }
 
 // WrapOverlay wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOverlay(obj *externglib.Object) Overlay {
-	return overlay{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Overlay{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalOverlay(p uintptr) (interface{}, error) {
@@ -43719,14 +44054,17 @@ type OverlayLayout interface {
 	LayoutManager
 }
 
+// overlayLayout implements the OverlayLayout interface.
 type overlayLayout struct {
-	layoutManager
+	LayoutManager
 }
 
 // WrapOverlayLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOverlayLayout(obj *externglib.Object) OverlayLayout {
-	return overlayLayout{layoutManager{*externglib.Object{obj}}}
+	return OverlayLayout{
+		LayoutManager: WrapLayoutManager(obj),
+	}
 }
 
 func marshalOverlayLayout(p uintptr) (interface{}, error) {
@@ -43760,14 +44098,17 @@ type OverlayLayoutChild interface {
 	SetMeasure(measure bool)
 }
 
+// overlayLayoutChild implements the OverlayLayoutChild interface.
 type overlayLayoutChild struct {
-	layoutChild
+	LayoutChild
 }
 
 // WrapOverlayLayoutChild wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
-	return overlayLayoutChild{layoutChild{*externglib.Object{obj}}}
+	return OverlayLayoutChild{
+		LayoutChild: WrapLayoutChild(obj),
+	}
 }
 
 func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
@@ -43884,14 +44225,17 @@ type PadController interface {
 	SetAction(_type PadActionType, index int, mode int, label string, actionName string)
 }
 
+// padController implements the PadController interface.
 type padController struct {
-	eventController
+	EventController
 }
 
 // WrapPadController wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPadController(obj *externglib.Object) PadController {
-	return padController{eventController{*externglib.Object{obj}}}
+	return PadController{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
@@ -44035,14 +44379,17 @@ type PageSetup interface {
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
 
+// pageSetup implements the PageSetup interface.
 type pageSetup struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPageSetup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPageSetup(obj *externglib.Object) PageSetup {
-	return pageSetup{*externglib.Object{obj}}
+	return PageSetup{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPageSetup(p uintptr) (interface{}, error) {
@@ -44563,14 +44910,17 @@ type Paned interface {
 	SetWideHandle(wide bool)
 }
 
+// paned implements the Paned interface.
 type paned struct {
-	widget
+	Widget
 }
 
 // WrapPaned wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPaned(obj *externglib.Object) Paned {
-	return paned{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Paned{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalPaned(p uintptr) (interface{}, error) {
@@ -44854,14 +45204,17 @@ type PasswordEntry interface {
 	SetShowPeekIcon(showPeekIcon bool)
 }
 
+// passwordEntry implements the PasswordEntry interface.
 type passwordEntry struct {
-	widget
+	Widget
 }
 
 // WrapPasswordEntry wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPasswordEntry(obj *externglib.Object) PasswordEntry {
-	return passwordEntry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return PasswordEntry{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalPasswordEntry(p uintptr) (interface{}, error) {
@@ -45045,14 +45398,17 @@ type Picture interface {
 	SetResource(resourcePath string)
 }
 
+// picture implements the Picture interface.
 type picture struct {
-	widget
+	Widget
 }
 
 // WrapPicture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPicture(obj *externglib.Object) Picture {
-	return picture{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Picture{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalPicture(p uintptr) (interface{}, error) {
@@ -45464,14 +45820,17 @@ type Popover interface {
 	SetPosition(position PositionType)
 }
 
+// popover implements the Popover interface.
 type popover struct {
-	widget
+	Widget
 }
 
 // WrapPopover wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPopover(obj *externglib.Object) Popover {
-	return popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Popover{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalPopover(p uintptr) (interface{}, error) {
@@ -45887,14 +46246,17 @@ type PopoverMenu interface {
 	SetMenuModel(model gio.MenuModel)
 }
 
+// popoverMenu implements the PopoverMenu interface.
 type popoverMenu struct {
-	popover
+	Popover
 }
 
 // WrapPopoverMenu wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPopoverMenu(obj *externglib.Object) PopoverMenu {
-	return popoverMenu{popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return PopoverMenu{
+		Popover: WrapPopover(obj),
+	}
 }
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
@@ -46047,14 +46409,17 @@ type PopoverMenuBar interface {
 	SetMenuModel(model gio.MenuModel)
 }
 
+// popoverMenuBar implements the PopoverMenuBar interface.
 type popoverMenuBar struct {
-	widget
+	Widget
 }
 
 // WrapPopoverMenuBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBar {
-	return popoverMenuBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return PopoverMenuBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
@@ -46248,14 +46613,17 @@ type PrintContext interface {
 	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
+// printContext implements the PrintContext interface.
 type printContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPrintContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPrintContext(obj *externglib.Object) PrintContext {
-	return printContext{*externglib.Object{obj}}
+	return PrintContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPrintContext(p uintptr) (interface{}, error) {
@@ -46727,14 +47095,17 @@ type PrintOperation interface {
 	SetUseFullPage(fullPage bool)
 }
 
+// printOperation implements the PrintOperation interface.
 type printOperation struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPrintOperation wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPrintOperation(obj *externglib.Object) PrintOperation {
-	return printOperation{*externglib.Object{obj}}
+	return PrintOperation{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPrintOperation(p uintptr) (interface{}, error) {
@@ -47449,14 +47820,17 @@ type PrintSettings interface {
 	Unset(key string)
 }
 
+// printSettings implements the PrintSettings interface.
 type printSettings struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapPrintSettings wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapPrintSettings(obj *externglib.Object) PrintSettings {
-	return printSettings{*externglib.Object{obj}}
+	return PrintSettings{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalPrintSettings(p uintptr) (interface{}, error) {
@@ -48685,14 +49059,17 @@ type ProgressBar interface {
 	SetText(text string)
 }
 
+// progressBar implements the ProgressBar interface.
 type progressBar struct {
-	widget
+	Widget
 }
 
 // WrapProgressBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapProgressBar(obj *externglib.Object) ProgressBar {
-	return progressBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ProgressBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalProgressBar(p uintptr) (interface{}, error) {
@@ -48907,66 +49284,6 @@ func (pbar progressBar) SetText(text string) {
 	C.gtk_progress_bar_set_text(arg0, arg1)
 }
 
-type PropertyExpression interface {
-	Expression
-
-	// Expression gets the expression specifying the object of a property
-	// expression.
-	Expression() Expression
-}
-
-type propertyExpression struct {
-	expression
-}
-
-// WrapPropertyExpression wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPropertyExpression(obj *externglib.Object) PropertyExpression {
-	return propertyExpression{expression{obj}}
-}
-
-func marshalPropertyExpression(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPropertyExpression(obj), nil
-}
-
-// NewPropertyExpression constructs a class PropertyExpression.
-func NewPropertyExpression(thisType externglib.Type, expression Expression, propertyName string) PropertyExpression {
-	var arg1 C.GType
-	var arg2 *C.GtkExpression
-	var arg3 *C.char
-
-	arg1 = C.GType(thisType)
-	arg2 = (*C.GtkExpression)(expression.Native())
-	arg3 = (*C.gchar)(C.CString(propertyName))
-	defer C.free(unsafe.Pointer(arg3))
-
-	ret := C.gtk_property_expression_new(arg1, arg2, arg3)
-
-	var ret0 PropertyExpression
-
-	ret0 = WrapPropertyExpression(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// Expression gets the expression specifying the object of a property
-// expression.
-func (expression propertyExpression) Expression() Expression {
-	var arg0 *C.GtkExpression
-
-	arg0 = (*C.GtkExpression)(expression.Native())
-
-	ret := C.gtk_property_expression_get_expression(arg0)
-
-	var ret0 Expression
-
-	ret0 = WrapExpression(externglib.Take(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // Range is the common base class for widgets which visualize an adjustment, e.g
 // Scale or Scrollbar.
 //
@@ -49076,14 +49393,17 @@ type Range interface {
 	SetValue(value float64)
 }
 
+// _range implements the Range interface.
 type _range struct {
-	widget
+	Widget
 }
 
 // WrapRange wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRange(obj *externglib.Object) Range {
-	return _range{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Range{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
@@ -49536,14 +49856,17 @@ type RecentManager interface {
 	RemoveItem(uri string) bool
 }
 
+// recentManager implements the RecentManager interface.
 type recentManager struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapRecentManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRecentManager(obj *externglib.Object) RecentManager {
-	return recentManager{*externglib.Object{obj}}
+	return RecentManager{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
@@ -49798,14 +50121,17 @@ type Revealer interface {
 	SetTransitionType(transition RevealerTransitionType)
 }
 
+// revealer implements the Revealer interface.
 type revealer struct {
-	widget
+	Widget
 }
 
 // WrapRevealer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRevealer(obj *externglib.Object) Revealer {
-	return revealer{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Revealer{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalRevealer(p uintptr) (interface{}, error) {
@@ -50101,14 +50427,17 @@ type Scale interface {
 	SetValuePos(pos PositionType)
 }
 
+// scale implements the Scale interface.
 type scale struct {
-	_range
+	Range
 }
 
 // WrapScale wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScale(obj *externglib.Object) Scale {
-	return scale{_range{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return Scale{
+		Range: WrapRange(obj),
+	}
 }
 
 func marshalScale(p uintptr) (interface{}, error) {
@@ -50403,14 +50732,17 @@ type ScaleButton interface {
 	SetValue(value float64)
 }
 
+// scaleButton implements the ScaleButton interface.
 type scaleButton struct {
-	widget
+	Widget
 }
 
 // WrapScaleButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScaleButton(obj *externglib.Object) ScaleButton {
-	return scaleButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ScaleButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalScaleButton(p uintptr) (interface{}, error) {
@@ -50604,14 +50936,17 @@ type Scrollbar interface {
 	SetAdjustment(adjustment Adjustment)
 }
 
+// scrollbar implements the Scrollbar interface.
 type scrollbar struct {
-	widget
+	Widget
 }
 
 // WrapScrollbar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScrollbar(obj *externglib.Object) Scrollbar {
-	return scrollbar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Scrollbar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
@@ -50878,14 +51213,17 @@ type ScrolledWindow interface {
 	UnsetPlacement()
 }
 
+// scrolledWindow implements the ScrolledWindow interface.
 type scrolledWindow struct {
-	widget
+	Widget
 }
 
 // WrapScrolledWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapScrolledWindow(obj *externglib.Object) ScrolledWindow {
-	return scrolledWindow{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ScrolledWindow{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalScrolledWindow(p uintptr) (interface{}, error) {
@@ -51447,14 +51785,17 @@ type SearchBar interface {
 	SetShowCloseButton(visible bool)
 }
 
+// searchBar implements the SearchBar interface.
 type searchBar struct {
-	widget
+	Widget
 }
 
 // WrapSearchBar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSearchBar(obj *externglib.Object) SearchBar {
-	return searchBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return SearchBar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalSearchBar(p uintptr) (interface{}, error) {
@@ -51638,14 +51979,17 @@ type SearchEntry interface {
 	SetKeyCaptureWidget(widget Widget)
 }
 
+// searchEntry implements the SearchEntry interface.
 type searchEntry struct {
-	widget
+	Widget
 }
 
 // WrapSearchEntry wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSearchEntry(obj *externglib.Object) SearchEntry {
-	return searchEntry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return SearchEntry{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalSearchEntry(p uintptr) (interface{}, error) {
@@ -51714,14 +52058,17 @@ type SelectionFilterModel interface {
 	SetModel(model SelectionModel)
 }
 
+// selectionFilterModel implements the SelectionFilterModel interface.
 type selectionFilterModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSelectionFilterModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
-	return selectionFilterModel{*externglib.Object{obj}}
+	return SelectionFilterModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
@@ -51776,14 +52123,17 @@ type Separator interface {
 	Widget
 }
 
+// separator implements the Separator interface.
 type separator struct {
-	widget
+	Widget
 }
 
 // WrapSeparator wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSeparator(obj *externglib.Object) Separator {
-	return separator{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Separator{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalSeparator(p uintptr) (interface{}, error) {
@@ -51842,14 +52192,17 @@ type Settings interface {
 	ResetProperty(name string)
 }
 
+// settings implements the Settings interface.
 type settings struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSettings wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSettings(obj *externglib.Object) Settings {
-	return settings{*externglib.Object{obj}}
+	return Settings{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -51905,14 +52258,17 @@ type Shortcut interface {
 	SetTrigger(trigger ShortcutTrigger)
 }
 
+// shortcut implements the Shortcut interface.
 type shortcut struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapShortcut wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcut(obj *externglib.Object) Shortcut {
-	return shortcut{*externglib.Object{obj}}
+	return Shortcut{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalShortcut(p uintptr) (interface{}, error) {
@@ -52064,14 +52420,17 @@ type ShortcutAction interface {
 	String() string
 }
 
+// shortcutAction implements the ShortcutAction interface.
 type shortcutAction struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapShortcutAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutAction(obj *externglib.Object) ShortcutAction {
-	return shortcutAction{*externglib.Object{obj}}
+	return ShortcutAction{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalShortcutAction(p uintptr) (interface{}, error) {
@@ -52243,14 +52602,17 @@ type ShortcutController interface {
 	SetScope(scope ShortcutScope)
 }
 
+// shortcutController implements the ShortcutController interface.
 type shortcutController struct {
-	eventController
+	EventController
 }
 
 // WrapShortcutController wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutController(obj *externglib.Object) ShortcutController {
-	return shortcutController{eventController{*externglib.Object{obj}}}
+	return ShortcutController{
+		EventController: WrapEventController(obj),
+	}
 }
 
 func marshalShortcutController(p uintptr) (interface{}, error) {
@@ -52392,14 +52754,17 @@ type ShortcutLabel interface {
 	SetDisabledText(disabledText string)
 }
 
+// shortcutLabel implements the ShortcutLabel interface.
 type shortcutLabel struct {
-	widget
+	Widget
 }
 
 // WrapShortcutLabel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
-	return shortcutLabel{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ShortcutLabel{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalShortcutLabel(p uintptr) (interface{}, error) {
@@ -52548,14 +52913,17 @@ type ShortcutTrigger interface {
 	Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
 }
 
+// shortcutTrigger implements the ShortcutTrigger interface.
 type shortcutTrigger struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapShortcutTrigger wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutTrigger(obj *externglib.Object) ShortcutTrigger {
-	return shortcutTrigger{*externglib.Object{obj}}
+	return ShortcutTrigger{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalShortcutTrigger(p uintptr) (interface{}, error) {
@@ -52759,14 +53127,17 @@ type ShortcutsGroup interface {
 	Box
 }
 
+// shortcutsGroup implements the ShortcutsGroup interface.
 type shortcutsGroup struct {
-	box
+	Box
 }
 
 // WrapShortcutsGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
-	return shortcutsGroup{box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ShortcutsGroup{
+		Box: WrapBox(obj),
+	}
 }
 
 func marshalShortcutsGroup(p uintptr) (interface{}, error) {
@@ -52789,14 +53160,17 @@ type ShortcutsSection interface {
 	Box
 }
 
+// shortcutsSection implements the ShortcutsSection interface.
 type shortcutsSection struct {
-	box
+	Box
 }
 
 // WrapShortcutsSection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
-	return shortcutsSection{box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ShortcutsSection{
+		Box: WrapBox(obj),
+	}
 }
 
 func marshalShortcutsSection(p uintptr) (interface{}, error) {
@@ -52812,14 +53186,17 @@ type ShortcutsShortcut interface {
 	Widget
 }
 
+// shortcutsShortcut implements the ShortcutsShortcut interface.
 type shortcutsShortcut struct {
-	widget
+	Widget
 }
 
 // WrapShortcutsShortcut wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
-	return shortcutsShortcut{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return ShortcutsShortcut{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
@@ -52875,14 +53252,17 @@ type ShortcutsWindow interface {
 	Window
 }
 
+// shortcutsWindow implements the ShortcutsWindow interface.
 type shortcutsWindow struct {
-	window
+	Window
 }
 
 // WrapShortcutsWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
-	return shortcutsWindow{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ShortcutsWindow{
+		Window: WrapWindow(obj),
+	}
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
@@ -52902,14 +53282,17 @@ type SignalAction interface {
 	SignalName() string
 }
 
+// signalAction implements the SignalAction interface.
 type signalAction struct {
-	shortcutAction
+	ShortcutAction
 }
 
 // WrapSignalAction wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSignalAction(obj *externglib.Object) SignalAction {
-	return signalAction{shortcutAction{*externglib.Object{obj}}}
+	return SignalAction{
+		ShortcutAction: WrapShortcutAction(obj),
+	}
 }
 
 func marshalSignalAction(p uintptr) (interface{}, error) {
@@ -52992,14 +53375,17 @@ type SignalListItemFactory interface {
 	ListItemFactory
 }
 
+// signalListItemFactory implements the SignalListItemFactory interface.
 type signalListItemFactory struct {
-	listItemFactory
+	ListItemFactory
 }
 
 // WrapSignalListItemFactory wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
-	return signalListItemFactory{listItemFactory{*externglib.Object{obj}}}
+	return SignalListItemFactory{
+		ListItemFactory: WrapListItemFactory(obj),
+	}
 }
 
 func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
@@ -53068,14 +53454,17 @@ type SingleSelection interface {
 	SetSelected(position uint)
 }
 
+// singleSelection implements the SingleSelection interface.
 type singleSelection struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSingleSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSingleSelection(obj *externglib.Object) SingleSelection {
-	return singleSelection{*externglib.Object{obj}}
+	return SingleSelection{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSingleSelection(p uintptr) (interface{}, error) {
@@ -53311,14 +53700,17 @@ type SizeGroup interface {
 	SetMode(mode SizeGroupMode)
 }
 
+// sizeGroup implements the SizeGroup interface.
 type sizeGroup struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSizeGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSizeGroup(obj *externglib.Object) SizeGroup {
-	return sizeGroup{*externglib.Object{obj}}
+	return SizeGroup{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
@@ -53445,14 +53837,17 @@ type SliceListModel interface {
 	SetSize(size uint)
 }
 
+// sliceListModel implements the SliceListModel interface.
 type sliceListModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSliceListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSliceListModel(obj *externglib.Object) SliceListModel {
-	return sliceListModel{*externglib.Object{obj}}
+	return SliceListModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSliceListModel(p uintptr) (interface{}, error) {
@@ -53745,6 +54140,7 @@ type Snapshot interface {
 	Translate3D(point *graphene.Point3D)
 }
 
+// snapshot implements the Snapshot interface.
 type snapshot struct {
 	gdk.Snapshot
 }
@@ -53752,7 +54148,9 @@ type snapshot struct {
 // WrapSnapshot wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSnapshot(obj *externglib.Object) Snapshot {
-	return snapshot{gdk.WrapSnapshot(obj)}
+	return Snapshot{
+		gdk.Snapshot: gdk.WrapSnapshot(obj),
+	}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -54444,14 +54842,17 @@ type SortListModel interface {
 	SetSorter(sorter Sorter)
 }
 
+// sortListModel implements the SortListModel interface.
 type sortListModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSortListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSortListModel(obj *externglib.Object) SortListModel {
-	return sortListModel{*externglib.Object{obj}}
+	return SortListModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSortListModel(p uintptr) (interface{}, error) {
@@ -54633,14 +55034,17 @@ type Sorter interface {
 	Order() SorterOrder
 }
 
+// sorter implements the Sorter interface.
 type sorter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSorter(obj *externglib.Object) Sorter {
-	return sorter{*externglib.Object{obj}}
+	return Sorter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSorter(p uintptr) (interface{}, error) {
@@ -54826,14 +55230,17 @@ type SpinButton interface {
 	Update()
 }
 
+// spinButton implements the SpinButton interface.
 type spinButton struct {
-	widget
+	Widget
 }
 
 // WrapSpinButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSpinButton(obj *externglib.Object) SpinButton {
-	return spinButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return SpinButton{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalSpinButton(p uintptr) (interface{}, error) {
@@ -55256,14 +55663,17 @@ type Spinner interface {
 	Stop()
 }
 
+// spinner implements the Spinner interface.
 type spinner struct {
-	widget
+	Widget
 }
 
 // WrapSpinner wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSpinner(obj *externglib.Object) Spinner {
-	return spinner{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Spinner{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalSpinner(p uintptr) (interface{}, error) {
@@ -55466,14 +55876,17 @@ type Stack interface {
 	SetVisibleChildName(name string)
 }
 
+// stack implements the Stack interface.
 type stack struct {
-	widget
+	Widget
 }
 
 // WrapStack wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStack(obj *externglib.Object) Stack {
-	return stack{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Stack{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalStack(p uintptr) (interface{}, error) {
@@ -55897,14 +56310,17 @@ type StackPage interface {
 	SetVisible(visible bool)
 }
 
+// stackPage implements the StackPage interface.
 type stackPage struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapStackPage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStackPage(obj *externglib.Object) StackPage {
-	return stackPage{*externglib.Object{obj}}
+	return StackPage{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalStackPage(p uintptr) (interface{}, error) {
@@ -56123,14 +56539,17 @@ type StackSidebar interface {
 	SetStack(stack Stack)
 }
 
+// stackSidebar implements the StackSidebar interface.
 type stackSidebar struct {
-	widget
+	Widget
 }
 
 // WrapStackSidebar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStackSidebar(obj *externglib.Object) StackSidebar {
-	return stackSidebar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return StackSidebar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalStackSidebar(p uintptr) (interface{}, error) {
@@ -56214,14 +56633,17 @@ type StackSwitcher interface {
 	SetStack(stack Stack)
 }
 
+// stackSwitcher implements the StackSwitcher interface.
 type stackSwitcher struct {
-	widget
+	Widget
 }
 
 // WrapStackSwitcher wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStackSwitcher(obj *externglib.Object) StackSwitcher {
-	return stackSwitcher{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return StackSwitcher{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalStackSwitcher(p uintptr) (interface{}, error) {
@@ -56322,14 +56744,17 @@ type Statusbar interface {
 	RemoveAll(contextID uint)
 }
 
+// statusbar implements the Statusbar interface.
 type statusbar struct {
-	widget
+	Widget
 }
 
 // WrapStatusbar wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStatusbar(obj *externglib.Object) Statusbar {
-	return statusbar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Statusbar{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalStatusbar(p uintptr) (interface{}, error) {
@@ -56459,14 +56884,17 @@ type StringFilter interface {
 	SetSearch(search string)
 }
 
+// stringFilter implements the StringFilter interface.
 type stringFilter struct {
-	filter
+	Filter
 }
 
 // WrapStringFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStringFilter(obj *externglib.Object) StringFilter {
-	return stringFilter{filter{*externglib.Object{obj}}}
+	return StringFilter{
+		Filter: WrapFilter(obj),
+	}
 }
 
 func marshalStringFilter(p uintptr) (interface{}, error) {
@@ -56664,14 +57092,17 @@ type StringList interface {
 	Take(string string)
 }
 
+// stringList implements the StringList interface.
 type stringList struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapStringList wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStringList(obj *externglib.Object) StringList {
-	return stringList{*externglib.Object{obj}}
+	return StringList{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalStringList(p uintptr) (interface{}, error) {
@@ -56798,14 +57229,17 @@ type StringObject interface {
 	String() string
 }
 
+// stringObject implements the StringObject interface.
 type stringObject struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapStringObject wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStringObject(obj *externglib.Object) StringObject {
-	return stringObject{*externglib.Object{obj}}
+	return StringObject{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalStringObject(p uintptr) (interface{}, error) {
@@ -56868,14 +57302,17 @@ type StringSorter interface {
 	SetIgnoreCase(ignoreCase bool)
 }
 
+// stringSorter implements the StringSorter interface.
 type stringSorter struct {
-	sorter
+	Sorter
 }
 
 // WrapStringSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStringSorter(obj *externglib.Object) StringSorter {
-	return stringSorter{sorter{*externglib.Object{obj}}}
+	return StringSorter{
+		Sorter: WrapSorter(obj),
+	}
 }
 
 func marshalStringSorter(p uintptr) (interface{}, error) {
@@ -57074,14 +57511,17 @@ type StyleContext interface {
 	String(flags StyleContextPrintFlags) string
 }
 
+// styleContext implements the StyleContext interface.
 type styleContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapStyleContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapStyleContext(obj *externglib.Object) StyleContext {
-	return styleContext{*externglib.Object{obj}}
+	return StyleContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {
@@ -57414,14 +57854,17 @@ type Switch interface {
 	SetState(state bool)
 }
 
+// _switch implements the Switch interface.
 type _switch struct {
-	widget
+	Widget
 }
 
 // WrapSwitch wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSwitch(obj *externglib.Object) Switch {
-	return _switch{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Switch{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalSwitch(p uintptr) (interface{}, error) {
@@ -57695,14 +58138,17 @@ type Text interface {
 	UnsetInvisibleChar()
 }
 
+// text implements the Text interface.
 type text struct {
-	widget
+	Widget
 }
 
 // WrapText wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapText(obj *externglib.Object) Text {
-	return text{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Text{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalText(p uintptr) (interface{}, error) {
@@ -58627,14 +59073,17 @@ type TextBuffer interface {
 	Undo()
 }
 
+// textBuffer implements the TextBuffer interface.
 type textBuffer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTextBuffer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextBuffer(obj *externglib.Object) TextBuffer {
-	return textBuffer{*externglib.Object{obj}}
+	return TextBuffer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTextBuffer(p uintptr) (interface{}, error) {
@@ -59945,14 +60394,17 @@ type TextChildAnchor interface {
 	Widgets() (outLen uint, widgets []Widget)
 }
 
+// textChildAnchor implements the TextChildAnchor interface.
 type textChildAnchor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTextChildAnchor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
-	return textChildAnchor{*externglib.Object{obj}}
+	return TextChildAnchor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
@@ -60067,14 +60519,17 @@ type TextMark interface {
 	SetVisible(setting bool)
 }
 
+// textMark implements the TextMark interface.
 type textMark struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTextMark wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextMark(obj *externglib.Object) TextMark {
-	return textMark{*externglib.Object{obj}}
+	return TextMark{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTextMark(p uintptr) (interface{}, error) {
@@ -60228,14 +60683,17 @@ type TextTag interface {
 	SetPriority(priority int)
 }
 
+// textTag implements the TextTag interface.
 type textTag struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTextTag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextTag(obj *externglib.Object) TextTag {
-	return textTag{*externglib.Object{obj}}
+	return TextTag{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTextTag(p uintptr) (interface{}, error) {
@@ -60353,14 +60811,17 @@ type TextTagTable interface {
 	Remove(tag TextTag)
 }
 
+// textTagTable implements the TextTagTable interface.
 type textTagTable struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTextTagTable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextTagTable(obj *externglib.Object) TextTagTable {
-	return textTagTable{*externglib.Object{obj}}
+	return TextTagTable{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTextTagTable(p uintptr) (interface{}, error) {
@@ -60853,14 +61314,17 @@ type TextView interface {
 	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
+// textView implements the TextView interface.
 type textView struct {
-	widget
+	Widget
 }
 
 // WrapTextView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTextView(obj *externglib.Object) TextView {
-	return textView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return TextView{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalTextView(p uintptr) (interface{}, error) {
@@ -62224,14 +62688,17 @@ type ToggleButton interface {
 	Toggled()
 }
 
+// toggleButton implements the ToggleButton interface.
 type toggleButton struct {
-	button
+	Button
 }
 
 // WrapToggleButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapToggleButton(obj *externglib.Object) ToggleButton {
-	return toggleButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return ToggleButton{
+		Button: WrapButton(obj),
+	}
 }
 
 func marshalToggleButton(p uintptr) (interface{}, error) {
@@ -62401,14 +62868,17 @@ type Tooltip interface {
 	SetTipArea(rect *gdk.Rectangle)
 }
 
+// tooltip implements the Tooltip interface.
 type tooltip struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTooltip wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTooltip(obj *externglib.Object) Tooltip {
-	return tooltip{*externglib.Object{obj}}
+	return Tooltip{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTooltip(p uintptr) (interface{}, error) {
@@ -62572,14 +63042,17 @@ type TreeExpander interface {
 	SetListRow(listRow TreeListRow)
 }
 
+// treeExpander implements the TreeExpander interface.
 type treeExpander struct {
-	widget
+	Widget
 }
 
 // WrapTreeExpander wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeExpander(obj *externglib.Object) TreeExpander {
-	return treeExpander{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return TreeExpander{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalTreeExpander(p uintptr) (interface{}, error) {
@@ -62718,14 +63191,17 @@ type TreeListModel interface {
 	SetAutoexpand(autoexpand bool)
 }
 
+// treeListModel implements the TreeListModel interface.
 type treeListModel struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTreeListModel wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeListModel(obj *externglib.Object) TreeListModel {
-	return treeListModel{*externglib.Object{obj}}
+	return TreeListModel{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeListModel(p uintptr) (interface{}, error) {
@@ -62895,14 +63371,17 @@ type TreeListRow interface {
 	SetExpanded(expanded bool)
 }
 
+// treeListRow implements the TreeListRow interface.
 type treeListRow struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTreeListRow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeListRow(obj *externglib.Object) TreeListRow {
-	return treeListRow{*externglib.Object{obj}}
+	return TreeListRow{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeListRow(p uintptr) (interface{}, error) {
@@ -63080,14 +63559,17 @@ type TreeListRowSorter interface {
 	SetSorter(sorter Sorter)
 }
 
+// treeListRowSorter implements the TreeListRowSorter interface.
 type treeListRowSorter struct {
-	sorter
+	Sorter
 }
 
 // WrapTreeListRowSorter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
-	return treeListRowSorter{sorter{*externglib.Object{obj}}}
+	return TreeListRowSorter{
+		Sorter: WrapSorter(obj),
+	}
 }
 
 func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
@@ -63279,14 +63761,17 @@ type TreeModelFilter interface {
 	SetVisibleFunc(_func TreeModelFilterVisibleFunc)
 }
 
+// treeModelFilter implements the TreeModelFilter interface.
 type treeModelFilter struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTreeModelFilter wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeModelFilter(obj *externglib.Object) TreeModelFilter {
-	return treeModelFilter{*externglib.Object{obj}}
+	return TreeModelFilter{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeModelFilter(p uintptr) (interface{}, error) {
@@ -63565,14 +64050,17 @@ type TreeModelSort interface {
 	ResetDefaultSortFunc()
 }
 
+// treeModelSort implements the TreeModelSort interface.
 type treeModelSort struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTreeModelSort wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeModelSort(obj *externglib.Object) TreeModelSort {
-	return treeModelSort{*externglib.Object{obj}}
+	return TreeModelSort{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeModelSort(p uintptr) (interface{}, error) {
@@ -63804,14 +64292,17 @@ type TreeSelection interface {
 	UnselectRange(startPath *TreePath, endPath *TreePath)
 }
 
+// treeSelection implements the TreeSelection interface.
 type treeSelection struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTreeSelection wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeSelection(obj *externglib.Object) TreeSelection {
-	return treeSelection{*externglib.Object{obj}}
+	return TreeSelection{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeSelection(p uintptr) (interface{}, error) {
@@ -64211,14 +64702,17 @@ type TreeStore interface {
 	Swap(a *TreeIter, b *TreeIter)
 }
 
+// treeStore implements the TreeStore interface.
 type treeStore struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTreeStore wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeStore(obj *externglib.Object) TreeStore {
-	return treeStore{*externglib.Object{obj}}
+	return TreeStore{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeStore(p uintptr) (interface{}, error) {
@@ -65035,14 +65529,17 @@ type TreeView interface {
 	UnsetRowsDragSource()
 }
 
+// treeView implements the TreeView interface.
 type treeView struct {
-	widget
+	Widget
 }
 
 // WrapTreeView wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeView(obj *externglib.Object) TreeView {
-	return treeView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return TreeView{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalTreeView(p uintptr) (interface{}, error) {
@@ -66811,14 +67308,17 @@ type TreeViewColumn interface {
 	SetWidget(widget Widget)
 }
 
+// treeViewColumn implements the TreeViewColumn interface.
 type treeViewColumn struct {
-	externglib.InitiallyUnowned
+	gextras.Objector
 }
 
 // WrapTreeViewColumn wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
-	return treeViewColumn{externglib.InitiallyUnowned{*externglib.Object{obj}}}
+	return TreeViewColumn{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
@@ -67629,14 +68129,17 @@ type Video interface {
 	SetResource(resourcePath string)
 }
 
+// video implements the Video interface.
 type video struct {
-	widget
+	Widget
 }
 
 // WrapVideo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVideo(obj *externglib.Object) Video {
-	return video{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Video{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalVideo(p uintptr) (interface{}, error) {
@@ -67872,14 +68375,17 @@ type Viewport interface {
 	SetScrollToFocus(scrollToFocus bool)
 }
 
+// viewport implements the Viewport interface.
 type viewport struct {
-	widget
+	Widget
 }
 
 // WrapViewport wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapViewport(obj *externglib.Object) Viewport {
-	return viewport{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Viewport{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalViewport(p uintptr) (interface{}, error) {
@@ -67965,14 +68471,17 @@ type VolumeButton interface {
 	ScaleButton
 }
 
+// volumeButton implements the VolumeButton interface.
 type volumeButton struct {
-	scaleButton
+	ScaleButton
 }
 
 // WrapVolumeButton wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVolumeButton(obj *externglib.Object) VolumeButton {
-	return volumeButton{scaleButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
+	return VolumeButton{
+		ScaleButton: WrapScaleButton(obj),
+	}
 }
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
@@ -69126,14 +69635,17 @@ type Widget interface {
 	UnsetStateFlags(flags StateFlags)
 }
 
+// widget implements the Widget interface.
 type widget struct {
-	externglib.InitiallyUnowned
+	gextras.Objector
 }
 
 // WrapWidget wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWidget(obj *externglib.Object) Widget {
-	return widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}
+	return Widget{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
@@ -72071,14 +72583,17 @@ type WidgetPaintable interface {
 	SetWidget(widget Widget)
 }
 
+// widgetPaintable implements the WidgetPaintable interface.
 type widgetPaintable struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapWidgetPaintable wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
-	return widgetPaintable{*externglib.Object{obj}}
+	return WidgetPaintable{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
@@ -72519,14 +73034,17 @@ type Window interface {
 	Unminimize()
 }
 
+// window implements the Window interface.
 type window struct {
-	widget
+	Widget
 }
 
 // WrapWindow wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindow(obj *externglib.Object) Window {
-	return window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return Window{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
@@ -73518,14 +74036,17 @@ type WindowControls interface {
 	SetSide(side PackType)
 }
 
+// windowControls implements the WindowControls interface.
 type windowControls struct {
-	widget
+	Widget
 }
 
 // WrapWindowControls wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindowControls(obj *externglib.Object) WindowControls {
-	return windowControls{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return WindowControls{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalWindowControls(p uintptr) (interface{}, error) {
@@ -73658,14 +74179,17 @@ type WindowGroup interface {
 	RemoveWindow(window Window)
 }
 
+// windowGroup implements the WindowGroup interface.
 type windowGroup struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapWindowGroup wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindowGroup(obj *externglib.Object) WindowGroup {
-	return windowGroup{*externglib.Object{obj}}
+	return WindowGroup{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
@@ -73745,14 +74269,17 @@ type WindowHandle interface {
 	SetChild(child Widget)
 }
 
+// windowHandle implements the WindowHandle interface.
 type windowHandle struct {
-	widget
+	Widget
 }
 
 // WrapWindowHandle wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapWindowHandle(obj *externglib.Object) WindowHandle {
-	return windowHandle{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
+	return WindowHandle{
+		Widget: WrapWidget(obj),
+	}
 }
 
 func marshalWindowHandle(p uintptr) (interface{}, error) {

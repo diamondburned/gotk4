@@ -507,14 +507,17 @@ type Info interface {
 	ListScripts(tableType TableType) *Tag
 }
 
+// info implements the Info interface.
 type info struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInfo(obj *externglib.Object) Info {
-	return info{*externglib.Object{obj}}
+	return Info{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalInfo(p uintptr) (interface{}, error) {
@@ -570,14 +573,17 @@ type Ruleset interface {
 	Substitute(buffer *Buffer)
 }
 
+// ruleset implements the Ruleset interface.
 type ruleset struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapRuleset wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRuleset(obj *externglib.Object) Ruleset {
-	return ruleset{*externglib.Object{obj}}
+	return Ruleset{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalRuleset(p uintptr) (interface{}, error) {

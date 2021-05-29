@@ -79,16 +79,16 @@ func init() {
 
 		// Classes
 		{T: externglib.Type(C.gdk_app_launch_context_get_type()), F: marshalAppLaunchContext},
-		{T: externglib.Type(C.gdk_button_event_get_type()), F: marshalButtonEvent},
+		// Skipped ButtonEvent.
 		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContext},
 		{T: externglib.Type(C.gdk_clipboard_get_type()), F: marshalClipboard},
 		{T: externglib.Type(C.gdk_content_deserializer_get_type()), F: marshalContentDeserializer},
 		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProvider},
 		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializer},
-		{T: externglib.Type(C.gdk_crossing_event_get_type()), F: marshalCrossingEvent},
+		// Skipped CrossingEvent.
 		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
-		{T: externglib.Type(C.gdk_dnd_event_get_type()), F: marshalDNDEvent},
-		{T: externglib.Type(C.gdk_delete_event_get_type()), F: marshalDeleteEvent},
+		// Skipped DNDEvent.
+		// Skipped DeleteEvent.
 		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevice},
 		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTool},
 		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplay},
@@ -97,24 +97,24 @@ func init() {
 		{T: externglib.Type(C.gdk_draw_context_get_type()), F: marshalDrawContext},
 		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDrop},
 		// Skipped Event.
-		{T: externglib.Type(C.gdk_focus_event_get_type()), F: marshalFocusEvent},
+		// Skipped FocusEvent.
 		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClock},
 		{T: externglib.Type(C.gdk_gl_context_get_type()), F: marshalGLContext},
 		{T: externglib.Type(C.gdk_gl_texture_get_type()), F: marshalGLTexture},
-		{T: externglib.Type(C.gdk_grab_broken_event_get_type()), F: marshalGrabBrokenEvent},
-		{T: externglib.Type(C.gdk_key_event_get_type()), F: marshalKeyEvent},
+		// Skipped GrabBrokenEvent.
+		// Skipped KeyEvent.
 		{T: externglib.Type(C.gdk_memory_texture_get_type()), F: marshalMemoryTexture},
 		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitor},
-		{T: externglib.Type(C.gdk_motion_event_get_type()), F: marshalMotionEvent},
-		{T: externglib.Type(C.gdk_pad_event_get_type()), F: marshalPadEvent},
-		{T: externglib.Type(C.gdk_proximity_event_get_type()), F: marshalProximityEvent},
-		{T: externglib.Type(C.gdk_scroll_event_get_type()), F: marshalScrollEvent},
+		// Skipped MotionEvent.
+		// Skipped PadEvent.
+		// Skipped ProximityEvent.
+		// Skipped ScrollEvent.
 		{T: externglib.Type(C.gdk_seat_get_type()), F: marshalSeat},
 		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshot},
 		{T: externglib.Type(C.gdk_surface_get_type()), F: marshalSurface},
 		{T: externglib.Type(C.gdk_texture_get_type()), F: marshalTexture},
-		{T: externglib.Type(C.gdk_touch_event_get_type()), F: marshalTouchEvent},
-		{T: externglib.Type(C.gdk_touchpad_event_get_type()), F: marshalTouchpadEvent},
+		// Skipped TouchEvent.
+		// Skipped TouchpadEvent.
 		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContext},
 	})
 }
@@ -3140,6 +3140,7 @@ type AppLaunchContext interface {
 	SetTimestamp(timestamp uint32)
 }
 
+// appLaunchContext implements the AppLaunchContext interface.
 type appLaunchContext struct {
 	gio.AppLaunchContext
 }
@@ -3147,7 +3148,9 @@ type appLaunchContext struct {
 // WrapAppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return appLaunchContext{gio.WrapAppLaunchContext(obj)}
+	return AppLaunchContext{
+		gio.AppLaunchContext: gio.WrapAppLaunchContext(obj),
+	}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
@@ -3240,45 +3243,6 @@ func (context appLaunchContext) SetTimestamp(timestamp uint32) {
 	C.gdk_app_launch_context_set_timestamp(arg0, arg1)
 }
 
-// ButtonEvent: an event related to a button on a pointer device/
-type ButtonEvent interface {
-	Event
-
-	// Button: extract the button number from a button event.
-	Button() uint
-}
-
-type buttonEvent struct {
-	event
-}
-
-// WrapButtonEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapButtonEvent(obj *externglib.Object) ButtonEvent {
-	return buttonEvent{event{obj}}
-}
-
-func marshalButtonEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapButtonEvent(obj), nil
-}
-
-// Button: extract the button number from a button event.
-func (event buttonEvent) Button() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_button_event_get_button(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // CairoContext is an object representing the platform-specific draw context.
 //
 // CairoContexts are created for a Display using
@@ -3296,14 +3260,17 @@ type CairoContext interface {
 	CairoCreate() *cairo.Context
 }
 
+// cairoContext implements the CairoContext interface.
 type cairoContext struct {
-	drawContext
+	DrawContext
 }
 
 // WrapCairoContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCairoContext(obj *externglib.Object) CairoContext {
-	return cairoContext{drawContext{*externglib.Object{obj}}}
+	return CairoContext{
+		DrawContext: WrapDrawContext(obj),
+	}
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
@@ -3425,14 +3392,17 @@ type Clipboard interface {
 	StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 }
 
+// clipboard implements the Clipboard interface.
 type clipboard struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapClipboard wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapClipboard(obj *externglib.Object) Clipboard {
-	return clipboard{*externglib.Object{obj}}
+	return Clipboard{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalClipboard(p uintptr) (interface{}, error) {
@@ -3711,14 +3681,17 @@ type ContentDeserializer interface {
 	ReturnSuccess()
 }
 
+// contentDeserializer implements the ContentDeserializer interface.
 type contentDeserializer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapContentDeserializer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
-	return contentDeserializer{*externglib.Object{obj}}
+	return ContentDeserializer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalContentDeserializer(p uintptr) (interface{}, error) {
@@ -3889,14 +3862,17 @@ type ContentProvider interface {
 	WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 }
 
+// contentProvider implements the ContentProvider interface.
 type contentProvider struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapContentProvider wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentProvider(obj *externglib.Object) ContentProvider {
-	return contentProvider{*externglib.Object{obj}}
+	return ContentProvider{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
@@ -4066,14 +4042,17 @@ type ContentSerializer interface {
 	ReturnSuccess()
 }
 
+// contentSerializer implements the ContentSerializer interface.
 type contentSerializer struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapContentSerializer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentSerializer(obj *externglib.Object) ContentSerializer {
-	return contentSerializer{*externglib.Object{obj}}
+	return ContentSerializer{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalContentSerializer(p uintptr) (interface{}, error) {
@@ -4199,79 +4178,6 @@ func (serializer contentSerializer) ReturnSuccess() {
 	C.gdk_content_serializer_return_success(arg0)
 }
 
-// CrossingEvent: an event caused by a pointing device moving between surfaces.
-type CrossingEvent interface {
-	Event
-
-	// Detail extracts the notify detail from a crossing event.
-	Detail() NotifyType
-	// Focus checks if the @event surface is the focus surface.
-	Focus() bool
-	// Mode extracts the crossing mode from a crossing event.
-	Mode() CrossingMode
-}
-
-type crossingEvent struct {
-	event
-}
-
-// WrapCrossingEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapCrossingEvent(obj *externglib.Object) CrossingEvent {
-	return crossingEvent{event{obj}}
-}
-
-func marshalCrossingEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapCrossingEvent(obj), nil
-}
-
-// Detail extracts the notify detail from a crossing event.
-func (event crossingEvent) Detail() NotifyType {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_crossing_event_get_detail(arg0)
-
-	var ret0 NotifyType
-
-	ret0 = NotifyType(ret)
-
-	return ret0
-}
-
-// Focus checks if the @event surface is the focus surface.
-func (event crossingEvent) Focus() bool {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_crossing_event_get_focus(arg0)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// Mode extracts the crossing mode from a crossing event.
-func (event crossingEvent) Mode() CrossingMode {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_crossing_event_get_mode(arg0)
-
-	var ret0 CrossingMode
-
-	ret0 = CrossingMode(ret)
-
-	return ret0
-}
-
 // Cursor: a Cursor represents a cursor. Its contents are private.
 //
 // Cursors are immutable objects, so they can not change after they have been
@@ -4309,14 +4215,17 @@ type Cursor interface {
 	Texture() Texture
 }
 
+// cursor implements the Cursor interface.
 type cursor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapCursor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCursor(obj *externglib.Object) Cursor {
-	return cursor{*externglib.Object{obj}}
+	return Cursor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
@@ -4457,66 +4366,6 @@ func (cursor cursor) Texture() Texture {
 	return ret0
 }
 
-// DNDEvent: an event related to drag and drop operations.
-type DNDEvent interface {
-	Event
-
-	// Drop gets the Drop from a DND event.
-	Drop() Drop
-}
-
-type dndEvent struct {
-	event
-}
-
-// WrapDNDEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapDNDEvent(obj *externglib.Object) DNDEvent {
-	return dndEvent{event{obj}}
-}
-
-func marshalDNDEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDNDEvent(obj), nil
-}
-
-// Drop gets the Drop from a DND event.
-func (event dndEvent) Drop() Drop {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_dnd_event_get_drop(arg0)
-
-	var ret0 Drop
-
-	ret0 = WrapDrop(externglib.Take(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// DeleteEvent: an event related to closing a top-level surface.
-type DeleteEvent interface {
-	Event
-}
-
-type deleteEvent struct {
-	event
-}
-
-// WrapDeleteEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapDeleteEvent(obj *externglib.Object) DeleteEvent {
-	return deleteEvent{event{obj}}
-}
-
-func marshalDeleteEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapDeleteEvent(obj), nil
-}
-
 // Device: the Device object represents a single input device, such as a
 // keyboard, a mouse, a touchpad, etc.
 //
@@ -4601,14 +4450,17 @@ type Device interface {
 	HasBidiLayouts() bool
 }
 
+// device implements the Device interface.
 type device struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDevice wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDevice(obj *externglib.Object) Device {
-	return device{*externglib.Object{obj}}
+	return Device{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
@@ -4930,14 +4782,17 @@ type DeviceTool interface {
 	ToolType() DeviceToolType
 }
 
+// deviceTool implements the DeviceTool interface.
 type deviceTool struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDeviceTool wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDeviceTool(obj *externglib.Object) DeviceTool {
-	return deviceTool{*externglib.Object{obj}}
+	return DeviceTool{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
@@ -5171,14 +5026,17 @@ type Display interface {
 	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
+// display implements the Display interface.
 type display struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDisplay wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDisplay(obj *externglib.Object) Display {
-	return display{*externglib.Object{obj}}
+	return Display{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {
@@ -5716,14 +5574,17 @@ type DisplayManager interface {
 	SetDefaultDisplay(display Display)
 }
 
+// displayManager implements the DisplayManager interface.
 type displayManager struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDisplayManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDisplayManager(obj *externglib.Object) DisplayManager {
-	return displayManager{*externglib.Object{obj}}
+	return DisplayManager{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {
@@ -5833,14 +5694,17 @@ type Drag interface {
 	SetHotspot(hotX int, hotY int)
 }
 
+// drag implements the Drag interface.
 type drag struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDrag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrag(obj *externglib.Object) Drag {
-	return drag{*externglib.Object{obj}}
+	return Drag{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
@@ -6071,14 +5935,17 @@ type DrawContext interface {
 	IsInFrame() bool
 }
 
+// drawContext implements the DrawContext interface.
 type drawContext struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDrawContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrawContext(obj *externglib.Object) DrawContext {
-	return drawContext{*externglib.Object{obj}}
+	return DrawContext{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {
@@ -6271,14 +6138,17 @@ type Drop interface {
 	Status(actions DragAction, preferred DragAction)
 }
 
+// drop implements the Drop interface.
 type drop struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapDrop wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrop(obj *externglib.Object) Drop {
-	return drop{*externglib.Object{obj}}
+	return Drop{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalDrop(p uintptr) (interface{}, error) {
@@ -6477,47 +6347,6 @@ func (self drop) Status(actions DragAction, preferred DragAction) {
 	C.gdk_drop_status(arg0, arg1, arg2)
 }
 
-// FocusEvent: an event related to a focus change.
-type FocusEvent interface {
-	Event
-
-	// In extracts whether this event is about focus entering or leaving the
-	// surface.
-	In() bool
-}
-
-type focusEvent struct {
-	event
-}
-
-// WrapFocusEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFocusEvent(obj *externglib.Object) FocusEvent {
-	return focusEvent{event{obj}}
-}
-
-func marshalFocusEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFocusEvent(obj), nil
-}
-
-// In extracts whether this event is about focus entering or leaving the
-// surface.
-func (event focusEvent) In() bool {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_focus_event_get_in(arg0)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // FrameClock: a FrameClock tells the application when to update and repaint a
 // surface. This may be synced to the vertical refresh rate of the monitor, for
 // example. Even when the frame clock uses a simple timer rather than a
@@ -6600,14 +6429,17 @@ type FrameClock interface {
 	RequestPhase(phase FrameClockPhase)
 }
 
+// frameClock implements the FrameClock interface.
 type frameClock struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapFrameClock wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFrameClock(obj *externglib.Object) FrameClock {
-	return frameClock{*externglib.Object{obj}}
+	return FrameClock{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalFrameClock(p uintptr) (interface{}, error) {
@@ -6922,14 +6754,17 @@ type GLContext interface {
 	SetUseES(useES int)
 }
 
+// glContext implements the GLContext interface.
 type glContext struct {
-	drawContext
+	DrawContext
 }
 
 // WrapGLContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLContext(obj *externglib.Object) GLContext {
-	return glContext{drawContext{*externglib.Object{obj}}}
+	return GLContext{
+		DrawContext: WrapDrawContext(obj),
+	}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
@@ -7218,14 +7053,17 @@ type GLTexture interface {
 	Release()
 }
 
+// glTexture implements the GLTexture interface.
 type glTexture struct {
-	texture
+	Texture
 }
 
 // WrapGLTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLTexture(obj *externglib.Object) GLTexture {
-	return glTexture{texture{*externglib.Object{obj}}}
+	return GLTexture{
+		Texture: WrapTexture(obj),
+	}
 }
 
 func marshalGLTexture(p uintptr) (interface{}, error) {
@@ -7247,255 +7085,22 @@ func (self glTexture) Release() {
 	C.gdk_gl_texture_release(arg0)
 }
 
-// GrabBrokenEvent: an event related to a broken windowing system grab.
-type GrabBrokenEvent interface {
-	Event
-
-	// GrabSurface extracts the grab surface from a grab broken event.
-	GrabSurface() Surface
-	// Implicit checks whether the grab broken event is for an implicit grab.
-	Implicit() bool
-}
-
-type grabBrokenEvent struct {
-	event
-}
-
-// WrapGrabBrokenEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
-	return grabBrokenEvent{event{obj}}
-}
-
-func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapGrabBrokenEvent(obj), nil
-}
-
-// GrabSurface extracts the grab surface from a grab broken event.
-func (event grabBrokenEvent) GrabSurface() Surface {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_grab_broken_event_get_grab_surface(arg0)
-
-	var ret0 Surface
-
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// Implicit checks whether the grab broken event is for an implicit grab.
-func (event grabBrokenEvent) Implicit() bool {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_grab_broken_event_get_implicit(arg0)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// KeyEvent: an event related to a key-based device.
-type KeyEvent interface {
-	Event
-
-	// ConsumedModifiers extracts the consumed modifiers from a key event.
-	ConsumedModifiers() ModifierType
-	// Keycode extracts the keycode from a key event.
-	Keycode() uint
-	// Keyval extracts the keyval from a key event.
-	Keyval() uint
-	// Layout extracts the layout from a key event.
-	Layout() uint
-	// Level extracts the shift level from a key event.
-	Level() uint
-	// Match gets a keyval and modifier combination that will cause
-	// gdk_key_event_matches() to successfully match the given event.
-	Match() (keyval uint, modifiers ModifierType, ok bool)
-	// IsModifier extracts whether the key event is for a modifier key.
-	IsModifier() bool
-	// Matches matches a key event against a keyboard shortcut that is specified
-	// as a keyval and modifiers. Partial matches are possible where the
-	// combination matches if the currently active group is ignored.
-	//
-	// Note that we ignore Caps Lock for matching.
-	Matches(keyval uint, modifiers ModifierType) KeyMatch
-}
-
-type keyEvent struct {
-	event
-}
-
-// WrapKeyEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapKeyEvent(obj *externglib.Object) KeyEvent {
-	return keyEvent{event{obj}}
-}
-
-func marshalKeyEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapKeyEvent(obj), nil
-}
-
-// ConsumedModifiers extracts the consumed modifiers from a key event.
-func (event keyEvent) ConsumedModifiers() ModifierType {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_get_consumed_modifiers(arg0)
-
-	var ret0 ModifierType
-
-	ret0 = ModifierType(ret)
-
-	return ret0
-}
-
-// Keycode extracts the keycode from a key event.
-func (event keyEvent) Keycode() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_get_keycode(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// Keyval extracts the keyval from a key event.
-func (event keyEvent) Keyval() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_get_keyval(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// Layout extracts the layout from a key event.
-func (event keyEvent) Layout() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_get_layout(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// Level extracts the shift level from a key event.
-func (event keyEvent) Level() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_get_level(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// Match gets a keyval and modifier combination that will cause
-// gdk_key_event_matches() to successfully match the given event.
-func (event keyEvent) Match() (keyval uint, modifiers ModifierType, ok bool) {
-	var arg0 *C.GdkEvent
-	var arg1 *C.guint           // out
-	var arg2 *C.GdkModifierType // out
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_get_match(arg0, &arg1, &arg2)
-
-	var ret0 uint
-	var ret1 *ModifierType
-	var ret2 bool
-
-	ret0 = uint(arg1)
-
-	ret1 = (*ModifierType)(arg2)
-
-	ret2 = gextras.Gobool(ret)
-
-	return ret0, ret1, ret2
-}
-
-// IsModifier extracts whether the key event is for a modifier key.
-func (event keyEvent) IsModifier() bool {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_key_event_is_modifier(arg0)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// Matches matches a key event against a keyboard shortcut that is specified
-// as a keyval and modifiers. Partial matches are possible where the
-// combination matches if the currently active group is ignored.
-//
-// Note that we ignore Caps Lock for matching.
-func (event keyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
-	var arg0 *C.GdkEvent
-	var arg1 C.guint
-	var arg2 C.GdkModifierType
-
-	arg0 = (*C.GdkEvent)(event.Native())
-	arg1 = C.guint(keyval)
-	arg2 = (C.GdkModifierType)(modifiers)
-
-	ret := C.gdk_key_event_matches(arg0, arg1, arg2)
-
-	var ret0 KeyMatch
-
-	ret0 = KeyMatch(ret)
-
-	return ret0
-}
-
 // MemoryTexture: a Texture representing image data in memory.
 type MemoryTexture interface {
 	Texture
 }
 
+// memoryTexture implements the MemoryTexture interface.
 type memoryTexture struct {
-	texture
+	Texture
 }
 
 // WrapMemoryTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryTexture(obj *externglib.Object) MemoryTexture {
-	return memoryTexture{texture{*externglib.Object{obj}}}
+	return MemoryTexture{
+		Texture: WrapTexture(obj),
+	}
 }
 
 func marshalMemoryTexture(p uintptr) (interface{}, error) {
@@ -7577,14 +7182,17 @@ type Monitor interface {
 	IsValid() bool
 }
 
+// monitor implements the Monitor interface.
 type monitor struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMonitor(obj *externglib.Object) Monitor {
-	return monitor{*externglib.Object{obj}}
+	return Monitor{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {
@@ -7778,225 +7386,6 @@ func (monitor monitor) IsValid() bool {
 	return ret0
 }
 
-// MotionEvent: an event related to a pointer or touch device motion.
-type MotionEvent interface {
-	Event
-}
-
-type motionEvent struct {
-	event
-}
-
-// WrapMotionEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapMotionEvent(obj *externglib.Object) MotionEvent {
-	return motionEvent{event{obj}}
-}
-
-func marshalMotionEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapMotionEvent(obj), nil
-}
-
-// PadEvent: an event related to a pad-based device.
-type PadEvent interface {
-	Event
-
-	// AxisValue extracts the information from a pad strip or ring event.
-	AxisValue() (index uint, value float64)
-	// Button extracts information about the pressed button from a pad event.
-	Button() uint
-	// GroupMode extracts group and mode information from a pad event.
-	GroupMode() (group uint, mode uint)
-}
-
-type padEvent struct {
-	event
-}
-
-// WrapPadEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPadEvent(obj *externglib.Object) PadEvent {
-	return padEvent{event{obj}}
-}
-
-func marshalPadEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPadEvent(obj), nil
-}
-
-// AxisValue extracts the information from a pad strip or ring event.
-func (event padEvent) AxisValue() (index uint, value float64) {
-	var arg0 *C.GdkEvent
-	var arg1 *C.guint  // out
-	var arg2 *C.double // out
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_pad_event_get_axis_value(arg0, &arg1, &arg2)
-
-	var ret0 uint
-	var ret1 float64
-
-	ret0 = uint(arg1)
-
-	ret1 = float64(arg2)
-
-	return ret0, ret1
-}
-
-// Button extracts information about the pressed button from a pad event.
-func (event padEvent) Button() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_pad_event_get_button(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// GroupMode extracts group and mode information from a pad event.
-func (event padEvent) GroupMode() (group uint, mode uint) {
-	var arg0 *C.GdkEvent
-	var arg1 *C.guint // out
-	var arg2 *C.guint // out
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_pad_event_get_group_mode(arg0, &arg1, &arg2)
-
-	var ret0 uint
-	var ret1 uint
-
-	ret0 = uint(arg1)
-
-	ret1 = uint(arg2)
-
-	return ret0, ret1
-}
-
-// ProximityEvent: an event related to the proximity of a tool to a device.
-type ProximityEvent interface {
-	Event
-}
-
-type proximityEvent struct {
-	event
-}
-
-// WrapProximityEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapProximityEvent(obj *externglib.Object) ProximityEvent {
-	return proximityEvent{event{obj}}
-}
-
-func marshalProximityEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProximityEvent(obj), nil
-}
-
-// ScrollEvent: an event related to a scrolling motion.
-type ScrollEvent interface {
-	Event
-
-	// Deltas extracts the scroll deltas of a scroll event.
-	//
-	// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
-	Deltas() (deltaX float64, deltaY float64)
-	// Direction extracts the direction of a scroll event.
-	Direction() ScrollDirection
-	// IsStop: check whether a scroll event is a stop scroll event. Scroll
-	// sequences with smooth scroll information may provide a stop scroll event
-	// once the interaction with the device finishes, e.g. by lifting a finger.
-	// This stop scroll event is the signal that a widget may trigger kinetic
-	// scrolling based on the current velocity.
-	//
-	// Stop scroll events always have a delta of 0/0.
-	IsStop() bool
-}
-
-type scrollEvent struct {
-	event
-}
-
-// WrapScrollEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapScrollEvent(obj *externglib.Object) ScrollEvent {
-	return scrollEvent{event{obj}}
-}
-
-func marshalScrollEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapScrollEvent(obj), nil
-}
-
-// Deltas extracts the scroll deltas of a scroll event.
-//
-// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
-func (event scrollEvent) Deltas() (deltaX float64, deltaY float64) {
-	var arg0 *C.GdkEvent
-	var arg1 *C.double // out
-	var arg2 *C.double // out
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_scroll_event_get_deltas(arg0, &arg1, &arg2)
-
-	var ret0 float64
-	var ret1 float64
-
-	ret0 = float64(arg1)
-
-	ret1 = float64(arg2)
-
-	return ret0, ret1
-}
-
-// Direction extracts the direction of a scroll event.
-func (event scrollEvent) Direction() ScrollDirection {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_scroll_event_get_direction(arg0)
-
-	var ret0 ScrollDirection
-
-	ret0 = ScrollDirection(ret)
-
-	return ret0
-}
-
-// IsStop: check whether a scroll event is a stop scroll event. Scroll
-// sequences with smooth scroll information may provide a stop scroll event
-// once the interaction with the device finishes, e.g. by lifting a finger.
-// This stop scroll event is the signal that a widget may trigger kinetic
-// scrolling based on the current velocity.
-//
-// Stop scroll events always have a delta of 0/0.
-func (event scrollEvent) IsStop() bool {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_scroll_event_is_stop(arg0)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
 // Seat: the Seat object represents a collection of input devices that belong to
 // a user.
 type Seat interface {
@@ -8016,14 +7405,17 @@ type Seat interface {
 	Tools() *glib.List
 }
 
+// seat implements the Seat interface.
 type seat struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSeat wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSeat(obj *externglib.Object) Seat {
-	return seat{*externglib.Object{obj}}
+	return Seat{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {
@@ -8129,14 +7521,17 @@ type Snapshot interface {
 	gextras.Objector
 }
 
+// snapshot implements the Snapshot interface.
 type snapshot struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSnapshot wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSnapshot(obj *externglib.Object) Snapshot {
-	return snapshot{*externglib.Object{obj}}
+	return Snapshot{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -8306,14 +7701,17 @@ type Surface interface {
 	TranslateCoordinates(to Surface, x float64, y float64) bool
 }
 
+// surface implements the Surface interface.
 type surface struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapSurface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSurface(obj *externglib.Object) Surface {
-	return surface{*externglib.Object{obj}}
+	return Surface{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
@@ -8834,14 +8232,17 @@ type Texture interface {
 	SaveToPng(filename string) bool
 }
 
+// texture implements the Texture interface.
 type texture struct {
-	*externglib.Object
+	gextras.Objector
 }
 
 // WrapTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTexture(obj *externglib.Object) Texture {
-	return texture{*externglib.Object{obj}}
+	return Texture{
+		gextras.Objector: (obj),
+	}
 }
 
 func marshalTexture(p uintptr) (interface{}, error) {
@@ -8966,159 +8367,6 @@ func (texture texture) SaveToPng(filename string) bool {
 	return ret0
 }
 
-// TouchEvent: an event related to a touch-based device.
-type TouchEvent interface {
-	Event
-
-	// EmulatingPointer extracts whether a touch event is emulating a pointer
-	// event.
-	EmulatingPointer() bool
-}
-
-type touchEvent struct {
-	event
-}
-
-// WrapTouchEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapTouchEvent(obj *externglib.Object) TouchEvent {
-	return touchEvent{event{obj}}
-}
-
-func marshalTouchEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTouchEvent(obj), nil
-}
-
-// EmulatingPointer extracts whether a touch event is emulating a pointer
-// event.
-func (event touchEvent) EmulatingPointer() bool {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_touch_event_get_emulating_pointer(arg0)
-
-	var ret0 bool
-
-	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// TouchpadEvent: an event related to a touchpad device.
-type TouchpadEvent interface {
-	Event
-
-	// Deltas extracts delta information from a touchpad event.
-	Deltas() (dx float64, dy float64)
-	// GesturePhase extracts the touchpad gesture phase from a touchpad event.
-	GesturePhase() TouchpadGesturePhase
-	// NFingers extracts the number of fingers from a touchpad event.
-	NFingers() uint
-	// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
-	PinchAngleDelta() float64
-	// PinchScale extracts the scale from a touchpad pinch event.
-	PinchScale() float64
-}
-
-type touchpadEvent struct {
-	event
-}
-
-// WrapTouchpadEvent wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
-	return touchpadEvent{event{obj}}
-}
-
-func marshalTouchpadEvent(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapTouchpadEvent(obj), nil
-}
-
-// Deltas extracts delta information from a touchpad event.
-func (event touchpadEvent) Deltas() (dx float64, dy float64) {
-	var arg0 *C.GdkEvent
-	var arg1 *C.double // out
-	var arg2 *C.double // out
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_touchpad_event_get_deltas(arg0, &arg1, &arg2)
-
-	var ret0 float64
-	var ret1 float64
-
-	ret0 = float64(arg1)
-
-	ret1 = float64(arg2)
-
-	return ret0, ret1
-}
-
-// GesturePhase extracts the touchpad gesture phase from a touchpad event.
-func (event touchpadEvent) GesturePhase() TouchpadGesturePhase {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_touchpad_event_get_gesture_phase(arg0)
-
-	var ret0 TouchpadGesturePhase
-
-	ret0 = TouchpadGesturePhase(ret)
-
-	return ret0
-}
-
-// NFingers extracts the number of fingers from a touchpad event.
-func (event touchpadEvent) NFingers() uint {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_touchpad_event_get_n_fingers(arg0)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
-func (event touchpadEvent) PinchAngleDelta() float64 {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_touchpad_event_get_pinch_angle_delta(arg0)
-
-	var ret0 float64
-
-	ret0 = float64(ret)
-
-	return ret0
-}
-
-// PinchScale extracts the scale from a touchpad pinch event.
-func (event touchpadEvent) PinchScale() float64 {
-	var arg0 *C.GdkEvent
-
-	arg0 = (*C.GdkEvent)(event.Native())
-
-	ret := C.gdk_touchpad_event_get_pinch_scale(arg0)
-
-	var ret0 float64
-
-	ret0 = float64(ret)
-
-	return ret0
-}
-
 // VulkanContext is an object representing the platform-specific Vulkan draw
 // context.
 //
@@ -9132,14 +8380,17 @@ type VulkanContext interface {
 	DrawContext
 }
 
+// vulkanContext implements the VulkanContext interface.
 type vulkanContext struct {
-	drawContext
+	DrawContext
 }
 
 // WrapVulkanContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVulkanContext(obj *externglib.Object) VulkanContext {
-	return vulkanContext{drawContext{*externglib.Object{obj}}}
+	return VulkanContext{
+		DrawContext: WrapDrawContext(obj),
+	}
 }
 
 func marshalVulkanContext(p uintptr) (interface{}, error) {

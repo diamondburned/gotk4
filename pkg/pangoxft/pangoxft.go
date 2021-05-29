@@ -235,6 +235,7 @@ type Font interface {
 	UnlockFace()
 }
 
+// font implements the Font interface.
 type font struct {
 	pangofc.Font
 }
@@ -242,7 +243,9 @@ type font struct {
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
-	return font{pangofc.WrapFont(obj)}
+	return Font{
+		pangofc.Font: pangofc.WrapFont(obj),
+	}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -368,6 +371,7 @@ type FontMap interface {
 	pangofc.FontMap
 }
 
+// fontMap implements the FontMap interface.
 type fontMap struct {
 	pangofc.FontMap
 }
@@ -375,7 +379,9 @@ type fontMap struct {
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{pangofc.WrapFontMap(obj)}
+	return FontMap{
+		pangofc.FontMap: pangofc.WrapFontMap(obj),
+	}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -397,6 +403,7 @@ type Renderer interface {
 	SetDraw(draw *xft.Draw)
 }
 
+// renderer implements the Renderer interface.
 type renderer struct {
 	pango.Renderer
 }
@@ -404,7 +411,9 @@ type renderer struct {
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{pango.WrapRenderer(obj)}
+	return Renderer{
+		pango.Renderer: pango.WrapRenderer(obj),
+	}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {

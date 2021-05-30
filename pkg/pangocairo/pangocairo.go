@@ -3,6 +3,7 @@
 package pangocairo
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -17,7 +18,13 @@ import (
 // #include <pango/pangocairo.h>
 //
 // extern void gotk4_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer)
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -34,7 +41,7 @@ type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath boo
 
 //export gotk4_ShapeRendererFunc
 func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -43,9 +50,19 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 	var attr *pango.AttrShape
 	var doPath bool
 
-	cr = cairo.WrapContext(arg0)
+	{
+		cr = cairo.WrapContext(arg0)
+		runtime.SetFinalizer(&cr, func(v **cairo.Context) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	attr = pango.WrapAttrShape(arg1)
+	{
+		attr = pango.WrapAttrShape(arg1)
+		runtime.SetFinalizer(&attr, func(v **pango.AttrShape) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	doPath = gextras.Gobool(arg2)
 
@@ -66,7 +83,12 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 
 	var ret0 *cairo.FontOptions
 
-	ret0 = cairo.WrapFontOptions(ret)
+	{
+		ret0 = cairo.WrapFontOptions(ret)
+		runtime.SetFinalizer(&ret0, func(v **cairo.FontOptions) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -467,7 +489,12 @@ func (font font) ScaledFont() *cairo.ScaledFont {
 
 	var ret0 *cairo.ScaledFont
 
-	ret0 = cairo.WrapScaledFont(ret)
+	{
+		ret0 = cairo.WrapScaledFont(ret)
+		runtime.SetFinalizer(&ret0, func(v **cairo.ScaledFont) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

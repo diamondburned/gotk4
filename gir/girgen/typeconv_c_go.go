@@ -69,6 +69,8 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	case array.Length != nil:
+		ng.addImport("unsafe")
+
 		lengthArg := conv.ArgAt(*array.Length)
 
 		// If the code explicitly doesn't want us to own the data, then we will
@@ -80,12 +82,14 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
 		if !conv.isTransferring() && innerResolved.IsPrimitive() {
+			ng.addImport("runtime")
+			ng.addImport("reflect")
+
 			b.Linef(goSliceFromPtr(conv.Target, conv.Value, lengthArg))
 
 			// Ensure that Go's GC doesn't touch the pointer within the duration
 			// of the function.
 			// See: https://golang.org/misc/cgo/gmp/gmp.go?s=3086:3757#L87
-			ng.addImport("runtime")
 			b.Linef("runtime.SetFinalizer(&%s, func() {", conv.Value)
 			b.Linef("  C.free(unsafe.Pointer(%s))", conv.Value)
 			b.Linef("})")
@@ -100,6 +104,8 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	case array.Name == "GLib.Array": // treat as Go array
+		ng.addImport("unsafe")
+
 		b.Linef("var length uintptr")
 		b.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&length))", conv.Value)
 		b.Linef("%s = make([]%s, length)", conv.Target, innerType)
@@ -110,6 +116,8 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	case array.IsZeroTerminated():
+		ng.addImport("unsafe")
+
 		// Scan for the length.
 		b.Linef("var length uint")
 		b.Linef("for p := unsafe.Pointer(%s); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {", conv.Value)
@@ -158,6 +166,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 
 			// Only free this if C is transferring ownership to us.
 			if conv.isTransferring() {
+				ng.addImport("unsafe")
 				p.Linef("C.free(unsafe.Pointer(%s))", conv.Value)
 			}
 
@@ -248,6 +257,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 
 		switch {
 		case result.Class != nil, result.Interface != nil:
+			ng.addImport("unsafe")
 			return cgoTakeObject(conv.TypeConversion, wrapName)
 
 		case result.Record != nil:
@@ -258,10 +268,13 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 			// don't need it anymore.
 			if !conv.isTransferring() {
 				ng.addImport("runtime")
-				b.Linef("runtime.SetFinalizer(&%s, nil)", conv.Target)
+
+				b.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", conv.Target, goName)
+				b.Linef("  C.free(unsafe.Pointer(v.Native()))")
+				b.Linef("})")
 			}
 
-			return conv.call(wrapName)
+			return b.String()
 		}
 	}
 

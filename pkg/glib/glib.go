@@ -254,7 +254,6 @@ type Strv string
 //
 //    time (&ttime);
 //    gtime = (GTime)ttime;
-//
 type Time int32
 
 // TimeSpan: a value representing an interval of time, in microseconds.
@@ -2494,7 +2493,7 @@ type ChildWatchFunc func(pid Pid, status int)
 
 //export gotk4_ChildWatchFunc
 func gotk4_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2521,7 +2520,7 @@ type CompareDataFunc func(a interface{}, b interface{}) int
 
 //export gotk4_CompareDataFunc
 func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gint {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2543,7 +2542,7 @@ type DataForeachFunc func(keyID Quark, data interface{})
 
 //export gotk4_DataForeachFunc
 func gotk4_DataForeachFunc(arg0 C.GQuark, arg1 C.gpointer, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2569,7 +2568,7 @@ type DuplicateFunc func(data interface{}) interface{}
 
 //export gotk4_DuplicateFunc
 func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2587,7 +2586,7 @@ type Func func(data interface{})
 
 //export gotk4_Func
 func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2606,7 +2605,7 @@ type HFunc func(key interface{}, value interface{})
 
 //export gotk4_HFunc
 func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2630,7 +2629,7 @@ type HRFunc func(key interface{}, value interface{}) bool
 
 //export gotk4_HRFunc
 func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2659,7 +2658,7 @@ type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 
 //export gotk4_LogFunc
 func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2699,7 +2698,7 @@ type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) LogWriterOutp
 
 //export gotk4_LogWriterFunc
 func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2713,7 +2712,12 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 		fields = make([]LogField, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (C.GLogField)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			fields[i] = WrapLogField(src)
+			{
+				fields[i] = WrapLogField(src)
+				runtime.SetFinalizer(&fields[i], func(v *LogField) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 
@@ -2728,7 +2732,7 @@ type RegexEvalCallback func(matchInfo *MatchInfo, result *String) bool
 
 //export gotk4_RegexEvalCallback
 func gotk4_RegexEvalCallback(arg0 *C.GMatchInfo, arg1 *C.GString, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2736,9 +2740,19 @@ func gotk4_RegexEvalCallback(arg0 *C.GMatchInfo, arg1 *C.GString, arg2 C.gpointe
 	var matchInfo *MatchInfo
 	var result *String
 
-	matchInfo = WrapMatchInfo(arg0)
+	{
+		matchInfo = WrapMatchInfo(arg0)
+		runtime.SetFinalizer(&matchInfo, func(v **MatchInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	result = WrapString(arg1)
+	{
+		result = WrapString(arg1)
+		runtime.SetFinalizer(&result, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(RegexEvalCallback)(matchInfo, result)
 }
@@ -2753,7 +2767,7 @@ type SourceFunc func() bool
 
 //export gotk4_SourceFunc
 func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg0))
+	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2791,7 +2805,7 @@ type SpawnChildSetupFunc func()
 
 //export gotk4_SpawnChildSetupFunc
 func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg0))
+	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2805,7 +2819,7 @@ type TestDataFunc func()
 
 //export gotk4_TestDataFunc
 func gotk4_TestDataFunc(arg0 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg0))
+	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2827,7 +2841,7 @@ type TestFixtureFunc func(fixture interface{})
 
 //export gotk4_TestFixtureFunc
 func gotk4_TestFixtureFunc(arg0 C.gpointer, arg1 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2844,7 +2858,7 @@ type TestLogFatalFunc func(logDomain string, logLevel LogLevelFlags, message str
 
 //export gotk4_TestLogFatalFunc
 func gotk4_TestLogFatalFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2868,7 +2882,7 @@ type UnixFDSourceFunc func(fd int, condition IOCondition) bool
 
 //export gotk4_UnixFDSourceFunc
 func gotk4_UnixFDSourceFunc(arg0 C.gint, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3935,22 +3949,6 @@ func AtomicRcBoxRelease(memBlock interface{}) {
 	C.g_atomic_rc_box_release(arg1)
 }
 
-// AtomicRcBoxReleaseFull: atomically releases a reference on the data pointed
-// by @mem_block.
-//
-// If the reference was the last one, it will call @clear_func to clear the
-// contents of @mem_block, and then will free the resources allocated for
-// @mem_block.
-func AtomicRcBoxReleaseFull(memBlock interface{}) {
-	var arg1 C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg1 = C.gpointer(box.Assign(memBlock))
-	arg2 = (*[0]byte)(C.callbackDelete)
-
-	C.g_atomic_rc_box_release_full(arg1, arg2)
-}
-
 // AtomicRefCountCompare: atomically compares the current value of @arc with
 // @val.
 func AtomicRefCountCompare(arc int, val int) bool {
@@ -4265,7 +4263,9 @@ func ByteArrayFreeToBytes(array []byte) *Bytes {
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -4445,32 +4445,8 @@ func ClearList(listPtr **List) {
 	var arg2 C.GDestroyNotify
 
 	arg1 = (**C.GList)(listPtr.Native())
-	arg2 = (*[0]byte)(C.callbackDelete)
 
 	C.g_clear_list(arg1, arg2)
-}
-
-// ClearPointer clears a reference to a variable.
-//
-// @pp must not be nil.
-//
-// If the reference is nil then this function does nothing. Otherwise, the
-// variable is destroyed using @destroy and the pointer is set to nil.
-//
-// A macro is also included that allows this function to be used without pointer
-// casts. This will mask any warnings about incompatible function types or
-// calling conventions, so you must ensure that your @destroy function is
-// compatible with being called as `GDestroyNotify` using the standard calling
-// convention for the platform that GLib was compiled for; otherwise the program
-// will experience undefined behaviour.
-func ClearPointer(pp interface{}) {
-	var arg1 *C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg1 = C.gpointer(box.Assign(pp))
-	arg2 = (*[0]byte)(C.callbackDelete)
-
-	C.g_clear_pointer(arg1, arg2)
 }
 
 // ClearSlist clears a pointer to a List, freeing it and, optionally, freeing
@@ -4483,7 +4459,6 @@ func ClearSlist(slistPtr **SList) {
 	var arg2 C.GDestroyNotify
 
 	arg1 = (**C.GSList)(slistPtr.Native())
-	arg2 = (*[0]byte)(C.callbackDelete)
 
 	C.g_clear_slist(arg1, arg2)
 }
@@ -5368,13 +5343,12 @@ func FileReadLink(filename string) string {
 // file without being tricked into writing into a different location. It doesn't
 // work!
 //
-//     // DON'T DO THIS
-//     if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
-//       {
-//         fd = g_open (filename, O_WRONLY);
-//         // write to fd
-//       }
-//
+//    // DON'T DO THIS
+//    if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
+//      {
+//        fd = g_open (filename, O_WRONLY);
+//        // write to fd
+//      }
 //
 // Another thing to note is that G_FILE_TEST_EXISTS and
 // G_FILE_TEST_IS_EXECUTABLE are implemented using the access() system call.
@@ -6971,7 +6945,12 @@ func IconvOpen(toCodeset string, fromCodeset string) IConv {
 
 	var ret0 IConv
 
-	ret0 = WrapIConv(ret)
+	{
+		ret0 = WrapIConv(ret)
+		runtime.SetFinalizer(&ret0, func(v *IConv) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7035,7 +7014,9 @@ func NewIdleSource() *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -7222,7 +7203,9 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -7463,8 +7446,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 // Invalid file descriptors are accepted and return false, which allows for the
 // following construct without needing any additional error handling:
 //
-//      is_journald = g_log_writer_is_journald (fileno (stderr));
-//
+//    is_journald = g_log_writer_is_journald (fileno (stderr));
 func LogWriterIsJournald(outputFd int) bool {
 	var arg1 C.gint
 
@@ -7506,7 +7488,12 @@ func MainContextDefault() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+		runtime.SetFinalizer(&ret0, func(v **MainContext) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7527,7 +7514,12 @@ func MainContextGetThreadDefault() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+		runtime.SetFinalizer(&ret0, func(v **MainContext) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7544,7 +7536,9 @@ func MainContextRefThreadDefault() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+	}
 
 	return ret0
 }
@@ -7556,7 +7550,12 @@ func MainCurrentSource() *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+		runtime.SetFinalizer(&ret0, func(v **Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7601,7 +7600,6 @@ func MainCurrentSource() *Source {
 //          l = next;
 //        }
 //      }
-//
 //
 // There is a temptation to use g_main_depth() to solve problems with
 // reentrancy. For instance, while waiting for data to be received from the
@@ -7984,7 +7982,6 @@ func NumberParserErrorQuark() Quark {
 //                         NULL);
 //      ...
 //
-//
 // If "[E]xit" is selected, the application terminates with a call to _exit(0).
 //
 // If "[S]tack" trace is selected, g_on_error_stack_trace() is called. This
@@ -8047,7 +8044,6 @@ func OnErrorStackTrace(prgName string) {
 //        }
 //
 //      // use initialization_value here
-//
 func OnceInitEnter(location interface{}) bool {
 	var arg1 *C.void
 
@@ -8372,7 +8368,9 @@ func PropagateError(src *Error) *Error {
 
 	var ret0 **Error
 
-	ret0 = WrapError(arg1)
+	{
+		ret0 = WrapError(arg1)
+	}
 
 	return ret0
 }
@@ -8721,21 +8719,6 @@ func RcBoxRelease(memBlock interface{}) {
 	arg1 = C.gpointer(box.Assign(memBlock))
 
 	C.g_rc_box_release(arg1)
-}
-
-// RcBoxReleaseFull releases a reference on the data pointed by @mem_block.
-//
-// If the reference was the last one, it will call @clear_func to clear the
-// contents of @mem_block, and then will free the resources allocated for
-// @mem_block.
-func RcBoxReleaseFull(memBlock interface{}) {
-	var arg1 C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg1 = C.gpointer(box.Assign(memBlock))
-	arg2 = (*[0]byte)(C.callbackDelete)
-
-	C.g_rc_box_release_full(arg1, arg2)
 }
 
 // Realloc reallocates the memory pointed to by @mem, so that it now has space
@@ -9171,7 +9154,12 @@ func SequenceInsertBefore(iter *SequenceIter, data interface{}) *SequenceIter {
 
 	var ret0 *SequenceIter
 
-	ret0 = WrapSequenceIter(ret)
+	{
+		ret0 = WrapSequenceIter(ret)
+		runtime.SetFinalizer(&ret0, func(v **SequenceIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -9227,7 +9215,12 @@ func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) *SequenceI
 
 	var ret0 *SequenceIter
 
-	ret0 = WrapSequenceIter(ret)
+	{
+		ret0 = WrapSequenceIter(ret)
+		runtime.SetFinalizer(&ret0, func(v **SequenceIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -10560,10 +10553,9 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 // place, and return @string itself, not a copy. The return value is to allow
 // nesting such as
 //
-//      reformatted = g_strcanon (g_strdup (const_str), "abc", '?');
-//      ...
-//      g_free (reformatted);
-//
+//    reformatted = g_strcanon (g_strdup (const_str), "abc", '?');
+//    ...
+//    g_free (reformatted);
 func Strcanon(string string, validChars string, substitutor byte) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -10698,10 +10690,9 @@ func Strcompress(source string) string {
 // @new_delimiter character. Modifies @string in place, and returns @string
 // itself, not a copy. The return value is to allow nesting such as
 //
-//      reformatted = g_strdelimit (g_strdup (const_str), "abc", '?');
-//      ...
-//      g_free (reformatted);
-//
+//    reformatted = g_strdelimit (g_strdup (const_str), "abc", '?');
+//    ...
+//    g_free (reformatted);
 func Strdelimit(string string, delimiters string, newDelimiter byte) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -10799,14 +10790,12 @@ func Strdupv(strArray string) []string {
 // changed by intermediate function calls, so you should save its value as soon
 // as the call returns:
 //
-//
 //      int saved_errno;
 //
 //      ret = read (blah);
 //      saved_errno = errno;
 //
 //      g_strerror (saved_errno);
-//
 func Strerror(errnum int) string {
 	var arg1 C.gint
 
@@ -10872,7 +10861,9 @@ func NewString(init string) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+	}
 
 	return ret0
 }
@@ -10895,7 +10886,9 @@ func StringNewLen(init string, len int) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+	}
 
 	return ret0
 }
@@ -10912,7 +10905,9 @@ func NewStringSized(dflSize uint) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+	}
 
 	return ret0
 }
@@ -11467,7 +11462,12 @@ func TestCreateSuite(suiteName string) *TestSuite {
 
 	var ret0 *TestSuite
 
-	ret0 = WrapTestSuite(ret)
+	{
+		ret0 = WrapTestSuite(ret)
+		runtime.SetFinalizer(&ret0, func(v **TestSuite) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -11489,14 +11489,13 @@ func TestCreateSuite(suiteName string) *TestSuite {
 //
 // For example:
 //
-//      // g_main_context_push_thread_default() should fail if the
-//      // context is already owned by another thread.
-//      g_test_expect_message (G_LOG_DOMAIN,
-//                             G_LOG_LEVEL_CRITICAL,
-//                             "assertion*acquired_context*failed");
-//      g_main_context_push_thread_default (bad_context);
-//      g_test_assert_expected_messages ();
-//
+//    // g_main_context_push_thread_default() should fail if the
+//    // context is already owned by another thread.
+//    g_test_expect_message (G_LOG_DOMAIN,
+//                           G_LOG_LEVEL_CRITICAL,
+//                           "assertion*acquired_context*failed");
+//    g_main_context_push_thread_default (bad_context);
+//    g_test_assert_expected_messages ();
 //
 // Note that you cannot use this to test g_error() messages, since g_error()
 // intentionally never returns even if the program doesn't abort; use
@@ -11581,7 +11580,12 @@ func TestGetRoot() *TestSuite {
 
 	var ret0 *TestSuite
 
-	ret0 = WrapTestSuite(ret)
+	{
+		ret0 = WrapTestSuite(ret)
+		runtime.SetFinalizer(&ret0, func(v **TestSuite) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -11644,21 +11648,6 @@ func TestLogTypeName(logType TestLogType) string {
 	ret0 = C.GoString(ret)
 
 	return ret0
-}
-
-// TestQueueDestroy: this function enqueus a callback @destroy_func to be
-// executed during the next test case teardown phase. This is most useful to
-// auto destruct allocated test resources at the end of a test run. Resources
-// are released in reverse queue order, that means enqueueing callback A before
-// callback B will cause B() to be called before A() during teardown.
-func TestQueueDestroy(destroyData interface{}) {
-	var arg1 C.GDestroyNotify
-	var arg2 C.gpointer
-
-	arg1 = (*[0]byte)(C.callbackDelete)
-	arg2 = C.gpointer(box.Assign(destroyData))
-
-	C.g_test_queue_destroy(arg1, arg2)
 }
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
@@ -11864,7 +11853,6 @@ func TestSubprocess() bool {
 //
 //      …
 //    }
-//
 func TestSummary(summary string) {
 	var arg1 *C.char
 
@@ -11941,20 +11929,19 @@ func TestTrapAssertions(domain string, file string, line int, _func string, asse
 // process then asserts successful child program termination and validates child
 // program outputs.
 //
-//      static void
-//      test_fork_patterns (void)
-//      {
-//        if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
-//          {
-//            g_print ("some stdout text: somagic17\n");
-//            g_printerr ("some stderr text: semagic43\n");
-//            exit (0); // successful test run
-//          }
-//        g_test_trap_assert_passed ();
-//        g_test_trap_assert_stdout ("*somagic17*");
-//        g_test_trap_assert_stderr ("*semagic43*");
-//      }
-//
+//    static void
+//    test_fork_patterns (void)
+//    {
+//      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+//        {
+//          g_print ("some stdout text: somagic17\n");
+//          g_printerr ("some stderr text: semagic43\n");
+//          exit (0); // successful test run
+//        }
+//      g_test_trap_assert_passed ();
+//      g_test_trap_assert_stdout ("*somagic17*");
+//      g_test_trap_assert_stderr ("*semagic43*");
+//    }
 func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
 	var arg1 C.guint64
 	var arg2 C.GTestTrapFlags
@@ -12052,7 +12039,6 @@ func TestTrapReachedTimeout() bool {
 //                         test_create_large_object);
 //        return g_test_run ();
 //      }
-//
 func TestTrapSubprocess(testPath string, usecTimeout uint64, testFlags TestSubprocessFlags) {
 	var arg1 *C.char
 	var arg2 C.guint64
@@ -12195,7 +12181,12 @@ func ThreadSelf() *Thread {
 
 	var ret0 *Thread
 
-	ret0 = WrapThread(ret)
+	{
+		ret0 = WrapThread(ret)
+		runtime.SetFinalizer(&ret0, func(v **Thread) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -12222,11 +12213,9 @@ func ThreadYield() {
 // This function was deprecated, along with Val itself, in GLib 2.62. Equivalent
 // functionality is available using code like:
 //
-//
 //    GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
 //    gint64 time_val = g_date_time_to_unix (dt);
 //    g_date_time_unref (dt);
-//
 func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
 	var arg1 *C.gchar
 	var arg2 *C.GTimeVal // out
@@ -12239,7 +12228,12 @@ func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
 	var ret0 *TimeVal
 	var ret1 bool
 
-	ret0 = WrapTimeVal(arg2)
+	{
+		ret0 = WrapTimeVal(arg2)
+		runtime.SetFinalizer(&ret0, func(v **TimeVal) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -12368,7 +12362,9 @@ func NewTimeoutSource(interval uint) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -12392,7 +12388,9 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -13373,7 +13371,9 @@ func NewUnixFdSource(fd int, condition IOCondition) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -13477,7 +13477,9 @@ func NewUnixSignalSource(signum int) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -13562,7 +13564,9 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 
 	var ret0 *URI
 
-	ret0 = WrapURI(ret)
+	{
+		ret0 = WrapURI(ret)
+	}
 
 	return ret0
 }
@@ -13610,7 +13614,9 @@ func URIBuildWithUser(flags URIFlags, scheme string, user string, password strin
 
 	var ret0 *URI
 
-	ret0 = WrapURI(ret)
+	{
+		ret0 = WrapURI(ret)
+	}
 
 	return ret0
 }
@@ -13827,7 +13833,9 @@ func URIParse(uriString string, flags URIFlags) *URI {
 
 	var ret0 *URI
 
-	ret0 = WrapURI(ret)
+	{
+		ret0 = WrapURI(ret)
+	}
 
 	return ret0
 }
@@ -13873,7 +13881,9 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 
 	var ret0 *HashTable
 
-	ret0 = WrapHashTable(ret)
+	{
+		ret0 = WrapHashTable(ret)
+	}
 
 	return ret0
 }
@@ -13881,9 +13891,7 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 // URIParseScheme gets the scheme portion of a URI string. RFC 3986
 // (https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
 //
-//
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-//
 //
 // Common schemes include `file`, `https`, `svn+ssh`, etc.
 func URIParseScheme(uri string) string {
@@ -13905,9 +13913,7 @@ func URIParseScheme(uri string) string {
 // URIPeekScheme gets the scheme portion of a URI string. RFC 3986
 // (https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
 //
-//
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-//
 //
 // Common schemes include `file`, `https`, `svn+ssh`, etc.
 //
@@ -14154,7 +14160,9 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -15033,7 +15041,9 @@ func VariantParse(_type *VariantType, text string, limit string, endptr string) 
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -15046,19 +15056,15 @@ func VariantParse(_type *VariantType, text string, limit string, endptr string) 
 //
 // The message will typically look something like one of the following:
 //
-//
 //    unterminated string constant:
 //      (1, 2, 3, 'abc
 //                ^^^^
-//    ]|
 //
-//    or
+// or
 //
-//    |[
 //    unable to find a common type:
 //      [1, 2, 3, 'str']
 //       ^        ^^^^^
-//
 //
 // The format of the message may change in a future version.
 //
@@ -15125,7 +15131,12 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -15484,7 +15495,9 @@ func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -15499,7 +15512,9 @@ func (bytes *Bytes) Ref() *Bytes {
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -15614,7 +15629,9 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	var ret0 *Checksum
 
-	ret0 = WrapChecksum(ret)
+	{
+		ret0 = WrapChecksum(ret)
+	}
 
 	return ret0
 }
@@ -15631,7 +15648,9 @@ func (checksum *Checksum) Copy() *Checksum {
 
 	var ret0 *Checksum
 
-	ret0 = WrapChecksum(ret)
+	{
+		ret0 = WrapChecksum(ret)
+	}
 
 	return ret0
 }
@@ -15714,7 +15733,6 @@ func (checksum *Checksum) Reset() {
 //
 //        return data;
 //      }
-//
 //
 // Whenever a thread calls pop_data() now, it will wait until current_data is
 // non-nil, i.e. until some other thread has called push_data().
@@ -15860,7 +15878,9 @@ func NewDate() *Date {
 
 	var ret0 *Date
 
-	ret0 = WrapDate(ret)
+	{
+		ret0 = WrapDate(ret)
+	}
 
 	return ret0
 }
@@ -15875,7 +15895,9 @@ func NewDateJulian(julianDay uint32) *Date {
 
 	var ret0 *Date
 
-	ret0 = WrapDate(ret)
+	{
+		ret0 = WrapDate(ret)
+	}
 
 	return ret0
 }
@@ -15993,7 +16015,9 @@ func (date *Date) Copy() *Date {
 
 	var ret0 *Date
 
-	ret0 = WrapDate(ret)
+	{
+		ret0 = WrapDate(ret)
+	}
 
 	return ret0
 }
@@ -16271,11 +16295,10 @@ func (date *Date) SetParse(str string) {
 //
 // To set the value of a date to the current day, you could write:
 //
-//     time_t now = time (NULL);
-//     if (now == (time_t) -1)
-//       // handle the error
-//     g_date_set_time_t (date, now);
-//
+//    time_t now = time (NULL);
+//    if (now == (time_t) -1)
+//      // handle the error
+//    g_date_set_time_t (date, now);
 func (date *Date) SetTimeT(timet int32) {
 	var arg0 *C.GDate
 	var arg1 C.time_t
@@ -16416,7 +16439,9 @@ func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute in
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16434,7 +16459,9 @@ func NewDateTimeFromIso8601(text string, defaultTz *TimeZone) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16449,7 +16476,9 @@ func NewDateTimeFromTimevalLocal(tv *TimeVal) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16464,7 +16493,9 @@ func NewDateTimeFromTimevalUtc(tv *TimeVal) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16479,7 +16510,9 @@ func NewDateTimeFromUnixLocal(t int64) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16494,7 +16527,9 @@ func NewDateTimeFromUnixUtc(t int64) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16519,7 +16554,9 @@ func NewDateTimeLocal(year int, month int, day int, hour int, minute int, second
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16534,7 +16571,9 @@ func NewDateTimeNow(tz *TimeZone) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16546,7 +16585,9 @@ func NewDateTimeNowLocal() *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16558,7 +16599,9 @@ func NewDateTimeNowUtc() *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16583,7 +16626,9 @@ func NewDateTimeUtc(year int, month int, day int, hour int, minute int, seconds 
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16601,7 +16646,9 @@ func (datetime *DateTime) AddDays(days int) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16629,7 +16676,9 @@ func (datetime *DateTime) AddFull(years int, months int, days int, hours int, mi
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16647,7 +16696,9 @@ func (datetime *DateTime) AddHours(hours int) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16665,7 +16716,9 @@ func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16688,7 +16741,9 @@ func (datetime *DateTime) AddMonths(months int) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16706,7 +16761,9 @@ func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16724,7 +16781,9 @@ func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -16745,7 +16804,9 @@ func (datetime *DateTime) AddYears(years int) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -17041,7 +17102,12 @@ func (datetime *DateTime) Timezone() *TimeZone {
 
 	var ret0 *TimeZone
 
-	ret0 = WrapTimeZone(ret)
+	{
+		ret0 = WrapTimeZone(ret)
+		runtime.SetFinalizer(&ret0, func(v **TimeZone) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -17229,7 +17295,9 @@ func (datetime *DateTime) Ref() *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -17248,7 +17316,9 @@ func (datetime *DateTime) ToLocal() *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -17298,7 +17368,9 @@ func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -17336,7 +17408,9 @@ func (datetime *DateTime) ToUtc() *DateTime {
 
 	var ret0 *DateTime
 
-	ret0 = WrapDateTime(ret)
+	{
+		ret0 = WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -17453,7 +17527,9 @@ func (error *Error) Copy() *Error {
 
 	var ret0 *Error
 
-	ret0 = WrapError(ret)
+	{
+		ret0 = WrapError(ret)
+	}
 
 	return ret0
 }
@@ -17535,7 +17611,12 @@ func (iter *HashTableIter) HashTable() *HashTable {
 
 	var ret0 *HashTable
 
-	ret0 = WrapHashTable(ret)
+	{
+		ret0 = WrapHashTable(ret)
+		runtime.SetFinalizer(&ret0, func(v **HashTable) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -17555,7 +17636,6 @@ func (iter *HashTableIter) HashTable() *HashTable {
 //      {
 //        // do something with key and value
 //      }
-//
 func (iter *HashTableIter) Init(hashTable *HashTable) {
 	var arg0 *C.GHashTableIter
 	var arg1 *C.GHashTable
@@ -17607,7 +17687,6 @@ func (iter *HashTableIter) Next() (key interface{}, value interface{}, ok bool) 
 //        if (condition)
 //          g_hash_table_iter_remove (&iter);
 //      }
-//
 func (iter *HashTableIter) Remove() {
 	var arg0 *C.GHashTableIter
 
@@ -17679,14 +17758,24 @@ func (d *Hook) Data() interface{} {
 // Next gets the field inside the struct.
 func (n *Hook) Next() *Hook {
 	var ret *Hook
-	ret = WrapHook(h.native.next)
+	{
+		ret = WrapHook(h.native.next)
+		runtime.SetFinalizer(&ret, func(v **Hook) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Prev gets the field inside the struct.
 func (p *Hook) Prev() *Hook {
 	var ret *Hook
-	ret = WrapHook(h.native.prev)
+	{
+		ret = WrapHook(h.native.prev)
+		runtime.SetFinalizer(&ret, func(v **Hook) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -17785,7 +17874,12 @@ func (i *HookList) IsSetup() uint {
 // Hooks gets the field inside the struct.
 func (h *HookList) Hooks() *Hook {
 	var ret *Hook
-	ret = WrapHook(h.native.hooks)
+	{
+		ret = WrapHook(h.native.hooks)
+		runtime.SetFinalizer(&ret, func(v **Hook) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -17924,7 +18018,9 @@ func NewIOChannelFile(filename string, mode string) *IOChannel {
 
 	var ret0 *IOChannel
 
-	ret0 = WrapIOChannel(ret)
+	{
+		ret0 = WrapIOChannel(ret)
+	}
 
 	return ret0
 }
@@ -17939,7 +18035,9 @@ func NewIOChannelUnix(fd int) *IOChannel {
 
 	var ret0 *IOChannel
 
-	ret0 = WrapIOChannel(ret)
+	{
+		ret0 = WrapIOChannel(ret)
+	}
 
 	return ret0
 }
@@ -18235,7 +18333,9 @@ func (channel *IOChannel) Ref() *IOChannel {
 
 	var ret0 *IOChannel
 
-	ret0 = WrapIOChannel(ret)
+	{
+		ret0 = WrapIOChannel(ret)
+	}
 
 	return ret0
 }
@@ -18563,7 +18663,9 @@ func NewKeyFile() *KeyFile {
 
 	var ret0 *KeyFile
 
-	ret0 = WrapKeyFile(ret)
+	{
+		ret0 = WrapKeyFile(ret)
+	}
 
 	return ret0
 }
@@ -19328,7 +19430,9 @@ func (keyFile *KeyFile) Ref() *KeyFile {
 
 	var ret0 *KeyFile
 
-	ret0 = WrapKeyFile(ret)
+	{
+		ret0 = WrapKeyFile(ret)
+	}
 
 	return ret0
 }
@@ -19686,14 +19790,24 @@ func (d *List) Data() interface{} {
 // Next gets the field inside the struct.
 func (n *List) Next() *List {
 	var ret *List
-	ret = WrapList(l.native.next)
+	{
+		ret = WrapList(l.native.next)
+		runtime.SetFinalizer(&ret, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Prev gets the field inside the struct.
 func (p *List) Prev() *List {
 	var ret *List
-	ret = WrapList(l.native.prev)
+	{
+		ret = WrapList(l.native.prev)
+		runtime.SetFinalizer(&ret, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -19782,7 +19896,9 @@ func NewMainContext() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+	}
 
 	return ret0
 }
@@ -19853,7 +19969,12 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+		runtime.SetFinalizer(&ret0, func(v **Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -19880,7 +20001,12 @@ func (context *MainContext) FindSourceByID(sourceID uint) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+		runtime.SetFinalizer(&ret0, func(v **Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -19899,7 +20025,12 @@ func (context *MainContext) FindSourceByUserData(userData interface{}) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+		runtime.SetFinalizer(&ret0, func(v **Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -20102,7 +20233,9 @@ func (context *MainContext) Ref() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+	}
 
 	return ret0
 }
@@ -20156,7 +20289,6 @@ func (context *MainContext) Unref() {
 //
 //      if (g_atomic_int_dec_and_test (&tasks_remaining))
 //        g_main_context_wakeup (NULL);
-//
 func (context *MainContext) Wakeup() {
 	var arg0 *C.GMainContext
 
@@ -20203,7 +20335,9 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 
 	var ret0 *MainLoop
 
-	ret0 = WrapMainLoop(ret)
+	{
+		ret0 = WrapMainLoop(ret)
+	}
 
 	return ret0
 }
@@ -20218,7 +20352,12 @@ func (loop *MainLoop) Context() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+		runtime.SetFinalizer(&ret0, func(v **MainContext) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -20262,7 +20401,9 @@ func (loop *MainLoop) Ref() *MainLoop {
 
 	var ret0 *MainLoop
 
-	ret0 = WrapMainLoop(ret)
+	{
+		ret0 = WrapMainLoop(ret)
+	}
 
 	return ret0
 }
@@ -20328,7 +20469,9 @@ func NewMappedFile(filename string, writable bool) *MappedFile {
 
 	var ret0 *MappedFile
 
-	ret0 = WrapMappedFile(ret)
+	{
+		ret0 = WrapMappedFile(ret)
+	}
 
 	return ret0
 }
@@ -20345,7 +20488,9 @@ func NewMappedFileFromFd(fd int, writable bool) *MappedFile {
 
 	var ret0 *MappedFile
 
-	ret0 = WrapMappedFile(ret)
+	{
+		ret0 = WrapMappedFile(ret)
+	}
 
 	return ret0
 }
@@ -20372,7 +20517,9 @@ func (file *MappedFile) Bytes() *Bytes {
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -20424,7 +20571,9 @@ func (file *MappedFile) Ref() *MappedFile {
 
 	var ret0 *MappedFile
 
-	ret0 = WrapMappedFile(ret)
+	{
+		ret0 = WrapMappedFile(ret)
+	}
 
 	return ret0
 }
@@ -20469,27 +20618,6 @@ func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (m *MarkupParseContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
-}
-
-// NewMarkupParseContext constructs a struct MarkupParseContext.
-func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData interface{}) *MarkupParseContext {
-	var arg1 *C.GMarkupParser
-	var arg2 C.GMarkupParseFlags
-	var arg3 C.gpointer
-	var arg4 C.GDestroyNotify
-
-	arg1 = (*C.GMarkupParser)(parser.Native())
-	arg2 = (C.GMarkupParseFlags)(flags)
-	arg3 = C.gpointer(box.Assign(userData))
-	arg4 = (*[0]byte)(C.callbackDelete)
-
-	ret := C.g_markup_parse_context_new(arg1, arg2, arg3, arg4)
-
-	var ret0 *MarkupParseContext
-
-	ret0 = WrapMarkupParseContext(ret)
-
-	return ret0
 }
 
 // EndParse signals to the ParseContext that all data has been fed into the
@@ -20561,7 +20689,12 @@ func (context *MarkupParseContext) ElementStack() *SList {
 
 	var ret0 *SList
 
-	ret0 = WrapSList(ret)
+	{
+		ret0 = WrapSList(ret)
+		runtime.SetFinalizer(&ret0, func(v **SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -20705,7 +20838,6 @@ func (context *MarkupParseContext) Pop() interface{} {
 //
 //      // else, handle other tags...
 //    }
-//
 func (context *MarkupParseContext) Push(parser *MarkupParser, userData interface{}) {
 	var arg0 *C.GMarkupParseContext
 	var arg1 *C.GMarkupParser
@@ -20728,7 +20860,9 @@ func (context *MarkupParseContext) Ref() *MarkupParseContext {
 
 	var ret0 *MarkupParseContext
 
-	ret0 = WrapMarkupParseContext(ret)
+	{
+		ret0 = WrapMarkupParseContext(ret)
+	}
 
 	return ret0
 }
@@ -21012,7 +21146,9 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 
 	var ret0 *Regex
 
-	ret0 = WrapRegex(ret)
+	{
+		ret0 = WrapRegex(ret)
+	}
 
 	return ret0
 }
@@ -21123,7 +21259,9 @@ func (matchInfo *MatchInfo) Ref() *MatchInfo {
 
 	var ret0 *MatchInfo
 
-	ret0 = WrapMatchInfo(ret)
+	{
+		ret0 = WrapMatchInfo(ret)
+	}
 
 	return ret0
 }
@@ -21175,28 +21313,48 @@ func (d *Node) Data() interface{} {
 // Next gets the field inside the struct.
 func (n *Node) Next() *Node {
 	var ret *Node
-	ret = WrapNode(n.native.next)
+	{
+		ret = WrapNode(n.native.next)
+		runtime.SetFinalizer(&ret, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Prev gets the field inside the struct.
 func (p *Node) Prev() *Node {
 	var ret *Node
-	ret = WrapNode(n.native.prev)
+	{
+		ret = WrapNode(n.native.prev)
+		runtime.SetFinalizer(&ret, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Parent gets the field inside the struct.
 func (p *Node) Parent() *Node {
 	var ret *Node
-	ret = WrapNode(n.native.parent)
+	{
+		ret = WrapNode(n.native.parent)
+		runtime.SetFinalizer(&ret, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Children gets the field inside the struct.
 func (c *Node) Children() *Node {
 	var ret *Node
-	ret = WrapNode(n.native.children)
+	{
+		ret = WrapNode(n.native.children)
+		runtime.SetFinalizer(&ret, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -21265,7 +21423,12 @@ func (node *Node) Copy() *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21284,7 +21447,12 @@ func (node *Node) CopyDeep(copyFunc CopyFunc) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21333,7 +21501,12 @@ func (root *Node) Find(order TraverseType, flags TraverseFlags, data interface{}
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21352,7 +21525,12 @@ func (node *Node) FindChild(flags TraverseFlags, data interface{}) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21368,7 +21546,12 @@ func (node *Node) FirstSibling() *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21383,7 +21566,12 @@ func (node *Node) Root() *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21402,7 +21590,12 @@ func (parent *Node) Insert(position int, node *Node) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21421,7 +21614,12 @@ func (parent *Node) InsertAfter(sibling *Node, node *Node) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21440,7 +21638,12 @@ func (parent *Node) InsertBefore(sibling *Node, node *Node) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21474,7 +21677,12 @@ func (node *Node) LastChild() *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21490,7 +21698,12 @@ func (node *Node) LastSibling() *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21559,7 +21772,12 @@ func (node *Node) NthChild(n uint) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21576,7 +21794,12 @@ func (parent *Node) Prepend(node *Node) *Node {
 
 	var ret0 *Node
 
-	ret0 = WrapNode(ret)
+	{
+		ret0 = WrapNode(ret)
+		runtime.SetFinalizer(&ret0, func(v **Node) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21784,13 +22007,14 @@ func NewOptionGroup(name string, description string, helpDescription string, use
 	arg3 = (*C.gchar)(C.CString(helpDescription))
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = C.gpointer(box.Assign(userData))
-	arg5 = (*[0]byte)(C.callbackDelete)
 
 	ret := C.g_option_group_new(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 *OptionGroup
 
-	ret0 = WrapOptionGroup(ret)
+	{
+		ret0 = WrapOptionGroup(ret)
+	}
 
 	return ret0
 }
@@ -21828,7 +22052,9 @@ func (group *OptionGroup) Ref() *OptionGroup {
 
 	var ret0 *OptionGroup
 
-	ret0 = WrapOptionGroup(ret)
+	{
+		ret0 = WrapOptionGroup(ret)
+	}
 
 	return ret0
 }
@@ -22096,14 +22322,24 @@ func (q *Queue) Native() unsafe.Pointer {
 // Head gets the field inside the struct.
 func (h *Queue) Head() *List {
 	var ret *List
-	ret = WrapList(q.native.head)
+	{
+		ret = WrapList(q.native.head)
+		runtime.SetFinalizer(&ret, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Tail gets the field inside the struct.
 func (t *Queue) Tail() *List {
 	var ret *List
-	ret = WrapList(q.native.tail)
+	{
+		ret = WrapList(q.native.tail)
+		runtime.SetFinalizer(&ret, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -22124,7 +22360,6 @@ func (queue *Queue) ClearFull() {
 	var arg1 C.GDestroyNotify
 
 	arg0 = (*C.GQueue)(queue.Native())
-	arg1 = (*[0]byte)(C.callbackDelete)
 
 	C.g_queue_clear_full(arg0, arg1)
 }
@@ -22141,7 +22376,12 @@ func (queue *Queue) Copy() *Queue {
 
 	var ret0 *Queue
 
-	ret0 = WrapQueue(ret)
+	{
+		ret0 = WrapQueue(ret)
+		runtime.SetFinalizer(&ret0, func(v **Queue) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22171,7 +22411,12 @@ func (queue *Queue) Find(data interface{}) *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22205,21 +22450,6 @@ func (queue *Queue) Free() {
 	arg0 = (*C.GQueue)(queue.Native())
 
 	C.g_queue_free(arg0)
-}
-
-// FreeFull: convenience method, which frees all the memory used by a #GQueue,
-// and calls the specified destroy function on every element's data.
-//
-// @free_func should not modify the queue (eg, by removing the freed element
-// from it).
-func (queue *Queue) FreeFull() {
-	var arg0 *C.GQueue
-	var arg1 C.GDestroyNotify
-
-	arg0 = (*C.GQueue)(queue.Native())
-	arg1 = (*[0]byte)(C.callbackDelete)
-
-	C.g_queue_free_full(arg0, arg1)
 }
 
 // Length returns the number of items in @queue.
@@ -22401,7 +22631,12 @@ func (queue *Queue) PeekHeadLink() *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22435,7 +22670,12 @@ func (queue *Queue) PeekNthLink(n uint) *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22465,7 +22705,12 @@ func (queue *Queue) PeekTailLink() *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22495,7 +22740,12 @@ func (queue *Queue) PopHeadLink() *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22529,7 +22779,12 @@ func (queue *Queue) PopNthLink(n uint) *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22559,7 +22814,12 @@ func (queue *Queue) PopTailLink() *List {
 
 	var ret0 *List
 
-	ret0 = WrapList(ret)
+	{
+		ret0 = WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22718,42 +22978,40 @@ func (queue *Queue) Unlink(link_ *List) {
 // lock when a reader already holds the lock and a writer is queued to acquire
 // it.
 //
-// Here is an example for an array with access functions:
+// Here is an example for an array with access functions: |[<!-- language="C"
+// --> GRWLock lock; GPtrArray *array;
 //
-//      GRWLock lock;
-//      GPtrArray *array;
+//     gpointer
+//     my_array_get (guint index)
+//     {
+//       gpointer retval = NULL;
 //
-//      gpointer
-//      my_array_get (guint index)
-//      {
-//        gpointer retval = NULL;
+//       if (!array)
+//         return NULL;
 //
-//        if (!array)
-//          return NULL;
+//       g_rw_lock_reader_lock (&lock);
+//       if (index < array->len)
+//         retval = g_ptr_array_index (array, index);
+//       g_rw_lock_reader_unlock (&lock);
 //
-//        g_rw_lock_reader_lock (&lock);
-//        if (index < array->len)
-//          retval = g_ptr_array_index (array, index);
-//        g_rw_lock_reader_unlock (&lock);
+//       return retval;
+//     }
 //
-//        return retval;
-//      }
+//     void
+//     my_array_set (guint index, gpointer data)
+//     {
+//       g_rw_lock_writer_lock (&lock);
 //
-//      void
-//      my_array_set (guint index, gpointer data)
-//      {
-//        g_rw_lock_writer_lock (&lock);
+//       if (!array)
+//         array = g_ptr_array_new ();
 //
-//        if (!array)
-//          array = g_ptr_array_new ();
+//       if (index >= array->len)
+//         g_ptr_array_set_size (array, index+1);
+//       g_ptr_array_index (array, index) = data;
 //
-//        if (index >= array->len)
-//          g_ptr_array_set_size (array, index+1);
-//        g_ptr_array_index (array, index) = data;
-//
-//        g_rw_lock_writer_unlock (&lock);
-//      }
-//
+//       g_rw_lock_writer_unlock (&lock);
+//     }
+//    ]|
 //
 // This example shows an array which can be accessed by many readers (the
 // my_array_get() function) simultaneously, whereas the writers (the
@@ -22823,7 +23081,6 @@ func (rwLock *RWLock) Clear() {
 //
 //    b = g_new (Blob, 1);
 //    g_rw_lock_init (&b->l);
-//
 //
 // To undo the effect of g_rw_lock_init() when a lock is no longer needed, use
 // g_rw_lock_clear().
@@ -22994,7 +23251,6 @@ func (recMutex *RecMutex) Clear() {
 //    b = g_new (Blob, 1);
 //    g_rec_mutex_init (&b->m);
 //
-//
 // Calling g_rec_mutex_init() on an already initialized Mutex leads to undefined
 // behaviour.
 //
@@ -23149,7 +23405,9 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	var ret0 *Regex
 
-	ret0 = WrapRegex(ret)
+	{
+		ret0 = WrapRegex(ret)
+	}
 
 	return ret0
 }
@@ -23320,7 +23578,6 @@ func (regex *Regex) StringNumber(name string) int {
 //      g_regex_unref (regex);
 //    }
 //
-//
 // @string is not copied and is used in Info internally. If you use any Info
 // method (except g_match_info_free()) after freeing or modifying @string then
 // the behaviour is undefined.
@@ -23340,7 +23597,9 @@ func (regex *Regex) Match(string string, matchOptions RegexMatchFlags) (matchInf
 	var ret0 **MatchInfo
 	var ret1 bool
 
-	ret0 = WrapMatchInfo(arg3)
+	{
+		ret0 = WrapMatchInfo(arg3)
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -23376,7 +23635,9 @@ func (regex *Regex) MatchAll(string string, matchOptions RegexMatchFlags) (match
 	var ret0 **MatchInfo
 	var ret1 bool
 
-	ret0 = WrapMatchInfo(arg3)
+	{
+		ret0 = WrapMatchInfo(arg3)
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -23393,7 +23654,9 @@ func (regex *Regex) Ref() *Regex {
 
 	var ret0 *Regex
 
-	ret0 = WrapRegex(ret)
+	{
+		ret0 = WrapRegex(ret)
+	}
 
 	return ret0
 }
@@ -23490,7 +23753,12 @@ func (d *SList) Data() interface{} {
 // Next gets the field inside the struct.
 func (n *SList) Next() *SList {
 	var ret *SList
-	ret = WrapSList(s.native.next)
+	{
+		ret = WrapSList(s.native.next)
+		runtime.SetFinalizer(&ret, func(v **SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -23560,14 +23828,24 @@ func (i *Scanner) InputName() string {
 // Qdata gets the field inside the struct.
 func (q *Scanner) Qdata() *Data {
 	var ret *Data
-	ret = WrapData(s.native.qdata)
+	{
+		ret = WrapData(s.native.qdata)
+		runtime.SetFinalizer(&ret, func(v **Data) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // Config gets the field inside the struct.
 func (c *Scanner) Config() *ScannerConfig {
 	var ret *ScannerConfig
-	ret = WrapScannerConfig(s.native.config)
+	{
+		ret = WrapScannerConfig(s.native.config)
+		runtime.SetFinalizer(&ret, func(v **ScannerConfig) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -24139,7 +24417,9 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -24292,7 +24572,12 @@ func (source *Source) Context() *MainContext {
 
 	var ret0 *MainContext
 
-	ret0 = WrapMainContext(ret)
+	{
+		ret0 = WrapMainContext(ret)
+		runtime.SetFinalizer(&ret0, func(v **MainContext) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24424,7 +24709,6 @@ func (source *Source) Time() int64 {
 //      return FALSE;
 //    }
 //
-//
 // Calls to this function from a thread other than the one acquired by the
 // Context the #GSource is attached to are typically redundant, as the source
 // could be destroyed immediately after this function returns. However, once a
@@ -24503,7 +24787,9 @@ func (source *Source) Ref() *Source {
 
 	var ret0 *Source
 
-	ret0 = WrapSource(ret)
+	{
+		ret0 = WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -24778,7 +25064,12 @@ func (string *String) Append(val string) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24795,7 +25086,12 @@ func (string *String) AppendC(c byte) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24823,7 +25119,12 @@ func (string *String) AppendLen(val string, len int) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24841,7 +25142,12 @@ func (string *String) AppendUnichar(wc uint32) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24865,7 +25171,12 @@ func (string *String) AppendURIEscaped(unescaped string, reservedCharsAllowed st
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24880,7 +25191,12 @@ func (string *String) ASCIIDown() *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24895,7 +25211,12 @@ func (string *String) ASCIIUp() *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24915,7 +25236,12 @@ func (string *String) Assign(rval string) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24930,7 +25256,12 @@ func (string *String) Down() *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24968,7 +25299,12 @@ func (string *String) Erase(pos int, len int) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25009,7 +25345,9 @@ func (string *String) FreeToBytes() *Bytes {
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -25044,7 +25382,12 @@ func (string *String) Insert(pos int, val string) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25063,7 +25406,12 @@ func (string *String) InsertC(pos int, c byte) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25094,7 +25442,12 @@ func (string *String) InsertLen(pos int, val string, len int) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25114,7 +25467,12 @@ func (string *String) InsertUnichar(pos int, wc uint32) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25134,7 +25492,12 @@ func (string *String) Overwrite(pos uint, val string) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25157,7 +25520,12 @@ func (string *String) OverwriteLen(pos uint, val string, len int) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25176,7 +25544,12 @@ func (string *String) Prepend(val string) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25193,7 +25566,12 @@ func (string *String) PrependC(c byte) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25221,7 +25599,12 @@ func (string *String) PrependLen(val string, len int) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25239,7 +25622,12 @@ func (string *String) PrependUnichar(wc uint32) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25259,7 +25647,12 @@ func (string *String) SetSize(len uint) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25276,7 +25669,12 @@ func (string *String) Truncate(len uint) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25291,7 +25689,12 @@ func (string *String) Up() *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+		runtime.SetFinalizer(&ret0, func(v **String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25407,7 +25810,12 @@ func (tbuffer *TestLogBuffer) Pop() *TestLogMsg {
 
 	var ret0 *TestLogMsg
 
-	ret0 = WrapTestLogMsg(ret)
+	{
+		ret0 = WrapTestLogMsg(ret)
+		runtime.SetFinalizer(&ret0, func(v **TestLogMsg) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -25544,7 +25952,9 @@ func NewThread(name string, _func ThreadFunc) *Thread {
 
 	var ret0 *Thread
 
-	ret0 = WrapThread(ret)
+	{
+		ret0 = WrapThread(ret)
+	}
 
 	return ret0
 }
@@ -25564,7 +25974,9 @@ func NewThreadTry(name string, _func ThreadFunc) *Thread {
 
 	var ret0 *Thread
 
-	ret0 = WrapThread(ret)
+	{
+		ret0 = WrapThread(ret)
+	}
 
 	return ret0
 }
@@ -25608,7 +26020,9 @@ func (thread *Thread) Ref() *Thread {
 
 	var ret0 *Thread
 
-	ret0 = WrapThread(ret)
+	{
+		ret0 = WrapThread(ret)
+	}
 
 	return ret0
 }
@@ -25918,11 +26332,9 @@ func (time_ *TimeVal) Add(microseconds int32) {
 // the year 2038 problem. Accordingly, since GLib 2.62, this function has been
 // deprecated. Equivalent functionality is available using:
 //
-//
 //    GDateTime *dt = g_date_time_new_from_unix_utc (time_val);
 //    iso8601_string = g_date_time_format_iso8601 (dt);
 //    g_date_time_unref (dt);
-//
 //
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
@@ -25977,7 +26389,9 @@ func NewTimeZone(identifier string) *TimeZone {
 
 	var ret0 *TimeZone
 
-	ret0 = WrapTimeZone(ret)
+	{
+		ret0 = WrapTimeZone(ret)
+	}
 
 	return ret0
 }
@@ -25989,7 +26403,9 @@ func NewTimeZoneLocal() *TimeZone {
 
 	var ret0 *TimeZone
 
-	ret0 = WrapTimeZone(ret)
+	{
+		ret0 = WrapTimeZone(ret)
+	}
 
 	return ret0
 }
@@ -26004,7 +26420,9 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 
 	var ret0 *TimeZone
 
-	ret0 = WrapTimeZone(ret)
+	{
+		ret0 = WrapTimeZone(ret)
+	}
 
 	return ret0
 }
@@ -26016,7 +26434,9 @@ func NewTimeZoneUtc() *TimeZone {
 
 	var ret0 *TimeZone
 
-	ret0 = WrapTimeZone(ret)
+	{
+		ret0 = WrapTimeZone(ret)
+	}
 
 	return ret0
 }
@@ -26180,7 +26600,9 @@ func (tz *TimeZone) Ref() *TimeZone {
 
 	var ret0 *TimeZone
 
-	ret0 = WrapTimeZone(ret)
+	{
+		ret0 = WrapTimeZone(ret)
+	}
 
 	return ret0
 }
@@ -26223,7 +26645,12 @@ func (t *TrashStack) Native() unsafe.Pointer {
 // Next gets the field inside the struct.
 func (n *TrashStack) Next() *TrashStack {
 	var ret *TrashStack
-	ret = WrapTrashStack(t.native.next)
+	{
+		ret = WrapTrashStack(t.native.next)
+		runtime.SetFinalizer(&ret, func(v **TrashStack) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -26566,7 +26993,9 @@ func (baseURI *URI) ParseRelative(uriRef string, flags URIFlags) *URI {
 
 	var ret0 *URI
 
-	ret0 = WrapURI(ret)
+	{
+		ret0 = WrapURI(ret)
+	}
 
 	return ret0
 }
@@ -26581,7 +27010,9 @@ func (uri *URI) Ref() *URI {
 
 	var ret0 *URI
 
-	ret0 = WrapURI(ret)
+	{
+		ret0 = WrapURI(ret)
+	}
 
 	return ret0
 }
@@ -26708,7 +27139,6 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 //      }
 //    if (error)
 //      // handle parsing error
-//
 func (iter *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
 	var arg0 *C.GUriParamsIter
 	var arg1 *C.gchar
@@ -26776,8 +27206,7 @@ func (iter *URIParamsIter) Next() (attribute string, value string, ok bool) {
 // For instance, if you want to create a #GVariant holding an integer value you
 // can use:
 //
-//      GVariant *v = g_variant_new ("u", 40);
-//
+//    GVariant *v = g_variant_new ("u", 40);
 //
 // The string "u" in the first argument tells #GVariant that the data passed to
 // the constructor (40) is going to be an unsigned integer.
@@ -27019,7 +27448,12 @@ func NewVariantBoolean(value bool) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27034,7 +27468,12 @@ func NewVariantByte(value byte) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27051,7 +27490,12 @@ func NewVariantBytestring(string []byte) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27068,7 +27512,12 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27083,7 +27532,12 @@ func NewVariantDouble(value float64) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27104,7 +27558,12 @@ func NewVariantFixedArray(elementType *VariantType, elements interface{}, nEleme
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27123,7 +27582,12 @@ func NewVariantFromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Varian
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27138,7 +27602,12 @@ func NewVariantHandle(value int32) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27153,7 +27622,12 @@ func NewVariantInt16(value int16) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27168,7 +27642,12 @@ func NewVariantInt32(value int32) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27183,7 +27662,12 @@ func NewVariantInt64(value int64) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27200,7 +27684,12 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27216,7 +27705,12 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27232,7 +27726,12 @@ func NewVariantSignature(signature string) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27248,7 +27747,12 @@ func NewVariantString(string string) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27264,7 +27768,12 @@ func NewVariantTakeString(string string) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27279,7 +27788,12 @@ func NewVariantUint16(value uint16) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27294,7 +27808,12 @@ func NewVariantUint32(value uint32) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27309,7 +27828,12 @@ func NewVariantUint64(value uint64) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27324,7 +27848,12 @@ func NewVariantVariant(value *Variant) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27348,7 +27877,9 @@ func (value *Variant) Byteswap() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -27753,7 +28284,9 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -27806,7 +28339,9 @@ func (value *Variant) DataAsBytes() *Bytes {
 
 	var ret0 *Bytes
 
-	ret0 = WrapBytes(ret)
+	{
+		ret0 = WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -27967,7 +28502,9 @@ func (value *Variant) Maybe() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28004,7 +28541,9 @@ func (value *Variant) NormalForm() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28146,7 +28685,12 @@ func (value *Variant) Type() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -28233,7 +28777,9 @@ func (value *Variant) Variant() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28358,7 +28904,9 @@ func (value *Variant) NewIter() *VariantIter {
 
 	var ret0 *VariantIter
 
-	ret0 = WrapVariantIter(ret)
+	{
+		ret0 = WrapVariantIter(ret)
+	}
 
 	return ret0
 }
@@ -28398,7 +28946,9 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28466,7 +29016,9 @@ func (value *Variant) PrintString(string *String, typeAnnotate bool) *String {
 
 	var ret0 *String
 
-	ret0 = WrapString(ret)
+	{
+		ret0 = WrapString(ret)
+	}
 
 	return ret0
 }
@@ -28481,7 +29033,9 @@ func (value *Variant) Ref() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28515,7 +29069,9 @@ func (value *Variant) RefSink() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28580,7 +29136,9 @@ func (value *Variant) TakeRef() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -28637,7 +29195,9 @@ func NewVariantBuilder(_type *VariantType) *VariantBuilder {
 
 	var ret0 *VariantBuilder
 
-	ret0 = WrapVariantBuilder(ret)
+	{
+		ret0 = WrapVariantBuilder(ret)
+	}
 
 	return ret0
 }
@@ -28719,7 +29279,12 @@ func (builder *VariantBuilder) End() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -28794,7 +29359,6 @@ func (builder *VariantBuilder) Init(_type *VariantType) {
 //    g_variant_builder_close (&builder);
 //
 //    output = g_variant_builder_end (&builder);
-//
 func (builder *VariantBuilder) Open(_type *VariantType) {
 	var arg0 *C.GVariantBuilder
 	var arg1 *C.GVariantType
@@ -28818,7 +29382,9 @@ func (builder *VariantBuilder) Ref() *VariantBuilder {
 
 	var ret0 *VariantBuilder
 
-	ret0 = WrapVariantBuilder(ret)
+	{
+		ret0 = WrapVariantBuilder(ret)
+	}
 
 	return ret0
 }
@@ -28895,7 +29461,6 @@ func (builder *VariantBuilder) Unref() {
 //
 //        return result;
 //      }
-//
 type VariantDict struct {
 	native C.GVariantDict
 }
@@ -28930,7 +29495,9 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 
 	var ret0 *VariantDict
 
-	ret0 = WrapVariantDict(ret)
+	{
+		ret0 = WrapVariantDict(ret)
+	}
 
 	return ret0
 }
@@ -28989,7 +29556,12 @@ func (dict *VariantDict) End() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -29059,7 +29631,9 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -29076,7 +29650,9 @@ func (dict *VariantDict) Ref() *VariantDict {
 
 	var ret0 *VariantDict
 
-	ret0 = WrapVariantDict(ret)
+	{
+		ret0 = WrapVariantDict(ret)
+	}
 
 	return ret0
 }
@@ -29158,7 +29734,9 @@ func (iter *VariantIter) Copy() *VariantIter {
 
 	var ret0 *VariantIter
 
-	ret0 = WrapVariantIter(ret)
+	{
+		ret0 = WrapVariantIter(ret)
+	}
 
 	return ret0
 }
@@ -29239,7 +29817,6 @@ func (iter *VariantIter) NChildren() uint {
 //            g_variant_unref (child);
 //          }
 //      }
-//
 func (iter *VariantIter) NextValue() *Variant {
 	var arg0 *C.GVariantIter
 
@@ -29249,7 +29826,9 @@ func (iter *VariantIter) NextValue() *Variant {
 
 	var ret0 *Variant
 
-	ret0 = WrapVariant(ret)
+	{
+		ret0 = WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -29422,7 +30001,9 @@ func NewVariantType(typeString string) *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+	}
 
 	return ret0
 }
@@ -29437,7 +30018,9 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+	}
 
 	return ret0
 }
@@ -29454,7 +30037,9 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+	}
 
 	return ret0
 }
@@ -29469,7 +30054,9 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+	}
 
 	return ret0
 }
@@ -29485,7 +30072,9 @@ func (_type *VariantType) Copy() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+	}
 
 	return ret0
 }
@@ -29520,7 +30109,12 @@ func (_type *VariantType) Element() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -29571,7 +30165,12 @@ func (_type *VariantType) First() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -29817,7 +30416,12 @@ func (_type *VariantType) Key() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -29862,7 +30466,12 @@ func (_type *VariantType) Next() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -29898,7 +30507,12 @@ func (_type *VariantType) Value() *VariantType {
 
 	var ret0 *VariantType
 
-	ret0 = WrapVariantType(ret)
+	{
+		ret0 = WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

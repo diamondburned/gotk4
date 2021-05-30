@@ -447,7 +447,10 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	// Skip the cache if the type does not have a CType. We want to do this to
 	// prevent filling the cache up with incomplete GIR types.
 	if typ.CType == "" {
-		return ng.resolveTypeUncached(typ)
+		resolved := ng.resolveTypeUncached(typ)
+		ng.addResolvedImport(resolved)
+
+		return resolved
 	}
 
 	// Build the full type name. This name should only be used for caching; it
@@ -459,7 +462,10 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 
 	v, ok := typeCache.Load(fullName)
 	if ok {
-		return v.(*ResolvedType)
+		resolved := v.(*ResolvedType)
+		ng.addResolvedImport(resolved)
+
+		return resolved
 	}
 
 	// Cache miss. Use singleflight to ensure we're not looking up multiple
@@ -471,19 +477,20 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 		// the result is found or not.
 		typeCache.Store(fullName, resolved)
 
-		if resolved != nil {
-			// Add the import in the same singleflight callback, but only if the
-			// namespace is not the current one.
-			if resolved.Import != "" && resolved.Import != ng.pkgPath {
-				ng.addImportAlias(resolved.Import, resolved.Package)
-			}
-		}
-
 		return resolved, nil
 	})
 
 	// may be a non-nil interface to a nil pointer.
-	return v.(*ResolvedType)
+	resolved := v.(*ResolvedType)
+	ng.addResolvedImport(resolved)
+
+	return resolved
+}
+
+func (ng *NamespaceGenerator) addResolvedImport(resolved *ResolvedType) {
+	if resolved != nil && resolved.Import != "" && resolved.Import != ng.pkgPath {
+		ng.addImportAlias(resolved.Import, resolved.Package)
+	}
 }
 
 // gextrasObjector references the gextras.Objector interface.

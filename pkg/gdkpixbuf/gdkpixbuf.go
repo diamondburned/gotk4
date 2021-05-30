@@ -178,7 +178,7 @@ type PixbufSaveFunc func(buf []byte) (err *glib.Error, ok bool)
 
 //export gotk4_PixbufSaveFunc
 func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -248,7 +248,9 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 
 	var ret0 *PixbufFormat
 
-	ret0 = WrapPixbufFormat(ret)
+	{
+		ret0 = WrapPixbufFormat(ret)
+	}
 
 	return ret0
 }
@@ -1084,7 +1086,12 @@ func (loader pixbufLoader) Format() *PixbufFormat {
 
 	var ret0 *PixbufFormat
 
-	ret0 = WrapPixbufFormat(ret)
+	{
+		ret0 = WrapPixbufFormat(ret)
+		runtime.SetFinalizer(&ret0, func(v **PixbufFormat) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

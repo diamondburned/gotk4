@@ -52,11 +52,11 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	switch {
 	case array.FixedSize > 0:
 		if innerResolved.IsPrimitive() {
+			ng.addImport("runtime")
+
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
 			b.Linef("%s = (%s)(&%s)", conv.Target, outerCGoType, conv.Value)
-
-			ng.addImport("runtime")
 			b.Linef("defer runtime.KeepAlive(&%s)", conv.Value)
 			return b.String()
 		}
@@ -76,13 +76,16 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
 		if !conv.isTransferring() && innerResolved.IsPrimitive() {
+			ng.addImport("runtime")
+
 			b.Linef("%s = (%s)(&%s[0])", conv.Target, outerCGoType, conv.Value)
 			b.Linef("%s = %s", conv.ArgAt(*array.Length), length)
-
-			ng.addImport("runtime")
 			b.Linef("defer runtime.KeepAlive(%s)", conv.Value)
 			return b.String()
 		}
+
+		ng.addImport("reflect")
+		ng.addImport("unsafe")
 
 		// Copying is pretty much required here, since the C code will store the
 		// pointer, so we can't reliably do this with Go's memory.
@@ -112,10 +115,13 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		b.Linef(
 			"%s = C.g_array_sized_new(%v, false, C.guint(%s), %s)",
 			conv.Target, array.ZeroTerminated, csizeof(ng, innerResolved), length)
-
 		b.EmptyLine()
+
 		b.Linef("var dst []%s", innerCGoType)
+
+		ng.addImport("reflect")
 		b.Linef(goSliceFromPtr("dst", conv.Target+".data", length))
+
 		b.EmptyLine()
 
 		b.Linef("for i := 0; i < %s; i++ {", length)
@@ -148,6 +154,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 			// If we're not giving ownership this C-allocated string, then we
 			// can free it once done.
 			if !conv.isTransferring() {
+				ng.addImport("unsafe")
 				p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Target)
 			}
 
@@ -168,9 +175,8 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		return fmt.Sprintf("%s = C.gpointer(box.Assign(%s))", conv.Target, conv.Value)
 
 	case "GLib.DestroyNotify", "DestroyNotify":
-		// Use a constant C function. Value is unused.
-		ng.needsCallbackDelete()
-		return fmt.Sprintf("%s = (*[0]byte)(C.callbackDelete)", conv.Target)
+		// Use conv.Destroy instead.
+		return ""
 
 	case "GType":
 		// Just a primitive.
@@ -243,6 +249,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		p.Linef("%s = C.gpointer(box.Assign(%s))", conv.ArgAt(*conv.Closure), conv.Value)
 
 		if conv.Destroy != nil {
+			ng.needsCallbackDelete()
 			p.Linef("%s = (*[0]byte)(C.callbackDelete)", conv.ArgAt(*conv.Destroy))
 		}
 

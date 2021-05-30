@@ -252,7 +252,9 @@ func (pixdata *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.S
 
 	var ret0 *glib.String
 
-	ret0 = glib.WrapString(ret)
+	{
+		ret0 = glib.WrapString(ret)
+	}
 
 	return ret0
 }

@@ -3,6 +3,7 @@
 package pangoot
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -131,7 +132,9 @@ func NewBuffer(font pangofc.Font) *Buffer {
 
 	var ret0 *Buffer
 
-	ret0 = WrapBuffer(ret)
+	{
+		ret0 = WrapBuffer(ret)
+	}
 
 	return ret0
 }
@@ -189,7 +192,9 @@ func (buffer *Buffer) Glyphs() (glyphs []*Glyph, nGlyphs int) {
 		ret0 = make([]*Glyph, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (*C.PangoOTGlyph)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = WrapGlyph(src)
+			{
+				ret0[i] = WrapGlyph(src)
+			}
 		}
 	}
 
@@ -387,14 +392,24 @@ func (s *RulesetDescription) Script() pango.Script {
 // Language gets the field inside the struct.
 func (l *RulesetDescription) Language() *pango.Language {
 	var ret *pango.Language
-	ret = pango.WrapLanguage(r.native.language)
+	{
+		ret = pango.WrapLanguage(r.native.language)
+		runtime.SetFinalizer(&ret, func(v **pango.Language) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
 // StaticGsubFeatures gets the field inside the struct.
 func (s *RulesetDescription) StaticGsubFeatures() *FeatureMap {
 	var ret *FeatureMap
-	ret = WrapFeatureMap(r.native.static_gsub_features)
+	{
+		ret = WrapFeatureMap(r.native.static_gsub_features)
+		runtime.SetFinalizer(&ret, func(v **FeatureMap) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -408,7 +423,12 @@ func (n *RulesetDescription) NStaticGsubFeatures() uint {
 // StaticGposFeatures gets the field inside the struct.
 func (s *RulesetDescription) StaticGposFeatures() *FeatureMap {
 	var ret *FeatureMap
-	ret = WrapFeatureMap(r.native.static_gpos_features)
+	{
+		ret = WrapFeatureMap(r.native.static_gpos_features)
+		runtime.SetFinalizer(&ret, func(v **FeatureMap) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -422,7 +442,12 @@ func (n *RulesetDescription) NStaticGposFeatures() uint {
 // OtherFeatures gets the field inside the struct.
 func (o *RulesetDescription) OtherFeatures() *FeatureMap {
 	var ret *FeatureMap
-	ret = WrapFeatureMap(r.native.other_features)
+	{
+		ret = WrapFeatureMap(r.native.other_features)
+		runtime.SetFinalizer(&ret, func(v **FeatureMap) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -446,7 +471,9 @@ func (desc *RulesetDescription) Copy() *RulesetDescription {
 
 	var ret0 *RulesetDescription
 
-	ret0 = WrapRulesetDescription(ret)
+	{
+		ret0 = WrapRulesetDescription(ret)
+	}
 
 	return ret0
 }

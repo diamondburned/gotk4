@@ -11,7 +11,6 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen"
-	"github.com/diamondburned/gotk4/gir/goimports"
 )
 
 var (
@@ -99,11 +98,6 @@ func main() {
 	}
 
 	wg.Wait()
-
-	log.Println("running goimports on output...")
-	if err := goimports.Dir(output); err != nil {
-		log.Println("failed to run goimports on "+output+":", err)
-	}
 }
 
 func writeNamespace(ng *girgen.NamespaceGenerator) {
@@ -116,21 +110,13 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 		return
 	}
 
-	f, err := os.Create(out)
+	b, err := ng.Generate()
 	if err != nil {
-		log.Println("failed to create go file:", err)
-		return
-	}
-	defer f.Close()
-
-	if err := ng.Generate(f); err != nil {
 		log.Println("generation error:", err)
 		return
 	}
 
-	if err := f.Close(); err != nil {
-		log.Println("failed to close file:", err)
-		return
+	if err := os.WriteFile(out, b, os.ModePerm); err != nil {
+		log.Println("failed to write file:", err)
 	}
-
 }

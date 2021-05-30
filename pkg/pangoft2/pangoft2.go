@@ -3,8 +3,11 @@
 package pangoft2
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
@@ -15,7 +18,13 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
 //
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -57,7 +66,12 @@ func FontGetFace(font pango.Font) freetype2.Face {
 
 	var ret0 freetype2.Face
 
-	ret0 = freetype2.WrapFace(ret)
+	{
+		ret0 = freetype2.WrapFace(ret)
+		runtime.SetFinalizer(&ret0, func(v *freetype2.Face) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

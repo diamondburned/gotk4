@@ -3,10 +3,12 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/xlib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -582,7 +584,12 @@ func (display x11Display) Xdisplay() *xlib.Display {
 
 	var ret0 *xlib.Display
 
-	ret0 = xlib.WrapDisplay(ret)
+	{
+		ret0 = xlib.WrapDisplay(ret)
+		runtime.SetFinalizer(&ret0, func(v **xlib.Display) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -616,7 +623,12 @@ func (display x11Display) Xscreen() *xlib.Screen {
 
 	var ret0 *xlib.Screen
 
-	ret0 = xlib.WrapScreen(ret)
+	{
+		ret0 = xlib.WrapScreen(ret)
+		runtime.SetFinalizer(&ret0, func(v **xlib.Screen) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -909,7 +921,12 @@ func (monitor x11Monitor) Workarea() gdk.Rectangle {
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg1)
+	{
+		ret0 = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -1073,7 +1090,12 @@ func (screen x11Screen) Xscreen() *xlib.Screen {
 
 	var ret0 *xlib.Screen
 
-	ret0 = xlib.WrapScreen(ret)
+	{
+		ret0 = xlib.WrapScreen(ret)
+		runtime.SetFinalizer(&ret0, func(v **xlib.Screen) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

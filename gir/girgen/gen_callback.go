@@ -100,11 +100,11 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 }
 
 func (fg *callbackGenerator) CBlock() string {
-	b := pen.NewBlockSections(1024, 4096)
+	b := pen.NewBlockSections(128, 1024, 4096, 128, 4096)
 
 	fg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
 
-	b.Linef(0, "v := box.Get(box.Callback, uintptr(arg%d))", *fg.Closure)
+	b.Linef(0, "v := box.Get(uintptr(arg%d))", *fg.Closure)
 	b.Linef(0, "if v == nil {")
 	b.Linef(0, "  panic(`callback not found`)")
 	b.Linef(0, "}")

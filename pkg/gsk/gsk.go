@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -339,7 +340,7 @@ type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error *glib.E
 
 //export gotk4_ParseErrorFunc
 func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -348,11 +349,26 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	var end *ParseLocation
 	var error *glib.Error
 
-	start = WrapParseLocation(arg0)
+	{
+		start = WrapParseLocation(arg0)
+		runtime.SetFinalizer(&start, func(v **ParseLocation) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	end = WrapParseLocation(arg1)
+	{
+		end = WrapParseLocation(arg1)
+		runtime.SetFinalizer(&end, func(v **ParseLocation) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	error = glib.WrapError(arg2)
+	{
+		error = glib.WrapError(arg2)
+		runtime.SetFinalizer(&error, func(v **glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(ParseErrorFunc)(start, end, error)
 }
@@ -390,7 +406,9 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 	var ret0 **Transform
 	var ret1 bool
 
-	ret0 = WrapTransform(arg2)
+	{
+		ret0 = WrapTransform(arg2)
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -432,7 +450,12 @@ func (o *ColorStop) Offset() float32 {
 // Color gets the field inside the struct.
 func (c *ColorStop) Color() gdk.RGBA {
 	var ret gdk.RGBA
-	ret = gdk.WrapRGBA(c.native.color)
+	{
+		ret = gdk.WrapRGBA(c.native.color)
+		runtime.SetFinalizer(&ret, func(v *gdk.RGBA) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -531,7 +554,12 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 // Bounds gets the field inside the struct.
 func (b *RoundedRect) Bounds() graphene.Rect {
 	var ret graphene.Rect
-	ret = graphene.WrapRect(r.native.bounds)
+	{
+		ret = graphene.WrapRect(r.native.bounds)
+		runtime.SetFinalizer(&ret, func(v *graphene.Rect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -543,7 +571,12 @@ func (c *RoundedRect) Corner() [4]graphene.Size {
 
 		for i := 0; i < 4; i++ {
 			src := cArray[i]
-			ret[i] = graphene.WrapSize(src)
+			{
+				ret[i] = graphene.WrapSize(src)
+				runtime.SetFinalizer(&ret[i], func(v *graphene.Size) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -608,7 +641,12 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 
 	var ret0 *RoundedRect
 
-	ret0 = WrapRoundedRect(ret)
+	{
+		ret0 = WrapRoundedRect(ret)
+		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -628,7 +666,12 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 
 	var ret0 *RoundedRect
 
-	ret0 = WrapRoundedRect(ret)
+	{
+		ret0 = WrapRoundedRect(ret)
+		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -648,7 +691,12 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 
 	var ret0 *RoundedRect
 
-	ret0 = WrapRoundedRect(ret)
+	{
+		ret0 = WrapRoundedRect(ret)
+		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -704,7 +752,12 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 
 	var ret0 *RoundedRect
 
-	ret0 = WrapRoundedRect(ret)
+	{
+		ret0 = WrapRoundedRect(ret)
+		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -725,7 +778,12 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 
 	var ret0 *RoundedRect
 
-	ret0 = WrapRoundedRect(ret)
+	{
+		ret0 = WrapRoundedRect(ret)
+		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -753,7 +811,12 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 
 	var ret0 *RoundedRect
 
-	ret0 = WrapRoundedRect(ret)
+	{
+		ret0 = WrapRoundedRect(ret)
+		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -795,7 +858,9 @@ func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArg
 
 	var ret0 *ShaderArgsBuilder
 
-	ret0 = WrapShaderArgsBuilder(ret)
+	{
+		ret0 = WrapShaderArgsBuilder(ret)
+	}
 
 	return ret0
 }
@@ -812,7 +877,9 @@ func (builder *ShaderArgsBuilder) FreeToArgs() *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -827,7 +894,9 @@ func (builder *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
 
 	var ret0 *ShaderArgsBuilder
 
-	ret0 = WrapShaderArgsBuilder(ret)
+	{
+		ret0 = WrapShaderArgsBuilder(ret)
+	}
 
 	return ret0
 }
@@ -942,7 +1011,9 @@ func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -985,7 +1056,12 @@ func (s *Shadow) Native() unsafe.Pointer {
 // Color gets the field inside the struct.
 func (c *Shadow) Color() gdk.RGBA {
 	var ret gdk.RGBA
-	ret = gdk.WrapRGBA(s.native.color)
+	{
+		ret = gdk.WrapRGBA(s.native.color)
+		runtime.SetFinalizer(&ret, func(v *gdk.RGBA) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -1042,7 +1118,9 @@ func NewTransform() *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1094,7 +1172,9 @@ func (self *Transform) Invert() *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1111,7 +1191,9 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1131,7 +1213,9 @@ func (next *Transform) Perspective(depth float32) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1158,7 +1242,12 @@ func (self *Transform) Ref() *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+		runtime.SetFinalizer(&ret0, func(v **Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -1175,7 +1264,9 @@ func (next *Transform) Rotate(angle float32) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1196,7 +1287,9 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1216,7 +1309,9 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1237,7 +1332,9 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1248,10 +1345,9 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 //
 // The returned values have the following layout:
 //
-//      | xx yx |   |  a  b  0 |
-//      | xy yy | = |  c  d  0 |
-//      | dx dy |   | tx ty  1 |
-//
+//    | xx yx |   |  a  b  0 |
+//    | xy yy | = |  c  d  0 |
+//    | dx dy |   | tx ty  1 |
 //
 // This function can be used to convert between a Transform and a matrix type
 // from other 2D drawing libraries, in particular Cairo.
@@ -1332,7 +1428,12 @@ func (self *Transform) ToMatrix() graphene.Matrix {
 
 	var ret0 *graphene.Matrix
 
-	ret0 = graphene.WrapMatrix(arg1)
+	{
+		ret0 = graphene.WrapMatrix(arg1)
+		runtime.SetFinalizer(&ret0, func(v **graphene.Matrix) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -1391,7 +1492,9 @@ func (next *Transform) Transform(other *Transform) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1410,7 +1513,12 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 
 	var ret0 *graphene.Rect
 
-	ret0 = graphene.WrapRect(arg2)
+	{
+		ret0 = graphene.WrapRect(arg2)
+		runtime.SetFinalizer(&ret0, func(v **graphene.Rect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -1429,7 +1537,12 @@ func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 
 	var ret0 *graphene.Point
 
-	ret0 = graphene.WrapPoint(arg2)
+	{
+		ret0 = graphene.WrapPoint(arg2)
+		runtime.SetFinalizer(&ret0, func(v **graphene.Point) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -1446,7 +1559,9 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1463,7 +1578,9 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 
 	var ret0 *Transform
 
-	ret0 = WrapTransform(ret)
+	{
+		ret0 = WrapTransform(ret)
+	}
 
 	return ret0
 }
@@ -1919,7 +2036,12 @@ func (shader glShader) Source() *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

@@ -3,6 +3,7 @@
 package pangofc
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -16,8 +17,14 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
 //
+// // extern void callbackDelete(gpointer);
 // extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -41,14 +48,19 @@ type DecoderFindFunc func(pattern *fontconfig.Pattern) Decoder
 
 //export gotk4_DecoderFindFunc
 func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var pattern *fontconfig.Pattern
 
-	pattern = fontconfig.WrapPattern(arg0)
+	{
+		pattern = fontconfig.WrapPattern(arg0)
+		runtime.SetFinalizer(&pattern, func(v **fontconfig.Pattern) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	decoder := v.(DecoderFindFunc)(pattern)
 }
@@ -118,7 +130,12 @@ func (decoder decoder) Charset(fcfont Font) *fontconfig.CharSet {
 
 	var ret0 *fontconfig.CharSet
 
-	ret0 = fontconfig.WrapCharSet(ret)
+	{
+		ret0 = fontconfig.WrapCharSet(ret)
+		runtime.SetFinalizer(&ret0, func(v **fontconfig.CharSet) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -249,7 +266,12 @@ func (font font) Languages() **pango.Language {
 
 	var ret0 **pango.Language
 
-	ret0 = pango.WrapLanguage(ret)
+	{
+		ret0 = pango.WrapLanguage(ret)
+		runtime.SetFinalizer(&ret0, func(v ***pango.Language) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -264,7 +286,12 @@ func (font font) Pattern() *fontconfig.Pattern {
 
 	var ret0 *fontconfig.Pattern
 
-	ret0 = fontconfig.WrapPattern(ret)
+	{
+		ret0 = fontconfig.WrapPattern(ret)
+		runtime.SetFinalizer(&ret0, func(v **fontconfig.Pattern) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }

@@ -250,7 +250,6 @@ func (ng *NamespaceGenerator) generateRecords() {
 		// Add the needed imports once.
 		if !imported {
 			rg.Ng.addImport("unsafe")
-			rg.Ng.addImport("runtime")
 			imported = true
 		}
 

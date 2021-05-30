@@ -1038,7 +1038,6 @@ func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
 //        ...
 //      }
 //
-//
 // but should instead treat all unrecognized error codes the same as
 // IO_ERROR_FAILED.
 //
@@ -1189,7 +1188,6 @@ func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
 //
 //    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
 //      drop_caches ();
-//
 type MemoryMonitorWarningLevel int
 
 const (
@@ -2602,7 +2600,7 @@ type AsyncReadyCallback func(sourceObject gextras.Objector, res AsyncResult)
 
 //export gotk4_AsyncReadyCallback
 func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2623,7 +2621,7 @@ type BusAcquiredCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusAcquiredCallback
 func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2643,7 +2641,7 @@ type BusNameAcquiredCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusNameAcquiredCallback
 func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2664,7 +2662,7 @@ type BusNameAppearedCallback func(connection DBusConnection, name string, nameOw
 
 //export gotk4_BusNameAppearedCallback
 func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2688,7 +2686,7 @@ type BusNameLostCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusNameLostCallback
 func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2712,7 +2710,7 @@ type BusNameVanishedCallback func(connection DBusConnection, name string)
 
 //export gotk4_BusNameVanishedCallback
 func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2733,7 +2731,7 @@ type CancellableSourceFunc func(cancellable Cancellable) bool
 
 //export gotk4_CancellableSourceFunc
 func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2751,7 +2749,7 @@ type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string,
 
 //export gotk4_DBusInterfaceGetPropertyFunc
 func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) *C.GVariant {
-	v := box.Get(box.Callback, uintptr(arg6))
+	v := box.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2773,7 +2771,12 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 
 	propertyName = C.GoString(arg4)
 
-	error = glib.WrapError(arg5)
+	{
+		error = glib.WrapError(arg5)
+		runtime.SetFinalizer(&error, func(v ***glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	variant := v.(DBusInterfaceGetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, error)
 }
@@ -2784,7 +2787,7 @@ type DBusInterfaceMethodCallFunc func(connection DBusConnection, sender string, 
 
 //export gotk4_DBusInterfaceMethodCallFunc
 func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg7))
+	v := box.Get(uintptr(arg7))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2807,7 +2810,12 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 
 	methodName = C.GoString(arg4)
 
-	parameters = glib.WrapVariant(arg5)
+	{
+		parameters = glib.WrapVariant(arg5)
+		runtime.SetFinalizer(&parameters, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	invocation = WrapDBusMethodInvocation(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native())))
 
@@ -2820,7 +2828,7 @@ type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string,
 
 //export gotk4_DBusInterfaceSetPropertyFunc
 func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg7))
+	v := box.Get(uintptr(arg7))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2843,9 +2851,19 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 
 	propertyName = C.GoString(arg4)
 
-	value = glib.WrapVariant(arg5)
+	{
+		value = glib.WrapVariant(arg5)
+		runtime.SetFinalizer(&value, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	error = glib.WrapError(arg6)
+	{
+		error = glib.WrapError(arg6)
+		runtime.SetFinalizer(&error, func(v ***glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(DBusInterfaceSetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, value, error)
 }
@@ -2857,7 +2875,6 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 // too. Passive filter functions that don't modify the message can simply return
 // the @message object:
 //
-//
 //    static GDBusMessage *
 //    passive_filter (GDBusConnection *connection
 //                    GDBusMessage    *message,
@@ -2867,9 +2884,9 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 //      // inspect @message
 //      return message;
 //    }
-//    ]|
-//    Filter functions that wants to drop a message can simply return nil:
-//    |[
+//
+// Filter functions that wants to drop a message can simply return nil:
+//
 //    static GDBusMessage *
 //    drop_filter (GDBusConnection *connection
 //                 GDBusMessage    *message,
@@ -2883,9 +2900,9 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 //        }
 //      return message;
 //    }
-//    ]|
-//    Finally, a filter function may modify a message by copying it:
-//    |[
+//
+// Finally, a filter function may modify a message by copying it:
+//
 //    static GDBusMessage *
 //    modifying_filter (GDBusConnection *connection
 //                      GDBusMessage    *message,
@@ -2905,7 +2922,6 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 //      return copy;
 //    }
 //
-//
 // If the returned BusMessage is different from @message and cannot be sent on
 // @connection (it could use features, such as file descriptors, not compatible
 // with @connection), then a warning is logged to standard error. Applications
@@ -2915,7 +2931,7 @@ type DBusMessageFilterFunction func(connection DBusConnection, message DBusMessa
 
 //export gotk4_DBusMessageFilterFunction
 func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) *C.GDBusMessage {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2943,7 +2959,7 @@ type DBusProxyTypeFunc func(manager DBusObjectManagerClient, objectPath string, 
 
 //export gotk4_DBusProxyTypeFunc
 func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2967,7 +2983,7 @@ type DBusSignalCallback func(connection DBusConnection, senderName string, objec
 
 //export gotk4_DBusSignalCallback
 func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg6))
+	v := box.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -2989,7 +3005,12 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 
 	signalName = C.GoString(arg4)
 
-	parameters = glib.WrapVariant(arg5)
+	{
+		parameters = glib.WrapVariant(arg5)
+		runtime.SetFinalizer(&parameters, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(DBusSignalCallback)(connection, senderName, objectPath, interfaceName, signalName, parameters)
 }
@@ -3003,7 +3024,7 @@ type DBusSubtreeDispatchFunc func(connection DBusConnection, sender string, obje
 
 //export gotk4_DBusSubtreeDispatchFunc
 func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) *C.GDBusInterfaceVTable {
-	v := box.Get(box.Callback, uintptr(arg6))
+	v := box.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3046,7 +3067,7 @@ type DBusSubtreeEnumerateFunc func(connection DBusConnection, sender string, obj
 
 //export gotk4_DBusSubtreeEnumerateFunc
 func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) **C.gchar {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3086,7 +3107,7 @@ type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, ob
 
 //export gotk4_DBusSubtreeIntrospectFunc
 func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3113,7 +3134,7 @@ type DatagramBasedSourceFunc func(datagramBased DatagramBased, condition glib.IO
 
 //export gotk4_DatagramBasedSourceFunc
 func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3135,7 +3156,7 @@ type DesktopAppLaunchCallback func(appinfo DesktopAppInfo, pid glib.Pid)
 
 //export gotk4_DesktopAppLaunchCallback
 func gotk4_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3185,7 +3206,7 @@ type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDir
 
 //export gotk4_FileMeasureProgressCallback
 func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3213,7 +3234,7 @@ type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64)
 
 //export gotk4_FileProgressCallback
 func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3237,7 +3258,7 @@ type FileReadMoreCallback func(fileContents string, fileSize int64) bool
 
 //export gotk4_FileReadMoreCallback
 func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3260,7 +3281,7 @@ type IOSchedulerJobFunc func(job *IOSchedulerJob, cancellable Cancellable) bool
 
 //export gotk4_IOSchedulerJobFunc
 func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3268,7 +3289,12 @@ func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg
 	var job *IOSchedulerJob
 	var cancellable Cancellable
 
-	job = WrapIOSchedulerJob(arg0)
+	{
+		job = WrapIOSchedulerJob(arg0)
+		runtime.SetFinalizer(&job, func(v **IOSchedulerJob) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	cancellable = WrapCancellable(externglib.Take(unsafe.Pointer(arg1.Native())))
 
@@ -3282,7 +3308,7 @@ type PollableSourceFunc func(pollableStream gextras.Objector) bool
 
 //export gotk4_PollableSourceFunc
 func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3301,7 +3327,7 @@ type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant)
 
 //export gotk4_SettingsBindGetMapping
 func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3309,7 +3335,12 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 	var value *externglib.Value
 	var variant *glib.Variant
 
-	variant = glib.WrapVariant(arg1)
+	{
+		variant = glib.WrapVariant(arg1)
+		runtime.SetFinalizer(&variant, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(SettingsBindGetMapping)(value, variant)
 }
@@ -3320,7 +3351,7 @@ type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.Var
 
 //export gotk4_SettingsBindSetMapping
 func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3328,7 +3359,12 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 	var value *externglib.Value
 	var expectedType *glib.VariantType
 
-	expectedType = glib.WrapVariantType(arg1)
+	{
+		expectedType = glib.WrapVariantType(arg1)
+		runtime.SetFinalizer(&expectedType, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	variant := v.(SettingsBindSetMapping)(value, expectedType)
 }
@@ -3347,14 +3383,19 @@ type SettingsGetMapping func(value *glib.Variant) (result interface{}, ok bool)
 
 //export gotk4_SettingsGetMapping
 func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var value *glib.Variant
 
-	value = glib.WrapVariant(arg0)
+	{
+		value = glib.WrapVariant(arg0)
+		runtime.SetFinalizer(&value, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	result, ok := v.(SettingsGetMapping)(value)
 }
@@ -3365,7 +3406,7 @@ type SocketSourceFunc func(socket Socket, condition glib.IOCondition) bool
 
 //export gotk4_SocketSourceFunc
 func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3390,7 +3431,7 @@ type VfsFileLookupFunc func(vfs Vfs, identifier string) File
 
 //export gotk4_VfsFileLookupFunc
 func gotk4_VfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3467,7 +3508,9 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = glib.WrapVariant(arg3)
+	{
+		ret1 = glib.WrapVariant(arg3)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -3544,7 +3587,9 @@ func AppInfoGetAll() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -3562,7 +3607,9 @@ func AppInfoGetAllForType(contentType string) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -3616,7 +3663,9 @@ func AppInfoGetFallbackForType(contentType string) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -3636,7 +3685,9 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -4205,7 +4256,6 @@ func ContentTypeIsUnknown(_type string) bool {
 //      …
 //
 //      return g_test_run ();
-//
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var arg1 **C.gchar
 
@@ -4225,7 +4275,9 @@ func ContentTypesGetRegistered() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -4476,7 +4528,9 @@ func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) *gl
 
 	var ret0 *glib.Error
 
-	ret0 = glib.WrapError(ret)
+	{
+		ret0 = glib.WrapError(ret)
+	}
 
 	return ret0
 }
@@ -4565,7 +4619,9 @@ func DBusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -4982,7 +5038,12 @@ func IOExtensionPointImplement(extensionPointName string, _type externglib.Type,
 
 	var ret0 *IOExtension
 
-	ret0 = WrapIOExtension(ret)
+	{
+		ret0 = WrapIOExtension(ret)
+		runtime.SetFinalizer(&ret0, func(v **IOExtension) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -4998,7 +5059,12 @@ func IOExtensionPointLookup(name string) *IOExtensionPoint {
 
 	var ret0 *IOExtensionPoint
 
-	ret0 = WrapIOExtensionPoint(ret)
+	{
+		ret0 = WrapIOExtensionPoint(ret)
+		runtime.SetFinalizer(&ret0, func(v **IOExtensionPoint) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -5014,7 +5080,12 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint {
 
 	var ret0 *IOExtensionPoint
 
-	ret0 = WrapIOExtensionPoint(ret)
+	{
+		ret0 = WrapIOExtensionPoint(ret)
+		runtime.SetFinalizer(&ret0, func(v **IOExtensionPoint) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -5034,7 +5105,9 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -5057,7 +5130,9 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -5149,24 +5224,20 @@ func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable 
 // the key "/apps/example/enabled" to a value of true will cause the following
 // to appear in the keyfile:
 //
+//    [toplevel]
+//    enabled=true
 //
-//      [toplevel]
-//      enabled=true
-//    ]|
+// If @root_group is nil then it is not permitted to store keys directly below
+// the @root_path.
 //
-//    If @root_group is nil then it is not permitted to store keys
-//    directly below the @root_path.
+// For keys not stored directly below @root_path (ie: in a sub-path), the name
+// of the subpath (with the final slash stripped) is used as the name of the
+// keyfile group. To continue the example, if
+// "/apps/example/profiles/default/font-size" were set to 12 then the following
+// would appear in the keyfile:
 //
-//    For keys not stored directly below @root_path (ie: in a sub-path),
-//    the name of the subpath (with the final slash stripped) is used as
-//    the name of the keyfile group.  To continue the example, if
-//    "/apps/example/profiles/default/font-size" were set to
-//    12 then the following would appear in the keyfile:
-//
-//    |[
-//      [profiles/default]
-//      font-size=12
-//
+//    [profiles/default]
+//    font-size=12
 //
 // The backend will refuse writes (and return writability as being false) for
 // keys outside of @root_path and, in the event that @root_group is nil, also
@@ -5281,7 +5352,9 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -5303,7 +5376,9 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -5388,7 +5463,9 @@ func ResourceLoad(filename string) *Resource {
 
 	var ret0 *Resource
 
-	ret0 = WrapResource(ret)
+	{
+		ret0 = WrapResource(ret)
+	}
 
 	return ret0
 }
@@ -5481,7 +5558,9 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -5547,7 +5626,12 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 
 	var ret0 *SettingsSchemaSource
 
-	ret0 = WrapSettingsSchemaSource(ret)
+	{
+		ret0 = WrapSettingsSchemaSource(ret)
+		runtime.SetFinalizer(&ret0, func(v **SettingsSchemaSource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -5598,7 +5682,9 @@ func SrvTargetListSort(targets *glib.List) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -5794,7 +5880,9 @@ func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEn
 
 	ret0 = uint64(arg2)
 
-	ret1 = WrapUnixMountEntry(ret)
+	{
+		ret1 = WrapUnixMountEntry(ret)
+	}
 
 	return ret0, ret1
 }
@@ -5826,7 +5914,9 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 
 	var ret0 *UnixMountEntry
 
-	ret0 = WrapUnixMountEntry(ret)
+	{
+		ret0 = WrapUnixMountEntry(ret)
+	}
 
 	return ret0
 }
@@ -5850,7 +5940,9 @@ func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEn
 
 	ret0 = uint64(arg2)
 
-	ret1 = WrapUnixMountEntry(ret)
+	{
+		ret1 = WrapUnixMountEntry(ret)
+	}
 
 	return ret0, ret1
 }
@@ -6080,7 +6172,9 @@ func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMo
 
 	ret0 = uint64(arg2)
 
-	ret1 = WrapUnixMountPoint(ret)
+	{
+		ret1 = WrapUnixMountPoint(ret)
+	}
 
 	return ret0, ret1
 }
@@ -6115,7 +6209,9 @@ func UnixMountPointsGet() (timeRead uint64, list *glib.List) {
 
 	ret0 = uint64(arg1)
 
-	ret1 = glib.WrapList(ret)
+	{
+		ret1 = glib.WrapList(ret)
+	}
 
 	return ret0, ret1
 }
@@ -6149,7 +6245,9 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 
 	ret0 = uint64(arg1)
 
-	ret1 = glib.WrapList(ret)
+	{
+		ret1 = glib.WrapList(ret)
+	}
 
 	return ret0, ret1
 }
@@ -6373,7 +6471,12 @@ func (action action) ParameterType() *glib.VariantType {
 
 	var ret0 *glib.VariantType
 
-	ret0 = glib.WrapVariantType(ret)
+	{
+		ret0 = glib.WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -6395,7 +6498,9 @@ func (action action) State() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -6427,7 +6532,9 @@ func (action action) StateHint() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -6452,7 +6559,12 @@ func (action action) StateType() *glib.VariantType {
 
 	var ret0 *glib.VariantType
 
-	ret0 = glib.WrapVariantType(ret)
+	{
+		ret0 = glib.WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -6818,7 +6930,12 @@ func (actionGroup actionGroup) ActionParameterType(actionName string) *glib.Vari
 
 	var ret0 *glib.VariantType
 
-	ret0 = glib.WrapVariantType(ret)
+	{
+		ret0 = glib.WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -6844,7 +6961,9 @@ func (actionGroup actionGroup) ActionState(actionName string) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -6879,7 +6998,9 @@ func (actionGroup actionGroup) ActionStateHint(actionName string) *glib.Variant 
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -6911,7 +7032,12 @@ func (actionGroup actionGroup) ActionStateType(actionName string) *glib.VariantT
 
 	var ret0 *glib.VariantType
 
-	ret0 = glib.WrapVariantType(ret)
+	{
+		ret0 = glib.WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7015,13 +7141,21 @@ func (actionGroup actionGroup) QueryAction(actionName string) (enabled bool, par
 
 	ret0 = gextras.Gobool(arg2)
 
-	ret1 = glib.WrapVariantType(arg3)
+	{
+		ret1 = glib.WrapVariantType(arg3)
+	}
 
-	ret2 = glib.WrapVariantType(arg4)
+	{
+		ret2 = glib.WrapVariantType(arg4)
+	}
 
-	ret3 = glib.WrapVariant(arg5)
+	{
+		ret3 = glib.WrapVariant(arg5)
+	}
 
-	ret4 = glib.WrapVariant(arg6)
+	{
+		ret4 = glib.WrapVariant(arg6)
+	}
 
 	ret5 = gextras.Gobool(ret)
 
@@ -7283,7 +7417,6 @@ type AppInfoOverrider interface {
 // g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
 // The following snippet illustrates this:
 //
-//
 //    GFile *f;
 //    char *uri;
 //
@@ -7298,7 +7431,6 @@ type AppInfoOverrider interface {
 //        // do something special with uri
 //      }
 //    g_object_unref (file);
-//
 //
 // This code will work when both `cdda://sr0/Track 1.wav` and
 // `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the application. It
@@ -7971,7 +8103,6 @@ type AsyncInitableOverrider interface {
 //      iface->init_async = foo_init_async;
 //      iface->init_finish = foo_init_finish;
 //    }
-//
 type AsyncInitable interface {
 	gextras.Objector
 	AsyncInitableOverrider
@@ -8169,7 +8300,6 @@ type AsyncResultOverrider interface {
 //
 //       ...
 //    }
-//
 //
 // The callback for an asynchronous operation is called only once, and is always
 // called, even in the case of a cancelled operation. On cancellation the result
@@ -8415,7 +8545,12 @@ func (interface_ dBusInterface) Info() *DBusInterfaceInfo {
 
 	var ret0 *DBusInterfaceInfo
 
-	ret0 = WrapDBusInterfaceInfo(ret)
+	{
+		ret0 = WrapDBusInterfaceInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -8507,7 +8642,9 @@ func (object dBusObject) Interfaces() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -8648,7 +8785,9 @@ func (manager dBusObjectManager) Objects() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -8898,7 +9037,9 @@ func (datagramBased datagramBased) CreateSource(condition glib.IOCondition, canc
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -9406,7 +9547,9 @@ func (drive drive) Volumes() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -9673,7 +9816,9 @@ func (conn dtlsClientConnection) AcceptedCAS() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -10732,7 +10877,6 @@ type FileOverrider interface {
 	// time-of-use races
 	// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
 	//
-	//
 	//    g_autoptr(GError) local_error = NULL;
 	//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
 	//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
@@ -10742,7 +10886,6 @@ type FileOverrider interface {
 	//        g_warning ("Failed to delete s: s",
 	//                   g_file_peek_path (my_file), local_error->message);
 	//      }
-	//
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
@@ -10893,9 +11036,7 @@ type FileOverrider interface {
 	// URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme
 	// as:
 	//
-	//
 	//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-	//
 	//
 	// Common schemes include "file", "http", "ftp", etc.
 	//
@@ -11573,7 +11714,6 @@ type File interface {
 	// time-of-use races
 	// (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
 	//
-	//
 	//    g_autoptr(GError) local_error = NULL;
 	//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
 	//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
@@ -11583,7 +11723,6 @@ type File interface {
 	//        g_warning ("Failed to delete s: s",
 	//                   g_file_peek_path (my_file), local_error->message);
 	//      }
-	//
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
@@ -12275,7 +12414,6 @@ func (file file) CreateReadwriteFinish(res AsyncResult) FileIOStream {
 // time-of-use races
 // (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
 //
-//
 //    g_autoptr(GError) local_error = NULL;
 //    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
 //        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
@@ -12285,7 +12423,6 @@ func (file file) CreateReadwriteFinish(res AsyncResult) FileIOStream {
 //        g_warning ("Failed to delete s: s",
 //                   g_file_peek_path (my_file), local_error->message);
 //      }
-//
 //
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
@@ -12814,9 +12951,7 @@ func (file file) URI() string {
 // URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme
 // as:
 //
-//
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-//
 //
 // Common schemes include "file", "http", "ftp", etc.
 //
@@ -12975,7 +13110,9 @@ func (file file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = glib.WrapBytes(ret)
+	{
+		ret1 = glib.WrapBytes(ret)
+	}
 
 	return ret0, ret1
 }
@@ -13030,7 +13167,9 @@ func (file file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *gli
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = glib.WrapBytes(ret)
+	{
+		ret1 = glib.WrapBytes(ret)
+	}
 
 	return ret0, ret1
 }
@@ -14141,7 +14280,9 @@ func (file file) QuerySettableAttributes(cancellable Cancellable) *FileAttribute
 
 	var ret0 *FileAttributeInfoList
 
-	ret0 = WrapFileAttributeInfoList(ret)
+	{
+		ret0 = WrapFileAttributeInfoList(ret)
+	}
 
 	return ret0
 }
@@ -14164,7 +14305,9 @@ func (file file) QueryWritableNamespaces(cancellable Cancellable) *FileAttribute
 
 	var ret0 *FileAttributeInfoList
 
-	ret0 = WrapFileAttributeInfoList(ret)
+	{
+		ret0 = WrapFileAttributeInfoList(ret)
+	}
 
 	return ret0
 }
@@ -15340,7 +15483,9 @@ func (icon icon) Serialize() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -15861,7 +16006,6 @@ type MemoryMonitorOverrider interface {
 //                        G_CALLBACK (warning_cb), NULL);
 //      return m;
 //    }
-//
 //
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
@@ -16950,7 +17094,9 @@ func (stream pollableInputStream) CreateSource(cancellable Cancellable) *glib.So
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -17075,7 +17221,9 @@ func (stream pollableOutputStream) CreateSource(cancellable Cancellable) *glib.S
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -17796,7 +17944,6 @@ type SocketConnectableOverrider interface {
 //          return NULL;
 //        }
 //    }
-//
 type SocketConnectable interface {
 	gextras.Objector
 	SocketConnectableOverrider
@@ -18149,7 +18296,9 @@ func (conn tlsClientConnection) AcceptedCAS() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -18336,9 +18485,8 @@ type VolumeOverrider interface {
 	// obtained from g_volume_get_mount() will always either be equal or a
 	// prefix of what this function returns. In other words, in code
 	//
-	//      (g_file_has_prefix (volume_activation_root, mount_root) ||
-	//       g_file_equal (volume_activation_root, mount_root))
-	//
+	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+	//     g_file_equal (volume_activation_root, mount_root))
 	//
 	// will always be true.
 	//
@@ -18590,9 +18738,8 @@ func (volume volume) EnumerateIdentifiers() []string {
 // obtained from g_volume_get_mount() will always either be equal or a
 // prefix of what this function returns. In other words, in code
 //
-//      (g_file_has_prefix (volume_activation_root, mount_root) ||
-//       g_file_equal (volume_activation_root, mount_root))
-//
+//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+//     g_file_equal (volume_activation_root, mount_root))
 //
 // will always be true.
 //
@@ -18861,7 +19008,12 @@ func (a *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -18878,7 +19030,9 @@ func (info *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 
 	var ret0 *DBusAnnotationInfo
 
-	ret0 = WrapDBusAnnotationInfo(ret)
+	{
+		ret0 = WrapDBusAnnotationInfo(ret)
+	}
 
 	return ret0
 }
@@ -18952,7 +19106,12 @@ func (a *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -18969,7 +19128,9 @@ func (info *DBusArgInfo) Ref() *DBusArgInfo {
 
 	var ret0 *DBusArgInfo
 
-	ret0 = WrapDBusArgInfo(ret)
+	{
+		ret0 = WrapDBusArgInfo(ret)
+	}
 
 	return ret0
 }
@@ -19075,7 +19236,12 @@ func (m *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 		ret = make([]*DBusMethodInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusMethodInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.methods)) + i))
-			ret[i] = WrapDBusMethodInfo(src)
+			{
+				ret[i] = WrapDBusMethodInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusMethodInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19093,7 +19259,12 @@ func (s *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 		ret = make([]*DBusSignalInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusSignalInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.signals)) + i))
-			ret[i] = WrapDBusSignalInfo(src)
+			{
+				ret[i] = WrapDBusSignalInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusSignalInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19111,7 +19282,12 @@ func (p *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 		ret = make([]*DBusPropertyInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusPropertyInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.properties)) + i))
-			ret[i] = WrapDBusPropertyInfo(src)
+			{
+				ret[i] = WrapDBusPropertyInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusPropertyInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19129,7 +19305,12 @@ func (a *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19197,7 +19378,12 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 
 	var ret0 *DBusMethodInfo
 
-	ret0 = WrapDBusMethodInfo(ret)
+	{
+		ret0 = WrapDBusMethodInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusMethodInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -19218,7 +19404,12 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 
 	var ret0 *DBusPropertyInfo
 
-	ret0 = WrapDBusPropertyInfo(ret)
+	{
+		ret0 = WrapDBusPropertyInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusPropertyInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -19239,7 +19430,12 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 
 	var ret0 *DBusSignalInfo
 
-	ret0 = WrapDBusSignalInfo(ret)
+	{
+		ret0 = WrapDBusSignalInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusSignalInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -19255,7 +19451,9 @@ func (info *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 
 	var ret0 *DBusInterfaceInfo
 
-	ret0 = WrapDBusInterfaceInfo(ret)
+	{
+		ret0 = WrapDBusInterfaceInfo(ret)
+	}
 
 	return ret0
 }
@@ -19384,7 +19582,12 @@ func (i *DBusMethodInfo) InArgs() []*DBusArgInfo {
 		ret = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.in_args)) + i))
-			ret[i] = WrapDBusArgInfo(src)
+			{
+				ret[i] = WrapDBusArgInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusArgInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19402,7 +19605,12 @@ func (o *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 		ret = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.out_args)) + i))
-			ret[i] = WrapDBusArgInfo(src)
+			{
+				ret[i] = WrapDBusArgInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusArgInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19420,7 +19628,12 @@ func (a *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19437,7 +19650,9 @@ func (info *DBusMethodInfo) Ref() *DBusMethodInfo {
 
 	var ret0 *DBusMethodInfo
 
-	ret0 = WrapDBusMethodInfo(ret)
+	{
+		ret0 = WrapDBusMethodInfo(ret)
+	}
 
 	return ret0
 }
@@ -19489,7 +19704,9 @@ func NewDBusNodeInfoForXml(xmlData string) *DBusNodeInfo {
 
 	var ret0 *DBusNodeInfo
 
-	ret0 = WrapDBusNodeInfo(ret)
+	{
+		ret0 = WrapDBusNodeInfo(ret)
+	}
 
 	return ret0
 }
@@ -19520,7 +19737,12 @@ func (i *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 		ret = make([]*DBusInterfaceInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusInterfaceInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.interfaces)) + i))
-			ret[i] = WrapDBusInterfaceInfo(src)
+			{
+				ret[i] = WrapDBusInterfaceInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusInterfaceInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19538,7 +19760,12 @@ func (n *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 		ret = make([]*DBusNodeInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusNodeInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.nodes)) + i))
-			ret[i] = WrapDBusNodeInfo(src)
+			{
+				ret[i] = WrapDBusNodeInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusNodeInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19556,7 +19783,12 @@ func (a *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19595,7 +19827,12 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 
 	var ret0 *DBusInterfaceInfo
 
-	ret0 = WrapDBusInterfaceInfo(ret)
+	{
+		ret0 = WrapDBusInterfaceInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -19611,7 +19848,9 @@ func (info *DBusNodeInfo) Ref() *DBusNodeInfo {
 
 	var ret0 *DBusNodeInfo
 
-	ret0 = WrapDBusNodeInfo(ret)
+	{
+		ret0 = WrapDBusNodeInfo(ret)
+	}
 
 	return ret0
 }
@@ -19692,7 +19931,12 @@ func (a *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19709,7 +19953,9 @@ func (info *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 
 	var ret0 *DBusPropertyInfo
 
-	ret0 = WrapDBusPropertyInfo(ret)
+	{
+		ret0 = WrapDBusPropertyInfo(ret)
+	}
 
 	return ret0
 }
@@ -19776,7 +20022,12 @@ func (a *DBusSignalInfo) Args() []*DBusArgInfo {
 		ret = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.args)) + i))
-			ret[i] = WrapDBusArgInfo(src)
+			{
+				ret[i] = WrapDBusArgInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusArgInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19794,7 +20045,12 @@ func (a *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		ret = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
-			ret[i] = WrapDBusAnnotationInfo(src)
+			{
+				ret[i] = WrapDBusAnnotationInfo(src)
+				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -19811,7 +20067,9 @@ func (info *DBusSignalInfo) Ref() *DBusSignalInfo {
 
 	var ret0 *DBusSignalInfo
 
-	ret0 = WrapDBusSignalInfo(ret)
+	{
+		ret0 = WrapDBusSignalInfo(ret)
+	}
 
 	return ret0
 }
@@ -19932,7 +20190,9 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 	var ret0 *FileAttributeInfoList
 
-	ret0 = WrapFileAttributeInfoList(ret)
+	{
+		ret0 = WrapFileAttributeInfoList(ret)
+	}
 
 	return ret0
 }
@@ -19940,7 +20200,12 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 // Infos gets the field inside the struct.
 func (i *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	var ret *FileAttributeInfo
-	ret = WrapFileAttributeInfo(f.native.infos)
+	{
+		ret = WrapFileAttributeInfo(f.native.infos)
+		runtime.SetFinalizer(&ret, func(v **FileAttributeInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -19978,7 +20243,9 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 
 	var ret0 *FileAttributeInfoList
 
-	ret0 = WrapFileAttributeInfoList(ret)
+	{
+		ret0 = WrapFileAttributeInfoList(ret)
+	}
 
 	return ret0
 }
@@ -19996,7 +20263,12 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 
 	var ret0 *FileAttributeInfo
 
-	ret0 = WrapFileAttributeInfo(ret)
+	{
+		ret0 = WrapFileAttributeInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **FileAttributeInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -20011,7 +20283,9 @@ func (list *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 
 	var ret0 *FileAttributeInfoList
 
-	ret0 = WrapFileAttributeInfoList(ret)
+	{
+		ret0 = WrapFileAttributeInfoList(ret)
+	}
 
 	return ret0
 }
@@ -20062,7 +20336,9 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 
 	var ret0 *FileAttributeMatcher
 
-	ret0 = WrapFileAttributeMatcher(ret)
+	{
+		ret0 = WrapFileAttributeMatcher(ret)
+	}
 
 	return ret0
 }
@@ -20154,7 +20430,9 @@ func (matcher *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 
 	var ret0 *FileAttributeMatcher
 
-	ret0 = WrapFileAttributeMatcher(ret)
+	{
+		ret0 = WrapFileAttributeMatcher(ret)
+	}
 
 	return ret0
 }
@@ -20177,7 +20455,9 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 
 	var ret0 *FileAttributeMatcher
 
-	ret0 = WrapFileAttributeMatcher(ret)
+	{
+		ret0 = WrapFileAttributeMatcher(ret)
+	}
 
 	return ret0
 }
@@ -20268,7 +20548,12 @@ func (v *InputMessage) Vectors() []InputVector {
 		ret = make([]InputVector, i.native.num_vectors)
 		for i := 0; i < uintptr(i.native.num_vectors); i++ {
 			src := (C.GInputVector)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret[i] = WrapInputVector(src)
+			{
+				ret[i] = WrapInputVector(src)
+				runtime.SetFinalizer(&ret[i], func(v *InputVector) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
 		}
 	}
 	return ret
@@ -20383,7 +20668,12 @@ func (a *OutputMessage) Address() SocketAddress {
 // Vectors gets the field inside the struct.
 func (v *OutputMessage) Vectors() *OutputVector {
 	var ret *OutputVector
-	ret = WrapOutputVector(o.native.vectors)
+	{
+		ret = WrapOutputVector(o.native.vectors)
+		runtime.SetFinalizer(&ret, func(v **OutputVector) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 	return ret
 }
 
@@ -20512,7 +20802,6 @@ func (s *OutputVector) Size() uint {
 //
 // An example resource description:
 //
-//
 //    <?xml version="1.0" encoding="UTF-8"?>
 //    <gresources>
 //      <gresource prefix="/org/gtk/Example">
@@ -20522,60 +20811,66 @@ func (s *OutputVector) Size() uint {
 //        <file alias="example.css">data/example.css</file>
 //      </gresource>
 //    </gresources>
-//    ]|
 //
-//    This will create a resource bundle with the following files:
-//    |[
+// This will create a resource bundle with the following files:
+//
 //    /org/gtk/Example/data/splashscreen.png
 //    /org/gtk/Example/dialog.ui
 //    /org/gtk/Example/menumarkup.xml
 //    /org/gtk/Example/example.css
-//    ]|
 //
-//    Note that all resources in the process share the same namespace, so use Java-style
-//    path prefixes (like in the above example) to avoid conflicts.
+// Note that all resources in the process share the same namespace, so use
+// Java-style path prefixes (like in the above example) to avoid conflicts.
 //
-//    You can then use [glib-compile-resources][glib-compile-resources] to compile the XML to a
-//    binary bundle that you can load with g_resource_load(). However, its more common to use the --generate-source and
-//    --generate-header arguments to create a source file and header to link directly into your application.
-//    This will generate `get_resource()`, `register_resource()` and
-//    `unregister_resource()` functions, prefixed by the `--c-name` argument passed
-//    to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
-//    the generated #GResource object. The register and unregister functions
-//    register the resource so its files can be accessed using
-//    g_resources_lookup_data().
+// You can then use [glib-compile-resources][glib-compile-resources] to compile
+// the XML to a binary bundle that you can load with g_resource_load(). However,
+// its more common to use the --generate-source and --generate-header arguments
+// to create a source file and header to link directly into your application.
+// This will generate `get_resource()`, `register_resource()` and
+// `unregister_resource()` functions, prefixed by the `--c-name` argument passed
+// to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
+// the generated #GResource object. The register and unregister functions
+// register the resource so its files can be accessed using
+// g_resources_lookup_data().
 //
-//    Once a #GResource has been created and registered all the data in it can be accessed globally in the process by
-//    using API calls like g_resources_open_stream() to stream the data or g_resources_lookup_data() to get a direct pointer
-//    to the data. You can also use URIs like "resource:///org/gtk/Example/data/splashscreen.png" with #GFile to access
-//    the resource data.
+// Once a #GResource has been created and registered all the data in it can be
+// accessed globally in the process by using API calls like
+// g_resources_open_stream() to stream the data or g_resources_lookup_data() to
+// get a direct pointer to the data. You can also use URIs like
+// "resource:///org/gtk/Example/data/splashscreen.png" with #GFile to access the
+// resource data.
 //
-//    Some higher-level APIs, such as Application, will automatically load
-//    resources from certain well-known paths in the resource namespace as a
-//    convenience. See the documentation for those APIs for details.
+// Some higher-level APIs, such as Application, will automatically load
+// resources from certain well-known paths in the resource namespace as a
+// convenience. See the documentation for those APIs for details.
 //
-//    There are two forms of the generated source, the default version uses the compiler support for constructor
-//    and destructor functions (where available) to automatically create and register the #GResource on startup
-//    or library load time. If you pass `--manual-register`, two functions to register/unregister the resource are created
-//    instead. This requires an explicit initialization call in your application/library, but it works on all platforms,
-//    even on the minor ones where constructors are not supported. (Constructor support is available for at least Win32, Mac OS and Linux.)
+// There are two forms of the generated source, the default version uses the
+// compiler support for constructor and destructor functions (where available)
+// to automatically create and register the #GResource on startup or library
+// load time. If you pass `--manual-register`, two functions to
+// register/unregister the resource are created instead. This requires an
+// explicit initialization call in your application/library, but it works on all
+// platforms, even on the minor ones where constructors are not supported.
+// (Constructor support is available for at least Win32, Mac OS and Linux.)
 //
-//    Note that resource data can point directly into the data segment of e.g. a library, so if you are unloading libraries
-//    during runtime you need to be very careful with keeping around pointers to data from a resource, as this goes away
-//    when the library is unloaded. However, in practice this is not generally a problem, since most resource accesses
-//    are for your own resources, and resource data is often used once, during parsing, and then released.
+// Note that resource data can point directly into the data segment of e.g. a
+// library, so if you are unloading libraries during runtime you need to be very
+// careful with keeping around pointers to data from a resource, as this goes
+// away when the library is unloaded. However, in practice this is not generally
+// a problem, since most resource accesses are for your own resources, and
+// resource data is often used once, during parsing, and then released.
 //
-//    When debugging a program or testing a change to an installed version, it is often useful to be able to
-//    replace resources in the program or library, without recompiling, for debugging or quick hacking and testing
-//    purposes. Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment variable to selectively overlay
-//    resources with replacements from the filesystem.  It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to perform
-//    during resource lookups.
+// When debugging a program or testing a change to an installed version, it is
+// often useful to be able to replace resources in the program or library,
+// without recompiling, for debugging or quick hacking and testing purposes.
+// Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment
+// variable to selectively overlay resources with replacements from the
+// filesystem. It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to
+// perform during resource lookups.
 //
-//    A substitution has the form
+// A substitution has the form
 //
-//    |[
-//       /org/gtk/libgtk=/home/desrt/gtk-overlay
-//
+//    /org/gtk/libgtk=/home/desrt/gtk-overlay
 //
 // The part before the `=` is the resource subpath for which the overlay
 // applies. The part after is a filesystem path which contains files and
@@ -20627,7 +20922,9 @@ func NewResourceFromData(data *glib.Bytes) *Resource {
 
 	var ret0 *Resource
 
-	ret0 = WrapResource(ret)
+	{
+		ret0 = WrapResource(ret)
+	}
 
 	return ret0
 }
@@ -20748,7 +21045,9 @@ func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlag
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -20787,7 +21086,9 @@ func (resource *Resource) Ref() *Resource {
 
 	var ret0 *Resource
 
-	ret0 = WrapResource(ret)
+	{
+		ret0 = WrapResource(ret)
+	}
 
 	return ret0
 }
@@ -20827,7 +21128,6 @@ func (resource *Resource) Unref() {
 //      some_value = g_settings_get_int (settings, "some-value");
 //      ...
 //    }
-//
 //
 // It's also possible that the plugin system expects the schema source files
 // (ie: .gschema.xml files) instead of a gschemas.compiled file. In that case,
@@ -20888,7 +21188,9 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 
 	var ret0 *SettingsSchemaKey
 
-	ret0 = WrapSettingsSchemaKey(ret)
+	{
+		ret0 = WrapSettingsSchemaKey(ret)
+	}
 
 	return ret0
 }
@@ -21004,7 +21306,9 @@ func (schema *SettingsSchema) Ref() *SettingsSchema {
 
 	var ret0 *SettingsSchema
 
-	ret0 = WrapSettingsSchema(ret)
+	{
+		ret0 = WrapSettingsSchema(ret)
+	}
 
 	return ret0
 }
@@ -21057,7 +21361,9 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -21146,7 +21452,9 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -21186,7 +21494,12 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 
 	var ret0 *glib.VariantType
 
-	ret0 = glib.WrapVariantType(ret)
+	{
+		ret0 = glib.WrapVariantType(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21222,7 +21535,9 @@ func (key *SettingsSchemaKey) Ref() *SettingsSchemaKey {
 
 	var ret0 *SettingsSchemaKey
 
-	ret0 = WrapSettingsSchemaKey(ret)
+	{
+		ret0 = WrapSettingsSchemaKey(ret)
+	}
 
 	return ret0
 }
@@ -21277,7 +21592,9 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 
 	var ret0 *SettingsSchemaSource
 
-	ret0 = WrapSettingsSchemaSource(ret)
+	{
+		ret0 = WrapSettingsSchemaSource(ret)
+	}
 
 	return ret0
 }
@@ -21362,7 +21679,9 @@ func (source *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *Set
 
 	var ret0 *SettingsSchema
 
-	ret0 = WrapSettingsSchema(ret)
+	{
+		ret0 = WrapSettingsSchema(ret)
+	}
 
 	return ret0
 }
@@ -21377,7 +21696,9 @@ func (source *SettingsSchemaSource) Ref() *SettingsSchemaSource {
 
 	var ret0 *SettingsSchemaSource
 
-	ret0 = WrapSettingsSchemaSource(ret)
+	{
+		ret0 = WrapSettingsSchemaSource(ret)
+	}
 
 	return ret0
 }
@@ -21444,7 +21765,9 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	var ret0 *SrvTarget
 
-	ret0 = WrapSrvTarget(ret)
+	{
+		ret0 = WrapSrvTarget(ret)
+	}
 
 	return ret0
 }
@@ -21459,7 +21782,9 @@ func (target *SrvTarget) Copy() *SrvTarget {
 
 	var ret0 *SrvTarget
 
-	ret0 = WrapSrvTarget(ret)
+	{
+		ret0 = WrapSrvTarget(ret)
+	}
 
 	return ret0
 }
@@ -21592,7 +21917,12 @@ func (staticResource *StaticResource) Resource() *Resource {
 
 	var ret0 *Resource
 
-	ret0 = WrapResource(ret)
+	{
+		ret0 = WrapResource(ret)
+		runtime.SetFinalizer(&ret0, func(v **Resource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21689,7 +22019,9 @@ func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
 
 	var ret0 *UnixMountPoint
 
-	ret0 = WrapUnixMountPoint(ret)
+	{
+		ret0 = WrapUnixMountPoint(ret)
+	}
 
 	return ret0
 }
@@ -23306,7 +23638,6 @@ func (application application) WithdrawNotification(id string) {
 //      return 0;
 //    }
 //
-//
 // In this example the commandline is not completely handled before the
 // #GApplication::command-line handler returns. Instead, we keep a reference to
 // the CommandLine object and handle it later (in this example, in an idle).
@@ -23625,7 +23956,12 @@ func (cmdline applicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	var ret0 *glib.VariantDict
 
-	ret0 = glib.WrapVariantDict(ret)
+	{
+		ret0 = glib.WrapVariantDict(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.VariantDict) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -23647,7 +23983,9 @@ func (cmdline applicationCommandLine) PlatformData() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -24256,7 +24594,12 @@ func (icon bytesIcon) Bytes() *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -24630,7 +24973,9 @@ func (cancellable cancellable) NewSource() *glib.Source {
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -25194,7 +25539,6 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 //
 //      return authorized;
 //    }
-//
 type DBusAuthObserver interface {
 	gextras.Objector
 
@@ -25353,21 +25697,20 @@ type DBusConnection interface {
 	// If the @parameters #GVariant is floating, it is consumed. This allows
 	// convenient 'inline' use of g_variant_new(), e.g.:
 	//
-	//     g_dbus_connection_call (connection,
-	//                             "org.freedesktop.StringThings",
-	//                             "/org/freedesktop/StringThings",
-	//                             "org.freedesktop.StringThings",
-	//                             "TwoStrings",
-	//                             g_variant_new ("(ss)",
-	//                                            "Thing One",
-	//                                            "Thing Two"),
-	//                             NULL,
-	//                             G_DBUS_CALL_FLAGS_NONE,
-	//                             -1,
-	//                             NULL,
-	//                             (GAsyncReadyCallback) two_strings_done,
-	//                             NULL);
-	//
+	//    g_dbus_connection_call (connection,
+	//                            "org.freedesktop.StringThings",
+	//                            "/org/freedesktop/StringThings",
+	//                            "org.freedesktop.StringThings",
+	//                            "TwoStrings",
+	//                            g_variant_new ("(ss)",
+	//                                           "Thing One",
+	//                                           "Thing Two"),
+	//                            NULL,
+	//                            G_DBUS_CALL_FLAGS_NONE,
+	//                            -1,
+	//                            NULL,
+	//                            (GAsyncReadyCallback) two_strings_done,
+	//                            NULL);
 	//
 	// This is an asynchronous method. When the operation is finished, @callback
 	// will be invoked in the [thread-default main
@@ -25400,20 +25743,19 @@ type DBusConnection interface {
 	// If the @parameters #GVariant is floating, it is consumed. This allows
 	// convenient 'inline' use of g_variant_new(), e.g.:
 	//
-	//     g_dbus_connection_call_sync (connection,
-	//                                  "org.freedesktop.StringThings",
-	//                                  "/org/freedesktop/StringThings",
-	//                                  "org.freedesktop.StringThings",
-	//                                  "TwoStrings",
-	//                                  g_variant_new ("(ss)",
-	//                                                 "Thing One",
-	//                                                 "Thing Two"),
-	//                                  NULL,
-	//                                  G_DBUS_CALL_FLAGS_NONE,
-	//                                  -1,
-	//                                  NULL,
-	//                                  &error);
-	//
+	//    g_dbus_connection_call_sync (connection,
+	//                                 "org.freedesktop.StringThings",
+	//                                 "/org/freedesktop/StringThings",
+	//                                 "org.freedesktop.StringThings",
+	//                                 "TwoStrings",
+	//                                 g_variant_new ("(ss)",
+	//                                                "Thing One",
+	//                                                "Thing Two"),
+	//                                 NULL,
+	//                                 G_DBUS_CALL_FLAGS_NONE,
+	//                                 -1,
+	//                                 NULL,
+	//                                 &error);
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_connection_call() for the asynchronous version of this method.
@@ -25564,41 +25906,6 @@ type DBusConnection interface {
 	// g_dbus_connection_register_object() using closures instead of a
 	// BusInterfaceVTable for easier binding in other languages.
 	RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) uint
-	// RegisterSubtree registers a whole subtree of dynamic objects.
-	//
-	// The @enumerate and @introspection functions in @vtable are used to
-	// convey, to remote callers, what nodes exist in the subtree rooted by
-	// @object_path.
-	//
-	// When handling remote calls into any node in the subtree, first the
-	// @enumerate function is used to check if the node exists. If the node
-	// exists or the DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is
-	// set the @introspection function is used to check if the node supports the
-	// requested method. If so, the @dispatch function is used to determine
-	// where to dispatch the call. The collected BusInterfaceVTable and
-	// #gpointer will be used to call into the interface vtable for processing
-	// the request.
-	//
-	// All calls into user-provided code will be invoked in the [thread-default
-	// main context][g-main-context-push-thread-default] of the thread you are
-	// calling this method from.
-	//
-	// If an existing subtree is already registered at @object_path or then
-	// @error is set to IO_ERROR_EXISTS.
-	//
-	// Note that it is valid to register regular objects (using
-	// g_dbus_connection_register_object()) in a subtree registered with
-	// g_dbus_connection_register_subtree() - if so, the subtree handler is
-	// tried as the last resort. One way to think about a subtree handler is to
-	// consider it a fallback handler for object paths not registered via
-	// g_dbus_connection_register_object() or other bindings.
-	//
-	// Note that @vtable will be copied so you cannot change it after
-	// registration.
-	//
-	// See this [server][gdbus-subtree-server] for an example of how to use this
-	// method.
-	RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}) uint
 	// RemoveFilter removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
@@ -25911,21 +26218,20 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 // If the @parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//     g_dbus_connection_call (connection,
-//                             "org.freedesktop.StringThings",
-//                             "/org/freedesktop/StringThings",
-//                             "org.freedesktop.StringThings",
-//                             "TwoStrings",
-//                             g_variant_new ("(ss)",
-//                                            "Thing One",
-//                                            "Thing Two"),
-//                             NULL,
-//                             G_DBUS_CALL_FLAGS_NONE,
-//                             -1,
-//                             NULL,
-//                             (GAsyncReadyCallback) two_strings_done,
-//                             NULL);
-//
+//    g_dbus_connection_call (connection,
+//                            "org.freedesktop.StringThings",
+//                            "/org/freedesktop/StringThings",
+//                            "org.freedesktop.StringThings",
+//                            "TwoStrings",
+//                            g_variant_new ("(ss)",
+//                                           "Thing One",
+//                                           "Thing Two"),
+//                            NULL,
+//                            G_DBUS_CALL_FLAGS_NONE,
+//                            -1,
+//                            NULL,
+//                            (GAsyncReadyCallback) two_strings_done,
+//                            NULL);
 //
 // This is an asynchronous method. When the operation is finished, @callback
 // will be invoked in the [thread-default main
@@ -25983,7 +26289,9 @@ func (connection dBusConnection) CallFinish(res AsyncResult) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -26006,20 +26314,19 @@ func (connection dBusConnection) CallFinish(res AsyncResult) *glib.Variant {
 // If the @parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//     g_dbus_connection_call_sync (connection,
-//                                  "org.freedesktop.StringThings",
-//                                  "/org/freedesktop/StringThings",
-//                                  "org.freedesktop.StringThings",
-//                                  "TwoStrings",
-//                                  g_variant_new ("(ss)",
-//                                                 "Thing One",
-//                                                 "Thing Two"),
-//                                  NULL,
-//                                  G_DBUS_CALL_FLAGS_NONE,
-//                                  -1,
-//                                  NULL,
-//                                  &error);
-//
+//    g_dbus_connection_call_sync (connection,
+//                                 "org.freedesktop.StringThings",
+//                                 "/org/freedesktop/StringThings",
+//                                 "org.freedesktop.StringThings",
+//                                 "TwoStrings",
+//                                 g_variant_new ("(ss)",
+//                                                "Thing One",
+//                                                "Thing Two"),
+//                                 NULL,
+//                                 G_DBUS_CALL_FLAGS_NONE,
+//                                 -1,
+//                                 NULL,
+//                                 &error);
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
@@ -26054,7 +26361,9 @@ func (connection dBusConnection) CallSync(busName string, objectPath string, int
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -26116,7 +26425,9 @@ func (connection dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outF
 
 	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
 
-	ret1 = glib.WrapVariant(ret)
+	{
+		ret1 = glib.WrapVariant(ret)
+	}
 
 	return ret0, ret1
 }
@@ -26162,7 +26473,9 @@ func (connection dBusConnection) CallWithUnixFdListSync(busName string, objectPa
 
 	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native())))
 
-	ret1 = glib.WrapVariant(ret)
+	{
+		ret1 = glib.WrapVariant(ret)
+	}
 
 	return ret0, ret1
 }
@@ -26579,65 +26892,6 @@ func (connection dBusConnection) RegisterObjectWithClosures(objectPath string, i
 	arg2 = (*C.GDBusInterfaceInfo)(interfaceInfo.Native())
 
 	ret := C.g_dbus_connection_register_object_with_closures(arg0, arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// RegisterSubtree registers a whole subtree of dynamic objects.
-//
-// The @enumerate and @introspection functions in @vtable are used to
-// convey, to remote callers, what nodes exist in the subtree rooted by
-// @object_path.
-//
-// When handling remote calls into any node in the subtree, first the
-// @enumerate function is used to check if the node exists. If the node
-// exists or the DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is
-// set the @introspection function is used to check if the node supports the
-// requested method. If so, the @dispatch function is used to determine
-// where to dispatch the call. The collected BusInterfaceVTable and
-// #gpointer will be used to call into the interface vtable for processing
-// the request.
-//
-// All calls into user-provided code will be invoked in the [thread-default
-// main context][g-main-context-push-thread-default] of the thread you are
-// calling this method from.
-//
-// If an existing subtree is already registered at @object_path or then
-// @error is set to IO_ERROR_EXISTS.
-//
-// Note that it is valid to register regular objects (using
-// g_dbus_connection_register_object()) in a subtree registered with
-// g_dbus_connection_register_subtree() - if so, the subtree handler is
-// tried as the last resort. One way to think about a subtree handler is to
-// consider it a fallback handler for object paths not registered via
-// g_dbus_connection_register_object() or other bindings.
-//
-// Note that @vtable will be copied so you cannot change it after
-// registration.
-//
-// See this [server][gdbus-subtree-server] for an example of how to use this
-// method.
-func (connection dBusConnection) RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}) uint {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.gchar
-	var arg2 *C.GDBusSubtreeVTable
-	var arg3 C.GDBusSubtreeFlags
-	var arg4 C.gpointer
-	var arg5 C.GDestroyNotify
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GDBusSubtreeVTable)(vtable.Native())
-	arg3 = (C.GDBusSubtreeFlags)(flags)
-	arg4 = C.gpointer(box.Assign(userData))
-	arg5 = (*[0]byte)(C.callbackDelete)
-
-	ret := C.g_dbus_connection_register_subtree(arg0, arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 uint
 
@@ -27191,7 +27445,9 @@ func (interface_ dBusInterfaceSkeleton) Connections() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -27223,7 +27479,12 @@ func (interface_ dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 
 	var ret0 *DBusInterfaceInfo
 
-	ret0 = WrapDBusInterfaceInfo(ret)
+	{
+		ret0 = WrapDBusInterfaceInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27253,7 +27514,9 @@ func (interface_ dBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -27270,7 +27533,12 @@ func (interface_ dBusInterfaceSkeleton) Vtable() *DBusInterfaceVTable {
 
 	var ret0 *DBusInterfaceVTable
 
-	ret0 = WrapDBusInterfaceVTable(ret)
+	{
+		ret0 = WrapDBusInterfaceVTable(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceVTable) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27438,7 +27706,6 @@ type DBusMessage interface {
 	// formatting is subject to change at any time. Typical output looks
 	// something like this:
 	//
-	//
 	//    Flags:   none
 	//    Version: 0
 	//    Serial:  4
@@ -27450,9 +27717,9 @@ type DBusMessage interface {
 	//    Body: ()
 	//    UNIX File Descriptors:
 	//      (none)
-	//    ]|
-	//    or
-	//    |[
+	//
+	// or
+	//
 	//    Flags:   no-reply-expected
 	//    Version: 0
 	//    Serial:  477
@@ -27464,7 +27731,6 @@ type DBusMessage interface {
 	//    Body: ()
 	//    UNIX File Descriptors:
 	//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
-	//
 	Print(indent uint) string
 	// SetBody sets the body @message. As a side-effect the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type
@@ -27654,7 +27920,12 @@ func (message dBusMessage) Body() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27736,7 +28007,12 @@ func (message dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Vari
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -27997,7 +28273,6 @@ func (methodCallMessage dBusMessage) NewMethodReply() DBusMessage {
 // formatting is subject to change at any time. Typical output looks
 // something like this:
 //
-//
 //    Flags:   none
 //    Version: 0
 //    Serial:  4
@@ -28009,9 +28284,9 @@ func (methodCallMessage dBusMessage) NewMethodReply() DBusMessage {
 //    Body: ()
 //    UNIX File Descriptors:
 //      (none)
-//    ]|
-//    or
-//    |[
+//
+// or
+//
 //    Flags:   no-reply-expected
 //    Version: 0
 //    Serial:  477
@@ -28023,7 +28298,6 @@ func (methodCallMessage dBusMessage) NewMethodReply() DBusMessage {
 //    Body: ()
 //    UNIX File Descriptors:
 //      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
-//
 func (message dBusMessage) Print(indent uint) string {
 	var arg0 *C.GDBusMessage
 	var arg1 C.guint
@@ -28389,7 +28663,6 @@ type DBusMethodInvocation interface {
 	//
 	//    // Do not free @invocation here; returning a value does that
 	//
-	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
 	//
@@ -28506,7 +28779,12 @@ func (invocation dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 
 	var ret0 *DBusMethodInfo
 
-	ret0 = WrapDBusMethodInfo(ret)
+	{
+		ret0 = WrapDBusMethodInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusMethodInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -28553,7 +28831,12 @@ func (invocation dBusMethodInvocation) Parameters() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -28578,7 +28861,12 @@ func (invocation dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 
 	var ret0 *DBusPropertyInfo
 
-	ret0 = WrapDBusPropertyInfo(ret)
+	{
+		ret0 = WrapDBusPropertyInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusPropertyInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -28670,7 +28958,6 @@ func (invocation dBusMethodInvocation) ReturnGerror(error *glib.Error) {
 //                                             g_variant_new ("(s)", result_string));
 //
 //    // Do not free @invocation here; returning a value does that
-//
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
@@ -29447,17 +29734,16 @@ type DBusProxy interface {
 	// If the @parameters #GVariant is floating, it is consumed. This allows
 	// convenient 'inline' use of g_variant_new(), e.g.:
 	//
-	//     g_dbus_proxy_call (proxy,
-	//                        "TwoStrings",
-	//                        g_variant_new ("(ss)",
-	//                                       "Thing One",
-	//                                       "Thing Two"),
-	//                        G_DBUS_CALL_FLAGS_NONE,
-	//                        -1,
-	//                        NULL,
-	//                        (GAsyncReadyCallback) two_strings_done,
-	//                        &data);
-	//
+	//    g_dbus_proxy_call (proxy,
+	//                       "TwoStrings",
+	//                       g_variant_new ("(ss)",
+	//                                      "Thing One",
+	//                                      "Thing Two"),
+	//                       G_DBUS_CALL_FLAGS_NONE,
+	//                       -1,
+	//                       NULL,
+	//                       (GAsyncReadyCallback) two_strings_done,
+	//                       &data);
 	//
 	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
 	// @method_name is referenced by it, then the return value is checked
@@ -29490,16 +29776,15 @@ type DBusProxy interface {
 	// If the @parameters #GVariant is floating, it is consumed. This allows
 	// convenient 'inline' use of g_variant_new(), e.g.:
 	//
-	//     g_dbus_proxy_call_sync (proxy,
-	//                             "TwoStrings",
-	//                             g_variant_new ("(ss)",
-	//                                            "Thing One",
-	//                                            "Thing Two"),
-	//                             G_DBUS_CALL_FLAGS_NONE,
-	//                             -1,
-	//                             NULL,
-	//                             &error);
-	//
+	//    g_dbus_proxy_call_sync (proxy,
+	//                            "TwoStrings",
+	//                            g_variant_new ("(ss)",
+	//                                           "Thing One",
+	//                                           "Thing Two"),
+	//                            G_DBUS_CALL_FLAGS_NONE,
+	//                            -1,
+	//                            NULL,
+	//                            &error);
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_proxy_call() for the asynchronous version of this method.
@@ -29568,12 +29853,11 @@ type DBusProxy interface {
 	// If the @value #GVariant is floating, it is consumed. This allows
 	// convenient 'inline' use of g_variant_new(), e.g.
 	//
-	//     g_dbus_proxy_set_cached_property (proxy,
-	//                                       "SomeProperty",
-	//                                       g_variant_new ("(si)",
-	//                                                     "A String",
-	//                                                     42));
-	//
+	//    g_dbus_proxy_set_cached_property (proxy,
+	//                                      "SomeProperty",
+	//                                      g_variant_new ("(si)",
+	//                                                    "A String",
+	//                                                    42));
 	//
 	// Normally you will not need to use this method since @proxy is tracking
 	// changes using the `org.freedesktop.DBus.Properties.PropertiesChanged`
@@ -29732,17 +30016,16 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 // If the @parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//     g_dbus_proxy_call (proxy,
-//                        "TwoStrings",
-//                        g_variant_new ("(ss)",
-//                                       "Thing One",
-//                                       "Thing Two"),
-//                        G_DBUS_CALL_FLAGS_NONE,
-//                        -1,
-//                        NULL,
-//                        (GAsyncReadyCallback) two_strings_done,
-//                        &data);
-//
+//    g_dbus_proxy_call (proxy,
+//                       "TwoStrings",
+//                       g_variant_new ("(ss)",
+//                                      "Thing One",
+//                                      "Thing Two"),
+//                       G_DBUS_CALL_FLAGS_NONE,
+//                       -1,
+//                       NULL,
+//                       (GAsyncReadyCallback) two_strings_done,
+//                       &data);
 //
 // If @proxy has an expected interface (see BusProxy:g-interface-info) and
 // @method_name is referenced by it, then the return value is checked
@@ -29792,7 +30075,9 @@ func (proxy dBusProxy) CallFinish(res AsyncResult) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -29812,16 +30097,15 @@ func (proxy dBusProxy) CallFinish(res AsyncResult) *glib.Variant {
 // If the @parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//     g_dbus_proxy_call_sync (proxy,
-//                             "TwoStrings",
-//                             g_variant_new ("(ss)",
-//                                            "Thing One",
-//                                            "Thing Two"),
-//                             G_DBUS_CALL_FLAGS_NONE,
-//                             -1,
-//                             NULL,
-//                             &error);
-//
+//    g_dbus_proxy_call_sync (proxy,
+//                            "TwoStrings",
+//                            g_variant_new ("(ss)",
+//                                           "Thing One",
+//                                           "Thing Two"),
+//                            G_DBUS_CALL_FLAGS_NONE,
+//                            -1,
+//                            NULL,
+//                            &error);
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_proxy_call() for the asynchronous version of this method.
@@ -29849,7 +30133,9 @@ func (proxy dBusProxy) CallSync(methodName string, parameters *glib.Variant, fla
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -29900,7 +30186,9 @@ func (proxy dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList Unix
 
 	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
 
-	ret1 = glib.WrapVariant(ret)
+	{
+		ret1 = glib.WrapVariant(ret)
+	}
 
 	return ret0, ret1
 }
@@ -29935,7 +30223,9 @@ func (proxy dBusProxy) CallWithUnixFdListSync(methodName string, parameters *gli
 
 	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native())))
 
-	ret1 = glib.WrapVariant(ret)
+	{
+		ret1 = glib.WrapVariant(ret)
+	}
 
 	return ret0, ret1
 }
@@ -29958,7 +30248,9 @@ func (proxy dBusProxy) CachedProperty(propertyName string) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -30051,7 +30343,12 @@ func (proxy dBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 
 	var ret0 *DBusInterfaceInfo
 
-	ret0 = WrapDBusInterfaceInfo(ret)
+	{
+		ret0 = WrapDBusInterfaceInfo(ret)
+		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -30133,12 +30430,11 @@ func (proxy dBusProxy) ObjectPath() string {
 // If the @value #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.
 //
-//     g_dbus_proxy_set_cached_property (proxy,
-//                                       "SomeProperty",
-//                                       g_variant_new ("(si)",
-//                                                     "A String",
-//                                                     42));
-//
+//    g_dbus_proxy_set_cached_property (proxy,
+//                                      "SomeProperty",
+//                                      g_variant_new ("(si)",
+//                                                    "A String",
+//                                                    42));
 //
 // Normally you will not need to use this method since @proxy is tracking
 // changes using the `org.freedesktop.DBus.Properties.PropertiesChanged`
@@ -32166,7 +32462,12 @@ func (emblemed emblemedIcon) Emblems() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -32245,10 +32546,9 @@ type FileEnumerator interface {
 	//
 	// This is a convenience method that's equivalent to:
 	//
-	//      gchar *name = g_file_info_get_name (info);
-	//      GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-	//                                       name);
-	//
+	//    gchar *name = g_file_info_get_name (info);
+	//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+	//                                     name);
 	Child(info FileInfo) File
 	// Container: get the #GFile container which is being enumerated.
 	Container() File
@@ -32277,7 +32577,6 @@ type FileEnumerator interface {
 	// The code pattern for correctly using g_file_enumerator_iterate() from C
 	// is:
 	//
-	//
 	//    direnum = g_file_enumerate_children (file, ...);
 	//    while (TRUE)
 	//      {
@@ -32291,7 +32590,6 @@ type FileEnumerator interface {
 	//
 	//    out:
 	//      g_object_unref (direnum); // Note: frees the last @info
-	//
 	Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, ok bool)
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
@@ -32430,10 +32728,9 @@ func (enumerator fileEnumerator) CloseFinish(result AsyncResult) bool {
 //
 // This is a convenience method that's equivalent to:
 //
-//      gchar *name = g_file_info_get_name (info);
-//      GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-//                                       name);
-//
+//    gchar *name = g_file_info_get_name (info);
+//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+//                                     name);
 func (enumerator fileEnumerator) Child(info FileInfo) File {
 	var arg0 *C.GFileEnumerator
 	var arg1 *C.GFileInfo
@@ -32516,7 +32813,6 @@ func (enumerator fileEnumerator) IsClosed() bool {
 // The code pattern for correctly using g_file_enumerator_iterate() from C
 // is:
 //
-//
 //    direnum = g_file_enumerate_children (file, ...);
 //    while (TRUE)
 //      {
@@ -32530,7 +32826,6 @@ func (enumerator fileEnumerator) IsClosed() bool {
 //
 //    out:
 //      g_object_unref (direnum); // Note: frees the last @info
-//
 func (direnum fileEnumerator) Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, ok bool) {
 	var arg0 *C.GFileEnumerator
 	var arg1 **C.GFileInfo // out
@@ -32631,7 +32926,9 @@ func (enumerator fileEnumerator) NextFilesFinish(result AsyncResult) *glib.List 
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -33477,7 +33774,9 @@ func (info fileInfo) DeletionDate() *glib.DateTime {
 
 	var ret0 *glib.DateTime
 
-	ret0 = glib.WrapDateTime(ret)
+	{
+		ret0 = glib.WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -33621,7 +33920,9 @@ func (info fileInfo) ModificationDateTime() *glib.DateTime {
 
 	var ret0 *glib.DateTime
 
-	ret0 = glib.WrapDateTime(ret)
+	{
+		ret0 = glib.WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -33638,7 +33939,12 @@ func (info fileInfo) ModificationTime() glib.TimeVal {
 
 	var ret0 *glib.TimeVal
 
-	ret0 = glib.WrapTimeVal(arg1)
+	{
+		ret0 = glib.WrapTimeVal(arg1)
+		runtime.SetFinalizer(&ret0, func(v **glib.TimeVal) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -36555,7 +36861,9 @@ func (stream inputStream) ReadBytes(count uint, cancellable Cancellable) *glib.B
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -36611,7 +36919,9 @@ func (stream inputStream) ReadBytesFinish(result AsyncResult) *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -37208,7 +37518,9 @@ func (ostream memoryOutputStream) StealAsBytes() *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+	}
 
 	return ret0
 }
@@ -37719,7 +38031,9 @@ func (iter menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok
 
 	ret0 = C.GoString(arg1)
 
-	ret1 = glib.WrapVariant(arg2)
+	{
+		ret1 = glib.WrapVariant(arg2)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -37738,7 +38052,9 @@ func (iter menuAttributeIter) Value() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -38005,7 +38321,9 @@ func (menuItem menuItem) AttributeValue(attribute string, expectedType *glib.Var
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -38589,7 +38907,9 @@ func (model menuModel) ItemAttributeValue(itemIndex int, attribute string, expec
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -41233,7 +41553,9 @@ func (resolver resolver) LookupByName(hostname string, cancellable Cancellable) 
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41276,7 +41598,9 @@ func (resolver resolver) LookupByNameFinish(result AsyncResult) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41300,7 +41624,9 @@ func (resolver resolver) LookupByNameWithFlags(hostname string, flags ResolverNa
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41345,7 +41671,9 @@ func (resolver resolver) LookupByNameWithFlagsFinish(result AsyncResult) *glib.L
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41375,7 +41703,9 @@ func (resolver resolver) LookupRecords(rrname string, recordType ResolverRecordT
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41422,7 +41752,9 @@ func (resolver resolver) LookupRecordsFinish(result AsyncResult) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41466,7 +41798,9 @@ func (resolver resolver) LookupService(service string, protocol string, domain s
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41515,7 +41849,9 @@ func (resolver resolver) LookupServiceFinish(result AsyncResult) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41600,46 +41936,43 @@ func (resolver resolver) SetDefault() {
 //
 // For example:
 //
+//    <!-- Translators: A list of words which are not allowed to be typed, in
+//         GVariant serialization syntax.
+//         See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
+//    <default l10n='messages' context='Banned words'>['bad', 'words']</default>
 //
-//     <!-- Translators: A list of words which are not allowed to be typed, in
-//          GVariant serialization syntax.
-//          See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
-//     <default l10n='messages' context='Banned words'>['bad', 'words']</default>
-//    ]|
+// Translations of default values must remain syntactically valid serialized
+// #GVariants (e.g. retaining any surrounding quotation marks) or runtime errors
+// will occur.
 //
-//    Translations of default values must remain syntactically valid serialized
-//    #GVariants (e.g. retaining any surrounding quotation marks) or runtime
-//    errors will occur.
+// GSettings uses schemas in a compact binary form that is created by the
+// [glib-compile-schemas][glib-compile-schemas] utility. The input is a schema
+// description in an XML format.
 //
-//    GSettings uses schemas in a compact binary form that is created
-//    by the [glib-compile-schemas][glib-compile-schemas]
-//    utility. The input is a schema description in an XML format.
+// A DTD for the gschema XML format can be found here: gschema.dtd
+// (https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
 //
-//    A DTD for the gschema XML format can be found here:
-//    gschema.dtd (https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
+// The [glib-compile-schemas][glib-compile-schemas] tool expects schema files to
+// have the extension `.gschema.xml`.
 //
-//    The [glib-compile-schemas][glib-compile-schemas] tool expects schema
-//    files to have the extension `.gschema.xml`.
+// At runtime, schemas are identified by their id (as specified in the id
+// attribute of the <schema> element). The convention for schema ids is to use a
+// dotted name, similar in style to a D-Bus bus name, e.g.
+// "org.gnome.SessionManager". In particular, if the settings are for a specific
+// service that owns a D-Bus bus name, the D-Bus bus name and schema id should
+// match. For schemas which deal with settings not associated with one named
+// application, the id should not use StudlyCaps, e.g.
+// "org.gnome.font-rendering".
 //
-//    At runtime, schemas are identified by their id (as specified in the
-//    id attribute of the <schema> element). The convention for schema
-//    ids is to use a dotted name, similar in style to a D-Bus bus name,
-//    e.g. "org.gnome.SessionManager". In particular, if the settings are
-//    for a specific service that owns a D-Bus bus name, the D-Bus bus name
-//    and schema id should match. For schemas which deal with settings not
-//    associated with one named application, the id should not use
-//    StudlyCaps, e.g. "org.gnome.font-rendering".
+// In addition to #GVariant types, keys can have types that have enumerated
+// types. These can be described by a <choice>, <enum> or <flags> element, as
+// seen in the [example][schema-enumerated]. The underlying type of such a key
+// is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
+// g_settings_get_flags(), g_settings_set_flags() access the numeric values
+// corresponding to the string value of enum and flags keys.
 //
-//    In addition to #GVariant types, keys can have types that have
-//    enumerated types. These can be described by a <choice>,
-//    <enum> or <flags> element, as seen in the
-//    [example][schema-enumerated]. The underlying type of such a key
-//    is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
-//    g_settings_get_flags(), g_settings_set_flags() access the numeric values
-//    corresponding to the string value of enum and flags keys.
+// An example for default value:
 //
-//    An example for default value:
-//    |[
 //    <schemalist>
 //      <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
 //
@@ -41662,10 +41995,9 @@ func (resolver resolver) SetDefault() {
 //
 //      </schema>
 //    </schemalist>
-//    ]|
 //
-//    An example for ranges, choices and enumerated types:
-//    |[
+// An example for ranges, choices and enumerated types:
+//
 //    <schemalist>
 //
 //      <enum id="org.gtk.Test.myenum">
@@ -41708,124 +42040,106 @@ func (resolver resolver) SetDefault() {
 //        </key>
 //      </schema>
 //    </schemalist>
-//    ]|
-//
 //
 //
 // Vendor overrides
 //
+// Default values are defined in the schemas that get installed by an
+// application. Sometimes, it is necessary for a vendor or distributor to adjust
+// these defaults. Since patching the XML source for the schema is inconvenient
+// and error-prone, [glib-compile-schemas][glib-compile-schemas] reads so-called
+// vendor override' files. These are keyfiles in the same directory as the XML
+// schema sources which can override default values. The schema id serves as the
+// group name in the key file, and the values are expected in serialized
+// GVariant form, as in the following example:
 //
-//    Default values are defined in the schemas that get installed by
-//    an application. Sometimes, it is necessary for a vendor or distributor
-//    to adjust these defaults. Since patching the XML source for the schema
-//    is inconvenient and error-prone,
-//    [glib-compile-schemas][glib-compile-schemas] reads so-called vendor
-//    override' files. These are keyfiles in the same directory as the XML
-//    schema sources which can override default values. The schema id serves
-//    as the group name in the key file, and the values are expected in
-//    serialized GVariant form, as in the following example:
-//    |[
-//        [org.gtk.Example]
-//        key1='string'
-//        key2=1.5
-//    ]|
+//    [org.gtk.Example]
+//    key1='string'
+//    key2=1.5
 //
-//    glib-compile-schemas expects schema files to have the extension
-//    `.gschema.override`.
-//
+// glib-compile-schemas expects schema files to have the extension
+// `.gschema.override`.
 //
 //
 // Binding
 //
+// A very convenient feature of GSettings lets you bind #GObject properties
+// directly to settings, using g_settings_bind(). Once a GObject property has
+// been bound to a setting, changes on either side are automatically propagated
+// to the other side. GSettings handles details like mapping between GObject and
+// GVariant types, and preventing infinite cycles.
 //
-//    A very convenient feature of GSettings lets you bind #GObject properties
-//    directly to settings, using g_settings_bind(). Once a GObject property
-//    has been bound to a setting, changes on either side are automatically
-//    propagated to the other side. GSettings handles details like mapping
-//    between GObject and GVariant types, and preventing infinite cycles.
-//
-//    This makes it very easy to hook up a preferences dialog to the
-//    underlying settings. To make this even more convenient, GSettings
-//    looks for a boolean property with the name "sensitivity" and
-//    automatically binds it to the writability of the bound setting.
-//    If this 'magic' gets in the way, it can be suppressed with the
-//    SETTINGS_BIND_NO_SENSITIVITY flag.
-//
+// This makes it very easy to hook up a preferences dialog to the underlying
+// settings. To make this even more convenient, GSettings looks for a boolean
+// property with the name "sensitivity" and automatically binds it to the
+// writability of the bound setting. If this 'magic' gets in the way, it can be
+// suppressed with the SETTINGS_BIND_NO_SENSITIVITY flag.
 //
 //
 // Relocatable schemas
 //
+// A relocatable schema is one with no `path` attribute specified on its
+// <schema> element. By using g_settings_new_with_path(), a #GSettings object
+// can be instantiated for a relocatable schema, assigning a path to the
+// instance. Paths passed to g_settings_new_with_path() will typically be
+// constructed dynamically from a constant prefix plus some form of instance
+// identifier; but they must still be valid GSettings paths. Paths could also be
+// constant and used with a globally installed schema originating from a
+// dependency library.
 //
-//    A relocatable schema is one with no `path` attribute specified on its
-//    <schema> element. By using g_settings_new_with_path(), a #GSettings object
-//    can be instantiated for a relocatable schema, assigning a path to the
-//    instance. Paths passed to g_settings_new_with_path() will typically be
-//    constructed dynamically from a constant prefix plus some form of instance
-//    identifier; but they must still be valid GSettings paths. Paths could also
-//    be constant and used with a globally installed schema originating from a
-//    dependency library.
+// For example, a relocatable schema could be used to store geometry information
+// for different windows in an application. If the schema ID was
+// `org.foo.MyApp.Window`, it could be instantiated for paths
+// `/org/foo/MyApp/main/`, `/org/foo/MyApp/document-1/`,
+// `/org/foo/MyApp/document-2/`, etc. If any of the paths are well-known they
+// can be specified as <child> elements in the parent schema, e.g.:
 //
-//    For example, a relocatable schema could be used to store geometry information
-//    for different windows in an application. If the schema ID was
-//    `org.foo.MyApp.Window`, it could be instantiated for paths
-//    `/org/foo/MyApp/main/`, `/org/foo/MyApp/document-1/`,
-//    `/org/foo/MyApp/document-2/`, etc. If any of the paths are well-known
-//    they can be specified as <child> elements in the parent schema, e.g.:
-//    |[
 //    <schema id="org.foo.MyApp" path="/org/foo/MyApp/">
 //      <child name="main" schema="org.foo.MyApp.Window"/>
 //    </schema>
-//    ]|
-//
 //
 //
 // Build system integration
 //
+// GSettings comes with autotools integration to simplify compiling and
+// installing schemas. To add GSettings support to an application, add the
+// following to your `configure.ac`:
 //
-//    GSettings comes with autotools integration to simplify compiling and
-//    installing schemas. To add GSettings support to an application, add the
-//    following to your `configure.ac`:
-//    |[
 //    GLIB_GSETTINGS
-//    ]|
 //
-//    In the appropriate `Makefile.am`, use the following snippet to compile and
-//    install the named schema:
-//    |[
+// In the appropriate `Makefile.am`, use the following snippet to compile and
+// install the named schema:
+//
 //    gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
 //    EXTRA_DIST = $(gsettings_SCHEMAS)
 //
 //    @GSETTINGS_RULES@
-//    ]|
 //
-//    No changes are needed to the build system to mark a schema XML file for
-//    translation. Assuming it sets the `gettext-domain` attribute, a schema may
-//    be marked for translation by adding it to `POTFILES.in`, assuming gettext
-//    0.19 is in use (the preferred method for translation):
-//    |[
+// No changes are needed to the build system to mark a schema XML file for
+// translation. Assuming it sets the `gettext-domain` attribute, a schema may be
+// marked for translation by adding it to `POTFILES.in`, assuming gettext 0.19
+// is in use (the preferred method for translation):
+//
 //    data/org.foo.MyApp.gschema.xml
-//    ]|
 //
-//    Alternatively, if intltool 0.50.1 is in use:
-//    |[
+// Alternatively, if intltool 0.50.1 is in use:
+//
 //    [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
-//    ]|
 //
-//    GSettings will use gettext to look up translations for the <summary> and
-//    <description> elements, and also any <default> elements which have a `l10n`
-//    attribute set. Translations must not be included in the `.gschema.xml` file
-//    by the build system, for example by using intltool XML rules with a
-//    `.gschema.xml.in` template.
+// GSettings will use gettext to look up translations for the <summary> and
+// <description> elements, and also any <default> elements which have a `l10n`
+// attribute set. Translations must not be included in the `.gschema.xml` file
+// by the build system, for example by using intltool XML rules with a
+// `.gschema.xml.in` template.
 //
-//    If an enumerated type defined in a C header file is to be used in a GSettings
-//    schema, it can either be defined manually using an <enum> element in the
-//    schema XML, or it can be extracted automatically from the C header. This
-//    approach is preferred, as it ensures the two representations are always
-//    synchronised. To do so, add the following to the relevant `Makefile.am`:
-//    |[
+// If an enumerated type defined in a C header file is to be used in a GSettings
+// schema, it can either be defined manually using an <enum> element in the
+// schema XML, or it can be extracted automatically from the C header. This
+// approach is preferred, as it ensures the two representations are always
+// synchronised. To do so, add the following to the relevant `Makefile.am`:
+//
 //    gsettings_ENUM_NAMESPACE = org.foo.MyApp
 //    gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
-//
 //
 // `gsettings_ENUM_NAMESPACE` specifies the schema namespace for the enum files,
 // which are specified in `gsettings_ENUM_FILES`. This will generate a
@@ -42503,7 +42817,9 @@ func (settings settings) DefaultValue(key string) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -42710,7 +43026,9 @@ func (settings settings) Range(key string) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -42847,7 +43165,9 @@ func (settings settings) UserValue(key string) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -42868,7 +43188,9 @@ func (settings settings) Value(key string) *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+	}
 
 	return ret0
 }
@@ -43994,7 +44316,6 @@ func (simple simpleActionGroup) Remove(actionName string) {
 //      cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
 //      return g_object_ref (cake);
 //    }
-//
 type SimpleAsyncResult interface {
 	gextras.Objector
 	AsyncResult
@@ -44061,9 +44382,6 @@ type SimpleAsyncResult interface {
 	// SetOpResGboolean sets the operation result to a boolean within the
 	// asynchronous result.
 	SetOpResGboolean(opRes bool)
-	// SetOpResGpointer sets the operation result within the asynchronous result
-	// to a pointer.
-	SetOpResGpointer(opRes interface{})
 	// SetOpResGssize sets the operation result within the asynchronous result
 	// to the given @op_res.
 	SetOpResGssize(opRes int)
@@ -44333,20 +44651,6 @@ func (simple simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	arg1 = gextras.Cbool(opRes)
 
 	C.g_simple_async_result_set_op_res_gboolean(arg0, arg1)
-}
-
-// SetOpResGpointer sets the operation result within the asynchronous result
-// to a pointer.
-func (simple simpleAsyncResult) SetOpResGpointer(opRes interface{}) {
-	var arg0 *C.GSimpleAsyncResult
-	var arg1 C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg0 = (*C.GSimpleAsyncResult)(simple.Native())
-	arg1 = C.gpointer(box.Assign(opRes))
-	arg2 = (*[0]byte)(C.callbackDelete)
-
-	C.g_simple_async_result_set_op_res_gpointer(arg0, arg1, arg2)
 }
 
 // SetOpResGssize sets the operation result within the asynchronous result
@@ -45431,7 +45735,9 @@ func (socket socket) CreateSource(condition glib.IOCondition, cancellable Cancel
 
 	var ret0 *glib.Source
 
-	ret0 = glib.WrapSource(ret)
+	{
+		ret0 = glib.WrapSource(ret)
+	}
 
 	return ret0
 }
@@ -48753,9 +49059,13 @@ func (subprocess subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cance
 	var ret1 **glib.Bytes
 	var ret2 bool
 
-	ret0 = glib.WrapBytes(arg3)
+	{
+		ret0 = glib.WrapBytes(arg3)
+	}
 
-	ret1 = glib.WrapBytes(arg4)
+	{
+		ret1 = glib.WrapBytes(arg4)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -48797,9 +49107,13 @@ func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *g
 	var ret1 **glib.Bytes
 	var ret2 bool
 
-	ret0 = glib.WrapBytes(arg2)
+	{
+		ret0 = glib.WrapBytes(arg2)
+	}
 
-	ret1 = glib.WrapBytes(arg3)
+	{
+		ret1 = glib.WrapBytes(arg3)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -49888,7 +50202,6 @@ func (self subprocessLauncher) Unsetenv(variable string) {
 //        }
 //
 //
-//
 // Porting from GSimpleAsyncResult
 //
 // #GTask's API attempts to be simpler than AsyncResult's in several ways: - You
@@ -50216,7 +50529,12 @@ func (task task) Context() *glib.MainContext {
 
 	var ret0 *glib.MainContext
 
-	ret0 = glib.WrapMainContext(ret)
+	{
+		ret0 = glib.WrapMainContext(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.MainContext) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -50476,7 +50794,6 @@ func (task task) ReturnPointer(result interface{}) {
 
 	arg0 = (*C.GTask)(task.Native())
 	arg1 = C.gpointer(box.Assign(result))
-	arg2 = (*[0]byte)(C.callbackDelete)
 
 	C.g_task_return_pointer(arg0, arg1, arg2)
 }
@@ -50625,7 +50942,6 @@ func (task task) SetTaskData(taskData interface{}) {
 
 	arg0 = (*C.GTask)(task.Native())
 	arg1 = C.gpointer(box.Assign(taskData))
-	arg2 = (*[0]byte)(C.callbackDelete)
 
 	C.g_task_set_task_data(arg0, arg1, arg2)
 }
@@ -50799,51 +51115,50 @@ func (conn tcpWrapperConnection) BaseIOStream() IOStream {
 // achieve this by adding a file such as `my-server.service.in` in the services
 // directory and have it processed by configure.
 //
+//    [D-BUS Service]
+//    Name=org.gtk.GDBus.Examples.ObjectManager
+//    Exec=@abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server
 //
-//        [D-BUS Service]
-//        Name=org.gtk.GDBus.Examples.ObjectManager
-//        Exec=@abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server
-//    ]|
-//    You will also need to indicate this service directory in your test
-//    fixtures, so you will need to pass the path while compiling your
-//    test cases. Typically this is done with autotools with an added
-//    preprocessor flag specified to compile your tests such as:
-//    |[
-//        -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\"
-//    ]|
-//        Once you have a service definition file which is local to your source tree,
-//    you can proceed to set up a GTest fixture using the DBus scaffolding.
+// You will also need to indicate this service directory in your test fixtures,
+// so you will need to pass the path while compiling your test cases. Typically
+// this is done with autotools with an added preprocessor flag specified to
+// compile your tests such as:
 //
-//    An example of a test fixture for D-Bus services can be found
-//    here:
-//    gdbus-test-fixture.c (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c)
+//       -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\"
 //
-//    Note that these examples only deal with isolating the D-Bus aspect of your
-//    service. To successfully run isolated unit tests on your service you may need
-//    some additional modifications to your test case fixture. For example; if your
-//    service uses GSettings and installs a schema then it is important that your test service
-//    not load the schema in the ordinary installed location (chances are that your service
-//    and schema files are not yet installed, or worse; there is an older version of the
-//    schema file sitting in the install location).
+//    Once you have a service definition file which is local to your source tree,
 //
-//    Most of the time we can work around these obstacles using the
-//    environment. Since the environment is inherited by the D-Bus daemon
-//    created by DBus and then in turn inherited by any services the
-//    D-Bus daemon activates, using the setup routine for your fixture is
-//    a practical place to help sandbox your runtime environment. For the
-//    rather typical GSettings case we can work around this by setting
-//    `GSETTINGS_SCHEMA_DIR` to the in tree directory holding your schemas
-//    in the above fixture_setup() routine.
+// you can proceed to set up a GTest fixture using the DBus scaffolding.
 //
-//    The GSettings schemas need to be locally pre-compiled for this to work. This can be achieved
-//    by compiling the schemas locally as a step before running test cases, an autotools setup might
-//    do the following in the directory holding schemas:
-//    |[
+// An example of a test fixture for D-Bus services can be found here:
+// gdbus-test-fixture.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c)
+//
+// Note that these examples only deal with isolating the D-Bus aspect of your
+// service. To successfully run isolated unit tests on your service you may need
+// some additional modifications to your test case fixture. For example; if your
+// service uses GSettings and installs a schema then it is important that your
+// test service not load the schema in the ordinary installed location (chances
+// are that your service and schema files are not yet installed, or worse; there
+// is an older version of the schema file sitting in the install location).
+//
+// Most of the time we can work around these obstacles using the environment.
+// Since the environment is inherited by the D-Bus daemon created by DBus and
+// then in turn inherited by any services the D-Bus daemon activates, using the
+// setup routine for your fixture is a practical place to help sandbox your
+// runtime environment. For the rather typical GSettings case we can work around
+// this by setting `GSETTINGS_SCHEMA_DIR` to the in tree directory holding your
+// schemas in the above fixture_setup() routine.
+//
+// The GSettings schemas need to be locally pre-compiled for this to work. This
+// can be achieved by compiling the schemas locally as a step before running
+// test cases, an autotools setup might do the following in the directory
+// holding schemas:
+//
 //        all-am:
 //                $(GLIB_COMPILE_SCHEMAS) .
 //
 //        CLEANFILES += gschemas.compiled
-//
 type TestDBus interface {
 	gextras.Objector
 
@@ -52389,7 +52704,9 @@ func (self tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interacti
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -52437,7 +52754,9 @@ func (self tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) *gl
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -54700,7 +55019,9 @@ func (volumeMonitor volumeMonitor) ConnectedDrives() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -54736,7 +55057,9 @@ func (volumeMonitor volumeMonitor) Mounts() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -54773,7 +55096,9 @@ func (volumeMonitor volumeMonitor) Volumes() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }

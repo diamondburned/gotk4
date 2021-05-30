@@ -3,16 +3,18 @@
 package gdk
 
 import (
+	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
-	"github.com/linuxdeepin/go-gir/gdkpixbuf-2.0"
 )
 
 // #cgo pkg-config: gtk4
@@ -996,7 +998,9 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 
 	var ret0 *cairo.Region
 
-	ret0 = cairo.WrapRegion(ret)
+	{
+		ret0 = cairo.WrapRegion(ret)
+	}
 
 	return ret0
 }
@@ -1420,7 +1424,9 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 
 	var ret0 *cairo.Region
 
-	ret0 = cairo.WrapRegion(ret)
+	{
+		ret0 = cairo.WrapRegion(ret)
+	}
 
 	return ret0
 }
@@ -1457,7 +1463,9 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 
 	var ret0 *cairo.Region
 
-	ret0 = cairo.WrapRegion(ret)
+	{
+		ret0 = cairo.WrapRegion(ret)
+	}
 
 	return ret0
 }
@@ -1517,7 +1525,6 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 // For example,
 //
 //    gdk_set_allowed_backends ("wayland,quartz,*");
-//
 //
 // instructs GDK to try the Wayland backend first, followed by the Quartz
 // backend, and then all others.
@@ -2794,7 +2801,9 @@ func NewContentFormatsForGType(_type externglib.Type) *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -2926,7 +2935,9 @@ func (formats *ContentFormats) Ref() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -2961,7 +2972,9 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -2977,7 +2990,9 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -2993,7 +3008,9 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -3009,7 +3026,9 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -3025,7 +3044,9 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -3074,7 +3095,9 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 
 	var ret0 *ContentFormatsBuilder
 
-	ret0 = WrapContentFormatsBuilder(ret)
+	{
+		ret0 = WrapContentFormatsBuilder(ret)
+	}
 
 	return ret0
 }
@@ -3125,7 +3148,9 @@ func (builder *ContentFormatsBuilder) FreeToFormats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -3143,7 +3168,12 @@ func (builder *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 
 	var ret0 *ContentFormatsBuilder
 
-	ret0 = WrapContentFormatsBuilder(ret)
+	{
+		ret0 = WrapContentFormatsBuilder(ret)
+		runtime.SetFinalizer(&ret0, func(v **ContentFormatsBuilder) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -3164,7 +3194,9 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -3355,7 +3387,9 @@ func (timings *FrameTimings) Ref() *FrameTimings {
 
 	var ret0 *FrameTimings
 
-	ret0 = WrapFrameTimings(ret)
+	{
+		ret0 = WrapFrameTimings(ret)
+	}
 
 	return ret0
 }
@@ -3486,7 +3520,9 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 
 	var ret0 *PopupLayout
 
-	ret0 = WrapPopupLayout(ret)
+	{
+		ret0 = WrapPopupLayout(ret)
+	}
 
 	return ret0
 }
@@ -3501,7 +3537,9 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 
 	var ret0 *PopupLayout
 
-	ret0 = WrapPopupLayout(ret)
+	{
+		ret0 = WrapPopupLayout(ret)
+	}
 
 	return ret0
 }
@@ -3548,7 +3586,12 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 
 	var ret0 *Rectangle
 
-	ret0 = WrapRectangle(ret)
+	{
+		ret0 = WrapRectangle(ret)
+		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -3613,7 +3656,9 @@ func (layout *PopupLayout) Ref() *PopupLayout {
 
 	var ret0 *PopupLayout
 
-	ret0 = WrapPopupLayout(ret)
+	{
+		ret0 = WrapPopupLayout(ret)
+	}
 
 	return ret0
 }
@@ -3755,7 +3800,9 @@ func (rgba *RGBA) Copy() *RGBA {
 
 	var ret0 *RGBA
 
-	ret0 = WrapRGBA(ret)
+	{
+		ret0 = WrapRGBA(ret)
+	}
 
 	return ret0
 }
@@ -3999,7 +4046,12 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 	var ret0 *Rectangle
 	var ret1 bool
 
-	ret0 = WrapRectangle(arg2)
+	{
+		ret0 = WrapRectangle(arg2)
+		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -4024,7 +4076,12 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 
 	var ret0 *Rectangle
 
-	ret0 = WrapRectangle(arg2)
+	{
+		ret0 = WrapRectangle(arg2)
+		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -4111,7 +4168,9 @@ func NewToplevelLayout() *ToplevelLayout {
 
 	var ret0 *ToplevelLayout
 
-	ret0 = WrapToplevelLayout(ret)
+	{
+		ret0 = WrapToplevelLayout(ret)
+	}
 
 	return ret0
 }
@@ -4126,7 +4185,9 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 
 	var ret0 *ToplevelLayout
 
-	ret0 = WrapToplevelLayout(ret)
+	{
+		ret0 = WrapToplevelLayout(ret)
+	}
 
 	return ret0
 }
@@ -4232,7 +4293,9 @@ func (layout *ToplevelLayout) Ref() *ToplevelLayout {
 
 	var ret0 *ToplevelLayout
 
-	ret0 = WrapToplevelLayout(ret)
+	{
+		ret0 = WrapToplevelLayout(ret)
+	}
 
 	return ret0
 }
@@ -4302,7 +4365,6 @@ func (layout *ToplevelLayout) Unref() {
 //      g_warning ("Launching failed: s\n", error->message);
 //
 //    g_object_unref (context);
-//
 type AppLaunchContext interface {
 	gio.AppLaunchContext
 
@@ -4502,7 +4564,9 @@ func (self cairoContext) CairoCreate() *cairo.Context {
 
 	var ret0 *cairo.Context
 
-	ret0 = cairo.WrapContext(ret)
+	{
+		ret0 = cairo.WrapContext(ret)
+	}
 
 	return ret0
 }
@@ -4676,7 +4740,12 @@ func (clipboard clipboard) Formats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+		runtime.SetFinalizer(&ret0, func(v **ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -4984,8 +5053,6 @@ type ContentDeserializer interface {
 	// ReturnSuccess: indicate that the deserialization has been successfully
 	// completed.
 	ReturnSuccess()
-	// SetTaskData: associate data with the current deserialization operation.
-	SetTaskData(data interface{})
 }
 
 // contentDeserializer implements the ContentDeserializer interface.
@@ -5126,19 +5193,6 @@ func (deserializer contentDeserializer) ReturnSuccess() {
 	arg0 = (*C.GdkContentDeserializer)(deserializer.Native())
 
 	C.gdk_content_deserializer_return_success(arg0)
-}
-
-// SetTaskData: associate data with the current deserialization operation.
-func (deserializer contentDeserializer) SetTaskData(data interface{}) {
-	var arg0 *C.GdkContentDeserializer
-	var arg1 C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg0 = (*C.GdkContentDeserializer)(deserializer.Native())
-	arg1 = C.gpointer(box.Assign(data))
-	arg2 = (*[0]byte)(C.callbackDelete)
-
-	C.gdk_content_deserializer_set_task_data(arg0, arg1, arg2)
 }
 
 // ContentProvider: a GdkContentProvider is used to provide content for the
@@ -5286,7 +5340,9 @@ func (provider contentProvider) RefFormats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -5305,7 +5361,9 @@ func (provider contentProvider) RefStorableFormats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -5389,8 +5447,6 @@ type ContentSerializer interface {
 	// ReturnSuccess: indicate that the serialization has been successfully
 	// completed.
 	ReturnSuccess()
-	// SetTaskData: associate data with the current serialization operation.
-	SetTaskData(data interface{})
 }
 
 // contentSerializer implements the ContentSerializer interface.
@@ -5531,19 +5587,6 @@ func (serializer contentSerializer) ReturnSuccess() {
 	arg0 = (*C.GdkContentSerializer)(serializer.Native())
 
 	C.gdk_content_serializer_return_success(arg0)
-}
-
-// SetTaskData: associate data with the current serialization operation.
-func (serializer contentSerializer) SetTaskData(data interface{}) {
-	var arg0 *C.GdkContentSerializer
-	var arg1 C.gpointer
-	var arg2 C.GDestroyNotify
-
-	arg0 = (*C.GdkContentSerializer)(serializer.Native())
-	arg1 = C.gpointer(box.Assign(data))
-	arg2 = (*[0]byte)(C.callbackDelete)
-
-	C.gdk_content_serializer_set_task_data(arg0, arg1, arg2)
 }
 
 // Cursor: a Cursor represents a cursor. Its contents are private.
@@ -5812,7 +5855,6 @@ type Device interface {
 	//
 	//       return settings;
 	//     }
-	//
 	VendorID() string
 	// HasBidiLayouts determines if keyboard layouts for both right-to-left and
 	// left-to-right languages are in use on the keyboard, if @device is a
@@ -6099,7 +6141,6 @@ func (device device) SurfaceAtPosition() (winX float64, winY float64, surface Su
 //
 //       return settings;
 //     }
-//
 func (device device) VendorID() string {
 	var arg0 *C.GdkDevice
 
@@ -6712,7 +6753,9 @@ func (display display) ListSeats() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -6746,7 +6789,9 @@ func (display display) MapKeycode(keycode uint) (keys []*KeymapKey, keyvals []ui
 		ret0 = make([]*KeymapKey, arg4)
 		for i := 0; i < uintptr(arg4); i++ {
 			src := (*C.GdkKeymapKey)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = WrapKeymapKey(src)
+			{
+				ret0[i] = WrapKeymapKey(src)
+			}
 		}
 	}
 
@@ -6798,7 +6843,9 @@ func (display display) MapKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok 
 		ret0 = make([]*KeymapKey, arg3)
 		for i := 0; i < uintptr(arg3); i++ {
 			src := (*C.GdkKeymapKey)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = WrapKeymapKey(src)
+			{
+				ret0[i] = WrapKeymapKey(src)
+			}
 		}
 	}
 
@@ -6965,7 +7012,6 @@ func (display display) TranslateKey(keycode uint, state ModifierType, group int)
 //      else
 //    #endif
 //      g_error ("Unsupported GDK backend");
-//
 type DisplayManager interface {
 	gextras.Objector
 
@@ -7025,7 +7071,9 @@ func (manager displayManager) ListDisplays() *glib.SList {
 
 	var ret0 *glib.SList
 
-	ret0 = glib.WrapSList(ret)
+	{
+		ret0 = glib.WrapSList(ret)
+	}
 
 	return ret0
 }
@@ -7231,7 +7279,12 @@ func (drag drag) Formats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+		runtime.SetFinalizer(&ret0, func(v **ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7446,7 +7499,12 @@ func (context drawContext) FrameRegion() *cairo.Region {
 
 	var ret0 *cairo.Region
 
-	ret0 = cairo.WrapRegion(ret)
+	{
+		ret0 = cairo.WrapRegion(ret)
+		runtime.SetFinalizer(&ret0, func(v **cairo.Region) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7671,7 +7729,12 @@ func (self drop) Formats() *ContentFormats {
 
 	var ret0 *ContentFormats
 
-	ret0 = WrapContentFormats(ret)
+	{
+		ret0 = WrapContentFormats(ret)
+		runtime.SetFinalizer(&ret0, func(v **ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7924,7 +7987,12 @@ func (frameClock frameClock) CurrentTimings() *FrameTimings {
 
 	var ret0 *FrameTimings
 
-	ret0 = WrapFrameTimings(ret)
+	{
+		ret0 = WrapFrameTimings(ret)
+		runtime.SetFinalizer(&ret0, func(v **FrameTimings) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -8039,7 +8107,12 @@ func (frameClock frameClock) Timings(frameCounter int64) *FrameTimings {
 
 	var ret0 *FrameTimings
 
-	ret0 = WrapFrameTimings(ret)
+	{
+		ret0 = WrapFrameTimings(ret)
+		runtime.SetFinalizer(&ret0, func(v **FrameTimings) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -8101,8 +8174,7 @@ func (frameClock frameClock) RequestPhase(phase FrameClockPhase) {
 // is possible to have multiple contexts, so you always need to ensure that the
 // one which you want to draw with is the current one before issuing commands:
 //
-//      gdk_gl_context_make_current (context);
-//
+//    gdk_gl_context_make_current (context);
 //
 // You can now perform your drawing using OpenGL commands.
 //
@@ -8522,31 +8594,6 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return WrapGLTexture(obj), nil
 }
 
-// NewGLTexture constructs a class GLTexture.
-func NewGLTexture(context GLContext, id uint, width int, height int, data interface{}) GLTexture {
-	var arg1 *C.GdkGLContext
-	var arg2 C.guint
-	var arg3 C.int
-	var arg4 C.int
-	var arg5 C.GDestroyNotify
-	var arg6 C.gpointer
-
-	arg1 = (*C.GdkGLContext)(context.Native())
-	arg2 = C.guint(id)
-	arg3 = C.int(width)
-	arg4 = C.int(height)
-	arg5 = (*[0]byte)(C.callbackDelete)
-	arg6 = C.gpointer(box.Assign(data))
-
-	ret := C.gdk_gl_texture_new(arg1, arg2, arg3, arg4, arg5, arg6)
-
-	var ret0 GLTexture
-
-	ret0 = WrapGLTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
 // Release releases the GL resources held by a GLTexture that was created
 // with gdk_gl_texture_new().
 //
@@ -8726,7 +8773,12 @@ func (monitor monitor) Geometry() Rectangle {
 
 	var ret0 *Rectangle
 
-	ret0 = WrapRectangle(arg1)
+	{
+		ret0 = WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -8935,7 +8987,9 @@ func (seat seat) Devices(capabilities SeatCapabilities) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -8995,7 +9049,9 @@ func (seat seat) Tools() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -9312,7 +9368,9 @@ func (surface surface) CreateSimilarSurface(content cairo.Content, width int, he
 
 	var ret0 *cairo.Surface
 
-	ret0 = cairo.WrapSurface(ret)
+	{
+		ret0 = cairo.WrapSurface(ret)
+	}
 
 	return ret0
 }
@@ -9706,7 +9764,6 @@ type Texture interface {
 	//                          cairo_image_surface_get_data (surface),
 	//                          cairo_image_surface_get_stride (surface));
 	//    cairo_surface_mark_dirty (surface);
-	//
 	Download(data []byte, stride uint)
 	// Height returns the height of the @texture, in pixels.
 	Height() int
@@ -9807,7 +9864,6 @@ func NewTextureFromResource(resourcePath string) Texture {
 //                          cairo_image_surface_get_data (surface),
 //                          cairo_image_surface_get_stride (surface));
 //    cairo_surface_mark_dirty (surface);
-//
 func (texture texture) Download(data []byte, stride uint) {
 	var arg0 *C.GdkTexture
 	var arg1 *C.guchar

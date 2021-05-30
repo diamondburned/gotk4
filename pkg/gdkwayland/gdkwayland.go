@@ -49,7 +49,7 @@ type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
 
 //export gotk4_WaylandToplevelExported
 func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}

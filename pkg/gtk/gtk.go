@@ -7,22 +7,24 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
-	"github.com/linuxdeepin/go-gir/gdkpixbuf-2.0"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 //
+// // extern void callbackDelete(gpointer);
 // extern int gotk4_AssistantPageFunc(int, gpointer)
 // extern gboolean gotk4_CellAllocCallback(GtkCellRenderer*, const GdkRectangle*, const GdkRectangle*, gpointer)
 // extern gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer)
@@ -64,6 +66,11 @@ import (
 // extern gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
 // extern gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, const char*, GtkTreeIter*, gpointer)
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -3574,7 +3581,7 @@ type AssistantPageFunc func(currentPage int) int
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3593,7 +3600,7 @@ type CellAllocCallback func(renderer CellRenderer, cellArea *gdk.Rectangle, cell
 
 //export gotk4_CellAllocCallback
 func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3604,9 +3611,19 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 
 	renderer = WrapCellRenderer(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	cellArea = gdk.WrapRectangle(arg1)
+	{
+		cellArea = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&cellArea, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	cellBackground = gdk.WrapRectangle(arg2)
+	{
+		cellBackground = gdk.WrapRectangle(arg2)
+		runtime.SetFinalizer(&cellBackground, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(CellAllocCallback)(renderer, cellArea, cellBackground)
 }
@@ -3617,7 +3634,7 @@ type CellCallback func(renderer CellRenderer) bool
 
 //export gotk4_CellCallback
 func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3635,7 +3652,7 @@ type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel
 
 //export gotk4_CellLayoutDataFunc
 func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3651,7 +3668,12 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 
 	treeModel = WrapTreeModel(externglib.Take(unsafe.Pointer(arg2.Native())))
 
-	iter = WrapTreeIter(arg3)
+	{
+		iter = WrapTreeIter(arg3)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(CellLayoutDataFunc)(cellLayout, cell, treeModel, iter)
 }
@@ -3663,7 +3685,7 @@ type CustomFilterFunc func(item gextras.Objector) bool
 
 //export gotk4_CustomFilterFunc
 func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3684,7 +3706,7 @@ type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width 
 
 //export gotk4_DrawingAreaDrawFunc
 func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3696,7 +3718,12 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 
 	drawingArea = WrapDrawingArea(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	cr = cairo.WrapContext(arg1)
+	{
+		cr = cairo.WrapContext(arg1)
+		runtime.SetFinalizer(&cr, func(v **cairo.Context) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	width = int(arg2)
 
@@ -3715,7 +3742,7 @@ type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter 
 
 //export gotk4_EntryCompletionMatchFunc
 func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3728,7 +3755,12 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, ar
 
 	key = C.GoString(arg1)
 
-	iter = WrapTreeIter(arg2)
+	{
+		iter = WrapTreeIter(arg2)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(EntryCompletionMatchFunc)(completion, key, iter)
 }
@@ -3739,7 +3771,7 @@ type ExpressionNotify func()
 
 //export gotk4_ExpressionNotify
 func gotk4_ExpressionNotify(arg0 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg0))
+	v := box.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3753,7 +3785,7 @@ type FlowBoxCreateWidgetFunc func(item gextras.Objector) Widget
 
 //export gotk4_FlowBoxCreateWidgetFunc
 func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3771,7 +3803,7 @@ type FlowBoxFilterFunc func(child FlowBoxChild) bool
 
 //export gotk4_FlowBoxFilterFunc
 func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3789,7 +3821,7 @@ type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
 
 //export gotk4_FlowBoxForeachFunc
 func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3810,7 +3842,7 @@ type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) int
 
 //export gotk4_FlowBoxSortFunc
 func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3831,7 +3863,7 @@ type FontFilterFunc func(family pango.FontFamily, face pango.FontFace) bool
 
 //export gotk4_FontFilterFunc
 func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3852,7 +3884,7 @@ type IconViewForeachFunc func(iconView IconView, path *TreePath)
 
 //export gotk4_IconViewForeachFunc
 func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3862,7 +3894,12 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 
 	iconView = WrapIconView(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	path = WrapTreePath(arg1)
+	{
+		path = WrapTreePath(arg1)
+		runtime.SetFinalizer(&path, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(IconViewForeachFunc)(iconView, path)
 }
@@ -3873,7 +3910,7 @@ type ListBoxCreateWidgetFunc func(item gextras.Objector) Widget
 
 //export gotk4_ListBoxCreateWidgetFunc
 func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3891,7 +3928,7 @@ type ListBoxFilterFunc func(row ListBoxRow) bool
 
 //export gotk4_ListBoxFilterFunc
 func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3909,7 +3946,7 @@ type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
 
 //export gotk4_ListBoxForeachFunc
 func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3929,7 +3966,7 @@ type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow) int
 
 //export gotk4_ListBoxSortFunc
 func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3952,7 +3989,7 @@ type ListBoxUpdateHeaderFunc func(row ListBoxRow, before ListBoxRow)
 
 //export gotk4_ListBoxUpdateHeaderFunc
 func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3976,7 +4013,7 @@ type MapListModelMapFunc func(item gextras.Objector) gextras.Objector
 
 //export gotk4_MapListModelMapFunc
 func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -3996,7 +4033,7 @@ type MenuButtonCreatePopupFunc func(menuButton MenuButton)
 
 //export gotk4_MenuButtonCreatePopupFunc
 func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4017,7 +4054,7 @@ type PageSetupDoneFunc func(pageSetup PageSetup)
 
 //export gotk4_PageSetupDoneFunc
 func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4033,7 +4070,7 @@ type PrintSettingsFunc func(key string, value string)
 
 //export gotk4_PrintSettingsFunc
 func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4052,7 +4089,7 @@ type ScaleFormatValueFunc func(scale Scale, value float64) string
 
 //export gotk4_ScaleFormatValueFunc
 func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4072,7 +4109,7 @@ type ShortcutFunc func(widget Widget, args *glib.Variant) bool
 
 //export gotk4_ShortcutFunc
 func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4082,7 +4119,12 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 
 	widget = WrapWidget(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	args = glib.WrapVariant(arg1)
+	{
+		args = glib.WrapVariant(arg1)
+		runtime.SetFinalizer(&args, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(ShortcutFunc)(widget, args)
 }
@@ -4093,7 +4135,7 @@ type TextCharPredicate func(ch uint32) bool
 
 //export gotk4_TextCharPredicate
 func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4111,7 +4153,7 @@ type TextTagTableForeach func(tag TextTag)
 
 //export gotk4_TextTagTableForeach
 func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4129,7 +4171,7 @@ type TickCallback func(widget Widget, frameClock gdk.FrameClock) bool
 
 //export gotk4_TickCallback
 func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4154,7 +4196,7 @@ type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeMod
 
 //export gotk4_TreeCellDataFunc
 func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4170,7 +4212,12 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 
 	treeModel = WrapTreeModel(externglib.Take(unsafe.Pointer(arg2.Native())))
 
-	iter = WrapTreeIter(arg3)
+	{
+		iter = WrapTreeIter(arg3)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(TreeCellDataFunc)(treeColumn, cell, treeModel, iter)
 }
@@ -4188,7 +4235,7 @@ type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter) int
 
 //export gotk4_TreeIterCompareFunc
 func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.int {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4199,9 +4246,19 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	a = WrapTreeIter(arg1)
+	{
+		a = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&a, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	b = WrapTreeIter(arg2)
+	{
+		b = WrapTreeIter(arg2)
+		runtime.SetFinalizer(&b, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	gint := v.(TreeIterCompareFunc)(model, a, b)
 }
@@ -4217,7 +4274,7 @@ type TreeListModelCreateModelFunc func(item gextras.Objector) gio.ListModel
 
 //export gotk4_TreeListModelCreateModelFunc
 func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListModel {
-	v := box.Get(box.Callback, uintptr(arg1))
+	v := box.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4239,7 +4296,7 @@ type TreeModelFilterModifyFunc func(model TreeModel, iter *TreeIter, column int)
 
 //export gotk4_TreeModelFilterModifyFunc
 func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4250,7 +4307,12 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	iter = WrapTreeIter(arg1)
+	{
+		iter = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	column = int(arg3)
 
@@ -4263,7 +4325,7 @@ type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter) bool
 
 //export gotk4_TreeModelFilterVisibleFunc
 func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4273,7 +4335,12 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	iter = WrapTreeIter(arg1)
+	{
+		iter = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(TreeModelFilterVisibleFunc)(model, iter)
 }
@@ -4284,7 +4351,7 @@ type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter) 
 
 //export gotk4_TreeModelForeachFunc
 func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4295,9 +4362,19 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	path = WrapTreePath(arg1)
+	{
+		path = WrapTreePath(arg1)
+		runtime.SetFinalizer(&path, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	iter = WrapTreeIter(arg2)
+	{
+		iter = WrapTreeIter(arg2)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(TreeModelForeachFunc)(model, path, iter)
 }
@@ -4309,7 +4386,7 @@ type TreeSelectionForeachFunc func(model TreeModel, path *TreePath, iter *TreeIt
 
 //export gotk4_TreeSelectionForeachFunc
 func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg3))
+	v := box.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4320,9 +4397,19 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	path = WrapTreePath(arg1)
+	{
+		path = WrapTreePath(arg1)
+		runtime.SetFinalizer(&path, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	iter = WrapTreeIter(arg2)
+	{
+		iter = WrapTreeIter(arg2)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(TreeSelectionForeachFunc)(model, path, iter)
 }
@@ -4335,7 +4422,7 @@ type TreeSelectionFunc func(selection TreeSelection, model TreeModel, path *Tree
 
 //export gotk4_TreeSelectionFunc
 func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4349,7 +4436,12 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg1.Native())))
 
-	path = WrapTreePath(arg2)
+	{
+		path = WrapTreePath(arg2)
+		runtime.SetFinalizer(&path, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	pathCurrentlySelected = gextras.Gobool(arg3)
 
@@ -4368,7 +4460,7 @@ type TreeViewColumnDropFunc func(treeView TreeView, column TreeViewColumn, prevC
 
 //export gotk4_TreeViewColumnDropFunc
 func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4394,7 +4486,7 @@ type TreeViewMappingFunc func(treeView TreeView, path *TreePath)
 
 //export gotk4_TreeViewMappingFunc
 func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4404,7 +4496,12 @@ func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.
 
 	treeView = WrapTreeView(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	path = WrapTreePath(arg1)
+	{
+		path = WrapTreePath(arg1)
+		runtime.SetFinalizer(&path, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	v.(TreeViewMappingFunc)(treeView, path)
 }
@@ -4417,7 +4514,7 @@ type TreeViewRowSeparatorFunc func(model TreeModel, iter *TreeIter) bool
 
 //export gotk4_TreeViewRowSeparatorFunc
 func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg2))
+	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4427,7 +4524,12 @@ func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, a
 
 	model = WrapTreeModel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	iter = WrapTreeIter(arg1)
+	{
+		iter = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(TreeViewRowSeparatorFunc)(model, iter)
 }
@@ -4440,7 +4542,7 @@ type TreeViewSearchEqualFunc func(model TreeModel, column int, key string, iter 
 
 //export gotk4_TreeViewSearchEqualFunc
 func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) C.gboolean {
-	v := box.Get(box.Callback, uintptr(arg4))
+	v := box.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
@@ -4456,7 +4558,12 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.cha
 
 	key = C.GoString(arg2)
 
-	iter = WrapTreeIter(arg3)
+	{
+		iter = WrapTreeIter(arg3)
+		runtime.SetFinalizer(&iter, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ok := v.(TreeViewSearchEqualFunc)(model, column, key, iter)
 }
@@ -4726,7 +4833,12 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 	var ret1 uint
 	var ret2 bool
 
-	ret0 = WrapBitsetIter(arg1)
+	{
+		ret0 = WrapBitsetIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **BitsetIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = uint(arg4)
 
@@ -4751,7 +4863,12 @@ func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var ret1 uint
 	var ret2 bool
 
-	ret0 = WrapBitsetIter(arg1)
+	{
+		ret0 = WrapBitsetIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **BitsetIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = uint(arg3)
 
@@ -4775,7 +4892,12 @@ func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var ret1 uint
 	var ret2 bool
 
-	ret0 = WrapBitsetIter(arg1)
+	{
+		ret0 = WrapBitsetIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **BitsetIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = uint(arg3)
 
@@ -4974,7 +5096,12 @@ func GetDefaultLanguage() *pango.Language {
 
 	var ret0 *pango.Language
 
-	ret0 = pango.WrapLanguage(ret)
+	{
+		ret0 = pango.WrapLanguage(ret)
+		runtime.SetFinalizer(&ret0, func(v **pango.Language) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -5011,7 +5138,6 @@ func GetInterfaceAge() uint {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
-//
 func GetLocaleDirection() TextDirection {
 
 	ret := C.gtk_get_locale_direction()
@@ -5217,7 +5343,9 @@ func PaperSizeGetPaperSizes(includeCustom bool) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -5828,7 +5956,9 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 
 	ret0 = WrapTreeModel(externglib.Take(unsafe.Pointer(arg2.Native())))
 
-	ret1 = WrapTreePath(arg3)
+	{
+		ret1 = WrapTreePath(arg3)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -6155,7 +6285,12 @@ func (actionable actionable) ActionTargetValue() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -6621,7 +6756,6 @@ type CellLayoutOverrider interface {
 //
 // This is an example of a UI definition fragment specifying attributes:
 //
-//
 //    <object class="GtkCellView">
 //      <child>
 //        <object class="GtkCellRendererText"/>
@@ -6630,17 +6764,15 @@ type CellLayoutOverrider interface {
 //        </attributes>
 //      </child>"
 //    </object>
-//    ]|
 //
-//    Furthermore for implementations of GtkCellLayout that use a CellArea
-//    to lay out cells (all GtkCellLayouts in GTK use a GtkCellArea)
-//    [cell properties][cell-properties] can also be defined in the format by
-//    specifying the custom <cell-packing> attribute which can contain multiple
-//    <property> elements defined in the normal way.
+// Furthermore for implementations of GtkCellLayout that use a CellArea to lay
+// out cells (all GtkCellLayouts in GTK use a GtkCellArea) [cell
+// properties][cell-properties] can also be defined in the format by specifying
+// the custom <cell-packing> attribute which can contain multiple <property>
+// elements defined in the normal way.
 //
-//    Here is a UI definition fragment specifying cell properties:
+// Here is a UI definition fragment specifying cell properties:
 //
-//    |[
 //    <object class="GtkTreeViewColumn">
 //      <child>
 //        <object class="GtkCellRendererText"/>
@@ -6650,32 +6782,16 @@ type CellLayoutOverrider interface {
 //        </cell-packing>
 //      </child>"
 //    </object>
-//    ]|
-//
 //
 //
 // Subclassing GtkCellLayout implementations
 //
+// When subclassing a widget that implements CellLayout like IconView or
+// ComboBox, there are some considerations related to the fact that these
+// widgets internally use a CellArea. The cell area is exposed as a
+// construct-only property by these widgets. This means that it is possible to
+// e.g. do
 //
-//    When subclassing a widget that implements CellLayout like
-//    IconView or ComboBox, there are some considerations related
-//    to the fact that these widgets internally use a CellArea.
-//    The cell area is exposed as a construct-only property by these
-//    widgets. This means that it is possible to e.g. do
-//
-//    |[<!-- language="C" -->
-//    combo = g_object_new (GTK_TYPE_COMBO_BOX, "cell-area", my_cell_area, NULL);
-//    ]|
-//
-//    to use a custom cell area with a combo box. But construct properties
-//    are only initialized after instance init()
-//    functions have run, which means that using functions which rely on
-//    the existence of the cell area in your subclass’ init() function will
-//    cause the default cell area to be instantiated. In this case, a provided
-//    construct property value will be ignored (with a warning, to alert
-//    you to the problem).
-//
-//    |[<!-- language="C" -->
 //    static void
 //    my_combo_box_init (MyComboBox *b)
 //    {
@@ -6694,7 +6810,6 @@ type CellLayoutOverrider interface {
 //      // This call is going to cause a warning about area being ignored
 //      return g_object_new (MY_TYPE_COMBO_BOX, "cell-area", area, NULL);
 //    }
-//
 //
 // If supporting alternative cell areas with your derived widget is not
 // important, then this does not have to concern you. If you want to support
@@ -6796,7 +6911,9 @@ func (cellLayout cellLayout) Cells() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -6910,7 +7027,12 @@ func (chooser colorChooser) RGBA() gdk.RGBA {
 
 	var ret0 *gdk.RGBA
 
-	ret0 = gdk.WrapRGBA(arg1)
+	{
+		ret0 = gdk.WrapRGBA(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.RGBA) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -7069,22 +7191,18 @@ type EditableOverrider interface {
 //
 //      g_free (result);
 //    }
-//    ]|
-//
 //
 //
 // Implementing GtkEditable
 //
+// The most likely scenario for implementing GtkEditable on your own widget is
+// that you will embed a Text inside a complex widget, and want to delegate the
+// editable functionality to that text widget. GtkEditable provides some utility
+// functions to make this easy.
 //
-//    The most likely scenario for implementing GtkEditable on your own widget
-//    is that you will embed a Text inside a complex widget, and want to
-//    delegate the editable functionality to that text widget. GtkEditable
-//    provides some utility functions to make this easy.
+// In your class_init function, call gtk_editable_install_properties(), passing
+// the first available property ID:
 //
-//    In your class_init function, call gtk_editable_install_properties(),
-//    passing the first available property ID:
-//
-//    |[
 //    static void
 //    my_class_init (MyClass *class)
 //    {
@@ -7093,12 +7211,10 @@ type EditableOverrider interface {
 //       gtk_editable_install_properties (object_clas, NUM_PROPERTIES);
 //       ...
 //    }
-//    ]|
 //
-//    In your interface_init function for the GtkEditable interface, provide
-//    an implementation for the get_delegate vfunc that returns your text widget:
+// In your interface_init function for the GtkEditable interface, provide an
+// implementation for the get_delegate vfunc that returns your text widget:
 //
-//    |[
 //    GtkEditable *
 //    get_editable_delegate (GtkEditable *editable)
 //    {
@@ -7110,16 +7226,14 @@ type EditableOverrider interface {
 //    {
 //      iface->get_delegate = get_editable_delegate;
 //    }
-//    ]|
 //
-//    You don't need to provide any other vfuncs. The default implementations
-//    work by forwarding to the delegate that the EditableInterface.get_delegate()
-//    vfunc returns.
+// You don't need to provide any other vfuncs. The default implementations work
+// by forwarding to the delegate that the EditableInterface.get_delegate() vfunc
+// returns.
 //
-//    In your instance_init function, create your text widget, and then call
-//    gtk_editable_init_delegate():
+// In your instance_init function, create your text widget, and then call
+// gtk_editable_init_delegate():
 //
-//    |[
 //    static void
 //    my_widget_init (MyWidget *self)
 //    {
@@ -7128,12 +7242,10 @@ type EditableOverrider interface {
 //      gtk_editable_init_delegate (GTK_EDITABLE (self));
 //      ...
 //    }
-//    ]|
 //
-//    In your dispose function, call gtk_editable_finish_delegate() before
-//    destroying your text widget:
+// In your dispose function, call gtk_editable_finish_delegate() before
+// destroying your text widget:
 //
-//    |[
 //    static void
 //    my_widget_dispose (GObject *object)
 //    {
@@ -7142,19 +7254,16 @@ type EditableOverrider interface {
 //      g_clear_pointer (&self->text_widget, gtk_widget_unparent);
 //      ...
 //    }
-//    ]|
 //
-//    Finally, use gtk_editable_delegate_set_property() in your `set_property`
-//    function (and similar for `get_property`), to set the editable properties:
+// Finally, use gtk_editable_delegate_set_property() in your `set_property`
+// function (and similar for `get_property`), to set the editable properties:
 //
-//    |[
 //      ...
 //      if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
 //        return;
 //
 //      switch (prop_id)
 //      ...
-//
 //
 // It is important to note that if you create a GtkEditable that uses a
 // delegate, the low level Editable::insert-text and Editable::delete-text
@@ -7825,7 +7934,6 @@ type FileChooser interface {
 	//          gtk_file_chooser_set_file (chooser, existing_file, NULL);
 	//        }
 	//    }
-	//
 	SetFile(file gio.File) bool
 	// SetFilter sets the current filter; only the files that pass the filter
 	// will be displayed. If the user-selectable list of filters is non-empty,
@@ -8278,7 +8386,6 @@ func (chooser fileChooser) SetCurrentName(name string) {
 //          gtk_file_chooser_set_file (chooser, existing_file, NULL);
 //        }
 //    }
-//
 func (chooser fileChooser) SetFile(file gio.File) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
@@ -8356,15 +8463,12 @@ type FontChooserOverrider interface {
 	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
 	//
 	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-	//    ]|
 	//
-	//    Note that other GTK widgets will only be able to use the application-specific
-	//    font if it is present in the font map they use:
+	// Note that other GTK widgets will only be able to use the
+	// application-specific font if it is present in the font map they use:
 	//
-	//    |[
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);
-	//
 	SetFontMap(fontmap pango.FontMap)
 }
 
@@ -8487,7 +8591,9 @@ func (fontchooser fontChooser) FontDesc() *pango.FontDescription {
 
 	var ret0 *pango.FontDescription
 
-	ret0 = pango.WrapFontDescription(ret)
+	{
+		ret0 = pango.WrapFontDescription(ret)
+	}
 
 	return ret0
 }
@@ -8674,15 +8780,12 @@ func (fontchooser fontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
 //
 //    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-//    ]|
 //
-//    Note that other GTK widgets will only be able to use the application-specific
-//    font if it is present in the font map they use:
+// Note that other GTK widgets will only be able to use the
+// application-specific font if it is present in the font map they use:
 //
-//    |[
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);
-//
 func (fontchooser fontChooser) SetFontMap(fontmap pango.FontMap) {
 	var arg0 *C.GtkFontChooser
 	var arg1 *C.PangoFontMap
@@ -9206,7 +9309,12 @@ func (scrollable scrollable) Border() (border Border, ok bool) {
 	var ret0 *Border
 	var ret1 bool
 
-	ret0 = WrapBorder(arg1)
+	{
+		ret0 = WrapBorder(arg1)
+		runtime.SetFinalizer(&ret0, func(v **Border) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -9365,7 +9473,6 @@ type SelectionModelOverrider interface {
 	//
 	//    gtk_selection_model_selection_changed (model, first_changed_item, n_changed_items);
 	//
-	//
 	// @mask and @selected must not be modified. They may refer to the same
 	// bitset, which would mean that every item in the set should be selected.
 	SetSelection(selected *Bitset, mask *Bitset) bool
@@ -9467,7 +9574,9 @@ func (model selectionModel) Selection() *Bitset {
 
 	var ret0 *Bitset
 
-	ret0 = WrapBitset(ret)
+	{
+		ret0 = WrapBitset(ret)
+	}
 
 	return ret0
 }
@@ -9493,7 +9602,9 @@ func (model selectionModel) SelectionInRange(position uint, nItems uint) *Bitset
 
 	var ret0 *Bitset
 
-	ret0 = WrapBitset(ret)
+	{
+		ret0 = WrapBitset(ret)
+	}
 
 	return ret0
 }
@@ -9608,7 +9719,6 @@ func (model selectionModel) SelectionChanged(position uint, nItems uint) {
 //      }
 //
 //    gtk_selection_model_selection_changed (model, first_changed_item, n_changed_items);
-//
 //
 // @mask and @selected must not be modified. They may refer to the same
 // bitset, which would mean that every item in the set should be selected.
@@ -10176,7 +10286,6 @@ type TreeModelOverrider interface {
 //       row_count++;
 //     }
 //
-//
 // The TreeModel interface contains two methods for reference counting:
 // gtk_tree_model_ref_node() and gtk_tree_model_unref_node(). These two methods
 // are optional to implement. The reference counting is meant as a way for views
@@ -10318,7 +10427,12 @@ func (treeModel treeModel) Iter(path *TreePath) (iter TreeIter, ok bool) {
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10338,7 +10452,12 @@ func (treeModel treeModel) IterFirst() (iter TreeIter, ok bool) {
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10361,7 +10480,12 @@ func (treeModel treeModel) IterFromString(pathString string) (iter TreeIter, ok 
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10397,7 +10521,9 @@ func (treeModel treeModel) Path(iter *TreeIter) *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -10444,7 +10570,12 @@ func (treeModel treeModel) IterChildren(parent *TreeIter) (iter TreeIter, ok boo
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10531,7 +10662,12 @@ func (treeModel treeModel) IterNthChild(parent *TreeIter, n int) (iter TreeIter,
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10559,7 +10695,12 @@ func (treeModel treeModel) IterParent(child *TreeIter) (iter TreeIter, ok bool) 
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -10922,7 +11063,9 @@ func NewBitsetEmpty() *Bitset {
 
 	var ret0 *Bitset
 
-	ret0 = WrapBitset(ret)
+	{
+		ret0 = WrapBitset(ret)
+	}
 
 	return ret0
 }
@@ -10939,7 +11082,9 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 
 	var ret0 *Bitset
 
-	ret0 = WrapBitset(ret)
+	{
+		ret0 = WrapBitset(ret)
+	}
 
 	return ret0
 }
@@ -11035,7 +11180,9 @@ func (self *Bitset) Copy() *Bitset {
 
 	var ret0 *Bitset
 
-	ret0 = WrapBitset(ret)
+	{
+		ret0 = WrapBitset(ret)
+	}
 
 	return ret0
 }
@@ -11207,7 +11354,12 @@ func (self *Bitset) Ref() *Bitset {
 
 	var ret0 *Bitset
 
-	ret0 = WrapBitset(ret)
+	{
+		ret0 = WrapBitset(ret)
+		runtime.SetFinalizer(&ret0, func(v **Bitset) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -11510,7 +11662,9 @@ func NewBorder() *Border {
 
 	var ret0 *Border
 
-	ret0 = WrapBorder(ret)
+	{
+		ret0 = WrapBorder(ret)
+	}
 
 	return ret0
 }
@@ -11553,7 +11707,9 @@ func (border_ *Border) Copy() *Border {
 
 	var ret0 *Border
 
-	ret0 = WrapBorder(ret)
+	{
+		ret0 = WrapBorder(ret)
+	}
 
 	return ret0
 }
@@ -11678,7 +11834,9 @@ func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSect
 
 	var ret0 *CSSSection
 
-	ret0 = WrapCSSSection(ret)
+	{
+		ret0 = WrapCSSSection(ret)
+	}
 
 	return ret0
 }
@@ -11693,7 +11851,12 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 
 	var ret0 *CSSLocation
 
-	ret0 = WrapCSSLocation(ret)
+	{
+		ret0 = WrapCSSLocation(ret)
+		runtime.SetFinalizer(&ret0, func(v **CSSLocation) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -11730,7 +11893,12 @@ func (section *CSSSection) Parent() *CSSSection {
 
 	var ret0 *CSSSection
 
-	ret0 = WrapCSSSection(ret)
+	{
+		ret0 = WrapCSSSection(ret)
+		runtime.SetFinalizer(&ret0, func(v **CSSSection) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -11746,7 +11914,12 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 
 	var ret0 *CSSLocation
 
-	ret0 = WrapCSSLocation(ret)
+	{
+		ret0 = WrapCSSLocation(ret)
+		runtime.SetFinalizer(&ret0, func(v **CSSLocation) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -11774,7 +11947,9 @@ func (section *CSSSection) Ref() *CSSSection {
 
 	var ret0 *CSSSection
 
-	ret0 = WrapCSSSection(ret)
+	{
+		ret0 = WrapCSSSection(ret)
+	}
 
 	return ret0
 }
@@ -11949,7 +12124,9 @@ func NewPaperSize(name string) *PaperSize {
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -11974,7 +12151,9 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -11989,7 +12168,9 @@ func NewPaperSizeFromGvariant(variant *glib.Variant) *PaperSize {
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -12009,7 +12190,9 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -12027,7 +12210,9 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) *PaperSize
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -12050,7 +12235,9 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -12065,7 +12252,9 @@ func (other *PaperSize) Copy() *PaperSize {
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -12298,7 +12487,12 @@ func (paperSize *PaperSize) ToGvariant() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -12477,7 +12671,12 @@ func (info *RecentInfo) Added() *glib.DateTime {
 
 	var ret0 *glib.DateTime
 
-	ret0 = glib.WrapDateTime(ret)
+	{
+		ret0 = glib.WrapDateTime(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -12525,7 +12724,12 @@ func (info *RecentInfo) ApplicationInfo(appName string) (appExec string, count u
 
 	ret1 = uint(arg3)
 
-	ret2 = glib.WrapDateTime(arg4)
+	{
+		ret2 = glib.WrapDateTime(arg4)
+		runtime.SetFinalizer(&ret2, func(v ***glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret3 = gextras.Gobool(ret)
 
@@ -12658,7 +12862,12 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 
 	var ret0 *glib.DateTime
 
-	ret0 = glib.WrapDateTime(ret)
+	{
+		ret0 = glib.WrapDateTime(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -12741,7 +12950,12 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 
 	var ret0 *glib.DateTime
 
-	ret0 = glib.WrapDateTime(ret)
+	{
+		ret0 = glib.WrapDateTime(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -12844,7 +13058,9 @@ func (info *RecentInfo) Ref() *RecentInfo {
 
 	var ret0 *RecentInfo
 
-	ret0 = WrapRecentInfo(ret)
+	{
+		ret0 = WrapRecentInfo(ret)
+	}
 
 	return ret0
 }
@@ -12941,7 +13157,9 @@ func NewRequisition() *Requisition {
 
 	var ret0 *Requisition
 
-	ret0 = WrapRequisition(ret)
+	{
+		ret0 = WrapRequisition(ret)
+	}
 
 	return ret0
 }
@@ -12970,7 +13188,9 @@ func (requisition *Requisition) Copy() *Requisition {
 
 	var ret0 *Requisition
 
-	ret0 = WrapRequisition(ret)
+	{
+		ret0 = WrapRequisition(ret)
+	}
 
 	return ret0
 }
@@ -13218,9 +13438,19 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 	var ret1 *TextIter
 	var ret2 bool
 
-	ret0 = WrapTextIter(arg3)
+	{
+		ret0 = WrapTextIter(arg3)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = WrapTextIter(arg4)
+	{
+		ret1 = WrapTextIter(arg4)
+		runtime.SetFinalizer(&ret1, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -13490,7 +13720,9 @@ func (iter *TextIter) Copy() *TextIter {
 
 	var ret0 *TextIter
 
-	ret0 = WrapTextIter(ret)
+	{
+		ret0 = WrapTextIter(ret)
+	}
 
 	return ret0
 }
@@ -13797,9 +14029,19 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 	var ret1 *TextIter
 	var ret2 bool
 
-	ret0 = WrapTextIter(arg3)
+	{
+		ret0 = WrapTextIter(arg3)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = WrapTextIter(arg4)
+	{
+		ret1 = WrapTextIter(arg4)
+		runtime.SetFinalizer(&ret1, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -14150,7 +14392,9 @@ func (iter *TextIter) Language() *pango.Language {
 
 	var ret0 *pango.Language
 
-	ret0 = pango.WrapLanguage(ret)
+	{
+		ret0 = pango.WrapLanguage(ret)
+	}
 
 	return ret0
 }
@@ -14218,7 +14462,9 @@ func (iter *TextIter) Marks() *glib.SList {
 
 	var ret0 *glib.SList
 
-	ret0 = glib.WrapSList(ret)
+	{
+		ret0 = glib.WrapSList(ret)
+	}
 
 	return ret0
 }
@@ -14293,7 +14539,9 @@ func (iter *TextIter) Tags() *glib.SList {
 
 	var ret0 *glib.SList
 
-	ret0 = glib.WrapSList(ret)
+	{
+		ret0 = glib.WrapSList(ret)
+	}
 
 	return ret0
 }
@@ -14335,7 +14583,9 @@ func (iter *TextIter) ToggledTags(toggledOn bool) *glib.SList {
 
 	var ret0 *glib.SList
 
-	ret0 = glib.WrapSList(ret)
+	{
+		ret0 = glib.WrapSList(ret)
+	}
 
 	return ret0
 }
@@ -14802,7 +15052,9 @@ func (iter *TreeIter) Copy() *TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(ret)
+	{
+		ret0 = WrapTreeIter(ret)
+	}
 
 	return ret0
 }
@@ -14849,7 +15101,9 @@ func NewTreePath() *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -14861,7 +15115,9 @@ func NewTreePathFirst() *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -14877,7 +15133,9 @@ func NewTreePathFromString(path string) *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -14925,7 +15183,9 @@ func (path *TreePath) Copy() *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -15140,7 +15400,9 @@ func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
 
 	var ret0 *TreeRowReference
 
-	ret0 = WrapTreeRowReference(ret)
+	{
+		ret0 = WrapTreeRowReference(ret)
+	}
 
 	return ret0
 }
@@ -15159,7 +15421,9 @@ func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModel, path *Tre
 
 	var ret0 *TreeRowReference
 
-	ret0 = WrapTreeRowReference(ret)
+	{
+		ret0 = WrapTreeRowReference(ret)
+	}
 
 	return ret0
 }
@@ -15174,7 +15438,9 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 
 	var ret0 *TreeRowReference
 
-	ret0 = WrapTreeRowReference(ret)
+	{
+		ret0 = WrapTreeRowReference(ret)
+	}
 
 	return ret0
 }
@@ -15214,7 +15480,9 @@ func (reference *TreeRowReference) Path() *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -15357,7 +15625,6 @@ func (self atContext) AccessibleRole() AccessibleRole {
 //                           NULL);
 //
 //
-//
 // CSS nodes
 //
 // GtkAboutDialog has a single CSS node with the name window and style class
@@ -15460,7 +15727,6 @@ type AboutDialog interface {
 	//    GtkWidget *about = gtk_about_dialog_new ();
 	//     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
 	//                                              _("translator-credits"));
-	//
 	//
 	// It is a good idea to use the customary msgid “translator-credits” for
 	// this purpose, since translators will already know the purpose of that
@@ -15978,7 +16244,6 @@ func (about aboutDialog) SetSystemInformation(systemInformation string) {
 //    GtkWidget *about = gtk_about_dialog_new ();
 //     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
 //                                              _("translator-credits"));
-//
 //
 // It is a good idea to use the customary msgid “translator-credits” for
 // this purpose, since translators will already know the purpose of that
@@ -17520,7 +17785,6 @@ func (self appChooserWidget) SetShowRecommended(setting bool) {
 //    // ...
 //
 //    GtkWidget *window = gtk_application_window_new (app);
-//
 type ApplicationWindow interface {
 	Window
 	gio.ActionGroup
@@ -19346,7 +19610,6 @@ func (boxLayout boxLayout) SetSpacing(spacing uint) {
 //
 // A GtkBuilder UI Definition
 //
-//
 //    <interface>
 //      <object class="GtkDialog" id="dialog1">
 //        <child internal-child="vbox">
@@ -19365,7 +19628,6 @@ func (boxLayout boxLayout) SetSpacing(spacing uint) {
 //        </child>
 //      </object>
 //    </interface>
-//
 //
 // Beyond this general structure, several object classes define their own XML
 // DTD fragments for filling in the ANY placeholders in the DTD above. Note that
@@ -19880,7 +20142,9 @@ func (builder builder) Objects() *glib.SList {
 
 	var ret0 *glib.SList
 
-	ret0 = glib.WrapSList(ret)
+	{
+		ret0 = glib.WrapSList(ret)
+	}
 
 	return ret0
 }
@@ -20009,22 +20273,20 @@ func NewBuilderCScope() BuilderCScope {
 //
 // Example:
 //
-//
-//      <interface>
-//        <template class="GtkListItem">
-//          <property name="child">
-//            <object class="GtkLabel">
-//              <property name="xalign">0</property>
-//              <binding name="label">
-//                <lookup name="name" type="SettingsKey">
-//                  <lookup name="item">GtkListItem</lookup>
-//                </lookup>
-//              </binding>
-//            </object>
-//          </property>
-//        </template>
-//      </interface>
-//
+//    <interface>
+//      <template class="GtkListItem">
+//        <property name="child">
+//          <object class="GtkLabel">
+//            <property name="xalign">0</property>
+//            <binding name="label">
+//              <lookup name="name" type="SettingsKey">
+//                <lookup name="item">GtkListItem</lookup>
+//              </lookup>
+//            </binding>
+//          </object>
+//        </property>
+//      </template>
+//    </interface>
 type BuilderListItemFactory interface {
 	ListItemFactory
 
@@ -20105,7 +20367,12 @@ func (self builderListItemFactory) Bytes() *glib.Bytes {
 
 	var ret0 *glib.Bytes
 
-	ret0 = glib.WrapBytes(ret)
+	{
+		ret0 = glib.WrapBytes(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -20470,7 +20737,6 @@ func (button button) SetUseUnderline(useUnderline bool) {
 //    ╰── grid
 //        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
 //
-//
 // GtkCalendar has a main node with name calendar. It contains a subnode called
 // header containing the widgets for switching between years and months.
 //
@@ -20579,7 +20845,9 @@ func (self calendar) Date() *glib.DateTime {
 
 	var ret0 *glib.DateTime
 
-	ret0 = glib.WrapDateTime(ret)
+	{
+		ret0 = glib.WrapDateTime(ret)
+	}
 
 	return ret0
 }
@@ -20842,7 +21110,6 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 //        }
 //        return have_focus;
 //    }
-//
 //
 // Note that the layouting widget is responsible for matching the
 // GtkDirectionType values to the way it lays out its cells.
@@ -21414,7 +21681,12 @@ func (area cellArea) CellAllocation(context CellAreaContext, widget Widget, rend
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg5)
+	{
+		ret0 = gdk.WrapRectangle(arg5)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21443,7 +21715,12 @@ func (area cellArea) CellAtPosition(context CellAreaContext, widget Widget, cell
 	var ret0 *gdk.Rectangle
 	var ret1 CellRenderer
 
-	ret0 = gdk.WrapRectangle(arg6)
+	{
+		ret0 = gdk.WrapRectangle(arg6)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = WrapCellRenderer(externglib.Take(unsafe.Pointer(ret.Native())))
 
@@ -21548,7 +21825,12 @@ func (area cellArea) FocusSiblings(renderer CellRenderer) *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -21743,7 +22025,12 @@ func (area cellArea) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.R
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg3)
+	{
+		ret0 = gdk.WrapRectangle(arg3)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22582,7 +22869,12 @@ func (cell cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cel
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg4)
+	{
+		ret0 = gdk.WrapRectangle(arg4)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -22742,9 +23034,19 @@ func (cell cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, 
 	var ret0 *Requisition
 	var ret1 *Requisition
 
-	ret0 = WrapRequisition(arg2)
+	{
+		ret0 = WrapRequisition(arg2)
+		runtime.SetFinalizer(&ret0, func(v **Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = WrapRequisition(arg3)
+	{
+		ret1 = WrapRequisition(arg3)
+		runtime.SetFinalizer(&ret1, func(v **Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0, ret1
 }
@@ -23707,7 +24009,9 @@ func (cellView cellView) DisplayedRow() *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -24251,7 +24555,6 @@ func (self centerLayout) SetStartWidget(widget Widget) {
 //    ├── check
 //    ╰── [label]
 //
-//
 // A CheckButton has a main node with name checkbutton. If the CheckButton:label
 // property is set, it contains a label child. The indicator node is named check
 // when no group is set, and radio if the checkbutton is grouped together with
@@ -24546,7 +24849,6 @@ func (self checkButton) SetUseUnderline(setting bool) {
 //    colorbutton
 //    ╰── button.color
 //        ╰── [content]
-//
 //
 // GtkColorButton has a single CSS node with name colorbutton which contains a
 // button node. To differentiate it from a plain Button, it gets the .color
@@ -24853,7 +25155,6 @@ func NewColorChooserWidget() ColorChooserWidget {
 //    ╰── [rubberband]
 //
 //
-//
 // GtkColumnView uses a single CSS node named columnview. It may carry the
 // .column-separators style class, when ColumnView:show-column-separators
 // property is set. Header widets appear below a node with name header. The rows
@@ -24915,14 +25216,12 @@ type ColumnView interface {
 	//
 	// Here is an example:
 	//
-	//
-	//      gtk_column_view_column_set_sorter (column, sorter);
-	//      gtk_column_view_append_column (view, column);
-	//      sorter = g_object_ref (gtk_column_view_get_sorter (view)));
-	//      model = gtk_sort_list_model_new (store, sorter);
-	//      selection = gtk_no_selection_new (model);
-	//      gtk_column_view_set_model (view, selection);
-	//
+	//    gtk_column_view_column_set_sorter (column, sorter);
+	//    gtk_column_view_append_column (view, column);
+	//    sorter = g_object_ref (gtk_column_view_get_sorter (view)));
+	//    model = gtk_sort_list_model_new (store, sorter);
+	//    selection = gtk_no_selection_new (model);
+	//    gtk_column_view_set_model (view, selection);
 	Sorter() Sorter
 	// InsertColumn inserts a column at the given position in the columns of
 	// @self.
@@ -25140,14 +25439,12 @@ func (self columnView) SingleClickActivate() bool {
 //
 // Here is an example:
 //
-//
-//      gtk_column_view_column_set_sorter (column, sorter);
-//      gtk_column_view_append_column (view, column);
-//      sorter = g_object_ref (gtk_column_view_get_sorter (view)));
-//      model = gtk_sort_list_model_new (store, sorter);
-//      selection = gtk_no_selection_new (model);
-//      gtk_column_view_set_model (view, selection);
-//
+//    gtk_column_view_column_set_sorter (column, sorter);
+//    gtk_column_view_append_column (view, column);
+//    sorter = g_object_ref (gtk_column_view_get_sorter (view)));
+//    model = gtk_sort_list_model_new (store, sorter);
+//    selection = gtk_no_selection_new (model);
+//    gtk_column_view_set_model (view, selection);
 func (self columnView) Sorter() Sorter {
 	var arg0 *C.GtkColumnView
 
@@ -25675,7 +25972,6 @@ func (self columnViewColumn) SetVisible(visible bool) {
 //    │           ╰── arrow
 //    ╰── window.popup
 //
-//
 // A GtkComboBox with an entry has a single CSS node with name combobox. It
 // contains a box with the .linked class. That box contains an entry and a
 // button, both with the .combo class added. The button also contains another
@@ -25940,7 +26236,12 @@ func (comboBox comboBox) ActiveIter() (iter TreeIter, ok bool) {
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -26272,7 +26573,6 @@ func (comboBox comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc) {
 //
 // Here is a UI definition fragment specifying GtkComboBoxText items:
 //
-//
 //    <object class="GtkComboBoxText">
 //      <items>
 //        <item translatable="yes" id="factory">Factory</item>
@@ -26280,20 +26580,14 @@ func (comboBox comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc) {
 //        <item translatable="yes" id="subway">Subway</item>
 //      </items>
 //    </object>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    combobox
 //    ╰── box.linked
 //        ├── entry.combo
 //        ├── button.combo
 //        ╰── window.popup
-//
 //
 // GtkComboBoxText has a single CSS node with name combobox. It adds the style
 // class .combo to the main CSS nodes of its entry and button children, and the
@@ -26559,9 +26853,7 @@ func (comboBox comboBoxText) RemoveAll() {
 // Constraint describes a constraint between an attribute on a widget and
 // another attribute on another widget, expressed as a linear equation like:
 //
-//
-//      target.attr1 = source.attr2 × multiplier + constant
-//
+//    target.attr1 = source.attr2 × multiplier + constant
 //
 // Each Constraint is part of a system that will be solved by a ConstraintLayout
 // in order to allocate and position each child widget.
@@ -27126,128 +27418,111 @@ func (guide constraintGuide) SetStrength(strength ConstraintStrength) {
 //
 // An example of a UI definition fragment specifying a constraint:
 //
-//
-//      <object class="GtkConstraintLayout">
-//        <constraints>
-//          <constraint target="button" target-attribute="start"
-//                      relation="eq"
-//                      source="super" source-attribute="start"
-//                      constant="12"
-//                      strength="required" />
-//          <constraint target="button" target-attribute="width"
-//                      relation="ge"
-//                      constant="250"
-//                      strength="strong" />
-//        </constraints>
-//      </object>
-//    ]|
-//
-//    The definition above will add two constraints to the GtkConstraintLayout:
-//
-//     - a required constraint between the leading edge of "button" and
-//       the leading edge of the widget using the constraint layout, plus
-//       12 pixels
-//     - a strong, constant constraint making the width of "button" greater
-//       than, or equal to 250 pixels
-//
-//    The "target" and "target-attribute" attributes are required.
-//
-//    The "source" and "source-attribute" attributes of the "constraint"
-//    element are optional; if they are not specified, the constraint is
-//    assumed to be a constant.
-//
-//    The "relation" attribute is optional; if not specified, the constraint
-//    is assumed to be an equality.
-//
-//    The "strength" attribute is optional; if not specified, the constraint
-//    is assumed to be required.
-//
-//    The "source" and "target" attributes can be set to "super" to indicate
-//    that the constraint target is the widget using the GtkConstraintLayout.
-//
-//    There can be "constant" and "multiplier" attributes.
-//
-//    Additionally, the "constraints" element can also contain a description
-//    of the ConstraintGuides used by the layout:
-//
-//    |[
+//    <object class="GtkConstraintLayout">
 //      <constraints>
-//        <guide min-width="100" max-width="500" name="hspace"/>
-//        <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
+//        <constraint target="button" target-attribute="start"
+//                    relation="eq"
+//                    source="super" source-attribute="start"
+//                    constant="12"
+//                    strength="required" />
+//        <constraint target="button" target-attribute="width"
+//                    relation="ge"
+//                    constant="250"
+//                    strength="strong" />
 //      </constraints>
-//    ]|
+//    </object>
 //
-//    The "guide" element has the following optional attributes:
+// The definition above will add two constraints to the GtkConstraintLayout:
 //
-//      - "min-width", "nat-width", and "max-width", describe the minimum,
-//        natural, and maximum width of the guide, respectively
-//      - "min-height", "nat-height", and "max-height", describe the minimum,
-//        natural, and maximum height of the guide, respectively
-//      - "strength" describes the strength of the constraint on the natural
-//        size of the guide; if not specified, the constraint is assumed to
-//        have a medium strength
-//      - "name" describes a name for the guide, useful when debugging
+//    - a required constraint between the leading edge of "button" and
+//      the leading edge of the widget using the constraint layout, plus
+//      12 pixels
+//    - a strong, constant constraint making the width of "button" greater
+//      than, or equal to 250 pixels
 //
+// The "target" and "target-attribute" attributes are required.
+//
+// The "source" and "source-attribute" attributes of the "constraint" element
+// are optional; if they are not specified, the constraint is assumed to be a
+// constant.
+//
+// The "relation" attribute is optional; if not specified, the constraint is
+// assumed to be an equality.
+//
+// The "strength" attribute is optional; if not specified, the constraint is
+// assumed to be required.
+//
+// The "source" and "target" attributes can be set to "super" to indicate that
+// the constraint target is the widget using the GtkConstraintLayout.
+//
+// There can be "constant" and "multiplier" attributes.
+//
+// Additionally, the "constraints" element can also contain a description of the
+// ConstraintGuides used by the layout:
+//
+//    <constraints>
+//      <guide min-width="100" max-width="500" name="hspace"/>
+//      <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
+//    </constraints>
+//
+// The "guide" element has the following optional attributes:
+//
+//    - "min-width", "nat-width", and "max-width", describe the minimum,
+//      natural, and maximum width of the guide, respectively
+//    - "min-height", "nat-height", and "max-height", describe the minimum,
+//      natural, and maximum height of the guide, respectively
+//    - "strength" describes the strength of the constraint on the natural
+//      size of the guide; if not specified, the constraint is assumed to
+//      have a medium strength
+//    - "name" describes a name for the guide, useful when debugging
 //
 //
 // Using the Visual Format Language
 //
+// Complex constraints can be described using a compact syntax called VFL, or
+// *Visual Format Language*.
 //
-//    Complex constraints can be described using a compact syntax called VFL,
-//    or *Visual Format Language*.
+// The Visual Format Language describes all the constraints on a row or column,
+// typically starting from the leading edge towards the trailing one. Each
+// element of the layout is composed by "views", which identify a
+// ConstraintTarget.
 //
-//    The Visual Format Language describes all the constraints on a row or
-//    column, typically starting from the leading edge towards the trailing
-//    one. Each element of the layout is composed by "views", which identify
-//    a ConstraintTarget.
+// For instance:
 //
-//    For instance:
+//    [button]-[textField]
 //
-//    |[
-//      [button]-[textField]
-//    ]|
+// Describes a constraint that binds the trailing edge of "button" to the
+// leading edge of "textField", leaving a default space between the two.
 //
-//    Describes a constraint that binds the trailing edge of "button" to the
-//    leading edge of "textField", leaving a default space between the two.
+// Using VFL is also possible to specify predicates that describe constraints on
+// attributes like width and height:
 //
-//    Using VFL is also possible to specify predicates that describe constraints
-//    on attributes like width and height:
-//
-//    |[
 //      // Width must be greater than, or equal to 50
 //      [button(>=50)]
 //
 //      // Width of button1 must be equal to width of button2
 //      [button1(==button2)]
-//    ]|
 //
-//    The default orientation for a VFL description is horizontal, unless
-//    otherwise specified:
+// The default orientation for a VFL description is horizontal, unless otherwise
+// specified:
 //
-//    |[
 //      // horizontal orientation, default attribute: width
 //      H:[button(>=150)]
 //
 //      // vertical orientation, default attribute: height
 //      V:[button1(==button2)]
-//    ]|
 //
-//    It's also possible to specify multiple predicates, as well as their
-//    strength:
+// It's also possible to specify multiple predicates, as well as their strength:
 //
-//    |[
-//      // minimum width of button must be 150
-//      // natural width of button can be 250
-//      [button(>=150@required, ==250@medium)]
-//    ]|
+//    // minimum width of button must be 150
+//    // natural width of button can be 250
+//    [button(>=150@required, ==250@medium)]
 //
-//    Finally, it's also possible to use simple arithmetic operators:
+// Finally, it's also possible to use simple arithmetic operators:
 //
-//    |[
-//      // width of button1 must be equal to width of button2
-//      // divided by 2 plus 12
-//      [button1(button2 / 2 + 12)]
-//
+//    // width of button1 must be equal to width of button2
+//    // divided by 2 plus 12
+//    [button1(button2 / 2 + 12)]
 type ConstraintLayout interface {
 	LayoutManager
 	Buildable
@@ -27818,31 +28093,27 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter {
 //     gtk_box_append (GTK_BOX (content_area), label);
 //     gtk_widget_show (dialog);
 //    }
-//    ]|
-//
 //
 //
 // GtkDialog as GtkBuildable
 //
+// The GtkDialog implementation of the Buildable interface exposes the
+// @content_area as an internal child with the name “content_area”.
 //
-//    The GtkDialog implementation of the Buildable interface exposes the
-//    @content_area as an internal child with the name “content_area”.
+// GtkDialog supports a custom <action-widgets> element, which can contain
+// multiple <action-widget> elements. The “response” attribute specifies a
+// numeric response, and the content of the element is the id of widget (which
+// should be a child of the dialogs @action_area). To mark a response as
+// default, set the “default“ attribute of the <action-widget> element to true.
 //
-//    GtkDialog supports a custom <action-widgets> element, which can contain
-//    multiple <action-widget> elements. The “response” attribute specifies a
-//    numeric response, and the content of the element is the id of widget
-//    (which should be a child of the dialogs @action_area). To mark a response
-//    as default, set the “default“ attribute of the <action-widget> element
-//    to true.
+// GtkDialog supports adding action widgets by specifying “action“ as the “type“
+// attribute of a <child> element. The widget will be added either to the action
+// area or the headerbar of the dialog, depending on the “use-header-bar“
+// property. The response id has to be associated with the action widget using
+// the <action-widgets> element.
 //
-//    GtkDialog supports adding action widgets by specifying “action“ as
-//    the “type“ attribute of a <child> element. The widget will be added
-//    either to the action area or the headerbar of the dialog, depending
-//    on the “use-header-bar“ property. The response id has to be associated
-//    with the action widget using the <action-widgets> element.
+// An example of a Dialog UI definition fragment:
 //
-//    An example of a Dialog UI definition fragment:
-//    |[
 //    <object class="GtkDialog" id="dialog1">
 //      <child type="action">
 //        <object class="GtkButton" id="button_cancel"/>
@@ -27856,7 +28127,6 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter {
 //        <action-widget response="ok" default="true">button_ok</action-widget>
 //      </action-widgets>
 //    </object>
-//
 //
 //
 // Accessibility
@@ -28253,7 +28523,12 @@ func (self directoryList) Error() *glib.Error {
 
 	var ret0 *glib.Error
 
-	ret0 = glib.WrapError(ret)
+	{
+		ret0 = glib.WrapError(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -28488,7 +28763,6 @@ func (self dragIcon) SetChild(child Widget) {
 //      gtk_drag_source_set_icon (source, paintable, 0, 0);
 //      g_object_unref (paintable);
 //    }
-//
 //
 // During the DND operation, GtkDragSource emits signals that can be used to
 // obtain updates about the status of the operation, but it is not normally
@@ -28743,7 +29017,6 @@ func (source dragSource) SetIcon(paintable gdk.Paintable, hotX int, hotY int) {
 //                                      NULL, NULL);
 //      return 0;
 //    }
-//
 //
 // The draw function is normally called when a drawing area first comes
 // onscreen, or when it’s covered by another window and then uncovered. You can
@@ -29357,7 +29630,6 @@ func (self dropDown) SetSelected(position uint) {
 //      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
 //    }
 //
-//
 // DropTarget supports more options, such as:
 //
 //    * rejecting potential drops via the DropTarget::accept signal
@@ -29488,7 +29760,9 @@ func (self dropTarget) Formats() *gdk.ContentFormats {
 
 	var ret0 *gdk.ContentFormats
 
-	ret0 = gdk.WrapContentFormats(ret)
+	{
+		ret0 = gdk.WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -29660,7 +29934,9 @@ func (self dropTargetAsync) Formats() *gdk.ContentFormats {
 
 	var ret0 *gdk.ContentFormats
 
-	ret0 = gdk.WrapContentFormats(ret)
+	{
+		ret0 = gdk.WrapContentFormats(ret)
+	}
 
 	return ret0
 }
@@ -29717,7 +29993,6 @@ func (self dropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 //    ╰── stack
 //        ├── label
 //        ╰── text
-//
 //
 // GtkEditableLabel has a main node with the name editablelabel. When the entry
 // is in editing mode, it gets the .editing style class.
@@ -29840,7 +30115,6 @@ func (self editableLabel) StopEditing(commit bool) {
 //        ├── ...
 //        ╰── button.image-button.emoji-section
 //
-//
 // Every EmojiChooser consists of a main node called popover. The contents of
 // the popover are largely implementation defined and supposed to inherit
 // general styles. The top searchbar used to search emoji and gets the
@@ -29936,41 +30210,35 @@ func NewEmojiChooser() EmojiChooser {
 //    ├── image.left
 //    ├── image.right
 //    ╰── [progress[.pulse]]
-//    ]|
 //
-//    GtkEntry has a main node with the name entry. Depending on the properties
-//    of the entry, the style classes .read-only and .flat may appear. The style
-//    classes .warning and .error may also be used with entries.
+// GtkEntry has a main node with the name entry. Depending on the properties of
+// the entry, the style classes .read-only and .flat may appear. The style
+// classes .warning and .error may also be used with entries.
 //
-//    When the entry shows icons, it adds subnodes with the name image and the
-//    style class .left or .right, depending on where the icon appears.
+// When the entry shows icons, it adds subnodes with the name image and the
+// style class .left or .right, depending on where the icon appears.
 //
-//    When the entry shows progress, it adds a subnode with the name progress.
-//    The node has the style class .pulse when the shown progress is pulsing.
+// When the entry shows progress, it adds a subnode with the name progress. The
+// node has the style class .pulse when the shown progress is pulsing.
 //
-//    For all the subnodes added to the text node in various situations,
-//    see Text.
-//
+// For all the subnodes added to the text node in various situations, see Text.
 //
 //
 // GtkEntry as GtkBuildable
 //
+// The GtkEntry implementation of the GtkBuildable interface supports a custom
+// <attributes> element, which supports any number of <attribute> elements. The
+// <attribute> element has attributes named “name“, “value“, “start“ and “end“
+// and allows you to specify Attribute values for this label.
 //
-//    The GtkEntry implementation of the GtkBuildable interface supports a
-//    custom <attributes> element, which supports any number of <attribute>
-//    elements. The <attribute> element has attributes named “name“, “value“,
-//    “start“ and “end“ and allows you to specify Attribute values for
-//    this label.
+// An example of a UI definition fragment specifying Pango attributes:
 //
-//    An example of a UI definition fragment specifying Pango attributes:
-//    |[
 //    <object class="GtkEnry">
 //      <attributes>
 //        <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
 //        <attribute name="background" value="red" start="5" end="10"/>
 //      </attributes>
 //    </object>
-//
 //
 // The start and end attributes specify the range of characters to which the
 // Pango attribute applies. If start and end are not specified, the attribute is
@@ -30336,7 +30604,12 @@ func (entry entry) Attributes() *pango.AttrList {
 
 	var ret0 *pango.AttrList
 
-	ret0 = pango.WrapAttrList(ret)
+	{
+		ret0 = pango.WrapAttrList(ret)
+		runtime.SetFinalizer(&ret0, func(v **pango.AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -30454,7 +30727,12 @@ func (entry entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg2)
+	{
+		ret0 = gdk.WrapRectangle(arg2)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -30752,7 +31030,12 @@ func (entry entry) Tabs() *pango.TabArray {
 
 	var ret0 *pango.TabArray
 
-	ret0 = pango.WrapTabArray(ret)
+	{
+		ret0 = pango.WrapTabArray(ret)
+		runtime.SetFinalizer(&ret0, func(v **pango.TabArray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -32712,7 +32995,6 @@ func NewEveryFilter() EveryFilter {
 //        │   ╰── <label widget>
 //        ╰── <child>
 //
-//
 // GtkExpander has three CSS nodes, the main node with the name expander, a
 // subnode with name title and node below it with name arrow. The arrow of an
 // expander that is showing its child gets the :checked pseudoclass added to it.
@@ -33071,7 +33353,6 @@ func (expander expander) SetUseUnderline(useUnderline bool) {
 // In the simplest of cases, you can the following code to use FileChooserDialog
 // to select a file for opening:
 //
-//
 //    static void
 //    on_open_response (GtkDialog *dialog,
 //                      int        response)
@@ -33106,11 +33387,9 @@ func (expander expander) SetUseUnderline(useUnderline bool) {
 //      g_signal_connect (dialog, "response",
 //                        G_CALLBACK (on_open_response),
 //                        NULL);
-//    ]|
 //
-//    To use a dialog for saving, you can use this:
+// To use a dialog for saving, you can use this:
 //
-//    |[
 //    static void
 //    on_save_response (GtkDialog *dialog,
 //                      int        response)
@@ -33152,47 +33431,39 @@ func (expander expander) SetUseUnderline(useUnderline bool) {
 //      g_signal_connect (dialog, "response",
 //                        G_CALLBACK (on_save_response),
 //                        NULL);
-//    ]|
-//
 //
 //
 // Setting up a file chooser dialog
 //
+// There are various cases in which you may need to use a FileChooserDialog:
 //
-//    There are various cases in which you may need to use a FileChooserDialog:
+// - To select a file for opening. Use K_FILE_CHOOSER_ACTION_OPEN.
 //
-//    - To select a file for opening. Use K_FILE_CHOOSER_ACTION_OPEN.
+// - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE, and
+// suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
 //
-//    - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE,
-//      and suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
+// - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE, and
+// set the existing file with gtk_file_chooser_set_file().
 //
-//    - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE,
-//      and set the existing file with gtk_file_chooser_set_file().
+// - To choose a folder instead of a file. Use
+// K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 //
-//    - To choose a folder instead of a file. Use K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-//
-//    Note that old versions of the file chooser’s documentation suggested
-//    using gtk_file_chooser_set_current_folder() in various
-//    situations, with the intention of letting the application
-//    suggest a reasonable default folder.  This is no longer
-//    considered to be a good policy, as now the file chooser is
-//    able to make good suggestions on its own.  In general, you
-//    should only cause the file chooser to show a specific folder
-//    when it is appropriate to use gtk_file_chooser_set_file(),
-//    i.e. when you are doing a Save As command and you already
-//    have a file saved somewhere.
-//
+// Note that old versions of the file chooser’s documentation suggested using
+// gtk_file_chooser_set_current_folder() in various situations, with the
+// intention of letting the application suggest a reasonable default folder.
+// This is no longer considered to be a good policy, as now the file chooser is
+// able to make good suggestions on its own. In general, you should only cause
+// the file chooser to show a specific folder when it is appropriate to use
+// gtk_file_chooser_set_file(), i.e. when you are doing a Save As command and
+// you already have a file saved somewhere.
 //
 //
 // Response Codes
 //
+// FileChooserDialog inherits from Dialog, so buttons that go in its action area
+// have response codes such as K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL. For
+// example, you could call gtk_file_chooser_dialog_new() as follows:
 //
-//    FileChooserDialog inherits from Dialog, so buttons that
-//    go in its action area have response codes such as
-//    K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL.  For example, you
-//    could call gtk_file_chooser_dialog_new() as follows:
-//
-//    |[
 //    GtkWidget *dialog;
 //    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
 //
@@ -33204,7 +33475,6 @@ func (expander expander) SetUseUnderline(useUnderline bool) {
 //                                          _("_Open"),
 //                                          GTK_RESPONSE_ACCEPT,
 //                                          NULL);
-//
 //
 // This will create buttons for “Cancel” and “Open” that use predefined response
 // identifiers from ResponseType. For most dialog boxes you can use your own
@@ -33331,7 +33601,6 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 //
 //      g_signal_connect (native, "response", G_CALLBACK (on_response), NULL);
 //      gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
-//
 //
 // For more information on how to best set up a file dialog, see
 // FileChooserDialog.
@@ -33607,7 +33876,6 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 //
 // An example of a UI definition fragment specifying GtkFileFilter rules:
 //
-//
 //    <object class="GtkFileFilter">
 //      <property name="name" translatable="yes">Text and Images</property>
 //      <mime-types>
@@ -33619,7 +33887,6 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 //        <pattern>*.png</pattern>
 //      </patterns>
 //    </object>
-//
 type FileFilter interface {
 	Filter
 	Buildable
@@ -33808,7 +34075,12 @@ func (filter fileFilter) ToGvariant() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -33959,11 +34231,9 @@ type FilterListModel interface {
 	// remaining by dividing the return value by the total number of items in
 	// the underlying model:
 	//
-	//
-	//      pending = gtk_filter_list_model_get_pending (self);
-	//      model = gtk_filter_list_model_get_model (self);
-	//      percentage = pending / (double) g_list_model_get_n_items (model);
-	//
+	//    pending = gtk_filter_list_model_get_pending (self);
+	//    model = gtk_filter_list_model_get_model (self);
+	//    percentage = pending / (double) g_list_model_get_n_items (model);
 	//
 	// If no filter operation is ongoing - in particular when
 	// FilterListModel:incremental is false - this function returns 0.
@@ -34086,11 +34356,9 @@ func (self filterListModel) Model() gio.ListModel {
 // remaining by dividing the return value by the total number of items in
 // the underlying model:
 //
-//
-//      pending = gtk_filter_list_model_get_pending (self);
-//      model = gtk_filter_list_model_get_model (self);
-//      percentage = pending / (double) g_list_model_get_n_items (model);
-//
+//    pending = gtk_filter_list_model_get_pending (self);
+//    model = gtk_filter_list_model_get_model (self);
+//    percentage = pending / (double) g_list_model_get_n_items (model);
 //
 // If no filter operation is ongoing - in particular when
 // FilterListModel:incremental is false - this function returns 0.
@@ -34300,7 +34568,12 @@ func (fixed fixed) ChildTransform(widget Widget) *gsk.Transform {
 
 	var ret0 *gsk.Transform
 
-	ret0 = gsk.WrapTransform(ret)
+	{
+		ret0 = gsk.WrapTransform(ret)
+		runtime.SetFinalizer(&ret0, func(v **gsk.Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -34472,7 +34745,12 @@ func (child fixedLayoutChild) Transform() *gsk.Transform {
 
 	var ret0 *gsk.Transform
 
-	ret0 = gsk.WrapTransform(ret)
+	{
+		ret0 = gsk.WrapTransform(ret)
+		runtime.SetFinalizer(&ret0, func(v **gsk.Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -34619,7 +34897,6 @@ func (self flattenListModel) SetModel(model gio.ListModel) {
 //    │   ╰── <child>
 //    ┊
 //    ╰── [rubberband]
-//
 //
 // GtkFlowBox uses a single CSS node with name flowbox. GtkFlowBoxChild uses a
 // single CSS node with name flowboxchild. For rubberband selection, a subnode
@@ -34920,7 +35197,9 @@ func (box flowBox) SelectedChildren() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -35340,7 +35619,6 @@ func (self flowBoxChild) SetChild(child Widget) {
 //    ╰── button.font
 //        ╰── [content]
 //
-//
 // GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton interface {
@@ -35690,7 +35968,6 @@ func NewFontChooserWidget() FontChooserWidget {
 //
 // An example of a UI definition fragment with GtkFrame:
 //
-//
 //    <object class="GtkFrame">
 //      <child type="label">
 //        <object class="GtkLabel" id="frame_label"/>
@@ -35699,18 +35976,12 @@ func NewFontChooserWidget() FontChooserWidget {
 //        <object class="GtkEntry" id="frame_content"/>
 //      </child>
 //    </object>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    frame
 //    ├── <label widget>
 //    ╰── <child>
-//
 //
 // GtkFrame has a main CSS node with name “frame”, which is used to draw the
 // visible border. You can set the appearance of the border using CSS properties
@@ -35954,7 +36225,6 @@ func (frame frame) SetLabelWidget(labelWidget Widget) {
 //          }
 //      }
 //
-//
 // If you need to change the options for creating the GLContext you should use
 // the GLArea::create-context signal.
 type GLArea interface {
@@ -36127,7 +36397,12 @@ func (area glArea) Error() *glib.Error {
 
 	var ret0 *glib.Error
 
-	ret0 = glib.WrapError(ret)
+	{
+		ret0 = glib.WrapError(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -36478,7 +36753,6 @@ type Gesture interface {
 	// callback might be executed before the other gesture knows about the
 	// sequence. A safe way to perform this could be:
 	//
-	//
 	//    static void
 	//    first_gesture_begin_cb (GtkGesture       *first_gesture,
 	//                            GdkEventSequence *sequence,
@@ -36496,7 +36770,6 @@ type Gesture interface {
 	//      if (gtk_gesture_get_sequence_state (first_gesture, sequence) == GTK_EVENT_SEQUENCE_CLAIMED)
 	//        gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
 	//    }
-	//
 	//
 	// If both gestures are in the same group, just set the state on the gesture
 	// emitting the event, the sequence will be already be initialized to the
@@ -36550,7 +36823,12 @@ func (gesture gesture) BoundingBox() (rect gdk.Rectangle, ok bool) {
 	var ret0 *gdk.Rectangle
 	var ret1 bool
 
-	ret0 = gdk.WrapRectangle(arg1)
+	{
+		ret0 = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -36609,7 +36887,9 @@ func (gesture gesture) GetGroup() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -36646,7 +36926,12 @@ func (gesture gesture) LastUpdatedSequence() *gdk.EventSequence {
 
 	var ret0 *gdk.EventSequence
 
-	ret0 = gdk.WrapEventSequence(ret)
+	{
+		ret0 = gdk.WrapEventSequence(ret)
+		runtime.SetFinalizer(&ret0, func(v **gdk.EventSequence) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -36707,7 +36992,9 @@ func (gesture gesture) Sequences() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -36818,7 +37105,6 @@ func (gesture gesture) IsRecognized() bool {
 // callback might be executed before the other gesture knows about the
 // sequence. A safe way to perform this could be:
 //
-//
 //    static void
 //    first_gesture_begin_cb (GtkGesture       *first_gesture,
 //                            GdkEventSequence *sequence,
@@ -36836,7 +37122,6 @@ func (gesture gesture) IsRecognized() bool {
 //      if (gtk_gesture_get_sequence_state (first_gesture, sequence) == GTK_EVENT_SEQUENCE_CLAIMED)
 //        gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
 //    }
-//
 //
 // If both gestures are in the same group, just set the state on the gesture
 // emitting the event, the sequence will be already be initialized to the
@@ -37365,7 +37650,9 @@ func (gesture gestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	var ret0 *gdk.EventSequence
 
-	ret0 = gdk.WrapEventSequence(ret)
+	{
+		ret0 = gdk.WrapEventSequence(ret)
+	}
 
 	return ret0
 }
@@ -37556,7 +37843,9 @@ func (gesture gestureStylus) Backlog() (backlog []*gdk.TimeCoord, nElems uint, o
 		ret0 = make([]*gdk.TimeCoord, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (*C.GdkTimeCoord)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = gdk.WrapTimeCoord(src)
+			{
+				ret0[i] = gdk.WrapTimeCoord(src)
+			}
 		}
 	}
 
@@ -38680,7 +38969,6 @@ func (child gridLayoutChild) SetRowSpan(span int) {
 //    ┊
 //    ╰── [rubberband]
 //
-//
 // GtkGridView uses a single CSS node with name gridview. Each child uses a
 // single CSS node with name child. For rubberband selection, a subnode with
 // name rubberband is used.
@@ -38973,7 +39261,6 @@ func (self gridView) SetSingleClickActivate(singleClickActivate bool) {
 // it is contained in as the title widget, equivalent to the following UI
 // definition:
 //
-//
 //    <object class="GtkHeaderBar">
 //      <property name="title-widget">
 //        <object class="GtkLabel">
@@ -38987,14 +39274,9 @@ func (self gridView) SetSingleClickActivate(singleClickActivate bool) {
 //        </object>
 //      </property>
 //    </object>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    headerbar
 //    ╰── windowhandle
 //        ╰── box
@@ -39005,7 +39287,6 @@ func (self gridView) SetSingleClickActivate(singleClickActivate bool) {
 //            ╰── box.end
 //                ├── [other children]
 //                ╰── windowcontrols.end
-//
 //
 // A HeaderBar's CSS node is called `headerbar`. It contains a `windowhandle`
 // subnode, which contains a `box` subnode, which contains two `box` subnodes at
@@ -39289,7 +39570,6 @@ func (bar headerBar) SetTitleWidget(titleWidget Widget) {
 //
 //    GtkIMContext * im_module_create(const char *context_id);
 //
-//
 // This function should return a pointer to a newly created instance of the
 // IMContext subclass identified by @context_id. The context ID is the same as
 // specified in the IMContextInfo array returned by im_module_list().
@@ -39522,7 +39802,9 @@ func (context imContext) PreeditString() (str string, attrs *pango.AttrList, cur
 	ret0 = C.GoString(arg1)
 	C.free(unsafe.Pointer(arg1))
 
-	ret1 = pango.WrapAttrList(arg2)
+	{
+		ret1 = pango.WrapAttrList(arg2)
+	}
 
 	ret2 = int(arg3)
 
@@ -39967,7 +40249,6 @@ func (self iconPaintable) IsSymbolic() bool {
 //     paintable = GDK_PAINTABLE (icon);
 //     // Use the paintable
 //     g_object_unref (icon);
-//
 type IconTheme interface {
 	gextras.Objector
 
@@ -40433,7 +40714,6 @@ func (self iconTheme) SetThemeName(themeName string) {
 //    iconview.view
 //    ╰── [rubberband]
 //
-//
 // GtkIconView has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView interface {
@@ -40516,7 +40796,6 @@ type IconView interface {
 	// To free the return value, use:
 	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	//
 	SelectedItems() *glib.List
 	// SelectionMode gets the selection mode of the @icon_view.
 	SelectionMode() SelectionMode
@@ -40836,7 +41115,12 @@ func (iconView iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.R
 	var ret0 *gdk.Rectangle
 	var ret1 bool
 
-	ret0 = gdk.WrapRectangle(arg3)
+	{
+		ret0 = gdk.WrapRectangle(arg3)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -40891,7 +41175,9 @@ func (iconView iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 	var ret1 CellRenderer
 	var ret2 bool
 
-	ret0 = WrapTreePath(arg1)
+	{
+		ret0 = WrapTreePath(arg1)
+	}
 
 	ret1 = WrapCellRenderer(externglib.Take(unsafe.Pointer(arg2.Native())))
 
@@ -40918,7 +41204,9 @@ func (iconView iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, po
 	var ret1 *IconViewDropPosition
 	var ret2 bool
 
-	ret0 = WrapTreePath(arg3)
+	{
+		ret0 = WrapTreePath(arg3)
+	}
 
 	ret1 = (*IconViewDropPosition)(arg4)
 
@@ -40941,7 +41229,9 @@ func (iconView iconView) DragDestItem() (path *TreePath, pos IconViewDropPositio
 	var ret0 **TreePath
 	var ret1 *IconViewDropPosition
 
-	ret0 = WrapTreePath(arg1)
+	{
+		ret0 = WrapTreePath(arg1)
+	}
 
 	ret1 = (*IconViewDropPosition)(arg2)
 
@@ -40966,7 +41256,9 @@ func (iconView iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRende
 	var ret1 CellRenderer
 	var ret2 bool
 
-	ret0 = WrapTreePath(arg3)
+	{
+		ret0 = WrapTreePath(arg3)
+	}
 
 	ret1 = WrapCellRenderer(externglib.Take(unsafe.Pointer(arg4.Native())))
 
@@ -41118,7 +41410,9 @@ func (iconView iconView) PathAtPos(x int, y int) *TreePath {
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -41177,7 +41471,6 @@ func (iconView iconView) RowSpacing() int {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-//
 func (iconView iconView) SelectedItems() *glib.List {
 	var arg0 *C.GtkIconView
 
@@ -41187,7 +41480,9 @@ func (iconView iconView) SelectedItems() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -41286,9 +41581,16 @@ func (iconView iconView) TooltipContext(x int, y int, keyboardTip bool) (model T
 
 	ret0 = WrapTreeModel(externglib.Take(unsafe.Pointer(arg4.Native())))
 
-	ret1 = WrapTreePath(arg5)
+	{
+		ret1 = WrapTreePath(arg5)
+	}
 
-	ret2 = WrapTreeIter(arg6)
+	{
+		ret2 = WrapTreeIter(arg6)
+		runtime.SetFinalizer(&ret2, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret3 = gextras.Gobool(ret)
 
@@ -41312,9 +41614,13 @@ func (iconView iconView) VisibleRange() (startPath *TreePath, endPath *TreePath,
 	var ret1 **TreePath
 	var ret2 bool
 
-	ret0 = WrapTreePath(arg1)
+	{
+		ret0 = WrapTreePath(arg1)
+	}
 
-	ret1 = WrapTreePath(arg2)
+	{
+		ret1 = WrapTreePath(arg2)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -41749,9 +42055,8 @@ func (iconView iconView) UnsetModelDragSource() {
 // and then display that. There’s a convenience function to do this,
 // gtk_image_new_from_file(), used as follows:
 //
-//      GtkWidget *image;
-//      image = gtk_image_new_from_file ("myfile.png");
-//
+//    GtkWidget *image;
+//    image = gtk_image_new_from_file ("myfile.png");
 //
 // If the file isn’t loaded successfully, the image will contain a “broken
 // image” icon similar to that used in many web browsers. If you want to handle
@@ -42249,7 +42554,6 @@ func (image image) SetPixelSize(pixelSize int) {
 //    gtk_widget_show (bar);
 //
 //
-//
 // GtkInfoBar as GtkBuildable
 //
 // The GtkInfoBar implementation of the GtkBuildable interface exposes the
@@ -42665,7 +42969,6 @@ func (self keyvalTrigger) Modifiers() gdk.ModifierType {
 //    GtkWidget *label = gtk_label_new (NULL);
 //    gtk_label_set_markup (GTK_LABEL (label), text);
 //
-//
 // It is possible to implement custom handling for links and their tooltips with
 // the Label::activate-link signal and the gtk_label_get_current_uri() function.
 type Label interface {
@@ -42807,7 +43110,6 @@ type Label interface {
 	//    markup = g_markup_printf_escaped (format, str);
 	//    gtk_label_set_markup (GTK_LABEL (self), markup);
 	//    g_free (markup);
-	//
 	//
 	// This function will set the Label:use-markup property to true as a side
 	// effect.
@@ -42967,7 +43269,12 @@ func (self label) Attributes() *pango.AttrList {
 
 	var ret0 *pango.AttrList
 
-	ret0 = pango.WrapAttrList(ret)
+	{
+		ret0 = pango.WrapAttrList(ret)
+		runtime.SetFinalizer(&ret0, func(v **pango.AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -43465,7 +43772,6 @@ func (self label) SetLines(lines int) {
 //    gtk_label_set_markup (GTK_LABEL (self), markup);
 //    g_free (markup);
 //
-//
 // This function will set the Label:use-markup property to true as a side
 // effect.
 //
@@ -43791,7 +44097,6 @@ func (layoutChild layoutChild) LayoutManager() LayoutManager {
 //                           NULL);
 //    }
 //
-//
 // The LayoutChild:layout-manager and LayoutChild:child-widget properties on the
 // newly created LayoutChild instance are mandatory. The LayoutManager will
 // cache the newly created LayoutChild instance until the widget is removed from
@@ -44001,7 +44306,6 @@ func (manager layoutManager) Measure(widget Widget, orientation Orientation, for
 //        ┊
 //        ├── block.empty
 //        ┊
-//
 //
 // GtkLevelBar has a main CSS node with name levelbar and one of the style
 // classes .discrete or .continuous and a subnode with name trough. Below the
@@ -44558,7 +44862,6 @@ func marshalListBase(p uintptr) (interface{}, error) {
 //    list[.separators][.rich-list][.navigation-sidebar]
 //    ╰── row[.activatable]
 //
-//
 // GtkListBox uses a single CSS node named list. It may carry the .separators
 // style class, when the ListBox:show-separators property is set. Each
 // GtkListBoxRow uses a single CSS node named row. The row nodes get the
@@ -44849,7 +45152,9 @@ func (box listBox) SelectedRows() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -45678,7 +45983,6 @@ func marshalListItemFactory(p uintptr) (interface{}, error) {
 //        </row>
 //      </data>
 //    </object>
-//
 type ListStore interface {
 	gextras.Objector
 	Buildable
@@ -45790,7 +46094,12 @@ func (listStore listStore) Append() TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -45821,7 +46130,12 @@ func (listStore listStore) Insert(position int) TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -45843,7 +46157,12 @@ func (listStore listStore) InsertAfter(sibling *TreeIter) TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -45865,7 +46184,12 @@ func (listStore listStore) InsertBefore(sibling *TreeIter) TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -45934,7 +46258,12 @@ func (listStore listStore) Prepend() TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -46021,7 +46350,6 @@ func (store listStore) Swap(a *TreeIter, b *TreeIter) {
 //
 // An example of using GtkListView:
 //
-//
 //    static void
 //    setup_listitem_cb (GtkListItemFactory *factory,
 //                       GtkListItem        *list_item)
@@ -46070,14 +46398,9 @@ func (store listStore) Swap(a *TreeIter, b *TreeIter) {
 //      g_signal_connect (list, "activate", G_CALLBACK (activate_cb), NULL);
 //
 //      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    listview[.separators][.rich-list][.navigation-sidebar][.data-table]
 //    ├── row
 //    │
@@ -46085,7 +46408,6 @@ func (store listStore) Swap(a *TreeIter, b *TreeIter) {
 //    │
 //    ┊
 //    ╰── [rubberband]
-//
 //
 //
 // GtkListView uses a single CSS node named listview. It may carry the
@@ -46440,7 +46762,6 @@ func (button lockButton) SetPermission(permission gio.Permission) {
 //
 // Example: Create a list of EventControllers
 //
-//
 //      static gpointer
 //      map_to_controllers (gpointer widget,
 //                          gpointer data)
@@ -46459,7 +46780,6 @@ func (button lockButton) SetPermission(permission gio.Permission) {
 //
 //      model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
 //                                          controllers);
-//
 //
 // MapListModel will attempt to discard the mapped objects as soon as they are
 // no longer needed and recreate them if necessary.
@@ -47141,7 +47461,12 @@ func (self mediaStream) Error() *glib.Error {
 
 	var ret0 *glib.Error
 
-	ret0 = glib.WrapError(ret)
+	{
+		ret0 = glib.WrapError(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -47604,7 +47929,6 @@ func (self mediaStream) Update(timestamp int64) {
 //    ╰── button.toggle
 //        ╰── [content]
 //
-//
 // GtkMenuButton has a single CSS node with name menubutton which contains a
 // toggle button node.
 //
@@ -48006,7 +48330,6 @@ func (menuButton menuButton) SetUseUnderline(useUnderline bool) {
 //     g_signal_connect (dialog, "response",
 //                       G_CALLBACK (gtk_window_destroy),
 //                       NULL);
-//
 //
 //
 // GtkMessageDialog as GtkBuildable
@@ -48975,7 +49298,6 @@ func (self noSelection) SetModel(model gio.ListModel) {
 //
 // An example of a UI definition fragment with GtkNotebook:
 //
-//
 //    <object class="GtkNotebook">
 //      <child>
 //        <object class="GtkLabel" id="notebook-content">
@@ -48988,14 +49310,9 @@ func (self noSelection) SetModel(model gio.ListModel) {
 //        </object>
 //      </child>
 //    </object>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    notebook
 //    ├── header.top
 //    │   ├── [<action widget>]
@@ -49013,7 +49330,6 @@ func (self noSelection) SetModel(model gio.ListModel) {
 //        ├── <child>
 //        ┊
 //        ╰── <child>
-//
 //
 // GtkNotebook has a main CSS node with name `notebook`, a subnode with name
 // `header` and below that a subnode with name `tabs` which contains one subnode
@@ -49209,7 +49525,6 @@ type Notebook interface {
 	//
 	//       gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
 	//     }
-	//
 	//
 	// If you want a notebook to accept drags from other widgets, you will have
 	// to set your own DnD code to do it.
@@ -49929,7 +50244,6 @@ func (notebook notebook) SetShowTabs(showTabs bool) {
 //       gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
 //     }
 //
-//
 // If you want a notebook to accept drags from other widgets, you will have
 // to set your own DnD code to do it.
 func (notebook notebook) SetTabDetachable(child Widget, detachable bool) {
@@ -50568,7 +50882,6 @@ func (child overlayLayoutChild) SetMeasure(measure bool) {
 // A simple example of PadController usage, assigning button 1 in all modes and
 // pad devices to an "invert-selection" action:
 //
-//
 //      GtkPadActionEntry *pad_actions[] = {
 //        { GTK_PAD_ACTION_BUTTON, 1, -1, "Invert selection", "pad-actions.invert-selection" },
 //        …
@@ -50581,7 +50894,6 @@ func (child overlayLayoutChild) SetMeasure(measure bool) {
 //      g_action_map_add_action (G_ACTION_MAP (action_group), action);
 //      …
 //      pad_controller = gtk_pad_controller_new (action_group, NULL);
-//
 //
 // The actions belonging to rings/strips will be activated with a parameter of
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
@@ -50705,7 +51017,6 @@ func (controller padController) SetAction(_type PadActionType, index int, mode i
 //
 //      page_setup = new_page_setup;
 //    }
-//
 type PageSetup interface {
 	gextras.Objector
 
@@ -50989,7 +51300,12 @@ func (setup pageSetup) PaperSize() *PaperSize {
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+		runtime.SetFinalizer(&ret0, func(v **PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -51203,7 +51519,12 @@ func (setup pageSetup) ToGvariant() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -51264,7 +51585,6 @@ func (setup pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 //    gtk_paned_set_end_child_resize (GTK_PANED (hpaned), FALSE);
 //    gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
 //    gtk_widget_set_size_request (frame2, 50, -1);
-//
 type Paned interface {
 	Widget
 	Accessible
@@ -51585,7 +51905,6 @@ func (paned paned) SetWideHandle(wide bool) {
 //        ├── image.caps-lock-indicator
 //        ┊
 //
-//
 // GtkPasswordEntry has a single CSS node with name entry that carries a
 // .passwordstyle class. The text Css node below it has a child with name image
 // and style class .caps-lock-indicator for the Caps Lock icon, and possibly
@@ -51722,9 +52041,8 @@ func (entry passwordEntry) SetShowPeekIcon(showPeekIcon bool) {
 // an image from a file, and then display that, there’s a convenience function
 // to do this:
 //
-//      GtkWidget *widget;
-//      widget = gtk_picture_new_for_filename ("myfile.png");
-//
+//    GtkWidget *widget;
+//    widget = gtk_picture_new_for_filename ("myfile.png");
 //
 // If the file isn’t loaded successfully, the picture will contain a “broken
 // image” icon similar to that used in many web browsers. If you want to handle
@@ -52170,7 +52488,6 @@ func (self picture) SetResource(resourcePath string) {
 // the PopoverMenu subclass which supports being populated from a Model with
 // gtk_popover_menu_new_from_model().
 //
-//
 //    <section>
 //      <attribute name="display-hint">horizontal-buttons</attribute>
 //      <item>
@@ -52189,19 +52506,13 @@ func (self picture) SetResource(resourcePath string) {
 //        <attribute name="verb-icon">edit-paste-symbolic</attribute>
 //      </item>
 //    </section>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    popover[.menu]
 //    ├── arrow
 //    ╰── contents.background
 //        ╰── <child>
-//
 //
 // The contents child node always gets the .background style class and the
 // popover itself gets the .menu style class if the popover is menu-like (i.e.
@@ -52461,7 +52772,12 @@ func (popover popover) PointingTo() (rect gdk.Rectangle, ok bool) {
 	var ret0 *gdk.Rectangle
 	var ret1 bool
 
-	ret0 = gdk.WrapRectangle(arg1)
+	{
+		ret0 = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -52670,7 +52986,6 @@ func (popover popover) SetPosition(position PositionType) {
 //        </item>
 //      </section>
 //    </menu>
-//
 //
 // Attribute values can be translated using gettext, like other Builder content.
 // `<attribute>` elements can be marked for translation with a
@@ -52893,7 +53208,6 @@ func (popover popoverMenu) SetMenuModel(model gio.MenuModel) {
 //    ╰── item
 //        ╰── popover
 //
-//
 // GtkPopoverMenuBar has a single CSS node with name menubar, below which each
 // item has its CSS node, and below that the corresponding popover.
 //
@@ -53097,7 +53411,6 @@ func (bar popoverMenuBar) SetMenuModel(model gio.MenuModel) {
 //
 //      g_object_unref (layout);
 //    }
-//
 type PrintContext interface {
 	gextras.Objector
 
@@ -53201,7 +53514,12 @@ func (context printContext) CairoContext() *cairo.Context {
 
 	var ret0 *cairo.Context
 
-	ret0 = cairo.WrapContext(ret)
+	{
+		ret0 = cairo.WrapContext(ret)
+		runtime.SetFinalizer(&ret0, func(v **cairo.Context) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -53402,7 +53720,6 @@ func (context printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpi
 //      g_object_unref (print);
 //    }
 //
-//
 // By default GtkPrintOperation uses an external application to do print
 // preview. To implement a custom print preview, an application must connect to
 // the preview signal. The functions gtk_print_operation_preview_render_page(),
@@ -53525,7 +53842,6 @@ type PrintOperation interface {
 	//    g_object_unref (settings);
 	//       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
 	//     }
-	//
 	//
 	// Note that gtk_print_operation_run() can only be called once on a given
 	// PrintOperation.
@@ -53907,7 +54223,6 @@ func (op printOperation) IsFinished() bool {
 //    g_object_unref (settings);
 //       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
 //     }
-//
 //
 // Note that gtk_print_operation_run() can only be called once on a given
 // PrintOperation.
@@ -54788,7 +55103,9 @@ func (settings printSettings) PageRanges() (numRanges int, pageRanges []PageRang
 		ret1 = make([]PageRange, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
 			src := (C.GtkPageRange)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = WrapPageRange(src)
+			{
+				ret1[i] = WrapPageRange(src)
+			}
 		}
 	}
 
@@ -54839,7 +55156,9 @@ func (settings printSettings) PaperSize() *PaperSize {
 
 	var ret0 *PaperSize
 
-	ret0 = WrapPaperSize(ret)
+	{
+		ret0 = WrapPaperSize(ret)
+	}
 
 	return ret0
 }
@@ -55458,7 +55777,12 @@ func (settings printSettings) ToGvariant() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -55520,7 +55844,6 @@ func (settings printSettings) Unset(key string) {
 //    ├── [text]
 //    ╰── trough[.empty][.full]
 //        ╰── progress[.pulse]
-//
 //
 // GtkProgressBar has a main CSS node with name progressbar and subnodes with
 // names text and trough, of which the latter has a subnode named progress. The
@@ -56050,7 +56373,12 @@ func (_range _range) RangeRect() gdk.Rectangle {
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg1)
+	{
+		ret0 = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -56356,7 +56684,6 @@ func (_range _range) SetValue(value float64) {
 //       gtk_recent_info_unref (info);
 //     }
 //
-//
 // In order to retrieve the list of recently used files, you can use
 // gtk_recent_manager_get_items(), which returns a list of RecentInfo.
 //
@@ -56523,7 +56850,9 @@ func (manager recentManager) Items() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -56562,7 +56891,9 @@ func (manager recentManager) LookupItem(uri string) *RecentInfo {
 
 	var ret0 *RecentInfo
 
-	ret0 = WrapRecentInfo(ret)
+	{
+		ret0 = WrapRecentInfo(ret)
+	}
 
 	return ret0
 }
@@ -56899,7 +57230,6 @@ func (revealer revealer) SetTransitionType(transition RevealerTransitionType) {
 //        ├── [fill]
 //        ├── [highlight]
 //        ╰── slider
-//
 //
 // GtkScale has a main CSS node with name scale and a subnode for its contents,
 // with subnodes named trough and slider.
@@ -57516,7 +57846,6 @@ func (button scaleButton) SetValue(value float64) {
 //        ╰── trough
 //            ╰── slider
 //
-//
 // GtkScrollbar has a main CSS node with name scrollbar and a subnode for its
 // contents. The main node gets the .horizontal or .vertical style classes
 // applied, depending on the scrollbar's orientation.
@@ -57649,7 +57978,6 @@ func (self scrollbar) SetAdjustment(adjustment Adjustment) {
 //    // or
 //    gtk_box_remove (GTK_BOX (scrolled_window),
 //                          gtk_bin_get_child (GTK_BIN (scrolled_window)));
-//
 //
 // Unless ScrolledWindow:hscrollbar-policy and ScrolledWindow:vscrollbar-policy
 // are GTK_POLICY_NEVER or GTK_POLICY_EXTERNAL, GtkScrolledWindow adds internal
@@ -58379,7 +58707,6 @@ func (scrolledWindow scrolledWindow) UnsetPlacement() {
 //             ├── [child]
 //             ╰── [button.close]
 //
-//
 // GtkSearchBar has a main CSS node with name searchbar. It has a child node
 // with name revealer that contains a node with name box. The box node contains
 // both the CSS node of the child widget as well as an optional button node
@@ -58613,7 +58940,6 @@ func (bar searchBar) SetShowCloseButton(visible bool) {
 //
 //    entry.search
 //    ╰── text
-//
 //
 // GtkSearchEntry has a single CSS node with name entry that carries a .sarch
 // style class, and the text node is a child of that.
@@ -59041,7 +59367,12 @@ func (self shortcut) Arguments() *glib.Variant {
 
 	var ret0 *glib.Variant
 
-	ret0 = glib.WrapVariant(ret)
+	{
+		ret0 = glib.WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -59258,21 +59589,19 @@ func (self shortcutAction) String() string {
 //
 // An example of a UI definition fragment with GtkShortcutController:
 //
-//
-//      <object class='GtkButton'>
-//        <child>
-//          <object class='GtkShortcutController'>
-//            <property name='scope'>managed</property>
-//            <child>
-//              <object class='GtkShortcut'>
-//                <property name='trigger'>&amp;lt;Control&amp;gt;k</property>
-//                <property name='action'>activate</property>
-//              </object>
-//            </child>
-//          </object>
-//        </child>
-//      </object>
-//
+//    <object class='GtkButton'>
+//      <child>
+//        <object class='GtkShortcutController'>
+//          <property name='scope'>managed</property>
+//          <child>
+//            <object class='GtkShortcut'>
+//              <property name='trigger'>&amp;lt;Control&amp;gt;k</property>
+//              <property name='action'>activate</property>
+//            </object>
+//          </child>
+//        </object>
+//      </child>
+//    </object>
 //
 // This example creates a ActivateAction for triggering the `activate` signal of
 // the GtkButton. See gtk_shortcut_action_parse_string() for the syntax for
@@ -60514,7 +60843,6 @@ func (self singleSelection) SetSelected(position uint) {
 //
 // An example of a UI definition fragment with GtkSizeGroup:
 //
-//
 //    <object class="GtkSizeGroup">
 //      <property name="mode">horizontal</property>
 //      <widgets>
@@ -60522,7 +60850,6 @@ func (self singleSelection) SetSelected(position uint) {
 //        <widget name="radio2"/>
 //      </widgets>
 //    </object>
-//
 type SizeGroup interface {
 	gextras.Objector
 	Buildable
@@ -60633,7 +60960,12 @@ func (sizeGroup sizeGroup) Widgets() *glib.SList {
 
 	var ret0 *glib.SList
 
-	ret0 = glib.WrapSList(ret)
+	{
+		ret0 = glib.WrapSList(ret)
+		runtime.SetFinalizer(&ret0, func(v **glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -61087,7 +61419,9 @@ func (snapshot snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 
 	var ret0 *cairo.Context
 
-	ret0 = cairo.WrapContext(ret)
+	{
+		ret0 = cairo.WrapContext(ret)
+	}
 
 	return ret0
 }
@@ -61738,10 +62072,9 @@ type SortListModel interface {
 	//
 	// If you want to estimate the progress, you can use code like this:
 	//
-	//      pending = gtk_sort_list_model_get_pending (self);
-	//      model = gtk_sort_list_model_get_model (self);
-	//      progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
-	//
+	//    pending = gtk_sort_list_model_get_pending (self);
+	//    model = gtk_sort_list_model_get_model (self);
+	//    progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
 	//
 	// If no sort operation is ongoing - in particular when
 	// SortListModel:incremental is false - this function returns 0.
@@ -61851,10 +62184,9 @@ func (self sortListModel) Model() gio.ListModel {
 //
 // If you want to estimate the progress, you can use code like this:
 //
-//      pending = gtk_sort_list_model_get_pending (self);
-//      model = gtk_sort_list_model_get_model (self);
-//      progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
-//
+//    pending = gtk_sort_list_model_get_pending (self);
+//    model = gtk_sort_list_model_get_model (self);
+//    progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
 //
 // If no sort operation is ongoing - in particular when
 // SortListModel:incremental is false - this function returns 0.
@@ -62093,7 +62425,6 @@ func (self sorter) Order() SorterOrder {
 //    │    ├── undershoot.left
 //    │    ╰── undershoot.right
 //    ╰── button.down
-//
 //
 // GtkSpinButtons main CSS node has the name spinbutton. It creates subnodes for
 // the entry and the two buttons, with these names. The button nodes have the
@@ -62741,20 +63072,18 @@ func (spinner spinner) Stop() {
 // To set child-specific properties in a .ui file, create GtkStackPage objects
 // explicitly, and set the child widget as a property on it:
 //
-//
-//      <object class="GtkStack" id="stack">
-//        <child>
-//          <object class="GtkStackPage">
-//            <property name="name">page1</property>
-//            <property name="title">In the beginning…</property>
-//            <property name="child">
-//              <object class="GtkLabel">
-//                <property name="label">It was dark</property>
-//              </object>
-//            </property>
-//          </object>
-//        </child>
-//
+//    <object class="GtkStack" id="stack">
+//      <child>
+//        <object class="GtkStackPage">
+//          <property name="name">page1</property>
+//          <property name="title">In the beginning…</property>
+//          <property name="child">
+//            <object class="GtkLabel">
+//              <property name="label">It was dark</property>
+//            </object>
+//          </property>
+//        </object>
+//      </child>
 //
 //
 // CSS nodes
@@ -64098,7 +64427,6 @@ func (self stringFilter) SetSearch(search string) {
 //
 // Here is a UI definition fragment specifying a GtkStringList
 //
-//
 //    <object class="GtkStringList">
 //      <items>
 //        <item translatable="yes">Factory</item>
@@ -64106,7 +64434,6 @@ func (self stringFilter) SetSearch(search string) {
 //        <item translatable="yes">Subway</item>
 //      </items>
 //    </object>
-//
 type StringList interface {
 	gextras.Objector
 	gio.ListModel
@@ -64144,9 +64471,7 @@ type StringList interface {
 	// This variant of gtk_string_list_append() is convenient for formatting
 	// strings:
 	//
-	//
 	//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
-	//
 	Take(string string)
 }
 
@@ -64273,9 +64598,7 @@ func (self stringList) Splice(position uint, nRemovals uint, additions []string)
 // This variant of gtk_string_list_append() is convenient for formatting
 // strings:
 //
-//
 //    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
-//
 func (self stringList) Take(string string) {
 	var arg0 *C.GtkStringList
 	var arg1 *C.char
@@ -64508,15 +64831,10 @@ type StyleContext interface {
 	// In the CSS file format, a Entry defining a “search” class, would be
 	// matched by:
 	//
-	//     <!-- language="CSS" -->
-	//    entry.search { ... }
-	//    ]|
+	// |[ <!-- language="CSS" --> entry.search { ... } ]|
 	//
-	//    While any widget defining a “search” class would be
-	//    matched by:
-	//    |[ <!-- language="CSS" -->
-	//    .search { ... }
-	//
+	// While any widget defining a “search” class would be matched by: |[ <!--
+	// language="CSS" --> .search { ... } ]|
 	AddClass(className string)
 	// AddProvider adds a style provider to @context, to be used in style
 	// construction. Note that a style provider added by this function only
@@ -64619,15 +64937,10 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 // In the CSS file format, a Entry defining a “search” class, would be
 // matched by:
 //
-//     <!-- language="CSS" -->
-//    entry.search { ... }
-//    ]|
+// |[ <!-- language="CSS" --> entry.search { ... } ]|
 //
-//    While any widget defining a “search” class would be
-//    matched by:
-//    |[ <!-- language="CSS" -->
-//    .search { ... }
-//
+// While any widget defining a “search” class would be matched by: |[ <!--
+// language="CSS" --> .search { ... } ]|
 func (context styleContext) AddClass(className string) {
 	var arg0 *C.GtkStyleContext
 	var arg1 *C.char
@@ -64671,7 +64984,12 @@ func (context styleContext) Border() Border {
 
 	var ret0 *Border
 
-	ret0 = WrapBorder(arg1)
+	{
+		ret0 = WrapBorder(arg1)
+		runtime.SetFinalizer(&ret0, func(v **Border) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -64687,7 +65005,12 @@ func (context styleContext) Color() gdk.RGBA {
 
 	var ret0 *gdk.RGBA
 
-	ret0 = gdk.WrapRGBA(arg1)
+	{
+		ret0 = gdk.WrapRGBA(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.RGBA) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -64718,7 +65041,12 @@ func (context styleContext) Margin() Border {
 
 	var ret0 *Border
 
-	ret0 = WrapBorder(arg1)
+	{
+		ret0 = WrapBorder(arg1)
+		runtime.SetFinalizer(&ret0, func(v **Border) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -64734,7 +65062,12 @@ func (context styleContext) Padding() Border {
 
 	var ret0 *Border
 
-	ret0 = WrapBorder(arg1)
+	{
+		ret0 = WrapBorder(arg1)
+		runtime.SetFinalizer(&ret0, func(v **Border) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -64808,7 +65141,12 @@ func (context styleContext) LookupColor(colorName string) (color gdk.RGBA, ok bo
 	var ret0 *gdk.RGBA
 	var ret1 bool
 
-	ret0 = gdk.WrapRGBA(arg2)
+	{
+		ret0 = gdk.WrapRGBA(arg2)
+		runtime.SetFinalizer(&ret0, func(v **gdk.RGBA) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -64941,7 +65279,6 @@ func (context styleContext) String(flags StyleContextPrintFlags) string {
 //    ├── label
 //    ├── label
 //    ╰── slider
-//
 //
 // GtkSwitch has four css nodes, the main node with the name switch and subnodes
 // for the slider and the on and off labels. Neither of them is using any style
@@ -65100,7 +65437,6 @@ func (self _switch) SetState(state bool) {
 //    ├── [selection]
 //    ├── [block-cursor]
 //    ╰── [window.popup]
-//
 //
 // GtkText has a main node with the name text. Depending on the properties of
 // the widget, the .read-only style class may appear.
@@ -65355,7 +65691,12 @@ func (self text) Attributes() *pango.AttrList {
 
 	var ret0 *pango.AttrList
 
-	ret0 = pango.WrapAttrList(ret)
+	{
+		ret0 = pango.WrapAttrList(ret)
+		runtime.SetFinalizer(&ret0, func(v **pango.AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -65532,7 +65873,12 @@ func (self text) Tabs() *pango.TabArray {
 
 	var ret0 *pango.TabArray
 
-	ret0 = pango.WrapTabArray(ret)
+	{
+		ret0 = pango.WrapTabArray(ret)
+		runtime.SetFinalizer(&ret0, func(v **pango.TabArray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -66620,9 +66966,19 @@ func (buffer textBuffer) Bounds() (start TextIter, end TextIter) {
 	var ret0 *TextIter
 	var ret1 *TextIter
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = WrapTextIter(arg2)
+	{
+		ret1 = WrapTextIter(arg2)
+		runtime.SetFinalizer(&ret1, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0, ret1
 }
@@ -66711,7 +67067,12 @@ func (buffer textBuffer) EndIter() TextIter {
 
 	var ret0 *TextIter
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -66762,7 +67123,12 @@ func (buffer textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
 
 	var ret0 *TextIter
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -66783,7 +67149,12 @@ func (buffer textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
 	var ret0 *TextIter
 	var ret1 bool
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -66812,7 +67183,12 @@ func (buffer textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter Te
 	var ret0 *TextIter
 	var ret1 bool
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -66843,7 +67219,12 @@ func (buffer textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter 
 	var ret0 *TextIter
 	var ret1 bool
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -66863,7 +67244,12 @@ func (buffer textBuffer) IterAtMark(mark TextMark) TextIter {
 
 	var ret0 *TextIter
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -66884,7 +67270,12 @@ func (buffer textBuffer) IterAtOffset(charOffset int) TextIter {
 
 	var ret0 *TextIter
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -67002,9 +67393,19 @@ func (buffer textBuffer) SelectionBounds() (start TextIter, end TextIter, ok boo
 	var ret1 *TextIter
 	var ret2 bool
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = WrapTextIter(arg2)
+	{
+		ret1 = WrapTextIter(arg2)
+		runtime.SetFinalizer(&ret1, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -67071,7 +67472,12 @@ func (buffer textBuffer) StartIter() TextIter {
 
 	var ret0 *TextIter
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -67959,13 +68365,11 @@ func (tag textTag) SetPriority(priority int) {
 //
 // An example of a UI definition fragment specifying tags:
 //
-//
 //    <object class="GtkTextTagTable">
 //     <child type="tag">
 //       <object class="GtkTextTag"/>
 //     </child>
 //    </object>
-//
 type TextTagTable interface {
 	gextras.Objector
 	Buildable
@@ -68123,7 +68527,6 @@ func (table textTagTable) Remove(tag TextTag) {
 //    ├── border.right
 //    ├── border.bottom
 //    ╰── [window.popup]
-//
 //
 // GtkTextView has a main css node with name textview and style class .view, and
 // subnodes for each of the border windows, and the main text area, with names
@@ -68347,7 +68750,6 @@ type TextView interface {
 	//
 	//      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
 	//    }
-	//
 	ImContextFilterKeypress(event gdk.Event) bool
 	// MoveMarkOnscreen moves a mark within the buffer so that it's located
 	// within the currently-visible text area.
@@ -68800,9 +69202,19 @@ func (textView textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, 
 	var ret0 *gdk.Rectangle
 	var ret1 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg2)
+	{
+		ret0 = gdk.WrapRectangle(arg2)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = gdk.WrapRectangle(arg3)
+	{
+		ret1 = gdk.WrapRectangle(arg3)
+		runtime.SetFinalizer(&ret1, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0, ret1
 }
@@ -68942,7 +69354,12 @@ func (textView textView) IterAtLocation(x int, y int) (iter TextIter, ok bool) {
 	var ret0 *TextIter
 	var ret1 bool
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -68974,7 +69391,12 @@ func (textView textView) IterAtPosition(x int, y int) (iter TextIter, trailing i
 	var ret1 int
 	var ret2 bool
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = int(arg2)
 
@@ -68999,7 +69421,12 @@ func (textView textView) IterLocation(iter *TextIter) gdk.Rectangle {
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg2)
+	{
+		ret0 = gdk.WrapRectangle(arg2)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -69054,7 +69481,12 @@ func (textView textView) LineAtY(y int) (targetIter TextIter, lineTop int) {
 	var ret0 *TextIter
 	var ret1 int
 
-	ret0 = WrapTextIter(arg1)
+	{
+		ret0 = WrapTextIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = int(arg3)
 
@@ -69198,7 +69630,9 @@ func (textView textView) Tabs() *pango.TabArray {
 
 	var ret0 *pango.TabArray
 
-	ret0 = pango.WrapTabArray(ret)
+	{
+		ret0 = pango.WrapTabArray(ret)
+	}
 
 	return ret0
 }
@@ -69231,7 +69665,12 @@ func (textView textView) VisibleRect() gdk.Rectangle {
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg1)
+	{
+		ret0 = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -69279,7 +69718,6 @@ func (textView textView) WrapMode() WrapMode {
 //
 //      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
 //    }
-//
 func (textView textView) ImContextFilterKeypress(event gdk.Event) bool {
 	var arg0 *C.GtkTextView
 	var arg1 *C.GdkEvent
@@ -69862,7 +70300,6 @@ func (textView textView) WindowToBufferCoords(win TextWindowType, windowX int, w
 //      gtk_window_set_child (GTK_WINDOW (window), box);
 //      gtk_widget_show (window);
 //    }
-//
 type ToggleButton interface {
 	Button
 	Accessible
@@ -70225,7 +70662,6 @@ func (tooltip tooltip) SetTipArea(rect *gdk.Rectangle) {
 //    ├── [expander]
 //    ╰── <child>
 //
-//
 // GtkTreeExpander has zero or one CSS nodes with the name "expander" that
 // should display the expander icon. The node will be `:checked` when it is
 // expanded. If the node is not expandable, an "indent" node will be displayed
@@ -70251,8 +70687,7 @@ type TreeExpander interface {
 	//
 	// This call is essentially equivalent to calling:
 	//
-	//      gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-	//
+	//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 	Item() gextras.Objector
 	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
@@ -70320,8 +70755,7 @@ func (self treeExpander) Child() Widget {
 //
 // This call is essentially equivalent to calling:
 //
-//      gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-//
+//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 func (self treeExpander) Item() gextras.Objector {
 	var arg0 *C.GtkTreeExpander
 
@@ -70819,13 +71253,11 @@ func (self treeListRow) SetExpanded(expanded bool) {
 // Here is an example for setting up a column view with a tree model and a
 // GtkTreeListSorter:
 //
-//
 //    column_sorter = gtk_column_view_get_sorter (view);
 //    sorter = gtk_tree_list_row_sorter_new (g_object_ref (column_sorter));
 //    sort_model = gtk_sort_list_model_new (tree_model, sorter);
 //    selection = gtk_single_selection_new (sort_model);
 //    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
-//
 type TreeListRowSorter interface {
 	Sorter
 
@@ -71039,7 +71471,6 @@ type TreeModelFilter interface {
 	//      return visible;
 	//    }
 	//
-	//
 	// Note that gtk_tree_model_filter_set_visible_func() or
 	// gtk_tree_model_filter_set_visible_column() can only be called once for a
 	// given filter model.
@@ -71101,7 +71532,12 @@ func (filter treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (filte
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -71124,7 +71560,9 @@ func (filter treeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreeP
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -71143,7 +71581,12 @@ func (filter treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeI
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -71164,7 +71607,9 @@ func (filter treeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tree
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -71242,7 +71687,6 @@ func (filter treeModelFilter) SetVisibleColumn(column int) {
 //      return visible;
 //    }
 //
-//
 // Note that gtk_tree_model_filter_set_visible_func() or
 // gtk_tree_model_filter_set_visible_column() can only be called once for a
 // given filter model.
@@ -71316,7 +71760,6 @@ func (filter treeModelFilter) SetVisibleFunc(_func TreeModelFilterVisibleFunc) {
 //                          -1);
 //      g_free (modified_data);
 //    }
-//
 type TreeModelSort interface {
 	gextras.Objector
 	TreeDragSource
@@ -71437,7 +71880,12 @@ func (treeModelSort treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (
 	var ret0 *TreeIter
 	var ret1 bool
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -71460,7 +71908,9 @@ func (treeModelSort treeModelSort) ConvertChildPathToPath(childPath *TreePath) *
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -71479,7 +71929,12 @@ func (treeModelSort treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) 
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -71500,7 +71955,9 @@ func (treeModelSort treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) 
 
 	var ret0 *TreePath
 
-	ret0 = WrapTreePath(ret)
+	{
+		ret0 = WrapTreePath(ret)
+	}
 
 	return ret0
 }
@@ -71597,7 +72054,6 @@ type TreeSelection interface {
 	// To free the return value, use:
 	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	//
 	SelectedRows() (model TreeModel, list *glib.List)
 	// TreeView returns the tree view associated with @selection.
 	TreeView() TreeView
@@ -71710,7 +72166,12 @@ func (selection treeSelection) Selected() (model TreeModel, iter TreeIter, ok bo
 
 	ret0 = WrapTreeModel(externglib.Take(unsafe.Pointer(arg1.Native())))
 
-	ret1 = WrapTreeIter(arg2)
+	{
+		ret1 = WrapTreeIter(arg2)
+		runtime.SetFinalizer(&ret1, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -71725,7 +72186,6 @@ func (selection treeSelection) Selected() (model TreeModel, iter TreeIter, ok bo
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-//
 func (selection treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 	var arg0 *C.GtkTreeSelection
 	var arg1 **C.GtkTreeModel // out
@@ -71739,7 +72199,9 @@ func (selection treeSelection) SelectedRows() (model TreeModel, list *glib.List)
 
 	ret0 = WrapTreeModel(externglib.Take(unsafe.Pointer(arg1.Native())))
 
-	ret1 = glib.WrapList(ret)
+	{
+		ret1 = glib.WrapList(ret)
+	}
 
 	return ret0, ret1
 }
@@ -71944,7 +72406,6 @@ func (selection treeSelection) UnselectRange(startPath *TreePath, endPath *TreeP
 //
 // An example of a UI Definition fragment for a tree store:
 //
-//
 //    <object class="GtkTreeStore">
 //      <columns>
 //        <column type="gchararray"/>
@@ -71952,7 +72413,6 @@ func (selection treeSelection) UnselectRange(startPath *TreePath, endPath *TreeP
 //        <column type="gint"/>
 //      </columns>
 //    </object>
-//
 type TreeStore interface {
 	gextras.Objector
 	Buildable
@@ -72091,7 +72551,12 @@ func (treeStore treeStore) Append(parent *TreeIter) TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -72126,7 +72591,12 @@ func (treeStore treeStore) Insert(parent *TreeIter, position int) TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -72154,7 +72624,12 @@ func (treeStore treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) Tree
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -72182,7 +72657,12 @@ func (treeStore treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) Tre
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -72295,7 +72775,12 @@ func (treeStore treeStore) Prepend(parent *TreeIter) TreeIter {
 
 	var ret0 *TreeIter
 
-	ret0 = WrapTreeIter(arg1)
+	{
+		ret0 = WrapTreeIter(arg1)
+		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -72405,7 +72890,6 @@ func (treeStore treeStore) Swap(a *TreeIter, b *TreeIter) {
 //
 // An example of a UI definition fragment with GtkTreeView:
 //
-//
 //    <object class="GtkTreeView" id="treeview">
 //      <property name="model">liststore1</property>
 //      <child>
@@ -72425,14 +72909,9 @@ func (treeStore treeStore) Swap(a *TreeIter, b *TreeIter) {
 //        </object>
 //      </child>
 //    </object>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    treeview.view
 //    ├── header
 //    │   ├── <column header>
@@ -72441,7 +72920,6 @@ func (treeStore treeStore) Swap(a *TreeIter, b *TreeIter) {
 //    │
 //    ├── [rubberband]
 //    ╰── [dndtarget]
-//
 //
 // GtkTreeView has a main CSS node with name treeview and style class .view. It
 // has a subnode with name header, which is the parent for all the column header
@@ -73277,7 +73755,12 @@ func (treeView treeView) BackgroundArea(path *TreePath, column TreeViewColumn) g
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg3)
+	{
+		ret0 = gdk.WrapRectangle(arg3)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -73305,7 +73788,12 @@ func (treeView treeView) CellArea(path *TreePath, column TreeViewColumn) gdk.Rec
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg3)
+	{
+		ret0 = gdk.WrapRectangle(arg3)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -73338,7 +73826,9 @@ func (treeView treeView) Columns() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -73361,7 +73851,9 @@ func (treeView treeView) Cursor() (path *TreePath, focusColumn TreeViewColumn) {
 	var ret0 **TreePath
 	var ret1 TreeViewColumn
 
-	ret0 = WrapTreePath(arg1)
+	{
+		ret0 = WrapTreePath(arg1)
+	}
 
 	ret1 = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2.Native())))
 
@@ -73390,7 +73882,9 @@ func (treeView treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos
 	var ret1 *TreeViewDropPosition
 	var ret2 bool
 
-	ret0 = WrapTreePath(arg3)
+	{
+		ret0 = WrapTreePath(arg3)
+	}
 
 	ret1 = (*TreeViewDropPosition)(arg4)
 
@@ -73413,7 +73907,9 @@ func (treeView treeView) DragDestRow() (path *TreePath, pos TreeViewDropPosition
 	var ret0 **TreePath
 	var ret1 *TreeViewDropPosition
 
-	ret0 = WrapTreePath(arg1)
+	{
+		ret0 = WrapTreePath(arg1)
+	}
 
 	ret1 = (*TreeViewDropPosition)(arg2)
 
@@ -73646,7 +74142,9 @@ func (treeView treeView) PathAtPos(x int, y int) (path *TreePath, column TreeVie
 	var ret3 int
 	var ret4 bool
 
-	ret0 = WrapTreePath(arg3)
+	{
+		ret0 = WrapTreePath(arg3)
+	}
 
 	ret1 = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg4.Native())))
 
@@ -73804,9 +74302,16 @@ func (treeView treeView) TooltipContext(x int, y int, keyboardTip bool) (model T
 
 	ret0 = WrapTreeModel(externglib.Take(unsafe.Pointer(arg4.Native())))
 
-	ret1 = WrapTreePath(arg5)
+	{
+		ret1 = WrapTreePath(arg5)
+	}
 
-	ret2 = WrapTreeIter(arg6)
+	{
+		ret2 = WrapTreeIter(arg6)
+		runtime.SetFinalizer(&ret2, func(v **TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret3 = gextras.Gobool(ret)
 
@@ -73830,9 +74335,13 @@ func (treeView treeView) VisibleRange() (startPath *TreePath, endPath *TreePath,
 	var ret1 **TreePath
 	var ret2 bool
 
-	ret0 = WrapTreePath(arg1)
+	{
+		ret0 = WrapTreePath(arg1)
+	}
 
-	ret1 = WrapTreePath(arg2)
+	{
+		ret1 = WrapTreePath(arg2)
+	}
 
 	ret2 = gextras.Gobool(ret)
 
@@ -73854,7 +74363,12 @@ func (treeView treeView) VisibleRect() gdk.Rectangle {
 
 	var ret0 *gdk.Rectangle
 
-	ret0 = gdk.WrapRectangle(arg1)
+	{
+		ret0 = gdk.WrapRectangle(arg1)
+		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -73920,7 +74434,9 @@ func (treeView treeView) IsBlankAtPos(x int, y int) (path *TreePath, column Tree
 	var ret3 int
 	var ret4 bool
 
-	ret0 = WrapTreePath(arg3)
+	{
+		ret0 = WrapTreePath(arg3)
+	}
 
 	ret1 = WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg4.Native())))
 
@@ -76082,7 +76598,6 @@ func NewVolumeButton() VolumeButton {
 //                                                   "/com/example/ui/foowidget.ui");
 //      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
 //    }
-//
 type Widget interface {
 	gextras.Objector
 	Accessible
@@ -77361,7 +77876,12 @@ func (widget widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok b
 	var ret0 *graphene.Rect
 	var ret1 bool
 
-	ret0 = graphene.WrapRect(arg2)
+	{
+		ret0 = graphene.WrapRect(arg2)
+		runtime.SetFinalizer(&ret0, func(v **graphene.Rect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -77413,7 +77933,12 @@ func (widget widget) ComputePoint(target Widget, point *graphene.Point) (outPoin
 	var ret0 *graphene.Point
 	var ret1 bool
 
-	ret0 = graphene.WrapPoint(arg3)
+	{
+		ret0 = graphene.WrapPoint(arg3)
+		runtime.SetFinalizer(&ret0, func(v **graphene.Point) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -77435,7 +77960,12 @@ func (widget widget) ComputeTransform(target Widget) (outTransform graphene.Matr
 	var ret0 *graphene.Matrix
 	var ret1 bool
 
-	ret0 = graphene.WrapMatrix(arg2)
+	{
+		ret0 = graphene.WrapMatrix(arg2)
+		runtime.SetFinalizer(&ret0, func(v **graphene.Matrix) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	ret1 = gextras.Gobool(ret)
 
@@ -77621,7 +78151,12 @@ func (widget widget) Allocation() Allocation {
 
 	{
 		var tmp gdk.Rectangle
-		tmp = gdk.WrapRectangle(arg1)
+		{
+			tmp = gdk.WrapRectangle(arg1)
+			runtime.SetFinalizer(&tmp, func(v *gdk.Rectangle) {
+				C.free(unsafe.Pointer(v.Native()))
+			})
+		}
 		ret0 = *Allocation(tmp)
 	}
 
@@ -77909,7 +78444,12 @@ func (widget widget) FontOptions() *cairo.FontOptions {
 
 	var ret0 *cairo.FontOptions
 
-	ret0 = cairo.WrapFontOptions(ret)
+	{
+		ret0 = cairo.WrapFontOptions(ret)
+		runtime.SetFinalizer(&ret0, func(v **cairo.FontOptions) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0
 }
@@ -78303,9 +78843,19 @@ func (widget widget) PreferredSize() (minimumSize Requisition, naturalSize Requi
 	var ret0 *Requisition
 	var ret1 *Requisition
 
-	ret0 = WrapRequisition(arg1)
+	{
+		ret0 = WrapRequisition(arg1)
+		runtime.SetFinalizer(&ret0, func(v **Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
-	ret1 = WrapRequisition(arg2)
+	{
+		ret1 = WrapRequisition(arg2)
+		runtime.SetFinalizer(&ret1, func(v **Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
 
 	return ret0, ret1
 }
@@ -79080,7 +79630,9 @@ func (widget widget) ListMnemonicLabels() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }
@@ -80218,7 +80770,6 @@ func (self widgetPaintable) SetWidget(widget Widget) {
 //    window.background
 //    ├── <child>
 //    ╰── <titlebar child>.titlebar [.default-decoration]
-//
 //
 // GtkWindow has a main CSS node with name window and style class .background.
 //
@@ -81541,7 +82092,6 @@ func (window window) Unminimize() {
 // WindowControls:side), so it's intended to be always used in pair with another
 // WindowControls using the opposite side, for example:
 //
-//
 //    <object class="GtkBox">
 //      <child>
 //        <object class="GtkWindowControls">
@@ -81557,20 +82107,14 @@ func (window window) Unminimize() {
 //        </object>
 //      </child>
 //    </object>
-//    ]|
-//
-//
 //
 // CSS nodes
 //
-//
-//    |[<!-- language="plain" -->
 //    windowcontrols
 //    ├── [image.icon]
 //    ├── [button.minimize]
 //    ├── [button.maximize]
 //    ╰── [button.close]
-//
 //
 // A WindowControls' CSS node is called windowcontrols. It contains subnodes
 // corresponding to each title button. Which of the title buttons exist and
@@ -81822,7 +82366,9 @@ func (windowGroup windowGroup) ListWindows() *glib.List {
 
 	var ret0 *glib.List
 
-	ret0 = glib.WrapList(ret)
+	{
+		ret0 = glib.WrapList(ret)
+	}
 
 	return ret0
 }

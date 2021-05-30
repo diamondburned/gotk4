@@ -243,11 +243,11 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		return conv.call(goName)
 	}
 
-	if result.Class != nil || result.Record != nil {
+	if result.Class != nil || result.Record != nil || result.Interface != nil {
 		wrapName := resolved.WrapName(resolved.NeedsNamespace(ng.current))
 
 		switch {
-		case result.Class != nil:
+		case result.Class != nil, result.Interface != nil:
 			return cgoTakeObject(conv.TypeConversion, wrapName)
 
 		case result.Record != nil:

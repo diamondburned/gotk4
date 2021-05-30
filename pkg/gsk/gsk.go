@@ -1489,6 +1489,8 @@ type cairoRenderer struct {
 	Renderer
 }
 
+var _ CairoRenderer = (*cairoRenderer)(nil)
+
 // WrapCairoRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCairoRenderer(obj *externglib.Object) CairoRenderer {
@@ -1523,6 +1525,8 @@ type GLRenderer interface {
 type glRenderer struct {
 	Renderer
 }
+
+var _ GLRenderer = (*glRenderer)(nil)
 
 // WrapGLRenderer wraps a GObject to the right type. It is
 // primarily used internally.
@@ -1620,11 +1624,13 @@ type glShader struct {
 	gextras.Objector
 }
 
+var _ GLShader = (*glShader)(nil)
+
 // WrapGLShader wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLShader(obj *externglib.Object) GLShader {
 	return GLShader{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -2014,11 +2020,13 @@ type renderer struct {
 	gextras.Objector
 }
 
+var _ Renderer = (*renderer)(nil)
+
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
 	return Renderer{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -2157,6 +2165,8 @@ type VulkanRenderer interface {
 type vulkanRenderer struct {
 	Renderer
 }
+
+var _ VulkanRenderer = (*vulkanRenderer)(nil)
 
 // WrapVulkanRenderer wraps a GObject to the right type. It is
 // primarily used internally.

@@ -16,6 +16,17 @@ var initTmpl = newGoTemplate(`
 			{{ end }}
 			{{ end }}
 
+			{{ if .Bitfields -}}
+			// Bitfields
+			{{- range .Bitfields }}
+			{{- if .GLibGetType }}
+			{T: externglib.Type(C.{{.GLibGetType}}()), F: marshal{{PascalToGo .Name}}},
+			{{- else }}
+			// Skipped {{.Name}}.
+			{{- end -}}
+			{{ end }}
+			{{ end }}
+
 			{{ if .Records -}}
 			// Records
 			{{- range .Records }}
@@ -37,12 +48,24 @@ var initTmpl = newGoTemplate(`
 			{{- end -}}
 			{{ end }}
 			{{ end }}
+
+			{{ if .Interfaces -}}
+			// Interfaces
+			{{- range .Interfaces }}
+			{{- if (and .GLibGetType ($.I.Use .)) }}
+			{T: externglib.Type(C.{{.GLibGetType}}()), F: marshal{{$.C.InterfaceName}}},
+			{{- else }}
+			// Skipped {{.Name}}.
+			{{- end -}}
+			{{ end }}
+			{{ end }}
 		})
 	}
 `)
 
 type initGenerator struct {
 	*gir.Namespace
+	I  *ifaceGenerator
 	C  *classGenerator
 	R  *recordGenerator
 	Ng *NamespaceGenerator
@@ -56,6 +79,7 @@ func (ng *NamespaceGenerator) generateInit() {
 
 		Ng: ng,
 
+		I: newIfaceGenerator(ng),
 		C: newClassGenerator(ng),
 		R: newRecordGenerator(ng),
 	})

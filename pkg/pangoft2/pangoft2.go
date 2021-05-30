@@ -5,7 +5,6 @@ package pangoft2
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
@@ -16,13 +15,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
 //
-// // extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -232,13 +225,6 @@ type FontMap interface {
 
 	// CreateContext: create a `PangoContext` for the given fontmap.
 	CreateContext() pango.Context
-	// SetDefaultSubstitute sets a function that will be called to do final
-	// configuration substitution on a `FcPattern` before it is used to load the
-	// font.
-	//
-	// This function can be used to do things like set hinting and antialiasing
-	// options.
-	SetDefaultSubstitute(_func SubstituteFunc)
 	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
 	SetResolution(dpiX float64, dpiY float64)
@@ -255,6 +241,8 @@ type FontMap interface {
 type fontMap struct {
 	pangofc.FontMap
 }
+
+var _ FontMap = (*fontMap)(nil)
 
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
@@ -295,23 +283,6 @@ func (fontmap fontMap) CreateContext() pango.Context {
 	ret0 = pango.WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
 
 	return ret0
-}
-
-// SetDefaultSubstitute sets a function that will be called to do final
-// configuration substitution on a `FcPattern` before it is used to load the
-// font.
-//
-// This function can be used to do things like set hinting and antialiasing
-// options.
-func (fontmap fontMap) SetDefaultSubstitute(_func SubstituteFunc) {
-	var arg0 *C.PangoFT2FontMap
-	var arg1 C.PangoFT2SubstituteFunc
-	arg2 := C.gpointer(box.Assign(data))
-
-	arg0 = (*C.PangoFT2FontMap)(fontmap.Native())
-	arg1 = (*[0]byte)(C.gotk4_SubstituteFunc)
-
-	C.pango_ft2_font_map_set_default_substitute(arg0, arg1, (*[0]byte)(C.callbackDelete))
 }
 
 // SetResolution sets the horizontal and vertical resolutions for the

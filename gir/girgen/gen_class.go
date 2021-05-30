@@ -9,7 +9,7 @@ import (
 var classTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .InterfaceName }}
 	type {{ .InterfaceName }} interface {
-		{{ range .TypeTree.PublicChildren }}
+		{{ range .TypeTree.PublicChildren -}}
 		{{ . }}
 		{{ end }}
 
@@ -21,10 +21,12 @@ var classTmpl = newGoTemplate(`
 
 	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
 	type {{ .StructName }} struct {
-		{{ range .TypeTree.PublicChildren }}
+		{{ range .TypeTree.PublicChildren -}}
 		{{ . }}
 		{{ end }}
 	}
+
+	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
 
 	// Wrap{{ .InterfaceName }} wraps a GObject to the right type. It is
 	// primarily used internally.
@@ -44,8 +46,6 @@ var classTmpl = newGoTemplate(`
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
 	{{ end }}
-
-	{{ $recv := (FirstLetter $.StructName) }}
 
 	{{ range .Methods }}
 	{{ GoDoc .Doc 1 .Name }}

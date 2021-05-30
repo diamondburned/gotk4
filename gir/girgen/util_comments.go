@@ -22,7 +22,7 @@ var (
 	cmtPrimitiveRegex = regexp.MustCompile(`%\w+`)
 	cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
 	cmtHeadingRegex   = regexp.MustCompile(`\n*#+ (.*?)(?: ?#+ ?\{#.*?\})?\n+`)
-	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->\n)?(.*)(?:\]\|)?\]\|\n*`)
+	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?(.*?)(?:\]\|)?\]\|\n*`)
 	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
 )
 

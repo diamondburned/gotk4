@@ -189,6 +189,8 @@ type x11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
 
+var _ X11AppLaunchContext = (*x11AppLaunchContext)(nil)
+
 // WrapX11AppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
@@ -212,11 +214,13 @@ type x11DeviceManagerXI2 struct {
 	gextras.Objector
 }
 
+var _ X11DeviceManagerXI2 = (*x11DeviceManagerXI2)(nil)
+
 // WrapX11DeviceManagerXI2 wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
 	return X11DeviceManagerXI2{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -234,6 +238,8 @@ type X11DeviceXI2 interface {
 type x11DeviceXI2 struct {
 	gdk.Device
 }
+
+var _ X11DeviceXI2 = (*x11DeviceXI2)(nil)
 
 // WrapX11DeviceXI2 wraps a GObject to the right type. It is
 // primarily used internally.
@@ -366,6 +372,8 @@ type X11Display interface {
 type x11Display struct {
 	gdk.Display
 }
+
+var _ X11Display = (*x11Display)(nil)
 
 // WrapX11Display wraps a GObject to the right type. It is
 // primarily used internally.
@@ -819,6 +827,8 @@ type x11Drag struct {
 	gdk.Drag
 }
 
+var _ X11Drag = (*x11Drag)(nil)
+
 // WrapX11Drag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Drag(obj *externglib.Object) X11Drag {
@@ -849,6 +859,8 @@ type X11Monitor interface {
 type x11Monitor struct {
 	gdk.Monitor
 }
+
+var _ X11Monitor = (*x11Monitor)(nil)
 
 // WrapX11Monitor wraps a GObject to the right type. It is
 // primarily used internally.
@@ -946,11 +958,13 @@ type x11Screen struct {
 	gextras.Objector
 }
 
+var _ X11Screen = (*x11Screen)(nil)
+
 // WrapX11Screen wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapX11Screen(obj *externglib.Object) X11Screen {
 	return X11Screen{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -1167,6 +1181,8 @@ type X11Surface interface {
 type x11Surface struct {
 	gdk.Surface
 }
+
+var _ X11Surface = (*x11Surface)(nil)
 
 // WrapX11Surface wraps a GObject to the right type. It is
 // primarily used internally.

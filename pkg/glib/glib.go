@@ -16,6 +16,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
 //
+// // extern void callbackDelete(gpointer);
 // extern void gotk4_ChildWatchFunc(GPid, gint, gpointer)
 // extern gint gotk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer)
 // extern void gotk4_DataForeachFunc(GQuark, gpointer, gpointer)
@@ -33,6 +34,11 @@ import (
 // extern gboolean gotk4_TestLogFatalFunc(const gchar*, GLogLevelFlags, const gchar*, gpointer)
 // extern gboolean gotk4_UnixFDSourceFunc(gint, GIOCondition, gpointer)
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -75,6 +81,29 @@ func init() {
 		// Skipped UserDirectory.
 		// Skipped VariantClass.
 		// Skipped VariantParseError.
+
+		// Bitfields
+		// Skipped AsciiType.
+		// Skipped FileSetContentsFlags.
+		// Skipped FileTest.
+		// Skipped FormatSizeFlags.
+		// Skipped HookFlagMask.
+		{T: externglib.Type(C.g_io_condition_get_type()), F: marshalIOCondition},
+		// Skipped IOFlags.
+		// Skipped KeyFileFlags.
+		// Skipped LogLevelFlags.
+		// Skipped MarkupCollectType.
+		// Skipped MarkupParseFlags.
+		// Skipped OptionFlags.
+		// Skipped RegexCompileFlags.
+		// Skipped RegexMatchFlags.
+		// Skipped SpawnFlags.
+		// Skipped TestSubprocessFlags.
+		// Skipped TestTrapFlags.
+		// Skipped TraverseFlags.
+		// Skipped UriFlags.
+		// Skipped UriHideFlags.
+		// Skipped UriParamsFlags.
 
 		// Records
 		{T: externglib.Type(C.g_array_get_type()), F: marshalArray},
@@ -3443,42 +3472,6 @@ func AssertionMessageExpr(domain string, file string, line int, _func string, ex
 	C.g_assertion_message_expr(arg1, arg2, arg3, arg4, arg5)
 }
 
-// Atexit specifies a function to be called at normal program termination.
-//
-// Since GLib 2.8.2, on Windows g_atexit() actually is a preprocessor macro that
-// maps to a call to the atexit() function in the C library. This means that in
-// case the code that calls g_atexit(), i.e. atexit(), is in a DLL, the function
-// will be called when the DLL is detached from the program. This typically
-// makes more sense than that the function is called when the GLib DLL is
-// detached, which happened earlier when g_atexit() was a function in the GLib
-// DLL.
-//
-// The behaviour of atexit() in the context of dynamically loaded modules is not
-// formally specified and varies wildly.
-//
-// On POSIX systems, calling g_atexit() (or atexit()) in a dynamically loaded
-// module which is unloaded before the program terminates might well cause a
-// crash at program exit.
-//
-// Some POSIX systems implement atexit() like Windows, and have each dynamically
-// loaded module maintain an own atexit chain that is called when the module is
-// unloaded.
-//
-// On other POSIX systems, before a dynamically loaded module is unloaded, the
-// registered atexit functions (if any) residing in that module are called,
-// regardless where the code that registered them resided. This is presumably
-// the most robust approach.
-//
-// As can be seen from the above, for portability it's best to avoid calling
-// g_atexit() (or atexit()) except in the main executable of a program.
-func Atexit(_func VoidFunc) {
-	var arg1 C.GVoidFunc
-
-	arg1 = (*[0]byte)(C.gotk4_VoidFunc)
-
-	C.g_atexit(arg1)
-}
-
 // AtomicIntAdd: atomically adds @val to the value of @atomic.
 //
 // Think of this operation as an atomic version of `{ tmp = *atomic; *atomic +=
@@ -3950,10 +3943,12 @@ func AtomicRcBoxRelease(memBlock interface{}) {
 // @mem_block.
 func AtomicRcBoxReleaseFull(memBlock interface{}) {
 	var arg1 C.gpointer
+	var arg2 C.GDestroyNotify
 
 	arg1 = C.gpointer(box.Assign(memBlock))
+	arg2 = (*[0]byte)(C.callbackDelete)
 
-	C.g_atomic_rc_box_release_full(arg1, (*[0]byte)(C.free))
+	C.g_atomic_rc_box_release_full(arg1, arg2)
 }
 
 // AtomicRefCountCompare: atomically compares the current value of @arc with
@@ -4440,25 +4435,6 @@ func ClearError() {
 	C.g_clear_error()
 }
 
-// ClearHandleID clears a numeric handler, such as a #GSource ID.
-//
-// @tag_ptr must be a valid pointer to the variable holding the handler.
-//
-// If the ID is zero then this function does nothing. Otherwise, clear_func() is
-// called with the ID as a parameter, and the tag is set to zero.
-//
-// A macro is also included that allows this function to be used without pointer
-// casts.
-func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc) {
-	var arg1 *C.guint
-	var arg2 C.GClearHandleFunc
-
-	arg1 = (*C.guint)(tagPtr)
-	arg2 = (*[0]byte)(C.gotk4_ClearHandleFunc)
-
-	C.g_clear_handle_id(arg1, arg2)
-}
-
 // ClearList clears a pointer to a #GList, freeing it and, optionally, freeing
 // its elements using @destroy.
 //
@@ -4466,10 +4442,12 @@ func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc) {
 // does nothing.
 func ClearList(listPtr **List) {
 	var arg1 **C.GList
+	var arg2 C.GDestroyNotify
 
 	arg1 = (**C.GList)(listPtr.Native())
+	arg2 = (*[0]byte)(C.callbackDelete)
 
-	C.g_clear_list(arg1, (*[0]byte)(C.free))
+	C.g_clear_list(arg1, arg2)
 }
 
 // ClearPointer clears a reference to a variable.
@@ -4487,10 +4465,12 @@ func ClearList(listPtr **List) {
 // will experience undefined behaviour.
 func ClearPointer(pp interface{}) {
 	var arg1 *C.gpointer
+	var arg2 C.GDestroyNotify
 
 	arg1 = C.gpointer(box.Assign(pp))
+	arg2 = (*[0]byte)(C.callbackDelete)
 
-	C.g_clear_pointer(arg1, (*[0]byte)(C.free))
+	C.g_clear_pointer(arg1, arg2)
 }
 
 // ClearSlist clears a pointer to a List, freeing it and, optionally, freeing
@@ -4500,10 +4480,12 @@ func ClearPointer(pp interface{}) {
 // does nothing.
 func ClearSlist(slistPtr **SList) {
 	var arg1 **C.GSList
+	var arg2 C.GDestroyNotify
 
 	arg1 = (**C.GSList)(slistPtr.Native())
+	arg2 = (*[0]byte)(C.callbackDelete)
 
-	C.g_clear_slist(arg1, (*[0]byte)(C.free))
+	C.g_clear_slist(arg1, arg2)
 }
 
 // Close: this wraps the close() call; in case of error, errno will be
@@ -4631,12 +4613,13 @@ func DatalistClear(datalist **Data) {
 func DatalistForeach(datalist **Data, _func DataForeachFunc) {
 	var arg1 **C.GData
 	var arg2 C.GDataForeachFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg3 C.gpointer
 
 	arg1 = (**C.GData)(datalist.Native())
 	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	C.g_datalist_foreach(arg1, arg2)
+	C.g_datalist_foreach(arg1, arg2, arg3)
 }
 
 // DatalistGetData gets a data element, using its string identifier. This is
@@ -4732,12 +4715,13 @@ func DatasetDestroy(datasetLocation interface{}) {
 func DatasetForeach(datasetLocation interface{}, _func DataForeachFunc) {
 	var arg1 C.gpointer
 	var arg2 C.GDataForeachFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg3 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(datasetLocation))
 	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	C.g_dataset_foreach(arg1, arg2)
+	C.g_dataset_foreach(arg1, arg2, arg3)
 }
 
 // DateStrftime generates a printed representation of the date, in a
@@ -7007,12 +6991,15 @@ func IconvOpen(toCodeset string, fromCodeset string) IConv {
 func IdleAddFull(priority int, function SourceFunc) uint {
 	var arg1 C.gint
 	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg3 C.gpointer
+	var arg4 C.GDestroyNotify
 
 	arg1 = C.gint(priority)
 	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg3 = C.gpointer(box.Assign(function))
+	arg4 = (*[0]byte)(C.callbackDelete)
 
-	ret := C.g_idle_add_full(arg1, arg2, (*[0]byte)(C.free))
+	ret := C.g_idle_add_full(arg1, arg2, arg3, arg4)
 
 	var ret0 uint
 
@@ -7176,33 +7163,6 @@ func InternString(string string) string {
 	var ret0 string
 
 	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
-// IOAddWatchFull adds the OChannel into the default main loop context with the
-// given priority.
-//
-// This internally creates a main loop source using g_io_create_watch() and
-// attaches it to the main loop context with g_source_attach(). You can do these
-// steps manually if you need greater control.
-func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, _func IOFunc) uint {
-	var arg1 *C.GIOChannel
-	var arg2 C.gint
-	var arg3 C.GIOCondition
-	var arg4 C.GIOFunc
-	arg5 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*C.GIOChannel)(channel.Native())
-	arg2 = C.gint(priority)
-	arg3 = (C.GIOCondition)(condition)
-	arg4 = (*[0]byte)(C.gotk4_IOFunc)
-
-	ret := C.g_io_add_watch_full(arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -7464,47 +7424,6 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	ret0 = LogLevelFlags(ret)
 
 	return ret0
-}
-
-// LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
-// the @user_data.
-//
-// This has no effect if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) uint {
-	var arg1 *C.gchar
-	var arg2 C.GLogLevelFlags
-	var arg3 C.GLogFunc
-	arg4 := C.gpointer(box.Assign(userData))
-
-	arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GLogLevelFlags)(logLevels)
-	arg3 = (*[0]byte)(C.gotk4_LogFunc)
-
-	ret := C.g_log_set_handler_full(arg1, arg2, arg3, (*[0]byte)(C.free))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// LogSetWriterFunc: set a writer function which will be called to format and
-// write out each log message. Each program should set a writer function, or the
-// default writer (g_log_writer_default()) will be used.
-//
-// Libraries **must not** call this function — only programs are allowed to
-// install a writer function, as there must be a single, central point where log
-// messages are formatted and outputted.
-//
-// There can only be one writer function. It is an error to set more than one.
-func LogSetWriterFunc(_func LogWriterFunc) {
-	var arg1 C.GLogWriterFunc
-	var arg2 C.gpointer
-
-	C.g_log_set_writer_func(arg1, arg2, (*[0]byte)(C.free))
 }
 
 // LogVariant: log a message with structured data, accepting the data within a
@@ -8507,7 +8426,6 @@ func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equal
 
 	}
 	arg2 = C.gpointer(box.Assign(needle))
-	arg3 = (*[0]byte)(C.gotk4_EqualFunc)
 
 	ret := C.g_ptr_array_find_with_equal_func(arg1, arg2, arg3, &arg4)
 
@@ -8530,14 +8448,15 @@ func QsortWithData(pbase interface{}, totalElems int, size uint, compareFunc Com
 	var arg2 C.gint
 	var arg3 C.gsize
 	var arg4 C.GCompareDataFunc
-	arg5 := C.gpointer(box.Assign(userData))
+	var arg5 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(pbase))
 	arg2 = C.gint(totalElems)
 	arg3 = C.gsize(size)
 	arg4 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	arg5 = C.gpointer(box.Assign(compareFunc))
 
-	C.g_qsort_with_data(arg1, arg2, arg3, arg4)
+	C.g_qsort_with_data(arg1, arg2, arg3, arg4, arg5)
 }
 
 // QuarkFromStaticString gets the #GQuark identifying the given (static) string.
@@ -8811,10 +8730,12 @@ func RcBoxRelease(memBlock interface{}) {
 // @mem_block.
 func RcBoxReleaseFull(memBlock interface{}) {
 	var arg1 C.gpointer
+	var arg2 C.GDestroyNotify
 
 	arg1 = C.gpointer(box.Assign(memBlock))
+	arg2 = (*[0]byte)(C.callbackDelete)
 
-	C.g_rc_box_release_full(arg1, (*[0]byte)(C.free))
+	C.g_rc_box_release_full(arg1, arg2)
 }
 
 // Realloc reallocates the memory pointed to by @mem, so that it now has space
@@ -9822,7 +9743,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	var arg3 **C.gchar
 	var arg4 C.GSpawnFlags
 	var arg5 C.GSpawnChildSetupFunc
-	arg6 := C.gpointer(box.Assign(userData))
+	var arg6 C.gpointer
 	var arg7 *C.GPid // out
 
 	arg1 = (*C.gchar)(C.CString(workingDirectory))
@@ -9835,8 +9756,9 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg6 = C.gpointer(box.Assign(childSetup))
 
-	ret := C.g_spawn_async(arg1, arg2, arg3, arg4, arg5, &arg7)
+	ret := C.g_spawn_async(arg1, arg2, arg3, arg4, arg5, arg6, &arg7)
 
 	var ret0 *Pid
 	var ret1 bool
@@ -9876,7 +9798,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	var arg3 **C.gchar
 	var arg4 C.GSpawnFlags
 	var arg5 C.GSpawnChildSetupFunc
-	arg6 := C.gpointer(box.Assign(userData))
+	var arg6 C.gpointer
 	var arg7 *C.GPid // out
 	var arg8 C.gint
 	var arg9 C.gint
@@ -9892,11 +9814,12 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg6 = C.gpointer(box.Assign(childSetup))
 	arg8 = C.gint(stdinFd)
 	arg9 = C.gint(stdoutFd)
 	arg10 = C.gint(stderrFd)
 
-	ret := C.g_spawn_async_with_fds(arg1, arg2, arg3, arg4, arg5, &arg7, arg8, arg9, arg10)
+	ret := C.g_spawn_async_with_fds(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, arg8, arg9, arg10)
 
 	var ret0 *Pid
 	var ret1 bool
@@ -10074,7 +9997,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	var arg3 **C.gchar
 	var arg4 C.GSpawnFlags
 	var arg5 C.GSpawnChildSetupFunc
-	arg6 := C.gpointer(box.Assign(userData))
+	var arg6 C.gpointer
 	var arg7 *C.GPid  // out
 	var arg8 *C.gint  // out
 	var arg9 *C.gint  // out
@@ -10090,8 +10013,9 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg6 = C.gpointer(box.Assign(childSetup))
 
-	ret := C.g_spawn_async_with_pipes(arg1, arg2, arg3, arg4, arg5, &arg7, &arg8, &arg9, &arg10)
+	ret := C.g_spawn_async_with_pipes(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &arg8, &arg9, &arg10)
 
 	var ret0 *Pid
 	var ret1 int
@@ -10312,7 +10236,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var arg3 **C.gchar
 	var arg4 C.GSpawnFlags
 	var arg5 C.GSpawnChildSetupFunc
-	arg6 := C.gpointer(box.Assign(userData))
+	var arg6 C.gpointer
 	var arg7 **C.gchar // out
 	var arg8 **C.gchar // out
 	var arg9 *C.gint   // out
@@ -10327,8 +10251,9 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg6 = C.gpointer(box.Assign(childSetup))
 
-	ret := C.g_spawn_sync(arg1, arg2, arg3, arg4, arg5, &arg7, &arg8, &arg9)
+	ret := C.g_spawn_sync(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &arg8, &arg9)
 
 	var ret0 []byte
 	var ret1 []byte
@@ -11480,89 +11405,6 @@ func StrvLength(strArray string) uint {
 	return ret0
 }
 
-// TestAddDataFunc: create a new test case, similar to g_test_create_case().
-// However the test is assumed to use no fixture, and test suites are
-// automatically created on the fly and added to the root fixture, based on the
-// slash-separated portions of @testpath. The @test_data argument will be passed
-// as first argument to @test_func.
-//
-// If @testpath includes the component "subprocess" anywhere in it, the test
-// will be skipped by default, and only run if explicitly required via the `-p`
-// command-line option or g_test_trap_subprocess().
-//
-// No component of @testpath may start with a dot (`.`) if the
-// G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
-// so even if it isn’t.
-func TestAddDataFunc(testpath string, testData interface{}, testFunc TestDataFunc) {
-	var arg1 *C.char
-	var arg2 C.gpointer
-	var arg3 C.GTestDataFunc
-
-	arg1 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gpointer(box.Assign(testData))
-	arg3 = (*[0]byte)(C.gotk4_TestDataFunc)
-
-	C.g_test_add_data_func(arg1, arg2, arg3)
-}
-
-// TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
-// but freeing @test_data after the test run is complete.
-func TestAddDataFuncFull(testpath string, testData interface{}, testFunc TestDataFunc) {
-	var arg1 *C.char
-	var arg2 C.gpointer
-	var arg3 C.GTestDataFunc
-
-	arg1 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gpointer(box.Assign(testData))
-	arg3 = (*[0]byte)(C.gotk4_TestDataFunc)
-
-	C.g_test_add_data_func_full(arg1, arg2, arg3, (*[0]byte)(C.free))
-}
-
-// TestAddFunc: create a new test case, similar to g_test_create_case(). However
-// the test is assumed to use no fixture, and test suites are automatically
-// created on the fly and added to the root fixture, based on the
-// slash-separated portions of @testpath.
-//
-// If @testpath includes the component "subprocess" anywhere in it, the test
-// will be skipped by default, and only run if explicitly required via the `-p`
-// command-line option or g_test_trap_subprocess().
-//
-// No component of @testpath may start with a dot (`.`) if the
-// G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
-// so even if it isn’t.
-func TestAddFunc(testpath string, testFunc TestFunc) {
-	var arg1 *C.char
-	var arg2 C.GTestFunc
-
-	arg1 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*[0]byte)(C.gotk4_TestFunc)
-
-	C.g_test_add_func(arg1, arg2)
-}
-
-func TestAddVtable(testpath string, dataSize uint, testData interface{}, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc) {
-	var arg1 *C.char
-	var arg2 C.gsize
-	var arg3 C.gpointer
-	var arg4 C.GTestFixtureFunc
-	var arg5 C.GTestFixtureFunc
-	var arg6 C.GTestFixtureFunc
-
-	arg1 = (*C.gchar)(C.CString(testpath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gsize(dataSize)
-	arg3 = C.gpointer(box.Assign(testData))
-	arg4 = (*[0]byte)(C.gotk4_TestFixtureFunc)
-	arg5 = (*[0]byte)(C.gotk4_TestFixtureFunc)
-	arg6 = (*[0]byte)(C.gotk4_TestFixtureFunc)
-
-	C.g_test_add_vtable(arg1, arg2, arg3, arg4, arg5, arg6)
-}
-
 func TestAssertExpectedMessagesInternal(domain string, file string, line int, _func string) {
 	var arg1 *C.char
 	var arg2 *C.char
@@ -11612,48 +11454,6 @@ func TestBugBase(uriPattern string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_test_bug_base(arg1)
-}
-
-// TestCreateCase: create a new Case, named @test_name.
-//
-// This API is fairly low level, and calling g_test_add() or g_test_add_func()
-// is preferable.
-//
-// When this test is executed, a fixture structure of size @data_size will be
-// automatically allocated and filled with zeros. Then @data_setup is called to
-// initialize the fixture. After fixture setup, the actual test function
-// @data_test is called. Once the test run completes, the fixture structure is
-// torn down by calling @data_teardown and after that the memory is
-// automatically released by the test framework.
-//
-// Splitting up a test run into fixture setup, test function and fixture
-// teardown is most useful if the same fixture type is used for multiple tests.
-// In this cases, g_test_create_case() will be called with the same type of
-// fixture (the @data_size argument), but varying @test_name and @data_test
-// arguments.
-func TestCreateCase(testName string, dataSize uint, testData interface{}, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc) *TestCase {
-	var arg1 *C.char
-	var arg2 C.gsize
-	var arg3 C.gpointer
-	var arg4 C.GTestFixtureFunc
-	var arg5 C.GTestFixtureFunc
-	var arg6 C.GTestFixtureFunc
-
-	arg1 = (*C.gchar)(C.CString(testName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gsize(dataSize)
-	arg3 = C.gpointer(box.Assign(testData))
-	arg4 = (*[0]byte)(C.gotk4_TestFixtureFunc)
-	arg5 = (*[0]byte)(C.gotk4_TestFixtureFunc)
-	arg6 = (*[0]byte)(C.gotk4_TestFixtureFunc)
-
-	ret := C.g_test_create_case(arg1, arg2, arg3, arg4, arg5, arg6)
-
-	var ret0 *TestCase
-
-	ret0 = WrapTestCase(ret)
-
-	return ret0
 }
 
 // TestCreateSuite: create a new test suite with the name @suite_name.
@@ -11824,11 +11624,12 @@ func TestIncomplete(msg string) {
 // Logging][using-structured-logging].
 func TestLogSetFatalHandler(logFunc TestLogFatalFunc) {
 	var arg1 C.GTestLogFatalFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg2 C.gpointer
 
 	arg1 = (*[0]byte)(C.gotk4_TestLogFatalFunc)
+	arg2 = C.gpointer(box.Assign(logFunc))
 
-	C.g_test_log_set_fatal_handler(arg1)
+	C.g_test_log_set_fatal_handler(arg1, arg2)
 }
 
 func TestLogTypeName(logType TestLogType) string {
@@ -11851,11 +11652,13 @@ func TestLogTypeName(logType TestLogType) string {
 // are released in reverse queue order, that means enqueueing callback A before
 // callback B will cause B() to be called before A() during teardown.
 func TestQueueDestroy(destroyData interface{}) {
+	var arg1 C.GDestroyNotify
 	var arg2 C.gpointer
 
+	arg1 = (*[0]byte)(C.callbackDelete)
 	arg2 = C.gpointer(box.Assign(destroyData))
 
-	C.g_test_queue_destroy((*[0]byte)(C.free), arg2)
+	C.g_test_queue_destroy(arg1, arg2)
 }
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
@@ -12471,13 +12274,16 @@ func TimeoutAddFull(priority int, interval uint, function SourceFunc) uint {
 	var arg1 C.gint
 	var arg2 C.guint
 	var arg3 C.GSourceFunc
-	arg4 := C.gpointer(box.Assign(data))
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
 
 	arg1 = C.gint(priority)
 	arg2 = C.guint(interval)
 	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg4 = C.gpointer(box.Assign(function))
+	arg5 = (*[0]byte)(C.callbackDelete)
 
-	ret := C.g_timeout_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
+	ret := C.g_timeout_add_full(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 uint
 
@@ -12528,13 +12334,16 @@ func TimeoutAddSecondsFull(priority int, interval uint, function SourceFunc) uin
 	var arg1 C.gint
 	var arg2 C.guint
 	var arg3 C.GSourceFunc
-	arg4 := C.gpointer(box.Assign(data))
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
 
 	arg1 = C.gint(priority)
 	arg2 = C.guint(interval)
 	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg4 = C.gpointer(box.Assign(function))
+	arg5 = (*[0]byte)(C.callbackDelete)
 
-	ret := C.g_timeout_add_seconds_full(arg1, arg2, arg3, (*[0]byte)(C.free))
+	ret := C.g_timeout_add_seconds_full(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 uint
 
@@ -13533,39 +13342,14 @@ func UnixFdAdd(fd int, condition IOCondition, function UnixFDSourceFunc) uint {
 	var arg1 C.gint
 	var arg2 C.GIOCondition
 	var arg3 C.GUnixFDSourceFunc
-	arg4 := C.gpointer(box.Assign(userData))
+	var arg4 C.gpointer
 
 	arg1 = C.gint(fd)
 	arg2 = (C.GIOCondition)(condition)
 	arg3 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
+	arg4 = C.gpointer(box.Assign(function))
 
-	ret := C.g_unix_fd_add(arg1, arg2, arg3)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// UnixFdAddFull sets a function to be called when the IO condition, as
-// specified by @condition becomes true for @fd.
-//
-// This is the same as g_unix_fd_add(), except that it allows you to specify a
-// non-default priority and a provide a Notify for @user_data.
-func UnixFdAddFull(priority int, fd int, condition IOCondition, function UnixFDSourceFunc) uint {
-	var arg1 C.gint
-	var arg2 C.gint
-	var arg3 C.GIOCondition
-	var arg4 C.GUnixFDSourceFunc
-	arg5 := C.gpointer(box.Assign(userData))
-
-	arg1 = C.gint(priority)
-	arg2 = C.gint(fd)
-	arg3 = (C.GIOCondition)(condition)
-	arg4 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
-
-	ret := C.g_unix_fd_add_full(arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
+	ret := C.g_unix_fd_add(arg1, arg2, arg3, arg4)
 
 	var ret0 uint
 
@@ -13659,28 +13443,6 @@ func UnixSetFdNonblocking(fd int, nonblock bool) bool {
 	var ret0 bool
 
 	ret0 = gextras.Gobool(ret)
-
-	return ret0
-}
-
-// UnixSignalAddFull: a convenience function for g_unix_signal_source_new(),
-// which attaches to the default Context. You can remove the watch using
-// g_source_remove().
-func UnixSignalAddFull(priority int, signum int, handler SourceFunc) uint {
-	var arg1 C.gint
-	var arg2 C.gint
-	var arg3 C.GSourceFunc
-	arg4 := C.gpointer(box.Assign(userData))
-
-	arg1 = C.gint(priority)
-	arg2 = C.gint(signum)
-	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
-
-	ret := C.g_unix_signal_add_full(arg1, arg2, arg3, (*[0]byte)(C.free))
-
-	var ret0 uint
-
-	ret0 = uint(ret)
 
 	return ret0
 }
@@ -18096,13 +17858,14 @@ func (hookList *HookList) Marshal(mayRecurse bool, marshaller HookMarshaller) {
 	var arg0 *C.GHookList
 	var arg1 C.gboolean
 	var arg2 C.GHookMarshaller
-	arg3 := C.gpointer(box.Assign(marshalData))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GHookList)(hookList.Native())
 	arg1 = gextras.Cbool(mayRecurse)
 	arg2 = (*[0]byte)(C.gotk4_HookMarshaller)
+	arg3 = C.gpointer(box.Assign(marshaller))
 
-	C.g_hook_list_marshal(arg0, arg1, arg2)
+	C.g_hook_list_marshal(arg0, arg1, arg2, arg3)
 }
 
 // MarshalCheck calls a function on each valid #GHook and destroys it if the
@@ -18111,13 +17874,14 @@ func (hookList *HookList) MarshalCheck(mayRecurse bool, marshaller HookCheckMars
 	var arg0 *C.GHookList
 	var arg1 C.gboolean
 	var arg2 C.GHookCheckMarshaller
-	arg3 := C.gpointer(box.Assign(marshalData))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GHookList)(hookList.Native())
 	arg1 = gextras.Cbool(mayRecurse)
 	arg2 = (*[0]byte)(C.gotk4_HookCheckMarshaller)
+	arg3 = C.gpointer(box.Assign(marshaller))
 
-	C.g_hook_list_marshal_check(arg0, arg1, arg2)
+	C.g_hook_list_marshal_check(arg0, arg1, arg2, arg3)
 }
 
 // IOChannel: a data structure representing an IO Channel. The fields should be
@@ -20162,12 +19926,13 @@ func (context *MainContext) FindSourceByUserData(userData interface{}) *Source {
 func (context *MainContext) Invoke(function SourceFunc) {
 	var arg0 *C.GMainContext
 	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg2 C.gpointer
 
 	arg0 = (*C.GMainContext)(context.Native())
 	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg2 = C.gpointer(box.Assign(function))
 
-	C.g_main_context_invoke(arg0, arg1)
+	C.g_main_context_invoke(arg0, arg1, arg2)
 }
 
 // InvokeFull invokes a function in such a way that @context is owned during the
@@ -20183,13 +19948,16 @@ func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
 	var arg0 *C.GMainContext
 	var arg1 C.gint
 	var arg2 C.GSourceFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg3 C.gpointer
+	var arg4 C.GDestroyNotify
 
 	arg0 = (*C.GMainContext)(context.Native())
 	arg1 = C.gint(priority)
 	arg2 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg3 = C.gpointer(box.Assign(function))
+	arg4 = (*[0]byte)(C.callbackDelete)
 
-	C.g_main_context_invoke_full(arg0, arg1, arg2, (*[0]byte)(C.free))
+	C.g_main_context_invoke_full(arg0, arg1, arg2, arg3, arg4)
 }
 
 // IsOwner determines whether this thread holds the (recursive) ownership of
@@ -20361,22 +20129,6 @@ func (context *MainContext) RemovePoll(fd *PollFD) {
 	arg1 = (*C.GPollFD)(fd.Native())
 
 	C.g_main_context_remove_poll(arg0, arg1)
-}
-
-// SetPollFunc sets the function to use to handle polling of file descriptors.
-// It will be used instead of the poll() system call (or GLib's replacement
-// function, which is used where poll() isn't available).
-//
-// This function could possibly be used to integrate the GLib event loop with an
-// external event loop.
-func (context *MainContext) SetPollFunc(_func PollFunc) {
-	var arg0 *C.GMainContext
-	var arg1 C.GPollFunc
-
-	arg0 = (*C.GMainContext)(context.Native())
-	arg1 = (*[0]byte)(C.gotk4_PollFunc)
-
-	C.g_main_context_set_poll_func(arg0, arg1)
 }
 
 // Unref decreases the reference count on a Context object by one. If the result
@@ -20724,12 +20476,14 @@ func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userDat
 	var arg1 *C.GMarkupParser
 	var arg2 C.GMarkupParseFlags
 	var arg3 C.gpointer
+	var arg4 C.GDestroyNotify
 
 	arg1 = (*C.GMarkupParser)(parser.Native())
 	arg2 = (C.GMarkupParseFlags)(flags)
 	arg3 = C.gpointer(box.Assign(userData))
+	arg4 = (*[0]byte)(C.callbackDelete)
 
-	ret := C.g_markup_parse_context_new(arg1, arg2, arg3, (*[0]byte)(C.free))
+	ret := C.g_markup_parse_context_new(arg1, arg2, arg3, arg4)
 
 	var ret0 *MarkupParseContext
 
@@ -21490,13 +21244,14 @@ func (node *Node) ChildrenForeach(flags TraverseFlags, _func NodeForeachFunc) {
 	var arg0 *C.GNode
 	var arg1 C.GTraverseFlags
 	var arg2 C.GNodeForeachFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GNode)(node.Native())
 	arg1 = (C.GTraverseFlags)(flags)
 	arg2 = (*[0]byte)(C.gotk4_NodeForeachFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	C.g_node_children_foreach(arg0, arg1, arg2)
+	C.g_node_children_foreach(arg0, arg1, arg2, arg3)
 }
 
 // Copy: recursively copies a #GNode (but does not deep-copy the data inside the
@@ -21519,12 +21274,13 @@ func (node *Node) Copy() *Node {
 func (node *Node) CopyDeep(copyFunc CopyFunc) *Node {
 	var arg0 *C.GNode
 	var arg1 C.GCopyFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg2 C.gpointer
 
 	arg0 = (*C.GNode)(node.Native())
 	arg1 = (*[0]byte)(C.gotk4_CopyFunc)
+	arg2 = C.gpointer(box.Assign(copyFunc))
 
-	ret := C.g_node_copy_deep(arg0, arg1)
+	ret := C.g_node_copy_deep(arg0, arg1, arg2)
 
 	var ret0 *Node
 
@@ -21845,15 +21601,16 @@ func (root *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int
 	var arg2 C.GTraverseFlags
 	var arg3 C.gint
 	var arg4 C.GNodeTraverseFunc
-	arg5 := C.gpointer(box.Assign(data))
+	var arg5 C.gpointer
 
 	arg0 = (*C.GNode)(root.Native())
 	arg1 = (C.GTraverseType)(order)
 	arg2 = (C.GTraverseFlags)(flags)
 	arg3 = C.gint(maxDepth)
 	arg4 = (*[0]byte)(C.gotk4_NodeTraverseFunc)
+	arg5 = C.gpointer(box.Assign(_func))
 
-	C.g_node_traverse(arg0, arg1, arg2, arg3, arg4)
+	C.g_node_traverse(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // Unlink unlinks a #GNode from a tree, resulting in two separate trees.
@@ -21903,24 +21660,6 @@ func (r *Once) Retval() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(o.native.retval))
 	return ret
-}
-
-func (once *Once) Impl(_func ThreadFunc, arg interface{}) interface{} {
-	var arg0 *C.GOnce
-	var arg1 C.GThreadFunc
-	var arg2 C.gpointer
-
-	arg0 = (*C.GOnce)(once.Native())
-	arg1 = (*[0]byte)(C.gotk4_ThreadFunc)
-	arg2 = C.gpointer(box.Assign(arg))
-
-	ret := C.g_once_impl(arg0, arg1, arg2)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
@@ -22036,6 +21775,7 @@ func NewOptionGroup(name string, description string, helpDescription string, use
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
@@ -22044,8 +21784,9 @@ func NewOptionGroup(name string, description string, helpDescription string, use
 	arg3 = (*C.gchar)(C.CString(helpDescription))
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = C.gpointer(box.Assign(userData))
+	arg5 = (*[0]byte)(C.callbackDelete)
 
-	ret := C.g_option_group_new(arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
+	ret := C.g_option_group_new(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 *OptionGroup
 
@@ -22092,21 +21833,6 @@ func (group *OptionGroup) Ref() *OptionGroup {
 	return ret0
 }
 
-// SetErrorHook associates a function with @group which will be called from
-// g_option_context_parse() when an error occurs.
-//
-// Note that the user data to be passed to @error_func can be specified when
-// constructing the group with g_option_group_new().
-func (group *OptionGroup) SetErrorHook(errorFunc OptionErrorFunc) {
-	var arg0 *C.GOptionGroup
-	var arg1 C.GOptionErrorFunc
-
-	arg0 = (*C.GOptionGroup)(group.Native())
-	arg1 = (*[0]byte)(C.gotk4_OptionErrorFunc)
-
-	C.g_option_group_set_error_hook(arg0, arg1)
-}
-
 // SetParseHooks associates two functions with @group which will be called from
 // g_option_context_parse() before the first option is parsed and after the last
 // option has been parsed, respectively.
@@ -22119,8 +21845,6 @@ func (group *OptionGroup) SetParseHooks(preParseFunc OptionParseFunc, postParseF
 	var arg2 C.GOptionParseFunc
 
 	arg0 = (*C.GOptionGroup)(group.Native())
-	arg1 = (*[0]byte)(C.gotk4_OptionParseFunc)
-	arg2 = (*[0]byte)(C.gotk4_OptionParseFunc)
 
 	C.g_option_group_set_parse_hooks(arg0, arg1, arg2)
 }
@@ -22134,12 +21858,15 @@ func (group *OptionGroup) SetParseHooks(preParseFunc OptionParseFunc, postParseF
 func (group *OptionGroup) SetTranslateFunc(_func TranslateFunc) {
 	var arg0 *C.GOptionGroup
 	var arg1 C.GTranslateFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
 
 	arg0 = (*C.GOptionGroup)(group.Native())
 	arg1 = (*[0]byte)(C.gotk4_TranslateFunc)
+	arg2 = C.gpointer(box.Assign(_func))
+	arg3 = (*[0]byte)(C.callbackDelete)
 
-	C.g_option_group_set_translate_func(arg0, arg1, (*[0]byte)(C.free))
+	C.g_option_group_set_translate_func(arg0, arg1, arg2, arg3)
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating
@@ -22394,10 +22121,12 @@ func (queue *Queue) Clear() {
 // and calls the provided @free_func on each item in the #GQueue.
 func (queue *Queue) ClearFull() {
 	var arg0 *C.GQueue
+	var arg1 C.GDestroyNotify
 
 	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*[0]byte)(C.callbackDelete)
 
-	C.g_queue_clear_full(arg0, (*[0]byte)(C.free))
+	C.g_queue_clear_full(arg0, arg1)
 }
 
 // Copy copies a @queue. Note that is a shallow copy. If the elements in the
@@ -22447,29 +22176,6 @@ func (queue *Queue) Find(data interface{}) *List {
 	return ret0
 }
 
-// FindCustom finds an element in a #GQueue, using a supplied function to find
-// the desired element. It iterates over the queue, calling the given function
-// which should return 0 when the desired element is found. The function takes
-// two gconstpointer arguments, the #GQueue element's data as the first argument
-// and the given user data as the second argument.
-func (queue *Queue) FindCustom(data interface{}, _func CompareFunc) *List {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
-	var arg2 C.GCompareFunc
-
-	arg0 = (*C.GQueue)(queue.Native())
-	arg1 = C.gpointer(box.Assign(data))
-	arg2 = (*[0]byte)(C.gotk4_CompareFunc)
-
-	ret := C.g_queue_find_custom(arg0, arg1, arg2)
-
-	var ret0 *List
-
-	ret0 = WrapList(ret)
-
-	return ret0
-}
-
 // Foreach calls @func for each element in the queue passing @user_data to the
 // function.
 //
@@ -22478,12 +22184,13 @@ func (queue *Queue) FindCustom(data interface{}, _func CompareFunc) *List {
 func (queue *Queue) Foreach(_func Func) {
 	var arg0 *C.GQueue
 	var arg1 C.GFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg2 C.gpointer
 
 	arg0 = (*C.GQueue)(queue.Native())
 	arg1 = (*[0]byte)(C.gotk4_Func)
+	arg2 = C.gpointer(box.Assign(_func))
 
-	C.g_queue_foreach(arg0, arg1)
+	C.g_queue_foreach(arg0, arg1, arg2)
 }
 
 // Free frees the memory allocated for the #GQueue. Only call this function if
@@ -22507,10 +22214,12 @@ func (queue *Queue) Free() {
 // from it).
 func (queue *Queue) FreeFull() {
 	var arg0 *C.GQueue
+	var arg1 C.GDestroyNotify
 
 	arg0 = (*C.GQueue)(queue.Native())
+	arg1 = (*[0]byte)(C.callbackDelete)
 
-	C.g_queue_free_full(arg0, (*[0]byte)(C.free))
+	C.g_queue_free_full(arg0, arg1)
 }
 
 // Length returns the number of items in @queue.
@@ -22625,13 +22334,14 @@ func (queue *Queue) InsertSorted(data interface{}, _func CompareDataFunc) {
 	var arg0 *C.GQueue
 	var arg1 C.gpointer
 	var arg2 C.GCompareDataFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GQueue)(queue.Native())
 	arg1 = C.gpointer(box.Assign(data))
 	arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	C.g_queue_insert_sorted(arg0, arg1, arg2)
+	C.g_queue_insert_sorted(arg0, arg1, arg2, arg3)
 }
 
 // IsEmpty returns true if the queue is empty.
@@ -22971,12 +22681,13 @@ func (queue *Queue) Reverse() {
 func (queue *Queue) Sort(compareFunc CompareDataFunc) {
 	var arg0 *C.GQueue
 	var arg1 C.GCompareDataFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg2 C.gpointer
 
 	arg0 = (*C.GQueue)(queue.Native())
 	arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	arg2 = C.gpointer(box.Assign(compareFunc))
 
-	C.g_queue_sort(arg0, arg1)
+	C.g_queue_sort(arg0, arg1, arg2)
 }
 
 // Unlink unlinks @link_ so that it will no longer be part of @queue. The link
@@ -24078,13 +23789,14 @@ func (scanner *Scanner) ScopeForeachSymbol(scopeID uint, _func HFunc) {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 C.GHFunc
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GScanner)(scanner.Native())
 	arg1 = C.guint(scopeID)
 	arg2 = (*[0]byte)(C.gotk4_HFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	C.g_scanner_scope_foreach_symbol(arg0, arg1, arg2)
+	C.g_scanner_scope_foreach_symbol(arg0, arg1, arg2, arg3)
 }
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
@@ -24865,12 +24577,15 @@ func (source *Source) RemoveUnixFd(tag interface{}) {
 func (source *Source) SetCallback(_func SourceFunc) {
 	var arg0 *C.GSource
 	var arg1 C.GSourceFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
 
 	arg0 = (*C.GSource)(source.Native())
 	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg2 = C.gpointer(box.Assign(_func))
+	arg3 = (*[0]byte)(C.callbackDelete)
 
-	C.g_source_set_callback(arg0, arg1, (*[0]byte)(C.free))
+	C.g_source_set_callback(arg0, arg1, arg2, arg3)
 }
 
 // SetCallbackIndirect sets the callback function storing the data as a
@@ -24906,33 +24621,6 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 	arg1 = gextras.Cbool(canRecurse)
 
 	C.g_source_set_can_recurse(arg0, arg1)
-}
-
-// SetDisposeFunction: set @dispose as dispose function on @source. @dispose
-// will be called once the reference count of @source reaches 0 but before any
-// of the state of the source is freed, especially before the finalize function
-// is called.
-//
-// This means that at this point @source is still a valid #GSource and it is
-// allow for the reference count to increase again until @dispose returns.
-//
-// The dispose function can be used to clear any "weak" references to the
-// @source in other data structures in a thread-safe way where it is possible
-// for another thread to increase the reference count of @source again while it
-// is being freed.
-//
-// The finalize function can not be used for this purpose as at that point
-// @source is already partially freed and not valid anymore.
-//
-// This should only ever be called from #GSource implementations.
-func (source *Source) SetDisposeFunction(dispose SourceDisposeFunc) {
-	var arg0 *C.GSource
-	var arg1 C.GSourceDisposeFunc
-
-	arg0 = (*C.GSource)(source.Native())
-	arg1 = (*[0]byte)(C.gotk4_SourceDisposeFunc)
-
-	C.g_source_set_dispose_function(arg0, arg1)
 }
 
 // SetFuncs sets the source functions (can be used to override default
@@ -25845,13 +25533,14 @@ func (t *Thread) Native() unsafe.Pointer {
 func NewThread(name string, _func ThreadFunc) *Thread {
 	var arg1 *C.gchar
 	var arg2 C.GThreadFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg3 C.gpointer
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*[0]byte)(C.gotk4_ThreadFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	ret := C.g_thread_new(arg1, arg2)
+	ret := C.g_thread_new(arg1, arg2, arg3)
 
 	var ret0 *Thread
 
@@ -25864,13 +25553,14 @@ func NewThread(name string, _func ThreadFunc) *Thread {
 func NewThreadTry(name string, _func ThreadFunc) *Thread {
 	var arg1 *C.gchar
 	var arg2 C.GThreadFunc
-	arg3 := C.gpointer(box.Assign(data))
+	var arg3 C.gpointer
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*[0]byte)(C.gotk4_ThreadFunc)
+	arg3 = C.gpointer(box.Assign(_func))
 
-	ret := C.g_thread_try_new(arg1, arg2)
+	ret := C.g_thread_try_new(arg1, arg2, arg3)
 
 	var ret0 *Thread
 
@@ -26122,12 +25812,13 @@ func (pool *ThreadPool) SetMaxThreads(maxThreads int) bool {
 func (pool *ThreadPool) SetSortFunction(_func CompareDataFunc) {
 	var arg0 *C.GThreadPool
 	var arg1 C.GCompareDataFunc
-	arg2 := C.gpointer(box.Assign(userData))
+	var arg2 C.gpointer
 
 	arg0 = (*C.GThreadPool)(pool.Native())
 	arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	arg2 = C.gpointer(box.Assign(_func))
 
-	C.g_thread_pool_set_sort_function(arg0, arg1)
+	C.g_thread_pool_set_sort_function(arg0, arg1, arg2)
 }
 
 // Unprocessed returns the number of tasks still unprocessed in @pool.

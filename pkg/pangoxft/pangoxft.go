@@ -5,7 +5,6 @@ package pangoxft
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -19,13 +18,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoxft.h>
 //
-// // extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -155,23 +148,6 @@ func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, f
 	C.pango_xft_render_transformed(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
-// SetDefaultSubstitute sets a function that will be called to do final
-// configuration substitution on a Pattern before it is used to load the font.
-// This function can be used to do things like set hinting and antialiasing
-// options.
-func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFunc) {
-	var arg1 *C.Display
-	var arg2 C.int
-	var arg3 C.PangoXftSubstituteFunc
-	arg4 := C.gpointer(box.Assign(data))
-
-	arg1 = (*C.Display)(display.Native())
-	arg2 = C.int(screen)
-	arg3 = (*[0]byte)(C.gotk4_SubstituteFunc)
-
-	C.pango_xft_set_default_substitute(arg1, arg2, arg3, (*[0]byte)(C.callbackDelete))
-}
-
 // ShutdownDisplay: release any resources that have been cached for the
 // combination of @display and @screen. Note that when the X display is closed,
 // resources are released automatically, without needing to call this function.
@@ -239,6 +215,8 @@ type Font interface {
 type font struct {
 	pangofc.Font
 }
+
+var _ Font = (*font)(nil)
 
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
@@ -376,6 +354,8 @@ type fontMap struct {
 	pangofc.FontMap
 }
 
+var _ FontMap = (*fontMap)(nil)
+
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
@@ -407,6 +387,8 @@ type Renderer interface {
 type renderer struct {
 	pango.Renderer
 }
+
+var _ Renderer = (*renderer)(nil)
 
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.

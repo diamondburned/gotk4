@@ -22,10 +22,11 @@ func newGoTemplate(block string) *template.Template {
 
 	t := template.New(base)
 	t.Funcs(template.FuncMap{
-		"PascalToGo":  PascalToGo,
-		"SnakeToGo":   SnakeToGo,
-		"FirstLetter": FirstLetter,
-		"GoDoc":       GoDoc,
+		"PascalToGo":     PascalToGo,
+		"UnexportPascal": UnexportPascal,
+		"SnakeToGo":      SnakeToGo,
+		"FirstLetter":    FirstLetter,
+		"GoDoc":          GoDoc,
 	})
 	t = template.Must(t.Parse(block))
 	return t

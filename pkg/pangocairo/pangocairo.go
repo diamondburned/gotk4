@@ -17,16 +17,15 @@ import (
 // #include <pango/pangocairo.h>
 //
 // extern void gotk4_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer)
-// // extern void callbackDelete(gpointer);
 import "C"
 
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
-
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{})
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+
+		// Interfaces
+		{T: externglib.Type(C.pango_cairo_font_get_type()), F: marshal},
+		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshal},
+	})
 }
 
 // ShapeRendererFunc: function type for rendering attributes of type
@@ -116,21 +115,6 @@ func ContextSetResolution(context pango.Context, dpi float64) {
 	arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(arg1, arg2)
-}
-
-// ContextSetShapeRenderer sets callback function for context to use for
-// rendering attributes of type PANGO_ATTR_SHAPE.
-//
-// See `PangoCairoShapeRendererFunc` for details.
-func ContextSetShapeRenderer(context pango.Context, _func ShapeRendererFunc) {
-	var arg1 *C.PangoContext
-	var arg2 C.PangoCairoShapeRendererFunc
-	arg3 := C.gpointer(box.Assign(data))
-
-	arg1 = (*C.PangoContext)(context.Native())
-	arg2 = (*[0]byte)(C.gotk4_ShapeRendererFunc)
-
-	C.pango_cairo_context_set_shape_renderer(arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
 // CreateContext creates a context object set up to match the current
@@ -437,4 +421,197 @@ func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
 	arg2 = (*C.PangoLayout)(layout.Native())
 
 	C.pango_cairo_update_layout(arg1, arg2)
+}
+
+// Font: `PangoCairoFont` is an interface exported by fonts for use with Cairo.
+//
+// The actual type of the font will depend on the particular font technology
+// Cairo was compiled to use.
+type Font interface {
+	pango.Font
+
+	// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
+	// can be referenced and kept using cairo_scaled_font_reference().
+	ScaledFont() *cairo.ScaledFont
+}
+
+// font implements the Font interface.
+type font struct {
+	pango.Font
+}
+
+var _ Font = (*font)(nil)
+
+// WrapFont wraps a GObject to a type that implements interface
+// Font. It is primarily used internally.
+func WrapFont(obj *externglib.Object) Font {
+	return Font{
+		pango.Font: pango.WrapFont(obj),
+	}
+}
+
+func marshalFont(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFont(obj), nil
+}
+
+// ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
+// can be referenced and kept using cairo_scaled_font_reference().
+func (font font) ScaledFont() *cairo.ScaledFont {
+	var arg0 *C.PangoCairoFont
+
+	arg0 = (*C.PangoCairoFont)(font.Native())
+
+	ret := C.pango_cairo_font_get_scaled_font(arg0)
+
+	var ret0 *cairo.ScaledFont
+
+	ret0 = cairo.WrapScaledFont(ret)
+
+	return ret0
+}
+
+// FontMap: `PangoCairoFontMap` is an interface exported by font maps for use
+// with Cairo.
+//
+// The actual type of the font map will depend on the particular font technology
+// Cairo was compiled to use.
+type FontMap interface {
+	pango.FontMap
+
+	// CreateContext: create a `PangoContext` for the given fontmap.
+	CreateContext() pango.Context
+	// FontType gets the type of Cairo font backend that @fontmap uses.
+	FontType() cairo.FontType
+	// Resolution gets the resolution for the fontmap.
+	//
+	// See [method@PangoCairo.FontMap.set_resolution].
+	Resolution() float64
+	// SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
+	//
+	// This can be used to change the Cairo font backend that the default
+	// fontmap uses for example. The old default font map is unreffed and the
+	// new font map referenced.
+	//
+	// Note that since Pango 1.32.6, the default fontmap is per-thread. This
+	// function only changes the default fontmap for the current thread. Default
+	// fontmaps of existing threads are not changed. Default fontmaps of any new
+	// threads will still be created using [type_func@PangoCairo.FontMap.new].
+	//
+	// A value of nil for @fontmap will cause the current default font map to be
+	// released and a new default font map to be created on demand, using
+	// [type_func@PangoCairo.FontMap.new].
+	SetDefault()
+	// SetResolution sets the resolution for the fontmap.
+	//
+	// This is a scale factor between points specified in a
+	// `PangoFontDescription` and Cairo units. The default value is 96, meaning
+	// that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
+	SetResolution(dpi float64)
+}
+
+// fontMap implements the FontMap interface.
+type fontMap struct {
+	pango.FontMap
+}
+
+var _ FontMap = (*fontMap)(nil)
+
+// WrapFontMap wraps a GObject to a type that implements interface
+// FontMap. It is primarily used internally.
+func WrapFontMap(obj *externglib.Object) FontMap {
+	return FontMap{
+		pango.FontMap: pango.WrapFontMap(obj),
+	}
+}
+
+func marshalFontMap(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFontMap(obj), nil
+}
+
+// CreateContext: create a `PangoContext` for the given fontmap.
+func (fontmap fontMap) CreateContext() pango.Context {
+	var arg0 *C.PangoCairoFontMap
+
+	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+
+	ret := C.pango_cairo_font_map_create_context(arg0)
+
+	var ret0 pango.Context
+
+	ret0 = pango.WrapContext(externglib.Take(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// FontType gets the type of Cairo font backend that @fontmap uses.
+func (fontmap fontMap) FontType() cairo.FontType {
+	var arg0 *C.PangoCairoFontMap
+
+	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+
+	ret := C.pango_cairo_font_map_get_font_type(arg0)
+
+	var ret0 cairo.FontType
+
+	ret0 = cairo.FontType(ret)
+
+	return ret0
+}
+
+// Resolution gets the resolution for the fontmap.
+//
+// See [method@PangoCairo.FontMap.set_resolution].
+func (fontmap fontMap) Resolution() float64 {
+	var arg0 *C.PangoCairoFontMap
+
+	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+
+	ret := C.pango_cairo_font_map_get_resolution(arg0)
+
+	var ret0 float64
+
+	ret0 = float64(ret)
+
+	return ret0
+}
+
+// SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
+//
+// This can be used to change the Cairo font backend that the default
+// fontmap uses for example. The old default font map is unreffed and the
+// new font map referenced.
+//
+// Note that since Pango 1.32.6, the default fontmap is per-thread. This
+// function only changes the default fontmap for the current thread. Default
+// fontmaps of existing threads are not changed. Default fontmaps of any new
+// threads will still be created using [type_func@PangoCairo.FontMap.new].
+//
+// A value of nil for @fontmap will cause the current default font map to be
+// released and a new default font map to be created on demand, using
+// [type_func@PangoCairo.FontMap.new].
+func (fontmap fontMap) SetDefault() {
+	var arg0 *C.PangoCairoFontMap
+
+	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+
+	C.pango_cairo_font_map_set_default(arg0)
+}
+
+// SetResolution sets the resolution for the fontmap.
+//
+// This is a scale factor between points specified in a
+// `PangoFontDescription` and Cairo units. The default value is 96, meaning
+// that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
+func (fontmap fontMap) SetResolution(dpi float64) {
+	var arg0 *C.PangoCairoFontMap
+	var arg1 C.double
+
+	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+	arg1 = C.double(dpi)
+
+	C.pango_cairo_font_map_set_resolution(arg0, arg1)
 }

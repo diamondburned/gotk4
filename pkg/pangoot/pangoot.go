@@ -512,11 +512,13 @@ type info struct {
 	gextras.Objector
 }
 
+var _ Info = (*info)(nil)
+
 // WrapInfo wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapInfo(obj *externglib.Object) Info {
 	return Info{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -578,11 +580,13 @@ type ruleset struct {
 	gextras.Objector
 }
 
+var _ Ruleset = (*ruleset)(nil)
+
 // WrapRuleset wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRuleset(obj *externglib.Object) Ruleset {
 	return Ruleset{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 

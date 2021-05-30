@@ -95,9 +95,6 @@ func (cg *callableGenerator) block() string {
 
 		args = pen.NewJoints(", ", len(cg.Parameters.Parameters))
 
-		var closure *int // user-data arg
-		var destroy *int
-
 		doParam := func(i int, param gir.ParameterAttrs, targ, valn string) bool {
 			// Generate a zero-value variable regardless if we have the
 			// conversions or not.
@@ -116,8 +113,8 @@ func (cg *callableGenerator) block() string {
 						ArgAt:      argNamer,
 						ParentName: dots(cg.Ng.PackageName(), cg.Parent, cg.Name),
 					},
-					Closure: closure,
-					Destroy: destroy,
+					Closure: param.Closure,
+					Destroy: param.Destroy,
 				})
 
 				if converter != "" {
@@ -138,17 +135,9 @@ func (cg *callableGenerator) block() string {
 		}
 
 		for i, param := range cg.Parameters.Parameters {
-			if param.Closure != nil {
-				closure = param.Closure
-			}
-			if param.Destroy != nil {
-				destroy = param.Destroy
-			}
-
 			// Be careful with using the index `i`, since the name is different
 			// from the index within the slice.
 
-			ignores.paramIgnore(param)
 			targ := argNamer(i)
 			valn := SnakeToGo(false, param.Name)
 
@@ -162,33 +151,6 @@ func (cg *callableGenerator) block() string {
 					Owner:     param.TransferOwnership,
 					AllowNone: param.AllowNone,
 				})
-				continue
-			}
-
-			// Handle non-closure destroy notifiers: since we're always copying
-			// Go memory to C using malloc, we can just give it a free.
-			if param.Type != nil &&
-				param.Type.Name != "GLib.DestroyNotify" &&
-				strings.HasSuffix(param.Type.Name, "DestroyNotify") {
-
-				// https://github.com/golang/go/issues/19835
-				args.Add("(*[0]byte)(C.free)")
-				continue
-			}
-
-			if closure != nil && *closure == i {
-				cg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
-				// TODO: this is probably not always gpointer. Handle with
-				// anyCGoType.
-				blocks.Linef(0, "%s := C.gpointer(box.Assign(%s))", targ, valn)
-				continue
-			}
-
-			if destroy != nil && *destroy == i {
-				cg.Ng.needsCallbackDelete()
-				// TODO: this is probably not always true.
-				// https://github.com/golang/go/issues/19835
-				args.Add("(*[0]byte)(C.callbackDelete)")
 				continue
 			}
 

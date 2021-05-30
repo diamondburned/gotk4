@@ -31,7 +31,8 @@ type TypeConversionToC struct {
 	TypeConversion
 
 	// Closure marks the user_data argument. If this is provided, then the
-	// conversion function will set the parameter to the callback ID.
+	// conversion function will set the parameter to the callback ID. The caller
+	// is responsible for skipping conversion of these indices.
 	Closure *int
 	// Destroy marks the callback to destroy the user_data argument. If this is
 	// provided, then callbackDelete will be set along with Closure.

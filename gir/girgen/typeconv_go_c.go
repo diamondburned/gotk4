@@ -168,10 +168,9 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		return fmt.Sprintf("%s = C.gpointer(box.Assign(%s))", conv.Target, conv.Value)
 
 	case "GLib.DestroyNotify", "DestroyNotify":
-		// This should never be called, because the caller should never see a
-		// DestroyNotify, so there's no use to convert from Go to C.
-		ng.logln(logWarn, "unexpected DestroyNotify conversion from Go to C")
-		return ""
+		// Use a constant C function. Value is unused.
+		ng.needsCallbackDelete()
+		return fmt.Sprintf("%s = (*[0]byte)(C.callbackDelete)", conv.Target)
 
 	case "GType":
 		// Just a primitive.
@@ -215,7 +214,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		return fmt.Sprintf("%s = (%s)(%s)", conv.Target, resolved.CGoType(), conv.Value)
 	}
 
-	if result.Class != nil || result.Record != nil {
+	if result.Class != nil || result.Record != nil || result.Interface != nil {
 		// gextras.Objector has Native() uintptr.
 		return fmt.Sprintf(
 			"%s = (%s)(%s.Native())",
@@ -224,9 +223,30 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	}
 
 	if result.Callback != nil {
+		// Callbacks must have the closure attribute to store the closure
+		// pointer.
+		if conv.Closure == nil {
+			ng.logln(logInfo, "skipping callback", exportedName, "since missing closure")
+			return ""
+		}
+
+		ng.addImport("github.com/diamondburned/gotk4/internal/box")
+
+		p := pen.NewPiece()
+
 		// Return the constant function here. The function will dynamically load
 		// the user_data, which will match with the "gpointer" case above.
-		return fmt.Sprintf("%s = (*[0]byte)(C.%s%s)", conv.Target, callbackPrefix, exportedName)
+		//
+		// As for the pointer to byte array cast, see
+		// https://github.com/golang/go/issues/19835.
+		p.Linef("%s = (*[0]byte)(C.%s%s)", conv.Target, callbackPrefix, exportedName)
+		p.Linef("%s = C.gpointer(box.Assign(%s))", conv.ArgAt(*conv.Closure), conv.Value)
+
+		if conv.Destroy != nil {
+			p.Linef("%s = (*[0]byte)(C.callbackDelete)", conv.ArgAt(*conv.Destroy))
+		}
+
+		return p.String()
 	}
 
 	// TODO

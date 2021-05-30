@@ -21,6 +21,10 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
+		// Bitfields
+		// Skipped PixdataDumpType.
+		// Skipped PixdataType.
+
 		// Records
 		// Skipped Pixdata.
 

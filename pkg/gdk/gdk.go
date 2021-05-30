@@ -8,11 +8,11 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
+	"github.com/linuxdeepin/go-gir/gdkpixbuf-2.0"
 )
 
 // #cgo pkg-config: gtk4
@@ -48,6 +48,16 @@ func init() {
 		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
 		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
 		{T: externglib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
+
+		// Bitfields
+		{T: externglib.Type(C.gdk_anchor_hints_get_type()), F: marshalAnchorHints},
+		{T: externglib.Type(C.gdk_axis_flags_get_type()), F: marshalAxisFlags},
+		{T: externglib.Type(C.gdk_drag_action_get_type()), F: marshalDragAction},
+		{T: externglib.Type(C.gdk_frame_clock_phase_get_type()), F: marshalFrameClockPhase},
+		{T: externglib.Type(C.gdk_modifier_type_get_type()), F: marshalModifierType},
+		{T: externglib.Type(C.gdk_paintable_flags_get_type()), F: marshalPaintableFlags},
+		{T: externglib.Type(C.gdk_seat_capabilities_get_type()), F: marshalSeatCapabilities},
+		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
 
 		// Records
 		{T: externglib.Type(C.gdk_content_formats_get_type()), F: marshalContentFormats},
@@ -116,6 +126,13 @@ func init() {
 		// Skipped TouchEvent.
 		// Skipped TouchpadEvent.
 		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContext},
+
+		// Interfaces
+		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalVulkanContext},
+		{T: externglib.Type(C.gdk_drag_surface_get_type()), F: marshalVulkanContext},
+		{T: externglib.Type(C.gdk_paintable_get_type()), F: marshalVulkanContext},
+		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalVulkanContext},
+		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalVulkanContext},
 	})
 }
 
@@ -1024,7 +1041,7 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type exte
 	var arg4 C.int
 	var arg5 *C.GCancellable
 	var arg6 C.GAsyncReadyCallback
-	arg7 := C.gpointer(box.Assign(userData))
+	var arg7 C.gpointer
 
 	arg1 = (*C.GInputStream)(stream.Native())
 	arg2 = (*C.gchar)(C.CString(mimeType))
@@ -1033,40 +1050,26 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type exte
 	arg4 = C.int(ioPriority)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 	arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg7 = C.gpointer(box.Assign(callback))
 
-	C.gdk_content_deserialize_async(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gdk_content_deserialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
-// ContentRegisterDeserializer registers a function to create objects of a given
-// @type from a serialized representation with the given mime type.
-func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc) {
-	var arg1 *C.char
-	var arg2 C.GType
-	var arg3 C.GdkContentDeserializeFunc
-	arg4 := C.gpointer(box.Assign(data))
+// ContentDeserializeFinish finishes a content deserialization operation.
+func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool {
+	var arg1 *C.GAsyncResult
+	var arg2 *C.GValue
 
-	arg1 = (*C.gchar)(C.CString(mimeType))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.GType(_type)
-	arg3 = (*[0]byte)(C.gotk4_ContentDeserializeFunc)
+	arg1 = (*C.GAsyncResult)(result.Native())
+	arg2 = (*C.GValue)(value.GValue)
 
-	C.gdk_content_register_deserializer(arg1, arg2, arg3, (*[0]byte)(C.callbackDelete))
-}
+	ret := C.gdk_content_deserialize_finish(arg1, arg2)
 
-// ContentRegisterSerializer registers a function to convert objects of the
-// given @type to a serialized representation with the given mime type.
-func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc) {
-	var arg1 C.GType
-	var arg2 *C.char
-	var arg3 C.GdkContentSerializeFunc
-	arg4 := C.gpointer(box.Assign(data))
+	var ret0 bool
 
-	arg1 = C.GType(_type)
-	arg2 = (*C.gchar)(C.CString(mimeType))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*[0]byte)(C.gotk4_ContentSerializeFunc)
+	ret0 = gextras.Gobool(ret)
 
-	C.gdk_content_register_serializer(arg1, arg2, arg3, (*[0]byte)(C.callbackDelete))
+	return ret0
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
@@ -1080,7 +1083,7 @@ func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *exte
 	var arg4 C.int
 	var arg5 *C.GCancellable
 	var arg6 C.GAsyncReadyCallback
-	arg7 := C.gpointer(box.Assign(userData))
+	var arg7 C.gpointer
 
 	arg1 = (*C.GOutputStream)(stream.Native())
 	arg2 = (*C.gchar)(C.CString(mimeType))
@@ -1089,8 +1092,24 @@ func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *exte
 	arg4 = C.int(ioPriority)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 	arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg7 = C.gpointer(box.Assign(callback))
 
-	C.gdk_content_serialize_async(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gdk_content_serialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+}
+
+// ContentSerializeFinish finishes a content serialization operation.
+func ContentSerializeFinish(result gio.AsyncResult) bool {
+	var arg1 *C.GAsyncResult
+
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_content_serialize_finish(arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
 }
 
 // DragActionIsUnique checks if @action represents a single action or if it
@@ -1355,6 +1374,26 @@ func KeyvalToUpper(keyval uint) uint {
 	return ret0
 }
 
+// PaintableNewEmpty returns a paintable that has the given intrinsic size and
+// draws nothing. This is often useful for implementing the
+// PaintableInterface.get_current_image() virtual function when the paintable is
+// in an incomplete state (like a MediaStream before receiving the first frame).
+func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
+	var arg1 C.int
+	var arg2 C.int
+
+	arg1 = C.int(intrinsicWidth)
+	arg2 = C.int(intrinsicHeight)
+
+	ret := C.gdk_paintable_new_empty(arg1, arg2)
+
+	var ret0 Paintable
+
+	ret0 = WrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
 // PangoLayoutGetClipRegion obtains a clip region which contains the areas where
 // the given ranges of text would be drawn. @x_origin and @y_origin are the top
 // left point to center the layout. @index_ranges should contain ranges of bytes
@@ -1527,6 +1566,1170 @@ func VulkanErrorQuark() glib.Quark {
 		tmp = uint32(ret)
 		ret0 = glib.Quark(tmp)
 	}
+
+	return ret0
+}
+
+// DevicePad is an interface implemented by devices of type
+// GDK_SOURCE_TABLET_PAD, it allows querying the features provided by the pad
+// device.
+//
+// Tablet pads may contain one or more groups, each containing a subset of the
+// buttons/rings/strips available. gdk_device_pad_get_n_groups() can be used to
+// obtain the number of groups, gdk_device_pad_get_n_features() and
+// gdk_device_pad_get_feature_group() can be combined to find out the number of
+// buttons/rings/strips the device has, and how are they grouped.
+//
+// Each of those groups have different modes, which may be used to map each
+// individual pad feature to multiple actions. Only one mode is effective
+// (current) for each given group, different groups may have different current
+// modes. The number of available modes in a group can be found out through
+// gdk_device_pad_get_group_n_modes(), and the current mode for a given group
+// will be notified through events of type K_PAD_GROUP_MODE.
+type DevicePad interface {
+	Device
+
+	// FeatureGroup returns the group the given @feature and @idx belong to, or
+	// -1 if feature/index do not exist in @pad.
+	FeatureGroup(feature DevicePadFeature, featureIdx int) int
+	// GroupNModes returns the number of modes that @group may have.
+	GroupNModes(groupIdx int) int
+	// NFeatures returns the number of features a tablet pad has.
+	NFeatures(feature DevicePadFeature) int
+	// NGroups returns the number of groups this pad device has. Pads have at
+	// least one group. A pad group is a subcollection of buttons/strip/rings
+	// that is affected collectively by a same current mode.
+	NGroups() int
+}
+
+// devicePad implements the DevicePad interface.
+type devicePad struct {
+	Device
+}
+
+var _ DevicePad = (*devicePad)(nil)
+
+// WrapDevicePad wraps a GObject to a type that implements interface
+// DevicePad. It is primarily used internally.
+func WrapDevicePad(obj *externglib.Object) DevicePad {
+	return DevicePad{
+		Device: WrapDevice(obj),
+	}
+}
+
+func marshalDevicePad(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDevicePad(obj), nil
+}
+
+// FeatureGroup returns the group the given @feature and @idx belong to, or
+// -1 if feature/index do not exist in @pad.
+func (pad devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
+	var arg0 *C.GdkDevicePad
+	var arg1 C.GdkDevicePadFeature
+	var arg2 C.int
+
+	arg0 = (*C.GdkDevicePad)(pad.Native())
+	arg1 = (C.GdkDevicePadFeature)(feature)
+	arg2 = C.int(featureIdx)
+
+	ret := C.gdk_device_pad_get_feature_group(arg0, arg1, arg2)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// GroupNModes returns the number of modes that @group may have.
+func (pad devicePad) GroupNModes(groupIdx int) int {
+	var arg0 *C.GdkDevicePad
+	var arg1 C.int
+
+	arg0 = (*C.GdkDevicePad)(pad.Native())
+	arg1 = C.int(groupIdx)
+
+	ret := C.gdk_device_pad_get_group_n_modes(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// NFeatures returns the number of features a tablet pad has.
+func (pad devicePad) NFeatures(feature DevicePadFeature) int {
+	var arg0 *C.GdkDevicePad
+	var arg1 C.GdkDevicePadFeature
+
+	arg0 = (*C.GdkDevicePad)(pad.Native())
+	arg1 = (C.GdkDevicePadFeature)(feature)
+
+	ret := C.gdk_device_pad_get_n_features(arg0, arg1)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// NGroups returns the number of groups this pad device has. Pads have at
+// least one group. A pad group is a subcollection of buttons/strip/rings
+// that is affected collectively by a same current mode.
+func (pad devicePad) NGroups() int {
+	var arg0 *C.GdkDevicePad
+
+	arg0 = (*C.GdkDevicePad)(pad.Native())
+
+	ret := C.gdk_device_pad_get_n_groups(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// DragSurface: a DragSurface is an interface implemented by Surfaces used
+// during a DND operation.
+type DragSurface interface {
+	Surface
+
+	// Present: present @drag_surface.
+	Present(width int, height int) bool
+}
+
+// dragSurface implements the DragSurface interface.
+type dragSurface struct {
+	Surface
+}
+
+var _ DragSurface = (*dragSurface)(nil)
+
+// WrapDragSurface wraps a GObject to a type that implements interface
+// DragSurface. It is primarily used internally.
+func WrapDragSurface(obj *externglib.Object) DragSurface {
+	return DragSurface{
+		Surface: WrapSurface(obj),
+	}
+}
+
+func marshalDragSurface(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapDragSurface(obj), nil
+}
+
+// Present: present @drag_surface.
+func (dragSurface dragSurface) Present(width int, height int) bool {
+	var arg0 *C.GdkDragSurface
+	var arg1 C.int
+	var arg2 C.int
+
+	arg0 = (*C.GdkDragSurface)(dragSurface.Native())
+	arg1 = C.int(width)
+	arg2 = C.int(height)
+
+	ret := C.gdk_drag_surface_present(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// PaintableOverrider contains methods that are overridable. This
+// interface is a subset of the interface Paintable.
+type PaintableOverrider interface {
+	// CurrentImage gets an immutable paintable for the current contents
+	// displayed by @paintable.
+	//
+	// This is useful when you want to retain the current state of an animation,
+	// for example to take a screenshot of a running animation.
+	//
+	// If the @paintable is already immutable, it will return itself.
+	CurrentImage() Paintable
+	// Flags: get flags for the paintable. This is oftentimes useful for
+	// optimizations.
+	//
+	// See PaintableFlags for the flags and what they mean.
+	Flags() PaintableFlags
+	// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
+	// like to be displayed at. The aspect ratio is the width divided by the
+	// height, so a value of 0.5 means that the @paintable prefers to be
+	// displayed twice as high as it is wide. Consumers of this interface can
+	// use this to preserve aspect ratio when displaying the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to gdk_paintable_snapshot().
+	//
+	// Usually when a @paintable returns nonzero values from
+	// gdk_paintable_get_intrinsic_width() and
+	// gdk_paintable_get_intrinsic_height() the aspect ratio should conform to
+	// those values, though that is not required.
+	//
+	// If the @paintable does not have a preferred aspect ratio, it returns 0.
+	// Negative values are never returned.
+	IntrinsicAspectRatio() float64
+	// IntrinsicHeight gets the preferred height the @paintable would like to be
+	// displayed at. Consumers of this interface can use this to reserve enough
+	// space to draw the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to gdk_paintable_snapshot().
+	//
+	// If the @paintable does not have a preferred height, it returns 0.
+	// Negative values are never returned.
+	IntrinsicHeight() int
+	// IntrinsicWidth gets the preferred width the @paintable would like to be
+	// displayed at. Consumers of this interface can use this to reserve enough
+	// space to draw the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to gdk_paintable_snapshot().
+	//
+	// If the @paintable does not have a preferred width, it returns 0. Negative
+	// values are never returned.
+	IntrinsicWidth() int
+	// Snapshot snapshots the given paintable with the given @width and @height
+	// at the current (0,0) offset of the @snapshot. If @width and @height are
+	// not larger than zero, this function will do nothing.
+	Snapshot(snapshot Snapshot, width float64, height float64)
+}
+
+// Paintable is a simple interface used by GDK and GTK to represent objects that
+// can be painted anywhere at any size without requiring any sort of layout. The
+// interface is inspired by similar concepts elsewhere, such as ClutterContent
+// (https://developer.gnome.org/clutter/stable/ClutterContent.html), HTML/CSS
+// Paint Sources (https://www.w3.org/TR/css-images-4/#paint-source), or SVG
+// Paint Servers (https://www.w3.org/TR/SVG2/pservers.html).
+//
+// A Paintable can be snapshot at any time and size using
+// gdk_paintable_snapshot(). How the paintable interprets that size and if it
+// scales or centers itself into the given rectangle is implementation defined,
+// though if you are implementing a Paintable and don't know what to do, it is
+// suggested that you scale your paintable ignoring any potential aspect ratio.
+//
+// The contents that a Paintable produces may depend on the Snapshot passed to
+// it. For example, paintables may decide to use more detailed images on higher
+// resolution screens or when OpenGL is available. A Paintable will however
+// always produce the same output for the same snapshot.
+//
+// A Paintable may change its contents, meaning that it will now produce a
+// different output with the same snapshot. Once that happens, it will call
+// gdk_paintable_invalidate_contents() which will emit the
+// Paintable::invalidate-contents signal. If a paintable is known to never
+// change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS flag. If a
+// consumer cannot deal with changing contents, it may call
+// gdk_paintable_get_current_image() which will return a static paintable and
+// use that.
+//
+// A paintable can report an intrinsic (or preferred) size or aspect ratio it
+// wishes to be rendered at, though it doesn't have to. Consumers of the
+// interface can use this information to layout thepaintable appropriately. Just
+// like the contents, the size of a paintable can change. A paintable will
+// indicate this by calling gdk_paintable_invalidate_size() which will emit the
+// Paintable::invalidate-size signal. And just like for contents, if a paintable
+// is known to never change its size, it will set the GDK_PAINTABLE_STATIC_SIZE
+// flag.
+//
+// Besides API for applications, there are some functions that are only useful
+// for implementing subclasses and should not be used by applications:
+// gdk_paintable_invalidate_contents(), gdk_paintable_invalidate_size(),
+// gdk_paintable_new_empty().
+type Paintable interface {
+	gextras.Objector
+	PaintableOverrider
+
+	// ComputeConcreteSize applies the sizing algorithm outlined in
+	// https://drafts.csswg.org/css-images-3/#default-sizing to the given
+	// @paintable. See that link for more details.
+	//
+	// It is not necessary to call this function when both @specified_width and
+	// @specified_height are known, but it is useful to call this function in
+	// GtkWidget:measure implementations to compute the other dimension when
+	// only one dimension is given.
+	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
+	// InvalidateContents: called by implementations of Paintable to invalidate
+	// their contents. Unless the contents are invalidated, implementations must
+	// guarantee that multiple calls of gdk_paintable_snapshot() produce the
+	// same output.
+	//
+	// This function will emit the Paintable::invalidate-contents signal.
+	//
+	// If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
+	// not call this function.
+	InvalidateContents()
+	// InvalidateSize: called by implementations of Paintable to invalidate
+	// their size. As long as the size is not invalidated, @paintable must
+	// return the same values for its intrinsic width, height and aspect ratio.
+	//
+	// This function will emit the Paintable::invalidate-size signal.
+	//
+	// If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
+	// call this function.
+	InvalidateSize()
+}
+
+// paintable implements the Paintable interface.
+type paintable struct {
+	gextras.Objector
+}
+
+var _ Paintable = (*paintable)(nil)
+
+// WrapPaintable wraps a GObject to a type that implements interface
+// Paintable. It is primarily used internally.
+func WrapPaintable(obj *externglib.Object) Paintable {
+	return Paintable{
+		Objector: obj,
+	}
+}
+
+func marshalPaintable(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapPaintable(obj), nil
+}
+
+// ComputeConcreteSize applies the sizing algorithm outlined in
+// https://drafts.csswg.org/css-images-3/#default-sizing to the given
+// @paintable. See that link for more details.
+//
+// It is not necessary to call this function when both @specified_width and
+// @specified_height are known, but it is useful to call this function in
+// GtkWidget:measure implementations to compute the other dimension when
+// only one dimension is given.
+func (paintable paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+	var arg0 *C.GdkPaintable
+	var arg1 C.double
+	var arg2 C.double
+	var arg3 C.double
+	var arg4 C.double
+	var arg5 *C.double // out
+	var arg6 *C.double // out
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+	arg1 = C.double(specifiedWidth)
+	arg2 = C.double(specifiedHeight)
+	arg3 = C.double(defaultWidth)
+	arg4 = C.double(defaultHeight)
+
+	ret := C.gdk_paintable_compute_concrete_size(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+
+	var ret0 float64
+	var ret1 float64
+
+	ret0 = float64(arg5)
+
+	ret1 = float64(arg6)
+
+	return ret0, ret1
+}
+
+// CurrentImage gets an immutable paintable for the current contents
+// displayed by @paintable.
+//
+// This is useful when you want to retain the current state of an animation,
+// for example to take a screenshot of a running animation.
+//
+// If the @paintable is already immutable, it will return itself.
+func (paintable paintable) CurrentImage() Paintable {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	ret := C.gdk_paintable_get_current_image(arg0)
+
+	var ret0 Paintable
+
+	ret0 = WrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// Flags: get flags for the paintable. This is oftentimes useful for
+// optimizations.
+//
+// See PaintableFlags for the flags and what they mean.
+func (paintable paintable) Flags() PaintableFlags {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	ret := C.gdk_paintable_get_flags(arg0)
+
+	var ret0 PaintableFlags
+
+	ret0 = PaintableFlags(ret)
+
+	return ret0
+}
+
+// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
+// like to be displayed at. The aspect ratio is the width divided by the
+// height, so a value of 0.5 means that the @paintable prefers to be
+// displayed twice as high as it is wide. Consumers of this interface can
+// use this to preserve aspect ratio when displaying the paintable.
+//
+// This is a purely informational value and does not in any way limit the
+// values that may be passed to gdk_paintable_snapshot().
+//
+// Usually when a @paintable returns nonzero values from
+// gdk_paintable_get_intrinsic_width() and
+// gdk_paintable_get_intrinsic_height() the aspect ratio should conform to
+// those values, though that is not required.
+//
+// If the @paintable does not have a preferred aspect ratio, it returns 0.
+// Negative values are never returned.
+func (paintable paintable) IntrinsicAspectRatio() float64 {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	ret := C.gdk_paintable_get_intrinsic_aspect_ratio(arg0)
+
+	var ret0 float64
+
+	ret0 = float64(ret)
+
+	return ret0
+}
+
+// IntrinsicHeight gets the preferred height the @paintable would like to be
+// displayed at. Consumers of this interface can use this to reserve enough
+// space to draw the paintable.
+//
+// This is a purely informational value and does not in any way limit the
+// values that may be passed to gdk_paintable_snapshot().
+//
+// If the @paintable does not have a preferred height, it returns 0.
+// Negative values are never returned.
+func (paintable paintable) IntrinsicHeight() int {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	ret := C.gdk_paintable_get_intrinsic_height(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// IntrinsicWidth gets the preferred width the @paintable would like to be
+// displayed at. Consumers of this interface can use this to reserve enough
+// space to draw the paintable.
+//
+// This is a purely informational value and does not in any way limit the
+// values that may be passed to gdk_paintable_snapshot().
+//
+// If the @paintable does not have a preferred width, it returns 0. Negative
+// values are never returned.
+func (paintable paintable) IntrinsicWidth() int {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	ret := C.gdk_paintable_get_intrinsic_width(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// InvalidateContents: called by implementations of Paintable to invalidate
+// their contents. Unless the contents are invalidated, implementations must
+// guarantee that multiple calls of gdk_paintable_snapshot() produce the
+// same output.
+//
+// This function will emit the Paintable::invalidate-contents signal.
+//
+// If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
+// not call this function.
+func (paintable paintable) InvalidateContents() {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	C.gdk_paintable_invalidate_contents(arg0)
+}
+
+// InvalidateSize: called by implementations of Paintable to invalidate
+// their size. As long as the size is not invalidated, @paintable must
+// return the same values for its intrinsic width, height and aspect ratio.
+//
+// This function will emit the Paintable::invalidate-size signal.
+//
+// If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
+// call this function.
+func (paintable paintable) InvalidateSize() {
+	var arg0 *C.GdkPaintable
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+
+	C.gdk_paintable_invalidate_size(arg0)
+}
+
+// Snapshot snapshots the given paintable with the given @width and @height
+// at the current (0,0) offset of the @snapshot. If @width and @height are
+// not larger than zero, this function will do nothing.
+func (paintable paintable) Snapshot(snapshot Snapshot, width float64, height float64) {
+	var arg0 *C.GdkPaintable
+	var arg1 *C.GdkSnapshot
+	var arg2 C.double
+	var arg3 C.double
+
+	arg0 = (*C.GdkPaintable)(paintable.Native())
+	arg1 = (*C.GdkSnapshot)(snapshot.Native())
+	arg2 = C.double(width)
+	arg3 = C.double(height)
+
+	C.gdk_paintable_snapshot(arg0, arg1, arg2, arg3)
+}
+
+// Popup: a Popup is a surface that is attached to another surface, called its
+// Popup:parent, and is positioned relative to it.
+//
+// Popups are typically used to implement menus and similar popups. They can be
+// modal, which is indicated by the Popup:autohide property.
+type Popup interface {
+	Surface
+
+	// Autohide returns whether this popup is set to hide on outside clicks.
+	Autohide() bool
+	// Parent returns the parent surface of a popup.
+	Parent() Surface
+	// PositionX obtains the position of the popup relative to its parent.
+	PositionX() int
+	// PositionY obtains the position of the popup relative to its parent.
+	PositionY() int
+	// RectAnchor gets the current popup rectangle anchor.
+	//
+	// The value returned may change after calling gdk_popup_present(), or after
+	// the Surface::layout signal is emitted.
+	RectAnchor() Gravity
+	// SurfaceAnchor gets the current popup surface anchor.
+	//
+	// The value returned may change after calling gdk_popup_present(), or after
+	// the Surface::layout signal is emitted.
+	SurfaceAnchor() Gravity
+	// Present: present @popup after having processed the PopupLayout rules. If
+	// the popup was previously now showing, it will be showed, otherwise it
+	// will change position according to @layout.
+	//
+	// After calling this function, the result should be handled in response to
+	// the Surface::layout signal being emitted. The resulting popup position
+	// can be queried using gdk_popup_get_position_x(),
+	// gdk_popup_get_position_y(), and the resulting size will be sent as
+	// parameters in the layout signal. Use gdk_popup_get_rect_anchor() and
+	// gdk_popup_get_surface_anchor() to get the resulting anchors.
+	//
+	// Presenting may fail, for example if the @popup is set to autohide and is
+	// immediately hidden upon being presented. If presenting failed, the
+	// Surface::layout signal will not me emitted.
+	Present(width int, height int, layout *PopupLayout) bool
+}
+
+// popup implements the Popup interface.
+type popup struct {
+	Surface
+}
+
+var _ Popup = (*popup)(nil)
+
+// WrapPopup wraps a GObject to a type that implements interface
+// Popup. It is primarily used internally.
+func WrapPopup(obj *externglib.Object) Popup {
+	return Popup{
+		Surface: WrapSurface(obj),
+	}
+}
+
+func marshalPopup(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapPopup(obj), nil
+}
+
+// Autohide returns whether this popup is set to hide on outside clicks.
+func (popup popup) Autohide() bool {
+	var arg0 *C.GdkPopup
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+
+	ret := C.gdk_popup_get_autohide(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Parent returns the parent surface of a popup.
+func (popup popup) Parent() Surface {
+	var arg0 *C.GdkPopup
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+
+	ret := C.gdk_popup_get_parent(arg0)
+
+	var ret0 Surface
+
+	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// PositionX obtains the position of the popup relative to its parent.
+func (popup popup) PositionX() int {
+	var arg0 *C.GdkPopup
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+
+	ret := C.gdk_popup_get_position_x(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// PositionY obtains the position of the popup relative to its parent.
+func (popup popup) PositionY() int {
+	var arg0 *C.GdkPopup
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+
+	ret := C.gdk_popup_get_position_y(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// RectAnchor gets the current popup rectangle anchor.
+//
+// The value returned may change after calling gdk_popup_present(), or after
+// the Surface::layout signal is emitted.
+func (popup popup) RectAnchor() Gravity {
+	var arg0 *C.GdkPopup
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+
+	ret := C.gdk_popup_get_rect_anchor(arg0)
+
+	var ret0 Gravity
+
+	ret0 = Gravity(ret)
+
+	return ret0
+}
+
+// SurfaceAnchor gets the current popup surface anchor.
+//
+// The value returned may change after calling gdk_popup_present(), or after
+// the Surface::layout signal is emitted.
+func (popup popup) SurfaceAnchor() Gravity {
+	var arg0 *C.GdkPopup
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+
+	ret := C.gdk_popup_get_surface_anchor(arg0)
+
+	var ret0 Gravity
+
+	ret0 = Gravity(ret)
+
+	return ret0
+}
+
+// Present: present @popup after having processed the PopupLayout rules. If
+// the popup was previously now showing, it will be showed, otherwise it
+// will change position according to @layout.
+//
+// After calling this function, the result should be handled in response to
+// the Surface::layout signal being emitted. The resulting popup position
+// can be queried using gdk_popup_get_position_x(),
+// gdk_popup_get_position_y(), and the resulting size will be sent as
+// parameters in the layout signal. Use gdk_popup_get_rect_anchor() and
+// gdk_popup_get_surface_anchor() to get the resulting anchors.
+//
+// Presenting may fail, for example if the @popup is set to autohide and is
+// immediately hidden upon being presented. If presenting failed, the
+// Surface::layout signal will not me emitted.
+func (popup popup) Present(width int, height int, layout *PopupLayout) bool {
+	var arg0 *C.GdkPopup
+	var arg1 C.int
+	var arg2 C.int
+	var arg3 *C.GdkPopupLayout
+
+	arg0 = (*C.GdkPopup)(popup.Native())
+	arg1 = C.int(width)
+	arg2 = C.int(height)
+	arg3 = (*C.GdkPopupLayout)(layout.Native())
+
+	ret := C.gdk_popup_present(arg0, arg1, arg2, arg3)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Toplevel: a Toplevel is a freestanding toplevel surface.
+//
+// The Toplevel interface provides useful APIs for interacting with the
+// windowing system, such as controlling maximization and size of the surface,
+// setting icons and transient parents for dialogs.
+type Toplevel interface {
+	Surface
+
+	// BeginMove begins an interactive move operation (for a toplevel surface).
+	// You might use this function to implement draggable titlebars.
+	BeginMove(device Device, button int, x float64, y float64, timestamp uint32)
+	// BeginResize begins an interactive resize operation (for a toplevel
+	// surface). You might use this function to implement a “window resize
+	// grip.”
+	BeginResize(edge SurfaceEdge, device Device, button int, x float64, y float64, timestamp uint32)
+	// Focus sets keyboard focus to @surface.
+	//
+	// In most cases, gtk_window_present_with_time() should be used on a Window,
+	// rather than calling this function.
+	Focus(timestamp uint32)
+	// State gets the bitwise OR of the currently active surface state flags,
+	// from the ToplevelState enumeration.
+	State() ToplevelState
+	// InhibitSystemShortcuts requests that the @toplevel inhibit the system
+	// shortcuts, asking the desktop environment/windowing system to let all
+	// keyboard events reach the surface, as long as it is focused, instead of
+	// triggering system actions.
+	//
+	// If granted, the rerouting remains active until the default shortcuts
+	// processing is restored with gdk_toplevel_restore_system_shortcuts(), or
+	// the request is revoked by the desktop environment, windowing system or
+	// the user.
+	//
+	// A typical use case for this API is remote desktop or virtual machine
+	// viewers which need to inhibit the default system keyboard shortcuts so
+	// that the remote session or virtual host gets those instead of the local
+	// environment.
+	//
+	// The windowing system or desktop environment may ask the user to grant or
+	// deny the request or even choose to ignore the request entirely.
+	//
+	// The caller can be notified whenever the request is granted or revoked by
+	// listening to the GdkToplevel::shortcuts-inhibited property.
+	InhibitSystemShortcuts(event Event)
+	// Lower asks to lower the @toplevel below other windows.
+	//
+	// The windowing system may choose to ignore the request.
+	Lower() bool
+	// Minimize asks to minimize the @toplevel.
+	//
+	// The windowing system may choose to ignore the request.
+	Minimize() bool
+	// Present: present @toplevel after having processed the ToplevelLayout
+	// rules. If the toplevel was previously not showing, it will be showed,
+	// otherwise it will change layout according to @layout.
+	//
+	// GDK may emit the 'compute-size' signal to let the user of this toplevel
+	// compute the preferred size of the toplevel surface. See
+	// Toplevel::compute-size for details.
+	//
+	// Presenting is asynchronous and the specified layout parameters are not
+	// guaranteed to be respected.
+	Present(layout *ToplevelLayout)
+	// RestoreSystemShortcuts: restore default system keyboard shortcuts which
+	// were previously requested to be inhibited by
+	// gdk_toplevel_inhibit_system_shortcuts().
+	RestoreSystemShortcuts()
+	// SetDecorated: setting @decorated to false hints the desktop environment
+	// that the surface has its own, client-side decorations and does not need
+	// to have window decorations added.
+	SetDecorated(decorated bool)
+	// SetDeletable: setting @deletable to true hints the desktop environment
+	// that it should offer the user a way to close the surface.
+	SetDeletable(deletable bool)
+	// SetIconList sets a list of icons for the surface.
+	//
+	// One of these will be used to represent the surface in iconic form. The
+	// icon may be shown in window lists or task bars. Which icon size is shown
+	// depends on the window manager. The window manager can scale the icon but
+	// setting several size icons can give better image quality.
+	//
+	// Note that some platforms don't support surface icons.
+	SetIconList(surfaces *glib.List)
+	// SetModal: the application can use this hint to tell the window manager
+	// that a certain surface has modal behaviour. The window manager can use
+	// this information to handle modal surfaces in a special way.
+	//
+	// You should only use this on surfaces for which you have previously called
+	// gdk_toplevel_set_transient_for().
+	SetModal(modal bool)
+	// SetStartupID: when using GTK, typically you should use
+	// gtk_window_set_startup_id() instead of this low-level function.
+	SetStartupID(startupID string)
+	// SetTitle sets the title of a toplevel surface, to be displayed in the
+	// titlebar, in lists of windows, etc.
+	SetTitle(title string)
+	// SetTransientFor indicates to the window manager that @surface is a
+	// transient dialog associated with the application surface @parent. This
+	// allows the window manager to do things like center @surface on @parent
+	// and keep @surface above @parent.
+	//
+	// See gtk_window_set_transient_for() if you’re using Window or Dialog.
+	SetTransientFor(parent Surface)
+	// ShowWindowMenu asks the windowing system to show the window menu.
+	//
+	// The window menu is the menu shown when right-clicking the titlebar on
+	// traditional windows managed by the window manager. This is useful for
+	// windows using client-side decorations, activating it with a right-click
+	// on the window decorations.
+	ShowWindowMenu(event Event) bool
+	// SupportsEdgeConstraints returns whether the desktop environment supports
+	// tiled window states.
+	SupportsEdgeConstraints() bool
+}
+
+// toplevel implements the Toplevel interface.
+type toplevel struct {
+	Surface
+}
+
+var _ Toplevel = (*toplevel)(nil)
+
+// WrapToplevel wraps a GObject to a type that implements interface
+// Toplevel. It is primarily used internally.
+func WrapToplevel(obj *externglib.Object) Toplevel {
+	return Toplevel{
+		Surface: WrapSurface(obj),
+	}
+}
+
+func marshalToplevel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapToplevel(obj), nil
+}
+
+// BeginMove begins an interactive move operation (for a toplevel surface).
+// You might use this function to implement draggable titlebars.
+func (toplevel toplevel) BeginMove(device Device, button int, x float64, y float64, timestamp uint32) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.GdkDevice
+	var arg2 C.int
+	var arg3 C.double
+	var arg4 C.double
+	var arg5 C.guint32
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.GdkDevice)(device.Native())
+	arg2 = C.int(button)
+	arg3 = C.double(x)
+	arg4 = C.double(y)
+	arg5 = C.guint32(timestamp)
+
+	C.gdk_toplevel_begin_move(arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
+// BeginResize begins an interactive resize operation (for a toplevel
+// surface). You might use this function to implement a “window resize
+// grip.”
+func (toplevel toplevel) BeginResize(edge SurfaceEdge, device Device, button int, x float64, y float64, timestamp uint32) {
+	var arg0 *C.GdkToplevel
+	var arg1 C.GdkSurfaceEdge
+	var arg2 *C.GdkDevice
+	var arg3 C.int
+	var arg4 C.double
+	var arg5 C.double
+	var arg6 C.guint32
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (C.GdkSurfaceEdge)(edge)
+	arg2 = (*C.GdkDevice)(device.Native())
+	arg3 = C.int(button)
+	arg4 = C.double(x)
+	arg5 = C.double(y)
+	arg6 = C.guint32(timestamp)
+
+	C.gdk_toplevel_begin_resize(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
+// Focus sets keyboard focus to @surface.
+//
+// In most cases, gtk_window_present_with_time() should be used on a Window,
+// rather than calling this function.
+func (toplevel toplevel) Focus(timestamp uint32) {
+	var arg0 *C.GdkToplevel
+	var arg1 C.guint32
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = C.guint32(timestamp)
+
+	C.gdk_toplevel_focus(arg0, arg1)
+}
+
+// State gets the bitwise OR of the currently active surface state flags,
+// from the ToplevelState enumeration.
+func (toplevel toplevel) State() ToplevelState {
+	var arg0 *C.GdkToplevel
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+
+	ret := C.gdk_toplevel_get_state(arg0)
+
+	var ret0 ToplevelState
+
+	ret0 = ToplevelState(ret)
+
+	return ret0
+}
+
+// InhibitSystemShortcuts requests that the @toplevel inhibit the system
+// shortcuts, asking the desktop environment/windowing system to let all
+// keyboard events reach the surface, as long as it is focused, instead of
+// triggering system actions.
+//
+// If granted, the rerouting remains active until the default shortcuts
+// processing is restored with gdk_toplevel_restore_system_shortcuts(), or
+// the request is revoked by the desktop environment, windowing system or
+// the user.
+//
+// A typical use case for this API is remote desktop or virtual machine
+// viewers which need to inhibit the default system keyboard shortcuts so
+// that the remote session or virtual host gets those instead of the local
+// environment.
+//
+// The windowing system or desktop environment may ask the user to grant or
+// deny the request or even choose to ignore the request entirely.
+//
+// The caller can be notified whenever the request is granted or revoked by
+// listening to the GdkToplevel::shortcuts-inhibited property.
+func (toplevel toplevel) InhibitSystemShortcuts(event Event) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.GdkEvent
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.GdkEvent)(event.Native())
+
+	C.gdk_toplevel_inhibit_system_shortcuts(arg0, arg1)
+}
+
+// Lower asks to lower the @toplevel below other windows.
+//
+// The windowing system may choose to ignore the request.
+func (toplevel toplevel) Lower() bool {
+	var arg0 *C.GdkToplevel
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+
+	ret := C.gdk_toplevel_lower(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Minimize asks to minimize the @toplevel.
+//
+// The windowing system may choose to ignore the request.
+func (toplevel toplevel) Minimize() bool {
+	var arg0 *C.GdkToplevel
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+
+	ret := C.gdk_toplevel_minimize(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// Present: present @toplevel after having processed the ToplevelLayout
+// rules. If the toplevel was previously not showing, it will be showed,
+// otherwise it will change layout according to @layout.
+//
+// GDK may emit the 'compute-size' signal to let the user of this toplevel
+// compute the preferred size of the toplevel surface. See
+// Toplevel::compute-size for details.
+//
+// Presenting is asynchronous and the specified layout parameters are not
+// guaranteed to be respected.
+func (toplevel toplevel) Present(layout *ToplevelLayout) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.GdkToplevelLayout
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.GdkToplevelLayout)(layout.Native())
+
+	C.gdk_toplevel_present(arg0, arg1)
+}
+
+// RestoreSystemShortcuts: restore default system keyboard shortcuts which
+// were previously requested to be inhibited by
+// gdk_toplevel_inhibit_system_shortcuts().
+func (toplevel toplevel) RestoreSystemShortcuts() {
+	var arg0 *C.GdkToplevel
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+
+	C.gdk_toplevel_restore_system_shortcuts(arg0)
+}
+
+// SetDecorated: setting @decorated to false hints the desktop environment
+// that the surface has its own, client-side decorations and does not need
+// to have window decorations added.
+func (toplevel toplevel) SetDecorated(decorated bool) {
+	var arg0 *C.GdkToplevel
+	var arg1 C.gboolean
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = gextras.Cbool(decorated)
+
+	C.gdk_toplevel_set_decorated(arg0, arg1)
+}
+
+// SetDeletable: setting @deletable to true hints the desktop environment
+// that it should offer the user a way to close the surface.
+func (toplevel toplevel) SetDeletable(deletable bool) {
+	var arg0 *C.GdkToplevel
+	var arg1 C.gboolean
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = gextras.Cbool(deletable)
+
+	C.gdk_toplevel_set_deletable(arg0, arg1)
+}
+
+// SetIconList sets a list of icons for the surface.
+//
+// One of these will be used to represent the surface in iconic form. The
+// icon may be shown in window lists or task bars. Which icon size is shown
+// depends on the window manager. The window manager can scale the icon but
+// setting several size icons can give better image quality.
+//
+// Note that some platforms don't support surface icons.
+func (toplevel toplevel) SetIconList(surfaces *glib.List) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.GList
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.GList)(surfaces.Native())
+
+	C.gdk_toplevel_set_icon_list(arg0, arg1)
+}
+
+// SetModal: the application can use this hint to tell the window manager
+// that a certain surface has modal behaviour. The window manager can use
+// this information to handle modal surfaces in a special way.
+//
+// You should only use this on surfaces for which you have previously called
+// gdk_toplevel_set_transient_for().
+func (toplevel toplevel) SetModal(modal bool) {
+	var arg0 *C.GdkToplevel
+	var arg1 C.gboolean
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = gextras.Cbool(modal)
+
+	C.gdk_toplevel_set_modal(arg0, arg1)
+}
+
+// SetStartupID: when using GTK, typically you should use
+// gtk_window_set_startup_id() instead of this low-level function.
+func (toplevel toplevel) SetStartupID(startupID string) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.char
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.gchar)(C.CString(startupID))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.gdk_toplevel_set_startup_id(arg0, arg1)
+}
+
+// SetTitle sets the title of a toplevel surface, to be displayed in the
+// titlebar, in lists of windows, etc.
+func (toplevel toplevel) SetTitle(title string) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.char
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.gdk_toplevel_set_title(arg0, arg1)
+}
+
+// SetTransientFor indicates to the window manager that @surface is a
+// transient dialog associated with the application surface @parent. This
+// allows the window manager to do things like center @surface on @parent
+// and keep @surface above @parent.
+//
+// See gtk_window_set_transient_for() if you’re using Window or Dialog.
+func (toplevel toplevel) SetTransientFor(parent Surface) {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.GdkSurface
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.GdkSurface)(parent.Native())
+
+	C.gdk_toplevel_set_transient_for(arg0, arg1)
+}
+
+// ShowWindowMenu asks the windowing system to show the window menu.
+//
+// The window menu is the menu shown when right-clicking the titlebar on
+// traditional windows managed by the window manager. This is useful for
+// windows using client-side decorations, activating it with a right-click
+// on the window decorations.
+func (toplevel toplevel) ShowWindowMenu(event Event) bool {
+	var arg0 *C.GdkToplevel
+	var arg1 *C.GdkEvent
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+	arg1 = (*C.GdkEvent)(event.Native())
+
+	ret := C.gdk_toplevel_show_window_menu(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
+}
+
+// SupportsEdgeConstraints returns whether the desktop environment supports
+// tiled window states.
+func (toplevel toplevel) SupportsEdgeConstraints() bool {
+	var arg0 *C.GdkToplevel
+
+	arg0 = (*C.GdkToplevel)(toplevel.Native())
+
+	ret := C.gdk_toplevel_supports_edge_constraints(arg0)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -3145,6 +4348,8 @@ type appLaunchContext struct {
 	gio.AppLaunchContext
 }
 
+var _ AppLaunchContext = (*appLaunchContext)(nil)
+
 // WrapAppLaunchContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
@@ -3204,6 +4409,7 @@ func (context appLaunchContext) SetIcon(icon gio.Icon) {
 	var arg1 *C.GIcon
 
 	arg0 = (*C.GdkAppLaunchContext)(context.Native())
+	arg1 = (*C.GIcon)(icon.Native())
 
 	C.gdk_app_launch_context_set_icon(arg0, arg1)
 }
@@ -3264,6 +4470,8 @@ type CairoContext interface {
 type cairoContext struct {
 	DrawContext
 }
+
+var _ CairoContext = (*cairoContext)(nil)
 
 // WrapCairoContext wraps a GObject to the right type. It is
 // primarily used internally.
@@ -3339,6 +4547,9 @@ type Clipboard interface {
 	// The clipboard will choose the most suitable mime type from the given list
 	// to fulfill the request, preferring the ones listed first.
 	ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// ReadFinish finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_async().
+	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
 	// ReadTextAsync: asynchronously request the @clipboard contents converted
 	// to a string. When the operation is finished @callback will be called. You
 	// can then call gdk_clipboard_read_text_finish() to get the result.
@@ -3347,6 +4558,9 @@ type Clipboard interface {
 	// that function or gdk_clipboard_read_async() directly if you need more
 	// control over the operation.
 	ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// ReadTextFinish finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_text_async().
+	ReadTextFinish(result gio.AsyncResult) string
 	// ReadTextureAsync: asynchronously request the @clipboard contents
 	// converted to a Pixbuf. When the operation is finished @callback will be
 	// called. You can then call gdk_clipboard_read_texture_finish() to get the
@@ -3356,6 +4570,9 @@ type Clipboard interface {
 	// that function or gdk_clipboard_read_async() directly if you need more
 	// control over the operation.
 	ReadTextureAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// ReadTextureFinish finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_texture_async().
+	ReadTextureFinish(result gio.AsyncResult) Texture
 	// ReadValueAsync: asynchronously request the @clipboard contents converted
 	// to the given @type. When the operation is finished @callback will be
 	// called. You can then call gdk_clipboard_read_value_finish() to get the
@@ -3390,6 +4607,9 @@ type Clipboard interface {
 	// This function is called automatically when gtk_main() or Application
 	// exit, so you likely don't need to call it.
 	StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// StoreFinish finishes an asynchronous clipboard store started with
+	// gdk_clipboard_store_async().
+	StoreFinish(result gio.AsyncResult) bool
 }
 
 // clipboard implements the Clipboard interface.
@@ -3397,11 +4617,13 @@ type clipboard struct {
 	gextras.Objector
 }
 
+var _ Clipboard = (*clipboard)(nil)
+
 // WrapClipboard wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapClipboard(obj *externglib.Object) Clipboard {
 	return Clipboard{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -3491,7 +4713,7 @@ func (clipboard clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellab
 	var arg2 C.int
 	var arg3 *C.GCancellable
 	var arg4 C.GAsyncReadyCallback
-	arg5 := C.gpointer(box.Assign(userData))
+	var arg5 C.gpointer
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.gchar)(C.CString(mimeTypes))
@@ -3499,8 +4721,31 @@ func (clipboard clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellab
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg5 = C.gpointer(box.Assign(callback))
 
-	C.gdk_clipboard_read_async(arg0, arg1, arg2, arg3, arg4)
+	C.gdk_clipboard_read_async(arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
+// ReadFinish finishes an asynchronous clipboard read started with
+// gdk_clipboard_read_async().
+func (clipboard clipboard) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream) {
+	var arg0 *C.GdkClipboard
+	var arg1 *C.GAsyncResult
+	var arg2 **C.char // out
+
+	arg0 = (*C.GdkClipboard)(clipboard.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_clipboard_read_finish(arg0, arg1, &arg2)
+
+	var ret0 string
+	var ret1 gio.InputStream
+
+	ret0 = C.GoString(arg2)
+
+	ret1 = gio.WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0, ret1
 }
 
 // ReadTextAsync: asynchronously request the @clipboard contents converted
@@ -3514,13 +4759,33 @@ func (clipboard clipboard) ReadTextAsync(cancellable gio.Cancellable, callback g
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GCancellable
 	var arg2 C.GAsyncReadyCallback
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg3 = C.gpointer(box.Assign(callback))
 
-	C.gdk_clipboard_read_text_async(arg0, arg1, arg2)
+	C.gdk_clipboard_read_text_async(arg0, arg1, arg2, arg3)
+}
+
+// ReadTextFinish finishes an asynchronous clipboard read started with
+// gdk_clipboard_read_text_async().
+func (clipboard clipboard) ReadTextFinish(result gio.AsyncResult) string {
+	var arg0 *C.GdkClipboard
+	var arg1 *C.GAsyncResult
+
+	arg0 = (*C.GdkClipboard)(clipboard.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_clipboard_read_text_finish(arg0, arg1)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
 }
 
 // ReadTextureAsync: asynchronously request the @clipboard contents
@@ -3535,13 +4800,32 @@ func (clipboard clipboard) ReadTextureAsync(cancellable gio.Cancellable, callbac
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GCancellable
 	var arg2 C.GAsyncReadyCallback
-	arg3 := C.gpointer(box.Assign(userData))
+	var arg3 C.gpointer
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg3 = C.gpointer(box.Assign(callback))
 
-	C.gdk_clipboard_read_texture_async(arg0, arg1, arg2)
+	C.gdk_clipboard_read_texture_async(arg0, arg1, arg2, arg3)
+}
+
+// ReadTextureFinish finishes an asynchronous clipboard read started with
+// gdk_clipboard_read_texture_async().
+func (clipboard clipboard) ReadTextureFinish(result gio.AsyncResult) Texture {
+	var arg0 *C.GdkClipboard
+	var arg1 *C.GAsyncResult
+
+	arg0 = (*C.GdkClipboard)(clipboard.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_clipboard_read_texture_finish(arg0, arg1)
+
+	var ret0 Texture
+
+	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
 }
 
 // ReadValueAsync: asynchronously request the @clipboard contents converted
@@ -3558,15 +4842,16 @@ func (clipboard clipboard) ReadValueAsync(_type externglib.Type, ioPriority int,
 	var arg2 C.int
 	var arg3 *C.GCancellable
 	var arg4 C.GAsyncReadyCallback
-	arg5 := C.gpointer(box.Assign(userData))
+	var arg5 C.gpointer
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = C.GType(_type)
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg5 = C.gpointer(box.Assign(callback))
 
-	C.gdk_clipboard_read_value_async(arg0, arg1, arg2, arg3, arg4)
+	C.gdk_clipboard_read_value_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // SetContent sets a new content provider on @clipboard. The clipboard will
@@ -3641,20 +4926,40 @@ func (clipboard clipboard) StoreAsync(ioPriority int, cancellable gio.Cancellabl
 	var arg1 C.int
 	var arg2 *C.GCancellable
 	var arg3 C.GAsyncReadyCallback
-	arg4 := C.gpointer(box.Assign(userData))
+	var arg4 C.gpointer
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = C.int(ioPriority)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg4 = C.gpointer(box.Assign(callback))
 
-	C.gdk_clipboard_store_async(arg0, arg1, arg2, arg3)
+	C.gdk_clipboard_store_async(arg0, arg1, arg2, arg3, arg4)
+}
+
+// StoreFinish finishes an asynchronous clipboard store started with
+// gdk_clipboard_store_async().
+func (clipboard clipboard) StoreFinish(result gio.AsyncResult) bool {
+	var arg0 *C.GdkClipboard
+	var arg1 *C.GAsyncResult
+
+	arg0 = (*C.GdkClipboard)(clipboard.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_clipboard_store_finish(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
 }
 
 // ContentDeserializer: a GdkContentDeserializer is used to deserialize content
 // received via inter-application data transfers.
 type ContentDeserializer interface {
 	gextras.Objector
+	gio.AsyncResult
 
 	// Cancellable gets the cancellable that was passed to
 	// gdk_content_deserialize_async().
@@ -3679,18 +4984,24 @@ type ContentDeserializer interface {
 	// ReturnSuccess: indicate that the deserialization has been successfully
 	// completed.
 	ReturnSuccess()
+	// SetTaskData: associate data with the current deserialization operation.
+	SetTaskData(data interface{})
 }
 
 // contentDeserializer implements the ContentDeserializer interface.
 type contentDeserializer struct {
 	gextras.Objector
+	gio.AsyncResult
 }
+
+var _ ContentDeserializer = (*contentDeserializer)(nil)
 
 // WrapContentDeserializer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
 	return ContentDeserializer{
-		gextras.Objector: (obj),
+		Objector:        obj,
+		gio.AsyncResult: gio.WrapAsyncResult(obj),
 	}
 }
 
@@ -3817,6 +5128,19 @@ func (deserializer contentDeserializer) ReturnSuccess() {
 	C.gdk_content_deserializer_return_success(arg0)
 }
 
+// SetTaskData: associate data with the current deserialization operation.
+func (deserializer contentDeserializer) SetTaskData(data interface{}) {
+	var arg0 *C.GdkContentDeserializer
+	var arg1 C.gpointer
+	var arg2 C.GDestroyNotify
+
+	arg0 = (*C.GdkContentDeserializer)(deserializer.Native())
+	arg1 = C.gpointer(box.Assign(data))
+	arg2 = (*[0]byte)(C.callbackDelete)
+
+	C.gdk_content_deserializer_set_task_data(arg0, arg1, arg2)
+}
+
 // ContentProvider: a GdkContentProvider is used to provide content for the
 // clipboard in a number of formats.
 //
@@ -3860,6 +5184,9 @@ type ContentProvider interface {
 	//
 	// The given @stream will not be closed.
 	WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// WriteMIMETypeFinish finishes an asynchronous write operation started with
+	// gdk_content_provider_write_mime_type_async().
+	WriteMIMETypeFinish(result gio.AsyncResult) bool
 }
 
 // contentProvider implements the ContentProvider interface.
@@ -3867,11 +5194,13 @@ type contentProvider struct {
 	gextras.Objector
 }
 
+var _ ContentProvider = (*contentProvider)(nil)
+
 // WrapContentProvider wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentProvider(obj *externglib.Object) ContentProvider {
 	return ContentProvider{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -3999,7 +5328,7 @@ func (provider contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.O
 	var arg3 C.int
 	var arg4 *C.GCancellable
 	var arg5 C.GAsyncReadyCallback
-	arg6 := C.gpointer(box.Assign(userData))
+	var arg6 C.gpointer
 
 	arg0 = (*C.GdkContentProvider)(provider.Native())
 	arg1 = (*C.gchar)(C.CString(mimeType))
@@ -4008,14 +5337,34 @@ func (provider contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.O
 	arg3 = C.int(ioPriority)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg6 = C.gpointer(box.Assign(callback))
 
-	C.gdk_content_provider_write_mime_type_async(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gdk_content_provider_write_mime_type_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
+// WriteMIMETypeFinish finishes an asynchronous write operation started with
+// gdk_content_provider_write_mime_type_async().
+func (provider contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) bool {
+	var arg0 *C.GdkContentProvider
+	var arg1 *C.GAsyncResult
+
+	arg0 = (*C.GdkContentProvider)(provider.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_content_provider_write_mime_type_finish(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = gextras.Gobool(ret)
+
+	return ret0
 }
 
 // ContentSerializer: a GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
 type ContentSerializer interface {
 	gextras.Objector
+	gio.AsyncResult
 
 	// Cancellable gets the cancellable that was passed to
 	// gdk_content_serialize_async().
@@ -4040,18 +5389,24 @@ type ContentSerializer interface {
 	// ReturnSuccess: indicate that the serialization has been successfully
 	// completed.
 	ReturnSuccess()
+	// SetTaskData: associate data with the current serialization operation.
+	SetTaskData(data interface{})
 }
 
 // contentSerializer implements the ContentSerializer interface.
 type contentSerializer struct {
 	gextras.Objector
+	gio.AsyncResult
 }
+
+var _ ContentSerializer = (*contentSerializer)(nil)
 
 // WrapContentSerializer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContentSerializer(obj *externglib.Object) ContentSerializer {
 	return ContentSerializer{
-		gextras.Objector: (obj),
+		Objector:        obj,
+		gio.AsyncResult: gio.WrapAsyncResult(obj),
 	}
 }
 
@@ -4178,6 +5533,19 @@ func (serializer contentSerializer) ReturnSuccess() {
 	C.gdk_content_serializer_return_success(arg0)
 }
 
+// SetTaskData: associate data with the current serialization operation.
+func (serializer contentSerializer) SetTaskData(data interface{}) {
+	var arg0 *C.GdkContentSerializer
+	var arg1 C.gpointer
+	var arg2 C.GDestroyNotify
+
+	arg0 = (*C.GdkContentSerializer)(serializer.Native())
+	arg1 = C.gpointer(box.Assign(data))
+	arg2 = (*[0]byte)(C.callbackDelete)
+
+	C.gdk_content_serializer_set_task_data(arg0, arg1, arg2)
+}
+
 // Cursor: a Cursor represents a cursor. Its contents are private.
 //
 // Cursors are immutable objects, so they can not change after they have been
@@ -4220,11 +5588,13 @@ type cursor struct {
 	gextras.Objector
 }
 
+var _ Cursor = (*cursor)(nil)
+
 // WrapCursor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCursor(obj *externglib.Object) Cursor {
 	return Cursor{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -4455,11 +5825,13 @@ type device struct {
 	gextras.Objector
 }
 
+var _ Device = (*device)(nil)
+
 // WrapDevice wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDevice(obj *externglib.Object) Device {
 	return Device{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -4787,11 +6159,13 @@ type deviceTool struct {
 	gextras.Objector
 }
 
+var _ DeviceTool = (*deviceTool)(nil)
+
 // WrapDeviceTool wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDeviceTool(obj *externglib.Object) DeviceTool {
 	return DeviceTool{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -4917,6 +6291,14 @@ type Display interface {
 	// MonitorAtSurface gets the monitor in which the largest area of @surface
 	// resides, or a monitor close to @surface if it is outside of all monitors.
 	MonitorAtSurface(surface Surface) Monitor
+	// Monitors gets the list of monitors associated with this display.
+	//
+	// Subsequent calls to this function will always return the same list for
+	// the same display.
+	//
+	// You can listen to the GListModel::items-changed signal on this list to
+	// monitor changes to the monitor of this display.
+	Monitors() gio.ListModel
 	// Name gets the name of the display.
 	Name() string
 	// PrimaryClipboard gets the clipboard used for the primary selection. On
@@ -5031,11 +6413,13 @@ type display struct {
 	gextras.Objector
 }
 
+var _ Display = (*display)(nil)
+
 // WrapDisplay wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDisplay(obj *externglib.Object) Display {
 	return Display{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -5163,6 +6547,27 @@ func (display display) MonitorAtSurface(surface Surface) Monitor {
 	var ret0 Monitor
 
 	ret0 = WrapMonitor(externglib.Take(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// Monitors gets the list of monitors associated with this display.
+//
+// Subsequent calls to this function will always return the same list for
+// the same display.
+//
+// You can listen to the GListModel::items-changed signal on this list to
+// monitor changes to the monitor of this display.
+func (self display) Monitors() gio.ListModel {
+	var arg0 *C.GdkDisplay
+
+	arg0 = (*C.GdkDisplay)(self.Native())
+
+	ret := C.gdk_display_get_monitors(arg0)
+
+	var ret0 gio.ListModel
+
+	ret0 = gio.WrapListModel(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5579,11 +6984,13 @@ type displayManager struct {
 	gextras.Objector
 }
 
+var _ DisplayManager = (*displayManager)(nil)
+
 // WrapDisplayManager wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDisplayManager(obj *externglib.Object) DisplayManager {
 	return DisplayManager{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -5699,11 +7106,13 @@ type drag struct {
 	gextras.Objector
 }
 
+var _ Drag = (*drag)(nil)
+
 // WrapDrag wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrag(obj *externglib.Object) Drag {
 	return Drag{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -5940,11 +7349,13 @@ type drawContext struct {
 	gextras.Objector
 }
 
+var _ DrawContext = (*drawContext)(nil)
+
 // WrapDrawContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrawContext(obj *externglib.Object) DrawContext {
 	return DrawContext{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -6112,6 +7523,9 @@ type Drop interface {
 	// ReadAsync: asynchronously read the dropped data from a Drop in a format
 	// that complies with one of the mime types.
 	ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// ReadFinish finishes an async drop read operation, see
+	// gdk_drop_read_async().
+	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
 	// ReadValueAsync: asynchronously request the drag operation's contents
 	// converted to the given @type. When the operation is finished @callback
 	// will be called. You can then call gdk_drop_read_value_finish() to get the
@@ -6143,11 +7557,13 @@ type drop struct {
 	gextras.Objector
 }
 
+var _ Drop = (*drop)(nil)
+
 // WrapDrop wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapDrop(obj *externglib.Object) Drop {
 	return Drop{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -6283,7 +7699,7 @@ func (self drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.C
 	var arg2 C.int
 	var arg3 *C.GCancellable
 	var arg4 C.GAsyncReadyCallback
-	arg5 := C.gpointer(box.Assign(userData))
+	var arg5 C.gpointer
 
 	arg0 = (*C.GdkDrop)(self.Native())
 	{
@@ -6292,8 +7708,32 @@ func (self drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.C
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg5 = C.gpointer(box.Assign(callback))
 
-	C.gdk_drop_read_async(arg0, arg1, arg2, arg3, arg4)
+	C.gdk_drop_read_async(arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
+// ReadFinish finishes an async drop read operation, see
+// gdk_drop_read_async().
+func (self drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream) {
+	var arg0 *C.GdkDrop
+	var arg1 *C.GAsyncResult
+	var arg2 **C.char // out
+
+	arg0 = (*C.GdkDrop)(self.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_drop_read_finish(arg0, arg1, &arg2)
+
+	var ret0 string
+	var ret1 gio.InputStream
+
+	ret0 = C.GoString(arg2)
+	C.free(unsafe.Pointer(arg2))
+
+	ret1 = gio.WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0, ret1
 }
 
 // ReadValueAsync: asynchronously request the drag operation's contents
@@ -6310,15 +7750,16 @@ func (self drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellab
 	var arg2 C.int
 	var arg3 *C.GCancellable
 	var arg4 C.GAsyncReadyCallback
-	arg5 := C.gpointer(box.Assign(userData))
+	var arg5 C.gpointer
 
 	arg0 = (*C.GdkDrop)(self.Native())
 	arg1 = C.GType(_type)
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg5 = C.gpointer(box.Assign(callback))
 
-	C.gdk_drop_read_value_async(arg0, arg1, arg2, arg3, arg4)
+	C.gdk_drop_read_value_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // Status selects all actions that are potentially supported by the
@@ -6434,11 +7875,13 @@ type frameClock struct {
 	gextras.Objector
 }
 
+var _ FrameClock = (*frameClock)(nil)
+
 // WrapFrameClock wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFrameClock(obj *externglib.Object) FrameClock {
 	return FrameClock{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -6759,6 +8202,8 @@ type glContext struct {
 	DrawContext
 }
 
+var _ GLContext = (*glContext)(nil)
+
 // WrapGLContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLContext(obj *externglib.Object) GLContext {
@@ -7044,6 +8489,7 @@ func (context glContext) SetUseES(useES int) {
 // GLTexture: a Texture representing a GL texture object.
 type GLTexture interface {
 	Texture
+	Paintable
 
 	// Release releases the GL resources held by a GLTexture that was created
 	// with gdk_gl_texture_new().
@@ -7056,13 +8502,17 @@ type GLTexture interface {
 // glTexture implements the GLTexture interface.
 type glTexture struct {
 	Texture
+	Paintable
 }
+
+var _ GLTexture = (*glTexture)(nil)
 
 // WrapGLTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapGLTexture(obj *externglib.Object) GLTexture {
 	return GLTexture{
-		Texture: WrapTexture(obj),
+		Texture:   WrapTexture(obj),
+		Paintable: WrapPaintable(obj),
 	}
 }
 
@@ -7070,6 +8520,31 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGLTexture(obj), nil
+}
+
+// NewGLTexture constructs a class GLTexture.
+func NewGLTexture(context GLContext, id uint, width int, height int, data interface{}) GLTexture {
+	var arg1 *C.GdkGLContext
+	var arg2 C.guint
+	var arg3 C.int
+	var arg4 C.int
+	var arg5 C.GDestroyNotify
+	var arg6 C.gpointer
+
+	arg1 = (*C.GdkGLContext)(context.Native())
+	arg2 = C.guint(id)
+	arg3 = C.int(width)
+	arg4 = C.int(height)
+	arg5 = (*[0]byte)(C.callbackDelete)
+	arg6 = C.gpointer(box.Assign(data))
+
+	ret := C.gdk_gl_texture_new(arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 GLTexture
+
+	ret0 = WrapGLTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
 }
 
 // Release releases the GL resources held by a GLTexture that was created
@@ -7088,18 +8563,23 @@ func (self glTexture) Release() {
 // MemoryTexture: a Texture representing image data in memory.
 type MemoryTexture interface {
 	Texture
+	Paintable
 }
 
 // memoryTexture implements the MemoryTexture interface.
 type memoryTexture struct {
 	Texture
+	Paintable
 }
+
+var _ MemoryTexture = (*memoryTexture)(nil)
 
 // WrapMemoryTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMemoryTexture(obj *externglib.Object) MemoryTexture {
 	return MemoryTexture{
-		Texture: WrapTexture(obj),
+		Texture:   WrapTexture(obj),
+		Paintable: WrapPaintable(obj),
 	}
 }
 
@@ -7187,11 +8667,13 @@ type monitor struct {
 	gextras.Objector
 }
 
+var _ Monitor = (*monitor)(nil)
+
 // WrapMonitor wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapMonitor(obj *externglib.Object) Monitor {
 	return Monitor{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -7410,11 +8892,13 @@ type seat struct {
 	gextras.Objector
 }
 
+var _ Seat = (*seat)(nil)
+
 // WrapSeat wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSeat(obj *externglib.Object) Seat {
 	return Seat{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -7526,11 +9010,13 @@ type snapshot struct {
 	gextras.Objector
 }
 
+var _ Snapshot = (*snapshot)(nil)
+
 // WrapSnapshot wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSnapshot(obj *externglib.Object) Snapshot {
 	return Snapshot{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -7706,11 +9192,13 @@ type surface struct {
 	gextras.Objector
 }
 
+var _ Surface = (*surface)(nil)
+
 // WrapSurface wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapSurface(obj *externglib.Object) Surface {
 	return Surface{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8199,6 +9687,7 @@ func (from surface) TranslateCoordinates(to Surface, x float64, y float64) bool 
 // Texture: the `GdkTexture` structure contains only private data.
 type Texture interface {
 	gextras.Objector
+	Paintable
 
 	// Download downloads the @texture into local memory. This may be an
 	// expensive operation, as the actual texture data may reside on a GPU or on
@@ -8235,13 +9724,17 @@ type Texture interface {
 // texture implements the Texture interface.
 type texture struct {
 	gextras.Objector
+	Paintable
 }
+
+var _ Texture = (*texture)(nil)
 
 // WrapTexture wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapTexture(obj *externglib.Object) Texture {
 	return Texture{
-		gextras.Objector: (obj),
+		Objector:  obj,
+		Paintable: WrapPaintable(obj),
 	}
 }
 
@@ -8258,6 +9751,21 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
 
 	ret := C.gdk_texture_new_for_pixbuf(arg1)
+
+	var ret0 Texture
+
+	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+
+	return ret0
+}
+
+// NewTextureFromFile constructs a class Texture.
+func NewTextureFromFile(file gio.File) Texture {
+	var arg1 *C.GFile
+
+	arg1 = (*C.GFile)(file.Native())
+
+	ret := C.gdk_texture_new_from_file(arg1)
 
 	var ret0 Texture
 
@@ -8378,18 +9886,23 @@ func (texture texture) SaveToPng(filename string) bool {
 // returning nil context.
 type VulkanContext interface {
 	DrawContext
+	gio.Initable
 }
 
 // vulkanContext implements the VulkanContext interface.
 type vulkanContext struct {
 	DrawContext
+	gio.Initable
 }
+
+var _ VulkanContext = (*vulkanContext)(nil)
 
 // WrapVulkanContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapVulkanContext(obj *externglib.Object) VulkanContext {
 	return VulkanContext{
-		DrawContext: WrapDrawContext(obj),
+		DrawContext:  WrapDrawContext(obj),
+		gio.Initable: gio.WrapInitable(obj),
 	}
 }
 

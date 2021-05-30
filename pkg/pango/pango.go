@@ -18,13 +18,7 @@ import (
 // extern gpointer gotk4_AttrDataCopyFunc(gconstpointer)
 // extern gboolean gotk4_AttrFilterFunc(PangoAttribute*, gpointer)
 // extern gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer)
-// // extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -47,6 +41,11 @@ func init() {
 		{T: externglib.Type(C.pango_variant_get_type()), F: marshalVariant},
 		{T: externglib.Type(C.pango_weight_get_type()), F: marshalWeight},
 		{T: externglib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
+
+		// Bitfields
+		{T: externglib.Type(C.pango_font_mask_get_type()), F: marshalFontMask},
+		{T: externglib.Type(C.pango_shape_flags_get_type()), F: marshalShapeFlags},
+		{T: externglib.Type(C.pango_show_flags_get_type()), F: marshalShowFlags},
 
 		// Records
 		// Skipped Analysis.
@@ -1351,13 +1350,13 @@ func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data inter
 	var arg2 *C.PangoRectangle
 	var arg3 C.gpointer
 	var arg4 C.PangoAttrDataCopyFunc
+	var arg5 C.GDestroyNotify
 
 	arg1 = (*C.PangoRectangle)(inkRect.Native())
 	arg2 = (*C.PangoRectangle)(logicalRect.Native())
 	arg3 = C.gpointer(box.Assign(data))
-	arg4 = (*[0]byte)(C.gotk4_AttrDataCopyFunc)
 
-	ret := C.pango_attr_shape_new_with_data(arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
+	ret := C.pango_attr_shape_new_with_data(arg1, arg2, arg3, arg4, arg5)
 
 	var ret0 *Attribute
 
@@ -3383,12 +3382,13 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 func (list *AttrList) Filter(_func AttrFilterFunc) *AttrList {
 	var arg0 *C.PangoAttrList
 	var arg1 C.PangoAttrFilterFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg2 C.gpointer
 
 	arg0 = (*C.PangoAttrList)(list.Native())
 	arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
+	arg2 = C.gpointer(box.Assign(_func))
 
-	ret := C.pango_attr_list_filter(arg0, arg1)
+	ret := C.pango_attr_list_filter(arg0, arg1, arg2)
 
 	var ret0 *AttrList
 
@@ -7415,11 +7415,13 @@ type context struct {
 	gextras.Objector
 }
 
+var _ Context = (*context)(nil)
+
 // WrapContext wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapContext(obj *externglib.Object) Context {
 	return Context{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -7885,11 +7887,13 @@ type coverage struct {
 	gextras.Objector
 }
 
+var _ Coverage = (*coverage)(nil)
+
 // WrapCoverage wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapCoverage(obj *externglib.Object) Coverage {
 	return Coverage{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8071,11 +8075,13 @@ type font struct {
 	gextras.Objector
 }
 
+var _ Font = (*font)(nil)
+
 // WrapFont wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFont(obj *externglib.Object) Font {
 	return Font{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8253,11 +8259,13 @@ type fontFace struct {
 	gextras.Objector
 }
 
+var _ FontFace = (*fontFace)(nil)
+
 // WrapFontFace wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontFace(obj *externglib.Object) FontFace {
 	return FontFace{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8409,11 +8417,13 @@ type fontFamily struct {
 	gextras.Objector
 }
 
+var _ FontFamily = (*fontFamily)(nil)
+
 // WrapFontFamily wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontFamily(obj *externglib.Object) FontFamily {
 	return FontFamily{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8587,11 +8597,13 @@ type fontMap struct {
 	gextras.Objector
 }
 
+var _ FontMap = (*fontMap)(nil)
+
 // WrapFontMap wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontMap(obj *externglib.Object) FontMap {
 	return FontMap{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8777,11 +8789,13 @@ type fontset struct {
 	gextras.Objector
 }
 
+var _ Fontset = (*fontset)(nil)
+
 // WrapFontset wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapFontset(obj *externglib.Object) Fontset {
 	return Fontset{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -8798,12 +8812,13 @@ func marshalFontset(p uintptr) (interface{}, error) {
 func (fontset fontset) Foreach(_func FontsetForeachFunc) {
 	var arg0 *C.PangoFontset
 	var arg1 C.PangoFontsetForeachFunc
-	arg2 := C.gpointer(box.Assign(data))
+	var arg2 C.gpointer
 
 	arg0 = (*C.PangoFontset)(fontset.Native())
 	arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
+	arg2 = C.gpointer(box.Assign(_func))
 
-	C.pango_fontset_foreach(arg0, arg1)
+	C.pango_fontset_foreach(arg0, arg1, arg2)
 }
 
 // Font returns the font in the fontset that contains the best glyph for a
@@ -8857,6 +8872,8 @@ type FontsetSimple interface {
 type fontsetSimple struct {
 	Fontset
 }
+
+var _ FontsetSimple = (*fontsetSimple)(nil)
 
 // WrapFontsetSimple wraps a GObject to the right type. It is
 // primarily used internally.
@@ -9349,11 +9366,13 @@ type layout struct {
 	gextras.Objector
 }
 
+var _ Layout = (*layout)(nil)
+
 // WrapLayout wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapLayout(obj *externglib.Object) Layout {
 	return Layout{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 
@@ -10702,11 +10721,13 @@ type renderer struct {
 	gextras.Objector
 }
 
+var _ Renderer = (*renderer)(nil)
+
 // WrapRenderer wraps a GObject to the right type. It is
 // primarily used internally.
 func WrapRenderer(obj *externglib.Object) Renderer {
 	return Renderer{
-		gextras.Objector: (obj),
+		Objector: obj,
 	}
 }
 

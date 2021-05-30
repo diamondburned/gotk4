@@ -6,33 +6,68 @@ import (
 
 // TODO: unexported type implementation
 // TODO: methods for implementation
-// TODO: wrap GObject into implementation
-// TODO: Go->C and C->Go conversions for implementation
 
 var interfaceTmpl = newGoTemplate(`
-	{{ GoDoc .Doc 0 .GoName }}
-	type {{ .GoName }} interface {
-		{{- range .TypeTree.PublicChildren }}
-		{{ . }}
-		{{- else }}
-		gextras.Objector
-		{{ end }}
-
+	{{ if .Virtuals }}
+	// {{ .InterfaceName }}Overrider contains methods that are overridable. This
+	// interface is a subset of the interface {{ .InterfaceName }}.
+	type {{ .InterfaceName }}Overrider interface {
 		{{ range .Virtuals -}}
 		{{ GoDoc .Doc 1 .Name }}
 		{{ .Name }}{{ .Tail }}
 		{{ end }}
 	}
+	{{ end }}
 
-	// Wrap{{ .GoName }} wraps a GObject to a type that implements interface
-	// {{ .GoName }}. It is primarily used internally.
-	func Wrap{{ .GoName }}(obj *externglib.Object) {{ .GoName }} {
+	{{ GoDoc .Doc 0 .InterfaceName }}
+	type {{ .InterfaceName }} interface {
+		{{ range .TypeTree.PublicChildren -}}
+		{{ . }}
+		{{- end }}
+		{{ if .Virtuals -}}
+		{{ .InterfaceName }}Overrider
+		{{- end }}
+
+		{{ range .Methods -}}
+		{{ if not ($.IsVirtual .Name) -}}
+		{{ GoDoc .Doc 1 .Name }}
+		{{ .Name }}{{ .Tail }}
+		{{ end -}}
+		{{ end }}
 	}
+
+	// {{ .StructName }} implements the {{ .InterfaceName }} interface.
+	type {{ .StructName }} struct {
+		{{ range .TypeTree.PublicChildren -}}
+		{{ . }}
+		{{ end }}
+	}
+
+	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
+
+	// Wrap{{ .InterfaceName }} wraps a GObject to a type that implements interface
+	// {{ .InterfaceName }}. It is primarily used internally.
+	func Wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
+		return {{ .TypeTree.Wrap "obj" }}
+	}
+
+	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
+		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+		obj := externglib.Take(unsafe.Pointer(val))
+		return Wrap{{ .InterfaceName }}(obj), nil
+	}
+
+	{{ range .Methods }}
+	{{ GoDoc .Doc 1 .Name }}
+	func ({{ .Recv }} {{ $.StructName }}) {{ .Name }}{{ .Tail }} {{ .Block }}
+	{{ end }}
 `)
 
 type ifaceGenerator struct {
 	gir.Interface
-	GoName   string
+	InterfaceName string
+	StructName    string
+
 	TypeTree TypeTree
 	Virtuals []callableGenerator // for interface
 	Methods  []callableGenerator // for object implementation
@@ -40,17 +75,22 @@ type ifaceGenerator struct {
 	Ng *NamespaceGenerator
 }
 
+func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
+	return &ifaceGenerator{
+		Ng:       ng,
+		TypeTree: *ng.TypeTree(),
+	}
+}
+
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.Interface = iface
-	ig.GoName = PascalToGo(iface.Name)
-
+	ig.InterfaceName = PascalToGo(iface.Name)
+	ig.StructName = UnexportPascal(ig.InterfaceName)
 	ig.updateMethods()
-	if len(ig.Virtuals) == 0 {
-		return false
-	}
 
 	resolved := TypeFromResult(ig.Ng, gir.TypeFindResult{Interface: &iface})
 	if !ig.TypeTree.ResolveFromType(resolved) {
+		ig.Ng.logln(logInfo, "skipping interface", ig.InterfaceName, "cannot be type-resolved")
 		return false
 	}
 
@@ -67,7 +107,7 @@ func (ig *ifaceGenerator) updateMethods() {
 			continue
 		}
 
-		cbgen.Parent = ig.GoName
+		cbgen.Parent = ig.InterfaceName
 		ig.Virtuals = append(ig.Virtuals, cbgen)
 	}
 
@@ -77,7 +117,7 @@ func (ig *ifaceGenerator) updateMethods() {
 			continue
 		}
 
-		cbgen.Parent = ig.GoName
+		cbgen.Parent = ig.InterfaceName
 		ig.Methods = append(ig.Methods, cbgen)
 	}
 
@@ -85,12 +125,22 @@ func (ig *ifaceGenerator) updateMethods() {
 	callableRenameGetters(ig.Virtuals)
 }
 
+// IsVirtual returns true if the given method name is a virtual method's.
+func (ig *ifaceGenerator) IsVirtual(name string) bool {
+	for _, vmethod := range ig.Virtuals {
+		if vmethod.Name == name {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (ng *NamespaceGenerator) generateIfaces() {
-	ig := ifaceGenerator{Ng: ng}
+	ig := newIfaceGenerator(ng)
 
 	for _, iface := range ng.current.Namespace.Interfaces {
 		if !ig.Use(iface) {
-			ng.logln(logInfo, "skipping interface", iface.Name)
 			continue
 		}
 

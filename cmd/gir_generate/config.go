@@ -18,6 +18,5 @@ var packages = []Package{
 // namespace, and the values are list of names.
 var filters = []girgen.FilterMatcher{
 	girgen.RegexFilter("GLib.str.+"),
-	girgen.RegexFilter("GLib.g_variant.*"),
-	girgen.RegexFilter("GLib.GVariant.*"),
+	girgen.RegexFilter("GLib.Variant.*"),
 }

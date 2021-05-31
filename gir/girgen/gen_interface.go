@@ -138,8 +138,16 @@ func (ng *NamespaceGenerator) generateIfaces() {
 	ig := newIfaceGenerator(ng)
 
 	for _, iface := range ng.current.Namespace.Interfaces {
+		if ng.mustIgnore(iface.Name) {
+			continue
+		}
+
 		if !ig.Use(iface) {
 			continue
+		}
+
+		if iface.GLibGetType != "" {
+			ng.addMarshaler(iface.GLibGetType, ig.InterfaceName)
 		}
 
 		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")

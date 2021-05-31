@@ -36,6 +36,14 @@ func (eg *enumGenerator) FormatMember(memberName string) string {
 
 func (ng *NamespaceGenerator) generateEnums() {
 	for _, enum := range ng.current.Namespace.Enums {
+		if ng.mustIgnore(enum.Name) {
+			continue
+		}
+
+		if enum.GLibGetType != "" {
+			ng.addMarshaler(enum.GLibGetType, PascalToGo(enum.Name))
+		}
+
 		ng.pen.BlockTmpl(enumTmpl, &enumGenerator{
 			Enum: enum,
 			Ng:   ng,

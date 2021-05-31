@@ -36,6 +36,10 @@ func (ng *NamespaceGenerator) generateFuncs() {
 	fg := newFunctionGenerator(ng)
 
 	for _, function := range ng.current.Namespace.Functions {
+		if ng.mustIgnore(function.Name) {
+			continue
+		}
+
 		if !fg.Use(function) {
 			ng.logln(logInfo, "skipping function", cFunctionSig(function))
 			continue

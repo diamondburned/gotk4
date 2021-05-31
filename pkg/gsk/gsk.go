@@ -24,7 +24,6 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
 		{T: externglib.Type(C.gsk_blend_mode_get_type()), F: marshalBlendMode},
 		{T: externglib.Type(C.gsk_corner_get_type()), F: marshalCorner},
 		{T: externglib.Type(C.gsk_gl_uniform_type_get_type()), F: marshalGLUniformType},
@@ -32,51 +31,12 @@ func init() {
 		{T: externglib.Type(C.gsk_scaling_filter_get_type()), F: marshalScalingFilter},
 		{T: externglib.Type(C.gsk_serialization_error_get_type()), F: marshalSerializationError},
 		{T: externglib.Type(C.gsk_transform_category_get_type()), F: marshalTransformCategory},
-
-		// Records
-		// Skipped CairoRendererClass.
-		// Skipped ColorStop.
-		// Skipped GLRendererClass.
-		// Skipped GLShaderClass.
-		// Skipped ParseLocation.
-		// Skipped RendererClass.
-		// Skipped RoundedRect.
 		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
-		// Skipped Shadow.
 		{T: externglib.Type(C.gsk_transform_get_type()), F: marshalTransform},
-		// Skipped VulkanRendererClass.
-
-		// Classes
-		// Skipped BlendNode.
-		// Skipped BlurNode.
-		// Skipped BorderNode.
-		// Skipped CairoNode.
 		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRenderer},
-		// Skipped ClipNode.
-		// Skipped ColorMatrixNode.
-		// Skipped ColorNode.
-		// Skipped ConicGradientNode.
-		// Skipped ContainerNode.
-		// Skipped CrossFadeNode.
-		// Skipped DebugNode.
 		{T: externglib.Type(C.gsk_gl_renderer_get_type()), F: marshalGLRenderer},
 		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShader},
-		// Skipped GLShaderNode.
-		// Skipped InsetShadowNode.
-		// Skipped LinearGradientNode.
-		// Skipped OpacityNode.
-		// Skipped OutsetShadowNode.
-		// Skipped RadialGradientNode.
-		// Skipped RenderNode.
 		{T: externglib.Type(C.gsk_renderer_get_type()), F: marshalRenderer},
-		// Skipped RepeatNode.
-		// Skipped RepeatingLinearGradientNode.
-		// Skipped RepeatingRadialGradientNode.
-		// Skipped RoundedClipNode.
-		// Skipped ShadowNode.
-		// Skipped TextNode.
-		// Skipped TextureNode.
-		// Skipped TransformNode.
 		{T: externglib.Type(C.gsk_vulkan_renderer_get_type()), F: marshalVulkanRenderer},
 	})
 }

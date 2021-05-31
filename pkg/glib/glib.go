@@ -15,7 +15,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
 //
-// // extern void callbackDelete(gpointer);
 // extern void gotk4_ChildWatchFunc(GPid, gint, gpointer)
 // extern gint gotk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer)
 // extern void gotk4_DataForeachFunc(GQuark, gpointer, gpointer)
@@ -32,156 +31,46 @@ import (
 // extern void gotk4_TestFixtureFunc(gpointer, gconstpointer)
 // extern gboolean gotk4_TestLogFatalFunc(const gchar*, GLogLevelFlags, const gchar*, gpointer)
 // extern gboolean gotk4_UnixFDSourceFunc(gint, GIOCondition, gpointer)
+// // extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
-		// Skipped BookmarkFileError.
-		// Skipped ChecksumType.
-		// Skipped ConvertError.
-		// Skipped DateDMY.
-		// Skipped DateMonth.
-		// Skipped DateWeekday.
-		// Skipped ErrorType.
-		// Skipped FileError.
-		// Skipped IOChannelError.
-		// Skipped IOError.
-		// Skipped IOStatus.
-		// Skipped KeyFileError.
-		// Skipped LogWriterOutput.
-		// Skipped MarkupError.
-		// Skipped NormalizeMode.
-		// Skipped NumberParserError.
-		// Skipped OnceStatus.
-		// Skipped OptionArg.
-		// Skipped OptionError.
-		// Skipped RegexError.
-		// Skipped SeekType.
-		// Skipped ShellError.
-		// Skipped SliceConfig.
-		// Skipped SpawnError.
-		// Skipped TestFileType.
-		// Skipped TestLogType.
-		// Skipped TestResult.
-		// Skipped ThreadError.
-		// Skipped TimeType.
-		// Skipped TokenType.
-		// Skipped TraverseType.
-		// Skipped UnicodeBreakType.
-		// Skipped UnicodeScript.
-		// Skipped UnicodeType.
-		// Skipped UriError.
-		// Skipped UserDirectory.
-		// Skipped VariantClass.
-		// Skipped VariantParseError.
-
-		// Bitfields
-		// Skipped AsciiType.
-		// Skipped FileSetContentsFlags.
-		// Skipped FileTest.
-		// Skipped FormatSizeFlags.
-		// Skipped HookFlagMask.
 		{T: externglib.Type(C.g_io_condition_get_type()), F: marshalIOCondition},
-		// Skipped IOFlags.
-		// Skipped KeyFileFlags.
-		// Skipped LogLevelFlags.
-		// Skipped MarkupCollectType.
-		// Skipped MarkupParseFlags.
-		// Skipped OptionFlags.
-		// Skipped RegexCompileFlags.
-		// Skipped RegexMatchFlags.
-		// Skipped SpawnFlags.
-		// Skipped TestSubprocessFlags.
-		// Skipped TestTrapFlags.
-		// Skipped TraverseFlags.
-		// Skipped UriFlags.
-		// Skipped UriHideFlags.
-		// Skipped UriParamsFlags.
-
-		// Records
 		{T: externglib.Type(C.g_array_get_type()), F: marshalArray},
-		// Skipped AsyncQueue.
-		// Skipped BookmarkFile.
 		{T: externglib.Type(C.g_byte_array_get_type()), F: marshalByteArray},
 		{T: externglib.Type(C.g_bytes_get_type()), F: marshalBytes},
 		{T: externglib.Type(C.g_checksum_get_type()), F: marshalChecksum},
-		// Skipped Cond.
-		// Skipped Data.
 		{T: externglib.Type(C.g_date_get_type()), F: marshalDate},
 		{T: externglib.Type(C.g_date_time_get_type()), F: marshalDateTime},
-		// Skipped DebugKey.
-		// Skipped Dir.
 		{T: externglib.Type(C.g_error_get_type()), F: marshalError},
 		{T: externglib.Type(C.g_hash_table_get_type()), F: marshalHashTable},
-		// Skipped HashTableIter.
-		// Skipped Hmac.
-		// Skipped Hook.
-		// Skipped HookList.
-		// Skipped IConv.
 		{T: externglib.Type(C.g_io_channel_get_type()), F: marshalIOChannel},
-		// Skipped IOFuncs.
 		{T: externglib.Type(C.g_key_file_get_type()), F: marshalKeyFile},
-		// Skipped List.
-		// Skipped LogField.
 		{T: externglib.Type(C.g_main_context_get_type()), F: marshalMainContext},
 		{T: externglib.Type(C.g_main_loop_get_type()), F: marshalMainLoop},
 		{T: externglib.Type(C.g_mapped_file_get_type()), F: marshalMappedFile},
 		{T: externglib.Type(C.g_markup_parse_context_get_type()), F: marshalMarkupParseContext},
-		// Skipped MarkupParser.
 		{T: externglib.Type(C.g_match_info_get_type()), F: marshalMatchInfo},
-		// Skipped MemVTable.
-		// Skipped Node.
-		// Skipped Once.
-		// Skipped OptionContext.
-		// Skipped OptionEntry.
 		{T: externglib.Type(C.g_option_group_get_type()), F: marshalOptionGroup},
-		// Skipped PatternSpec.
 		{T: externglib.Type(C.g_pollfd_get_type()), F: marshalPollFD},
-		// Skipped Private.
 		{T: externglib.Type(C.g_ptr_array_get_type()), F: marshalPtrArray},
-		// Skipped Queue.
-		// Skipped RWLock.
-		// Skipped Rand.
-		// Skipped RecMutex.
 		{T: externglib.Type(C.g_regex_get_type()), F: marshalRegex},
-		// Skipped SList.
-		// Skipped Scanner.
-		// Skipped ScannerConfig.
-		// Skipped Sequence.
-		// Skipped SequenceIter.
 		{T: externglib.Type(C.g_source_get_type()), F: marshalSource},
-		// Skipped SourceCallbackFuncs.
-		// Skipped SourceFuncs.
-		// Skipped SourcePrivate.
-		// Skipped StatBuf.
 		{T: externglib.Type(C.g_gstring_get_type()), F: marshalString},
-		// Skipped StringChunk.
-		// Skipped TestCase.
-		// Skipped TestConfig.
-		// Skipped TestLogBuffer.
-		// Skipped TestLogMsg.
-		// Skipped TestSuite.
 		{T: externglib.Type(C.g_thread_get_type()), F: marshalThread},
-		// Skipped ThreadPool.
-		// Skipped TimeVal.
 		{T: externglib.Type(C.g_time_zone_get_type()), F: marshalTimeZone},
-		// Skipped Timer.
-		// Skipped TrashStack.
-		// Skipped Tree.
 		{T: externglib.Type(C.g_uri_get_type()), F: marshalURI},
-		// Skipped UriParamsIter.
 		{T: externglib.Type(C.intern()), F: marshalVariant},
 		{T: externglib.Type(C.g_variant_builder_get_type()), F: marshalVariantBuilder},
 		{T: externglib.Type(C.g_variant_dict_get_type()), F: marshalVariantDict},
-		// Skipped VariantIter.
 		{T: externglib.Type(C.g_variant_type_get_gtype()), F: marshalVariantType},
 	})
+}
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
 }
 
 // DateDay: integer representing a day of the month; between 1 and 31.
@@ -9435,7 +9324,7 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 
 	{
 		var dst []C.gpointer
-		ptr := C.malloc(C.sizeof_gpointer * (len(haystack) + 1))
+		ptr := C.malloc(C.sizeof_gconstpointer * (len(haystack) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(haystack)
@@ -9480,7 +9369,7 @@ func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equal
 
 	{
 		var dst []C.gpointer
-		ptr := C.malloc(C.sizeof_gpointer * (len(haystack) + 1))
+		ptr := C.malloc(C.sizeof_gconstpointer * (len(haystack) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(haystack)

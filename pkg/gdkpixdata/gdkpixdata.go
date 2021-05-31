@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/glib"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
@@ -18,19 +17,6 @@ import (
 // #include <gdk-pixbuf/gdk-pixdata.h>
 //
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Bitfields
-		// Skipped PixdataDumpType.
-		// Skipped PixdataType.
-
-		// Records
-		// Skipped Pixdata.
-
-	})
-}
 
 // PixdataDumpType: an enumeration which is used by gdk_pixdata_to_csource() to
 // determine the form of C source to be generated. The three values

@@ -21,18 +21,16 @@ import (
 // // extern void callbackDelete(gpointer);
 import "C"
 
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_cairo_font_get_type()), F: marshalFont},
+		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshalFontMap},
+	})
+}
+
 //export callbackDelete
 func callbackDelete(ptr C.gpointer) {
 	box.Delete(box.Callback, uintptr(ptr))
-}
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Interfaces
-		{T: externglib.Type(C.pango_cairo_font_get_type()), F: marshal},
-		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshal},
-	})
 }
 
 // ShapeRendererFunc: function type for rendering attributes of type

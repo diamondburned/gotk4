@@ -21,27 +21,11 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
-		// Skipped X11DeviceType.
-
-		// Records
-		// Skipped X11AppLaunchContextClass.
-		// Skipped X11DeviceManagerXI2Class.
-		// Skipped X11DeviceXI2Class.
-		// Skipped X11DisplayClass.
-		// Skipped X11DragClass.
-		// Skipped X11GLContextClass.
-		// Skipped X11MonitorClass.
-		// Skipped X11ScreenClass.
-		// Skipped X11SurfaceClass.
-
-		// Classes
 		{T: externglib.Type(C.gdk_x11_app_launch_context_get_type()), F: marshalX11AppLaunchContext},
 		{T: externglib.Type(C.gdk_x11_device_manager_xi2_get_type()), F: marshalX11DeviceManagerXI2},
 		{T: externglib.Type(C.gdk_x11_device_xi2_get_type()), F: marshalX11DeviceXI2},
 		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Display},
 		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Drag},
-		// Skipped X11GLContext.
 		{T: externglib.Type(C.gdk_x11_monitor_get_type()), F: marshalX11Monitor},
 		{T: externglib.Type(C.gdk_x11_screen_get_type()), F: marshalX11Screen},
 		{T: externglib.Type(C.gdk_x11_surface_get_type()), F: marshalX11Surface},
@@ -738,7 +722,7 @@ func (display x11Display) StringToCompoundText(str string) (encoding string, for
 	{
 		ret2 = make([]byte, arg5)
 		for i := 0; i < uintptr(arg5); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret2[i] = byte(src)
 		}
 	}
@@ -818,7 +802,7 @@ func (display x11Display) UTF8ToCompoundText(str string) (encoding string, forma
 	{
 		ret2 = make([]byte, arg5)
 		for i := 0; i < uintptr(arg5); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret2[i] = byte(src)
 		}
 	}

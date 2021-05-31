@@ -20,24 +20,11 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Records
-		// Skipped WaylandDeviceClass.
-		// Skipped WaylandDisplayClass.
-		// Skipped WaylandGLContextClass.
-		// Skipped WaylandMonitorClass.
-		// Skipped WaylandSeatClass.
-
-		// Classes
 		{T: externglib.Type(C.gdk_wayland_device_get_type()), F: marshalWaylandDevice},
 		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplay},
-		// Skipped WaylandGLContext.
 		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitor},
-		// Skipped WaylandPopup.
 		{T: externglib.Type(C.gdk_wayland_seat_get_type()), F: marshalWaylandSeat},
 		{T: externglib.Type(C.gdk_wayland_surface_get_type()), F: marshalWaylandSurface},
-		// Skipped WaylandToplevel.
-
 	})
 }
 

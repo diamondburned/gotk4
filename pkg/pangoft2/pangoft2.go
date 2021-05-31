@@ -21,17 +21,15 @@ import (
 // // extern void callbackDelete(gpointer);
 import "C"
 
+func init() {
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.pango_ft2_font_map_get_type()), F: marshalFontMap},
+	})
+}
+
 //export callbackDelete
 func callbackDelete(ptr C.gpointer) {
 	box.Delete(box.Callback, uintptr(ptr))
-}
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Classes
-		{T: externglib.Type(C.pango_ft2_font_map_get_type()), F: marshalFontMap},
-	})
 }
 
 // FontGetCoverage gets the Coverage for a `PangoFT2Font`. Use

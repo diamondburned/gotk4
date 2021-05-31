@@ -2,7 +2,6 @@ package girgen
 
 import (
 	"fmt"
-	"log"
 	"path"
 	"strings"
 	"sync"
@@ -546,13 +545,6 @@ func (ng *NamespaceGenerator) addResolvedImport(resolved *ResolvedType) {
 	}
 }
 
-// gextrasObjector references the gextras.Objector interface.
-var gextrasObjector = &ResolvedType{
-	Builtin: func() *string { v := "gextras.Objector"; return &v }(),
-	Import:  "github.com/diamondburned/gotk4/internal/gextras",
-	Package: "gextras",
-}
-
 func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	if typ.Name == "" {
 		ng.logln(logWarn, "empty gir type", typ)
@@ -603,15 +595,6 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	// TODO: Add _full function support.
 	case "GObject.EnumValue":
 		return nil
-	}
-
-	// Types that aren't in the switch tree that match any of these patterns are
-	// types that must be in the switch tree, so them not being in there is a
-	// bug.
-	for _, check := range ng.gen.KnownTypes {
-		if check(typ.Name) {
-			log.Fatalf("missing gir type %s in the type tree\n", typ.Name)
-		}
 	}
 
 	// CType is required here so we can properly account for pointers.

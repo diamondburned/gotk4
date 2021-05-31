@@ -23,23 +23,17 @@ import (
 // // extern void callbackDelete(gpointer);
 import "C"
 
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
-
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Records
-		// Skipped RendererClass.
-		// Skipped RendererPrivate.
-
-		// Classes
 		{T: externglib.Type(C.pango_xft_font_get_type()), F: marshalFont},
 		{T: externglib.Type(C.pango_xft_font_map_get_type()), F: marshalFontMap},
 		{T: externglib.Type(C.pango_xft_renderer_get_type()), F: marshalRenderer},
 	})
+}
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
 }
 
 // GetContext retrieves a Context appropriate for rendering with Xft fonts on

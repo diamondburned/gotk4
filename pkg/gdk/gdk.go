@@ -24,14 +24,8 @@ import (
 // // extern void callbackDelete(gpointer);
 import "C"
 
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
-
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
 		{T: externglib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
 		{T: externglib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
 		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
@@ -50,8 +44,6 @@ func init() {
 		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
 		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
 		{T: externglib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
-
-		// Bitfields
 		{T: externglib.Type(C.gdk_anchor_hints_get_type()), F: marshalAnchorHints},
 		{T: externglib.Type(C.gdk_axis_flags_get_type()), F: marshalAxisFlags},
 		{T: externglib.Type(C.gdk_drag_action_get_type()), F: marshalDragAction},
@@ -60,47 +52,26 @@ func init() {
 		{T: externglib.Type(C.gdk_paintable_flags_get_type()), F: marshalPaintableFlags},
 		{T: externglib.Type(C.gdk_seat_capabilities_get_type()), F: marshalSeatCapabilities},
 		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
-
-		// Records
+		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePad},
+		{T: externglib.Type(C.gdk_drag_surface_get_type()), F: marshalDragSurface},
+		{T: externglib.Type(C.gdk_paintable_get_type()), F: marshalPaintable},
+		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopup},
+		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalToplevel},
 		{T: externglib.Type(C.gdk_content_formats_get_type()), F: marshalContentFormats},
 		{T: externglib.Type(C.gdk_content_formats_builder_get_type()), F: marshalContentFormatsBuilder},
-		// Skipped ContentProviderClass.
-		// Skipped DevicePadInterface.
-		// Skipped DragSurfaceInterface.
-		// Skipped DrawingContext.
 		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
-		// Skipped FrameClockClass.
-		// Skipped FrameClockPrivate.
 		{T: externglib.Type(C.gdk_frame_timings_get_type()), F: marshalFrameTimings},
-		// Skipped GLTextureClass.
-		// Skipped KeymapKey.
-		// Skipped MemoryTextureClass.
-		// Skipped MonitorClass.
-		// Skipped PaintableInterface.
-		// Skipped PopupInterface.
 		{T: externglib.Type(C.gdk_popup_layout_get_type()), F: marshalPopupLayout},
 		{T: externglib.Type(C.gdk_rgba_get_type()), F: marshalRGBA},
 		{T: externglib.Type(C.gdk_rectangle_get_type()), F: marshalRectangle},
-		// Skipped SnapshotClass.
-		// Skipped SurfaceClass.
-		// Skipped TextureClass.
-		// Skipped TimeCoord.
-		// Skipped ToplevelInterface.
 		{T: externglib.Type(C.gdk_toplevel_layout_get_type()), F: marshalToplevelLayout},
-		// Skipped ToplevelSize.
-
-		// Classes
 		{T: externglib.Type(C.gdk_app_launch_context_get_type()), F: marshalAppLaunchContext},
-		// Skipped ButtonEvent.
 		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContext},
 		{T: externglib.Type(C.gdk_clipboard_get_type()), F: marshalClipboard},
 		{T: externglib.Type(C.gdk_content_deserializer_get_type()), F: marshalContentDeserializer},
 		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProvider},
 		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializer},
-		// Skipped CrossingEvent.
 		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
-		// Skipped DNDEvent.
-		// Skipped DeleteEvent.
 		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevice},
 		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTool},
 		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplay},
@@ -108,34 +79,22 @@ func init() {
 		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrag},
 		{T: externglib.Type(C.gdk_draw_context_get_type()), F: marshalDrawContext},
 		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDrop},
-		// Skipped Event.
-		// Skipped FocusEvent.
 		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClock},
 		{T: externglib.Type(C.gdk_gl_context_get_type()), F: marshalGLContext},
 		{T: externglib.Type(C.gdk_gl_texture_get_type()), F: marshalGLTexture},
-		// Skipped GrabBrokenEvent.
-		// Skipped KeyEvent.
 		{T: externglib.Type(C.gdk_memory_texture_get_type()), F: marshalMemoryTexture},
 		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitor},
-		// Skipped MotionEvent.
-		// Skipped PadEvent.
-		// Skipped ProximityEvent.
-		// Skipped ScrollEvent.
 		{T: externglib.Type(C.gdk_seat_get_type()), F: marshalSeat},
 		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshot},
 		{T: externglib.Type(C.gdk_surface_get_type()), F: marshalSurface},
 		{T: externglib.Type(C.gdk_texture_get_type()), F: marshalTexture},
-		// Skipped TouchEvent.
-		// Skipped TouchpadEvent.
 		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContext},
-
-		// Interfaces
-		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalVulkanContext},
-		{T: externglib.Type(C.gdk_drag_surface_get_type()), F: marshalVulkanContext},
-		{T: externglib.Type(C.gdk_paintable_get_type()), F: marshalVulkanContext},
-		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalVulkanContext},
-		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalVulkanContext},
 	})
+}
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
 }
 
 // AxisUse: an enumeration describing the way in which a device axis (valuator)

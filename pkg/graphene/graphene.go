@@ -5,8 +5,6 @@ package graphene
 import (
 	"runtime"
 	"unsafe"
-
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: graphene-gobject-1.0
@@ -17,11 +15,6 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
-		// Skipped EulerOrder.
-		// Skipped RayIntersectionKind.
-
-		// Records
 		{T: externglib.Type(C.graphene_box_get_type()), F: marshalBox},
 		{T: externglib.Type(C.graphene_euler_get_type()), F: marshalEuler},
 		{T: externglib.Type(C.graphene_frustum_get_type()), F: marshalFrustum},
@@ -33,8 +26,6 @@ func init() {
 		{T: externglib.Type(C.graphene_quaternion_get_type()), F: marshalQuaternion},
 		{T: externglib.Type(C.graphene_ray_get_type()), F: marshalRay},
 		{T: externglib.Type(C.graphene_rect_get_type()), F: marshalRect},
-		// Skipped Simd4F.
-		// Skipped Simd4X4F.
 		{T: externglib.Type(C.graphene_size_get_type()), F: marshalSize},
 		{T: externglib.Type(C.graphene_sphere_get_type()), F: marshalSphere},
 		{T: externglib.Type(C.graphene_triangle_get_type()), F: marshalTriangle},

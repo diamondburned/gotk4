@@ -156,6 +156,10 @@ func (ng *NamespaceGenerator) generateCallbacks() {
 	cg := newCallbackGenerator(ng)
 
 	for _, callback := range ng.current.Namespace.Callbacks {
+		if ng.mustIgnore(callback.Name) {
+			continue
+		}
+
 		if !cg.Use(callback) {
 			ng.logln(logInfo, "skipping callback", callback.Name)
 			continue

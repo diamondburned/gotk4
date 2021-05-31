@@ -4,31 +4,12 @@ package xlib
 
 import (
 	"unsafe"
-
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 //
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Records
-		// Skipped Display.
-		// Skipped Screen.
-		// Skipped Visual.
-		// Skipped XConfigureEvent.
-		// Skipped XImage.
-		// Skipped XFontStruct.
-		// Skipped XTrapezoid.
-		// Skipped XVisualInfo.
-		// Skipped XWindowAttributes.
-
-	})
-}
 
 type Atom uint32
 

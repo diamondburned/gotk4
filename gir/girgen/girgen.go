@@ -36,16 +36,9 @@ func newGoTemplate(block string) *template.Template {
 
 // Generator is a big generator that manages multiple repositories.
 type Generator struct {
-	// KnownTypes contains a list of type checks that return true if the given
-	// type matches a known type.
-	KnownTypes []func(string) bool
-	// NoMarshalPkgs contains a list of namespace package names that don't have
-	// marshalers generated. GLib is by default in this list, because it
-	// shouldn't have any marshalers.
-	NoMarshalPkgs []string
-
 	Repos      gir.Repositories
 	RootModule string
+	Filters    []FilterMatcher
 
 	logger *log.Logger
 	color  bool
@@ -198,8 +191,9 @@ type NamespaceGenerator struct {
 	pre *pen.Paper
 	cgo *pen.Paper
 
-	pkgPath string            // package name
-	imports map[string]string // optional alias value
+	pkgPath    string            // package name
+	imports    map[string]string // optional alias value
+	marshalers []string
 
 	gen     *Generator
 	current *gir.NamespaceFindResult
@@ -224,12 +218,19 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 	}
 	ng.cgo.Line()
 
+	ng.marshalers = make([]string, 0, 0+
+		len(ng.current.Namespace.Enums)+
+		len(ng.current.Namespace.Bitfields)+
+		len(ng.current.Namespace.Records)+
+		len(ng.current.Namespace.Classes)+
+		len(ng.current.Namespace.Interfaces),
+	)
+
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
-	ng.generateInit()
 	ng.generateAliases()
 	ng.generateEnums()
 	ng.generateBitfields()
@@ -286,6 +287,21 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 	pen.Words(`import "C"`)
 	pen.Line()
 
+	if len(ng.marshalers) > 0 {
+		ng.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
+
+		pen.Words("func init() {")
+		pen.Words("  externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{")
+
+		for _, marshaler := range ng.marshalers {
+			pen.Words("      " + marshaler)
+		}
+
+		pen.Words("  })")
+		pen.Words("}")
+		pen.Line()
+	}
+
 	pen.WriteString(ng.pre.String())
 	pen.WriteString(ng.pen.String())
 
@@ -307,6 +323,25 @@ func makeImport(importPath, alias string) string {
 	// Only use the import alias if it's provided and does not match the base
 	// name of the import path for idiomaticity.
 	return alias + " " + strconv.Quote(importPath)
+}
+
+func (ng *NamespaceGenerator) addMarshaler(glibGetType, goName string) {
+	ng.marshalers = append(ng.marshalers, fmt.Sprintf(
+		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
+	))
+}
+
+// mustIgnore checks the generator's filters to see if the given girType in this
+// namespace should be ignored.
+func (ng *NamespaceGenerator) mustIgnore(girType string) (ignore bool) {
+	for _, filter := range ng.gen.Filters {
+		if !filter.Filter(ng, girType) {
+			// Filter returns keep=false.
+			return true
+		}
+	}
+
+	return false
 }
 
 func (ng *NamespaceGenerator) needsCallbackDelete() {

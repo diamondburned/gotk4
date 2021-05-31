@@ -272,6 +272,66 @@ func (repos *Repositories) FindType(nspName, typ string) *TypeFindResult {
 	return v.(*TypeFindResult)
 }
 
+// SearchNamespace searches the namespace for the given type name. The returned
+// interface may be any of the types in TypeFindResult.
+func SearchNamespace(namespace *Namespace, f func(typ, ctyp string) bool) interface{} {
+	for _, alias := range namespace.Aliases {
+		if f(alias.Name, alias.CType) {
+			return &alias
+		}
+	}
+
+	for _, class := range namespace.Classes {
+		if f(class.Name, class.GLibTypeName) {
+			return &class
+		}
+	}
+
+	for _, enum := range namespace.Enums {
+		if f(enum.Name, enum.CType) {
+			return &enum
+		}
+	}
+
+	for _, record := range namespace.Records {
+		if f(record.Name, record.CType) {
+			return &record
+		}
+	}
+
+	for _, function := range namespace.Functions {
+		if f(function.Name, function.CIdentifier) {
+			return &function
+		}
+	}
+
+	for _, union := range namespace.Unions {
+		if f(union.Name, union.CType) {
+			return &union
+		}
+	}
+
+	for _, bitfield := range namespace.Bitfields {
+		if f(bitfield.Name, bitfield.CType) {
+			return &bitfield
+		}
+	}
+
+	for _, callback := range namespace.Callbacks {
+		if f(callback.Name, callback.CIdentifier) {
+			return &callback
+		}
+	}
+
+	for _, iface := range namespace.Interfaces {
+		if f(iface.Name, iface.CType) {
+			return &iface
+		}
+	}
+
+	return nil
+}
+
 func (repos *Repositories) findType(typ string) *TypeFindResult {
 	namespace, typ := SplitGIRType(typ)
 
@@ -283,70 +343,33 @@ func (repos *Repositories) findType(typ string) *TypeFindResult {
 		return nil
 	}
 
-	for _, alias := range r.Namespace.Aliases {
-		if alias.Name == typ {
-			r.Alias = &alias
-			return &r
-		}
+	v := SearchNamespace(r.Namespace, func(name, _ string) bool { return name == typ })
+	if v == nil {
+		return nil
 	}
 
-	for _, class := range r.Namespace.Classes {
-		if class.Name == typ {
-			r.Class = &class
-			return &r
-		}
+	switch v := v.(type) {
+	case *Alias:
+		r.Alias = v
+	case *Class:
+		r.Class = v
+	case *Interface:
+		r.Interface = v
+	case *Record:
+		r.Record = v
+	case *Enum:
+		r.Enum = v
+	case *Function:
+		r.Function = v
+	case *Union:
+		r.Union = v
+	case *Bitfield:
+		r.Bitfield = v
+	case *Callback:
+		r.Callback = v
 	}
 
-	for _, enum := range r.Namespace.Enums {
-		if enum.Name == typ {
-			r.Enum = &enum
-			return &r
-		}
-	}
-
-	for _, record := range r.Namespace.Records {
-		if record.Name == typ {
-			r.Record = &record
-			return &r
-		}
-	}
-
-	for _, function := range r.Namespace.Functions {
-		if function.Name == typ {
-			r.Function = &function
-			return &r
-		}
-	}
-
-	for _, union := range r.Namespace.Unions {
-		if union.Name == typ {
-			r.Union = &union
-			return &r
-		}
-	}
-
-	for _, bitfield := range r.Namespace.Bitfields {
-		if bitfield.Name == typ {
-			r.Bitfield = &bitfield
-			return &r
-		}
-	}
-
-	for _, callback := range r.Namespace.Callbacks {
-		if callback.Name == typ {
-			r.Callback = &callback
-			return &r
-		}
-	}
-
-	for _, iface := range r.Namespace.Interfaces {
-		if iface.Name == typ {
-			r.Interface = &iface
-			return &r
-		}
-	}
-
-	return nil
+	return &r
 }
 
 // PkgRepository wraps a Repository to add additional information.

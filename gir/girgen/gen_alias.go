@@ -20,6 +20,10 @@ func (ng *NamespaceGenerator) generateAliases() {
 			continue
 		}
 
+		if ng.mustIgnore(alias.Name) {
+			continue
+		}
+
 		if goType == "" {
 			// TODO: fix this.
 			goType = "struct{}"

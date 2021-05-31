@@ -33,16 +33,6 @@ type Package struct {
 	Namespaces []string // refer to ./cmd/gir_namespaces
 }
 
-var packages = []Package{
-	{"gobject-introspection-1.0", []string{
-		"GLib", "Gio", "cairo", "xft", "xlib", "freetype2", "fontconfig",
-	}},
-	{"pango", nil},
-	{"gdk-pixbuf-2.0", []string{"GdkPixbuf", "GdkPixdata"}},
-	{"graphene-1.0", nil},
-	{"gtk4", nil}, // includes Gdk
-}
-
 func main() {
 	var repos gir.Repositories
 	var err error

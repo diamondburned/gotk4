@@ -4,25 +4,12 @@ package freetype2
 
 import (
 	"unsafe"
-
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 //
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Records
-		// Skipped Bitmap.
-		// Skipped Face.
-		// Skipped Library.
-
-	})
-}
 
 type Int32 int32
 

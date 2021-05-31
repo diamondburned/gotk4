@@ -240,6 +240,10 @@ func (ng *NamespaceGenerator) generateRecords() {
 	imported := false
 
 	for _, record := range ng.current.Namespace.Records {
+		if ng.mustIgnore(record.Name) {
+			continue
+		}
+
 		if !rg.Use(record) {
 			ng.logln(logInfo, "record", record.Name, "skipped")
 			continue
@@ -249,6 +253,10 @@ func (ng *NamespaceGenerator) generateRecords() {
 		if !imported {
 			rg.Ng.addImport("unsafe")
 			imported = true
+		}
+
+		if record.GLibGetType != "" {
+			ng.addMarshaler(record.GLibGetType, rg.GoName)
 		}
 
 		ng.pen.BlockTmpl(recordTmpl, &rg)

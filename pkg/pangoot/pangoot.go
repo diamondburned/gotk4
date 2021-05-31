@@ -20,16 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
-		// Skipped TableType.
-
-		// Records
 		{T: externglib.Type(C.pango_ot_buffer_get_type()), F: marshalBuffer},
-		// Skipped FeatureMap.
-		// Skipped Glyph.
 		{T: externglib.Type(C.pango_ot_ruleset_description_get_type()), F: marshalRulesetDescription},
-
-		// Classes
 		{T: externglib.Type(C.pango_ot_info_get_type()), F: marshalInfo},
 		{T: externglib.Type(C.pango_ot_ruleset_get_type()), F: marshalRuleset},
 	})

@@ -47,6 +47,14 @@ func (eg *bitfieldGenerator) FormatMember(memberName string) string {
 
 func (ng *NamespaceGenerator) generateBitfields() {
 	for _, bitfield := range ng.current.Namespace.Bitfields {
+		if ng.mustIgnore(bitfield.Name) {
+			continue
+		}
+
+		if bitfield.GLibGetType != "" {
+			ng.addMarshaler(bitfield.GLibGetType, PascalToGo(bitfield.Name))
+		}
+
 		ng.pen.BlockTmpl(bitfieldTmpl, &bitfieldGenerator{
 			Bitfield: bitfield,
 			Ng:       ng,

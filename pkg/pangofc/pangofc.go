@@ -17,29 +17,21 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
 //
-// // extern void callbackDelete(gpointer);
 // extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
+// // extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) {
-	box.Delete(box.Callback, uintptr(ptr))
-}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Records
-		// Skipped DecoderClass.
-		// Skipped FontClass.
-		// Skipped FontMapClass.
-		// Skipped FontMapPrivate.
-
-		// Classes
 		{T: externglib.Type(C.pango_fc_decoder_get_type()), F: marshalDecoder},
 		{T: externglib.Type(C.pango_fc_font_get_type()), F: marshalFont},
 		{T: externglib.Type(C.pango_fc_font_map_get_type()), F: marshalFontMap},
 	})
+}
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
 }
 
 // DecoderFindFunc: callback function passed to

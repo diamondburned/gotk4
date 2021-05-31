@@ -149,9 +149,17 @@ func (ng *NamespaceGenerator) generateClasses() {
 	cg := newClassGenerator(ng)
 
 	for _, class := range ng.current.Namespace.Classes {
+		if ng.mustIgnore(class.Name) {
+			continue
+		}
+
 		if !cg.Use(class) {
 			ng.logln(logInfo, "skipping class", class.Name)
 			continue
+		}
+
+		if class.GLibGetType != "" {
+			ng.addMarshaler(class.GLibGetType, cg.InterfaceName)
 		}
 
 		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")

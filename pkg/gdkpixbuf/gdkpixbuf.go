@@ -23,20 +23,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		// Enums
 		{T: externglib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
 		{T: externglib.Type(C.gdk_interp_type_get_type()), F: marshalInterpType},
 		{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
 		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
 		{T: externglib.Type(C.gdk_pixbuf_rotation_get_type()), F: marshalPixbufRotation},
-
-		// Records
 		{T: externglib.Type(C.gdk_pixbuf_format_get_type()), F: marshalPixbufFormat},
-		// Skipped PixbufLoaderClass.
-		// Skipped PixbufSimpleAnimClass.
-
-		// Classes
-		// Skipped Pixbuf.
 		{T: externglib.Type(C.gdk_pixbuf_animation_get_type()), F: marshalPixbufAnimation},
 		{T: externglib.Type(C.gdk_pixbuf_animation_iter_get_type()), F: marshalPixbufAnimationIter},
 		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoader},

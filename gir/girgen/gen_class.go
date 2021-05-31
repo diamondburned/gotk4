@@ -149,7 +149,7 @@ func (ng *NamespaceGenerator) generateClasses() {
 	cg := newClassGenerator(ng)
 
 	for _, class := range ng.current.Namespace.Classes {
-		if ng.mustIgnore(class.Name) {
+		if ng.mustIgnore(class.Name, class.CType) {
 			continue
 		}
 

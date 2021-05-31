@@ -179,6 +179,12 @@ func csizeof(ng *NamespaceGenerator, resolved *ResolvedType) string {
 func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	typ := conv.Type.Type
 
+	for _, unsupported := range unsupportedTypes {
+		if unsupported == typ.Name {
+			return ""
+		}
+	}
+
 	if prim, ok := girToBuiltin[typ.Name]; ok {
 		switch prim {
 		case "string":
@@ -229,17 +235,6 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		return fmt.Sprintf("%s = (*C.GObject)(%s.Native())", conv.Target, conv.Value)
 	case "GObject.InitiallyUnowned":
 		return fmt.Sprintf("%s = (*C.GInitiallyUnowned)(%s.Native())", conv.Target, conv.Value)
-
-	// These are empty until they're filled out in type_c_go.go
-	case "GObject.Closure":
-		return ""
-	case "GObject.Callback":
-		return ""
-	case "va_list":
-		return ""
-	case "GObject.EnumValue", "GObject.TypeModule", "GObject.ParamSpec", "GObject.Parameter":
-		// Refer to ResolveType.
-		return ""
 	}
 
 	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)

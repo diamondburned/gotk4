@@ -73,15 +73,15 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 
 		lengthArg := conv.ArgAt(*array.Length)
 
-		// If the code explicitly doesn't want us to own the data, then we will
-		// have to directly use the C backing array, but we can only do this if
-		// the underlying type is a by-value primitive type. Any other types
-		// will have to be copied or otherwise converted somehow.
+		// If we're owning the new data, then we will directly use the backing
+		// array, but we can only do this if the underlying type is a primitive,
+		// since those have equivalent Go representations. Any other types will
+		// have to be copied or otherwise converted somehow.
 		//
 		// TODO: record conversion should handle ownership: if
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
-		if !conv.isTransferring() && innerResolved.IsPrimitive() {
+		if conv.isTransferring() && innerResolved.IsPrimitive() {
 			ng.addImport("runtime")
 			ng.addImport("reflect")
 
@@ -156,6 +156,12 @@ func goSliceFromPtr(target, ptr, len string) string {
 func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	typ := conv.Type.Type
 
+	for _, unsupported := range unsupportedTypes {
+		if unsupported == typ.Name {
+			return ""
+		}
+	}
+
 	// Resolve primitive types.
 	if prim, ok := girToBuiltin[typ.Name]; ok {
 		// Edge cases.
@@ -173,7 +179,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 			return p.String()
 
 		case "bool":
-			return fmt.Sprintf("%s = %s != C.FALSE", conv.Target, conv.Value)
+			return fmt.Sprintf("%s = C.BOOL(%s) != 0", conv.Target, conv.Value)
 
 		default:
 			return directCall(conv.Value, conv.Target, prim)
@@ -203,19 +209,24 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		return ""
 
 	case "GType":
-		return "" // TODO
+		ng.addGLibImport()
+		return conv.call("externglib.Type")
+
 	case "GObject.GValue", "GObject.Value":
-		return "" // TODO
-	case "GObject.Closure":
-		return "" // TODO
-	case "GObject.Callback":
-		return "" // TODO
-	case "va_list":
-		// CGo cannot handle variadic argument lists.
-		return ""
-	case "GObject.EnumValue", "GObject.TypeModule", "GObject.ParamSpec", "GObject.Parameter":
-		// Refer to ResolveType.
-		return ""
+		ng.addGLibImport()
+		ng.addImport("unsafe")
+
+		p := pen.NewPiece()
+		p.Linef("%s = externglib.ValueFromNative(unsafe.Pointer(%s))", conv.Target, conv.Value)
+
+		// Set this to be freed if we have the ownership now.
+		if conv.isTransferring() {
+			p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", conv.Target)
+			p.Linef("  C.g_value_unset((*C.GValue)(v.GValue))")
+			p.Linef("})")
+		}
+
+		return p.String()
 	}
 
 	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
@@ -266,14 +277,22 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 			wrapName := resolved.WrapName(resolved.NeedsNamespace(ng.current))
 
 			b := pen.NewBlock()
-			b.Linef(conv.call(wrapName))
+			b.Linef("%s = %s(unsafe.Pointer(%s))", conv.Target, wrapName, conv.Value)
 
-			// If we don't own the record, then we shouldn't free it when we
-			// don't need it anymore.
-			if !conv.isTransferring() {
+			// If ownership is being transferred to us on the Go side, then we
+			// should free.
+			if conv.isTransferring() {
 				ng.addImport("runtime")
 
-				b.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", conv.Target, goName)
+				arg := conv.Target
+				typ := goName
+
+				if resolved.Ptr < 1 {
+					arg = "&" + arg
+					typ = "*" + typ
+				}
+
+				b.Linef("runtime.SetFinalizer(%s, func(v %s) {", arg, typ)
 				b.Linef("  C.free(unsafe.Pointer(v.Native()))")
 				b.Linef("})")
 			}

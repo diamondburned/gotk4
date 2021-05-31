@@ -106,7 +106,7 @@ func WrapBuffer(ptr unsafe.Pointer) *Buffer {
 
 func marshalBuffer(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBuffer(unsafe.Pointer(b))
+	return WrapBuffer(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -125,7 +125,10 @@ func NewBuffer(font pangofc.Font) *Buffer {
 	var ret0 *Buffer
 
 	{
-		ret0 = WrapBuffer(ret)
+		ret0 = WrapBuffer(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Buffer) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -185,7 +188,10 @@ func (buffer *Buffer) Glyphs() (glyphs []*Glyph, nGlyphs int) {
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (*C.PangoOTGlyph)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret0[i] = WrapGlyph(src)
+				ret0[i] = WrapGlyph(unsafe.Pointer(src))
+				runtime.SetFinalizer(ret0[i], func(v *Glyph) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
 			}
 		}
 	}
@@ -257,7 +263,7 @@ func WrapFeatureMap(ptr unsafe.Pointer) *FeatureMap {
 
 func marshalFeatureMap(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFeatureMap(unsafe.Pointer(b))
+	return WrapFeatureMap(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -298,7 +304,7 @@ func WrapGlyph(ptr unsafe.Pointer) *Glyph {
 
 func marshalGlyph(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyph(unsafe.Pointer(b))
+	return WrapGlyph(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -370,7 +376,7 @@ func WrapRulesetDescription(ptr unsafe.Pointer) *RulesetDescription {
 
 func marshalRulesetDescription(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRulesetDescription(unsafe.Pointer(b))
+	return WrapRulesetDescription(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -389,10 +395,7 @@ func (r *RulesetDescription) Script() pango.Script {
 func (r *RulesetDescription) Language() *pango.Language {
 	var ret *pango.Language
 	{
-		ret = pango.WrapLanguage(r.native.language)
-		runtime.SetFinalizer(&ret, func(v **pango.Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = pango.WrapLanguage(unsafe.Pointer(r.native.language))
 	}
 	return ret
 }
@@ -401,10 +404,7 @@ func (r *RulesetDescription) Language() *pango.Language {
 func (r *RulesetDescription) StaticGsubFeatures() *FeatureMap {
 	var ret *FeatureMap
 	{
-		ret = WrapFeatureMap(r.native.static_gsub_features)
-		runtime.SetFinalizer(&ret, func(v **FeatureMap) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapFeatureMap(unsafe.Pointer(r.native.static_gsub_features))
 	}
 	return ret
 }
@@ -420,10 +420,7 @@ func (r *RulesetDescription) NStaticGsubFeatures() uint {
 func (r *RulesetDescription) StaticGposFeatures() *FeatureMap {
 	var ret *FeatureMap
 	{
-		ret = WrapFeatureMap(r.native.static_gpos_features)
-		runtime.SetFinalizer(&ret, func(v **FeatureMap) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapFeatureMap(unsafe.Pointer(r.native.static_gpos_features))
 	}
 	return ret
 }
@@ -439,10 +436,7 @@ func (r *RulesetDescription) NStaticGposFeatures() uint {
 func (r *RulesetDescription) OtherFeatures() *FeatureMap {
 	var ret *FeatureMap
 	{
-		ret = WrapFeatureMap(r.native.other_features)
-		runtime.SetFinalizer(&ret, func(v **FeatureMap) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapFeatureMap(unsafe.Pointer(r.native.other_features))
 	}
 	return ret
 }
@@ -468,7 +462,10 @@ func (desc *RulesetDescription) Copy() *RulesetDescription {
 	var ret0 *RulesetDescription
 
 	{
-		ret0 = WrapRulesetDescription(ret)
+		ret0 = WrapRulesetDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *RulesetDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -492,7 +489,7 @@ func (desc1 *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }

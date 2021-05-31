@@ -66,20 +66,28 @@ func anyTypeCGo(any gir.AnyType) string {
 func anyTypeC(any gir.AnyType) string {
 	switch {
 	case any.Array != nil:
-		return oneOrOtherStr(any.Array.CType, any.Array.Name)
+		return ctypeFallback(any.Array.CType, any.Array.Name)
 	case any.Type != nil:
-		return oneOrOtherStr(any.Type.CType, any.Type.Name)
+		return ctypeFallback(any.Type.CType, any.Type.Name)
 	default:
 		return ""
 	}
 }
 
-// oneOrOtherStr returns one or the other string, whichever is not empty.
-func oneOrOtherStr(one, other string) string {
-	if one != "" {
-		return one
+// ctypeFallback returns the C type OR the GIR type if it's empty.
+func ctypeFallback(c, gir string) string {
+	if c != "" {
+		return c
 	}
-	return other
+
+	// Handle edge cases with a hard-coded type map. Thanks, GIR, for evading
+	// needed information.
+	switch gir {
+	case "utf8", "filename":
+		return "gchar*"
+	default:
+		return gir
+	}
 }
 
 // cgoType turns the given C type into CGo.
@@ -190,7 +198,7 @@ func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 		Import:  imp,
 		Package: pkg,
 		GType:   girType.Name,
-		CType:   oneOrOtherStr(girType.CType, girType.Name),
+		CType:   ctypeFallback(girType.CType, girType.Name),
 		Ptr:     countPtrs(girType, nil),
 	}
 }
@@ -545,10 +553,34 @@ func (ng *NamespaceGenerator) addResolvedImport(resolved *ResolvedType) {
 	}
 }
 
+// addGLibImport adds the gotk3/glib import.
+func (ng *NamespaceGenerator) addGLibImport() {
+	ng.addResolvedImport(externGLibType("", gir.Type{}, ""))
+}
+
+// unsupportedTypes is the list of unsupported types, either because it is not
+// yet supported or will never be supported due to redundancy or else.
+var unsupportedTypes = []string{
+	"tm", // requires time.h
+	"va_list",
+	"GObject.Closure",    // TODO
+	"GObject.Callback",   // TODO
+	"GObject.EnumValue",  // TODO
+	"GObject.ParamSpec",  // TODO
+	"GObject.Parameter",  // TODO
+	"GObject.TypeModule", // TODO
+}
+
 func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	if typ.Name == "" {
 		ng.logln(logWarn, "empty gir type", typ)
 		return nil
+	}
+
+	for _, unsupported := range unsupportedTypes {
+		if unsupported == typ.Name {
+			return nil
+		}
 	}
 
 	if prim, ok := girToBuiltin[typ.Name]; ok {
@@ -576,25 +608,8 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 		// interface{} similarly to object.Connect(). We can use glib's Closure
 		// APIs to parse this interface{}.
 		return builtinType("", "interface{}", typ)
-
 	case "GObject.InitiallyUnowned":
 		return externGLibType("InitiallyUnowned", typ, "*GInitiallyUnowned")
-
-	case "va_list":
-		// CGo cannot handle variadic argument lists.
-		return nil
-
-	// We don't know what these types translates to.
-	case "GObject.TypeModule":
-		return nil
-	case "GObject.ParamSpec": // this is deprecated
-		return nil
-	case "GObject.Parameter": // also deprecated I think
-		return nil
-	// TODO: Find a way to map EnumValue type.
-	// TODO: Add _full function support.
-	case "GObject.EnumValue":
-		return nil
 	}
 
 	// CType is required here so we can properly account for pointers.

@@ -27,34 +27,34 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer)
-// extern void gotk4_BusAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
-// extern void gotk4_BusNameAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
-// extern void gotk4_BusNameAppearedCallback(GDBusConnection*, const gchar*, const gchar*, gpointer)
-// extern void gotk4_BusNameLostCallback(GDBusConnection*, const gchar*, gpointer)
-// extern void gotk4_BusNameVanishedCallback(GDBusConnection*, const gchar*, gpointer)
-// extern gboolean gotk4_CancellableSourceFunc(GCancellable*, gpointer)
-// extern GVariant* gotk4_DBusInterfaceGetPropertyFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GError**, gpointer)
-// extern void gotk4_DBusInterfaceMethodCallFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, GDBusMethodInvocation*, gpointer)
-// extern gboolean gotk4_DBusInterfaceSetPropertyFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, GError**, gpointer)
-// extern GDBusMessage* gotk4_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer)
-// extern GType gotk4_DBusProxyTypeFunc(GDBusObjectManagerClient*, const gchar*, const gchar*, gpointer)
-// extern void gotk4_DBusSignalCallback(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, gpointer)
-// extern const GDBusInterfaceVTable* gotk4_DBusSubtreeDispatchFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, gpointer*, gpointer)
-// extern gchar** gotk4_DBusSubtreeEnumerateFunc(GDBusConnection*, const gchar*, const gchar*, gpointer)
-// extern GDBusInterfaceInfo** gotk4_DBusSubtreeIntrospectFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, gpointer)
-// extern gboolean gotk4_DatagramBasedSourceFunc(GDatagramBased*, GIOCondition, gpointer)
-// extern void gotk4_DesktopAppLaunchCallback(GDesktopAppInfo*, GPid, gpointer)
-// extern void gotk4_FileMeasureProgressCallback(gboolean, guint64, guint64, guint64, gpointer)
-// extern void gotk4_FileProgressCallback(goffset, goffset, gpointer)
-// extern gboolean gotk4_FileReadMoreCallback(const char*, goffset, gpointer)
-// extern gboolean gotk4_IOSchedulerJobFunc(GIOSchedulerJob*, GCancellable*, gpointer)
-// extern gboolean gotk4_PollableSourceFunc(GObject*, gpointer)
-// extern gboolean gotk4_SettingsBindGetMapping(GValue*, GVariant*, gpointer)
-// extern GVariant* gotk4_SettingsBindSetMapping(const GValue*, const GVariantType*, gpointer)
-// extern gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer)
-// extern gboolean gotk4_SocketSourceFunc(GSocket*, GIOCondition, gpointer)
-// extern GFile* gotk4_VfsFileLookupFunc(GVfs*, const char*, gpointer)
+// extern void gotk4_AsyncReadyCallback(GObject* _0, GAsyncResult* _1, gpointer _2);
+// extern void gotk4_BusAcquiredCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
+// extern void gotk4_BusNameAcquiredCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
+// extern void gotk4_BusNameAppearedCallback(GDBusConnection* _0, const gchar* _1, const gchar* _2, gpointer _3);
+// extern void gotk4_BusNameLostCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
+// extern void gotk4_BusNameVanishedCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
+// extern gboolean gotk4_CancellableSourceFunc(GCancellable* _0, gpointer _1);
+// extern GVariant* gotk4_DBusInterfaceGetPropertyFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GError** _5, gpointer _6);
+// extern void gotk4_DBusInterfaceMethodCallFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GVariant* _5, GDBusMethodInvocation* _6, gpointer _7);
+// extern gboolean gotk4_DBusInterfaceSetPropertyFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GVariant* _5, GError** _6, gpointer _7);
+// extern GDBusMessage* gotk4_DBusMessageFilterFunction(GDBusConnection* _0, GDBusMessage* _1, gboolean _2, gpointer _3);
+// extern GType gotk4_DBusProxyTypeFunc(GDBusObjectManagerClient* _0, const gchar* _1, const gchar* _2, gpointer _3);
+// extern void gotk4_DBusSignalCallback(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GVariant* _5, gpointer _6);
+// extern const GDBusInterfaceVTable* gotk4_DBusSubtreeDispatchFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, gpointer* _5, gpointer _6);
+// extern gchar** gotk4_DBusSubtreeEnumerateFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, gpointer _3);
+// extern GDBusInterfaceInfo** gotk4_DBusSubtreeIntrospectFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, gpointer _4);
+// extern gboolean gotk4_DatagramBasedSourceFunc(GDatagramBased* _0, GIOCondition _1, gpointer _2);
+// extern void gotk4_DesktopAppLaunchCallback(GDesktopAppInfo* _0, GPid _1, gpointer _2);
+// extern void gotk4_FileMeasureProgressCallback(gboolean _0, guint64 _1, guint64 _2, guint64 _3, gpointer _4);
+// extern void gotk4_FileProgressCallback(goffset _0, goffset _1, gpointer _2);
+// extern gboolean gotk4_FileReadMoreCallback(const char* _0, goffset _1, gpointer _2);
+// extern gboolean gotk4_IOSchedulerJobFunc(GIOSchedulerJob* _0, GCancellable* _1, gpointer _2);
+// extern gboolean gotk4_PollableSourceFunc(GObject* _0, gpointer _1);
+// extern gboolean gotk4_SettingsBindGetMapping(GValue* _0, GVariant* _1, gpointer _2);
+// extern GVariant* gotk4_SettingsBindSetMapping(const GValue* _0, const GVariantType* _1, gpointer _2);
+// extern gboolean gotk4_SettingsGetMapping(GVariant* _0, gpointer* _1, gpointer _2);
+// extern gboolean gotk4_SocketSourceFunc(GSocket* _0, GIOCondition _1, gpointer _2);
+// extern GFile* gotk4_VfsFileLookupFunc(GVfs* _0, const char* _1, gpointer _2);
 // // extern void callbackDelete(gpointer);
 import "C"
 
@@ -2556,10 +2556,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	propertyName = C.GoString(arg4)
 
 	{
-		error = glib.WrapError(arg5)
-		runtime.SetFinalizer(&error, func(v ***glib.Error) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		error = glib.WrapError(unsafe.Pointer(arg5))
 	}
 
 	variant := v.(DBusInterfaceGetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, error)
@@ -2595,10 +2592,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	methodName = C.GoString(arg4)
 
 	{
-		parameters = glib.WrapVariant(arg5)
-		runtime.SetFinalizer(&parameters, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		parameters = glib.WrapVariant(unsafe.Pointer(arg5))
 	}
 
 	invocation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(DBusMethodInvocation)
@@ -2636,17 +2630,11 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	propertyName = C.GoString(arg4)
 
 	{
-		value = glib.WrapVariant(arg5)
-		runtime.SetFinalizer(&value, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		value = glib.WrapVariant(unsafe.Pointer(arg5))
 	}
 
 	{
-		error = glib.WrapError(arg6)
-		runtime.SetFinalizer(&error, func(v ***glib.Error) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		error = glib.WrapError(unsafe.Pointer(arg6))
 	}
 
 	ok := v.(DBusInterfaceSetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, value, error)
@@ -2728,7 +2716,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 
 	message = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(DBusMessage)
 
-	incoming = arg2 != C.FALSE
+	incoming = C.BOOL(arg2) != 0
 
 	dBusMessage := v.(DBusMessageFilterFunction)(connection, message, incoming)
 }
@@ -2790,10 +2778,7 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	signalName = C.GoString(arg4)
 
 	{
-		parameters = glib.WrapVariant(arg5)
-		runtime.SetFinalizer(&parameters, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		parameters = glib.WrapVariant(unsafe.Pointer(arg5))
 	}
 
 	v.(DBusSignalCallback)(connection, senderName, objectPath, interfaceName, signalName, parameters)
@@ -3000,7 +2985,7 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	var numDirs uint64
 	var numFiles uint64
 
-	reporting = arg0 != C.FALSE
+	reporting = C.BOOL(arg0) != 0
 
 	currentSize = uint64(arg1)
 
@@ -3074,10 +3059,7 @@ func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg
 	var cancellable Cancellable
 
 	{
-		job = WrapIOSchedulerJob(arg0)
-		runtime.SetFinalizer(&job, func(v **IOSchedulerJob) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		job = WrapIOSchedulerJob(unsafe.Pointer(arg0))
 	}
 
 	cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Cancellable)
@@ -3119,11 +3101,10 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 	var value *externglib.Value
 	var variant *glib.Variant
 
+	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
+
 	{
-		variant = glib.WrapVariant(arg1)
-		runtime.SetFinalizer(&variant, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		variant = glib.WrapVariant(unsafe.Pointer(arg1))
 	}
 
 	ok := v.(SettingsBindGetMapping)(value, variant)
@@ -3143,11 +3124,10 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 	var value *externglib.Value
 	var expectedType *glib.VariantType
 
+	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
+
 	{
-		expectedType = glib.WrapVariantType(arg1)
-		runtime.SetFinalizer(&expectedType, func(v **glib.VariantType) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		expectedType = glib.WrapVariantType(unsafe.Pointer(arg1))
 	}
 
 	variant := v.(SettingsBindSetMapping)(value, expectedType)
@@ -3175,10 +3155,7 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	var value *glib.Variant
 
 	{
-		value = glib.WrapVariant(arg0)
-		runtime.SetFinalizer(&value, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		value = glib.WrapVariant(unsafe.Pointer(arg0))
 	}
 
 	result, ok := v.(SettingsGetMapping)(value)
@@ -3247,7 +3224,7 @@ func ActionNameIsValid(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3294,7 +3271,10 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	C.free(unsafe.Pointer(arg2))
 
 	{
-		ret1 = glib.WrapVariant(arg3)
+		ret1 = glib.WrapVariant(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret1, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -3383,7 +3363,10 @@ func AppInfoGetAll() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3403,7 +3386,10 @@ func AppInfoGetAllForType(contentType string) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3461,7 +3447,10 @@ func AppInfoGetFallbackForType(contentType string) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3483,7 +3472,10 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3666,53 +3658,6 @@ func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusCo
 	return ret0, goError
 }
 
-// BusOwnNameOnConnectionWithClosures: version of g_bus_own_name_on_connection()
-// using closures instead of callbacks for easier binding in other languages.
-func BusOwnNameOnConnectionWithClosures(connection DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint {
-	var arg1 *C.GDBusConnection
-	var arg2 *C.gchar
-	var arg3 C.GBusNameOwnerFlags
-	var arg4 *C.GClosure
-	var arg5 *C.GClosure
-
-	arg1 = (*C.GDBusConnection)(connection.Native())
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameOwnerFlags)(flags)
-
-	ret := C.g_bus_own_name_on_connection_with_closures(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// BusOwnNameWithClosures: version of g_bus_own_name() using closures instead of
-// callbacks for easier binding in other languages.
-func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure *externglib.Closure, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint {
-	var arg1 C.GBusType
-	var arg2 *C.gchar
-	var arg3 C.GBusNameOwnerFlags
-	var arg4 *C.GClosure
-	var arg5 *C.GClosure
-	var arg6 *C.GClosure
-
-	arg1 = (C.GBusType)(busType)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameOwnerFlags)(flags)
-
-	ret := C.g_bus_own_name_with_closures(arg1, arg2, arg3, arg4, arg5, arg6)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // BusUnownName stops owning a name.
 //
 // Note that there may still be D-Bus traffic to process (relating to owning and
@@ -3744,53 +3689,6 @@ func BusUnwatchName(watcherID uint) {
 	C.g_bus_unwatch_name(arg1)
 }
 
-// BusWatchNameOnConnectionWithClosures: version of
-// g_bus_watch_name_on_connection() using closures instead of callbacks for
-// easier binding in other languages.
-func BusWatchNameOnConnectionWithClosures(connection DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint {
-	var arg1 *C.GDBusConnection
-	var arg2 *C.gchar
-	var arg3 C.GBusNameWatcherFlags
-	var arg4 *C.GClosure
-	var arg5 *C.GClosure
-
-	arg1 = (*C.GDBusConnection)(connection.Native())
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameWatcherFlags)(flags)
-
-	ret := C.g_bus_watch_name_on_connection_with_closures(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
-// BusWatchNameWithClosures: version of g_bus_watch_name() using closures
-// instead of callbacks for easier binding in other languages.
-func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint {
-	var arg1 C.GBusType
-	var arg2 *C.gchar
-	var arg3 C.GBusNameWatcherFlags
-	var arg4 *C.GClosure
-	var arg5 *C.GClosure
-
-	arg1 = (C.GBusType)(busType)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GBusNameWatcherFlags)(flags)
-
-	ret := C.g_bus_watch_name_with_closures(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 uint
-
-	ret0 = uint(ret)
-
-	return ret0
-}
-
 // ContentTypeCanBeExecutable checks if a content type can be executable. Note
 // that for instance things like text files can be executables (i.e. scripts and
 // batch files).
@@ -3804,7 +3702,7 @@ func ContentTypeCanBeExecutable(typ string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3823,7 +3721,7 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3917,7 +3815,7 @@ func ContentTypeGetMIMEDirs() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -3980,7 +3878,7 @@ func ContentTypeGuess(filename string, data []byte) (resultUncertain bool, utf8 
 	var ret0 bool
 	var ret1 string
 
-	ret0 = arg4 != C.FALSE
+	ret0 = C.BOOL(arg4) != 0
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
@@ -4017,7 +3915,7 @@ func ContentTypeGuessForTree(root File) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -4040,7 +3938,7 @@ func ContentTypeIsA(typ string, supertype string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4060,7 +3958,7 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4078,7 +3976,7 @@ func ContentTypeIsUnknown(typ string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4138,7 +4036,10 @@ func ContentTypesGetRegistered() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4381,7 +4282,7 @@ func DBusErrorIsRemoteError(error *glib.Error) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4425,7 +4326,10 @@ func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) *gl
 	var ret0 *glib.Error
 
 	{
-		ret0 = glib.WrapError(ret)
+		ret0 = glib.WrapError(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Error) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4493,7 +4397,7 @@ func DBusErrorStripRemoteError(error *glib.Error) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4548,8 +4452,37 @@ func DBusGValueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
+
+	return ret0
+}
+
+// DBusGvariantToGValue converts a #GVariant to a #GValue. If @value is
+// floating, it is consumed.
+//
+// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
+// this function is essentially its reverse form. So, a #GVariant containing any
+// basic or string array type will be converted to a #GValue containing a basic
+// value or string array. Any other #GVariant (handle, variant, tuple, dict
+// entry) will be converted to a #GValue containing that #GVariant.
+//
+// The conversion never fails - a valid #GValue is always returned in
+// @out_gvalue.
+func DBusGvariantToGValue(value *glib.Variant) externglib.Value {
+	var arg1 *C.GVariant
+	var arg2 *C.GValue // out
+
+	arg1 = (*C.GVariant)(value.Native())
+
+	C.g_dbus_gvariant_to_gvalue(arg1, &arg2)
+
+	var ret0 *externglib.Value
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg2))
 
 	return ret0
 }
@@ -4569,7 +4502,7 @@ func DBusIsAddress(string string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4588,7 +4521,7 @@ func DBusIsGuid(string string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4604,7 +4537,7 @@ func DBusIsInterfaceName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4621,7 +4554,7 @@ func DBusIsMemberName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4638,7 +4571,7 @@ func DBusIsName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4677,7 +4610,7 @@ func DBusIsUniqueName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4999,10 +4932,7 @@ func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, e
 	var ret0 *IOExtension
 
 	{
-		ret0 = WrapIOExtension(ret)
-		runtime.SetFinalizer(&ret0, func(v **IOExtension) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapIOExtension(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5020,10 +4950,7 @@ func IOExtensionPointLookup(name string) *IOExtensionPoint {
 	var ret0 *IOExtensionPoint
 
 	{
-		ret0 = WrapIOExtensionPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **IOExtensionPoint) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapIOExtensionPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5041,10 +4968,7 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint {
 	var ret0 *IOExtensionPoint
 
 	{
-		ret0 = WrapIOExtensionPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **IOExtensionPoint) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapIOExtensionPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5066,7 +4990,10 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5091,7 +5018,10 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5313,7 +5243,10 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5337,7 +5270,10 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5558,7 +5494,10 @@ func ResourceLoad(filename string) (resource *Resource, err error) {
 	var goError error
 
 	{
-		ret0 = WrapResource(ret)
+		ret0 = WrapResource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Resource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -5596,7 +5535,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -5671,7 +5610,10 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *g
 	var goError error
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -5751,10 +5693,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	var ret0 *SettingsSchemaSource
 
 	{
-		ret0 = WrapSettingsSchemaSource(ret)
-		runtime.SetFinalizer(&ret0, func(v **SettingsSchemaSource) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSettingsSchemaSource(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5807,7 +5746,10 @@ func SrvTargetListSort(targets *glib.List) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5956,7 +5898,7 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5979,7 +5921,7 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6001,7 +5943,7 @@ func UnixIsSystemFSType(fsType string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6026,7 +5968,10 @@ func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEn
 	ret0 = uint64(arg2)
 
 	{
-		ret1 = WrapUnixMountEntry(ret)
+		ret1 = WrapUnixMountEntry(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *UnixMountEntry) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0, ret1
@@ -6060,7 +6005,10 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 	var ret0 *UnixMountEntry
 
 	{
-		ret0 = WrapUnixMountEntry(ret)
+		ret0 = WrapUnixMountEntry(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *UnixMountEntry) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6086,7 +6034,10 @@ func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEn
 	ret0 = uint64(arg2)
 
 	{
-		ret1 = WrapUnixMountEntry(ret)
+		ret1 = WrapUnixMountEntry(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *UnixMountEntry) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0, ret1
@@ -6194,7 +6145,7 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6242,7 +6193,7 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6272,7 +6223,7 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6292,7 +6243,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6318,7 +6269,10 @@ func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMo
 	ret0 = uint64(arg2)
 
 	{
-		ret1 = WrapUnixMountPoint(ret)
+		ret1 = WrapUnixMountPoint(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *UnixMountPoint) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0, ret1
@@ -6335,7 +6289,7 @@ func UnixMountPointsChangedSince(time uint64) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6355,7 +6309,10 @@ func UnixMountPointsGet() (timeRead uint64, list *glib.List) {
 	ret0 = uint64(arg1)
 
 	{
-		ret1 = glib.WrapList(ret)
+		ret1 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0, ret1
@@ -6372,7 +6329,7 @@ func UnixMountsChangedSince(time uint64) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6391,7 +6348,10 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 	ret0 = uint64(arg1)
 
 	{
-		ret1 = glib.WrapList(ret)
+		ret1 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0, ret1
@@ -6579,7 +6539,7 @@ func (action action) Enabled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6617,10 +6577,7 @@ func (action action) ParameterType() *glib.VariantType {
 	var ret0 *glib.VariantType
 
 	{
-		ret0 = glib.WrapVariantType(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariantType(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6644,7 +6601,10 @@ func (action action) State() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6678,7 +6638,10 @@ func (action action) StateHint() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6705,10 +6668,7 @@ func (action action) StateType() *glib.VariantType {
 	var ret0 *glib.VariantType
 
 	{
-		ret0 = glib.WrapVariantType(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariantType(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7047,7 +7007,7 @@ func (actionGroup actionGroup) ActionEnabled(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7078,10 +7038,7 @@ func (actionGroup actionGroup) ActionParameterType(actionName string) *glib.Vari
 	var ret0 *glib.VariantType
 
 	{
-		ret0 = glib.WrapVariantType(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariantType(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7109,7 +7066,10 @@ func (actionGroup actionGroup) ActionState(actionName string) *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7146,7 +7106,10 @@ func (actionGroup actionGroup) ActionStateHint(actionName string) *glib.Variant 
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7180,10 +7143,7 @@ func (actionGroup actionGroup) ActionStateType(actionName string) *glib.VariantT
 	var ret0 *glib.VariantType
 
 	{
-		ret0 = glib.WrapVariantType(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariantType(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7202,7 +7162,7 @@ func (actionGroup actionGroup) HasAction(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7228,7 +7188,7 @@ func (actionGroup actionGroup) ListActions() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -7286,25 +7246,37 @@ func (actionGroup actionGroup) QueryAction(actionName string) (enabled bool, par
 	var ret4 **glib.Variant
 	var ret5 bool
 
-	ret0 = arg2 != C.FALSE
+	ret0 = C.BOOL(arg2) != 0
 
 	{
-		ret1 = glib.WrapVariantType(arg3)
+		ret1 = glib.WrapVariantType(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret1, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret2 = glib.WrapVariantType(arg4)
+		ret2 = glib.WrapVariantType(unsafe.Pointer(arg4))
+		runtime.SetFinalizer(ret2, func(v **glib.VariantType) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret3 = glib.WrapVariant(arg5)
+		ret3 = glib.WrapVariant(unsafe.Pointer(arg5))
+		runtime.SetFinalizer(ret3, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret4 = glib.WrapVariant(arg6)
+		ret4 = glib.WrapVariant(unsafe.Pointer(arg6))
+		runtime.SetFinalizer(ret4, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
-	ret5 = ret != C.FALSE
+	ret5 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4, ret5
 }
@@ -7652,7 +7624,7 @@ func (appinfo appInfo) CanDelete() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7668,7 +7640,7 @@ func (appinfo appInfo) CanRemoveSupportsType() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7687,7 +7659,7 @@ func (appinfo appInfo) Delete() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7724,7 +7696,7 @@ func (appinfo1 appInfo) Equal(appinfo2 AppInfo) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7865,7 +7837,7 @@ func (appinfo appInfo) SupportedTypes() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -8104,7 +8076,7 @@ func (appinfo appInfo) ShouldShow() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8119,7 +8091,7 @@ func (appinfo appInfo) SupportsFiles() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8135,7 +8107,7 @@ func (appinfo appInfo) SupportsUris() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8582,7 +8554,7 @@ func (res asyncResult) IsTagged(sourceTag interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8944,10 +8916,7 @@ func (interface_ dBusInterface) Info() *DBusInterfaceInfo {
 	var ret0 *DBusInterfaceInfo
 
 	{
-		ret0 = WrapDBusInterfaceInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusInterfaceInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -9041,7 +9010,10 @@ func (object dBusObject) Interfaces() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9184,7 +9156,10 @@ func (manager dBusObjectManager) Objects() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9536,7 +9511,10 @@ func (datagramBased datagramBased) CreateSource(condition glib.IOCondition, canc
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9952,7 +9930,7 @@ func (drive drive) CanEject() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9967,7 +9945,7 @@ func (drive drive) CanPollForMedia() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9982,7 +9960,7 @@ func (drive drive) CanStart() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9997,7 +9975,7 @@ func (drive drive) CanStartDegraded() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10012,7 +9990,7 @@ func (drive drive) CanStop() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10121,7 +10099,7 @@ func (drive drive) EnumerateIdentifiers() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -10240,7 +10218,10 @@ func (drive drive) Volumes() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -10258,7 +10239,7 @@ func (drive drive) HasMedia() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10273,7 +10254,7 @@ func (drive drive) HasVolumes() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10289,7 +10270,7 @@ func (drive drive) IsMediaCheckAutomatic() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10304,7 +10285,7 @@ func (drive drive) IsMediaRemovable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10320,7 +10301,7 @@ func (drive drive) IsRemovable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10521,7 +10502,10 @@ func (conn dtlsClientConnection) AcceptedCAS() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -10933,7 +10917,7 @@ func (conn dtlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11119,7 +11103,7 @@ func (conn dtlsConnection) RequireCloseNotify() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13573,7 +13557,7 @@ func (file1 file) Equal(file2 File) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13886,7 +13870,7 @@ func (file file) HasParent(parent File) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13915,7 +13899,7 @@ func (file file) HasPrefix(prefix File) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13935,7 +13919,7 @@ func (file file) HasURIScheme(uriScheme string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13977,7 +13961,7 @@ func (file file) IsNative() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14012,7 +13996,10 @@ func (file file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib
 	C.free(unsafe.Pointer(arg2))
 
 	{
-		ret1 = glib.WrapBytes(ret)
+		ret1 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -14076,7 +14063,10 @@ func (file file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *gli
 	C.free(unsafe.Pointer(arg2))
 
 	{
-		ret1 = glib.WrapBytes(ret)
+		ret1 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -14114,11 +14104,14 @@ func (file file) LoadContents(cancellable Cancellable) (contents []byte, length 
 	var goError error
 
 	{
-		ret0 = make([]byte, arg3)
-		for i := 0; i < uintptr(arg3); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg2))
+		sliceHeader.Len = arg3
+		sliceHeader.Cap = arg3
+		runtime.SetFinalizer(&arg2, func() {
+			C.free(unsafe.Pointer(arg2))
+		})
+		defer runtime.KeepAlive(arg2)
 	}
 
 	ret1 = uint(arg3)
@@ -14184,11 +14177,14 @@ func (file file) LoadContentsFinish(res AsyncResult) (contents []byte, length ui
 	var goError error
 
 	{
-		ret0 = make([]byte, arg3)
-		for i := 0; i < uintptr(arg3); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg2))
+		sliceHeader.Len = arg3
+		sliceHeader.Cap = arg3
+		runtime.SetFinalizer(&arg2, func() {
+			C.free(unsafe.Pointer(arg2))
+		})
+		defer runtime.KeepAlive(arg2)
 	}
 
 	ret1 = uint(arg3)
@@ -14257,11 +14253,14 @@ func (file file) LoadPartialContentsFinish(res AsyncResult) (contents []byte, le
 	var goError error
 
 	{
-		ret0 = make([]byte, arg3)
-		for i := 0; i < uintptr(arg3); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg2))
+		sliceHeader.Len = arg3
+		sliceHeader.Cap = arg3
+		runtime.SetFinalizer(&arg2, func() {
+			C.free(unsafe.Pointer(arg2))
+		})
+		defer runtime.KeepAlive(arg2)
 	}
 
 	ret1 = uint(arg3)
@@ -15061,7 +15060,7 @@ func (file file) QueryExists(cancellable Cancellable) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15328,7 +15327,10 @@ func (file file) QuerySettableAttributes(cancellable Cancellable) (fileAttribute
 	var goError error
 
 	{
-		ret0 = WrapFileAttributeInfoList(ret)
+		ret0 = WrapFileAttributeInfoList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeInfoList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -15360,7 +15362,10 @@ func (file file) QueryWritableNamespaces(cancellable Cancellable) (fileAttribute
 	var goError error
 
 	{
-		ret0 = WrapFileAttributeInfoList(ret)
+		ret0 = WrapFileAttributeInfoList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeInfoList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -16410,7 +16415,7 @@ func (file file) SupportsThreadContexts() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -16755,7 +16760,7 @@ func (icon1 icon) Equal(icon2 Icon) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -16776,7 +16781,10 @@ func (icon icon) Serialize() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -16971,6 +16979,12 @@ type ListModelOverrider interface {
 	// nil is never returned for an index that is smaller than the length of the
 	// list. See g_list_model_get_n_items().
 	Item(position uint) gextras.Objector
+	// ItemType gets the type of the items in @list. All items returned from
+	// g_list_model_get_type() are of that type or a subtype, or are an
+	// implementation of that interface.
+	//
+	// The item type of a Model can not change during the life of the model.
+	ItemType() externglib.Type
 	// NItems gets the number of items in @list.
 	//
 	// Depending on the model implementation, calling this function may be less
@@ -17072,6 +17086,25 @@ func marshalListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapListModel(obj), nil
+}
+
+// ItemType gets the type of the items in @list. All items returned from
+// g_list_model_get_type() are of that type or a subtype, or are an
+// implementation of that interface.
+//
+// The item type of a Model can not change during the life of the model.
+func (list listModel) ItemType() externglib.Type {
+	var arg0 *C.GListModel
+
+	arg0 = (*C.GListModel)(list.Native())
+
+	ret := C.g_list_model_get_item_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
 }
 
 // NItems gets the number of items in @list.
@@ -17544,7 +17577,7 @@ func (mount mount) CanEject() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17559,7 +17592,7 @@ func (mount mount) CanUnmount() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17848,7 +17881,7 @@ func (mount mount) GuessContentTypeFinish(result AsyncResult) (utf8s []string, e
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -17896,7 +17929,7 @@ func (mount mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellabl
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -17940,7 +17973,7 @@ func (mount mount) IsShadowed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18330,7 +18363,7 @@ func (monitor networkMonitor) NetworkAvailable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18346,7 +18379,7 @@ func (monitor networkMonitor) NetworkMetered() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18438,7 +18471,7 @@ func (stream pollableInputStream) CanPoll() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18463,7 +18496,10 @@ func (stream pollableInputStream) CreateSource(cancellable Cancellable) *glib.So
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -18485,7 +18521,7 @@ func (stream pollableInputStream) IsReadable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18638,7 +18674,7 @@ func (stream pollableOutputStream) CanPoll() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18663,7 +18699,10 @@ func (stream pollableOutputStream) CreateSource(cancellable Cancellable) *glib.S
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -18685,7 +18724,7 @@ func (stream pollableOutputStream) IsWritable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18925,7 +18964,7 @@ func (proxy proxy) SupportsHostname() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19004,7 +19043,7 @@ func (resolver proxyResolver) IsSupported() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19045,7 +19084,7 @@ func (resolver proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -19102,7 +19141,7 @@ func (resolver proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, 
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -19330,7 +19369,7 @@ func (seekable seekable) CanSeek() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19346,7 +19385,7 @@ func (seekable seekable) CanTruncate() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19615,6 +19654,23 @@ type TLSBackend interface {
 	gextras.Objector
 	TLSBackendOverrider
 
+	// CertificateType gets the #GType of @backend's Certificate implementation.
+	CertificateType() externglib.Type
+	// ClientConnectionType gets the #GType of @backend's ClientConnection
+	// implementation.
+	ClientConnectionType() externglib.Type
+	// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+	// implementation.
+	DTLSClientConnectionType() externglib.Type
+	// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+	// implementation.
+	DTLSServerConnectionType() externglib.Type
+	// FileDatabaseType gets the #GType of @backend's FileDatabase
+	// implementation.
+	FileDatabaseType() externglib.Type
+	// ServerConnectionType gets the #GType of @backend's ServerConnection
+	// implementation.
+	ServerConnectionType() externglib.Type
 	// SetDefaultDatabase: set the default Database used to verify TLS
 	// connections
 	//
@@ -19649,6 +19705,37 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 	return WrapTLSBackend(obj), nil
 }
 
+// CertificateType gets the #GType of @backend's Certificate implementation.
+func (backend tlsBackend) CertificateType() externglib.Type {
+	var arg0 *C.GTlsBackend
+
+	arg0 = (*C.GTlsBackend)(backend.Native())
+
+	ret := C.g_tls_backend_get_certificate_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
+// ClientConnectionType gets the #GType of @backend's ClientConnection
+// implementation.
+func (backend tlsBackend) ClientConnectionType() externglib.Type {
+	var arg0 *C.GTlsBackend
+
+	arg0 = (*C.GTlsBackend)(backend.Native())
+
+	ret := C.g_tls_backend_get_client_connection_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
 // DefaultDatabase gets the default Database used to verify TLS connections.
 func (backend tlsBackend) DefaultDatabase() TLSDatabase {
 	var arg0 *C.GTlsBackend
@@ -19660,6 +19747,70 @@ func (backend tlsBackend) DefaultDatabase() TLSDatabase {
 	var ret0 TLSDatabase
 
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSDatabase)
+
+	return ret0
+}
+
+// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+// implementation.
+func (backend tlsBackend) DTLSClientConnectionType() externglib.Type {
+	var arg0 *C.GTlsBackend
+
+	arg0 = (*C.GTlsBackend)(backend.Native())
+
+	ret := C.g_tls_backend_get_dtls_client_connection_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
+// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+// implementation.
+func (backend tlsBackend) DTLSServerConnectionType() externglib.Type {
+	var arg0 *C.GTlsBackend
+
+	arg0 = (*C.GTlsBackend)(backend.Native())
+
+	ret := C.g_tls_backend_get_dtls_server_connection_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
+// FileDatabaseType gets the #GType of @backend's FileDatabase
+// implementation.
+func (backend tlsBackend) FileDatabaseType() externglib.Type {
+	var arg0 *C.GTlsBackend
+
+	arg0 = (*C.GTlsBackend)(backend.Native())
+
+	ret := C.g_tls_backend_get_file_database_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
+// ServerConnectionType gets the #GType of @backend's ServerConnection
+// implementation.
+func (backend tlsBackend) ServerConnectionType() externglib.Type {
+	var arg0 *C.GTlsBackend
+
+	arg0 = (*C.GTlsBackend)(backend.Native())
+
+	ret := C.g_tls_backend_get_server_connection_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
 
 	return ret0
 }
@@ -19695,7 +19846,7 @@ func (backend tlsBackend) SupportsDTLS() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19711,7 +19862,7 @@ func (backend tlsBackend) SupportsTLS() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19866,7 +20017,10 @@ func (conn tlsClientConnection) AcceptedCAS() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -19898,7 +20052,7 @@ func (conn tlsClientConnection) UseSSL3() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -20176,7 +20330,7 @@ func (volume volume) CanEject() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -20191,7 +20345,7 @@ func (volume volume) CanMount() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -20302,7 +20456,7 @@ func (volume volume) EnumerateIdentifiers() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -20528,7 +20682,7 @@ func (volume volume) ShouldAutomount() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -20550,7 +20704,7 @@ func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
 
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusAnnotationInfo(unsafe.Pointer(b))
+	return WrapDBusAnnotationInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -20592,10 +20746,7 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -20614,7 +20765,10 @@ func (info *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 	var ret0 *DBusAnnotationInfo
 
 	{
-		ret0 = WrapDBusAnnotationInfo(ret)
+		ret0 = WrapDBusAnnotationInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusAnnotationInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -20648,7 +20802,7 @@ func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
 
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusArgInfo(unsafe.Pointer(b))
+	return WrapDBusArgInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -20690,10 +20844,7 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -20712,7 +20863,10 @@ func (info *DBusArgInfo) Ref() *DBusArgInfo {
 	var ret0 *DBusArgInfo
 
 	{
-		ret0 = WrapDBusArgInfo(ret)
+		ret0 = WrapDBusArgInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusArgInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -20746,7 +20900,7 @@ func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 
 func marshalDBusErrorEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusErrorEntry(unsafe.Pointer(b))
+	return WrapDBusErrorEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -20785,7 +20939,7 @@ func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusInterfaceInfo(unsafe.Pointer(b))
+	return WrapDBusInterfaceInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -20820,10 +20974,7 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusMethodInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.methods)) + i))
 			{
-				ret[i] = WrapDBusMethodInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusMethodInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusMethodInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -20843,10 +20994,7 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusSignalInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.signals)) + i))
 			{
-				ret[i] = WrapDBusSignalInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusSignalInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusSignalInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -20866,10 +21014,7 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusPropertyInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.properties)) + i))
 			{
-				ret[i] = WrapDBusPropertyInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusPropertyInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusPropertyInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -20889,10 +21034,7 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -20962,10 +21104,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var ret0 *DBusMethodInfo
 
 	{
-		ret0 = WrapDBusMethodInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusMethodInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusMethodInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -20988,10 +21127,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var ret0 *DBusPropertyInfo
 
 	{
-		ret0 = WrapDBusPropertyInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusPropertyInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusPropertyInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -21014,10 +21150,7 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var ret0 *DBusSignalInfo
 
 	{
-		ret0 = WrapDBusSignalInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusSignalInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusSignalInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -21035,7 +21168,10 @@ func (info *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 	var ret0 *DBusInterfaceInfo
 
 	{
-		ret0 = WrapDBusInterfaceInfo(ret)
+		ret0 = WrapDBusInterfaceInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusInterfaceInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21106,7 +21242,7 @@ func WrapDBusInterfaceVTable(ptr unsafe.Pointer) *DBusInterfaceVTable {
 
 func marshalDBusInterfaceVTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusInterfaceVTable(unsafe.Pointer(b))
+	return WrapDBusInterfaceVTable(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21131,7 +21267,7 @@ func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
 
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusMethodInfo(unsafe.Pointer(b))
+	return WrapDBusMethodInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21166,10 +21302,7 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.in_args)) + i))
 			{
-				ret[i] = WrapDBusArgInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusArgInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusArgInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21189,10 +21322,7 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.out_args)) + i))
 			{
-				ret[i] = WrapDBusArgInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusArgInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusArgInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21212,10 +21342,7 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21234,7 +21361,10 @@ func (info *DBusMethodInfo) Ref() *DBusMethodInfo {
 	var ret0 *DBusMethodInfo
 
 	{
-		ret0 = WrapDBusMethodInfo(ret)
+		ret0 = WrapDBusMethodInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusMethodInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21268,7 +21398,7 @@ func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusNodeInfo(unsafe.Pointer(b))
+	return WrapDBusNodeInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21290,7 +21420,10 @@ func NewDBusNodeInfoForXml(xmlData string) (dBusNodeInfo *DBusNodeInfo, err erro
 	var goError error
 
 	{
-		ret0 = WrapDBusNodeInfo(ret)
+		ret0 = WrapDBusNodeInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusNodeInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -21328,10 +21461,7 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusInterfaceInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.interfaces)) + i))
 			{
-				ret[i] = WrapDBusInterfaceInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusInterfaceInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusInterfaceInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21351,10 +21481,7 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusNodeInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.nodes)) + i))
 			{
-				ret[i] = WrapDBusNodeInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusNodeInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusNodeInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21374,10 +21501,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21418,10 +21542,7 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var ret0 *DBusInterfaceInfo
 
 	{
-		ret0 = WrapDBusInterfaceInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusInterfaceInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -21439,7 +21560,10 @@ func (info *DBusNodeInfo) Ref() *DBusNodeInfo {
 	var ret0 *DBusNodeInfo
 
 	{
-		ret0 = WrapDBusNodeInfo(ret)
+		ret0 = WrapDBusNodeInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusNodeInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21473,7 +21597,7 @@ func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
 
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusPropertyInfo(unsafe.Pointer(b))
+	return WrapDBusPropertyInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21522,10 +21646,7 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21544,7 +21665,10 @@ func (info *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 	var ret0 *DBusPropertyInfo
 
 	{
-		ret0 = WrapDBusPropertyInfo(ret)
+		ret0 = WrapDBusPropertyInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusPropertyInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21578,7 +21702,7 @@ func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusSignalInfo(unsafe.Pointer(b))
+	return WrapDBusSignalInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21613,10 +21737,7 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.args)) + i))
 			{
-				ret[i] = WrapDBusArgInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusArgInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusArgInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21636,10 +21757,7 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(d.native.annotations)) + i))
 			{
-				ret[i] = WrapDBusAnnotationInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v **DBusAnnotationInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -21658,7 +21776,10 @@ func (info *DBusSignalInfo) Ref() *DBusSignalInfo {
 	var ret0 *DBusSignalInfo
 
 	{
-		ret0 = WrapDBusSignalInfo(ret)
+		ret0 = WrapDBusSignalInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *DBusSignalInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21693,7 +21814,7 @@ func WrapDBusSubtreeVTable(ptr unsafe.Pointer) *DBusSubtreeVTable {
 
 func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusSubtreeVTable(unsafe.Pointer(b))
+	return WrapDBusSubtreeVTable(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21718,7 +21839,7 @@ func WrapFileAttributeInfo(ptr unsafe.Pointer) *FileAttributeInfo {
 
 func marshalFileAttributeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileAttributeInfo(unsafe.Pointer(b))
+	return WrapFileAttributeInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21765,7 +21886,7 @@ func WrapFileAttributeInfoList(ptr unsafe.Pointer) *FileAttributeInfoList {
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileAttributeInfoList(unsafe.Pointer(b))
+	return WrapFileAttributeInfoList(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21781,7 +21902,10 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	var ret0 *FileAttributeInfoList
 
 	{
-		ret0 = WrapFileAttributeInfoList(ret)
+		ret0 = WrapFileAttributeInfoList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeInfoList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21791,10 +21915,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	var ret *FileAttributeInfo
 	{
-		ret = WrapFileAttributeInfo(f.native.infos)
-		runtime.SetFinalizer(&ret, func(v **FileAttributeInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapFileAttributeInfo(unsafe.Pointer(f.native.infos))
 	}
 	return ret
 }
@@ -21834,7 +21955,10 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var ret0 *FileAttributeInfoList
 
 	{
-		ret0 = WrapFileAttributeInfoList(ret)
+		ret0 = WrapFileAttributeInfoList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeInfoList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21854,10 +21978,7 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var ret0 *FileAttributeInfo
 
 	{
-		ret0 = WrapFileAttributeInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **FileAttributeInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFileAttributeInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -21874,7 +21995,10 @@ func (list *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 	var ret0 *FileAttributeInfoList
 
 	{
-		ret0 = WrapFileAttributeInfoList(ret)
+		ret0 = WrapFileAttributeInfoList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeInfoList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21907,7 +22031,7 @@ func WrapFileAttributeMatcher(ptr unsafe.Pointer) *FileAttributeMatcher {
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileAttributeMatcher(unsafe.Pointer(b))
+	return WrapFileAttributeMatcher(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -21927,7 +22051,10 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var ret0 *FileAttributeMatcher
 
 	{
-		ret0 = WrapFileAttributeMatcher(ret)
+		ret0 = WrapFileAttributeMatcher(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeMatcher) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21951,7 +22078,7 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21986,7 +22113,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -22005,7 +22132,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -22021,7 +22148,10 @@ func (matcher *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 	var ret0 *FileAttributeMatcher
 
 	{
-		ret0 = WrapFileAttributeMatcher(ret)
+		ret0 = WrapFileAttributeMatcher(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeMatcher) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -22046,7 +22176,10 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 	var ret0 *FileAttributeMatcher
 
 	{
-		ret0 = WrapFileAttributeMatcher(ret)
+		ret0 = WrapFileAttributeMatcher(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FileAttributeMatcher) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -22116,7 +22249,7 @@ func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
 
 func marshalInputMessage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInputMessage(unsafe.Pointer(b))
+	return WrapInputMessage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22139,10 +22272,7 @@ func (i *InputMessage) Vectors() []InputVector {
 		for i := 0; i < uintptr(i.native.num_vectors); i++ {
 			src := (C.GInputVector)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret[i] = WrapInputVector(src)
-				runtime.SetFinalizer(&ret[i], func(v *InputVector) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapInputVector(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -22195,7 +22325,7 @@ func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 
 func marshalInputVector(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInputVector(unsafe.Pointer(b))
+	return WrapInputVector(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22240,7 +22370,7 @@ func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
 
 func marshalOutputMessage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOutputMessage(unsafe.Pointer(b))
+	return WrapOutputMessage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22259,10 +22389,7 @@ func (o *OutputMessage) Address() SocketAddress {
 func (o *OutputMessage) Vectors() *OutputVector {
 	var ret *OutputVector
 	{
-		ret = WrapOutputVector(o.native.vectors)
-		runtime.SetFinalizer(&ret, func(v **OutputVector) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapOutputVector(unsafe.Pointer(o.native.vectors))
 	}
 	return ret
 }
@@ -22313,7 +22440,7 @@ func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 
 func marshalOutputVector(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOutputVector(unsafe.Pointer(b))
+	return WrapOutputVector(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22494,7 +22621,7 @@ func WrapResource(ptr unsafe.Pointer) *Resource {
 
 func marshalResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapResource(unsafe.Pointer(b))
+	return WrapResource(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22515,7 +22642,10 @@ func NewResourceFromData(data *glib.Bytes) (resource *Resource, err error) {
 	var goError error
 
 	{
-		ret0 = WrapResource(ret)
+		ret0 = WrapResource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Resource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -22578,7 +22708,7 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -22656,7 +22786,10 @@ func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlag
 	var goError error
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -22709,7 +22842,10 @@ func (resource *Resource) Ref() *Resource {
 	var ret0 *Resource
 
 	{
-		ret0 = WrapResource(ret)
+		ret0 = WrapResource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Resource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -22771,7 +22907,7 @@ func WrapSettingsSchema(ptr unsafe.Pointer) *SettingsSchema {
 
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsSchema(unsafe.Pointer(b))
+	return WrapSettingsSchema(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22811,7 +22947,10 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var ret0 *SettingsSchemaKey
 
 	{
-		ret0 = WrapSettingsSchemaKey(ret)
+		ret0 = WrapSettingsSchemaKey(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SettingsSchemaKey) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -22853,7 +22992,7 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -22878,7 +23017,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -22909,7 +23048,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -22929,7 +23068,10 @@ func (schema *SettingsSchema) Ref() *SettingsSchema {
 	var ret0 *SettingsSchema
 
 	{
-		ret0 = WrapSettingsSchema(ret)
+		ret0 = WrapSettingsSchema(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SettingsSchema) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -22962,7 +23104,7 @@ func WrapSettingsSchemaKey(ptr unsafe.Pointer) *SettingsSchemaKey {
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsSchemaKey(unsafe.Pointer(b))
+	return WrapSettingsSchemaKey(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -22984,7 +23126,10 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23075,7 +23220,10 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23117,10 +23265,7 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	var ret0 *glib.VariantType
 
 	{
-		ret0 = glib.WrapVariantType(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.VariantType) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariantType(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -23142,7 +23287,7 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23158,7 +23303,10 @@ func (key *SettingsSchemaKey) Ref() *SettingsSchemaKey {
 	var ret0 *SettingsSchemaKey
 
 	{
-		ret0 = WrapSettingsSchemaKey(ret)
+		ret0 = WrapSettingsSchemaKey(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SettingsSchemaKey) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23191,7 +23339,7 @@ func WrapSettingsSchemaSource(ptr unsafe.Pointer) *SettingsSchemaSource {
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsSchemaSource(unsafe.Pointer(b))
+	return WrapSettingsSchemaSource(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -23219,7 +23367,10 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var goError error
 
 	{
-		ret0 = WrapSettingsSchemaSource(ret)
+		ret0 = WrapSettingsSchemaSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SettingsSchemaSource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -23315,7 +23466,10 @@ func (source *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *Set
 	var ret0 *SettingsSchema
 
 	{
-		ret0 = WrapSettingsSchema(ret)
+		ret0 = WrapSettingsSchema(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SettingsSchema) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23332,7 +23486,10 @@ func (source *SettingsSchemaSource) Ref() *SettingsSchemaSource {
 	var ret0 *SettingsSchemaSource
 
 	{
-		ret0 = WrapSettingsSchemaSource(ret)
+		ret0 = WrapSettingsSchemaSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SettingsSchemaSource) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23375,7 +23532,7 @@ func WrapSrvTarget(ptr unsafe.Pointer) *SrvTarget {
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSrvTarget(unsafe.Pointer(b))
+	return WrapSrvTarget(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -23401,7 +23558,10 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	var ret0 *SrvTarget
 
 	{
-		ret0 = WrapSrvTarget(ret)
+		ret0 = WrapSrvTarget(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SrvTarget) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23418,7 +23578,10 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	var ret0 *SrvTarget
 
 	{
-		ret0 = WrapSrvTarget(ret)
+		ret0 = WrapSrvTarget(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *SrvTarget) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23516,7 +23679,7 @@ func WrapStaticResource(ptr unsafe.Pointer) *StaticResource {
 
 func marshalStaticResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStaticResource(unsafe.Pointer(b))
+	return WrapStaticResource(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -23553,10 +23716,7 @@ func (staticResource *StaticResource) Resource() *Resource {
 	var ret0 *Resource
 
 	{
-		ret0 = WrapResource(ret)
-		runtime.SetFinalizer(&ret0, func(v **Resource) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapResource(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -23593,7 +23753,7 @@ func WrapUnixMountEntry(ptr unsafe.Pointer) *UnixMountEntry {
 
 func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixMountEntry(unsafe.Pointer(b))
+	return WrapUnixMountEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -23619,7 +23779,7 @@ func WrapUnixMountPoint(ptr unsafe.Pointer) *UnixMountPoint {
 
 func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixMountPoint(unsafe.Pointer(b))
+	return WrapUnixMountPoint(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -23655,7 +23815,10 @@ func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
 	var ret0 *UnixMountPoint
 
 	{
-		ret0 = WrapUnixMountPoint(ret)
+		ret0 = WrapUnixMountPoint(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *UnixMountPoint) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -23740,7 +23903,7 @@ func (mountPoint *UnixMountPoint) GuessCanEject() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23802,7 +23965,7 @@ func (mountPoint *UnixMountPoint) IsLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23817,7 +23980,7 @@ func (mountPoint *UnixMountPoint) IsReadonly() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23832,7 +23995,7 @@ func (mountPoint *UnixMountPoint) IsUserMountable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23988,7 +24151,7 @@ func (context appLaunchContext) Environment() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -24859,7 +25022,7 @@ func (application application) IsBusy() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24877,7 +25040,7 @@ func (application application) IsRegistered() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24901,7 +25064,7 @@ func (application application) IsRemote() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25162,8 +25325,8 @@ func (application application) Run(argc int, argv []string) int {
 
 	arg0 = (*C.GApplication)(application.Native())
 	{
-		var dst []C.filename
-		ptr := C.malloc(C.sizeof_filename * len(argv))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(argv))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(argv)
@@ -25714,7 +25877,7 @@ func (cmdline applicationCommandLine) Arguments() (argc int, filenames []string)
 	{
 		ret1 = make([]string, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret1[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -25777,7 +25940,7 @@ func (cmdline applicationCommandLine) Environ() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -25811,7 +25974,7 @@ func (cmdline applicationCommandLine) IsRemote() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25836,10 +25999,7 @@ func (cmdline applicationCommandLine) OptionsDict() *glib.VariantDict {
 	var ret0 *glib.VariantDict
 
 	{
-		ret0 = glib.WrapVariantDict(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.VariantDict) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariantDict(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -25863,7 +26023,10 @@ func (cmdline applicationCommandLine) PlatformData() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -26256,14 +26419,11 @@ func (stream bufferedInputStream) PeekBuffer() (count uint, guint8s []byte) {
 	ret0 = uint(arg1)
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
-		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
-		sliceHeader.Len = arg1
-		sliceHeader.Cap = arg1
-		runtime.SetFinalizer(&ret, func() {
-			C.free(unsafe.Pointer(ret))
-		})
-		defer runtime.KeepAlive(ret)
+		ret1 = make([]byte, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = byte(src)
+		}
 	}
 
 	return ret0, ret1
@@ -26414,7 +26574,7 @@ func (stream bufferedOutputStream) AutoGrow() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26523,10 +26683,7 @@ func (icon bytesIcon) Bytes() *glib.Bytes {
 	var ret0 *glib.Bytes
 
 	{
-		ret0 = glib.WrapBytes(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Bytes) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -26767,7 +26924,7 @@ func (cancellable cancellable) IsCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26800,7 +26957,7 @@ func (cancellable cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26906,7 +27063,10 @@ func (cancellable cancellable) NewSource() *glib.Source {
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -27004,7 +27164,7 @@ func (converter charsetConverter) UseFallback() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -27560,7 +27720,7 @@ func (observer dBusAuthObserver) AllowMechanism(mechanism string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -27580,7 +27740,7 @@ func (observer dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, cre
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -27891,10 +28051,6 @@ type DBusConnection interface {
 	UniqueName() string
 	// IsClosed gets whether @connection is closed.
 	IsClosed() bool
-	// RegisterObjectWithClosures: version of
-	// g_dbus_connection_register_object() using closures instead of a
-	// BusInterfaceVTable for easier binding in other languages.
-	RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) (guint uint, err error)
 	// RemoveFilter removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
@@ -28354,7 +28510,10 @@ func (connection dBusConnection) CallFinish(res AsyncResult) (variant *glib.Vari
 	var goError error
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -28433,7 +28592,10 @@ func (connection dBusConnection) CallSync(busName string, objectPath string, int
 	var goError error
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -28504,7 +28666,10 @@ func (connection dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outF
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
 
 	{
-		ret1 = glib.WrapVariant(ret)
+		ret1 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -28559,7 +28724,10 @@ func (connection dBusConnection) CallWithUnixFdListSync(busName string, objectPa
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native()))).(UnixFDList)
 
 	{
-		ret1 = glib.WrapVariant(ret)
+		ret1 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -28872,7 +29040,7 @@ func (connection dBusConnection) ExitOnClose() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -28994,41 +29162,9 @@ func (connection dBusConnection) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
-}
-
-// RegisterObjectWithClosures: version of
-// g_dbus_connection_register_object() using closures instead of a
-// BusInterfaceVTable for easier binding in other languages.
-func (connection dBusConnection) RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) (guint uint, err error) {
-	var arg0 *C.GDBusConnection
-	var arg1 *C.gchar
-	var arg2 *C.GDBusInterfaceInfo
-	var arg3 *C.GClosure
-	var arg4 *C.GClosure
-	var arg5 *C.GClosure
-	var gError *C.GError
-
-	arg0 = (*C.GDBusConnection)(connection.Native())
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GDBusInterfaceInfo)(interfaceInfo.Native())
-
-	ret := C.g_dbus_connection_register_object_with_closures(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
-
-	var ret0 uint
-	var goError error
-
-	ret0 = uint(ret)
-
-	if gError != nil {
-		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
-		C.g_error_free(gError)
-	}
-
-	return ret0, goError
 }
 
 // RemoveFilter removes a filter.
@@ -29424,7 +29560,7 @@ func (connection dBusConnection) UnregisterObject(registrationID uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -29441,7 +29577,7 @@ func (connection dBusConnection) UnregisterSubtree(registrationID uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -29601,7 +29737,10 @@ func (interface_ dBusInterfaceSkeleton) Connections() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -29635,10 +29774,7 @@ func (interface_ dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var ret0 *DBusInterfaceInfo
 
 	{
-		ret0 = WrapDBusInterfaceInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusInterfaceInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -29670,7 +29806,10 @@ func (interface_ dBusInterfaceSkeleton) Properties() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -29689,10 +29828,7 @@ func (interface_ dBusInterfaceSkeleton) Vtable() *DBusInterfaceVTable {
 	var ret0 *DBusInterfaceVTable
 
 	{
-		ret0 = WrapDBusInterfaceVTable(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceVTable) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusInterfaceVTable(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -29710,7 +29846,7 @@ func (interface_ dBusInterfaceSkeleton) HasConnection(connection DBusConnection)
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -30110,10 +30246,7 @@ func (message dBusMessage) Body() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -30197,10 +30330,7 @@ func (message dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Vari
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -30260,7 +30390,7 @@ func (message dBusMessage) Locked() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -30728,11 +30858,14 @@ func (message dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (outSize uin
 	ret0 = uint(arg1)
 
 	{
-		ret1 = make([]byte, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
+		sliceHeader.Len = arg1
+		sliceHeader.Cap = arg1
+		runtime.SetFinalizer(&ret, func() {
+			C.free(unsafe.Pointer(ret))
+		})
+		defer runtime.KeepAlive(ret)
 	}
 
 	if gError != nil {
@@ -30980,10 +31113,7 @@ func (invocation dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var ret0 *DBusMethodInfo
 
 	{
-		ret0 = WrapDBusMethodInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusMethodInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusMethodInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -31032,10 +31162,7 @@ func (invocation dBusMethodInvocation) Parameters() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -31062,10 +31189,7 @@ func (invocation dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var ret0 *DBusPropertyInfo
 
 	{
-		ret0 = WrapDBusPropertyInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusPropertyInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusPropertyInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -31659,7 +31783,7 @@ func (manager dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) boo
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31693,7 +31817,7 @@ func (manager dBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -32334,7 +32458,10 @@ func (proxy dBusProxy) CallFinish(res AsyncResult) (variant *glib.Variant, err e
 	var goError error
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -32399,7 +32526,10 @@ func (proxy dBusProxy) CallSync(methodName string, parameters *glib.Variant, fla
 	var goError error
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -32459,7 +32589,10 @@ func (proxy dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList Unix
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
 
 	{
-		ret1 = glib.WrapVariant(ret)
+		ret1 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -32503,7 +32636,10 @@ func (proxy dBusProxy) CallWithUnixFdListSync(methodName string, parameters *gli
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(UnixFDList)
 
 	{
-		ret1 = glib.WrapVariant(ret)
+		ret1 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -32533,7 +32669,10 @@ func (proxy dBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -32557,7 +32696,7 @@ func (proxy dBusProxy) CachedPropertyNames() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -32628,10 +32767,7 @@ func (proxy dBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	var ret0 *DBusInterfaceInfo
 
 	{
-		ret0 = WrapDBusInterfaceInfo(ret)
-		runtime.SetFinalizer(&ret0, func(v **DBusInterfaceInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapDBusInterfaceInfo(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -32922,7 +33058,7 @@ func (server dBusServer) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34316,7 +34452,7 @@ func (info desktopAppInfo) Boolean(key string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34379,7 +34515,7 @@ func (info desktopAppInfo) IsHidden() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34402,7 +34538,7 @@ func (info desktopAppInfo) Keywords() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -34444,7 +34580,7 @@ func (info desktopAppInfo) Nodisplay() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34472,7 +34608,7 @@ func (info desktopAppInfo) ShowIn(desktopEnv string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34537,7 +34673,7 @@ func (info desktopAppInfo) StringList(key string) (length uint, utf8s []string) 
 	{
 		ret1 = make([]string, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret1[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -34560,7 +34696,7 @@ func (info desktopAppInfo) HasKey(key string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34700,7 +34836,7 @@ func (info desktopAppInfo) ListActions() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -34899,10 +35035,7 @@ func (emblemed emblemedIcon) Emblems() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.List) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -35216,7 +35349,7 @@ func (enumerator fileEnumerator) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -35231,7 +35364,7 @@ func (enumerator fileEnumerator) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -35384,7 +35517,10 @@ func (enumerator fileEnumerator) NextFilesFinish(result AsyncResult) (list *glib
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -35986,7 +36122,7 @@ func (info fileInfo) AttributeBoolean(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36036,7 +36172,7 @@ func (info fileInfo) AttributeData(attribute string) (typ FileAttributeType, val
 
 	ret2 = (*FileAttributeStatus)(arg4)
 
-	ret3 = ret != C.FALSE
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -36159,7 +36295,7 @@ func (info fileInfo) AttributeStringv(attribute string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -36253,7 +36389,10 @@ func (info fileInfo) DeletionDate() *glib.DateTime {
 	var ret0 *glib.DateTime
 
 	{
-		ret0 = glib.WrapDateTime(ret)
+		ret0 = glib.WrapDateTime(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -36348,7 +36487,7 @@ func (info fileInfo) IsBackup() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36363,7 +36502,7 @@ func (info fileInfo) IsHidden() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36378,7 +36517,7 @@ func (info fileInfo) IsSymlink() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36399,7 +36538,10 @@ func (info fileInfo) ModificationDateTime() *glib.DateTime {
 	var ret0 *glib.DateTime
 
 	{
-		ret0 = glib.WrapDateTime(ret)
+		ret0 = glib.WrapDateTime(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -36418,10 +36560,7 @@ func (info fileInfo) ModificationTime() glib.TimeVal {
 	var ret0 *glib.TimeVal
 
 	{
-		ret0 = glib.WrapTimeVal(arg1)
-		runtime.SetFinalizer(&ret0, func(v **glib.TimeVal) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapTimeVal(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -36517,7 +36656,7 @@ func (info fileInfo) HasAttribute(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36536,7 +36675,7 @@ func (info fileInfo) HasNamespace(nameSpace string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36562,7 +36701,7 @@ func (info fileInfo) ListAttributes(nameSpace string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -36709,7 +36848,7 @@ func (info fileInfo) SetAttributeStatus(attribute string, status FileAttributeSt
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36743,8 +36882,8 @@ func (info fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	arg1 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(arg1))
 	{
-		var dst []C.utf8
-		ptr := C.malloc(C.sizeof_utf8 * (len(attrValue) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(attrValue) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(attrValue)
@@ -37188,7 +37327,7 @@ func (monitor fileMonitor) Cancel() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37223,7 +37362,7 @@ func (monitor fileMonitor) IsCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37510,7 +37649,7 @@ func (completer filenameCompleter) Completions(initialText string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -37597,7 +37736,7 @@ func (stream filterInputStream) CloseBaseStream() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37680,7 +37819,7 @@ func (stream filterOutputStream) CloseBaseStream() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37989,7 +38128,7 @@ func (stream ioStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38004,7 +38143,7 @@ func (stream ioStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38183,7 +38322,7 @@ func (address inetAddress) Equal(otherAddress InetAddress) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38213,7 +38352,7 @@ func (address inetAddress) IsAny() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38230,7 +38369,7 @@ func (address inetAddress) IsLinkLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38245,7 +38384,7 @@ func (address inetAddress) IsLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38260,7 +38399,7 @@ func (address inetAddress) IsMcGlobal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38275,7 +38414,7 @@ func (address inetAddress) IsMcLinkLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38290,7 +38429,7 @@ func (address inetAddress) IsMcNodeLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38306,7 +38445,7 @@ func (address inetAddress) IsMcOrgLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38321,7 +38460,7 @@ func (address inetAddress) IsMcSiteLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38336,7 +38475,7 @@ func (address inetAddress) IsMulticast() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38354,7 +38493,7 @@ func (address inetAddress) IsSiteLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38510,7 +38649,7 @@ func (mask inetAddressMask) Equal(mask2 InetAddressMask) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38572,7 +38711,7 @@ func (mask inetAddressMask) Matches(address InetAddress) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -39107,7 +39246,7 @@ func (stream inputStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -39122,7 +39261,7 @@ func (stream inputStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -39167,14 +39306,11 @@ func (stream inputStream) Read(cancellable Cancellable) (buffer []byte, count ui
 	var goError error
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
 	}
 
 	ret1 = uint(arg2)
@@ -39228,14 +39364,11 @@ func (stream inputStream) ReadAll(cancellable Cancellable) (buffer []byte, count
 	var goError error
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
 	}
 
 	ret1 = uint(arg2)
@@ -39281,14 +39414,11 @@ func (stream inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, 
 	var ret1 uint
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
 	}
 
 	ret1 = uint(arg2)
@@ -39374,14 +39504,11 @@ func (stream inputStream) ReadAsync(ioPriority int, cancellable Cancellable, cal
 	var ret1 uint
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
 	}
 
 	ret1 = uint(arg2)
@@ -39426,7 +39553,10 @@ func (stream inputStream) ReadBytes(count uint, cancellable Cancellable) (bytes 
 	var goError error
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -39491,7 +39621,10 @@ func (stream inputStream) ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes
 	var goError error
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -39793,7 +39926,7 @@ func (store listStore) Find(item gextras.Objector) (position uint, ok bool) {
 
 	ret0 = uint(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -40240,7 +40373,10 @@ func (ostream memoryOutputStream) StealAsBytes() *glib.Bytes {
 	var ret0 *glib.Bytes
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -40753,10 +40889,13 @@ func (iter menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok
 	ret0 = C.GoString(arg1)
 
 	{
-		ret1 = glib.WrapVariant(arg2)
+		ret1 = glib.WrapVariant(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret1, func(v **glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -40774,7 +40913,10 @@ func (iter menuAttributeIter) Value() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -40797,7 +40939,7 @@ func (iter menuAttributeIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41043,7 +41185,10 @@ func (menuItem menuItem) AttributeValue(attribute string, expectedType *glib.Var
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -41370,7 +41515,7 @@ func (iter menuLinkIter) GetNext() (outLink string, value MenuModel, ok bool) {
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(MenuModel)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -41408,7 +41553,7 @@ func (iter menuLinkIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41629,7 +41774,10 @@ func (model menuModel) ItemAttributeValue(itemIndex int, attribute string, expec
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -41687,7 +41835,7 @@ func (model menuModel) IsMutable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41876,7 +42024,7 @@ func (op mountOperation) Anonymous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41922,7 +42070,7 @@ func (op mountOperation) IsTcryptHiddenVolume() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41938,7 +42086,7 @@ func (op mountOperation) IsTcryptSystemVolume() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -43273,7 +43421,7 @@ func (stream outputStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -43288,7 +43436,7 @@ func (stream outputStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -43305,7 +43453,7 @@ func (stream outputStream) IsClosing() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44195,7 +44343,7 @@ func (permission permission) Allowed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44212,7 +44360,7 @@ func (permission permission) CanAcquire() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44229,7 +44377,7 @@ func (permission permission) CanRelease() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44949,7 +45097,10 @@ func (resolver resolver) LookupByName(hostname string, cancellable Cancellable) 
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45001,7 +45152,10 @@ func (resolver resolver) LookupByNameFinish(result AsyncResult) (list *glib.List
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45034,7 +45188,10 @@ func (resolver resolver) LookupByNameWithFlags(hostname string, flags ResolverNa
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45088,7 +45245,10 @@ func (resolver resolver) LookupByNameWithFlagsFinish(result AsyncResult) (list *
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45127,7 +45287,10 @@ func (resolver resolver) LookupRecords(rrname string, recordType ResolverRecordT
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45183,7 +45346,10 @@ func (resolver resolver) LookupRecordsFinish(result AsyncResult) (list *glib.Lis
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45236,7 +45402,10 @@ func (resolver resolver) LookupService(service string, protocol string, domain s
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -45294,7 +45463,10 @@ func (resolver resolver) LookupServiceFinish(result AsyncResult) (list *glib.Lis
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -46209,7 +46381,7 @@ func (settings settings) Boolean(key string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46269,7 +46441,10 @@ func (settings settings) DefaultValue(key string) *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -46365,7 +46540,7 @@ func (settings settings) HasUnapplied() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46478,7 +46653,10 @@ func (settings settings) Range(key string) *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -46532,7 +46710,7 @@ func (settings settings) Strv(key string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -46617,7 +46795,10 @@ func (settings settings) UserValue(key string) *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -46640,7 +46821,10 @@ func (settings settings) Value(key string) *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -46659,7 +46843,7 @@ func (settings settings) IsWritable(name string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46692,7 +46876,7 @@ func (settings settings) ListChildren() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -46726,7 +46910,7 @@ func (settings settings) ListKeys() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -46751,7 +46935,7 @@ func (settings settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46808,7 +46992,7 @@ func (settings settings) SetBoolean(key string, value bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46833,7 +47017,7 @@ func (settings settings) SetDouble(key string, value float64) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46861,7 +47045,7 @@ func (settings settings) SetEnum(key string, value int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46891,7 +47075,7 @@ func (settings settings) SetFlags(key string, value uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46916,7 +47100,7 @@ func (settings settings) SetInt(key string, value int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46941,7 +47125,7 @@ func (settings settings) SetInt64(key string, value int64) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46967,7 +47151,7 @@ func (settings settings) SetString(key string, value string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47009,7 +47193,7 @@ func (settings settings) SetStrv(key string, value []string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47034,7 +47218,7 @@ func (settings settings) SetUint(key string, value uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47059,7 +47243,7 @@ func (settings settings) SetUint64(key string, value uint64) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47085,7 +47269,7 @@ func (settings settings) SetValue(key string, value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48034,7 +48218,7 @@ func (simple simpleAsyncResult) OpResGboolean() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49524,7 +49708,10 @@ func (socket socket) CreateSource(condition glib.IOCondition, cancellable Cancel
 	var ret0 *glib.Source
 
 	{
-		ret0 = glib.WrapSource(ret)
+		ret0 = glib.WrapSource(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Source) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -49566,7 +49753,7 @@ func (socket socket) Blocking() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49582,7 +49769,7 @@ func (socket socket) Broadcast() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49669,7 +49856,7 @@ func (socket socket) Keepalive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49726,7 +49913,7 @@ func (socket socket) MulticastLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49881,7 +50068,7 @@ func (socket socket) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49902,7 +50089,7 @@ func (socket socket) IsConnected() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -50120,14 +50307,11 @@ func (socket socket) Receive(cancellable Cancellable) (buffer []byte, size uint,
 	var goError error
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
 	}
 
 	ret1 = uint(arg2)
@@ -50170,14 +50354,11 @@ func (socket socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(SocketAddress)
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg2))
-		sliceHeader.Len = arg3
-		sliceHeader.Cap = arg3
-		runtime.SetFinalizer(&arg2, func() {
-			C.free(unsafe.Pointer(arg2))
-		})
-		defer runtime.KeepAlive(arg2)
+		ret1 = make([]byte, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = byte(src)
+		}
 	}
 
 	ret2 = uint(arg3)
@@ -50414,14 +50595,11 @@ func (socket socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable)
 	var goError error
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
+		ret0 = make([]byte, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = byte(src)
+		}
 	}
 
 	ret1 = uint(arg2)
@@ -51015,7 +51193,7 @@ func (socket socket) SpeaksIpv4() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -51999,7 +52177,7 @@ func (client socketClient) EnableProxy() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52117,7 +52295,7 @@ func (client socketClient) TLS() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52510,7 +52688,7 @@ func (connection socketConnection) IsConnected() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53255,7 +53433,7 @@ func (service socketService) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53557,8 +53735,8 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (subprocess Subprocess
 	var gError *C.GError
 
 	{
-		var dst []C.filename
-		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(argv) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(argv)
@@ -53649,11 +53827,17 @@ func (subprocess subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cance
 	var goError error
 
 	{
-		ret0 = glib.WrapBytes(arg3)
+		ret0 = glib.WrapBytes(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret0, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret1 = glib.WrapBytes(arg4)
+		ret1 = glib.WrapBytes(unsafe.Pointer(arg4))
+		runtime.SetFinalizer(ret1, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -53701,11 +53885,17 @@ func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *g
 	var goError error
 
 	{
-		ret0 = glib.WrapBytes(arg2)
+		ret0 = glib.WrapBytes(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret0, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret1 = glib.WrapBytes(arg3)
+		ret1 = glib.WrapBytes(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret1, func(v **glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -53877,7 +54067,7 @@ func (subprocess subprocess) IfExited() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53898,7 +54088,7 @@ func (subprocess subprocess) IfSignaled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53997,7 +54187,7 @@ func (subprocess subprocess) Successful() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54489,8 +54679,8 @@ func (self subprocessLauncher) SetEnviron(env []string) {
 
 	arg0 = (*C.GSubprocessLauncher)(self.Native())
 	{
-		var dst []C.filename
-		ptr := C.malloc(C.sizeof_filename * (len(env) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(env) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(env)
@@ -54633,8 +54823,8 @@ func (self subprocessLauncher) Spawnv(argv []string) (subprocess Subprocess, err
 
 	arg0 = (*C.GSubprocessLauncher)(self.Native())
 	{
-		var dst []C.filename
-		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(argv) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(argv)
@@ -55000,6 +55190,17 @@ type Task interface {
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
 	PropagatePointer() (gpointer interface{}, err error)
+	// PropagateValue gets the result of @task as a #GValue, and transfers
+	// ownership of that value to the caller. As with g_task_return_value(),
+	// this is a generic low-level method; g_task_propagate_pointer() and the
+	// like will usually be more useful for C code.
+	//
+	// If the task resulted in an error, or was cancelled, then this will
+	// instead set @error and return false.
+	//
+	// Since this method transfers ownership of the return value (or error) to
+	// the caller, you may only call it once.
+	PropagateValue() (value externglib.Value, err error)
 	// ReturnBoolean sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
@@ -55187,7 +55388,7 @@ func (task task) CheckCancellable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55204,7 +55405,7 @@ func (task task) Completed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55226,10 +55427,7 @@ func (task task) Context() *glib.MainContext {
 	var ret0 *glib.MainContext
 
 	{
-		ret0 = glib.WrapMainContext(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.MainContext) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapMainContext(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -55276,7 +55474,7 @@ func (task task) ReturnOnCancel() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55337,7 +55535,7 @@ func (task task) HadError() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55424,6 +55622,38 @@ func (task task) PropagatePointer() (gpointer interface{}, err error) {
 	return ret0, goError
 }
 
+// PropagateValue gets the result of @task as a #GValue, and transfers
+// ownership of that value to the caller. As with g_task_return_value(),
+// this is a generic low-level method; g_task_propagate_pointer() and the
+// like will usually be more useful for C code.
+//
+// If the task resulted in an error, or was cancelled, then this will
+// instead set @error and return false.
+//
+// Since this method transfers ownership of the return value (or error) to
+// the caller, you may only call it once.
+func (task task) PropagateValue() (value externglib.Value, err error) {
+	var arg0 *C.GTask
+	var arg1 *C.GValue // out
+	var gError *C.GError
+
+	arg0 = (*C.GTask)(task.Native())
+
+	ret := C.g_task_propagate_value(arg0, &arg1, &gError)
+
+	var ret0 *externglib.Value
+	var goError error
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg1))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
 // ReturnBoolean sets @task's result to @result and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
 func (task task) ReturnBoolean(result bool) {
@@ -55471,7 +55701,7 @@ func (task task) ReturnErrorIfCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55633,7 +55863,7 @@ func (task task) SetReturnOnCancel(returnOnCancel bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55719,7 +55949,7 @@ func (connection tcpConnection) GracefulDisconnect() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56188,7 +56418,7 @@ func (icon themedIcon) Names() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -56425,7 +56655,7 @@ func (certOne tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56685,7 +56915,7 @@ func (conn tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors 
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56871,7 +57101,7 @@ func (conn tlsConnection) RequireCloseNotify() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56888,7 +57118,7 @@ func (conn tlsConnection) UseSystemCertdb() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -57554,7 +57784,10 @@ func (self tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interacti
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -57624,7 +57857,10 @@ func (self tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) (li
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -59123,14 +59359,11 @@ func (list unixFDList) PeekFds() (length int, gints []int) {
 	ret0 = int(arg1)
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
-		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
-		sliceHeader.Len = arg1
-		sliceHeader.Cap = arg1
-		runtime.SetFinalizer(&ret, func() {
-			C.free(unsafe.Pointer(ret))
-		})
-		defer runtime.KeepAlive(ret)
+		ret1 = make([]int, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = int(src)
+		}
 	}
 
 	return ret0, ret1
@@ -59166,11 +59399,14 @@ func (list unixFDList) StealFds() (length int, gints []int) {
 	ret0 = int(arg1)
 
 	{
-		ret1 = make([]int, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = int(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
+		sliceHeader.Len = arg1
+		sliceHeader.Cap = arg1
+		runtime.SetFinalizer(&ret, func() {
+			C.free(unsafe.Pointer(ret))
+		})
+		defer runtime.KeepAlive(ret)
 	}
 
 	return ret0, ret1
@@ -59344,11 +59580,14 @@ func (message unixFDMessage) StealFds() (length int, gints []int) {
 	ret0 = int(arg1)
 
 	{
-		ret1 = make([]int, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = int(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
+		sliceHeader.Len = arg1
+		sliceHeader.Cap = arg1
+		runtime.SetFinalizer(&ret, func() {
+			C.free(unsafe.Pointer(ret))
+		})
+		defer runtime.KeepAlive(ret)
 	}
 
 	return ret0, ret1
@@ -59432,7 +59671,7 @@ func (stream unixInputStream) CloseFd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59606,7 +59845,7 @@ func (stream unixOutputStream) CloseFd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59776,7 +60015,7 @@ func (address unixSocketAddress) IsAbstract() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59944,7 +60183,7 @@ func (vfs vfs) SupportedURISchemes() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -59962,7 +60201,7 @@ func (vfs vfs) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60032,7 +60271,7 @@ func (vfs vfs) RegisterURIScheme(scheme string, uriFunc VfsFileLookupFunc, parse
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60051,7 +60290,7 @@ func (vfs vfs) UnregisterURIScheme(scheme string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60126,7 +60365,10 @@ func (volumeMonitor volumeMonitor) ConnectedDrives() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -60164,7 +60406,10 @@ func (volumeMonitor volumeMonitor) Mounts() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -60203,7 +60448,10 @@ func (volumeMonitor volumeMonitor) Volumes() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0

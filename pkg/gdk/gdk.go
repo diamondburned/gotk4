@@ -958,7 +958,10 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var ret0 *cairo.Region
 
 	{
-		ret0 = cairo.WrapRegion(ret)
+		ret0 = cairo.WrapRegion(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *cairo.Region) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1134,7 +1137,7 @@ func DragActionIsUnique(action DragAction) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1158,7 +1161,7 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 
 	ret0 = float64(arg3)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -1184,7 +1187,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 
 	ret1 = float64(arg4)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -1207,7 +1210,7 @@ func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 
 	ret0 = float64(arg3)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -1296,7 +1299,7 @@ func KeyvalIsLower(keyval uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1311,7 +1314,7 @@ func KeyvalIsUpper(keyval uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1430,7 +1433,10 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	var ret0 *cairo.Region
 
 	{
-		ret0 = cairo.WrapRegion(ret)
+		ret0 = cairo.WrapRegion(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *cairo.Region) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1511,6 +1517,17 @@ func SetAllowedBackends(backends string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gdk_set_allowed_backends(arg1)
+}
+
+func ToplevelSizeGetType() externglib.Type {
+
+	ret := C.gdk_toplevel_size_get_type()
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
 }
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
@@ -1711,7 +1728,7 @@ func (dragSurface dragSurface) Present(width int, height int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2144,7 +2161,7 @@ func (popup popup) Autohide() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2259,7 +2276,7 @@ func (popup popup) Present(width int, height int, layout *PopupLayout) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2515,7 +2532,7 @@ func (toplevel toplevel) Lower() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2532,7 +2549,7 @@ func (toplevel toplevel) Minimize() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2692,7 +2709,7 @@ func (toplevel toplevel) ShowWindowMenu(event Event) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2708,7 +2725,7 @@ func (toplevel toplevel) SupportsEdgeConstraints() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2755,7 +2772,7 @@ func WrapContentFormats(ptr unsafe.Pointer) *ContentFormats {
 
 func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapContentFormats(unsafe.Pointer(b))
+	return WrapContentFormats(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -2792,7 +2809,10 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2809,7 +2829,10 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2827,7 +2850,7 @@ func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2845,9 +2868,36 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
+}
+
+// GTypes gets the #GTypes included in @formats. Note that @formats may not
+// contain any #GTypes, in particular when they are empty. In that case nil will
+// be returned.
+func (formats *ContentFormats) GTypes() (nGTypes uint, gTypes []externglib.Type) {
+	var arg0 *C.GdkContentFormats
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GdkContentFormats)(formats.Native())
+
+	ret := C.gdk_content_formats_get_gtypes(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []externglib.Type
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]externglib.Type, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.GType)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = externglib.Type(src)
+		}
+	}
+
+	return ret0, ret1
 }
 
 // MIMETypes gets the mime types included in @formats. Note that @formats may
@@ -2874,7 +2924,7 @@ func (formats *ContentFormats) MIMETypes() (nMIMETypes uint, utf8s []string) {
 
 		ret1 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret1[i] = C.GoString(src)
 		}
 	}
@@ -2894,7 +2944,25 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
+
+	return ret0
+}
+
+// MatchGType finds the first #GType from @first that is also contained in
+// @second. If no matching #GType is found, G_TYPE_INVALID is returned.
+func (first *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
+	var arg0 *C.GdkContentFormats
+	var arg1 *C.GdkContentFormats
+
+	arg0 = (*C.GdkContentFormats)(first.Native())
+	arg1 = (*C.GdkContentFormats)(second.Native())
+
+	ret := C.gdk_content_formats_match_gtype(arg0, arg1)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
 
 	return ret0
 }
@@ -2943,7 +3011,10 @@ func (formats *ContentFormats) Ref() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2980,7 +3051,10 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2998,7 +3072,10 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3016,7 +3093,10 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3034,7 +3114,10 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3052,7 +3135,10 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3087,7 +3173,7 @@ func WrapContentFormatsBuilder(ptr unsafe.Pointer) *ContentFormatsBuilder {
 
 func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapContentFormatsBuilder(unsafe.Pointer(b))
+	return WrapContentFormatsBuilder(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3103,7 +3189,10 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 	var ret0 *ContentFormatsBuilder
 
 	{
-		ret0 = WrapContentFormatsBuilder(ret)
+		ret0 = WrapContentFormatsBuilder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormatsBuilder) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3156,7 +3245,10 @@ func (builder *ContentFormatsBuilder) FreeToFormats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3176,10 +3268,7 @@ func (builder *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 	var ret0 *ContentFormatsBuilder
 
 	{
-		ret0 = WrapContentFormatsBuilder(ret)
-		runtime.SetFinalizer(&ret0, func(v **ContentFormatsBuilder) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapContentFormatsBuilder(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3202,7 +3291,10 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3235,7 +3327,7 @@ func WrapEventSequence(ptr unsafe.Pointer) *EventSequence {
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEventSequence(unsafe.Pointer(b))
+	return WrapEventSequence(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3265,7 +3357,7 @@ func WrapFrameTimings(ptr unsafe.Pointer) *FrameTimings {
 
 func marshalFrameTimings(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFrameTimings(unsafe.Pointer(b))
+	return WrapFrameTimings(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3290,7 +3382,7 @@ func (timings *FrameTimings) Complete() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3395,7 +3487,10 @@ func (timings *FrameTimings) Ref() *FrameTimings {
 	var ret0 *FrameTimings
 
 	{
-		ret0 = WrapFrameTimings(ret)
+		ret0 = WrapFrameTimings(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FrameTimings) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3428,7 +3523,7 @@ func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 
 func marshalKeymapKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapKeymapKey(unsafe.Pointer(b))
+	return WrapKeymapKey(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3505,7 +3600,7 @@ func WrapPopupLayout(ptr unsafe.Pointer) *PopupLayout {
 
 func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPopupLayout(unsafe.Pointer(b))
+	return WrapPopupLayout(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3528,7 +3623,10 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	var ret0 *PopupLayout
 
 	{
-		ret0 = WrapPopupLayout(ret)
+		ret0 = WrapPopupLayout(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PopupLayout) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3545,7 +3643,10 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	var ret0 *PopupLayout
 
 	{
-		ret0 = WrapPopupLayout(ret)
+		ret0 = WrapPopupLayout(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PopupLayout) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3563,7 +3664,7 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3594,10 +3695,7 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 	var ret0 *Rectangle
 
 	{
-		ret0 = WrapRectangle(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3664,7 +3762,10 @@ func (layout *PopupLayout) Ref() *PopupLayout {
 	var ret0 *PopupLayout
 
 	{
-		ret0 = WrapPopupLayout(ret)
+		ret0 = WrapPopupLayout(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PopupLayout) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3759,7 +3860,7 @@ func WrapRGBA(ptr unsafe.Pointer) *RGBA {
 
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRGBA(unsafe.Pointer(b))
+	return WrapRGBA(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3808,7 +3909,10 @@ func (rgba *RGBA) Copy() *RGBA {
 	var ret0 *RGBA
 
 	{
-		ret0 = WrapRGBA(ret)
+		ret0 = WrapRGBA(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *RGBA) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3826,7 +3930,7 @@ func (p1 *RGBA) Equal(p2 RGBA) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3866,7 +3970,7 @@ func (rgba *RGBA) IsClear() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3882,7 +3986,7 @@ func (rgba *RGBA) IsOpaque() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3913,7 +4017,7 @@ func (rgba *RGBA) Parse(spec string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3963,7 +4067,7 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangle(unsafe.Pointer(b))
+	return WrapRectangle(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4013,7 +4117,7 @@ func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4030,7 +4134,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4054,13 +4158,10 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -4084,10 +4185,7 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var ret0 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -4110,7 +4208,7 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 
 func marshalTimeCoord(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTimeCoord(unsafe.Pointer(b))
+	return WrapTimeCoord(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4160,7 +4258,7 @@ func WrapToplevelLayout(ptr unsafe.Pointer) *ToplevelLayout {
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToplevelLayout(unsafe.Pointer(b))
+	return WrapToplevelLayout(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4176,7 +4274,10 @@ func NewToplevelLayout() *ToplevelLayout {
 	var ret0 *ToplevelLayout
 
 	{
-		ret0 = WrapToplevelLayout(ret)
+		ret0 = WrapToplevelLayout(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ToplevelLayout) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4193,7 +4294,10 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var ret0 *ToplevelLayout
 
 	{
-		ret0 = WrapToplevelLayout(ret)
+		ret0 = WrapToplevelLayout(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ToplevelLayout) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4211,7 +4315,7 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4230,9 +4334,9 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = arg1 != C.FALSE
+	ret0 = C.BOOL(arg1) != 0
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -4267,9 +4371,9 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = arg1 != C.FALSE
+	ret0 = C.BOOL(arg1) != 0
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -4285,7 +4389,7 @@ func (layout *ToplevelLayout) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4301,7 +4405,10 @@ func (layout *ToplevelLayout) Ref() *ToplevelLayout {
 	var ret0 *ToplevelLayout
 
 	{
-		ret0 = WrapToplevelLayout(ret)
+		ret0 = WrapToplevelLayout(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ToplevelLayout) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4578,7 +4685,10 @@ func (self cairoContext) CairoCreate() *cairo.Context {
 	var ret0 *cairo.Context
 
 	{
-		ret0 = cairo.WrapContext(ret)
+		ret0 = cairo.WrapContext(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *cairo.Context) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4659,6 +4769,9 @@ type Clipboard interface {
 	// value will be copied directly. Otherwise, GDK will try to use
 	// gdk_content_deserialize_async() to convert the clipboard's data.
 	ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// ReadValueFinish finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_value_async().
+	ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, err error)
 	// SetContent sets a new content provider on @clipboard. The clipboard will
 	// claim the Display's resources and advertise these new contents to other
 	// applications.
@@ -4754,10 +4867,7 @@ func (clipboard clipboard) Formats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
-		runtime.SetFinalizer(&ret0, func(v **ContentFormats) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4777,7 +4887,7 @@ func (clipboard clipboard) IsLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4957,6 +5067,31 @@ func (clipboard clipboard) ReadValueAsync(typ externglib.Type, ioPriority int, c
 	C.gdk_clipboard_read_value_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
+// ReadValueFinish finishes an asynchronous clipboard read started with
+// gdk_clipboard_read_value_async().
+func (clipboard clipboard) ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, err error) {
+	var arg0 *C.GdkClipboard
+	var arg1 *C.GAsyncResult
+	var gError *C.GError
+
+	arg0 = (*C.GdkClipboard)(clipboard.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_clipboard_read_value_finish(arg0, arg1, &gError)
+
+	var ret0 *externglib.Value
+	var goError error
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(ret))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
 // SetContent sets a new content provider on @clipboard. The clipboard will
 // claim the Display's resources and advertise these new contents to other
 // applications.
@@ -4979,7 +5114,7 @@ func (clipboard clipboard) SetContent(provider ContentProvider) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5071,6 +5206,8 @@ type ContentDeserializer interface {
 	// Cancellable gets the cancellable that was passed to
 	// gdk_content_deserialize_async().
 	Cancellable() gio.Cancellable
+	// GType gets the GType to create an instance of.
+	GType() externglib.Type
 	// InputStream gets the input stream that was passed to
 	// gdk_content_deserialize_async().
 	InputStream() gio.InputStream
@@ -5085,6 +5222,8 @@ type ContentDeserializer interface {
 	// UserData gets the user data that was passed when the deserializer was
 	// registered.
 	UserData() interface{}
+	// Value gets the #GValue to store the deserialized object in.
+	Value() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
 	// This function consumes @error.
 	ReturnError(error *glib.Error)
@@ -5128,6 +5267,21 @@ func (deserializer contentDeserializer) Cancellable() gio.Cancellable {
 	var ret0 gio.Cancellable
 
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.Cancellable)
+
+	return ret0
+}
+
+// GType gets the GType to create an instance of.
+func (deserializer contentDeserializer) GType() externglib.Type {
+	var arg0 *C.GdkContentDeserializer
+
+	arg0 = (*C.GdkContentDeserializer)(deserializer.Native())
+
+	ret := C.gdk_content_deserializer_get_gtype(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
 
 	return ret0
 }
@@ -5207,6 +5361,21 @@ func (deserializer contentDeserializer) UserData() interface{} {
 	var ret0 interface{}
 
 	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Value gets the #GValue to store the deserialized object in.
+func (deserializer contentDeserializer) Value() *externglib.Value {
+	var arg0 *C.GdkContentDeserializer
+
+	arg0 = (*C.GdkContentDeserializer)(deserializer.Native())
+
+	ret := C.gdk_content_deserializer_get_value(arg0)
+
+	var ret0 *externglib.Value
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5414,7 +5583,10 @@ func (provider contentProvider) RefFormats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5435,7 +5607,10 @@ func (provider contentProvider) RefStorableFormats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5504,6 +5679,8 @@ type ContentSerializer interface {
 	// Cancellable gets the cancellable that was passed to
 	// gdk_content_serialize_async().
 	Cancellable() gio.Cancellable
+	// GType gets the GType to of the object to serialize.
+	GType() externglib.Type
 	// MIMEType gets the mime type to serialize to.
 	MIMEType() string
 	// OutputStream gets the output stream that was passed to
@@ -5518,6 +5695,8 @@ type ContentSerializer interface {
 	// UserData gets the user data that was passed when the serializer was
 	// registered.
 	UserData() interface{}
+	// Value gets the #GValue to read the object to serialize from.
+	Value() *externglib.Value
 	// ReturnError: indicate that the serialization has ended with an error.
 	// This function consumes @error.
 	ReturnError(error *glib.Error)
@@ -5561,6 +5740,21 @@ func (serializer contentSerializer) Cancellable() gio.Cancellable {
 	var ret0 gio.Cancellable
 
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.Cancellable)
+
+	return ret0
+}
+
+// GType gets the GType to of the object to serialize.
+func (serializer contentSerializer) GType() externglib.Type {
+	var arg0 *C.GdkContentSerializer
+
+	arg0 = (*C.GdkContentSerializer)(serializer.Native())
+
+	ret := C.gdk_content_serializer_get_gtype(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
 
 	return ret0
 }
@@ -5640,6 +5834,21 @@ func (serializer contentSerializer) UserData() interface{} {
 	var ret0 interface{}
 
 	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+// Value gets the #GValue to read the object to serialize from.
+func (serializer contentSerializer) Value() *externglib.Value {
+	var arg0 *C.GdkContentSerializer
+
+	arg0 = (*C.GdkContentSerializer)(serializer.Native())
+
+	ret := C.gdk_content_serializer_get_value(arg0)
+
+	var ret0 *externglib.Value
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -5971,7 +6180,7 @@ func (device device) CapsLockState() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6036,7 +6245,7 @@ func (device device) HasCursor() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6084,7 +6293,7 @@ func (device device) NumLockState() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6133,7 +6342,7 @@ func (device device) ScrollLockState() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6244,7 +6453,7 @@ func (device device) HasBidiLayouts() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6579,7 +6788,7 @@ func (display display) DeviceIsGrabbed(device Device) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6738,7 +6947,7 @@ func (display display) Setting(name string, value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6769,7 +6978,7 @@ func (display display) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6791,7 +7000,7 @@ func (display display) IsComposited() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6815,7 +7024,7 @@ func (display display) IsRGBA() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6831,7 +7040,10 @@ func (display display) ListSeats() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6867,22 +7079,28 @@ func (display display) MapKeycode(keycode uint) (keys []*KeymapKey, keyvals []ui
 		for i := 0; i < uintptr(arg4); i++ {
 			src := (*C.GdkKeymapKey)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret0[i] = WrapKeymapKey(src)
+				ret0[i] = WrapKeymapKey(unsafe.Pointer(src))
+				runtime.SetFinalizer(ret0[i], func(v *KeymapKey) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
 			}
 		}
 	}
 
 	{
-		ret1 = make([]uint, arg4)
-		for i := 0; i < uintptr(arg4); i++ {
-			src := (*C.guint)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = uint(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg3))
+		sliceHeader.Len = arg4
+		sliceHeader.Cap = arg4
+		runtime.SetFinalizer(&arg3, func() {
+			C.free(unsafe.Pointer(arg3))
+		})
+		defer runtime.KeepAlive(arg3)
 	}
 
 	ret2 = int(arg4)
 
-	ret3 = ret != C.FALSE
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -6921,14 +7139,17 @@ func (display display) MapKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok 
 		for i := 0; i < uintptr(arg3); i++ {
 			src := (*C.GdkKeymapKey)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret0[i] = WrapKeymapKey(src)
+				ret0[i] = WrapKeymapKey(unsafe.Pointer(src))
+				runtime.SetFinalizer(ret0[i], func(v *KeymapKey) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
 			}
 		}
 	}
 
 	ret1 = int(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -6979,7 +7200,7 @@ func (display display) SupportsInputShapes() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7049,7 +7270,7 @@ func (display display) TranslateKey(keycode uint, state ModifierType, group int)
 
 	ret3 = (*ModifierType)(arg7)
 
-	ret4 = ret != C.FALSE
+	ret4 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -7149,7 +7370,10 @@ func (manager displayManager) ListDisplays() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7359,10 +7583,7 @@ func (drag drag) Formats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
-		runtime.SetFinalizer(&ret0, func(v **ContentFormats) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7579,10 +7800,7 @@ func (context drawContext) FrameRegion() *cairo.Region {
 	var ret0 *cairo.Region
 
 	{
-		ret0 = cairo.WrapRegion(ret)
-		runtime.SetFinalizer(&ret0, func(v **cairo.Region) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = cairo.WrapRegion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7616,7 +7834,7 @@ func (context drawContext) IsInFrame() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7672,6 +7890,9 @@ type Drop interface {
 	// the value will be copied directly. Otherwise, GDK will try to use
 	// gdk_content_deserialize_async() to convert the data.
 	ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	// ReadValueFinish finishes an async drop read started with
+	// gdk_drop_read_value_async().
+	ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, err error)
 	// Status selects all actions that are potentially supported by the
 	// destination.
 	//
@@ -7809,10 +8030,7 @@ func (self drop) Formats() *ContentFormats {
 	var ret0 *ContentFormats
 
 	{
-		ret0 = WrapContentFormats(ret)
-		runtime.SetFinalizer(&ret0, func(v **ContentFormats) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapContentFormats(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7845,8 +8063,8 @@ func (self drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.C
 
 	arg0 = (*C.GdkDrop)(self.Native())
 	{
-		var dst []C.utf8
-		ptr := C.malloc(C.sizeof_utf8 * (len(mimeTypes) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(mimeTypes) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(mimeTypes)
@@ -7923,6 +8141,31 @@ func (self drop) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable
 	arg5 = C.gpointer(box.Assign(callback))
 
 	C.gdk_drop_read_value_async(arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
+// ReadValueFinish finishes an async drop read started with
+// gdk_drop_read_value_async().
+func (self drop) ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, err error) {
+	var arg0 *C.GdkDrop
+	var arg1 *C.GAsyncResult
+	var gError *C.GError
+
+	arg0 = (*C.GdkDrop)(self.Native())
+	arg1 = (*C.GAsyncResult)(result.Native())
+
+	ret := C.gdk_drop_read_value_finish(arg0, arg1, &gError)
+
+	var ret0 *externglib.Value
+	var goError error
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(ret))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Status selects all actions that are potentially supported by the
@@ -8088,10 +8331,7 @@ func (frameClock frameClock) CurrentTimings() *FrameTimings {
 	var ret0 *FrameTimings
 
 	{
-		ret0 = WrapFrameTimings(ret)
-		runtime.SetFinalizer(&ret0, func(v **FrameTimings) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFrameTimings(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8208,10 +8448,7 @@ func (frameClock frameClock) Timings(frameCounter int64) *FrameTimings {
 	var ret0 *FrameTimings
 
 	{
-		ret0 = WrapFrameTimings(ret)
-		runtime.SetFinalizer(&ret0, func(v **FrameTimings) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFrameTimings(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8401,7 +8638,7 @@ func (context glContext) DebugEnabled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8432,7 +8669,7 @@ func (context glContext) ForwardCompatible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8499,7 +8736,7 @@ func (context glContext) UseES() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8551,7 +8788,7 @@ func (context glContext) IsLegacy() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8882,10 +9119,7 @@ func (monitor monitor) Geometry() Rectangle {
 	var ret0 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -9023,7 +9257,7 @@ func (monitor monitor) IsValid() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9096,7 +9330,10 @@ func (seat seat) Devices(capabilities SeatCapabilities) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9158,7 +9395,10 @@ func (seat seat) Tools() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9486,7 +9726,10 @@ func (surface surface) CreateSimilarSurface(content cairo.Content, width int, he
 	var ret0 *cairo.Surface
 
 	{
-		ret0 = cairo.WrapSurface(ret)
+		ret0 = cairo.WrapSurface(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *cairo.Surface) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9597,7 +9840,7 @@ func (surface surface) DevicePosition(device Device) (x float64, y float64, mask
 
 	ret2 = (*ModifierType)(arg4)
 
-	ret3 = ret != C.FALSE
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -9663,7 +9906,7 @@ func (surface surface) Mapped() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9732,7 +9975,7 @@ func (surface surface) IsDestroyed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9861,7 +10104,7 @@ func (from surface) TranslateCoordinates(to Surface, x float64, y float64) bool 
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10008,7 +10251,7 @@ func (texture texture) SaveToPng(filename string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }

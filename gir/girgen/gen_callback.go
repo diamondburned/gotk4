@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -76,7 +77,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 			return false // probably var_args
 		}
 
-		ctail.Add(ctype)
+		ctail.Add(ctype + " _" + strconv.Itoa(i))
 		cgotype := anyTypeCGo(param.AnyType)
 		cgotail.Addf("arg%d %s", i, cgotype)
 	}
@@ -94,7 +95,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 		fg.CGoTail += " " + anyTypeCGo(cb.ReturnValue.AnyType)
 	}
 
-	fg.Ng.cgo.Wordf("extern %s %s(%s)", cReturn, callbackPrefix+fg.GoName, ctail.Join())
+	fg.Ng.cgo.Wordf("extern %s %s(%s);", cReturn, callbackPrefix+fg.GoName, ctail.Join())
 
 	return true
 }
@@ -156,7 +157,7 @@ func (ng *NamespaceGenerator) generateCallbacks() {
 	cg := newCallbackGenerator(ng)
 
 	for _, callback := range ng.current.Namespace.Callbacks {
-		if ng.mustIgnore(callback.Name) {
+		if ng.mustIgnore(callback.Name, callback.CIdentifier) {
 			continue
 		}
 

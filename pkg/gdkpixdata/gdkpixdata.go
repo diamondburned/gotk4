@@ -3,6 +3,7 @@
 package gdkpixdata
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -130,7 +131,7 @@ func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 
 func marshalPixdata(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPixdata(unsafe.Pointer(b))
+	return WrapPixdata(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -249,11 +250,14 @@ func (pixdata *Pixdata) Serialize() (streamLengthP uint, guint8s []byte) {
 	ret0 = uint(arg1)
 
 	{
-		ret1 = make([]byte, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
+		sliceHeader.Len = arg1
+		sliceHeader.Cap = arg1
+		runtime.SetFinalizer(&ret, func() {
+			C.free(unsafe.Pointer(ret))
+		})
+		defer runtime.KeepAlive(ret)
 	}
 
 	return ret0, ret1
@@ -280,7 +284,10 @@ func (pixdata *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.S
 	var ret0 *glib.String
 
 	{
-		ret0 = glib.WrapString(ret)
+		ret0 = glib.WrapString(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.String) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0

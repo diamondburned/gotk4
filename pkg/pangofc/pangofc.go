@@ -3,12 +3,10 @@
 package pangofc
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/fontconfig"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -17,7 +15,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
 //
-// extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
 // // extern void callbackDelete(gpointer);
 import "C"
 
@@ -34,29 +31,6 @@ func callbackDelete(ptr C.gpointer) {
 	box.Delete(box.Callback, uintptr(ptr))
 }
 
-// DecoderFindFunc: callback function passed to
-// [method@PangoFc.FontMap.add_decoder_find_func].
-type DecoderFindFunc func(pattern *fontconfig.Pattern) Decoder
-
-//export gotk4_DecoderFindFunc
-func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var pattern *fontconfig.Pattern
-
-	{
-		pattern = fontconfig.WrapPattern(arg0)
-		runtime.SetFinalizer(&pattern, func(v **fontconfig.Pattern) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	decoder := v.(DecoderFindFunc)(pattern)
-}
-
 // Decoder: `PangoFcDecoder` is a virtual base class that implementations will
 // inherit from.
 //
@@ -69,12 +43,6 @@ func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder
 type Decoder interface {
 	gextras.Objector
 
-	// Charset generates an `FcCharSet` of supported characters for the @fcfont
-	// given.
-	//
-	// The returned `FcCharSet` will be a reference to an internal value stored
-	// by the `PangoFcDecoder` and must not be modified or freed.
-	Charset(fcfont Font) *fontconfig.CharSet
 	// Glyph generates a `PangoGlyph` for the given Unicode point using the
 	// custom decoder.
 	//
@@ -104,32 +72,6 @@ func marshalDecoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDecoder(obj), nil
-}
-
-// Charset generates an `FcCharSet` of supported characters for the @fcfont
-// given.
-//
-// The returned `FcCharSet` will be a reference to an internal value stored
-// by the `PangoFcDecoder` and must not be modified or freed.
-func (decoder decoder) Charset(fcfont Font) *fontconfig.CharSet {
-	var arg0 *C.PangoFcDecoder
-	var arg1 *C.PangoFcFont
-
-	arg0 = (*C.PangoFcDecoder)(decoder.Native())
-	arg1 = (*C.PangoFcFont)(fcfont.Native())
-
-	ret := C.pango_fc_decoder_get_charset(arg0, arg1)
-
-	var ret0 *fontconfig.CharSet
-
-	{
-		ret0 = fontconfig.WrapCharSet(ret)
-		runtime.SetFinalizer(&ret0, func(v **fontconfig.CharSet) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
 }
 
 // Glyph generates a `PangoGlyph` for the given Unicode point using the
@@ -183,8 +125,6 @@ type Font interface {
 	// The returned array is only valid as long as the font and its fontmap are
 	// valid.
 	Languages() **pango.Language
-	// Pattern returns the FcPattern that @font is based on.
-	Pattern() *fontconfig.Pattern
 	// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
 	// unknown character.
 	//
@@ -259,30 +199,7 @@ func (font font) Languages() **pango.Language {
 	var ret0 **pango.Language
 
 	{
-		ret0 = pango.WrapLanguage(ret)
-		runtime.SetFinalizer(&ret0, func(v ***pango.Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Pattern returns the FcPattern that @font is based on.
-func (font font) Pattern() *fontconfig.Pattern {
-	var arg0 *C.PangoFcFont
-
-	arg0 = (*C.PangoFcFont)(font.Native())
-
-	ret := C.pango_fc_font_get_pattern(arg0)
-
-	var ret0 *fontconfig.Pattern
-
-	{
-		ret0 = fontconfig.WrapPattern(ret)
-		runtime.SetFinalizer(&ret0, func(v **fontconfig.Pattern) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapLanguage(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -324,7 +241,7 @@ func (font font) HasChar(wc uint32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -391,11 +308,6 @@ type FontMap interface {
 	// information needed for correct operation on the `PangoContext` after
 	// calling this function.
 	CreateContext() pango.Context
-	// FindDecoder finds the decoder to use for @pattern.
-	//
-	// Decoders can be added to a font map using
-	// [method@PangoFc.FontMap.add_decoder_find_func].
-	FindDecoder(pattern *fontconfig.Pattern) Decoder
 	// SetDefaultSubstitute sets a function that will be called to do final
 	// configuration substitution on a `FcPattern` before it is used to load the
 	// font.
@@ -506,26 +418,6 @@ func (fcfontmap fontMap) CreateContext() pango.Context {
 	var ret0 pango.Context
 
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Context)
-
-	return ret0
-}
-
-// FindDecoder finds the decoder to use for @pattern.
-//
-// Decoders can be added to a font map using
-// [method@PangoFc.FontMap.add_decoder_find_func].
-func (fcfontmap fontMap) FindDecoder(pattern *fontconfig.Pattern) Decoder {
-	var arg0 *C.PangoFcFontMap
-	var arg1 *C.FcPattern
-
-	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
-	arg1 = (*C.FcPattern)(pattern.Native())
-
-	ret := C.pango_fc_font_map_find_decoder(arg0, arg1)
-
-	var ret0 Decoder
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Decoder)
 
 	return ret0
 }

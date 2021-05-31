@@ -138,7 +138,7 @@ func (ng *NamespaceGenerator) generateIfaces() {
 	ig := newIfaceGenerator(ng)
 
 	for _, iface := range ng.current.Namespace.Interfaces {
-		if ng.mustIgnore(iface.Name) {
+		if ng.mustIgnore(iface.Name, iface.CType) {
 			continue
 		}
 

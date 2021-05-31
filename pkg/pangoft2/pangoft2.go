@@ -3,12 +3,10 @@
 package pangoft2
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -46,30 +44,6 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	var ret0 pango.Coverage
 
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Coverage)
-
-	return ret0
-}
-
-// FontGetFace returns the native FreeType2 `FT_Face` structure used for this
-// Font. This may be useful if you want to use FreeType2 functions directly.
-//
-// Use pango_fc_font_lock_face() instead; when you are done with a face from
-// pango_fc_font_lock_face() you must call pango_fc_font_unlock_face().
-func FontGetFace(font pango.Font) freetype2.Face {
-	var arg1 *C.PangoFont
-
-	arg1 = (*C.PangoFont)(font.Native())
-
-	ret := C.pango_ft2_font_get_face(arg1)
-
-	var ret0 freetype2.Face
-
-	{
-		ret0 = freetype2.WrapFace(ret)
-		runtime.SetFinalizer(&ret0, func(v *freetype2.Face) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
 
 	return ret0
 }
@@ -114,112 +88,6 @@ func GetUnknownGlyph(font pango.Font) pango.Glyph {
 	}
 
 	return ret0
-}
-
-// Render renders a GlyphString onto a FreeType2 bitmap.
-func Render(bitmap *freetype2.Bitmap, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
-	var arg1 *C.FT_Bitmap
-	var arg2 *C.PangoFont
-	var arg3 *C.PangoGlyphString
-	var arg4 C.gint
-	var arg5 C.gint
-
-	arg1 = (*C.FT_Bitmap)(bitmap.Native())
-	arg2 = (*C.PangoFont)(font.Native())
-	arg3 = (*C.PangoGlyphString)(glyphs.Native())
-	arg4 = C.gint(x)
-	arg5 = C.gint(y)
-
-	C.pango_ft2_render(arg1, arg2, arg3, arg4, arg5)
-}
-
-// RenderLayout: render a Layout onto a FreeType2 bitmap
-func RenderLayout(bitmap *freetype2.Bitmap, layout pango.Layout, x int, y int) {
-	var arg1 *C.FT_Bitmap
-	var arg2 *C.PangoLayout
-	var arg3 C.int
-	var arg4 C.int
-
-	arg1 = (*C.FT_Bitmap)(bitmap.Native())
-	arg2 = (*C.PangoLayout)(layout.Native())
-	arg3 = C.int(x)
-	arg4 = C.int(y)
-
-	C.pango_ft2_render_layout(arg1, arg2, arg3, arg4)
-}
-
-// RenderLayoutLine: render a LayoutLine onto a FreeType2 bitmap
-func RenderLayoutLine(bitmap *freetype2.Bitmap, line *pango.LayoutLine, x int, y int) {
-	var arg1 *C.FT_Bitmap
-	var arg2 *C.PangoLayoutLine
-	var arg3 C.int
-	var arg4 C.int
-
-	arg1 = (*C.FT_Bitmap)(bitmap.Native())
-	arg2 = (*C.PangoLayoutLine)(line.Native())
-	arg3 = C.int(x)
-	arg4 = C.int(y)
-
-	C.pango_ft2_render_layout_line(arg1, arg2, arg3, arg4)
-}
-
-// RenderLayoutLineSubpixel: render a LayoutLine onto a FreeType2 bitmap, with
-// he location specified in fixed-point Pango units rather than pixels. (Using
-// this will avoid extra inaccuracies from rounding to integer pixels multiple
-// times, even if the final glyph positions are integers.)
-func RenderLayoutLineSubpixel(bitmap *freetype2.Bitmap, line *pango.LayoutLine, x int, y int) {
-	var arg1 *C.FT_Bitmap
-	var arg2 *C.PangoLayoutLine
-	var arg3 C.int
-	var arg4 C.int
-
-	arg1 = (*C.FT_Bitmap)(bitmap.Native())
-	arg2 = (*C.PangoLayoutLine)(line.Native())
-	arg3 = C.int(x)
-	arg4 = C.int(y)
-
-	C.pango_ft2_render_layout_line_subpixel(arg1, arg2, arg3, arg4)
-}
-
-// RenderLayoutSubpixel: render a Layout onto a FreeType2 bitmap, with he
-// location specified in fixed-point Pango units rather than pixels. (Using this
-// will avoid extra inaccuracies from rounding to integer pixels multiple times,
-// even if the final glyph positions are integers.)
-func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout pango.Layout, x int, y int) {
-	var arg1 *C.FT_Bitmap
-	var arg2 *C.PangoLayout
-	var arg3 C.int
-	var arg4 C.int
-
-	arg1 = (*C.FT_Bitmap)(bitmap.Native())
-	arg2 = (*C.PangoLayout)(layout.Native())
-	arg3 = C.int(x)
-	arg4 = C.int(y)
-
-	C.pango_ft2_render_layout_subpixel(arg1, arg2, arg3, arg4)
-}
-
-// RenderTransformed renders a GlyphString onto a FreeType2 bitmap, possibly
-// transforming the layed-out coordinates through a transformation matrix. Note
-// that the transformation matrix for @font is not changed, so to produce
-// correct rendering results, the @font must have been loaded using a Context
-// with an identical transformation matrix to that passed in to this function.
-func RenderTransformed(bitmap *freetype2.Bitmap, matrix *pango.Matrix, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
-	var arg1 *C.FT_Bitmap
-	var arg2 *C.PangoMatrix
-	var arg3 *C.PangoFont
-	var arg4 *C.PangoGlyphString
-	var arg5 C.int
-	var arg6 C.int
-
-	arg1 = (*C.FT_Bitmap)(bitmap.Native())
-	arg2 = (*C.PangoMatrix)(matrix.Native())
-	arg3 = (*C.PangoFont)(font.Native())
-	arg4 = (*C.PangoGlyphString)(glyphs.Native())
-	arg5 = C.int(x)
-	arg6 = C.int(y)
-
-	C.pango_ft2_render_transformed(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // ShutdownDisplay: free the global fontmap. (See

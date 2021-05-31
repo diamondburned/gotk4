@@ -15,7 +15,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
 //
-// extern void gotk4_WaylandToplevelExported(GdkToplevel*, const char*, gpointer)
+// extern void gotk4_WaylandToplevelExported(GdkToplevel* _0, const char* _1, gpointer _2);
 import "C"
 
 func init() {
@@ -267,7 +267,7 @@ func (display waylandDisplay) QueryRegistry(global string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }

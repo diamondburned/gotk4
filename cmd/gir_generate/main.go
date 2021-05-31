@@ -64,6 +64,7 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, path.Join(module, output))
+	gen.Filters = filters
 	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.LstdFlags|log.Lmsgprefix), true)
 
 	// Do a clean-up of the target directory.

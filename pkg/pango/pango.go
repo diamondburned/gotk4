@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -16,9 +17,9 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango.h>
 //
-// extern gpointer gotk4_AttrDataCopyFunc(gconstpointer)
-// extern gboolean gotk4_AttrFilterFunc(PangoAttribute*, gpointer)
-// extern gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer)
+// extern gpointer gotk4_AttrDataCopyFunc(gconstpointer _0);
+// extern gboolean gotk4_AttrFilterFunc(PangoAttribute* _0, gpointer _1);
+// extern gboolean gotk4_FontsetForeachFunc(PangoFontset* _0, PangoFont* _1, gpointer _2);
 import "C"
 
 func init() {
@@ -960,10 +961,7 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 	var attribute *Attribute
 
 	{
-		attribute = WrapAttribute(arg0)
-		runtime.SetFinalizer(&attribute, func(v **Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		attribute = WrapAttribute(unsafe.Pointer(arg0))
 	}
 
 	ok := v.(AttrFilterFunc)(attribute)
@@ -1006,7 +1004,10 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1023,7 +1024,10 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1044,7 +1048,10 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1067,7 +1074,10 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1085,7 +1095,10 @@ func NewAttrFamily(family string) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1105,7 +1118,10 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1123,7 +1139,10 @@ func NewAttrFontFeatures(features string) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1140,7 +1159,10 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1161,7 +1183,10 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1178,7 +1203,10 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1195,7 +1223,10 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1217,7 +1248,10 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1234,7 +1268,10 @@ func NewAttrLanguage(language *Language) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1251,7 +1288,10 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1275,7 +1315,10 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1292,7 +1335,10 @@ func NewAttrOverline(overline Overline) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1309,7 +1355,10 @@ func NewAttrRise(rise int) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1329,7 +1378,10 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1352,7 +1404,10 @@ func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1378,7 +1433,10 @@ func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data inter
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1396,7 +1454,10 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1413,7 +1474,10 @@ func NewAttrSize(size int) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1430,7 +1494,10 @@ func AttrSizeNewAbsolute(size int) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1447,7 +1514,10 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1471,7 +1541,10 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1490,7 +1563,10 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1507,7 +1583,10 @@ func NewAttrStyle(style Style) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1571,7 +1650,10 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1588,7 +1670,10 @@ func NewAttrUnderline(underline Underline) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1605,7 +1690,10 @@ func NewAttrVariant(variant Variant) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1622,7 +1710,10 @@ func NewAttrWeight(weight Weight) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1823,7 +1914,10 @@ func FontDescriptionFromString(str string) *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1873,7 +1967,7 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1989,7 +2083,7 @@ func IsZeroWidth(ch uint32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2026,7 +2120,10 @@ func Itemize(context Context, text string, startIndex int, length int, attrs *At
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2061,7 +2158,10 @@ func ItemizeWithBaseDir(context Context, baseDir Direction, text string, startIn
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2089,10 +2189,7 @@ func LanguageFromString(language string) *Language {
 	var ret0 *Language
 
 	{
-		ret0 = WrapLanguage(ret)
-		runtime.SetFinalizer(&ret0, func(v **Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLanguage(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2129,10 +2226,7 @@ func LanguageGetDefault() *Language {
 	var ret0 *Language
 
 	{
-		ret0 = WrapLanguage(ret)
-		runtime.SetFinalizer(&ret0, func(v **Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLanguage(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2154,10 +2248,7 @@ func LanguageGetPreferred() **Language {
 	var ret0 **Language
 
 	{
-		ret0 = WrapLanguage(ret)
-		runtime.SetFinalizer(&ret0, func(v ***Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLanguage(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2215,7 +2306,10 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, t
 	var goError error
 
 	{
-		ret0 = WrapAttrList(arg2)
+		ret0 = WrapAttrList(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret0, func(v **AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = C.GoString(arg3)
@@ -2263,10 +2357,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var ret0 *glib.MarkupParseContext
 
 	{
-		ret0 = glib.WrapMarkupParseContext(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.MarkupParseContext) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapMarkupParseContext(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2305,7 +2396,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (value int, possibleV
 	ret1 = C.GoString(arg5)
 	C.free(unsafe.Pointer(arg5))
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -2350,7 +2441,10 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 	var goError error
 
 	{
-		ret0 = WrapAttrList(arg4)
+		ret0 = WrapAttrList(unsafe.Pointer(arg4))
+		runtime.SetFinalizer(ret0, func(v **AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = C.GoString(arg5)
@@ -2390,7 +2484,7 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 
 	ret0 = (*Stretch)(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -2417,7 +2511,7 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 
 	ret0 = (*Style)(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -2444,7 +2538,7 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 
 	ret0 = (*Variant)(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -2471,7 +2565,7 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 
 	ret0 = (*Weight)(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -2535,7 +2629,10 @@ func ReorderItems(logicalItems *glib.List) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2557,7 +2654,7 @@ func ScanInt(pos string) (out int, ok bool) {
 
 	ret0 = int(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -2578,7 +2675,7 @@ func ScanString(pos string, out *glib.String) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2598,7 +2695,7 @@ func ScanWord(pos string, out *glib.String) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2662,7 +2759,10 @@ func ScriptGetSampleLanguage(script Script) *Language {
 	var ret0 *Language
 
 	{
-		ret0 = WrapLanguage(ret)
+		ret0 = WrapLanguage(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Language) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -2777,7 +2877,7 @@ func SkipSpace(pos string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2802,7 +2902,7 @@ func SplitFileList(str string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -2995,7 +3095,7 @@ func WrapAnalysis(ptr unsafe.Pointer) *Analysis {
 
 func marshalAnalysis(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAnalysis(unsafe.Pointer(b))
+	return WrapAnalysis(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3056,10 +3156,7 @@ func (a *Analysis) Script() byte {
 func (a *Analysis) Language() *Language {
 	var ret *Language
 	{
-		ret = WrapLanguage(a.native.language)
-		runtime.SetFinalizer(&ret, func(v **Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapLanguage(unsafe.Pointer(a.native.language))
 	}
 	return ret
 }
@@ -3068,10 +3165,7 @@ func (a *Analysis) Language() *Language {
 func (a *Analysis) ExtraAttrs() *glib.SList {
 	var ret *glib.SList
 	{
-		ret = glib.WrapSList(a.native.extra_attrs)
-		runtime.SetFinalizer(&ret, func(v **glib.SList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = glib.WrapSList(unsafe.Pointer(a.native.extra_attrs))
 	}
 	return ret
 }
@@ -3094,7 +3188,7 @@ func WrapAttrColor(ptr unsafe.Pointer) *AttrColor {
 
 func marshalAttrColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrColor(unsafe.Pointer(b))
+	return WrapAttrColor(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3106,10 +3200,7 @@ func (a *AttrColor) Native() unsafe.Pointer {
 func (a *AttrColor) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3118,10 +3209,7 @@ func (a *AttrColor) Attr() Attribute {
 func (a *AttrColor) Color() Color {
 	var ret Color
 	{
-		ret = WrapColor(a.native.color)
-		runtime.SetFinalizer(&ret, func(v *Color) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapColor(unsafe.Pointer(a.native.color))
 	}
 	return ret
 }
@@ -3144,7 +3232,7 @@ func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 
 func marshalAttrFloat(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrFloat(unsafe.Pointer(b))
+	return WrapAttrFloat(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3156,10 +3244,7 @@ func (a *AttrFloat) Native() unsafe.Pointer {
 func (a *AttrFloat) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3189,7 +3274,7 @@ func WrapAttrFontDesc(ptr unsafe.Pointer) *AttrFontDesc {
 
 func marshalAttrFontDesc(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrFontDesc(unsafe.Pointer(b))
+	return WrapAttrFontDesc(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3201,10 +3286,7 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 func (a *AttrFontDesc) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3213,10 +3295,7 @@ func (a *AttrFontDesc) Attr() Attribute {
 func (a *AttrFontDesc) Desc() *FontDescription {
 	var ret *FontDescription
 	{
-		ret = WrapFontDescription(a.native.desc)
-		runtime.SetFinalizer(&ret, func(v **FontDescription) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapFontDescription(unsafe.Pointer(a.native.desc))
 	}
 	return ret
 }
@@ -3239,7 +3318,7 @@ func WrapAttrFontFeatures(ptr unsafe.Pointer) *AttrFontFeatures {
 
 func marshalAttrFontFeatures(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrFontFeatures(unsafe.Pointer(b))
+	return WrapAttrFontFeatures(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3251,10 +3330,7 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 func (a *AttrFontFeatures) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3284,7 +3360,7 @@ func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 
 func marshalAttrInt(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrInt(unsafe.Pointer(b))
+	return WrapAttrInt(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3296,10 +3372,7 @@ func (a *AttrInt) Native() unsafe.Pointer {
 func (a *AttrInt) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3335,7 +3408,7 @@ func WrapAttrIterator(ptr unsafe.Pointer) *AttrIterator {
 
 func marshalAttrIterator(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrIterator(unsafe.Pointer(b))
+	return WrapAttrIterator(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3354,7 +3427,10 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 	var ret0 *AttrIterator
 
 	{
-		ret0 = WrapAttrIterator(ret)
+		ret0 = WrapAttrIterator(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *AttrIterator) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3384,10 +3460,7 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
-		runtime.SetFinalizer(&ret0, func(v **Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3404,7 +3477,10 @@ func (iterator *AttrIterator) Attrs() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3435,7 +3511,7 @@ func (iterator *AttrIterator) Next() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3481,7 +3557,7 @@ func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 
 func marshalAttrLanguage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrLanguage(unsafe.Pointer(b))
+	return WrapAttrLanguage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3493,10 +3569,7 @@ func (a *AttrLanguage) Native() unsafe.Pointer {
 func (a *AttrLanguage) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3505,10 +3578,7 @@ func (a *AttrLanguage) Attr() Attribute {
 func (a *AttrLanguage) Value() *Language {
 	var ret *Language
 	{
-		ret = WrapLanguage(a.native.value)
-		runtime.SetFinalizer(&ret, func(v **Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapLanguage(unsafe.Pointer(a.native.value))
 	}
 	return ret
 }
@@ -3540,7 +3610,7 @@ func WrapAttrList(ptr unsafe.Pointer) *AttrList {
 
 func marshalAttrList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrList(unsafe.Pointer(b))
+	return WrapAttrList(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3556,7 +3626,10 @@ func NewAttrList() *AttrList {
 	var ret0 *AttrList
 
 	{
-		ret0 = WrapAttrList(ret)
+		ret0 = WrapAttrList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3592,7 +3665,10 @@ func (list *AttrList) Copy() *AttrList {
 	var ret0 *AttrList
 
 	{
-		ret0 = WrapAttrList(ret)
+		ret0 = WrapAttrList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3612,7 +3688,7 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3633,7 +3709,10 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var ret0 *AttrList
 
 	{
-		ret0 = WrapAttrList(ret)
+		ret0 = WrapAttrList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3650,7 +3729,10 @@ func (list *AttrList) Attributes() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3668,7 +3750,10 @@ func (list *AttrList) Iterator() *AttrIterator {
 	var ret0 *AttrIterator
 
 	{
-		ret0 = WrapAttrIterator(ret)
+		ret0 = WrapAttrIterator(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *AttrIterator) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3711,7 +3796,10 @@ func (list *AttrList) Ref() *AttrList {
 	var ret0 *AttrList
 
 	{
-		ret0 = WrapAttrList(ret)
+		ret0 = WrapAttrList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3797,7 +3885,7 @@ func WrapAttrShape(ptr unsafe.Pointer) *AttrShape {
 
 func marshalAttrShape(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrShape(unsafe.Pointer(b))
+	return WrapAttrShape(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3809,10 +3897,7 @@ func (a *AttrShape) Native() unsafe.Pointer {
 func (a *AttrShape) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3821,10 +3906,7 @@ func (a *AttrShape) Attr() Attribute {
 func (a *AttrShape) InkRect() Rectangle {
 	var ret Rectangle
 	{
-		ret = WrapRectangle(a.native.ink_rect)
-		runtime.SetFinalizer(&ret, func(v *Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapRectangle(unsafe.Pointer(a.native.ink_rect))
 	}
 	return ret
 }
@@ -3833,10 +3915,7 @@ func (a *AttrShape) InkRect() Rectangle {
 func (a *AttrShape) LogicalRect() Rectangle {
 	var ret Rectangle
 	{
-		ret = WrapRectangle(a.native.logical_rect)
-		runtime.SetFinalizer(&ret, func(v *Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapRectangle(unsafe.Pointer(a.native.logical_rect))
 	}
 	return ret
 }
@@ -3866,7 +3945,7 @@ func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
 
 func marshalAttrSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrSize(unsafe.Pointer(b))
+	return WrapAttrSize(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3878,10 +3957,7 @@ func (a *AttrSize) Native() unsafe.Pointer {
 func (a *AttrSize) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3918,7 +3994,7 @@ func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 
 func marshalAttrString(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttrString(unsafe.Pointer(b))
+	return WrapAttrString(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3930,10 +4006,7 @@ func (a *AttrString) Native() unsafe.Pointer {
 func (a *AttrString) Attr() Attribute {
 	var ret Attribute
 	{
-		ret = WrapAttribute(a.native.attr)
-		runtime.SetFinalizer(&ret, func(v *Attribute) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttribute(unsafe.Pointer(a.native.attr))
 	}
 	return ret
 }
@@ -3969,7 +4042,7 @@ func WrapAttribute(ptr unsafe.Pointer) *Attribute {
 
 func marshalAttribute(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAttribute(unsafe.Pointer(b))
+	return WrapAttribute(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3981,10 +4054,7 @@ func (a *Attribute) Native() unsafe.Pointer {
 func (a *Attribute) Klass() *AttrClass {
 	var ret *AttrClass
 	{
-		ret = WrapAttrClass(a.native.klass)
-		runtime.SetFinalizer(&ret, func(v **AttrClass) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAttrClass(unsafe.Pointer(a.native.klass))
 	}
 	return ret
 }
@@ -4014,7 +4084,10 @@ func (attr *Attribute) Copy() *Attribute {
 	var ret0 *Attribute
 
 	{
-		ret0 = WrapAttribute(ret)
+		ret0 = WrapAttribute(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Attribute) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4042,7 +4115,7 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4079,7 +4152,7 @@ func WrapColor(ptr unsafe.Pointer) *Color {
 
 func marshalColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapColor(unsafe.Pointer(b))
+	return WrapColor(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4123,7 +4196,10 @@ func (src *Color) Copy() *Color {
 	var ret0 *Color
 
 	{
-		ret0 = WrapColor(ret)
+		ret0 = WrapColor(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Color) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4158,7 +4234,7 @@ func (color *Color) Parse(spec string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4192,7 +4268,7 @@ func (color *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
 
 	ret0 = uint16(arg1)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -4238,7 +4314,7 @@ func WrapFontDescription(ptr unsafe.Pointer) *FontDescription {
 
 func marshalFontDescription(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontDescription(unsafe.Pointer(b))
+	return WrapFontDescription(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4254,7 +4330,10 @@ func NewFontDescription() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4284,7 +4363,7 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4300,7 +4379,10 @@ func (desc *FontDescription) Copy() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4323,7 +4405,10 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4346,7 +4431,7 @@ func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4440,7 +4525,7 @@ func (desc *FontDescription) SizeIsAbsolute() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4856,7 +4941,7 @@ func WrapFontMetrics(ptr unsafe.Pointer) *FontMetrics {
 
 func marshalFontMetrics(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontMetrics(unsafe.Pointer(b))
+	return WrapFontMetrics(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5042,7 +5127,10 @@ func (metrics *FontMetrics) Ref() *FontMetrics {
 	var ret0 *FontMetrics
 
 	{
-		ret0 = WrapFontMetrics(ret)
+		ret0 = WrapFontMetrics(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontMetrics) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5076,7 +5164,7 @@ func WrapGlyphGeometry(ptr unsafe.Pointer) *GlyphGeometry {
 
 func marshalGlyphGeometry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyphGeometry(unsafe.Pointer(b))
+	return WrapGlyphGeometry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5135,7 +5223,7 @@ func WrapGlyphInfo(ptr unsafe.Pointer) *GlyphInfo {
 
 func marshalGlyphInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyphInfo(unsafe.Pointer(b))
+	return WrapGlyphInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5158,10 +5246,7 @@ func (g *GlyphInfo) Glyph() Glyph {
 func (g *GlyphInfo) Geometry() GlyphGeometry {
 	var ret GlyphGeometry
 	{
-		ret = WrapGlyphGeometry(g.native.geometry)
-		runtime.SetFinalizer(&ret, func(v *GlyphGeometry) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapGlyphGeometry(unsafe.Pointer(g.native.geometry))
 	}
 	return ret
 }
@@ -5170,10 +5255,7 @@ func (g *GlyphInfo) Geometry() GlyphGeometry {
 func (g *GlyphInfo) Attr() GlyphVisAttr {
 	var ret GlyphVisAttr
 	{
-		ret = WrapGlyphVisAttr(g.native.attr)
-		runtime.SetFinalizer(&ret, func(v *GlyphVisAttr) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapGlyphVisAttr(unsafe.Pointer(g.native.attr))
 	}
 	return ret
 }
@@ -5200,7 +5282,7 @@ func WrapGlyphItem(ptr unsafe.Pointer) *GlyphItem {
 
 func marshalGlyphItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyphItem(unsafe.Pointer(b))
+	return WrapGlyphItem(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5212,10 +5294,7 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 func (g *GlyphItem) Item() *Item {
 	var ret *Item
 	{
-		ret = WrapItem(g.native.item)
-		runtime.SetFinalizer(&ret, func(v **Item) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapItem(unsafe.Pointer(g.native.item))
 	}
 	return ret
 }
@@ -5224,10 +5303,7 @@ func (g *GlyphItem) Item() *Item {
 func (g *GlyphItem) Glyphs() *GlyphString {
 	var ret *GlyphString
 	{
-		ret = WrapGlyphString(g.native.glyphs)
-		runtime.SetFinalizer(&ret, func(v **GlyphString) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapGlyphString(unsafe.Pointer(g.native.glyphs))
 	}
 	return ret
 }
@@ -5264,7 +5340,10 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) *glib.SList 
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5281,7 +5360,10 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 	var ret0 *GlyphItem
 
 	{
-		ret0 = WrapGlyphItem(ret)
+		ret0 = WrapGlyphItem(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *GlyphItem) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5321,7 +5403,10 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var ret0 *GlyphItem
 
 	{
-		ret0 = WrapGlyphItem(ret)
+		ret0 = WrapGlyphItem(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *GlyphItem) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5375,7 +5460,7 @@ func WrapGlyphItemIter(ptr unsafe.Pointer) *GlyphItemIter {
 
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyphItemIter(unsafe.Pointer(b))
+	return WrapGlyphItemIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5387,10 +5472,7 @@ func (g *GlyphItemIter) Native() unsafe.Pointer {
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
 	var ret *GlyphItem
 	{
-		ret = WrapGlyphItem(g.native.glyph_item)
-		runtime.SetFinalizer(&ret, func(v **GlyphItem) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapGlyphItem(unsafe.Pointer(g.native.glyph_item))
 	}
 	return ret
 }
@@ -5455,7 +5537,10 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var ret0 *GlyphItemIter
 
 	{
-		ret0 = WrapGlyphItemIter(ret)
+		ret0 = WrapGlyphItemIter(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *GlyphItemIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5488,7 +5573,7 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5511,7 +5596,7 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5528,7 +5613,7 @@ func (iter *GlyphItemIter) NextCluster() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5544,7 +5629,7 @@ func (iter *GlyphItemIter) PrevCluster() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5570,7 +5655,7 @@ func WrapGlyphString(ptr unsafe.Pointer) *GlyphString {
 
 func marshalGlyphString(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyphString(unsafe.Pointer(b))
+	return WrapGlyphString(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5586,7 +5671,10 @@ func NewGlyphString() *GlyphString {
 	var ret0 *GlyphString
 
 	{
-		ret0 = WrapGlyphString(ret)
+		ret0 = WrapGlyphString(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *GlyphString) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5607,10 +5695,7 @@ func (g *GlyphString) Glyphs() []GlyphInfo {
 		for i := 0; i < uintptr(g.native.num_glyphs); i++ {
 			src := (C.PangoGlyphInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret[i] = WrapGlyphInfo(src)
-				runtime.SetFinalizer(&ret[i], func(v *GlyphInfo) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = WrapGlyphInfo(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -5635,7 +5720,10 @@ func (string *GlyphString) Copy() *GlyphString {
 	var ret0 *GlyphString
 
 	{
-		ret0 = WrapGlyphString(ret)
+		ret0 = WrapGlyphString(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *GlyphString) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5664,17 +5752,11 @@ func (glyphs *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Re
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret1 = WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg3))
 	}
 
 	return ret0, ret1
@@ -5704,17 +5786,11 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect 
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg4)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg4))
 	}
 
 	{
-		ret1 = WrapRectangle(arg5)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg5))
 	}
 
 	return ret0, ret1
@@ -5848,7 +5924,7 @@ func WrapGlyphVisAttr(ptr unsafe.Pointer) *GlyphVisAttr {
 
 func marshalGlyphVisAttr(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGlyphVisAttr(unsafe.Pointer(b))
+	return WrapGlyphVisAttr(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5883,7 +5959,7 @@ func WrapItem(ptr unsafe.Pointer) *Item {
 
 func marshalItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapItem(unsafe.Pointer(b))
+	return WrapItem(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5899,7 +5975,10 @@ func NewItem() *Item {
 	var ret0 *Item
 
 	{
-		ret0 = WrapItem(ret)
+		ret0 = WrapItem(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Item) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5930,10 +6009,7 @@ func (i *Item) NumChars() int {
 func (i *Item) Analysis() Analysis {
 	var ret Analysis
 	{
-		ret = WrapAnalysis(i.native.analysis)
-		runtime.SetFinalizer(&ret, func(v *Analysis) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapAnalysis(unsafe.Pointer(i.native.analysis))
 	}
 	return ret
 }
@@ -5969,7 +6045,10 @@ func (item *Item) Copy() *Item {
 	var ret0 *Item
 
 	{
-		ret0 = WrapItem(ret)
+		ret0 = WrapItem(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Item) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6008,7 +6087,10 @@ func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var ret0 *Item
 
 	{
-		ret0 = WrapItem(ret)
+		ret0 = WrapItem(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Item) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6034,7 +6116,7 @@ func WrapLanguage(ptr unsafe.Pointer) *Language {
 
 func marshalLanguage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLanguage(unsafe.Pointer(b))
+	return WrapLanguage(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6139,7 +6221,7 @@ func (language *Language) IncludesScript(script Script) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6162,7 +6244,7 @@ func (language *Language) Matches(rangeList string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6204,7 +6286,7 @@ func WrapLayoutIter(ptr unsafe.Pointer) *LayoutIter {
 
 func marshalLayoutIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLayoutIter(unsafe.Pointer(b))
+	return WrapLayoutIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6222,7 +6304,7 @@ func (iter *LayoutIter) AtLastLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6238,7 +6320,10 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 	var ret0 *LayoutIter
 
 	{
-		ret0 = WrapLayoutIter(ret)
+		ret0 = WrapLayoutIter(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *LayoutIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6284,10 +6369,7 @@ func (iter *LayoutIter) CharExtents() Rectangle {
 	var ret0 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6308,17 +6390,11 @@ func (iter *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectang
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -6372,17 +6448,11 @@ func (iter *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangl
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -6402,10 +6472,7 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	var ret0 *LayoutLine
 
 	{
-		ret0 = WrapLayoutLine(ret)
-		runtime.SetFinalizer(&ret0, func(v **LayoutLine) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLayoutLine(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6430,17 +6497,11 @@ func (iter *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle)
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -6461,10 +6522,7 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	var ret0 *LayoutLine
 
 	{
-		ret0 = WrapLayoutLine(ret)
-		runtime.SetFinalizer(&ret0, func(v **LayoutLine) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLayoutLine(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6517,10 +6575,7 @@ func (iter *LayoutIter) Run() *LayoutRun {
 	{
 		var tmp GlyphItem
 		{
-			tmp = WrapGlyphItem(ret)
-			runtime.SetFinalizer(&tmp, func(v *GlyphItem) {
-				C.free(unsafe.Pointer(v.Native()))
-			})
+			tmp = WrapGlyphItem(unsafe.Pointer(ret))
 		}
 		ret0 = *LayoutRun(tmp)
 	}
@@ -6543,17 +6598,11 @@ func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) 
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -6579,10 +6628,7 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 	{
 		var tmp GlyphItem
 		{
-			tmp = WrapGlyphItem(ret)
-			runtime.SetFinalizer(&tmp, func(v *GlyphItem) {
-				C.free(unsafe.Pointer(v.Native()))
-			})
+			tmp = WrapGlyphItem(unsafe.Pointer(ret))
 		}
 		ret0 = *LayoutRun(tmp)
 	}
@@ -6601,7 +6647,7 @@ func (iter *LayoutIter) NextChar() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6617,7 +6663,7 @@ func (iter *LayoutIter) NextCluster() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6633,7 +6679,7 @@ func (iter *LayoutIter) NextLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6649,7 +6695,7 @@ func (iter *LayoutIter) NextRun() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6676,7 +6722,7 @@ func WrapLayoutLine(ptr unsafe.Pointer) *LayoutLine {
 
 func marshalLayoutLine(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLayoutLine(unsafe.Pointer(b))
+	return WrapLayoutLine(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6709,10 +6755,7 @@ func (l *LayoutLine) Length() int {
 func (l *LayoutLine) Runs() *glib.SList {
 	var ret *glib.SList
 	{
-		ret = glib.WrapSList(l.native.runs)
-		runtime.SetFinalizer(&ret, func(v **glib.SList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = glib.WrapSList(unsafe.Pointer(l.native.runs))
 	}
 	return ret
 }
@@ -6747,17 +6790,11 @@ func (line *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -6800,17 +6837,11 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rec
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -6838,11 +6869,14 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) (ranges []int, nRa
 	var ret1 int
 
 	{
-		ret0 = make([]int, arg4)
-		for i := 0; i < uintptr(arg4); i++ {
-			src := (*C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = int(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg3))
+		sliceHeader.Len = arg4
+		sliceHeader.Cap = arg4
+		runtime.SetFinalizer(&arg3, func() {
+			C.free(unsafe.Pointer(arg3))
+		})
+		defer runtime.KeepAlive(arg3)
 	}
 
 	ret1 = int(arg4)
@@ -6883,7 +6917,10 @@ func (line *LayoutLine) Ref() *LayoutLine {
 	var ret0 *LayoutLine
 
 	{
-		ret0 = WrapLayoutLine(ret)
+		ret0 = WrapLayoutLine(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *LayoutLine) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6928,7 +6965,7 @@ func (line *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 
 	ret1 = int(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -6951,7 +6988,7 @@ func WrapLogAttr(ptr unsafe.Pointer) *LogAttr {
 
 func marshalLogAttr(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLogAttr(unsafe.Pointer(b))
+	return WrapLogAttr(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7074,7 +7111,7 @@ func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMatrix(unsafe.Pointer(b))
+	return WrapMatrix(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7148,7 +7185,10 @@ func (matrix *Matrix) Copy() *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Matrix) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7358,7 +7398,7 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangle(unsafe.Pointer(b))
+	return WrapRectangle(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7412,7 +7452,7 @@ func WrapScriptIter(ptr unsafe.Pointer) *ScriptIter {
 
 func marshalScriptIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapScriptIter(unsafe.Pointer(b))
+	return WrapScriptIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7434,7 +7474,10 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	var ret0 *ScriptIter
 
 	{
-		ret0 = WrapScriptIter(ret)
+		ret0 = WrapScriptIter(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ScriptIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7492,7 +7535,7 @@ func (iter *ScriptIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7517,7 +7560,7 @@ func WrapTabArray(ptr unsafe.Pointer) *TabArray {
 
 func marshalTabArray(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTabArray(unsafe.Pointer(b))
+	return WrapTabArray(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7540,7 +7583,10 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var ret0 *TabArray
 
 	{
-		ret0 = WrapTabArray(ret)
+		ret0 = WrapTabArray(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TabArray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7557,7 +7603,10 @@ func (src *TabArray) Copy() *TabArray {
 	var ret0 *TabArray
 
 	{
-		ret0 = WrapTabArray(ret)
+		ret0 = WrapTabArray(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TabArray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7583,7 +7632,7 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7910,10 +7959,7 @@ func (context context) FontDescription() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
-		runtime.SetFinalizer(&ret0, func(v **FontDescription) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7982,7 +8028,10 @@ func (context context) Language() *Language {
 	var ret0 *Language
 
 	{
-		ret0 = WrapLanguage(ret)
+		ret0 = WrapLanguage(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Language) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8002,10 +8051,7 @@ func (context context) Matrix() *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8037,7 +8083,10 @@ func (context context) Metrics(desc *FontDescription, language *Language) *FontM
 	var ret0 *FontMetrics
 
 	{
-		ret0 = WrapFontMetrics(ret)
+		ret0 = WrapFontMetrics(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontMetrics) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8054,7 +8103,7 @@ func (context context) RoundGlyphPositions() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8426,11 +8475,14 @@ func (coverage coverage) ToBytes() (bytes []byte, nBytes int) {
 	var ret1 int
 
 	{
-		ret0 = make([]byte, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
+		sliceHeader.Len = arg2
+		sliceHeader.Cap = arg2
+		runtime.SetFinalizer(&arg1, func() {
+			C.free(unsafe.Pointer(arg1))
+		})
+		defer runtime.KeepAlive(arg1)
 	}
 
 	ret1 = int(arg2)
@@ -8529,7 +8581,10 @@ func (font font) Describe() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8549,7 +8604,10 @@ func (font font) DescribeWithAbsoluteSize() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8631,7 +8689,10 @@ func (font font) Metrics(language *Language) *FontMetrics {
 	var ret0 *FontMetrics
 
 	{
-		ret0 = WrapFontMetrics(ret)
+		ret0 = WrapFontMetrics(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontMetrics) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8651,7 +8712,7 @@ func (font font) HasChar(wc uint32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8718,7 +8779,10 @@ func (face fontFace) Describe() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8768,7 +8832,7 @@ func (face fontFace) IsSynthesized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8792,11 +8856,14 @@ func (face fontFace) ListSizes() (sizes []int, nSizes int) {
 	var ret1 int
 
 	{
-		ret0 = make([]int, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
-			src := (*C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = int(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
+		sliceHeader.Len = arg2
+		sliceHeader.Cap = arg2
+		runtime.SetFinalizer(&arg1, func() {
+			C.free(unsafe.Pointer(arg1))
+		})
+		defer runtime.KeepAlive(arg1)
 	}
 
 	ret1 = int(arg2)
@@ -8924,7 +8991,7 @@ func (family fontFamily) IsMonospace() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8940,7 +9007,7 @@ func (family fontFamily) IsVariable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9282,7 +9349,10 @@ func (fontset fontset) Metrics() *FontMetrics {
 	var ret0 *FontMetrics
 
 	{
-		ret0 = WrapFontMetrics(ret)
+		ret0 = WrapFontMetrics(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontMetrics) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9889,10 +9959,7 @@ func (layout layout) Attributes() *AttrList {
 	var ret0 *AttrList
 
 	{
-		ret0 = WrapAttrList(ret)
-		runtime.SetFinalizer(&ret0, func(v **AttrList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapAttrList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -9911,7 +9978,7 @@ func (layout layout) AutoDir() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9985,17 +10052,11 @@ func (layout layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectang
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret1 = WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg3))
 	}
 
 	return ret0, ret1
@@ -10062,17 +10123,11 @@ func (layout layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -10089,10 +10144,7 @@ func (layout layout) FontDescription() *FontDescription {
 	var ret0 *FontDescription
 
 	{
-		ret0 = WrapFontDescription(ret)
-		runtime.SetFinalizer(&ret0, func(v **FontDescription) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -10144,7 +10196,10 @@ func (layout layout) Iter() *LayoutIter {
 	var ret0 *LayoutIter
 
 	{
-		ret0 = WrapLayoutIter(ret)
+		ret0 = WrapLayoutIter(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *LayoutIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -10161,7 +10216,7 @@ func (layout layout) Justify() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10182,10 +10237,7 @@ func (layout layout) Line(line int) *LayoutLine {
 	var ret0 *LayoutLine
 
 	{
-		ret0 = WrapLayoutLine(ret)
-		runtime.SetFinalizer(&ret0, func(v **LayoutLine) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLayoutLine(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -10223,10 +10275,7 @@ func (layout layout) LineReadonly(line int) *LayoutLine {
 	var ret0 *LayoutLine
 
 	{
-		ret0 = WrapLayoutLine(ret)
-		runtime.SetFinalizer(&ret0, func(v **LayoutLine) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLayoutLine(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -10263,10 +10312,7 @@ func (layout layout) Lines() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.SList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -10287,10 +10333,7 @@ func (layout layout) LinesReadonly() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.SList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -10315,10 +10358,7 @@ func (layout layout) LogAttrs() (attrs []*LogAttr, nAttrs int) {
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (*C.PangoLogAttr)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret0[i] = WrapLogAttr(src)
-				runtime.SetFinalizer(&ret0[i], func(v **LogAttr) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret0[i] = WrapLogAttr(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -10357,10 +10397,7 @@ func (layout layout) LogAttrsReadonly() (nAttrs int, logAttrs []LogAttr) {
 		for i := 0; i < uintptr(arg1); i++ {
 			src := (C.PangoLogAttr)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret1[i] = WrapLogAttr(src)
-				runtime.SetFinalizer(&ret1[i], func(v *LogAttr) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret1[i] = WrapLogAttr(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -10388,17 +10425,11 @@ func (layout layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 	var ret1 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -10467,7 +10498,7 @@ func (layout layout) SingleParagraphMode() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10527,7 +10558,10 @@ func (layout layout) Tabs() *TabArray {
 	var ret0 *TabArray
 
 	{
-		ret0 = WrapTabArray(ret)
+		ret0 = WrapTabArray(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TabArray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -10651,10 +10685,7 @@ func (layout layout) IndexToPos(index_ int) Rectangle {
 	var ret0 *Rectangle
 
 	{
-		ret0 = WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -10674,7 +10705,7 @@ func (layout layout) IsEllipsized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10693,7 +10724,7 @@ func (layout layout) IsWrapped() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11120,7 +11151,7 @@ func (layout layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 
 	ret1 = int(arg4)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -11467,10 +11498,7 @@ func (renderer renderer) Color(part RenderPart) *Color {
 	var ret0 *Color
 
 	{
-		ret0 = WrapColor(ret)
-		runtime.SetFinalizer(&ret0, func(v **Color) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapColor(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -11513,10 +11541,7 @@ func (renderer renderer) LayoutLine() *LayoutLine {
 	var ret0 *LayoutLine
 
 	{
-		ret0 = WrapLayoutLine(ret)
-		runtime.SetFinalizer(&ret0, func(v **LayoutLine) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapLayoutLine(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -11536,10 +11561,7 @@ func (renderer renderer) Matrix() *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0

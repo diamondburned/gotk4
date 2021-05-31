@@ -11,7 +11,7 @@ import (
 type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the
 	// namespace generator. The GIR type will never have a namespace prefix.
-	Filter(ng *NamespaceGenerator, girType string) (keep bool)
+	Filter(ng *NamespaceGenerator, girType, cType string) (keep bool)
 }
 
 // RegexFilter is a regex filter for FilterMatcher. A regex filter's format is a
@@ -22,7 +22,7 @@ type RegexFilter string
 var _ FilterMatcher = RegexFilter("")
 
 var (
-	regexCache map[string]*regexp.Regexp
+	regexCache = map[string]*regexp.Regexp{}
 	regexMutex sync.Mutex
 )
 
@@ -56,10 +56,17 @@ func (rf RegexFilter) regex() (regex *regexp.Regexp) {
 }
 
 // Filter implements FilterMatcher.
-func (rf RegexFilter) Filter(ng *NamespaceGenerator, girType string) (keep bool) {
-	if ng.Namespace().Name != rf.namespace() {
+func (rf RegexFilter) Filter(ng *NamespaceGenerator, girType, cType string) (keep bool) {
+	regex := rf.regex()
+	namespace := rf.namespace()
+
+	if namespace == "C" {
+		return !regex.MatchString(cType)
+	}
+
+	if ng.Namespace().Name != namespace {
 		return true
 	}
 
-	return !rf.regex().MatchString(girType)
+	return !regex.MatchString(girType)
 }

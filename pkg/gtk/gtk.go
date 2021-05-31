@@ -24,46 +24,46 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 //
-// extern int gotk4_AssistantPageFunc(int, gpointer)
-// extern gboolean gotk4_CellAllocCallback(GtkCellRenderer*, const GdkRectangle*, const GdkRectangle*, gpointer)
-// extern gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer)
-// extern void gotk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern gboolean gotk4_CustomFilterFunc(gpointer, gpointer)
-// extern void gotk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer)
-// extern gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion*, const char*, GtkTreeIter*, gpointer)
-// extern void gotk4_ExpressionNotify(gpointer)
-// extern GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer, gpointer)
-// extern gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer)
-// extern void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer)
-// extern int gotk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer)
-// extern gboolean gotk4_FontFilterFunc(const PangoFontFamily*, const PangoFontFace*, gpointer)
-// extern void gotk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer)
-// extern GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer, gpointer)
-// extern gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer)
-// extern void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer)
-// extern int gotk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer)
-// extern void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer)
-// extern gpointer gotk4_MapListModelMapFunc(gpointer, gpointer)
-// extern void gotk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer)
-// extern void gotk4_PageSetupDoneFunc(GtkPageSetup*, gpointer)
-// extern void gotk4_PrintSettingsFunc(const char*, const char*, gpointer)
-// extern char* gotk4_ScaleFormatValueFunc(GtkScale*, double, gpointer)
-// extern gboolean gotk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer)
-// extern gboolean gotk4_TextCharPredicate(gunichar, gpointer)
-// extern void gotk4_TextTagTableForeach(GtkTextTag*, gpointer)
-// extern gboolean gotk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer)
-// extern void gotk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern int gotk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer)
-// extern GListModel* gotk4_TreeListModelCreateModelFunc(gpointer, gpointer)
-// extern void gotk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer)
-// extern gboolean gotk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer)
-// extern void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer)
-// extern gboolean gotk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer)
-// extern gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer)
-// extern void gotk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer)
-// extern gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, const char*, GtkTreeIter*, gpointer)
+// extern int gotk4_AssistantPageFunc(int _0, gpointer _1);
+// extern gboolean gotk4_CellAllocCallback(GtkCellRenderer* _0, const GdkRectangle* _1, const GdkRectangle* _2, gpointer _3);
+// extern gboolean gotk4_CellCallback(GtkCellRenderer* _0, gpointer _1);
+// extern void gotk4_CellLayoutDataFunc(GtkCellLayout* _0, GtkCellRenderer* _1, GtkTreeModel* _2, GtkTreeIter* _3, gpointer _4);
+// extern gboolean gotk4_CustomFilterFunc(gpointer _0, gpointer _1);
+// extern void gotk4_DrawingAreaDrawFunc(GtkDrawingArea* _0, cairo_t* _1, int _2, int _3, gpointer _4);
+// extern gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion* _0, const char* _1, GtkTreeIter* _2, gpointer _3);
+// extern void gotk4_ExpressionNotify(gpointer _0);
+// extern GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer _0, gpointer _1);
+// extern gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild* _0, gpointer _1);
+// extern void gotk4_FlowBoxForeachFunc(GtkFlowBox* _0, GtkFlowBoxChild* _1, gpointer _2);
+// extern int gotk4_FlowBoxSortFunc(GtkFlowBoxChild* _0, GtkFlowBoxChild* _1, gpointer _2);
+// extern gboolean gotk4_FontFilterFunc(const PangoFontFamily* _0, const PangoFontFace* _1, gpointer _2);
+// extern void gotk4_IconViewForeachFunc(GtkIconView* _0, GtkTreePath* _1, gpointer _2);
+// extern GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer _0, gpointer _1);
+// extern gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow* _0, gpointer _1);
+// extern void gotk4_ListBoxForeachFunc(GtkListBox* _0, GtkListBoxRow* _1, gpointer _2);
+// extern int gotk4_ListBoxSortFunc(GtkListBoxRow* _0, GtkListBoxRow* _1, gpointer _2);
+// extern void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow* _0, GtkListBoxRow* _1, gpointer _2);
+// extern gpointer gotk4_MapListModelMapFunc(gpointer _0, gpointer _1);
+// extern void gotk4_MenuButtonCreatePopupFunc(GtkMenuButton* _0, gpointer _1);
+// extern void gotk4_PageSetupDoneFunc(GtkPageSetup* _0, gpointer _1);
+// extern void gotk4_PrintSettingsFunc(const char* _0, const char* _1, gpointer _2);
+// extern char* gotk4_ScaleFormatValueFunc(GtkScale* _0, double _1, gpointer _2);
+// extern gboolean gotk4_ShortcutFunc(GtkWidget* _0, GVariant* _1, gpointer _2);
+// extern gboolean gotk4_TextCharPredicate(gunichar _0, gpointer _1);
+// extern void gotk4_TextTagTableForeach(GtkTextTag* _0, gpointer _1);
+// extern gboolean gotk4_TickCallback(GtkWidget* _0, GdkFrameClock* _1, gpointer _2);
+// extern void gotk4_TreeCellDataFunc(GtkTreeViewColumn* _0, GtkCellRenderer* _1, GtkTreeModel* _2, GtkTreeIter* _3, gpointer _4);
+// extern int gotk4_TreeIterCompareFunc(GtkTreeModel* _0, GtkTreeIter* _1, GtkTreeIter* _2, gpointer _3);
+// extern GListModel* gotk4_TreeListModelCreateModelFunc(gpointer _0, gpointer _1);
+// extern void gotk4_TreeModelFilterModifyFunc(GtkTreeModel* _0, GtkTreeIter* _1, GValue* _2, int _3, gpointer _4);
+// extern gboolean gotk4_TreeModelFilterVisibleFunc(GtkTreeModel* _0, GtkTreeIter* _1, gpointer _2);
+// extern gboolean gotk4_TreeModelForeachFunc(GtkTreeModel* _0, GtkTreePath* _1, GtkTreeIter* _2, gpointer _3);
+// extern void gotk4_TreeSelectionForeachFunc(GtkTreeModel* _0, GtkTreePath* _1, GtkTreeIter* _2, gpointer _3);
+// extern gboolean gotk4_TreeSelectionFunc(GtkTreeSelection* _0, GtkTreeModel* _1, GtkTreePath* _2, gboolean _3, gpointer _4);
+// extern gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView* _0, GtkTreeViewColumn* _1, GtkTreeViewColumn* _2, GtkTreeViewColumn* _3, gpointer _4);
+// extern void gotk4_TreeViewMappingFunc(GtkTreeView* _0, GtkTreePath* _1, gpointer _2);
+// extern gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel* _0, GtkTreeIter* _1, gpointer _2);
+// extern gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel* _0, int _1, const char* _2, GtkTreeIter* _3, gpointer _4);
 // // extern void callbackDelete(gpointer);
 import "C"
 
@@ -3379,17 +3379,11 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 	renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(CellRenderer)
 
 	{
-		cellArea = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&cellArea, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		cellArea = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	{
-		cellBackground = gdk.WrapRectangle(arg2)
-		runtime.SetFinalizer(&cellBackground, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		cellBackground = gdk.WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	ok := v.(CellAllocCallback)(renderer, cellArea, cellBackground)
@@ -3436,10 +3430,7 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeModel)
 
 	{
-		iter = WrapTreeIter(arg3)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg3))
 	}
 
 	v.(CellLayoutDataFunc)(cellLayout, cell, treeModel, iter)
@@ -3486,10 +3477,7 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DrawingArea)
 
 	{
-		cr = cairo.WrapContext(arg1)
-		runtime.SetFinalizer(&cr, func(v **cairo.Context) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		cr = cairo.WrapContext(unsafe.Pointer(arg1))
 	}
 
 	width = int(arg2)
@@ -3523,10 +3511,7 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, ar
 	key = C.GoString(arg1)
 
 	{
-		iter = WrapTreeIter(arg2)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
 	ok := v.(EntryCompletionMatchFunc)(completion, key, iter)
@@ -3662,10 +3647,7 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(IconView)
 
 	{
-		path = WrapTreePath(arg1)
-		runtime.SetFinalizer(&path, func(v **TreePath) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		path = WrapTreePath(unsafe.Pointer(arg1))
 	}
 
 	v.(IconViewForeachFunc)(iconView, path)
@@ -3887,10 +3869,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Widget)
 
 	{
-		args = glib.WrapVariant(arg1)
-		runtime.SetFinalizer(&args, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		args = glib.WrapVariant(unsafe.Pointer(arg1))
 	}
 
 	ok := v.(ShortcutFunc)(widget, args)
@@ -3980,10 +3959,7 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeModel)
 
 	{
-		iter = WrapTreeIter(arg3)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg3))
 	}
 
 	v.(TreeCellDataFunc)(treeColumn, cell, treeModel, iter)
@@ -4014,17 +3990,11 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
 
 	{
-		a = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&a, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		a = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	{
-		b = WrapTreeIter(arg2)
-		runtime.SetFinalizer(&b, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		b = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
 	gint := v.(TreeIterCompareFunc)(model, a, b)
@@ -4075,10 +4045,7 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
 
 	{
-		iter = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	column = int(arg3)
@@ -4103,10 +4070,7 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
 
 	{
-		iter = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	ok := v.(TreeModelFilterVisibleFunc)(model, iter)
@@ -4130,17 +4094,11 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
 
 	{
-		path = WrapTreePath(arg1)
-		runtime.SetFinalizer(&path, func(v **TreePath) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		path = WrapTreePath(unsafe.Pointer(arg1))
 	}
 
 	{
-		iter = WrapTreeIter(arg2)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
 	ok := v.(TreeModelForeachFunc)(model, path, iter)
@@ -4165,17 +4123,11 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
 
 	{
-		path = WrapTreePath(arg1)
-		runtime.SetFinalizer(&path, func(v **TreePath) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		path = WrapTreePath(unsafe.Pointer(arg1))
 	}
 
 	{
-		iter = WrapTreeIter(arg2)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
 	v.(TreeSelectionForeachFunc)(model, path, iter)
@@ -4204,13 +4156,10 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(TreeModel)
 
 	{
-		path = WrapTreePath(arg2)
-		runtime.SetFinalizer(&path, func(v **TreePath) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		path = WrapTreePath(unsafe.Pointer(arg2))
 	}
 
-	pathCurrentlySelected = arg3 != C.FALSE
+	pathCurrentlySelected = C.BOOL(arg3) != 0
 
 	ok := v.(TreeSelectionFunc)(selection, model, path, pathCurrentlySelected)
 }
@@ -4264,10 +4213,7 @@ func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.
 	treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeView)
 
 	{
-		path = WrapTreePath(arg1)
-		runtime.SetFinalizer(&path, func(v **TreePath) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		path = WrapTreePath(unsafe.Pointer(arg1))
 	}
 
 	v.(TreeViewMappingFunc)(treeView, path)
@@ -4292,10 +4238,7 @@ func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, a
 	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TreeModel)
 
 	{
-		iter = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	ok := v.(TreeViewRowSeparatorFunc)(model, iter)
@@ -4326,10 +4269,7 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.cha
 	key = C.GoString(arg2)
 
 	{
-		iter = WrapTreeIter(arg3)
-		runtime.SetFinalizer(&iter, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		iter = WrapTreeIter(unsafe.Pointer(arg3))
 	}
 
 	ok := v.(TreeViewSearchEqualFunc)(model, column, key, iter)
@@ -4474,7 +4414,7 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 
 	ret1 = (*gdk.ModifierType)(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -4527,7 +4467,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 
 	ret2 = (*gdk.ModifierType)(arg5)
 
-	ret3 = ret != C.FALSE
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -4547,7 +4487,7 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4601,15 +4541,12 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 	var ret2 bool
 
 	{
-		ret0 = WrapBitsetIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **BitsetIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBitsetIter(unsafe.Pointer(arg1))
 	}
 
 	ret1 = uint(arg4)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -4631,15 +4568,12 @@ func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var ret2 bool
 
 	{
-		ret0 = WrapBitsetIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **BitsetIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBitsetIter(unsafe.Pointer(arg1))
 	}
 
 	ret1 = uint(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -4660,15 +4594,12 @@ func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var ret2 bool
 
 	{
-		ret0 = WrapBitsetIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **BitsetIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBitsetIter(unsafe.Pointer(arg1))
 	}
 
 	ret1 = uint(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -4864,10 +4795,7 @@ func GetDefaultLanguage() *pango.Language {
 	var ret0 *pango.Language
 
 	{
-		ret0 = pango.WrapLanguage(ret)
-		runtime.SetFinalizer(&ret0, func(v **pango.Language) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapLanguage(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5054,7 +4982,7 @@ func InitCheck() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5067,7 +4995,7 @@ func IsInitialized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5113,7 +5041,10 @@ func PaperSizeGetPaperSizes(includeCustom bool) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5612,7 +5543,7 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5629,7 +5560,7 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5647,7 +5578,7 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5664,9 +5595,32 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
+}
+
+// TestListAllTypes: return the type ids that have been registered after calling
+// gtk_test_register_all_types().
+func TestListAllTypes() (nTypes uint, gTypes []externglib.Type) {
+	var arg1 *C.guint // out
+
+	ret := C.gtk_test_list_all_types(&arg1)
+
+	var ret0 uint
+	var ret1 []externglib.Type
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]externglib.Type, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.GType)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = externglib.Type(src)
+		}
+	}
+
+	return ret0, ret1
 }
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
@@ -5730,10 +5684,13 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(*TreeModel)
 
 	{
-		ret1 = WrapTreePath(arg3)
+		ret1 = WrapTreePath(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret1, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -6172,10 +6129,7 @@ func (actionable actionable) ActionTargetValue() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6432,6 +6386,14 @@ func (buildable buildable) BuildableID() string {
 	return ret0
 }
 
+// BuilderScopeOverrider contains methods that are overridable. This
+// interface is a subset of the interface BuilderScope.
+type BuilderScopeOverrider interface {
+	TypeFromFunction(builder Builder, functionName string) externglib.Type
+
+	TypeFromName(builder Builder, typeName string) externglib.Type
+}
+
 // BuilderScope is an interface to provide support to Builder, primarily for
 // looking up programming-language-specific values for strings that are given in
 // a Builder UI file.
@@ -6459,6 +6421,7 @@ func (buildable buildable) BuildableID() string {
 // will require that #GModule be supported on the platform.
 type BuilderScope interface {
 	gextras.Objector
+	BuilderScopeOverrider
 }
 
 // builderScope implements the BuilderScope interface.
@@ -6806,7 +6769,10 @@ func (cellLayout cellLayout) Cells() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7000,10 +6966,7 @@ func (chooser colorChooser) RGBA() gdk.RGBA {
 	var ret0 *gdk.RGBA
 
 	{
-		ret0 = gdk.WrapRGBA(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.RGBA) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7019,7 +6982,7 @@ func (chooser colorChooser) UseAlpha() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7464,7 +7427,7 @@ func (editable editable) Editable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7479,7 +7442,7 @@ func (editable editable) EnableUndo() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7542,7 +7505,7 @@ func (editable editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -8085,7 +8048,7 @@ func (chooser fileChooser) CreateFolders() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8206,7 +8169,7 @@ func (chooser fileChooser) SelectMultiple() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8621,7 +8584,10 @@ func (fontchooser fontChooser) FontDesc() *pango.FontDescription {
 	var ret0 *pango.FontDescription
 
 	{
-		ret0 = pango.WrapFontDescription(ret)
+		ret0 = pango.WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *pango.FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8767,7 +8733,7 @@ func (fontchooser fontChooser) ShowPreviewEntry() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9137,7 +9103,7 @@ func (preview printOperationPreview) IsSelected(pageNr int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9357,13 +9323,10 @@ func (scrollable scrollable) Border() (border Border, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapBorder(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Border) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBorder(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -9622,7 +9585,10 @@ func (model selectionModel) Selection() *Bitset {
 	var ret0 *Bitset
 
 	{
-		ret0 = WrapBitset(ret)
+		ret0 = WrapBitset(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Bitset) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9650,7 +9616,10 @@ func (model selectionModel) SelectionInRange(position uint, nItems uint) *Bitset
 	var ret0 *Bitset
 
 	{
-		ret0 = WrapBitset(ret)
+		ret0 = WrapBitset(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Bitset) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -9668,7 +9637,7 @@ func (model selectionModel) IsSelected(position uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9683,7 +9652,7 @@ func (model selectionModel) SelectAll() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9704,7 +9673,7 @@ func (model selectionModel) SelectItem(position uint, unselectRest bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9727,7 +9696,7 @@ func (model selectionModel) SelectRange(position uint, nItems uint, unselectRest
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9786,7 +9755,7 @@ func (model selectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9801,7 +9770,7 @@ func (model selectionModel) UnselectAll() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9818,7 +9787,7 @@ func (model selectionModel) UnselectItem(position uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9837,7 +9806,7 @@ func (model selectionModel) UnselectRange(position uint, nItems uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9975,7 +9944,7 @@ func (dragDest treeDragDest) DragDataReceived(dest *TreePath, value *externglib.
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -9998,7 +9967,7 @@ func (dragDest treeDragDest) RowDropPossible(destPath *TreePath, value *externgl
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10064,7 +10033,7 @@ func (dragSource treeDragSource) DragDataDelete(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10102,7 +10071,7 @@ func (dragSource treeDragSource) RowDraggable(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10110,6 +10079,8 @@ func (dragSource treeDragSource) RowDraggable(path *TreePath) bool {
 // TreeModelOverrider contains methods that are overridable. This
 // interface is a subset of the interface TreeModel.
 type TreeModelOverrider interface {
+	// ColumnType returns the type of the column.
+	ColumnType(index_ int) externglib.Type
 	// Flags returns a set of flags supported by this interface.
 	//
 	// The flags are a bitwise combination of TreeModelFlags. The flags
@@ -10124,6 +10095,11 @@ type TreeModelOverrider interface {
 	//
 	// This path should be freed with gtk_tree_path_free().
 	Path(iter *TreeIter) *TreePath
+	// Value initializes and sets @value to that at @column.
+	//
+	// When done with @value, g_value_unset() needs to be called to free any
+	// allocated memory.
+	Value(iter *TreeIter, column int) externglib.Value
 	// IterChildren sets @iter to point to the first child of @parent.
 	//
 	// If @parent has no children, false is returned and @iter is set to be
@@ -10450,6 +10426,23 @@ func (model treeModel) Foreach(fn TreeModelForeachFunc) {
 	C.gtk_tree_model_foreach(arg0, arg1, arg2)
 }
 
+// ColumnType returns the type of the column.
+func (treeModel treeModel) ColumnType(index_ int) externglib.Type {
+	var arg0 *C.GtkTreeModel
+	var arg1 C.int
+
+	arg0 = (*C.GtkTreeModel)(treeModel.Native())
+	arg1 = C.int(index_)
+
+	ret := C.gtk_tree_model_get_column_type(arg0, arg1)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
 // Flags returns a set of flags supported by this interface.
 //
 // The flags are a bitwise combination of TreeModelFlags. The flags
@@ -10484,13 +10477,10 @@ func (treeModel treeModel) Iter(path *TreePath) (iter TreeIter, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -10509,13 +10499,10 @@ func (treeModel treeModel) IterFirst() (iter TreeIter, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -10537,13 +10524,10 @@ func (treeModel treeModel) IterFromString(pathString string) (iter TreeIter, ok 
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -10578,7 +10562,10 @@ func (treeModel treeModel) Path(iter *TreeIter) *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -10605,6 +10592,29 @@ func (treeModel treeModel) StringFromIter(iter *TreeIter) string {
 	return ret0
 }
 
+// Value initializes and sets @value to that at @column.
+//
+// When done with @value, g_value_unset() needs to be called to free any
+// allocated memory.
+func (treeModel treeModel) Value(iter *TreeIter, column int) externglib.Value {
+	var arg0 *C.GtkTreeModel
+	var arg1 *C.GtkTreeIter
+	var arg2 C.int
+	var arg3 *C.GValue // out
+
+	arg0 = (*C.GtkTreeModel)(treeModel.Native())
+	arg1 = (*C.GtkTreeIter)(iter.Native())
+	arg2 = C.int(column)
+
+	C.gtk_tree_model_get_value(arg0, arg1, arg2, &arg3)
+
+	var ret0 *externglib.Value
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+
+	return ret0
+}
+
 // IterChildren sets @iter to point to the first child of @parent.
 //
 // If @parent has no children, false is returned and @iter is set to be
@@ -10627,13 +10637,10 @@ func (treeModel treeModel) IterChildren(parent *TreeIter) (iter TreeIter, ok boo
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -10650,7 +10657,7 @@ func (treeModel treeModel) IterHasChild(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10691,7 +10698,7 @@ func (treeModel treeModel) IterNext(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10719,13 +10726,10 @@ func (treeModel treeModel) IterNthChild(parent *TreeIter, n int) (iter TreeIter,
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -10752,13 +10756,10 @@ func (treeModel treeModel) IterParent(child *TreeIter) (iter TreeIter, ok bool) 
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -10779,7 +10780,7 @@ func (treeModel treeModel) IterPrevious(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -10999,7 +11000,7 @@ func (sortable treeSortable) SortColumnID() (sortColumnID int, order SortType, o
 
 	ret1 = (*SortType)(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -11016,7 +11017,7 @@ func (sortable treeSortable) HasDefaultSortFunc() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11125,7 +11126,7 @@ func WrapBitset(ptr unsafe.Pointer) *Bitset {
 
 func marshalBitset(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBitset(unsafe.Pointer(b))
+	return WrapBitset(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -11141,7 +11142,10 @@ func NewBitsetEmpty() *Bitset {
 	var ret0 *Bitset
 
 	{
-		ret0 = WrapBitset(ret)
+		ret0 = WrapBitset(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Bitset) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -11160,7 +11164,10 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var ret0 *Bitset
 
 	{
-		ret0 = WrapBitset(ret)
+		ret0 = WrapBitset(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Bitset) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -11178,7 +11185,7 @@ func (self *Bitset) Add(value uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11242,7 +11249,7 @@ func (self *Bitset) Contains(value uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11258,7 +11265,10 @@ func (self *Bitset) Copy() *Bitset {
 	var ret0 *Bitset
 
 	{
-		ret0 = WrapBitset(ret)
+		ret0 = WrapBitset(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Bitset) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -11292,7 +11302,7 @@ func (self *Bitset) Equals(other *Bitset) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11416,7 +11426,7 @@ func (self *Bitset) IsEmpty() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11432,10 +11442,7 @@ func (self *Bitset) Ref() *Bitset {
 	var ret0 *Bitset
 
 	{
-		ret0 = WrapBitset(ret)
-		runtime.SetFinalizer(&ret0, func(v **Bitset) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBitset(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -11453,7 +11460,7 @@ func (self *Bitset) Remove(value uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11624,7 +11631,7 @@ func WrapBitsetIter(ptr unsafe.Pointer) *BitsetIter {
 
 func marshalBitsetIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBitsetIter(unsafe.Pointer(b))
+	return WrapBitsetIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -11660,7 +11667,7 @@ func (iter *BitsetIter) IsValid() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -11680,7 +11687,7 @@ func (iter *BitsetIter) Next() (value uint, ok bool) {
 
 	ret0 = uint(arg1)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -11701,7 +11708,7 @@ func (iter *BitsetIter) Previous() (value uint, ok bool) {
 
 	ret0 = uint(arg1)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -11724,7 +11731,7 @@ func WrapBorder(ptr unsafe.Pointer) *Border {
 
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBorder(unsafe.Pointer(b))
+	return WrapBorder(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -11740,7 +11747,10 @@ func NewBorder() *Border {
 	var ret0 *Border
 
 	{
-		ret0 = WrapBorder(ret)
+		ret0 = WrapBorder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Border) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -11785,7 +11795,10 @@ func (border_ *Border) Copy() *Border {
 	var ret0 *Border
 
 	{
-		ret0 = WrapBorder(ret)
+		ret0 = WrapBorder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Border) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -11827,7 +11840,7 @@ func WrapCSSLocation(ptr unsafe.Pointer) *CSSLocation {
 
 func marshalCSSLocation(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCSSLocation(unsafe.Pointer(b))
+	return WrapCSSLocation(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -11889,7 +11902,7 @@ func WrapCSSSection(ptr unsafe.Pointer) *CSSSection {
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCSSSection(unsafe.Pointer(b))
+	return WrapCSSSection(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -11912,7 +11925,10 @@ func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSect
 	var ret0 *CSSSection
 
 	{
-		ret0 = WrapCSSSection(ret)
+		ret0 = WrapCSSSection(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *CSSSection) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -11929,10 +11945,7 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 	var ret0 *CSSLocation
 
 	{
-		ret0 = WrapCSSLocation(ret)
-		runtime.SetFinalizer(&ret0, func(v **CSSLocation) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapCSSLocation(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -11971,10 +11984,7 @@ func (section *CSSSection) Parent() *CSSSection {
 	var ret0 *CSSSection
 
 	{
-		ret0 = WrapCSSSection(ret)
-		runtime.SetFinalizer(&ret0, func(v **CSSSection) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapCSSSection(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -11992,10 +12002,7 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 	var ret0 *CSSLocation
 
 	{
-		ret0 = WrapCSSLocation(ret)
-		runtime.SetFinalizer(&ret0, func(v **CSSLocation) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapCSSLocation(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -12025,7 +12032,10 @@ func (section *CSSSection) Ref() *CSSSection {
 	var ret0 *CSSSection
 
 	{
-		ret0 = WrapCSSSection(ret)
+		ret0 = WrapCSSSection(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *CSSSection) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12075,7 +12085,7 @@ func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
 
 func marshalPadActionEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPadActionEntry(unsafe.Pointer(b))
+	return WrapPadActionEntry(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -12135,7 +12145,7 @@ func WrapPageRange(ptr unsafe.Pointer) *PageRange {
 
 func marshalPageRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPageRange(unsafe.Pointer(b))
+	return WrapPageRange(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -12182,7 +12192,7 @@ func WrapPaperSize(ptr unsafe.Pointer) *PaperSize {
 
 func marshalPaperSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPaperSize(unsafe.Pointer(b))
+	return WrapPaperSize(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -12202,7 +12212,10 @@ func NewPaperSize(name string) *PaperSize {
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12229,7 +12242,10 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12246,7 +12262,10 @@ func NewPaperSizeFromGvariant(variant *glib.Variant) *PaperSize {
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12268,7 +12287,10 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12290,7 +12312,10 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (paperSize
 	var goError error
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -12320,7 +12345,10 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12337,7 +12365,10 @@ func (other *PaperSize) Copy() *PaperSize {
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -12509,7 +12540,7 @@ func (size *PaperSize) IsCustom() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -12526,7 +12557,7 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -12541,7 +12572,7 @@ func (size *PaperSize) IsIpp() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -12572,10 +12603,7 @@ func (paperSize *PaperSize) ToGvariant() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -12613,7 +12641,7 @@ func WrapRecentData(ptr unsafe.Pointer) *RecentData {
 
 func marshalRecentData(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRecentData(unsafe.Pointer(b))
+	return WrapRecentData(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -12677,7 +12705,7 @@ func (r *RecentData) Groups() []string {
 // IsPrivate gets the field inside the struct.
 func (r *RecentData) IsPrivate() bool {
 	var ret bool
-	ret = r.native.is_private != C.FALSE
+	ret = C.BOOL(r.native.is_private) != 0
 	return ret
 }
 
@@ -12702,7 +12730,7 @@ func WrapRecentInfo(ptr unsafe.Pointer) *RecentInfo {
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRecentInfo(unsafe.Pointer(b))
+	return WrapRecentInfo(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -12746,7 +12774,7 @@ func (info *RecentInfo) Exists() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -12763,10 +12791,7 @@ func (info *RecentInfo) Added() *glib.DateTime {
 	var ret0 *glib.DateTime
 
 	{
-		ret0 = glib.WrapDateTime(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.DateTime) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapDateTime(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -12816,13 +12841,10 @@ func (info *RecentInfo) ApplicationInfo(appName string) (appExec string, count u
 	ret1 = uint(arg3)
 
 	{
-		ret2 = glib.WrapDateTime(arg4)
-		runtime.SetFinalizer(&ret2, func(v ***glib.DateTime) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret2 = glib.WrapDateTime(unsafe.Pointer(arg4))
 	}
 
-	ret3 = ret != C.FALSE
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -12845,7 +12867,7 @@ func (info *RecentInfo) Applications() (length uint, utf8s []string) {
 	{
 		ret1 = make([]string, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret1[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -12919,7 +12941,7 @@ func (info *RecentInfo) Groups() (length uint, utf8s []string) {
 	{
 		ret1 = make([]string, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret1[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -12954,10 +12976,7 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 	var ret0 *glib.DateTime
 
 	{
-		ret0 = glib.WrapDateTime(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.DateTime) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapDateTime(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -12975,7 +12994,7 @@ func (info *RecentInfo) PrivateHint() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13042,10 +13061,7 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 	var ret0 *glib.DateTime
 
 	{
-		ret0 = glib.WrapDateTime(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.DateTime) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapDateTime(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -13065,7 +13081,7 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13084,7 +13100,7 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13100,7 +13116,7 @@ func (info *RecentInfo) IsLocal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13134,7 +13150,7 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13150,7 +13166,10 @@ func (info *RecentInfo) Ref() *RecentInfo {
 	var ret0 *RecentInfo
 
 	{
-		ret0 = WrapRecentInfo(ret)
+		ret0 = WrapRecentInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *RecentInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -13185,7 +13204,7 @@ func WrapRequestedSize(ptr unsafe.Pointer) *RequestedSize {
 
 func marshalRequestedSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRequestedSize(unsafe.Pointer(b))
+	return WrapRequestedSize(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -13233,7 +13252,7 @@ func WrapRequisition(ptr unsafe.Pointer) *Requisition {
 
 func marshalRequisition(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRequisition(unsafe.Pointer(b))
+	return WrapRequisition(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -13249,7 +13268,10 @@ func NewRequisition() *Requisition {
 	var ret0 *Requisition
 
 	{
-		ret0 = WrapRequisition(ret)
+		ret0 = WrapRequisition(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -13280,7 +13302,10 @@ func (requisition *Requisition) Copy() *Requisition {
 	var ret0 *Requisition
 
 	{
-		ret0 = WrapRequisition(ret)
+		ret0 = WrapRequisition(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -13311,7 +13336,7 @@ func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
 
 func marshalSettingsValue(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsValue(unsafe.Pointer(b))
+	return WrapSettingsValue(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -13323,6 +13348,13 @@ func (s *SettingsValue) Native() unsafe.Pointer {
 func (s *SettingsValue) Origin() string {
 	var ret string
 	ret = C.GoString(s.native.origin)
+	return ret
+}
+
+// Value gets the field inside the struct.
+func (s *SettingsValue) Value() *externglib.Value {
+	var ret *externglib.Value
+	ret = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
 	return ret
 }
 
@@ -13345,7 +13377,7 @@ func WrapTextIter(ptr unsafe.Pointer) *TextIter {
 
 func marshalTextIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextIter(unsafe.Pointer(b))
+	return WrapTextIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -13379,7 +13411,7 @@ func (iter *TextIter) BackwardChar() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13401,7 +13433,7 @@ func (iter *TextIter) BackwardChars(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13417,7 +13449,7 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13435,7 +13467,7 @@ func (iter *TextIter) BackwardCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13457,7 +13489,7 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13478,7 +13510,7 @@ func (iter *TextIter) BackwardLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13500,7 +13532,7 @@ func (iter *TextIter) BackwardLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13530,20 +13562,14 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 	var ret2 bool
 
 	{
-		ret0 = WrapTextIter(arg3)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg3))
 	}
 
 	{
-		ret1 = WrapTextIter(arg4)
-		runtime.SetFinalizer(&ret1, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapTextIter(unsafe.Pointer(arg4))
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -13562,7 +13588,7 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13581,7 +13607,7 @@ func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13602,7 +13628,7 @@ func (iter *TextIter) BackwardToTagToggle(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13618,7 +13644,7 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13636,7 +13662,7 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13657,7 +13683,7 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13680,7 +13706,7 @@ func (iter *TextIter) BackwardVisibleLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13699,7 +13725,7 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13717,7 +13743,7 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13735,7 +13761,7 @@ func (iter *TextIter) BackwardWordStart() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13753,7 +13779,7 @@ func (iter *TextIter) BackwardWordStarts(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13776,7 +13802,7 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13814,7 +13840,10 @@ func (iter *TextIter) Copy() *TextIter {
 	var ret0 *TextIter
 
 	{
-		ret0 = WrapTextIter(ret)
+		ret0 = WrapTextIter(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TextIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -13845,7 +13874,7 @@ func (iter *TextIter) Editable(defaultSetting bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13866,7 +13895,7 @@ func (iter *TextIter) EndsLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13883,7 +13912,7 @@ func (iter *TextIter) EndsSentence() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13907,7 +13936,7 @@ func (iter *TextIter) EndsTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13924,7 +13953,7 @@ func (iter *TextIter) EndsWord() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13944,7 +13973,7 @@ func (lhs *TextIter) Equal(rhs *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13965,7 +13994,7 @@ func (iter *TextIter) ForwardChar() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -13987,7 +14016,7 @@ func (iter *TextIter) ForwardChars(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14010,7 +14039,7 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14028,7 +14057,7 @@ func (iter *TextIter) ForwardCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14051,7 +14080,7 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14069,7 +14098,7 @@ func (iter *TextIter) ForwardLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14091,7 +14120,7 @@ func (iter *TextIter) ForwardLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14125,20 +14154,14 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 	var ret2 bool
 
 	{
-		ret0 = WrapTextIter(arg3)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg3))
 	}
 
 	{
-		ret1 = WrapTextIter(arg4)
-		runtime.SetFinalizer(&ret1, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapTextIter(unsafe.Pointer(arg4))
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -14157,7 +14180,7 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14176,7 +14199,7 @@ func (iter *TextIter) ForwardSentenceEnds(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14208,7 +14231,7 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14229,7 +14252,7 @@ func (iter *TextIter) ForwardToTagToggle(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14245,7 +14268,7 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14263,7 +14286,7 @@ func (iter *TextIter) ForwardVisibleCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14281,7 +14304,7 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14304,7 +14327,7 @@ func (iter *TextIter) ForwardVisibleLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14322,7 +14345,7 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14340,7 +14363,7 @@ func (iter *TextIter) ForwardVisibleWordEnds(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14358,7 +14381,7 @@ func (iter *TextIter) ForwardWordEnd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14375,7 +14398,7 @@ func (iter *TextIter) ForwardWordEnds(count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14488,7 +14511,10 @@ func (iter *TextIter) Language() *pango.Language {
 	var ret0 *pango.Language
 
 	{
-		ret0 = pango.WrapLanguage(ret)
+		ret0 = pango.WrapLanguage(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *pango.Language) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -14558,7 +14584,10 @@ func (iter *TextIter) Marks() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -14635,7 +14664,10 @@ func (iter *TextIter) Tags() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -14681,7 +14713,10 @@ func (iter *TextIter) ToggledTags(toggledOn bool) *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -14775,7 +14810,7 @@ func (iter *TextIter) HasTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14795,7 +14830,7 @@ func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14814,7 +14849,7 @@ func (iter *TextIter) InsideSentence() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14835,7 +14870,7 @@ func (iter *TextIter) InsideWord() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14851,7 +14886,7 @@ func (iter *TextIter) IsCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14868,7 +14903,7 @@ func (iter *TextIter) IsEnd() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14884,7 +14919,7 @@ func (iter *TextIter) IsStart() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -14997,7 +15032,7 @@ func (iter *TextIter) StartsLine() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15015,7 +15050,7 @@ func (iter *TextIter) StartsSentence() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15039,7 +15074,7 @@ func (iter *TextIter) StartsTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15056,7 +15091,7 @@ func (iter *TextIter) StartsWord() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15075,7 +15110,7 @@ func (iter *TextIter) TogglesTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15099,7 +15134,7 @@ func WrapTreeIter(ptr unsafe.Pointer) *TreeIter {
 
 func marshalTreeIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeIter(unsafe.Pointer(b))
+	return WrapTreeIter(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -15150,7 +15185,10 @@ func (iter *TreeIter) Copy() *TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(ret)
+		ret0 = WrapTreeIter(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreeIter) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15183,7 +15221,7 @@ func WrapTreePath(ptr unsafe.Pointer) *TreePath {
 
 func marshalTreePath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreePath(unsafe.Pointer(b))
+	return WrapTreePath(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -15199,7 +15237,10 @@ func NewTreePath() *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15213,7 +15254,10 @@ func NewTreePathFirst() *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15233,7 +15277,10 @@ func NewTreePathFromIndicesv(indices []int) *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15251,7 +15298,10 @@ func NewTreePathFromString(path string) *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15301,7 +15351,10 @@ func (path *TreePath) Copy() *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15358,14 +15411,11 @@ func (path *TreePath) IndicesWithDepth() (depth int, gints []int) {
 	ret0 = int(arg1)
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
-		sliceHeader.Data = uintptr(unsafe.Pointer(ret))
-		sliceHeader.Len = arg1
-		sliceHeader.Cap = arg1
-		runtime.SetFinalizer(&ret, func() {
-			C.free(unsafe.Pointer(ret))
-		})
-		defer runtime.KeepAlive(ret)
+		ret1 = make([]int, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = int(src)
+		}
 	}
 
 	return ret0, ret1
@@ -15383,7 +15433,7 @@ func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15400,7 +15450,7 @@ func (path *TreePath) IsDescendant(ancestor *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15438,7 +15488,7 @@ func (path *TreePath) Prev() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15473,7 +15523,7 @@ func (path *TreePath) Up() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15497,7 +15547,7 @@ func WrapTreeRowReference(ptr unsafe.Pointer) *TreeRowReference {
 
 func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeRowReference(unsafe.Pointer(b))
+	return WrapTreeRowReference(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -15518,7 +15568,10 @@ func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
 	var ret0 *TreeRowReference
 
 	{
-		ret0 = WrapTreeRowReference(ret)
+		ret0 = WrapTreeRowReference(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreeRowReference) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15539,7 +15592,10 @@ func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModel, path *Tre
 	var ret0 *TreeRowReference
 
 	{
-		ret0 = WrapTreeRowReference(ret)
+		ret0 = WrapTreeRowReference(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreeRowReference) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15556,7 +15612,10 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 	var ret0 *TreeRowReference
 
 	{
-		ret0 = WrapTreeRowReference(ret)
+		ret0 = WrapTreeRowReference(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreeRowReference) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15598,7 +15657,10 @@ func (reference *TreeRowReference) Path() *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -15615,7 +15677,7 @@ func (reference *TreeRowReference) Valid() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -15955,7 +16017,7 @@ func (about aboutDialog) Artists() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -15982,7 +16044,7 @@ func (about aboutDialog) Authors() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -16039,7 +16101,7 @@ func (about aboutDialog) Documenters() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -16211,7 +16273,7 @@ func (about aboutDialog) WrapLicense() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -16589,7 +16651,7 @@ func (actionBar actionBar) Revealed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17373,7 +17435,7 @@ func (self appChooserButton) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17389,7 +17451,7 @@ func (self appChooserButton) ShowDefaultItem() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17405,7 +17467,7 @@ func (self appChooserButton) ShowDialogItem() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17761,7 +17823,7 @@ func (self appChooserWidget) ShowAll() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17777,7 +17839,7 @@ func (self appChooserWidget) ShowDefault() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17793,7 +17855,7 @@ func (self appChooserWidget) ShowFallback() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17809,7 +17871,7 @@ func (self appChooserWidget) ShowOther() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -17825,7 +17887,7 @@ func (self appChooserWidget) ShowRecommended() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18103,7 +18165,7 @@ func (window applicationWindow) ShowMenubar() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18258,7 +18320,7 @@ func (self aspectFrame) ObeyChild() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -18669,7 +18731,7 @@ func (assistant assistant) PageComplete(page Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19133,7 +19195,7 @@ func (self bookmarkList) IsLoading() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19247,7 +19309,7 @@ func (self boolFilter) Invert() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19433,7 +19495,7 @@ func (box box) Homogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19647,7 +19709,7 @@ func (boxLayout boxLayout) Homogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -19987,6 +20049,10 @@ type Builder interface {
 	Scope() BuilderScope
 	// TranslationDomain gets the translation domain of @builder.
 	TranslationDomain() string
+	// TypeFromName looks up a type by name, using the virtual function that
+	// Builder has for that purpose. This is mainly used when implementing the
+	// Buildable interface on a type.
+	TypeFromName(typeName string) externglib.Type
 	// SetCurrentObject sets the current object for the @builder. The current
 	// object can be thought of as the `this` object that the builder is working
 	// for and will often be used as the default object when an object is
@@ -20005,6 +20071,14 @@ type Builder interface {
 	// SetTranslationDomain sets the translation domain of @builder. See
 	// Builder:translation-domain.
 	SetTranslationDomain(domain string)
+	// ValueFromStringType: like gtk_builder_value_from_string(), this function
+	// demarshals a value from a string, but takes a #GType instead of Spec.
+	// This function calls g_value_init() on the @value argument, so it need not
+	// be initialised beforehand.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR domain.
+	ValueFromStringType(typ externglib.Type, string string) (value externglib.Value, err error)
 }
 
 // builder implements the Builder interface.
@@ -20223,8 +20297,8 @@ func (builder builder) AddObjectsFromFile(filename string, objectIds []string) e
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 	{
-		var dst []C.utf8
-		ptr := C.malloc(C.sizeof_utf8 * (len(objectIds) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(objectIds) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(objectIds)
@@ -20272,8 +20346,8 @@ func (builder builder) AddObjectsFromResource(resourcePath string, objectIds []s
 	arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 	{
-		var dst []C.utf8
-		ptr := C.malloc(C.sizeof_utf8 * (len(objectIds) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(objectIds) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(objectIds)
@@ -20323,8 +20397,8 @@ func (builder builder) AddObjectsFromString(buffer string, length int, objectIds
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(length)
 	{
-		var dst []C.utf8
-		ptr := C.malloc(C.sizeof_utf8 * (len(objectIds) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(objectIds) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(objectIds)
@@ -20447,7 +20521,10 @@ func (builder builder) Objects() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.SList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -20481,6 +20558,26 @@ func (builder builder) TranslationDomain() string {
 	var ret0 string
 
 	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// TypeFromName looks up a type by name, using the virtual function that
+// Builder has for that purpose. This is mainly used when implementing the
+// Buildable interface on a type.
+func (builder builder) TypeFromName(typeName string) externglib.Type {
+	var arg0 *C.GtkBuilder
+	var arg1 *C.char
+
+	arg0 = (*C.GtkBuilder)(builder.Native())
+	arg1 = (*C.gchar)(C.CString(typeName))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gtk_builder_get_type_from_name(arg0, arg1)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
 
 	return ret0
 }
@@ -20529,6 +20626,40 @@ func (builder builder) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_builder_set_translation_domain(arg0, arg1)
+}
+
+// ValueFromStringType: like gtk_builder_value_from_string(), this function
+// demarshals a value from a string, but takes a #GType instead of Spec.
+// This function calls g_value_init() on the @value argument, so it need not
+// be initialised beforehand.
+//
+// Upon errors false will be returned and @error will be assigned a #GError
+// from the K_BUILDER_ERROR domain.
+func (builder builder) ValueFromStringType(typ externglib.Type, string string) (value externglib.Value, err error) {
+	var arg0 *C.GtkBuilder
+	var arg1 C.GType
+	var arg2 *C.char
+	var arg3 *C.GValue // out
+	var gError *C.GError
+
+	arg0 = (*C.GtkBuilder)(builder.Native())
+	arg1 = C.GType(typ)
+	arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.gtk_builder_value_from_string_type(arg0, arg1, arg2, &arg3, &gError)
+
+	var ret0 *externglib.Value
+	var goError error
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 type BuilderCScope interface {
@@ -20672,10 +20803,7 @@ func (self builderListItemFactory) Bytes() *glib.Bytes {
 	var ret0 *glib.Bytes
 
 	{
-		ret0 = glib.WrapBytes(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Bytes) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -20893,7 +21021,7 @@ func (button button) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -20942,7 +21070,7 @@ func (button button) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21154,7 +21282,10 @@ func (self calendar) Date() *glib.DateTime {
 	var ret0 *glib.DateTime
 
 	{
-		ret0 = glib.WrapDateTime(ret)
+		ret0 = glib.WrapDateTime(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.DateTime) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -21172,7 +21303,7 @@ func (calendar calendar) DayIsMarked(day uint) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21189,7 +21320,7 @@ func (self calendar) ShowDayNames() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21205,7 +21336,7 @@ func (self calendar) ShowHeading() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21221,7 +21352,7 @@ func (self calendar) ShowWeekNumbers() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21701,7 +21832,7 @@ func (area cellArea) Activate(context CellAreaContext, widget Widget, cellArea *
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21728,7 +21859,7 @@ func (area cellArea) ActivateCell(widget Widget, renderer CellRenderer, event gd
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -21956,7 +22087,7 @@ func (area cellArea) Focus(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -22017,10 +22148,7 @@ func (area cellArea) CellAllocation(context CellAreaContext, widget Widget, rend
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg5)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg5))
 	}
 
 	return ret0
@@ -22051,10 +22179,7 @@ func (area cellArea) CellAtPosition(context CellAreaContext, widget Widget, cell
 	var ret1 CellRenderer
 
 	{
-		ret0 = gdk.WrapRectangle(arg6)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg6))
 	}
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(CellRenderer)
@@ -22161,10 +22286,7 @@ func (area cellArea) FocusSiblings(renderer CellRenderer) *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.List) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -22337,7 +22459,7 @@ func (area cellArea) HasRenderer(renderer CellRenderer) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -22361,10 +22483,7 @@ func (area cellArea) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.R
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -22381,7 +22500,7 @@ func (area cellArea) IsActivatable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -22401,7 +22520,7 @@ func (area cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer)
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23197,7 +23316,7 @@ func (cell cellRenderer) Activate(event gdk.Event, widget Widget, path string, b
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23221,10 +23340,7 @@ func (cell cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cel
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg4)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg4))
 	}
 
 	return ret0
@@ -23281,7 +23397,7 @@ func (cell cellRenderer) IsExpanded() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23296,7 +23412,7 @@ func (cell cellRenderer) IsExpander() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23386,17 +23502,11 @@ func (cell cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, 
 	var ret1 *Requisition
 
 	{
-		ret0 = WrapRequisition(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Requisition) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRequisition(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret1 = WrapRequisition(arg3)
-		runtime.SetFinalizer(&ret1, func(v **Requisition) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRequisition(unsafe.Pointer(arg3))
 	}
 
 	return ret0, ret1
@@ -23476,7 +23586,7 @@ func (cell cellRenderer) Sensitive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23511,7 +23621,7 @@ func (cell cellRenderer) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -23527,7 +23637,7 @@ func (cell cellRenderer) IsActivatable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24116,7 +24226,7 @@ func (toggle cellRendererToggle) Activatable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24132,7 +24242,7 @@ func (toggle cellRendererToggle) Active() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24148,7 +24258,7 @@ func (toggle cellRendererToggle) Radio() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24377,7 +24487,10 @@ func (cellView cellView) DisplayedRow() *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -24394,7 +24507,7 @@ func (cellView cellView) DrawSensitive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -24410,7 +24523,7 @@ func (cellView cellView) FitModel() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25075,7 +25188,7 @@ func (self checkButton) Active() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25091,7 +25204,7 @@ func (checkButton checkButton) Inconsistent() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25122,7 +25235,7 @@ func (self checkButton) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25313,7 +25426,7 @@ func (button colorButton) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25723,7 +25836,7 @@ func (self columnView) EnableRubberband() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25753,7 +25866,7 @@ func (self columnView) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25769,7 +25882,7 @@ func (self columnView) ShowColumnSeparators() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25785,7 +25898,7 @@ func (self columnView) ShowRowSeparators() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -25801,7 +25914,7 @@ func (self columnView) SingleClickActivate() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26107,7 +26220,7 @@ func (self columnViewColumn) Expand() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26169,7 +26282,7 @@ func (self columnViewColumn) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26214,7 +26327,7 @@ func (self columnViewColumn) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26632,13 +26745,10 @@ func (comboBox comboBox) ActiveIter() (iter TreeIter, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -26700,7 +26810,7 @@ func (comboBox comboBox) HasEntry() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26748,7 +26858,7 @@ func (comboBox comboBox) PopupFixedWidth() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -26822,7 +26932,7 @@ func (comboBox comboBox) SetActiveID(activeID string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -27511,7 +27621,7 @@ func (constraint constraint) IsAttached() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -27527,7 +27637,7 @@ func (constraint constraint) IsConstant() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -27543,7 +27653,7 @@ func (constraint constraint) IsRequired() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -28158,7 +28268,10 @@ func (layout constraintLayout) AddConstraintsFromDescriptionv(lines []string, hs
 	var goError error
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -29162,10 +29275,7 @@ func (self directoryList) Error() *glib.Error {
 	var ret0 *glib.Error
 
 	{
-		ret0 = glib.WrapError(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Error) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapError(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -29213,7 +29323,7 @@ func (self directoryList) Monitored() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -29232,7 +29342,7 @@ func (self directoryList) IsLoading() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -29913,7 +30023,7 @@ func (self dropControllerMotion) ContainsPointer() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -29944,7 +30054,7 @@ func (self dropControllerMotion) IsPointer() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -30105,7 +30215,7 @@ func (self dropDown) EnableSearch() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -30357,8 +30467,13 @@ type DropTarget interface {
 	//
 	// If the result is nil, all formats are expected to be supported.
 	Formats() *gdk.ContentFormats
+	// GTypes gets the list of supported #GTypes for @self. If no type have been
+	// set, nil will be returned.
+	GTypes() (nTypes uint, gTypes []externglib.Type)
 	// Preload gets the value of the GtkDropTarget:preload property.
 	Preload() bool
+	// Value gets the value of the GtkDropTarget:value property.
+	Value() *externglib.Value
 	// Reject rejects the ongoing drop operation.
 	//
 	// If no drop operation is ongoing - when GdkDropTarget:drop returns nil -
@@ -30458,10 +30573,39 @@ func (self dropTarget) Formats() *gdk.ContentFormats {
 	var ret0 *gdk.ContentFormats
 
 	{
-		ret0 = gdk.WrapContentFormats(ret)
+		ret0 = gdk.WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *gdk.ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
+}
+
+// GTypes gets the list of supported #GTypes for @self. If no type have been
+// set, nil will be returned.
+func (self dropTarget) GTypes() (nTypes uint, gTypes []externglib.Type) {
+	var arg0 *C.GtkDropTarget
+	var arg1 *C.gsize // out
+
+	arg0 = (*C.GtkDropTarget)(self.Native())
+
+	ret := C.gtk_drop_target_get_gtypes(arg0, &arg1)
+
+	var ret0 uint
+	var ret1 []externglib.Type
+
+	ret0 = uint(arg1)
+
+	{
+		ret1 = make([]externglib.Type, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.GType)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = externglib.Type(src)
+		}
+	}
+
+	return ret0, ret1
 }
 
 // Preload gets the value of the GtkDropTarget:preload property.
@@ -30474,7 +30618,22 @@ func (self dropTarget) Preload() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
+
+	return ret0
+}
+
+// Value gets the value of the GtkDropTarget:value property.
+func (self dropTarget) Value() *externglib.Value {
+	var arg0 *C.GtkDropTarget
+
+	arg0 = (*C.GtkDropTarget)(self.Native())
+
+	ret := C.gtk_drop_target_get_value(arg0)
+
+	var ret0 *externglib.Value
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -30662,7 +30821,10 @@ func (self dropTargetAsync) Formats() *gdk.ContentFormats {
 	var ret0 *gdk.ContentFormats
 
 	{
-		ret0 = gdk.WrapContentFormats(ret)
+		ret0 = gdk.WrapContentFormats(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *gdk.ContentFormats) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -30798,7 +30960,7 @@ func (self editableLabel) Editing() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31302,7 +31464,7 @@ func (entry entry) ActivatesDefault() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31334,10 +31496,7 @@ func (entry entry) Attributes() *pango.AttrList {
 	var ret0 *pango.AttrList
 
 	{
-		ret0 = pango.WrapAttrList(ret)
-		runtime.SetFinalizer(&ret0, func(v **pango.AttrList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapAttrList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -31415,7 +31574,7 @@ func (entry entry) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31432,7 +31591,7 @@ func (entry entry) IconActivatable(iconPos EntryIconPosition) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31457,10 +31616,7 @@ func (entry entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -31557,7 +31713,7 @@ func (entry entry) IconSensitive(iconPos EntryIconPosition) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31695,7 +31851,7 @@ func (entry entry) OverwriteMode() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31760,10 +31916,7 @@ func (entry entry) Tabs() *pango.TabArray {
 	var ret0 *pango.TabArray
 
 	{
-		ret0 = pango.WrapTabArray(ret)
-		runtime.SetFinalizer(&ret0, func(v **pango.TabArray) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapTabArray(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -31798,7 +31951,7 @@ func (entry entry) Visibility() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -31818,7 +31971,7 @@ func (entry entry) GrabFocusWithoutSelecting() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -32774,7 +32927,7 @@ func (completion entryCompletion) InlineCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -32789,7 +32942,7 @@ func (completion entryCompletion) InlineSelection() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -32836,7 +32989,7 @@ func (completion entryCompletion) PopupCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -32852,7 +33005,7 @@ func (completion entryCompletion) PopupSetWidth() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -32868,7 +33021,7 @@ func (completion entryCompletion) PopupSingleMatch() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33341,7 +33494,7 @@ func (self eventControllerFocus) ContainsFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33357,7 +33510,7 @@ func (self eventControllerFocus) IsFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33431,7 +33584,7 @@ func (controller eventControllerKey) Forward(widget Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33575,7 +33728,7 @@ func (self eventControllerMotion) ContainsPointer() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33591,7 +33744,7 @@ func (self eventControllerMotion) IsPointer() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33925,7 +34078,7 @@ func (expander expander) Expanded() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33981,7 +34134,7 @@ func (expander expander) ResizeToplevel() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -33998,7 +34151,7 @@ func (expander expander) UseMarkup() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34014,7 +34167,7 @@ func (expander expander) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -34807,7 +34960,7 @@ func (filter fileFilter) Attributes() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 		}
 	}
@@ -34856,10 +35009,7 @@ func (filter fileFilter) ToGvariant() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -34981,7 +35131,7 @@ func (self filter) Match(item gextras.Objector) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -35109,7 +35259,7 @@ func (self filterListModel) Incremental() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -35351,10 +35501,7 @@ func (fixed fixed) ChildTransform(widget Widget) *gsk.Transform {
 	var ret0 *gsk.Transform
 
 	{
-		ret0 = gsk.WrapTransform(ret)
-		runtime.SetFinalizer(&ret0, func(v **gsk.Transform) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gsk.WrapTransform(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -35528,10 +35675,7 @@ func (child fixedLayoutChild) Transform() *gsk.Transform {
 	var ret0 *gsk.Transform
 
 	{
-		ret0 = gsk.WrapTransform(ret)
-		runtime.SetFinalizer(&ret0, func(v **gsk.Transform) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gsk.WrapTransform(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -35919,7 +36063,7 @@ func (box flowBox) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -35987,7 +36131,7 @@ func (box flowBox) Homogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36048,7 +36192,10 @@ func (box flowBox) SelectedChildren() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -36496,7 +36643,7 @@ func (child flowBoxChild) IsSelected() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36618,7 +36765,7 @@ func (fontButton fontButton) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36648,7 +36795,7 @@ func (fontButton fontButton) UseFont() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -36663,7 +36810,7 @@ func (fontButton fontButton) UseSize() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37276,7 +37423,7 @@ func (area glArea) AutoRender() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37307,10 +37454,7 @@ func (area glArea) Error() *glib.Error {
 	var ret0 *glib.Error
 
 	{
-		ret0 = glib.WrapError(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Error) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapError(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -37326,7 +37470,7 @@ func (area glArea) HasDepthBuffer() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37341,7 +37485,7 @@ func (area glArea) HasStencilBuffer() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37377,7 +37521,7 @@ func (area glArea) UseES() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37741,13 +37885,10 @@ func (gesture gesture) BoundingBox() (rect gdk.Rectangle, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -37773,7 +37914,7 @@ func (gesture gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 
 	ret1 = float64(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -37805,7 +37946,10 @@ func (gesture gesture) GetGroup() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -37844,10 +37988,7 @@ func (gesture gesture) LastUpdatedSequence() *gdk.EventSequence {
 	var ret0 *gdk.EventSequence
 
 	{
-		ret0 = gdk.WrapEventSequence(ret)
-		runtime.SetFinalizer(&ret0, func(v **gdk.EventSequence) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapEventSequence(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -37876,7 +38017,7 @@ func (gesture gesture) Point(sequence *gdk.EventSequence) (x float64, y float64,
 
 	ret1 = float64(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -37910,7 +38051,10 @@ func (gesture gesture) Sequences() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -37953,7 +38097,7 @@ func (gesture gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37969,7 +38113,7 @@ func (gesture gesture) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -37986,7 +38130,7 @@ func (gesture gesture) IsGroupedWith(other Gesture) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38003,7 +38147,7 @@ func (gesture gesture) IsRecognized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38056,7 +38200,7 @@ func (gesture gesture) SetSequenceState(sequence *gdk.EventSequence, state Event
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38075,7 +38219,7 @@ func (gesture gesture) SetState(state EventSequenceState) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38201,7 +38345,7 @@ func (gesture gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 	ret1 = float64(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -38226,7 +38370,7 @@ func (gesture gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	ret1 = float64(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -38568,7 +38712,10 @@ func (gesture gestureSingle) CurrentSequence() *gdk.EventSequence {
 	var ret0 *gdk.EventSequence
 
 	{
-		ret0 = gdk.WrapEventSequence(ret)
+		ret0 = gdk.WrapEventSequence(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *gdk.EventSequence) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -38585,7 +38732,7 @@ func (gesture gestureSingle) Exclusive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38600,7 +38747,7 @@ func (gesture gestureSingle) TouchOnly() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -38731,7 +38878,7 @@ func (gesture gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 
 	ret0 = float64(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -38765,14 +38912,17 @@ func (gesture gestureStylus) Backlog() (backlog []*gdk.TimeCoord, nElems uint, o
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (*C.GdkTimeCoord)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret0[i] = gdk.WrapTimeCoord(src)
+				ret0[i] = gdk.WrapTimeCoord(unsafe.Pointer(src))
+				runtime.SetFinalizer(ret0[i], func(v *gdk.TimeCoord) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
 			}
 		}
 	}
 
 	ret1 = uint(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -38867,7 +39017,7 @@ func (gesture gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok
 
 	ret1 = float64(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -39184,7 +39334,7 @@ func (grid grid) ColumnHomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -39233,7 +39383,7 @@ func (grid grid) RowHomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -39571,7 +39721,7 @@ func (grid gridLayout) ColumnHomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -39622,7 +39772,7 @@ func (grid gridLayout) RowHomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40012,7 +40162,7 @@ func (self gridView) EnableRubberband() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40088,7 +40238,7 @@ func (self gridView) SingleClickActivate() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40356,7 +40506,7 @@ func (bar headerBar) ShowTitleButtons() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40640,7 +40790,7 @@ func (context imContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40672,7 +40822,7 @@ func (context imContext) FilterKey(press bool, surface gdk.Surface, device gdk.D
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40691,7 +40841,7 @@ func (context imContext) FilterKeypress(event gdk.Event) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -40740,7 +40890,10 @@ func (context imContext) PreeditString() (str string, attrs *pango.AttrList, cur
 	C.free(unsafe.Pointer(arg1))
 
 	{
-		ret1 = pango.WrapAttrList(arg2)
+		ret1 = pango.WrapAttrList(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret1, func(v **pango.AttrList) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret2 = int(arg3)
@@ -40778,7 +40931,7 @@ func (context imContext) Surrounding() (text string, cursorIndex int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -41121,7 +41274,7 @@ func (self iconPaintable) IsSymbolic() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41339,7 +41492,7 @@ func (self iconTheme) IconNames() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -41399,7 +41552,7 @@ func (self iconTheme) ResourcePath() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -41427,7 +41580,7 @@ func (self iconTheme) SearchPath() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.filename)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -41468,7 +41621,7 @@ func (self iconTheme) HasIcon(iconName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -41598,8 +41751,8 @@ func (self iconTheme) SetSearchPath(path []string) {
 
 	arg0 = (*C.GtkIconTheme)(self.Native())
 	{
-		var dst []C.filename
-		ptr := C.malloc(C.sizeof_filename * (len(path) + 1))
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(path) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
 		sliceHeader.Len = len(path)
@@ -42025,7 +42178,7 @@ func (iconView iconView) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -42050,13 +42203,10 @@ func (iconView iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.R
 	var ret1 bool
 
 	{
-		ret0 = gdk.WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -42110,12 +42260,15 @@ func (iconView iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 	var ret2 bool
 
 	{
-		ret0 = WrapTreePath(arg1)
+		ret0 = WrapTreePath(unsafe.Pointer(arg1))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -42139,12 +42292,15 @@ func (iconView iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, po
 	var ret2 bool
 
 	{
-		ret0 = WrapTreePath(arg3)
+		ret0 = WrapTreePath(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = (*IconViewDropPosition)(arg4)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -42164,7 +42320,10 @@ func (iconView iconView) DragDestItem() (path *TreePath, pos IconViewDropPositio
 	var ret1 *IconViewDropPosition
 
 	{
-		ret0 = WrapTreePath(arg1)
+		ret0 = WrapTreePath(unsafe.Pointer(arg1))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = (*IconViewDropPosition)(arg2)
@@ -42191,12 +42350,15 @@ func (iconView iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRende
 	var ret2 bool
 
 	{
-		ret0 = WrapTreePath(arg3)
+		ret0 = WrapTreePath(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -42345,7 +42507,10 @@ func (iconView iconView) PathAtPos(x int, y int) *TreePath {
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -42377,7 +42542,7 @@ func (iconView iconView) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -42415,7 +42580,10 @@ func (iconView iconView) SelectedItems() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -42518,17 +42686,17 @@ func (iconView iconView) TooltipContext(x int, y int, keyboardTip bool) (model T
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
 
 	{
-		ret1 = WrapTreePath(arg5)
-	}
-
-	{
-		ret2 = WrapTreeIter(arg6)
-		runtime.SetFinalizer(&ret2, func(v **TreeIter) {
+		ret1 = WrapTreePath(unsafe.Pointer(arg5))
+		runtime.SetFinalizer(ret1, func(v **TreePath) {
 			C.free(unsafe.Pointer(v.Native()))
 		})
 	}
 
-	ret3 = ret != C.FALSE
+	{
+		ret2 = WrapTreeIter(unsafe.Pointer(arg6))
+	}
+
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -42551,14 +42719,20 @@ func (iconView iconView) VisibleRange() (startPath *TreePath, endPath *TreePath,
 	var ret2 bool
 
 	{
-		ret0 = WrapTreePath(arg1)
+		ret0 = WrapTreePath(unsafe.Pointer(arg1))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret1 = WrapTreePath(arg2)
+		ret1 = WrapTreePath(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret1, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -42587,7 +42761,7 @@ func (iconView iconView) PathIsSelected(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -43691,7 +43865,7 @@ func (infoBar infoBar) Revealed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -43707,7 +43881,7 @@ func (infoBar infoBar) ShowCloseButton() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44220,10 +44394,7 @@ func (self label) Attributes() *pango.AttrList {
 	var ret0 *pango.AttrList
 
 	{
-		ret0 = pango.WrapAttrList(ret)
-		runtime.SetFinalizer(&ret0, func(v **pango.AttrList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapAttrList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -44431,7 +44602,7 @@ func (self label) Selectable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44455,7 +44626,7 @@ func (self label) SelectionBounds() (start int, end int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -44470,7 +44641,7 @@ func (self label) SingleLineMode() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44504,7 +44675,7 @@ func (self label) UseMarkup() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44520,7 +44691,7 @@ func (self label) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -44552,7 +44723,7 @@ func (self label) Wrap() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -45417,7 +45588,7 @@ func (self levelBar) Inverted() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -45485,7 +45656,7 @@ func (self levelBar) OffsetValue(name string) (value float64, ok bool) {
 
 	ret0 = float64(arg2)
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -45722,7 +45893,7 @@ func (linkButton linkButton) Visited() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46123,7 +46294,7 @@ func (box listBox) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46209,7 +46380,10 @@ func (box listBox) SelectedRows() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -46241,7 +46415,7 @@ func (box listBox) ShowSeparators() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46659,7 +46833,7 @@ func (row listBoxRow) Activatable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46722,7 +46896,7 @@ func (row listBoxRow) Selectable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46738,7 +46912,7 @@ func (row listBoxRow) IsSelected() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46891,7 +47065,7 @@ func (self listItem) Activatable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46957,7 +47131,7 @@ func (self listItem) Selectable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -46974,7 +47148,7 @@ func (self listItem) Selected() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47295,10 +47469,7 @@ func (listStore listStore) Append() TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -47331,10 +47502,7 @@ func (listStore listStore) Insert(position int) TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -47358,10 +47526,7 @@ func (listStore listStore) InsertAfter(sibling *TreeIter) TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -47385,10 +47550,7 @@ func (listStore listStore) InsertBefore(sibling *TreeIter) TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -47433,10 +47595,7 @@ func (listStore listStore) InsertWithValuesv(position int, columns []int, values
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -47457,7 +47616,7 @@ func (listStore listStore) IterIsValid(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47507,10 +47666,7 @@ func (listStore listStore) Prepend() TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -47530,7 +47686,7 @@ func (listStore listStore) Remove(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47848,7 +48004,7 @@ func (self listView) EnableRubberband() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47894,7 +48050,7 @@ func (self listView) ShowSeparators() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -47910,7 +48066,7 @@ func (self listView) SingleClickActivate() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48214,7 +48370,7 @@ func (self mapListModel) HasMap() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48827,7 +48983,7 @@ func (self mediaStream) GetEnded() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48853,10 +49009,7 @@ func (self mediaStream) Error() *glib.Error {
 	var ret0 *glib.Error
 
 	{
-		ret0 = glib.WrapError(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Error) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapError(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -48873,7 +49026,7 @@ func (self mediaStream) Loop() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48889,7 +49042,7 @@ func (self mediaStream) Muted() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48904,7 +49057,7 @@ func (self mediaStream) Playing() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48950,7 +49103,7 @@ func (self mediaStream) HasAudio() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48965,7 +49118,7 @@ func (self mediaStream) HasVideo() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -48981,7 +49134,7 @@ func (self mediaStream) IsPrepared() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49004,7 +49157,7 @@ func (self mediaStream) IsSeekable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49019,7 +49172,7 @@ func (self mediaStream) IsSeeking() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49481,7 +49634,7 @@ func (menuButton menuButton) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -49558,7 +49711,7 @@ func (menuButton menuButton) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -50012,7 +50165,7 @@ func (op mountOperation) IsShowing() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -50449,7 +50602,7 @@ func (self nativeDialog) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -50495,7 +50648,7 @@ func (self nativeDialog) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -51206,7 +51359,7 @@ func (notebook notebook) Scrollable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -51222,7 +51375,7 @@ func (notebook notebook) ShowBorder() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -51238,7 +51391,7 @@ func (notebook notebook) ShowTabs() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -51256,7 +51409,7 @@ func (notebook notebook) TabDetachable(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -51327,7 +51480,7 @@ func (notebook notebook) TabReorderable(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52072,7 +52225,7 @@ func (overlay overlay) ClipOverlay(widget Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52090,7 +52243,7 @@ func (overlay overlay) MeasureOverlay(widget Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52239,7 +52392,7 @@ func (child overlayLayoutChild) ClipOverlay() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52254,7 +52407,7 @@ func (child overlayLayoutChild) Measure() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -52776,10 +52929,7 @@ func (setup pageSetup) PaperSize() *PaperSize {
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
-		runtime.SetFinalizer(&ret0, func(v **PaperSize) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -53007,10 +53157,7 @@ func (setup pageSetup) ToGvariant() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -53203,7 +53350,7 @@ func (paned paned) ResizeEndChild() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53218,7 +53365,7 @@ func (paned paned) ResizeStartChild() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53233,7 +53380,7 @@ func (paned paned) ShrinkEndChild() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53248,7 +53395,7 @@ func (paned paned) ShrinkStartChild() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53280,7 +53427,7 @@ func (paned paned) WideHandle() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53502,7 +53649,7 @@ func (entry passwordEntry) ShowPeekIcon() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53790,7 +53937,7 @@ func (self picture) CanShrink() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -53823,7 +53970,7 @@ func (self picture) KeepAspectRatio() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54173,7 +54320,7 @@ func (popover popover) Autohide() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54189,7 +54336,7 @@ func (popover popover) CascadePopdown() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54220,7 +54367,7 @@ func (popover popover) HasArrow() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54236,7 +54383,7 @@ func (popover popover) MnemonicsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54276,13 +54423,10 @@ func (popover popover) PointingTo() (rect gdk.Rectangle, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -54654,7 +54798,7 @@ func (popover popoverMenu) AddChild(child Widget, id string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54687,7 +54831,7 @@ func (popover popoverMenu) RemoveChild(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54810,7 +54954,7 @@ func (bar popoverMenuBar) AddChild(child Widget, id string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -54843,7 +54987,7 @@ func (bar popoverMenuBar) RemoveChild(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55026,10 +55170,7 @@ func (context printContext) CairoContext() *cairo.Context {
 	var ret0 *cairo.Context
 
 	{
-		ret0 = cairo.WrapContext(ret)
-		runtime.SetFinalizer(&ret0, func(v **cairo.Context) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = cairo.WrapContext(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -55094,7 +55235,7 @@ func (context printContext) HardMargins() (top float64, bottom float64, left flo
 
 	ret3 = float64(arg4)
 
-	ret4 = ret != C.FALSE
+	ret4 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -55537,7 +55678,7 @@ func (op printOperation) EmbedPageSetup() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55565,7 +55706,7 @@ func (op printOperation) HasSelection() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55659,7 +55800,7 @@ func (op printOperation) SupportSelection() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -55680,7 +55821,7 @@ func (op printOperation) IsFinished() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56359,7 +56500,7 @@ func (settings printSettings) Bool(key string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56374,7 +56515,7 @@ func (settings printSettings) Collate() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56653,7 +56794,10 @@ func (settings printSettings) PageRanges() (numRanges int, pageRanges []PageRang
 		for i := 0; i < uintptr(arg1); i++ {
 			src := (C.GtkPageRange)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			{
-				ret1[i] = WrapPageRange(src)
+				ret1[i] = WrapPageRange(unsafe.Pointer(src))
+				runtime.SetFinalizer(&ret1[i], func(v *PageRange) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
 			}
 		}
 	}
@@ -56706,7 +56850,10 @@ func (settings printSettings) PaperSize() *PaperSize {
 	var ret0 *PaperSize
 
 	{
-		ret0 = WrapPaperSize(ret)
+		ret0 = WrapPaperSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PaperSize) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -56846,7 +56993,7 @@ func (settings printSettings) Reverse() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56876,7 +57023,7 @@ func (settings printSettings) UseColor() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -56894,7 +57041,7 @@ func (settings printSettings) HasKey(key string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -57361,10 +57508,7 @@ func (settings printSettings) ToGvariant() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -57585,7 +57729,7 @@ func (pbar progressBar) Inverted() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -57617,7 +57761,7 @@ func (pbar progressBar) ShowText() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -57926,7 +58070,7 @@ func (_range _range) Flippable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -57941,7 +58085,7 @@ func (_range _range) Inverted() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -57961,10 +58105,7 @@ func (_range _range) RangeRect() gdk.Rectangle {
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -57981,7 +58122,7 @@ func (_range _range) RestrictToFillLevel() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58012,7 +58153,7 @@ func (_range _range) ShowFillLevel() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58052,7 +58193,7 @@ func (_range _range) SliderSizeFixed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58406,7 +58547,7 @@ func (manager recentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58432,7 +58573,7 @@ func (manager recentManager) AddItem(uri string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58448,7 +58589,10 @@ func (manager recentManager) Items() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -58468,7 +58612,7 @@ func (manager recentManager) HasItem(uri string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58491,7 +58635,10 @@ func (manager recentManager) LookupItem(uri string) (recentInfo *RecentInfo, err
 	var goError error
 
 	{
-		ret0 = WrapRecentInfo(ret)
+		ret0 = WrapRecentInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *RecentInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	if gError != nil {
@@ -58703,7 +58850,7 @@ func (revealer revealer) ChildRevealed() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -58723,7 +58870,7 @@ func (revealer revealer) RevealChild() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59084,7 +59231,7 @@ func (scale scale) DrawValue() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59099,7 +59246,7 @@ func (scale scale) HasOrigin() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59899,7 +60046,7 @@ func (scrolledWindow scrolledWindow) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -59929,7 +60076,7 @@ func (scrolledWindow scrolledWindow) KineticScrolling() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60007,7 +60154,7 @@ func (scrolledWindow scrolledWindow) OverlayScrolling() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60062,7 +60209,7 @@ func (scrolledWindow scrolledWindow) PropagateNaturalHeight() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60079,7 +60226,7 @@ func (scrolledWindow scrolledWindow) PropagateNaturalWidth() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60507,7 +60654,7 @@ func (bar searchBar) SearchMode() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -60522,7 +60669,7 @@ func (bar searchBar) ShowCloseButton() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -61035,10 +61182,7 @@ func (self shortcut) Arguments() *glib.Variant {
 	var ret0 *glib.Variant
 
 	{
-		ret0 = glib.WrapVariant(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Variant) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapVariant(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -61198,7 +61342,7 @@ func (self shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, ar
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -61738,7 +61882,7 @@ func (trigger1 shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -61804,7 +61948,7 @@ func (self shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String)
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -62329,7 +62473,7 @@ func (self singleSelection) Autoselect() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -62345,7 +62489,7 @@ func (self singleSelection) CanUnselect() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -62634,10 +62778,7 @@ func (sizeGroup sizeGroup) Widgets() *glib.SList {
 	var ret0 *glib.SList
 
 	{
-		ret0 = glib.WrapSList(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.SList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapSList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -63100,7 +63241,10 @@ func (snapshot snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var ret0 *cairo.Context
 
 	{
-		ret0 = cairo.WrapContext(ret)
+		ret0 = cairo.WrapContext(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *cairo.Context) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -63953,7 +64097,7 @@ func (self sortListModel) Incremental() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -64485,7 +64629,7 @@ func (spinButton spinButton) Numeric() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -64522,7 +64666,7 @@ func (spinButton spinButton) SnapToTicks() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -64585,7 +64729,7 @@ func (spinButton spinButton) Wrap() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -64824,7 +64968,7 @@ func (spinner spinner) Spinning() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65134,7 +65278,7 @@ func (stack stack) Hhomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65150,7 +65294,7 @@ func (stack stack) InterpolateSize() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65216,7 +65360,7 @@ func (stack stack) TransitionRunning() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65248,7 +65392,7 @@ func (stack stack) Vhomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65548,7 +65692,7 @@ func (self stackPage) NeedsAttention() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65579,7 +65723,7 @@ func (self stackPage) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -65595,7 +65739,7 @@ func (self stackPage) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -66148,7 +66292,7 @@ func (self stringFilter) IgnoreCase() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -66602,7 +66746,7 @@ func (self stringSorter) IgnoreCase() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -66836,10 +66980,7 @@ func (context styleContext) Border() Border {
 	var ret0 *Border
 
 	{
-		ret0 = WrapBorder(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Border) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBorder(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -66857,10 +66998,7 @@ func (context styleContext) Color() gdk.RGBA {
 	var ret0 *gdk.RGBA
 
 	{
-		ret0 = gdk.WrapRGBA(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.RGBA) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -66893,10 +67031,7 @@ func (context styleContext) Margin() Border {
 	var ret0 *Border
 
 	{
-		ret0 = WrapBorder(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Border) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBorder(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -66914,10 +67049,7 @@ func (context styleContext) Padding() Border {
 	var ret0 *Border
 
 	{
-		ret0 = WrapBorder(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Border) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBorder(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -66972,7 +67104,7 @@ func (context styleContext) HasClass(className string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -66993,13 +67125,10 @@ func (context styleContext) LookupColor(colorName string) (color gdk.RGBA, ok bo
 	var ret1 bool
 
 	{
-		ret0 = gdk.WrapRGBA(arg2)
-		runtime.SetFinalizer(&ret0, func(v **gdk.RGBA) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -67213,7 +67342,7 @@ func (self _switch) Active() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67228,7 +67357,7 @@ func (self _switch) State() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67530,7 +67659,7 @@ func (self text) ActivatesDefault() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67547,10 +67676,7 @@ func (self text) Attributes() *pango.AttrList {
 	var ret0 *pango.AttrList
 
 	{
-		ret0 = pango.WrapAttrList(ret)
-		runtime.SetFinalizer(&ret0, func(v **pango.AttrList) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapAttrList(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -67582,7 +67708,7 @@ func (self text) EnableEmojiCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67680,7 +67806,7 @@ func (self text) OverwriteMode() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67712,7 +67838,7 @@ func (self text) PropagateTextWidth() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67729,10 +67855,7 @@ func (self text) Tabs() *pango.TabArray {
 	var ret0 *pango.TabArray
 
 	{
-		ret0 = pango.WrapTabArray(ret)
-		runtime.SetFinalizer(&ret0, func(v **pango.TabArray) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = pango.WrapTabArray(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -67767,7 +67890,7 @@ func (self text) TruncateMultiline() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67783,7 +67906,7 @@ func (self text) Visibility() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -67803,7 +67926,7 @@ func (self text) GrabFocusWithoutSelecting() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68569,7 +68692,7 @@ func (buffer textBuffer) Backspace(iter *TextIter, interactive bool, defaultEdit
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68743,7 +68866,7 @@ func (buffer textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIte
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68800,7 +68923,7 @@ func (buffer textBuffer) DeleteSelection(interactive bool, defaultEditable bool)
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68848,17 +68971,11 @@ func (buffer textBuffer) Bounds() (start TextIter, end TextIter) {
 	var ret1 *TextIter
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapTextIter(arg2)
-		runtime.SetFinalizer(&ret1, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapTextIter(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -68874,7 +68991,7 @@ func (buffer textBuffer) CanRedo() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68889,7 +69006,7 @@ func (buffer textBuffer) CanUndo() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68927,7 +69044,7 @@ func (buffer textBuffer) EnableUndo() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -68949,10 +69066,7 @@ func (buffer textBuffer) EndIter() TextIter {
 	var ret0 *TextIter
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -68969,7 +69083,7 @@ func (buffer textBuffer) HasSelection() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -69005,10 +69119,7 @@ func (buffer textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
 	var ret0 *TextIter
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -69031,13 +69142,10 @@ func (buffer textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -69065,13 +69173,10 @@ func (buffer textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter Te
 	var ret1 bool
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -69101,13 +69206,10 @@ func (buffer textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter 
 	var ret1 bool
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -69126,10 +69228,7 @@ func (buffer textBuffer) IterAtMark(mark TextMark) TextIter {
 	var ret0 *TextIter
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -69152,10 +69251,7 @@ func (buffer textBuffer) IterAtOffset(charOffset int) TextIter {
 	var ret0 *TextIter
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -69226,7 +69322,7 @@ func (buffer textBuffer) Modified() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -69275,20 +69371,14 @@ func (buffer textBuffer) SelectionBounds() (start TextIter, end TextIter, ok boo
 	var ret2 bool
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapTextIter(arg2)
-		runtime.SetFinalizer(&ret1, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapTextIter(unsafe.Pointer(arg2))
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -69356,10 +69446,7 @@ func (buffer textBuffer) StartIter() TextIter {
 	var ret0 *TextIter
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -69495,7 +69582,7 @@ func (buffer textBuffer) InsertInteractive(iter *TextIter, text string, len int,
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -69524,7 +69611,7 @@ func (buffer textBuffer) InsertInteractiveAtCursor(text string, len int, default
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -69614,7 +69701,7 @@ func (buffer textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter,
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -69917,7 +70004,7 @@ func (anchor textChildAnchor) Deleted() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70066,7 +70153,7 @@ func (mark textMark) Deleted() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70081,7 +70168,7 @@ func (mark textMark) LeftGravity() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70112,7 +70199,7 @@ func (mark textMark) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70349,7 +70436,7 @@ func (table textTagTable) Add(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70919,7 +71006,7 @@ func (textView textView) BackwardDisplayLine(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70943,7 +71030,7 @@ func (textView textView) BackwardDisplayLineStart(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -70995,7 +71082,7 @@ func (textView textView) ForwardDisplayLine(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71019,7 +71106,7 @@ func (textView textView) ForwardDisplayLineEnd(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71035,7 +71122,7 @@ func (textView textView) AcceptsTab() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71106,17 +71193,11 @@ func (textView textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, 
 	var ret1 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret1 = gdk.WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret1, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	}
 
 	return ret0, ret1
@@ -71132,7 +71213,7 @@ func (textView textView) CursorVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71148,7 +71229,7 @@ func (textView textView) Editable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71258,13 +71339,10 @@ func (textView textView) IterAtLocation(x int, y int) (iter TextIter, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -71295,15 +71373,12 @@ func (textView textView) IterAtPosition(x int, y int) (iter TextIter, trailing i
 	var ret2 bool
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	ret1 = int(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -71325,10 +71400,7 @@ func (textView textView) IterLocation(iter *TextIter) gdk.Rectangle {
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg2)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -71385,10 +71457,7 @@ func (textView textView) LineAtY(y int) (targetIter TextIter, lineTop int) {
 	var ret1 int
 
 	{
-		ret0 = WrapTextIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TextIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
 	ret1 = int(arg3)
@@ -71431,7 +71500,7 @@ func (textView textView) Monospace() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71446,7 +71515,7 @@ func (textView textView) Overwrite() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71534,7 +71603,10 @@ func (textView textView) Tabs() *pango.TabArray {
 	var ret0 *pango.TabArray
 
 	{
-		ret0 = pango.WrapTabArray(ret)
+		ret0 = pango.WrapTabArray(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *pango.TabArray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -71569,10 +71641,7 @@ func (textView textView) VisibleRect() gdk.Rectangle {
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -71632,7 +71701,7 @@ func (textView textView) ImContextFilterKeypress(event gdk.Event) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71650,7 +71719,7 @@ func (textView textView) MoveMarkOnscreen(mark TextMark) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71693,7 +71762,7 @@ func (textView textView) MoveVisually(iter *TextIter, count int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71709,7 +71778,7 @@ func (textView textView) PlaceCursorOnscreen() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -71798,7 +71867,7 @@ func (textView textView) ScrollToIter(iter *TextIter, withinMargin float64, useA
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -72131,7 +72200,7 @@ func (textView textView) StartsDisplayLine(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -72329,7 +72398,7 @@ func (toggleButton toggleButton) Active() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -72839,7 +72908,7 @@ func (self treeListModel) Autoexpand() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -72898,7 +72967,7 @@ func (self treeListModel) Passthrough() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -73100,7 +73169,7 @@ func (self treeListRow) Expanded() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -73174,7 +73243,7 @@ func (self treeListRow) IsExpandable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -73496,13 +73565,10 @@ func (filter treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (filte
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -73524,7 +73590,10 @@ func (filter treeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreeP
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -73545,10 +73614,7 @@ func (filter treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeI
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -73571,7 +73637,10 @@ func (filter treeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tree
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -73887,13 +73956,10 @@ func (treeModelSort treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (
 	var ret1 bool
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -73915,7 +73981,10 @@ func (treeModelSort treeModelSort) ConvertChildPathToPath(childPath *TreePath) *
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -73936,10 +74005,7 @@ func (treeModelSort treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) 
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -73962,7 +74028,10 @@ func (treeModelSort treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) 
 	var ret0 *TreePath
 
 	{
-		ret0 = WrapTreePath(ret)
+		ret0 = WrapTreePath(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -73998,7 +74067,7 @@ func (treeModelSort treeModelSort) IterIsValid(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -74180,13 +74249,10 @@ func (selection treeSelection) Selected() (model TreeModel, iter TreeIter, ok bo
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
 
 	{
-		ret1 = WrapTreeIter(arg2)
-		runtime.SetFinalizer(&ret1, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -74213,7 +74279,10 @@ func (selection treeSelection) SelectedRows() (model TreeModel, list *glib.List)
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
 
 	{
-		ret1 = glib.WrapList(ret)
+		ret1 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret1, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0, ret1
@@ -74261,7 +74330,7 @@ func (selection treeSelection) IterIsSelected(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -74279,7 +74348,7 @@ func (selection treeSelection) PathIsSelected(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -74627,10 +74696,7 @@ func (treeStore treeStore) Append(parent *TreeIter) TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -74667,10 +74733,7 @@ func (treeStore treeStore) Insert(parent *TreeIter, position int) TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -74700,10 +74763,7 @@ func (treeStore treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) Tree
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -74733,10 +74793,7 @@ func (treeStore treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) Tre
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -74783,10 +74840,7 @@ func (treeStore treeStore) InsertWithValuesv(parent *TreeIter, position int, col
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -74807,7 +74861,7 @@ func (treeStore treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -74845,7 +74899,7 @@ func (treeStore treeStore) IterIsValid(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -74901,10 +74955,7 @@ func (treeStore treeStore) Prepend(parent *TreeIter) TreeIter {
 	var ret0 *TreeIter
 
 	{
-		ret0 = WrapTreeIter(arg1)
-		runtime.SetFinalizer(&ret0, func(v **TreeIter) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -74924,7 +74975,7 @@ func (treeStore treeStore) Remove(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -75646,7 +75697,7 @@ func (treeView treeView) CollapseRow(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -75884,7 +75935,7 @@ func (treeView treeView) ExpandRow(path *TreePath, openAll bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -75912,7 +75963,7 @@ func (treeView treeView) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -75942,10 +75993,7 @@ func (treeView treeView) BackgroundArea(path *TreePath, column TreeViewColumn) g
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -75975,10 +76023,7 @@ func (treeView treeView) CellArea(path *TreePath, column TreeViewColumn) gdk.Rec
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg3)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -76013,7 +76058,10 @@ func (treeView treeView) Columns() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -76038,7 +76086,10 @@ func (treeView treeView) Cursor() (path *TreePath, focusColumn TreeViewColumn) {
 	var ret1 TreeViewColumn
 
 	{
-		ret0 = WrapTreePath(arg1)
+		ret0 = WrapTreePath(unsafe.Pointer(arg1))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeViewColumn)
@@ -76069,12 +76120,15 @@ func (treeView treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos
 	var ret2 bool
 
 	{
-		ret0 = WrapTreePath(arg3)
+		ret0 = WrapTreePath(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = (*TreeViewDropPosition)(arg4)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -76094,7 +76148,10 @@ func (treeView treeView) DragDestRow() (path *TreePath, pos TreeViewDropPosition
 	var ret1 *TreeViewDropPosition
 
 	{
-		ret0 = WrapTreePath(arg1)
+		ret0 = WrapTreePath(unsafe.Pointer(arg1))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = (*TreeViewDropPosition)(arg2)
@@ -76113,7 +76170,7 @@ func (treeView treeView) EnableSearch() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76129,7 +76186,7 @@ func (treeView treeView) EnableTreeLines() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76162,7 +76219,7 @@ func (treeView treeView) FixedHeightMode() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76192,7 +76249,7 @@ func (treeView treeView) HeadersClickable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76207,7 +76264,7 @@ func (treeView treeView) HeadersVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76223,7 +76280,7 @@ func (treeView treeView) HoverExpand() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76239,7 +76296,7 @@ func (treeView treeView) HoverSelection() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76329,7 +76386,10 @@ func (treeView treeView) PathAtPos(x int, y int) (path *TreePath, column TreeVie
 	var ret4 bool
 
 	{
-		ret0 = WrapTreePath(arg3)
+		ret0 = WrapTreePath(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeViewColumn)
@@ -76338,7 +76398,7 @@ func (treeView treeView) PathAtPos(x int, y int) (path *TreePath, column TreeVie
 
 	ret3 = int(arg6)
 
-	ret4 = ret != C.FALSE
+	ret4 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -76354,7 +76414,7 @@ func (treeView treeView) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76371,7 +76431,7 @@ func (treeView treeView) RubberBanding() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76433,7 +76493,7 @@ func (treeView treeView) ShowExpanders() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76491,17 +76551,17 @@ func (treeView treeView) TooltipContext(x int, y int, keyboardTip bool) (model T
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
 
 	{
-		ret1 = WrapTreePath(arg5)
-	}
-
-	{
-		ret2 = WrapTreeIter(arg6)
-		runtime.SetFinalizer(&ret2, func(v **TreeIter) {
+		ret1 = WrapTreePath(unsafe.Pointer(arg5))
+		runtime.SetFinalizer(ret1, func(v **TreePath) {
 			C.free(unsafe.Pointer(v.Native()))
 		})
 	}
 
-	ret3 = ret != C.FALSE
+	{
+		ret2 = WrapTreeIter(unsafe.Pointer(arg6))
+	}
+
+	ret3 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3
 }
@@ -76524,14 +76584,20 @@ func (treeView treeView) VisibleRange() (startPath *TreePath, endPath *TreePath,
 	var ret2 bool
 
 	{
-		ret0 = WrapTreePath(arg1)
+		ret0 = WrapTreePath(unsafe.Pointer(arg1))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	{
-		ret1 = WrapTreePath(arg2)
+		ret1 = WrapTreePath(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret1, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -76552,10 +76618,7 @@ func (treeView treeView) VisibleRect() gdk.Rectangle {
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -76657,7 +76720,10 @@ func (treeView treeView) IsBlankAtPos(x int, y int) (path *TreePath, column Tree
 	var ret4 bool
 
 	{
-		ret0 = WrapTreePath(arg3)
+		ret0 = WrapTreePath(unsafe.Pointer(arg3))
+		runtime.SetFinalizer(ret0, func(v **TreePath) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeViewColumn)
@@ -76666,7 +76732,7 @@ func (treeView treeView) IsBlankAtPos(x int, y int) (path *TreePath, column Tree
 
 	ret3 = int(arg6)
 
-	ret4 = ret != C.FALSE
+	ret4 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -76682,7 +76748,7 @@ func (treeView treeView) IsRubberBandingActive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -76757,7 +76823,7 @@ func (treeView treeView) RowExpanded(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77592,7 +77658,7 @@ func (treeColumn treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOf
 
 	ret1 = int(arg3)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -77638,7 +77704,7 @@ func (treeColumn treeViewColumn) CellIsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77752,7 +77818,7 @@ func (treeColumn treeViewColumn) Clickable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77767,7 +77833,7 @@ func (treeColumn treeViewColumn) Expand() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77832,7 +77898,7 @@ func (treeColumn treeViewColumn) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77848,7 +77914,7 @@ func (treeColumn treeViewColumn) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77896,7 +77962,7 @@ func (treeColumn treeViewColumn) SortIndicator() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -77972,7 +78038,7 @@ func (treeColumn treeViewColumn) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -78485,7 +78551,7 @@ func (self video) Autoplay() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -78516,7 +78582,7 @@ func (self video) Loop() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -78725,7 +78791,7 @@ func (viewport viewport) ScrollToFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80035,7 +80101,7 @@ func (widget widget) Activate() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80063,7 +80129,7 @@ func (widget widget) ActivateActionVariant(name string, args *glib.Variant) bool
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80211,7 +80277,7 @@ func (widget widget) ChildFocus(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80239,13 +80305,10 @@ func (widget widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok b
 	var ret1 bool
 
 	{
-		ret0 = graphene.WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **graphene.Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = graphene.WrapRect(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -80272,7 +80335,7 @@ func (widget widget) ComputeExpand(orientation Orientation) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80296,13 +80359,10 @@ func (widget widget) ComputePoint(target Widget, point *graphene.Point) (outPoin
 	var ret1 bool
 
 	{
-		ret0 = graphene.WrapPoint(arg3)
-		runtime.SetFinalizer(&ret0, func(v **graphene.Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = graphene.WrapPoint(unsafe.Pointer(arg3))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -80323,13 +80383,10 @@ func (widget widget) ComputeTransform(target Widget) (outTransform graphene.Matr
 	var ret1 bool
 
 	{
-		ret0 = graphene.WrapMatrix(arg2)
-		runtime.SetFinalizer(&ret0, func(v **graphene.Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = graphene.WrapMatrix(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -80351,7 +80408,7 @@ func (widget widget) Contains(x float64, y float64) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80417,7 +80474,7 @@ func (widget widget) DragCheckThreshold(startX int, startY int, currentX int, cu
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80514,10 +80571,7 @@ func (widget widget) Allocation() Allocation {
 	{
 		var tmp gdk.Rectangle
 		{
-			tmp = gdk.WrapRectangle(arg1)
-			runtime.SetFinalizer(&tmp, func(v *gdk.Rectangle) {
-				C.free(unsafe.Pointer(v.Native()))
-			})
+			tmp = gdk.WrapRectangle(unsafe.Pointer(arg1))
 		}
 		ret0 = *Allocation(tmp)
 	}
@@ -80561,7 +80615,7 @@ func (widget widget) CanFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80576,7 +80630,7 @@ func (widget widget) CanTarget() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80596,7 +80650,7 @@ func (widget widget) ChildVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80638,7 +80692,7 @@ func (widget widget) CSSClasses() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -80758,7 +80812,7 @@ func (widget widget) FocusOnClick() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80774,7 +80828,7 @@ func (widget widget) Focusable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80807,10 +80861,7 @@ func (widget widget) FontOptions() *cairo.FontOptions {
 	var ret0 *cairo.FontOptions
 
 	{
-		ret0 = cairo.WrapFontOptions(ret)
-		runtime.SetFinalizer(&ret0, func(v **cairo.FontOptions) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = cairo.WrapFontOptions(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -80881,7 +80932,7 @@ func (widget widget) HasTooltip() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80925,7 +80976,7 @@ func (widget widget) Hexpand() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80948,7 +80999,7 @@ func (widget widget) HexpandSet() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -80996,7 +81047,7 @@ func (widget widget) Mapped() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81206,17 +81257,11 @@ func (widget widget) PreferredSize() (minimumSize Requisition, naturalSize Requi
 	var ret1 *Requisition
 
 	{
-		ret0 = WrapRequisition(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Requisition) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRequisition(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapRequisition(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Requisition) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapRequisition(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -81268,7 +81313,7 @@ func (widget widget) Realized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81287,7 +81332,7 @@ func (widget widget) ReceivesDefault() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81363,7 +81408,7 @@ func (widget widget) Sensitive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81564,7 +81609,7 @@ func (widget widget) Vexpand() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81582,7 +81627,7 @@ func (widget widget) VexpandSet() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81603,7 +81648,7 @@ func (widget widget) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81643,7 +81688,7 @@ func (widget widget) GrabFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81661,7 +81706,7 @@ func (widget widget) HasCSSClass(cssClass string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81677,7 +81722,7 @@ func (widget widget) HasDefault() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81694,7 +81739,7 @@ func (widget widget) HasFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81716,7 +81761,7 @@ func (widget widget) HasVisibleFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81742,7 +81787,7 @@ func (widget widget) InDestruction() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81857,7 +81902,7 @@ func (widget widget) IsAncestor(ancestor Widget) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81873,7 +81918,7 @@ func (widget widget) IsDrawable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81891,7 +81936,7 @@ func (widget widget) IsFocus() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81907,7 +81952,7 @@ func (widget widget) IsSensitive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81927,7 +81972,7 @@ func (widget widget) IsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81969,7 +82014,7 @@ func (widget widget) KeynavFailed(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -81993,7 +82038,10 @@ func (widget widget) ListMnemonicLabels() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -82062,7 +82110,7 @@ func (widget widget) MnemonicActivate(groupCycling bool) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -82934,7 +82982,7 @@ func (widget widget) ShouldLayout() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83006,7 +83054,7 @@ func (srcWidget widget) TranslateCoordinates(destWidget Widget, srcX float64, sr
 
 	ret1 = float64(arg5)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -83700,7 +83748,7 @@ func (window window) Decorated() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83755,7 +83803,7 @@ func (window window) Deletable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83771,7 +83819,7 @@ func (window window) DestroyWithParent() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83804,7 +83852,7 @@ func (window window) FocusVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83836,7 +83884,7 @@ func (window window) HideOnClose() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83867,7 +83915,7 @@ func (window window) MnemonicsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83882,7 +83930,7 @@ func (window window) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83897,7 +83945,7 @@ func (window window) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83959,7 +84007,7 @@ func (window window) HasGroup() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -83978,7 +84026,7 @@ func (window window) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -84002,7 +84050,7 @@ func (window window) IsFullscreen() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -84026,7 +84074,7 @@ func (window window) IsMaximized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -84651,7 +84699,7 @@ func (self windowControls) Empty() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -84789,7 +84837,10 @@ func (windowGroup windowGroup) ListWindows() *glib.List {
 	var ret0 *glib.List
 
 	{
-		ret0 = glib.WrapList(ret)
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0

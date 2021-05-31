@@ -19,7 +19,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
 //
-// extern void gotk4_ParseErrorFunc(const GskParseLocation*, const GskParseLocation*, const GError*, gpointer)
+// extern void gotk4_ParseErrorFunc(const GskParseLocation* _0, const GskParseLocation* _1, const GError* _2, gpointer _3);
 import "C"
 
 func init() {
@@ -310,24 +310,15 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	var error *glib.Error
 
 	{
-		start = WrapParseLocation(arg0)
-		runtime.SetFinalizer(&start, func(v **ParseLocation) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		start = WrapParseLocation(unsafe.Pointer(arg0))
 	}
 
 	{
-		end = WrapParseLocation(arg1)
-		runtime.SetFinalizer(&end, func(v **ParseLocation) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		end = WrapParseLocation(unsafe.Pointer(arg1))
 	}
 
 	{
-		error = glib.WrapError(arg2)
-		runtime.SetFinalizer(&error, func(v **glib.Error) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		error = glib.WrapError(unsafe.Pointer(arg2))
 	}
 
 	v.(ParseErrorFunc)(start, end, error)
@@ -367,10 +358,13 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapTransform(arg2)
+		ret0 = WrapTransform(unsafe.Pointer(arg2))
+		runtime.SetFinalizer(ret0, func(v **Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -392,7 +386,7 @@ func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
 
 func marshalColorStop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapColorStop(unsafe.Pointer(b))
+	return WrapColorStop(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -411,10 +405,7 @@ func (c *ColorStop) Offset() float32 {
 func (c *ColorStop) Color() gdk.RGBA {
 	var ret gdk.RGBA
 	{
-		ret = gdk.WrapRGBA(c.native.color)
-		runtime.SetFinalizer(&ret, func(v *gdk.RGBA) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = gdk.WrapRGBA(unsafe.Pointer(c.native.color))
 	}
 	return ret
 }
@@ -436,7 +427,7 @@ func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
 
 func marshalParseLocation(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapParseLocation(unsafe.Pointer(b))
+	return WrapParseLocation(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -503,7 +494,7 @@ func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
 
 func marshalRoundedRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRoundedRect(unsafe.Pointer(b))
+	return WrapRoundedRect(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -515,10 +506,7 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 func (r *RoundedRect) Bounds() graphene.Rect {
 	var ret graphene.Rect
 	{
-		ret = graphene.WrapRect(r.native.bounds)
-		runtime.SetFinalizer(&ret, func(v *graphene.Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = graphene.WrapRect(unsafe.Pointer(r.native.bounds))
 	}
 	return ret
 }
@@ -532,10 +520,7 @@ func (r *RoundedRect) Corner() [4]graphene.Size {
 		for i := 0; i < 4; i++ {
 			src := cArray[i]
 			{
-				ret[i] = graphene.WrapSize(src)
-				runtime.SetFinalizer(&ret[i], func(v *graphene.Size) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret[i] = graphene.WrapSize(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -555,7 +540,7 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -574,7 +559,7 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -602,10 +587,7 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 	var ret0 *RoundedRect
 
 	{
-		ret0 = WrapRoundedRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRoundedRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -627,10 +609,7 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var ret0 *RoundedRect
 
 	{
-		ret0 = WrapRoundedRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRoundedRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -652,10 +631,7 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 	var ret0 *RoundedRect
 
 	{
-		ret0 = WrapRoundedRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRoundedRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -675,7 +651,7 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -694,7 +670,7 @@ func (self *RoundedRect) IsRectilinear() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -713,10 +689,7 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 	var ret0 *RoundedRect
 
 	{
-		ret0 = WrapRoundedRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRoundedRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -739,10 +712,7 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	var ret0 *RoundedRect
 
 	{
-		ret0 = WrapRoundedRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRoundedRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -772,10 +742,7 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 	var ret0 *RoundedRect
 
 	{
-		ret0 = WrapRoundedRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **RoundedRect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRoundedRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -798,7 +765,7 @@ func WrapShaderArgsBuilder(ptr unsafe.Pointer) *ShaderArgsBuilder {
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapShaderArgsBuilder(unsafe.Pointer(b))
+	return WrapShaderArgsBuilder(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -819,7 +786,10 @@ func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArg
 	var ret0 *ShaderArgsBuilder
 
 	{
-		ret0 = WrapShaderArgsBuilder(ret)
+		ret0 = WrapShaderArgsBuilder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ShaderArgsBuilder) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -838,7 +808,10 @@ func (builder *ShaderArgsBuilder) FreeToArgs() *glib.Bytes {
 	var ret0 *glib.Bytes
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -855,7 +828,10 @@ func (builder *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
 	var ret0 *ShaderArgsBuilder
 
 	{
-		ret0 = WrapShaderArgsBuilder(ret)
+		ret0 = WrapShaderArgsBuilder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ShaderArgsBuilder) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -974,7 +950,10 @@ func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 	var ret0 *glib.Bytes
 
 	{
-		ret0 = glib.WrapBytes(ret)
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1007,7 +986,7 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 
 func marshalShadow(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapShadow(unsafe.Pointer(b))
+	return WrapShadow(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -1019,10 +998,7 @@ func (s *Shadow) Native() unsafe.Pointer {
 func (s *Shadow) Color() gdk.RGBA {
 	var ret gdk.RGBA
 	{
-		ret = gdk.WrapRGBA(s.native.color)
-		runtime.SetFinalizer(&ret, func(v *gdk.RGBA) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = gdk.WrapRGBA(unsafe.Pointer(s.native.color))
 	}
 	return ret
 }
@@ -1065,7 +1041,7 @@ func WrapTransform(ptr unsafe.Pointer) *Transform {
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTransform(unsafe.Pointer(b))
+	return WrapTransform(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -1081,7 +1057,10 @@ func NewTransform() *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1099,7 +1078,7 @@ func (first *Transform) Equal(second *Transform) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1135,7 +1114,10 @@ func (self *Transform) Invert() *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1154,7 +1136,10 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1176,7 +1161,10 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1205,10 +1193,7 @@ func (self *Transform) Ref() *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
-		runtime.SetFinalizer(&ret0, func(v **Transform) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTransform(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1227,7 +1212,10 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1250,7 +1238,10 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1272,7 +1263,10 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1295,7 +1289,10 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1391,10 +1388,7 @@ func (self *Transform) ToMatrix() graphene.Matrix {
 	var ret0 *graphene.Matrix
 
 	{
-		ret0 = graphene.WrapMatrix(arg1)
-		runtime.SetFinalizer(&ret0, func(v **graphene.Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = graphene.WrapMatrix(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -1455,7 +1449,10 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1476,10 +1473,7 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	var ret0 *graphene.Rect
 
 	{
-		ret0 = graphene.WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **graphene.Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = graphene.WrapRect(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -1500,10 +1494,7 @@ func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	var ret0 *graphene.Point
 
 	{
-		ret0 = graphene.WrapPoint(arg2)
-		runtime.SetFinalizer(&ret0, func(v **graphene.Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = graphene.WrapPoint(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -1522,7 +1513,10 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1541,7 +1535,10 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var ret0 *Transform
 
 	{
-		ret0 = WrapTransform(ret)
+		ret0 = WrapTransform(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Transform) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1813,7 +1810,7 @@ func (shader glShader) ArgBool(args *glib.Bytes, idx int) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2003,10 +2000,7 @@ func (shader glShader) Source() *glib.Bytes {
 	var ret0 *glib.Bytes
 
 	{
-		ret0 = glib.WrapBytes(ret)
-		runtime.SetFinalizer(&ret0, func(v **glib.Bytes) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2165,7 +2159,7 @@ func (renderer renderer) IsRealized() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }

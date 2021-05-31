@@ -3,7 +3,6 @@
 package gdkpixbuf
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -18,7 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 //
-// extern gboolean gotk4_PixbufSaveFunc(const gchar*, gsize, GError**, gpointer)
+// extern gboolean gotk4_PixbufSaveFunc(const gchar* _0, gsize _1, GError** _2, gpointer _3);
 import "C"
 
 func init() {
@@ -178,14 +177,11 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	var buf []byte
 
 	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg0))
-		sliceHeader.Len = arg1
-		sliceHeader.Cap = arg1
-		runtime.SetFinalizer(&arg0, func() {
-			C.free(unsafe.Pointer(arg0))
-		})
-		defer runtime.KeepAlive(arg0)
+		buf = make([]byte, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			buf[i] = byte(src)
+		}
 	}
 
 	err, ok := v.(PixbufSaveFunc)(buf)
@@ -222,7 +218,7 @@ func WrapPixbufFormat(ptr unsafe.Pointer) *PixbufFormat {
 
 func marshalPixbufFormat(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPixbufFormat(unsafe.Pointer(b))
+	return WrapPixbufFormat(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -241,7 +237,10 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 	var ret0 *PixbufFormat
 
 	{
-		ret0 = WrapPixbufFormat(ret)
+		ret0 = WrapPixbufFormat(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *PixbufFormat) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -292,7 +291,7 @@ func (format *PixbufFormat) Extensions() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -339,7 +338,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			C.free(unsafe.Pointer(src))
 		}
@@ -375,7 +374,7 @@ func (format *PixbufFormat) IsDisabled() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -395,7 +394,7 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -413,7 +412,7 @@ func (format *PixbufFormat) IsScalable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -428,7 +427,7 @@ func (format *PixbufFormat) IsWritable() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -730,7 +729,7 @@ func (animation pixbufAnimation) IsStaticImage() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -862,7 +861,7 @@ func (iter pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -928,7 +927,7 @@ func (iter pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1133,10 +1132,7 @@ func (loader pixbufLoader) Format() *PixbufFormat {
 	var ret0 *PixbufFormat
 
 	{
-		ret0 = WrapPixbufFormat(ret)
-		runtime.SetFinalizer(&ret0, func(v **PixbufFormat) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPixbufFormat(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1319,7 +1315,7 @@ func (animation pixbufSimpleAnim) Loop() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }

@@ -5,6 +5,8 @@ package graphene
 import (
 	"runtime"
 	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: graphene-gobject-1.0
@@ -159,10 +161,7 @@ func BoxEmpty() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -178,10 +177,7 @@ func BoxInfinite() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -198,10 +194,7 @@ func BoxMinusOne() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -218,10 +211,7 @@ func BoxOne() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -238,10 +228,7 @@ func BoxOneMinusOne() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -258,10 +245,7 @@ func BoxZero() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -275,10 +259,7 @@ func Point3DZero() *Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -292,10 +273,7 @@ func PointZero() *Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -311,7 +289,10 @@ func RectAlloc() *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
+		ret0 = WrapRect(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Rect) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -326,10 +307,7 @@ func RectZero() *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -344,10 +322,7 @@ func SizeZero() *Size {
 	var ret0 *Size
 
 	{
-		ret0 = WrapSize(ret)
-		runtime.SetFinalizer(&ret0, func(v **Size) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSize(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -361,10 +336,7 @@ func Vec2One() *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -378,10 +350,7 @@ func Vec2XAxis() *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -395,10 +364,7 @@ func Vec2YAxis() *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -412,10 +378,7 @@ func Vec2Zero() *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -430,10 +393,7 @@ func Vec3One() *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -448,10 +408,7 @@ func Vec3XAxis() *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -466,10 +423,7 @@ func Vec3YAxis() *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -484,10 +438,7 @@ func Vec3ZAxis() *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -502,10 +453,7 @@ func Vec3Zero() *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -520,10 +468,7 @@ func Vec4One() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -538,10 +483,7 @@ func Vec4WAxis() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -556,10 +498,7 @@ func Vec4XAxis() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -574,10 +513,7 @@ func Vec4YAxis() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -592,10 +528,7 @@ func Vec4ZAxis() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -610,10 +543,7 @@ func Vec4Zero() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -637,7 +567,7 @@ func WrapBox(ptr unsafe.Pointer) *Box {
 
 func marshalBox(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBox(unsafe.Pointer(b))
+	return WrapBox(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -653,7 +583,10 @@ func NewBoxAlloc() *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
+		ret0 = WrapBox(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Box) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -672,7 +605,7 @@ func (a *Box) ContainsBox(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -689,7 +622,7 @@ func (box *Box) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -706,7 +639,7 @@ func (a *Box) Equal(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -725,10 +658,7 @@ func (box *Box) Expand(point *Point3D) Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -751,10 +681,7 @@ func (box *Box) ExpandScalar(scalar float32) Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -775,10 +702,7 @@ func (box *Box) ExpandVec3(vec *Vec3) Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -806,10 +730,7 @@ func (box *Box) BoundingSphere() Sphere {
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Sphere) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSphere(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -827,10 +748,7 @@ func (box *Box) Center() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -879,10 +797,7 @@ func (box *Box) Max() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -901,10 +816,7 @@ func (box *Box) Min() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -923,10 +835,7 @@ func (box *Box) Size() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -949,10 +858,7 @@ func (box *Box) Vertices() [8]Vec3 {
 		for i := 0; i < 8; i++ {
 			src := cArray[i]
 			{
-				ret0[i] = WrapVec3(src)
-				runtime.SetFinalizer(&ret0[i], func(v *Vec3) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret0[i] = WrapVec3(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -990,10 +896,7 @@ func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1013,10 +916,7 @@ func (box *Box) InitFromBox(src *Box) *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1041,10 +941,7 @@ func (box *Box) InitFromPoints(nPoints uint, points []Point3D) *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1066,10 +963,7 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1095,10 +989,7 @@ func (box *Box) InitFromVectors(nVectors uint, vectors []Vec3) *Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(ret)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1122,13 +1013,10 @@ func (a *Box) Intersection(b *Box) (res Box, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapBox(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -1147,10 +1035,7 @@ func (a *Box) Union(b *Box) Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -1176,7 +1061,7 @@ func WrapEuler(ptr unsafe.Pointer) *Euler {
 
 func marshalEuler(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEuler(unsafe.Pointer(b))
+	return WrapEuler(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -1192,7 +1077,10 @@ func NewEulerAlloc() *Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
+		ret0 = WrapEuler(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Euler) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1210,7 +1098,7 @@ func (a *Euler) Equal(b *Euler) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1362,10 +1250,7 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1388,10 +1273,7 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1416,10 +1298,7 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1444,10 +1323,7 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1473,10 +1349,7 @@ func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrde
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1501,10 +1374,7 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1530,10 +1400,7 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(ret)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1557,10 +1424,7 @@ func (e *Euler) Reorder(order EulerOrder) Euler {
 	var ret0 *Euler
 
 	{
-		ret0 = WrapEuler(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Euler) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapEuler(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -1593,10 +1457,7 @@ func (e *Euler) ToMatrix() Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -1614,10 +1475,7 @@ func (e *Euler) ToQuaternion() Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -1636,10 +1494,7 @@ func (e *Euler) ToVec3() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -1665,7 +1520,7 @@ func WrapFrustum(ptr unsafe.Pointer) *Frustum {
 
 func marshalFrustum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFrustum(unsafe.Pointer(b))
+	return WrapFrustum(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -1681,7 +1536,10 @@ func NewFrustumAlloc() *Frustum {
 	var ret0 *Frustum
 
 	{
-		ret0 = WrapFrustum(ret)
+		ret0 = WrapFrustum(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Frustum) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1700,7 +1558,7 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1717,7 +1575,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1748,10 +1606,7 @@ func (f *Frustum) Planes() [6]Plane {
 		for i := 0; i < 6; i++ {
 			src := cArray[i]
 			{
-				ret0[i] = WrapPlane(src)
-				runtime.SetFinalizer(&ret0[i], func(v *Plane) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret0[i] = WrapPlane(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -1783,10 +1638,7 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 	var ret0 *Frustum
 
 	{
-		ret0 = WrapFrustum(ret)
-		runtime.SetFinalizer(&ret0, func(v **Frustum) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFrustum(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1806,10 +1658,7 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 	var ret0 *Frustum
 
 	{
-		ret0 = WrapFrustum(ret)
-		runtime.SetFinalizer(&ret0, func(v **Frustum) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFrustum(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1828,10 +1677,7 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	var ret0 *Frustum
 
 	{
-		ret0 = WrapFrustum(ret)
-		runtime.SetFinalizer(&ret0, func(v **Frustum) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapFrustum(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -1850,7 +1696,7 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1868,7 +1714,7 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1893,7 +1739,7 @@ func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMatrix(unsafe.Pointer(b))
+	return WrapMatrix(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -1909,7 +1755,10 @@ func NewMatrixAlloc() *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Matrix) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -1943,41 +1792,26 @@ func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, she
 	var ret5 bool
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret2 = WrapQuaternion(arg3)
-		runtime.SetFinalizer(&ret2, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret2 = WrapQuaternion(unsafe.Pointer(arg3))
 	}
 
 	{
-		ret3 = WrapVec3(arg4)
-		runtime.SetFinalizer(&ret3, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret3 = WrapVec3(unsafe.Pointer(arg4))
 	}
 
 	{
-		ret4 = WrapVec4(arg5)
-		runtime.SetFinalizer(&ret4, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret4 = WrapVec4(unsafe.Pointer(arg5))
 	}
 
-	ret5 = ret != C.FALSE
+	ret5 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4, ret5
 }
@@ -2009,7 +1843,7 @@ func (a *Matrix) Equal(b *Matrix) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2045,7 +1879,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2073,10 +1907,7 @@ func (m *Matrix) Row(index_ uint) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -2224,10 +2055,7 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2248,10 +2076,7 @@ func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2271,10 +2096,7 @@ func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2300,10 +2122,7 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2335,10 +2154,7 @@ func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top fl
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2355,10 +2171,7 @@ func (m *Matrix) InitIdentity() *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2394,10 +2207,7 @@ func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2426,10 +2236,7 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2455,10 +2262,7 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2480,10 +2284,7 @@ func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2506,10 +2307,7 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2531,10 +2329,7 @@ func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2554,10 +2349,7 @@ func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(ret)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -2584,10 +2376,7 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -2606,13 +2395,10 @@ func (m *Matrix) Inverse() (res Matrix, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapMatrix(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg1))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -2628,7 +2414,7 @@ func (m *Matrix) Is2D() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2644,7 +2430,7 @@ func (m *Matrix) IsBackfaceVisible() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2660,7 +2446,7 @@ func (m *Matrix) IsIdentity() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2675,7 +2461,7 @@ func (m *Matrix) IsSingular() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2697,10 +2483,7 @@ func (a *Matrix) Multiply(b *Matrix) Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -2721,7 +2504,7 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -2738,10 +2521,7 @@ func (m *Matrix) Normalize() Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -2761,10 +2541,7 @@ func (m *Matrix) Perspective(depth float32) Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -2796,10 +2573,7 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -2822,10 +2596,7 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 	var ret0 *Quad
 
 	{
-		ret0 = WrapQuad(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Quad) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuad(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -2848,10 +2619,7 @@ func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3038,7 +2806,7 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 
 	ret5 = float64(arg6)
 
-	ret6 = ret != C.FALSE
+	ret6 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4, ret5, ret6
 }
@@ -3079,10 +2847,7 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3106,10 +2871,7 @@ func (m *Matrix) TransformBox(b *Box) Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3135,10 +2897,7 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3165,10 +2924,7 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3188,10 +2944,7 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 	var ret0 *Ray
 
 	{
-		ret0 = WrapRay(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Ray) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRay(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3216,10 +2969,7 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 	var ret0 *Quad
 
 	{
-		ret0 = WrapQuad(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Quad) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuad(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3240,10 +2990,7 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Sphere) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSphere(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3269,10 +3016,7 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3294,10 +3038,7 @@ func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -3330,10 +3071,7 @@ func (m *Matrix) Transpose() Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -3356,10 +3094,7 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Po
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -3383,10 +3118,7 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -3410,13 +3142,10 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (res Point, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapPoint(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg3))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -3441,7 +3170,7 @@ func WrapPlane(ptr unsafe.Pointer) *Plane {
 
 func marshalPlane(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPlane(unsafe.Pointer(b))
+	return WrapPlane(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3457,7 +3186,10 @@ func NewPlaneAlloc() *Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(ret)
+		ret0 = WrapPlane(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Plane) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3492,7 +3224,7 @@ func (a *Plane) Equal(b *Plane) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3535,10 +3267,7 @@ func (p *Plane) Normal() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -3560,10 +3289,7 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(ret)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3583,10 +3309,7 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(ret)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3608,10 +3331,7 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(ret)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3638,10 +3358,7 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(ret)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3661,10 +3378,7 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(ret)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3683,10 +3397,7 @@ func (p *Plane) Negate() Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -3705,10 +3416,7 @@ func (p *Plane) Normalize() Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -3736,10 +3444,7 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -3762,7 +3467,7 @@ func WrapPoint(ptr unsafe.Pointer) *Point {
 
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPoint(unsafe.Pointer(b))
+	return WrapPoint(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -3778,7 +3483,10 @@ func NewPointAlloc() *Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(ret)
+		ret0 = WrapPoint(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Point) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -3839,7 +3547,7 @@ func (a *Point) Equal(b *Point) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3870,10 +3578,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3892,10 +3597,7 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3915,10 +3617,7 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -3941,10 +3640,7 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -3965,7 +3661,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -3983,10 +3679,7 @@ func (p *Point) ToVec2() Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -4009,7 +3702,7 @@ func WrapPoint3D(ptr unsafe.Pointer) *Point3D {
 
 func marshalPoint3D(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPoint3D(unsafe.Pointer(b))
+	return WrapPoint3D(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4025,7 +3718,10 @@ func NewPoint3DAlloc() *Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(ret)
+		ret0 = WrapPoint3D(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Point3D) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4066,10 +3762,7 @@ func (a *Point3D) Cross(b *Point3D) Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -4090,10 +3783,7 @@ func (a *Point3D) Distance(b *Point3D) (delta Vec3, gfloat float32) {
 	var ret1 float32
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	ret1 = float32(ret)
@@ -4130,7 +3820,7 @@ func (a *Point3D) Equal(b *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4161,10 +3851,7 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4184,10 +3871,7 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4207,10 +3891,7 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4233,10 +3914,7 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -4273,7 +3951,7 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4291,10 +3969,7 @@ func (p *Point3D) Normalize() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -4322,10 +3997,7 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg4)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg4))
 	}
 
 	return ret0
@@ -4346,10 +4018,7 @@ func (p *Point3D) Scale(factor float32) Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -4368,10 +4037,7 @@ func (p *Point3D) ToVec3() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -4397,7 +4063,7 @@ func WrapQuad(ptr unsafe.Pointer) *Quad {
 
 func marshalQuad(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapQuad(unsafe.Pointer(b))
+	return WrapQuad(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4413,7 +4079,10 @@ func NewQuadAlloc() *Quad {
 	var ret0 *Quad
 
 	{
-		ret0 = WrapQuad(ret)
+		ret0 = WrapQuad(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Quad) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4431,10 +4100,7 @@ func (q *Quad) Bounds() Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -4453,7 +4119,7 @@ func (q *Quad) Contains(p *Point) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4480,10 +4146,7 @@ func (q *Quad) Point(index_ uint) *Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(ret)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4508,10 +4171,7 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 	var ret0 *Quad
 
 	{
-		ret0 = WrapQuad(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quad) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuad(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4531,10 +4191,7 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 	var ret0 *Quad
 
 	{
-		ret0 = WrapQuad(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quad) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuad(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4554,10 +4211,7 @@ func (q *Quad) InitFromRect(r *Rect) *Quad {
 	var ret0 *Quad
 
 	{
-		ret0 = WrapQuad(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quad) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuad(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4583,7 +4237,7 @@ func WrapQuaternion(ptr unsafe.Pointer) *Quaternion {
 
 func marshalQuaternion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapQuaternion(unsafe.Pointer(b))
+	return WrapQuaternion(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -4599,7 +4253,10 @@ func NewQuaternionAlloc() *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Quaternion) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -4619,10 +4276,7 @@ func (a *Quaternion) Add(b *Quaternion) Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -4657,7 +4311,7 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -4690,10 +4344,7 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4715,10 +4366,7 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4744,10 +4392,7 @@ func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Q
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4767,10 +4412,7 @@ func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4790,10 +4432,7 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4813,10 +4452,7 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4842,10 +4478,7 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4864,10 +4497,7 @@ func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4885,10 +4515,7 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(ret)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -4907,10 +4534,7 @@ func (q *Quaternion) Invert() Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -4930,10 +4554,7 @@ func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -4951,10 +4572,7 @@ func (q *Quaternion) Normalize() Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -4975,10 +4593,7 @@ func (q *Quaternion) Scale(factor float32) Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -5002,10 +4617,7 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 	var ret0 *Quaternion
 
 	{
-		ret0 = WrapQuaternion(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Quaternion) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapQuaternion(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -5027,10 +4639,7 @@ func (q *Quaternion) ToAngleVec3() (angle float32, axis Vec3) {
 	ret0 = float32(arg1)
 
 	{
-		ret1 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0, ret1
@@ -5074,10 +4683,7 @@ func (q *Quaternion) ToMatrix() Matrix {
 	var ret0 *Matrix
 
 	{
-		ret0 = WrapMatrix(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Matrix) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapMatrix(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5121,10 +4727,7 @@ func (q *Quaternion) ToVec4() Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5150,7 +4753,7 @@ func WrapRay(ptr unsafe.Pointer) *Ray {
 
 func marshalRay(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRay(unsafe.Pointer(b))
+	return WrapRay(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5166,7 +4769,10 @@ func NewRayAlloc() *Ray {
 	var ret0 *Ray
 
 	{
-		ret0 = WrapRay(ret)
+		ret0 = WrapRay(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Ray) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -5184,7 +4790,7 @@ func (a *Ray) Equal(b *Ray) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5213,10 +4819,7 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -5234,10 +4837,7 @@ func (r *Ray) Direction() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5296,10 +4896,7 @@ func (r *Ray) Origin() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5320,10 +4917,7 @@ func (r *Ray) PositionAt(t float32) Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -5345,10 +4939,7 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 	var ret0 *Ray
 
 	{
-		ret0 = WrapRay(ret)
-		runtime.SetFinalizer(&ret0, func(v **Ray) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRay(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5368,10 +4959,7 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 	var ret0 *Ray
 
 	{
-		ret0 = WrapRay(ret)
-		runtime.SetFinalizer(&ret0, func(v **Ray) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRay(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5392,10 +4980,7 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 	var ret0 *Ray
 
 	{
-		ret0 = WrapRay(ret)
-		runtime.SetFinalizer(&ret0, func(v **Ray) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRay(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5482,7 +5067,7 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5502,7 +5087,7 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5522,7 +5107,7 @@ func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5555,7 +5140,7 @@ func WrapRect(ptr unsafe.Pointer) *Rect {
 
 func marshalRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRect(unsafe.Pointer(b))
+	return WrapRect(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -5567,10 +5152,7 @@ func (r *Rect) Native() unsafe.Pointer {
 func (r *Rect) Origin() Point {
 	var ret Point
 	{
-		ret = WrapPoint(r.native.origin)
-		runtime.SetFinalizer(&ret, func(v *Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapPoint(unsafe.Pointer(r.native.origin))
 	}
 	return ret
 }
@@ -5579,10 +5161,7 @@ func (r *Rect) Origin() Point {
 func (r *Rect) Size() Size {
 	var ret Size
 	{
-		ret = WrapSize(r.native.size)
-		runtime.SetFinalizer(&ret, func(v *Size) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret = WrapSize(unsafe.Pointer(r.native.size))
 	}
 	return ret
 }
@@ -5600,7 +5179,7 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5618,7 +5197,7 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5635,7 +5214,7 @@ func (a *Rect) Equal(b *Rect) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -5654,10 +5233,7 @@ func (r *Rect) Expand(p *Point) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -5700,10 +5276,7 @@ func (r *Rect) BottomLeft() Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5722,10 +5295,7 @@ func (r *Rect) BottomRight() Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5743,10 +5313,7 @@ func (r *Rect) Center() Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5780,10 +5347,7 @@ func (r *Rect) TopLeft() Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5802,10 +5366,7 @@ func (r *Rect) TopRight() Point {
 	var ret0 *Point
 
 	{
-		ret0 = WrapPoint(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -5828,10 +5389,7 @@ func (r *Rect) Vertices() [4]Vec2 {
 		for i := 0; i < 4; i++ {
 			src := cArray[i]
 			{
-				ret0[i] = WrapVec2(src)
-				runtime.SetFinalizer(&ret0[i], func(v *Vec2) {
-					C.free(unsafe.Pointer(v.Native()))
-				})
+				ret0[i] = WrapVec2(unsafe.Pointer(src))
 			}
 		}
 	}
@@ -5906,10 +5464,7 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5931,10 +5486,7 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -5967,10 +5519,7 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6004,10 +5553,7 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -6030,10 +5576,7 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -6061,13 +5604,10 @@ func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -6086,10 +5626,7 @@ func (r *Rect) Normalize() *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6110,10 +5647,7 @@ func (r *Rect) NormalizeR() Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6136,10 +5670,7 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6163,10 +5694,7 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -6191,10 +5719,7 @@ func (r *Rect) Round() Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6228,10 +5753,7 @@ func (r *Rect) RoundExtents() Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6250,10 +5772,7 @@ func (r *Rect) RoundToPixel() *Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(ret)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6276,10 +5795,7 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -6303,10 +5819,7 @@ func (a *Rect) Union(b *Rect) Rect {
 	var ret0 *Rect
 
 	{
-		ret0 = WrapRect(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Rect) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapRect(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -6328,7 +5841,7 @@ func WrapSIMD4F(ptr unsafe.Pointer) *SIMD4F {
 
 func marshalSIMD4F(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSIMD4F(unsafe.Pointer(b))
+	return WrapSIMD4F(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6352,7 +5865,7 @@ func WrapSIMD4X4F(ptr unsafe.Pointer) *SIMD4X4F {
 
 func marshalSIMD4X4F(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSIMD4X4F(unsafe.Pointer(b))
+	return WrapSIMD4X4F(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6377,7 +5890,7 @@ func WrapSize(ptr unsafe.Pointer) *Size {
 
 func marshalSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSize(unsafe.Pointer(b))
+	return WrapSize(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6393,7 +5906,10 @@ func NewSizeAlloc() *Size {
 	var ret0 *Size
 
 	{
-		ret0 = WrapSize(ret)
+		ret0 = WrapSize(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Size) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6425,7 +5941,7 @@ func (a *Size) Equal(b *Size) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6454,10 +5970,7 @@ func (s *Size) Init(width float32, height float32) *Size {
 	var ret0 *Size
 
 	{
-		ret0 = WrapSize(ret)
-		runtime.SetFinalizer(&ret0, func(v **Size) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSize(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6477,10 +5990,7 @@ func (s *Size) InitFromSize(src *Size) *Size {
 	var ret0 *Size
 
 	{
-		ret0 = WrapSize(ret)
-		runtime.SetFinalizer(&ret0, func(v **Size) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSize(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6503,10 +6013,7 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	var ret0 *Size
 
 	{
-		ret0 = WrapSize(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Size) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSize(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -6526,10 +6033,7 @@ func (s *Size) Scale(factor float32) Size {
 	var ret0 *Size
 
 	{
-		ret0 = WrapSize(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Size) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSize(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -6552,7 +6056,7 @@ func WrapSphere(ptr unsafe.Pointer) *Sphere {
 
 func marshalSphere(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSphere(unsafe.Pointer(b))
+	return WrapSphere(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6568,7 +6072,10 @@ func NewSphereAlloc() *Sphere {
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(ret)
+		ret0 = WrapSphere(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Sphere) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6587,7 +6094,7 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6622,7 +6129,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6649,10 +6156,7 @@ func (s *Sphere) BoundingBox() Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6670,10 +6174,7 @@ func (s *Sphere) Center() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6710,10 +6211,7 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(ret)
-		runtime.SetFinalizer(&ret0, func(v **Sphere) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSphere(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6741,10 +6239,7 @@ func (s *Sphere) InitFromPoints(nPoints uint, points []Point3D, center *Point3D)
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(ret)
-		runtime.SetFinalizer(&ret0, func(v **Sphere) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSphere(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6772,10 +6267,7 @@ func (s *Sphere) InitFromVectors(nVectors uint, vectors []Vec3, center *Point3D)
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(ret)
-		runtime.SetFinalizer(&ret0, func(v **Sphere) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSphere(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -6791,7 +6283,7 @@ func (s *Sphere) IsEmpty() bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6811,10 +6303,7 @@ func (s *Sphere) Translate(point *Point3D) Sphere {
 	var ret0 *Sphere
 
 	{
-		ret0 = WrapSphere(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Sphere) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapSphere(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -6837,7 +6326,7 @@ func WrapTriangle(ptr unsafe.Pointer) *Triangle {
 
 func marshalTriangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTriangle(unsafe.Pointer(b))
+	return WrapTriangle(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -6853,7 +6342,10 @@ func NewTriangleAlloc() *Triangle {
 	var ret0 *Triangle
 
 	{
-		ret0 = WrapTriangle(ret)
+		ret0 = WrapTriangle(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Triangle) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -6871,7 +6363,7 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6888,7 +6380,7 @@ func (a *Triangle) Equal(b *Triangle) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -6948,13 +6440,10 @@ func (t *Triangle) Barycoords(p *Point3D) (res Vec2, ok bool) {
 	var ret1 bool
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -6971,10 +6460,7 @@ func (t *Triangle) BoundingBox() Box {
 	var ret0 *Box
 
 	{
-		ret0 = WrapBox(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Box) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapBox(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -6997,10 +6483,7 @@ func (t *Triangle) Midpoint() Point3D {
 	var ret0 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7018,10 +6501,7 @@ func (t *Triangle) Normal() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7040,10 +6520,7 @@ func (t *Triangle) Plane() Plane {
 	var ret0 *Plane
 
 	{
-		ret0 = WrapPlane(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Plane) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPlane(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7066,24 +6543,15 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 	var ret2 *Point3D
 
 	{
-		ret0 = WrapPoint3D(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapPoint3D(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapPoint3D(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapPoint3D(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret2 = WrapPoint3D(arg3)
-		runtime.SetFinalizer(&ret2, func(v **Point3D) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret2 = WrapPoint3D(unsafe.Pointer(arg3))
 	}
 
 	return ret0, ret1, ret2
@@ -7121,13 +6589,10 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res Vec2, ok
 	var ret1 bool
 
 	{
-		ret0 = WrapVec2(arg5)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg5))
 	}
 
-	ret1 = ret != C.FALSE
+	ret1 = C.BOOL(ret) != 0
 
 	return ret0, ret1
 }
@@ -7148,24 +6613,15 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 	var ret2 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	{
-		ret1 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret1, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret1 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	{
-		ret2 = WrapVec3(arg3)
-		runtime.SetFinalizer(&ret2, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret2 = WrapVec3(unsafe.Pointer(arg3))
 	}
 
 	return ret0, ret1, ret2
@@ -7193,10 +6649,7 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 	var ret0 *Triangle
 
 	{
-		ret0 = WrapTriangle(ret)
-		runtime.SetFinalizer(&ret0, func(v **Triangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTriangle(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7220,10 +6673,7 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 	var ret0 *Triangle
 
 	{
-		ret0 = WrapTriangle(ret)
-		runtime.SetFinalizer(&ret0, func(v **Triangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTriangle(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7247,10 +6697,7 @@ func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	var ret0 *Triangle
 
 	{
-		ret0 = WrapTriangle(ret)
-		runtime.SetFinalizer(&ret0, func(v **Triangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapTriangle(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7276,7 +6723,7 @@ func WrapVec2(ptr unsafe.Pointer) *Vec2 {
 
 func marshalVec2(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVec2(unsafe.Pointer(b))
+	return WrapVec2(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7292,7 +6739,10 @@ func NewVec2Alloc() *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
+		ret0 = WrapVec2(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Vec2) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7313,10 +6763,7 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7338,10 +6785,7 @@ func (a *Vec2) Divide(b *Vec2) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7376,7 +6820,7 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7437,10 +6881,7 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7460,10 +6901,7 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7482,10 +6920,7 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -7507,10 +6942,7 @@ func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -7546,10 +6978,7 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7570,10 +6999,7 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7594,10 +7020,7 @@ func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7618,7 +7041,7 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7635,10 +7058,7 @@ func (v *Vec2) Negate() Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7656,10 +7076,7 @@ func (v *Vec2) Normalize() Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7680,10 +7097,7 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7705,10 +7119,7 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7751,7 +7162,7 @@ func WrapVec3(ptr unsafe.Pointer) *Vec3 {
 
 func marshalVec3(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVec3(unsafe.Pointer(b))
+	return WrapVec3(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -7767,7 +7178,10 @@ func NewVec3Alloc() *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
+		ret0 = WrapVec3(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Vec3) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -7787,10 +7201,7 @@ func (a *Vec3) Add(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7810,10 +7221,7 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7835,10 +7243,7 @@ func (a *Vec3) Divide(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -7873,7 +7278,7 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -7915,10 +7320,7 @@ func (v *Vec3) XY() Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7937,10 +7339,7 @@ func (v *Vec3) XY0() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7959,10 +7358,7 @@ func (v *Vec3) XYZ0() Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -7981,10 +7377,7 @@ func (v *Vec3) XYZ1() Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8005,10 +7398,7 @@ func (v *Vec3) Xyzw(w float32) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8063,10 +7453,7 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8086,10 +7473,7 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8109,10 +7493,7 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8134,10 +7515,7 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -8173,10 +7551,7 @@ func (a *Vec3) Max(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8197,10 +7572,7 @@ func (a *Vec3) Min(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8220,10 +7592,7 @@ func (a *Vec3) Multiply(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8244,7 +7613,7 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8261,10 +7630,7 @@ func (v *Vec3) Negate() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8282,10 +7648,7 @@ func (v *Vec3) Normalize() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8306,10 +7669,7 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8331,10 +7691,7 @@ func (a *Vec3) Subtract(b *Vec3) Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8377,7 +7734,7 @@ func WrapVec4(ptr unsafe.Pointer) *Vec4 {
 
 func marshalVec4(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapVec4(unsafe.Pointer(b))
+	return WrapVec4(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -8393,7 +7750,10 @@ func NewVec4Alloc() *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
+		ret0 = WrapVec4(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Vec4) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
 	}
 
 	return ret0
@@ -8413,10 +7773,7 @@ func (a *Vec4) Add(b *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8438,10 +7795,7 @@ func (a *Vec4) Divide(b *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8476,7 +7830,7 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8533,10 +7887,7 @@ func (v *Vec4) XY() Vec2 {
 	var ret0 *Vec2
 
 	{
-		ret0 = WrapVec2(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec2) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec2(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8555,10 +7906,7 @@ func (v *Vec4) XYZ() Vec3 {
 	var ret0 *Vec3
 
 	{
-		ret0 = WrapVec3(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec3) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec3(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8615,10 +7963,7 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8639,10 +7984,7 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8666,10 +8008,7 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8691,10 +8030,7 @@ func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8714,10 +8050,7 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(ret)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -8739,10 +8072,7 @@ func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg3)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg3))
 	}
 
 	return ret0
@@ -8778,10 +8108,7 @@ func (a *Vec4) Max(b *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8802,10 +8129,7 @@ func (a *Vec4) Min(b *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8825,10 +8149,7 @@ func (a *Vec4) Multiply(b *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8849,7 +8170,7 @@ func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -8866,10 +8187,7 @@ func (v *Vec4) Negate() Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8887,10 +8205,7 @@ func (v *Vec4) Normalize() Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg1)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -8911,10 +8226,7 @@ func (v *Vec4) Scale(factor float32) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0
@@ -8936,10 +8248,7 @@ func (a *Vec4) Subtract(b *Vec4) Vec4 {
 	var ret0 *Vec4
 
 	{
-		ret0 = WrapVec4(arg2)
-		runtime.SetFinalizer(&ret0, func(v **Vec4) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = WrapVec4(unsafe.Pointer(arg2))
 	}
 
 	return ret0

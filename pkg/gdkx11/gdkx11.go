@@ -3,13 +3,13 @@
 package gdkx11
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/gio"
-	"github.com/diamondburned/gotk4/pkg/xlib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -106,47 +106,6 @@ func X11GetServerTime(surface X11Surface) uint32 {
 	var ret0 uint32
 
 	ret0 = uint32(ret)
-
-	return ret0
-}
-
-// X11GetXatomByNameForDisplay returns the X atom for a Display corresponding to
-// @atom_name. This function caches the result, so if called repeatedly it is
-// much faster than XInternAtom(), which is a round trip to the server each
-// time.
-func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.char
-
-	arg1 = (*C.GdkDisplay)(display.Native())
-	arg2 = (*C.gchar)(C.CString(atomName))
-	defer C.free(unsafe.Pointer(arg2))
-
-	ret := C.gdk_x11_get_xatom_by_name_for_display(arg1, arg2)
-
-	var ret0 xlib.Atom
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = xlib.Atom(tmp)
-	}
-
-	return ret0
-}
-
-// X11LookupXdisplay: find the Display corresponding to @xdisplay, if any
-// exists.
-func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
-	var arg1 *C.Display
-
-	arg1 = (*C.Display)(xdisplay.Native())
-
-	ret := C.gdk_x11_lookup_xdisplay(arg1)
-
-	var ret0 X11Display
-
-	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(X11Display)
 
 	return ret0
 }
@@ -287,20 +246,6 @@ type X11Display interface {
 	// The timestamp is taken from events caused by user interaction such as key
 	// presses or pointer movements. See gdk_x11_surface_set_user_time().
 	UserTime() uint32
-	// Xcursor returns the X cursor belonging to a Cursor, potentially creating
-	// the cursor.
-	//
-	// Be aware that the returned cursor may not be unique to @cursor. It may
-	// for example be shared with its fallback cursor. On old X servers that
-	// don't support the XCursor extension, all cursors may even fall back to a
-	// few default cursors.
-	Xcursor(cursor gdk.Cursor) xlib.Cursor
-	// Xdisplay returns the X display of a Display.
-	Xdisplay() *xlib.Display
-	// Xrootwindow returns the root X window used by Display.
-	Xrootwindow() xlib.Window
-	// Xscreen returns the X Screen used by Display.
-	Xscreen() *xlib.Screen
 	// Grab: call XGrabServer() on @display. To ungrab the display again, use
 	// gdk_x11_display_ungrab().
 	//
@@ -456,7 +401,7 @@ func (display x11Display) GlxVersion() (major int, minor int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = ret != C.FALSE
+	ret2 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2
 }
@@ -527,92 +472,6 @@ func (display x11Display) UserTime() uint32 {
 	var ret0 uint32
 
 	ret0 = uint32(ret)
-
-	return ret0
-}
-
-// Xcursor returns the X cursor belonging to a Cursor, potentially creating
-// the cursor.
-//
-// Be aware that the returned cursor may not be unique to @cursor. It may
-// for example be shared with its fallback cursor. On old X servers that
-// don't support the XCursor extension, all cursors may even fall back to a
-// few default cursors.
-func (display x11Display) Xcursor(cursor gdk.Cursor) xlib.Cursor {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.GdkCursor
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-	arg1 = (*C.GdkCursor)(cursor.Native())
-
-	ret := C.gdk_x11_display_get_xcursor(arg0, arg1)
-
-	var ret0 xlib.Cursor
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = xlib.Cursor(tmp)
-	}
-
-	return ret0
-}
-
-// Xdisplay returns the X display of a Display.
-func (display x11Display) Xdisplay() *xlib.Display {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_x11_display_get_xdisplay(arg0)
-
-	var ret0 *xlib.Display
-
-	{
-		ret0 = xlib.WrapDisplay(ret)
-		runtime.SetFinalizer(&ret0, func(v **xlib.Display) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Xrootwindow returns the root X window used by Display.
-func (display x11Display) Xrootwindow() xlib.Window {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_x11_display_get_xrootwindow(arg0)
-
-	var ret0 xlib.Window
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = xlib.Window(tmp)
-	}
-
-	return ret0
-}
-
-// Xscreen returns the X Screen used by Display.
-func (display x11Display) Xscreen() *xlib.Screen {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_x11_display_get_xscreen(arg0)
-
-	var ret0 *xlib.Screen
-
-	{
-		ret0 = xlib.WrapScreen(ret)
-		runtime.SetFinalizer(&ret0, func(v **xlib.Screen) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
 
 	return ret0
 }
@@ -720,11 +579,14 @@ func (display x11Display) StringToCompoundText(str string) (encoding string, for
 	ret1 = int(arg3)
 
 	{
-		ret2 = make([]byte, arg5)
-		for i := 0; i < uintptr(arg5); i++ {
-			src := (*C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret2))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg4))
+		sliceHeader.Len = arg5
+		sliceHeader.Cap = arg5
+		runtime.SetFinalizer(&arg4, func() {
+			C.free(unsafe.Pointer(arg4))
+		})
+		defer runtime.KeepAlive(arg4)
 	}
 
 	ret3 = int(arg5)
@@ -800,16 +662,19 @@ func (display x11Display) UTF8ToCompoundText(str string) (encoding string, forma
 	ret1 = int(arg3)
 
 	{
-		ret2 = make([]byte, arg5)
-		for i := 0; i < uintptr(arg5); i++ {
-			src := (*C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret2[i] = byte(src)
-		}
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret2))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg4))
+		sliceHeader.Len = arg5
+		sliceHeader.Cap = arg5
+		runtime.SetFinalizer(&arg4, func() {
+			C.free(unsafe.Pointer(arg4))
+		})
+		defer runtime.KeepAlive(arg4)
 	}
 
 	ret3 = int(arg5)
 
-	ret4 = ret != C.FALSE
+	ret4 = C.BOOL(ret) != 0
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -842,8 +707,6 @@ func marshalX11Drag(p uintptr) (interface{}, error) {
 type X11Monitor interface {
 	gdk.Monitor
 
-	// Output returns the XID of the Output corresponding to @monitor.
-	Output() xlib.XID
 	// Workarea retrieves the size and position of the “work area” on a monitor
 	// within the display coordinate space. The returned geometry is in
 	// ”application pixels”, not in ”device pixels” (see
@@ -872,25 +735,6 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 	return WrapX11Monitor(obj), nil
 }
 
-// Output returns the XID of the Output corresponding to @monitor.
-func (monitor x11Monitor) Output() xlib.XID {
-	var arg0 *C.GdkMonitor
-
-	arg0 = (*C.GdkMonitor)(monitor.Native())
-
-	ret := C.gdk_x11_monitor_get_output(arg0)
-
-	var ret0 xlib.XID
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = xlib.XID(tmp)
-	}
-
-	return ret0
-}
-
 // Workarea retrieves the size and position of the “work area” on a monitor
 // within the display coordinate space. The returned geometry is in
 // ”application pixels”, not in ”device pixels” (see
@@ -906,10 +750,7 @@ func (monitor x11Monitor) Workarea() gdk.Rectangle {
 	var ret0 *gdk.Rectangle
 
 	{
-		ret0 = gdk.WrapRectangle(arg1)
-		runtime.SetFinalizer(&ret0, func(v **gdk.Rectangle) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
 	return ret0
@@ -923,10 +764,6 @@ type X11Screen interface {
 	// the Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-	// MonitorOutput gets the XID of the specified output/monitor. If the X
-	// server does not support version 1.2 of the RANDR extension, 0 is
-	// returned.
-	MonitorOutput(monitorNum int) xlib.XID
 	// NumberOfDesktops returns the number of workspaces for @screen when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the Extended Window Manager Hints
@@ -936,8 +773,6 @@ type X11Screen interface {
 	ScreenNumber() int
 	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
-	// Xscreen returns the screen of a X11Screen.
-	Xscreen() *xlib.Screen
 	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
 	// and indicates whether the window manager supports a certain hint from the
 	// Extended Window Manager Hints
@@ -993,29 +828,6 @@ func (screen x11Screen) CurrentDesktop() uint32 {
 	return ret0
 }
 
-// MonitorOutput gets the XID of the specified output/monitor. If the X
-// server does not support version 1.2 of the RANDR extension, 0 is
-// returned.
-func (screen x11Screen) MonitorOutput(monitorNum int) xlib.XID {
-	var arg0 *C.GdkX11Screen
-	var arg1 C.int
-
-	arg0 = (*C.GdkX11Screen)(screen.Native())
-	arg1 = C.int(monitorNum)
-
-	ret := C.gdk_x11_screen_get_monitor_output(arg0, arg1)
-
-	var ret0 xlib.XID
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = xlib.XID(tmp)
-	}
-
-	return ret0
-}
-
 // NumberOfDesktops returns the number of workspaces for @screen when
 // running under a window manager that supports multiple workspaces, as
 // described in the Extended Window Manager Hints
@@ -1064,26 +876,6 @@ func (screen x11Screen) WindowManagerName() string {
 	return ret0
 }
 
-// Xscreen returns the screen of a X11Screen.
-func (screen x11Screen) Xscreen() *xlib.Screen {
-	var arg0 *C.GdkX11Screen
-
-	arg0 = (*C.GdkX11Screen)(screen.Native())
-
-	ret := C.gdk_x11_screen_get_xscreen(arg0)
-
-	var ret0 *xlib.Screen
-
-	{
-		ret0 = xlib.WrapScreen(ret)
-		runtime.SetFinalizer(&ret0, func(v **xlib.Screen) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
 // SupportsNetWmHint: this function is specific to the X11 backend of GDK,
 // and indicates whether the window manager supports a certain hint from the
 // Extended Window Manager Hints
@@ -1109,7 +901,7 @@ func (screen x11Screen) SupportsNetWmHint(propertyName string) bool {
 
 	var ret0 bool
 
-	ret0 = ret != C.FALSE
+	ret0 = C.BOOL(ret) != 0
 
 	return ret0
 }
@@ -1121,8 +913,6 @@ type X11Surface interface {
 	Desktop() uint32
 	// Group returns the group this surface belongs to.
 	Group() gdk.Surface
-	// Xid returns the X resource (surface) belonging to a Surface.
-	Xid() xlib.Window
 	// MoveToCurrentDesktop moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the Extended Window Manager Hints
@@ -1230,25 +1020,6 @@ func (surface x11Surface) Group() gdk.Surface {
 	var ret0 gdk.Surface
 
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gdk.Surface)
-
-	return ret0
-}
-
-// Xid returns the X resource (surface) belonging to a Surface.
-func (surface x11Surface) Xid() xlib.Window {
-	var arg0 *C.GdkSurface
-
-	arg0 = (*C.GdkSurface)(surface.Native())
-
-	ret := C.gdk_x11_surface_get_xid(arg0)
-
-	var ret0 xlib.Window
-
-	{
-		var tmp uint32
-		tmp = uint32(ret)
-		ret0 = xlib.Window(tmp)
-	}
 
 	return ret0
 }

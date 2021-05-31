@@ -47,7 +47,7 @@ func (eg *bitfieldGenerator) FormatMember(memberName string) string {
 
 func (ng *NamespaceGenerator) generateBitfields() {
 	for _, bitfield := range ng.current.Namespace.Bitfields {
-		if ng.mustIgnore(bitfield.Name) {
+		if ng.mustIgnore(bitfield.Name, bitfield.CType) {
 			continue
 		}
 

@@ -20,7 +20,7 @@ func (ng *NamespaceGenerator) generateAliases() {
 			continue
 		}
 
-		if ng.mustIgnore(alias.Name) {
+		if ng.mustIgnore(alias.Name, alias.CType) {
 			continue
 		}
 

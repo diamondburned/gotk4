@@ -240,6 +240,10 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 	ng.generateRecords()
 	ng.generateClasses()
 
+	if len(ng.marshalers) > 0 {
+		ng.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
+	}
+
 	pen.Flush(ng.pen, ng.cgo, ng.pre)
 
 	var out bytes.Buffer
@@ -288,8 +292,6 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 	pen.Line()
 
 	if len(ng.marshalers) > 0 {
-		ng.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
-
 		pen.Words("func init() {")
 		pen.Words("  externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{")
 
@@ -333,9 +335,9 @@ func (ng *NamespaceGenerator) addMarshaler(glibGetType, goName string) {
 
 // mustIgnore checks the generator's filters to see if the given girType in this
 // namespace should be ignored.
-func (ng *NamespaceGenerator) mustIgnore(girType string) (ignore bool) {
+func (ng *NamespaceGenerator) mustIgnore(girType, cType string) (ignore bool) {
 	for _, filter := range ng.gen.Filters {
-		if !filter.Filter(ng, girType) {
+		if !filter.Filter(ng, girType, cType) {
 			// Filter returns keep=false.
 			return true
 		}

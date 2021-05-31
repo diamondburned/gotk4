@@ -40,7 +40,7 @@ var recordTmpl = newGoTemplate(`
 
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-		return Wrap{{ .GoName }}(unsafe.Pointer(b))
+		return Wrap{{ .GoName }}(unsafe.Pointer(b)), nil
 	}
 
 	// Native returns the underlying C source pointer.
@@ -240,7 +240,7 @@ func (ng *NamespaceGenerator) generateRecords() {
 	imported := false
 
 	for _, record := range ng.current.Namespace.Records {
-		if ng.mustIgnore(record.Name) {
+		if ng.mustIgnore(record.Name, record.CType) {
 			continue
 		}
 

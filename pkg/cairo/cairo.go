@@ -4,6 +4,8 @@ package cairo
 
 import (
 	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: cairo-gobject
@@ -573,11 +575,6 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 	return RegionOverlap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-func ImageSurfaceCreate() {
-
-	C.cairo_image_surface_create()
-}
-
 type Context struct {
 	native C.cairo_t
 }
@@ -594,7 +591,7 @@ func WrapContext(ptr unsafe.Pointer) *Context {
 
 func marshalContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapContext(unsafe.Pointer(b))
+	return WrapContext(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -618,7 +615,7 @@ func WrapDevice(ptr unsafe.Pointer) *Device {
 
 func marshalDevice(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDevice(unsafe.Pointer(b))
+	return WrapDevice(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -642,7 +639,7 @@ func WrapSurface(ptr unsafe.Pointer) *Surface {
 
 func marshalSurface(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSurface(unsafe.Pointer(b))
+	return WrapSurface(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -666,7 +663,7 @@ func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMatrix(unsafe.Pointer(b))
+	return WrapMatrix(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -690,7 +687,7 @@ func WrapPattern(ptr unsafe.Pointer) *Pattern {
 
 func marshalPattern(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPattern(unsafe.Pointer(b))
+	return WrapPattern(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -714,7 +711,7 @@ func WrapRegion(ptr unsafe.Pointer) *Region {
 
 func marshalRegion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRegion(unsafe.Pointer(b))
+	return WrapRegion(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -738,7 +735,7 @@ func WrapFontOptions(ptr unsafe.Pointer) *FontOptions {
 
 func marshalFontOptions(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontOptions(unsafe.Pointer(b))
+	return WrapFontOptions(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -762,7 +759,7 @@ func WrapFontFace(ptr unsafe.Pointer) *FontFace {
 
 func marshalFontFace(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontFace(unsafe.Pointer(b))
+	return WrapFontFace(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -786,7 +783,7 @@ func WrapScaledFont(ptr unsafe.Pointer) *ScaledFont {
 
 func marshalScaledFont(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapScaledFont(unsafe.Pointer(b))
+	return WrapScaledFont(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -810,7 +807,7 @@ func WrapPath(ptr unsafe.Pointer) *Path {
 
 func marshalPath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPath(unsafe.Pointer(b))
+	return WrapPath(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -834,7 +831,7 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangle(unsafe.Pointer(b))
+	return WrapRectangle(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.
@@ -886,7 +883,7 @@ func WrapRectangleInt(ptr unsafe.Pointer) *RectangleInt {
 
 func marshalRectangleInt(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRectangleInt(unsafe.Pointer(b))
+	return WrapRectangleInt(unsafe.Pointer(b)), nil
 }
 
 // Native returns the underlying C source pointer.

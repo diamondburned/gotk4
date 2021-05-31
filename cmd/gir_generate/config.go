@@ -5,9 +5,7 @@ import "github.com/diamondburned/gotk4/gir/girgen"
 // packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
 var packages = []Package{
-	{"gobject-introspection-1.0", []string{
-		"GLib", "Gio", "cairo", "xft", "xlib", "freetype2", "fontconfig",
-	}},
+	{"gobject-introspection-1.0", []string{"GLib", "Gio", "cairo"}},
 	{"gdk-pixbuf-2.0", []string{"GdkPixbuf", "GdkPixdata"}},
 	{"graphene-1.0", nil},
 	{"pango", nil},
@@ -18,5 +16,6 @@ var packages = []Package{
 // namespace, and the values are list of names.
 var filters = []girgen.FilterMatcher{
 	girgen.RegexFilter("GLib.str.+"),
-	girgen.RegexFilter("GLib.Variant.*"),
+	girgen.RegexFilter("GLib.[Vv]ariant.*"),
+	girgen.RegexFilter("C.cairo_image_surface_create"),
 }

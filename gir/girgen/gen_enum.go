@@ -36,7 +36,7 @@ func (eg *enumGenerator) FormatMember(memberName string) string {
 
 func (ng *NamespaceGenerator) generateEnums() {
 	for _, enum := range ng.current.Namespace.Enums {
-		if ng.mustIgnore(enum.Name) {
+		if ng.mustIgnore(enum.Name, enum.CType) {
 			continue
 		}
 

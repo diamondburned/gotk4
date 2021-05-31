@@ -3,7 +3,6 @@
 package pangocairo
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -17,7 +16,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangocairo.h>
 //
-// extern void gotk4_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer)
+// extern void gotk4_ShapeRendererFunc(cairo_t* _0, PangoAttrShape* _1, gboolean _2, gpointer _3);
 // // extern void callbackDelete(gpointer);
 import "C"
 
@@ -49,20 +48,14 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 	var doPath bool
 
 	{
-		cr = cairo.WrapContext(arg0)
-		runtime.SetFinalizer(&cr, func(v **cairo.Context) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		cr = cairo.WrapContext(unsafe.Pointer(arg0))
 	}
 
 	{
-		attr = pango.WrapAttrShape(arg1)
-		runtime.SetFinalizer(&attr, func(v **pango.AttrShape) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		attr = pango.WrapAttrShape(unsafe.Pointer(arg1))
 	}
 
-	doPath = arg2 != C.FALSE
+	doPath = C.BOOL(arg2) != 0
 
 	v.(ShapeRendererFunc)(cr, attr, doPath)
 }
@@ -82,10 +75,7 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 	var ret0 *cairo.FontOptions
 
 	{
-		ret0 = cairo.WrapFontOptions(ret)
-		runtime.SetFinalizer(&ret0, func(v **cairo.FontOptions) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = cairo.WrapFontOptions(unsafe.Pointer(ret))
 	}
 
 	return ret0
@@ -506,10 +496,7 @@ func (font font) ScaledFont() *cairo.ScaledFont {
 	var ret0 *cairo.ScaledFont
 
 	{
-		ret0 = cairo.WrapScaledFont(ret)
-		runtime.SetFinalizer(&ret0, func(v **cairo.ScaledFont) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
+		ret0 = cairo.WrapScaledFont(unsafe.Pointer(ret))
 	}
 
 	return ret0

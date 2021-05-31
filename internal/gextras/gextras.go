@@ -1,10 +1,14 @@
 // Package gextras contains supplemental types to gotk3.
 package gextras
 
-// #include <glib/glib.h>
+// #cgo pkg-config: glib-2.0 gobject-2.0
+// #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 import (
+	"unsafe"
+
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -34,7 +38,7 @@ func CastObject(obj *glib.Object) interface{} {
 	C.g_value_init(&gvalue, C.GType(obj.TypeFromInstance()))
 	defer C.g_value_unset(&gvalue)
 
-	v, err := (&glib.Value{&gvalue}).GoValue()
+	v, err := glib.ValueFromNative(unsafe.Pointer(&gvalue)).GoValue()
 	if err != nil {
 		return Objector(obj)
 	}

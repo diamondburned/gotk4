@@ -2608,9 +2608,9 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 	var sourceObject gextras.Objector
 	var res AsyncResult
 
-	sourceObject = externglib.Take(unsafe.Pointer(arg0.Native()))
+	sourceObject = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
 
-	res = WrapAsyncResult(externglib.Take(unsafe.Pointer(arg1.Native())))
+	res = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(AsyncResult)
 
 	v.(AsyncReadyCallback)(sourceObject, res)
 }
@@ -2629,7 +2629,7 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	var connection DBusConnection
 	var name string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	name = C.GoString(arg1)
 
@@ -2649,7 +2649,7 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var connection DBusConnection
 	var name string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	name = C.GoString(arg1)
 
@@ -2671,7 +2671,7 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var name string
 	var nameOwner string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	name = C.GoString(arg1)
 
@@ -2694,7 +2694,7 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	var connection DBusConnection
 	var name string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	name = C.GoString(arg1)
 
@@ -2718,7 +2718,7 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var connection DBusConnection
 	var name string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	name = C.GoString(arg1)
 
@@ -2738,7 +2738,7 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboole
 
 	var cancellable Cancellable
 
-	cancellable = WrapCancellable(externglib.Take(unsafe.Pointer(arg0.Native())))
+	cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Cancellable)
 
 	ok := v.(CancellableSourceFunc)(cancellable)
 }
@@ -2761,7 +2761,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	var propertyName string
 	var error **glib.Error
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	sender = C.GoString(arg1)
 
@@ -2800,7 +2800,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	var parameters *glib.Variant
 	var invocation DBusMethodInvocation
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	sender = C.GoString(arg1)
 
@@ -2817,7 +2817,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 		})
 	}
 
-	invocation = WrapDBusMethodInvocation(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native())))
+	invocation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(DBusMethodInvocation)
 
 	v.(DBusInterfaceMethodCallFunc)(connection, sender, objectPath, interfaceName, methodName, parameters, invocation)
 }
@@ -2841,7 +2841,7 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	var value *glib.Variant
 	var error **glib.Error
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	sender = C.GoString(arg1)
 
@@ -2940,11 +2940,11 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	var message DBusMessage
 	var incoming bool
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
-	message = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
+	message = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(DBusMessage)
 
-	incoming = gextras.Gobool(arg2)
+	incoming = arg2 != C.FALSE
 
 	dBusMessage := v.(DBusMessageFilterFunction)(connection, message, incoming)
 }
@@ -2968,7 +2968,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	var objectPath string
 	var interfaceName string
 
-	manager = WrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0.Native())))
+	manager = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusObjectManagerClient)
 
 	objectPath = C.GoString(arg1)
 
@@ -2995,7 +2995,7 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	var signalName string
 	var parameters *glib.Variant
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	senderName = C.GoString(arg1)
 
@@ -3036,7 +3036,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var node string
 	var outUserData interface{}
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	sender = C.GoString(arg1)
 
@@ -3076,7 +3076,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	var sender string
 	var objectPath string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	sender = C.GoString(arg1)
 
@@ -3117,7 +3117,7 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	var objectPath string
 	var node string
 
-	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	connection = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DBusConnection)
 
 	sender = C.GoString(arg1)
 
@@ -3142,7 +3142,7 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 	var datagramBased DatagramBased
 	var condition glib.IOCondition
 
-	datagramBased = WrapDatagramBased(externglib.Take(unsafe.Pointer(arg0.Native())))
+	datagramBased = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DatagramBased)
 
 	condition = glib.IOCondition(arg1)
 
@@ -3164,7 +3164,7 @@ func gotk4_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C
 	var appinfo DesktopAppInfo
 	var pid glib.Pid
 
-	appinfo = WrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0.Native())))
+	appinfo = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(DesktopAppInfo)
 
 	{
 		var tmp int
@@ -3216,7 +3216,7 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	var numDirs uint64
 	var numFiles uint64
 
-	reporting = gextras.Gobool(arg0)
+	reporting = arg0 != C.FALSE
 
 	currentSize = uint64(arg1)
 
@@ -3296,7 +3296,7 @@ func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg
 		})
 	}
 
-	cancellable = WrapCancellable(externglib.Take(unsafe.Pointer(arg1.Native())))
+	cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Cancellable)
 
 	ok := v.(IOSchedulerJobFunc)(job, cancellable)
 }
@@ -3315,7 +3315,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 
 	var pollableStream gextras.Objector
 
-	pollableStream = externglib.Take(unsafe.Pointer(arg0.Native()))
+	pollableStream = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
 
 	ok := v.(PollableSourceFunc)(pollableStream)
 }
@@ -3414,7 +3414,7 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 	var socket Socket
 	var condition glib.IOCondition
 
-	socket = WrapSocket(externglib.Take(unsafe.Pointer(arg0.Native())))
+	socket = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Socket)
 
 	condition = glib.IOCondition(arg1)
 
@@ -3439,7 +3439,7 @@ func gotk4_VfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 	var vfs Vfs
 	var identifier string
 
-	vfs = WrapVfs(externglib.Take(unsafe.Pointer(arg0.Native())))
+	vfs = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Vfs)
 
 	identifier = C.GoString(arg1)
 
@@ -3463,7 +3463,7 @@ func ActionNameIsValid(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3491,19 +3491,20 @@ func ActionNameIsValid(actionName string) bool {
 // "app.action('target')". For strings, this third format must be used if *
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
-func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, ok bool) {
+func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar    // out
 	var arg3 **C.GVariant // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(detailedName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_action_parse_detailed_name(arg1, &arg2, &arg3)
+	ret := C.g_action_parse_detailed_name(arg1, &arg2, &arg3, &gError)
 
 	var ret0 string
 	var ret1 **glib.Variant
-	var ret2 bool
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
@@ -3512,9 +3513,12 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 		ret1 = glib.WrapVariant(arg3)
 	}
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // ActionPrintDetailedName formats a detailed action name from @action_name and
@@ -3554,10 +3558,11 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 // example, if the @commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
-func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) AppInfo {
+func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) (appInfo AppInfo, err error) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.GAppInfoCreateFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(commandline))
 	defer C.free(unsafe.Pointer(arg1))
@@ -3565,13 +3570,19 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (C.GAppInfoCreateFlags)(flags)
 
-	ret := C.g_app_info_create_from_commandline(arg1, arg2, arg3)
+	ret := C.g_app_info_create_from_commandline(arg1, arg2, arg3, &gError)
 
 	var ret0 AppInfo
+	var goError error
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // AppInfoGetAll gets a list of all of the applications currently registered on
@@ -3621,13 +3632,15 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo 
 
 	arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(mustSupportUris)
+	if mustSupportUris {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_app_info_get_default_for_type(arg1, arg2)
 
 	var ret0 AppInfo
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
 	return ret0
 }
@@ -3645,7 +3658,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo {
 
 	var ret0 AppInfo
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
 	return ret0
 }
@@ -3699,21 +3712,25 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List {
 // The D-Bus–activated applications don't have to be started if your application
 // terminates too soon after this function. To prevent this, use
 // g_app_info_launch_default_for_uri_async() instead.
-func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) bool {
+func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) error {
 	var arg1 *C.char
 	var arg2 *C.GAppLaunchContext
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GAppLaunchContext)(context.Native())
 
-	ret := C.g_app_info_launch_default_for_uri(arg1, arg2)
+	ret := C.g_app_info_launch_default_for_uri(arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // AppInfoLaunchDefaultForURIAsync: async version of
@@ -3745,18 +3762,22 @@ func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContext, cance
 
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
 // launch-default-for-uri operation.
-func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool {
+func AppInfoLaunchDefaultForURIFinish(result AsyncResult) error {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_app_info_launch_default_for_uri_finish(arg1)
+	ret := C.g_app_info_launch_default_for_uri_finish(arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // AppInfoResetTypeAssociations removes all changes to the type associations
@@ -3802,18 +3823,25 @@ func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallbac
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetFinish(res AsyncResult) DBusConnection {
+func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_bus_get_finish(arg1)
+	ret := C.g_bus_get_finish(arg1, &gError)
 
 	var ret0 DBusConnection
+	var goError error
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // BusGetSync: synchronously connects to the message bus specified by @bus_type.
@@ -3831,20 +3859,27 @@ func BusGetFinish(res AsyncResult) DBusConnection {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetSync(busType BusType, cancellable Cancellable) DBusConnection {
+func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
 	var arg1 C.GBusType
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_bus_get_sync(arg1, arg2)
+	ret := C.g_bus_get_sync(arg1, arg2, &gError)
 
 	var ret0 DBusConnection
+	var goError error
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // BusOwnNameOnConnectionWithClosures: version of g_bus_own_name_on_connection()
@@ -3975,17 +4010,17 @@ func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcher
 // ContentTypeCanBeExecutable checks if a content type can be executable. Note
 // that for instance things like text files can be executables (i.e. scripts and
 // batch files).
-func ContentTypeCanBeExecutable(_type string) bool {
+func ContentTypeCanBeExecutable(typ string) bool {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_can_be_executable(arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4004,7 +4039,7 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4029,10 +4064,10 @@ func ContentTypeFromMIMEType(mimeType string) string {
 
 // ContentTypeGetDescription gets the human readable description of the content
 // type.
-func ContentTypeGetDescription(_type string) string {
+func ContentTypeGetDescription(typ string) string {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_get_description(arg1)
@@ -4050,10 +4085,10 @@ func ContentTypeGetDescription(_type string) string {
 // See the shared-mime-info
 // (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on the generic icon name.
-func ContentTypeGetGenericIconName(_type string) string {
+func ContentTypeGetGenericIconName(typ string) string {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_get_generic_icon_name(arg1)
@@ -4067,17 +4102,17 @@ func ContentTypeGetGenericIconName(_type string) string {
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
-func ContentTypeGetIcon(_type string) Icon {
+func ContentTypeGetIcon(typ string) Icon {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_get_icon(arg1)
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -4108,10 +4143,10 @@ func ContentTypeGetMIMEDirs() []string {
 
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
 // registered.
-func ContentTypeGetMIMEType(_type string) string {
+func ContentTypeGetMIMEType(typ string) string {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_get_mime_type(arg1)
@@ -4125,19 +4160,48 @@ func ContentTypeGetMIMEType(_type string) string {
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-func ContentTypeGetSymbolicIcon(_type string) Icon {
+func ContentTypeGetSymbolicIcon(typ string) Icon {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_get_symbolic_icon(arg1)
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
+}
+
+// ContentTypeGuess guesses the content type based on example data. If the
+// function is uncertain, @result_uncertain will be set to true. Either
+// @filename or @data may be nil, in which case the guess will be based solely
+// on the other argument.
+func ContentTypeGuess(filename string, data []byte) (resultUncertain bool, utf8 string) {
+	var arg1 *C.gchar
+	var arg2 *C.guchar
+	var arg3 C.gsize
+	var arg4 *C.gboolean // out
+
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	arg3 = len(data)
+	defer runtime.KeepAlive(data)
+
+	ret := C.g_content_type_guess(arg1, arg2, arg3, &arg4)
+
+	var ret0 bool
+	var ret1 string
+
+	ret0 = arg4 != C.FALSE
+
+	ret1 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0, ret1
 }
 
 // ContentTypeGuessForTree tries to guess the type of the tree with root @root,
@@ -4179,11 +4243,11 @@ func ContentTypeGuessForTree(root File) []string {
 }
 
 // ContentTypeIsA determines if @type is a subset of @supertype.
-func ContentTypeIsA(_type string, supertype string) bool {
+func ContentTypeIsA(typ string, supertype string) bool {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(supertype))
 	defer C.free(unsafe.Pointer(arg2))
@@ -4192,18 +4256,18 @@ func ContentTypeIsA(_type string, supertype string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
 // Convenience wrapper around g_content_type_is_a().
-func ContentTypeIsMIMEType(_type string, mimeType string) bool {
+func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg2))
@@ -4212,7 +4276,7 @@ func ContentTypeIsMIMEType(_type string, mimeType string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4220,17 +4284,17 @@ func ContentTypeIsMIMEType(_type string, mimeType string) bool {
 // ContentTypeIsUnknown checks if the content type is the generic "unknown"
 // type. On UNIX this is the "application/octet-stream" mimetype, while on win32
 // it is "*" and on OSX it is a dynamic type or octet-stream.
-func ContentTypeIsUnknown(_type string) bool {
+func ContentTypeIsUnknown(typ string) bool {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(_type))
+	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_content_type_is_unknown(arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4260,7 +4324,21 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 	var arg1 **C.gchar
 
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(dirs) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(dirs)
+		sliceHeader.Cap = len(dirs)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(dirs); i++ {
+			src := dirs[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	C.g_content_type_set_mime_dirs(arg1)
@@ -4310,21 +4388,28 @@ func DBusAddressEscapeValue(string string) string {
 //
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
+func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (utf8 string, err error) {
 	var arg1 C.GBusType
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_address_get_for_bus_sync(arg1, arg2)
+	ret := C.g_dbus_address_get_for_bus_sync(arg1, arg2, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // DBusAddressGetStream: asynchronously connects to an endpoint specified by
@@ -4355,23 +4440,30 @@ func DBusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 
 // DBusAddressGetStreamFinish finishes an operation started with
 // g_dbus_address_get_stream().
-func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream) {
+func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream, err error) {
 	var arg1 *C.GAsyncResult
 	var arg2 **C.gchar // out
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_address_get_stream_finish(arg1, &arg2)
+	ret := C.g_dbus_address_get_stream_finish(arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 IOStream
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = WrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(IOStream)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
@@ -4382,26 +4474,33 @@ func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStr
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream) {
+func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar // out
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(arg1))
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_address_get_stream_sync(arg1, &arg2, arg3)
+	ret := C.g_dbus_address_get_stream_sync(arg1, &arg2, arg3, &gError)
 
 	var ret0 string
 	var ret1 IOStream
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = WrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(IOStream)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // DBusAnnotationInfoLookup looks up the value of an annotation.
@@ -4412,7 +4511,20 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	var arg2 *C.gchar
 
 	{
+		var dst []*C.GDBusAnnotationInfo
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(annotations) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(annotations)
+		sliceHeader.Cap = len(annotations)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(annotations); i++ {
+			src := annotations[i]
+			dst[i] = (*C.GDBusAnnotationInfo)(src.Native())
+		}
+
+		arg1 = (**C.GDBusAnnotationInfo)(unsafe.Pointer(ptr))
 	}
 	arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg2))
@@ -4485,7 +4597,7 @@ func DBusErrorIsRemoteError(error *glib.Error) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4550,6 +4662,38 @@ func DBusErrorQuark() glib.Quark {
 	return ret0
 }
 
+// DBusErrorRegisterErrorDomain: helper function for associating a #GError error
+// domain with D-Bus error names.
+func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry) {
+	var arg1 *C.gchar
+	var arg2 *C.gsize
+	var arg3 *C.GDBusErrorEntry
+	var arg4 C.guint
+
+	arg1 = (*C.gchar)(C.CString(errorDomainQuarkName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gsize)(quarkVolatile)
+	{
+		var dst []C.GDBusErrorEntry
+		ptr := C.malloc(C.sizeof_GDBusErrorEntry * len(entries))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(entries)
+		sliceHeader.Cap = len(entries)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(entries); i++ {
+			src := entries[i]
+			dst[i] = (C.GDBusErrorEntry)(src.Native())
+		}
+
+		arg3 = (*C.GDBusErrorEntry)(unsafe.Pointer(ptr))
+		arg4 = len(entries)
+	}
+
+	C.g_dbus_error_register_error_domain(arg1, arg2, arg3, arg4)
+}
+
 // DBusErrorStripRemoteError looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
 // message field in @error will correspond exactly to what was received on the
@@ -4565,7 +4709,7 @@ func DBusErrorStripRemoteError(error *glib.Error) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4608,12 +4752,12 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant {
+func DBusGValueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var arg1 *C.GValue
 	var arg2 *C.GVariantType
 
 	arg1 = (*C.GValue)(gvalue.GValue)
-	arg2 = (*C.GVariantType)(_type.Native())
+	arg2 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_dbus_gvalue_to_gvariant(arg1, arg2)
 
@@ -4641,7 +4785,7 @@ func DBusIsAddress(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4660,7 +4804,7 @@ func DBusIsGuid(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4676,7 +4820,7 @@ func DBusIsInterfaceName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4693,7 +4837,7 @@ func DBusIsMemberName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4710,7 +4854,7 @@ func DBusIsName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4719,19 +4863,23 @@ func DBusIsName(string string) bool {
 // library supports the transports in @string and that key/value pairs for each
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusIsSupportedAddress(string string) bool {
+func DBusIsSupportedAddress(string string) error {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_dbus_is_supported_address(arg1)
+	ret := C.g_dbus_is_supported_address(arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DBusIsUniqueName checks if @string is a valid D-Bus unique bus name.
@@ -4745,7 +4893,7 @@ func DBusIsUniqueName(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4753,37 +4901,51 @@ func DBusIsUniqueName(string string) bool {
 // NewDTLSClientConnection creates a new ClientConnection wrapping @base_socket
 // which is assumed to communicate with the server identified by
 // @server_identity.
-func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DTLSClientConnection {
+func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) (dtlsClientConnection DTLSClientConnection, err error) {
 	var arg1 *C.GDatagramBased
 	var arg2 *C.GSocketConnectable
+	var gError *C.GError
 
 	arg1 = (*C.GDatagramBased)(baseSocket.Native())
 	arg2 = (*C.GSocketConnectable)(serverIdentity.Native())
 
-	ret := C.g_dtls_client_connection_new(arg1, arg2)
+	ret := C.g_dtls_client_connection_new(arg1, arg2, &gError)
 
 	var ret0 DTLSClientConnection
+	var goError error
 
-	ret0 = WrapDTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DTLSClientConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDTLSServerConnection creates a new ServerConnection wrapping @base_socket.
-func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificate) DTLSServerConnection {
+func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificate) (dtlsServerConnection DTLSServerConnection, err error) {
 	var arg1 *C.GDatagramBased
 	var arg2 *C.GTlsCertificate
+	var gError *C.GError
 
 	arg1 = (*C.GDatagramBased)(baseSocket.Native())
 	arg2 = (*C.GTlsCertificate)(certificate.Native())
 
-	ret := C.g_dtls_server_connection_new(arg1, arg2)
+	ret := C.g_dtls_server_connection_new(arg1, arg2, &gError)
 
 	var ret0 DTLSServerConnection
+	var goError error
 
-	ret0 = WrapDTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DTLSServerConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FileNewForCommandlineArg creates a #GFile with the given argument from the
@@ -4809,7 +4971,7 @@ func FileNewForCommandlineArg(arg string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -4838,7 +5000,7 @@ func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -4856,7 +5018,7 @@ func FileNewForPath(path string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -4874,7 +5036,7 @@ func FileNewForURI(uri string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -4889,23 +5051,30 @@ func FileNewForURI(uri string) File {
 //
 // Unlike the other #GFile constructors, this will return nil if a temporary
 // file could not be created.
-func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
+func FileNewTmp(tmpl string) (iostream FileIOStream, file File, err error) {
 	var arg1 *C.char
 	var arg2 **C.GFileIOStream // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_new_tmp(arg1, &arg2)
+	ret := C.g_file_new_tmp(arg1, &arg2, &gError)
 
 	var ret0 FileIOStream
 	var ret1 File
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileIOStream)
 
-	ret1 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // FileParseName constructs a #GFile with the given @parse_name (i.e. something
@@ -4922,7 +5091,7 @@ func FileParseName(parseName string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -4938,7 +5107,7 @@ func IconDeserialize(value *glib.Variant) Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -4964,19 +5133,26 @@ func IconHash(icon interface{}) uint {
 // If your application or library provides one or more #GIcon implementations
 // you need to ensure that each #GType is registered with the type system prior
 // to calling g_icon_new_for_string().
-func IconNewForString(str string) Icon {
+func IconNewForString(str string) (icon Icon, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_icon_new_for_string(arg1)
+	ret := C.g_icon_new_for_string(arg1, &gError)
 
 	var ret0 Icon
+	var goError error
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // IOErrorFromErrno converts errno.h error codes into GIO error codes. The
@@ -5021,7 +5197,7 @@ func IOErrorQuark() glib.Quark {
 //
 // If @type has already been registered as an extension for this extension
 // point, the existing OExtension object is returned.
-func IOExtensionPointImplement(extensionPointName string, _type externglib.Type, extensionName string, priority int) *IOExtension {
+func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, extensionName string, priority int) *IOExtension {
 	var arg1 *C.char
 	var arg2 C.GType
 	var arg3 *C.char
@@ -5029,7 +5205,7 @@ func IOExtensionPointImplement(extensionPointName string, _type externglib.Type,
 
 	arg1 = (*C.gchar)(C.CString(extensionPointName))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.GType(_type)
+	arg2 = C.GType(typ)
 	arg3 = (*C.gchar)(C.CString(extensionName))
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = C.gint(priority)
@@ -5268,7 +5444,7 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 
 	var ret0 SettingsBackend
 
-	ret0 = WrapSettingsBackend(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SettingsBackend)
 
 	return ret0
 }
@@ -5281,7 +5457,7 @@ func MemoryMonitorDupDefault() MemoryMonitor {
 
 	var ret0 MemoryMonitor
 
-	ret0 = WrapMemoryMonitor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryMonitor)
 
 	return ret0
 }
@@ -5297,7 +5473,7 @@ func NewMemorySettingsBackend() SettingsBackend {
 
 	var ret0 SettingsBackend
 
-	ret0 = WrapSettingsBackend(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SettingsBackend)
 
 	return ret0
 }
@@ -5309,7 +5485,7 @@ func NetworkMonitorGetDefault() NetworkMonitor {
 
 	var ret0 NetworkMonitor
 
-	ret0 = WrapNetworkMonitor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(NetworkMonitor)
 
 	return ret0
 }
@@ -5333,7 +5509,7 @@ func NewNullSettingsBackend() SettingsBackend {
 
 	var ret0 SettingsBackend
 
-	ret0 = WrapSettingsBackend(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SettingsBackend)
 
 	return ret0
 }
@@ -5383,6 +5559,138 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 	return ret0
 }
 
+// PollableStreamRead tries to read from @stream, as with g_input_stream_read()
+// (if @blocking is true) or g_pollable_input_stream_read_nonblocking() (if
+// @blocking is false). This can be used to more easily share code between
+// blocking and non-blocking implementations of a method.
+//
+// If @blocking is false, then @stream must be a InputStream for which
+// g_pollable_input_stream_can_poll() returns true, or else the behavior is
+// undefined. If @blocking is true, then @stream does not need to be a
+// InputStream.
+func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancellable Cancellable) (gssize int, err error) {
+	var arg1 *C.GInputStream
+	var arg2 *C.void
+	var arg3 C.gsize
+	var arg4 C.gboolean
+	var arg5 *C.GCancellable
+	var gError *C.GError
+
+	arg1 = (*C.GInputStream)(stream.Native())
+	arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg3 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	if blocking {
+		arg4 = C.TRUE
+	}
+	arg5 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_pollable_stream_read(arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// PollableStreamWrite tries to write to @stream, as with
+// g_output_stream_write() (if @blocking is true) or
+// g_pollable_output_stream_write_nonblocking() (if @blocking is false). This
+// can be used to more easily share code between blocking and non-blocking
+// implementations of a method.
+//
+// If @blocking is false, then @stream must be a OutputStream for which
+// g_pollable_output_stream_can_poll() returns true or else the behavior is
+// undefined. If @blocking is true, then @stream does not need to be a
+// OutputStream.
+func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (gssize int, err error) {
+	var arg1 *C.GOutputStream
+	var arg2 *C.void
+	var arg3 C.gsize
+	var arg4 C.gboolean
+	var arg5 *C.GCancellable
+	var gError *C.GError
+
+	arg1 = (*C.GOutputStream)(stream.Native())
+	arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg3 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	if blocking {
+		arg4 = C.TRUE
+	}
+	arg5 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_pollable_stream_write(arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// PollableStreamWriteAll tries to write @count bytes to @stream, as with
+// g_output_stream_write_all(), but using g_pollable_stream_write() rather than
+// g_output_stream_write().
+//
+// On a successful write of @count bytes, true is returned, and @bytes_written
+// is set to @count.
+//
+// If there is an error during the operation (including G_IO_ERROR_WOULD_BLOCK
+// in the non-blocking case), false is returned and @error is set to indicate
+// the error status, @bytes_written is updated to contain the number of bytes
+// written into the stream before the error occurred.
+//
+// As with g_pollable_stream_write(), if @blocking is false, then @stream must
+// be a OutputStream for which g_pollable_output_stream_can_poll() returns true
+// or else the behavior is undefined. If @blocking is true, then @stream does
+// not need to be a OutputStream.
+func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (bytesWritten uint, err error) {
+	var arg1 *C.GOutputStream
+	var arg2 *C.void
+	var arg3 C.gsize
+	var arg4 C.gboolean
+	var arg5 *C.gsize // out
+	var arg6 *C.GCancellable
+	var gError *C.GError
+
+	arg1 = (*C.GOutputStream)(stream.Native())
+	arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg3 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	if blocking {
+		arg4 = C.TRUE
+	}
+	arg6 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_pollable_stream_write_all(arg1, arg2, arg3, arg4, &arg5, arg6, &gError)
+
+	var ret0 uint
+	var goError error
+
+	ret0 = uint(arg5)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
 // ProxyGetDefaultForProtocol: find the `gio-proxy` extension point for a proxy
 // implementation that supports the specified protocol.
 func ProxyGetDefaultForProtocol(protocol string) Proxy {
@@ -5395,7 +5703,7 @@ func ProxyGetDefaultForProtocol(protocol string) Proxy {
 
 	var ret0 Proxy
 
-	ret0 = WrapProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Proxy)
 
 	return ret0
 }
@@ -5407,7 +5715,7 @@ func ProxyResolverGetDefault() ProxyResolver {
 
 	var ret0 ProxyResolver
 
-	ret0 = WrapProxyResolver(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(ProxyResolver)
 
 	return ret0
 }
@@ -5453,21 +5761,28 @@ func ResourceErrorQuark() glib.Quark {
 // If @filename is empty or the data in it is corrupt, G_RESOURCE_ERROR_INTERNAL
 // will be returned. If @filename doesn’t exist, or there is an error in reading
 // it, an error from g_mapped_file_new() will be returned.
-func ResourceLoad(filename string) *Resource {
+func ResourceLoad(filename string) (resource *Resource, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_resource_load(arg1)
+	ret := C.g_resource_load(arg1, &gError)
 
 	var ret0 *Resource
+	var goError error
 
 	{
 		ret0 = WrapResource(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ResourcesEnumerateChildren returns all the names of children at the specified
@@ -5475,17 +5790,19 @@ func ResourceLoad(filename string) *Resource {
 // terminated list of strings which should be released with g_strfreev().
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []string {
+func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resources_enumerate_children(arg1, arg2)
+	ret := C.g_resources_enumerate_children(arg1, arg2, &gError)
 
 	var ret0 []string
+	var goError error
 
 	{
 		var length uint
@@ -5501,36 +5818,45 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 		}
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ResourcesGetInfo looks for a file at the specified @path in the set of
 // globally registered resources and if found returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, ok bool) {
+func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
 	var arg3 *C.gsize   // out
 	var arg4 *C.guint32 // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resources_get_info(arg1, arg2, &arg3, &arg4)
+	ret := C.g_resources_get_info(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 uint
 	var ret1 uint32
-	var ret2 bool
+	var goError error
 
 	ret0 = uint(arg3)
 
 	ret1 = uint32(arg4)
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // ResourcesLookupData looks for a file at the specified @path in the set of
@@ -5546,23 +5872,30 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 // uncompress the data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Bytes {
+func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *glib.Bytes, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resources_lookup_data(arg1, arg2)
+	ret := C.g_resources_lookup_data(arg1, arg2, &gError)
 
 	var ret0 *glib.Bytes
+	var goError error
 
 	{
 		ret0 = glib.WrapBytes(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ResourcesOpenStream looks for a file at the specified @path in the set of
@@ -5570,21 +5903,28 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 // data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) InputStream {
+func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resources_open_stream(arg1, arg2)
+	ret := C.g_resources_open_stream(arg1, arg2, &gError)
 
 	var ret0 InputStream
+	var goError error
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ResourcesRegister registers the resource with the process-global set of
@@ -5696,7 +6036,7 @@ func TLSBackendGetDefault() TLSBackend {
 
 	var ret0 TLSBackend
 
-	ret0 = WrapTLSBackend(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSBackend)
 
 	return ret0
 }
@@ -5724,20 +6064,27 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func NewTLSClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) TLSClientConnection {
+func NewTLSClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) (tlsClientConnection TLSClientConnection, err error) {
 	var arg1 *C.GIOStream
 	var arg2 *C.GSocketConnectable
+	var gError *C.GError
 
 	arg1 = (*C.GIOStream)(baseIOStream.Native())
 	arg2 = (*C.GSocketConnectable)(serverIdentity.Native())
 
-	ret := C.g_tls_client_connection_new(arg1, arg2)
+	ret := C.g_tls_client_connection_new(arg1, arg2, &gError)
 
 	var ret0 TLSClientConnection
+	var goError error
 
-	ret0 = WrapTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSClientConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // TLSErrorQuark gets the TLS error quark.
@@ -5760,19 +6107,26 @@ func TLSErrorQuark() glib.Quark {
 // authorities in @anchors to verify certificate chains.
 //
 // The certificates in @anchors must be PEM encoded.
-func NewTLSFileDatabase(anchors string) TLSFileDatabase {
+func NewTLSFileDatabase(anchors string) (tlsFileDatabase TLSFileDatabase, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(anchors))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_tls_file_database_new(arg1)
+	ret := C.g_tls_file_database_new(arg1, &gError)
 
 	var ret0 TLSFileDatabase
+	var goError error
 
-	ret0 = WrapTLSFileDatabase(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSFileDatabase)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewTLSServerConnection creates a new ServerConnection wrapping
@@ -5781,20 +6135,27 @@ func NewTLSFileDatabase(anchors string) TLSFileDatabase {
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func NewTLSServerConnection(baseIOStream IOStream, certificate TLSCertificate) TLSServerConnection {
+func NewTLSServerConnection(baseIOStream IOStream, certificate TLSCertificate) (tlsServerConnection TLSServerConnection, err error) {
 	var arg1 *C.GIOStream
 	var arg2 *C.GTlsCertificate
+	var gError *C.GError
 
 	arg1 = (*C.GIOStream)(baseIOStream.Native())
 	arg2 = (*C.GTlsCertificate)(certificate.Native())
 
-	ret := C.g_tls_server_connection_new(arg1, arg2)
+	ret := C.g_tls_server_connection_new(arg1, arg2, &gError)
 
 	var ret0 TLSServerConnection
+	var goError error
 
-	ret0 = WrapTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSServerConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // UnixIsMountPathSystemInternal determines if @mount_path is considered an
@@ -5811,7 +6172,7 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5834,7 +6195,7 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5856,7 +6217,7 @@ func UnixIsSystemFSType(fsType string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6049,7 +6410,7 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6064,7 +6425,7 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -6097,7 +6458,7 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6112,7 +6473,7 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -6127,7 +6488,7 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6147,7 +6508,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6190,7 +6551,7 @@ func UnixMountPointsChangedSince(time uint64) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6227,7 +6588,7 @@ func UnixMountsChangedSince(time uint64) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6434,7 +6795,7 @@ func (action action) Enabled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6804,7 +7165,9 @@ func (actionGroup actionGroup) ActionEnabledChanged(actionName string, enabled b
 	arg0 = (*C.GActionGroup)(actionGroup.Native())
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(enabled)
+	if enabled {
+		arg2 = C.TRUE
+	}
 
 	C.g_action_group_action_enabled_changed(arg0, arg1, arg2)
 }
@@ -6900,7 +7263,7 @@ func (actionGroup actionGroup) ActionEnabled(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7055,7 +7418,7 @@ func (actionGroup actionGroup) HasAction(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7139,7 +7502,7 @@ func (actionGroup actionGroup) QueryAction(actionName string) (enabled bool, par
 	var ret4 **glib.Variant
 	var ret5 bool
 
-	ret0 = gextras.Gobool(arg2)
+	ret0 = arg2 != C.FALSE
 
 	{
 		ret1 = glib.WrapVariantType(arg3)
@@ -7157,7 +7520,7 @@ func (actionGroup actionGroup) QueryAction(actionName string) (enabled bool, par
 		ret4 = glib.WrapVariant(arg6)
 	}
 
-	ret5 = gextras.Gobool(ret)
+	ret5 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3, ret4, ret5
 }
@@ -7248,7 +7611,7 @@ func (actionMap actionMap) LookupAction(actionName string) Action {
 
 	var ret0 Action
 
-	ret0 = WrapAction(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Action)
 
 	return ret0
 }
@@ -7273,7 +7636,7 @@ type AppInfoOverrider interface {
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
 	// content type.
-	AddSupportsType(contentType string) bool
+	AddSupportsType(contentType string) error
 	// CanDelete obtains the information whether the Info can be deleted. See
 	// g_app_info_delete().
 	CanDelete() bool
@@ -7350,7 +7713,7 @@ type AppInfoOverrider interface {
 	// it be inherited by further processes. The `DISPLAY` and
 	// `DESKTOP_STARTUP_ID` environment variables are also set, based on
 	// information provided in @context.
-	Launch(files *glib.List, context AppLaunchContext) bool
+	Launch(files *glib.List, context AppLaunchContext) error
 	// LaunchUris launches the application. This passes the @uris to the
 	// launched application as arguments, using the optional @context to get
 	// information about the details of the launcher (like what screen it is
@@ -7361,7 +7724,7 @@ type AppInfoOverrider interface {
 	// Note that even if the launch is successful the application launched can
 	// fail to start if it runs into problems during startup. There is no way to
 	// detect this.
-	LaunchUris(uris *glib.List, context AppLaunchContext) bool
+	LaunchUris(uris *glib.List, context AppLaunchContext) error
 	// LaunchUrisAsync: async version of g_app_info_launch_uris().
 	//
 	// The @callback is invoked immediately after the application launch, but it
@@ -7370,21 +7733,21 @@ type AppInfoOverrider interface {
 	// for g_app_info_launch_default_for_uri_async().
 	LaunchUrisAsync(uris *glib.List, context AppLaunchContext, cancellable Cancellable, callback AsyncReadyCallback)
 	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchUrisFinish(result AsyncResult) bool
+	LaunchUrisFinish(result AsyncResult) error
 	// RemoveSupportsType removes a supported type from an application, if
 	// possible.
-	RemoveSupportsType(contentType string) bool
+	RemoveSupportsType(contentType string) error
 	// SetAsDefaultForExtension sets the application as the default handler for
 	// the given file extension.
-	SetAsDefaultForExtension(extension string) bool
+	SetAsDefaultForExtension(extension string) error
 	// SetAsDefaultForType sets the application as the default handler for a
 	// given type.
-	SetAsDefaultForType(contentType string) bool
+	SetAsDefaultForType(contentType string) error
 	// SetAsLastUsedForType sets the application as the last used application
 	// for a given type. This will make the application appear as first in the
 	// list returned by g_app_info_get_recommended_for_type(), regardless of the
 	// default application for that content type.
-	SetAsLastUsedForType(contentType string) bool
+	SetAsLastUsedForType(contentType string) error
 	// ShouldShow checks if the application info should be shown in menus that
 	// list available applications.
 	ShouldShow() bool
@@ -7473,21 +7836,25 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 // AddSupportsType adds a content type to the application information to
 // indicate the application is capable of opening files with the given
 // content type.
-func (appinfo appInfo) AddSupportsType(contentType string) bool {
+func (appinfo appInfo) AddSupportsType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_app_info_add_supports_type(arg0, arg1)
+	ret := C.g_app_info_add_supports_type(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CanDelete obtains the information whether the Info can be deleted. See
@@ -7501,7 +7868,7 @@ func (appinfo appInfo) CanDelete() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7517,7 +7884,7 @@ func (appinfo appInfo) CanRemoveSupportsType() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7536,7 +7903,7 @@ func (appinfo appInfo) Delete() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7551,7 +7918,7 @@ func (appinfo appInfo) Dup() AppInfo {
 
 	var ret0 AppInfo
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
 	return ret0
 }
@@ -7573,7 +7940,7 @@ func (appinfo1 appInfo) Equal(appinfo2 AppInfo) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7651,7 +8018,7 @@ func (appinfo appInfo) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -7749,22 +8116,26 @@ func (appinfo appInfo) SupportedTypes() []string {
 // it be inherited by further processes. The `DISPLAY` and
 // `DESKTOP_STARTUP_ID` environment variables are also set, based on
 // information provided in @context.
-func (appinfo appInfo) Launch(files *glib.List, context AppLaunchContext) bool {
+func (appinfo appInfo) Launch(files *glib.List, context AppLaunchContext) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GList
 	var arg2 *C.GAppLaunchContext
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.GList)(files.Native())
 	arg2 = (*C.GAppLaunchContext)(context.Native())
 
-	ret := C.g_app_info_launch(arg0, arg1, arg2)
+	ret := C.g_app_info_launch(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LaunchUris launches the application. This passes the @uris to the
@@ -7777,22 +8148,26 @@ func (appinfo appInfo) Launch(files *glib.List, context AppLaunchContext) bool {
 // Note that even if the launch is successful the application launched can
 // fail to start if it runs into problems during startup. There is no way to
 // detect this.
-func (appinfo appInfo) LaunchUris(uris *glib.List, context AppLaunchContext) bool {
+func (appinfo appInfo) LaunchUris(uris *glib.List, context AppLaunchContext) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GList
 	var arg2 *C.GAppLaunchContext
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.GList)(uris.Native())
 	arg2 = (*C.GAppLaunchContext)(context.Native())
 
-	ret := C.g_app_info_launch_uris(arg0, arg1, arg2)
+	ret := C.g_app_info_launch_uris(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LaunchUrisAsync: async version of g_app_info_launch_uris().
@@ -7820,98 +8195,118 @@ func (appinfo appInfo) LaunchUrisAsync(uris *glib.List, context AppLaunchContext
 }
 
 // LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
-func (appinfo appInfo) LaunchUrisFinish(result AsyncResult) bool {
+func (appinfo appInfo) LaunchUrisFinish(result AsyncResult) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_app_info_launch_uris_finish(arg0, arg1)
+	ret := C.g_app_info_launch_uris_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // RemoveSupportsType removes a supported type from an application, if
 // possible.
-func (appinfo appInfo) RemoveSupportsType(contentType string) bool {
+func (appinfo appInfo) RemoveSupportsType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_app_info_remove_supports_type(arg0, arg1)
+	ret := C.g_app_info_remove_supports_type(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAsDefaultForExtension sets the application as the default handler for
 // the given file extension.
-func (appinfo appInfo) SetAsDefaultForExtension(extension string) bool {
+func (appinfo appInfo) SetAsDefaultForExtension(extension string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.gchar)(C.CString(extension))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_app_info_set_as_default_for_extension(arg0, arg1)
+	ret := C.g_app_info_set_as_default_for_extension(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAsDefaultForType sets the application as the default handler for a
 // given type.
-func (appinfo appInfo) SetAsDefaultForType(contentType string) bool {
+func (appinfo appInfo) SetAsDefaultForType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_app_info_set_as_default_for_type(arg0, arg1)
+	ret := C.g_app_info_set_as_default_for_type(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAsLastUsedForType sets the application as the last used application
 // for a given type. This will make the application appear as first in the
 // list returned by g_app_info_get_recommended_for_type(), regardless of the
 // default application for that content type.
-func (appinfo appInfo) SetAsLastUsedForType(contentType string) bool {
+func (appinfo appInfo) SetAsLastUsedForType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg0 = (*C.GAppInfo)(appinfo.Native())
 	arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_app_info_set_as_last_used_for_type(arg0, arg1)
+	ret := C.g_app_info_set_as_last_used_for_type(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ShouldShow checks if the application info should be shown in menus that
@@ -7925,7 +8320,7 @@ func (appinfo appInfo) ShouldShow() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7940,7 +8335,7 @@ func (appinfo appInfo) SupportsFiles() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7956,7 +8351,7 @@ func (appinfo appInfo) SupportsUris() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8003,7 +8398,7 @@ type AsyncInitableOverrider interface {
 	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
-	InitFinish(res AsyncResult) bool
+	InitFinish(res AsyncResult) error
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
@@ -8109,7 +8504,7 @@ type AsyncInitable interface {
 
 	// NewFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or nil on error.
-	NewFinish(res AsyncResult) gextras.Objector
+	NewFinish(res AsyncResult) (object gextras.Objector, err error)
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -8187,38 +8582,49 @@ func (initable asyncInitable) InitAsync(ioPriority int, cancellable Cancellable,
 
 // InitFinish finishes asynchronous initialization and returns the result.
 // See g_async_initable_init_async().
-func (initable asyncInitable) InitFinish(res AsyncResult) bool {
+func (initable asyncInitable) InitFinish(res AsyncResult) error {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GAsyncInitable)(initable.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_async_initable_init_finish(arg0, arg1)
+	ret := C.g_async_initable_init_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // NewFinish finishes the async construction for the various
 // g_async_initable_new calls, returning the created object or nil on error.
-func (initable asyncInitable) NewFinish(res AsyncResult) gextras.Objector {
+func (initable asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, err error) {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GAsyncInitable)(initable.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_async_initable_new_finish(arg0, arg1)
+	ret := C.g_async_initable_new_finish(arg0, arg1, &gError)
 
 	var ret0 gextras.Objector
+	var goError error
 
-	ret0 = externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gextras.Objector)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // AsyncResultOverrider contains methods that are overridable. This
@@ -8325,7 +8731,7 @@ type AsyncResult interface {
 	// rather than calling into the virtual method. This should not be used in
 	// new code; Result errors that are set by virtual methods should also be
 	// extracted by virtual methods, to enable subclasses to chain up correctly.
-	LegacyPropagateError() bool
+	LegacyPropagateError() error
 }
 
 // asyncResult implements the AsyncResult interface.
@@ -8359,7 +8765,7 @@ func (res asyncResult) SourceObject() gextras.Objector {
 
 	var ret0 gextras.Objector
 
-	ret0 = externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gextras.Objector)
 
 	return ret0
 }
@@ -8392,7 +8798,7 @@ func (res asyncResult) IsTagged(sourceTag interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8405,23 +8811,109 @@ func (res asyncResult) IsTagged(sourceTag interface{}) bool {
 // rather than calling into the virtual method. This should not be used in
 // new code; Result errors that are set by virtual methods should also be
 // extracted by virtual methods, to enable subclasses to chain up correctly.
-func (res asyncResult) LegacyPropagateError() bool {
+func (res asyncResult) LegacyPropagateError() error {
 	var arg0 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_async_result_legacy_propagate_error(arg0)
+	ret := C.g_async_result_legacy_propagate_error(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ConverterOverrider contains methods that are overridable. This
 // interface is a subset of the interface Converter.
 type ConverterOverrider interface {
+	// Convert: this is the main operation used when converting data. It is to
+	// be called multiple times in a loop, and each time it will do some work,
+	// i.e. producing some output (in @outbuf) or consuming some input (from
+	// @inbuf) or both. If its not possible to do any work an error is returned.
+	//
+	// Note that a single call may not consume all input (or any input at all).
+	// Also a call may produce output even if given no input, due to state
+	// stored in the converter producing output.
+	//
+	// If any data was either produced or consumed, and then an error happens,
+	// then only the successful conversion is reported and the error is returned
+	// on the next call.
+	//
+	// A full conversion loop involves calling this method repeatedly, each time
+	// giving it new input and space output space. When there is no more input
+	// data after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be
+	// set. The loop will be (unless some error happens) returning
+	// G_CONVERTER_CONVERTED each time until all data is consumed and all output
+	// is produced, then G_CONVERTER_FINISHED is returned instead. Note, that
+	// G_CONVERTER_FINISHED may be returned even if G_CONVERTER_INPUT_AT_END is
+	// not set, for instance in a decompression converter where the end of data
+	// is detectable from the data (and there might even be other data after the
+	// end of the compressed data).
+	//
+	// When some data has successfully been converted @bytes_read and is set to
+	// the number of bytes read from @inbuf, and @bytes_written is set to
+	// indicate how many bytes was written to @outbuf. If there are more data to
+	// output or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified)
+	// then G_CONVERTER_CONVERTED is returned, and if no more data is to be
+	// output then G_CONVERTER_FINISHED is returned.
+	//
+	// On error G_CONVERTER_ERROR is returned and @error is set accordingly.
+	// Some errors need special handling:
+	//
+	// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
+	// resulting converted data, the application should call the function again
+	// with a larger @outbuf to continue.
+	//
+	// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to
+	// fully determine what the conversion should produce, and the
+	// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with
+	// an incomplete multibyte sequence when converting text, or when a regexp
+	// matches up to the end of the input (and may match further input). It may
+	// also happen when @inbuf_size is zero and there is no more data to
+	// produce.
+	//
+	// When this happens the application should read more input and then call
+	// the function again. If further input shows that there is no more data
+	// call the function again with the same data but with the
+	// G_CONVERTER_INPUT_AT_END flag set. This may cause the conversion to
+	// finish as e.g. in the regexp match case (or, to fail again with
+	// G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion where the input is
+	// actually partial).
+	//
+	// After g_converter_convert() has returned G_CONVERTER_FINISHED the
+	// converter object is in an invalid state where its not allowed to call
+	// g_converter_convert() anymore. At this time you can only free the object
+	// or call g_converter_reset() to reset it to the initial state.
+	//
+	// If the flag G_CONVERTER_FLUSH is set then conversion is modified to try
+	// to write out all internal state to the output. The application has to
+	// call the function multiple times with the flag set, and when the
+	// available input has been consumed and all internal state has been
+	// produced then G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at
+	// the end) is returned instead of G_CONVERTER_CONVERTED. This is somewhat
+	// similar to what happens at the end of the input stream, but done in the
+	// middle of the data.
+	//
+	// This has different meanings for different conversions. For instance in a
+	// compression converter it would mean that we flush all the compression
+	// state into output such that if you uncompress the compressed data you get
+	// back all the input data. Doing this may make the final file larger due to
+	// padding though. Another example is a regexp conversion, where if you at
+	// the end of the flushed data have a match, but there is also a potential
+	// longer match. In the non-flushed case we would ask for more input, but
+	// when flushing we treat this as the end of input and do the match.
+	//
+	// Flushing is not always possible (like if a charset converter flushes at a
+	// partial multibyte sequence). Converters are supposed to try to produce as
+	// much output as possible and then return an error (typically
+	// G_IO_ERROR_PARTIAL_INPUT).
+	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, err error)
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created. If the converter has any internal state that would
 	// produce output then that output is lost.
@@ -8457,6 +8949,128 @@ func marshalConverter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapConverter(obj), nil
+}
+
+// Convert: this is the main operation used when converting data. It is to
+// be called multiple times in a loop, and each time it will do some work,
+// i.e. producing some output (in @outbuf) or consuming some input (from
+// @inbuf) or both. If its not possible to do any work an error is returned.
+//
+// Note that a single call may not consume all input (or any input at all).
+// Also a call may produce output even if given no input, due to state
+// stored in the converter producing output.
+//
+// If any data was either produced or consumed, and then an error happens,
+// then only the successful conversion is reported and the error is returned
+// on the next call.
+//
+// A full conversion loop involves calling this method repeatedly, each time
+// giving it new input and space output space. When there is no more input
+// data after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be
+// set. The loop will be (unless some error happens) returning
+// G_CONVERTER_CONVERTED each time until all data is consumed and all output
+// is produced, then G_CONVERTER_FINISHED is returned instead. Note, that
+// G_CONVERTER_FINISHED may be returned even if G_CONVERTER_INPUT_AT_END is
+// not set, for instance in a decompression converter where the end of data
+// is detectable from the data (and there might even be other data after the
+// end of the compressed data).
+//
+// When some data has successfully been converted @bytes_read and is set to
+// the number of bytes read from @inbuf, and @bytes_written is set to
+// indicate how many bytes was written to @outbuf. If there are more data to
+// output or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified)
+// then G_CONVERTER_CONVERTED is returned, and if no more data is to be
+// output then G_CONVERTER_FINISHED is returned.
+//
+// On error G_CONVERTER_ERROR is returned and @error is set accordingly.
+// Some errors need special handling:
+//
+// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
+// resulting converted data, the application should call the function again
+// with a larger @outbuf to continue.
+//
+// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to
+// fully determine what the conversion should produce, and the
+// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with
+// an incomplete multibyte sequence when converting text, or when a regexp
+// matches up to the end of the input (and may match further input). It may
+// also happen when @inbuf_size is zero and there is no more data to
+// produce.
+//
+// When this happens the application should read more input and then call
+// the function again. If further input shows that there is no more data
+// call the function again with the same data but with the
+// G_CONVERTER_INPUT_AT_END flag set. This may cause the conversion to
+// finish as e.g. in the regexp match case (or, to fail again with
+// G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion where the input is
+// actually partial).
+//
+// After g_converter_convert() has returned G_CONVERTER_FINISHED the
+// converter object is in an invalid state where its not allowed to call
+// g_converter_convert() anymore. At this time you can only free the object
+// or call g_converter_reset() to reset it to the initial state.
+//
+// If the flag G_CONVERTER_FLUSH is set then conversion is modified to try
+// to write out all internal state to the output. The application has to
+// call the function multiple times with the flag set, and when the
+// available input has been consumed and all internal state has been
+// produced then G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at
+// the end) is returned instead of G_CONVERTER_CONVERTED. This is somewhat
+// similar to what happens at the end of the input stream, but done in the
+// middle of the data.
+//
+// This has different meanings for different conversions. For instance in a
+// compression converter it would mean that we flush all the compression
+// state into output such that if you uncompress the compressed data you get
+// back all the input data. Doing this may make the final file larger due to
+// padding though. Another example is a regexp conversion, where if you at
+// the end of the flushed data have a match, but there is also a potential
+// longer match. In the non-flushed case we would ask for more input, but
+// when flushing we treat this as the end of input and do the match.
+//
+// Flushing is not always possible (like if a charset converter flushes at a
+// partial multibyte sequence). Converters are supposed to try to produce as
+// much output as possible and then return an error (typically
+// G_IO_ERROR_PARTIAL_INPUT).
+func (converter converter) Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, err error) {
+	var arg0 *C.GConverter
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 *C.void
+	var arg4 C.gsize
+	var arg5 C.GConverterFlags
+	var arg6 *C.gsize // out
+	var arg7 *C.gsize // out
+	var gError *C.GError
+
+	arg0 = (*C.GConverter)(converter.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&inbuf[0]))
+	arg2 = len(inbuf)
+	defer runtime.KeepAlive(inbuf)
+	arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
+	arg4 = len(outbuf)
+	defer runtime.KeepAlive(outbuf)
+	arg5 = (C.GConverterFlags)(flags)
+
+	ret := C.g_converter_convert(arg0, arg1, arg2, arg3, arg4, arg5, &arg6, &arg7, &gError)
+
+	var ret0 uint
+	var ret1 uint
+	var ret2 ConverterResult
+	var goError error
+
+	ret0 = uint(arg6)
+
+	ret1 = uint(arg7)
+
+	ret2 = ConverterResult(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // Reset resets all internal state in the converter, making it behave as if
@@ -8529,7 +9143,7 @@ func (interface_ dBusInterface) DupObject() DBusObject {
 
 	var ret0 DBusObject
 
-	ret0 = WrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObject)
 
 	return ret0
 }
@@ -8627,7 +9241,7 @@ func (object dBusObject) Interface(interfaceName string) DBusInterface {
 
 	var ret0 DBusInterface
 
-	ret0 = WrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusInterface)
 
 	return ret0
 }
@@ -8737,7 +9351,7 @@ func (manager dBusObjectManager) Interface(objectPath string, interfaceName stri
 
 	var ret0 DBusInterface
 
-	ret0 = WrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusInterface)
 
 	return ret0
 }
@@ -8755,7 +9369,7 @@ func (manager dBusObjectManager) Object(objectPath string) DBusObject {
 
 	var ret0 DBusObject
 
-	ret0 = WrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObject)
 
 	return ret0
 }
@@ -8840,7 +9454,7 @@ type DatagramBasedOverrider interface {
 	// If @cancellable is cancelled before the condition is met, or if @timeout
 	// is reached before the condition is met, then false is returned and @error
 	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) bool
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
 	// CreateSource creates a #GSource that can be attached to a Context to
 	// monitor for the availability of the specified @condition on the Based.
 	// The #GSource keeps a reference to the @datagram_based.
@@ -8856,6 +9470,102 @@ type DatagramBasedOverrider interface {
 	// change). You can check for this in the callback using
 	// g_cancellable_is_cancelled().
 	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
+	// ReceiveMessages: receive one or more data messages from @datagram_based
+	// in one go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to.
+	//
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// received, the connection is closed remotely (EOS), @cancellable is
+	// cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will return up to @num_messages without
+	// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+	// operating system to be received.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (gint int, err error)
+	// SendMessages: send one or more data messages from @datagram_based in one
+	// go.
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains an address to
+	// send the data to, and a pointer to an array of Vector structs to describe
+	// the buffers that the data to be sent for each message will be gathered
+	// from.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If @timeout is negative the call will block until @num_messages have been
+	// sent, @cancellable is cancelled, or an error occurs.
+	//
+	// If @timeout is 0 the call will send up to @num_messages without blocking,
+	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+	// messages.
+	//
+	// If @timeout is positive the call will block on the same conditions as if
+	// @timeout were negative. If the timeout is reached before any messages are
+	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages sent before timing out.
+	//
+	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_send_messages() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned. If
+	// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (gint int, err error)
 }
 
 // DatagramBased: a Based is a networking interface for representing
@@ -8990,24 +9700,28 @@ func (datagramBased datagramBased) ConditionCheck(condition glib.IOCondition) gl
 // If @cancellable is cancelled before the condition is met, or if @timeout
 // is reached before the condition is met, then false is returned and @error
 // is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-func (datagramBased datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) bool {
+func (datagramBased datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
 	var arg0 *C.GDatagramBased
 	var arg1 C.GIOCondition
 	var arg2 C.gint64
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDatagramBased)(datagramBased.Native())
 	arg1 = (C.GIOCondition)(condition)
 	arg2 = C.gint64(timeout)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_datagram_based_condition_wait(arg0, arg1, arg2, arg3)
+	ret := C.g_datagram_based_condition_wait(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CreateSource creates a #GSource that can be attached to a Context to
@@ -9042,6 +9756,192 @@ func (datagramBased datagramBased) CreateSource(condition glib.IOCondition, canc
 	}
 
 	return ret0
+}
+
+// ReceiveMessages: receive one or more data messages from @datagram_based
+// in one go.
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains a pointer to an
+// array of Vector structs describing the buffers that the data received in
+// each message will be written to.
+//
+// @flags modify how all messages are received. The commonly available
+// arguments for this are available in the MsgFlags enum, but the values
+// there are the same as the system values, and the flags are passed in
+// as-is, so you can pass in system-specific flags too. These flags affect
+// the overall receive operation. Flags affecting individual messages are
+// returned in Message.flags.
+//
+// The other members of Message are treated as described in its
+// documentation.
+//
+// If @timeout is negative the call will block until @num_messages have been
+// received, the connection is closed remotely (EOS), @cancellable is
+// cancelled, or an error occurs.
+//
+// If @timeout is 0 the call will return up to @num_messages without
+// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+// operating system to be received.
+//
+// If @timeout is positive the call will block on the same conditions as if
+// @timeout were negative. If the timeout is reached before any messages are
+// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+// number of messages received before timing out. (Note: This is effectively
+// the behaviour of `MSG_WAITFORONE` with recvmmsg().)
+//
+// To be notified when messages are available, wait for the G_IO_IN
+// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+// from g_datagram_based_receive_messages() even if you were previously
+// notified of a G_IO_IN condition.
+//
+// If the remote peer closes the connection, any messages queued in the
+// underlying receive buffer will be returned, and subsequent calls to
+// g_datagram_based_receive_messages() will return 0 (with no error set).
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be received; otherwise the number of
+// messages successfully received before the error will be returned. If
+// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+// other error.
+func (datagramBased datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (gint int, err error) {
+	var arg0 *C.GDatagramBased
+	var arg1 *C.GInputMessage
+	var arg2 C.guint
+	var arg3 C.gint
+	var arg4 C.gint64
+	var arg5 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GDatagramBased)(datagramBased.Native())
+	{
+		var dst []C.GInputMessage
+		ptr := C.malloc(C.sizeof_GInputMessage * len(messages))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(messages)
+		sliceHeader.Cap = len(messages)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(messages); i++ {
+			src := messages[i]
+			dst[i] = (C.GInputMessage)(src.Native())
+		}
+
+		arg1 = (*C.GInputMessage)(unsafe.Pointer(ptr))
+		arg2 = len(messages)
+	}
+	arg3 = C.gint(flags)
+	arg4 = C.gint64(timeout)
+	arg5 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_datagram_based_receive_messages(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// SendMessages: send one or more data messages from @datagram_based in one
+// go.
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains an address to
+// send the data to, and a pointer to an array of Vector structs to describe
+// the buffers that the data to be sent for each message will be gathered
+// from.
+//
+// @flags modify how the message is sent. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can
+// pass in system-specific flags too.
+//
+// The other members of Message are treated as described in its
+// documentation.
+//
+// If @timeout is negative the call will block until @num_messages have been
+// sent, @cancellable is cancelled, or an error occurs.
+//
+// If @timeout is 0 the call will send up to @num_messages without blocking,
+// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+// messages.
+//
+// If @timeout is positive the call will block on the same conditions as if
+// @timeout were negative. If the timeout is reached before any messages are
+// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+// number of messages sent before timing out.
+//
+// To be notified when messages can be sent, wait for the G_IO_OUT
+// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+// from g_datagram_based_send_messages() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with @shutdown_write set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be sent; otherwise the number of
+// messages successfully sent before the error will be returned. If
+// @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+// other error.
+func (datagramBased datagramBased) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (gint int, err error) {
+	var arg0 *C.GDatagramBased
+	var arg1 *C.GOutputMessage
+	var arg2 C.guint
+	var arg3 C.gint
+	var arg4 C.gint64
+	var arg5 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GDatagramBased)(datagramBased.Native())
+	{
+		var dst []C.GOutputMessage
+		ptr := C.malloc(C.sizeof_GOutputMessage * len(messages))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(messages)
+		sliceHeader.Cap = len(messages)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(messages); i++ {
+			src := messages[i]
+			dst[i] = (C.GOutputMessage)(src.Native())
+		}
+
+		arg1 = (*C.GOutputMessage)(unsafe.Pointer(ptr))
+		arg2 = len(messages)
+	}
+	arg3 = C.gint(flags)
+	arg4 = C.gint64(timeout)
+	arg5 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_datagram_based_send_messages(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // DesktopAppInfoLookupOverrider contains methods that are overridable. This
@@ -9106,7 +10006,7 @@ func (lookup desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo
 
 	var ret0 AppInfo
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
 	return ret0
 }
@@ -9136,7 +10036,7 @@ type DriveOverrider interface {
 
 	EjectButton()
 	// EjectFinish finishes ejecting a drive.
-	EjectFinish(result AsyncResult) bool
+	EjectFinish(result AsyncResult) error
 	// EjectWithOperation ejects a drive. This is an asynchronous operation, and
 	// is finished by calling g_drive_eject_with_operation_finish() with the
 	// @drive and Result data returned in the @callback.
@@ -9144,7 +10044,7 @@ type DriveOverrider interface {
 	// EjectWithOperationFinish finishes ejecting a drive. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) bool
+	EjectWithOperationFinish(result AsyncResult) error
 	// EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
 	// g_drive_get_identifier() to obtain the identifiers themselves.
 	EnumerateIdentifiers() []string
@@ -9189,14 +10089,14 @@ type DriveOverrider interface {
 	PollForMedia(cancellable Cancellable, callback AsyncReadyCallback)
 	// PollForMediaFinish finishes an operation started with
 	// g_drive_poll_for_media() on a drive.
-	PollForMediaFinish(result AsyncResult) bool
+	PollForMediaFinish(result AsyncResult) error
 	// Start: asynchronously starts a drive.
 	//
 	// When the operation is finished, @callback will be called. You can then
 	// call g_drive_start_finish() to obtain the result of the operation.
 	Start(flags DriveStartFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// StartFinish finishes starting a drive.
-	StartFinish(result AsyncResult) bool
+	StartFinish(result AsyncResult) error
 	// Stop: asynchronously stops a drive.
 	//
 	// When the operation is finished, @callback will be called. You can then
@@ -9205,7 +10105,7 @@ type DriveOverrider interface {
 
 	StopButton()
 	// StopFinish finishes stopping a drive.
-	StopFinish(result AsyncResult) bool
+	StopFinish(result AsyncResult) error
 }
 
 // Drive: #GDrive - this represent a piece of hardware connected to the machine.
@@ -9268,7 +10168,7 @@ func (drive drive) CanEject() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9283,7 +10183,7 @@ func (drive drive) CanPollForMedia() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9298,7 +10198,7 @@ func (drive drive) CanStart() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9313,7 +10213,7 @@ func (drive drive) CanStartDegraded() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9328,7 +10228,7 @@ func (drive drive) CanStop() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9354,20 +10254,24 @@ func (drive drive) Eject(flags MountUnmountFlags, cancellable Cancellable, callb
 }
 
 // EjectFinish finishes ejecting a drive.
-func (drive drive) EjectFinish(result AsyncResult) bool {
+func (drive drive) EjectFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDrive)(drive.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_drive_eject_finish(arg0, arg1)
+	ret := C.g_drive_eject_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EjectWithOperation ejects a drive. This is an asynchronous operation, and
@@ -9394,20 +10298,24 @@ func (drive drive) EjectWithOperation(flags MountUnmountFlags, mountOperation Mo
 // EjectWithOperationFinish finishes ejecting a drive. If any errors
 // occurred during the operation, @error will be set to contain the errors
 // and false will be returned.
-func (drive drive) EjectWithOperationFinish(result AsyncResult) bool {
+func (drive drive) EjectWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDrive)(drive.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_drive_eject_with_operation_finish(arg0, arg1)
+	ret := C.g_drive_eject_with_operation_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
@@ -9448,7 +10356,7 @@ func (drive drive) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -9529,7 +10437,7 @@ func (drive drive) SymbolicIcon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -9566,7 +10474,7 @@ func (drive drive) HasMedia() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9581,7 +10489,7 @@ func (drive drive) HasVolumes() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9597,7 +10505,7 @@ func (drive drive) IsMediaCheckAutomatic() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9612,7 +10520,7 @@ func (drive drive) IsMediaRemovable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9628,7 +10536,7 @@ func (drive drive) IsRemovable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9655,20 +10563,24 @@ func (drive drive) PollForMedia(cancellable Cancellable, callback AsyncReadyCall
 
 // PollForMediaFinish finishes an operation started with
 // g_drive_poll_for_media() on a drive.
-func (drive drive) PollForMediaFinish(result AsyncResult) bool {
+func (drive drive) PollForMediaFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDrive)(drive.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_drive_poll_for_media_finish(arg0, arg1)
+	ret := C.g_drive_poll_for_media_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Start: asynchronously starts a drive.
@@ -9694,20 +10606,24 @@ func (drive drive) Start(flags DriveStartFlags, mountOperation MountOperation, c
 }
 
 // StartFinish finishes starting a drive.
-func (drive drive) StartFinish(result AsyncResult) bool {
+func (drive drive) StartFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDrive)(drive.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_drive_start_finish(arg0, arg1)
+	ret := C.g_drive_start_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Stop: asynchronously stops a drive.
@@ -9733,20 +10649,24 @@ func (drive drive) Stop(flags MountUnmountFlags, mountOperation MountOperation, 
 }
 
 // StopFinish finishes stopping a drive.
-func (drive drive) StopFinish(result AsyncResult) bool {
+func (drive drive) StopFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDrive)(drive.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_drive_stop_finish(arg0, arg1)
+	ret := C.g_drive_stop_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
@@ -9833,7 +10753,7 @@ func (conn dtlsClientConnection) ServerIdentity() SocketConnectable {
 
 	var ret0 SocketConnectable
 
-	ret0 = WrapSocketConnectable(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(SocketConnectable)
 
 	return ret0
 }
@@ -9885,7 +10805,7 @@ func (conn dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 type DTLSConnectionOverrider interface {
 	AcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
 
-	BindingData(_type TLSChannelBindingType, data []byte) bool
+	BindingData(typ TLSChannelBindingType, data []byte) error
 	// NegotiatedProtocol gets the name of the application-layer protocol
 	// negotiated during the handshake.
 	//
@@ -9918,13 +10838,13 @@ type DTLSConnectionOverrider interface {
 	// handshake will no longer do anything.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable Cancellable) bool
+	Handshake(cancellable Cancellable) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
 	// g_dtls_connection_handshake() for more information.
 	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_dtls_connection_handshake() for more information.
-	HandshakeFinish(result AsyncResult) bool
+	HandshakeFinish(result AsyncResult) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
 	// advertise that the caller is willing to speak on this connection. The
 	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
@@ -9953,13 +10873,13 @@ type DTLSConnectionOverrider interface {
 	// If @cancellable is cancelled, the Connection may be left partially-closed
 	// and any pending untransmitted data may be lost. Call
 	// g_dtls_connection_shutdown() again to complete closing the Connection.
-	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) bool
+	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error
 	// ShutdownAsync: asynchronously shut down part or all of the DTLS
 	// connection. See g_dtls_connection_shutdown() for more information.
 	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
-	ShutdownFinish(result AsyncResult) bool
+	ShutdownFinish(result AsyncResult) error
 }
 
 // DTLSConnection is the base DTLS connection class type, which wraps a Based
@@ -10002,13 +10922,13 @@ type DTLSConnection interface {
 	// If @cancellable is cancelled, the Connection may be left partially-closed
 	// and any pending untransmitted data may be lost. Call
 	// g_dtls_connection_close() again to complete closing the Connection.
-	Close(cancellable Cancellable) bool
+	Close(cancellable Cancellable) error
 	// CloseAsync: asynchronously close the DTLS connection. See
 	// g_dtls_connection_close() for more information.
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish: finish an asynchronous TLS close operation. See
 	// g_dtls_connection_close() for more information.
-	CloseFinish(result AsyncResult) bool
+	CloseFinish(result AsyncResult) error
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
 	EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
@@ -10029,7 +10949,7 @@ type DTLSConnection interface {
 	// though. That could happen if TLS connection does not support @type or the
 	// binding data is not available yet due to additional negotiation or input
 	// required.
-	ChannelBindingData(_type TLSChannelBindingType) (data []byte, ok bool)
+	ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error)
 	// Database gets the certificate database that @conn uses to verify peer
 	// certificates. See g_dtls_connection_set_database().
 	Database() TLSDatabase
@@ -10154,20 +11074,24 @@ func marshalDTLSConnection(p uintptr) (interface{}, error) {
 // If @cancellable is cancelled, the Connection may be left partially-closed
 // and any pending untransmitted data may be lost. Call
 // g_dtls_connection_close() again to complete closing the Connection.
-func (conn dtlsConnection) Close(cancellable Cancellable) bool {
+func (conn dtlsConnection) Close(cancellable Cancellable) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dtls_connection_close(arg0, arg1)
+	ret := C.g_dtls_connection_close(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CloseAsync: asynchronously close the DTLS connection. See
@@ -10190,20 +11114,24 @@ func (conn dtlsConnection) CloseAsync(ioPriority int, cancellable Cancellable, c
 
 // CloseFinish: finish an asynchronous TLS close operation. See
 // g_dtls_connection_close() for more information.
-func (conn dtlsConnection) CloseFinish(result AsyncResult) bool {
+func (conn dtlsConnection) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_dtls_connection_close_finish(arg0, arg1)
+	ret := C.g_dtls_connection_close_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EmitAcceptCertificate: used by Connection implementations to emit the
@@ -10221,7 +11149,7 @@ func (conn dtlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10237,7 +11165,7 @@ func (conn dtlsConnection) Certificate() TLSCertificate {
 
 	var ret0 TLSCertificate
 
-	ret0 = WrapTLSCertificate(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
 	return ret0
 }
@@ -10256,18 +11184,19 @@ func (conn dtlsConnection) Certificate() TLSCertificate {
 // though. That could happen if TLS connection does not support @type or the
 // binding data is not available yet due to additional negotiation or input
 // required.
-func (conn dtlsConnection) ChannelBindingData(_type TLSChannelBindingType) (data []byte, ok bool) {
+func (conn dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error) {
 	var arg0 *C.GDtlsConnection
 	var arg1 C.GTlsChannelBindingType
 	var arg2 *C.GByteArray // out
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
-	arg1 = (C.GTlsChannelBindingType)(_type)
+	arg1 = (C.GTlsChannelBindingType)(typ)
 
-	ret := C.g_dtls_connection_get_channel_binding_data(arg0, arg1, &arg2)
+	ret := C.g_dtls_connection_get_channel_binding_data(arg0, arg1, &arg2, &gError)
 
 	var ret0 []byte
-	var ret1 bool
+	var goError error
 
 	{
 		var length uint
@@ -10282,9 +11211,12 @@ func (conn dtlsConnection) ChannelBindingData(_type TLSChannelBindingType) (data
 		}
 	}
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // Database gets the certificate database that @conn uses to verify peer
@@ -10298,7 +11230,7 @@ func (conn dtlsConnection) Database() TLSDatabase {
 
 	var ret0 TLSDatabase
 
-	ret0 = WrapTLSDatabase(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSDatabase)
 
 	return ret0
 }
@@ -10315,7 +11247,7 @@ func (conn dtlsConnection) Interaction() TLSInteraction {
 
 	var ret0 TLSInteraction
 
-	ret0 = WrapTLSInteraction(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSInteraction)
 
 	return ret0
 }
@@ -10353,7 +11285,7 @@ func (conn dtlsConnection) PeerCertificate() TLSCertificate {
 
 	var ret0 TLSCertificate
 
-	ret0 = WrapTLSCertificate(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
 	return ret0
 }
@@ -10403,7 +11335,7 @@ func (conn dtlsConnection) RequireCloseNotify() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10432,20 +11364,24 @@ func (conn dtlsConnection) RequireCloseNotify() bool {
 // handshake will no longer do anything.
 //
 // Connection::accept_certificate may be emitted during the handshake.
-func (conn dtlsConnection) Handshake(cancellable Cancellable) bool {
+func (conn dtlsConnection) Handshake(cancellable Cancellable) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dtls_connection_handshake(arg0, arg1)
+	ret := C.g_dtls_connection_handshake(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
@@ -10468,20 +11404,24 @@ func (conn dtlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellabl
 
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_dtls_connection_handshake() for more information.
-func (conn dtlsConnection) HandshakeFinish(result AsyncResult) bool {
+func (conn dtlsConnection) HandshakeFinish(result AsyncResult) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_dtls_connection_handshake_finish(arg0, arg1)
+	ret := C.g_dtls_connection_handshake_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -10501,7 +11441,21 @@ func (conn dtlsConnection) SetAdvertisedProtocols(protocols []string) {
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(protocols) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(protocols)
+		sliceHeader.Cap = len(protocols)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(protocols); i++ {
+			src := protocols[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	C.g_dtls_connection_set_advertised_protocols(arg0, arg1)
@@ -10607,7 +11561,9 @@ func (conn dtlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
-	arg1 = gextras.Cbool(requireCloseNotify)
+	if requireCloseNotify {
+		arg1 = C.TRUE
+	}
 
 	C.g_dtls_connection_set_require_close_notify(arg0, arg1)
 }
@@ -10628,24 +11584,32 @@ func (conn dtlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 // If @cancellable is cancelled, the Connection may be left partially-closed
 // and any pending untransmitted data may be lost. Call
 // g_dtls_connection_shutdown() again to complete closing the Connection.
-func (conn dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) bool {
+func (conn dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellable) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 C.gboolean
 	var arg2 C.gboolean
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
-	arg1 = gextras.Cbool(shutdownRead)
-	arg2 = gextras.Cbool(shutdownWrite)
+	if shutdownRead {
+		arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		arg2 = C.TRUE
+	}
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dtls_connection_shutdown(arg0, arg1, arg2, arg3)
+	ret := C.g_dtls_connection_shutdown(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ShutdownAsync: asynchronously shut down part or all of the DTLS
@@ -10660,8 +11624,12 @@ func (conn dtlsConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, 
 	var arg6 C.gpointer
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
-	arg1 = gextras.Cbool(shutdownRead)
-	arg2 = gextras.Cbool(shutdownWrite)
+	if shutdownRead {
+		arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		arg2 = C.TRUE
+	}
 	arg3 = C.int(ioPriority)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -10672,20 +11640,24 @@ func (conn dtlsConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, 
 
 // ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 // g_dtls_connection_shutdown() for more information.
-func (conn dtlsConnection) ShutdownFinish(result AsyncResult) bool {
+func (conn dtlsConnection) ShutdownFinish(result AsyncResult) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDtlsConnection)(conn.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_dtls_connection_shutdown_finish(arg0, arg1)
+	ret := C.g_dtls_connection_shutdown_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DTLSServerConnection is the server-side subclass of Connection, representing
@@ -10736,7 +11708,7 @@ type FileOverrider interface {
 	// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
 	// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
 	// too, and depend on what kind of filesystem the file is on.
-	AppendTo(flags FileCreateFlags, cancellable Cancellable) FileOutputStream
+	AppendTo(flags FileCreateFlags, cancellable Cancellable) (fileOutputStream FileOutputStream, err error)
 	// AppendToAsync: asynchronously opens @file for appending.
 	//
 	// For more details, see g_file_append_to() which is the synchronous version
@@ -10747,7 +11719,7 @@ type FileOverrider interface {
 	AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// AppendToFinish finishes an asynchronous file append operation started
 	// with g_file_append_to_async().
-	AppendToFinish(res AsyncResult) FileOutputStream
+	AppendToFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error)
 	// Copy copies the file @source to the location specified by @destination.
 	// Can not handle recursive copies of directories.
 	//
@@ -10788,7 +11760,7 @@ type FileOverrider interface {
 	//
 	// If you are interested in copying the #GFile object itself (not the
 	// on-disk file), see g_file_dup().
-	Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) bool
+	Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
 	// CopyAsync copies the file @source to the location specified by
 	// @destination asynchronously. For details of the behaviour, see
 	// g_file_copy().
@@ -10802,7 +11774,7 @@ type FileOverrider interface {
 	// call g_file_copy_finish() to get the result of the operation.
 	CopyAsync(destination File, flags FileCopyFlags, ioPriority int, cancellable Cancellable, progressCallback FileProgressCallback, callback AsyncReadyCallback)
 	// CopyFinish finishes copying the file started with g_file_copy_async().
-	CopyFinish(res AsyncResult) bool
+	CopyFinish(res AsyncResult) error
 	// Create creates a new file and returns an output stream for writing to it.
 	// The file must not already exist.
 	//
@@ -10821,7 +11793,7 @@ type FileOverrider interface {
 	// if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
 	// Other errors are possible too, and depend on what kind of filesystem the
 	// file is on.
-	Create(flags FileCreateFlags, cancellable Cancellable) FileOutputStream
+	Create(flags FileCreateFlags, cancellable Cancellable) (fileOutputStream FileOutputStream, err error)
 	// CreateAsync: asynchronously creates a new file and returns an output
 	// stream for writing to it. The file must not already exist.
 	//
@@ -10833,7 +11805,7 @@ type FileOverrider interface {
 	CreateAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CreateFinish finishes an asynchronous file create operation started with
 	// g_file_create_async().
-	CreateFinish(res AsyncResult) FileOutputStream
+	CreateFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error)
 	// CreateReadwrite creates a new file and returns a stream for reading and
 	// writing to it. The file must not already exist.
 	//
@@ -10856,7 +11828,7 @@ type FileOverrider interface {
 	// Note that in many non-local file cases read and write streams are not
 	// supported, so make sure you really need to do read and write streaming,
 	// rather than just opening for reading or writing.
-	CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) FileIOStream
+	CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (fileIOStream FileIOStream, err error)
 	// CreateReadwriteAsync: asynchronously creates a new file and returns a
 	// stream for reading and writing to it. The file must not already exist.
 	//
@@ -10868,7 +11840,7 @@ type FileOverrider interface {
 	CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CreateReadwriteFinish finishes an asynchronous file create operation
 	// started with g_file_create_readwrite_async().
-	CreateReadwriteFinish(res AsyncResult) FileIOStream
+	CreateReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error)
 	// DeleteFile deletes a file. If the @file is a directory, it will only be
 	// deleted if it is empty. This has the same semantics as g_unlink().
 	//
@@ -10890,14 +11862,14 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	DeleteFile(cancellable Cancellable) bool
+	DeleteFile(cancellable Cancellable) error
 	// DeleteFileAsync: asynchronously delete a file. If the @file is a
 	// directory, it will only be deleted if it is empty. This has the same
 	// semantics as g_unlink().
 	DeleteFileAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// DeleteFileFinish finishes deleting a file started with
 	// g_file_delete_async().
-	DeleteFileFinish(result AsyncResult) bool
+	DeleteFileFinish(result AsyncResult) error
 	// Dup duplicates a #GFile handle. This operation does not duplicate the
 	// actual file or directory represented by the #GFile; see g_file_copy() if
 	// attempting to copy a file.
@@ -10919,7 +11891,7 @@ type FileOverrider interface {
 	EjectMountable(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectMountableFinish finishes an asynchronous eject operation started by
 	// g_file_eject_mountable().
-	EjectMountableFinish(result AsyncResult) bool
+	EjectMountableFinish(result AsyncResult) error
 	// EjectMountableWithOperation starts an asynchronous eject on a mountable.
 	// When this operation has completed, @callback will be called with
 	// @user_user data, and the operation can be finalized with
@@ -10931,7 +11903,7 @@ type FileOverrider interface {
 	EjectMountableWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// EjectMountableWithOperationFinish finishes an asynchronous eject
 	// operation started by g_file_eject_mountable_with_operation().
-	EjectMountableWithOperationFinish(result AsyncResult) bool
+	EjectMountableWithOperationFinish(result AsyncResult) error
 	// EnumerateChildren gets the requested information about the files in a
 	// directory. The result is a Enumerator object that will give out Info
 	// objects for all the files in the directory.
@@ -10952,7 +11924,7 @@ type FileOverrider interface {
 	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
 	// returned. If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY
 	// error will be returned. Other errors are possible too.
-	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) FileEnumerator
+	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (fileEnumerator FileEnumerator, err error)
 	// EnumerateChildrenAsync: asynchronously gets the requested information
 	// about the files in a directory. The result is a Enumerator object that
 	// will give out Info objects for all the files in the directory.
@@ -10966,7 +11938,7 @@ type FileOverrider interface {
 	EnumerateChildrenAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// EnumerateChildrenFinish finishes an async enumerate children operation.
 	// See g_file_enumerate_children_async().
-	EnumerateChildrenFinish(res AsyncResult) FileEnumerator
+	EnumerateChildrenFinish(res AsyncResult) (fileEnumerator FileEnumerator, err error)
 	// Equal checks if the two given #GFiles refer to the same file.
 	//
 	// Note that two #GFiles that differ can still refer to the same file on the
@@ -10983,7 +11955,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	FindEnclosingMount(cancellable Cancellable) Mount
+	FindEnclosingMount(cancellable Cancellable) (mount Mount, err error)
 	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
 	//
 	// For more details, see g_file_find_enclosing_mount() which is the
@@ -10995,7 +11967,7 @@ type FileOverrider interface {
 	FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
 	// g_file_find_enclosing_mount_async().
-	FindEnclosingMountFinish(res AsyncResult) Mount
+	FindEnclosingMountFinish(res AsyncResult) (mount Mount, err error)
 
 	Basename() string
 	// ChildForDisplayName gets the child of @file for a given @display_name
@@ -11006,7 +11978,7 @@ type FileOverrider interface {
 	// in the file selector.
 	//
 	// This call does no blocking I/O.
-	ChildForDisplayName(displayName string) File
+	ChildForDisplayName(displayName string) (file File, err error)
 	// Parent gets the parent directory for the @file. If the @file represents
 	// the root directory of the file system, then nil will be returned.
 	//
@@ -11076,19 +12048,19 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	MakeDirectory(cancellable Cancellable) bool
+	MakeDirectory(cancellable Cancellable) error
 	// MakeDirectoryAsync: asynchronously creates a directory.
 	MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// MakeDirectoryFinish finishes an asynchronous directory creation, started
 	// with g_file_make_directory_async().
-	MakeDirectoryFinish(result AsyncResult) bool
+	MakeDirectoryFinish(result AsyncResult) error
 	// MakeSymbolicLink creates a symbolic link named @file which contains the
 	// string @symlink_value.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	MakeSymbolicLink(symlinkValue string, cancellable Cancellable) bool
+	MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error
 	// MeasureDiskUsage: recursively measures the disk usage of @file.
 	//
 	// This is essentially an analog of the 'du' command, but it also reports
@@ -11107,7 +12079,7 @@ type FileOverrider interface {
 	// progress updates while scanning. See the documentation for
 	// MeasureProgressCallback for information about when and how the callback
 	// will be invoked.
-	MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool)
+	MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (diskUsage uint64, numDirs uint64, numFiles uint64, err error)
 	// MeasureDiskUsageAsync: recursively measures the disk usage of @file.
 	//
 	// This is the asynchronous version of g_file_measure_disk_usage(). See
@@ -11116,7 +12088,7 @@ type FileOverrider interface {
 	// MeasureDiskUsageFinish collects the results from an earlier call to
 	// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
 	// more information.
-	MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool)
+	MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, err error)
 	// MonitorDir obtains a directory monitor for the given file. This may fail
 	// if directory monitoring is not supported.
 	//
@@ -11129,7 +12101,7 @@ type FileOverrider interface {
 	// directories. It is not possible to monitor all the files in a directory
 	// for changes made via hard links; if you want to do this then you must
 	// register individual watches with g_file_monitor().
-	MonitorDir(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
+	MonitorDir(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error)
 	// MonitorFile obtains a file monitor for the given file. If no file
 	// notification mechanism exists, then regular polling of the file is used.
 	//
@@ -11143,7 +12115,7 @@ type FileOverrider interface {
 	// through the filename contained in @file to be reported. Using this flag
 	// may result in an increase in resource usage, and may not have any effect
 	// depending on the Monitor backend and/or filesystem type.
-	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
+	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error)
 	// MountEnclosingVolume starts a @mount_operation, mounting the volume that
 	// contains the file @location.
 	//
@@ -11157,7 +12129,7 @@ type FileOverrider interface {
 	MountEnclosingVolume(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback)
 	// MountEnclosingVolumeFinish finishes a mount operation started by
 	// g_file_mount_enclosing_volume().
-	MountEnclosingVolumeFinish(result AsyncResult) bool
+	MountEnclosingVolumeFinish(result AsyncResult) error
 	// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE. Using
 	// @mount_operation, you can request callbacks when, for instance, passwords
 	// are needed during authentication.
@@ -11174,7 +12146,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous mount operation that was started with
 	// g_file_mount_mountable().
-	MountMountableFinish(result AsyncResult) File
+	MountMountableFinish(result AsyncResult) (file File, err error)
 	// Move tries to move the file or directory @source to the location
 	// specified by @destination. If native move operations are supported then
 	// this is used, otherwise a copy + delete fallback is used. The native
@@ -11208,7 +12180,7 @@ type FileOverrider interface {
 	// FILE_COPY_OVERWRITE is specified and the target is a file, then the
 	// G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move
 	// operation isn't available).
-	Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) bool
+	Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error
 	// OpenReadwrite opens an existing file for reading and writing. The result
 	// is a IOStream that can be used to read and write the contents of the
 	// file.
@@ -11224,7 +12196,7 @@ type FileOverrider interface {
 	// and write streams are not supported, so make sure you really need to do
 	// read and write streaming, rather than just opening for reading or
 	// writing.
-	OpenReadwrite(cancellable Cancellable) FileIOStream
+	OpenReadwrite(cancellable Cancellable) (fileIOStream FileIOStream, err error)
 	// OpenReadwriteAsync: asynchronously opens @file for reading and writing.
 	//
 	// For more details, see g_file_open_readwrite() which is the synchronous
@@ -11235,7 +12207,7 @@ type FileOverrider interface {
 	OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// OpenReadwriteFinish finishes an asynchronous file read operation started
 	// with g_file_open_readwrite_async().
-	OpenReadwriteFinish(res AsyncResult) FileIOStream
+	OpenReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error)
 	// PollMountable polls a file of type FILE_TYPE_MOUNTABLE.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
@@ -11250,7 +12222,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous poll operation that was polled with
 	// g_file_poll_mountable().
-	PollMountableFinish(result AsyncResult) bool
+	PollMountableFinish(result AsyncResult) error
 	// PrefixMatches checks whether @file has the prefix specified by @prefix.
 	//
 	// In other words, if the names of initial elements of @file's pathname
@@ -11289,7 +12261,7 @@ type FileOverrider interface {
 	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
 	// returned. Other errors are possible too, and depend on what kind of
 	// filesystem the file is on.
-	QueryFilesystemInfo(attributes string, cancellable Cancellable) FileInfo
+	QueryFilesystemInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error)
 	// QueryFilesystemInfoAsync: asynchronously gets the requested information
 	// about the filesystem that the specified @file is on. The result is a Info
 	// object that contains key-value attributes (such as type or size for the
@@ -11303,7 +12275,7 @@ type FileOverrider interface {
 	QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 	// See g_file_query_filesystem_info_async().
-	QueryFilesystemInfoFinish(res AsyncResult) FileInfo
+	QueryFilesystemInfoFinish(res AsyncResult) (fileInfo FileInfo, err error)
 	// QueryInfo gets the requested information about specified @file. The
 	// result is a Info object that contains key-value attributes (such as the
 	// type or size of the file).
@@ -11331,7 +12303,7 @@ type FileOverrider interface {
 	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
 	// returned. Other errors are possible too, and depend on what kind of
 	// filesystem the file is on.
-	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) FileInfo
+	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (fileInfo FileInfo, err error)
 	// QueryInfoAsync: asynchronously gets the requested information about
 	// specified @file. The result is a Info object that contains key-value
 	// attributes (such as type or size for the file).
@@ -11344,7 +12316,7 @@ type FileOverrider interface {
 	QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous file info query. See
 	// g_file_query_info_async().
-	QueryInfoFinish(res AsyncResult) FileInfo
+	QueryInfoFinish(res AsyncResult) (fileInfo FileInfo, err error)
 	// QuerySettableAttributes: obtain the list of settable attributes for the
 	// file.
 	//
@@ -11356,7 +12328,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	QuerySettableAttributes(cancellable Cancellable) *FileAttributeInfoList
+	QuerySettableAttributes(cancellable Cancellable) (fileAttributeInfoList *FileAttributeInfoList, err error)
 	// QueryWritableNamespaces: obtain the list of attribute namespaces where
 	// new attributes can be created by a user. An example of this is extended
 	// attributes (in the "xattr" namespace).
@@ -11364,7 +12336,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	QueryWritableNamespaces(cancellable Cancellable) *FileAttributeInfoList
+	QueryWritableNamespaces(cancellable Cancellable) (fileAttributeInfoList *FileAttributeInfoList, err error)
 	// ReadAsync: asynchronously opens @file for reading.
 	//
 	// For more details, see g_file_read() which is the synchronous version of
@@ -11375,7 +12347,7 @@ type FileOverrider interface {
 	ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous file read operation started with
 	// g_file_read_async().
-	ReadFinish(res AsyncResult) FileInputStream
+	ReadFinish(res AsyncResult) (fileInputStream FileInputStream, err error)
 	// ReadFn opens a file for reading. The result is a InputStream that can be
 	// used to read the contents of the file.
 	//
@@ -11387,7 +12359,7 @@ type FileOverrider interface {
 	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
 	// will be returned. Other errors are possible too, and depend on what kind
 	// of filesystem the file is on.
-	ReadFn(cancellable Cancellable) FileInputStream
+	ReadFn(cancellable Cancellable) (fileInputStream FileInputStream, err error)
 	// Replace returns an output stream for overwriting the file, possibly
 	// creating a backup copy of the file first. If the file doesn't exist, it
 	// will be created.
@@ -11426,7 +12398,7 @@ type FileOverrider interface {
 	// error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be
 	// returned. Other errors are possible too, and depend on what kind of
 	// filesystem the file is on.
-	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileOutputStream
+	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (fileOutputStream FileOutputStream, err error)
 	// ReplaceAsync: asynchronously overwrites the file, replacing the contents,
 	// possibly creating a backup copy of the file first.
 	//
@@ -11438,7 +12410,7 @@ type FileOverrider interface {
 	ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReplaceFinish finishes an asynchronous file replace operation started
 	// with g_file_replace_async().
-	ReplaceFinish(res AsyncResult) FileOutputStream
+	ReplaceFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error)
 	// ReplaceReadwrite returns an output stream for overwriting the file in
 	// readwrite mode, possibly creating a backup copy of the file first. If the
 	// file doesn't exist, it will be created.
@@ -11449,7 +12421,7 @@ type FileOverrider interface {
 	// Note that in many non-local file cases read and write streams are not
 	// supported, so make sure you really need to do read and write streaming,
 	// rather than just opening for reading or writing.
-	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileIOStream
+	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (fileIOStream FileIOStream, err error)
 	// ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
 	// mode, replacing the contents, possibly creating a backup copy of the file
 	// first.
@@ -11463,7 +12435,7 @@ type FileOverrider interface {
 	ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
 	// started with g_file_replace_readwrite_async().
-	ReplaceReadwriteFinish(res AsyncResult) FileIOStream
+	ReplaceReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error)
 	// ResolveRelativePath resolves a relative path for @file to an absolute
 	// path.
 	//
@@ -11478,7 +12450,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttribute(attribute string, _type FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributesAsync: asynchronously sets the attributes of @file with
 	// @info.
 	//
@@ -11490,7 +12462,7 @@ type FileOverrider interface {
 	SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
-	SetAttributesFinish(result AsyncResult) (info FileInfo, ok bool)
+	SetAttributesFinish(result AsyncResult) (info FileInfo, err error)
 	// SetAttributesFromInfo tries to set all attributes in the Info on the
 	// target values, not stopping on the first error.
 	//
@@ -11503,7 +12475,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetDisplayName renames @file to the specified display name.
 	//
 	// The display name is converted from UTF-8 to the correct encoding for the
@@ -11519,7 +12491,7 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetDisplayName(displayName string, cancellable Cancellable) File
+	SetDisplayName(displayName string, cancellable Cancellable) (file File, err error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
 	// #GFile.
 	//
@@ -11531,7 +12503,7 @@ type FileOverrider interface {
 	SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
-	SetDisplayNameFinish(res AsyncResult) File
+	SetDisplayNameFinish(res AsyncResult) (file File, err error)
 	// StartMountable starts a file of type FILE_TYPE_MOUNTABLE. Using
 	// @start_operation, you can request callbacks when, for instance, passwords
 	// are needed during authentication.
@@ -11548,7 +12520,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous start operation that was started with
 	// g_file_start_mountable().
-	StartMountableFinish(result AsyncResult) bool
+	StartMountableFinish(result AsyncResult) error
 	// StopMountable stops a file of type FILE_TYPE_MOUNTABLE.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
@@ -11563,7 +12535,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous stop operation that was started with
 	// g_file_stop_mountable().
-	StopMountableFinish(result AsyncResult) bool
+	StopMountableFinish(result AsyncResult) error
 	// Trash sends @file to the "Trashcan", if possible. This is similar to
 	// deleting it, but the user can recover it before emptying the trashcan.
 	// Not all file systems support trashing, so this call can return the
@@ -11575,13 +12547,13 @@ type FileOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Trash(cancellable Cancellable) bool
+	Trash(cancellable Cancellable) error
 	// TrashAsync: asynchronously sends @file to the Trash location, if
 	// possible.
 	TrashAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// TrashFinish finishes an asynchronous file trashing operation, started
 	// with g_file_trash_async().
-	TrashFinish(result AsyncResult) bool
+	TrashFinish(result AsyncResult) error
 	// UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
@@ -11597,7 +12569,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable().
-	UnmountMountableFinish(result AsyncResult) bool
+	UnmountMountableFinish(result AsyncResult) error
 	// UnmountMountableWithOperation unmounts a file of type
 	// FILE_TYPE_MOUNTABLE.
 	//
@@ -11614,7 +12586,7 @@ type FileOverrider interface {
 	//
 	// Finish an asynchronous unmount operation that was started with
 	// g_file_unmount_mountable_with_operation().
-	UnmountMountableWithOperationFinish(result AsyncResult) bool
+	UnmountMountableWithOperationFinish(result AsyncResult) error
 }
 
 // File is a high level abstraction for manipulating files on a virtual file
@@ -11705,7 +12677,7 @@ type File interface {
 	// include e.g. owner). However if FILE_COPY_ALL_METADATA is specified in
 	// @flags, then all the metadata that is possible to copy is copied. This is
 	// useful when implementing move by copy + delete source.
-	CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) bool
+	CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) error
 	// Delete deletes a file. If the @file is a directory, it will only be
 	// deleted if it is empty. This has the same semantics as g_unlink().
 	//
@@ -11727,13 +12699,13 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Delete(cancellable Cancellable) bool
+	Delete(cancellable Cancellable) error
 	// DeleteAsync: asynchronously delete a file. If the @file is a directory,
 	// it will only be deleted if it is empty. This has the same semantics as
 	// g_unlink().
 	DeleteAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// DeleteFinish finishes deleting a file started with g_file_delete_async().
-	DeleteFinish(result AsyncResult) bool
+	DeleteFinish(result AsyncResult) error
 	// Child gets a child of @file with basename equal to @name.
 	//
 	// Note that the file with that specific name might not exist, but you can
@@ -11773,7 +12745,7 @@ type File interface {
 	// The data contained in the resulting #GBytes is always zero-terminated,
 	// but this is not included in the #GBytes length. The resulting #GBytes
 	// should be freed with g_bytes_unref() when no longer in use.
-	LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes)
+	LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes, err error)
 	// LoadBytesAsync: asynchronously loads the contents of @file as #GBytes.
 	//
 	// If @file is a resource:// based URI, the resulting bytes will reference
@@ -11795,7 +12767,7 @@ type File interface {
 	// should be freed with g_bytes_unref() when no longer in use.
 	//
 	// See g_file_load_bytes() for more information.
-	LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes)
+	LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes, err error)
 	// LoadContents loads the content of the file into memory. The data is
 	// always zero-terminated, but this is not included in the resultant
 	// @length. The returned @contents should be freed with g_free() when no
@@ -11804,7 +12776,7 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	LoadContents(cancellable Cancellable) (contents []byte, length uint, etagOut string, ok bool)
+	LoadContents(cancellable Cancellable) (contents []byte, length uint, etagOut string, err error)
 	// LoadContentsAsync starts an asynchronous load of the @file's contents.
 	//
 	// For more details, see g_file_load_contents() which is the synchronous
@@ -11823,7 +12795,7 @@ type File interface {
 	// the @contents string. The @contents should be freed with g_free() when no
 	// longer needed. If @etag_out is present, it will be set to the new entity
 	// tag for the @file.
-	LoadContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, ok bool)
+	LoadContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, err error)
 	// LoadPartialContentsAsync reads the partial contents of a file. A
 	// ReadMoreCallback should be used to stop reading from the file when
 	// appropriate, else this function will behave exactly as
@@ -11842,7 +12814,7 @@ type File interface {
 	// always zero-terminated, but this is not included in the resultant
 	// @length. The returned @contents should be freed with g_free() when no
 	// longer needed.
-	LoadPartialContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, ok bool)
+	LoadPartialContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, err error)
 	// MakeDirectoryWithParents creates a directory and any parent directories
 	// that may not exist similar to 'mkdir -p'. If the file system does not
 	// support creating directories, this function will fail, setting @error to
@@ -11856,14 +12828,14 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	MakeDirectoryWithParents(cancellable Cancellable) bool
+	MakeDirectoryWithParents(cancellable Cancellable) error
 	// Monitor obtains a file or directory monitor for the given file, depending
 	// on the type of the file.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Monitor(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
+	Monitor(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error)
 	// MonitorDirectory obtains a directory monitor for the given file. This may
 	// fail if directory monitoring is not supported.
 	//
@@ -11876,7 +12848,7 @@ type File interface {
 	// directories. It is not possible to monitor all the files in a directory
 	// for changes made via hard links; if you want to do this then you must
 	// register individual watches with g_file_monitor().
-	MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
+	MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error)
 	// PeekPath: exactly like g_file_get_path(), but caches the result via
 	// g_object_set_qdata_full(). This is useful for example in C applications
 	// which mix `g_file_*` APIs with native ones. It also avoids an extra
@@ -11890,13 +12862,13 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	QueryDefaultHandler(cancellable Cancellable) AppInfo
+	QueryDefaultHandler(cancellable Cancellable) (appInfo AppInfo, err error)
 	// QueryDefaultHandlerAsync: async version of
 	// g_file_query_default_handler().
 	QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 	// operation.
-	QueryDefaultHandlerFinish(result AsyncResult) AppInfo
+	QueryDefaultHandlerFinish(result AsyncResult) (appInfo AppInfo, err error)
 	// QueryExists: utility function to check if a particular file exists. This
 	// is implemented using g_file_query_info() and as such does blocking I/O.
 	//
@@ -11938,7 +12910,45 @@ type File interface {
 	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
 	// will be returned. Other errors are possible too, and depend on what kind
 	// of filesystem the file is on.
-	Read(cancellable Cancellable) FileInputStream
+	Read(cancellable Cancellable) (fileInputStream FileInputStream, err error)
+	// ReplaceContents replaces the contents of @file with @contents of @length
+	// bytes.
+	//
+	// If @etag is specified (not nil), any existing file must have that etag,
+	// or the error G_IO_ERROR_WRONG_ETAG will be returned.
+	//
+	// If @make_backup is true, this function will attempt to make a backup of
+	// @file. Internally, it uses g_file_replace(), so will try to replace the
+	// file contents in the safest way possible. For example, atomic renames are
+	// used when replacing local files’ contents.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The returned @new_etag can be used to verify that the file hasn't changed
+	// the next time it is saved over.
+	ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (newEtag string, err error)
+	// ReplaceContentsAsync starts an asynchronous replacement of @file with the
+	// given @contents of @length bytes. @etag will replace the document's
+	// current entity tag.
+	//
+	// When this operation has completed, @callback will be called with
+	// @user_user data, and the operation can be finalized with
+	// g_file_replace_contents_finish().
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If @make_backup is true, this function will attempt to make a backup of
+	// @file.
+	//
+	// Note that no copy of @contents will be made, so it must stay valid until
+	// @callback is called. See g_file_replace_contents_bytes_async() for a
+	// #GBytes version that will automatically hold a reference to the contents
+	// (without copying) for the duration of the call.
+	ReplaceContentsAsync(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
 	// takes a #GBytes input instead. This function will keep a ref on @contents
 	// until the operation is done. Unlike g_file_replace_contents_async() this
@@ -11951,7 +12961,7 @@ type File interface {
 	// ReplaceContentsFinish finishes an asynchronous replace of the given
 	// @file. See g_file_replace_contents_async(). Sets @new_etag to the new
 	// entity tag for the document, if present.
-	ReplaceContentsFinish(res AsyncResult) (newEtag string, ok bool)
+	ReplaceContentsFinish(res AsyncResult) (newEtag string, err error)
 	// SetAttributeByteString sets @attribute of type
 	// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value. If @attribute is of a
 	// different type, this operation will fail, returning false.
@@ -11959,21 +12969,21 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributeInt32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
 	// @value. If @attribute is of a different type, this operation will fail.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributeInt64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
 	// @value. If @attribute is of a different type, this operation will fail.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributeString sets @attribute of type G_FILE_ATTRIBUTE_TYPE_STRING
 	// to @value. If @attribute is of a different type, this operation will
 	// fail.
@@ -11981,7 +12991,7 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributeUint32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32
 	// to @value. If @attribute is of a different type, this operation will
 	// fail.
@@ -11989,7 +12999,7 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SetAttributeUint64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64
 	// to @value. If @attribute is of a different type, this operation will
 	// fail.
@@ -11997,7 +13007,7 @@ type File interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) bool
+	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) error
 	// SupportsThreadContexts checks if @file supports [thread-default
 	// contexts][g-main-context-push-thread-default-context]. If this returns
 	// false, you cannot perform asynchronous operations on @file in a thread
@@ -12042,22 +13052,29 @@ func marshalFile(p uintptr) (interface{}, error) {
 // G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
 // G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
 // too, and depend on what kind of filesystem the file is on.
-func (file file) AppendTo(flags FileCreateFlags, cancellable Cancellable) FileOutputStream {
+func (file file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileCreateFlags
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileCreateFlags)(flags)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_append_to(arg0, arg1, arg2)
+	ret := C.g_file_append_to(arg0, arg1, arg2, &gError)
 
 	var ret0 FileOutputStream
+	var goError error
 
-	ret0 = WrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileOutputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // AppendToAsync: asynchronously opens @file for appending.
@@ -12087,20 +13104,27 @@ func (file file) AppendToAsync(flags FileCreateFlags, ioPriority int, cancellabl
 
 // AppendToFinish finishes an asynchronous file append operation started
 // with g_file_append_to_async().
-func (file file) AppendToFinish(res AsyncResult) FileOutputStream {
+func (file file) AppendToFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_append_to_finish(arg0, arg1)
+	ret := C.g_file_append_to_finish(arg0, arg1, &gError)
 
 	var ret0 FileOutputStream
+	var goError error
 
-	ret0 = WrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileOutputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Copy copies the file @source to the location specified by @destination.
@@ -12143,13 +13167,14 @@ func (file file) AppendToFinish(res AsyncResult) FileOutputStream {
 //
 // If you are interested in copying the #GFile object itself (not the
 // on-disk file), see g_file_dup().
-func (source file) Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) bool {
+func (source file) Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
 	var arg0 *C.GFile
 	var arg1 *C.GFile
 	var arg2 C.GFileCopyFlags
 	var arg3 *C.GCancellable
 	var arg4 C.GFileProgressCallback
 	var arg5 C.gpointer
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(source.Native())
 	arg1 = (*C.GFile)(destination.Native())
@@ -12158,13 +13183,16 @@ func (source file) Copy(destination File, flags FileCopyFlags, cancellable Cance
 	arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
 	arg5 = C.gpointer(box.Assign(progressCallback))
 
-	ret := C.g_file_copy(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_file_copy(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CopyAsync copies the file @source to the location specified by
@@ -12205,41 +13233,49 @@ func (source file) CopyAsync(destination File, flags FileCopyFlags, ioPriority i
 // include e.g. owner). However if FILE_COPY_ALL_METADATA is specified in
 // @flags, then all the metadata that is possible to copy is copied. This is
 // useful when implementing move by copy + delete source.
-func (source file) CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) bool {
+func (source file) CopyAttributes(destination File, flags FileCopyFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GFile
 	var arg2 C.GFileCopyFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(source.Native())
 	arg1 = (*C.GFile)(destination.Native())
 	arg2 = (C.GFileCopyFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_copy_attributes(arg0, arg1, arg2, arg3)
+	ret := C.g_file_copy_attributes(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CopyFinish finishes copying the file started with g_file_copy_async().
-func (file file) CopyFinish(res AsyncResult) bool {
+func (file file) CopyFinish(res AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_copy_finish(arg0, arg1)
+	ret := C.g_file_copy_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Create creates a new file and returns an output stream for writing to it.
@@ -12260,22 +13296,29 @@ func (file file) CopyFinish(res AsyncResult) bool {
 // if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
 // Other errors are possible too, and depend on what kind of filesystem the
 // file is on.
-func (file file) Create(flags FileCreateFlags, cancellable Cancellable) FileOutputStream {
+func (file file) Create(flags FileCreateFlags, cancellable Cancellable) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileCreateFlags
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileCreateFlags)(flags)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_create(arg0, arg1, arg2)
+	ret := C.g_file_create(arg0, arg1, arg2, &gError)
 
 	var ret0 FileOutputStream
+	var goError error
 
-	ret0 = WrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileOutputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CreateAsync: asynchronously creates a new file and returns an output
@@ -12306,20 +13349,27 @@ func (file file) CreateAsync(flags FileCreateFlags, ioPriority int, cancellable 
 
 // CreateFinish finishes an asynchronous file create operation started with
 // g_file_create_async().
-func (file file) CreateFinish(res AsyncResult) FileOutputStream {
+func (file file) CreateFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_create_finish(arg0, arg1)
+	ret := C.g_file_create_finish(arg0, arg1, &gError)
 
 	var ret0 FileOutputStream
+	var goError error
 
-	ret0 = WrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileOutputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CreateReadwrite creates a new file and returns a stream for reading and
@@ -12344,22 +13394,29 @@ func (file file) CreateFinish(res AsyncResult) FileOutputStream {
 // Note that in many non-local file cases read and write streams are not
 // supported, so make sure you really need to do read and write streaming,
 // rather than just opening for reading or writing.
-func (file file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) FileIOStream {
+func (file file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileCreateFlags
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileCreateFlags)(flags)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_create_readwrite(arg0, arg1, arg2)
+	ret := C.g_file_create_readwrite(arg0, arg1, arg2, &gError)
 
 	var ret0 FileIOStream
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CreateReadwriteAsync: asynchronously creates a new file and returns a
@@ -12390,20 +13447,27 @@ func (file file) CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, can
 
 // CreateReadwriteFinish finishes an asynchronous file create operation
 // started with g_file_create_readwrite_async().
-func (file file) CreateReadwriteFinish(res AsyncResult) FileIOStream {
+func (file file) CreateReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_create_readwrite_finish(arg0, arg1)
+	ret := C.g_file_create_readwrite_finish(arg0, arg1, &gError)
 
 	var ret0 FileIOStream
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Delete deletes a file. If the @file is a directory, it will only be
@@ -12427,20 +13491,24 @@ func (file file) CreateReadwriteFinish(res AsyncResult) FileIOStream {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) Delete(cancellable Cancellable) bool {
+func (file file) Delete(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_delete(arg0, arg1)
+	ret := C.g_file_delete(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DeleteAsync: asynchronously delete a file. If the @file is a directory,
@@ -12463,20 +13531,24 @@ func (file file) DeleteAsync(ioPriority int, cancellable Cancellable, callback A
 }
 
 // DeleteFinish finishes deleting a file started with g_file_delete_async().
-func (file file) DeleteFinish(result AsyncResult) bool {
+func (file file) DeleteFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_delete_finish(arg0, arg1)
+	ret := C.g_file_delete_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Dup duplicates a #GFile handle. This operation does not duplicate the
@@ -12498,7 +13570,7 @@ func (file file) Dup() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -12528,20 +13600,24 @@ func (file file) EjectMountable(flags MountUnmountFlags, cancellable Cancellable
 
 // EjectMountableFinish finishes an asynchronous eject operation started by
 // g_file_eject_mountable().
-func (file file) EjectMountableFinish(result AsyncResult) bool {
+func (file file) EjectMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_eject_mountable_finish(arg0, arg1)
+	ret := C.g_file_eject_mountable_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EjectMountableWithOperation starts an asynchronous eject on a mountable.
@@ -12572,20 +13648,24 @@ func (file file) EjectMountableWithOperation(flags MountUnmountFlags, mountOpera
 
 // EjectMountableWithOperationFinish finishes an asynchronous eject
 // operation started by g_file_eject_mountable_with_operation().
-func (file file) EjectMountableWithOperationFinish(result AsyncResult) bool {
+func (file file) EjectMountableWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_eject_mountable_with_operation_finish(arg0, arg1)
+	ret := C.g_file_eject_mountable_with_operation_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EnumerateChildren gets the requested information about the files in a
@@ -12608,11 +13688,12 @@ func (file file) EjectMountableWithOperationFinish(result AsyncResult) bool {
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
 // returned. If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY
 // error will be returned. Other errors are possible too.
-func (file file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) FileEnumerator {
+func (file file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (fileEnumerator FileEnumerator, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.GFileQueryInfoFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attributes))
@@ -12620,13 +13701,19 @@ func (file file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, 
 	arg2 = (C.GFileQueryInfoFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_enumerate_children(arg0, arg1, arg2, arg3)
+	ret := C.g_file_enumerate_children(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 FileEnumerator
+	var goError error
 
-	ret0 = WrapFileEnumerator(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileEnumerator)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // EnumerateChildrenAsync: asynchronously gets the requested information
@@ -12662,20 +13749,27 @@ func (file file) EnumerateChildrenAsync(attributes string, flags FileQueryInfoFl
 
 // EnumerateChildrenFinish finishes an async enumerate children operation.
 // See g_file_enumerate_children_async().
-func (file file) EnumerateChildrenFinish(res AsyncResult) FileEnumerator {
+func (file file) EnumerateChildrenFinish(res AsyncResult) (fileEnumerator FileEnumerator, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_enumerate_children_finish(arg0, arg1)
+	ret := C.g_file_enumerate_children_finish(arg0, arg1, &gError)
 
 	var ret0 FileEnumerator
+	var goError error
 
-	ret0 = WrapFileEnumerator(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileEnumerator)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Equal checks if the two given #GFiles refer to the same file.
@@ -12695,7 +13789,7 @@ func (file1 file) Equal(file2 File) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12709,20 +13803,27 @@ func (file1 file) Equal(file2 File) bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) FindEnclosingMount(cancellable Cancellable) Mount {
+func (file file) FindEnclosingMount(cancellable Cancellable) (mount Mount, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_find_enclosing_mount(arg0, arg1)
+	ret := C.g_file_find_enclosing_mount(arg0, arg1, &gError)
 
 	var ret0 Mount
+	var goError error
 
-	ret0 = WrapMount(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Mount)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FindEnclosingMountAsync: asynchronously gets the mount for the file.
@@ -12751,20 +13852,27 @@ func (file file) FindEnclosingMountAsync(ioPriority int, cancellable Cancellable
 
 // FindEnclosingMountFinish finishes an asynchronous find mount request. See
 // g_file_find_enclosing_mount_async().
-func (file file) FindEnclosingMountFinish(res AsyncResult) Mount {
+func (file file) FindEnclosingMountFinish(res AsyncResult) (mount Mount, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_find_enclosing_mount_finish(arg0, arg1)
+	ret := C.g_file_find_enclosing_mount_finish(arg0, arg1, &gError)
 
 	var ret0 Mount
+	var goError error
 
-	ret0 = WrapMount(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Mount)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Basename gets the base name (the last component of the path) for a given
@@ -12815,7 +13923,7 @@ func (file file) Child(name string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -12828,21 +13936,28 @@ func (file file) Child(name string) File {
 // in the file selector.
 //
 // This call does no blocking I/O.
-func (file file) ChildForDisplayName(displayName string) File {
+func (file file) ChildForDisplayName(displayName string) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_get_child_for_display_name(arg0, arg1)
+	ret := C.g_file_get_child_for_display_name(arg0, arg1, &gError)
 
 	var ret0 File
+	var goError error
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Parent gets the parent directory for the @file. If the @file represents
@@ -12858,7 +13973,7 @@ func (file file) Parent() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -12987,7 +14102,7 @@ func (file file) HasParent(parent File) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13016,7 +14131,7 @@ func (file file) HasPrefix(prefix File) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13036,7 +14151,7 @@ func (file file) HasURIScheme(uriScheme string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13078,7 +14193,7 @@ func (file file) IsNative() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13094,18 +14209,20 @@ func (file file) IsNative() bool {
 // The data contained in the resulting #GBytes is always zero-terminated,
 // but this is not included in the #GBytes length. The resulting #GBytes
 // should be freed with g_bytes_unref() when no longer in use.
-func (file file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes) {
+func (file file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
 	var arg2 **C.gchar // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_load_bytes(arg0, arg1, &arg2)
+	ret := C.g_file_load_bytes(arg0, arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 *glib.Bytes
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
@@ -13114,7 +14231,12 @@ func (file file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib
 		ret1 = glib.WrapBytes(ret)
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // LoadBytesAsync: asynchronously loads the contents of @file as #GBytes.
@@ -13151,18 +14273,20 @@ func (file file) LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCall
 // should be freed with g_bytes_unref() when no longer in use.
 //
 // See g_file_load_bytes() for more information.
-func (file file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes) {
+func (file file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
 	var arg2 **C.gchar // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_load_bytes_finish(arg0, arg1, &arg2)
+	ret := C.g_file_load_bytes_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 *glib.Bytes
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
@@ -13171,7 +14295,12 @@ func (file file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *gli
 		ret1 = glib.WrapBytes(ret)
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // LoadContents loads the content of the file into memory. The data is
@@ -13182,22 +14311,23 @@ func (file file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *gli
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) LoadContents(cancellable Cancellable) (contents []byte, length uint, etagOut string, ok bool) {
+func (file file) LoadContents(cancellable Cancellable) (contents []byte, length uint, etagOut string, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
 	var arg2 **C.char // out
 	var arg3 *C.gsize // out
 	var arg4 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_load_contents(arg0, arg1, &arg2, &arg3, &arg4)
+	ret := C.g_file_load_contents(arg0, arg1, &arg2, &arg3, &arg4, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 string
-	var ret3 bool
+	var goError error
 
 	{
 		ret0 = make([]byte, arg3)
@@ -13212,9 +14342,12 @@ func (file file) LoadContents(cancellable Cancellable) (contents []byte, length 
 	ret2 = C.GoString(arg4)
 	C.free(unsafe.Pointer(arg4))
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // LoadContentsAsync starts an asynchronous load of the @file's contents.
@@ -13248,22 +14381,23 @@ func (file file) LoadContentsAsync(cancellable Cancellable, callback AsyncReadyC
 // the @contents string. The @contents should be freed with g_free() when no
 // longer needed. If @etag_out is present, it will be set to the new entity
 // tag for the @file.
-func (file file) LoadContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, ok bool) {
+func (file file) LoadContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
 	var arg3 *C.gsize // out
 	var arg4 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_load_contents_finish(arg0, arg1, &arg2, &arg3, &arg4)
+	ret := C.g_file_load_contents_finish(arg0, arg1, &arg2, &arg3, &arg4, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 string
-	var ret3 bool
+	var goError error
 
 	{
 		ret0 = make([]byte, arg3)
@@ -13278,9 +14412,12 @@ func (file file) LoadContentsFinish(res AsyncResult) (contents []byte, length ui
 	ret2 = C.GoString(arg4)
 	C.free(unsafe.Pointer(arg4))
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // LoadPartialContentsAsync reads the partial contents of a file. A
@@ -13317,22 +14454,23 @@ func (file file) LoadPartialContentsAsync(cancellable Cancellable, readMoreCallb
 // always zero-terminated, but this is not included in the resultant
 // @length. The returned @contents should be freed with g_free() when no
 // longer needed.
-func (file file) LoadPartialContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, ok bool) {
+func (file file) LoadPartialContentsFinish(res AsyncResult) (contents []byte, length uint, etagOut string, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
 	var arg3 *C.gsize // out
 	var arg4 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_load_partial_contents_finish(arg0, arg1, &arg2, &arg3, &arg4)
+	ret := C.g_file_load_partial_contents_finish(arg0, arg1, &arg2, &arg3, &arg4, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 string
-	var ret3 bool
+	var goError error
 
 	{
 		ret0 = make([]byte, arg3)
@@ -13347,9 +14485,12 @@ func (file file) LoadPartialContentsFinish(res AsyncResult) (contents []byte, le
 	ret2 = C.GoString(arg4)
 	C.free(unsafe.Pointer(arg4))
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // MakeDirectory creates a directory. Note that this will only create a
@@ -13366,20 +14507,24 @@ func (file file) LoadPartialContentsFinish(res AsyncResult) (contents []byte, le
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) MakeDirectory(cancellable Cancellable) bool {
+func (file file) MakeDirectory(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_make_directory(arg0, arg1)
+	ret := C.g_file_make_directory(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // MakeDirectoryAsync: asynchronously creates a directory.
@@ -13401,20 +14546,24 @@ func (file file) MakeDirectoryAsync(ioPriority int, cancellable Cancellable, cal
 
 // MakeDirectoryFinish finishes an asynchronous directory creation, started
 // with g_file_make_directory_async().
-func (file file) MakeDirectoryFinish(result AsyncResult) bool {
+func (file file) MakeDirectoryFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_make_directory_finish(arg0, arg1)
+	ret := C.g_file_make_directory_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // MakeDirectoryWithParents creates a directory and any parent directories
@@ -13430,20 +14579,24 @@ func (file file) MakeDirectoryFinish(result AsyncResult) bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) MakeDirectoryWithParents(cancellable Cancellable) bool {
+func (file file) MakeDirectoryWithParents(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_make_directory_with_parents(arg0, arg1)
+	ret := C.g_file_make_directory_with_parents(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // MakeSymbolicLink creates a symbolic link named @file which contains the
@@ -13452,23 +14605,27 @@ func (file file) MakeDirectoryWithParents(cancellable Cancellable) bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) bool {
+func (file file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(symlinkValue))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_make_symbolic_link(arg0, arg1, arg2)
+	ret := C.g_file_make_symbolic_link(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // MeasureDiskUsage: recursively measures the disk usage of @file.
@@ -13489,7 +14646,7 @@ func (file file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) 
 // progress updates while scanning. See the documentation for
 // MeasureProgressCallback for information about when and how the callback
 // will be invoked.
-func (file file) MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool) {
+func (file file) MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (diskUsage uint64, numDirs uint64, numFiles uint64, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileMeasureFlags
 	var arg2 *C.GCancellable
@@ -13498,6 +14655,7 @@ func (file file) MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellabl
 	var arg5 *C.guint64 // out
 	var arg6 *C.guint64 // out
 	var arg7 *C.guint64 // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileMeasureFlags)(flags)
@@ -13505,12 +14663,12 @@ func (file file) MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellabl
 	arg3 = (*[0]byte)(C.gotk4_FileMeasureProgressCallback)
 	arg4 = C.gpointer(box.Assign(progressCallback))
 
-	ret := C.g_file_measure_disk_usage(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6, &arg7)
+	ret := C.g_file_measure_disk_usage(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6, &arg7, &gError)
 
 	var ret0 uint64
 	var ret1 uint64
 	var ret2 uint64
-	var ret3 bool
+	var goError error
 
 	ret0 = uint64(arg5)
 
@@ -13518,9 +14676,12 @@ func (file file) MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellabl
 
 	ret2 = uint64(arg7)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // MeasureDiskUsageAsync: recursively measures the disk usage of @file.
@@ -13552,22 +14713,23 @@ func (file file) MeasureDiskUsageAsync(flags FileMeasureFlags, ioPriority int, c
 // MeasureDiskUsageFinish collects the results from an earlier call to
 // g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
 // more information.
-func (file file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool) {
+func (file file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
 	var arg2 *C.guint64 // out
 	var arg3 *C.guint64 // out
 	var arg4 *C.guint64 // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_measure_disk_usage_finish(arg0, arg1, &arg2, &arg3, &arg4)
+	ret := C.g_file_measure_disk_usage_finish(arg0, arg1, &arg2, &arg3, &arg4, &gError)
 
 	var ret0 uint64
 	var ret1 uint64
 	var ret2 uint64
-	var ret3 bool
+	var goError error
 
 	ret0 = uint64(arg2)
 
@@ -13575,9 +14737,12 @@ func (file file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, n
 
 	ret2 = uint64(arg4)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // Monitor obtains a file or directory monitor for the given file, depending
@@ -13586,22 +14751,29 @@ func (file file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, n
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) Monitor(flags FileMonitorFlags, cancellable Cancellable) FileMonitor {
+func (file file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileMonitorFlags
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileMonitorFlags)(flags)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_monitor(arg0, arg1, arg2)
+	ret := C.g_file_monitor(arg0, arg1, arg2, &gError)
 
 	var ret0 FileMonitor
+	var goError error
 
-	ret0 = WrapFileMonitor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileMonitor)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // MonitorDirectory obtains a directory monitor for the given file. This may
@@ -13616,22 +14788,29 @@ func (file file) Monitor(flags FileMonitorFlags, cancellable Cancellable) FileMo
 // directories. It is not possible to monitor all the files in a directory
 // for changes made via hard links; if you want to do this then you must
 // register individual watches with g_file_monitor().
-func (file file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) FileMonitor {
+func (file file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileMonitorFlags
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileMonitorFlags)(flags)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_monitor_directory(arg0, arg1, arg2)
+	ret := C.g_file_monitor_directory(arg0, arg1, arg2, &gError)
 
 	var ret0 FileMonitor
+	var goError error
 
-	ret0 = WrapFileMonitor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileMonitor)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // MonitorFile obtains a file monitor for the given file. If no file
@@ -13647,22 +14826,29 @@ func (file file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellabl
 // through the filename contained in @file to be reported. Using this flag
 // may result in an increase in resource usage, and may not have any effect
 // depending on the Monitor backend and/or filesystem type.
-func (file file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) FileMonitor {
+func (file file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (fileMonitor FileMonitor, err error) {
 	var arg0 *C.GFile
 	var arg1 C.GFileMonitorFlags
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (C.GFileMonitorFlags)(flags)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_monitor_file(arg0, arg1, arg2)
+	ret := C.g_file_monitor_file(arg0, arg1, arg2, &gError)
 
 	var ret0 FileMonitor
+	var goError error
 
-	ret0 = WrapFileMonitor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileMonitor)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // MountEnclosingVolume starts a @mount_operation, mounting the volume that
@@ -13695,20 +14881,24 @@ func (location file) MountEnclosingVolume(flags MountMountFlags, mountOperation 
 
 // MountEnclosingVolumeFinish finishes a mount operation started by
 // g_file_mount_enclosing_volume().
-func (location file) MountEnclosingVolumeFinish(result AsyncResult) bool {
+func (location file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(location.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_mount_enclosing_volume_finish(arg0, arg1)
+	ret := C.g_file_mount_enclosing_volume_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE. Using
@@ -13744,20 +14934,27 @@ func (file file) MountMountable(flags MountMountFlags, mountOperation MountOpera
 //
 // Finish an asynchronous mount operation that was started with
 // g_file_mount_mountable().
-func (file file) MountMountableFinish(result AsyncResult) File {
+func (file file) MountMountableFinish(result AsyncResult) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_mount_mountable_finish(arg0, arg1)
+	ret := C.g_file_mount_mountable_finish(arg0, arg1, &gError)
 
 	var ret0 File
+	var goError error
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Move tries to move the file or directory @source to the location
@@ -13793,13 +14990,14 @@ func (file file) MountMountableFinish(result AsyncResult) File {
 // FILE_COPY_OVERWRITE is specified and the target is a file, then the
 // G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move
 // operation isn't available).
-func (source file) Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) bool {
+func (source file) Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
 	var arg0 *C.GFile
 	var arg1 *C.GFile
 	var arg2 C.GFileCopyFlags
 	var arg3 *C.GCancellable
 	var arg4 C.GFileProgressCallback
 	var arg5 C.gpointer
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(source.Native())
 	arg1 = (*C.GFile)(destination.Native())
@@ -13808,13 +15006,16 @@ func (source file) Move(destination File, flags FileCopyFlags, cancellable Cance
 	arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
 	arg5 = C.gpointer(box.Assign(progressCallback))
 
-	ret := C.g_file_move(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_file_move(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // OpenReadwrite opens an existing file for reading and writing. The result
@@ -13832,20 +15033,27 @@ func (source file) Move(destination File, flags FileCopyFlags, cancellable Cance
 // and write streams are not supported, so make sure you really need to do
 // read and write streaming, rather than just opening for reading or
 // writing.
-func (file file) OpenReadwrite(cancellable Cancellable) FileIOStream {
+func (file file) OpenReadwrite(cancellable Cancellable) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_open_readwrite(arg0, arg1)
+	ret := C.g_file_open_readwrite(arg0, arg1, &gError)
 
 	var ret0 FileIOStream
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // OpenReadwriteAsync: asynchronously opens @file for reading and writing.
@@ -13873,20 +15081,27 @@ func (file file) OpenReadwriteAsync(ioPriority int, cancellable Cancellable, cal
 
 // OpenReadwriteFinish finishes an asynchronous file read operation started
 // with g_file_open_readwrite_async().
-func (file file) OpenReadwriteFinish(res AsyncResult) FileIOStream {
+func (file file) OpenReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_open_readwrite_finish(arg0, arg1)
+	ret := C.g_file_open_readwrite_finish(arg0, arg1, &gError)
 
 	var ret0 FileIOStream
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // PeekPath: exactly like g_file_get_path(), but caches the result via
@@ -13936,20 +15151,24 @@ func (file file) PollMountable(cancellable Cancellable, callback AsyncReadyCallb
 //
 // Finish an asynchronous poll operation that was polled with
 // g_file_poll_mountable().
-func (file file) PollMountableFinish(result AsyncResult) bool {
+func (file file) PollMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_poll_mountable_finish(arg0, arg1)
+	ret := C.g_file_poll_mountable_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // QueryDefaultHandler returns the Info that is registered as the default
@@ -13958,20 +15177,27 @@ func (file file) PollMountableFinish(result AsyncResult) bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) QueryDefaultHandler(cancellable Cancellable) AppInfo {
+func (file file) QueryDefaultHandler(cancellable Cancellable) (appInfo AppInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_query_default_handler(arg0, arg1)
+	ret := C.g_file_query_default_handler(arg0, arg1, &gError)
 
 	var ret0 AppInfo
+	var goError error
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryDefaultHandlerAsync: async version of
@@ -13994,20 +15220,27 @@ func (file file) QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellabl
 
 // QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 // operation.
-func (file file) QueryDefaultHandlerFinish(result AsyncResult) AppInfo {
+func (file file) QueryDefaultHandlerFinish(result AsyncResult) (appInfo AppInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_query_default_handler_finish(arg0, arg1)
+	ret := C.g_file_query_default_handler_finish(arg0, arg1, &gError)
 
 	var ret0 AppInfo
+	var goError error
 
-	ret0 = WrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryExists: utility function to check if a particular file exists. This
@@ -14044,7 +15277,7 @@ func (file file) QueryExists(cancellable Cancellable) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -14096,23 +15329,30 @@ func (file file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
 // returned. Other errors are possible too, and depend on what kind of
 // filesystem the file is on.
-func (file file) QueryFilesystemInfo(attributes string, cancellable Cancellable) FileInfo {
+func (file file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_query_filesystem_info(arg0, arg1, arg2)
+	ret := C.g_file_query_filesystem_info(arg0, arg1, arg2, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryFilesystemInfoAsync: asynchronously gets the requested information
@@ -14146,20 +15386,27 @@ func (file file) QueryFilesystemInfoAsync(attributes string, ioPriority int, can
 
 // QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 // See g_file_query_filesystem_info_async().
-func (file file) QueryFilesystemInfoFinish(res AsyncResult) FileInfo {
+func (file file) QueryFilesystemInfoFinish(res AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_query_filesystem_info_finish(arg0, arg1)
+	ret := C.g_file_query_filesystem_info_finish(arg0, arg1, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryInfo gets the requested information about specified @file. The
@@ -14189,11 +15436,12 @@ func (file file) QueryFilesystemInfoFinish(res AsyncResult) FileInfo {
 // If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
 // returned. Other errors are possible too, and depend on what kind of
 // filesystem the file is on.
-func (file file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) FileInfo {
+func (file file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.GFileQueryInfoFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attributes))
@@ -14201,13 +15449,19 @@ func (file file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancella
 	arg2 = (C.GFileQueryInfoFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_query_info(arg0, arg1, arg2, arg3)
+	ret := C.g_file_query_info(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryInfoAsync: asynchronously gets the requested information about
@@ -14242,20 +15496,27 @@ func (file file) QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioP
 
 // QueryInfoFinish finishes an asynchronous file info query. See
 // g_file_query_info_async().
-func (file file) QueryInfoFinish(res AsyncResult) FileInfo {
+func (file file) QueryInfoFinish(res AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_query_info_finish(arg0, arg1)
+	ret := C.g_file_query_info_finish(arg0, arg1, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QuerySettableAttributes: obtain the list of settable attributes for the
@@ -14269,22 +15530,29 @@ func (file file) QueryInfoFinish(res AsyncResult) FileInfo {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) QuerySettableAttributes(cancellable Cancellable) *FileAttributeInfoList {
+func (file file) QuerySettableAttributes(cancellable Cancellable) (fileAttributeInfoList *FileAttributeInfoList, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_query_settable_attributes(arg0, arg1)
+	ret := C.g_file_query_settable_attributes(arg0, arg1, &gError)
 
 	var ret0 *FileAttributeInfoList
+	var goError error
 
 	{
 		ret0 = WrapFileAttributeInfoList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryWritableNamespaces: obtain the list of attribute namespaces where
@@ -14294,22 +15562,29 @@ func (file file) QuerySettableAttributes(cancellable Cancellable) *FileAttribute
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) QueryWritableNamespaces(cancellable Cancellable) *FileAttributeInfoList {
+func (file file) QueryWritableNamespaces(cancellable Cancellable) (fileAttributeInfoList *FileAttributeInfoList, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_query_writable_namespaces(arg0, arg1)
+	ret := C.g_file_query_writable_namespaces(arg0, arg1, &gError)
 
 	var ret0 *FileAttributeInfoList
+	var goError error
 
 	{
 		ret0 = WrapFileAttributeInfoList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Read opens a file for reading. The result is a InputStream that can be
@@ -14323,20 +15598,27 @@ func (file file) QueryWritableNamespaces(cancellable Cancellable) *FileAttribute
 // returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
 // will be returned. Other errors are possible too, and depend on what kind
 // of filesystem the file is on.
-func (file file) Read(cancellable Cancellable) FileInputStream {
+func (file file) Read(cancellable Cancellable) (fileInputStream FileInputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_read(arg0, arg1)
+	ret := C.g_file_read(arg0, arg1, &gError)
 
 	var ret0 FileInputStream
+	var goError error
 
-	ret0 = WrapFileInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadAsync: asynchronously opens @file for reading.
@@ -14364,20 +15646,27 @@ func (file file) ReadAsync(ioPriority int, cancellable Cancellable, callback Asy
 
 // ReadFinish finishes an asynchronous file read operation started with
 // g_file_read_async().
-func (file file) ReadFinish(res AsyncResult) FileInputStream {
+func (file file) ReadFinish(res AsyncResult) (fileInputStream FileInputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_read_finish(arg0, arg1)
+	ret := C.g_file_read_finish(arg0, arg1, &gError)
 
 	var ret0 FileInputStream
+	var goError error
 
-	ret0 = WrapFileInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Replace returns an output stream for overwriting the file, possibly
@@ -14418,27 +15707,36 @@ func (file file) ReadFinish(res AsyncResult) FileInputStream {
 // error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be
 // returned. Other errors are possible too, and depend on what kind of
 // filesystem the file is on.
-func (file file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileOutputStream {
+func (file file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.gboolean
 	var arg3 C.GFileCreateFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(etag))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(makeBackup)
+	if makeBackup {
+		arg2 = C.TRUE
+	}
 	arg3 = (C.GFileCreateFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_replace(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_replace(arg0, arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 FileOutputStream
+	var goError error
 
-	ret0 = WrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileOutputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReplaceAsync: asynchronously overwrites the file, replacing the contents,
@@ -14462,7 +15760,9 @@ func (file file) ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlag
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(etag))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(makeBackup)
+	if makeBackup {
+		arg2 = C.TRUE
+	}
 	arg3 = (C.GFileCreateFlags)(flags)
 	arg4 = C.int(ioPriority)
 	arg5 = (*C.GCancellable)(cancellable.Native())
@@ -14470,6 +15770,109 @@ func (file file) ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlag
 	arg7 = C.gpointer(box.Assign(callback))
 
 	C.g_file_replace_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+}
+
+// ReplaceContents replaces the contents of @file with @contents of @length
+// bytes.
+//
+// If @etag is specified (not nil), any existing file must have that etag,
+// or the error G_IO_ERROR_WRONG_ETAG will be returned.
+//
+// If @make_backup is true, this function will attempt to make a backup of
+// @file. Internally, it uses g_file_replace(), so will try to replace the
+// file contents in the safest way possible. For example, atomic renames are
+// used when replacing local files’ contents.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The returned @new_etag can be used to verify that the file hasn't changed
+// the next time it is saved over.
+func (file file) ReplaceContents(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (newEtag string, err error) {
+	var arg0 *C.GFile
+	var arg1 *C.char
+	var arg2 C.gsize
+	var arg3 *C.char
+	var arg4 C.gboolean
+	var arg5 C.GFileCreateFlags
+	var arg6 **C.char // out
+	var arg7 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GFile)(file.Native())
+	arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	arg2 = len(contents)
+	defer runtime.KeepAlive(contents)
+	arg3 = (*C.gchar)(C.CString(etag))
+	defer C.free(unsafe.Pointer(arg3))
+	if makeBackup {
+		arg4 = C.TRUE
+	}
+	arg5 = (C.GFileCreateFlags)(flags)
+	arg7 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_file_replace_contents(arg0, arg1, arg2, arg3, arg4, arg5, &arg6, arg7, &gError)
+
+	var ret0 string
+	var goError error
+
+	ret0 = C.GoString(arg6)
+	C.free(unsafe.Pointer(arg6))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// ReplaceContentsAsync starts an asynchronous replacement of @file with the
+// given @contents of @length bytes. @etag will replace the document's
+// current entity tag.
+//
+// When this operation has completed, @callback will be called with
+// @user_user data, and the operation can be finalized with
+// g_file_replace_contents_finish().
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If @make_backup is true, this function will attempt to make a backup of
+// @file.
+//
+// Note that no copy of @contents will be made, so it must stay valid until
+// @callback is called. See g_file_replace_contents_bytes_async() for a
+// #GBytes version that will automatically hold a reference to the contents
+// (without copying) for the duration of the call.
+func (file file) ReplaceContentsAsync(contents []byte, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg0 *C.GFile
+	var arg1 *C.char
+	var arg2 C.gsize
+	var arg3 *C.char
+	var arg4 C.gboolean
+	var arg5 C.GFileCreateFlags
+	var arg6 *C.GCancellable
+	var arg7 C.GAsyncReadyCallback
+	var arg8 C.gpointer
+
+	arg0 = (*C.GFile)(file.Native())
+	arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	arg2 = len(contents)
+	defer runtime.KeepAlive(contents)
+	arg3 = (*C.gchar)(C.CString(etag))
+	defer C.free(unsafe.Pointer(arg3))
+	if makeBackup {
+		arg4 = C.TRUE
+	}
+	arg5 = (C.GFileCreateFlags)(flags)
+	arg6 = (*C.GCancellable)(cancellable.Native())
+	arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg8 = C.gpointer(box.Assign(callback))
+
+	C.g_file_replace_contents_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
@@ -14494,7 +15897,9 @@ func (file file) ReplaceContentsBytesAsync(contents *glib.Bytes, etag string, ma
 	arg1 = (*C.GBytes)(contents.Native())
 	arg2 = (*C.gchar)(C.CString(etag))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(makeBackup)
+	if makeBackup {
+		arg3 = C.TRUE
+	}
 	arg4 = (C.GFileCreateFlags)(flags)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 	arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -14506,43 +15911,54 @@ func (file file) ReplaceContentsBytesAsync(contents *glib.Bytes, etag string, ma
 // ReplaceContentsFinish finishes an asynchronous replace of the given
 // @file. See g_file_replace_contents_async(). Sets @new_etag to the new
 // entity tag for the document, if present.
-func (file file) ReplaceContentsFinish(res AsyncResult) (newEtag string, ok bool) {
+func (file file) ReplaceContentsFinish(res AsyncResult) (newEtag string, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_replace_contents_finish(arg0, arg1, &arg2)
+	ret := C.g_file_replace_contents_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 string
-	var ret1 bool
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // ReplaceFinish finishes an asynchronous file replace operation started
 // with g_file_replace_async().
-func (file file) ReplaceFinish(res AsyncResult) FileOutputStream {
+func (file file) ReplaceFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_replace_finish(arg0, arg1)
+	ret := C.g_file_replace_finish(arg0, arg1, &gError)
 
 	var ret0 FileOutputStream
+	var goError error
 
-	ret0 = WrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileOutputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReplaceReadwrite returns an output stream for overwriting the file in
@@ -14555,27 +15971,36 @@ func (file file) ReplaceFinish(res AsyncResult) FileOutputStream {
 // Note that in many non-local file cases read and write streams are not
 // supported, so make sure you really need to do read and write streaming,
 // rather than just opening for reading or writing.
-func (file file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileIOStream {
+func (file file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.gboolean
 	var arg3 C.GFileCreateFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(etag))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(makeBackup)
+	if makeBackup {
+		arg2 = C.TRUE
+	}
 	arg3 = (C.GFileCreateFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_replace_readwrite(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_replace_readwrite(arg0, arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 FileIOStream
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
@@ -14601,7 +16026,9 @@ func (file file) ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileC
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(etag))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(makeBackup)
+	if makeBackup {
+		arg2 = C.TRUE
+	}
 	arg3 = (C.GFileCreateFlags)(flags)
 	arg4 = C.int(ioPriority)
 	arg5 = (*C.GCancellable)(cancellable.Native())
@@ -14613,20 +16040,27 @@ func (file file) ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileC
 
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
 // started with g_file_replace_readwrite_async().
-func (file file) ReplaceReadwriteFinish(res AsyncResult) FileIOStream {
+func (file file) ReplaceReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_replace_readwrite_finish(arg0, arg1)
+	ret := C.g_file_replace_readwrite_finish(arg0, arg1, &gError)
 
 	var ret0 FileIOStream
+	var goError error
 
-	ret0 = WrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ResolveRelativePath resolves a relative path for @file to an absolute
@@ -14645,7 +16079,7 @@ func (file file) ResolveRelativePath(relativePath string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -14659,29 +16093,33 @@ func (file file) ResolveRelativePath(relativePath string) File {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttribute(attribute string, _type FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttribute(attribute string, typ FileAttributeType, valueP interface{}, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.GFileAttributeType
 	var arg3 C.gpointer
 	var arg4 C.GFileQueryInfoFlags
 	var arg5 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GFileAttributeType)(_type)
+	arg2 = (C.GFileAttributeType)(typ)
 	arg3 = C.gpointer(box.Assign(valueP))
 	arg4 = (C.GFileQueryInfoFlags)(flags)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_file_set_attribute(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributeByteString sets @attribute of type
@@ -14691,12 +16129,13 @@ func (file file) SetAttribute(attribute string, _type FileAttributeType, valueP 
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
@@ -14706,13 +16145,16 @@ func (file file) SetAttributeByteString(attribute string, value string, flags Fi
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute_byte_string(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_attribute_byte_string(arg0, arg1, arg2, arg3, arg4, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributeInt32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
@@ -14721,12 +16163,13 @@ func (file file) SetAttributeByteString(attribute string, value string, flags Fi
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.gint32
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
@@ -14735,13 +16178,16 @@ func (file file) SetAttributeInt32(attribute string, value int32, flags FileQuer
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute_int32(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_attribute_int32(arg0, arg1, arg2, arg3, arg4, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributeInt64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
@@ -14750,12 +16196,13 @@ func (file file) SetAttributeInt32(attribute string, value int32, flags FileQuer
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.gint64
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
@@ -14764,13 +16211,16 @@ func (file file) SetAttributeInt64(attribute string, value int64, flags FileQuer
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute_int64(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_attribute_int64(arg0, arg1, arg2, arg3, arg4, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributeString sets @attribute of type G_FILE_ATTRIBUTE_TYPE_STRING
@@ -14780,12 +16230,13 @@ func (file file) SetAttributeInt64(attribute string, value int64, flags FileQuer
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
@@ -14795,13 +16246,16 @@ func (file file) SetAttributeString(attribute string, value string, flags FileQu
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute_string(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_attribute_string(arg0, arg1, arg2, arg3, arg4, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributeUint32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32
@@ -14811,12 +16265,13 @@ func (file file) SetAttributeString(attribute string, value string, flags FileQu
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.guint32
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
@@ -14825,13 +16280,16 @@ func (file file) SetAttributeUint32(attribute string, value uint32, flags FileQu
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute_uint32(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_attribute_uint32(arg0, arg1, arg2, arg3, arg4, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributeUint64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64
@@ -14841,12 +16299,13 @@ func (file file) SetAttributeUint32(attribute string, value uint32, flags FileQu
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 C.guint64
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
@@ -14855,13 +16314,16 @@ func (file file) SetAttributeUint64(attribute string, value uint64, flags FileQu
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attribute_uint64(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_file_set_attribute_uint64(arg0, arg1, arg2, arg3, arg4, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAttributesAsync: asynchronously sets the attributes of @file with
@@ -14894,24 +16356,28 @@ func (file file) SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioP
 
 // SetAttributesFinish finishes setting an attribute started in
 // g_file_set_attributes_async().
-func (file file) SetAttributesFinish(result AsyncResult) (info FileInfo, ok bool) {
+func (file file) SetAttributesFinish(result AsyncResult) (info FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
 	var arg2 **C.GFileInfo // out
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_set_attributes_finish(arg0, arg1, &arg2)
+	ret := C.g_file_set_attributes_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 FileInfo
-	var ret1 bool
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileInfo)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // SetAttributesFromInfo tries to set all attributes in the Info on the
@@ -14926,24 +16392,28 @@ func (file file) SetAttributesFinish(result AsyncResult) (info FileInfo, ok bool
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) bool {
+func (file file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GFileInfo
 	var arg2 C.GFileQueryInfoFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GFileInfo)(info.Native())
 	arg2 = (C.GFileQueryInfoFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_attributes_from_info(arg0, arg1, arg2, arg3)
+	ret := C.g_file_set_attributes_from_info(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetDisplayName renames @file to the specified display name.
@@ -14961,23 +16431,30 @@ func (file file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, 
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) SetDisplayName(displayName string, cancellable Cancellable) File {
+func (file file) SetDisplayName(displayName string, cancellable Cancellable) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.gchar)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_set_display_name(arg0, arg1, arg2)
+	ret := C.g_file_set_display_name(arg0, arg1, arg2, &gError)
 
 	var ret0 File
+	var goError error
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetDisplayNameAsync: asynchronously sets the display name for a given
@@ -15009,20 +16486,27 @@ func (file file) SetDisplayNameAsync(displayName string, ioPriority int, cancell
 
 // SetDisplayNameFinish finishes setting a display name started with
 // g_file_set_display_name_async().
-func (file file) SetDisplayNameFinish(res AsyncResult) File {
+func (file file) SetDisplayNameFinish(res AsyncResult) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_file_set_display_name_finish(arg0, arg1)
+	ret := C.g_file_set_display_name_finish(arg0, arg1, &gError)
 
 	var ret0 File
+	var goError error
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // StartMountable starts a file of type FILE_TYPE_MOUNTABLE. Using
@@ -15058,20 +16542,24 @@ func (file file) StartMountable(flags DriveStartFlags, startOperation MountOpera
 //
 // Finish an asynchronous start operation that was started with
 // g_file_start_mountable().
-func (file file) StartMountableFinish(result AsyncResult) bool {
+func (file file) StartMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_start_mountable_finish(arg0, arg1)
+	ret := C.g_file_start_mountable_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // StopMountable stops a file of type FILE_TYPE_MOUNTABLE.
@@ -15105,20 +16593,24 @@ func (file file) StopMountable(flags MountUnmountFlags, mountOperation MountOper
 //
 // Finish an asynchronous stop operation that was started with
 // g_file_stop_mountable().
-func (file file) StopMountableFinish(result AsyncResult) bool {
+func (file file) StopMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_stop_mountable_finish(arg0, arg1)
+	ret := C.g_file_stop_mountable_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SupportsThreadContexts checks if @file supports [thread-default
@@ -15134,7 +16626,7 @@ func (file file) SupportsThreadContexts() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -15150,20 +16642,24 @@ func (file file) SupportsThreadContexts() bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (file file) Trash(cancellable Cancellable) bool {
+func (file file) Trash(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_trash(arg0, arg1)
+	ret := C.g_file_trash(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // TrashAsync: asynchronously sends @file to the Trash location, if
@@ -15186,20 +16682,24 @@ func (file file) TrashAsync(ioPriority int, cancellable Cancellable, callback As
 
 // TrashFinish finishes an asynchronous file trashing operation, started
 // with g_file_trash_async().
-func (file file) TrashFinish(result AsyncResult) bool {
+func (file file) TrashFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_trash_finish(arg0, arg1)
+	ret := C.g_file_trash_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
@@ -15232,20 +16732,24 @@ func (file file) UnmountMountable(flags MountUnmountFlags, cancellable Cancellab
 //
 // Finish an asynchronous unmount operation that was started with
 // g_file_unmount_mountable().
-func (file file) UnmountMountableFinish(result AsyncResult) bool {
+func (file file) UnmountMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_unmount_mountable_finish(arg0, arg1)
+	ret := C.g_file_unmount_mountable_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // UnmountMountableWithOperation unmounts a file of type
@@ -15281,20 +16785,24 @@ func (file file) UnmountMountableWithOperation(flags MountUnmountFlags, mountOpe
 //
 // Finish an asynchronous unmount operation that was started with
 // g_file_unmount_mountable_with_operation().
-func (file file) UnmountMountableWithOperationFinish(result AsyncResult) bool {
+func (file file) UnmountMountableWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFile)(file.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_unmount_mountable_with_operation_finish(arg0, arg1)
+	ret := C.g_file_unmount_mountable_with_operation_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // FileDescriptorBasedOverrider contains methods that are overridable. This
@@ -15463,7 +16971,7 @@ func (icon1 icon) Equal(icon2 Icon) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -15561,7 +17069,7 @@ type InitableOverrider interface {
 	// pattern, a caller would expect to be able to call g_initable_init() on
 	// the result of g_object_new(), regardless of whether it is in fact a new
 	// instance.
-	Init(cancellable Cancellable) bool
+	Init(cancellable Cancellable) error
 }
 
 // Initable is implemented by objects that can fail during initialization. If an
@@ -15650,20 +17158,24 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // pattern, a caller would expect to be able to call g_initable_init() on
 // the result of g_object_new(), regardless of whether it is in fact a new
 // instance.
-func (initable initable) Init(cancellable Cancellable) bool {
+func (initable initable) Init(cancellable Cancellable) error {
 	var arg0 *C.GInitable
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GInitable)(initable.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_initable_init(arg0, arg1)
+	ret := C.g_initable_init(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ListModelOverrider contains methods that are overridable. This
@@ -15813,7 +17325,7 @@ func (list listModel) Object(position uint) gextras.Objector {
 
 	var ret0 gextras.Objector
 
-	ret0 = externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gextras.Objector)
 
 	return ret0
 }
@@ -15856,14 +17368,14 @@ func (list listModel) ItemsChanged(position uint, removed uint, added uint) {
 type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
-	Load(size int, cancellable Cancellable) (_type string, inputStream InputStream)
+	Load(size int, cancellable Cancellable) (typ string, inputStream InputStream, err error)
 	// LoadAsync loads an icon asynchronously. To finish this function, see
 	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
 	// this function, see g_loadable_icon_load().
 	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
-	LoadFinish(res AsyncResult) (_type string, inputStream InputStream)
+	LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error)
 }
 
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
@@ -15896,27 +17408,34 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 
 // Load loads a loadable icon. For the asynchronous version of this
 // function, see g_loadable_icon_load_async().
-func (icon loadableIcon) Load(size int, cancellable Cancellable) (_type string, inputStream InputStream) {
+func (icon loadableIcon) Load(size int, cancellable Cancellable) (typ string, inputStream InputStream, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 C.int
 	var arg2 **C.char // out
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GLoadableIcon)(icon.Native())
 	arg1 = C.int(size)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_loadable_icon_load(arg0, arg1, &arg2, arg3)
+	ret := C.g_loadable_icon_load(arg0, arg1, &arg2, arg3, &gError)
 
 	var ret0 string
 	var ret1 InputStream
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InputStream)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // LoadAsync loads an icon asynchronously. To finish this function, see
@@ -15940,25 +17459,32 @@ func (icon loadableIcon) LoadAsync(size int, cancellable Cancellable, callback A
 
 // LoadFinish finishes an asynchronous icon load started in
 // g_loadable_icon_load_async().
-func (icon loadableIcon) LoadFinish(res AsyncResult) (_type string, inputStream InputStream) {
+func (icon loadableIcon) LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GLoadableIcon)(icon.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_loadable_icon_load_finish(arg0, arg1, &arg2)
+	ret := C.g_loadable_icon_load_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 InputStream
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InputStream)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // MemoryMonitorOverrider contains methods that are overridable. This
@@ -16051,7 +17577,7 @@ type MountOverrider interface {
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
 	// returned.
-	EjectFinish(result AsyncResult) bool
+	EjectFinish(result AsyncResult) error
 	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
 	// is finished by calling g_mount_eject_with_operation_finish() with the
 	// @mount and Result data returned in the @callback.
@@ -16059,7 +17585,7 @@ type MountOverrider interface {
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) bool
+	EjectWithOperationFinish(result AsyncResult) error
 	// DefaultLocation gets the default location of @mount. The default location
 	// of the given @mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
@@ -16101,7 +17627,7 @@ type MountOverrider interface {
 	// errors occurred during the operation, @error will be set to contain the
 	// errors and false will be returned. In particular, you may get an
 	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
-	GuessContentTypeFinish(result AsyncResult) []string
+	GuessContentTypeFinish(result AsyncResult) (utf8s []string, err error)
 	// GuessContentTypeSync tries to guess the type of content stored on @mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
@@ -16111,7 +17637,7 @@ type MountOverrider interface {
 	//
 	// This is a synchronous operation and as such may block doing IO; see
 	// g_mount_guess_content_type() for the asynchronous version.
-	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) []string
+	GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (utf8s []string, err error)
 
 	PreUnmount()
 	// Remount remounts a mount. This is an asynchronous operation, and is
@@ -16126,7 +17652,7 @@ type MountOverrider interface {
 	// RemountFinish finishes remounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
-	RemountFinish(result AsyncResult) bool
+	RemountFinish(result AsyncResult) error
 	// Unmount unmounts a mount. This is an asynchronous operation, and is
 	// finished by calling g_mount_unmount_finish() with the @mount and Result
 	// data returned in the @callback.
@@ -16134,7 +17660,7 @@ type MountOverrider interface {
 	// UnmountFinish finishes unmounting a mount. If any errors occurred during
 	// the operation, @error will be set to contain the errors and false will be
 	// returned.
-	UnmountFinish(result AsyncResult) bool
+	UnmountFinish(result AsyncResult) error
 	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
 	// and is finished by calling g_mount_unmount_with_operation_finish() with
 	// the @mount and Result data returned in the @callback.
@@ -16142,7 +17668,7 @@ type MountOverrider interface {
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
-	UnmountWithOperationFinish(result AsyncResult) bool
+	UnmountWithOperationFinish(result AsyncResult) error
 
 	Unmounted()
 }
@@ -16234,7 +17760,7 @@ func (mount mount) CanEject() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -16249,7 +17775,7 @@ func (mount mount) CanUnmount() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -16276,20 +17802,24 @@ func (mount mount) Eject(flags MountUnmountFlags, cancellable Cancellable, callb
 // EjectFinish finishes ejecting a mount. If any errors occurred during the
 // operation, @error will be set to contain the errors and false will be
 // returned.
-func (mount mount) EjectFinish(result AsyncResult) bool {
+func (mount mount) EjectFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_mount_eject_finish(arg0, arg1)
+	ret := C.g_mount_eject_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EjectWithOperation ejects a mount. This is an asynchronous operation, and
@@ -16316,20 +17846,24 @@ func (mount mount) EjectWithOperation(flags MountUnmountFlags, mountOperation Mo
 // EjectWithOperationFinish finishes ejecting a mount. If any errors
 // occurred during the operation, @error will be set to contain the errors
 // and false will be returned.
-func (mount mount) EjectWithOperationFinish(result AsyncResult) bool {
+func (mount mount) EjectWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_mount_eject_with_operation_finish(arg0, arg1)
+	ret := C.g_mount_eject_with_operation_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DefaultLocation gets the default location of @mount. The default location
@@ -16344,7 +17878,7 @@ func (mount mount) DefaultLocation() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -16362,7 +17896,7 @@ func (mount mount) Drive() Drive {
 
 	var ret0 Drive
 
-	ret0 = WrapDrive(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Drive)
 
 	return ret0
 }
@@ -16377,7 +17911,7 @@ func (mount mount) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -16408,7 +17942,7 @@ func (mount mount) Root() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -16438,7 +17972,7 @@ func (mount mount) SymbolicIcon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -16471,7 +18005,7 @@ func (mount mount) Volume() Volume {
 
 	var ret0 Volume
 
-	ret0 = WrapVolume(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Volume)
 
 	return ret0
 }
@@ -16495,7 +18029,9 @@ func (mount mount) GuessContentType(forceRescan bool, cancellable Cancellable, c
 	var arg4 C.gpointer
 
 	arg0 = (*C.GMount)(mount.Native())
-	arg1 = gextras.Cbool(forceRescan)
+	if forceRescan {
+		arg1 = C.TRUE
+	}
 	arg2 = (*C.GCancellable)(cancellable.Native())
 	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	arg4 = C.gpointer(box.Assign(callback))
@@ -16507,16 +18043,18 @@ func (mount mount) GuessContentType(forceRescan bool, cancellable Cancellable, c
 // errors occurred during the operation, @error will be set to contain the
 // errors and false will be returned. In particular, you may get an
 // G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
-func (mount mount) GuessContentTypeFinish(result AsyncResult) []string {
+func (mount mount) GuessContentTypeFinish(result AsyncResult) (utf8s []string, err error) {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_mount_guess_content_type_finish(arg0, arg1)
+	ret := C.g_mount_guess_content_type_finish(arg0, arg1, &gError)
 
 	var ret0 []string
+	var goError error
 
 	{
 		var length uint
@@ -16532,7 +18070,12 @@ func (mount mount) GuessContentTypeFinish(result AsyncResult) []string {
 		}
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // GuessContentTypeSync tries to guess the type of content stored on @mount.
@@ -16544,18 +18087,22 @@ func (mount mount) GuessContentTypeFinish(result AsyncResult) []string {
 //
 // This is a synchronous operation and as such may block doing IO; see
 // g_mount_guess_content_type() for the asynchronous version.
-func (mount mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) []string {
+func (mount mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (utf8s []string, err error) {
 	var arg0 *C.GMount
 	var arg1 C.gboolean
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
-	arg1 = gextras.Cbool(forceRescan)
+	if forceRescan {
+		arg1 = C.TRUE
+	}
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_mount_guess_content_type_sync(arg0, arg1, arg2)
+	ret := C.g_mount_guess_content_type_sync(arg0, arg1, arg2, &gError)
 
 	var ret0 []string
+	var goError error
 
 	{
 		var length uint
@@ -16571,7 +18118,12 @@ func (mount mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellabl
 		}
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // IsShadowed determines if @mount is shadowed. Applications or libraries
@@ -16604,7 +18156,7 @@ func (mount mount) IsShadowed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -16638,20 +18190,24 @@ func (mount mount) Remount(flags MountMountFlags, mountOperation MountOperation,
 // RemountFinish finishes remounting a mount. If any errors occurred during
 // the operation, @error will be set to contain the errors and false will be
 // returned.
-func (mount mount) RemountFinish(result AsyncResult) bool {
+func (mount mount) RemountFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_mount_remount_finish(arg0, arg1)
+	ret := C.g_mount_remount_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Shadow increments the shadow count on @mount. Usually used by Monitor
@@ -16688,20 +18244,24 @@ func (mount mount) Unmount(flags MountUnmountFlags, cancellable Cancellable, cal
 // UnmountFinish finishes unmounting a mount. If any errors occurred during
 // the operation, @error will be set to contain the errors and false will be
 // returned.
-func (mount mount) UnmountFinish(result AsyncResult) bool {
+func (mount mount) UnmountFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_mount_unmount_finish(arg0, arg1)
+	ret := C.g_mount_unmount_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // UnmountWithOperation unmounts a mount. This is an asynchronous operation,
@@ -16728,20 +18288,24 @@ func (mount mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation 
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
 // occurred during the operation, @error will be set to contain the errors
 // and false will be returned.
-func (mount mount) UnmountWithOperationFinish(result AsyncResult) bool {
+func (mount mount) UnmountWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GMount)(mount.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_mount_unmount_with_operation_finish(arg0, arg1)
+	ret := C.g_mount_unmount_with_operation_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Unshadow decrements the shadow count on @mount. Usually used by Monitor
@@ -16774,7 +18338,7 @@ type NetworkMonitorOverrider interface {
 	// may still block for a brief period of time (eg, trying to do multicast
 	// DNS on the local network), so if you do not want to block, you should use
 	// g_network_monitor_can_reach_async().
-	CanReach(connectable SocketConnectable, cancellable Cancellable) bool
+	CanReach(connectable SocketConnectable, cancellable Cancellable) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by @connectable can be reached, without actually trying
 	// to connect to it.
@@ -16787,7 +18351,7 @@ type NetworkMonitorOverrider interface {
 	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
-	CanReachFinish(result AsyncResult) bool
+	CanReachFinish(result AsyncResult) error
 
 	NetworkChanged(networkAvailable bool)
 }
@@ -16867,22 +18431,26 @@ func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 // may still block for a brief period of time (eg, trying to do multicast
 // DNS on the local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
-func (monitor networkMonitor) CanReach(connectable SocketConnectable, cancellable Cancellable) bool {
+func (monitor networkMonitor) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
 	var arg0 *C.GNetworkMonitor
 	var arg1 *C.GSocketConnectable
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GNetworkMonitor)(monitor.Native())
 	arg1 = (*C.GSocketConnectable)(connectable.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_network_monitor_can_reach(arg0, arg1, arg2)
+	ret := C.g_network_monitor_can_reach(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CanReachAsync: asynchronously attempts to determine whether or not the
@@ -16912,20 +18480,24 @@ func (monitor networkMonitor) CanReachAsync(connectable SocketConnectable, cance
 
 // CanReachFinish finishes an async network connectivity test. See
 // g_network_monitor_can_reach_async().
-func (monitor networkMonitor) CanReachFinish(result AsyncResult) bool {
+func (monitor networkMonitor) CanReachFinish(result AsyncResult) error {
 	var arg0 *C.GNetworkMonitor
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GNetworkMonitor)(monitor.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_network_monitor_can_reach_finish(arg0, arg1)
+	ret := C.g_network_monitor_can_reach_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Connectivity gets a more detailed networking state than
@@ -16974,7 +18546,7 @@ func (monitor networkMonitor) NetworkAvailable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -16990,7 +18562,7 @@ func (monitor networkMonitor) NetworkMetered() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17023,6 +18595,18 @@ type PollableInputStreamOverrider interface {
 	// you should always use g_pollable_input_stream_read_nonblocking(), which
 	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 	IsReadable() bool
+	// ReadNonblocking attempts to read up to @count bytes from @stream into
+	// @buffer, as with g_input_stream_read(). If @stream is not currently
+	// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+	// can use g_pollable_input_stream_create_source() to create a #GSource that
+	// will be triggered when @stream is readable.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	ReadNonblocking(buffer []byte) (gssize int, err error)
 }
 
 // PollableInputStream is implemented by Streams that can be polled for
@@ -17070,7 +18654,7 @@ func (stream pollableInputStream) CanPoll() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17117,9 +18701,48 @@ func (stream pollableInputStream) IsReadable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
+}
+
+// ReadNonblocking attempts to read up to @count bytes from @stream into
+// @buffer, as with g_input_stream_read(). If @stream is not currently
+// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+// can use g_pollable_input_stream_create_source() to create a #GSource that
+// will be triggered when @stream is readable.
+//
+// Note that since this method never blocks, you cannot actually use
+// @cancellable to cancel it. However, it will return an error if
+// @cancellable has already been cancelled when you call, which may happen
+// if you call this method after a source triggers due to having been
+// cancelled.
+func (stream pollableInputStream) ReadNonblocking(buffer []byte, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GPollableInputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GPollableInputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg3 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_pollable_input_stream_read_nonblocking(arg0, arg1, arg2, arg3, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // PollableOutputStreamOverrider contains methods that are overridable. This
@@ -17150,6 +18773,40 @@ type PollableOutputStreamOverrider interface {
 	// you should always use g_pollable_output_stream_write_nonblocking(), which
 	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 	IsWritable() bool
+	// WriteNonblocking attempts to write up to @count bytes from @buffer to
+	// @stream, as with g_output_stream_write(). If @stream is not currently
+	// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+	// can use g_pollable_output_stream_create_source() to create a #GSource
+	// that will be triggered when @stream is writable.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	//
+	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
+	// transports like D/TLS require that you re-send the same @buffer and
+	// @count in the next write call.
+	WriteNonblocking(buffer []byte) (gssize int, err error)
+	// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+	// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
+	// currently writable, this will immediately return
+	// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+	// g_pollable_output_stream_create_source() to create a #GSource that will
+	// be triggered when @stream is writable. @error will *not* be set in that
+	// case.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// @cancellable to cancel it. However, it will return an error if
+	// @cancellable has already been cancelled when you call, which may happen
+	// if you call this method after a source triggers due to having been
+	// cancelled.
+	//
+	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
+	// underlying transports like D/TLS require that you re-send the same
+	// @vectors and @n_vectors in the next write call.
+	WritevNonblocking(vectors []OutputVector) (bytesWritten uint, pollableReturn PollableReturn, err error)
 }
 
 // PollableOutputStream is implemented by Streams that can be polled for
@@ -17197,7 +18854,7 @@ func (stream pollableOutputStream) CanPoll() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17244,9 +18901,101 @@ func (stream pollableOutputStream) IsWritable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
+}
+
+// WriteNonblocking attempts to write up to @count bytes from @buffer to
+// @stream, as with g_output_stream_write(). If @stream is not currently
+// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+// can use g_pollable_output_stream_create_source() to create a #GSource
+// that will be triggered when @stream is writable.
+//
+// Note that since this method never blocks, you cannot actually use
+// @cancellable to cancel it. However, it will return an error if
+// @cancellable has already been cancelled when you call, which may happen
+// if you call this method after a source triggers due to having been
+// cancelled.
+//
+// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
+// transports like D/TLS require that you re-send the same @buffer and
+// @count in the next write call.
+func (stream pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GPollableOutputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GPollableOutputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg3 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_pollable_output_stream_write_nonblocking(arg0, arg1, arg2, arg3, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// WritevNonblocking attempts to write the bytes contained in the @n_vectors
+// @vectors to @stream, as with g_output_stream_writev(). If @stream is not
+// currently writable, this will immediately return
+// %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+// g_pollable_output_stream_create_source() to create a #GSource that will
+// be triggered when @stream is writable. @error will *not* be set in that
+// case.
+//
+// Note that since this method never blocks, you cannot actually use
+// @cancellable to cancel it. However, it will return an error if
+// @cancellable has already been cancelled when you call, which may happen
+// if you call this method after a source triggers due to having been
+// cancelled.
+//
+// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
+// underlying transports like D/TLS require that you re-send the same
+// @vectors and @n_vectors in the next write call.
+func (stream pollableOutputStream) WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn, err error) {
+	var arg0 *C.GPollableOutputStream
+	var arg1 *C.GOutputVector
+	var arg2 C.gsize
+	var arg3 *C.gsize // out
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GPollableOutputStream)(stream.Native())
+	arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg2 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_pollable_output_stream_writev_nonblocking(arg0, arg1, arg2, &arg3, arg4, &gError)
+
+	var ret0 uint
+	var ret1 PollableReturn
+	var goError error
+
+	ret0 = uint(arg3)
+
+	ret1 = PollableReturn(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ProxyOverrider contains methods that are overridable. This
@@ -17256,11 +19005,11 @@ type ProxyOverrider interface {
 	// that is connected to the proxy server), this does the necessary handshake
 	// to connect to @proxy_address, and if required, wraps the OStream to
 	// handle proxy payload.
-	Connect(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) IOStream
+	Connect(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (ioStream IOStream, err error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
-	ConnectFinish(result AsyncResult) IOStream
+	ConnectFinish(result AsyncResult) (ioStream IOStream, err error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
 	// which they will resolve to an IP address themselves. Others, like SOCKS4,
 	// do not allow this. This function will return false if @proxy is
@@ -17306,24 +19055,31 @@ func marshalProxy(p uintptr) (interface{}, error) {
 // that is connected to the proxy server), this does the necessary handshake
 // to connect to @proxy_address, and if required, wraps the OStream to
 // handle proxy payload.
-func (proxy proxy) Connect(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) IOStream {
+func (proxy proxy) Connect(connection IOStream, proxyAddress ProxyAddress, cancellable Cancellable) (ioStream IOStream, err error) {
 	var arg0 *C.GProxy
 	var arg1 *C.GIOStream
 	var arg2 *C.GProxyAddress
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GProxy)(proxy.Native())
 	arg1 = (*C.GIOStream)(connection.Native())
 	arg2 = (*C.GProxyAddress)(proxyAddress.Native())
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_proxy_connect(arg0, arg1, arg2, arg3)
+	ret := C.g_proxy_connect(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 IOStream
+	var goError error
 
-	ret0 = WrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(IOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
@@ -17346,20 +19102,27 @@ func (proxy proxy) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, 
 }
 
 // ConnectFinish: see g_proxy_connect().
-func (proxy proxy) ConnectFinish(result AsyncResult) IOStream {
+func (proxy proxy) ConnectFinish(result AsyncResult) (ioStream IOStream, err error) {
 	var arg0 *C.GProxy
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GProxy)(proxy.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_proxy_connect_finish(arg0, arg1)
+	ret := C.g_proxy_connect_finish(arg0, arg1, &gError)
 
 	var ret0 IOStream
+	var goError error
 
-	ret0 = WrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(IOStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -17378,7 +19141,7 @@ func (proxy proxy) SupportsHostname() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17402,14 +19165,14 @@ type ProxyResolverOverrider interface {
 	//
 	// `direct://` is used when no proxy is needed. Direct connection should not
 	// be attempted unless it is part of the returned array of proxies.
-	Lookup(uri string, cancellable Cancellable) []string
+	Lookup(uri string, cancellable Cancellable) (utf8s []string, err error)
 	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 	// for more details.
 	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
 	// g_proxy_resolver_lookup() for more details.
-	LookupFinish(result AsyncResult) []string
+	LookupFinish(result AsyncResult) (utf8s []string, err error)
 }
 
 // ProxyResolver provides synchronous and asynchronous network proxy resolution.
@@ -17457,7 +19220,7 @@ func (resolver proxyResolver) IsSupported() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17474,19 +19237,21 @@ func (resolver proxyResolver) IsSupported() bool {
 //
 // `direct://` is used when no proxy is needed. Direct connection should not
 // be attempted unless it is part of the returned array of proxies.
-func (resolver proxyResolver) Lookup(uri string, cancellable Cancellable) []string {
+func (resolver proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []string, err error) {
 	var arg0 *C.GProxyResolver
 	var arg1 *C.gchar
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GProxyResolver)(resolver.Native())
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_proxy_resolver_lookup(arg0, arg1, arg2)
+	ret := C.g_proxy_resolver_lookup(arg0, arg1, arg2, &gError)
 
 	var ret0 []string
+	var goError error
 
 	{
 		var length uint
@@ -17502,7 +19267,12 @@ func (resolver proxyResolver) Lookup(uri string, cancellable Cancellable) []stri
 		}
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
@@ -17527,16 +19297,18 @@ func (resolver proxyResolver) LookupAsync(uri string, cancellable Cancellable, c
 // LookupFinish: call this function to obtain the array of proxy URIs when
 // g_proxy_resolver_lookup_async() is complete. See
 // g_proxy_resolver_lookup() for more details.
-func (resolver proxyResolver) LookupFinish(result AsyncResult) []string {
+func (resolver proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err error) {
 	var arg0 *C.GProxyResolver
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GProxyResolver)(resolver.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_proxy_resolver_lookup_finish(arg0, arg1)
+	ret := C.g_proxy_resolver_lookup_finish(arg0, arg1, &gError)
 
 	var ret0 []string
+	var goError error
 
 	{
 		var length uint
@@ -17552,7 +19324,12 @@ func (resolver proxyResolver) LookupFinish(result AsyncResult) []string {
 		}
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // RemoteActionGroupOverrider contains methods that are overridable. This
@@ -17693,7 +19470,7 @@ type SeekableOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Seek(offset int64, _type glib.SeekType, cancellable Cancellable) bool
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
 	// Tell tells the current position within the stream.
 	Tell() int64
 	// TruncateFn sets the length of the stream to @offset. If the stream was
@@ -17706,7 +19483,7 @@ type SeekableOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	TruncateFn(offset int64, cancellable Cancellable) bool
+	TruncateFn(offset int64, cancellable Cancellable) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -17735,7 +19512,7 @@ type Seekable interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Truncate(offset int64, cancellable Cancellable) bool
+	Truncate(offset int64, cancellable Cancellable) error
 }
 
 // seekable implements the Seekable interface.
@@ -17769,7 +19546,7 @@ func (seekable seekable) CanSeek() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17785,7 +19562,7 @@ func (seekable seekable) CanTruncate() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17804,24 +19581,28 @@ func (seekable seekable) CanTruncate() bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (seekable seekable) Seek(offset int64, _type glib.SeekType, cancellable Cancellable) bool {
+func (seekable seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
 	var arg0 *C.GSeekable
 	var arg1 C.goffset
 	var arg2 C.GSeekType
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSeekable)(seekable.Native())
 	arg1 = C.goffset(offset)
-	arg2 = (C.GSeekType)(_type)
+	arg2 = (C.GSeekType)(typ)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_seekable_seek(arg0, arg1, arg2, arg3)
+	ret := C.g_seekable_seek(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Tell tells the current position within the stream.
@@ -17849,22 +19630,26 @@ func (seekable seekable) Tell() int64 {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 // operation was partially finished when the operation was cancelled the
 // partial result will be returned, without an error.
-func (seekable seekable) Truncate(offset int64, cancellable Cancellable) bool {
+func (seekable seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var arg0 *C.GSeekable
 	var arg1 C.goffset
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSeekable)(seekable.Native())
 	arg1 = C.goffset(offset)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_seekable_truncate(arg0, arg1, arg2)
+	ret := C.g_seekable_truncate(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SocketConnectableOverrider contains methods that are overridable. This
@@ -17980,7 +19765,7 @@ func (connectable socketConnectable) Enumerate() SocketAddressEnumerator {
 
 	var ret0 SocketAddressEnumerator
 
-	ret0 = WrapSocketAddressEnumerator(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddressEnumerator)
 
 	return ret0
 }
@@ -18001,7 +19786,7 @@ func (connectable socketConnectable) ProxyEnumerate() SocketAddressEnumerator {
 
 	var ret0 SocketAddressEnumerator
 
-	ret0 = WrapSocketAddressEnumerator(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddressEnumerator)
 
 	return ret0
 }
@@ -18090,7 +19875,7 @@ func (backend tlsBackend) DefaultDatabase() TLSDatabase {
 
 	var ret0 TLSDatabase
 
-	ret0 = WrapTLSDatabase(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSDatabase)
 
 	return ret0
 }
@@ -18126,7 +19911,7 @@ func (backend tlsBackend) SupportsDTLS() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18142,7 +19927,7 @@ func (backend tlsBackend) SupportsTLS() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18313,7 +20098,7 @@ func (conn tlsClientConnection) ServerIdentity() SocketConnectable {
 
 	var ret0 SocketConnectable
 
-	ret0 = WrapSocketConnectable(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(SocketConnectable)
 
 	return ret0
 }
@@ -18329,7 +20114,7 @@ func (conn tlsClientConnection) UseSSL3() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18377,7 +20162,9 @@ func (conn tlsClientConnection) SetUseSSL3(useSSL3 bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTlsClientConnection)(conn.Native())
-	arg1 = gextras.Cbool(useSSL3)
+	if useSSL3 {
+		arg1 = C.TRUE
+	}
 
 	C.g_tls_client_connection_set_use_ssl3(arg0, arg1)
 }
@@ -18466,7 +20253,7 @@ type VolumeOverrider interface {
 	// EjectFinish finishes ejecting a volume. If any errors occurred during the
 	// operation, @error will be set to contain the errors and false will be
 	// returned.
-	EjectFinish(result AsyncResult) bool
+	EjectFinish(result AsyncResult) error
 	// EjectWithOperation ejects a volume. This is an asynchronous operation,
 	// and is finished by calling g_volume_eject_with_operation_finish() with
 	// the @volume and Result data returned in the @callback.
@@ -18474,7 +20261,7 @@ type VolumeOverrider interface {
 	// EjectWithOperationFinish finishes ejecting a volume. If any errors
 	// occurred during the operation, @error will be set to contain the errors
 	// and false will be returned.
-	EjectWithOperationFinish(result AsyncResult) bool
+	EjectWithOperationFinish(result AsyncResult) error
 	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
 	// that @volume has. Use g_volume_get_identifier() to obtain the identifiers
 	// themselves.
@@ -18521,7 +20308,7 @@ type VolumeOverrider interface {
 	// If the mount operation succeeded, g_volume_get_mount() on @volume is
 	// guaranteed to return the mount right after calling this function; there's
 	// no need to listen for the 'mount-added' signal on Monitor.
-	MountFinish(result AsyncResult) bool
+	MountFinish(result AsyncResult) error
 	// MountFn mounts a volume. This is an asynchronous operation, and is
 	// finished by calling g_volume_mount_finish() with the @volume and Result
 	// returned in the @callback.
@@ -18605,7 +20392,7 @@ func (volume volume) CanEject() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18620,7 +20407,7 @@ func (volume volume) CanMount() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18647,20 +20434,24 @@ func (volume volume) Eject(flags MountUnmountFlags, cancellable Cancellable, cal
 // EjectFinish finishes ejecting a volume. If any errors occurred during the
 // operation, @error will be set to contain the errors and false will be
 // returned.
-func (volume volume) EjectFinish(result AsyncResult) bool {
+func (volume volume) EjectFinish(result AsyncResult) error {
 	var arg0 *C.GVolume
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GVolume)(volume.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_volume_eject_finish(arg0, arg1)
+	ret := C.g_volume_eject_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EjectWithOperation ejects a volume. This is an asynchronous operation,
@@ -18687,20 +20478,24 @@ func (volume volume) EjectWithOperation(flags MountUnmountFlags, mountOperation 
 // EjectWithOperationFinish finishes ejecting a volume. If any errors
 // occurred during the operation, @error will be set to contain the errors
 // and false will be returned.
-func (volume volume) EjectWithOperationFinish(result AsyncResult) bool {
+func (volume volume) EjectWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GVolume
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GVolume)(volume.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_volume_eject_with_operation_finish(arg0, arg1)
+	ret := C.g_volume_eject_with_operation_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
@@ -18755,7 +20550,7 @@ func (volume volume) ActivationRoot() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -18770,7 +20565,7 @@ func (volume volume) Drive() Drive {
 
 	var ret0 Drive
 
-	ret0 = WrapDrive(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Drive)
 
 	return ret0
 }
@@ -18785,7 +20580,7 @@ func (volume volume) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -18821,7 +20616,7 @@ func (volume volume) GetMount() Mount {
 
 	var ret0 Mount
 
-	ret0 = WrapMount(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Mount)
 
 	return ret0
 }
@@ -18867,7 +20662,7 @@ func (volume volume) SymbolicIcon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -18918,20 +20713,24 @@ func (volume volume) Mount(flags MountMountFlags, mountOperation MountOperation,
 // If the mount operation succeeded, g_volume_get_mount() on @volume is
 // guaranteed to return the mount right after calling this function; there's
 // no need to listen for the 'mount-added' signal on Monitor.
-func (volume volume) MountFinish(result AsyncResult) bool {
+func (volume volume) MountFinish(result AsyncResult) error {
 	var arg0 *C.GVolume
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GVolume)(volume.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_volume_mount_finish(arg0, arg1)
+	ret := C.g_volume_mount_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ShouldAutomount returns whether the volume should be automatically
@@ -18945,7 +20744,7 @@ func (volume volume) ShouldAutomount() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18976,28 +20775,28 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusAnnotationInfo) RefCount() int {
+func (d *DBusAnnotationInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Key gets the field inside the struct.
-func (k *DBusAnnotationInfo) Key() string {
+func (d *DBusAnnotationInfo) Key() string {
 	var ret string
 	ret = C.GoString(d.native.key)
 	return ret
 }
 
 // Value gets the field inside the struct.
-func (v *DBusAnnotationInfo) Value() string {
+func (d *DBusAnnotationInfo) Value() string {
 	var ret string
 	ret = C.GoString(d.native.value)
 	return ret
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -19074,28 +20873,28 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusArgInfo) RefCount() int {
+func (d *DBusArgInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Name gets the field inside the struct.
-func (n *DBusArgInfo) Name() string {
+func (d *DBusArgInfo) Name() string {
 	var ret string
 	ret = C.GoString(d.native.name)
 	return ret
 }
 
 // Signature gets the field inside the struct.
-func (s *DBusArgInfo) Signature() string {
+func (d *DBusArgInfo) Signature() string {
 	var ret string
 	ret = C.GoString(d.native.signature)
 	return ret
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -19172,7 +20971,7 @@ func (d *DBusErrorEntry) Native() unsafe.Pointer {
 }
 
 // ErrorCode gets the field inside the struct.
-func (e *DBusErrorEntry) ErrorCode() int {
+func (d *DBusErrorEntry) ErrorCode() int {
 	var ret int
 	ret = int(d.native.error_code)
 	return ret
@@ -19211,21 +21010,21 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusInterfaceInfo) RefCount() int {
+func (d *DBusInterfaceInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Name gets the field inside the struct.
-func (n *DBusInterfaceInfo) Name() string {
+func (d *DBusInterfaceInfo) Name() string {
 	var ret string
 	ret = C.GoString(d.native.name)
 	return ret
 }
 
 // Methods gets the field inside the struct.
-func (m *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
+func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	var ret []*DBusMethodInfo
 	{
 		var length uint
@@ -19248,7 +21047,7 @@ func (m *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 }
 
 // Signals gets the field inside the struct.
-func (s *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
+func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	var ret []*DBusSignalInfo
 	{
 		var length uint
@@ -19271,7 +21070,7 @@ func (s *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 }
 
 // Properties gets the field inside the struct.
-func (p *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
+func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	var ret []*DBusPropertyInfo
 	{
 		var length uint
@@ -19294,7 +21093,7 @@ func (p *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -19557,21 +21356,21 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusMethodInfo) RefCount() int {
+func (d *DBusMethodInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Name gets the field inside the struct.
-func (n *DBusMethodInfo) Name() string {
+func (d *DBusMethodInfo) Name() string {
 	var ret string
 	ret = C.GoString(d.native.name)
 	return ret
 }
 
 // InArgs gets the field inside the struct.
-func (i *DBusMethodInfo) InArgs() []*DBusArgInfo {
+func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	var ret []*DBusArgInfo
 	{
 		var length uint
@@ -19594,7 +21393,7 @@ func (i *DBusMethodInfo) InArgs() []*DBusArgInfo {
 }
 
 // OutArgs gets the field inside the struct.
-func (o *DBusMethodInfo) OutArgs() []*DBusArgInfo {
+func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	var ret []*DBusArgInfo
 	{
 		var length uint
@@ -19617,7 +21416,7 @@ func (o *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -19694,39 +21493,46 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 }
 
 // NewDBusNodeInfoForXml constructs a struct DBusNodeInfo.
-func NewDBusNodeInfoForXml(xmlData string) *DBusNodeInfo {
+func NewDBusNodeInfoForXml(xmlData string) (dBusNodeInfo *DBusNodeInfo, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(xmlData))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_dbus_node_info_new_for_xml(arg1)
+	ret := C.g_dbus_node_info_new_for_xml(arg1, &gError)
 
 	var ret0 *DBusNodeInfo
+	var goError error
 
 	{
 		ret0 = WrapDBusNodeInfo(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusNodeInfo) RefCount() int {
+func (d *DBusNodeInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Path gets the field inside the struct.
-func (p *DBusNodeInfo) Path() string {
+func (d *DBusNodeInfo) Path() string {
 	var ret string
 	ret = C.GoString(d.native.path)
 	return ret
 }
 
 // Interfaces gets the field inside the struct.
-func (i *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
+func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	var ret []*DBusInterfaceInfo
 	{
 		var length uint
@@ -19749,7 +21555,7 @@ func (i *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 }
 
 // Nodes gets the field inside the struct.
-func (n *DBusNodeInfo) Nodes() []*DBusNodeInfo {
+func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	var ret []*DBusNodeInfo
 	{
 		var length uint
@@ -19772,7 +21578,7 @@ func (n *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -19892,35 +21698,35 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusPropertyInfo) RefCount() int {
+func (d *DBusPropertyInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Name gets the field inside the struct.
-func (n *DBusPropertyInfo) Name() string {
+func (d *DBusPropertyInfo) Name() string {
 	var ret string
 	ret = C.GoString(d.native.name)
 	return ret
 }
 
 // Signature gets the field inside the struct.
-func (s *DBusPropertyInfo) Signature() string {
+func (d *DBusPropertyInfo) Signature() string {
 	var ret string
 	ret = C.GoString(d.native.signature)
 	return ret
 }
 
 // Flags gets the field inside the struct.
-func (f *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
+func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
 	var ret DBusPropertyInfoFlags
 	ret = DBusPropertyInfoFlags(d.native.flags)
 	return ret
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -19997,21 +21803,21 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 }
 
 // RefCount gets the field inside the struct.
-func (r *DBusSignalInfo) RefCount() int {
+func (d *DBusSignalInfo) RefCount() int {
 	var ret int
 	ret = int(d.native.ref_count)
 	return ret
 }
 
 // Name gets the field inside the struct.
-func (n *DBusSignalInfo) Name() string {
+func (d *DBusSignalInfo) Name() string {
 	var ret string
 	ret = C.GoString(d.native.name)
 	return ret
 }
 
 // Args gets the field inside the struct.
-func (a *DBusSignalInfo) Args() []*DBusArgInfo {
+func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	var ret []*DBusArgInfo
 	{
 		var length uint
@@ -20034,7 +21840,7 @@ func (a *DBusSignalInfo) Args() []*DBusArgInfo {
 }
 
 // Annotations gets the field inside the struct.
-func (a *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
+func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	var ret []*DBusAnnotationInfo
 	{
 		var length uint
@@ -20137,14 +21943,14 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 }
 
 // Name gets the field inside the struct.
-func (n *FileAttributeInfo) Name() string {
+func (f *FileAttributeInfo) Name() string {
 	var ret string
 	ret = C.GoString(f.native.name)
 	return ret
 }
 
 // Type gets the field inside the struct.
-func (t *FileAttributeInfo) Type() FileAttributeType {
+func (f *FileAttributeInfo) Type() FileAttributeType {
 	var ret FileAttributeType
 	ret = FileAttributeType(f.native._type)
 	return ret
@@ -20198,7 +22004,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 }
 
 // Infos gets the field inside the struct.
-func (i *FileAttributeInfoList) Infos() *FileAttributeInfo {
+func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	var ret *FileAttributeInfo
 	{
 		ret = WrapFileAttributeInfo(f.native.infos)
@@ -20210,7 +22016,7 @@ func (i *FileAttributeInfoList) Infos() *FileAttributeInfo {
 }
 
 // NInfos gets the field inside the struct.
-func (n *FileAttributeInfoList) NInfos() int {
+func (f *FileAttributeInfoList) NInfos() int {
 	var ret int
 	ret = int(f.native.n_infos)
 	return ret
@@ -20218,7 +22024,7 @@ func (n *FileAttributeInfoList) NInfos() int {
 
 // Add adds a new attribute with @name to the @list, setting its @type and
 // @flags.
-func (list *FileAttributeInfoList) Add(name string, _type FileAttributeType, flags FileAttributeInfoFlags) {
+func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
 	var arg0 *C.GFileAttributeInfoList
 	var arg1 *C.char
 	var arg2 C.GFileAttributeType
@@ -20227,7 +22033,7 @@ func (list *FileAttributeInfoList) Add(name string, _type FileAttributeType, fla
 	arg0 = (*C.GFileAttributeInfoList)(list.Native())
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GFileAttributeType)(_type)
+	arg2 = (C.GFileAttributeType)(typ)
 	arg3 = (C.GFileAttributeInfoFlags)(flags)
 
 	C.g_file_attribute_info_list_add(arg0, arg1, arg2, arg3)
@@ -20361,7 +22167,7 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20396,7 +22202,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20415,7 +22221,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20535,14 +22341,14 @@ func (i *InputMessage) Native() unsafe.Pointer {
 }
 
 // Address gets the field inside the struct.
-func (a *InputMessage) Address() SocketAddress {
+func (i *InputMessage) Address() SocketAddress {
 	var ret SocketAddress
-	ret = WrapSocketAddress(externglib.Take(unsafe.Pointer(i.native.address.Native())))
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(i.native.address.Native()))).(SocketAddress)
 	return ret
 }
 
 // Vectors gets the field inside the struct.
-func (v *InputMessage) Vectors() []InputVector {
+func (i *InputMessage) Vectors() []InputVector {
 	var ret []InputVector
 	{
 		ret = make([]InputVector, i.native.num_vectors)
@@ -20560,27 +22366,27 @@ func (v *InputMessage) Vectors() []InputVector {
 }
 
 // BytesReceived gets the field inside the struct.
-func (b *InputMessage) BytesReceived() uint {
+func (i *InputMessage) BytesReceived() uint {
 	var ret uint
 	ret = uint(i.native.bytes_received)
 	return ret
 }
 
 // Flags gets the field inside the struct.
-func (f *InputMessage) Flags() int {
+func (i *InputMessage) Flags() int {
 	var ret int
 	ret = int(i.native.flags)
 	return ret
 }
 
 // ControlMessages gets the field inside the struct.
-func (c *InputMessage) ControlMessages() []SocketControlMessage {
+func (i *InputMessage) ControlMessages() []SocketControlMessage {
 	var ret []SocketControlMessage
 	{
 		ret = make([]SocketControlMessage, i.native.num_control_messages)
 		for i := 0; i < uintptr(i.native.num_control_messages); i++ {
 			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret[i] = WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
+			ret[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(SocketControlMessage)
 		}
 	}
 	return ret
@@ -20614,14 +22420,14 @@ func (i *InputVector) Native() unsafe.Pointer {
 }
 
 // Buffer gets the field inside the struct.
-func (b *InputVector) Buffer() interface{} {
+func (i *InputVector) Buffer() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(i.native.buffer))
 	return ret
 }
 
 // Size gets the field inside the struct.
-func (s *InputVector) Size() uint {
+func (i *InputVector) Size() uint {
 	var ret uint
 	ret = uint(i.native.size)
 	return ret
@@ -20659,14 +22465,14 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 }
 
 // Address gets the field inside the struct.
-func (a *OutputMessage) Address() SocketAddress {
+func (o *OutputMessage) Address() SocketAddress {
 	var ret SocketAddress
-	ret = WrapSocketAddress(externglib.Take(unsafe.Pointer(o.native.address.Native())))
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.address.Native()))).(SocketAddress)
 	return ret
 }
 
 // Vectors gets the field inside the struct.
-func (v *OutputMessage) Vectors() *OutputVector {
+func (o *OutputMessage) Vectors() *OutputVector {
 	var ret *OutputVector
 	{
 		ret = WrapOutputVector(o.native.vectors)
@@ -20678,27 +22484,27 @@ func (v *OutputMessage) Vectors() *OutputVector {
 }
 
 // NumVectors gets the field inside the struct.
-func (n *OutputMessage) NumVectors() uint {
+func (o *OutputMessage) NumVectors() uint {
 	var ret uint
 	ret = uint(o.native.num_vectors)
 	return ret
 }
 
 // BytesSent gets the field inside the struct.
-func (b *OutputMessage) BytesSent() uint {
+func (o *OutputMessage) BytesSent() uint {
 	var ret uint
 	ret = uint(o.native.bytes_sent)
 	return ret
 }
 
 // ControlMessages gets the field inside the struct.
-func (c *OutputMessage) ControlMessages() []SocketControlMessage {
+func (o *OutputMessage) ControlMessages() []SocketControlMessage {
 	var ret []SocketControlMessage
 	{
 		ret = make([]SocketControlMessage, o.native.num_control_messages)
 		for i := 0; i < uintptr(o.native.num_control_messages); i++ {
 			src := (*C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret[i] = WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
+			ret[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(SocketControlMessage)
 		}
 	}
 	return ret
@@ -20732,14 +22538,14 @@ func (o *OutputVector) Native() unsafe.Pointer {
 }
 
 // Buffer gets the field inside the struct.
-func (b *OutputVector) Buffer() interface{} {
+func (o *OutputVector) Buffer() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(o.native.buffer))
 	return ret
 }
 
 // Size gets the field inside the struct.
-func (s *OutputVector) Size() uint {
+func (o *OutputVector) Size() uint {
 	var ret uint
 	ret = uint(o.native.size)
 	return ret
@@ -20913,20 +22719,27 @@ func (r *Resource) Native() unsafe.Pointer {
 }
 
 // NewResourceFromData constructs a struct Resource.
-func NewResourceFromData(data *glib.Bytes) *Resource {
+func NewResourceFromData(data *glib.Bytes) (resource *Resource, err error) {
 	var arg1 *C.GBytes
+	var gError *C.GError
 
 	arg1 = (*C.GBytes)(data.Native())
 
-	ret := C.g_resource_new_from_data(arg1)
+	ret := C.g_resource_new_from_data(arg1, &gError)
 
 	var ret0 *Resource
+	var goError error
 
 	{
 		ret0 = WrapResource(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Register registers the resource with the process-global set of resources.
@@ -20957,19 +22770,21 @@ func (resource *Resource) Unregister() {
 // G_RESOURCE_ERROR_NOT_FOUND will be returned.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) []string {
+func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, err error) {
 	var arg0 *C.GResource
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
+	var gError *C.GError
 
 	arg0 = (*C.GResource)(resource.Native())
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resource_enumerate_children(arg0, arg1, arg2)
+	ret := C.g_resource_enumerate_children(arg0, arg1, arg2, &gError)
 
 	var ret0 []string
+	var goError error
 
 	{
 		var length uint
@@ -20985,38 +22800,47 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 		}
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Info looks for a file at the specified @path in the resource and if found
 // returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, ok bool) {
+func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, err error) {
 	var arg0 *C.GResource
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
 	var arg3 *C.gsize   // out
 	var arg4 *C.guint32 // out
+	var gError *C.GError
 
 	arg0 = (*C.GResource)(resource.Native())
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resource_get_info(arg0, arg1, arg2, &arg3, &arg4)
+	ret := C.g_resource_get_info(arg0, arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 uint
 	var ret1 uint32
-	var ret2 bool
+	var goError error
 
 	ret0 = uint(arg3)
 
 	ret1 = uint32(arg4)
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // LookupData looks for a file at the specified @path in the resource and
@@ -21031,48 +22855,62 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (si
 // uncompress the data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) *glib.Bytes {
+func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) (bytes *glib.Bytes, err error) {
 	var arg0 *C.GResource
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
+	var gError *C.GError
 
 	arg0 = (*C.GResource)(resource.Native())
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resource_lookup_data(arg0, arg1, arg2)
+	ret := C.g_resource_lookup_data(arg0, arg1, arg2, &gError)
 
 	var ret0 *glib.Bytes
+	var goError error
 
 	{
 		ret0 = glib.WrapBytes(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // OpenStream looks for a file at the specified @path in the resource and
 // returns a Stream that lets you read the data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) InputStream {
+func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, err error) {
 	var arg0 *C.GResource
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
+	var gError *C.GError
 
 	arg0 = (*C.GResource)(resource.Native())
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	ret := C.g_resource_open_stream(arg0, arg1, arg2)
+	ret := C.g_resource_open_stream(arg0, arg1, arg2, &gError)
 
 	var ret0 InputStream
+	var goError error
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InputStream)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Ref: atomically increments the reference count of @resource by one. This
@@ -21231,7 +23069,7 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -21520,7 +23358,7 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -21578,25 +23416,34 @@ func (s *SettingsSchemaSource) Native() unsafe.Pointer {
 }
 
 // NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.
-func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) *SettingsSchemaSource {
+func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) (settingsSchemaSource *SettingsSchemaSource, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.GSettingsSchemaSource
 	var arg3 C.gboolean
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(directory))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GSettingsSchemaSource)(parent.Native())
-	arg3 = gextras.Cbool(trusted)
+	if trusted {
+		arg3 = C.TRUE
+	}
 
-	ret := C.g_settings_schema_source_new_from_directory(arg1, arg2, arg3)
+	ret := C.g_settings_schema_source_new_from_directory(arg1, arg2, arg3, &gError)
 
 	var ret0 *SettingsSchemaSource
+	var goError error
 
 	{
 		ret0 = WrapSettingsSchemaSource(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ListSchemas lists the schemas in a given source.
@@ -21617,9 +23464,11 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 	var arg3 ***C.gchar // out
 
 	arg0 = (*C.GSettingsSchemaSource)(source.Native())
-	arg1 = gextras.Cbool(recursive)
+	if recursive {
+		arg1 = C.TRUE
+	}
 
-	ret := C.g_settings_schema_source_list_schemas(arg0, arg1, &arg2, &arg3)
+	C.g_settings_schema_source_list_schemas(arg0, arg1, &arg2, &arg3)
 
 	var ret0 []string
 	var ret1 []string
@@ -21673,7 +23522,9 @@ func (source *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *Set
 	arg0 = (*C.GSettingsSchemaSource)(source.Native())
 	arg1 = (*C.gchar)(C.CString(schemaID))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(recursive)
+	if recursive {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_settings_schema_source_lookup(arg0, arg1, arg2)
 
@@ -22105,7 +23956,7 @@ func (mountPoint *UnixMountPoint) GuessCanEject() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -22120,7 +23971,7 @@ func (mountPoint *UnixMountPoint) GuessIcon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -22152,7 +24003,7 @@ func (mountPoint *UnixMountPoint) GuessSymbolicIcon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -22167,7 +24018,7 @@ func (mountPoint *UnixMountPoint) IsLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -22182,7 +24033,7 @@ func (mountPoint *UnixMountPoint) IsReadonly() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -22197,7 +24048,7 @@ func (mountPoint *UnixMountPoint) IsUserMountable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -22305,7 +24156,7 @@ func NewAppLaunchContext() AppLaunchContext {
 
 	var ret0 AppLaunchContext
 
-	ret0 = WrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppLaunchContext)
 
 	return ret0
 }
@@ -22681,6 +24532,21 @@ type Application interface {
 	//
 	// To cancel the busy indication, use g_application_unmark_busy().
 	MarkBusy()
+	// Open opens the given files.
+	//
+	// In essence, this results in the #GApplication::open signal being emitted
+	// in the primary instance.
+	//
+	// @n_files must be greater than zero.
+	//
+	// @hint is simply passed through to the ::open signal. It is intended to be
+	// used by applications that have multiple modes for opening files (eg:
+	// "view" vs "edit", etc). Unless you have a need for this functionality,
+	// you should use "".
+	//
+	// The application must be registered before calling this function and it
+	// must have the G_APPLICATION_HANDLES_OPEN flag set.
+	Open(files []File, hint string)
 	// Quit: immediately quits the application.
 	//
 	// Upon return to the mainloop, g_application_run() will return, calling
@@ -22722,7 +24588,7 @@ type Application interface {
 	// Note: the return value of this function is not an indicator that this
 	// instance is or is not the primary instance of the application. See
 	// g_application_get_is_remote() for that.
-	Register(cancellable Cancellable) bool
+	Register(cancellable Cancellable) error
 	// Release: decrease the use count of @application.
 	//
 	// When the use count reaches zero, the application will stop running.
@@ -22730,6 +24596,80 @@ type Application interface {
 	// Never call this function except to cancel the effect of a previous call
 	// to g_application_hold().
 	Release()
+	// Run runs the application.
+	//
+	// This function is intended to be run from main() and its return value is
+	// intended to be returned by main(). Although you are expected to pass the
+	// @argc, @argv parameters from main() to this function, it is possible to
+	// pass nil if @argv is not available or commandline handling is not
+	// required. Note that on Windows, @argc and @argv are ignored, and
+	// g_win32_get_command_line() is called internally (for proper support of
+	// Unicode commandline arguments).
+	//
+	// #GApplication will attempt to parse the commandline arguments. You can
+	// add commandline flags to the list of recognised options by way of
+	// g_application_add_main_option_entries(). After this, the
+	// #GApplication::handle-local-options signal is emitted, from which the
+	// application can inspect the values of its Entrys.
+	//
+	// #GApplication::handle-local-options is a good place to handle options
+	// such as `--version`, where an immediate reply from the local process is
+	// desired (instead of communicating with an already-running instance). A
+	// #GApplication::handle-local-options handler can stop further processing
+	// by returning a non-negative value, which then becomes the exit status of
+	// the process.
+	//
+	// What happens next depends on the flags: if
+	// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
+	// commandline arguments are sent to the primary instance, where a
+	// #GApplication::command-line signal is emitted. Otherwise, the remaining
+	// commandline arguments are assumed to be a list of files. If there are no
+	// files listed, the application is activated via the
+	// #GApplication::activate signal. If there are one or more files, and
+	// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
+	// the #GApplication::open signal.
+	//
+	// If you are interested in doing more complicated local handling of the
+	// commandline then you should implement your own #GApplication subclass and
+	// override local_command_line(). In this case, you most likely want to
+	// return true from your local_command_line() implementation to suppress the
+	// default handling. See
+	// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
+	// example.
+	//
+	// If, after the above is done, the use count of the application is zero
+	// then the exit status is returned immediately. If the use count is
+	// non-zero then the default main context is iterated until the use count
+	// falls to zero, at which point 0 is returned.
+	//
+	// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
+	// for as much as 10 seconds with a use count of zero while waiting for the
+	// message that caused the activation to arrive. After that, if the use
+	// count falls to zero the application will exit immediately, except in the
+	// case that g_application_set_inactivity_timeout() is in use.
+	//
+	// This function sets the prgname (g_set_prgname()), if not already set, to
+	// the basename of argv[0].
+	//
+	// Much like g_main_loop_run(), this function will acquire the main context
+	// for the duration that the application is running.
+	//
+	// Since 2.40, applications that are not explicitly flagged as services or
+	// launchers (ie: neither G_APPLICATION_IS_SERVICE or
+	// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
+	// default handler for local_command_line) if "--gapplication-service" was
+	// given in the command line. If this flag is present then normal
+	// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
+	// flag is set. This provides a "compromise" solution whereby running an
+	// application directly from the commandline will invoke it in the normal
+	// way (which can be useful for debugging) while still allowing applications
+	// to be D-Bus activated in service mode. The D-Bus service file should
+	// invoke the executable with "--gapplication-service" as the sole
+	// commandline argument. This approach is suitable for use by most graphical
+	// applications but should not be used from applications like editors that
+	// need precise control over when processes invoked via the commandline will
+	// exit and what their exit status will be.
+	Run(argc int, argv []string) int
 	// SendNotification sends a notification on behalf of @application to the
 	// desktop shell. There is no guarantee that the notification is displayed
 	// immediately, or even at all.
@@ -22910,7 +24850,7 @@ func NewApplication(applicationID string, flags ApplicationFlags) Application {
 
 	var ret0 Application
 
-	ret0 = WrapApplication(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Application)
 
 	return ret0
 }
@@ -23054,7 +24994,7 @@ func (application application) DBusConnection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -23135,7 +25075,7 @@ func (application application) IsBusy() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23153,7 +25093,7 @@ func (application application) IsRegistered() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23177,7 +25117,7 @@ func (application application) IsRemote() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23232,6 +25172,50 @@ func (application application) MarkBusy() {
 	C.g_application_mark_busy(arg0)
 }
 
+// Open opens the given files.
+//
+// In essence, this results in the #GApplication::open signal being emitted
+// in the primary instance.
+//
+// @n_files must be greater than zero.
+//
+// @hint is simply passed through to the ::open signal. It is intended to be
+// used by applications that have multiple modes for opening files (eg:
+// "view" vs "edit", etc). Unless you have a need for this functionality,
+// you should use "".
+//
+// The application must be registered before calling this function and it
+// must have the G_APPLICATION_HANDLES_OPEN flag set.
+func (application application) Open(files []File, hint string) {
+	var arg0 *C.GApplication
+	var arg1 **C.GFile
+	var arg2 C.gint
+	var arg3 *C.gchar
+
+	arg0 = (*C.GApplication)(application.Native())
+	{
+		var dst []*C.GFile
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(files))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(files)
+		sliceHeader.Cap = len(files)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(files); i++ {
+			src := files[i]
+			dst[i] = (*C.GFile)(src.Native())
+		}
+
+		arg1 = (**C.GFile)(unsafe.Pointer(ptr))
+		arg2 = len(files)
+	}
+	arg3 = (*C.gchar)(C.CString(hint))
+	defer C.free(unsafe.Pointer(arg3))
+
+	C.g_application_open(arg0, arg1, arg2, arg3)
+}
+
 // Quit: immediately quits the application.
 //
 // Upon return to the mainloop, g_application_run() will return, calling
@@ -23280,20 +25264,24 @@ func (application application) Quit() {
 // Note: the return value of this function is not an indicator that this
 // instance is or is not the primary instance of the application. See
 // g_application_get_is_remote() for that.
-func (application application) Register(cancellable Cancellable) bool {
+func (application application) Register(cancellable Cancellable) error {
 	var arg0 *C.GApplication
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GApplication)(application.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_application_register(arg0, arg1)
+	ret := C.g_application_register(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Release: decrease the use count of @application.
@@ -23308,6 +25296,113 @@ func (application application) Release() {
 	arg0 = (*C.GApplication)(application.Native())
 
 	C.g_application_release(arg0)
+}
+
+// Run runs the application.
+//
+// This function is intended to be run from main() and its return value is
+// intended to be returned by main(). Although you are expected to pass the
+// @argc, @argv parameters from main() to this function, it is possible to
+// pass nil if @argv is not available or commandline handling is not
+// required. Note that on Windows, @argc and @argv are ignored, and
+// g_win32_get_command_line() is called internally (for proper support of
+// Unicode commandline arguments).
+//
+// #GApplication will attempt to parse the commandline arguments. You can
+// add commandline flags to the list of recognised options by way of
+// g_application_add_main_option_entries(). After this, the
+// #GApplication::handle-local-options signal is emitted, from which the
+// application can inspect the values of its Entrys.
+//
+// #GApplication::handle-local-options is a good place to handle options
+// such as `--version`, where an immediate reply from the local process is
+// desired (instead of communicating with an already-running instance). A
+// #GApplication::handle-local-options handler can stop further processing
+// by returning a non-negative value, which then becomes the exit status of
+// the process.
+//
+// What happens next depends on the flags: if
+// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
+// commandline arguments are sent to the primary instance, where a
+// #GApplication::command-line signal is emitted. Otherwise, the remaining
+// commandline arguments are assumed to be a list of files. If there are no
+// files listed, the application is activated via the
+// #GApplication::activate signal. If there are one or more files, and
+// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
+// the #GApplication::open signal.
+//
+// If you are interested in doing more complicated local handling of the
+// commandline then you should implement your own #GApplication subclass and
+// override local_command_line(). In this case, you most likely want to
+// return true from your local_command_line() implementation to suppress the
+// default handling. See
+// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
+// example.
+//
+// If, after the above is done, the use count of the application is zero
+// then the exit status is returned immediately. If the use count is
+// non-zero then the default main context is iterated until the use count
+// falls to zero, at which point 0 is returned.
+//
+// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
+// for as much as 10 seconds with a use count of zero while waiting for the
+// message that caused the activation to arrive. After that, if the use
+// count falls to zero the application will exit immediately, except in the
+// case that g_application_set_inactivity_timeout() is in use.
+//
+// This function sets the prgname (g_set_prgname()), if not already set, to
+// the basename of argv[0].
+//
+// Much like g_main_loop_run(), this function will acquire the main context
+// for the duration that the application is running.
+//
+// Since 2.40, applications that are not explicitly flagged as services or
+// launchers (ie: neither G_APPLICATION_IS_SERVICE or
+// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
+// default handler for local_command_line) if "--gapplication-service" was
+// given in the command line. If this flag is present then normal
+// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
+// flag is set. This provides a "compromise" solution whereby running an
+// application directly from the commandline will invoke it in the normal
+// way (which can be useful for debugging) while still allowing applications
+// to be D-Bus activated in service mode. The D-Bus service file should
+// invoke the executable with "--gapplication-service" as the sole
+// commandline argument. This approach is suitable for use by most graphical
+// applications but should not be used from applications like editors that
+// need precise control over when processes invoked via the commandline will
+// exit and what their exit status will be.
+func (application application) Run(argc int, argv []string) int {
+	var arg0 *C.GApplication
+	var arg1 C.int
+	var arg2 **C.char
+
+	arg0 = (*C.GApplication)(application.Native())
+	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * len(argv))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.char)(unsafe.Pointer(ptr))
+		arg1 = len(argv)
+	}
+
+	ret := C.g_application_run(arg0, arg1, arg2)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
 }
 
 // SendNotification sends a notification on behalf of @application to the
@@ -23803,7 +25898,7 @@ func (cmdline applicationCommandLine) CreateFileForArg(arg string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -23932,7 +26027,7 @@ func (cmdline applicationCommandLine) IsRemote() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24008,7 +26103,7 @@ func (cmdline applicationCommandLine) Stdin() InputStream {
 
 	var ret0 InputStream
 
-	ret0 = WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InputStream)
 
 	return ret0
 }
@@ -24114,7 +26209,7 @@ type BufferedInputStream interface {
 	//
 	// For the asynchronous, non-blocking, version of this function, see
 	// g_buffered_input_stream_fill_async().
-	Fill(count int, cancellable Cancellable) int
+	Fill(count int, cancellable Cancellable) (gssize int, err error)
 	// FillAsync reads data into @stream's buffer asynchronously, up to @count
 	// size. @io_priority can be used to prioritize reads. For the synchronous
 	// version of this function, see g_buffered_input_stream_fill().
@@ -24123,11 +26218,14 @@ type BufferedInputStream interface {
 	// bytes that are required to fill the buffer.
 	FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
-	FillFinish(result AsyncResult) int
+	FillFinish(result AsyncResult) (gssize int, err error)
 	// Available gets the size of the available data within the stream.
 	Available() uint
 	// BufferSize gets the size of the input buffer.
 	BufferSize() uint
+	// Peek peeks in the buffer, copying data of size @count into @buffer,
+	// offset @offset bytes.
+	Peek(buffer []byte, offset uint) uint
 	// PeekBuffer returns the buffer with the currently available bytes. The
 	// returned buffer must not be modified and will become invalid when reading
 	// from the stream or filling the buffer.
@@ -24145,7 +26243,7 @@ type BufferedInputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	ReadByte(cancellable Cancellable) int
+	ReadByte(cancellable Cancellable) (gint int, err error)
 	// SetBufferSize sets the size of the internal buffer of @stream to @size,
 	// or to the size of the contents of the buffer. The buffer can never be
 	// resized smaller than its current contents.
@@ -24185,7 +26283,7 @@ func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
 
 	var ret0 BufferedInputStream
 
-	ret0 = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(BufferedInputStream)
 
 	return ret0
 }
@@ -24202,7 +26300,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 
 	var ret0 BufferedInputStream
 
-	ret0 = WrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(BufferedInputStream)
 
 	return ret0
 }
@@ -24231,22 +26329,29 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 //
 // For the asynchronous, non-blocking, version of this function, see
 // g_buffered_input_stream_fill_async().
-func (stream bufferedInputStream) Fill(count int, cancellable Cancellable) int {
+func (stream bufferedInputStream) Fill(count int, cancellable Cancellable) (gssize int, err error) {
 	var arg0 *C.GBufferedInputStream
 	var arg1 C.gssize
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GBufferedInputStream)(stream.Native())
 	arg1 = C.gssize(count)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_buffered_input_stream_fill(arg0, arg1, arg2)
+	ret := C.g_buffered_input_stream_fill(arg0, arg1, arg2, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FillAsync reads data into @stream's buffer asynchronously, up to @count
@@ -24274,20 +26379,27 @@ func (stream bufferedInputStream) FillAsync(count int, ioPriority int, cancellab
 }
 
 // FillFinish finishes an asynchronous read.
-func (stream bufferedInputStream) FillFinish(result AsyncResult) int {
+func (stream bufferedInputStream) FillFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GBufferedInputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GBufferedInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_buffered_input_stream_fill_finish(arg0, arg1)
+	ret := C.g_buffered_input_stream_fill_finish(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Available gets the size of the available data within the stream.
@@ -24312,6 +26424,29 @@ func (stream bufferedInputStream) BufferSize() uint {
 	arg0 = (*C.GBufferedInputStream)(stream.Native())
 
 	ret := C.g_buffered_input_stream_get_buffer_size(arg0)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// Peek peeks in the buffer, copying data of size @count into @buffer,
+// offset @offset bytes.
+func (stream bufferedInputStream) Peek(buffer []byte, offset uint) uint {
+	var arg0 *C.GBufferedInputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 C.gsize
+
+	arg0 = (*C.GBufferedInputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg3 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg2 = C.gsize(offset)
+
+	ret := C.g_buffered_input_stream_peek(arg0, arg1, arg2, arg3)
 
 	var ret0 uint
 
@@ -24363,20 +26498,27 @@ func (stream bufferedInputStream) PeekBuffer() (count uint, guint8s []byte) {
 // partial result will be returned, without an error.
 //
 // On error -1 is returned and @error is set accordingly.
-func (stream bufferedInputStream) ReadByte(cancellable Cancellable) int {
+func (stream bufferedInputStream) ReadByte(cancellable Cancellable) (gint int, err error) {
 	var arg0 *C.GBufferedInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GBufferedInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_buffered_input_stream_read_byte(arg0, arg1)
+	ret := C.g_buffered_input_stream_read_byte(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetBufferSize sets the size of the internal buffer of @stream to @size,
@@ -24456,7 +26598,7 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 
 	var ret0 BufferedOutputStream
 
-	ret0 = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(BufferedOutputStream)
 
 	return ret0
 }
@@ -24473,7 +26615,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 
 	var ret0 BufferedOutputStream
 
-	ret0 = WrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(BufferedOutputStream)
 
 	return ret0
 }
@@ -24488,7 +26630,7 @@ func (stream bufferedOutputStream) AutoGrow() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24517,7 +26659,9 @@ func (stream bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GBufferedOutputStream)(stream.Native())
-	arg1 = gextras.Cbool(autoGrow)
+	if autoGrow {
+		arg1 = C.TRUE
+	}
 
 	C.g_buffered_output_stream_set_auto_grow(arg0, arg1)
 }
@@ -24579,7 +26723,7 @@ func NewBytesIcon(bytes *glib.Bytes) BytesIcon {
 
 	var ret0 BytesIcon
 
-	ret0 = WrapBytesIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(BytesIcon)
 
 	return ret0
 }
@@ -24710,7 +26854,7 @@ type Cancellable interface {
 	Reset()
 	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 	// notify that the operation was cancelled.
-	SetErrorIfCancelled() bool
+	SetErrorIfCancelled() error
 	// NewSource creates a source that triggers if @cancellable is cancelled and
 	// calls its callback of type SourceFunc. This is primarily useful for
 	// attaching to another (non-cancellable) source with
@@ -24751,7 +26895,7 @@ func NewCancellable() Cancellable {
 
 	var ret0 Cancellable
 
-	ret0 = WrapCancellable(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Cancellable)
 
 	return ret0
 }
@@ -24839,7 +26983,7 @@ func (cancellable cancellable) IsCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24872,7 +27016,7 @@ func (cancellable cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24941,18 +27085,22 @@ func (cancellable cancellable) Reset() {
 
 // SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
-func (cancellable cancellable) SetErrorIfCancelled() bool {
+func (cancellable cancellable) SetErrorIfCancelled() error {
 	var arg0 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_cancellable_set_error_if_cancelled(arg0)
+	ret := C.g_cancellable_set_error_if_cancelled(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // NewSource creates a source that triggers if @cancellable is cancelled and
@@ -25021,22 +27169,29 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 }
 
 // NewCharsetConverter constructs a class CharsetConverter.
-func NewCharsetConverter(toCharset string, fromCharset string) CharsetConverter {
+func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter CharsetConverter, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(toCharset))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(fromCharset))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_charset_converter_new(arg1, arg2)
+	ret := C.g_charset_converter_new(arg1, arg2, &gError)
 
 	var ret0 CharsetConverter
+	var goError error
 
-	ret0 = WrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(CharsetConverter)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so
@@ -25065,7 +27220,7 @@ func (converter charsetConverter) UseFallback() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -25076,7 +27231,9 @@ func (converter charsetConverter) SetUseFallback(useFallback bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GCharsetConverter)(converter.Native())
-	arg1 = gextras.Cbool(useFallback)
+	if useFallback {
+		arg1 = C.TRUE
+	}
 
 	C.g_charset_converter_set_use_fallback(arg0, arg1)
 }
@@ -25128,7 +27285,7 @@ func NewConverterInputStream(baseStream InputStream, converter Converter) Conver
 
 	var ret0 ConverterInputStream
 
-	ret0 = WrapConverterInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ConverterInputStream)
 
 	return ret0
 }
@@ -25143,7 +27300,7 @@ func (converterStream converterInputStream) Converter() Converter {
 
 	var ret0 Converter
 
-	ret0 = WrapConverter(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Converter)
 
 	return ret0
 }
@@ -25195,7 +27352,7 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) Conv
 
 	var ret0 ConverterOutputStream
 
-	ret0 = WrapConverterOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ConverterOutputStream)
 
 	return ret0
 }
@@ -25210,7 +27367,7 @@ func (converterStream converterOutputStream) Converter() Converter {
 
 	var ret0 Converter
 
-	ret0 = WrapConverter(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Converter)
 
 	return ret0
 }
@@ -25262,19 +27419,19 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// process ID (for example this is the case for
 	// G_CREDENTIALS_TYPE_APPLE_XUCRED).
-	UnixPid() int
+	UnixPid() (gint int, err error)
 	// UnixUser tries to get the UNIX user identifier from @credentials. This
 	// method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// user.
-	UnixUser() uint
+	UnixUser() (guint uint, err error)
 	// IsSameUser checks if @credentials and @other_credentials is the same
 	// user.
 	//
 	// This operation can fail if #GCredentials is not supported on the the OS.
-	IsSameUser(otherCredentials Credentials) bool
+	IsSameUser(otherCredentials Credentials) error
 	// SetNative copies the native credentials of type @native_type from @native
 	// into @credentials.
 	//
@@ -25289,7 +27446,7 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// user. It can also fail if the OS does not allow the use of "spoofed"
 	// credentials.
-	SetUnixUser(uid uint) bool
+	SetUnixUser(uid uint) error
 	// String creates a human-readable textual representation of @credentials
 	// that can be used in logging and debug messages. The format of the
 	// returned string may change in future GLib release.
@@ -25324,7 +27481,7 @@ func NewCredentials() Credentials {
 
 	var ret0 Credentials
 
-	ret0 = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Credentials)
 
 	return ret0
 }
@@ -25358,18 +27515,25 @@ func (credentials credentials) Native(nativeType CredentialsType) interface{} {
 // the native credentials type does not contain information about the UNIX
 // process ID (for example this is the case for
 // G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (credentials credentials) UnixPid() int {
+func (credentials credentials) UnixPid() (gint int, err error) {
 	var arg0 *C.GCredentials
+	var gError *C.GError
 
 	arg0 = (*C.GCredentials)(credentials.Native())
 
-	ret := C.g_credentials_get_unix_pid(arg0)
+	ret := C.g_credentials_get_unix_pid(arg0, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // UnixUser tries to get the UNIX user identifier from @credentials. This
@@ -25378,38 +27542,49 @@ func (credentials credentials) UnixPid() int {
 // This operation can fail if #GCredentials is not supported on the OS or if
 // the native credentials type does not contain information about the UNIX
 // user.
-func (credentials credentials) UnixUser() uint {
+func (credentials credentials) UnixUser() (guint uint, err error) {
 	var arg0 *C.GCredentials
+	var gError *C.GError
 
 	arg0 = (*C.GCredentials)(credentials.Native())
 
-	ret := C.g_credentials_get_unix_user(arg0)
+	ret := C.g_credentials_get_unix_user(arg0, &gError)
 
 	var ret0 uint
+	var goError error
 
 	ret0 = uint(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // IsSameUser checks if @credentials and @other_credentials is the same
 // user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
-func (credentials credentials) IsSameUser(otherCredentials Credentials) bool {
+func (credentials credentials) IsSameUser(otherCredentials Credentials) error {
 	var arg0 *C.GCredentials
 	var arg1 *C.GCredentials
+	var gError *C.GError
 
 	arg0 = (*C.GCredentials)(credentials.Native())
 	arg1 = (*C.GCredentials)(otherCredentials.Native())
 
-	ret := C.g_credentials_is_same_user(arg0, arg1)
+	ret := C.g_credentials_is_same_user(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetNative copies the native credentials of type @native_type from @native
@@ -25437,20 +27612,24 @@ func (credentials credentials) SetNative(nativeType CredentialsType, native inte
 // the native credentials type does not contain information about the UNIX
 // user. It can also fail if the OS does not allow the use of "spoofed"
 // credentials.
-func (credentials credentials) SetUnixUser(uid uint) bool {
+func (credentials credentials) SetUnixUser(uid uint) error {
 	var arg0 *C.GCredentials
 	var arg1 C.uid_t
+	var gError *C.GError
 
 	arg0 = (*C.GCredentials)(credentials.Native())
 	arg1 = C.uid_t(uid)
 
-	ret := C.g_credentials_set_unix_user(arg0, arg1)
+	ret := C.g_credentials_set_unix_user(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // String creates a human-readable textual representation of @credentials
@@ -25578,7 +27757,7 @@ func NewDBusAuthObserver() DBusAuthObserver {
 
 	var ret0 DBusAuthObserver
 
-	ret0 = WrapDBusAuthObserver(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusAuthObserver)
 
 	return ret0
 }
@@ -25597,7 +27776,7 @@ func (observer dBusAuthObserver) AllowMechanism(mechanism string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -25617,7 +27796,7 @@ func (observer dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, cre
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -25678,6 +27857,32 @@ type DBusConnection interface {
 	AsyncInitable
 	Initable
 
+	// AddFilter adds a message filter. Filters are handlers that are run on all
+	// incoming and outgoing messages, prior to standard dispatch. Filters are
+	// run in the order that they were added. The same handler can be added as a
+	// filter more than once, in which case it will be run more than once.
+	// Filters added during a filter callback won't be run on the message being
+	// processed. Filter functions are allowed to modify and even drop messages.
+	//
+	// Note that filters are run in a dedicated message handling thread so they
+	// can't block and, generally, can't do anything but signal a worker thread.
+	// Also note that filters are rarely needed - use API such as
+	// g_dbus_connection_send_message_with_reply(),
+	// g_dbus_connection_signal_subscribe() or g_dbus_connection_call() instead.
+	//
+	// If a filter consumes an incoming message the message is not dispatched
+	// anywhere else - not even the standard dispatch machinery (that API such
+	// as g_dbus_connection_signal_subscribe() and
+	// g_dbus_connection_send_message_with_reply() relies on) will see the
+	// message. Similarly, if a filter consumes an outgoing message, the message
+	// will not be sent to the other peer.
+	//
+	// If @user_data_free_func is non-nil, it will be called (in the
+	// thread-default main context of the thread you are calling this method
+	// from) at some point after @user_data is no longer needed. (It is not
+	// guaranteed to be called synchronously when the filter is removed, and may
+	// be called after @connection has been destroyed.)
+	AddFilter(filterFunction DBusMessageFilterFunction) uint
 	// Call: asynchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
 	// owned by @bus_name.
@@ -25724,7 +27929,7 @@ type DBusConnection interface {
 	// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
 	Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CallFinish finishes an operation started with g_dbus_connection_call().
-	CallFinish(res AsyncResult) *glib.Variant
+	CallFinish(res AsyncResult) (variant *glib.Variant, err error)
 	// CallSync: synchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
 	// owned by @bus_name.
@@ -25759,7 +27964,7 @@ type DBusConnection interface {
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_connection_call() for the asynchronous version of this method.
-	CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) *glib.Variant
+	CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (variant *glib.Variant, err error)
 	// CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
 	// object.
 	//
@@ -25767,12 +27972,12 @@ type DBusConnection interface {
 	CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 	// CallWithUnixFdListFinish finishes an operation started with
 	// g_dbus_connection_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
+	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error)
 	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
 	// and returns FDList objects.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant)
+	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant, err error)
 	// Close closes @connection. Note that this never causes the process to exit
 	// (this might only happen if the other end of a shared message bus
 	// connection disconnects, see BusConnection:exit-on-close).
@@ -25798,11 +28003,11 @@ type DBusConnection interface {
 	// g_dbus_connection_close_sync() for the synchronous version.
 	Close(cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish finishes an operation started with g_dbus_connection_close().
-	CloseFinish(res AsyncResult) bool
+	CloseFinish(res AsyncResult) error
 	// CloseSync: synchronously closes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_close() for the
 	// asynchronous version of this method and more details about what it does.
-	CloseSync(cancellable Cancellable) bool
+	CloseSync(cancellable Cancellable) error
 	// EmitSignal emits a signal.
 	//
 	// If the parameters GVariant is floating, it is consumed.
@@ -25810,7 +28015,7 @@ type DBusConnection interface {
 	// This can only fail if @parameters is not compatible with the D-Bus
 	// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
 	// (G_IO_ERROR_CLOSED).
-	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) bool
+	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
 	// ExportActionGroup exports @action_group on @connection at @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
@@ -25831,7 +28036,7 @@ type DBusConnection interface {
 	// activations and state change requests are rather likely to cause changes
 	// on the action group, this effectively limits a given action group to
 	// being exported from only one main context.
-	ExportActionGroup(objectPath string, actionGroup ActionGroup) uint
+	ExportActionGroup(objectPath string, actionGroup ActionGroup) (guint uint, err error)
 	// ExportMenuModel exports @menu on @connection at @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
@@ -25844,7 +28049,7 @@ type DBusConnection interface {
 	// You can unexport the menu model using
 	// g_dbus_connection_unexport_menu_model() with the return value of this
 	// function.
-	ExportMenuModel(objectPath string, menu MenuModel) uint
+	ExportMenuModel(objectPath string, menu MenuModel) (guint uint, err error)
 	// Flush: asynchronously flushes @connection, that is, writes all queued
 	// outgoing message to the transport and then flushes the transport (using
 	// g_output_stream_flush_async()). This is useful in programs that wants to
@@ -25860,11 +28065,11 @@ type DBusConnection interface {
 	// g_dbus_connection_flush_sync() for the synchronous version.
 	Flush(cancellable Cancellable, callback AsyncReadyCallback)
 	// FlushFinish finishes an operation started with g_dbus_connection_flush().
-	FlushFinish(res AsyncResult) bool
+	FlushFinish(res AsyncResult) error
 	// FlushSync: synchronously flushes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_flush() for the
 	// asynchronous version of this method and more details about what it does.
-	FlushSync(cancellable Cancellable) bool
+	FlushSync(cancellable Cancellable) error
 	// Capabilities gets the capabilities negotiated with the remote peer
 	Capabilities() DBusCapabilityFlags
 	// ExitOnClose gets whether the process is terminated when @connection is
@@ -25905,7 +28110,7 @@ type DBusConnection interface {
 	// RegisterObjectWithClosures: version of
 	// g_dbus_connection_register_object() using closures instead of a
 	// BusInterfaceVTable for easier binding in other languages.
-	RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) uint
+	RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) (guint uint, err error)
 	// RemoveFilter removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
@@ -25934,7 +28139,7 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, ok bool)
+	SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, err error)
 	// SendMessageWithReply: asynchronously sends @message to the peer
 	// represented by @connection.
 	//
@@ -25975,7 +28180,7 @@ type DBusConnection interface {
 	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
-	SendMessageWithReplyFinish(res AsyncResult) DBusMessage
+	SendMessageWithReplyFinish(res AsyncResult) (dBusMessage DBusMessage, err error)
 	// SendMessageWithReplySync: synchronously sends @message to the peer
 	// represented by @connection and blocks the calling thread until a reply is
 	// received or the timeout is reached. See
@@ -26004,7 +28209,7 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage)
+	SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage, err error)
 	// SetExitOnClose sets whether the process should be terminated when
 	// @connection is closed by the remote peer. See BusConnection:exit-on-close
 	// for more details.
@@ -26124,41 +28329,56 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 }
 
 // NewDBusConnectionFinish constructs a class DBusConnection.
-func NewDBusConnectionFinish(res AsyncResult) DBusConnection {
+func NewDBusConnectionFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_new_finish(arg1)
+	ret := C.g_dbus_connection_new_finish(arg1, &gError)
 
 	var ret0 DBusConnection
+	var goError error
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusConnectionForAddressFinish constructs a class DBusConnection.
-func NewDBusConnectionForAddressFinish(res AsyncResult) DBusConnection {
+func NewDBusConnectionForAddressFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_new_for_address_finish(arg1)
+	ret := C.g_dbus_connection_new_for_address_finish(arg1, &gError)
 
 	var ret0 DBusConnection
+	var goError error
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusConnectionForAddressSync constructs a class DBusConnection.
-func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) DBusConnection {
+func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GDBusConnectionFlags
 	var arg3 *C.GDBusAuthObserver
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(arg1))
@@ -26166,22 +28386,29 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	arg3 = (*C.GDBusAuthObserver)(observer.Native())
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_new_for_address_sync(arg1, arg2, arg3, arg4)
+	ret := C.g_dbus_connection_new_for_address_sync(arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 DBusConnection
+	var goError error
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusConnectionSync constructs a class DBusConnection.
-func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) DBusConnection {
+func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GIOStream
 	var arg2 *C.gchar
 	var arg3 C.GDBusConnectionFlags
 	var arg4 *C.GDBusAuthObserver
 	var arg5 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.GIOStream)(stream.Native())
 	arg2 = (*C.gchar)(C.CString(guid))
@@ -26190,11 +28417,62 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	arg4 = (*C.GDBusAuthObserver)(observer.Native())
 	arg5 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_new_sync(arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_dbus_connection_new_sync(arg1, arg2, arg3, arg4, arg5, &gError)
 
 	var ret0 DBusConnection
+	var goError error
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// AddFilter adds a message filter. Filters are handlers that are run on all
+// incoming and outgoing messages, prior to standard dispatch. Filters are
+// run in the order that they were added. The same handler can be added as a
+// filter more than once, in which case it will be run more than once.
+// Filters added during a filter callback won't be run on the message being
+// processed. Filter functions are allowed to modify and even drop messages.
+//
+// Note that filters are run in a dedicated message handling thread so they
+// can't block and, generally, can't do anything but signal a worker thread.
+// Also note that filters are rarely needed - use API such as
+// g_dbus_connection_send_message_with_reply(),
+// g_dbus_connection_signal_subscribe() or g_dbus_connection_call() instead.
+//
+// If a filter consumes an incoming message the message is not dispatched
+// anywhere else - not even the standard dispatch machinery (that API such
+// as g_dbus_connection_signal_subscribe() and
+// g_dbus_connection_send_message_with_reply() relies on) will see the
+// message. Similarly, if a filter consumes an outgoing message, the message
+// will not be sent to the other peer.
+//
+// If @user_data_free_func is non-nil, it will be called (in the
+// thread-default main context of the thread you are calling this method
+// from) at some point after @user_data is no longer needed. (It is not
+// guaranteed to be called synchronously when the filter is removed, and may
+// be called after @connection has been destroyed.)
+func (connection dBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
+	var arg0 *C.GDBusConnection
+	var arg1 C.GDBusMessageFilterFunction
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GDBusConnection)(connection.Native())
+	arg1 = (*[0]byte)(C.gotk4_DBusMessageFilterFunction)
+	arg2 = C.gpointer(box.Assign(filterFunction))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_dbus_connection_add_filter(arg0, arg1, arg2, arg3)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -26278,22 +28556,29 @@ func (connection dBusConnection) Call(busName string, objectPath string, interfa
 }
 
 // CallFinish finishes an operation started with g_dbus_connection_call().
-func (connection dBusConnection) CallFinish(res AsyncResult) *glib.Variant {
+func (connection dBusConnection) CallFinish(res AsyncResult) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_call_finish(arg0, arg1)
+	ret := C.g_dbus_connection_call_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.Variant
+	var goError error
 
 	{
 		ret0 = glib.WrapVariant(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CallSync: synchronously invokes the @method_name method on the
@@ -26330,7 +28615,7 @@ func (connection dBusConnection) CallFinish(res AsyncResult) *glib.Variant {
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
-func (connection dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) *glib.Variant {
+func (connection dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -26341,6 +28626,7 @@ func (connection dBusConnection) CallSync(busName string, objectPath string, int
 	var arg7 C.GDBusCallFlags
 	var arg8 C.gint
 	var arg9 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.gchar)(C.CString(busName))
@@ -26357,15 +28643,21 @@ func (connection dBusConnection) CallSync(busName string, objectPath string, int
 	arg8 = C.gint(timeoutMsec)
 	arg9 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_call_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+	ret := C.g_dbus_connection_call_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, &gError)
 
 	var ret0 *glib.Variant
+	var goError error
 
 	{
 		ret0 = glib.WrapVariant(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
@@ -26410,33 +28702,40 @@ func (connection dBusConnection) CallWithUnixFdList(busName string, objectPath s
 
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_connection_call_with_unix_fd_list().
-func (connection dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant) {
+func (connection dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 **C.GUnixFDList // out
 	var arg2 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg2 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_call_with_unix_fd_list_finish(arg0, &arg1, arg2)
+	ret := C.g_dbus_connection_call_with_unix_fd_list_finish(arg0, &arg1, arg2, &gError)
 
 	var ret0 UnixFDList
 	var ret1 *glib.Variant
+	var goError error
 
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
 
 	{
 		ret1 = glib.WrapVariant(ret)
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
 // and returns FDList objects.
 //
 // This method is only available on UNIX.
-func (connection dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant) {
+func (connection dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -26449,6 +28748,7 @@ func (connection dBusConnection) CallWithUnixFdListSync(busName string, objectPa
 	var arg9 *C.GUnixFDList
 	var arg10 **C.GUnixFDList // out
 	var arg11 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.gchar)(C.CString(busName))
@@ -26466,18 +28766,24 @@ func (connection dBusConnection) CallWithUnixFdListSync(busName string, objectPa
 	arg9 = (*C.GUnixFDList)(fdList.Native())
 	arg11 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_call_with_unix_fd_list_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, &arg10, arg11)
+	ret := C.g_dbus_connection_call_with_unix_fd_list_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, &arg10, arg11, &gError)
 
 	var ret0 UnixFDList
 	var ret1 *glib.Variant
+	var goError error
 
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native()))).(UnixFDList)
 
 	{
 		ret1 = glib.WrapVariant(ret)
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Close closes @connection. Note that this never causes the process to exit
@@ -26518,39 +28824,47 @@ func (connection dBusConnection) Close(cancellable Cancellable, callback AsyncRe
 }
 
 // CloseFinish finishes an operation started with g_dbus_connection_close().
-func (connection dBusConnection) CloseFinish(res AsyncResult) bool {
+func (connection dBusConnection) CloseFinish(res AsyncResult) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_close_finish(arg0, arg1)
+	ret := C.g_dbus_connection_close_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CloseSync: synchronously closes @connection. The calling thread is
 // blocked until this is done. See g_dbus_connection_close() for the
 // asynchronous version of this method and more details about what it does.
-func (connection dBusConnection) CloseSync(cancellable Cancellable) bool {
+func (connection dBusConnection) CloseSync(cancellable Cancellable) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_close_sync(arg0, arg1)
+	ret := C.g_dbus_connection_close_sync(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // EmitSignal emits a signal.
@@ -26560,13 +28874,14 @@ func (connection dBusConnection) CloseSync(cancellable Cancellable) bool {
 // This can only fail if @parameters is not compatible with the D-Bus
 // protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
 // (G_IO_ERROR_CLOSED).
-func (connection dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) bool {
+func (connection dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 *C.gchar
 	var arg5 *C.GVariant
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.gchar)(C.CString(destinationBusName))
@@ -26579,13 +28894,16 @@ func (connection dBusConnection) EmitSignal(destinationBusName string, objectPat
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.GVariant)(parameters.Native())
 
-	ret := C.g_dbus_connection_emit_signal(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_dbus_connection_emit_signal(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ExportActionGroup exports @action_group on @connection at @object_path.
@@ -26608,23 +28926,30 @@ func (connection dBusConnection) EmitSignal(destinationBusName string, objectPat
 // activations and state change requests are rather likely to cause changes
 // on the action group, this effectively limits a given action group to
 // being exported from only one main context.
-func (connection dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) uint {
+func (connection dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) (guint uint, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GActionGroup
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GActionGroup)(actionGroup.Native())
 
-	ret := C.g_dbus_connection_export_action_group(arg0, arg1, arg2)
+	ret := C.g_dbus_connection_export_action_group(arg0, arg1, arg2, &gError)
 
 	var ret0 uint
+	var goError error
 
 	ret0 = uint(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ExportMenuModel exports @menu on @connection at @object_path.
@@ -26639,23 +28964,30 @@ func (connection dBusConnection) ExportActionGroup(objectPath string, actionGrou
 // You can unexport the menu model using
 // g_dbus_connection_unexport_menu_model() with the return value of this
 // function.
-func (connection dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) uint {
+func (connection dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (guint uint, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GMenuModel)(menu.Native())
 
-	ret := C.g_dbus_connection_export_menu_model(arg0, arg1, arg2)
+	ret := C.g_dbus_connection_export_menu_model(arg0, arg1, arg2, &gError)
 
 	var ret0 uint
+	var goError error
 
 	ret0 = uint(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Flush: asynchronously flushes @connection, that is, writes all queued
@@ -26686,39 +29018,47 @@ func (connection dBusConnection) Flush(cancellable Cancellable, callback AsyncRe
 }
 
 // FlushFinish finishes an operation started with g_dbus_connection_flush().
-func (connection dBusConnection) FlushFinish(res AsyncResult) bool {
+func (connection dBusConnection) FlushFinish(res AsyncResult) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_flush_finish(arg0, arg1)
+	ret := C.g_dbus_connection_flush_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // FlushSync: synchronously flushes @connection. The calling thread is
 // blocked until this is done. See g_dbus_connection_flush() for the
 // asynchronous version of this method and more details about what it does.
-func (connection dBusConnection) FlushSync(cancellable Cancellable) bool {
+func (connection dBusConnection) FlushSync(cancellable Cancellable) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_flush_sync(arg0, arg1)
+	ret := C.g_dbus_connection_flush_sync(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Capabilities gets the capabilities negotiated with the remote peer
@@ -26748,7 +29088,7 @@ func (connection dBusConnection) ExitOnClose() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -26820,7 +29160,7 @@ func (connection dBusConnection) PeerCredentials() Credentials {
 
 	var ret0 Credentials
 
-	ret0 = WrapCredentials(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Credentials)
 
 	return ret0
 }
@@ -26838,7 +29178,7 @@ func (connection dBusConnection) Stream() IOStream {
 
 	var ret0 IOStream
 
-	ret0 = WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(IOStream)
 
 	return ret0
 }
@@ -26870,7 +29210,7 @@ func (connection dBusConnection) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -26878,26 +29218,33 @@ func (connection dBusConnection) IsClosed() bool {
 // RegisterObjectWithClosures: version of
 // g_dbus_connection_register_object() using closures instead of a
 // BusInterfaceVTable for easier binding in other languages.
-func (connection dBusConnection) RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) uint {
+func (connection dBusConnection) RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) (guint uint, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GDBusInterfaceInfo
 	var arg3 *C.GClosure
 	var arg4 *C.GClosure
 	var arg5 *C.GClosure
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GDBusInterfaceInfo)(interfaceInfo.Native())
 
-	ret := C.g_dbus_connection_register_object_with_closures(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_dbus_connection_register_object_with_closures(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
 
 	var ret0 uint
+	var goError error
 
 	ret0 = uint(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // RemoveFilter removes a filter.
@@ -26937,26 +29284,30 @@ func (connection dBusConnection) RemoveFilter(filterID uint) {
 //
 // Note that @message must be unlocked, unless @flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-func (connection dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, ok bool) {
+func (connection dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GDBusMessage
 	var arg2 C.GDBusSendMessageFlags
 	var arg3 *C.guint32 // out
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GDBusMessage)(message.Native())
 	arg2 = (C.GDBusSendMessageFlags)(flags)
 
-	ret := C.g_dbus_connection_send_message(arg0, arg1, arg2, &arg3)
+	ret := C.g_dbus_connection_send_message(arg0, arg1, arg2, &arg3, &gError)
 
 	var ret0 uint32
-	var ret1 bool
+	var goError error
 
 	ret0 = uint32(arg3)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // SendMessageWithReply: asynchronously sends @message to the peer
@@ -27005,7 +29356,7 @@ func (connection dBusConnection) SendMessageWithReply(message DBusMessage, flags
 	arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	arg7 = C.gpointer(box.Assign(callback))
 
-	ret := C.g_dbus_connection_send_message_with_reply(arg0, arg1, arg2, arg3, &arg4, arg5, arg6, arg7)
+	C.g_dbus_connection_send_message_with_reply(arg0, arg1, arg2, arg3, &arg4, arg5, arg6, arg7)
 
 	var ret0 uint32
 
@@ -27025,20 +29376,27 @@ func (connection dBusConnection) SendMessageWithReply(message DBusMessage, flags
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
-func (connection dBusConnection) SendMessageWithReplyFinish(res AsyncResult) DBusMessage {
+func (connection dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_connection_send_message_with_reply_finish(arg0, arg1)
+	ret := C.g_dbus_connection_send_message_with_reply_finish(arg0, arg1, &gError)
 
 	var ret0 DBusMessage
+	var goError error
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SendMessageWithReplySync: synchronously sends @message to the peer
@@ -27069,13 +29427,14 @@ func (connection dBusConnection) SendMessageWithReplyFinish(res AsyncResult) DBu
 //
 // Note that @message must be unlocked, unless @flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-func (connection dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage) {
+func (connection dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GDBusMessage
 	var arg2 C.GDBusSendMessageFlags
 	var arg3 C.gint
 	var arg4 *C.guint32 // out
 	var arg5 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
 	arg1 = (*C.GDBusMessage)(message.Native())
@@ -27083,16 +29442,22 @@ func (connection dBusConnection) SendMessageWithReplySync(message DBusMessage, f
 	arg3 = C.gint(timeoutMsec)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_connection_send_message_with_reply_sync(arg0, arg1, arg2, arg3, &arg4, arg5)
+	ret := C.g_dbus_connection_send_message_with_reply_sync(arg0, arg1, arg2, arg3, &arg4, arg5, &gError)
 
 	var ret0 uint32
 	var ret1 DBusMessage
+	var goError error
 
 	ret0 = uint32(arg4)
 
-	ret1 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // SetExitOnClose sets whether the process should be terminated when
@@ -27110,7 +29475,9 @@ func (connection dBusConnection) SetExitOnClose(exitOnClose bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GDBusConnection)(connection.Native())
-	arg1 = gextras.Cbool(exitOnClose)
+	if exitOnClose {
+		arg1 = C.TRUE
+	}
 
 	C.g_dbus_connection_set_exit_on_close(arg0, arg1)
 }
@@ -27273,7 +29640,7 @@ func (connection dBusConnection) UnregisterObject(registrationID uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -27290,7 +29657,7 @@ func (connection dBusConnection) UnregisterSubtree(registrationID uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -27308,7 +29675,7 @@ type DBusInterfaceSkeleton interface {
 	// for all connections.
 	//
 	// Use g_dbus_interface_skeleton_unexport() to unexport the object.
-	Export(connection DBusConnection, objectPath string) bool
+	Export(connection DBusConnection, objectPath string) error
 	// Flush: if @interface_ has outstanding changes, request for these changes
 	// to be emitted immediately.
 	//
@@ -27384,23 +29751,27 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 // for all connections.
 //
 // Use g_dbus_interface_skeleton_unexport() to unexport the object.
-func (interface_ dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) bool {
+func (interface_ dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {
 	var arg0 *C.GDBusInterfaceSkeleton
 	var arg1 *C.GDBusConnection
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GDBusInterfaceSkeleton)(interface_.Native())
 	arg1 = (*C.GDBusConnection)(connection.Native())
 	arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_dbus_interface_skeleton_export(arg0, arg1, arg2)
+	ret := C.g_dbus_interface_skeleton_export(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Flush: if @interface_ has outstanding changes, request for these changes
@@ -27429,7 +29800,7 @@ func (interface_ dBusInterfaceSkeleton) Connection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -27555,7 +29926,7 @@ func (interface_ dBusInterfaceSkeleton) HasConnection(connection DBusConnection)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -27636,7 +30007,7 @@ type DBusMessage interface {
 	//
 	// This operation can fail if e.g. @message contains file descriptors and
 	// the per-process or system-wide open files limit is reached.
-	Copy() DBusMessage
+	Copy() (dBusMessage DBusMessage, err error)
 	// Arg0: convenience to get the first item in the body of @message.
 	Arg0() string
 	// Body gets the body of a message.
@@ -27759,7 +30130,7 @@ type DBusMessage interface {
 	// header field.
 	SetMember(value string)
 	// SetMessageType sets @message to be of @type.
-	SetMessageType(_type DBusMessageType)
+	SetMessageType(typ DBusMessageType)
 	// SetNumUnixFds: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
 	SetNumUnixFds(value uint32)
@@ -27785,7 +30156,7 @@ type DBusMessage interface {
 	SetUnixFdList(fdList UnixFDList)
 	// ToBlob serializes @message to a blob. The byte order returned by
 	// g_dbus_message_get_byte_order() will be used.
-	ToBlob(capabilities DBusCapabilityFlags) (outSize uint, guint8s []byte)
+	ToBlob(capabilities DBusCapabilityFlags) (outSize uint, guint8s []byte, err error)
 	// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
 	// nothing and returns false.
 	//
@@ -27793,7 +30164,7 @@ type DBusMessage interface {
 	// g_dbus_error_set_dbus_error() using the information in the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well
 	// as the first string item in @message's body.
-	ToGerror() bool
+	ToGerror() error
 }
 
 // dBusMessage implements the DBusMessage interface.
@@ -27824,9 +30195,36 @@ func NewDBusMessage() DBusMessage {
 
 	var ret0 DBusMessage
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
 	return ret0
+}
+
+// NewDBusMessageFromBlob constructs a class DBusMessage.
+func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (dBusMessage DBusMessage, err error) {
+	var arg1 *C.guchar
+	var arg2 C.gsize
+	var arg3 C.GDBusCapabilityFlags
+	var gError *C.GError
+
+	arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
+	arg2 = len(blob)
+	defer runtime.KeepAlive(blob)
+	arg3 = (C.GDBusCapabilityFlags)(capabilities)
+
+	ret := C.g_dbus_message_new_from_blob(arg1, arg2, arg3, &gError)
+
+	var ret0 DBusMessage
+	var goError error
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusMessageMethodCall constructs a class DBusMessage.
@@ -27849,7 +30247,7 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 
 	var ret0 DBusMessage
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
 	return ret0
 }
@@ -27871,7 +30269,7 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 
 	var ret0 DBusMessage
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
 	return ret0
 }
@@ -27881,18 +30279,25 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 //
 // This operation can fail if e.g. @message contains file descriptors and
 // the per-process or system-wide open files limit is reached.
-func (message dBusMessage) Copy() DBusMessage {
+func (message dBusMessage) Copy() (dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusMessage
+	var gError *C.GError
 
 	arg0 = (*C.GDBusMessage)(message.Native())
 
-	ret := C.g_dbus_message_copy(arg0)
+	ret := C.g_dbus_message_copy(arg0, &gError)
 
 	var ret0 DBusMessage
+	var goError error
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Arg0: convenience to get the first item in the body of @message.
@@ -28071,7 +30476,7 @@ func (message dBusMessage) Locked() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28215,7 +30620,7 @@ func (message dBusMessage) UnixFdList() UnixFDList {
 
 	var ret0 UnixFDList
 
-	ret0 = WrapUnixFDList(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(UnixFDList)
 
 	return ret0
 }
@@ -28246,7 +30651,7 @@ func (methodCallMessage dBusMessage) NewMethodErrorLiteral(errorName string, err
 
 	var ret0 DBusMessage
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
 	return ret0
 }
@@ -28262,7 +30667,7 @@ func (methodCallMessage dBusMessage) NewMethodReply() DBusMessage {
 
 	var ret0 DBusMessage
 
-	ret0 = WrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
 	return ret0
 }
@@ -28420,12 +30825,12 @@ func (message dBusMessage) SetMember(value string) {
 }
 
 // SetMessageType sets @message to be of @type.
-func (message dBusMessage) SetMessageType(_type DBusMessageType) {
+func (message dBusMessage) SetMessageType(typ DBusMessageType) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.GDBusMessageType
 
 	arg0 = (*C.GDBusMessage)(message.Native())
-	arg1 = (C.GDBusMessageType)(_type)
+	arg1 = (C.GDBusMessageType)(typ)
 
 	C.g_dbus_message_set_message_type(arg0, arg1)
 }
@@ -28521,18 +30926,20 @@ func (message dBusMessage) SetUnixFdList(fdList UnixFDList) {
 
 // ToBlob serializes @message to a blob. The byte order returned by
 // g_dbus_message_get_byte_order() will be used.
-func (message dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (outSize uint, guint8s []byte) {
+func (message dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (outSize uint, guint8s []byte, err error) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gsize // out
 	var arg2 C.GDBusCapabilityFlags
+	var gError *C.GError
 
 	arg0 = (*C.GDBusMessage)(message.Native())
 	arg2 = (C.GDBusCapabilityFlags)(capabilities)
 
-	ret := C.g_dbus_message_to_blob(arg0, &arg1, arg2)
+	ret := C.g_dbus_message_to_blob(arg0, &arg1, arg2, &gError)
 
 	var ret0 uint
 	var ret1 []byte
+	var goError error
 
 	ret0 = uint(arg1)
 
@@ -28544,7 +30951,12 @@ func (message dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (outSize uin
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
@@ -28554,18 +30966,22 @@ func (message dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (outSize uin
 // g_dbus_error_set_dbus_error() using the information in the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well
 // as the first string item in @message's body.
-func (message dBusMessage) ToGerror() bool {
+func (message dBusMessage) ToGerror() error {
 	var arg0 *C.GDBusMessage
+	var gError *C.GError
 
 	arg0 = (*C.GDBusMessage)(message.Native())
 
-	ret := C.g_dbus_message_to_gerror(arg0)
+	ret := C.g_dbus_message_to_gerror(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DBusMethodInvocation instances of the BusMethodInvocation class are used when
@@ -28717,7 +31133,7 @@ func (invocation dBusMethodInvocation) Connection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -28759,7 +31175,7 @@ func (invocation dBusMethodInvocation) Message() DBusMessage {
 
 	var ret0 DBusMessage
 
-	ret0 = WrapDBusMessage(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusMessage)
 
 	return ret0
 }
@@ -29120,37 +31536,51 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 }
 
 // NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientFinish(res AsyncResult) DBusObjectManagerClient {
+func NewDBusObjectManagerClientFinish(res AsyncResult) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_object_manager_client_new_finish(arg1)
+	ret := C.g_dbus_object_manager_client_new_finish(arg1, &gError)
 
 	var ret0 DBusObjectManagerClient
+	var goError error
 
-	ret0 = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectManagerClient)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientForBusFinish(res AsyncResult) DBusObjectManagerClient {
+func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_object_manager_client_new_for_bus_finish(arg1)
+	ret := C.g_dbus_object_manager_client_new_for_bus_finish(arg1, &gError)
 
 	var ret0 DBusObjectManagerClient
+	var goError error
 
-	ret0 = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectManagerClient)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusObjectManagerClientForBusSync constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientForBusSync(busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient {
+func NewDBusObjectManagerClientForBusSync(busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 C.GBusType
 	var arg2 C.GDBusObjectManagerClientFlags
 	var arg3 *C.gchar
@@ -29159,6 +31589,7 @@ func NewDBusObjectManagerClientForBusSync(busType BusType, flags DBusObjectManag
 	var arg6 C.gpointer
 	var arg7 C.GDestroyNotify
 	var arg8 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (C.GDBusObjectManagerClientFlags)(flags)
@@ -29171,17 +31602,23 @@ func NewDBusObjectManagerClientForBusSync(busType BusType, flags DBusObjectManag
 	arg7 = (*[0]byte)(C.callbackDelete)
 	arg8 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_object_manager_client_new_for_bus_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+	ret := C.g_dbus_object_manager_client_new_for_bus_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, &gError)
 
 	var ret0 DBusObjectManagerClient
+	var goError error
 
-	ret0 = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectManagerClient)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusObjectManagerClientSync constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientSync(connection DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient {
+func NewDBusObjectManagerClientSync(connection DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GDBusConnection
 	var arg2 C.GDBusObjectManagerClientFlags
 	var arg3 *C.gchar
@@ -29190,6 +31627,7 @@ func NewDBusObjectManagerClientSync(connection DBusConnection, flags DBusObjectM
 	var arg6 C.gpointer
 	var arg7 C.GDestroyNotify
 	var arg8 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.GDBusConnection)(connection.Native())
 	arg2 = (C.GDBusObjectManagerClientFlags)(flags)
@@ -29202,13 +31640,19 @@ func NewDBusObjectManagerClientSync(connection DBusConnection, flags DBusObjectM
 	arg7 = (*[0]byte)(C.callbackDelete)
 	arg8 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_object_manager_client_new_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+	ret := C.g_dbus_object_manager_client_new_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, &gError)
 
 	var ret0 DBusObjectManagerClient
+	var goError error
 
-	ret0 = WrapDBusObjectManagerClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectManagerClient)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Connection gets the BusConnection used by @manager.
@@ -29221,7 +31665,7 @@ func (manager dBusObjectManagerClient) Connection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -29365,7 +31809,7 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 
 	var ret0 DBusObjectManagerServer
 
-	ret0 = WrapDBusObjectManagerServer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectManagerServer)
 
 	return ret0
 }
@@ -29414,7 +31858,7 @@ func (manager dBusObjectManagerServer) Connection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -29431,7 +31875,7 @@ func (manager dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) boo
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -29465,7 +31909,7 @@ func (manager dBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -29518,7 +31962,7 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObject
 
 	var ret0 DBusObjectProxy
 
-	ret0 = WrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectProxy)
 
 	return ret0
 }
@@ -29533,7 +31977,7 @@ func (proxy dBusObjectProxy) Connection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -29605,7 +32049,7 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 
 	var ret0 DBusObjectSkeleton
 
-	ret0 = WrapDBusObjectSkeleton(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusObjectSkeleton)
 
 	return ret0
 }
@@ -29760,7 +32204,7 @@ type DBusProxy interface {
 	// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
 	Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CallFinish finishes an operation started with g_dbus_proxy_call().
-	CallFinish(res AsyncResult) *glib.Variant
+	CallFinish(res AsyncResult) (variant *glib.Variant, err error)
 	// CallSync: synchronously invokes the @method_name method on @proxy.
 	//
 	// If @method_name contains any dots, then @name is split into interface and
@@ -29792,7 +32236,7 @@ type DBusProxy interface {
 	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
 	// @method_name is referenced by it, then the return value is checked
 	// against the return type.
-	CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) *glib.Variant
+	CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (variant *glib.Variant, err error)
 	// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
 	// object.
 	//
@@ -29800,12 +32244,12 @@ type DBusProxy interface {
 	CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 	// CallWithUnixFdListFinish finishes an operation started with
 	// g_dbus_proxy_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
+	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error)
 	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
 	// returns FDList objects.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant)
+	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant, err error)
 	// CachedProperty looks up the value for a property from the cache. This
 	// call does no blocking IO.
 	//
@@ -29912,37 +32356,51 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 }
 
 // NewDBusProxyFinish constructs a class DBusProxy.
-func NewDBusProxyFinish(res AsyncResult) DBusProxy {
+func NewDBusProxyFinish(res AsyncResult) (dBusProxy DBusProxy, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_proxy_new_finish(arg1)
+	ret := C.g_dbus_proxy_new_finish(arg1, &gError)
 
 	var ret0 DBusProxy
+	var goError error
 
-	ret0 = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusProxy)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusProxyForBusFinish constructs a class DBusProxy.
-func NewDBusProxyForBusFinish(res AsyncResult) DBusProxy {
+func NewDBusProxyForBusFinish(res AsyncResult) (dBusProxy DBusProxy, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_proxy_new_for_bus_finish(arg1)
+	ret := C.g_dbus_proxy_new_for_bus_finish(arg1, &gError)
 
 	var ret0 DBusProxy
+	var goError error
 
-	ret0 = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusProxy)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusProxyForBusSync constructs a class DBusProxy.
-func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) DBusProxy {
+func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (dBusProxy DBusProxy, err error) {
 	var arg1 C.GBusType
 	var arg2 C.GDBusProxyFlags
 	var arg3 *C.GDBusInterfaceInfo
@@ -29950,6 +32408,7 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	var arg5 *C.gchar
 	var arg6 *C.gchar
 	var arg7 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (C.GDBusProxyFlags)(flags)
@@ -29962,17 +32421,23 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	defer C.free(unsafe.Pointer(arg6))
 	arg7 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_proxy_new_for_bus_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	ret := C.g_dbus_proxy_new_for_bus_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7, &gError)
 
 	var ret0 DBusProxy
+	var goError error
 
-	ret0 = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusProxy)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewDBusProxySync constructs a class DBusProxy.
-func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) DBusProxy {
+func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellable) (dBusProxy DBusProxy, err error) {
 	var arg1 *C.GDBusConnection
 	var arg2 C.GDBusProxyFlags
 	var arg3 *C.GDBusInterfaceInfo
@@ -29980,6 +32445,7 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	var arg5 *C.gchar
 	var arg6 *C.gchar
 	var arg7 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.GDBusConnection)(connection.Native())
 	arg2 = (C.GDBusProxyFlags)(flags)
@@ -29992,13 +32458,19 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	defer C.free(unsafe.Pointer(arg6))
 	arg7 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_proxy_new_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	ret := C.g_dbus_proxy_new_sync(arg1, arg2, arg3, arg4, arg5, arg6, arg7, &gError)
 
 	var ret0 DBusProxy
+	var goError error
 
-	ret0 = WrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusProxy)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Call: asynchronously invokes the @method_name method on @proxy.
@@ -30064,22 +32536,29 @@ func (proxy dBusProxy) Call(methodName string, parameters *glib.Variant, flags D
 }
 
 // CallFinish finishes an operation started with g_dbus_proxy_call().
-func (proxy dBusProxy) CallFinish(res AsyncResult) *glib.Variant {
+func (proxy dBusProxy) CallFinish(res AsyncResult) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusProxy
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusProxy)(proxy.Native())
 	arg1 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_proxy_call_finish(arg0, arg1)
+	ret := C.g_dbus_proxy_call_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.Variant
+	var goError error
 
 	{
 		ret0 = glib.WrapVariant(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CallSync: synchronously invokes the @method_name method on @proxy.
@@ -30113,13 +32592,14 @@ func (proxy dBusProxy) CallFinish(res AsyncResult) *glib.Variant {
 // If @proxy has an expected interface (see BusProxy:g-interface-info) and
 // @method_name is referenced by it, then the return value is checked
 // against the return type.
-func (proxy dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) *glib.Variant {
+func (proxy dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusProxy
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
 	var arg3 C.GDBusCallFlags
 	var arg4 C.gint
 	var arg5 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusProxy)(proxy.Native())
 	arg1 = (*C.gchar)(C.CString(methodName))
@@ -30129,15 +32609,21 @@ func (proxy dBusProxy) CallSync(methodName string, parameters *glib.Variant, fla
 	arg4 = C.gint(timeoutMsec)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_proxy_call_sync(arg0, arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_dbus_proxy_call_sync(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
 
 	var ret0 *glib.Variant
+	var goError error
 
 	{
 		ret0 = glib.WrapVariant(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
@@ -30171,33 +32657,40 @@ func (proxy dBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Va
 
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_proxy_call_with_unix_fd_list().
-func (proxy dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant) {
+func (proxy dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusProxy
 	var arg1 **C.GUnixFDList // out
 	var arg2 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GDBusProxy)(proxy.Native())
 	arg2 = (*C.GAsyncResult)(res.Native())
 
-	ret := C.g_dbus_proxy_call_with_unix_fd_list_finish(arg0, &arg1, arg2)
+	ret := C.g_dbus_proxy_call_with_unix_fd_list_finish(arg0, &arg1, arg2, &gError)
 
 	var ret0 UnixFDList
 	var ret1 *glib.Variant
+	var goError error
 
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
 
 	{
 		ret1 = glib.WrapVariant(ret)
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
 // returns FDList objects.
 //
 // This method is only available on UNIX.
-func (proxy dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant) {
+func (proxy dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusProxy
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
@@ -30206,6 +32699,7 @@ func (proxy dBusProxy) CallWithUnixFdListSync(methodName string, parameters *gli
 	var arg5 *C.GUnixFDList
 	var arg6 **C.GUnixFDList // out
 	var arg7 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDBusProxy)(proxy.Native())
 	arg1 = (*C.gchar)(C.CString(methodName))
@@ -30216,18 +32710,24 @@ func (proxy dBusProxy) CallWithUnixFdListSync(methodName string, parameters *gli
 	arg5 = (*C.GUnixFDList)(fdList.Native())
 	arg7 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_proxy_call_with_unix_fd_list_sync(arg0, arg1, arg2, arg3, arg4, arg5, &arg6, arg7)
+	ret := C.g_dbus_proxy_call_with_unix_fd_list_sync(arg0, arg1, arg2, arg3, arg4, arg5, &arg6, arg7, &gError)
 
 	var ret0 UnixFDList
 	var ret1 *glib.Variant
+	var goError error
 
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(UnixFDList)
 
 	{
 		ret1 = glib.WrapVariant(ret)
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // CachedProperty looks up the value for a property from the cache. This
@@ -30292,7 +32792,7 @@ func (proxy dBusProxy) Connection() DBusConnection {
 
 	var ret0 DBusConnection
 
-	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
 }
@@ -30550,12 +33050,13 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 }
 
 // NewDBusServerSync constructs a class DBusServer.
-func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) DBusServer {
+func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) (dBusServer DBusServer, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GDBusServerFlags
 	var arg3 *C.gchar
 	var arg4 *C.GDBusAuthObserver
 	var arg5 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(arg1))
@@ -30565,13 +33066,19 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	arg4 = (*C.GDBusAuthObserver)(observer.Native())
 	arg5 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_dbus_server_new_sync(arg1, arg2, arg3, arg4, arg5)
+	ret := C.g_dbus_server_new_sync(arg1, arg2, arg3, arg4, arg5, &gError)
 
 	var ret0 DBusServer
+	var goError error
 
-	ret0 = WrapDBusServer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DBusServer)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ClientAddress gets a D-Bus address
@@ -30631,7 +33138,7 @@ func (server dBusServer) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30665,13 +33172,13 @@ type DataInputStream interface {
 	// NewlineType gets the current newline type for the @stream.
 	NewlineType() DataStreamNewlineType
 	// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
-	ReadByte(cancellable Cancellable) byte
+	ReadByte(cancellable Cancellable) (guint8 byte, err error)
 	// ReadInt16 reads a 16-bit/2-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order() and
 	// g_data_input_stream_set_byte_order().
-	ReadInt16(cancellable Cancellable) int16
+	ReadInt16(cancellable Cancellable) (gint16 int16, err error)
 	// ReadInt32 reads a signed 32-bit/4-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
@@ -30681,7 +33188,7 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadInt32(cancellable Cancellable) int32
+	ReadInt32(cancellable Cancellable) (gint32 int32, err error)
 	// ReadInt64 reads a 64-bit/8-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
@@ -30691,7 +33198,7 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadInt64(cancellable Cancellable) int64
+	ReadInt64(cancellable Cancellable) (gint64 int64, err error)
 	// ReadLine reads a line from the data input stream. Note that no encoding
 	// checks or conversion is performed; the input is not guaranteed to be
 	// UTF-8, and may in fact have embedded NUL characters.
@@ -30699,7 +33206,7 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLine(cancellable Cancellable) (length uint, guint8s []byte)
+	ReadLine(cancellable Cancellable) (length uint, guint8s []byte, err error)
 	// ReadLineAsync: the asynchronous version of
 	// g_data_input_stream_read_line(). It is an error to have two outstanding
 	// calls to this function.
@@ -30711,22 +33218,22 @@ type DataInputStream interface {
 	// ReadLineFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async(). Note the warning about string
 	// encoding in g_data_input_stream_read_line() applies here as well.
-	ReadLineFinish(result AsyncResult) (length uint, guint8s []byte)
+	ReadLineFinish(result AsyncResult) (length uint, guint8s []byte, err error)
 	// ReadLineFinishUTF8: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async().
-	ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string)
+	ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string, err error)
 	// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLineUTF8(cancellable Cancellable) (length uint, utf8 string)
+	ReadLineUTF8(cancellable Cancellable) (length uint, utf8 string, err error)
 	// ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
 	// g_data_input_stream_get_byte_order() and
 	// g_data_input_stream_set_byte_order().
-	ReadUint16(cancellable Cancellable) uint16
+	ReadUint16(cancellable Cancellable) (guint16 uint16, err error)
 	// ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
@@ -30736,7 +33243,7 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadUint32(cancellable Cancellable) uint32
+	ReadUint32(cancellable Cancellable) (guint32 uint32, err error)
 	// ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
@@ -30745,7 +33252,7 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadUint64(cancellable Cancellable) uint64
+	ReadUint64(cancellable Cancellable) (guint64 uint64, err error)
 	// ReadUntil reads a string from the data input stream, up to the first
 	// occurrence of any of the stop characters.
 	//
@@ -30757,7 +33264,7 @@ type DataInputStream interface {
 	// marked as deprecated in a future release. Use
 	// g_data_input_stream_read_upto() instead, but note that that function does
 	// not consume the stop character.
-	ReadUntil(stopChars string, cancellable Cancellable) (length uint, utf8 string)
+	ReadUntil(stopChars string, cancellable Cancellable) (length uint, utf8 string, err error)
 	// ReadUntilAsync: the asynchronous version of
 	// g_data_input_stream_read_until(). It is an error to have two outstanding
 	// calls to this function.
@@ -30777,7 +33284,7 @@ type DataInputStream interface {
 	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadUntilFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_until_async().
-	ReadUntilFinish(result AsyncResult) (length uint, utf8 string)
+	ReadUntilFinish(result AsyncResult) (length uint, utf8 string, err error)
 	// ReadUpto reads a string from the data input stream, up to the first
 	// occurrence of any of the stop characters.
 	//
@@ -30789,7 +33296,7 @@ type DataInputStream interface {
 	// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
 	//
 	// The returned string will always be nul-terminated on success.
-	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (length uint, utf8 string)
+	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (length uint, utf8 string, err error)
 	// ReadUptoAsync: the asynchronous version of
 	// g_data_input_stream_read_upto(). It is an error to have two outstanding
 	// calls to this function.
@@ -30813,7 +33320,7 @@ type DataInputStream interface {
 	// g_data_input_stream_read_upto_async() again.
 	//
 	// The returned string will always be nul-terminated on success.
-	ReadUptoFinish(result AsyncResult) (length uint, utf8 string)
+	ReadUptoFinish(result AsyncResult) (length uint, utf8 string, err error)
 	// SetByteOrder: this function sets the byte order for the given @stream.
 	// All subsequent reads from the @stream will be read in the given @order.
 	SetByteOrder(order DataStreamByteOrder)
@@ -30823,7 +33330,7 @@ type DataInputStream interface {
 	// read chunk ends in "CR" we must read an additional byte to know if this
 	// is "CR" or "CR LF", and this might block if there is no more data
 	// available.
-	SetNewlineType(_type DataStreamNewlineType)
+	SetNewlineType(typ DataStreamNewlineType)
 }
 
 // dataInputStream implements the DataInputStream interface.
@@ -30859,7 +33366,7 @@ func NewDataInputStream(baseStream InputStream) DataInputStream {
 
 	var ret0 DataInputStream
 
-	ret0 = WrapDataInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DataInputStream)
 
 	return ret0
 }
@@ -30895,20 +33402,27 @@ func (stream dataInputStream) NewlineType() DataStreamNewlineType {
 }
 
 // ReadByte reads an unsigned 8-bit/1-byte value from @stream.
-func (stream dataInputStream) ReadByte(cancellable Cancellable) byte {
+func (stream dataInputStream) ReadByte(cancellable Cancellable) (guint8 byte, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_byte(arg0, arg1)
+	ret := C.g_data_input_stream_read_byte(arg0, arg1, &gError)
 
 	var ret0 byte
+	var goError error
 
 	ret0 = byte(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadInt16 reads a 16-bit/2-byte value from @stream.
@@ -30916,20 +33430,27 @@ func (stream dataInputStream) ReadByte(cancellable Cancellable) byte {
 // In order to get the correct byte order for this read operation, see
 // g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
-func (stream dataInputStream) ReadInt16(cancellable Cancellable) int16 {
+func (stream dataInputStream) ReadInt16(cancellable Cancellable) (gint16 int16, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_int16(arg0, arg1)
+	ret := C.g_data_input_stream_read_int16(arg0, arg1, &gError)
 
 	var ret0 int16
+	var goError error
 
 	ret0 = int16(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadInt32 reads a signed 32-bit/4-byte value from @stream.
@@ -30941,20 +33462,27 @@ func (stream dataInputStream) ReadInt16(cancellable Cancellable) int16 {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream dataInputStream) ReadInt32(cancellable Cancellable) int32 {
+func (stream dataInputStream) ReadInt32(cancellable Cancellable) (gint32 int32, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_int32(arg0, arg1)
+	ret := C.g_data_input_stream_read_int32(arg0, arg1, &gError)
 
 	var ret0 int32
+	var goError error
 
 	ret0 = int32(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadInt64 reads a 64-bit/8-byte value from @stream.
@@ -30966,20 +33494,27 @@ func (stream dataInputStream) ReadInt32(cancellable Cancellable) int32 {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream dataInputStream) ReadInt64(cancellable Cancellable) int64 {
+func (stream dataInputStream) ReadInt64(cancellable Cancellable) (gint64 int64, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_int64(arg0, arg1)
+	ret := C.g_data_input_stream_read_int64(arg0, arg1, &gError)
 
 	var ret0 int64
+	var goError error
 
 	ret0 = int64(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadLine reads a line from the data input stream. Note that no encoding
@@ -30989,18 +33524,20 @@ func (stream dataInputStream) ReadInt64(cancellable Cancellable) int64 {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream dataInputStream) ReadLine(cancellable Cancellable) (length uint, guint8s []byte) {
+func (stream dataInputStream) ReadLine(cancellable Cancellable) (length uint, guint8s []byte, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.gsize // out
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_line(arg0, &arg1, arg2)
+	ret := C.g_data_input_stream_read_line(arg0, &arg1, arg2, &gError)
 
 	var ret0 uint
 	var ret1 []byte
+	var goError error
 
 	ret0 = uint(arg1)
 
@@ -31017,7 +33554,12 @@ func (stream dataInputStream) ReadLine(cancellable Cancellable) (length uint, gu
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadLineAsync: the asynchronous version of
@@ -31046,18 +33588,20 @@ func (stream dataInputStream) ReadLineAsync(ioPriority int, cancellable Cancella
 // ReadLineFinish: finish an asynchronous call started by
 // g_data_input_stream_read_line_async(). Note the warning about string
 // encoding in g_data_input_stream_read_line() applies here as well.
-func (stream dataInputStream) ReadLineFinish(result AsyncResult) (length uint, guint8s []byte) {
+func (stream dataInputStream) ReadLineFinish(result AsyncResult) (length uint, guint8s []byte, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_data_input_stream_read_line_finish(arg0, arg1, &arg2)
+	ret := C.g_data_input_stream_read_line_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
 	var ret1 []byte
+	var goError error
 
 	ret0 = uint(arg2)
 
@@ -31074,30 +33618,42 @@ func (stream dataInputStream) ReadLineFinish(result AsyncResult) (length uint, g
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadLineFinishUTF8: finish an asynchronous call started by
 // g_data_input_stream_read_line_async().
-func (stream dataInputStream) ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string) {
+func (stream dataInputStream) ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_data_input_stream_read_line_finish_utf8(arg0, arg1, &arg2)
+	ret := C.g_data_input_stream_read_line_finish_utf8(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg2)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
@@ -31105,25 +33661,32 @@ func (stream dataInputStream) ReadLineFinishUTF8(result AsyncResult) (length uin
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream dataInputStream) ReadLineUTF8(cancellable Cancellable) (length uint, utf8 string) {
+func (stream dataInputStream) ReadLineUTF8(cancellable Cancellable) (length uint, utf8 string, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.gsize // out
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_line_utf8(arg0, &arg1, arg2)
+	ret := C.g_data_input_stream_read_line_utf8(arg0, &arg1, arg2, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg1)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadUint16 reads an unsigned 16-bit/2-byte value from @stream.
@@ -31131,20 +33694,27 @@ func (stream dataInputStream) ReadLineUTF8(cancellable Cancellable) (length uint
 // In order to get the correct byte order for this read operation, see
 // g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
-func (stream dataInputStream) ReadUint16(cancellable Cancellable) uint16 {
+func (stream dataInputStream) ReadUint16(cancellable Cancellable) (guint16 uint16, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_uint16(arg0, arg1)
+	ret := C.g_data_input_stream_read_uint16(arg0, arg1, &gError)
 
 	var ret0 uint16
+	var goError error
 
 	ret0 = uint16(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadUint32 reads an unsigned 32-bit/4-byte value from @stream.
@@ -31156,20 +33726,27 @@ func (stream dataInputStream) ReadUint16(cancellable Cancellable) uint16 {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream dataInputStream) ReadUint32(cancellable Cancellable) uint32 {
+func (stream dataInputStream) ReadUint32(cancellable Cancellable) (guint32 uint32, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_uint32(arg0, arg1)
+	ret := C.g_data_input_stream_read_uint32(arg0, arg1, &gError)
 
 	var ret0 uint32
+	var goError error
 
 	ret0 = uint32(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadUint64 reads an unsigned 64-bit/8-byte value from @stream.
@@ -31180,20 +33757,27 @@ func (stream dataInputStream) ReadUint32(cancellable Cancellable) uint32 {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream dataInputStream) ReadUint64(cancellable Cancellable) uint64 {
+func (stream dataInputStream) ReadUint64(cancellable Cancellable) (guint64 uint64, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_uint64(arg0, arg1)
+	ret := C.g_data_input_stream_read_uint64(arg0, arg1, &gError)
 
 	var ret0 uint64
+	var goError error
 
 	ret0 = uint64(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadUntil reads a string from the data input stream, up to the first
@@ -31207,28 +33791,35 @@ func (stream dataInputStream) ReadUint64(cancellable Cancellable) uint64 {
 // marked as deprecated in a future release. Use
 // g_data_input_stream_read_upto() instead, but note that that function does
 // not consume the stop character.
-func (stream dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (length uint, utf8 string) {
+func (stream dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (length uint, utf8 string, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.gchar
 	var arg2 *C.gsize // out
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(stopChars))
 	defer C.free(unsafe.Pointer(arg1))
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_until(arg0, arg1, &arg2, arg3)
+	ret := C.g_data_input_stream_read_until(arg0, arg1, &arg2, arg3, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg2)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadUntilAsync: the asynchronous version of
@@ -31268,25 +33859,32 @@ func (stream dataInputStream) ReadUntilAsync(stopChars string, ioPriority int, c
 
 // ReadUntilFinish: finish an asynchronous call started by
 // g_data_input_stream_read_until_async().
-func (stream dataInputStream) ReadUntilFinish(result AsyncResult) (length uint, utf8 string) {
+func (stream dataInputStream) ReadUntilFinish(result AsyncResult) (length uint, utf8 string, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_data_input_stream_read_until_finish(arg0, arg1, &arg2)
+	ret := C.g_data_input_stream_read_until_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg2)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadUpto reads a string from the data input stream, up to the first
@@ -31300,12 +33898,13 @@ func (stream dataInputStream) ReadUntilFinish(result AsyncResult) (length uint, 
 // Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
 //
 // The returned string will always be nul-terminated on success.
-func (stream dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (length uint, utf8 string) {
+func (stream dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (length uint, utf8 string, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.gchar
 	var arg2 C.gssize
 	var arg3 *C.gsize // out
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(stopChars))
@@ -31313,17 +33912,23 @@ func (stream dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cance
 	arg2 = C.gssize(stopCharsLen)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_input_stream_read_upto(arg0, arg1, arg2, &arg3, arg4)
+	ret := C.g_data_input_stream_read_upto(arg0, arg1, arg2, &arg3, arg4, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg3)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadUptoAsync: the asynchronous version of
@@ -31369,25 +33974,32 @@ func (stream dataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, 
 // g_data_input_stream_read_upto_async() again.
 //
 // The returned string will always be nul-terminated on success.
-func (stream dataInputStream) ReadUptoFinish(result AsyncResult) (length uint, utf8 string) {
+func (stream dataInputStream) ReadUptoFinish(result AsyncResult) (length uint, utf8 string, err error) {
 	var arg0 *C.GDataInputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_data_input_stream_read_upto_finish(arg0, arg1, &arg2)
+	ret := C.g_data_input_stream_read_upto_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg2)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // SetByteOrder: this function sets the byte order for the given @stream.
@@ -31408,12 +34020,12 @@ func (stream dataInputStream) SetByteOrder(order DataStreamByteOrder) {
 // read chunk ends in "CR" we must read an additional byte to know if this
 // is "CR" or "CR LF", and this might block if there is no more data
 // available.
-func (stream dataInputStream) SetNewlineType(_type DataStreamNewlineType) {
+func (stream dataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	var arg0 *C.GDataInputStream
 	var arg1 C.GDataStreamNewlineType
 
 	arg0 = (*C.GDataInputStream)(stream.Native())
-	arg1 = (C.GDataStreamNewlineType)(_type)
+	arg1 = (C.GDataStreamNewlineType)(typ)
 
 	C.g_data_input_stream_set_newline_type(arg0, arg1)
 }
@@ -31427,21 +34039,21 @@ type DataOutputStream interface {
 	// ByteOrder gets the byte order for the stream.
 	ByteOrder() DataStreamByteOrder
 	// PutByte puts a byte into the output stream.
-	PutByte(data byte, cancellable Cancellable) bool
+	PutByte(data byte, cancellable Cancellable) error
 	// PutInt16 puts a signed 16-bit integer into the output stream.
-	PutInt16(data int16, cancellable Cancellable) bool
+	PutInt16(data int16, cancellable Cancellable) error
 	// PutInt32 puts a signed 32-bit integer into the output stream.
-	PutInt32(data int32, cancellable Cancellable) bool
+	PutInt32(data int32, cancellable Cancellable) error
 	// PutInt64 puts a signed 64-bit integer into the stream.
-	PutInt64(data int64, cancellable Cancellable) bool
+	PutInt64(data int64, cancellable Cancellable) error
 	// PutString puts a string into the output stream.
-	PutString(str string, cancellable Cancellable) bool
+	PutString(str string, cancellable Cancellable) error
 	// PutUint16 puts an unsigned 16-bit integer into the output stream.
-	PutUint16(data uint16, cancellable Cancellable) bool
+	PutUint16(data uint16, cancellable Cancellable) error
 	// PutUint32 puts an unsigned 32-bit integer into the stream.
-	PutUint32(data uint32, cancellable Cancellable) bool
+	PutUint32(data uint32, cancellable Cancellable) error
 	// PutUint64 puts an unsigned 64-bit integer into the stream.
-	PutUint64(data uint64, cancellable Cancellable) bool
+	PutUint64(data uint64, cancellable Cancellable) error
 	// SetByteOrder sets the byte order of the data output stream to @order.
 	SetByteOrder(order DataStreamByteOrder)
 }
@@ -31479,7 +34091,7 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 
 	var ret0 DataOutputStream
 
-	ret0 = WrapDataOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DataOutputStream)
 
 	return ret0
 }
@@ -31500,156 +34112,188 @@ func (stream dataOutputStream) ByteOrder() DataStreamByteOrder {
 }
 
 // PutByte puts a byte into the output stream.
-func (stream dataOutputStream) PutByte(data byte, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.guchar
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.guchar(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_byte(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_byte(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutInt16 puts a signed 16-bit integer into the output stream.
-func (stream dataOutputStream) PutInt16(data int16, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.gint16
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.gint16(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_int16(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_int16(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutInt32 puts a signed 32-bit integer into the output stream.
-func (stream dataOutputStream) PutInt32(data int32, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.gint32
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.gint32(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_int32(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_int32(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutInt64 puts a signed 64-bit integer into the stream.
-func (stream dataOutputStream) PutInt64(data int64, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.gint64
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.gint64(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_int64(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_int64(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutString puts a string into the output stream.
-func (stream dataOutputStream) PutString(str string, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutString(str string, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_string(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_string(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutUint16 puts an unsigned 16-bit integer into the output stream.
-func (stream dataOutputStream) PutUint16(data uint16, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.guint16
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.guint16(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_uint16(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_uint16(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutUint32 puts an unsigned 32-bit integer into the stream.
-func (stream dataOutputStream) PutUint32(data uint32, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.guint32
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.guint32(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_uint32(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_uint32(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PutUint64 puts an unsigned 64-bit integer into the stream.
-func (stream dataOutputStream) PutUint64(data uint64, cancellable Cancellable) bool {
+func (stream dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error {
 	var arg0 *C.GDataOutputStream
 	var arg1 C.guint64
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GDataOutputStream)(stream.Native())
 	arg1 = C.guint64(data)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_data_output_stream_put_uint64(arg0, arg1, arg2)
+	ret := C.g_data_output_stream_put_uint64(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetByteOrder sets the byte order of the data output stream to @order.
@@ -31763,7 +34407,7 @@ type DesktopAppInfo interface {
 	// If application launching occurs via some other mechanism (eg: D-Bus
 	// activation) then @spawn_flags, @user_setup, @user_setup_data,
 	// @pid_callback and @pid_callback_data are ignored.
-	LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) bool
+	LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) error
 	// LaunchUrisAsManagerWithFds: equivalent to
 	// g_desktop_app_info_launch_uris_as_manager() but allows you to pass in
 	// file descriptors for the stdin, stdout and stderr streams of the launched
@@ -31771,7 +34415,7 @@ type DesktopAppInfo interface {
 	//
 	// If application launching occurs via some non-spawn mechanism (e.g. D-Bus
 	// activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
-	LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback, stdinFd int, stdoutFd int, stderrFd int) bool
+	LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback, stdinFd int, stdoutFd int, stderrFd int) error
 	// ListActions returns the list of "additional application actions"
 	// supported on the desktop file, as per the desktop file specification.
 	//
@@ -31814,7 +34458,7 @@ func NewDesktopAppInfo(desktopID string) DesktopAppInfo {
 
 	var ret0 DesktopAppInfo
 
-	ret0 = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DesktopAppInfo)
 
 	return ret0
 }
@@ -31830,7 +34474,7 @@ func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 
 	var ret0 DesktopAppInfo
 
-	ret0 = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DesktopAppInfo)
 
 	return ret0
 }
@@ -31845,7 +34489,7 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 
 	var ret0 DesktopAppInfo
 
-	ret0 = WrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(DesktopAppInfo)
 
 	return ret0
 }
@@ -31888,7 +34532,7 @@ func (info desktopAppInfo) Boolean(key string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -31951,7 +34595,7 @@ func (info desktopAppInfo) IsHidden() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -32016,7 +34660,7 @@ func (info desktopAppInfo) Nodisplay() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -32044,7 +34688,7 @@ func (info desktopAppInfo) ShowIn(desktopEnv string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -32132,7 +34776,7 @@ func (info desktopAppInfo) HasKey(key string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -32181,7 +34825,7 @@ func (info desktopAppInfo) LaunchAction(actionName string, launchContext AppLaun
 // If application launching occurs via some other mechanism (eg: D-Bus
 // activation) then @spawn_flags, @user_setup, @user_setup_data,
 // @pid_callback and @pid_callback_data are ignored.
-func (appinfo desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) bool {
+func (appinfo desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) error {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.GList
 	var arg2 *C.GAppLaunchContext
@@ -32190,19 +34834,23 @@ func (appinfo desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext
 	var arg5 C.gpointer
 	var arg6 C.GDesktopAppLaunchCallback
 	var arg7 C.gpointer
+	var gError *C.GError
 
 	arg0 = (*C.GDesktopAppInfo)(appinfo.Native())
 	arg1 = (*C.GList)(uris.Native())
 	arg2 = (*C.GAppLaunchContext)(launchContext.Native())
 	arg3 = (C.GSpawnFlags)(spawnFlags)
 
-	ret := C.g_desktop_app_info_launch_uris_as_manager(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	ret := C.g_desktop_app_info_launch_uris_as_manager(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LaunchUrisAsManagerWithFds: equivalent to
@@ -32212,7 +34860,7 @@ func (appinfo desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext
 //
 // If application launching occurs via some non-spawn mechanism (e.g. D-Bus
 // activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
-func (appinfo desktopAppInfo) LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback, stdinFd int, stdoutFd int, stderrFd int) bool {
+func (appinfo desktopAppInfo) LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback, stdinFd int, stdoutFd int, stderrFd int) error {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.GList
 	var arg2 *C.GAppLaunchContext
@@ -32224,6 +34872,7 @@ func (appinfo desktopAppInfo) LaunchUrisAsManagerWithFds(uris *glib.List, launch
 	var arg8 C.gint
 	var arg9 C.gint
 	var arg10 C.gint
+	var gError *C.GError
 
 	arg0 = (*C.GDesktopAppInfo)(appinfo.Native())
 	arg1 = (*C.GList)(uris.Native())
@@ -32233,13 +34882,16 @@ func (appinfo desktopAppInfo) LaunchUrisAsManagerWithFds(uris *glib.List, launch
 	arg9 = C.gint(stdoutFd)
 	arg10 = C.gint(stderrFd)
 
-	ret := C.g_desktop_app_info_launch_uris_as_manager_with_fds(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
+	ret := C.g_desktop_app_info_launch_uris_as_manager_with_fds(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ListActions returns the list of "additional application actions"
@@ -32320,7 +34972,7 @@ func NewEmblem(icon Icon) Emblem {
 
 	var ret0 Emblem
 
-	ret0 = WrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Emblem)
 
 	return ret0
 }
@@ -32337,7 +34989,7 @@ func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 
 	var ret0 Emblem
 
-	ret0 = WrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Emblem)
 
 	return ret0
 }
@@ -32352,7 +35004,7 @@ func (emblem emblem) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -32427,7 +35079,7 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 
 	var ret0 EmblemedIcon
 
-	ret0 = WrapEmblemedIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(EmblemedIcon)
 
 	return ret0
 }
@@ -32482,7 +35134,7 @@ func (emblemed emblemedIcon) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -32519,7 +35171,7 @@ type FileEnumerator interface {
 	// This will be automatically called when the last reference is dropped, but
 	// you might want to call this function to make sure resources are released
 	// as early as possible.
-	Close(cancellable Cancellable) bool
+	Close(cancellable Cancellable) error
 	// CloseAsync: asynchronously closes the file enumerator.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
@@ -32539,7 +35191,7 @@ type FileEnumerator interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 	// be returned.
-	CloseFinish(result AsyncResult) bool
+	CloseFinish(result AsyncResult) error
 	// Child: return a new #GFile which refers to the file named by @info in the
 	// source directory of @enumerator. This function is primarily intended to
 	// be used inside loops with g_file_enumerator_next_file().
@@ -32590,7 +35242,7 @@ type FileEnumerator interface {
 	//
 	//    out:
 	//      g_object_unref (direnum); // Note: frees the last @info
-	Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, ok bool)
+	Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, err error)
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
 	// this function will contain attributes that match the attribute string
@@ -32601,7 +35253,7 @@ type FileEnumerator interface {
 	//
 	// On error, returns nil and sets @error to the error. If the enumerator is
 	// at the end, nil will be returned and @error will be unset.
-	NextFile(cancellable Cancellable) FileInfo
+	NextFile(cancellable Cancellable) (fileInfo FileInfo, err error)
 	// NextFilesAsync: request information for a number of files from the
 	// enumerator asynchronously. When all i/o for the operation is finished the
 	// @callback will be called with the requested information.
@@ -32624,7 +35276,7 @@ type FileEnumerator interface {
 	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
-	NextFilesFinish(result AsyncResult) *glib.List
+	NextFilesFinish(result AsyncResult) (list *glib.List, err error)
 	// SetPending sets the file enumerator as having pending operations.
 	SetPending(pending bool)
 }
@@ -32656,20 +35308,24 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 // This will be automatically called when the last reference is dropped, but
 // you might want to call this function to make sure resources are released
 // as early as possible.
-func (enumerator fileEnumerator) Close(cancellable Cancellable) bool {
+func (enumerator fileEnumerator) Close(cancellable Cancellable) error {
 	var arg0 *C.GFileEnumerator
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFileEnumerator)(enumerator.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_enumerator_close(arg0, arg1)
+	ret := C.g_file_enumerator_close(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CloseAsync: asynchronously closes the file enumerator.
@@ -32706,20 +35362,24 @@ func (enumerator fileEnumerator) CloseAsync(ioPriority int, cancellable Cancella
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 // be returned.
-func (enumerator fileEnumerator) CloseFinish(result AsyncResult) bool {
+func (enumerator fileEnumerator) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GFileEnumerator
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFileEnumerator)(enumerator.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_enumerator_close_finish(arg0, arg1)
+	ret := C.g_file_enumerator_close_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Child: return a new #GFile which refers to the file named by @info in the
@@ -32742,7 +35402,7 @@ func (enumerator fileEnumerator) Child(info FileInfo) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -32757,7 +35417,7 @@ func (enumerator fileEnumerator) Container() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -32772,7 +35432,7 @@ func (enumerator fileEnumerator) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -32787,7 +35447,7 @@ func (enumerator fileEnumerator) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -32826,28 +35486,32 @@ func (enumerator fileEnumerator) IsClosed() bool {
 //
 //    out:
 //      g_object_unref (direnum); // Note: frees the last @info
-func (direnum fileEnumerator) Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, ok bool) {
+func (direnum fileEnumerator) Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, err error) {
 	var arg0 *C.GFileEnumerator
 	var arg1 **C.GFileInfo // out
 	var arg2 **C.GFile     // out
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFileEnumerator)(direnum.Native())
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_enumerator_iterate(arg0, &arg1, &arg2, arg3)
+	ret := C.g_file_enumerator_iterate(arg0, &arg1, &arg2, arg3, &gError)
 
 	var ret0 FileInfo
 	var ret1 *File
-	var ret2 bool
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.Take(unsafe.Pointer(arg1.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(FileInfo)
 
-	ret1 = WrapFile(externglib.Take(unsafe.Pointer(arg2.Native())))
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(*File)
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // NextFile returns information for the next file in the enumerated object.
@@ -32860,20 +35524,27 @@ func (direnum fileEnumerator) Iterate(cancellable Cancellable) (outInfo FileInfo
 //
 // On error, returns nil and sets @error to the error. If the enumerator is
 // at the end, nil will be returned and @error will be unset.
-func (enumerator fileEnumerator) NextFile(cancellable Cancellable) FileInfo {
+func (enumerator fileEnumerator) NextFile(cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileEnumerator
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFileEnumerator)(enumerator.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_enumerator_next_file(arg0, arg1)
+	ret := C.g_file_enumerator_next_file(arg0, arg1, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NextFilesAsync: request information for a number of files from the
@@ -32915,22 +35586,29 @@ func (enumerator fileEnumerator) NextFilesAsync(numFiles int, ioPriority int, ca
 
 // NextFilesFinish finishes the asynchronous operation started with
 // g_file_enumerator_next_files_async().
-func (enumerator fileEnumerator) NextFilesFinish(result AsyncResult) *glib.List {
+func (enumerator fileEnumerator) NextFilesFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GFileEnumerator
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFileEnumerator)(enumerator.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_enumerator_next_files_finish(arg0, arg1)
+	ret := C.g_file_enumerator_next_files_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetPending sets the file enumerator as having pending operations.
@@ -32939,7 +35617,9 @@ func (enumerator fileEnumerator) SetPending(pending bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GFileEnumerator)(enumerator.Native())
-	arg1 = gextras.Cbool(pending)
+	if pending {
+		arg1 = C.TRUE
+	}
 
 	C.g_file_enumerator_set_pending(arg0, arg1)
 }
@@ -32985,7 +35665,7 @@ type FileIOStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) FileInfo
+	QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_io_stream_query_info_finish().
@@ -32995,7 +35675,7 @@ type FileIOStream interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) FileInfo
+	QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error)
 }
 
 // fileIOStream implements the FileIOStream interface.
@@ -33055,23 +35735,30 @@ func (stream fileIOStream) Etag() string {
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 // be returned.
-func (stream fileIOStream) QueryInfo(attributes string, cancellable Cancellable) FileInfo {
+func (stream fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileIOStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFileIOStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_io_stream_query_info(arg0, arg1, arg2)
+	ret := C.g_file_io_stream_query_info(arg0, arg1, arg2, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryInfoAsync: asynchronously queries the @stream for a Info. When
@@ -33101,20 +35788,27 @@ func (stream fileIOStream) QueryInfoAsync(attributes string, ioPriority int, can
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_io_stream_query_info_async().
-func (stream fileIOStream) QueryInfoFinish(result AsyncResult) FileInfo {
+func (stream fileIOStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileIOStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFileIOStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_io_stream_query_info_finish(arg0, arg1)
+	ret := C.g_file_io_stream_query_info_finish(arg0, arg1, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
@@ -33162,7 +35856,7 @@ func NewFileIcon(file File) FileIcon {
 
 	var ret0 FileIcon
 
-	ret0 = WrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileIcon)
 
 	return ret0
 }
@@ -33177,7 +35871,7 @@ func (icon fileIcon) File() File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -33227,7 +35921,7 @@ type FileInfo interface {
 	AttributeByteString(attribute string) string
 	// AttributeData gets the attribute type, value and status for an attribute
 	// key.
-	AttributeData(attribute string) (_type FileAttributeType, valuePp interface{}, status FileAttributeStatus, ok bool)
+	AttributeData(attribute string) (typ FileAttributeType, valuePp interface{}, status FileAttributeStatus, ok bool)
 	// AttributeInt32 gets a signed 32-bit integer contained within the
 	// attribute. If the attribute does not contain a signed 32-bit integer, or
 	// is invalid, 0 will be returned.
@@ -33316,7 +36010,7 @@ type FileInfo interface {
 	RemoveAttribute(attribute string)
 	// SetAttribute sets the @attribute to contain the given value, if possible.
 	// To unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for @type.
-	SetAttribute(attribute string, _type FileAttributeType, valueP interface{})
+	SetAttribute(attribute string, typ FileAttributeType, valueP interface{})
 	// SetAttributeBoolean sets the @attribute to contain the given @attr_value,
 	// if possible.
 	SetAttributeBoolean(attribute string, attrValue bool)
@@ -33366,7 +36060,7 @@ type FileInfo interface {
 	SetEditName(editName string)
 	// SetFileType sets the file type in a Info to @type. See
 	// G_FILE_ATTRIBUTE_STANDARD_TYPE.
-	SetFileType(_type FileType)
+	SetFileType(typ FileType)
 	// SetIcon sets the icon for a given Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_ICON.
 	SetIcon(icon Icon)
@@ -33432,7 +36126,7 @@ func NewFileInfo() FileInfo {
 
 	var ret0 FileInfo
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
 	return ret0
 }
@@ -33469,7 +36163,7 @@ func (other fileInfo) Dup() FileInfo {
 
 	var ret0 FileInfo
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
 	return ret0
 }
@@ -33508,7 +36202,7 @@ func (info fileInfo) AttributeBoolean(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -33534,7 +36228,7 @@ func (info fileInfo) AttributeByteString(attribute string) string {
 
 // AttributeData gets the attribute type, value and status for an attribute
 // key.
-func (info fileInfo) AttributeData(attribute string) (_type FileAttributeType, valuePp interface{}, status FileAttributeStatus, ok bool) {
+func (info fileInfo) AttributeData(attribute string) (typ FileAttributeType, valuePp interface{}, status FileAttributeStatus, ok bool) {
 	var arg0 *C.GFileInfo
 	var arg1 *C.char
 	var arg2 *C.GFileAttributeType   // out
@@ -33558,7 +36252,7 @@ func (info fileInfo) AttributeData(attribute string) (_type FileAttributeType, v
 
 	ret2 = (*FileAttributeStatus)(arg4)
 
-	ret3 = gextras.Gobool(ret)
+	ret3 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3
 }
@@ -33617,7 +36311,7 @@ func (info fileInfo) AttributeObject(attribute string) gextras.Objector {
 
 	var ret0 gextras.Objector
 
-	ret0 = externglib.Take(unsafe.Pointer(ret.Native()))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gextras.Objector)
 
 	return ret0
 }
@@ -33855,7 +36549,7 @@ func (info fileInfo) Icon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -33870,7 +36564,7 @@ func (info fileInfo) IsBackup() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -33885,7 +36579,7 @@ func (info fileInfo) IsHidden() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -33900,7 +36594,7 @@ func (info fileInfo) IsSymlink() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -33935,7 +36629,7 @@ func (info fileInfo) ModificationTime() glib.TimeVal {
 
 	arg0 = (*C.GFileInfo)(info.Native())
 
-	ret := C.g_file_info_get_modification_time(arg0, &arg1)
+	C.g_file_info_get_modification_time(arg0, &arg1)
 
 	var ret0 *glib.TimeVal
 
@@ -34005,7 +36699,7 @@ func (info fileInfo) SymbolicIcon() Icon {
 
 	var ret0 Icon
 
-	ret0 = WrapIcon(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
 }
@@ -34039,7 +36733,7 @@ func (info fileInfo) HasAttribute(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -34058,7 +36752,7 @@ func (info fileInfo) HasNamespace(nameSpace string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -34107,7 +36801,7 @@ func (info fileInfo) RemoveAttribute(attribute string) {
 
 // SetAttribute sets the @attribute to contain the given value, if possible.
 // To unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for @type.
-func (info fileInfo) SetAttribute(attribute string, _type FileAttributeType, valueP interface{}) {
+func (info fileInfo) SetAttribute(attribute string, typ FileAttributeType, valueP interface{}) {
 	var arg0 *C.GFileInfo
 	var arg1 *C.char
 	var arg2 C.GFileAttributeType
@@ -34116,7 +36810,7 @@ func (info fileInfo) SetAttribute(attribute string, _type FileAttributeType, val
 	arg0 = (*C.GFileInfo)(info.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GFileAttributeType)(_type)
+	arg2 = (C.GFileAttributeType)(typ)
 	arg3 = C.gpointer(box.Assign(valueP))
 
 	C.g_file_info_set_attribute(arg0, arg1, arg2, arg3)
@@ -34132,7 +36826,9 @@ func (info fileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	arg0 = (*C.GFileInfo)(info.Native())
 	arg1 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(attrValue)
+	if attrValue {
+		arg2 = C.TRUE
+	}
 
 	C.g_file_info_set_attribute_boolean(arg0, arg1, arg2)
 }
@@ -34229,7 +36925,7 @@ func (info fileInfo) SetAttributeStatus(attribute string, status FileAttributeSt
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -34263,7 +36959,21 @@ func (info fileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	arg1 = (*C.gchar)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []C.utf8
+		ptr := C.malloc(C.sizeof_utf8 * (len(attrValue) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(attrValue)
+		sliceHeader.Cap = len(attrValue)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(attrValue); i++ {
+			src := attrValue[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.char)(unsafe.Pointer(ptr))
 	}
 
 	C.g_file_info_set_attribute_stringv(arg0, arg1, arg2)
@@ -34340,12 +37050,12 @@ func (info fileInfo) SetEditName(editName string) {
 
 // SetFileType sets the file type in a Info to @type. See
 // G_FILE_ATTRIBUTE_STANDARD_TYPE.
-func (info fileInfo) SetFileType(_type FileType) {
+func (info fileInfo) SetFileType(typ FileType) {
 	var arg0 *C.GFileInfo
 	var arg1 C.GFileType
 
 	arg0 = (*C.GFileInfo)(info.Native())
-	arg1 = (C.GFileType)(_type)
+	arg1 = (C.GFileType)(typ)
 
 	C.g_file_info_set_file_type(arg0, arg1)
 }
@@ -34369,7 +37079,9 @@ func (info fileInfo) SetIsHidden(isHidden bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GFileInfo)(info.Native())
-	arg1 = gextras.Cbool(isHidden)
+	if isHidden {
+		arg1 = C.TRUE
+	}
 
 	C.g_file_info_set_is_hidden(arg0, arg1)
 }
@@ -34381,7 +37093,9 @@ func (info fileInfo) SetIsSymlink(isSymlink bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GFileInfo)(info.Native())
-	arg1 = gextras.Cbool(isSymlink)
+	if isSymlink {
+		arg1 = C.TRUE
+	}
 
 	C.g_file_info_set_is_symlink(arg0, arg1)
 }
@@ -34503,7 +37217,7 @@ type FileInputStream interface {
 	// g_file_input_stream_query_info_async(). While the stream is blocked, the
 	// stream will set the pending flag internally, and any other operations on
 	// the stream will fail with G_IO_ERROR_PENDING.
-	QueryInfo(attributes string, cancellable Cancellable) FileInfo
+	QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error)
 	// QueryInfoAsync queries the stream information asynchronously. When the
 	// operation is finished @callback will be called. You can then call
 	// g_file_input_stream_query_info_finish() to get the result of the
@@ -34517,7 +37231,7 @@ type FileInputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
-	QueryInfoFinish(result AsyncResult) FileInfo
+	QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error)
 }
 
 // fileInputStream implements the FileInputStream interface.
@@ -34549,23 +37263,30 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 // g_file_input_stream_query_info_async(). While the stream is blocked, the
 // stream will set the pending flag internally, and any other operations on
 // the stream will fail with G_IO_ERROR_PENDING.
-func (stream fileInputStream) QueryInfo(attributes string, cancellable Cancellable) FileInfo {
+func (stream fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileInputStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFileInputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_input_stream_query_info(arg0, arg1, arg2)
+	ret := C.g_file_input_stream_query_info(arg0, arg1, arg2, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryInfoAsync queries the stream information asynchronously. When the
@@ -34599,20 +37320,27 @@ func (stream fileInputStream) QueryInfoAsync(attributes string, ioPriority int, 
 }
 
 // QueryInfoFinish finishes an asynchronous info query operation.
-func (stream fileInputStream) QueryInfoFinish(result AsyncResult) FileInfo {
+func (stream fileInputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileInputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFileInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_input_stream_query_info_finish(arg0, arg1)
+	ret := C.g_file_input_stream_query_info_finish(arg0, arg1, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -34676,7 +37404,7 @@ func (monitor fileMonitor) Cancel() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -34711,7 +37439,7 @@ func (monitor fileMonitor) IsCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -34764,7 +37492,7 @@ type FileOutputStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) FileInfo
+	QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_output_stream_query_info_finish().
@@ -34774,7 +37502,7 @@ type FileOutputStream interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) FileInfo
+	QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error)
 }
 
 // fileOutputStream implements the FileOutputStream interface.
@@ -34834,23 +37562,30 @@ func (stream fileOutputStream) Etag() string {
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 // be returned.
-func (stream fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) FileInfo {
+func (stream fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileOutputStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GFileOutputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_file_output_stream_query_info(arg0, arg1, arg2)
+	ret := C.g_file_output_stream_query_info(arg0, arg1, arg2, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // QueryInfoAsync: asynchronously queries the @stream for a Info. When
@@ -34880,20 +37615,27 @@ func (stream fileOutputStream) QueryInfoAsync(attributes string, ioPriority int,
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_output_stream_query_info_async().
-func (stream fileOutputStream) QueryInfoFinish(result AsyncResult) FileInfo {
+func (stream fileOutputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileOutputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GFileOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_file_output_stream_query_info_finish(arg0, arg1)
+	ret := C.g_file_output_stream_query_info_finish(arg0, arg1, &gError)
 
 	var ret0 FileInfo
+	var goError error
 
-	ret0 = WrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FileInfo)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FilenameCompleter completes partial file and directory names given a partial
@@ -34939,7 +37681,7 @@ func NewFilenameCompleter() FilenameCompleter {
 
 	var ret0 FilenameCompleter
 
-	ret0 = WrapFilenameCompleter(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FilenameCompleter)
 
 	return ret0
 }
@@ -35000,7 +37742,9 @@ func (completer filenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GFilenameCompleter)(completer.Native())
-	arg1 = gextras.Cbool(dirsOnly)
+	if dirsOnly {
+		arg1 = C.TRUE
+	}
 
 	C.g_filename_completer_set_dirs_only(arg0, arg1)
 }
@@ -35053,7 +37797,7 @@ func (stream filterInputStream) BaseStream() InputStream {
 
 	var ret0 InputStream
 
-	ret0 = WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(InputStream)
 
 	return ret0
 }
@@ -35069,7 +37813,7 @@ func (stream filterInputStream) CloseBaseStream() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35081,7 +37825,9 @@ func (stream filterInputStream) SetCloseBaseStream(closeBase bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GFilterInputStream)(stream.Native())
-	arg1 = gextras.Cbool(closeBase)
+	if closeBase {
+		arg1 = C.TRUE
+	}
 
 	C.g_filter_input_stream_set_close_base_stream(arg0, arg1)
 }
@@ -35134,7 +37880,7 @@ func (stream filterOutputStream) BaseStream() OutputStream {
 
 	var ret0 OutputStream
 
-	ret0 = WrapOutputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(OutputStream)
 
 	return ret0
 }
@@ -35150,7 +37896,7 @@ func (stream filterOutputStream) CloseBaseStream() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35162,7 +37908,9 @@ func (stream filterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GFilterOutputStream)(stream.Native())
-	arg1 = gextras.Cbool(closeBase)
+	if closeBase {
+		arg1 = C.TRUE
+	}
 
 	C.g_filter_output_stream_set_close_base_stream(arg0, arg1)
 }
@@ -35249,7 +37997,7 @@ type IOStream interface {
 	//
 	// The default implementation of this method just calls close on the
 	// individual input/output streams.
-	Close(cancellable Cancellable) bool
+	Close(cancellable Cancellable) error
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_io_stream_close_finish() to get the result of
@@ -35262,7 +38010,7 @@ type IOStream interface {
 	// However, if you override one you must override all.
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) bool
+	CloseFinish(result AsyncResult) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
 	InputStream() InputStream
@@ -35275,7 +38023,7 @@ type IOStream interface {
 	IsClosed() bool
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
-	SetPending() bool
+	SetPending() error
 	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
 	// input stream of @stream2, and splice the output stream of @stream2 to the
 	// input stream of @stream1.
@@ -35348,20 +38096,24 @@ func (stream ioStream) ClearPending() {
 //
 // The default implementation of this method just calls close on the
 // individual input/output streams.
-func (stream ioStream) Close(cancellable Cancellable) bool {
+func (stream ioStream) Close(cancellable Cancellable) error {
 	var arg0 *C.GIOStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GIOStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_io_stream_close(arg0, arg1)
+	ret := C.g_io_stream_close(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -35391,20 +38143,24 @@ func (stream ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callb
 }
 
 // CloseFinish closes a stream.
-func (stream ioStream) CloseFinish(result AsyncResult) bool {
+func (stream ioStream) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GIOStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GIOStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_io_stream_close_finish(arg0, arg1)
+	ret := C.g_io_stream_close_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // InputStream gets the input stream for this object. This is used for
@@ -35418,7 +38174,7 @@ func (stream ioStream) InputStream() InputStream {
 
 	var ret0 InputStream
 
-	ret0 = WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(InputStream)
 
 	return ret0
 }
@@ -35434,7 +38190,7 @@ func (stream ioStream) OutputStream() OutputStream {
 
 	var ret0 OutputStream
 
-	ret0 = WrapOutputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(OutputStream)
 
 	return ret0
 }
@@ -35449,7 +38205,7 @@ func (stream ioStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35464,25 +38220,29 @@ func (stream ioStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (stream ioStream) SetPending() bool {
+func (stream ioStream) SetPending() error {
 	var arg0 *C.GIOStream
+	var gError *C.GError
 
 	arg0 = (*C.GIOStream)(stream.Native())
 
-	ret := C.g_io_stream_set_pending(arg0)
+	ret := C.g_io_stream_set_pending(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SpliceAsync: asynchronously splice the output stream of @stream1 to the
@@ -35591,26 +38351,7 @@ func NewInetAddressAny(family SocketFamily) InetAddress {
 
 	var ret0 InetAddress
 
-	ret0 = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
-
-	return ret0
-}
-
-// NewInetAddressFromBytes constructs a class InetAddress.
-func NewInetAddressFromBytes(bytes []byte, family SocketFamily) InetAddress {
-	var arg1 *C.guint8
-	var arg2 C.GSocketFamily
-
-	{
-
-	}
-	arg2 = (C.GSocketFamily)(family)
-
-	ret := C.g_inet_address_new_from_bytes(arg1, arg2)
-
-	var ret0 InetAddress
-
-	ret0 = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetAddress)
 
 	return ret0
 }
@@ -35626,7 +38367,7 @@ func NewInetAddressFromString(string string) InetAddress {
 
 	var ret0 InetAddress
 
-	ret0 = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetAddress)
 
 	return ret0
 }
@@ -35641,7 +38382,7 @@ func NewInetAddressLoopback(family SocketFamily) InetAddress {
 
 	var ret0 InetAddress
 
-	ret0 = WrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetAddress)
 
 	return ret0
 }
@@ -35658,7 +38399,7 @@ func (address inetAddress) Equal(otherAddress InetAddress) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35688,7 +38429,7 @@ func (address inetAddress) IsAny() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35705,7 +38446,7 @@ func (address inetAddress) IsLinkLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35720,7 +38461,7 @@ func (address inetAddress) IsLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35735,7 +38476,7 @@ func (address inetAddress) IsMcGlobal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35750,7 +38491,7 @@ func (address inetAddress) IsMcLinkLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35765,7 +38506,7 @@ func (address inetAddress) IsMcNodeLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35781,7 +38522,7 @@ func (address inetAddress) IsMcOrgLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35796,7 +38537,7 @@ func (address inetAddress) IsMcSiteLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35811,7 +38552,7 @@ func (address inetAddress) IsMulticast() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35829,7 +38570,7 @@ func (address inetAddress) IsSiteLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35927,36 +38668,50 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 }
 
 // NewInetAddressMask constructs a class InetAddressMask.
-func NewInetAddressMask(addr InetAddress, length uint) InetAddressMask {
+func NewInetAddressMask(addr InetAddress, length uint) (inetAddressMask InetAddressMask, err error) {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint
+	var gError *C.GError
 
 	arg1 = (*C.GInetAddress)(addr.Native())
 	arg2 = C.guint(length)
 
-	ret := C.g_inet_address_mask_new(arg1, arg2)
+	ret := C.g_inet_address_mask_new(arg1, arg2, &gError)
 
 	var ret0 InetAddressMask
+	var goError error
 
-	ret0 = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetAddressMask)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewInetAddressMaskFromString constructs a class InetAddressMask.
-func NewInetAddressMaskFromString(maskString string) InetAddressMask {
+func NewInetAddressMaskFromString(maskString string) (inetAddressMask InetAddressMask, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(maskString))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_inet_address_mask_new_from_string(arg1)
+	ret := C.g_inet_address_mask_new_from_string(arg1, &gError)
 
 	var ret0 InetAddressMask
+	var goError error
 
-	ret0 = WrapInetAddressMask(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetAddressMask)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Equal tests if @mask and @mask2 are the same mask.
@@ -35971,7 +38726,7 @@ func (mask inetAddressMask) Equal(mask2 InetAddressMask) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -35986,7 +38741,7 @@ func (mask inetAddressMask) Address() InetAddress {
 
 	var ret0 InetAddress
 
-	ret0 = WrapInetAddress(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(InetAddress)
 
 	return ret0
 }
@@ -36033,7 +38788,7 @@ func (mask inetAddressMask) Matches(address InetAddress) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -36107,7 +38862,7 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 
 	var ret0 InetSocketAddress
 
-	ret0 = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetSocketAddress)
 
 	return ret0
 }
@@ -36125,7 +38880,7 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 
 	var ret0 InetSocketAddress
 
-	ret0 = WrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(InetSocketAddress)
 
 	return ret0
 }
@@ -36140,7 +38895,7 @@ func (address inetSocketAddress) Address() InetAddress {
 
 	var ret0 InetAddress
 
-	ret0 = WrapInetAddress(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(InetAddress)
 
 	return ret0
 }
@@ -36232,7 +38987,7 @@ type InputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
 	// Cancelling a close will still leave the stream closed, but some streams
 	// can use a faster close that doesn't block to e.g. check errors.
-	Close(cancellable Cancellable) bool
+	Close(cancellable Cancellable) error
 	// CloseAsync requests an asynchronous closes of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_input_stream_close_finish() to get the result
@@ -36246,7 +39001,7 @@ type InputStream interface {
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
-	CloseFinish(result AsyncResult) bool
+	CloseFinish(result AsyncResult) error
 	// HasPending checks if an input stream has pending actions.
 	HasPending() bool
 	// IsClosed checks if an input stream is closed.
@@ -36273,7 +39028,7 @@ type InputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	Read(cancellable Cancellable) (buffer []byte, count uint, gssize int)
+	Read(cancellable Cancellable) (buffer []byte, count uint, gssize int, err error)
 	// ReadAll tries to read @count bytes from the stream into the buffer
 	// starting at @buffer. Will block during this read.
 	//
@@ -36294,7 +39049,7 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read().
-	ReadAll(cancellable Cancellable) (buffer []byte, count uint, bytesRead uint, ok bool)
+	ReadAll(cancellable Cancellable) (buffer []byte, count uint, bytesRead uint, err error)
 	// ReadAllAsync: request an asynchronous read of @count bytes from the
 	// stream into the buffer starting at @buffer.
 	//
@@ -36315,7 +39070,7 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read_async().
-	ReadAllFinish(result AsyncResult) (bytesRead uint, ok bool)
+	ReadAllFinish(result AsyncResult) (bytesRead uint, err error)
 	// ReadAsync: request an asynchronous read of @count bytes from the stream
 	// into the buffer starting at @buffer. When the operation is finished
 	// @callback will be called. You can then call g_input_stream_read_finish()
@@ -36362,7 +39117,7 @@ type InputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error nil is returned and @error is set accordingly.
-	ReadBytes(count uint, cancellable Cancellable) *glib.Bytes
+	ReadBytes(count uint, cancellable Cancellable) (bytes *glib.Bytes, err error)
 	// ReadBytesAsync: request an asynchronous read of @count bytes from the
 	// stream into a new #GBytes. When the operation is finished @callback will
 	// be called. You can then call g_input_stream_read_bytes_finish() to get
@@ -36386,12 +39141,12 @@ type InputStream interface {
 	ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
 	// operation.
-	ReadBytesFinish(result AsyncResult) *glib.Bytes
+	ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes, err error)
 	// ReadFinish finishes an asynchronous stream read operation.
-	ReadFinish(result AsyncResult) int
+	ReadFinish(result AsyncResult) (gssize int, err error)
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
-	SetPending() bool
+	SetPending() error
 	// Skip tries to skip @count bytes from the stream. Will block during the
 	// operation.
 	//
@@ -36407,7 +39162,7 @@ type InputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Skip(count uint, cancellable Cancellable) int
+	Skip(count uint, cancellable Cancellable) (gssize int, err error)
 	// SkipAsync: request an asynchronous skip of @count bytes from the stream.
 	// When the operation is finished @callback will be called. You can then
 	// call g_input_stream_skip_finish() to get the result of the operation.
@@ -36433,7 +39188,7 @@ type InputStream interface {
 	// However, if you override one, you must override all.
 	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
-	SkipFinish(result AsyncResult) int
+	SkipFinish(result AsyncResult) (gssize int, err error)
 }
 
 // inputStream implements the InputStream interface.
@@ -36490,20 +39245,24 @@ func (stream inputStream) ClearPending() {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
 // Cancelling a close will still leave the stream closed, but some streams
 // can use a faster close that doesn't block to e.g. check errors.
-func (stream inputStream) Close(cancellable Cancellable) bool {
+func (stream inputStream) Close(cancellable Cancellable) error {
 	var arg0 *C.GInputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_input_stream_close(arg0, arg1)
+	ret := C.g_input_stream_close(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CloseAsync requests an asynchronous closes of the stream, releasing
@@ -36534,20 +39293,24 @@ func (stream inputStream) CloseAsync(ioPriority int, cancellable Cancellable, ca
 
 // CloseFinish finishes closing a stream asynchronously, started from
 // g_input_stream_close_async().
-func (stream inputStream) CloseFinish(result AsyncResult) bool {
+func (stream inputStream) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_input_stream_close_finish(arg0, arg1)
+	ret := C.g_input_stream_close_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // HasPending checks if an input stream has pending actions.
@@ -36560,7 +39323,7 @@ func (stream inputStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -36575,7 +39338,7 @@ func (stream inputStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -36602,20 +39365,22 @@ func (stream inputStream) IsClosed() bool {
 // partial result will be returned, without an error.
 //
 // On error -1 is returned and @error is set accordingly.
-func (stream inputStream) Read(cancellable Cancellable) (buffer []byte, count uint, gssize int) {
+func (stream inputStream) Read(cancellable Cancellable) (buffer []byte, count uint, gssize int, err error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.void // out
 	var arg2 C.gsize // out
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_input_stream_read(arg0, &arg1, &arg2, arg3)
+	ret := C.g_input_stream_read(arg0, &arg1, &arg2, arg3, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 int
+	var goError error
 
 	{
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
@@ -36632,7 +39397,12 @@ func (stream inputStream) Read(cancellable Cancellable) (buffer []byte, count ui
 
 	ret2 = int(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // ReadAll tries to read @count bytes from the stream into the buffer
@@ -36655,22 +39425,23 @@ func (stream inputStream) Read(cancellable Cancellable) (buffer []byte, count ui
 // read before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_input_stream_read().
-func (stream inputStream) ReadAll(cancellable Cancellable) (buffer []byte, count uint, bytesRead uint, ok bool) {
+func (stream inputStream) ReadAll(cancellable Cancellable) (buffer []byte, count uint, bytesRead uint, err error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.void  // out
 	var arg2 C.gsize  // out
 	var arg3 *C.gsize // out
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_input_stream_read_all(arg0, &arg1, &arg2, &arg3, arg4)
+	ret := C.g_input_stream_read_all(arg0, &arg1, &arg2, &arg3, arg4, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 uint
-	var ret3 bool
+	var goError error
 
 	{
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
@@ -36687,9 +39458,12 @@ func (stream inputStream) ReadAll(cancellable Cancellable) (buffer []byte, count
 
 	ret2 = uint(arg3)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // ReadAllAsync: request an asynchronous read of @count bytes from the
@@ -36717,7 +39491,7 @@ func (stream inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, 
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	arg6 = C.gpointer(box.Assign(callback))
 
-	ret := C.g_input_stream_read_all_async(arg0, &arg1, &arg2, arg3, arg4, arg5, arg6)
+	C.g_input_stream_read_all_async(arg0, &arg1, &arg2, arg3, arg4, arg5, arg6)
 
 	var ret0 []byte
 	var ret1 uint
@@ -36747,24 +39521,28 @@ func (stream inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, 
 // read before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_input_stream_read_async().
-func (stream inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, ok bool) {
+func (stream inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, err error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_input_stream_read_all_finish(arg0, arg1, &arg2)
+	ret := C.g_input_stream_read_all_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
-	var ret1 bool
+	var goError error
 
 	ret0 = uint(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // ReadAsync: request an asynchronous read of @count bytes from the stream
@@ -36806,7 +39584,7 @@ func (stream inputStream) ReadAsync(ioPriority int, cancellable Cancellable, cal
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	arg6 = C.gpointer(box.Assign(callback))
 
-	ret := C.g_input_stream_read_async(arg0, &arg1, &arg2, arg3, arg4, arg5, arg6)
+	C.g_input_stream_read_async(arg0, &arg1, &arg2, arg3, arg4, arg5, arg6)
 
 	var ret0 []byte
 	var ret1 uint
@@ -36848,24 +39626,31 @@ func (stream inputStream) ReadAsync(ioPriority int, cancellable Cancellable, cal
 // partial result will be returned, without an error.
 //
 // On error nil is returned and @error is set accordingly.
-func (stream inputStream) ReadBytes(count uint, cancellable Cancellable) *glib.Bytes {
+func (stream inputStream) ReadBytes(count uint, cancellable Cancellable) (bytes *glib.Bytes, err error) {
 	var arg0 *C.GInputStream
 	var arg1 C.gsize
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = C.gsize(count)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_input_stream_read_bytes(arg0, arg1, arg2)
+	ret := C.g_input_stream_read_bytes(arg0, arg1, arg2, &gError)
 
 	var ret0 *glib.Bytes
+	var goError error
 
 	{
 		ret0 = glib.WrapBytes(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadBytesAsync: request an asynchronous read of @count bytes from the
@@ -36908,55 +39693,73 @@ func (stream inputStream) ReadBytesAsync(count uint, ioPriority int, cancellable
 
 // ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
 // operation.
-func (stream inputStream) ReadBytesFinish(result AsyncResult) *glib.Bytes {
+func (stream inputStream) ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes, err error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_input_stream_read_bytes_finish(arg0, arg1)
+	ret := C.g_input_stream_read_bytes_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.Bytes
+	var goError error
 
 	{
 		ret0 = glib.WrapBytes(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadFinish finishes an asynchronous stream read operation.
-func (stream inputStream) ReadFinish(result AsyncResult) int {
+func (stream inputStream) ReadFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_input_stream_read_finish(arg0, arg1)
+	ret := C.g_input_stream_read_finish(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (stream inputStream) SetPending() bool {
+func (stream inputStream) SetPending() error {
 	var arg0 *C.GInputStream
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 
-	ret := C.g_input_stream_set_pending(arg0)
+	ret := C.g_input_stream_set_pending(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Skip tries to skip @count bytes from the stream. Will block during the
@@ -36974,22 +39777,29 @@ func (stream inputStream) SetPending() bool {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 // operation was partially finished when the operation was cancelled the
 // partial result will be returned, without an error.
-func (stream inputStream) Skip(count uint, cancellable Cancellable) int {
+func (stream inputStream) Skip(count uint, cancellable Cancellable) (gssize int, err error) {
 	var arg0 *C.GInputStream
 	var arg1 C.gsize
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = C.gsize(count)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_input_stream_skip(arg0, arg1, arg2)
+	ret := C.g_input_stream_skip(arg0, arg1, arg2, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SkipAsync: request an asynchronous skip of @count bytes from the stream.
@@ -37034,20 +39844,27 @@ func (stream inputStream) SkipAsync(count uint, ioPriority int, cancellable Canc
 }
 
 // SkipFinish finishes a stream skip operation.
-func (stream inputStream) SkipFinish(result AsyncResult) int {
+func (stream inputStream) SkipFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_input_stream_skip_finish(arg0, arg1)
+	ret := C.g_input_stream_skip_finish(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ListStore is a simple implementation of Model that stores all items in
@@ -37101,6 +39918,20 @@ type ListStore interface {
 	RemoveAll()
 	// Sort: sort the items in @store according to @compare_func.
 	Sort(compareFunc glib.CompareDataFunc)
+	// Splice changes @store by removing @n_removals items and adding
+	// @n_additions items to it. @additions must contain @n_additions items of
+	// type Store:item-type. nil is not permitted.
+	//
+	// This function is more efficient than g_list_store_insert() and
+	// g_list_store_remove(), because it only emits Model::items-changed once
+	// for the change.
+	//
+	// This function takes a ref on each item in @additions.
+	//
+	// The parameters @position and @n_removals must be correct (ie: @position +
+	// @n_removals must be less than or equal to the length of the list at the
+	// time this function is called).
+	Splice(position uint, nRemovals uint, additions []gextras.Objector)
 }
 
 // listStore implements the ListStore interface.
@@ -37136,7 +39967,7 @@ func NewListStore(itemType externglib.Type) ListStore {
 
 	var ret0 ListStore
 
-	ret0 = WrapListStore(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ListStore)
 
 	return ret0
 }
@@ -37178,7 +40009,7 @@ func (store listStore) Find(item gextras.Objector) (position uint, ok bool) {
 
 	ret0 = uint(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -37268,6 +40099,50 @@ func (store listStore) Sort(compareFunc glib.CompareDataFunc) {
 	C.g_list_store_sort(arg0, arg1, arg2)
 }
 
+// Splice changes @store by removing @n_removals items and adding
+// @n_additions items to it. @additions must contain @n_additions items of
+// type Store:item-type. nil is not permitted.
+//
+// This function is more efficient than g_list_store_insert() and
+// g_list_store_remove(), because it only emits Model::items-changed once
+// for the change.
+//
+// This function takes a ref on each item in @additions.
+//
+// The parameters @position and @n_removals must be correct (ie: @position +
+// @n_removals must be less than or equal to the length of the list at the
+// time this function is called).
+func (store listStore) Splice(position uint, nRemovals uint, additions []gextras.Objector) {
+	var arg0 *C.GListStore
+	var arg1 C.guint
+	var arg2 C.guint
+	var arg3 *C.gpointer
+	var arg4 C.guint
+
+	arg0 = (*C.GListStore)(store.Native())
+	arg1 = C.guint(position)
+	arg2 = C.guint(nRemovals)
+	{
+		var dst []*C.GObject
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(additions))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(additions)
+		sliceHeader.Cap = len(additions)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(additions); i++ {
+			src := additions[i]
+			dst[i] = (*C.GObject)(src.Native())
+		}
+
+		arg3 = (*C.gpointer)(unsafe.Pointer(ptr))
+		arg4 = len(additions)
+	}
+
+	C.g_list_store_splice(arg0, arg1, arg2, arg3, arg4)
+}
+
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
 // GIO streaming input operations.
 //
@@ -37279,6 +40154,8 @@ type MemoryInputStream interface {
 
 	// AddBytes appends @bytes to data that can be read from the input stream.
 	AddBytes(bytes *glib.Bytes)
+	// AddData appends @data to data that can be read from the input stream
+	AddData(data []byte)
 }
 
 // memoryInputStream implements the MemoryInputStream interface.
@@ -37313,7 +40190,7 @@ func NewMemoryInputStream() MemoryInputStream {
 
 	var ret0 MemoryInputStream
 
-	ret0 = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryInputStream)
 
 	return ret0
 }
@@ -37328,7 +40205,39 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream {
 
 	var ret0 MemoryInputStream
 
-	ret0 = WrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryInputStream)
+
+	return ret0
+}
+
+// NewMemoryInputStreamFromData constructs a class MemoryInputStream.
+func NewMemoryInputStreamFromData(data []byte) MemoryInputStream {
+	var arg1 *C.void
+	var arg2 C.gssize
+	var arg3 C.GDestroyNotify
+
+	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * len(data))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
+
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.void)(unsafe.Pointer(ptr))
+		arg2 = len(data)
+	}
+
+	ret := C.g_memory_input_stream_new_from_data(arg1, arg2, arg3)
+
+	var ret0 MemoryInputStream
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryInputStream)
 
 	return ret0
 }
@@ -37342,6 +40251,34 @@ func (stream memoryInputStream) AddBytes(bytes *glib.Bytes) {
 	arg1 = (*C.GBytes)(bytes.Native())
 
 	C.g_memory_input_stream_add_bytes(arg0, arg1)
+}
+
+// AddData appends @data to data that can be read from the input stream
+func (stream memoryInputStream) AddData(data []byte) {
+	var arg0 *C.GMemoryInputStream
+	var arg1 *C.void
+	var arg2 C.gssize
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GMemoryInputStream)(stream.Native())
+	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * len(data))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
+
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.void)(unsafe.Pointer(ptr))
+		arg2 = len(data)
+	}
+
+	C.g_memory_input_stream_add_data(arg0, arg1, arg2, arg3)
 }
 
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
@@ -37428,7 +40365,7 @@ func NewMemoryOutputStream(data interface{}, size uint, reallocFunction ReallocF
 
 	var ret0 MemoryOutputStream
 
-	ret0 = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryOutputStream)
 
 	return ret0
 }
@@ -37440,7 +40377,7 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 
 	var ret0 MemoryOutputStream
 
-	ret0 = WrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryOutputStream)
 
 	return ret0
 }
@@ -37667,7 +40604,7 @@ func NewMenu() Menu {
 
 	var ret0 Menu
 
-	ret0 = WrapMenu(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Menu)
 
 	return ret0
 }
@@ -38035,7 +40972,7 @@ func (iter menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok
 		ret1 = glib.WrapVariant(arg2)
 	}
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -38076,7 +41013,7 @@ func (iter menuAttributeIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -38244,7 +41181,7 @@ func NewMenuItem(label string, detailedAction string) MenuItem {
 
 	var ret0 MenuItem
 
-	ret0 = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuItem)
 
 	return ret0
 }
@@ -38261,7 +41198,7 @@ func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 
 	var ret0 MenuItem
 
-	ret0 = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuItem)
 
 	return ret0
 }
@@ -38279,7 +41216,7 @@ func NewMenuItemSection(label string, section MenuModel) MenuItem {
 
 	var ret0 MenuItem
 
-	ret0 = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuItem)
 
 	return ret0
 }
@@ -38297,7 +41234,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 
 	var ret0 MenuItem
 
-	ret0 = WrapMenuItem(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuItem)
 
 	return ret0
 }
@@ -38341,7 +41278,7 @@ func (menuItem menuItem) Link(link string) MenuModel {
 
 	var ret0 MenuModel
 
-	ret0 = WrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuModel)
 
 	return ret0
 }
@@ -38647,9 +41584,9 @@ func (iter menuLinkIter) GetNext() (outLink string, value MenuModel, ok bool) {
 
 	ret0 = C.GoString(arg1)
 
-	ret1 = WrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(MenuModel)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -38666,7 +41603,7 @@ func (iter menuLinkIter) Value() MenuModel {
 
 	var ret0 MenuModel
 
-	ret0 = WrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuModel)
 
 	return ret0
 }
@@ -38687,7 +41624,7 @@ func (iter menuLinkIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -38933,7 +41870,7 @@ func (model menuModel) ItemLink(itemIndex int, link string) MenuModel {
 
 	var ret0 MenuModel
 
-	ret0 = WrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuModel)
 
 	return ret0
 }
@@ -38966,7 +41903,7 @@ func (model menuModel) IsMutable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -39016,7 +41953,7 @@ func (model menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter {
 
 	var ret0 MenuAttributeIter
 
-	ret0 = WrapMenuAttributeIter(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuAttributeIter)
 
 	return ret0
 }
@@ -39036,7 +41973,7 @@ func (model menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
 
 	var ret0 MenuLinkIter
 
-	ret0 = WrapMenuLinkIter(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuLinkIter)
 
 	return ret0
 }
@@ -39139,7 +42076,7 @@ func NewMountOperation() MountOperation {
 
 	var ret0 MountOperation
 
-	ret0 = WrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MountOperation)
 
 	return ret0
 }
@@ -39155,7 +42092,7 @@ func (op mountOperation) Anonymous() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -39201,7 +42138,7 @@ func (op mountOperation) IsTcryptHiddenVolume() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -39217,7 +42154,7 @@ func (op mountOperation) IsTcryptSystemVolume() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -39300,7 +42237,9 @@ func (op mountOperation) SetAnonymous(anonymous bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GMountOperation)(op.Native())
-	arg1 = gextras.Cbool(anonymous)
+	if anonymous {
+		arg1 = C.TRUE
+	}
 
 	C.g_mount_operation_set_anonymous(arg0, arg1)
 }
@@ -39335,7 +42274,9 @@ func (op mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GMountOperation)(op.Native())
-	arg1 = gextras.Cbool(hiddenVolume)
+	if hiddenVolume {
+		arg1 = C.TRUE
+	}
 
 	C.g_mount_operation_set_is_tcrypt_hidden_volume(arg0, arg1)
 }
@@ -39347,7 +42288,9 @@ func (op mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GMountOperation)(op.Native())
-	arg1 = gextras.Cbool(systemVolume)
+	if systemVolume {
+		arg1 = C.TRUE
+	}
 
 	C.g_mount_operation_set_is_tcrypt_system_volume(arg0, arg1)
 }
@@ -39440,7 +42383,7 @@ func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 
 	var ret0 NativeSocketAddress
 
-	ret0 = WrapNativeSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(NativeSocketAddress)
 
 	return ret0
 }
@@ -39527,7 +42470,7 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 
 	var ret0 NetworkAddress
 
-	ret0 = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(NetworkAddress)
 
 	return ret0
 }
@@ -39542,7 +42485,7 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 
 	var ret0 NetworkAddress
 
-	ret0 = WrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(NetworkAddress)
 
 	return ret0
 }
@@ -39659,7 +42602,7 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 
 	var ret0 NetworkService
 
-	ret0 = WrapNetworkService(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(NetworkService)
 
 	return ret0
 }
@@ -39845,7 +42788,7 @@ func NewNotification(title string) Notification {
 
 	var ret0 Notification
 
-	ret0 = WrapNotification(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Notification)
 
 	return ret0
 }
@@ -39991,7 +42934,9 @@ func (notification notification) SetUrgent(urgent bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GNotification)(notification.Native())
-	arg1 = gextras.Cbool(urgent)
+	if urgent {
+		arg1 = C.TRUE
+	}
 
 	C.g_notification_set_urgent(arg0, arg1)
 }
@@ -40042,7 +42987,7 @@ type OutputStream interface {
 	// streams can use a faster close that doesn't block to e.g. check errors.
 	// On cancellation (as with any error) there is no guarantee that all
 	// written data will reach the target.
-	Close(cancellable Cancellable) bool
+	Close(cancellable Cancellable) error
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_output_stream_close_finish() to get the
@@ -40055,7 +43000,7 @@ type OutputStream interface {
 	// However, if you override one you must override all.
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish closes an output stream.
-	CloseFinish(result AsyncResult) bool
+	CloseFinish(result AsyncResult) error
 	// Flush forces a write of all user-space buffered data for the given
 	// @stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
@@ -40065,7 +43010,7 @@ type OutputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Flush(cancellable Cancellable) bool
+	Flush(cancellable Cancellable) error
 	// FlushAsync forces an asynchronous write of all user-space buffered data
 	// for the given @stream. For behaviour details see g_output_stream_flush().
 	//
@@ -40073,7 +43018,7 @@ type OutputStream interface {
 	// call g_output_stream_flush_finish() to get the result of the operation.
 	FlushAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FlushFinish finishes flushing an output stream.
-	FlushFinish(result AsyncResult) bool
+	FlushFinish(result AsyncResult) error
 	// HasPending checks if an output stream has pending actions.
 	HasPending() bool
 	// IsClosed checks if an output stream has already been closed.
@@ -40084,9 +43029,9 @@ type OutputStream interface {
 	IsClosing() bool
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
-	SetPending() bool
+	SetPending() error
 	// Splice splices an input stream into an output stream.
-	Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) int
+	Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (gssize int, err error)
 	// SpliceAsync splices a stream asynchronously. When the operation is
 	// finished @callback will be called. You can then call
 	// g_output_stream_splice_finish() to get the result of the operation.
@@ -40095,7 +43040,62 @@ type OutputStream interface {
 	// g_output_stream_splice().
 	SpliceAsync(source InputStream, flags OutputStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SpliceFinish finishes an asynchronous stream splice operation.
-	SpliceFinish(result AsyncResult) int
+	SpliceFinish(result AsyncResult) (gssize int, err error)
+	// Write tries to write @count bytes from @buffer into the stream. Will
+	// block during the operation.
+	//
+	// If count is 0, returns 0 and does nothing. A value of @count larger than
+	// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes written to the stream is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. on a partial I/O error, or if there is not enough storage in
+	// the stream. All writes block until at least one byte is written or an
+	// error occurs; 0 is never returned (unless @count is 0).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	Write(buffer []byte, cancellable Cancellable) (gssize int, err error)
+	// WriteAll tries to write @count bytes from @buffer into the stream. Will
+	// block during the operation.
+	//
+	// This function is similar to g_output_stream_write(), except it tries to
+	// write as many bytes as requested, only stopping on an error.
+	//
+	// On a successful write of @count bytes, true is returned, and
+	// @bytes_written is set to @count.
+	//
+	// If there is an error during the operation false is returned and @error is
+	// set to indicate the error status.
+	//
+	// As a special exception to the normal conventions for functions that use
+	// #GError, if this function returns false (and sets @error) then
+	// @bytes_written will be set to the number of bytes that were successfully
+	// written before the error was encountered. This functionality is only
+	// available from C. If you need it from another language then you must
+	// write your own loop around g_output_stream_write().
+	WriteAll(buffer []byte, cancellable Cancellable) (bytesWritten uint, err error)
+	// WriteAllAsync: request an asynchronous write of @count bytes from @buffer
+	// into the stream. When the operation is finished @callback will be called.
+	// You can then call g_output_stream_write_all_finish() to get the result of
+	// the operation.
+	//
+	// This is the asynchronous version of g_output_stream_write_all().
+	//
+	// Call g_output_stream_write_all_finish() to collect the result.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// Note that no copy of @buffer will be made, so it must stay valid until
+	// @callback is called.
+	WriteAllAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WriteAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_write_all_async().
 	//
@@ -40105,7 +43105,43 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_write_async().
-	WriteAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
+	WriteAllFinish(result AsyncResult) (bytesWritten uint, err error)
+	// WriteAsync: request an asynchronous write of @count bytes from @buffer
+	// into the stream. When the operation is finished @callback will be called.
+	// You can then call g_output_stream_write_finish() to get the result of the
+	// operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes written will be passed to the @callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. on a partial I/O error, but generally we try to write as
+	// many bytes as requested.
+	//
+	// You are guaranteed that this method will never fail with
+	// G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the method
+	// will just wait until this changes.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// For the synchronous, blocking version of this function, see
+	// g_output_stream_write().
+	//
+	// Note that no copy of @buffer will be made, so it must stay valid until
+	// @callback is called. See g_output_stream_write_bytes_async() for a
+	// #GBytes version that will automatically hold a reference to the contents
+	// (without copying) for the duration of the call.
+	WriteAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WriteBytes: a wrapper function for g_output_stream_write() which takes a
 	// #GBytes as input. This can be more convenient for use by language
 	// bindings or in other cases where the refcounted nature of #GBytes is
@@ -40117,7 +43153,7 @@ type OutputStream interface {
 	// using g_bytes_new_from_bytes(). Passing the same #GBytes instance
 	// multiple times potentially can result in duplicated data in the output
 	// stream.
-	WriteBytes(bytes *glib.Bytes, cancellable Cancellable) int
+	WriteBytes(bytes *glib.Bytes, cancellable Cancellable) (gssize int, err error)
 	// WriteBytesAsync: this function is similar to
 	// g_output_stream_write_async(), but takes a #GBytes as input. Due to the
 	// refcounted nature of #GBytes, this allows the stream to avoid taking a
@@ -40134,9 +43170,72 @@ type OutputStream interface {
 	// g_output_stream_write_bytes().
 	WriteBytesAsync(bytes *glib.Bytes, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
-	WriteBytesFinish(result AsyncResult) int
+	WriteBytesFinish(result AsyncResult) (gssize int, err error)
 	// WriteFinish finishes a stream write operation.
-	WriteFinish(result AsyncResult) int
+	WriteFinish(result AsyncResult) (gssize int, err error)
+	// Writev tries to write the bytes contained in the @n_vectors @vectors into
+	// the stream. Will block during the operation.
+	//
+	// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
+	// and does nothing.
+	//
+	// On success, the number of bytes written to the stream is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. on a partial I/O error, or if there is not enough storage in
+	// the stream. All writes block until at least one byte is written or an
+	// error occurs; 0 is never returned (unless @n_vectors is 0 or the sum of
+	// all bytes in @vectors is 0).
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// Some implementations of g_output_stream_writev() may have limitations on
+	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
+	// these are exceeded. For example, when writing to a local file on UNIX
+	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
+	Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, err error)
+	// WritevAll tries to write the bytes contained in the @n_vectors @vectors
+	// into the stream. Will block during the operation.
+	//
+	// This function is similar to g_output_stream_writev(), except it tries to
+	// write as many bytes as requested, only stopping on an error.
+	//
+	// On a successful write of all @n_vectors vectors, true is returned, and
+	// @bytes_written is set to the sum of all the sizes of @vectors.
+	//
+	// If there is an error during the operation false is returned and @error is
+	// set to indicate the error status.
+	//
+	// As a special exception to the normal conventions for functions that use
+	// #GError, if this function returns false (and sets @error) then
+	// @bytes_written will be set to the number of bytes that were successfully
+	// written before the error was encountered. This functionality is only
+	// available from C. If you need it from another language then you must
+	// write your own loop around g_output_stream_write().
+	//
+	// The content of the individual elements of @vectors might be changed by
+	// this function.
+	WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, err error)
+	// WritevAllAsync: request an asynchronous write of the bytes contained in
+	// the @n_vectors @vectors into the stream. When the operation is finished
+	// @callback will be called. You can then call
+	// g_output_stream_writev_all_finish() to get the result of the operation.
+	//
+	// This is the asynchronous version of g_output_stream_writev_all().
+	//
+	// Call g_output_stream_writev_all_finish() to collect the result.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// Note that no copy of @vectors will be made, so it must stay valid until
+	// @callback is called. The content of the individual elements of @vectors
+	// might be changed by this function.
+	WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_writev_all_async().
 	//
@@ -40146,9 +43245,40 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_writev_async().
-	WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
+	WritevAllFinish(result AsyncResult) (bytesWritten uint, err error)
+	// WritevAsync: request an asynchronous write of the bytes contained in
+	// @n_vectors @vectors into the stream. When the operation is finished
+	// @callback will be called. You can then call
+	// g_output_stream_writev_finish() to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed, and
+	// will result in G_IO_ERROR_PENDING errors.
+	//
+	// On success, the number of bytes written will be passed to the @callback.
+	// It is not an error if this is not the same as the requested size, as it
+	// can happen e.g. on a partial I/O error, but generally we try to write as
+	// many bytes as requested.
+	//
+	// You are guaranteed that this method will never fail with
+	// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method
+	// will just wait until this changes.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	//
+	// For the synchronous, blocking version of this function, see
+	// g_output_stream_writev().
+	//
+	// Note that no copy of @vectors will be made, so it must stay valid until
+	// @callback is called.
+	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
-	WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
+	WritevFinish(result AsyncResult) (bytesWritten uint, err error)
 }
 
 // outputStream implements the OutputStream interface.
@@ -40211,20 +43341,24 @@ func (stream outputStream) ClearPending() {
 // streams can use a faster close that doesn't block to e.g. check errors.
 // On cancellation (as with any error) there is no guarantee that all
 // written data will reach the target.
-func (stream outputStream) Close(cancellable Cancellable) bool {
+func (stream outputStream) Close(cancellable Cancellable) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_output_stream_close(arg0, arg1)
+	ret := C.g_output_stream_close(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -40254,20 +43388,24 @@ func (stream outputStream) CloseAsync(ioPriority int, cancellable Cancellable, c
 }
 
 // CloseFinish closes an output stream.
-func (stream outputStream) CloseFinish(result AsyncResult) bool {
+func (stream outputStream) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_close_finish(arg0, arg1)
+	ret := C.g_output_stream_close_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Flush forces a write of all user-space buffered data for the given
@@ -40279,20 +43417,24 @@ func (stream outputStream) CloseFinish(result AsyncResult) bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (stream outputStream) Flush(cancellable Cancellable) bool {
+func (stream outputStream) Flush(cancellable Cancellable) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_output_stream_flush(arg0, arg1)
+	ret := C.g_output_stream_flush(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // FlushAsync forces an asynchronous write of all user-space buffered data
@@ -40317,20 +43459,24 @@ func (stream outputStream) FlushAsync(ioPriority int, cancellable Cancellable, c
 }
 
 // FlushFinish finishes flushing an output stream.
-func (stream outputStream) FlushFinish(result AsyncResult) bool {
+func (stream outputStream) FlushFinish(result AsyncResult) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_flush_finish(arg0, arg1)
+	ret := C.g_output_stream_flush_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // HasPending checks if an output stream has pending actions.
@@ -40343,7 +43489,7 @@ func (stream outputStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -40358,7 +43504,7 @@ func (stream outputStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -40375,46 +43521,57 @@ func (stream outputStream) IsClosing() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (stream outputStream) SetPending() bool {
+func (stream outputStream) SetPending() error {
 	var arg0 *C.GOutputStream
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 
-	ret := C.g_output_stream_set_pending(arg0)
+	ret := C.g_output_stream_set_pending(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Splice splices an input stream into an output stream.
-func (stream outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) int {
+func (stream outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GInputStream
 	var arg2 C.GOutputStreamSpliceFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GInputStream)(source.Native())
 	arg2 = (C.GOutputStreamSpliceFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_output_stream_splice(arg0, arg1, arg2, arg3)
+	ret := C.g_output_stream_splice(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SpliceAsync splices a stream asynchronously. When the operation is
@@ -40444,20 +43601,157 @@ func (stream outputStream) SpliceAsync(source InputStream, flags OutputStreamSpl
 }
 
 // SpliceFinish finishes an asynchronous stream splice operation.
-func (stream outputStream) SpliceFinish(result AsyncResult) int {
+func (stream outputStream) SpliceFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_splice_finish(arg0, arg1)
+	ret := C.g_output_stream_splice_finish(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// Write tries to write @count bytes from @buffer into the stream. Will
+// block during the operation.
+//
+// If count is 0, returns 0 and does nothing. A value of @count larger than
+// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes written to the stream is returned. It is
+// not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, or if there is not enough storage in
+// the stream. All writes block until at least one byte is written or an
+// error occurs; 0 is never returned (unless @count is 0).
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+// operation was partially finished when the operation was cancelled the
+// partial result will be returned, without an error.
+//
+// On error -1 is returned and @error is set accordingly.
+func (stream outputStream) Write(buffer []byte, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg3 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_output_stream_write(arg0, arg1, arg2, arg3, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// WriteAll tries to write @count bytes from @buffer into the stream. Will
+// block during the operation.
+//
+// This function is similar to g_output_stream_write(), except it tries to
+// write as many bytes as requested, only stopping on an error.
+//
+// On a successful write of @count bytes, true is returned, and
+// @bytes_written is set to @count.
+//
+// If there is an error during the operation false is returned and @error is
+// set to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns false (and sets @error) then
+// @bytes_written will be set to the number of bytes that were successfully
+// written before the error was encountered. This functionality is only
+// available from C. If you need it from another language then you must
+// write your own loop around g_output_stream_write().
+func (stream outputStream) WriteAll(buffer []byte, cancellable Cancellable) (bytesWritten uint, err error) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 *C.gsize // out
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_output_stream_write_all(arg0, arg1, arg2, &arg3, arg4, &gError)
+
+	var ret0 uint
+	var goError error
+
+	ret0 = uint(arg3)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// WriteAllAsync: request an asynchronous write of @count bytes from @buffer
+// into the stream. When the operation is finished @callback will be called.
+// You can then call g_output_stream_write_all_finish() to get the result of
+// the operation.
+//
+// This is the asynchronous version of g_output_stream_write_all().
+//
+// Call g_output_stream_write_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority.
+// Default priority is G_PRIORITY_DEFAULT.
+//
+// Note that no copy of @buffer will be made, so it must stay valid until
+// @callback is called.
+func (stream outputStream) WriteAllAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 C.int
+	var arg4 *C.GCancellable
+	var arg5 C.GAsyncReadyCallback
+	var arg6 C.gpointer
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg3 = C.int(ioPriority)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_output_stream_write_all_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // WriteAllFinish finishes an asynchronous stream write operation started
@@ -40469,24 +43763,84 @@ func (stream outputStream) SpliceFinish(result AsyncResult) int {
 // written before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_output_stream_write_async().
-func (stream outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, ok bool) {
+func (stream outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_write_all_finish(arg0, arg1, &arg2)
+	ret := C.g_output_stream_write_all_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
-	var ret1 bool
+	var goError error
 
 	ret0 = uint(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
+}
+
+// WriteAsync: request an asynchronous write of @count bytes from @buffer
+// into the stream. When the operation is finished @callback will be called.
+// You can then call g_output_stream_write_finish() to get the result of the
+// operation.
+//
+// During an async request no other sync and async calls are allowed, and
+// will result in G_IO_ERROR_PENDING errors.
+//
+// A value of @count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes written will be passed to the @callback.
+// It is not an error if this is not the same as the requested size, as it
+// can happen e.g. on a partial I/O error, but generally we try to write as
+// many bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the method
+// will just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority.
+// Default priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_write().
+//
+// Note that no copy of @buffer will be made, so it must stay valid until
+// @callback is called. See g_output_stream_write_bytes_async() for a
+// #GBytes version that will automatically hold a reference to the contents
+// (without copying) for the duration of the call.
+func (stream outputStream) WriteAsync(buffer []byte, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.void
+	var arg2 C.gsize
+	var arg3 C.int
+	var arg4 *C.GCancellable
+	var arg5 C.GAsyncReadyCallback
+	var arg6 C.gpointer
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg3 = C.int(ioPriority)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_output_stream_write_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // WriteBytes: a wrapper function for g_output_stream_write() which takes a
@@ -40500,22 +43854,29 @@ func (stream outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint
 // using g_bytes_new_from_bytes(). Passing the same #GBytes instance
 // multiple times potentially can result in duplicated data in the output
 // stream.
-func (stream outputStream) WriteBytes(bytes *glib.Bytes, cancellable Cancellable) int {
+func (stream outputStream) WriteBytes(bytes *glib.Bytes, cancellable Cancellable) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GBytes
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GBytes)(bytes.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_output_stream_write_bytes(arg0, arg1, arg2)
+	ret := C.g_output_stream_write_bytes(arg0, arg1, arg2, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // WriteBytesAsync: this function is similar to
@@ -40551,37 +43912,190 @@ func (stream outputStream) WriteBytesAsync(bytes *glib.Bytes, ioPriority int, ca
 }
 
 // WriteBytesFinish finishes a stream write-from-#GBytes operation.
-func (stream outputStream) WriteBytesFinish(result AsyncResult) int {
+func (stream outputStream) WriteBytesFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_write_bytes_finish(arg0, arg1)
+	ret := C.g_output_stream_write_bytes_finish(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // WriteFinish finishes a stream write operation.
-func (stream outputStream) WriteFinish(result AsyncResult) int {
+func (stream outputStream) WriteFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_write_finish(arg0, arg1)
+	ret := C.g_output_stream_write_finish(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// Writev tries to write the bytes contained in the @n_vectors @vectors into
+// the stream. Will block during the operation.
+//
+// If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0
+// and does nothing.
+//
+// On success, the number of bytes written to the stream is returned. It is
+// not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, or if there is not enough storage in
+// the stream. All writes block until at least one byte is written or an
+// error occurs; 0 is never returned (unless @n_vectors is 0 or the sum of
+// all bytes in @vectors is 0).
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+// operation was partially finished when the operation was cancelled the
+// partial result will be returned, without an error.
+//
+// Some implementations of g_output_stream_writev() may have limitations on
+// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
+// these are exceeded. For example, when writing to a local file on UNIX
+// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
+func (stream outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, err error) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.GOutputVector
+	var arg2 C.gsize
+	var arg3 *C.gsize // out
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg2 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_output_stream_writev(arg0, arg1, arg2, &arg3, arg4, &gError)
+
+	var ret0 uint
+	var goError error
+
+	ret0 = uint(arg3)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// WritevAll tries to write the bytes contained in the @n_vectors @vectors
+// into the stream. Will block during the operation.
+//
+// This function is similar to g_output_stream_writev(), except it tries to
+// write as many bytes as requested, only stopping on an error.
+//
+// On a successful write of all @n_vectors vectors, true is returned, and
+// @bytes_written is set to the sum of all the sizes of @vectors.
+//
+// If there is an error during the operation false is returned and @error is
+// set to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns false (and sets @error) then
+// @bytes_written will be set to the number of bytes that were successfully
+// written before the error was encountered. This functionality is only
+// available from C. If you need it from another language then you must
+// write your own loop around g_output_stream_write().
+//
+// The content of the individual elements of @vectors might be changed by
+// this function.
+func (stream outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, err error) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.GOutputVector
+	var arg2 C.gsize
+	var arg3 *C.gsize // out
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg2 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_output_stream_writev_all(arg0, arg1, arg2, &arg3, arg4, &gError)
+
+	var ret0 uint
+	var goError error
+
+	ret0 = uint(arg3)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// WritevAllAsync: request an asynchronous write of the bytes contained in
+// the @n_vectors @vectors into the stream. When the operation is finished
+// @callback will be called. You can then call
+// g_output_stream_writev_all_finish() to get the result of the operation.
+//
+// This is the asynchronous version of g_output_stream_writev_all().
+//
+// Call g_output_stream_writev_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority.
+// Default priority is G_PRIORITY_DEFAULT.
+//
+// Note that no copy of @vectors will be made, so it must stay valid until
+// @callback is called. The content of the individual elements of @vectors
+// might be changed by this function.
+func (stream outputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.GOutputVector
+	var arg2 C.gsize
+	var arg3 C.int
+	var arg4 *C.GCancellable
+	var arg5 C.GAsyncReadyCallback
+	var arg6 C.gpointer
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg2 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg3 = C.int(ioPriority)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_output_stream_writev_all_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // WritevAllFinish finishes an asynchronous stream write operation started
@@ -40593,45 +44107,104 @@ func (stream outputStream) WriteFinish(result AsyncResult) int {
 // written before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_output_stream_writev_async().
-func (stream outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool) {
+func (stream outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_writev_all_finish(arg0, arg1, &arg2)
+	ret := C.g_output_stream_writev_all_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
-	var ret1 bool
+	var goError error
 
 	ret0 = uint(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
+}
+
+// WritevAsync: request an asynchronous write of the bytes contained in
+// @n_vectors @vectors into the stream. When the operation is finished
+// @callback will be called. You can then call
+// g_output_stream_writev_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and
+// will result in G_IO_ERROR_PENDING errors.
+//
+// On success, the number of bytes written will be passed to the @callback.
+// It is not an error if this is not the same as the requested size, as it
+// can happen e.g. on a partial I/O error, but generally we try to write as
+// many bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK — if @stream can't accept more data, the method
+// will just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority.
+// Default priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_writev().
+//
+// Note that no copy of @vectors will be made, so it must stay valid until
+// @callback is called.
+func (stream outputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg0 *C.GOutputStream
+	var arg1 *C.GOutputVector
+	var arg2 C.gsize
+	var arg3 C.int
+	var arg4 *C.GCancellable
+	var arg5 C.GAsyncReadyCallback
+	var arg6 C.gpointer
+
+	arg0 = (*C.GOutputStream)(stream.Native())
+	arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg2 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg3 = C.int(ioPriority)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg6 = C.gpointer(box.Assign(callback))
+
+	C.g_output_stream_writev_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // WritevFinish finishes a stream writev operation.
-func (stream outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, ok bool) {
+func (stream outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_output_stream_writev_finish(arg0, arg1, &arg2)
+	ret := C.g_output_stream_writev_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
-	var ret1 bool
+	var goError error
 
 	ret0 = uint(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // Permission: a #GPermission represents the status of the caller's permission
@@ -40665,7 +44238,7 @@ type Permission interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_acquire_async() for the
 	// non-blocking version.
-	Acquire(cancellable Cancellable) bool
+	Acquire(cancellable Cancellable) error
 	// AcquireAsync attempts to acquire the permission represented by
 	// @permission.
 	//
@@ -40677,7 +44250,7 @@ type Permission interface {
 	//
 	// This is the second half of the asynchronous version of
 	// g_permission_acquire().
-	AcquireFinish(result AsyncResult) bool
+	AcquireFinish(result AsyncResult) error
 	// Allowed gets the value of the 'allowed' property. This property is true
 	// if the caller currently has permission to perform the action that
 	// @permission represents the permission to perform.
@@ -40711,7 +44284,7 @@ type Permission interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_release_async() for the
 	// non-blocking version.
-	Release(cancellable Cancellable) bool
+	Release(cancellable Cancellable) error
 	// ReleaseAsync attempts to release the permission represented by
 	// @permission.
 	//
@@ -40723,7 +44296,7 @@ type Permission interface {
 	//
 	// This is the second half of the asynchronous version of
 	// g_permission_release().
-	ReleaseFinish(result AsyncResult) bool
+	ReleaseFinish(result AsyncResult) error
 }
 
 // permission implements the Permission interface.
@@ -40762,20 +44335,24 @@ func marshalPermission(p uintptr) (interface{}, error) {
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
-func (permission permission) Acquire(cancellable Cancellable) bool {
+func (permission permission) Acquire(cancellable Cancellable) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GPermission)(permission.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_permission_acquire(arg0, arg1)
+	ret := C.g_permission_acquire(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // AcquireAsync attempts to acquire the permission represented by
@@ -40802,20 +44379,24 @@ func (permission permission) AcquireAsync(cancellable Cancellable, callback Asyn
 //
 // This is the second half of the asynchronous version of
 // g_permission_acquire().
-func (permission permission) AcquireFinish(result AsyncResult) bool {
+func (permission permission) AcquireFinish(result AsyncResult) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GPermission)(permission.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_permission_acquire_finish(arg0, arg1)
+	ret := C.g_permission_acquire_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Allowed gets the value of the 'allowed' property. This property is true
@@ -40830,7 +44411,7 @@ func (permission permission) Allowed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -40847,7 +44428,7 @@ func (permission permission) CanAcquire() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -40864,7 +44445,7 @@ func (permission permission) CanRelease() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -40881,9 +44462,15 @@ func (permission permission) ImplUpdate(allowed bool, canAcquire bool, canReleas
 	var arg3 C.gboolean
 
 	arg0 = (*C.GPermission)(permission.Native())
-	arg1 = gextras.Cbool(allowed)
-	arg2 = gextras.Cbool(canAcquire)
-	arg3 = gextras.Cbool(canRelease)
+	if allowed {
+		arg1 = C.TRUE
+	}
+	if canAcquire {
+		arg2 = C.TRUE
+	}
+	if canRelease {
+		arg3 = C.TRUE
+	}
 
 	C.g_permission_impl_update(arg0, arg1, arg2, arg3)
 }
@@ -40903,20 +44490,24 @@ func (permission permission) ImplUpdate(allowed bool, canAcquire bool, canReleas
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_release_async() for the
 // non-blocking version.
-func (permission permission) Release(cancellable Cancellable) bool {
+func (permission permission) Release(cancellable Cancellable) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GPermission)(permission.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_permission_release(arg0, arg1)
+	ret := C.g_permission_release(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ReleaseAsync attempts to release the permission represented by
@@ -40943,20 +44534,24 @@ func (permission permission) ReleaseAsync(cancellable Cancellable, callback Asyn
 //
 // This is the second half of the asynchronous version of
 // g_permission_release().
-func (permission permission) ReleaseFinish(result AsyncResult) bool {
+func (permission permission) ReleaseFinish(result AsyncResult) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GPermission)(permission.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_permission_release_finish(arg0, arg1)
+	ret := C.g_permission_release_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PropertyAction: a Action is a way to get a #GAction with a state value
@@ -41051,7 +44646,7 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 
 	var ret0 PropertyAction
 
-	ret0 = WrapPropertyAction(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PropertyAction)
 
 	return ret0
 }
@@ -41131,7 +44726,7 @@ func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 
 	var ret0 ProxyAddress
 
-	ret0 = WrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ProxyAddress)
 
 	return ret0
 }
@@ -41298,7 +44893,7 @@ type Resolver interface {
 	//
 	// If @cancellable is non-nil, it can be used to cancel the operation, in
 	// which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
-	LookupByAddress(address InetAddress, cancellable Cancellable) string
+	LookupByAddress(address InetAddress, cancellable Cancellable) (utf8 string, err error)
 	// LookupByAddressAsync begins asynchronously reverse-resolving @address to
 	// determine its associated hostname, and eventually calls @callback, which
 	// must call g_resolver_lookup_by_address_finish() to get the final result.
@@ -41309,7 +44904,7 @@ type Resolver interface {
 	// If the DNS resolution failed, @error (if non-nil) will be set to a value
 	// from Error. If the operation was cancelled, @error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupByAddressFinish(result AsyncResult) string
+	LookupByAddressFinish(result AsyncResult) (utf8 string, err error)
 	// LookupByName: synchronously resolves @hostname to determine its
 	// associated IP address(es). @hostname may be an ASCII-only or UTF-8
 	// hostname, or the textual form of an IP address (in which case this just
@@ -41331,7 +44926,7 @@ type Resolver interface {
 	//
 	// If you are planning to connect to a socket on the resolved IP address, it
 	// may be easier to create a Address and use its Connectable interface.
-	LookupByName(hostname string, cancellable Cancellable) *glib.List
+	LookupByName(hostname string, cancellable Cancellable) (list *glib.List, err error)
 	// LookupByNameAsync begins asynchronously resolving @hostname to determine
 	// its associated IP address(es), and eventually calls @callback, which must
 	// call g_resolver_lookup_by_name_finish() to get the result. See
@@ -41343,11 +44938,11 @@ type Resolver interface {
 	// If the DNS resolution failed, @error (if non-nil) will be set to a value
 	// from Error. If the operation was cancelled, @error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupByNameFinish(result AsyncResult) *glib.List
+	LookupByNameFinish(result AsyncResult) (list *glib.List, err error)
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with @flags. For example this can
 	// be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
-	LookupByNameWithFlags(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable) *glib.List
+	LookupByNameWithFlags(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable) (list *glib.List, err error)
 	// LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
 	// determine its associated IP address(es), and eventually calls @callback,
 	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
@@ -41359,7 +44954,7 @@ type Resolver interface {
 	// If the DNS resolution failed, @error (if non-nil) will be set to a value
 	// from Error. If the operation was cancelled, @error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupByNameWithFlagsFinish(result AsyncResult) *glib.List
+	LookupByNameWithFlagsFinish(result AsyncResult) (list *glib.List, err error)
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// @rrname and returns a list of records as #GVariant tuples. See RecordType
 	// for information on what the records contain for each @record_type.
@@ -41369,7 +44964,7 @@ type Resolver interface {
 	//
 	// If @cancellable is non-nil, it can be used to cancel the operation, in
 	// which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
-	LookupRecords(rrname string, recordType ResolverRecordType, cancellable Cancellable) *glib.List
+	LookupRecords(rrname string, recordType ResolverRecordType, cancellable Cancellable) (list *glib.List, err error)
 	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
 	// given @rrname, and eventually calls @callback, which must call
 	// g_resolver_lookup_records_finish() to get the final result. See
@@ -41383,7 +44978,7 @@ type Resolver interface {
 	// If the DNS resolution failed, @error (if non-nil) will be set to a value
 	// from Error. If the operation was cancelled, @error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupRecordsFinish(result AsyncResult) *glib.List
+	LookupRecordsFinish(result AsyncResult) (list *glib.List, err error)
 	// LookupService: synchronously performs a DNS SRV lookup for the given
 	// @service and @protocol in the given @domain and returns an array of
 	// Target. @domain may be an ASCII-only or UTF-8 hostname. Note also that
@@ -41403,7 +44998,7 @@ type Resolver interface {
 	//
 	// If you are planning to connect to the service, it is usually easier to
 	// create a Service and use its Connectable interface.
-	LookupService(service string, protocol string, domain string, cancellable Cancellable) *glib.List
+	LookupService(service string, protocol string, domain string, cancellable Cancellable) (list *glib.List, err error)
 	// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
 	// the given @service and @protocol in the given @domain, and eventually
 	// calls @callback, which must call g_resolver_lookup_service_finish() to
@@ -41415,7 +45010,7 @@ type Resolver interface {
 	// If the DNS resolution failed, @error (if non-nil) will be set to a value
 	// from Error. If the operation was cancelled, @error will be set to
 	// G_IO_ERROR_CANCELLED.
-	LookupServiceFinish(result AsyncResult) *glib.List
+	LookupServiceFinish(result AsyncResult) (list *glib.List, err error)
 	// SetDefault sets @resolver to be the application's default resolver
 	// (reffing @resolver, and unreffing the previous default resolver, if any).
 	// Future calls to g_resolver_get_default() will return this resolver.
@@ -41457,23 +45052,30 @@ func marshalResolver(p uintptr) (interface{}, error) {
 //
 // If @cancellable is non-nil, it can be used to cancel the operation, in
 // which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByAddress(address InetAddress, cancellable Cancellable) string {
+func (resolver resolver) LookupByAddress(address InetAddress, cancellable Cancellable) (utf8 string, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GInetAddress
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.GInetAddress)(address.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_resolver_lookup_by_address(arg0, arg1, arg2)
+	ret := C.g_resolver_lookup_by_address(arg0, arg1, arg2, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupByAddressAsync begins asynchronously reverse-resolving @address to
@@ -41501,21 +45103,28 @@ func (resolver resolver) LookupByAddressAsync(address InetAddress, cancellable C
 // If the DNS resolution failed, @error (if non-nil) will be set to a value
 // from Error. If the operation was cancelled, @error will be set to
 // G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByAddressFinish(result AsyncResult) string {
+func (resolver resolver) LookupByAddressFinish(result AsyncResult) (utf8 string, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_resolver_lookup_by_address_finish(arg0, arg1)
+	ret := C.g_resolver_lookup_by_address_finish(arg0, arg1, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupByName: synchronously resolves @hostname to determine its
@@ -41539,25 +45148,32 @@ func (resolver resolver) LookupByAddressFinish(result AsyncResult) string {
 //
 // If you are planning to connect to a socket on the resolved IP address, it
 // may be easier to create a Address and use its Connectable interface.
-func (resolver resolver) LookupByName(hostname string, cancellable Cancellable) *glib.List {
+func (resolver resolver) LookupByName(hostname string, cancellable Cancellable) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.gchar
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_resolver_lookup_by_name(arg0, arg1, arg2)
+	ret := C.g_resolver_lookup_by_name(arg0, arg1, arg2, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupByNameAsync begins asynchronously resolving @hostname to determine
@@ -41587,32 +45203,40 @@ func (resolver resolver) LookupByNameAsync(hostname string, cancellable Cancella
 // If the DNS resolution failed, @error (if non-nil) will be set to a value
 // from Error. If the operation was cancelled, @error will be set to
 // G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByNameFinish(result AsyncResult) *glib.List {
+func (resolver resolver) LookupByNameFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_resolver_lookup_by_name_finish(arg0, arg1)
+	ret := C.g_resolver_lookup_by_name_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 // that you can modify the lookup behavior with @flags. For example this can
 // be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
-func (resolver resolver) LookupByNameWithFlags(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable) *glib.List {
+func (resolver resolver) LookupByNameWithFlags(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.gchar
 	var arg2 C.GResolverNameLookupFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.gchar)(C.CString(hostname))
@@ -41620,15 +45244,21 @@ func (resolver resolver) LookupByNameWithFlags(hostname string, flags ResolverNa
 	arg2 = (C.GResolverNameLookupFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_resolver_lookup_by_name_with_flags(arg0, arg1, arg2, arg3)
+	ret := C.g_resolver_lookup_by_name_with_flags(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
@@ -41660,22 +45290,29 @@ func (resolver resolver) LookupByNameWithFlagsAsync(hostname string, flags Resol
 // If the DNS resolution failed, @error (if non-nil) will be set to a value
 // from Error. If the operation was cancelled, @error will be set to
 // G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupByNameWithFlagsFinish(result AsyncResult) *glib.List {
+func (resolver resolver) LookupByNameWithFlagsFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_resolver_lookup_by_name_with_flags_finish(arg0, arg1)
+	ret := C.g_resolver_lookup_by_name_with_flags_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupRecords: synchronously performs a DNS record lookup for the given
@@ -41687,11 +45324,12 @@ func (resolver resolver) LookupByNameWithFlagsFinish(result AsyncResult) *glib.L
 //
 // If @cancellable is non-nil, it can be used to cancel the operation, in
 // which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupRecords(rrname string, recordType ResolverRecordType, cancellable Cancellable) *glib.List {
+func (resolver resolver) LookupRecords(rrname string, recordType ResolverRecordType, cancellable Cancellable) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.gchar
 	var arg2 C.GResolverRecordType
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.gchar)(C.CString(rrname))
@@ -41699,15 +45337,21 @@ func (resolver resolver) LookupRecords(rrname string, recordType ResolverRecordT
 	arg2 = (C.GResolverRecordType)(recordType)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_resolver_lookup_records(arg0, arg1, arg2, arg3)
+	ret := C.g_resolver_lookup_records(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupRecordsAsync begins asynchronously performing a DNS lookup for the
@@ -41741,22 +45385,29 @@ func (resolver resolver) LookupRecordsAsync(rrname string, recordType ResolverRe
 // If the DNS resolution failed, @error (if non-nil) will be set to a value
 // from Error. If the operation was cancelled, @error will be set to
 // G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupRecordsFinish(result AsyncResult) *glib.List {
+func (resolver resolver) LookupRecordsFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_resolver_lookup_records_finish(arg0, arg1)
+	ret := C.g_resolver_lookup_records_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupService: synchronously performs a DNS SRV lookup for the given
@@ -41778,12 +45429,13 @@ func (resolver resolver) LookupRecordsFinish(result AsyncResult) *glib.List {
 //
 // If you are planning to connect to the service, it is usually easier to
 // create a Service and use its Connectable interface.
-func (resolver resolver) LookupService(service string, protocol string, domain string, cancellable Cancellable) *glib.List {
+func (resolver resolver) LookupService(service string, protocol string, domain string, cancellable Cancellable) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.gchar)(C.CString(service))
@@ -41794,15 +45446,21 @@ func (resolver resolver) LookupService(service string, protocol string, domain s
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_resolver_lookup_service(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_resolver_lookup_service(arg0, arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
@@ -41838,22 +45496,29 @@ func (resolver resolver) LookupServiceAsync(service string, protocol string, dom
 // If the DNS resolution failed, @error (if non-nil) will be set to a value
 // from Error. If the operation was cancelled, @error will be set to
 // G_IO_ERROR_CANCELLED.
-func (resolver resolver) LookupServiceFinish(result AsyncResult) *glib.List {
+func (resolver resolver) LookupServiceFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GResolver)(resolver.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_resolver_lookup_service_finish(arg0, arg1)
+	ret := C.g_resolver_lookup_service_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetDefault sets @resolver to be the application's default resolver
@@ -42532,7 +46197,7 @@ func NewSettings(schemaID string) Settings {
 
 	var ret0 Settings
 
-	ret0 = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Settings)
 
 	return ret0
 }
@@ -42552,7 +46217,7 @@ func NewSettingsFull(schema *SettingsSchema, backend SettingsBackend, path strin
 
 	var ret0 Settings
 
-	ret0 = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Settings)
 
 	return ret0
 }
@@ -42570,7 +46235,7 @@ func NewSettingsWithBackend(schemaID string, backend SettingsBackend) Settings {
 
 	var ret0 Settings
 
-	ret0 = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Settings)
 
 	return ret0
 }
@@ -42591,7 +46256,7 @@ func NewSettingsWithBackendAndPath(schemaID string, backend SettingsBackend, pat
 
 	var ret0 Settings
 
-	ret0 = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Settings)
 
 	return ret0
 }
@@ -42610,7 +46275,7 @@ func NewSettingsWithPath(schemaID string, path string) Settings {
 
 	var ret0 Settings
 
-	ret0 = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Settings)
 
 	return ret0
 }
@@ -42694,7 +46359,9 @@ func (settings settings) BindWritable(key string, object gextras.Objector, prope
 	arg2 = (*C.GObject)(object.Native())
 	arg3 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = gextras.Cbool(inverted)
+	if inverted {
+		arg4 = C.TRUE
+	}
 
 	C.g_settings_bind_writable(arg0, arg1, arg2, arg3, arg4)
 }
@@ -42724,7 +46391,7 @@ func (settings settings) CreateAction(key string) Action {
 
 	var ret0 Action
 
-	ret0 = WrapAction(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Action)
 
 	return ret0
 }
@@ -42758,7 +46425,7 @@ func (settings settings) Boolean(key string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -42780,7 +46447,7 @@ func (settings settings) Child(name string) Settings {
 
 	var ret0 Settings
 
-	ret0 = WrapSettings(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Settings)
 
 	return ret0
 }
@@ -42914,7 +46581,7 @@ func (settings settings) HasUnapplied() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43208,7 +46875,7 @@ func (settings settings) IsWritable(name string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43300,7 +46967,7 @@ func (settings settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43349,13 +47016,15 @@ func (settings settings) SetBoolean(key string, value bool) bool {
 	arg0 = (*C.GSettings)(settings.Native())
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(value)
+	if value {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_settings_set_boolean(arg0, arg1, arg2)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43380,7 +47049,7 @@ func (settings settings) SetDouble(key string, value float64) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43408,7 +47077,7 @@ func (settings settings) SetEnum(key string, value int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43438,7 +47107,7 @@ func (settings settings) SetFlags(key string, value uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43463,7 +47132,7 @@ func (settings settings) SetInt(key string, value int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43488,7 +47157,7 @@ func (settings settings) SetInt64(key string, value int64) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43514,7 +47183,7 @@ func (settings settings) SetString(key string, value string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43535,14 +47204,28 @@ func (settings settings) SetStrv(key string, value []string) bool {
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(value) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(value)
+		sliceHeader.Cap = len(value)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(value); i++ {
+			src := value[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	ret := C.g_settings_set_strv(arg0, arg1, arg2)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43567,7 +47250,7 @@ func (settings settings) SetUint(key string, value uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43592,7 +47275,7 @@ func (settings settings) SetUint64(key string, value uint64) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43618,7 +47301,7 @@ func (settings settings) SetValue(key string, value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -43831,7 +47514,21 @@ func (backend settingsBackend) KeysChanged(path string, items []string, originTa
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(items) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(items)
+		sliceHeader.Cap = len(items)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(items); i++ {
+			src := items[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg3 = C.gpointer(box.Assign(originTag))
 
@@ -43973,7 +47670,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction 
 
 	var ret0 SimpleAction
 
-	ret0 = WrapSimpleAction(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleAction)
 
 	return ret0
 }
@@ -43993,7 +47690,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 
 	var ret0 SimpleAction
 
-	ret0 = WrapSimpleAction(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleAction)
 
 	return ret0
 }
@@ -44010,7 +47707,9 @@ func (simple simpleAction) SetEnabled(enabled bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSimpleAction)(simple.Native())
-	arg1 = gextras.Cbool(enabled)
+	if enabled {
+		arg1 = C.TRUE
+	}
 
 	C.g_simple_action_set_enabled(arg0, arg1)
 }
@@ -44055,6 +47754,9 @@ type SimpleActionGroup interface {
 	ActionGroup
 	ActionMap
 
+	// AddEntries: a convenience function for creating multiple Action instances
+	// and adding them to the action group.
+	AddEntries(entries []ActionEntry, userData interface{})
 	// Insert adds an action to the action group.
 	//
 	// If the action group already contains an action with the same name as
@@ -44104,9 +47806,40 @@ func NewSimpleActionGroup() SimpleActionGroup {
 
 	var ret0 SimpleActionGroup
 
-	ret0 = WrapSimpleActionGroup(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleActionGroup)
 
 	return ret0
+}
+
+// AddEntries: a convenience function for creating multiple Action instances
+// and adding them to the action group.
+func (simple simpleActionGroup) AddEntries(entries []ActionEntry, userData interface{}) {
+	var arg0 *C.GSimpleActionGroup
+	var arg1 *C.GActionEntry
+	var arg2 C.gint
+	var arg3 C.gpointer
+
+	arg0 = (*C.GSimpleActionGroup)(simple.Native())
+	{
+		var dst []C.GActionEntry
+		ptr := C.malloc(C.sizeof_GActionEntry * len(entries))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(entries)
+		sliceHeader.Cap = len(entries)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(entries); i++ {
+			src := entries[i]
+			dst[i] = (C.GActionEntry)(src.Native())
+		}
+
+		arg1 = (*C.GActionEntry)(unsafe.Pointer(ptr))
+		arg2 = len(entries)
+	}
+	arg3 = C.gpointer(box.Assign(userData))
+
+	C.g_simple_action_group_add_entries(arg0, arg1, arg2, arg3)
 }
 
 // Insert adds an action to the action group.
@@ -44140,7 +47873,7 @@ func (simple simpleActionGroup) Lookup(actionName string) Action {
 
 	var ret0 Action
 
-	ret0 = WrapAction(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Action)
 
 	return ret0
 }
@@ -44352,7 +48085,7 @@ type SimpleAsyncResult interface {
 	// If the #GCancellable given to a prior call to
 	// g_simple_async_result_set_check_cancellable() is cancelled then this
 	// function will return true with @dest set appropriately.
-	PropagateError() bool
+	PropagateError() error
 	// SetCheckCancellable sets a #GCancellable to check before dispatching
 	// results.
 	//
@@ -44429,7 +48162,7 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 
 	var ret0 SimpleAsyncResult
 
-	ret0 = WrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleAsyncResult)
 
 	return ret0
 }
@@ -44450,7 +48183,7 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 
 	var ret0 SimpleAsyncResult
 
-	ret0 = WrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleAsyncResult)
 
 	return ret0
 }
@@ -44471,7 +48204,7 @@ func NewSimpleAsyncResultTakeError(sourceObject gextras.Objector, callback Async
 
 	var ret0 SimpleAsyncResult
 
-	ret0 = WrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleAsyncResult)
 
 	return ret0
 }
@@ -44517,7 +48250,7 @@ func (simple simpleAsyncResult) OpResGboolean() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -44574,18 +48307,22 @@ func (simple simpleAsyncResult) SourceTag() interface{} {
 // If the #GCancellable given to a prior call to
 // g_simple_async_result_set_check_cancellable() is cancelled then this
 // function will return true with @dest set appropriately.
-func (simple simpleAsyncResult) PropagateError() bool {
+func (simple simpleAsyncResult) PropagateError() error {
 	var arg0 *C.GSimpleAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSimpleAsyncResult)(simple.Native())
 
-	ret := C.g_simple_async_result_propagate_error(arg0)
+	ret := C.g_simple_async_result_propagate_error(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetCheckCancellable sets a #GCancellable to check before dispatching
@@ -44636,7 +48373,9 @@ func (simple simpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSimpleAsyncResult)(simple.Native())
-	arg1 = gextras.Cbool(handleCancellation)
+	if handleCancellation {
+		arg1 = C.TRUE
+	}
 
 	C.g_simple_async_result_set_handle_cancellation(arg0, arg1)
 }
@@ -44648,7 +48387,9 @@ func (simple simpleAsyncResult) SetOpResGboolean(opRes bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSimpleAsyncResult)(simple.Native())
-	arg1 = gextras.Cbool(opRes)
+	if opRes {
+		arg1 = C.TRUE
+	}
 
 	C.g_simple_async_result_set_op_res_gboolean(arg0, arg1)
 }
@@ -44722,7 +48463,7 @@ func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) Simpl
 
 	var ret0 SimpleIOStream
 
-	ret0 = WrapSimpleIOStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleIOStream)
 
 	return ret0
 }
@@ -44761,13 +48502,15 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 func NewSimplePermission(allowed bool) SimplePermission {
 	var arg1 C.gboolean
 
-	arg1 = gextras.Cbool(allowed)
+	if allowed {
+		arg1 = C.TRUE
+	}
 
 	ret := C.g_simple_permission_new(arg1)
 
 	var ret0 SimplePermission
 
-	ret0 = WrapSimplePermission(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimplePermission)
 
 	return ret0
 }
@@ -44944,7 +48687,7 @@ type Socket interface {
 	// If there are no outstanding connections then the operation will block or
 	// return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be
 	// notified of an incoming connection, wait for the G_IO_IN condition.
-	Accept(cancellable Cancellable) Socket
+	Accept(cancellable Cancellable) (socket Socket, err error)
 	// Bind: when a socket is created it is attached to an address family, but
 	// it doesn't have an address in this family. g_socket_bind() assigns the
 	// address (sometimes called name) of the socket.
@@ -44967,11 +48710,11 @@ type Socket interface {
 	// and they will all receive all of the multicast and broadcast packets sent
 	// to that address. (The behavior of unicast UDP packets to an address with
 	// multiple listeners is not defined.)
-	Bind(address SocketAddress, allowReuse bool) bool
+	Bind(address SocketAddress, allowReuse bool) error
 	// CheckConnectResult checks and resets the pending connect error for the
 	// socket. This is used to check for errors when g_socket_connect() is used
 	// in non-blocking mode.
-	CheckConnectResult() bool
+	CheckConnectResult() error
 	// Close closes the socket, shutting down any active connection.
 	//
 	// Closing a socket does not wait for all outstanding I/O operations to
@@ -44999,7 +48742,7 @@ type Socket interface {
 	// can safely call g_socket_close(). (This is what Connection does if you
 	// call g_tcp_connection_set_graceful_disconnect(). But of course, this only
 	// works if the client will close its connection after the server does.)
-	Close() bool
+	Close() error
 	// ConditionCheck checks on the readiness of @socket to perform operations.
 	// The operations specified in @condition are checked for and masked against
 	// the currently-satisfied conditions on @socket. The result is returned.
@@ -45033,7 +48776,7 @@ type Socket interface {
 	// other GLib APIs, this function actually only has millisecond resolution,
 	// and the behavior is undefined if @timeout_us is not an exact number of
 	// milliseconds.
-	ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) bool
+	ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error
 	// ConditionWait waits for @condition to become true on @socket. When the
 	// condition is met, true is returned.
 	//
@@ -45043,7 +48786,7 @@ type Socket interface {
 	// value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 	//
 	// See also g_socket_condition_timed_wait().
-	ConditionWait(condition glib.IOCondition, cancellable Cancellable) bool
+	ConditionWait(condition glib.IOCondition, cancellable Cancellable) error
 	// Connect: connect the socket to the specified remote address.
 	//
 	// For connection oriented socket this generally means we attempt to make a
@@ -45060,7 +48803,7 @@ type Socket interface {
 	// user can be notified of the connection finishing by waiting for the
 	// G_IO_OUT condition. The result of the connection must then be checked
 	// with g_socket_check_connect_result().
-	Connect(address SocketAddress, cancellable Cancellable) bool
+	Connect(address SocketAddress, cancellable Cancellable) error
 	// ConnectionFactoryCreateConnection creates a Connection subclass of the
 	// right type for @socket.
 	ConnectionFactoryCreateConnection() SocketConnection
@@ -45120,7 +48863,7 @@ type Socket interface {
 	// Other ways to obtain credentials from a foreign peer includes the
 	// CredentialsMessage type and g_unix_connection_send_credentials() /
 	// g_unix_connection_receive_credentials() functions.
-	Credentials() Credentials
+	Credentials() (credentials Credentials, err error)
 	// Family gets the socket family of the socket.
 	Family() SocketFamily
 	// Fd returns the underlying OS socket object. On unix this is a socket file
@@ -45137,7 +48880,7 @@ type Socket interface {
 	// LocalAddress: try to get the local address of a bound socket. This is
 	// only useful if the socket has been bound to a local address, either
 	// explicitly or implicitly when connecting.
-	LocalAddress() SocketAddress
+	LocalAddress() (socketAddress SocketAddress, err error)
 	// MulticastLoopback gets the multicast loopback setting on @socket; if true
 	// (the default), outgoing multicast packets will be looped back to
 	// multicast listeners on the same host.
@@ -45157,13 +48900,13 @@ type Socket interface {
 	// Note that even for socket options that are a single byte in size, @value
 	// is still a pointer to a #gint variable, not a #guchar;
 	// g_socket_get_option() will handle the conversion internally.
-	Option(level int, optname int) (value int, ok bool)
+	Option(level int, optname int) (value int, err error)
 	// Protocol gets the socket protocol id the socket was created with. In case
 	// the protocol is unknown, -1 is returned.
 	Protocol() SocketProtocol
 	// RemoteAddress: try to get the remote address of a connected socket. This
 	// is only useful for connection oriented sockets that have been connected.
-	RemoteAddress() SocketAddress
+	RemoteAddress() (socketAddress SocketAddress, err error)
 	// SocketType gets the socket type of the socket.
 	SocketType() SocketType
 	// Timeout gets the timeout setting of the socket. For details on this, see
@@ -45195,7 +48938,7 @@ type Socket interface {
 	//
 	// To bind to a given source-specific multicast address, use
 	// g_socket_join_multicast_group_ssm() instead.
-	JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) bool
+	JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error
 	// JoinMulticastGroupSsm registers @socket to receive multicast messages
 	// sent to @group. @socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must
 	// have been bound to an appropriate interface and port with
@@ -45211,7 +48954,7 @@ type Socket interface {
 	// Note that this function can be called multiple times for the same @group
 	// with different @source_specific in order to receive multicast packets
 	// from more than one source.
-	JoinMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) bool
+	JoinMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) error
 	// LeaveMulticastGroup removes @socket from the multicast group defined by
 	// @group, @iface, and @source_specific (which must all have the same values
 	// they had when you joined the group).
@@ -45221,14 +48964,14 @@ type Socket interface {
 	//
 	// To unbind to a given source-specific multicast address, use
 	// g_socket_leave_multicast_group_ssm() instead.
-	LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) bool
+	LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error
 	// LeaveMulticastGroupSsm removes @socket from the multicast group defined
 	// by @group, @iface, and @source_specific (which must all have the same
 	// values they had when you joined the group).
 	//
 	// @socket remains bound to its address and port, and can still receive
 	// unicast messages after calling this.
-	LeaveMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) bool
+	LeaveMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) error
 	// Listen marks the socket as a server socket, i.e. a socket that is used to
 	// accept incoming requests using g_socket_accept().
 	//
@@ -45237,7 +48980,7 @@ type Socket interface {
 	//
 	// To set the maximum amount of outstanding clients, use
 	// g_socket_set_listen_backlog().
-	Listen() bool
+	Listen() error
 	// Receive: receive data (up to @size bytes) from a socket. This is mainly
 	// used by connection-oriented sockets; it is identical to
 	// g_socket_receive_from() with @address set to nil.
@@ -45260,18 +49003,232 @@ type Socket interface {
 	// is available, wait for the G_IO_IN condition.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	Receive(cancellable Cancellable) (buffer []byte, size uint, gssize int)
+	Receive(cancellable Cancellable) (buffer []byte, size uint, gssize int, err error)
 	// ReceiveFrom: receive data (up to @size bytes) from a socket.
 	//
 	// If @address is non-nil then @address will be set equal to the source
 	// address of the received packet. @address is owned by the caller.
 	//
 	// See g_socket_receive() for additional information.
-	ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []byte, size uint, gssize int)
+	ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []byte, size uint, gssize int, err error)
+	// ReceiveMessage: receive data from a socket. For receiving multiple
+	// messages, see g_socket_receive_messages(); for easier use, see
+	// g_socket_receive() and g_socket_receive_from().
+	//
+	// If @address is non-nil then @address will be set equal to the source
+	// address of the received packet. @address is owned by the caller.
+	//
+	// @vector must point to an array of Vector structs and @num_vectors must be
+	// the length of this array. These structs describe the buffers that
+	// received data will be scattered into. If @num_vectors is -1, then
+	// @vectors is assumed to be terminated by a Vector with a nil buffer
+	// pointer.
+	//
+	// As a special case, if @num_vectors is 0 (in which case, @vectors may of
+	// course be nil), then a single byte is received and discarded. This is to
+	// facilitate the common practice of sending a single '\0' byte for the
+	// purposes of transferring ancillary data.
+	//
+	// @messages, if non-nil, will be set to point to a newly-allocated array of
+	// ControlMessage instances or nil if no such messages was received. These
+	// correspond to the control messages received from the kernel, one
+	// ControlMessage per message from the kernel. This array is nil-terminated
+	// and must be freed by the caller using g_free() after calling
+	// g_object_unref() on each element. If @messages is nil, any control
+	// messages received will be discarded.
+	//
+	// @num_messages, if non-nil, will be set to the number of control messages
+	// received.
+	//
+	// If both @messages and @num_messages are non-nil, then @num_messages gives
+	// the number of ControlMessage instances in @messages (ie: not including
+	// the nil terminator).
+	//
+	// @flags is an in/out parameter. The commonly available arguments for this
+	// are available in the MsgFlags enum, but the values there are the same as
+	// the system values, and the flags are passed in as-is, so you can pass in
+	// system-specific flags too (and g_socket_receive_message() may pass
+	// system-specific flags out). Flags passed in to the parameter affect the
+	// receive operation; flags returned out of it are relevant to the specific
+	// returned message.
+	//
+	// As with g_socket_receive(), data may be discarded if @socket is
+	// G_SOCKET_TYPE_DATAGRAM or G_SOCKET_TYPE_SEQPACKET and you do not provide
+	// enough buffer space to read a complete message. You can pass
+	// G_SOCKET_MSG_PEEK in @flags to peek at the current message without
+	// removing it from the receive queue, but there is no portable way to find
+	// out the length of the message other than by reading it into a
+	// sufficiently-large buffer.
+	//
+	// If the socket is in blocking mode the call will block until there is some
+	// data to receive, the connection is closed, or there is an error. If there
+	// is no data available and the socket is in non-blocking mode, a
+	// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
+	// is available, wait for the G_IO_IN condition.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []SocketControlMessage, numMessages int, gssize int, err error)
+	// ReceiveMessages: receive multiple data messages from @socket in one go.
+	// This is the most complicated and fully-featured version of this call. For
+	// easier use, see g_socket_receive(), g_socket_receive_from(), and
+	// g_socket_receive_message().
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to. Using multiple Vectors is more
+	// memory-efficient than manually copying data out of a single buffer to
+	// multiple sources, and more system-call-efficient than making multiple
+	// calls to g_socket_receive(), such as in scenarios where a lot of data
+	// packets need to be received (e.g. high-bandwidth video streaming over
+	// RTP/UDP).
+	//
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If #GSocket:blocking is true the call will block until @num_messages have
+	// been received, or the end of the stream is reached.
+	//
+	// If #GSocket:blocking is false the call will return up to @num_messages
+	// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in
+	// the operating system to be received.
+	//
+	// In blocking mode, if #GSocket:timeout is positive and is reached before
+	// any messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up
+	// to @num_messages are returned. (Note: This is effectively the behaviour
+	// of `MSG_WAITFORONE` with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_socket_receive_messages() even if you were previously notified of
+	// a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// operating system will be returned, and subsequent calls to
+	// g_socket_receive_messages() will return 0 (with no error set).
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned.
+	ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (gint int, err error)
 	// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
 	// except that the choice of blocking or non-blocking behavior is determined
 	// by the @blocking argument rather than by @socket's properties.
-	ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []byte, size uint, gssize int)
+	ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []byte, size uint, gssize int, err error)
+	// Send tries to send @size bytes from @buffer on the socket. This is mainly
+	// used by connection-oriented sockets; it is identical to
+	// g_socket_send_to() with @address set to nil.
+	//
+	// If the socket is in blocking mode the call will block until there is
+	// space for the data in the socket queue. If there is no space available
+	// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+	// will be returned. To be notified when space is available, wait for the
+	// G_IO_OUT condition. Note though that you may still receive
+	// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// On error -1 is returned and @error is set accordingly.
+	Send(buffer []byte, cancellable Cancellable) (gssize int, err error)
+	// SendMessage: send data to @address on @socket. For sending multiple
+	// messages see g_socket_send_messages(); for easier use, see
+	// g_socket_send() and g_socket_send_to().
+	//
+	// If @address is nil then the message is sent to the default receiver (set
+	// by g_socket_connect()).
+	//
+	// @vectors must point to an array of Vector structs and @num_vectors must
+	// be the length of this array. (If @num_vectors is -1, then @vectors is
+	// assumed to be terminated by a Vector with a nil buffer pointer.) The
+	// Vector structs describe the buffers that the sent data will be gathered
+	// from. Using multiple Vectors is more memory-efficient than manually
+	// copying data from multiple sources into a single buffer, and more
+	// network-efficient than making multiple calls to g_socket_send().
+	//
+	// @messages, if non-nil, is taken to point to an array of @num_messages
+	// ControlMessage instances. These correspond to the control messages to be
+	// sent on the socket. If @num_messages is -1 then @messages is treated as a
+	// nil-terminated array.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// If the socket is in blocking mode the call will block until there is
+	// space for the data in the socket queue. If there is no space available
+	// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+	// will be returned. To be notified when space is available, wait for the
+	// G_IO_OUT condition. Note though that you may still receive
+	// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// On error -1 is returned and @error is set accordingly.
+	SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (gssize int, err error)
+	// SendMessageWithTimeout: this behaves exactly the same as
+	// g_socket_send_message(), except that the choice of timeout behavior is
+	// determined by the @timeout_us argument rather than by @socket's
+	// properties.
+	//
+	// On error G_POLLABLE_RETURN_FAILED is returned and @error is set
+	// accordingly, or if the socket is currently not writable
+	// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
+	// in both cases.
+	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn, err error)
+	// SendMessages: send multiple data messages from @socket in one go. This is
+	// the most complicated and fully-featured version of this call. For easier
+	// use, see g_socket_send(), g_socket_send_to(), and
+	// g_socket_send_message().
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains an address to
+	// send the data to, and a pointer to an array of Vector structs to describe
+	// the buffers that the data to be sent for each message will be gathered
+	// from. Using multiple Vectors is more memory-efficient than manually
+	// copying data from multiple sources into a single buffer, and more
+	// network-efficient than making multiple calls to g_socket_send(). Sending
+	// multiple messages in one go avoids the overhead of making a lot of
+	// syscalls in scenarios where a lot of data packets need to be sent (e.g.
+	// high-bandwidth video streaming over RTP/UDP), or where the same data
+	// needs to be sent to multiple recipients.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// If the socket is in blocking mode the call will block until there is
+	// space for all the data in the socket queue. If there is no space
+	// available and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK
+	// error will be returned if no data was written at all, otherwise the
+	// number of messages sent will be returned. To be notified when space is
+	// available, wait for the G_IO_OUT condition. Note though that you may
+	// still receive G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you
+	// were previously notified of a G_IO_OUT condition. (On Windows in
+	// particular, this is very common due to the way the underlying APIs work.)
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned.
+	SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (gint int, err error)
+	// SendTo tries to send @size bytes from @buffer to @address. If @address is
+	// nil then the message is sent to the default receiver (set by
+	// g_socket_connect()).
+	//
+	// See g_socket_send() for additional information.
+	SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (gssize int, err error)
+	// SendWithBlocking: this behaves exactly the same as g_socket_send(),
+	// except that the choice of blocking or non-blocking behavior is determined
+	// by the @blocking argument rather than by @socket's properties.
+	SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (gssize int, err error)
 	// SetBlocking sets the blocking mode of the socket. In blocking mode all
 	// operations (which don’t take an explicit blocking parameter) block until
 	// they succeed or there is an error. In non-blocking mode all functions
@@ -45324,7 +49281,7 @@ type Socket interface {
 	// headers that will define most of the standard/portable socket options.
 	// For unusual socket protocols or platform-dependent options, you may need
 	// to include additional headers.
-	SetOption(level int, optname int, value int) bool
+	SetOption(level int, optname int, value int) error
 	// SetTimeout sets the time in seconds after which I/O operations on @socket
 	// will time out if they have not yet completed.
 	//
@@ -45362,7 +49319,7 @@ type Socket interface {
 	// is graceful disconnect for TCP connections where you close the sending
 	// side, then wait for the other side to close the connection, thus ensuring
 	// that the other side saw all sent data.
-	Shutdown(shutdownRead bool, shutdownWrite bool) bool
+	Shutdown(shutdownRead bool, shutdownWrite bool) error
 	// SpeaksIpv4 checks if a socket is capable of speaking IPv4.
 	//
 	// IPv4 sockets are capable of speaking IPv4. On some operating systems and
@@ -45400,37 +49357,51 @@ func marshalSocket(p uintptr) (interface{}, error) {
 }
 
 // NewSocket constructs a class Socket.
-func NewSocket(family SocketFamily, _type SocketType, protocol SocketProtocol) Socket {
+func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (socket Socket, err error) {
 	var arg1 C.GSocketFamily
 	var arg2 C.GSocketType
 	var arg3 C.GSocketProtocol
+	var gError *C.GError
 
 	arg1 = (C.GSocketFamily)(family)
-	arg2 = (C.GSocketType)(_type)
+	arg2 = (C.GSocketType)(typ)
 	arg3 = (C.GSocketProtocol)(protocol)
 
-	ret := C.g_socket_new(arg1, arg2, arg3)
+	ret := C.g_socket_new(arg1, arg2, arg3, &gError)
 
 	var ret0 Socket
+	var goError error
 
-	ret0 = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Socket)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewSocketFromFd constructs a class Socket.
-func NewSocketFromFd(fd int) Socket {
+func NewSocketFromFd(fd int) (socket Socket, err error) {
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg1 = C.gint(fd)
 
-	ret := C.g_socket_new_from_fd(arg1)
+	ret := C.g_socket_new_from_fd(arg1, &gError)
 
 	var ret0 Socket
+	var goError error
 
-	ret0 = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Socket)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Accept: accept incoming connections on a connection-based socket. This
@@ -45443,20 +49414,27 @@ func NewSocketFromFd(fd int) Socket {
 // If there are no outstanding connections then the operation will block or
 // return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be
 // notified of an incoming connection, wait for the G_IO_IN condition.
-func (socket socket) Accept(cancellable Cancellable) Socket {
+func (socket socket) Accept(cancellable Cancellable) (socket Socket, err error) {
 	var arg0 *C.GSocket
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_accept(arg0, arg1)
+	ret := C.g_socket_accept(arg0, arg1, &gError)
 
 	var ret0 Socket
+	var goError error
 
-	ret0 = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Socket)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Bind: when a socket is created it is attached to an address family, but
@@ -45481,39 +49459,49 @@ func (socket socket) Accept(cancellable Cancellable) Socket {
 // and they will all receive all of the multicast and broadcast packets sent
 // to that address. (The behavior of unicast UDP packets to an address with
 // multiple listeners is not defined.)
-func (socket socket) Bind(address SocketAddress, allowReuse bool) bool {
+func (socket socket) Bind(address SocketAddress, allowReuse bool) error {
 	var arg0 *C.GSocket
 	var arg1 *C.GSocketAddress
 	var arg2 C.gboolean
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GSocketAddress)(address.Native())
-	arg2 = gextras.Cbool(allowReuse)
+	if allowReuse {
+		arg2 = C.TRUE
+	}
 
-	ret := C.g_socket_bind(arg0, arg1, arg2)
+	ret := C.g_socket_bind(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // CheckConnectResult checks and resets the pending connect error for the
 // socket. This is used to check for errors when g_socket_connect() is used
 // in non-blocking mode.
-func (socket socket) CheckConnectResult() bool {
+func (socket socket) CheckConnectResult() error {
 	var arg0 *C.GSocket
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 
-	ret := C.g_socket_check_connect_result(arg0)
+	ret := C.g_socket_check_connect_result(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Close closes the socket, shutting down any active connection.
@@ -45543,18 +49531,22 @@ func (socket socket) CheckConnectResult() bool {
 // can safely call g_socket_close(). (This is what Connection does if you
 // call g_tcp_connection_set_graceful_disconnect(). But of course, this only
 // works if the client will close its connection after the server does.)
-func (socket socket) Close() bool {
+func (socket socket) Close() error {
 	var arg0 *C.GSocket
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 
-	ret := C.g_socket_close(arg0)
+	ret := C.g_socket_close(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ConditionCheck checks on the readiness of @socket to perform operations.
@@ -45605,24 +49597,28 @@ func (socket socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition
 // other GLib APIs, this function actually only has millisecond resolution,
 // and the behavior is undefined if @timeout_us is not an exact number of
 // milliseconds.
-func (socket socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) bool {
+func (socket socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellable) error {
 	var arg0 *C.GSocket
 	var arg1 C.GIOCondition
 	var arg2 C.gint64
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (C.GIOCondition)(condition)
 	arg2 = C.gint64(timeoutUs)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_condition_timed_wait(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_condition_timed_wait(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ConditionWait waits for @condition to become true on @socket. When the
@@ -45634,22 +49630,26 @@ func (socket socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs in
 // value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 //
 // See also g_socket_condition_timed_wait().
-func (socket socket) ConditionWait(condition glib.IOCondition, cancellable Cancellable) bool {
+func (socket socket) ConditionWait(condition glib.IOCondition, cancellable Cancellable) error {
 	var arg0 *C.GSocket
 	var arg1 C.GIOCondition
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (C.GIOCondition)(condition)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_condition_wait(arg0, arg1, arg2)
+	ret := C.g_socket_condition_wait(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Connect: connect the socket to the specified remote address.
@@ -45668,22 +49668,26 @@ func (socket socket) ConditionWait(condition glib.IOCondition, cancellable Cance
 // user can be notified of the connection finishing by waiting for the
 // G_IO_OUT condition. The result of the connection must then be checked
 // with g_socket_check_connect_result().
-func (socket socket) Connect(address SocketAddress, cancellable Cancellable) bool {
+func (socket socket) Connect(address SocketAddress, cancellable Cancellable) error {
 	var arg0 *C.GSocket
 	var arg1 *C.GSocketAddress
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GSocketAddress)(address.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_connect(arg0, arg1, arg2)
+	ret := C.g_socket_connect(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ConnectionFactoryCreateConnection creates a Connection subclass of the
@@ -45697,7 +49701,7 @@ func (socket socket) ConnectionFactoryCreateConnection() SocketConnection {
 
 	var ret0 SocketConnection
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
 	return ret0
 }
@@ -45778,7 +49782,7 @@ func (socket socket) Blocking() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -45794,7 +49798,7 @@ func (socket socket) Broadcast() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -45816,18 +49820,25 @@ func (socket socket) Broadcast() bool {
 // Other ways to obtain credentials from a foreign peer includes the
 // CredentialsMessage type and g_unix_connection_send_credentials() /
 // g_unix_connection_receive_credentials() functions.
-func (socket socket) Credentials() Credentials {
+func (socket socket) Credentials() (credentials Credentials, err error) {
 	var arg0 *C.GSocket
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 
-	ret := C.g_socket_get_credentials(arg0)
+	ret := C.g_socket_get_credentials(arg0, &gError)
 
 	var ret0 Credentials
+	var goError error
 
-	ret0 = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Credentials)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Family gets the socket family of the socket.
@@ -45874,7 +49885,7 @@ func (socket socket) Keepalive() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -45898,18 +49909,25 @@ func (socket socket) ListenBacklog() int {
 // LocalAddress: try to get the local address of a bound socket. This is
 // only useful if the socket has been bound to a local address, either
 // explicitly or implicitly when connecting.
-func (socket socket) LocalAddress() SocketAddress {
+func (socket socket) LocalAddress() (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocket
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 
-	ret := C.g_socket_get_local_address(arg0)
+	ret := C.g_socket_get_local_address(arg0, &gError)
 
 	var ret0 SocketAddress
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // MulticastLoopback gets the multicast loopback setting on @socket; if true
@@ -45924,7 +49942,7 @@ func (socket socket) MulticastLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -45957,26 +49975,30 @@ func (socket socket) MulticastTtl() uint {
 // Note that even for socket options that are a single byte in size, @value
 // is still a pointer to a #gint variable, not a #guchar;
 // g_socket_get_option() will handle the conversion internally.
-func (socket socket) Option(level int, optname int) (value int, ok bool) {
+func (socket socket) Option(level int, optname int) (value int, err error) {
 	var arg0 *C.GSocket
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 *C.gint // out
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = C.gint(level)
 	arg2 = C.gint(optname)
 
-	ret := C.g_socket_get_option(arg0, arg1, arg2, &arg3)
+	ret := C.g_socket_get_option(arg0, arg1, arg2, &arg3, &gError)
 
 	var ret0 int
-	var ret1 bool
+	var goError error
 
 	ret0 = int(arg3)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // Protocol gets the socket protocol id the socket was created with. In case
@@ -45997,18 +50019,25 @@ func (socket socket) Protocol() SocketProtocol {
 
 // RemoteAddress: try to get the remote address of a connected socket. This
 // is only useful for connection oriented sockets that have been connected.
-func (socket socket) RemoteAddress() SocketAddress {
+func (socket socket) RemoteAddress() (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocket
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 
-	ret := C.g_socket_get_remote_address(arg0)
+	ret := C.g_socket_get_remote_address(arg0, &gError)
 
 	var ret0 SocketAddress
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SocketType gets the socket type of the socket.
@@ -46068,7 +50097,7 @@ func (socket socket) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -46089,7 +50118,7 @@ func (socket socket) IsConnected() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -46107,25 +50136,31 @@ func (socket socket) IsConnected() bool {
 //
 // To bind to a given source-specific multicast address, use
 // g_socket_join_multicast_group_ssm() instead.
-func (socket socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) bool {
+func (socket socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error {
 	var arg0 *C.GSocket
 	var arg1 *C.GInetAddress
 	var arg2 C.gboolean
 	var arg3 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GInetAddress)(group.Native())
-	arg2 = gextras.Cbool(sourceSpecific)
+	if sourceSpecific {
+		arg2 = C.TRUE
+	}
 	arg3 = (*C.gchar)(C.CString(iface))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_socket_join_multicast_group(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_join_multicast_group(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // JoinMulticastGroupSsm registers @socket to receive multicast messages
@@ -46143,11 +50178,12 @@ func (socket socket) JoinMulticastGroup(group InetAddress, sourceSpecific bool, 
 // Note that this function can be called multiple times for the same @group
 // with different @source_specific in order to receive multicast packets
 // from more than one source.
-func (socket socket) JoinMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) bool {
+func (socket socket) JoinMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) error {
 	var arg0 *C.GSocket
 	var arg1 *C.GInetAddress
 	var arg2 *C.GInetAddress
 	var arg3 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GInetAddress)(group.Native())
@@ -46155,13 +50191,16 @@ func (socket socket) JoinMulticastGroupSsm(group InetAddress, sourceSpecific Ine
 	arg3 = (*C.gchar)(C.CString(iface))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_socket_join_multicast_group_ssm(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_join_multicast_group_ssm(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LeaveMulticastGroup removes @socket from the multicast group defined by
@@ -46173,25 +50212,31 @@ func (socket socket) JoinMulticastGroupSsm(group InetAddress, sourceSpecific Ine
 //
 // To unbind to a given source-specific multicast address, use
 // g_socket_leave_multicast_group_ssm() instead.
-func (socket socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) bool {
+func (socket socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool, iface string) error {
 	var arg0 *C.GSocket
 	var arg1 *C.GInetAddress
 	var arg2 C.gboolean
 	var arg3 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GInetAddress)(group.Native())
-	arg2 = gextras.Cbool(sourceSpecific)
+	if sourceSpecific {
+		arg2 = C.TRUE
+	}
 	arg3 = (*C.gchar)(C.CString(iface))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_socket_leave_multicast_group(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_leave_multicast_group(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LeaveMulticastGroupSsm removes @socket from the multicast group defined
@@ -46200,11 +50245,12 @@ func (socket socket) LeaveMulticastGroup(group InetAddress, sourceSpecific bool,
 //
 // @socket remains bound to its address and port, and can still receive
 // unicast messages after calling this.
-func (socket socket) LeaveMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) bool {
+func (socket socket) LeaveMulticastGroupSsm(group InetAddress, sourceSpecific InetAddress, iface string) error {
 	var arg0 *C.GSocket
 	var arg1 *C.GInetAddress
 	var arg2 *C.GInetAddress
 	var arg3 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = (*C.GInetAddress)(group.Native())
@@ -46212,13 +50258,16 @@ func (socket socket) LeaveMulticastGroupSsm(group InetAddress, sourceSpecific In
 	arg3 = (*C.gchar)(C.CString(iface))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_socket_leave_multicast_group_ssm(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_leave_multicast_group_ssm(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Listen marks the socket as a server socket, i.e. a socket that is used to
@@ -46229,18 +50278,22 @@ func (socket socket) LeaveMulticastGroupSsm(group InetAddress, sourceSpecific In
 //
 // To set the maximum amount of outstanding clients, use
 // g_socket_set_listen_backlog().
-func (socket socket) Listen() bool {
+func (socket socket) Listen() error {
 	var arg0 *C.GSocket
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 
-	ret := C.g_socket_listen(arg0)
+	ret := C.g_socket_listen(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Receive: receive data (up to @size bytes) from a socket. This is mainly
@@ -46265,20 +50318,22 @@ func (socket socket) Listen() bool {
 // is available, wait for the G_IO_IN condition.
 //
 // On error -1 is returned and @error is set accordingly.
-func (socket socket) Receive(cancellable Cancellable) (buffer []byte, size uint, gssize int) {
+func (socket socket) Receive(cancellable Cancellable) (buffer []byte, size uint, gssize int, err error) {
 	var arg0 *C.GSocket
 	var arg1 *C.gchar // out
 	var arg2 C.gsize  // out
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_receive(arg0, &arg1, &arg2, arg3)
+	ret := C.g_socket_receive(arg0, &arg1, &arg2, arg3, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 int
+	var goError error
 
 	{
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
@@ -46295,7 +50350,12 @@ func (socket socket) Receive(cancellable Cancellable) (buffer []byte, size uint,
 
 	ret2 = int(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // ReceiveFrom: receive data (up to @size bytes) from a socket.
@@ -46304,24 +50364,26 @@ func (socket socket) Receive(cancellable Cancellable) (buffer []byte, size uint,
 // address of the received packet. @address is owned by the caller.
 //
 // See g_socket_receive() for additional information.
-func (socket socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []byte, size uint, gssize int) {
+func (socket socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []byte, size uint, gssize int, err error) {
 	var arg0 *C.GSocket
 	var arg1 **C.GSocketAddress // out
 	var arg2 *C.gchar           // out
 	var arg3 C.gsize            // out
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_receive_from(arg0, &arg1, &arg2, &arg3, arg4)
+	ret := C.g_socket_receive_from(arg0, &arg1, &arg2, &arg3, arg4, &gError)
 
 	var ret0 SocketAddress
 	var ret1 []byte
 	var ret2 uint
 	var ret3 int
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(SocketAddress)
 
 	{
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret1))
@@ -46338,28 +50400,234 @@ func (socket socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress
 
 	ret3 = int(ret)
 
-	return ret0, ret1, ret2, ret3
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, ret3, goError
+}
+
+// ReceiveMessage: receive data from a socket. For receiving multiple
+// messages, see g_socket_receive_messages(); for easier use, see
+// g_socket_receive() and g_socket_receive_from().
+//
+// If @address is non-nil then @address will be set equal to the source
+// address of the received packet. @address is owned by the caller.
+//
+// @vector must point to an array of Vector structs and @num_vectors must be
+// the length of this array. These structs describe the buffers that
+// received data will be scattered into. If @num_vectors is -1, then
+// @vectors is assumed to be terminated by a Vector with a nil buffer
+// pointer.
+//
+// As a special case, if @num_vectors is 0 (in which case, @vectors may of
+// course be nil), then a single byte is received and discarded. This is to
+// facilitate the common practice of sending a single '\0' byte for the
+// purposes of transferring ancillary data.
+//
+// @messages, if non-nil, will be set to point to a newly-allocated array of
+// ControlMessage instances or nil if no such messages was received. These
+// correspond to the control messages received from the kernel, one
+// ControlMessage per message from the kernel. This array is nil-terminated
+// and must be freed by the caller using g_free() after calling
+// g_object_unref() on each element. If @messages is nil, any control
+// messages received will be discarded.
+//
+// @num_messages, if non-nil, will be set to the number of control messages
+// received.
+//
+// If both @messages and @num_messages are non-nil, then @num_messages gives
+// the number of ControlMessage instances in @messages (ie: not including
+// the nil terminator).
+//
+// @flags is an in/out parameter. The commonly available arguments for this
+// are available in the MsgFlags enum, but the values there are the same as
+// the system values, and the flags are passed in as-is, so you can pass in
+// system-specific flags too (and g_socket_receive_message() may pass
+// system-specific flags out). Flags passed in to the parameter affect the
+// receive operation; flags returned out of it are relevant to the specific
+// returned message.
+//
+// As with g_socket_receive(), data may be discarded if @socket is
+// G_SOCKET_TYPE_DATAGRAM or G_SOCKET_TYPE_SEQPACKET and you do not provide
+// enough buffer space to read a complete message. You can pass
+// G_SOCKET_MSG_PEEK in @flags to peek at the current message without
+// removing it from the receive queue, but there is no portable way to find
+// out the length of the message other than by reading it into a
+// sufficiently-large buffer.
+//
+// If the socket is in blocking mode the call will block until there is some
+// data to receive, the connection is closed, or there is an error. If there
+// is no data available and the socket is in non-blocking mode, a
+// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
+// is available, wait for the G_IO_IN condition.
+//
+// On error -1 is returned and @error is set accordingly.
+func (socket socket) ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []SocketControlMessage, numMessages int, gssize int, err error) {
+	var arg0 *C.GSocket
+	var arg1 **C.GSocketAddress // out
+	var arg2 *C.GInputVector
+	var arg3 C.gint
+	var arg4 ***C.GSocketControlMessage // out
+	var arg5 *C.gint                    // out
+	var arg6 *C.gint
+	var arg7 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	arg2 = (*C.GInputVector)(unsafe.Pointer(&vectors[0]))
+	arg3 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg6 = (*C.gint)(flags)
+	arg7 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_receive_message(arg0, &arg1, arg2, arg3, &arg4, &arg5, arg6, arg7, &gError)
+
+	var ret0 SocketAddress
+	var ret1 []SocketControlMessage
+	var ret2 int
+	var ret3 int
+	var goError error
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(SocketAddress)
+
+	{
+		ret1 = make([]SocketControlMessage, arg5)
+		for i := 0; i < uintptr(arg5); i++ {
+			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret1[i] = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src.Native()))).(SocketControlMessage)
+		}
+	}
+
+	ret2 = int(arg5)
+
+	ret3 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, ret3, goError
+}
+
+// ReceiveMessages: receive multiple data messages from @socket in one go.
+// This is the most complicated and fully-featured version of this call. For
+// easier use, see g_socket_receive(), g_socket_receive_from(), and
+// g_socket_receive_message().
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains a pointer to an
+// array of Vector structs describing the buffers that the data received in
+// each message will be written to. Using multiple Vectors is more
+// memory-efficient than manually copying data out of a single buffer to
+// multiple sources, and more system-call-efficient than making multiple
+// calls to g_socket_receive(), such as in scenarios where a lot of data
+// packets need to be received (e.g. high-bandwidth video streaming over
+// RTP/UDP).
+//
+// @flags modify how all messages are received. The commonly available
+// arguments for this are available in the MsgFlags enum, but the values
+// there are the same as the system values, and the flags are passed in
+// as-is, so you can pass in system-specific flags too. These flags affect
+// the overall receive operation. Flags affecting individual messages are
+// returned in Message.flags.
+//
+// The other members of Message are treated as described in its
+// documentation.
+//
+// If #GSocket:blocking is true the call will block until @num_messages have
+// been received, or the end of the stream is reached.
+//
+// If #GSocket:blocking is false the call will return up to @num_messages
+// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in
+// the operating system to be received.
+//
+// In blocking mode, if #GSocket:timeout is positive and is reached before
+// any messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up
+// to @num_messages are returned. (Note: This is effectively the behaviour
+// of `MSG_WAITFORONE` with recvmmsg().)
+//
+// To be notified when messages are available, wait for the G_IO_IN
+// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+// from g_socket_receive_messages() even if you were previously notified of
+// a G_IO_IN condition.
+//
+// If the remote peer closes the connection, any messages queued in the
+// operating system will be returned, and subsequent calls to
+// g_socket_receive_messages() will return 0 (with no error set).
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be received; otherwise the number of
+// messages successfully received before the error will be returned.
+func (socket socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (gint int, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.GInputMessage
+	var arg2 C.guint
+	var arg3 C.gint
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	{
+		var dst []C.GInputMessage
+		ptr := C.malloc(C.sizeof_GInputMessage * len(messages))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(messages)
+		sliceHeader.Cap = len(messages)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(messages); i++ {
+			src := messages[i]
+			dst[i] = (C.GInputMessage)(src.Native())
+		}
+
+		arg1 = (*C.GInputMessage)(unsafe.Pointer(ptr))
+		arg2 = len(messages)
+	}
+	arg3 = C.gint(flags)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_receive_messages(arg0, arg1, arg2, arg3, arg4, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
 // except that the choice of blocking or non-blocking behavior is determined
 // by the @blocking argument rather than by @socket's properties.
-func (socket socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []byte, size uint, gssize int) {
+func (socket socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []byte, size uint, gssize int, err error) {
 	var arg0 *C.GSocket
 	var arg1 *C.gchar // out
 	var arg2 C.gsize  // out
 	var arg3 C.gboolean
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
-	arg3 = gextras.Cbool(blocking)
+	if blocking {
+		arg3 = C.TRUE
+	}
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_receive_with_blocking(arg0, &arg1, &arg2, arg3, arg4)
+	ret := C.g_socket_receive_with_blocking(arg0, &arg1, &arg2, arg3, arg4, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 int
+	var goError error
 
 	{
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
@@ -46376,7 +50644,355 @@ func (socket socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable)
 
 	ret2 = int(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
+}
+
+// Send tries to send @size bytes from @buffer on the socket. This is mainly
+// used by connection-oriented sockets; it is identical to
+// g_socket_send_to() with @address set to nil.
+//
+// If the socket is in blocking mode the call will block until there is
+// space for the data in the socket queue. If there is no space available
+// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+// will be returned. To be notified when space is available, wait for the
+// G_IO_OUT condition. Note though that you may still receive
+// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// On error -1 is returned and @error is set accordingly.
+func (socket socket) Send(buffer []byte, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg3 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_send(arg0, arg1, arg2, arg3, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// SendMessage: send data to @address on @socket. For sending multiple
+// messages see g_socket_send_messages(); for easier use, see
+// g_socket_send() and g_socket_send_to().
+//
+// If @address is nil then the message is sent to the default receiver (set
+// by g_socket_connect()).
+//
+// @vectors must point to an array of Vector structs and @num_vectors must
+// be the length of this array. (If @num_vectors is -1, then @vectors is
+// assumed to be terminated by a Vector with a nil buffer pointer.) The
+// Vector structs describe the buffers that the sent data will be gathered
+// from. Using multiple Vectors is more memory-efficient than manually
+// copying data from multiple sources into a single buffer, and more
+// network-efficient than making multiple calls to g_socket_send().
+//
+// @messages, if non-nil, is taken to point to an array of @num_messages
+// ControlMessage instances. These correspond to the control messages to be
+// sent on the socket. If @num_messages is -1 then @messages is treated as a
+// nil-terminated array.
+//
+// @flags modify how the message is sent. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can
+// pass in system-specific flags too.
+//
+// If the socket is in blocking mode the call will block until there is
+// space for the data in the socket queue. If there is no space available
+// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+// will be returned. To be notified when space is available, wait for the
+// G_IO_OUT condition. Note though that you may still receive
+// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// On error -1 is returned and @error is set accordingly.
+func (socket socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.GSocketAddress
+	var arg2 *C.GOutputVector
+	var arg3 C.gint
+	var arg4 **C.GSocketControlMessage
+	var arg5 C.gint
+	var arg6 C.gint
+	var arg7 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	arg1 = (*C.GSocketAddress)(address.Native())
+	arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg3 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	{
+		var dst []*C.GSocketControlMessage
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(messages))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(messages)
+		sliceHeader.Cap = len(messages)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(messages); i++ {
+			src := messages[i]
+			dst[i] = (*C.GSocketControlMessage)(src.Native())
+		}
+
+		arg4 = (**C.GSocketControlMessage)(unsafe.Pointer(ptr))
+		arg5 = len(messages)
+	}
+	arg6 = C.gint(flags)
+	arg7 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_send_message(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// SendMessageWithTimeout: this behaves exactly the same as
+// g_socket_send_message(), except that the choice of timeout behavior is
+// determined by the @timeout_us argument rather than by @socket's
+// properties.
+//
+// On error G_POLLABLE_RETURN_FAILED is returned and @error is set
+// accordingly, or if the socket is currently not writable
+// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
+// in both cases.
+func (socket socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.GSocketAddress
+	var arg2 *C.GOutputVector
+	var arg3 C.gint
+	var arg4 **C.GSocketControlMessage
+	var arg5 C.gint
+	var arg6 C.gint
+	var arg7 C.gint64
+	var arg8 *C.gsize // out
+	var arg9 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	arg1 = (*C.GSocketAddress)(address.Native())
+	arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	arg3 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	{
+		var dst []*C.GSocketControlMessage
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(messages))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(messages)
+		sliceHeader.Cap = len(messages)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(messages); i++ {
+			src := messages[i]
+			dst[i] = (*C.GSocketControlMessage)(src.Native())
+		}
+
+		arg4 = (**C.GSocketControlMessage)(unsafe.Pointer(ptr))
+		arg5 = len(messages)
+	}
+	arg6 = C.gint(flags)
+	arg7 = C.gint64(timeoutUs)
+	arg9 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_send_message_with_timeout(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, &arg8, arg9, &gError)
+
+	var ret0 uint
+	var ret1 PollableReturn
+	var goError error
+
+	ret0 = uint(arg8)
+
+	ret1 = PollableReturn(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
+}
+
+// SendMessages: send multiple data messages from @socket in one go. This is
+// the most complicated and fully-featured version of this call. For easier
+// use, see g_socket_send(), g_socket_send_to(), and
+// g_socket_send_message().
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains an address to
+// send the data to, and a pointer to an array of Vector structs to describe
+// the buffers that the data to be sent for each message will be gathered
+// from. Using multiple Vectors is more memory-efficient than manually
+// copying data from multiple sources into a single buffer, and more
+// network-efficient than making multiple calls to g_socket_send(). Sending
+// multiple messages in one go avoids the overhead of making a lot of
+// syscalls in scenarios where a lot of data packets need to be sent (e.g.
+// high-bandwidth video streaming over RTP/UDP), or where the same data
+// needs to be sent to multiple recipients.
+//
+// @flags modify how the message is sent. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can
+// pass in system-specific flags too.
+//
+// If the socket is in blocking mode the call will block until there is
+// space for all the data in the socket queue. If there is no space
+// available and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK
+// error will be returned if no data was written at all, otherwise the
+// number of messages sent will be returned. To be notified when space is
+// available, wait for the G_IO_OUT condition. Note though that you may
+// still receive G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you
+// were previously notified of a G_IO_OUT condition. (On Windows in
+// particular, this is very common due to the way the underlying APIs work.)
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be sent; otherwise the number of
+// messages successfully sent before the error will be returned.
+func (socket socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (gint int, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.GOutputMessage
+	var arg2 C.guint
+	var arg3 C.gint
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	{
+		var dst []C.GOutputMessage
+		ptr := C.malloc(C.sizeof_GOutputMessage * len(messages))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(messages)
+		sliceHeader.Cap = len(messages)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(messages); i++ {
+			src := messages[i]
+			dst[i] = (C.GOutputMessage)(src.Native())
+		}
+
+		arg1 = (*C.GOutputMessage)(unsafe.Pointer(ptr))
+		arg2 = len(messages)
+	}
+	arg3 = C.gint(flags)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_send_messages(arg0, arg1, arg2, arg3, arg4, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// SendTo tries to send @size bytes from @buffer to @address. If @address is
+// nil then the message is sent to the default receiver (set by
+// g_socket_connect()).
+//
+// See g_socket_send() for additional information.
+func (socket socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.GSocketAddress
+	var arg2 *C.gchar
+	var arg3 C.gsize
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	arg1 = (*C.GSocketAddress)(address.Native())
+	arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	arg3 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_send_to(arg0, arg1, arg2, arg3, arg4, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// SendWithBlocking: this behaves exactly the same as g_socket_send(),
+// except that the choice of blocking or non-blocking behavior is determined
+// by the @blocking argument rather than by @socket's properties.
+func (socket socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (gssize int, err error) {
+	var arg0 *C.GSocket
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 C.gboolean
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg0 = (*C.GSocket)(socket.Native())
+	arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+	if blocking {
+		arg3 = C.TRUE
+	}
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_socket_send_with_blocking(arg0, arg1, arg2, arg3, arg4, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetBlocking sets the blocking mode of the socket. In blocking mode all
@@ -46392,7 +51008,9 @@ func (socket socket) SetBlocking(blocking bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = gextras.Cbool(blocking)
+	if blocking {
+		arg1 = C.TRUE
+	}
 
 	C.g_socket_set_blocking(arg0, arg1)
 }
@@ -46404,7 +51022,9 @@ func (socket socket) SetBroadcast(broadcast bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = gextras.Cbool(broadcast)
+	if broadcast {
+		arg1 = C.TRUE
+	}
 
 	C.g_socket_set_broadcast(arg0, arg1)
 }
@@ -46429,7 +51049,9 @@ func (socket socket) SetKeepalive(keepalive bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = gextras.Cbool(keepalive)
+	if keepalive {
+		arg1 = C.TRUE
+	}
 
 	C.g_socket_set_keepalive(arg0, arg1)
 }
@@ -46459,7 +51081,9 @@ func (socket socket) SetMulticastLoopback(loopback bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = gextras.Cbool(loopback)
+	if loopback {
+		arg1 = C.TRUE
+	}
 
 	C.g_socket_set_multicast_loopback(arg0, arg1)
 }
@@ -46485,24 +51109,28 @@ func (socket socket) SetMulticastTtl(ttl uint) {
 // headers that will define most of the standard/portable socket options.
 // For unusual socket protocols or platform-dependent options, you may need
 // to include additional headers.
-func (socket socket) SetOption(level int, optname int, value int) bool {
+func (socket socket) SetOption(level int, optname int, value int) error {
 	var arg0 *C.GSocket
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gint
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
 	arg1 = C.gint(level)
 	arg2 = C.gint(optname)
 	arg3 = C.gint(value)
 
-	ret := C.g_socket_set_option(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_set_option(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetTimeout sets the time in seconds after which I/O operations on @socket
@@ -46560,22 +51188,30 @@ func (socket socket) SetTtl(ttl uint) {
 // is graceful disconnect for TCP connections where you close the sending
 // side, then wait for the other side to close the connection, thus ensuring
 // that the other side saw all sent data.
-func (socket socket) Shutdown(shutdownRead bool, shutdownWrite bool) bool {
+func (socket socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 	var arg0 *C.GSocket
 	var arg1 C.gboolean
 	var arg2 C.gboolean
+	var gError *C.GError
 
 	arg0 = (*C.GSocket)(socket.Native())
-	arg1 = gextras.Cbool(shutdownRead)
-	arg2 = gextras.Cbool(shutdownWrite)
+	if shutdownRead {
+		arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		arg2 = C.TRUE
+	}
 
-	ret := C.g_socket_shutdown(arg0, arg1, arg2)
+	ret := C.g_socket_shutdown(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SpeaksIpv4 checks if a socket is capable of speaking IPv4.
@@ -46595,7 +51231,7 @@ func (socket socket) SpeaksIpv4() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -46618,7 +51254,7 @@ type SocketAddress interface {
 	// If not enough space is available, a G_IO_ERROR_NO_SPACE error is
 	// returned. If the address type is not known on the system then a
 	// G_IO_ERROR_NOT_SUPPORTED error is returned.
-	ToNative(dest interface{}, destlen uint) bool
+	ToNative(dest interface{}, destlen uint) error
 }
 
 // socketAddress implements the SocketAddress interface.
@@ -46656,7 +51292,7 @@ func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
 
 	var ret0 SocketAddress
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
 	return ret0
 }
@@ -46698,22 +51334,26 @@ func (address socketAddress) NativeSize() int {
 // If not enough space is available, a G_IO_ERROR_NO_SPACE error is
 // returned. If the address type is not known on the system then a
 // G_IO_ERROR_NOT_SUPPORTED error is returned.
-func (address socketAddress) ToNative(dest interface{}, destlen uint) bool {
+func (address socketAddress) ToNative(dest interface{}, destlen uint) error {
 	var arg0 *C.GSocketAddress
 	var arg1 C.gpointer
 	var arg2 C.gsize
+	var gError *C.GError
 
 	arg0 = (*C.GSocketAddress)(address.Native())
 	arg1 = C.gpointer(box.Assign(dest))
 	arg2 = C.gsize(destlen)
 
-	ret := C.g_socket_address_to_native(arg0, arg1, arg2)
+	ret := C.g_socket_address_to_native(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SocketAddressEnumerator is an enumerator type for Address instances. It is
@@ -46742,7 +51382,7 @@ type SocketAddressEnumerator interface {
 	// *@error. However, if the first call to g_socket_address_enumerator_next()
 	// succeeds, then any further internal errors (other than @cancellable being
 	// triggered) will be ignored.
-	Next(cancellable Cancellable) SocketAddress
+	Next(cancellable Cancellable) (socketAddress SocketAddress, err error)
 	// NextAsync: asynchronously retrieves the next Address from @enumerator and
 	// then calls @callback, which must call
 	// g_socket_address_enumerator_next_finish() to get the result.
@@ -46754,7 +51394,7 @@ type SocketAddressEnumerator interface {
 	// g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
 	// handling.
-	NextFinish(result AsyncResult) SocketAddress
+	NextFinish(result AsyncResult) (socketAddress SocketAddress, err error)
 }
 
 // socketAddressEnumerator implements the SocketAddressEnumerator interface.
@@ -46789,20 +51429,27 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 // *@error. However, if the first call to g_socket_address_enumerator_next()
 // succeeds, then any further internal errors (other than @cancellable being
 // triggered) will be ignored.
-func (enumerator socketAddressEnumerator) Next(cancellable Cancellable) SocketAddress {
+func (enumerator socketAddressEnumerator) Next(cancellable Cancellable) (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketAddressEnumerator
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketAddressEnumerator)(enumerator.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_address_enumerator_next(arg0, arg1)
+	ret := C.g_socket_address_enumerator_next(arg0, arg1, &gError)
 
 	var ret0 SocketAddress
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NextAsync: asynchronously retrieves the next Address from @enumerator and
@@ -46829,20 +51476,27 @@ func (enumerator socketAddressEnumerator) NextAsync(cancellable Cancellable, cal
 // g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error
 // handling.
-func (enumerator socketAddressEnumerator) NextFinish(result AsyncResult) SocketAddress {
+func (enumerator socketAddressEnumerator) NextFinish(result AsyncResult) (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketAddressEnumerator
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSocketAddressEnumerator)(enumerator.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_address_enumerator_next_finish(arg0, arg1)
+	ret := C.g_socket_address_enumerator_next_finish(arg0, arg1, &gError)
 
 	var ret0 SocketAddress
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SocketClient is a lightweight high-level utility class for connecting to a
@@ -46899,7 +51553,7 @@ type SocketClient interface {
 	//
 	// If a local address is specified with g_socket_client_set_local_address()
 	// the socket will be bound to this address before connecting.
-	Connect(connectable SocketConnectable, cancellable Cancellable) SocketConnection
+	Connect(connectable SocketConnectable, cancellable Cancellable) (socketConnection SocketConnection, err error)
 	// ConnectAsync: this is the asynchronous version of
 	// g_socket_client_connect().
 	//
@@ -46908,7 +51562,7 @@ type SocketClient interface {
 	ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish finishes an async connect operation. See
 	// g_socket_client_connect_async()
-	ConnectFinish(result AsyncResult) SocketConnection
+	ConnectFinish(result AsyncResult) (socketConnection SocketConnection, err error)
 	// ConnectToHost: this is a helper function for g_socket_client_connect().
 	//
 	// Attempts to create a TCP connection to the named host.
@@ -46938,7 +51592,7 @@ type SocketClient interface {
 	//
 	// In the event of any failure (DNS error, service not found, no hosts
 	// connectable) nil is returned and @error (if non-nil) is set accordingly.
-	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) SocketConnection
+	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (socketConnection SocketConnection, err error)
 	// ConnectToHostAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_host().
 	//
@@ -46948,7 +51602,7 @@ type SocketClient interface {
 	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectToHostFinish finishes an async connect operation. See
 	// g_socket_client_connect_to_host_async()
-	ConnectToHostFinish(result AsyncResult) SocketConnection
+	ConnectToHostFinish(result AsyncResult) (socketConnection SocketConnection, err error)
 	// ConnectToService attempts to create a TCP connection to a service.
 	//
 	// This call looks up the SRV record for @service at @domain for the "tcp"
@@ -46962,13 +51616,13 @@ type SocketClient interface {
 	//
 	// In the event of any failure (DNS error, service not found, no hosts
 	// connectable) nil is returned and @error (if non-nil) is set accordingly.
-	ConnectToService(domain string, service string, cancellable Cancellable) SocketConnection
+	ConnectToService(domain string, service string, cancellable Cancellable) (socketConnection SocketConnection, err error)
 	// ConnectToServiceAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_service().
 	ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectToServiceFinish finishes an async connect operation. See
 	// g_socket_client_connect_to_service_async()
-	ConnectToServiceFinish(result AsyncResult) SocketConnection
+	ConnectToServiceFinish(result AsyncResult) (socketConnection SocketConnection, err error)
 	// ConnectToURI: this is a helper function for g_socket_client_connect().
 	//
 	// Attempts to create a TCP connection with a network URI.
@@ -46988,7 +51642,7 @@ type SocketClient interface {
 	//
 	// In the event of any failure (DNS error, service not found, no hosts
 	// connectable) nil is returned and @error (if non-nil) is set accordingly.
-	ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) SocketConnection
+	ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (socketConnection SocketConnection, err error)
 	// ConnectToURIAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_uri().
 	//
@@ -46998,7 +51652,7 @@ type SocketClient interface {
 	ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectToURIFinish finishes an async connect operation. See
 	// g_socket_client_connect_to_uri_async()
-	ConnectToURIFinish(result AsyncResult) SocketConnection
+	ConnectToURIFinish(result AsyncResult) (socketConnection SocketConnection, err error)
 	// EnableProxy gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
 	EnableProxy() bool
@@ -47073,7 +51727,7 @@ type SocketClient interface {
 	//
 	// It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
 	// GSocketClient is used for connection oriented services.
-	SetSocketType(_type SocketType)
+	SetSocketType(typ SocketType)
 	// SetTimeout sets the I/O timeout for sockets created by @client. @timeout
 	// is a time in seconds, or 0 for no timeout (the default).
 	//
@@ -47132,7 +51786,7 @@ func NewSocketClient() SocketClient {
 
 	var ret0 SocketClient
 
-	ret0 = WrapSocketClient(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketClient)
 
 	return ret0
 }
@@ -47186,22 +51840,29 @@ func (client socketClient) AddApplicationProxy(protocol string) {
 //
 // If a local address is specified with g_socket_client_set_local_address()
 // the socket will be bound to this address before connecting.
-func (client socketClient) Connect(connectable SocketConnectable, cancellable Cancellable) SocketConnection {
+func (client socketClient) Connect(connectable SocketConnectable, cancellable Cancellable) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.GSocketConnectable
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.GSocketConnectable)(connectable.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_client_connect(arg0, arg1, arg2)
+	ret := C.g_socket_client_connect(arg0, arg1, arg2, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectAsync: this is the asynchronous version of
@@ -47227,20 +51888,27 @@ func (client socketClient) ConnectAsync(connectable SocketConnectable, cancellab
 
 // ConnectFinish finishes an async connect operation. See
 // g_socket_client_connect_async()
-func (client socketClient) ConnectFinish(result AsyncResult) SocketConnection {
+func (client socketClient) ConnectFinish(result AsyncResult) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_client_connect_finish(arg0, arg1)
+	ret := C.g_socket_client_connect_finish(arg0, arg1, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectToHost: this is a helper function for g_socket_client_connect().
@@ -47272,11 +51940,12 @@ func (client socketClient) ConnectFinish(result AsyncResult) SocketConnection {
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (client socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) SocketConnection {
+func (client socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellable) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.gchar
 	var arg2 C.guint16
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.gchar)(C.CString(hostAndPort))
@@ -47284,13 +51953,19 @@ func (client socketClient) ConnectToHost(hostAndPort string, defaultPort uint16,
 	arg2 = C.guint16(defaultPort)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_client_connect_to_host(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_client_connect_to_host(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectToHostAsync: this is the asynchronous version of
@@ -47320,20 +51995,27 @@ func (client socketClient) ConnectToHostAsync(hostAndPort string, defaultPort ui
 
 // ConnectToHostFinish finishes an async connect operation. See
 // g_socket_client_connect_to_host_async()
-func (client socketClient) ConnectToHostFinish(result AsyncResult) SocketConnection {
+func (client socketClient) ConnectToHostFinish(result AsyncResult) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_client_connect_to_host_finish(arg0, arg1)
+	ret := C.g_socket_client_connect_to_host_finish(arg0, arg1, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectToService attempts to create a TCP connection to a service.
@@ -47349,11 +52031,12 @@ func (client socketClient) ConnectToHostFinish(result AsyncResult) SocketConnect
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (client socketClient) ConnectToService(domain string, service string, cancellable Cancellable) SocketConnection {
+func (client socketClient) ConnectToService(domain string, service string, cancellable Cancellable) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.gchar)(C.CString(domain))
@@ -47362,13 +52045,19 @@ func (client socketClient) ConnectToService(domain string, service string, cance
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_client_connect_to_service(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_client_connect_to_service(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectToServiceAsync: this is the asynchronous version of
@@ -47395,20 +52084,27 @@ func (client socketClient) ConnectToServiceAsync(domain string, service string, 
 
 // ConnectToServiceFinish finishes an async connect operation. See
 // g_socket_client_connect_to_service_async()
-func (client socketClient) ConnectToServiceFinish(result AsyncResult) SocketConnection {
+func (client socketClient) ConnectToServiceFinish(result AsyncResult) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_client_connect_to_service_finish(arg0, arg1)
+	ret := C.g_socket_client_connect_to_service_finish(arg0, arg1, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectToURI: this is a helper function for g_socket_client_connect().
@@ -47430,11 +52126,12 @@ func (client socketClient) ConnectToServiceFinish(result AsyncResult) SocketConn
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (client socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) SocketConnection {
+func (client socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellable) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.gchar
 	var arg2 C.guint16
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.gchar)(C.CString(uri))
@@ -47442,13 +52139,19 @@ func (client socketClient) ConnectToURI(uri string, defaultPort uint16, cancella
 	arg2 = C.guint16(defaultPort)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_client_connect_to_uri(arg0, arg1, arg2, arg3)
+	ret := C.g_socket_client_connect_to_uri(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ConnectToURIAsync: this is the asynchronous version of
@@ -47478,20 +52181,27 @@ func (client socketClient) ConnectToURIAsync(uri string, defaultPort uint16, can
 
 // ConnectToURIFinish finishes an async connect operation. See
 // g_socket_client_connect_to_uri_async()
-func (client socketClient) ConnectToURIFinish(result AsyncResult) SocketConnection {
+func (client socketClient) ConnectToURIFinish(result AsyncResult) (socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketClient
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSocketClient)(client.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_client_connect_to_uri_finish(arg0, arg1)
+	ret := C.g_socket_client_connect_to_uri_finish(arg0, arg1, &gError)
 
 	var ret0 SocketConnection
+	var goError error
 
-	ret0 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // EnableProxy gets the proxy enable state; see
@@ -47505,7 +52215,7 @@ func (client socketClient) EnableProxy() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -47539,7 +52249,7 @@ func (client socketClient) LocalAddress() SocketAddress {
 
 	var ret0 SocketAddress
 
-	ret0 = WrapSocketAddress(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
 	return ret0
 }
@@ -47573,7 +52283,7 @@ func (client socketClient) ProxyResolver() ProxyResolver {
 
 	var ret0 ProxyResolver
 
-	ret0 = WrapProxyResolver(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(ProxyResolver)
 
 	return ret0
 }
@@ -47623,7 +52333,7 @@ func (client socketClient) TLS() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -47655,7 +52365,9 @@ func (client socketClient) SetEnableProxy(enable bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSocketClient)(client.Native())
-	arg1 = gextras.Cbool(enable)
+	if enable {
+		arg1 = C.TRUE
+	}
 
 	C.g_socket_client_set_enable_proxy(arg0, arg1)
 }
@@ -47730,12 +52442,12 @@ func (client socketClient) SetProxyResolver(proxyResolver ProxyResolver) {
 //
 // It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
 // GSocketClient is used for connection oriented services.
-func (client socketClient) SetSocketType(_type SocketType) {
+func (client socketClient) SetSocketType(typ SocketType) {
 	var arg0 *C.GSocketClient
 	var arg1 C.GSocketType
 
 	arg0 = (*C.GSocketClient)(client.Native())
-	arg1 = (C.GSocketType)(_type)
+	arg1 = (C.GSocketType)(typ)
 
 	C.g_socket_client_set_socket_type(arg0, arg1)
 }
@@ -47777,7 +52489,9 @@ func (client socketClient) SetTLS(tls bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSocketClient)(client.Native())
-	arg1 = gextras.Cbool(tls)
+	if tls {
+		arg1 = C.TRUE
+	}
 
 	C.g_socket_client_set_tls(arg0, arg1)
 }
@@ -47814,7 +52528,7 @@ type SocketConnection interface {
 	IOStream
 
 	// Connect: connect @connection to the specified remote address.
-	Connect(address SocketAddress, cancellable Cancellable) bool
+	Connect(address SocketAddress, cancellable Cancellable) error
 	// ConnectAsync: asynchronously connect @connection to the specified remote
 	// address.
 	//
@@ -47825,9 +52539,9 @@ type SocketConnection interface {
 	ConnectAsync(address SocketAddress, cancellable Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish gets the result of a g_socket_connection_connect_async()
 	// call.
-	ConnectFinish(result AsyncResult) bool
+	ConnectFinish(result AsyncResult) error
 	// LocalAddress: try to get the local address of a socket connection.
-	LocalAddress() SocketAddress
+	LocalAddress() (socketAddress SocketAddress, err error)
 	// RemoteAddress: try to get the remote address of a socket connection.
 	//
 	// Since GLib 2.40, when used with g_socket_client_connect() or
@@ -47835,7 +52549,7 @@ type SocketConnection interface {
 	// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
 	// that will be used for the connection. This allows applications to print
 	// e.g. "Connecting to example.com (10.42.77.3)...".
-	RemoteAddress() SocketAddress
+	RemoteAddress() (socketAddress SocketAddress, err error)
 	// Socket gets the underlying #GSocket object of the connection. This can be
 	// useful if you want to do something unusual on it not supported by the
 	// Connection APIs.
@@ -47867,22 +52581,26 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 }
 
 // Connect: connect @connection to the specified remote address.
-func (connection socketConnection) Connect(address SocketAddress, cancellable Cancellable) bool {
+func (connection socketConnection) Connect(address SocketAddress, cancellable Cancellable) error {
 	var arg0 *C.GSocketConnection
 	var arg1 *C.GSocketAddress
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketConnection)(connection.Native())
 	arg1 = (*C.GSocketAddress)(address.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_connection_connect(arg0, arg1, arg2)
+	ret := C.g_socket_connection_connect(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ConnectAsync: asynchronously connect @connection to the specified remote
@@ -47910,35 +52628,46 @@ func (connection socketConnection) ConnectAsync(address SocketAddress, cancellab
 
 // ConnectFinish gets the result of a g_socket_connection_connect_async()
 // call.
-func (connection socketConnection) ConnectFinish(result AsyncResult) bool {
+func (connection socketConnection) ConnectFinish(result AsyncResult) error {
 	var arg0 *C.GSocketConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSocketConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_connection_connect_finish(arg0, arg1)
+	ret := C.g_socket_connection_connect_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LocalAddress: try to get the local address of a socket connection.
-func (connection socketConnection) LocalAddress() SocketAddress {
+func (connection socketConnection) LocalAddress() (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketConnection
+	var gError *C.GError
 
 	arg0 = (*C.GSocketConnection)(connection.Native())
 
-	ret := C.g_socket_connection_get_local_address(arg0)
+	ret := C.g_socket_connection_get_local_address(arg0, &gError)
 
 	var ret0 SocketAddress
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // RemoteAddress: try to get the remote address of a socket connection.
@@ -47948,18 +52677,25 @@ func (connection socketConnection) LocalAddress() SocketAddress {
 // G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
 // that will be used for the connection. This allows applications to print
 // e.g. "Connecting to example.com (10.42.77.3)...".
-func (connection socketConnection) RemoteAddress() SocketAddress {
+func (connection socketConnection) RemoteAddress() (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketConnection
+	var gError *C.GError
 
 	arg0 = (*C.GSocketConnection)(connection.Native())
 
-	ret := C.g_socket_connection_get_remote_address(arg0)
+	ret := C.g_socket_connection_get_remote_address(arg0, &gError)
 
 	var ret0 SocketAddress
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketAddress)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Socket gets the underlying #GSocket object of the connection. This can be
@@ -47974,7 +52710,7 @@ func (connection socketConnection) Socket() Socket {
 
 	var ret0 Socket
 
-	ret0 = WrapSocket(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Socket)
 
 	return ret0
 }
@@ -47990,7 +52726,7 @@ func (connection socketConnection) IsConnected() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -48142,7 +52878,7 @@ type SocketListener interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Accept(cancellable Cancellable) (sourceObject gextras.Objector, socketConnection SocketConnection)
+	Accept(cancellable Cancellable) (sourceObject gextras.Objector, socketConnection SocketConnection, err error)
 	// AcceptAsync: this is the asynchronous version of
 	// g_socket_listener_accept().
 	//
@@ -48152,7 +52888,7 @@ type SocketListener interface {
 	AcceptAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// AcceptFinish finishes an async accept operation. See
 	// g_socket_listener_accept_async()
-	AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection)
+	AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection, err error)
 	// AcceptSocket blocks waiting for a client to connect to any of the sockets
 	// added to the listener. Returns the #GSocket that was accepted.
 	//
@@ -48166,7 +52902,7 @@ type SocketListener interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	AcceptSocket(cancellable Cancellable) (sourceObject gextras.Objector, socket Socket)
+	AcceptSocket(cancellable Cancellable) (sourceObject gextras.Objector, socket Socket, err error)
 	// AcceptSocketAsync: this is the asynchronous version of
 	// g_socket_listener_accept_socket().
 	//
@@ -48176,7 +52912,7 @@ type SocketListener interface {
 	AcceptSocketAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// AcceptSocketFinish finishes an async accept operation. See
 	// g_socket_listener_accept_socket_async()
-	AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket)
+	AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket, err error)
 	// AddAddress creates a socket of type @type and protocol @protocol, binds
 	// it to @address and adds it to the set of sockets we're accepting sockets
 	// from.
@@ -48199,7 +52935,7 @@ type SocketListener interface {
 	// Call g_socket_listener_close() to stop listening on @address; this will
 	// not be done automatically when you drop your final reference to
 	// @listener, as references may be held internally.
-	AddAddress(address SocketAddress, _type SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (effectiveAddress SocketAddress, ok bool)
+	AddAddress(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (effectiveAddress SocketAddress, err error)
 	// AddAnyInetPort listens for TCP connections on any available port number
 	// for both IPv6 and IPv4 (if each is available).
 	//
@@ -48210,7 +52946,7 @@ type SocketListener interface {
 	// identify this particular source, which is useful if you're listening on
 	// multiple addresses and do different things depending on what address is
 	// connected to.
-	AddAnyInetPort(sourceObject gextras.Objector) uint16
+	AddAnyInetPort(sourceObject gextras.Objector) (guint16 uint16, err error)
 	// AddInetPort: helper function for g_socket_listener_add_address() that
 	// creates a TCP/IP socket listening on IPv4 and IPv6 (if supported) on the
 	// specified port on all interfaces.
@@ -48223,7 +52959,7 @@ type SocketListener interface {
 	// Call g_socket_listener_close() to stop listening on @port; this will not
 	// be done automatically when you drop your final reference to @listener, as
 	// references may be held internally.
-	AddInetPort(port uint16, sourceObject gextras.Objector) bool
+	AddInetPort(port uint16, sourceObject gextras.Objector) error
 	// AddSocket adds @socket to the set of sockets that we try to accept new
 	// clients from. The socket must be bound to a local address and listened
 	// to.
@@ -48237,7 +52973,7 @@ type SocketListener interface {
 	// finalized unless the listener held the final reference to the socket.
 	// Before GLib 2.42, the @socket was automatically closed on finalization of
 	// the @listener, even if references to it were held elsewhere.
-	AddSocket(socket Socket, sourceObject gextras.Objector) bool
+	AddSocket(socket Socket, sourceObject gextras.Objector) error
 	// Close closes all the sockets in the listener.
 	Close()
 	// SetBacklog sets the listen backlog on the sockets in the listener. This
@@ -48277,7 +53013,7 @@ func NewSocketListener() SocketListener {
 
 	var ret0 SocketListener
 
-	ret0 = WrapSocketListener(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketListener)
 
 	return ret0
 }
@@ -48292,24 +53028,31 @@ func NewSocketListener() SocketListener {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (listener socketListener) Accept(cancellable Cancellable) (sourceObject gextras.Objector, socketConnection SocketConnection) {
+func (listener socketListener) Accept(cancellable Cancellable) (sourceObject gextras.Objector, socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketListener
 	var arg1 **C.GObject // out
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_listener_accept(arg0, &arg1, arg2)
+	ret := C.g_socket_listener_accept(arg0, &arg1, arg2, &gError)
 
 	var ret0 gextras.Objector
 	var ret1 SocketConnection
+	var goError error
 
-	ret0 = externglib.Take(unsafe.Pointer(arg1.Native()))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gextras.Objector)
 
-	ret1 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // AcceptAsync: this is the asynchronous version of
@@ -48334,24 +53077,31 @@ func (listener socketListener) AcceptAsync(cancellable Cancellable, callback Asy
 
 // AcceptFinish finishes an async accept operation. See
 // g_socket_listener_accept_async()
-func (listener socketListener) AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection) {
+func (listener socketListener) AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection, err error) {
 	var arg0 *C.GSocketListener
 	var arg1 *C.GAsyncResult
 	var arg2 **C.GObject // out
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_listener_accept_finish(arg0, arg1, &arg2)
+	ret := C.g_socket_listener_accept_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 gextras.Objector
 	var ret1 SocketConnection
+	var goError error
 
-	ret0 = externglib.Take(unsafe.Pointer(arg2.Native()))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(gextras.Objector)
 
-	ret1 = WrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketConnection)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // AcceptSocket blocks waiting for a client to connect to any of the sockets
@@ -48367,24 +53117,31 @@ func (listener socketListener) AcceptFinish(result AsyncResult) (sourceObject ge
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (listener socketListener) AcceptSocket(cancellable Cancellable) (sourceObject gextras.Objector, socket Socket) {
+func (listener socketListener) AcceptSocket(cancellable Cancellable) (sourceObject gextras.Objector, socket Socket, err error) {
 	var arg0 *C.GSocketListener
 	var arg1 **C.GObject // out
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_socket_listener_accept_socket(arg0, &arg1, arg2)
+	ret := C.g_socket_listener_accept_socket(arg0, &arg1, arg2, &gError)
 
 	var ret0 gextras.Objector
 	var ret1 Socket
+	var goError error
 
-	ret0 = externglib.Take(unsafe.Pointer(arg1.Native()))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gextras.Objector)
 
-	ret1 = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Socket)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // AcceptSocketAsync: this is the asynchronous version of
@@ -48409,24 +53166,31 @@ func (listener socketListener) AcceptSocketAsync(cancellable Cancellable, callba
 
 // AcceptSocketFinish finishes an async accept operation. See
 // g_socket_listener_accept_socket_async()
-func (listener socketListener) AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket) {
+func (listener socketListener) AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket, err error) {
 	var arg0 *C.GSocketListener
 	var arg1 *C.GAsyncResult
 	var arg2 **C.GObject // out
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_socket_listener_accept_socket_finish(arg0, arg1, &arg2)
+	ret := C.g_socket_listener_accept_socket_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 gextras.Objector
 	var ret1 Socket
+	var goError error
 
-	ret0 = externglib.Take(unsafe.Pointer(arg2.Native()))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(gextras.Objector)
 
-	ret1 = WrapSocket(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Socket)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // AddAddress creates a socket of type @type and protocol @protocol, binds
@@ -48451,30 +53215,34 @@ func (listener socketListener) AcceptSocketFinish(result AsyncResult) (sourceObj
 // Call g_socket_listener_close() to stop listening on @address; this will
 // not be done automatically when you drop your final reference to
 // @listener, as references may be held internally.
-func (listener socketListener) AddAddress(address SocketAddress, _type SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (effectiveAddress SocketAddress, ok bool) {
+func (listener socketListener) AddAddress(address SocketAddress, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (effectiveAddress SocketAddress, err error) {
 	var arg0 *C.GSocketListener
 	var arg1 *C.GSocketAddress
 	var arg2 C.GSocketType
 	var arg3 C.GSocketProtocol
 	var arg4 *C.GObject
 	var arg5 **C.GSocketAddress // out
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg1 = (*C.GSocketAddress)(address.Native())
-	arg2 = (C.GSocketType)(_type)
+	arg2 = (C.GSocketType)(typ)
 	arg3 = (C.GSocketProtocol)(protocol)
 	arg4 = (*C.GObject)(sourceObject.Native())
 
-	ret := C.g_socket_listener_add_address(arg0, arg1, arg2, arg3, arg4, &arg5)
+	ret := C.g_socket_listener_add_address(arg0, arg1, arg2, arg3, arg4, &arg5, &gError)
 
 	var ret0 SocketAddress
-	var ret1 bool
+	var goError error
 
-	ret0 = WrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(arg5.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg5.Native()))).(SocketAddress)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // AddAnyInetPort listens for TCP connections on any available port number
@@ -48487,20 +53255,27 @@ func (listener socketListener) AddAddress(address SocketAddress, _type SocketTyp
 // identify this particular source, which is useful if you're listening on
 // multiple addresses and do different things depending on what address is
 // connected to.
-func (listener socketListener) AddAnyInetPort(sourceObject gextras.Objector) uint16 {
+func (listener socketListener) AddAnyInetPort(sourceObject gextras.Objector) (guint16 uint16, err error) {
 	var arg0 *C.GSocketListener
 	var arg1 *C.GObject
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg1 = (*C.GObject)(sourceObject.Native())
 
-	ret := C.g_socket_listener_add_any_inet_port(arg0, arg1)
+	ret := C.g_socket_listener_add_any_inet_port(arg0, arg1, &gError)
 
 	var ret0 uint16
+	var goError error
 
 	ret0 = uint16(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // AddInetPort: helper function for g_socket_listener_add_address() that
@@ -48515,22 +53290,26 @@ func (listener socketListener) AddAnyInetPort(sourceObject gextras.Objector) uin
 // Call g_socket_listener_close() to stop listening on @port; this will not
 // be done automatically when you drop your final reference to @listener, as
 // references may be held internally.
-func (listener socketListener) AddInetPort(port uint16, sourceObject gextras.Objector) bool {
+func (listener socketListener) AddInetPort(port uint16, sourceObject gextras.Objector) error {
 	var arg0 *C.GSocketListener
 	var arg1 C.guint16
 	var arg2 *C.GObject
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg1 = C.guint16(port)
 	arg2 = (*C.GObject)(sourceObject.Native())
 
-	ret := C.g_socket_listener_add_inet_port(arg0, arg1, arg2)
+	ret := C.g_socket_listener_add_inet_port(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // AddSocket adds @socket to the set of sockets that we try to accept new
@@ -48546,22 +53325,26 @@ func (listener socketListener) AddInetPort(port uint16, sourceObject gextras.Obj
 // finalized unless the listener held the final reference to the socket.
 // Before GLib 2.42, the @socket was automatically closed on finalization of
 // the @listener, even if references to it were held elsewhere.
-func (listener socketListener) AddSocket(socket Socket, sourceObject gextras.Objector) bool {
+func (listener socketListener) AddSocket(socket Socket, sourceObject gextras.Objector) error {
 	var arg0 *C.GSocketListener
 	var arg1 *C.GSocket
 	var arg2 *C.GObject
+	var gError *C.GError
 
 	arg0 = (*C.GSocketListener)(listener.Native())
 	arg1 = (*C.GSocket)(socket.Native())
 	arg2 = (*C.GObject)(sourceObject.Native())
 
-	ret := C.g_socket_listener_add_socket(arg0, arg1, arg2)
+	ret := C.g_socket_listener_add_socket(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Close closes all the sockets in the listener.
@@ -48671,7 +53454,7 @@ func NewSocketService() SocketService {
 
 	var ret0 SocketService
 
-	ret0 = WrapSocketService(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SocketService)
 
 	return ret0
 }
@@ -48688,7 +53471,7 @@ func (service socketService) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -48822,27 +53605,27 @@ type Subprocess interface {
 	// operation was cancelled. You should especially not attempt to interact
 	// with the pipes while the operation is in progress (either from another
 	// thread or if using the asynchronous version).
-	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
+	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, err error)
 	// CommunicateAsync asynchronous version of g_subprocess_communicate().
 	// Complete invocation with g_subprocess_communicate_finish().
 	CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 	// CommunicateFinish: complete an invocation of
 	// g_subprocess_communicate_async().
-	CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
+	CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, err error)
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
 	//
 	// On error, @stdout_buf and @stderr_buf will be set to undefined values and
 	// should not be used.
-	CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, ok bool)
+	CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, err error)
 	// CommunicateUTF8Async asynchronous version of
 	// g_subprocess_communicate_utf8(). Complete invocation with
 	// g_subprocess_communicate_utf8_finish().
 	CommunicateUTF8Async(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback)
 	// CommunicateUTF8Finish: complete an invocation of
 	// g_subprocess_communicate_utf8_async().
-	CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, ok bool)
+	CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, err error)
 	// ForceExit: use an operating-system specific method to attempt an
 	// immediate, forceful termination of the process. There is no mechanism to
 	// determine whether or not the request itself was successful; however, you
@@ -48940,13 +53723,13 @@ type Subprocess interface {
 	//
 	// Cancelling @cancellable doesn't kill the subprocess. Call
 	// g_subprocess_force_exit() if it is desirable.
-	Wait(cancellable Cancellable) bool
+	Wait(cancellable Cancellable) error
 	// WaitAsync: wait for the subprocess to terminate.
 	//
 	// This is the asynchronous version of g_subprocess_wait().
 	WaitAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-	WaitCheck(cancellable Cancellable) bool
+	WaitCheck(cancellable Cancellable) error
 	// WaitCheckAsync combines g_subprocess_wait_async() with
 	// g_spawn_check_exit_status().
 	//
@@ -48954,10 +53737,10 @@ type Subprocess interface {
 	WaitCheckAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// WaitCheckFinish collects the result of a previous call to
 	// g_subprocess_wait_check_async().
-	WaitCheckFinish(result AsyncResult) bool
+	WaitCheckFinish(result AsyncResult) error
 	// WaitFinish collects the result of a previous call to
 	// g_subprocess_wait_async().
-	WaitFinish(result AsyncResult) bool
+	WaitFinish(result AsyncResult) error
 }
 
 // subprocess implements the Subprocess interface.
@@ -48984,22 +53767,43 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 }
 
 // NewSubprocessV constructs a class Subprocess.
-func NewSubprocessV(argv []string, flags SubprocessFlags) Subprocess {
+func NewSubprocessV(argv []string, flags SubprocessFlags) (subprocess Subprocess, err error) {
 	var arg1 **C.gchar
 	var arg2 C.GSubprocessFlags
+	var gError *C.GError
 
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg2 = (C.GSubprocessFlags)(flags)
 
-	ret := C.g_subprocess_newv(arg1, arg2)
+	ret := C.g_subprocess_newv(arg1, arg2, &gError)
 
 	var ret0 Subprocess
+	var goError error
 
-	ret0 = WrapSubprocess(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Subprocess)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Communicate: communicate with the subprocess until it terminates, and all
@@ -49042,22 +53846,23 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) Subprocess {
 // operation was cancelled. You should especially not attempt to interact
 // with the pipes while the operation is in progress (either from another
 // thread or if using the asynchronous version).
-func (subprocess subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool) {
+func (subprocess subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GBytes
 	var arg2 *C.GCancellable
 	var arg3 **C.GBytes // out
 	var arg4 **C.GBytes // out
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GBytes)(stdinBuf.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_subprocess_communicate(arg0, arg1, arg2, &arg3, &arg4)
+	ret := C.g_subprocess_communicate(arg0, arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 **glib.Bytes
 	var ret1 **glib.Bytes
-	var ret2 bool
+	var goError error
 
 	{
 		ret0 = glib.WrapBytes(arg3)
@@ -49067,9 +53872,12 @@ func (subprocess subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cance
 		ret1 = glib.WrapBytes(arg4)
 	}
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // CommunicateAsync asynchronous version of g_subprocess_communicate().
@@ -49092,20 +53900,21 @@ func (subprocess subprocess) CommunicateAsync(stdinBuf *glib.Bytes, cancellable 
 
 // CommunicateFinish: complete an invocation of
 // g_subprocess_communicate_async().
-func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool) {
+func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
 	var arg2 **C.GBytes // out
 	var arg3 **C.GBytes // out
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_subprocess_communicate_finish(arg0, arg1, &arg2, &arg3)
+	ret := C.g_subprocess_communicate_finish(arg0, arg1, &arg2, &arg3, &gError)
 
 	var ret0 **glib.Bytes
 	var ret1 **glib.Bytes
-	var ret2 bool
+	var goError error
 
 	{
 		ret0 = glib.WrapBytes(arg2)
@@ -49115,9 +53924,12 @@ func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *g
 		ret1 = glib.WrapBytes(arg3)
 	}
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // CommunicateUTF8: like g_subprocess_communicate(), but validates the
@@ -49126,23 +53938,24 @@ func (subprocess subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *g
 //
 // On error, @stdout_buf and @stderr_buf will be set to undefined values and
 // should not be used.
-func (subprocess subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, ok bool) {
+func (subprocess subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.char
 	var arg2 *C.GCancellable
 	var arg3 **C.char // out
 	var arg4 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.gchar)(C.CString(stdinBuf))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_subprocess_communicate_utf8(arg0, arg1, arg2, &arg3, &arg4)
+	ret := C.g_subprocess_communicate_utf8(arg0, arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 string
 	var ret1 string
-	var ret2 bool
+	var goError error
 
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
@@ -49150,9 +53963,12 @@ func (subprocess subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancel
 	ret1 = C.GoString(arg4)
 	C.free(unsafe.Pointer(arg4))
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // CommunicateUTF8Async asynchronous version of
@@ -49177,20 +53993,21 @@ func (subprocess subprocess) CommunicateUTF8Async(stdinBuf string, cancellable C
 
 // CommunicateUTF8Finish: complete an invocation of
 // g_subprocess_communicate_utf8_async().
-func (subprocess subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, ok bool) {
+func (subprocess subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
 	var arg3 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_subprocess_communicate_utf8_finish(arg0, arg1, &arg2, &arg3)
+	ret := C.g_subprocess_communicate_utf8_finish(arg0, arg1, &arg2, &arg3, &gError)
 
 	var ret0 string
 	var ret1 string
-	var ret2 bool
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
@@ -49198,9 +54015,12 @@ func (subprocess subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBu
 	ret1 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // ForceExit: use an operating-system specific method to attempt an
@@ -49273,7 +54093,7 @@ func (subprocess subprocess) IfExited() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -49294,7 +54114,7 @@ func (subprocess subprocess) IfSignaled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -49337,7 +54157,7 @@ func (subprocess subprocess) StderrPipe() InputStream {
 
 	var ret0 InputStream
 
-	ret0 = WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(InputStream)
 
 	return ret0
 }
@@ -49355,7 +54175,7 @@ func (subprocess subprocess) StdinPipe() OutputStream {
 
 	var ret0 OutputStream
 
-	ret0 = WrapOutputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(OutputStream)
 
 	return ret0
 }
@@ -49373,7 +54193,7 @@ func (subprocess subprocess) StdoutPipe() InputStream {
 
 	var ret0 InputStream
 
-	ret0 = WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(InputStream)
 
 	return ret0
 }
@@ -49393,7 +54213,7 @@ func (subprocess subprocess) Successful() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -49446,20 +54266,24 @@ func (subprocess subprocess) SendSignal(signalNum int) {
 //
 // Cancelling @cancellable doesn't kill the subprocess. Call
 // g_subprocess_force_exit() if it is desirable.
-func (subprocess subprocess) Wait(cancellable Cancellable) bool {
+func (subprocess subprocess) Wait(cancellable Cancellable) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_subprocess_wait(arg0, arg1)
+	ret := C.g_subprocess_wait(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // WaitAsync: wait for the subprocess to terminate.
@@ -49480,20 +54304,24 @@ func (subprocess subprocess) WaitAsync(cancellable Cancellable, callback AsyncRe
 }
 
 // WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-func (subprocess subprocess) WaitCheck(cancellable Cancellable) bool {
+func (subprocess subprocess) WaitCheck(cancellable Cancellable) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_subprocess_wait_check(arg0, arg1)
+	ret := C.g_subprocess_wait_check(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // WaitCheckAsync combines g_subprocess_wait_async() with
@@ -49516,38 +54344,46 @@ func (subprocess subprocess) WaitCheckAsync(cancellable Cancellable, callback As
 
 // WaitCheckFinish collects the result of a previous call to
 // g_subprocess_wait_check_async().
-func (subprocess subprocess) WaitCheckFinish(result AsyncResult) bool {
+func (subprocess subprocess) WaitCheckFinish(result AsyncResult) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_subprocess_wait_check_finish(arg0, arg1)
+	ret := C.g_subprocess_wait_check_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // WaitFinish collects the result of a previous call to
 // g_subprocess_wait_async().
-func (subprocess subprocess) WaitFinish(result AsyncResult) bool {
+func (subprocess subprocess) WaitFinish(result AsyncResult) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocess)(subprocess.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_subprocess_wait_finish(arg0, arg1)
+	ret := C.g_subprocess_wait_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SubprocessLauncher: this class contains a set of options for launching child
@@ -49566,6 +54402,19 @@ type SubprocessLauncher interface {
 	// On UNIX, the returned string can be an arbitrary byte string. On Windows,
 	// it will be UTF-8.
 	env(variable string) string
+	// SetChildSetup sets up a child setup function.
+	//
+	// The child setup function will be called after fork() but before exec() on
+	// the child's side.
+	//
+	// @destroy_notify will not be automatically called on the child's side of
+	// the fork(). It will only be called when the last reference on the
+	// Launcher is dropped or when a new child setup function is given.
+	//
+	// nil can be given as @child_setup to disable the functionality.
+	//
+	// Child setup functions are only available on UNIX.
+	SetChildSetup(childSetup glib.SpawnChildSetupFunc)
 	// SetCwd sets the current working directory that processes will be launched
 	// with.
 	//
@@ -49653,7 +54502,7 @@ type SubprocessLauncher interface {
 	// they should be in UTF-8.
 	Setenv(variable string, value string, overwrite bool)
 	// Spawnv creates a #GSubprocess given a provided array of arguments.
-	Spawnv(argv []string) Subprocess
+	Spawnv(argv []string) (subprocess Subprocess, err error)
 	// TakeFd: transfer an arbitrary file descriptor from parent process to the
 	// child. This function takes "ownership" of the fd; it will be closed in
 	// the parent when @self is freed.
@@ -49762,7 +54611,7 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 
 	var ret0 SubprocessLauncher
 
-	ret0 = WrapSubprocessLauncher(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SubprocessLauncher)
 
 	return ret0
 }
@@ -49787,6 +54636,32 @@ func (self subprocessLauncher) env(variable string) string {
 	ret0 = C.GoString(ret)
 
 	return ret0
+}
+
+// SetChildSetup sets up a child setup function.
+//
+// The child setup function will be called after fork() but before exec() on
+// the child's side.
+//
+// @destroy_notify will not be automatically called on the child's side of
+// the fork(). It will only be called when the last reference on the
+// Launcher is dropped or when a new child setup function is given.
+//
+// nil can be given as @child_setup to disable the functionality.
+//
+// Child setup functions are only available on UNIX.
+func (self subprocessLauncher) SetChildSetup(childSetup glib.SpawnChildSetupFunc) {
+	var arg0 *C.GSubprocessLauncher
+	var arg1 C.GSpawnChildSetupFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GSubprocessLauncher)(self.Native())
+	arg1 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	arg2 = C.gpointer(box.Assign(childSetup))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	C.g_subprocess_launcher_set_child_setup(arg0, arg1, arg2, arg3)
 }
 
 // SetCwd sets the current working directory that processes will be launched
@@ -49830,7 +54705,21 @@ func (self subprocessLauncher) SetEnviron(env []string) {
 
 	arg0 = (*C.GSubprocessLauncher)(self.Native())
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(env) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(env)
+		sliceHeader.Cap = len(env)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(env); i++ {
+			src := env[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	C.g_subprocess_launcher_set_environ(arg0, arg1)
@@ -49945,28 +54834,51 @@ func (self subprocessLauncher) Setenv(variable string, value string, overwrite b
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(overwrite)
+	if overwrite {
+		arg3 = C.TRUE
+	}
 
 	C.g_subprocess_launcher_setenv(arg0, arg1, arg2, arg3)
 }
 
 // Spawnv creates a #GSubprocess given a provided array of arguments.
-func (self subprocessLauncher) Spawnv(argv []string) Subprocess {
+func (self subprocessLauncher) Spawnv(argv []string) (subprocess Subprocess, err error) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 **C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GSubprocessLauncher)(self.Native())
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
-	ret := C.g_subprocess_launcher_spawnv(arg0, arg1)
+	ret := C.g_subprocess_launcher_spawnv(arg0, arg1, &gError)
 
 	var ret0 Subprocess
+	var goError error
 
-	ret0 = WrapSubprocess(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Subprocess)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // TakeFd: transfer an arbitrary file descriptor from parent process to the
@@ -50286,7 +55198,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateBoolean() bool
+	PropagateBoolean() error
 	// PropagateInt gets the result of @task as an integer (#gssize).
 	//
 	// If the task resulted in an error, or was cancelled, then this will
@@ -50294,7 +55206,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateInt() int
+	PropagateInt() (gssize int, err error)
 	// PropagatePointer gets the result of @task as a pointer, and transfers
 	// ownership of that value to the caller.
 	//
@@ -50303,7 +55215,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagatePointer() interface{}
+	PropagatePointer() (gpointer interface{}, err error)
 	// ReturnBoolean sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
@@ -50460,7 +55372,7 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback As
 
 	var ret0 Task
 
-	ret0 = WrapTask(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Task)
 
 	return ret0
 }
@@ -50475,7 +55387,7 @@ func (task task) Cancellable() Cancellable {
 
 	var ret0 Cancellable
 
-	ret0 = WrapCancellable(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Cancellable)
 
 	return ret0
 }
@@ -50491,7 +55403,7 @@ func (task task) CheckCancellable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -50508,7 +55420,7 @@ func (task task) Completed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -50580,7 +55492,7 @@ func (task task) ReturnOnCancel() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -50596,7 +55508,7 @@ func (task task) SourceObject() gextras.Objector {
 
 	var ret0 gextras.Objector
 
-	ret0 = externglib.Take(unsafe.Pointer(ret.Native()))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gextras.Objector)
 
 	return ret0
 }
@@ -50641,7 +55553,7 @@ func (task task) HadError() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -50653,18 +55565,22 @@ func (task task) HadError() bool {
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (task task) PropagateBoolean() bool {
+func (task task) PropagateBoolean() error {
 	var arg0 *C.GTask
+	var gError *C.GError
 
 	arg0 = (*C.GTask)(task.Native())
 
-	ret := C.g_task_propagate_boolean(arg0)
+	ret := C.g_task_propagate_boolean(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PropagateInt gets the result of @task as an integer (#gssize).
@@ -50674,18 +55590,25 @@ func (task task) PropagateBoolean() bool {
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (task task) PropagateInt() int {
+func (task task) PropagateInt() (gssize int, err error) {
 	var arg0 *C.GTask
+	var gError *C.GError
 
 	arg0 = (*C.GTask)(task.Native())
 
-	ret := C.g_task_propagate_int(arg0)
+	ret := C.g_task_propagate_int(arg0, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // PropagatePointer gets the result of @task as a pointer, and transfers
@@ -50696,18 +55619,25 @@ func (task task) PropagateInt() int {
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (task task) PropagatePointer() interface{} {
+func (task task) PropagatePointer() (gpointer interface{}, err error) {
 	var arg0 *C.GTask
+	var gError *C.GError
 
 	arg0 = (*C.GTask)(task.Native())
 
-	ret := C.g_task_propagate_pointer(arg0)
+	ret := C.g_task_propagate_pointer(arg0, &gError)
 
 	var ret0 interface{}
+	var goError error
 
 	ret0 = box.Get(uintptr(ret)).(interface{})
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReturnBoolean sets @task's result to @result and completes the task (see
@@ -50717,7 +55647,9 @@ func (task task) ReturnBoolean(result bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTask)(task.Native())
-	arg1 = gextras.Cbool(result)
+	if result {
+		arg1 = C.TRUE
+	}
 
 	C.g_task_return_boolean(arg0, arg1)
 }
@@ -50755,7 +55687,7 @@ func (task task) ReturnErrorIfCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -50835,7 +55767,9 @@ func (task task) SetCheckCancellable(checkCancellable bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTask)(task.Native())
-	arg1 = gextras.Cbool(checkCancellable)
+	if checkCancellable {
+		arg1 = C.TRUE
+	}
 
 	C.g_task_set_check_cancellable(arg0, arg1)
 }
@@ -50907,13 +55841,15 @@ func (task task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTask)(task.Native())
-	arg1 = gextras.Cbool(returnOnCancel)
+	if returnOnCancel {
+		arg1 = C.TRUE
+	}
 
 	ret := C.g_task_set_return_on_cancel(arg0, arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -50999,7 +55935,7 @@ func (connection tcpConnection) GracefulDisconnect() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -51019,7 +55955,9 @@ func (connection tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTcpConnection)(connection.Native())
-	arg1 = gextras.Cbool(gracefulDisconnect)
+	if gracefulDisconnect {
+		arg1 = C.TRUE
+	}
 
 	C.g_tcp_connection_set_graceful_disconnect(arg0, arg1)
 }
@@ -51068,7 +56006,7 @@ func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) TcpWrapperCon
 
 	var ret0 TcpWrapperConnection
 
-	ret0 = WrapTcpWrapperConnection(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TcpWrapperConnection)
 
 	return ret0
 }
@@ -51083,7 +56021,7 @@ func (conn tcpWrapperConnection) BaseIOStream() IOStream {
 
 	var ret0 IOStream
 
-	ret0 = WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(IOStream)
 
 	return ret0
 }
@@ -51227,7 +56165,7 @@ func NewTestDBus(flags TestDBusFlags) TestDBus {
 
 	var ret0 TestDBus
 
-	ret0 = WrapTestDBus(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TestDBus)
 
 	return ret0
 }
@@ -51379,7 +56317,40 @@ func NewThemedIcon(iconname string) ThemedIcon {
 
 	var ret0 ThemedIcon
 
-	ret0 = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ThemedIcon)
+
+	return ret0
+}
+
+// NewThemedIconFromNames constructs a class ThemedIcon.
+func NewThemedIconFromNames(iconnames []string) ThemedIcon {
+	var arg1 **C.char
+	var arg2 C.int
+
+	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(iconnames))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(iconnames)
+		sliceHeader.Cap = len(iconnames)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(iconnames); i++ {
+			src := iconnames[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.char)(unsafe.Pointer(ptr))
+		arg2 = len(iconnames)
+	}
+
+	ret := C.g_themed_icon_new_from_names(arg1, arg2)
+
+	var ret0 ThemedIcon
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ThemedIcon)
 
 	return ret0
 }
@@ -51395,7 +56366,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 
 	var ret0 ThemedIcon
 
-	ret0 = WrapThemedIcon(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ThemedIcon)
 
 	return ret0
 }
@@ -51504,7 +56475,7 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 
 	var ret0 ThreadedSocketService
 
-	ret0 = WrapThreadedSocketService(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ThreadedSocketService)
 
 	return ret0
 }
@@ -51566,56 +56537,77 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 }
 
 // NewTLSCertificateFromFile constructs a class TLSCertificate.
-func NewTLSCertificateFromFile(file string) TLSCertificate {
+func NewTLSCertificateFromFile(file string) (tlsCertificate TLSCertificate, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_tls_certificate_new_from_file(arg1)
+	ret := C.g_tls_certificate_new_from_file(arg1, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewTLSCertificateFromFiles constructs a class TLSCertificate.
-func NewTLSCertificateFromFiles(certFile string, keyFile string) TLSCertificate {
+func NewTLSCertificateFromFiles(certFile string, keyFile string) (tlsCertificate TLSCertificate, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(certFile))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(keyFile))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_tls_certificate_new_from_files(arg1, arg2)
+	ret := C.g_tls_certificate_new_from_files(arg1, arg2, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewTLSCertificateFromPem constructs a class TLSCertificate.
-func NewTLSCertificateFromPem(data string, length int) TLSCertificate {
+func NewTLSCertificateFromPem(data string, length int) (tlsCertificate TLSCertificate, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gssize
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(data))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(length)
 
-	ret := C.g_tls_certificate_new_from_pem(arg1, arg2)
+	ret := C.g_tls_certificate_new_from_pem(arg1, arg2, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Issuer gets the Certificate representing @cert's issuer, if known
@@ -51628,7 +56620,7 @@ func (cert tlsCertificate) Issuer() TLSCertificate {
 
 	var ret0 TLSCertificate
 
-	ret0 = WrapTLSCertificate(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
 	return ret0
 }
@@ -51649,7 +56641,7 @@ func (certOne tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -51718,7 +56710,7 @@ type TLSConnection interface {
 	// though. That could happen if TLS connection does not support @type or the
 	// binding data is not available yet due to additional negotiation or input
 	// required.
-	ChannelBindingData(_type TLSChannelBindingType) (data []byte, ok bool)
+	ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error)
 	// Database gets the certificate database that @conn uses to verify peer
 	// certificates. See g_tls_connection_set_database().
 	Database() TLSDatabase
@@ -51781,13 +56773,13 @@ type TLSConnection interface {
 	// initial handshake, so calling this function manually is not recommended.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable Cancellable) bool
+	Handshake(cancellable Cancellable) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
 	// g_tls_connection_handshake() for more information.
 	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_tls_connection_handshake() for more information.
-	HandshakeFinish(result AsyncResult) bool
+	HandshakeFinish(result AsyncResult) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
 	// advertise that the caller is willing to speak on this connection. The
 	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
@@ -51909,7 +56901,7 @@ func (conn tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors 
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -51925,7 +56917,7 @@ func (conn tlsConnection) Certificate() TLSCertificate {
 
 	var ret0 TLSCertificate
 
-	ret0 = WrapTLSCertificate(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
 	return ret0
 }
@@ -51944,18 +56936,19 @@ func (conn tlsConnection) Certificate() TLSCertificate {
 // though. That could happen if TLS connection does not support @type or the
 // binding data is not available yet due to additional negotiation or input
 // required.
-func (conn tlsConnection) ChannelBindingData(_type TLSChannelBindingType) (data []byte, ok bool) {
+func (conn tlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error) {
 	var arg0 *C.GTlsConnection
 	var arg1 C.GTlsChannelBindingType
 	var arg2 *C.GByteArray // out
+	var gError *C.GError
 
 	arg0 = (*C.GTlsConnection)(conn.Native())
-	arg1 = (C.GTlsChannelBindingType)(_type)
+	arg1 = (C.GTlsChannelBindingType)(typ)
 
-	ret := C.g_tls_connection_get_channel_binding_data(arg0, arg1, &arg2)
+	ret := C.g_tls_connection_get_channel_binding_data(arg0, arg1, &arg2, &gError)
 
 	var ret0 []byte
-	var ret1 bool
+	var goError error
 
 	{
 		var length uint
@@ -51970,9 +56963,12 @@ func (conn tlsConnection) ChannelBindingData(_type TLSChannelBindingType) (data 
 		}
 	}
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // Database gets the certificate database that @conn uses to verify peer
@@ -51986,7 +56982,7 @@ func (conn tlsConnection) Database() TLSDatabase {
 
 	var ret0 TLSDatabase
 
-	ret0 = WrapTLSDatabase(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSDatabase)
 
 	return ret0
 }
@@ -52003,7 +56999,7 @@ func (conn tlsConnection) Interaction() TLSInteraction {
 
 	var ret0 TLSInteraction
 
-	ret0 = WrapTLSInteraction(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSInteraction)
 
 	return ret0
 }
@@ -52041,7 +57037,7 @@ func (conn tlsConnection) PeerCertificate() TLSCertificate {
 
 	var ret0 TLSCertificate
 
-	ret0 = WrapTLSCertificate(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
 	return ret0
 }
@@ -52091,7 +57087,7 @@ func (conn tlsConnection) RequireCloseNotify() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -52108,7 +57104,7 @@ func (conn tlsConnection) UseSystemCertdb() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -52141,20 +57137,24 @@ func (conn tlsConnection) UseSystemCertdb() bool {
 // initial handshake, so calling this function manually is not recommended.
 //
 // Connection::accept_certificate may be emitted during the handshake.
-func (conn tlsConnection) Handshake(cancellable Cancellable) bool {
+func (conn tlsConnection) Handshake(cancellable Cancellable) error {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsConnection)(conn.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_connection_handshake(arg0, arg1)
+	ret := C.g_tls_connection_handshake(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
@@ -52177,20 +57177,24 @@ func (conn tlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellable
 
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_tls_connection_handshake() for more information.
-func (conn tlsConnection) HandshakeFinish(result AsyncResult) bool {
+func (conn tlsConnection) HandshakeFinish(result AsyncResult) error {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsConnection)(conn.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_connection_handshake_finish(arg0, arg1)
+	ret := C.g_tls_connection_handshake_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -52210,7 +57214,21 @@ func (conn tlsConnection) SetAdvertisedProtocols(protocols []string) {
 
 	arg0 = (*C.GTlsConnection)(conn.Native())
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(protocols) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(protocols)
+		sliceHeader.Cap = len(protocols)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(protocols); i++ {
+			src := protocols[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	C.g_tls_connection_set_advertised_protocols(arg0, arg1)
@@ -52319,7 +57337,9 @@ func (conn tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTlsConnection)(conn.Native())
-	arg1 = gextras.Cbool(requireCloseNotify)
+	if requireCloseNotify {
+		arg1 = C.TRUE
+	}
 
 	C.g_tls_connection_set_require_close_notify(arg0, arg1)
 }
@@ -52336,7 +57356,9 @@ func (conn tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTlsConnection)(conn.Native())
-	arg1 = gextras.Cbool(useSystemCertdb)
+	if useSystemCertdb {
+		arg1 = C.TRUE
+	}
 
 	C.g_tls_connection_set_use_system_certdb(arg0, arg1)
 }
@@ -52375,7 +57397,7 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_for_handle_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) TLSCertificate
+	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, err error)
 	// LookupCertificateForHandleAsync: asynchronously look up a certificate by
 	// its handle in the database. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
@@ -52386,7 +57408,7 @@ type TLSDatabase interface {
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
 	// this database, then nil will be returned.
-	LookupCertificateForHandleFinish(result AsyncResult) TLSCertificate
+	LookupCertificateForHandleFinish(result AsyncResult) (tlsCertificate TLSCertificate, err error)
 	// LookupCertificateIssuer: look up the issuer of @certificate in the
 	// database.
 	//
@@ -52396,7 +57418,7 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_issuer_async() to perform the lookup
 	// operation asynchronously.
-	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) TLSCertificate
+	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, err error)
 	// LookupCertificateIssuerAsync: asynchronously look up the issuer of
 	// @certificate in the database. See
 	// g_tls_database_lookup_certificate_issuer() for more information.
@@ -52404,14 +57426,14 @@ type TLSDatabase interface {
 	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 	// operation. See g_tls_database_lookup_certificate_issuer() for more
 	// information.
-	LookupCertificateIssuerFinish(result AsyncResult) TLSCertificate
+	LookupCertificateIssuerFinish(result AsyncResult) (tlsCertificate TLSCertificate, err error)
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
 	// the database.
 	//
 	// This function can block, use
 	// g_tls_database_lookup_certificates_issued_by_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) *glib.List
+	LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (list *glib.List, err error)
 	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
 	// issued by this issuer in the database. See
 	// g_tls_database_lookup_certificates_issued_by() for more information.
@@ -52423,7 +57445,7 @@ type TLSDatabase interface {
 	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 	// certificates. See g_tls_database_lookup_certificates_issued_by() for more
 	// information.
-	LookupCertificatesIssuedByFinish(result AsyncResult) *glib.List
+	LookupCertificatesIssuedByFinish(result AsyncResult) (list *glib.List, err error)
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
 	//
@@ -52460,7 +57482,7 @@ type TLSDatabase interface {
 	//
 	// This function can block, use g_tls_database_verify_chain_async() to
 	// perform the verification operation asynchronously.
-	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) TLSCertificateFlags
+	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (tlsCertificateFlags TLSCertificateFlags, err error)
 	// VerifyChainAsync: asynchronously determines the validity of a certificate
 	// chain after looking up and adding any missing certificates to the chain.
 	// See g_tls_database_verify_chain() for more information.
@@ -52475,7 +57497,7 @@ type TLSDatabase interface {
 	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 	// will be set accordingly. @error is not set when @chain is successfully
 	// analyzed but found to be invalid.
-	VerifyChainFinish(result AsyncResult) TLSCertificateFlags
+	VerifyChainFinish(result AsyncResult) (tlsCertificateFlags TLSCertificateFlags, err error)
 }
 
 // tlsDatabase implements the TLSDatabase interface.
@@ -52537,12 +57559,13 @@ func (self tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) stri
 // This function can block, use
 // g_tls_database_lookup_certificate_for_handle_async() to perform the
 // lookup operation asynchronously.
-func (self tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) TLSCertificate {
+func (self tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.gchar
 	var arg2 *C.GTlsInteraction
 	var arg3 C.GTlsDatabaseLookupFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.gchar)(C.CString(handle))
@@ -52551,13 +57574,19 @@ func (self tlsDatabase) LookupCertificateForHandle(handle string, interaction TL
 	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_database_lookup_certificate_for_handle(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_tls_database_lookup_certificate_for_handle(arg0, arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupCertificateForHandleAsync: asynchronously look up a certificate by
@@ -52590,20 +57619,27 @@ func (self tlsDatabase) LookupCertificateForHandleAsync(handle string, interacti
 //
 // If the handle is no longer valid, or does not point to a certificate in
 // this database, then nil will be returned.
-func (self tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) TLSCertificate {
+func (self tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (tlsCertificate TLSCertificate, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_database_lookup_certificate_for_handle_finish(arg0, arg1)
+	ret := C.g_tls_database_lookup_certificate_for_handle_finish(arg0, arg1, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupCertificateIssuer: look up the issuer of @certificate in the
@@ -52615,12 +57651,13 @@ func (self tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) TLS
 // This function can block, use
 // g_tls_database_lookup_certificate_issuer_async() to perform the lookup
 // operation asynchronously.
-func (self tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) TLSCertificate {
+func (self tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GTlsCertificate
 	var arg2 *C.GTlsInteraction
 	var arg3 C.GTlsDatabaseLookupFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.GTlsCertificate)(certificate.Native())
@@ -52628,13 +57665,19 @@ func (self tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, inte
 	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_database_lookup_certificate_issuer(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_tls_database_lookup_certificate_issuer(arg0, arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupCertificateIssuerAsync: asynchronously look up the issuer of
@@ -52663,20 +57706,27 @@ func (self tlsDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate,
 // LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
-func (self tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) TLSCertificate {
+func (self tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (tlsCertificate TLSCertificate, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_database_lookup_certificate_issuer_finish(arg0, arg1)
+	ret := C.g_tls_database_lookup_certificate_issuer_finish(arg0, arg1, &gError)
 
 	var ret0 TLSCertificate
+	var goError error
 
-	ret0 = WrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSCertificate)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupCertificatesIssuedBy: look up certificates issued by this issuer in
@@ -52685,30 +57735,50 @@ func (self tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) TLSCer
 // This function can block, use
 // g_tls_database_lookup_certificates_issued_by_async() to perform the
 // lookup operation asynchronously.
-func (self tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) *glib.List {
+func (self tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (list *glib.List, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GByteArray
 	var arg2 *C.GTlsInteraction
 	var arg3 C.GTlsDatabaseLookupFlags
 	var arg4 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(issuerRawDn) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(issuerRawDn)
+		sliceHeader.Cap = len(issuerRawDn)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(issuerRawDn); i++ {
+			src := issuerRawDn[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.GByteArray)(unsafe.Pointer(ptr))
 	}
 	arg2 = (*C.GTlsInteraction)(interaction.Native())
 	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
 	arg4 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_database_lookup_certificates_issued_by(arg0, arg1, arg2, arg3, arg4)
+	ret := C.g_tls_database_lookup_certificates_issued_by(arg0, arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LookupCertificatesIssuedByAsync: asynchronously look up certificates
@@ -52729,7 +57799,20 @@ func (self tlsDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, inte
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(issuerRawDn) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(issuerRawDn)
+		sliceHeader.Cap = len(issuerRawDn)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(issuerRawDn); i++ {
+			src := issuerRawDn[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.GByteArray)(unsafe.Pointer(ptr))
 	}
 	arg2 = (*C.GTlsInteraction)(interaction.Native())
 	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
@@ -52743,22 +57826,29 @@ func (self tlsDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, inte
 // LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 // certificates. See g_tls_database_lookup_certificates_issued_by() for more
 // information.
-func (self tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) *glib.List {
+func (self tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_database_lookup_certificates_issued_by_finish(arg0, arg1)
+	ret := C.g_tls_database_lookup_certificates_issued_by_finish(arg0, arg1, &gError)
 
 	var ret0 *glib.List
+	var goError error
 
 	{
 		ret0 = glib.WrapList(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // VerifyChain determines the validity of a certificate chain after looking
@@ -52797,7 +57887,7 @@ func (self tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) *gl
 //
 // This function can block, use g_tls_database_verify_chain_async() to
 // perform the verification operation asynchronously.
-func (self tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) TLSCertificateFlags {
+func (self tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (tlsCertificateFlags TLSCertificateFlags, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GTlsCertificate
 	var arg2 *C.gchar
@@ -52805,6 +57895,7 @@ func (self tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identi
 	var arg4 *C.GTlsInteraction
 	var arg5 C.GTlsDatabaseVerifyFlags
 	var arg6 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.GTlsCertificate)(chain.Native())
@@ -52815,13 +57906,19 @@ func (self tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identi
 	arg5 = (C.GTlsDatabaseVerifyFlags)(flags)
 	arg6 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_database_verify_chain(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	ret := C.g_tls_database_verify_chain(arg0, arg1, arg2, arg3, arg4, arg5, arg6, &gError)
 
 	var ret0 TLSCertificateFlags
+	var goError error
 
 	ret0 = TLSCertificateFlags(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // VerifyChainAsync: asynchronously determines the validity of a certificate
@@ -52862,20 +57959,27 @@ func (self tlsDatabase) VerifyChainAsync(chain TLSCertificate, purpose string, i
 // then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 // will be set accordingly. @error is not set when @chain is successfully
 // analyzed but found to be invalid.
-func (self tlsDatabase) VerifyChainFinish(result AsyncResult) TLSCertificateFlags {
+func (self tlsDatabase) VerifyChainFinish(result AsyncResult) (tlsCertificateFlags TLSCertificateFlags, err error) {
 	var arg0 *C.GTlsDatabase
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsDatabase)(self.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_database_verify_chain_finish(arg0, arg1)
+	ret := C.g_tls_database_verify_chain_finish(arg0, arg1, &gError)
 
 	var ret0 TLSCertificateFlags
+	var goError error
 
 	ret0 = TLSCertificateFlags(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // TLSInteraction provides a mechanism for the TLS connection and database code
@@ -52914,7 +58018,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	AskPassword(password TLSPassword, cancellable Cancellable) TLSInteractionResult
+	AskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
 	// AskPasswordAsync: run asynchronous interaction to ask the user for a
 	// password. In general, g_tls_interaction_invoke_ask_password() should be
 	// used instead of this function.
@@ -52942,7 +58046,7 @@ type TLSInteraction interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	AskPasswordFinish(result AsyncResult) TLSInteractionResult
+	AskPasswordFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error)
 	// InvokeAskPassword: invoke the interaction to ask the user for a password.
 	// It invokes this interaction in the main loop, specifically the Context
 	// returned by g_main_context_get_thread_default() when the interaction is
@@ -52963,7 +58067,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	InvokeAskPassword(password TLSPassword, cancellable Cancellable) TLSInteractionResult
+	InvokeAskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
 	// InvokeRequestCertificate: invoke the interaction to ask the user to
 	// choose a certificate to use with the connection. It invokes this
 	// interaction in the main loop, specifically the Context returned by
@@ -52984,7 +58088,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) TLSInteractionResult
+	InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
 	// RequestCertificate: run synchronous interaction to ask the user to choose
 	// a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
@@ -53003,7 +58107,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) TLSInteractionResult
+	RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
 	// RequestCertificateAsync: run asynchronous interaction to ask the user for
 	// a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
@@ -53027,7 +58131,7 @@ type TLSInteraction interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	RequestCertificateFinish(result AsyncResult) TLSInteractionResult
+	RequestCertificateFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error)
 }
 
 // tlsInteraction implements the TLSInteraction interface.
@@ -53065,22 +58169,29 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (interaction tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellable) TLSInteractionResult {
+func (interaction tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsPassword
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsInteraction)(interaction.Native())
 	arg1 = (*C.GTlsPassword)(password.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_interaction_ask_password(arg0, arg1, arg2)
+	ret := C.g_tls_interaction_ask_password(arg0, arg1, arg2, &gError)
 
 	var ret0 TLSInteractionResult
+	var goError error
 
 	ret0 = TLSInteractionResult(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // AskPasswordAsync: run asynchronous interaction to ask the user for a
@@ -53125,20 +58236,27 @@ func (interaction tlsInteraction) AskPasswordAsync(password TLSPassword, cancell
 // If the interaction is cancelled by the cancellation object, or by the
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code.
-func (interaction tlsInteraction) AskPasswordFinish(result AsyncResult) TLSInteractionResult {
+func (interaction tlsInteraction) AskPasswordFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error) {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsInteraction)(interaction.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_interaction_ask_password_finish(arg0, arg1)
+	ret := C.g_tls_interaction_ask_password_finish(arg0, arg1, &gError)
 
 	var ret0 TLSInteractionResult
+	var goError error
 
 	ret0 = TLSInteractionResult(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // InvokeAskPassword: invoke the interaction to ask the user for a password.
@@ -53161,22 +58279,29 @@ func (interaction tlsInteraction) AskPasswordFinish(result AsyncResult) TLSInter
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (interaction tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Cancellable) TLSInteractionResult {
+func (interaction tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsPassword
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsInteraction)(interaction.Native())
 	arg1 = (*C.GTlsPassword)(password.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_interaction_invoke_ask_password(arg0, arg1, arg2)
+	ret := C.g_tls_interaction_invoke_ask_password(arg0, arg1, arg2, &gError)
 
 	var ret0 TLSInteractionResult
+	var goError error
 
 	ret0 = TLSInteractionResult(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // InvokeRequestCertificate: invoke the interaction to ask the user to
@@ -53199,24 +58324,31 @@ func (interaction tlsInteraction) InvokeAskPassword(password TLSPassword, cancel
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (interaction tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) TLSInteractionResult {
+func (interaction tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsConnection
 	var arg2 C.GTlsCertificateRequestFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsInteraction)(interaction.Native())
 	arg1 = (*C.GTlsConnection)(connection.Native())
 	arg2 = (C.GTlsCertificateRequestFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_interaction_invoke_request_certificate(arg0, arg1, arg2, arg3)
+	ret := C.g_tls_interaction_invoke_request_certificate(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 TLSInteractionResult
+	var goError error
 
 	ret0 = TLSInteractionResult(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // RequestCertificate: run synchronous interaction to ask the user to choose
@@ -53237,24 +58369,31 @@ func (interaction tlsInteraction) InvokeRequestCertificate(connection TLSConnect
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (interaction tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) TLSInteractionResult {
+func (interaction tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsConnection
 	var arg2 C.GTlsCertificateRequestFlags
 	var arg3 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GTlsInteraction)(interaction.Native())
 	arg1 = (*C.GTlsConnection)(connection.Native())
 	arg2 = (C.GTlsCertificateRequestFlags)(flags)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_tls_interaction_request_certificate(arg0, arg1, arg2, arg3)
+	ret := C.g_tls_interaction_request_certificate(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 TLSInteractionResult
+	var goError error
 
 	ret0 = TLSInteractionResult(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // RequestCertificateAsync: run asynchronous interaction to ask the user for
@@ -53297,20 +58436,27 @@ func (interaction tlsInteraction) RequestCertificateAsync(connection TLSConnecti
 // If the interaction is cancelled by the cancellation object, or by the
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code.
-func (interaction tlsInteraction) RequestCertificateFinish(result AsyncResult) TLSInteractionResult {
+func (interaction tlsInteraction) RequestCertificateFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error) {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GTlsInteraction)(interaction.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_tls_interaction_request_certificate_finish(arg0, arg1)
+	ret := C.g_tls_interaction_request_certificate_finish(arg0, arg1, &gError)
 
 	var ret0 TLSInteractionResult
+	var goError error
 
 	ret0 = TLSInteractionResult(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // TLSPassword holds a password used in TLS.
@@ -53336,6 +58482,24 @@ type TLSPassword interface {
 	SetDescription(description string)
 	// SetFlags: set flags about the password.
 	SetFlags(flags TLSPasswordFlags)
+	// SetValue: set the value for this password. The @value will be copied by
+	// the password object.
+	//
+	// Specify the @length, for a non-nul-terminated password. Pass -1 as
+	// @length if using a nul-terminated password, and @length will be
+	// calculated automatically. (Note that the terminating nul is not
+	// considered part of the password in this case.)
+	SetValue(value []byte)
+	// SetValueFull: provide the value for this password.
+	//
+	// The @value will be owned by the password object, and later freed using
+	// the @destroy function callback.
+	//
+	// Specify the @length, for a non-nul-terminated password. Pass -1 as
+	// @length if using a nul-terminated password, and @length will be
+	// calculated automatically. (Note that the terminating nul is not
+	// considered part of the password in this case.)
+	SetValueFull(value []byte)
 	// SetWarning: set a user readable translated warning. Usually this warning
 	// is a representation of the password flags returned from
 	// g_tls_password_get_flags().
@@ -53376,7 +58540,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 
 	var ret0 TLSPassword
 
-	ret0 = WrapTLSPassword(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(TLSPassword)
 
 	return ret0
 }
@@ -53473,6 +58637,49 @@ func (password tlsPassword) SetFlags(flags TLSPasswordFlags) {
 	C.g_tls_password_set_flags(arg0, arg1)
 }
 
+// SetValue: set the value for this password. The @value will be copied by
+// the password object.
+//
+// Specify the @length, for a non-nul-terminated password. Pass -1 as
+// @length if using a nul-terminated password, and @length will be
+// calculated automatically. (Note that the terminating nul is not
+// considered part of the password in this case.)
+func (password tlsPassword) SetValue(value []byte) {
+	var arg0 *C.GTlsPassword
+	var arg1 *C.guchar
+	var arg2 C.gssize
+
+	arg0 = (*C.GTlsPassword)(password.Native())
+	arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
+	arg2 = len(value)
+	defer runtime.KeepAlive(value)
+
+	C.g_tls_password_set_value(arg0, arg1, arg2)
+}
+
+// SetValueFull: provide the value for this password.
+//
+// The @value will be owned by the password object, and later freed using
+// the @destroy function callback.
+//
+// Specify the @length, for a non-nul-terminated password. Pass -1 as
+// @length if using a nul-terminated password, and @length will be
+// calculated automatically. (Note that the terminating nul is not
+// considered part of the password in this case.)
+func (password tlsPassword) SetValueFull(value []byte) {
+	var arg0 *C.GTlsPassword
+	var arg1 *C.guchar
+	var arg2 C.gssize
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GTlsPassword)(password.Native())
+	arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
+	arg2 = len(value)
+	defer runtime.KeepAlive(value)
+
+	C.g_tls_password_set_value_full(arg0, arg1, arg2, arg3)
+}
+
 // SetWarning: set a user readable translated warning. Usually this warning
 // is a representation of the password flags returned from
 // g_tls_password_get_flags().
@@ -53515,7 +58722,7 @@ type UnixConnection interface {
 	//
 	// Other ways to exchange credentials with a foreign peer includes the
 	// CredentialsMessage type and g_socket_get_credentials() function.
-	ReceiveCredentials(cancellable Cancellable) Credentials
+	ReceiveCredentials(cancellable Cancellable) (credentials Credentials, err error)
 	// ReceiveCredentialsAsync: asynchronously receive credentials.
 	//
 	// For more details, see g_unix_connection_receive_credentials() which is
@@ -53527,14 +58734,14 @@ type UnixConnection interface {
 	ReceiveCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
 	// operation started with g_unix_connection_receive_credentials_async().
-	ReceiveCredentialsFinish(result AsyncResult) Credentials
+	ReceiveCredentialsFinish(result AsyncResult) (credentials Credentials, err error)
 	// ReceiveFd receives a file descriptor from the sending end of the
 	// connection. The sending end has to call g_unix_connection_send_fd() for
 	// this to work.
 	//
 	// As well as reading the fd this also reads a single byte from the stream,
 	// as this is required for fd passing to work on some implementations.
-	ReceiveFd(cancellable Cancellable) int
+	ReceiveFd(cancellable Cancellable) (gint int, err error)
 	// SendCredentials passes the credentials of the current user the receiving
 	// side of the connection. The receiving end has to call
 	// g_unix_connection_receive_credentials() (or similar) to accept the
@@ -53552,7 +58759,7 @@ type UnixConnection interface {
 	//
 	// Other ways to exchange credentials with a foreign peer includes the
 	// CredentialsMessage type and g_socket_get_credentials() function.
-	SendCredentials(cancellable Cancellable) bool
+	SendCredentials(cancellable Cancellable) error
 	// SendCredentialsAsync: asynchronously send credentials.
 	//
 	// For more details, see g_unix_connection_send_credentials() which is the
@@ -53564,14 +58771,14 @@ type UnixConnection interface {
 	SendCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// SendCredentialsFinish finishes an asynchronous send credentials operation
 	// started with g_unix_connection_send_credentials_async().
-	SendCredentialsFinish(result AsyncResult) bool
+	SendCredentialsFinish(result AsyncResult) error
 	// SendFd passes a file descriptor to the receiving side of the connection.
 	// The receiving end has to call g_unix_connection_receive_fd() to accept
 	// the file descriptor.
 	//
 	// As well as sending the fd this also writes a single byte to the stream,
 	// as this is required for fd passing to work on some implementations.
-	SendFd(fd int, cancellable Cancellable) bool
+	SendFd(fd int, cancellable Cancellable) error
 }
 
 // unixConnection implements the UnixConnection interface.
@@ -53611,20 +58818,27 @@ func marshalUnixConnection(p uintptr) (interface{}, error) {
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (connection unixConnection) ReceiveCredentials(cancellable Cancellable) Credentials {
+func (connection unixConnection) ReceiveCredentials(cancellable Cancellable) (credentials Credentials, err error) {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GUnixConnection)(connection.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_unix_connection_receive_credentials(arg0, arg1)
+	ret := C.g_unix_connection_receive_credentials(arg0, arg1, &gError)
 
 	var ret0 Credentials
+	var goError error
 
-	ret0 = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Credentials)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReceiveCredentialsAsync: asynchronously receive credentials.
@@ -53651,20 +58865,27 @@ func (connection unixConnection) ReceiveCredentialsAsync(cancellable Cancellable
 
 // ReceiveCredentialsFinish finishes an asynchronous receive credentials
 // operation started with g_unix_connection_receive_credentials_async().
-func (connection unixConnection) ReceiveCredentialsFinish(result AsyncResult) Credentials {
+func (connection unixConnection) ReceiveCredentialsFinish(result AsyncResult) (credentials Credentials, err error) {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GUnixConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_unix_connection_receive_credentials_finish(arg0, arg1)
+	ret := C.g_unix_connection_receive_credentials_finish(arg0, arg1, &gError)
 
 	var ret0 Credentials
+	var goError error
 
-	ret0 = WrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Credentials)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReceiveFd receives a file descriptor from the sending end of the
@@ -53673,20 +58894,27 @@ func (connection unixConnection) ReceiveCredentialsFinish(result AsyncResult) Cr
 //
 // As well as reading the fd this also reads a single byte from the stream,
 // as this is required for fd passing to work on some implementations.
-func (connection unixConnection) ReceiveFd(cancellable Cancellable) int {
+func (connection unixConnection) ReceiveFd(cancellable Cancellable) (gint int, err error) {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GUnixConnection)(connection.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_unix_connection_receive_fd(arg0, arg1)
+	ret := C.g_unix_connection_receive_fd(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SendCredentials passes the credentials of the current user the receiving
@@ -53706,20 +58934,24 @@ func (connection unixConnection) ReceiveFd(cancellable Cancellable) int {
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (connection unixConnection) SendCredentials(cancellable Cancellable) bool {
+func (connection unixConnection) SendCredentials(cancellable Cancellable) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GUnixConnection)(connection.Native())
 	arg1 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_unix_connection_send_credentials(arg0, arg1)
+	ret := C.g_unix_connection_send_credentials(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SendCredentialsAsync: asynchronously send credentials.
@@ -53746,20 +58978,24 @@ func (connection unixConnection) SendCredentialsAsync(cancellable Cancellable, c
 
 // SendCredentialsFinish finishes an asynchronous send credentials operation
 // started with g_unix_connection_send_credentials_async().
-func (connection unixConnection) SendCredentialsFinish(result AsyncResult) bool {
+func (connection unixConnection) SendCredentialsFinish(result AsyncResult) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GUnixConnection)(connection.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.g_unix_connection_send_credentials_finish(arg0, arg1)
+	ret := C.g_unix_connection_send_credentials_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SendFd passes a file descriptor to the receiving side of the connection.
@@ -53768,22 +59004,26 @@ func (connection unixConnection) SendCredentialsFinish(result AsyncResult) bool 
 //
 // As well as sending the fd this also writes a single byte to the stream,
 // as this is required for fd passing to work on some implementations.
-func (connection unixConnection) SendFd(fd int, cancellable Cancellable) bool {
+func (connection unixConnection) SendFd(fd int, cancellable Cancellable) error {
 	var arg0 *C.GUnixConnection
 	var arg1 C.gint
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg0 = (*C.GUnixConnection)(connection.Native())
 	arg1 = C.gint(fd)
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.g_unix_connection_send_fd(arg0, arg1, arg2)
+	ret := C.g_unix_connection_send_fd(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // UnixCredentialsMessage: this ControlMessage contains a #GCredentials
@@ -53830,7 +59070,7 @@ func NewUnixCredentialsMessage() UnixCredentialsMessage {
 
 	var ret0 UnixCredentialsMessage
 
-	ret0 = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixCredentialsMessage)
 
 	return ret0
 }
@@ -53845,7 +59085,7 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 
 	var ret0 UnixCredentialsMessage
 
-	ret0 = WrapUnixCredentialsMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixCredentialsMessage)
 
 	return ret0
 }
@@ -53860,7 +59100,7 @@ func (message unixCredentialsMessage) Credentials() Credentials {
 
 	var ret0 Credentials
 
-	ret0 = WrapCredentials(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Credentials)
 
 	return ret0
 }
@@ -53889,7 +59129,7 @@ type UnixFDList interface {
 	// The index of the file descriptor in the list is returned. If you use this
 	// index with g_unix_fd_list_get() then you will receive back a duplicated
 	// copy of the same file descriptor.
-	Append(fd int) int
+	Append(fd int) (gint int, err error)
 	// Get gets a file descriptor out of @list.
 	//
 	// @index_ specifies the index of the file descriptor to get. It is a
@@ -53901,7 +59141,7 @@ type UnixFDList interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	Get(index_ int) int
+	Get(index_ int) (gint int, err error)
 	// Length gets the length of @list (ie: the number of file descriptors
 	// contained within).
 	Length() int
@@ -53965,7 +59205,25 @@ func NewUnixFDList() UnixFDList {
 
 	var ret0 UnixFDList
 
-	ret0 = WrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixFDList)
+
+	return ret0
+}
+
+// NewUnixFDListFromArray constructs a class UnixFDList.
+func NewUnixFDListFromArray(fds []int) UnixFDList {
+	var arg1 *C.gint
+	var arg2 C.gint
+
+	arg1 = (*C.gint)(unsafe.Pointer(&fds[0]))
+	arg2 = len(fds)
+	defer runtime.KeepAlive(fds)
+
+	ret := C.g_unix_fd_list_new_from_array(arg1, arg2)
+
+	var ret0 UnixFDList
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixFDList)
 
 	return ret0
 }
@@ -53982,20 +59240,27 @@ func NewUnixFDList() UnixFDList {
 // The index of the file descriptor in the list is returned. If you use this
 // index with g_unix_fd_list_get() then you will receive back a duplicated
 // copy of the same file descriptor.
-func (list unixFDList) Append(fd int) int {
+func (list unixFDList) Append(fd int) (gint int, err error) {
 	var arg0 *C.GUnixFDList
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg0 = (*C.GUnixFDList)(list.Native())
 	arg1 = C.gint(fd)
 
-	ret := C.g_unix_fd_list_append(arg0, arg1)
+	ret := C.g_unix_fd_list_append(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Get gets a file descriptor out of @list.
@@ -54009,20 +59274,27 @@ func (list unixFDList) Append(fd int) int {
 //
 // A possible cause of failure is exceeding the per-process or system-wide
 // file descriptor limit.
-func (list unixFDList) Get(index_ int) int {
+func (list unixFDList) Get(index_ int) (gint int, err error) {
 	var arg0 *C.GUnixFDList
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg0 = (*C.GUnixFDList)(list.Native())
 	arg1 = C.gint(index_)
 
-	ret := C.g_unix_fd_list_get(arg0, arg1)
+	ret := C.g_unix_fd_list_get(arg0, arg1, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Length gets the length of @list (ie: the number of file descriptors
@@ -54143,7 +59415,7 @@ type UnixFDMessage interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	AppendFd(fd int) bool
+	AppendFd(fd int) error
 	// FdList gets the FDList contained in @message. This function does not
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
@@ -54194,7 +59466,7 @@ func NewUnixFDMessage() UnixFDMessage {
 
 	var ret0 UnixFDMessage
 
-	ret0 = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixFDMessage)
 
 	return ret0
 }
@@ -54209,7 +59481,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 
 	var ret0 UnixFDMessage
 
-	ret0 = WrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixFDMessage)
 
 	return ret0
 }
@@ -54222,20 +59494,24 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 //
 // A possible cause of failure is exceeding the per-process or system-wide
 // file descriptor limit.
-func (message unixFDMessage) AppendFd(fd int) bool {
+func (message unixFDMessage) AppendFd(fd int) error {
 	var arg0 *C.GUnixFDMessage
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg0 = (*C.GUnixFDMessage)(message.Native())
 	arg1 = C.gint(fd)
 
-	ret := C.g_unix_fd_message_append_fd(arg0, arg1)
+	ret := C.g_unix_fd_message_append_fd(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // FdList gets the FDList contained in @message. This function does not
@@ -54250,7 +59526,7 @@ func (message unixFDMessage) FdList() UnixFDList {
 
 	var ret0 UnixFDList
 
-	ret0 = WrapUnixFDList(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(UnixFDList)
 
 	return ret0
 }
@@ -54348,13 +59624,15 @@ func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 	var arg2 C.gboolean
 
 	arg1 = C.gint(fd)
-	arg2 = gextras.Cbool(closeFd)
+	if closeFd {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_unix_input_stream_new(arg1, arg2)
 
 	var ret0 UnixInputStream
 
-	ret0 = WrapUnixInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixInputStream)
 
 	return ret0
 }
@@ -54370,7 +59648,7 @@ func (stream unixInputStream) CloseFd() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -54397,7 +59675,9 @@ func (stream unixInputStream) SetCloseFd(closeFd bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GUnixInputStream)(stream.Native())
-	arg1 = gextras.Cbool(closeFd)
+	if closeFd {
+		arg1 = C.TRUE
+	}
 
 	C.g_unix_input_stream_set_close_fd(arg0, arg1)
 }
@@ -54443,7 +59723,7 @@ func NewUnixMountMonitor() UnixMountMonitor {
 
 	var ret0 UnixMountMonitor
 
-	ret0 = WrapUnixMountMonitor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixMountMonitor)
 
 	return ret0
 }
@@ -54518,13 +59798,15 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	var arg2 C.gboolean
 
 	arg1 = C.gint(fd)
-	arg2 = gextras.Cbool(closeFd)
+	if closeFd {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_unix_output_stream_new(arg1, arg2)
 
 	var ret0 UnixOutputStream
 
-	ret0 = WrapUnixOutputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixOutputStream)
 
 	return ret0
 }
@@ -54540,7 +59822,7 @@ func (stream unixOutputStream) CloseFd() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -54567,7 +59849,9 @@ func (stream unixOutputStream) SetCloseFd(closeFd bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GUnixOutputStream)(stream.Native())
-	arg1 = gextras.Cbool(closeFd)
+	if closeFd {
+		arg1 = C.TRUE
+	}
 
 	C.g_unix_output_stream_set_close_fd(arg0, arg1)
 }
@@ -54640,7 +59924,45 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 
 	var ret0 UnixSocketAddress
 
-	ret0 = WrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixSocketAddress)
+
+	return ret0
+}
+
+// NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
+func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
+	var arg1 *C.gchar
+	var arg2 C.gint
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	arg2 = len(path)
+	defer runtime.KeepAlive(path)
+
+	ret := C.g_unix_socket_address_new_abstract(arg1, arg2)
+
+	var ret0 UnixSocketAddress
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixSocketAddress)
+
+	return ret0
+}
+
+// NewUnixSocketAddressWithType constructs a class UnixSocketAddress.
+func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) UnixSocketAddress {
+	var arg1 *C.gchar
+	var arg2 C.gint
+	var arg3 C.GUnixSocketAddressType
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	arg2 = len(path)
+	defer runtime.KeepAlive(path)
+	arg3 = (C.GUnixSocketAddressType)(typ)
+
+	ret := C.g_unix_socket_address_new_with_type(arg1, arg2, arg3)
+
+	var ret0 UnixSocketAddress
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixSocketAddress)
 
 	return ret0
 }
@@ -54670,7 +59992,7 @@ func (address unixSocketAddress) IsAbstract() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -54793,7 +60115,7 @@ func (vfs vfs) FileForPath(path string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -54815,7 +60137,7 @@ func (vfs vfs) FileForURI(uri string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -54856,7 +60178,7 @@ func (vfs vfs) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -54876,7 +60198,7 @@ func (vfs vfs) ParseName(parseName string) File {
 
 	var ret0 File
 
-	ret0 = WrapFile(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(File)
 
 	return ret0
 }
@@ -54926,7 +60248,7 @@ func (vfs vfs) RegisterURIScheme(scheme string, uriFunc VfsFileLookupFunc, parse
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -54945,7 +60267,7 @@ func (vfs vfs) UnregisterURIScheme(scheme string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -55039,7 +60361,7 @@ func (volumeMonitor volumeMonitor) MountForUUID(uuid string) Mount {
 
 	var ret0 Mount
 
-	ret0 = WrapMount(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Mount)
 
 	return ret0
 }
@@ -55078,7 +60400,7 @@ func (volumeMonitor volumeMonitor) VolumeForUUID(uuid string) Volume {
 
 	var ret0 Volume
 
-	ret0 = WrapVolume(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Volume)
 
 	return ret0
 }
@@ -55156,7 +60478,7 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 
 	var ret0 ZlibCompressor
 
-	ret0 = WrapZlibCompressor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ZlibCompressor)
 
 	return ret0
 }
@@ -55171,7 +60493,7 @@ func (compressor zlibCompressor) FileInfo() FileInfo {
 
 	var ret0 FileInfo
 
-	ret0 = WrapFileInfo(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FileInfo)
 
 	return ret0
 }
@@ -55240,7 +60562,7 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 
 	var ret0 ZlibDecompressor
 
-	ret0 = WrapZlibDecompressor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ZlibDecompressor)
 
 	return ret0
 }
@@ -55259,7 +60581,7 @@ func (decompressor zlibDecompressor) FileInfo() FileInfo {
 
 	var ret0 FileInfo
 
-	ret0 = WrapFileInfo(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FileInfo)
 
 	return ret0
 }

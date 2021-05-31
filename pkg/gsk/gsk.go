@@ -410,7 +410,7 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 		ret0 = WrapTransform(arg2)
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -441,7 +441,7 @@ func (c *ColorStop) Native() unsafe.Pointer {
 }
 
 // Offset gets the field inside the struct.
-func (o *ColorStop) Offset() float32 {
+func (c *ColorStop) Offset() float32 {
 	var ret float32
 	ret = float32(c.native.offset)
 	return ret
@@ -485,35 +485,35 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 }
 
 // Bytes gets the field inside the struct.
-func (b *ParseLocation) Bytes() uint {
+func (p *ParseLocation) Bytes() uint {
 	var ret uint
 	ret = uint(p.native.bytes)
 	return ret
 }
 
 // Chars gets the field inside the struct.
-func (c *ParseLocation) Chars() uint {
+func (p *ParseLocation) Chars() uint {
 	var ret uint
 	ret = uint(p.native.chars)
 	return ret
 }
 
 // Lines gets the field inside the struct.
-func (l *ParseLocation) Lines() uint {
+func (p *ParseLocation) Lines() uint {
 	var ret uint
 	ret = uint(p.native.lines)
 	return ret
 }
 
 // LineBytes gets the field inside the struct.
-func (l *ParseLocation) LineBytes() uint {
+func (p *ParseLocation) LineBytes() uint {
 	var ret uint
 	ret = uint(p.native.line_bytes)
 	return ret
 }
 
 // LineChars gets the field inside the struct.
-func (l *ParseLocation) LineChars() uint {
+func (p *ParseLocation) LineChars() uint {
 	var ret uint
 	ret = uint(p.native.line_chars)
 	return ret
@@ -552,7 +552,7 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 }
 
 // Bounds gets the field inside the struct.
-func (b *RoundedRect) Bounds() graphene.Rect {
+func (r *RoundedRect) Bounds() graphene.Rect {
 	var ret graphene.Rect
 	{
 		ret = graphene.WrapRect(r.native.bounds)
@@ -564,7 +564,7 @@ func (b *RoundedRect) Bounds() graphene.Rect {
 }
 
 // Corner gets the field inside the struct.
-func (c *RoundedRect) Corner() [4]graphene.Size {
+func (r *RoundedRect) Corner() [4]graphene.Size {
 	var ret [4]graphene.Size
 	{
 		cArray := ([4]graphene_size_t)(r.native.corner)
@@ -595,7 +595,7 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -614,7 +614,7 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -715,7 +715,7 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -734,7 +734,7 @@ func (self *RoundedRect) IsRectilinear() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -909,7 +909,9 @@ func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 
 	arg0 = (*C.GskShaderArgsBuilder)(builder.Native())
 	arg1 = C.int(idx)
-	arg2 = gextras.Cbool(value)
+	if value {
+		arg2 = C.TRUE
+	}
 
 	C.gsk_shader_args_builder_set_bool(arg0, arg1, arg2)
 }
@@ -1054,7 +1056,7 @@ func (s *Shadow) Native() unsafe.Pointer {
 }
 
 // Color gets the field inside the struct.
-func (c *Shadow) Color() gdk.RGBA {
+func (s *Shadow) Color() gdk.RGBA {
 	var ret gdk.RGBA
 	{
 		ret = gdk.WrapRGBA(s.native.color)
@@ -1066,21 +1068,21 @@ func (c *Shadow) Color() gdk.RGBA {
 }
 
 // Dx gets the field inside the struct.
-func (d *Shadow) Dx() float32 {
+func (s *Shadow) Dx() float32 {
 	var ret float32
 	ret = float32(s.native.dx)
 	return ret
 }
 
 // Dy gets the field inside the struct.
-func (d *Shadow) Dy() float32 {
+func (s *Shadow) Dy() float32 {
 	var ret float32
 	ret = float32(s.native.dy)
 	return ret
 }
 
 // Radius gets the field inside the struct.
-func (r *Shadow) Radius() float32 {
+func (s *Shadow) Radius() float32 {
 	var ret float32
 	ret = float32(s.native.radius)
 	return ret
@@ -1137,7 +1139,7 @@ func (first *Transform) Equal(second *Transform) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1362,7 +1364,7 @@ func (self *Transform) To2D() (outXX float32, outYX float32, outXY float32, outY
 
 	arg0 = (*C.GskTransform)(self.Native())
 
-	ret := C.gsk_transform_to_2d(arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6)
+	C.gsk_transform_to_2d(arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6)
 
 	var ret0 float32
 	var ret1 float32
@@ -1398,7 +1400,7 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 
 	arg0 = (*C.GskTransform)(self.Native())
 
-	ret := C.gsk_transform_to_affine(arg0, &arg1, &arg2, &arg3, &arg4)
+	C.gsk_transform_to_affine(arg0, &arg1, &arg2, &arg3, &arg4)
 
 	var ret0 float32
 	var ret1 float32
@@ -1424,7 +1426,7 @@ func (self *Transform) ToMatrix() graphene.Matrix {
 
 	arg0 = (*C.GskTransform)(self.Native())
 
-	ret := C.gsk_transform_to_matrix(arg0, &arg1)
+	C.gsk_transform_to_matrix(arg0, &arg1)
 
 	var ret0 *graphene.Matrix
 
@@ -1468,7 +1470,7 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 
 	arg0 = (*C.GskTransform)(self.Native())
 
-	ret := C.gsk_transform_to_translate(arg0, &arg1, &arg2)
+	C.gsk_transform_to_translate(arg0, &arg1, &arg2)
 
 	var ret0 float32
 	var ret1 float32
@@ -1509,7 +1511,7 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	arg0 = (*C.GskTransform)(self.Native())
 	arg1 = (*C.graphene_rect_t)(rect.Native())
 
-	ret := C.gsk_transform_transform_bounds(arg0, arg1, &arg2)
+	C.gsk_transform_transform_bounds(arg0, arg1, &arg2)
 
 	var ret0 *graphene.Rect
 
@@ -1533,7 +1535,7 @@ func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	arg0 = (*C.GskTransform)(self.Native())
 	arg1 = (*C.graphene_point_t)(point.Native())
 
-	ret := C.gsk_transform_transform_point(arg0, arg1, &arg2)
+	C.gsk_transform_transform_point(arg0, arg1, &arg2)
 
 	var ret0 *graphene.Point
 
@@ -1629,7 +1631,7 @@ func NewCairoRenderer() CairoRenderer {
 
 	var ret0 CairoRenderer
 
-	ret0 = WrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(CairoRenderer)
 
 	return ret0
 }
@@ -1666,7 +1668,7 @@ func NewGLRenderer() GLRenderer {
 
 	var ret0 GLRenderer
 
-	ret0 = WrapGLRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(GLRenderer)
 
 	return ret0
 }
@@ -1684,7 +1686,7 @@ type GLShader interface {
 	// current GL context) and requires the renderer to be set up. This means
 	// that the widget has to be realized. Commonly you want to call this from
 	// the realize signal of a widget, or during widget snapshot.
-	Compile(renderer Renderer) bool
+	Compile(renderer Renderer) error
 	// FindUniformByName looks for a uniform by the name @name, and returns the
 	// index of the uniform, or -1 if it was not found.
 	FindUniformByName(name string) int
@@ -1767,7 +1769,7 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) GLShader {
 
 	var ret0 GLShader
 
-	ret0 = WrapGLShader(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(GLShader)
 
 	return ret0
 }
@@ -1783,7 +1785,7 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 
 	var ret0 GLShader
 
-	ret0 = WrapGLShader(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(GLShader)
 
 	return ret0
 }
@@ -1797,20 +1799,24 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 // current GL context) and requires the renderer to be set up. This means
 // that the widget has to be realized. Commonly you want to call this from
 // the realize signal of a widget, or during widget snapshot.
-func (shader glShader) Compile(renderer Renderer) bool {
+func (shader glShader) Compile(renderer Renderer) error {
 	var arg0 *C.GskGLShader
 	var arg1 *C.GskRenderer
+	var gError *C.GError
 
 	arg0 = (*C.GskGLShader)(shader.Native())
 	arg1 = (*C.GskRenderer)(renderer.Native())
 
-	ret := C.gsk_gl_shader_compile(arg0, arg1)
+	ret := C.gsk_gl_shader_compile(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // FindUniformByName looks for a uniform by the name @name, and returns the
@@ -1847,7 +1853,7 @@ func (shader glShader) ArgBool(args *glib.Bytes, idx int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2112,7 +2118,7 @@ type Renderer interface {
 	IsRealized() bool
 	// Realize creates the resources needed by the @renderer to render the scene
 	// graph.
-	Realize(surface gdk.Surface) bool
+	Realize(surface gdk.Surface) error
 	// Render renders the scene graph, described by a tree of RenderNode
 	// instances, ensuring that the given @region gets redrawn.
 	//
@@ -2168,7 +2174,7 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 
 	var ret0 Renderer
 
-	ret0 = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Renderer)
 
 	return ret0
 }
@@ -2184,7 +2190,7 @@ func (renderer renderer) Surface() gdk.Surface {
 
 	var ret0 gdk.Surface
 
-	ret0 = gdk.WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gdk.Surface)
 
 	return ret0
 }
@@ -2199,27 +2205,31 @@ func (renderer renderer) IsRealized() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // Realize creates the resources needed by the @renderer to render the scene
 // graph.
-func (renderer renderer) Realize(surface gdk.Surface) bool {
+func (renderer renderer) Realize(surface gdk.Surface) error {
 	var arg0 *C.GskRenderer
 	var arg1 *C.GdkSurface
+	var gError *C.GError
 
 	arg0 = (*C.GskRenderer)(renderer.Native())
 	arg1 = (*C.GdkSurface)(surface.Native())
 
-	ret := C.gsk_renderer_realize(arg0, arg1)
+	ret := C.gsk_renderer_realize(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Render renders the scene graph, described by a tree of RenderNode
@@ -2265,7 +2275,7 @@ func (renderer renderer) RenderTexture(root RenderNode, viewport *graphene.Rect)
 
 	var ret0 gdk.Texture
 
-	ret0 = gdk.WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdk.Texture)
 
 	return ret0
 }
@@ -2311,7 +2321,7 @@ func NewVulkanRenderer() VulkanRenderer {
 
 	var ret0 VulkanRenderer
 
-	ret0 = WrapVulkanRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(VulkanRenderer)
 
 	return ret0
 }

@@ -98,7 +98,6 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 			continue
 		}
 
-		cbgen.Parent = cg.InterfaceName
 		cg.Methods = append(cg.Methods, cbgen)
 	}
 
@@ -143,9 +142,7 @@ func bodgeClassCtor(class gir.Class, ctor gir.Constructor) gir.Constructor {
 
 func (cg *classGenerator) UseConstructor(ctor gir.Constructor) bool {
 	ctor = bodgeClassCtor(cg.Class, ctor)
-	ok := cg.Callable.Use(ctor.CallableAttrs)
-	cg.Callable.Parent = cg.InterfaceName
-	return ok
+	return cg.Callable.Use(ctor.CallableAttrs)
 }
 
 func (ng *NamespaceGenerator) generateClasses() {

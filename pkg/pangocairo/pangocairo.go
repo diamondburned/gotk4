@@ -64,7 +64,7 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 		})
 	}
 
-	doPath = gextras.Gobool(arg2)
+	doPath = arg2 != C.FALSE
 
 	v.(ShapeRendererFunc)(cr, attr, doPath)
 }
@@ -139,6 +139,24 @@ func ContextSetResolution(context pango.Context, dpi float64) {
 	C.pango_cairo_context_set_resolution(arg1, arg2)
 }
 
+// ContextSetShapeRenderer sets callback function for context to use for
+// rendering attributes of type PANGO_ATTR_SHAPE.
+//
+// See `PangoCairoShapeRendererFunc` for details.
+func ContextSetShapeRenderer(context pango.Context, fn ShapeRendererFunc) {
+	var arg1 *C.PangoContext
+	var arg2 C.PangoCairoShapeRendererFunc
+	var arg3 C.gpointer
+	var arg4 C.GDestroyNotify
+
+	arg1 = (*C.PangoContext)(context.Native())
+	arg2 = (*[0]byte)(C.gotk4_ShapeRendererFunc)
+	arg3 = C.gpointer(box.Assign(fn))
+	arg4 = (*[0]byte)(C.callbackDelete)
+
+	C.pango_cairo_context_set_shape_renderer(arg1, arg2, arg3, arg4)
+}
+
 // CreateContext creates a context object set up to match the current
 // transformation and target surface of the Cairo context.
 //
@@ -158,7 +176,7 @@ func CreateContext(cr *cairo.Context) pango.Context {
 
 	var ret0 pango.Context
 
-	ret0 = pango.WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Context)
 
 	return ret0
 }
@@ -184,7 +202,7 @@ func CreateLayout(cr *cairo.Context) pango.Layout {
 
 	var ret0 pango.Layout
 
-	ret0 = pango.WrapLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Layout)
 
 	return ret0
 }
@@ -230,7 +248,7 @@ func FontMapGetDefault() pango.FontMap {
 
 	var ret0 pango.FontMap
 
-	ret0 = pango.WrapFontMap(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(pango.FontMap)
 
 	return ret0
 }
@@ -256,7 +274,7 @@ func NewFontMap() pango.FontMap {
 
 	var ret0 pango.FontMap
 
-	ret0 = pango.WrapFontMap(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.FontMap)
 
 	return ret0
 }
@@ -275,7 +293,7 @@ func FontMapNewForFontType(fonttype cairo.FontType) pango.FontMap {
 
 	var ret0 pango.FontMap
 
-	ret0 = pango.WrapFontMap(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.FontMap)
 
 	return ret0
 }
@@ -569,7 +587,7 @@ func (fontmap fontMap) CreateContext() pango.Context {
 
 	var ret0 pango.Context
 
-	ret0 = pango.WrapContext(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(pango.Context)
 
 	return ret0
 }

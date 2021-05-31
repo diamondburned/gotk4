@@ -294,7 +294,7 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 	formatted, err := format.Source(out.Bytes())
 	if err != nil {
 		ng.logln(logError, "failed to fmt final source code")
-		return nil, errors.Wrap(err, "failed to fmt")
+		return out.Bytes(), errors.Wrap(err, "failed to fmt")
 	}
 
 	return formatted, nil

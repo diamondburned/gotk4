@@ -16,8 +16,7 @@ type callableGenerator struct {
 
 	Converts []string
 
-	Parent string // optional
-	Ng     *NamespaceGenerator
+	Ng *NamespaceGenerator
 }
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
@@ -43,7 +42,6 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 
 	cg.Name = SnakeToGo(true, cattrs.Name)
 	cg.Tail = call
-	cg.Parent = ""
 	cg.CallableAttrs = cattrs
 
 	if cg.Block = cg.block(); cg.Block == "" {
@@ -76,7 +74,7 @@ func (cg *callableGenerator) block() string {
 
 	blocks := pen.NewBlockSections(1024, 4096)
 
-	var args *pen.Joints
+	var args pen.Joints
 	var rets []retVar
 
 	// argNamer returns arg with a +1 offset, except for when i is negative,
@@ -93,7 +91,8 @@ func (cg *callableGenerator) block() string {
 		var ignores ignoreIxs
 		ignores.paramsIgnore(cg.Parameters)
 
-		args = pen.NewJoints(", ", len(cg.Parameters.Parameters))
+		// Preallocate if possible.
+		args = *pen.NewJoints(", ", len(cg.Parameters.Parameters))
 
 		doParam := func(i int, param gir.ParameterAttrs, targ, valn string) bool {
 			// Generate a zero-value variable regardless if we have the
@@ -111,7 +110,7 @@ func (cg *callableGenerator) block() string {
 						Type:       param.AnyType,
 						Owner:      param.TransferOwnership,
 						ArgAt:      argNamer,
-						ParentName: dots(cg.Ng.PackageName(), cg.Parent, cg.Name),
+						ParentName: cg.CIdentifier,
 					},
 					Closure: param.Closure,
 					Destroy: param.Destroy,
@@ -121,10 +120,12 @@ func (cg *callableGenerator) block() string {
 					blocks.Line(1, converter)
 					return true
 				}
+
+				// If null is fine, then we're fine.
+				return param.AllowNone
 			}
 
-			// If null is fine, then we're fine.
-			return param.AllowNone
+			return true
 		}
 
 		if cg.Parameters.InstanceParameter != nil {
@@ -163,7 +164,13 @@ func (cg *callableGenerator) block() string {
 		}
 	}
 
-	if !returnIsVoid(cg.ReturnValue) {
+	if cg.Throws {
+		blocks.Linef(0, "var gError *C.GError")
+		args.Add("&gError")
+	}
+
+	funcReturns := !returnIsVoid(cg.ReturnValue)
+	if funcReturns {
 		rets = append(rets, retVar{
 			Name:  "ret",
 			Type:  cg.ReturnValue.AnyType,
@@ -171,17 +178,29 @@ func (cg *callableGenerator) block() string {
 		})
 	}
 
-	if len(rets) == 0 {
+	if !funcReturns {
 		blocks.Linef(2, "C.%s(%s)", cg.CIdentifier, args.Join())
+	} else {
+		blocks.Linef(2, "ret := C.%s(%s)", cg.CIdentifier, args.Join())
+	}
+
+	// If there is no return NOR output parameters, then exit.
+	if len(rets) == 0 {
 		return blocks.String()
 	}
 
-	blocks.Linef(2, "ret := C.%s(%s)", cg.CIdentifier, args.Join())
 	blocks.EmptyLine(2)
 
 	retvars := pen.NewJoints(", ", len(rets))
 
 	for i, ret := range rets {
+		// If the last return is a bool and the function can throw an error,
+		// then the boolean is probably to indicate that things are OK. We can
+		// skip generating this boolean.
+		if cg.Throws && i == len(rets)-1 && anyTypeName(ret.Type, "") == "ok" {
+			break
+		}
+
 		goType, _ := cg.Ng.ResolveAnyType(ret.Type, true)
 		retName := fmt.Sprintf("ret%d", i)
 		retvars.Add(retName)
@@ -195,7 +214,7 @@ func (cg *callableGenerator) block() string {
 				Type:       ret.Type,
 				Owner:      ret.Owner,
 				ArgAt:      argNamer,
-				ParentName: dots(cg.Ng.PackageName(), cg.Parent, cg.Name),
+				ParentName: cg.CIdentifier,
 			},
 			BoxCast: goType,
 		})
@@ -209,6 +228,16 @@ func (cg *callableGenerator) block() string {
 		if !ret.AllowNone {
 			return ""
 		}
+	}
+
+	if cg.Throws {
+		blocks.Linef(3, "var goError error")
+		retvars.Add("goError")
+
+		blocks.Line(4, "if gError != nil {")
+		blocks.Line(4, `  goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))`)
+		blocks.Line(4, "  C.g_error_free(gError)")
+		blocks.Line(4, "}")
 	}
 
 	blocks.Line(5, "return "+retvars.Join())
@@ -281,9 +310,18 @@ func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) 
 			}
 		}
 
+		// if returning bool and we're throwing, then skip
+		if i == -1 && attrs.Throws && goName == "ok" {
+			return true
+		}
+
 		returns = append(returns, goName+" "+typ)
 		return true
 	})
+
+	if attrs.Throws {
+		returns = append(returns, "err error")
+	}
 
 	if len(returns) == 0 || !ok {
 		return "", ok

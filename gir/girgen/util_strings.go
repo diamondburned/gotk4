@@ -55,6 +55,10 @@ var (
 		"Gicon", "GIcon",
 		"Gtype", "GType",
 		"Gvalue", "GValue",
+		"Hadj", "HAdj",
+		"Vadj", "VAdj",
+		"Hscroll", "HScroll",
+		"Vscroll", "VScroll",
 	)
 	pascalRegex *regexp.Regexp
 )
@@ -80,50 +84,15 @@ func init() {
 	pascalRegex = regexp.MustCompile(fullRegex.String())
 }
 
-// See Go specs, section Keywords.
-var goKeywords = map[string]struct{}{
-	"break":       {},
-	"default":     {},
-	"func":        {},
-	"interface":   {},
-	"select":      {},
-	"case":        {},
-	"defer":       {},
-	"go":          {},
-	"map":         {},
-	"struct":      {},
-	"chan":        {},
-	"else":        {},
-	"goto":        {},
-	"package":     {},
-	"switch":      {},
-	"const":       {},
-	"fallthrough": {},
-	"if":          {},
-	"range":       {},
-	"type":        {},
-	"continue":    {},
-	"for":         {},
-	"import":      {},
-	"return":      {},
-	"var":         {},
-}
-
-// cgoField formats the C field name to not be confused with a Go keyword.
-// See https://golang.org/cmd/cgo/#hdr-Go_references_to_C.
-func cgoField(field string) string {
-	_, keyword := goKeywords[field]
-	if keyword {
-		return "_" + field
-	}
-	return field
-}
-
 // dots is a helper function to join strings in dots for debugging.
 func dots(parts ...string) string {
 	nonEmptyParts := parts[:0]
 
 	for _, part := range parts {
+		if part == "" {
+			continue
+		}
+
 		if strings.Contains(part, "*") {
 			part = "(" + part + ")"
 		}
@@ -203,11 +172,59 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	return snakeString
 }
 
+// See Go specs, section Keywords.
+var goKeywords = map[string]struct{}{
+	"break":       {},
+	"default":     {},
+	"func":        {},
+	"interface":   {},
+	"select":      {},
+	"case":        {},
+	"defer":       {},
+	"go":          {},
+	"map":         {},
+	"struct":      {},
+	"chan":        {},
+	"else":        {},
+	"goto":        {},
+	"package":     {},
+	"switch":      {},
+	"const":       {},
+	"fallthrough": {},
+	"if":          {},
+	"range":       {},
+	"type":        {},
+	"continue":    {},
+	"for":         {},
+	"import":      {},
+	"return":      {},
+	"var":         {},
+}
+
+// cgoField formats the C field name to not be confused with a Go keyword.
+// See https://golang.org/cmd/cgo/#hdr-Go_references_to_C.
+func cgoField(field string) string {
+	_, keyword := goKeywords[field]
+	if keyword {
+		return "_" + field
+	}
+	return field
+}
+
 // snakeNoGo ensures the snake-case string is never a Go keyword.
 func snakeNoGo(snake string) string {
 	_, isKeyword := goKeywords[snake]
 	if isKeyword {
-		snake = "_" + snake
+		switch snake {
+		case "func":
+			snake = "fn"
+		case "type":
+			snake = "typ"
+		case "return":
+			snake = "ret"
+		default:
+			snake = "_" + snake
+		}
 	}
 	return snake
 }

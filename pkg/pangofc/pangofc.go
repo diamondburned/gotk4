@@ -332,7 +332,7 @@ func (font font) HasChar(wc uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -371,6 +371,14 @@ func (font font) UnlockFace() {
 type FontMap interface {
 	pango.FontMap
 
+	// AddDecoderFindFunc: this function saves a callback method in the
+	// `PangoFcFontMap` that will be called whenever new fonts are created.
+	//
+	// If the function returns a `PangoFcDecoder`, that decoder will be used to
+	// determine both coverage via a `FcCharSet` and a one-to-one mapping of
+	// characters to glyphs. This will allow applications to have
+	// application-specific encodings for various fonts.
+	AddDecoderFindFunc(findfunc DecoderFindFunc)
 	// CacheClear: clear all cached information and fontsets for this font map.
 	//
 	// This should be called whenever there is a change in the output of the
@@ -396,6 +404,13 @@ type FontMap interface {
 	// Decoders can be added to a font map using
 	// [method@PangoFc.FontMap.add_decoder_find_func].
 	FindDecoder(pattern *fontconfig.Pattern) Decoder
+	// SetDefaultSubstitute sets a function that will be called to do final
+	// configuration substitution on a `FcPattern` before it is used to load the
+	// font.
+	//
+	// This function can be used to do things like set hinting and antialiasing
+	// options.
+	SetDefaultSubstitute(fn SubstituteFunc)
 	// Shutdown clears all cached information for the fontmap and marks all
 	// fonts open for the fontmap as dead.
 	//
@@ -433,6 +448,27 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontMap(obj), nil
+}
+
+// AddDecoderFindFunc: this function saves a callback method in the
+// `PangoFcFontMap` that will be called whenever new fonts are created.
+//
+// If the function returns a `PangoFcDecoder`, that decoder will be used to
+// determine both coverage via a `FcCharSet` and a one-to-one mapping of
+// characters to glyphs. This will allow applications to have
+// application-specific encodings for various fonts.
+func (fcfontmap fontMap) AddDecoderFindFunc(findfunc DecoderFindFunc) {
+	var arg0 *C.PangoFcFontMap
+	var arg1 C.PangoFcDecoderFindFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.PangoFcFontMap)(fcfontmap.Native())
+	arg1 = (*[0]byte)(C.gotk4_DecoderFindFunc)
+	arg2 = C.gpointer(box.Assign(findfunc))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	C.pango_fc_font_map_add_decoder_find_func(arg0, arg1, arg2, arg3)
 }
 
 // CacheClear: clear all cached information and fontsets for this font map.
@@ -477,7 +513,7 @@ func (fcfontmap fontMap) CreateContext() pango.Context {
 
 	var ret0 pango.Context
 
-	ret0 = pango.WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Context)
 
 	return ret0
 }
@@ -497,9 +533,29 @@ func (fcfontmap fontMap) FindDecoder(pattern *fontconfig.Pattern) Decoder {
 
 	var ret0 Decoder
 
-	ret0 = WrapDecoder(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Decoder)
 
 	return ret0
+}
+
+// SetDefaultSubstitute sets a function that will be called to do final
+// configuration substitution on a `FcPattern` before it is used to load the
+// font.
+//
+// This function can be used to do things like set hinting and antialiasing
+// options.
+func (fontmap fontMap) SetDefaultSubstitute(fn SubstituteFunc) {
+	var arg0 *C.PangoFcFontMap
+	var arg1 C.PangoFcSubstituteFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.PangoFcFontMap)(fontmap.Native())
+	arg1 = (*[0]byte)(C.gotk4_SubstituteFunc)
+	arg2 = C.gpointer(box.Assign(fn))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	C.pango_fc_font_map_set_default_substitute(arg0, arg1, arg2, arg3)
 }
 
 // Shutdown clears all cached information for the fontmap and marks all

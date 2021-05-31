@@ -57,7 +57,7 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 	var toplevel WaylandToplevel
 	var handle string
 
-	toplevel = WrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0.Native())))
+	toplevel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(WaylandToplevel)
 
 	handle = C.GoString(arg1)
 
@@ -280,7 +280,7 @@ func (display waylandDisplay) QueryRegistry(global string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }

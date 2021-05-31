@@ -35,7 +35,7 @@ type Package struct {
 
 var packages = []Package{
 	{"gobject-introspection-1.0", []string{
-		"GLib", "Gio", "Vulkan", "cairo", "xft", "xlib", "freetype2", "fontconfig",
+		"GLib", "Gio", "cairo", "xft", "xlib", "freetype2", "fontconfig",
 	}},
 	{"pango", nil},
 	{"gdk-pixbuf-2.0", []string{"GdkPixbuf", "GdkPixdata"}},
@@ -113,10 +113,12 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 	b, err := ng.Generate()
 	if err != nil {
 		log.Println("generation error:", err)
-		return
 	}
 
-	if err := os.WriteFile(out, b, os.ModePerm); err != nil {
-		log.Println("failed to write file:", err)
+	// Write to file any non-empty output.
+	if len(b) > 0 {
+		if err := os.WriteFile(out, b, os.ModePerm); err != nil {
+			log.Println("failed to write file:", err)
+		}
 	}
 }

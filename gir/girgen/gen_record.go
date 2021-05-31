@@ -57,7 +57,7 @@ var recordTmpl = newGoTemplate(`
 
 	{{ range .Getters }}
 	// {{ .GoName }} gets the field inside the struct.
-	func ({{ FirstLetter .GoName }} *{{ $.GoName }}) {{ .GoName }}() {{ .GoType }} {
+	func ({{ FirstLetter $.GoName }} *{{ $.GoName }}) {{ .GoName }}() {{ .GoType }} {
 		var ret {{ .GoType }}
 		{{ .Convert }}
 		return ret
@@ -140,7 +140,6 @@ func (rg *recordGenerator) UseConstructor(ctor gir.Constructor, className string
 
 	rg.Callable.Name = strings.TrimPrefix(rg.Callable.Name, "New")
 	rg.Callable.Name = "New" + rg.GoName + rg.Callable.Name
-	rg.Callable.Parent = rg.GoName
 
 	return true
 }
@@ -154,7 +153,6 @@ func (rg *recordGenerator) methods() []callableGenerator {
 			continue
 		}
 
-		cbgen.Parent = rg.GoName
 		callables = append(callables, cbgen)
 	}
 
@@ -206,7 +204,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 					// Assume we have the ownership of the C value, because we do.
 					TransferOwnership: "none",
 				},
-				ParentName: dots(rg.Ng.PackageName(), rg.Name, field.Name),
+				ParentName: rg.CType,
 			},
 		})
 		if convert == "" {

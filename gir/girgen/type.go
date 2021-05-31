@@ -364,6 +364,59 @@ func (typ *ResolvedType) CGoType() string {
 	return cgoType(typ.CType)
 }
 
+// TypeHasPointer returns true if the type being resolved has a pointer. This is
+// useful for array passing from Go memory to C memory.
+func (ng *NamespaceGenerator) TypeHasPointer(typ *ResolvedType) bool {
+	if typ == nil {
+		// Probably unknown.
+		return true
+	}
+
+	if typ.Builtin != nil {
+		return !typ.IsPrimitive()
+	}
+
+	res := typ.Extern.Result
+
+	switch {
+	case res.Alias != nil:
+		return ng.TypeHasPointer(ng.ResolveTypeName(res.Alias.Name))
+
+	case
+		res.Class != nil,
+		res.Callback != nil,
+		res.Function != nil,
+		res.Interface != nil:
+		return true
+
+	case res.Union != nil:
+		return true // TODO: handle unions
+
+	case
+		res.Enum != nil,
+		res.Bitfield != nil:
+		return false
+
+	case res.Record != nil:
+		for _, field := range res.Record.Fields {
+			// If field is not a regular type, then it's probably an array or
+			// whatever, which means a pointer.
+			if field.Type == nil {
+				return true
+			}
+
+			if ng.TypeHasPointer(ng.ResolveType(*field.Type)) {
+				return true
+			}
+		}
+
+		return false
+	}
+
+	// Unknown type; assume there's a pointer.
+	return true
+}
+
 // PublicType returns the generated public Go type of the given resolved type.
 func (ng *NamespaceGenerator) PublicType(resolved *ResolvedType) string {
 	return resolved.PublicType(resolved.NeedsNamespace(ng.current))

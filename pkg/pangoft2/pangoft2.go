@@ -47,7 +47,7 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 
 	var ret0 pango.Coverage
 
-	ret0 = pango.WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Coverage)
 
 	return ret0
 }
@@ -90,7 +90,7 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 
 	var ret0 pango.Context
 
-	ret0 = pango.WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Context)
 
 	return ret0
 }
@@ -239,6 +239,13 @@ type FontMap interface {
 
 	// CreateContext: create a `PangoContext` for the given fontmap.
 	CreateContext() pango.Context
+	// SetDefaultSubstitute sets a function that will be called to do final
+	// configuration substitution on a `FcPattern` before it is used to load the
+	// font.
+	//
+	// This function can be used to do things like set hinting and antialiasing
+	// options.
+	SetDefaultSubstitute(fn SubstituteFunc)
 	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
 	SetResolution(dpiX float64, dpiY float64)
@@ -279,7 +286,7 @@ func NewFontMap() FontMap {
 
 	var ret0 FontMap
 
-	ret0 = WrapFontMap(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FontMap)
 
 	return ret0
 }
@@ -294,9 +301,29 @@ func (fontmap fontMap) CreateContext() pango.Context {
 
 	var ret0 pango.Context
 
-	ret0 = pango.WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(pango.Context)
 
 	return ret0
+}
+
+// SetDefaultSubstitute sets a function that will be called to do final
+// configuration substitution on a `FcPattern` before it is used to load the
+// font.
+//
+// This function can be used to do things like set hinting and antialiasing
+// options.
+func (fontmap fontMap) SetDefaultSubstitute(fn SubstituteFunc) {
+	var arg0 *C.PangoFT2FontMap
+	var arg1 C.PangoFT2SubstituteFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.PangoFT2FontMap)(fontmap.Native())
+	arg1 = (*[0]byte)(C.gotk4_SubstituteFunc)
+	arg2 = C.gpointer(box.Assign(fn))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	C.pango_ft2_font_map_set_default_substitute(arg0, arg1, arg2, arg3)
 }
 
 // SetResolution sets the horizontal and vertical resolutions for the

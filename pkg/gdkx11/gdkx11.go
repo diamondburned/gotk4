@@ -85,7 +85,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11
 
 	var ret0 X11DeviceXI2
 
-	ret0 = WrapX11DeviceXI2(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(X11DeviceXI2)
 
 	return ret0
 }
@@ -162,7 +162,7 @@ func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
 
 	var ret0 X11Display
 
-	ret0 = WrapX11Display(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(X11Display)
 
 	return ret0
 }
@@ -449,7 +449,7 @@ func (display x11Display) DefaultGroup() gdk.Surface {
 
 	var ret0 gdk.Surface
 
-	ret0 = gdk.WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gdk.Surface)
 
 	return ret0
 }
@@ -472,7 +472,7 @@ func (display x11Display) GlxVersion() (major int, minor int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -495,7 +495,7 @@ func (display x11Display) PrimaryMonitor() gdk.Monitor {
 
 	var ret0 gdk.Monitor
 
-	ret0 = gdk.WrapMonitor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gdk.Monitor)
 
 	return ret0
 }
@@ -510,7 +510,7 @@ func (display x11Display) Screen() X11Screen {
 
 	var ret0 X11Screen
 
-	ret0 = WrapX11Screen(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(X11Screen)
 
 	return ret0
 }
@@ -825,7 +825,7 @@ func (display x11Display) UTF8ToCompoundText(str string) (encoding string, forma
 
 	ret3 = int(arg5)
 
-	ret4 = gextras.Gobool(ret)
+	ret4 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -917,7 +917,7 @@ func (monitor x11Monitor) Workarea() gdk.Rectangle {
 
 	arg0 = (*C.GdkMonitor)(monitor.Native())
 
-	ret := C.gdk_x11_monitor_get_workarea(arg0, &arg1)
+	C.gdk_x11_monitor_get_workarea(arg0, &arg1)
 
 	var ret0 *gdk.Rectangle
 
@@ -1125,7 +1125,7 @@ func (screen x11Screen) SupportsNetWmHint(propertyName string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1245,7 +1245,7 @@ func (surface x11Surface) Group() gdk.Surface {
 
 	var ret0 gdk.Surface
 
-	ret0 = gdk.WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gdk.Surface)
 
 	return ret0
 }
@@ -1308,7 +1308,9 @@ func (surface x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkSurface)(surface.Native())
-	arg1 = gextras.Cbool(frameSyncEnabled)
+	if frameSyncEnabled {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_x11_surface_set_frame_sync_enabled(arg0, arg1)
 }
@@ -1332,7 +1334,9 @@ func (surface x11Surface) SetSkipPagerHint(skipsPager bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkSurface)(surface.Native())
-	arg1 = gextras.Cbool(skipsPager)
+	if skipsPager {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_x11_surface_set_skip_pager_hint(arg0, arg1)
 }
@@ -1344,7 +1348,9 @@ func (surface x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkSurface)(surface.Native())
-	arg1 = gextras.Cbool(skipsTaskbar)
+	if skipsTaskbar {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_x11_surface_set_skip_taskbar_hint(arg0, arg1)
 }
@@ -1376,7 +1382,9 @@ func (surface x11Surface) SetUrgencyHint(urgent bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkSurface)(surface.Native())
-	arg1 = gextras.Cbool(urgent)
+	if urgent {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_x11_surface_set_urgency_hint(arg0, arg1)
 }

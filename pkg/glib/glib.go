@@ -8,7 +8,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -3072,12 +3071,13 @@ func ASCIIStrdown(str string, len int) string {
 //
 // See g_ascii_strtoll() if you have more complex needs such as parsing a string
 // which starts with a number, but then has other characters.
-func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum int64, ok bool) {
+func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum int64, err error) {
 	var arg1 *C.gchar
 	var arg2 C.guint
 	var arg3 C.gint64
 	var arg4 C.gint64
 	var arg5 *C.gint64 // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
@@ -3085,16 +3085,19 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum in
 	arg3 = C.gint64(min)
 	arg4 = C.gint64(max)
 
-	ret := C.g_ascii_string_to_signed(arg1, arg2, arg3, arg4, &arg5)
+	ret := C.g_ascii_string_to_signed(arg1, arg2, arg3, arg4, &arg5, &gError)
 
 	var ret0 int64
-	var ret1 bool
+	var goError error
 
 	ret0 = int64(arg5)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // ASCIIStringToUnsigned: a convenience function for converting a string to an
@@ -3118,12 +3121,13 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum in
 //
 // See g_ascii_strtoull() if you have more complex needs such as parsing a
 // string which starts with a number, but then has other characters.
-func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNum uint64, ok bool) {
+func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNum uint64, err error) {
 	var arg1 *C.gchar
 	var arg2 C.guint
 	var arg3 C.guint64
 	var arg4 C.guint64
 	var arg5 *C.guint64 // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
@@ -3131,16 +3135,19 @@ func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNu
 	arg3 = C.guint64(min)
 	arg4 = C.guint64(max)
 
-	ret := C.g_ascii_string_to_unsigned(arg1, arg2, arg3, arg4, &arg5)
+	ret := C.g_ascii_string_to_unsigned(arg1, arg2, arg3, arg4, &arg5, &gError)
 
 	var ret0 uint64
-	var ret1 bool
+	var goError error
 
 	ret0 = uint64(arg5)
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // ASCIIStrncasecmp: compare @s1 and @s2, ignoring the case of ASCII characters
@@ -3386,7 +3393,7 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 	C.g_assert_warning(arg1, arg2, arg3, arg4, arg5)
 }
 
-func AssertionMessage(domain string, file string, line int, _func string, message string) {
+func AssertionMessage(domain string, file string, line int, fn string, message string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -3398,7 +3405,7 @@ func AssertionMessage(domain string, file string, line int, _func string, messag
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.gchar)(C.CString(message))
 	defer C.free(unsafe.Pointer(arg5))
@@ -3406,7 +3413,7 @@ func AssertionMessage(domain string, file string, line int, _func string, messag
 	C.g_assertion_message(arg1, arg2, arg3, arg4, arg5)
 }
 
-func AssertionMessageCmpnum(domain string, file string, line int, _func string, expr string, arg1 float64, cmp string, arg2 float64, numtype byte) {
+func AssertionMessageCmpnum(domain string, file string, line int, fn string, expr string, arg1 float64, cmp string, arg2 float64, numtype byte) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -3422,7 +3429,7 @@ func AssertionMessageCmpnum(domain string, file string, line int, _func string, 
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.gchar)(C.CString(expr))
 	defer C.free(unsafe.Pointer(arg5))
@@ -3435,7 +3442,7 @@ func AssertionMessageCmpnum(domain string, file string, line int, _func string, 
 	C.g_assertion_message_cmpnum(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
-func AssertionMessageCmpstr(domain string, file string, line int, _func string, expr string, arg1 string, cmp string, arg2 string) {
+func AssertionMessageCmpstr(domain string, file string, line int, fn string, expr string, arg1 string, cmp string, arg2 string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -3450,7 +3457,7 @@ func AssertionMessageCmpstr(domain string, file string, line int, _func string, 
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.gchar)(C.CString(expr))
 	defer C.free(unsafe.Pointer(arg5))
@@ -3466,7 +3473,7 @@ func AssertionMessageCmpstr(domain string, file string, line int, _func string, 
 
 // AssertionMessageExpr: internal function used to print messages from the
 // public g_assert() and g_assert_not_reached() macros.
-func AssertionMessageExpr(domain string, file string, line int, _func string, expr string) {
+func AssertionMessageExpr(domain string, file string, line int, fn string, expr string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -3478,7 +3485,7 @@ func AssertionMessageExpr(domain string, file string, line int, _func string, ex
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.gchar)(C.CString(expr))
 	defer C.free(unsafe.Pointer(arg5))
@@ -3556,7 +3563,7 @@ func AtomicIntCompareAndExchange(atomic int, oldval int, newval int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3576,7 +3583,7 @@ func AtomicIntDecAndTest(atomic int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3759,7 +3766,7 @@ func AtomicPointerCompareAndExchange(atomic interface{}, oldval interface{}, new
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3962,7 +3969,7 @@ func AtomicRefCountCompare(arc int, val int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3977,7 +3984,7 @@ func AtomicRefCountDec(arc int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4026,6 +4033,58 @@ func Base64Decode(text string) (outLen uint, guint8s []byte) {
 	}
 
 	return ret0, ret1
+}
+
+// Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
+// data by overwriting the input data.
+func Base64DecodeInplace(text []byte) byte {
+	var arg1 *C.gchar
+	var arg2 *C.gsize
+
+	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * len(text))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(text)
+		sliceHeader.Cap = len(text)
+
+		for i := 0; i < len(text); i++ {
+			src := text[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(text)
+	}
+
+	ret := C.g_base64_decode_inplace(arg1, arg2)
+
+	var ret0 byte
+
+	ret0 = byte(ret)
+
+	return ret0
+}
+
+// Base64Encode: encode a sequence of binary data into its Base-64 stringified
+// representation.
+func Base64Encode(data []byte) string {
+	var arg1 *C.guchar
+	var arg2 C.gsize
+
+	arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	arg2 = len(data)
+	defer runtime.KeepAlive(data)
+
+	ret := C.g_base64_encode(arg1, arg2)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
 }
 
 // Basename gets the name of the file without any leading directory components.
@@ -4144,7 +4203,7 @@ func BitTrylock(address int, lockBit int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4186,7 +4245,21 @@ func BuildFilenamev(args []string) string {
 	var arg1 **C.gchar
 
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(args) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(args)
+		sliceHeader.Cap = len(args)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(args); i++ {
+			src := args[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	ret := C.g_build_filenamev(arg1)
@@ -4209,7 +4282,21 @@ func BuildPathv(separator string, args []string) string {
 	arg1 = (*C.gchar)(C.CString(separator))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(args) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(args)
+		sliceHeader.Cap = len(args)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(args); i++ {
+			src := args[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	ret := C.g_build_pathv(arg1, arg2)
@@ -4231,9 +4318,24 @@ func ByteArrayFree(array []byte, freeSegment bool) byte {
 	var arg2 C.gboolean
 
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(array) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(array)
+		sliceHeader.Cap = len(array)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(array); i++ {
+			src := array[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.GByteArray)(unsafe.Pointer(ptr))
 	}
-	arg2 = gextras.Cbool(freeSegment)
+	if freeSegment {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_byte_array_free(arg1, arg2)
 
@@ -4256,7 +4358,19 @@ func ByteArrayFreeToBytes(array []byte) *Bytes {
 	var arg1 *C.GByteArray
 
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(array) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(array)
+		sliceHeader.Cap = len(array)
 
+		for i := 0; i < len(array); i++ {
+			src := array[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.GByteArray)(unsafe.Pointer(ptr))
 	}
 
 	ret := C.g_byte_array_free_to_bytes(arg1)
@@ -4293,6 +4407,50 @@ func NewByteArray() []byte {
 	return ret0
 }
 
+// ByteArrayNewTake: create byte array containing the data. The data will be
+// owned by the array and will be freed with g_free(), i.e. it could be
+// allocated using g_strdup().
+func ByteArrayNewTake(data []byte) []byte {
+	var arg1 *C.guint8
+	var arg2 C.gsize
+
+	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * len(data))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
+
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.guint8)(unsafe.Pointer(ptr))
+		arg2 = len(data)
+	}
+
+	ret := C.g_byte_array_new_take(arg1, arg2)
+
+	var ret0 []byte
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]byte, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = byte(src)
+		}
+	}
+
+	return ret0
+}
+
 // ByteArraySteal frees the data in the array and resets the size to zero, while
 // the underlying array is preserved for use elsewhere and returned to the
 // caller.
@@ -4301,7 +4459,20 @@ func ByteArraySteal(array []byte) (len uint, guint8 byte) {
 	var arg2 *C.gsize // out
 
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(array) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(array)
+		sliceHeader.Cap = len(array)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(array); i++ {
+			src := array[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.GByteArray)(unsafe.Pointer(ptr))
 	}
 
 	ret := C.g_byte_array_steal(arg1, &arg2)
@@ -4323,7 +4494,20 @@ func ByteArrayUnref(array []byte) {
 	var arg1 *C.GByteArray
 
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(array) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(array)
+		sliceHeader.Cap = len(array)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(array); i++ {
+			src := array[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.GByteArray)(unsafe.Pointer(ptr))
 	}
 
 	C.g_byte_array_unref(arg1)
@@ -4430,9 +4614,10 @@ func ChecksumTypeGetLength(checksumType ChecksumType) int {
 
 // ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
 // g_error_free() on *@err and sets *@err to nil.
-func ClearError() {
+func ClearError() error {
+	var gError *C.GError
 
-	C.g_clear_error()
+	C.g_clear_error(&gError)
 }
 
 // ClearList clears a pointer to a #GList, freeing it and, optionally, freeing
@@ -4469,18 +4654,22 @@ func ClearSlist(slistPtr **SList) {
 // Besides using #GError, there is another major reason to prefer this function
 // over the call provided by the system; on Unix, it will attempt to correctly
 // handle EINTR, which has platform-specific semantics.
-func Close(fd int) bool {
+func Close(fd int) error {
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg1 = C.gint(fd)
 
-	ret := C.g_close(arg1)
+	ret := C.g_close(arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ComputeChecksumForBytes computes the checksum for a binary @data. This is a
@@ -4496,6 +4685,31 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	arg2 = (*C.GBytes)(data.Native())
 
 	ret := C.g_compute_checksum_for_bytes(arg1, arg2)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// ComputeChecksumForData computes the checksum for a binary @data of @length.
+// This is a convenience wrapper for g_checksum_new(), g_checksum_get_string()
+// and g_checksum_free().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
+	var arg1 C.GChecksumType
+	var arg2 *C.guchar
+	var arg3 C.gsize
+
+	arg1 = (C.GChecksumType)(checksumType)
+	arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	arg3 = len(data)
+	defer runtime.KeepAlive(data)
+
+	ret := C.g_compute_checksum_for_data(arg1, arg2, arg3)
 
 	var ret0 string
 
@@ -4551,6 +4765,120 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) strin
 	return ret0
 }
 
+// ComputeHMACForData computes the HMAC for a binary @data of @length. This is a
+// convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
+	var arg1 C.GChecksumType
+	var arg2 *C.guchar
+	var arg3 C.gsize
+	var arg4 *C.guchar
+	var arg5 C.gsize
+
+	arg1 = (C.GChecksumType)(digestType)
+	arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
+	arg3 = len(key)
+	defer runtime.KeepAlive(key)
+	arg4 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	arg5 = len(data)
+	defer runtime.KeepAlive(data)
+
+	ret := C.g_compute_hmac_for_data(arg1, arg2, arg3, arg4, arg5)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// ComputeHMACForString computes the HMAC for a string.
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
+	var arg1 C.GChecksumType
+	var arg2 *C.guchar
+	var arg3 C.gsize
+	var arg4 *C.gchar
+	var arg5 C.gssize
+
+	arg1 = (C.GChecksumType)(digestType)
+	arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
+	arg3 = len(key)
+	defer runtime.KeepAlive(key)
+	arg4 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = C.gssize(length)
+
+	ret := C.g_compute_hmac_for_string(arg1, arg2, arg3, arg4, arg5)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
+// Convert converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Using extensions such as "//TRANSLIT" may not work (or may not work well) on
+// many platforms. Consider using g_str_to_ascii() instead.
+func Convert(str []byte, toCodeset string, fromCodeset string) (bytesRead uint, bytesWritten uint, guint8s []byte, err error) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gchar
+	var arg4 *C.gchar
+	var arg5 *C.gsize // out
+	var arg6 *C.gsize // out
+	var gError *C.GError
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	arg2 = len(str)
+	defer runtime.KeepAlive(str)
+	arg3 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(arg4))
+
+	ret := C.g_convert(arg1, arg2, arg3, arg4, &arg5, &arg6, &gError)
+
+	var ret0 uint
+	var ret1 uint
+	var ret2 []byte
+	var goError error
+
+	ret0 = uint(arg5)
+
+	ret1 = uint(arg6)
+
+	{
+		ret2 = make([]byte, arg6)
+		for i := 0; i < uintptr(arg6); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret2[i] = byte(src)
+		}
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
+}
+
 func ConvertErrorQuark() Quark {
 
 	ret := C.g_convert_error_quark()
@@ -4564,6 +4892,126 @@ func ConvertErrorQuark() Quark {
 	}
 
 	return ret0
+}
+
+// ConvertWithFallback converts a string from one character set to another,
+// possibly including fallback sequences for characters not representable in the
+// output. Note that it is not guaranteed that the specification for the
+// fallback sequences in @fallback will be honored. Some systems may do an
+// approximate conversion from @from_codeset to @to_codeset in their iconv()
+// functions, in which case GLib will simply return that approximate conversion.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (bytesRead uint, bytesWritten uint, guint8s []byte, err error) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gchar
+	var arg4 *C.gchar
+	var arg5 *C.gchar
+	var arg6 *C.gsize // out
+	var arg7 *C.gsize // out
+	var gError *C.GError
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	arg2 = len(str)
+	defer runtime.KeepAlive(str)
+	arg3 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.gchar)(C.CString(fallback))
+	defer C.free(unsafe.Pointer(arg5))
+
+	ret := C.g_convert_with_fallback(arg1, arg2, arg3, arg4, arg5, &arg6, &arg7, &gError)
+
+	var ret0 uint
+	var ret1 uint
+	var ret2 []byte
+	var goError error
+
+	ret0 = uint(arg6)
+
+	ret1 = uint(arg7)
+
+	{
+		ret2 = make([]byte, arg7)
+		for i := 0; i < uintptr(arg7); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret2[i] = byte(src)
+		}
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
+}
+
+// ConvertWithIconv converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Characters which are valid in the input character set, but which have no
+// representation in the output character set will result in a
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE error. This is in contrast to the iconv()
+// specification, which leaves this behaviour implementation defined. Note that
+// this is the same error code as is returned for an invalid byte sequence in
+// the input character set. To get defined behaviour for conversion of
+// unrepresentable characters, use g_convert_with_fallback().
+func ConvertWithIconv(str []byte, converter IConv) (bytesRead uint, bytesWritten uint, guint8s []byte, err error) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.GIConv
+	var arg4 *C.gsize // out
+	var arg5 *C.gsize // out
+	var gError *C.GError
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	arg2 = len(str)
+	defer runtime.KeepAlive(str)
+	arg3 = (C.GIConv)(converter.Native())
+
+	ret := C.g_convert_with_iconv(arg1, arg2, arg3, &arg4, &arg5, &gError)
+
+	var ret0 uint
+	var ret1 uint
+	var ret2 []byte
+	var goError error
+
+	ret0 = uint(arg4)
+
+	ret1 = uint(arg5)
+
+	{
+		ret2 = make([]byte, arg5)
+		for i := 0; i < uintptr(arg5); i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret2[i] = byte(src)
+		}
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // DatalistClear frees all the data elements of the datalist. The data elements'
@@ -4585,14 +5033,14 @@ func DatalistClear(datalist **Data) {
 // @func can make changes to @datalist, but the iteration will not reflect
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
-func DatalistForeach(datalist **Data, _func DataForeachFunc) {
+func DatalistForeach(datalist **Data, fn DataForeachFunc) {
 	var arg1 **C.GData
 	var arg2 C.GDataForeachFunc
 	var arg3 C.gpointer
 
 	arg1 = (**C.GData)(datalist.Native())
 	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
 	C.g_datalist_foreach(arg1, arg2, arg3)
 }
@@ -4687,14 +5135,14 @@ func DatasetDestroy(datasetLocation interface{}) {
 // @func can make changes to the dataset, but the iteration will not reflect
 // changes made during the g_dataset_foreach() call, other than skipping over
 // elements that are removed.
-func DatasetForeach(datasetLocation interface{}, _func DataForeachFunc) {
+func DatasetForeach(datasetLocation interface{}, fn DataForeachFunc) {
 	var arg1 C.gpointer
 	var arg2 C.GDataForeachFunc
 	var arg3 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(datasetLocation))
 	arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
 	C.g_dataset_foreach(arg1, arg2, arg3)
 }
@@ -4765,7 +5213,7 @@ func DateTimeEqual(dt1 interface{}, dt2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4796,7 +5244,7 @@ func DateValidJulian(julianDate uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4812,7 +5260,7 @@ func DateValidMonth(month DateMonth) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4828,7 +5276,7 @@ func DateValidWeekday(weekday DateWeekday) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4916,20 +5364,27 @@ func Dgettext(domain string, msgid string) string {
 //
 // Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not modified,
 // and might thus be a read-only literal string.
-func DirMakeTmp(tmpl string) string {
+func DirMakeTmp(tmpl string) (filename string, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_dir_make_tmp(arg1)
+	ret := C.g_dir_make_tmp(arg1, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // DirectEqual compares two #gpointer arguments and returns true if they are
@@ -4950,7 +5405,7 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5018,7 +5473,7 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5109,7 +5564,21 @@ func EnvironGetenv(envp []string, variable string) string {
 	var arg2 *C.gchar
 
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
@@ -5132,13 +5601,27 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	var arg4 C.gboolean
 
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = gextras.Cbool(overwrite)
+	if overwrite {
+		arg4 = C.TRUE
+	}
 
 	ret := C.g_environ_setenv(arg1, arg2, arg3, arg4)
 
@@ -5168,7 +5651,19 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	var arg2 *C.gchar
 
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
@@ -5241,19 +5736,20 @@ func FileErrorQuark() Quark {
 // false and sets @error. The error domain is FILE_ERROR. Possible error codes
 // are those in the Error enumeration. In the error case, @contents is set to
 // nil and @length is set to zero.
-func FileGetContents(filename string) (contents []byte, length uint, ok bool) {
+func FileGetContents(filename string) (contents []byte, length uint, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar // out
 	var arg3 *C.gsize  // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_get_contents(arg1, &arg2, &arg3)
+	ret := C.g_file_get_contents(arg1, &arg2, &arg3, &gError)
 
 	var ret0 []byte
 	var ret1 uint
-	var ret2 bool
+	var goError error
 
 	{
 		ret0 = make([]byte, arg3)
@@ -5265,9 +5761,12 @@ func FileGetContents(filename string) (contents []byte, length uint, ok bool) {
 
 	ret1 = uint(arg3)
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // FileOpenTmp opens a file for writing in the preferred directory for temporary
@@ -5284,43 +5783,168 @@ func FileGetContents(filename string) (contents []byte, length uint, ok bool) {
 // Upon success, and if @name_used is non-nil, the actual name used is returned
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
-func FileOpenTmp(tmpl string) (nameUsed string, gint int) {
+func FileOpenTmp(tmpl string) (nameUsed string, gint int, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_open_tmp(arg1, &arg2)
+	ret := C.g_file_open_tmp(arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 int
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
 	ret1 = int(ret)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // FileReadLink reads the contents of the symbolic link @filename like the POSIX
 // readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
-func FileReadLink(filename string) string {
+func FileReadLink(filename string) (filename string, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_file_read_link(arg1)
+	ret := C.g_file_read_link(arg1, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// FileSetContents writes all of @contents to a file named @filename. This is a
+// convenience wrapper around calling g_file_set_contents() with `flags` set to
+// `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
+// `mode` set to `0666`.
+func FileSetContents(filename string, contents []byte) error {
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gssize
+	var gError *C.GError
+
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+	arg3 = len(contents)
+	defer runtime.KeepAlive(contents)
+
+	ret := C.g_file_set_contents(arg1, arg2, arg3, &gError)
+
+	var goError error
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
+}
+
+// FileSetContentsFull writes all of @contents to a file named @filename, with
+// good error checking. If a file called @filename already exists it will be
+// overwritten.
+//
+// @flags control the properties of the write operation: whether it’s atomic,
+// and what the tradeoff is between returning quickly or being resilient to
+// system crashes.
+//
+// As this function performs file I/O, it is recommended to not call it anywhere
+// where blocking would cause problems, such as in the main loop of a graphical
+// application. In particular, if @flags has any value other than
+// G_FILE_SET_CONTENTS_NONE then this function may call `fsync()`.
+//
+// If G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the operation is atomic
+// in the sense that it is first written to a temporary file which is then
+// renamed to the final name.
+//
+// Notes:
+//
+// - On UNIX, if @filename already exists hard links to @filename will break.
+// Also since the file is recreated, existing permissions, access control lists,
+// metadata etc. may be lost. If @filename is a symbolic link, the link itself
+// will be replaced, not the linked file.
+//
+// - On UNIX, if @filename already exists and is non-empty, and if the system
+// supports it (via a journalling filesystem or equivalent), and if
+// G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the `fsync()` call (or
+// equivalent) will be used to ensure atomic replacement: @filename will contain
+// either its old contents or @contents, even in the face of system power loss,
+// the disk being unsafely removed, etc.
+//
+// - On UNIX, if @filename does not already exist or is empty, there is a
+// possibility that system power loss etc. after calling this function will
+// leave @filename empty or full of NUL bytes, depending on the underlying
+// filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
+// G_FILE_SET_CONTENTS_CONSISTENT are set in @flags.
+//
+// - On Windows renaming a file will not remove an existing file with the new
+// name, so on Windows there is a race condition between the existing file being
+// removed and the temporary file being renamed.
+//
+// - On Windows there is no way to remove a file that is open to some process,
+// or mapped into memory. Thus, this function will fail if @filename already
+// exists and is open.
+//
+// If the call was successful, it returns true. If the call was not successful,
+// it returns false and sets @error. The error domain is FILE_ERROR. Possible
+// error codes are those in the Error enumeration.
+//
+// Note that the name for the temporary file is constructed by appending up to 7
+// characters to @filename.
+//
+// If the file didn’t exist before and is created, it will be given the
+// permissions from @mode. Otherwise, the permissions of the existing file may
+// be changed to @mode depending on @flags, or they may remain unchanged.
+func FileSetContentsFull(filename string, contents []byte, flags FileSetContentsFlags, mode int) error {
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 C.gssize
+	var arg4 C.GFileSetContentsFlags
+	var arg5 C.int
+	var gError *C.GError
+
+	arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+	arg3 = len(contents)
+	defer runtime.KeepAlive(contents)
+	arg4 = (C.GFileSetContentsFlags)(flags)
+	arg5 = C.int(mode)
+
+	ret := C.g_file_set_contents_full(arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var goError error
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
 }
 
 // FileTest returns true if any of the tests in the bitfield @test are true. For
@@ -5373,7 +5997,7 @@ func FileTest(filename string, test FileTest) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5443,17 +6067,19 @@ func FilenameDisplayName(filename string) string {
 
 // FilenameFromURI converts an escaped ASCII-encoded URI to a local filename in
 // the encoding used for filenames.
-func FilenameFromURI(uri string) (hostname string, filename string) {
+func FilenameFromURI(uri string) (hostname string, filename string, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_filename_from_uri(arg1, &arg2)
+	ret := C.g_filename_from_uri(arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 string
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
@@ -5461,7 +6087,12 @@ func FilenameFromURI(uri string) (hostname string, filename string) {
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // FilenameFromUTF8 converts a string from UTF-8 to the encoding GLib uses for
@@ -5474,21 +6105,23 @@ func FilenameFromURI(uri string) (hostname string, filename string) {
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the filename encoding is not UTF-8 and
 // the conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil.
-func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string) {
+func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 	var arg3 *C.gsize // out
 	var arg4 *C.gsize // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(utf8String))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	ret := C.g_filename_from_utf8(arg1, arg2, &arg3, &arg4)
+	ret := C.g_filename_from_utf8(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 uint
 	var ret1 uint
 	var ret2 string
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -5497,28 +6130,40 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	ret2 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // FilenameToURI converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
-func FilenameToURI(filename string, hostname string) string {
+func FilenameToURI(filename string, hostname string) (utf8 string, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_filename_to_uri(arg1, arg2)
+	ret := C.g_filename_to_uri(arg1, arg2, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // FilenameToUTF8 converts a string which is in the encoding used by GLib for
@@ -5532,21 +6177,23 @@ func FilenameToURI(filename string, hostname string) string {
 // conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil. Use
 // g_convert() to produce output that may contain embedded nul characters.
-func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string) {
+func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 	var arg3 *C.gsize // out
 	var arg4 *C.gsize // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(opsysstring))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	ret := C.g_filename_to_utf8(arg1, arg2, &arg3, &arg4)
+	ret := C.g_filename_to_utf8(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 uint
 	var ret1 uint
 	var ret2 string
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -5555,7 +6202,12 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	ret2 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // FindProgramInPath locates the first executable named @program in the user's
@@ -5717,7 +6369,7 @@ func GetCharset() (charset string, ok bool) {
 
 	ret0 = C.GoString(arg1)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -5761,7 +6413,7 @@ func GetConsoleCharset() (charset string, ok bool) {
 
 	ret0 = C.GoString(arg1)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -5875,7 +6527,7 @@ func GetFilenameCharsets() (filenameCharsets []string, ok bool) {
 		}
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -6445,7 +7097,7 @@ func HashTableAdd(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6462,7 +7114,7 @@ func HashTableContains(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6502,7 +7154,7 @@ func HashTableInsert(hashTable *HashTable, key interface{}, value interface{}) b
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6553,7 +7205,7 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origK
 
 	ret1 = box.Get(uintptr(arg4)).(interface{})
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -6574,7 +7226,7 @@ func HashTableRemove(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6614,7 +7266,7 @@ func HashTableReplace(hashTable *HashTable, key interface{}, value interface{}) 
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6647,7 +7299,7 @@ func HashTableSteal(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6691,7 +7343,7 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolen
 
 	ret1 = box.Get(uintptr(arg4)).(interface{})
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -6720,7 +7372,7 @@ func HookDestroy(hookList *HookList, hookID uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6804,7 +7456,7 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6823,7 +7475,7 @@ func HostnameIsIpAddress(hostname string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6845,7 +7497,7 @@ func HostnameIsNonASCII(hostname string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6997,7 +7649,7 @@ func IdleRemoveByData(data interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7036,7 +7688,7 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7077,7 +7729,7 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7144,6 +7796,36 @@ func InternString(string string) string {
 	var ret0 string
 
 	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// IOAddWatchFull adds the OChannel into the default main loop context with the
+// given priority.
+//
+// This internally creates a main loop source using g_io_create_watch() and
+// attaches it to the main loop context with g_source_attach(). You can do these
+// steps manually if you need greater control.
+func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, fn IOFunc) uint {
+	var arg1 *C.GIOChannel
+	var arg2 C.gint
+	var arg3 C.GIOCondition
+	var arg4 C.GIOFunc
+	var arg5 C.gpointer
+	var arg6 C.GDestroyNotify
+
+	arg1 = (*C.GIOChannel)(channel.Native())
+	arg2 = C.gint(priority)
+	arg3 = (C.GIOCondition)(condition)
+	arg4 = (*[0]byte)(C.gotk4_IOFunc)
+	arg5 = C.gpointer(box.Assign(fn))
+	arg6 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_io_add_watch_full(arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -7264,21 +7946,23 @@ func Listenv() []string {
 // is positive. A nul character found inside the string will result in error
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
 // contain embedded nul characters.
-func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, guint8s []byte) {
+func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, guint8s []byte, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 	var arg3 *C.gsize // out
 	var arg4 *C.gsize // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(utf8String))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	ret := C.g_locale_from_utf8(arg1, arg2, &arg3, &arg4)
+	ret := C.g_locale_from_utf8(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 uint
 	var ret1 uint
 	var ret2 []byte
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -7292,7 +7976,55 @@ func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten ui
 		}
 	}
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
+}
+
+// LocaleToUTF8 converts a string which is in the encoding used for strings by
+// the C runtime (usually the same as that used by the operating system) in the
+// [current locale][setlocale] into a UTF-8 string.
+//
+// If the source encoding is not UTF-8 and the conversion output contains a nul
+// character, the error G_CONVERT_ERROR_EMBEDDED_NUL is set and the function
+// returns nil. If the source encoding is UTF-8, an embedded nul character is
+// treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
+// compatibility with earlier versions of this library. Use g_convert() to
+// produce output that may contain embedded nul characters.
+func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string, err error) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 *C.gsize // out
+	var arg4 *C.gsize // out
+	var gError *C.GError
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
+	arg2 = len(opsysstring)
+	defer runtime.KeepAlive(opsysstring)
+
+	ret := C.g_locale_to_utf8(arg1, arg2, &arg3, &arg4, &gError)
+
+	var ret0 uint
+	var ret1 uint
+	var ret2 string
+	var goError error
+
+	ret0 = uint(arg3)
+
+	ret1 = uint(arg4)
+
+	ret2 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // LogDefaultHandler: the default log handler set up by GLib;
@@ -7409,6 +8141,87 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	return ret0
 }
 
+// LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
+// the @user_data.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) uint {
+	var arg1 *C.gchar
+	var arg2 C.GLogLevelFlags
+	var arg3 C.GLogFunc
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
+
+	arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GLogLevelFlags)(logLevels)
+	arg3 = (*[0]byte)(C.gotk4_LogFunc)
+	arg4 = C.gpointer(box.Assign(logFunc))
+	arg5 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_log_set_handler_full(arg1, arg2, arg3, arg4, arg5)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
+// LogSetWriterFunc: set a writer function which will be called to format and
+// write out each log message. Each program should set a writer function, or the
+// default writer (g_log_writer_default()) will be used.
+//
+// Libraries **must not** call this function — only programs are allowed to
+// install a writer function, as there must be a single, central point where log
+// messages are formatted and outputted.
+//
+// There can only be one writer function. It is an error to set more than one.
+func LogSetWriterFunc(fn LogWriterFunc) {
+	var arg1 C.GLogWriterFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	C.g_log_set_writer_func(arg1, arg2, arg3)
+}
+
+// LogStructuredArray: log a message with structured data. The message will be
+// passed through to the log writer set by the application using
+// g_log_set_writer_func(). If the message is fatal (i.e. its log level is
+// G_LOG_LEVEL_ERROR), the program will be aborted at the end of this function.
+//
+// See g_log_structured() for more documentation.
+//
+// This assumes that @log_level is already present in @fields (typically as the
+// `PRIORITY` field).
+func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+
+	arg1 = (C.GLogLevelFlags)(logLevel)
+	{
+		var dst []C.GLogField
+		ptr := C.malloc(C.sizeof_GLogField * len(fields))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(fields); i++ {
+			src := fields[i]
+			dst[i] = (C.GLogField)(src.Native())
+		}
+
+		arg2 = (*C.GLogField)(unsafe.Pointer(ptr))
+		arg3 = len(fields)
+	}
+
+	C.g_log_structured_array(arg1, arg2, arg3)
+}
+
 // LogVariant: log a message with structured data, accepting the data within a
 // #GVariant. This version is especially useful for use in other languages, via
 // introspection.
@@ -7439,6 +8252,103 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	C.g_log_variant(arg1, arg2, arg3)
 }
 
+// LogWriterDefault: format a structured log message and output it to the
+// default log destination for the platform. On Linux, this is typically the
+// systemd journal, falling back to `stdout` or `stderr` if running from the
+// terminal or if output is being redirected to a file.
+//
+// Support for other platform-specific logging mechanisms may be added in
+// future. Distributors of GLib may modify this function to impose their own
+// (documented) platform-specific log writing policies.
+//
+// This is suitable for use as a WriterFunc, and is the default writer used if
+// no other is set using g_log_set_writer_func().
+//
+// As with g_log_default_handler(), this function drops debug and informational
+// messages unless their log domain (or `all`) is listed in the space-separated
+// `G_MESSAGES_DEBUG` environment variable.
+func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gpointer
+
+	arg1 = (C.GLogLevelFlags)(logLevel)
+	{
+		var dst []C.GLogField
+		ptr := C.malloc(C.sizeof_GLogField * len(fields))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(fields); i++ {
+			src := fields[i]
+			dst[i] = (C.GLogField)(src.Native())
+		}
+
+		arg2 = (*C.GLogField)(unsafe.Pointer(ptr))
+		arg3 = len(fields)
+	}
+	arg4 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_log_writer_default(arg1, arg2, arg3, arg4)
+
+	var ret0 LogWriterOutput
+
+	ret0 = LogWriterOutput(ret)
+
+	return ret0
+}
+
+// LogWriterFormatFields: format a structured log message as a string suitable
+// for outputting to the terminal (or elsewhere). This will include the values
+// of all fields it knows how to interpret, which includes `MESSAGE` and
+// `GLIB_DOMAIN` (see the documentation for g_log_structured()). It does not
+// include values from unknown fields.
+//
+// The returned string does **not** have a trailing new-line character. It is
+// encoded in the character set of the current locale, which is not necessarily
+// UTF-8.
+func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gboolean
+
+	arg1 = (C.GLogLevelFlags)(logLevel)
+	{
+		var dst []C.GLogField
+		ptr := C.malloc(C.sizeof_GLogField * len(fields))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(fields); i++ {
+			src := fields[i]
+			dst[i] = (C.GLogField)(src.Native())
+		}
+
+		arg2 = (*C.GLogField)(unsafe.Pointer(ptr))
+		arg3 = len(fields)
+	}
+	if useColor {
+		arg4 = C.TRUE
+	}
+
+	ret := C.g_log_writer_format_fields(arg1, arg2, arg3, arg4)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
 // connection to the systemd journal, or something else (like a log file or
 // `stdout` or `stderr`).
@@ -7456,7 +8366,98 @@ func LogWriterIsJournald(outputFd int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
+
+	return ret0
+}
+
+// LogWriterJournald: format a structured log message and send it to the systemd
+// journal as a set of key–value pairs. All fields are sent to the journal, but
+// if a field has length zero (indicating program-specific data) then only its
+// key will be sent.
+//
+// This is suitable for use as a WriterFunc.
+//
+// If GLib has been compiled without systemd support, this function is still
+// defined, but will always return G_LOG_WRITER_UNHANDLED.
+func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gpointer
+
+	arg1 = (C.GLogLevelFlags)(logLevel)
+	{
+		var dst []C.GLogField
+		ptr := C.malloc(C.sizeof_GLogField * len(fields))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(fields); i++ {
+			src := fields[i]
+			dst[i] = (C.GLogField)(src.Native())
+		}
+
+		arg2 = (*C.GLogField)(unsafe.Pointer(ptr))
+		arg3 = len(fields)
+	}
+	arg4 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_log_writer_journald(arg1, arg2, arg3, arg4)
+
+	var ret0 LogWriterOutput
+
+	ret0 = LogWriterOutput(ret)
+
+	return ret0
+}
+
+// LogWriterStandardStreams: format a structured log message and print it to
+// either `stdout` or `stderr`, depending on its log level. G_LOG_LEVEL_INFO and
+// G_LOG_LEVEL_DEBUG messages are sent to `stdout`; all other log levels are
+// sent to `stderr`. Only fields which are understood by this function are
+// included in the formatted string which is printed.
+//
+// If the output stream supports ANSI color escape sequences, they will be used
+// in the output.
+//
+// A trailing new-line character is added to the log message when it is printed.
+//
+// This is suitable for use as a WriterFunc.
+func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData interface{}) LogWriterOutput {
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.GLogField
+	var arg3 C.gsize
+	var arg4 C.gpointer
+
+	arg1 = (C.GLogLevelFlags)(logLevel)
+	{
+		var dst []C.GLogField
+		ptr := C.malloc(C.sizeof_GLogField * len(fields))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(fields)
+		sliceHeader.Cap = len(fields)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(fields); i++ {
+			src := fields[i]
+			dst[i] = (C.GLogField)(src.Native())
+		}
+
+		arg2 = (*C.GLogField)(unsafe.Pointer(ptr))
+		arg3 = len(fields)
+	}
+	arg4 = C.gpointer(box.Assign(userData))
+
+	ret := C.g_log_writer_standard_streams(arg1, arg2, arg3, arg4)
+
+	var ret0 LogWriterOutput
+
+	ret0 = LogWriterOutput(ret)
 
 	return ret0
 }
@@ -7473,7 +8474,7 @@ func LogWriterSupportsColor(outputFd int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7754,7 +8755,7 @@ func MemIsSystemMalloc() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8053,7 +9054,7 @@ func OnceInitEnter(location interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8084,6 +9085,50 @@ func OptionErrorQuark() Quark {
 		tmp = uint32(ret)
 		ret0 = Quark(tmp)
 	}
+
+	return ret0
+}
+
+// ParseDebugString parses a string containing debugging options into a guint
+// containing bit flags. This is used within GDK and GTK+ to parse the debug
+// options passed on the command line or through environment variables.
+//
+// If @string is equal to "all", all flags are set. Any flags specified along
+// with "all" in @string are inverted; thus, "all,foo,bar" or "foo,bar,all" sets
+// all flags except those corresponding to "foo" and "bar".
+//
+// If @string is equal to "help", all the available keys in @keys are printed
+// out to standard error.
+func ParseDebugString(string string, keys []DebugKey) uint {
+	var arg1 *C.gchar
+	var arg2 *C.GDebugKey
+	var arg3 C.guint
+
+	arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg1))
+	{
+		var dst []C.GDebugKey
+		ptr := C.malloc(C.sizeof_GDebugKey * len(keys))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(keys)
+		sliceHeader.Cap = len(keys)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(keys); i++ {
+			src := keys[i]
+			dst[i] = (C.GDebugKey)(src.Native())
+		}
+
+		arg2 = (*C.GDebugKey)(unsafe.Pointer(ptr))
+		arg3 = len(keys)
+	}
+
+	ret := C.g_parse_debug_string(arg1, arg2, arg3)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -8164,7 +9209,7 @@ func PathIsAbsolute(fileName string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8220,7 +9265,7 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8242,7 +9287,7 @@ func PatternMatchSimple(pattern string, string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8262,7 +9307,7 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8298,7 +9343,7 @@ func PointerBitTrylock(address interface{}, lockBit int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8364,7 +9409,7 @@ func PropagateError(src *Error) *Error {
 
 	arg2 = (*C.GError)(src.Native())
 
-	ret := C.g_propagate_error(&arg1, arg2)
+	C.g_propagate_error(&arg1, arg2)
 
 	var ret0 **Error
 
@@ -8389,7 +9434,20 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 	var arg3 *C.guint // out
 
 	{
+		var dst []C.gpointer
+		ptr := C.malloc(C.sizeof_gpointer * (len(haystack) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(haystack)
+		sliceHeader.Cap = len(haystack)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(haystack); i++ {
+			src := haystack[i]
+			dst[i] = C.gpointer(box.Assign(src))
+		}
+
+		arg1 = (*C.GPtrArray)(unsafe.Pointer(ptr))
 	}
 	arg2 = C.gpointer(box.Assign(needle))
 
@@ -8400,7 +9458,7 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 
 	ret0 = uint(arg3)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -8421,7 +9479,20 @@ func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equal
 	var arg4 *C.guint // out
 
 	{
+		var dst []C.gpointer
+		ptr := C.malloc(C.sizeof_gpointer * (len(haystack) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(haystack)
+		sliceHeader.Cap = len(haystack)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(haystack); i++ {
+			src := haystack[i]
+			dst[i] = C.gpointer(box.Assign(src))
+		}
+
+		arg1 = (*C.GPtrArray)(unsafe.Pointer(ptr))
 	}
 	arg2 = C.gpointer(box.Assign(needle))
 
@@ -8432,7 +9503,7 @@ func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equal
 
 	ret0 = uint(arg4)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -8775,7 +9846,7 @@ func RefCountCompare(rc int, val int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8790,7 +9861,7 @@ func RefCountDec(rc int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8928,23 +9999,27 @@ func RefStringRelease(str string) {
 // references. For instance, replacement text 'foo\n' does not contain
 // references and may be evaluated without information about actual match, but
 // '\0\1' (whole match followed by first subpattern) requires valid Info object.
-func RegexCheckReplacement(replacement string) (hasReferences bool, ok bool) {
+func RegexCheckReplacement(replacement string) (hasReferences bool, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gboolean // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(replacement))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_regex_check_replacement(arg1, &arg2)
+	ret := C.g_regex_check_replacement(arg1, &arg2, &gError)
 
 	var ret0 bool
-	var ret1 bool
+	var goError error
 
-	ret0 = gextras.Gobool(arg2)
+	ret0 = arg2 != C.FALSE
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 func RegexErrorQuark() Quark {
@@ -8985,6 +10060,45 @@ func RegexEscapeNUL(string string, length int) string {
 	return ret0
 }
 
+// RegexEscapeString escapes the special characters used for regular expressions
+// in @string, for instance "a.b*c" becomes "a\.b\*c". This function is useful
+// to dynamically generate regular expressions.
+//
+// @string can contain nul characters that are replaced with "\0", in this case
+// remember to specify the correct length of @string in @length.
+func RegexEscapeString(string []string) string {
+	var arg1 *C.gchar
+	var arg2 C.gint
+
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+
+	ret := C.g_regex_escape_string(arg1, arg2)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
 // RegexMatchSimple scans for a match in @string for @pattern.
 //
 // This function is equivalent to g_regex_match() but it does not require to
@@ -9012,7 +10126,7 @@ func RegexMatchSimple(pattern string, string string, compileOptions RegexCompile
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9341,13 +10455,15 @@ func Setenv(variable string, value string, overwrite bool) bool {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(overwrite)
+	if overwrite {
+		arg3 = C.TRUE
+	}
 
 	ret := C.g_setenv(arg1, arg2, arg3)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9375,19 +10491,20 @@ func ShellErrorQuark() Quark {
 // shell expansions. If the input does contain such expansions, they are passed
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
-func ShellParseArgv(commandLine string) (argcp int, argvp []string, ok bool) {
+func ShellParseArgv(commandLine string) (argcp int, argvp []string, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gint    // out
 	var arg3 ***C.gchar // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_shell_parse_argv(arg1, &arg2, &arg3)
+	ret := C.g_shell_parse_argv(arg1, &arg2, &arg3, &gError)
 
 	var ret0 int
 	var ret1 []string
-	var ret2 bool
+	var goError error
 
 	ret0 = int(arg2)
 
@@ -9400,9 +10517,12 @@ func ShellParseArgv(commandLine string) (argcp int, argvp []string, ok bool) {
 		}
 	}
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // ShellQuote quotes a string so that the shell (/bin/sh) will interpret the
@@ -9444,20 +10564,27 @@ func ShellQuote(unquotedString string) string {
 // ' in the quoted text, you have to do something like 'foo'\”bar'. Double
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
-func ShellUnquote(quotedString string) string {
+func ShellUnquote(quotedString string) (filename string, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(quotedString))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_shell_unquote(arg1)
+	ret := C.g_shell_unquote(arg1, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SliceAlloc allocates a block of memory from the slice allocator. The block
@@ -9630,7 +10757,7 @@ func SourceRemove(tag uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9649,7 +10776,7 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData interface{}) bool 
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9666,7 +10793,7 @@ func SourceRemoveByUserData(userData interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9730,7 +10857,7 @@ func SpacedPrimesClosest(num uint) uint {
 // Note that the returned @child_pid on Windows is a handle to the child process
 // and not its identifier. Process handles and process identifiers are different
 // concepts on Windows.
-func SpawnAsync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, ok bool) {
+func SpawnAsync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar
 	var arg3 **C.gchar
@@ -9738,23 +10865,52 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 	var arg5 C.GSpawnChildSetupFunc
 	var arg6 C.gpointer
 	var arg7 *C.GPid // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(workingDirectory))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg3 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
 	arg6 = C.gpointer(box.Assign(childSetup))
 
-	ret := C.g_spawn_async(arg1, arg2, arg3, arg4, arg5, arg6, &arg7)
+	ret := C.g_spawn_async(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &gError)
 
 	var ret0 *Pid
-	var ret1 bool
+	var goError error
 
 	{
 		var tmp int
@@ -9762,9 +10918,12 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 		ret0 = *Pid(tmp)
 	}
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // SpawnAsyncWithFds: identical to g_spawn_async_with_pipes() but instead of
@@ -9785,7 +10944,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 //
 // It is valid to pass the same fd in multiple parameters (e.g. you can pass a
 // single fd for both stdout and stderr).
-func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int) (childPid Pid, ok bool) {
+func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, stdinFd int, stdoutFd int, stderrFd int) (childPid Pid, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar
 	var arg3 **C.gchar
@@ -9796,14 +10955,43 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	var arg8 C.gint
 	var arg9 C.gint
 	var arg10 C.gint
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(workingDirectory))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(argv) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg3 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
@@ -9812,10 +11000,10 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 	arg9 = C.gint(stdoutFd)
 	arg10 = C.gint(stderrFd)
 
-	ret := C.g_spawn_async_with_fds(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, arg8, arg9, arg10)
+	ret := C.g_spawn_async_with_fds(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, arg8, arg9, arg10, &gError)
 
 	var ret0 *Pid
-	var ret1 bool
+	var goError error
 
 	{
 		var tmp int
@@ -9823,9 +11011,12 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 		ret0 = *Pid(tmp)
 	}
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // SpawnAsyncWithPipes executes a child program asynchronously (your program
@@ -9984,7 +11175,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 // graphical application too, then to ensure that the spawned program opens its
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
-func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, ok bool) {
+func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (childPid Pid, standardInput int, standardOutput int, standardError int, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar
 	var arg3 **C.gchar
@@ -9995,26 +11186,55 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 	var arg8 *C.gint  // out
 	var arg9 *C.gint  // out
 	var arg10 *C.gint // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(workingDirectory))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg3 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
 	arg6 = C.gpointer(box.Assign(childSetup))
 
-	ret := C.g_spawn_async_with_pipes(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &arg8, &arg9, &arg10)
+	ret := C.g_spawn_async_with_pipes(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &arg8, &arg9, &arg10, &gError)
 
 	var ret0 *Pid
 	var ret1 int
 	var ret2 int
 	var ret3 int
-	var ret4 bool
+	var goError error
 
 	{
 		var tmp int
@@ -10028,9 +11248,12 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 
 	ret3 = int(arg10)
 
-	ret4 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3, ret4
+	return ret0, ret1, ret2, ret3, goError
 }
 
 // SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
@@ -10068,18 +11291,22 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 // WEXITSTATUS() on @exit_status directly. Do not attempt to scan or parse the
 // error message string; it may be translated and/or change in future versions
 // of GLib.
-func SpawnCheckExitStatus(exitStatus int) bool {
+func SpawnCheckExitStatus(exitStatus int) error {
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg1 = C.gint(exitStatus)
 
-	ret := C.g_spawn_check_exit_status(arg1)
+	ret := C.g_spawn_check_exit_status(arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -10091,19 +11318,23 @@ func SpawnCheckExitStatus(exitStatus int) bool {
 // g_shell_parse_argv() and g_spawn_async().
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
-func SpawnCommandLineAsync(commandLine string) bool {
+func SpawnCommandLineAsync(commandLine string) error {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_spawn_command_line_async(arg1)
+	ret := C.g_spawn_command_line_async(arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
@@ -10126,21 +11357,22 @@ func SpawnCommandLineAsync(commandLine string) bool {
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
-func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, ok bool) {
+func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar // out
 	var arg3 **C.gchar // out
 	var arg4 *C.gint   // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4)
+	ret := C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4, &gError)
 
 	var ret0 []byte
 	var ret1 []byte
 	var ret2 int
-	var ret3 bool
+	var goError error
 
 	{
 		var length uint
@@ -10170,9 +11402,12 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 
 	ret2 = int(arg4)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 func SpawnErrorQuark() Quark {
@@ -10223,7 +11458,7 @@ func SpawnExitErrorQuark() Quark {
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
-func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, ok bool) {
+func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, err error) {
 	var arg1 *C.gchar
 	var arg2 **C.gchar
 	var arg3 **C.gchar
@@ -10233,25 +11468,54 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var arg7 **C.gchar // out
 	var arg8 **C.gchar // out
 	var arg9 *C.gint   // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(workingDirectory))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(argv) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(argv)
+		sliceHeader.Cap = len(argv)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(argv); i++ {
+			src := argv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(envp) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(envp)
+		sliceHeader.Cap = len(envp)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(envp); i++ {
+			src := envp[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg3 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg4 = (C.GSpawnFlags)(flags)
 	arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
 	arg6 = C.gpointer(box.Assign(childSetup))
 
-	ret := C.g_spawn_sync(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &arg8, &arg9)
+	ret := C.g_spawn_sync(arg1, arg2, arg3, arg4, arg5, arg6, &arg7, &arg8, &arg9, &gError)
 
 	var ret0 []byte
 	var ret1 []byte
 	var ret2 int
-	var ret3 bool
+	var goError error
 
 	{
 		var length uint
@@ -10281,9 +11545,12 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 
 	ret2 = int(arg9)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // Stpcpy copies a nul-terminated string into the dest buffer, include the
@@ -10327,7 +11594,7 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10346,7 +11613,7 @@ func StrHasPrefix(str string, prefix string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10365,7 +11632,7 @@ func StrHasSuffix(str string, suffix string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10408,7 +11675,7 @@ func StrIsASCII(str string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10442,13 +11709,15 @@ func StrMatchString(searchTerm string, potentialHit string, acceptAlternates boo
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(potentialHit))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(acceptAlternates)
+	if acceptAlternates {
+		arg3 = C.TRUE
+	}
 
 	ret := C.g_str_match_string(arg1, arg2, arg3)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11354,7 +12623,7 @@ func StrvContains(strv string, str string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11378,7 +12647,7 @@ func StrvEqual(strv1 string, strv2 string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11400,7 +12669,7 @@ func StrvLength(strArray string) uint {
 	return ret0
 }
 
-func TestAssertExpectedMessagesInternal(domain string, file string, line int, _func string) {
+func TestAssertExpectedMessagesInternal(domain string, file string, line int, fn string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -11411,7 +12680,7 @@ func TestAssertExpectedMessagesInternal(domain string, file string, line int, _f
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 
 	C.g_test_assert_expected_messages_internal(arg1, arg2, arg3, arg4)
@@ -11549,7 +12818,7 @@ func TestFailed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11831,7 +13100,7 @@ func TestSubprocess() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11894,7 +13163,7 @@ func TestTimerStart() {
 	C.g_test_timer_start()
 }
 
-func TestTrapAssertions(domain string, file string, line int, _func string, assertionFlags uint64, pattern string) {
+func TestTrapAssertions(domain string, file string, line int, fn string, assertionFlags uint64, pattern string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -11907,7 +13176,7 @@ func TestTrapAssertions(domain string, file string, line int, _func string, asse
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = C.guint64(assertionFlags)
 	arg6 = (*C.gchar)(C.CString(pattern))
@@ -11953,7 +13222,7 @@ func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11966,7 +13235,7 @@ func TestTrapHasPassed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -11979,7 +13248,7 @@ func TestTrapReachedTimeout() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12235,7 +13504,7 @@ func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -12567,20 +13836,22 @@ func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 
 // Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func Ucs4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16) {
+func Ucs4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16, err error) {
 	var arg1 *C.gunichar
 	var arg2 C.glong
 	var arg3 *C.glong // out
 	var arg4 *C.glong // out
+	var gError *C.GError
 
 	arg1 = (*C.gunichar)(str)
 	arg2 = C.glong(len)
 
-	ret := C.g_ucs4_to_utf16(arg1, arg2, &arg3, &arg4)
+	ret := C.g_ucs4_to_utf16(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint16
+	var goError error
 
 	ret0 = int32(arg3)
 
@@ -12588,25 +13859,32 @@ func Ucs4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, gu
 
 	ret2 = uint16(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
-func Ucs4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string) {
+func Ucs4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, err error) {
 	var arg1 *C.gunichar
 	var arg2 C.glong
 	var arg3 *C.glong // out
 	var arg4 *C.glong // out
+	var gError *C.GError
 
 	arg1 = (*C.gunichar)(str)
 	arg2 = C.glong(len)
 
-	ret := C.g_ucs4_to_utf8(arg1, arg2, &arg3, &arg4)
+	ret := C.g_ucs4_to_utf8(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 string
+	var goError error
 
 	ret0 = int32(arg3)
 
@@ -12615,7 +13893,12 @@ func Ucs4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf
 	ret2 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // UnicharBreakType determines the break type of @c. @c should be a Unicode
@@ -12682,7 +13965,7 @@ func UnicharCompose(a uint32, b uint32) (ch uint32, ok bool) {
 
 	ret0 = uint32(arg3)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -12720,7 +14003,7 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 
 	ret1 = uint32(arg3)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -12762,7 +14045,9 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (result uint3
 	var arg4 C.gsize
 
 	arg1 = C.gunichar(ch)
-	arg2 = gextras.Cbool(compat)
+	if compat {
+		arg2 = C.TRUE
+	}
 	arg4 = C.gsize(resultLen)
 
 	ret := C.g_unichar_fully_decompose(arg1, arg2, &arg3, arg4)
@@ -12797,7 +14082,7 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12833,7 +14118,7 @@ func UnicharIsalnum(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12849,7 +14134,7 @@ func UnicharIsalpha(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12865,7 +14150,7 @@ func UnicharIscntrl(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12881,7 +14166,7 @@ func UnicharIsdefined(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12898,7 +14183,7 @@ func UnicharIsdigit(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12916,7 +14201,7 @@ func UnicharIsgraph(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12932,7 +14217,7 @@ func UnicharIslower(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12953,7 +14238,7 @@ func UnicharIsmark(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12970,7 +14255,7 @@ func UnicharIsprint(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -12986,7 +14271,7 @@ func UnicharIspunct(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13006,7 +14291,7 @@ func UnicharIsspace(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13025,7 +14310,7 @@ func UnicharIstitle(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13040,7 +14325,7 @@ func UnicharIsupper(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13056,7 +14341,7 @@ func UnicharIswide(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13079,7 +14364,7 @@ func UnicharIswideCjk(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13094,7 +14379,7 @@ func UnicharIsxdigit(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13117,7 +14402,7 @@ func UnicharIszerowidth(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13213,7 +14498,7 @@ func UnicharValidate(ch uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -13356,6 +14641,35 @@ func UnixFdAdd(fd int, condition IOCondition, function UnixFDSourceFunc) uint {
 	return ret0
 }
 
+// UnixFdAddFull sets a function to be called when the IO condition, as
+// specified by @condition becomes true for @fd.
+//
+// This is the same as g_unix_fd_add(), except that it allows you to specify a
+// non-default priority and a provide a Notify for @user_data.
+func UnixFdAddFull(priority int, fd int, condition IOCondition, function UnixFDSourceFunc) uint {
+	var arg1 C.gint
+	var arg2 C.gint
+	var arg3 C.GIOCondition
+	var arg4 C.GUnixFDSourceFunc
+	var arg5 C.gpointer
+	var arg6 C.GDestroyNotify
+
+	arg1 = C.gint(priority)
+	arg2 = C.gint(fd)
+	arg3 = (C.GIOCondition)(condition)
+	arg4 = (*[0]byte)(C.gotk4_UnixFDSourceFunc)
+	arg5 = C.gpointer(box.Assign(function))
+	arg6 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_unix_fd_add_full(arg1, arg2, arg3, arg4, arg5, arg6)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
+
+	return ret0
+}
+
 // NewUnixFdSource creates a #GSource to watch for a particular IO condition on
 // a file descriptor.
 //
@@ -13389,19 +14703,26 @@ func NewUnixFdSource(fd int, condition IOCondition) *Source {
 // This function is safe to call from multiple threads concurrently.
 //
 // You will need to include `pwd.h` to get the definition of `struct passwd`.
-func UnixGetPasswdEntry(userName string) interface{} {
+func UnixGetPasswdEntry(userName string) (gpointer interface{}, err error) {
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(userName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_unix_get_passwd_entry(arg1)
+	ret := C.g_unix_get_passwd_entry(arg1, &gError)
 
 	var ret0 interface{}
+	var goError error
 
 	ret0 = box.Get(uintptr(ret)).(interface{})
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // UnixOpenPipe: similar to the UNIX pipe() call, but on modern systems like
@@ -13412,37 +14733,72 @@ func UnixGetPasswdEntry(userName string) interface{} {
 //
 // This function does not take O_CLOEXEC, it takes FD_CLOEXEC as if for fcntl();
 // these are different on Linux/glibc.
-func UnixOpenPipe(fds int, flags int) bool {
+func UnixOpenPipe(fds int, flags int) error {
 	var arg1 *C.gint
 	var arg2 C.gint
+	var gError *C.GError
 
 	arg1 = (*C.gint)(fds)
 	arg2 = C.gint(flags)
 
-	ret := C.g_unix_open_pipe(arg1, arg2)
+	ret := C.g_unix_open_pipe(arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // UnixSetFdNonblocking: control the non-blocking state of the given file
 // descriptor, according to @nonblock. On most systems this uses O_NONBLOCK, but
 // on some older ones may use O_NDELAY.
-func UnixSetFdNonblocking(fd int, nonblock bool) bool {
+func UnixSetFdNonblocking(fd int, nonblock bool) error {
 	var arg1 C.gint
 	var arg2 C.gboolean
+	var gError *C.GError
 
 	arg1 = C.gint(fd)
-	arg2 = gextras.Cbool(nonblock)
+	if nonblock {
+		arg2 = C.TRUE
+	}
 
-	ret := C.g_unix_set_fd_nonblocking(arg1, arg2)
+	ret := C.g_unix_set_fd_nonblocking(arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
+}
+
+// UnixSignalAddFull: a convenience function for g_unix_signal_source_new(),
+// which attaches to the default Context. You can remove the watch using
+// g_source_remove().
+func UnixSignalAddFull(priority int, signum int, handler SourceFunc) uint {
+	var arg1 C.gint
+	var arg2 C.gint
+	var arg3 C.GSourceFunc
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
+
+	arg1 = C.gint(priority)
+	arg2 = C.gint(signum)
+	arg3 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg4 = C.gpointer(box.Assign(handler))
+	arg5 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_unix_signal_add_full(arg1, arg2, arg3, arg4, arg5)
+
+	var ret0 uint
+
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -13636,6 +14992,37 @@ func URIErrorQuark() Quark {
 	return ret0
 }
 
+// URIEscapeBytes escapes arbitrary data for use in a URI.
+//
+// Normally all characters that are not ‘unreserved’ (i.e. ASCII alphanumerical
+// characters plus dash, dot, underscore and tilde) are escaped. But if you
+// specify characters in @reserved_chars_allowed they are not escaped. This is
+// useful for the ‘reserved’ characters in the URI specification, since those
+// are allowed unescaped in some portions of a URI.
+//
+// Though technically incorrect, this will also allow escaping nul bytes as
+// `%“00`.
+func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
+	var arg1 *C.guint8
+	var arg2 C.gsize
+	var arg3 *C.char
+
+	arg1 = (*C.guint8)(unsafe.Pointer(&unescaped[0]))
+	arg2 = len(unescaped)
+	defer runtime.KeepAlive(unescaped)
+	arg3 = (*C.gchar)(C.CString(reservedCharsAllowed))
+	defer C.free(unsafe.Pointer(arg3))
+
+	ret := C.g_uri_escape_bytes(arg1, arg2, arg3)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	return ret0
+}
+
 // URIEscapeString escapes a string for use in a URI.
 //
 // Normally all characters that are not "unreserved" (i.e. ASCII alphanumerical
@@ -13652,7 +15039,9 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bo
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(reservedCharsAllowed))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(allowUTF8)
+	if allowUTF8 {
+		arg3 = C.TRUE
+	}
 
 	ret := C.g_uri_escape_string(arg1, arg2, arg3)
 
@@ -13672,21 +15061,25 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bo
 //
 // See g_uri_split(), and the definition of Flags, for more information on the
 // effect of @flags.
-func URIIsValid(uriString string, flags URIFlags) bool {
+func URIIsValid(uriString string, flags URIFlags) error {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriString))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_is_valid(arg1, arg2)
+	ret := C.g_uri_is_valid(arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // URIJoin joins the given components together according to @flags to create an
@@ -13821,23 +15214,30 @@ func URIListExtractUris(uriList string) []string {
 // URIParse parses @uri_string according to @flags. If the result is not a valid
 // [absolute URI][relative-absolute-uris], it will be discarded, and an error
 // returned.
-func URIParse(uriString string, flags URIFlags) *URI {
+func URIParse(uriString string, flags URIFlags) (uri *URI, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriString))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_parse(arg1, arg2)
+	ret := C.g_uri_parse(arg1, arg2, &gError)
 
 	var ret0 *URI
+	var goError error
 
 	{
 		ret0 = WrapURI(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // URIParseParams: many URI schemes include one or more attribute/value pairs as
@@ -13864,11 +15264,12 @@ func URIParse(uriString string, flags URIFlags) *URI {
 //
 // If @params cannot be parsed (for example, it contains two @separators
 // characters in a row), then @error is set and nil is returned.
-func URIParseParams(params string, length int, separators string, flags URIParamsFlags) *HashTable {
+func URIParseParams(params string, length int, separators string, flags URIParamsFlags) (hashTable *HashTable, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 	var arg3 *C.gchar
 	var arg4 C.GUriParamsFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(params))
 	defer C.free(unsafe.Pointer(arg1))
@@ -13877,15 +15278,21 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (C.GUriParamsFlags)(flags)
 
-	ret := C.g_uri_parse_params(arg1, arg2, arg3, arg4)
+	ret := C.g_uri_parse_params(arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 *HashTable
+	var goError error
 
 	{
 		ret0 = WrapHashTable(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // URIParseScheme gets the scheme portion of a URI string. RFC 3986
@@ -13941,10 +15348,11 @@ func URIPeekScheme(uri string) string {
 //
 // (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
 // is invalid or not absolute.)
-func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) string {
+func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) (utf8 string, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 C.GUriFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(baseURIString))
 	defer C.free(unsafe.Pointer(arg1))
@@ -13952,14 +15360,20 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) str
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_resolve_relative(arg1, arg2, arg3)
+	ret := C.g_uri_resolve_relative(arg1, arg2, arg3, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // URISplit parses @uri_ref (which can be an [absolute or relative
@@ -13977,7 +15391,7 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) str
 // Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS @flags
 // are ignored by g_uri_split(), since it always returns only the full userinfo;
 // use g_uri_split_with_user() if you want it split up.
-func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, ok bool) {
+func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
 	var arg3 **C.gchar // out
@@ -13987,12 +15401,13 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	var arg7 **C.gchar // out
 	var arg8 **C.gchar // out
 	var arg9 **C.gchar // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_split(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9)
+	ret := C.g_uri_split(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &gError)
 
 	var ret0 string
 	var ret1 string
@@ -14001,7 +15416,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	var ret4 string
 	var ret5 string
 	var ret6 string
-	var ret7 bool
+	var goError error
 
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
@@ -14023,9 +15438,12 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	ret6 = C.GoString(arg9)
 	C.free(unsafe.Pointer(arg9))
 
-	ret7 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7
+	return ret0, ret1, ret2, ret3, ret4, ret5, ret6, goError
 }
 
 // URISplitNetwork parses @uri_string (which must be an [absolute
@@ -14034,23 +15452,24 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 // more details; this is mostly a wrapper around that function with simpler
 // arguments. However, it will return an error if @uri_string is a relative URI,
 // or does not contain a hostname component.
-func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, ok bool) {
+func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
 	var arg3 **C.gchar // out
 	var arg4 **C.gchar // out
 	var arg5 *C.gint   // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriString))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_split_network(arg1, arg2, &arg3, &arg4, &arg5)
+	ret := C.g_uri_split_network(arg1, arg2, &arg3, &arg4, &arg5, &gError)
 
 	var ret0 string
 	var ret1 string
 	var ret2 int
-	var ret3 bool
+	var goError error
 
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
@@ -14060,9 +15479,12 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 
 	ret2 = int(arg5)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // URISplitWithUser parses @uri_ref (which can be an [absolute or relative
@@ -14075,7 +15497,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 // effect of @flags. Note that @password will only be parsed out if @flags
 // contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
 // if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
-func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, ok bool) {
+func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
 	var arg3 **C.gchar  // out
@@ -14087,12 +15509,13 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	var arg9 **C.gchar  // out
 	var arg10 **C.gchar // out
 	var arg11 **C.gchar // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_split_with_user(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11)
+	ret := C.g_uri_split_with_user(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &gError)
 
 	var ret0 string
 	var ret1 string
@@ -14103,7 +15526,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	var ret6 string
 	var ret7 string
 	var ret8 string
-	var ret9 bool
+	var goError error
 
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
@@ -14131,9 +15554,12 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	ret8 = C.GoString(arg11)
 	C.free(unsafe.Pointer(arg11))
 
-	ret9 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7, ret8, ret9
+	return ret0, ret1, ret2, ret3, ret4, ret5, ret6, ret7, ret8, goError
 }
 
 // URIUnescapeBytes unescapes a segment of an escaped string as binary data.
@@ -14145,10 +15571,11 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 // character in @escaped_string, then that is an error and nil will be returned.
 // This is useful if you want to avoid for instance having a slash being
 // expanded in an escaped path element, which might confuse pathname handling.
-func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) *Bytes {
+func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) (bytes *Bytes, err error) {
 	var arg1 *C.char
 	var arg2 C.gssize
 	var arg3 *C.char
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(escapedString))
 	defer C.free(unsafe.Pointer(arg1))
@@ -14156,15 +15583,21 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 	arg3 = (*C.gchar)(C.CString(illegalCharacters))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_uri_unescape_bytes(arg1, arg2, arg3)
+	ret := C.g_uri_unescape_bytes(arg1, arg2, arg3, &gError)
 
 	var ret0 *Bytes
+	var goError error
 
 	{
 		ret0 = WrapBytes(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // URIUnescapeSegment unescapes a segment of an escaped string.
@@ -14240,20 +15673,22 @@ func Usleep(microseconds uint32) {
 
 // UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
-func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32) {
+func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32, err error) {
 	var arg1 *C.gunichar2
 	var arg2 C.glong
 	var arg3 *C.glong // out
 	var arg4 *C.glong // out
+	var gError *C.GError
 
 	arg1 = (*C.gunichar2)(str)
 	arg2 = C.glong(len)
 
-	ret := C.g_utf16_to_ucs4(arg1, arg2, &arg3, &arg4)
+	ret := C.g_utf16_to_ucs4(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint32
+	var goError error
 
 	ret0 = int32(arg3)
 
@@ -14261,7 +15696,12 @@ func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gu
 
 	ret2 = uint32(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
@@ -14275,20 +15715,22 @@ func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gu
 // e.g. include embedded NUL characters. The only validation done by this
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
-func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string) {
+func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, err error) {
 	var arg1 *C.gunichar2
 	var arg2 C.glong
 	var arg3 *C.glong // out
 	var arg4 *C.glong // out
+	var gError *C.GError
 
 	arg1 = (*C.gunichar2)(str)
 	arg2 = C.glong(len)
 
-	ret := C.g_utf16_to_utf8(arg1, arg2, &arg3, &arg4)
+	ret := C.g_utf16_to_utf8(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 string
+	var goError error
 
 	ret0 = int32(arg3)
 
@@ -14297,7 +15739,12 @@ func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, ut
 	ret2 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // UTF8Casefold converts a string into a form that is independent of case. The
@@ -14831,21 +16278,23 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 // UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
-func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32) {
+func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32, err error) {
 	var arg1 *C.gchar
 	var arg2 C.glong
 	var arg3 *C.glong // out
 	var arg4 *C.glong // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.glong(len)
 
-	ret := C.g_utf8_to_ucs4(arg1, arg2, &arg3, &arg4)
+	ret := C.g_utf8_to_ucs4(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint32
+	var goError error
 
 	ret0 = int32(arg3)
 
@@ -14853,7 +16302,12 @@ func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 
 	ret2 = uint32(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
@@ -14883,21 +16337,23 @@ func UTF8ToUcs4Fast(str string, len int32) (itemsWritten int32, gunichar uint32)
 
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16) {
+func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16, err error) {
 	var arg1 *C.gchar
 	var arg2 C.glong
 	var arg3 *C.glong // out
 	var arg4 *C.glong // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.glong(len)
 
-	ret := C.g_utf8_to_utf16(arg1, arg2, &arg3, &arg4)
+	ret := C.g_utf8_to_utf16(arg1, arg2, &arg3, &arg4, &gError)
 
 	var ret0 int32
 	var ret1 int32
 	var ret2 uint16
+	var goError error
 
 	ret0 = int32(arg3)
 
@@ -14905,7 +16361,71 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 
 	ret2 = uint16(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
+}
+
+// UTF8Validate validates UTF-8 encoded text. @str is the text to validate; if
+// @str is nul-terminated, then @max_len can be -1, otherwise @max_len should be
+// the number of bytes to validate. If @end is non-nil, then the end of the
+// valid range will be stored there (i.e. the start of the first invalid
+// character if some bytes were invalid, or the end of the text being validated
+// otherwise).
+//
+// Note that g_utf8_validate() returns false if @max_len is positive and any of
+// the @max_len bytes are nul.
+//
+// Returns true if all of @str was valid. Many GLib and GTK+ routines require
+// valid UTF-8 as input; so data read from a file or the network should be
+// checked with g_utf8_validate() before doing anything else with it.
+func UTF8Validate(str []byte) (end string, ok bool) {
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 **C.gchar // out
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	arg2 = len(str)
+	defer runtime.KeepAlive(str)
+
+	ret := C.g_utf8_validate(arg1, arg2, &arg3)
+
+	var ret0 string
+	var ret1 bool
+
+	ret0 = C.GoString(arg3)
+
+	ret1 = ret != C.FALSE
+
+	return ret0, ret1
+}
+
+// UTF8ValidateLen validates UTF-8 encoded text.
+//
+// As with g_utf8_validate(), but @max_len must be set, and hence this function
+// will always return false if any of the bytes of @str are nul.
+func UTF8ValidateLen(str []byte) (end string, ok bool) {
+	var arg1 *C.gchar
+	var arg2 C.gsize
+	var arg3 **C.gchar // out
+
+	arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	arg2 = len(str)
+	defer runtime.KeepAlive(str)
+
+	ret := C.g_utf8_validate_len(arg1, arg2, &arg3)
+
+	var ret0 string
+	var ret1 bool
+
+	ret0 = C.GoString(arg3)
+
+	ret1 = ret != C.FALSE
+
+	return ret0, ret1
 }
 
 // UUIDStringIsValid parses the string @str and verify if it is a UUID.
@@ -14926,7 +16446,7 @@ func UUIDStringIsValid(str string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -14965,7 +16485,7 @@ func VariantIsObjectPath(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -14986,7 +16506,7 @@ func VariantIsSignature(string string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -15023,13 +16543,14 @@ func VariantIsSignature(string string) bool {
 // There may be implementation specific restrictions on deeply nested values,
 // which would result in a G_VARIANT_PARSE_ERROR_RECURSION error. #GVariant is
 // guaranteed to handle nesting up to at least 64 levels.
-func VariantParse(_type *VariantType, text string, limit string, endptr string) *Variant {
+func VariantParse(typ *VariantType, text string, limit string, endptr string) (variant *Variant, err error) {
 	var arg1 *C.GVariantType
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 **C.gchar
+	var gError *C.GError
 
-	arg1 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(typ.Native())
 	arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(limit))
@@ -15037,15 +16558,21 @@ func VariantParse(_type *VariantType, text string, limit string, endptr string) 
 	arg4 = (*C.gchar)(C.CString(endptr))
 	defer C.free(unsafe.Pointer(arg4))
 
-	ret := C.g_variant_parse(arg1, arg2, arg3, arg4)
+	ret := C.g_variant_parse(arg1, arg2, arg3, arg4, &gError)
 
 	var ret0 *Variant
+	var goError error
 
 	{
 		ret0 = WrapVariant(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // VariantParseErrorPrintContext pretty-prints a message showing the context of
@@ -15169,7 +16696,7 @@ func VariantTypeStringIsValid(typeString string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -15204,14 +16731,14 @@ func VariantTypeStringScan(string string, limit string) (endptr string, ok bool)
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
 
 // WarnMessage: internal function used to print messages from the public
 // g_warn_if_reached() and g_warn_if_fail() macros.
-func WarnMessage(domain string, file string, line int, _func string, warnexpr string) {
+func WarnMessage(domain string, file string, line int, fn string, warnexpr string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.int
@@ -15223,7 +16750,7 @@ func WarnMessage(domain string, file string, line int, _func string, warnexpr st
 	arg2 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(line)
-	arg4 = (*C.gchar)(C.CString(_func))
+	arg4 = (*C.gchar)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.gchar)(C.CString(warnexpr))
 	defer C.free(unsafe.Pointer(arg5))
@@ -15257,14 +16784,14 @@ func (a *Array) Native() unsafe.Pointer {
 }
 
 // Data gets the field inside the struct.
-func (d *Array) Data() string {
+func (a *Array) Data() string {
 	var ret string
 	ret = C.GoString(a.native.data)
 	return ret
 }
 
 // Len gets the field inside the struct.
-func (l *Array) Len() uint {
+func (a *Array) Len() uint {
 	var ret uint
 	ret = uint(a.native.len)
 	return ret
@@ -15296,14 +16823,14 @@ func (b *ByteArray) Native() unsafe.Pointer {
 }
 
 // Data gets the field inside the struct.
-func (d *ByteArray) Data() byte {
+func (b *ByteArray) Data() byte {
 	var ret byte
 	ret = byte(b.native.data)
 	return ret
 }
 
 // Len gets the field inside the struct.
-func (l *ByteArray) Len() uint {
+func (b *ByteArray) Len() uint {
 	var ret uint
 	ret = uint(b.native.len)
 	return ret
@@ -15356,6 +16883,92 @@ func (b *Bytes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// NewBytes constructs a struct Bytes.
+func NewBytes(data []byte) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
+
+	arg1 = (C.gpointer)(unsafe.Pointer(&data[0]))
+	arg2 = len(data)
+	defer runtime.KeepAlive(data)
+
+	ret := C.g_bytes_new(arg1, arg2)
+
+	var ret0 *Bytes
+
+	{
+		ret0 = WrapBytes(ret)
+	}
+
+	return ret0
+}
+
+// NewBytesStatic constructs a struct Bytes.
+func NewBytesStatic(data []byte) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
+
+	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * len(data))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
+
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (C.gpointer)(unsafe.Pointer(ptr))
+		arg2 = len(data)
+	}
+
+	ret := C.g_bytes_new_static(arg1, arg2)
+
+	var ret0 *Bytes
+
+	{
+		ret0 = WrapBytes(ret)
+	}
+
+	return ret0
+}
+
+// NewBytesTake constructs a struct Bytes.
+func NewBytesTake(data []byte) *Bytes {
+	var arg1 C.gpointer
+	var arg2 C.gsize
+
+	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * len(data))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(data)
+		sliceHeader.Cap = len(data)
+
+		for i := 0; i < len(data); i++ {
+			src := data[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (C.gpointer)(unsafe.Pointer(ptr))
+		arg2 = len(data)
+	}
+
+	ret := C.g_bytes_new_take(arg1, arg2)
+
+	var ret0 *Bytes
+
+	{
+		ret0 = WrapBytes(ret)
+	}
+
+	return ret0
+}
+
 // Compare compares the two #GBytes values.
 //
 // This function can be used to sort GBytes instances in lexicographical order.
@@ -15397,7 +17010,7 @@ func (bytes1 *Bytes) Equal(bytes2 Bytes) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -15664,6 +17277,24 @@ func (checksum *Checksum) Free() {
 	C.g_checksum_free(arg0)
 }
 
+// Digest gets the digest from @checksum as a raw binary vector and places it
+// into @buffer. The size of the digest depends on the type of checksum.
+//
+// Once this function has been called, the #GChecksum is closed and can no
+// longer be updated with g_checksum_update().
+func (checksum *Checksum) Digest(buffer []byte) {
+	var arg0 *C.GChecksum
+	var arg1 *C.guint8
+	var arg2 *C.gsize
+
+	arg0 = (*C.GChecksum)(checksum.Native())
+	arg1 = (*C.guint8)(unsafe.Pointer(&buffer[0]))
+	arg2 = len(buffer)
+	defer runtime.KeepAlive(buffer)
+
+	C.g_checksum_get_digest(arg0, arg1, arg2)
+}
+
 // String gets the digest as a hexadecimal string.
 //
 // Once this function has been called the #GChecksum can no longer be updated
@@ -15691,6 +17322,22 @@ func (checksum *Checksum) Reset() {
 	arg0 = (*C.GChecksum)(checksum.Native())
 
 	C.g_checksum_reset(arg0)
+}
+
+// Update feeds @data into an existing #GChecksum. The checksum must still be
+// open, that is g_checksum_get_string() or g_checksum_get_digest() must not
+// have been called on @checksum.
+func (checksum *Checksum) Update(data []byte) {
+	var arg0 *C.GChecksum
+	var arg1 *C.guchar
+	var arg2 C.gssize
+
+	arg0 = (*C.GChecksum)(checksum.Native())
+	arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	arg2 = len(data)
+	defer runtime.KeepAlive(data)
+
+	C.g_checksum_update(arg0, arg1, arg2)
 }
 
 // Cond: the #GCond struct is an opaque data structure that represents a
@@ -15903,7 +17550,7 @@ func NewDateJulian(julianDay uint32) *Date {
 }
 
 // JulianDays gets the field inside the struct.
-func (j *Date) JulianDays() uint {
+func (d *Date) JulianDays() uint {
 	var ret uint
 	ret = uint(d.native.julian_days)
 	return ret
@@ -16212,7 +17859,7 @@ func (date *Date) IsFirstOfMonth() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -16228,7 +17875,7 @@ func (date *Date) IsLastOfMonth() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -16386,7 +18033,7 @@ func (date *Date) Valid() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17254,7 +18901,7 @@ func (datetime *DateTime) Ymd() (year int, month int, day int) {
 
 	arg0 = (*C.GDateTime)(datetime.Native())
 
-	ret := C.g_date_time_get_ymd(arg0, &arg1, &arg2, &arg3)
+	C.g_date_time_get_ymd(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 int
 	var ret1 int
@@ -17280,7 +18927,7 @@ func (datetime *DateTime) IsDaylightSavings() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17346,7 +18993,7 @@ func (datetime *DateTime) ToTimeval(tv *TimeVal) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -17453,14 +19100,14 @@ func (d *DebugKey) Native() unsafe.Pointer {
 }
 
 // Key gets the field inside the struct.
-func (k *DebugKey) Key() string {
+func (d *DebugKey) Key() string {
 	var ret string
 	ret = C.GoString(d.native.key)
 	return ret
 }
 
 // Value gets the field inside the struct.
-func (v *DebugKey) Value() uint {
+func (d *DebugKey) Value() uint {
 	var ret uint
 	ret = uint(d.native.value)
 	return ret
@@ -17493,7 +19140,7 @@ func (e *Error) Native() unsafe.Pointer {
 }
 
 // Domain gets the field inside the struct.
-func (d *Error) Domain() Quark {
+func (e *Error) Domain() Quark {
 	var ret Quark
 	{
 		var tmp uint32
@@ -17504,14 +19151,14 @@ func (d *Error) Domain() Quark {
 }
 
 // Code gets the field inside the struct.
-func (c *Error) Code() int {
+func (e *Error) Code() int {
 	var ret int
 	ret = int(e.native.code)
 	return ret
 }
 
 // Message gets the field inside the struct.
-func (m *Error) Message() string {
+func (e *Error) Message() string {
 	var ret string
 	ret = C.GoString(e.native.message)
 	return ret
@@ -17666,7 +19313,7 @@ func (iter *HashTableIter) Next() (key interface{}, value interface{}, ok bool) 
 
 	ret1 = box.Get(uintptr(arg2)).(interface{})
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -17749,14 +19396,14 @@ func (h *Hook) Native() unsafe.Pointer {
 }
 
 // Data gets the field inside the struct.
-func (d *Hook) Data() interface{} {
+func (h *Hook) Data() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(h.native.data))
 	return ret
 }
 
 // Next gets the field inside the struct.
-func (n *Hook) Next() *Hook {
+func (h *Hook) Next() *Hook {
 	var ret *Hook
 	{
 		ret = WrapHook(h.native.next)
@@ -17768,7 +19415,7 @@ func (n *Hook) Next() *Hook {
 }
 
 // Prev gets the field inside the struct.
-func (p *Hook) Prev() *Hook {
+func (h *Hook) Prev() *Hook {
 	var ret *Hook
 	{
 		ret = WrapHook(h.native.prev)
@@ -17780,7 +19427,7 @@ func (p *Hook) Prev() *Hook {
 }
 
 // RefCount gets the field inside the struct.
-func (r *Hook) RefCount() uint {
+func (h *Hook) RefCount() uint {
 	var ret uint
 	ret = uint(h.native.ref_count)
 	return ret
@@ -17794,14 +19441,14 @@ func (h *Hook) HookID() uint32 {
 }
 
 // Flags gets the field inside the struct.
-func (f *Hook) Flags() uint {
+func (h *Hook) Flags() uint {
 	var ret uint
 	ret = uint(h.native.flags)
 	return ret
 }
 
 // Func gets the field inside the struct.
-func (f *Hook) Func() interface{} {
+func (h *Hook) Func() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(h.native._func))
 	return ret
@@ -17851,7 +19498,7 @@ func (h *HookList) Native() unsafe.Pointer {
 }
 
 // SeqID gets the field inside the struct.
-func (s *HookList) SeqID() uint32 {
+func (h *HookList) SeqID() uint32 {
 	var ret uint32
 	ret = uint32(h.native.seq_id)
 	return ret
@@ -17865,7 +19512,7 @@ func (h *HookList) HookSize() uint {
 }
 
 // IsSetup gets the field inside the struct.
-func (i *HookList) IsSetup() uint {
+func (h *HookList) IsSetup() uint {
 	var ret uint
 	ret = uint(h.native.is_setup)
 	return ret
@@ -17884,14 +19531,14 @@ func (h *HookList) Hooks() *Hook {
 }
 
 // Dummy3 gets the field inside the struct.
-func (d *HookList) Dummy3() interface{} {
+func (h *HookList) Dummy3() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(h.native.dummy3))
 	return ret
 }
 
 // Dummy gets the field inside the struct.
-func (d *HookList) Dummy() [2]interface{} {
+func (h *HookList) Dummy() [2]interface{} {
 	var ret [2]interface{}
 	{
 		cArray := ([2]gpointer)(h.native.dummy)
@@ -17930,7 +19577,9 @@ func (hookList *HookList) Invoke(mayRecurse bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = gextras.Cbool(mayRecurse)
+	if mayRecurse {
+		arg1 = C.TRUE
+	}
 
 	C.g_hook_list_invoke(arg0, arg1)
 }
@@ -17942,7 +19591,9 @@ func (hookList *HookList) InvokeCheck(mayRecurse bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = gextras.Cbool(mayRecurse)
+	if mayRecurse {
+		arg1 = C.TRUE
+	}
 
 	C.g_hook_list_invoke_check(arg0, arg1)
 }
@@ -17955,7 +19606,9 @@ func (hookList *HookList) Marshal(mayRecurse bool, marshaller HookMarshaller) {
 	var arg3 C.gpointer
 
 	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = gextras.Cbool(mayRecurse)
+	if mayRecurse {
+		arg1 = C.TRUE
+	}
 	arg2 = (*[0]byte)(C.gotk4_HookMarshaller)
 	arg3 = C.gpointer(box.Assign(marshaller))
 
@@ -17971,7 +19624,9 @@ func (hookList *HookList) MarshalCheck(mayRecurse bool, marshaller HookCheckMars
 	var arg3 C.gpointer
 
 	arg0 = (*C.GHookList)(hookList.Native())
-	arg1 = gextras.Cbool(mayRecurse)
+	if mayRecurse {
+		arg1 = C.TRUE
+	}
 	arg2 = (*[0]byte)(C.gotk4_HookCheckMarshaller)
 	arg3 = C.gpointer(box.Assign(marshaller))
 
@@ -18005,24 +19660,31 @@ func (i *IOChannel) Native() unsafe.Pointer {
 }
 
 // NewIOChannelFile constructs a struct IOChannel.
-func NewIOChannelFile(filename string, mode string) *IOChannel {
+func NewIOChannelFile(filename string, mode string) (ioChannel *IOChannel, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(mode))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_io_channel_new_file(arg1, arg2)
+	ret := C.g_io_channel_new_file(arg1, arg2, &gError)
 
 	var ret0 *IOChannel
+	var goError error
 
 	{
 		ret0 = WrapIOChannel(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewIOChannelUnix constructs a struct IOChannel.
@@ -18054,18 +19716,25 @@ func (channel *IOChannel) Close() {
 }
 
 // Flush flushes the write buffer for the GIOChannel.
-func (channel *IOChannel) Flush() IOStatus {
+func (channel *IOChannel) Flush() (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 
-	ret := C.g_io_channel_flush(arg0)
+	ret := C.g_io_channel_flush(arg0, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // BufferCondition: this function returns a OCondition depending on whether
@@ -18110,7 +19779,7 @@ func (channel *IOChannel) Buffered() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18128,7 +19797,7 @@ func (channel *IOChannel) CloseOnUnref() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -18225,23 +19894,65 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead uint) IOError {
 	return ret0
 }
 
+// ReadChars: replacement for g_io_channel_read() with the new API.
+func (channel *IOChannel) ReadChars() (buf []byte, bytesRead uint, ioStatus IOStatus, err error) {
+	var arg0 *C.GIOChannel
+	var arg1 *C.gchar // out
+	var arg2 C.gsize
+	var arg3 *C.gsize // out
+	var gError *C.GError
+
+	arg0 = (*C.GIOChannel)(channel.Native())
+
+	ret := C.g_io_channel_read_chars(arg0, &arg1, arg2, &arg3, &gError)
+
+	var ret0 []byte
+	var ret1 uint
+	var ret2 IOStatus
+	var goError error
+
+	{
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
+		sliceHeader.Len = arg2
+		sliceHeader.Cap = arg2
+		runtime.SetFinalizer(&arg1, func() {
+			C.free(unsafe.Pointer(arg1))
+		})
+		defer runtime.KeepAlive(arg1)
+	}
+
+	ret1 = uint(arg3)
+
+	ret2 = IOStatus(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
+}
+
 // ReadLine reads a line, including the terminating character(s), from a
 // OChannel into a newly-allocated string. @str_return will contain allocated
 // memory if the return is G_IO_STATUS_NORMAL.
-func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus) {
+func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 **C.gchar // out
 	var arg2 *C.gsize  // out
 	var arg3 *C.gsize  // out
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 
-	ret := C.g_io_channel_read_line(arg0, &arg1, &arg2, &arg3)
+	ret := C.g_io_channel_read_line(arg0, &arg1, &arg2, &arg3, &gError)
 
 	var ret0 string
 	var ret1 uint
 	var ret2 uint
 	var ret3 IOStatus
+	var goError error
 
 	ret0 = C.GoString(arg1)
 	C.free(unsafe.Pointer(arg1))
@@ -18252,41 +19963,55 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 
 	ret3 = IOStatus(ret)
 
-	return ret0, ret1, ret2, ret3
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, ret3, goError
 }
 
 // ReadLineString reads a line from a OChannel, using a #GString as a buffer.
-func (channel *IOChannel) ReadLineString(buffer *String, terminatorPos uint) IOStatus {
+func (channel *IOChannel) ReadLineString(buffer *String, terminatorPos uint) (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 *C.GString
 	var arg2 *C.gsize
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 	arg1 = (*C.GString)(buffer.Native())
 	arg2 = (*C.gsize)(terminatorPos)
 
-	ret := C.g_io_channel_read_line_string(arg0, arg1, arg2)
+	ret := C.g_io_channel_read_line_string(arg0, arg1, arg2, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadToEnd reads all the remaining data from the file.
-func (channel *IOChannel) ReadToEnd() (strReturn []byte, length uint, ioStatus IOStatus) {
+func (channel *IOChannel) ReadToEnd() (strReturn []byte, length uint, ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 **C.gchar // out
 	var arg2 *C.gsize  // out
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 
-	ret := C.g_io_channel_read_to_end(arg0, &arg1, &arg2)
+	ret := C.g_io_channel_read_to_end(arg0, &arg1, &arg2, &gError)
 
 	var ret0 []byte
 	var ret1 uint
 	var ret2 IOStatus
+	var goError error
 
 	{
 		ret0 = make([]byte, arg2)
@@ -18300,27 +20025,39 @@ func (channel *IOChannel) ReadToEnd() (strReturn []byte, length uint, ioStatus I
 
 	ret2 = IOStatus(ret)
 
-	return ret0, ret1, ret2
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, ret2, goError
 }
 
 // ReadUnichar reads a Unicode character from @channel. This function cannot be
 // called on a channel with nil encoding.
-func (channel *IOChannel) ReadUnichar() (thechar uint32, ioStatus IOStatus) {
+func (channel *IOChannel) ReadUnichar() (thechar uint32, ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 *C.gunichar // out
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 
-	ret := C.g_io_channel_read_unichar(arg0, &arg1)
+	ret := C.g_io_channel_read_unichar(arg0, &arg1, &gError)
 
 	var ret0 uint32
 	var ret1 IOStatus
+	var goError error
 
 	ret0 = uint32(arg1)
 
 	ret1 = IOStatus(ret)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Ref increments the reference count of a OChannel.
@@ -18342,14 +20079,14 @@ func (channel *IOChannel) Ref() *IOChannel {
 
 // Seek sets the current position in the OChannel, similar to the standard
 // library function fseek().
-func (channel *IOChannel) Seek(offset int64, _type SeekType) IOError {
+func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
 	var arg0 *C.GIOChannel
 	var arg1 C.gint64
 	var arg2 C.GSeekType
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 	arg1 = C.gint64(offset)
-	arg2 = (C.GSeekType)(_type)
+	arg2 = (C.GSeekType)(typ)
 
 	ret := C.g_io_channel_seek(arg0, arg1, arg2)
 
@@ -18361,22 +20098,29 @@ func (channel *IOChannel) Seek(offset int64, _type SeekType) IOError {
 }
 
 // SeekPosition: replacement for g_io_channel_seek() with the new API.
-func (channel *IOChannel) SeekPosition(offset int64, _type SeekType) IOStatus {
+func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 C.gint64
 	var arg2 C.GSeekType
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 	arg1 = C.gint64(offset)
-	arg2 = (C.GSeekType)(_type)
+	arg2 = (C.GSeekType)(typ)
 
-	ret := C.g_io_channel_seek_position(arg0, arg1, arg2)
+	ret := C.g_io_channel_seek_position(arg0, arg1, arg2, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetBufferSize sets the buffer size.
@@ -18411,7 +20155,9 @@ func (channel *IOChannel) SetBuffered(buffered bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GIOChannel)(channel.Native())
-	arg1 = gextras.Cbool(buffered)
+	if buffered {
+		arg1 = C.TRUE
+	}
 
 	C.g_io_channel_set_buffered(arg0, arg1)
 }
@@ -18427,7 +20173,9 @@ func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GIOChannel)(channel.Native())
-	arg1 = gextras.Cbool(doClose)
+	if doClose {
+		arg1 = C.TRUE
+	}
 
 	C.g_io_channel_set_close_on_unref(arg0, arg1)
 }
@@ -18464,39 +20212,53 @@ func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
 // g_io_channel_seek_position() with an offset of G_SEEK_CUR, and, if they are
 // "seekable", cannot call g_io_channel_write_chars() after calling one of the
 // API "read" functions.
-func (channel *IOChannel) SetEncoding(encoding string) IOStatus {
+func (channel *IOChannel) SetEncoding(encoding string) (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 	arg1 = (*C.gchar)(C.CString(encoding))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_io_channel_set_encoding(arg0, arg1)
+	ret := C.g_io_channel_set_encoding(arg0, arg1, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetFlags sets the (writeable) flags in @channel to (@flags &
 // G_IO_FLAG_SET_MASK).
-func (channel *IOChannel) SetFlags(flags IOFlags) IOStatus {
+func (channel *IOChannel) SetFlags(flags IOFlags) (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 C.GIOFlags
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 	arg1 = (C.GIOFlags)(flags)
 
-	ret := C.g_io_channel_set_flags(arg0, arg1)
+	ret := C.g_io_channel_set_flags(arg0, arg1, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // SetLineTerm: this sets the string that OChannel uses to determine where in
@@ -18517,20 +20279,29 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 // Shutdown: close an IO channel. Any pending data to be written will be flushed
 // if @flush is true. The channel will not be freed until the last reference is
 // dropped using g_io_channel_unref().
-func (channel *IOChannel) Shutdown(flush bool) IOStatus {
+func (channel *IOChannel) Shutdown(flush bool) (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 C.gboolean
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
-	arg1 = gextras.Cbool(flush)
+	if flush {
+		arg1 = C.TRUE
+	}
 
-	ret := C.g_io_channel_shutdown(arg0, arg1)
+	ret := C.g_io_channel_shutdown(arg0, arg1, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // UnixGetFd returns the file descriptor of the OChannel.
@@ -18582,52 +20353,29 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten uint) IOErr
 	return ret0
 }
 
-// WriteChars: replacement for g_io_channel_write() with the new API.
-//
-// On seekable channels with encodings other than nil or UTF-8, generic mixing
-// of reading and writing is not allowed. A call to g_io_channel_write_chars ()
-// may only be made on a channel from which data has been read in the cases
-// described in the documentation for g_io_channel_set_encoding ().
-func (channel *IOChannel) WriteChars(buf []byte, count int) (bytesWritten uint, ioStatus IOStatus) {
-	var arg0 *C.GIOChannel
-	var arg1 *C.gchar
-	var arg2 C.gssize
-	var arg3 *C.gsize // out
-
-	arg0 = (*C.GIOChannel)(channel.Native())
-	{
-
-	}
-	arg2 = C.gssize(count)
-
-	ret := C.g_io_channel_write_chars(arg0, arg1, arg2, &arg3)
-
-	var ret0 uint
-	var ret1 IOStatus
-
-	ret0 = uint(arg3)
-
-	ret1 = IOStatus(ret)
-
-	return ret0, ret1
-}
-
 // WriteUnichar writes a Unicode character to @channel. This function cannot be
 // called on a channel with nil encoding.
-func (channel *IOChannel) WriteUnichar(thechar uint32) IOStatus {
+func (channel *IOChannel) WriteUnichar(thechar uint32) (ioStatus IOStatus, err error) {
 	var arg0 *C.GIOChannel
 	var arg1 C.gunichar
+	var gError *C.GError
 
 	arg0 = (*C.GIOChannel)(channel.Native())
 	arg1 = C.gunichar(thechar)
 
-	ret := C.g_io_channel_write_unichar(arg0, arg1)
+	ret := C.g_io_channel_write_unichar(arg0, arg1, &gError)
 
 	var ret0 IOStatus
+	var goError error
 
 	ret0 = IOStatus(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // KeyFile: the GKeyFile struct contains only private data and should not be
@@ -18688,10 +20436,11 @@ func (keyFile *KeyFile) Free() {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
 // cannot be interpreted as a boolean then false is returned and @error is set
 // to KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) Boolean(groupName string, key string) bool {
+func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18699,13 +20448,16 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) bool {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_boolean(arg0, arg1, arg2)
+	ret := C.g_key_file_get_boolean(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // BooleanList returns the values associated with @key under @group_name as
@@ -18715,11 +20467,12 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) bool {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
 // cannot be interpreted as booleans then nil is returned and @error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) BooleanList(groupName string, key string) (length uint, oks []bool) {
+func (keyFile *KeyFile) BooleanList(groupName string, key string) (length uint, oks []bool, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18727,10 +20480,11 @@ func (keyFile *KeyFile) BooleanList(groupName string, key string) (length uint, 
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_boolean_list(arg0, arg1, arg2, &arg3)
+	ret := C.g_key_file_get_boolean_list(arg0, arg1, arg2, &arg3, &gError)
 
 	var ret0 uint
 	var ret1 []bool
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -18738,11 +20492,16 @@ func (keyFile *KeyFile) BooleanList(groupName string, key string) (length uint, 
 		ret1 = make([]bool, arg3)
 		for i := 0; i < uintptr(arg3); i++ {
 			src := (C.gboolean)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret1[i] = gextras.Gobool(src)
+			ret1[i] = src != C.FALSE
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Comment retrieves a comment above @key from @group_name. If @key is nil then
@@ -18752,10 +20511,11 @@ func (keyFile *KeyFile) BooleanList(groupName string, key string) (length uint, 
 // Note that the returned string does not include the '#' comment markers, but
 // does include any whitespace after them (on each line). It includes the line
 // breaks between lines, but does not include the final line break.
-func (keyFile *KeyFile) Comment(groupName string, key string) string {
+func (keyFile *KeyFile) Comment(groupName string, key string) (utf8 string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18763,14 +20523,20 @@ func (keyFile *KeyFile) Comment(groupName string, key string) string {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_comment(arg0, arg1, arg2)
+	ret := C.g_key_file_get_comment(arg0, arg1, arg2, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Double returns the value associated with @key under @group_name as a double.
@@ -18780,10 +20546,11 @@ func (keyFile *KeyFile) Comment(groupName string, key string) string {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
 // cannot be interpreted as a double then 0.0 is returned and @error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) Double(groupName string, key string) float64 {
+func (keyFile *KeyFile) Double(groupName string, key string) (gdouble float64, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18791,13 +20558,19 @@ func (keyFile *KeyFile) Double(groupName string, key string) float64 {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_double(arg0, arg1, arg2)
+	ret := C.g_key_file_get_double(arg0, arg1, arg2, &gError)
 
 	var ret0 float64
+	var goError error
 
 	ret0 = float64(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // DoubleList returns the values associated with @key under @group_name as
@@ -18807,11 +20580,12 @@ func (keyFile *KeyFile) Double(groupName string, key string) float64 {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
 // cannot be interpreted as doubles then nil is returned and @error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) DoubleList(groupName string, key string) (length uint, gdoubles []float64) {
+func (keyFile *KeyFile) DoubleList(groupName string, key string) (length uint, gdoubles []float64, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18819,10 +20593,11 @@ func (keyFile *KeyFile) DoubleList(groupName string, key string) (length uint, g
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_double_list(arg0, arg1, arg2, &arg3)
+	ret := C.g_key_file_get_double_list(arg0, arg1, arg2, &arg3, &gError)
 
 	var ret0 uint
 	var ret1 []float64
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -18834,7 +20609,12 @@ func (keyFile *KeyFile) DoubleList(groupName string, key string) (length uint, g
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Groups returns all groups in the key file loaded with @key_file. The array of
@@ -18872,10 +20652,11 @@ func (keyFile *KeyFile) Groups() (length uint, utf8s []string) {
 // Int64 returns the value associated with @key under @group_name as a signed
 // 64-bit integer. This is similar to g_key_file_get_integer() but can return
 // 64-bit results without truncation.
-func (keyFile *KeyFile) Int64(groupName string, key string) int64 {
+func (keyFile *KeyFile) Int64(groupName string, key string) (gint64 int64, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18883,13 +20664,19 @@ func (keyFile *KeyFile) Int64(groupName string, key string) int64 {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_int64(arg0, arg1, arg2)
+	ret := C.g_key_file_get_int64(arg0, arg1, arg2, &gError)
 
 	var ret0 int64
+	var goError error
 
 	ret0 = int64(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Integer returns the value associated with @key under @group_name as an
@@ -18899,10 +20686,11 @@ func (keyFile *KeyFile) Int64(groupName string, key string) int64 {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
 // cannot be interpreted as an integer, or is out of range for a #gint, then 0
 // is returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) Integer(groupName string, key string) int {
+func (keyFile *KeyFile) Integer(groupName string, key string) (gint int, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18910,13 +20698,19 @@ func (keyFile *KeyFile) Integer(groupName string, key string) int {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_integer(arg0, arg1, arg2)
+	ret := C.g_key_file_get_integer(arg0, arg1, arg2, &gError)
 
 	var ret0 int
+	var goError error
 
 	ret0 = int(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // IntegerList returns the values associated with @key under @group_name as
@@ -18926,11 +20720,12 @@ func (keyFile *KeyFile) Integer(groupName string, key string) int {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
 // cannot be interpreted as integers, or are out of range for #gint, then nil is
 // returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
-func (keyFile *KeyFile) IntegerList(groupName string, key string) (length uint, gints []int) {
+func (keyFile *KeyFile) IntegerList(groupName string, key string) (length uint, gints []int, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -18938,10 +20733,11 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) (length uint, 
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_integer_list(arg0, arg1, arg2, &arg3)
+	ret := C.g_key_file_get_integer_list(arg0, arg1, arg2, &arg3, &gError)
 
 	var ret0 uint
 	var ret1 []int
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -18953,26 +20749,33 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) (length uint, 
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Keys returns all keys for the group name @group_name. The array of returned
 // keys will be nil-terminated, so @length may optionally be nil. In the event
 // that the @group_name cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (keyFile *KeyFile) Keys(groupName string) (length uint, utf8s []string) {
+func (keyFile *KeyFile) Keys(groupName string) (length uint, utf8s []string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_key_file_get_keys(arg0, arg1, &arg2)
+	ret := C.g_key_file_get_keys(arg0, arg1, &arg2, &gError)
 
 	var ret0 uint
 	var ret1 []string
+	var goError error
 
 	ret0 = uint(arg2)
 
@@ -18990,7 +20793,12 @@ func (keyFile *KeyFile) Keys(groupName string) (length uint, utf8s []string) {
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // LocaleForKey returns the actual locale which the result of
@@ -19037,11 +20845,12 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 // KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated with @key cannot be
 // interpreted or no suitable translation can be found then the untranslated
 // value is returned.
-func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string) string {
+func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string) (utf8 string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19051,14 +20860,20 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 	arg3 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_key_file_get_locale_string(arg0, arg1, arg2, arg3)
+	ret := C.g_key_file_get_locale_string(arg0, arg1, arg2, arg3, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // LocaleStringList returns the values associated with @key under @group_name
@@ -19074,12 +20889,13 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 // interpreted or no suitable translations can be found then the untranslated
 // values are returned. The returned array is nil-terminated, so @length may
 // optionally be nil.
-func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) (length uint, utf8s []string) {
+func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) (length uint, utf8s []string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19089,10 +20905,11 @@ func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale st
 	arg3 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_key_file_get_locale_string_list(arg0, arg1, arg2, arg3, &arg4)
+	ret := C.g_key_file_get_locale_string_list(arg0, arg1, arg2, arg3, &arg4, &gError)
 
 	var ret0 uint
 	var ret1 []string
+	var goError error
 
 	ret0 = uint(arg4)
 
@@ -19105,7 +20922,12 @@ func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale st
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // StartGroup returns the name of the start group of the file.
@@ -19131,10 +20953,11 @@ func (keyFile *KeyFile) StartGroup() string {
 // In the event the key cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
 // found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (keyFile *KeyFile) String(groupName string, key string) string {
+func (keyFile *KeyFile) String(groupName string, key string) (utf8 string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19142,14 +20965,20 @@ func (keyFile *KeyFile) String(groupName string, key string) string {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_string(arg0, arg1, arg2)
+	ret := C.g_key_file_get_string(arg0, arg1, arg2, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // StringList returns the values associated with @key under @group_name.
@@ -19157,11 +20986,12 @@ func (keyFile *KeyFile) String(groupName string, key string) string {
 // In the event the key cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
 // found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (keyFile *KeyFile) StringList(groupName string, key string) (length uint, utf8s []string) {
+func (keyFile *KeyFile) StringList(groupName string, key string) (length uint, utf8s []string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19169,10 +20999,11 @@ func (keyFile *KeyFile) StringList(groupName string, key string) (length uint, u
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_string_list(arg0, arg1, arg2, &arg3)
+	ret := C.g_key_file_get_string_list(arg0, arg1, arg2, &arg3, &gError)
 
 	var ret0 uint
 	var ret1 []string
+	var goError error
 
 	ret0 = uint(arg3)
 
@@ -19185,16 +21016,22 @@ func (keyFile *KeyFile) StringList(groupName string, key string) (length uint, u
 		}
 	}
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Uint64 returns the value associated with @key under @group_name as an
 // unsigned 64-bit integer. This is similar to g_key_file_get_integer() but can
 // return large positive results without truncation.
-func (keyFile *KeyFile) Uint64(groupName string, key string) uint64 {
+func (keyFile *KeyFile) Uint64(groupName string, key string) (guint64 uint64, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19202,13 +21039,19 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) uint64 {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_uint64(arg0, arg1, arg2)
+	ret := C.g_key_file_get_uint64(arg0, arg1, arg2, &gError)
 
 	var ret0 uint64
+	var goError error
 
 	ret0 = uint64(ret)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Value returns the raw value associated with @key under @group_name. Use
@@ -19217,10 +21060,11 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) uint64 {
 // In the event the key cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
 // found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (keyFile *KeyFile) Value(groupName string, key string) string {
+func (keyFile *KeyFile) Value(groupName string, key string) (utf8 string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19228,14 +21072,20 @@ func (keyFile *KeyFile) Value(groupName string, key string) string {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_get_value(arg0, arg1, arg2)
+	ret := C.g_key_file_get_value(arg0, arg1, arg2, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // HasGroup looks whether the key file has the group @group_name.
@@ -19251,7 +21101,7 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -19265,10 +21115,11 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 //
 // Language bindings should use g_key_file_get_value() to test whether or not a
 // key exists.
-func (keyFile *KeyFile) HasKey(groupName string, key string) bool {
+func (keyFile *KeyFile) HasKey(groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19276,42 +21127,50 @@ func (keyFile *KeyFile) HasKey(groupName string, key string) bool {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_has_key(arg0, arg1, arg2)
+	ret := C.g_key_file_has_key(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LoadFromBytes loads a key file from the data in @bytes into an empty File
 // structure. If the object cannot be created then error is set to a FileError.
-func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) bool {
+func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.GBytes
 	var arg2 C.GKeyFileFlags
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.GBytes)(bytes.Native())
 	arg2 = (C.GKeyFileFlags)(flags)
 
-	ret := C.g_key_file_load_from_bytes(arg0, arg1, arg2)
+	ret := C.g_key_file_load_from_bytes(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LoadFromData loads a key file from memory into an empty File structure. If
 // the object cannot be created then error is set to a FileError.
-func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) bool {
+func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 C.gsize
 	var arg3 C.GKeyFileFlags
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(data))
@@ -19319,41 +21178,48 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 	arg2 = C.gsize(length)
 	arg3 = (C.GKeyFileFlags)(flags)
 
-	ret := C.g_key_file_load_from_data(arg0, arg1, arg2, arg3)
+	ret := C.g_key_file_load_from_data(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // LoadFromDataDirs: this function looks for a key file named @file in the paths
 // returned from g_get_user_data_dir() and g_get_system_data_dirs(), loads the
 // file into @key_file and returns the file's full path in @full_path. If the
 // file could not be loaded then an error is set to either a Error or FileError.
-func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullPath string, ok bool) {
+func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullPath string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 **C.gchar // out
 	var arg3 C.GKeyFileFlags
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg1))
 	arg3 = (C.GKeyFileFlags)(flags)
 
-	ret := C.g_key_file_load_from_data_dirs(arg0, arg1, &arg2, arg3)
+	ret := C.g_key_file_load_from_data_dirs(arg0, arg1, &arg2, arg3, &gError)
 
 	var ret0 string
-	var ret1 bool
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // LoadFromDirs: this function looks for a key file named @file in the paths
@@ -19365,32 +21231,50 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullP
 // returns an error when opening or reading the file, a G_FILE_ERROR is
 // returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
 // returned.
-func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (fullPath string, ok bool) {
+func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (fullPath string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 **C.gchar
 	var arg3 **C.gchar // out
 	var arg4 C.GKeyFileFlags
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg1))
 	{
+		var dst []C.filename
+		ptr := C.malloc(C.sizeof_filename * (len(searchDirs) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(searchDirs)
+		sliceHeader.Cap = len(searchDirs)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(searchDirs); i++ {
+			src := searchDirs[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg2 = (**C.gchar)(unsafe.Pointer(ptr))
 	}
 	arg4 = (C.GKeyFileFlags)(flags)
 
-	ret := C.g_key_file_load_from_dirs(arg0, arg1, arg2, &arg3, arg4)
+	ret := C.g_key_file_load_from_dirs(arg0, arg1, arg2, &arg3, arg4, &gError)
 
 	var ret0 string
-	var ret1 bool
+	var goError error
 
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
 
-	ret1 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1
+	return ret0, goError
 }
 
 // LoadFromFile loads a key file into an empty File structure.
@@ -19401,23 +21285,27 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 //
 // This function will never return a G_KEY_FILE_ERROR_NOT_FOUND error. If the
 // @file is not found, G_FILE_ERROR_NOENT is returned.
-func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) bool {
+func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 C.GKeyFileFlags
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GKeyFileFlags)(flags)
 
-	ret := C.g_key_file_load_from_file(arg0, arg1, arg2)
+	ret := C.g_key_file_load_from_file(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Ref increases the reference count of @key_file.
@@ -19440,10 +21328,11 @@ func (keyFile *KeyFile) Ref() *KeyFile {
 // RemoveComment removes a comment above @key from @group_name. If @key is nil
 // then @comment will be removed above @group_name. If both @key and @group_name
 // are nil, then @comment will be removed above the first group in the file.
-func (keyFile *KeyFile) RemoveComment(groupName string, key string) bool {
+func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19451,38 +21340,46 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) bool {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_remove_comment(arg0, arg1, arg2)
+	ret := C.g_key_file_remove_comment(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // RemoveGroup removes the specified group, @group_name, from the key file.
-func (keyFile *KeyFile) RemoveGroup(groupName string) bool {
+func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_key_file_remove_group(arg0, arg1)
+	ret := C.g_key_file_remove_group(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // RemoveKey removes @key in @group_name from the key file.
-func (keyFile *KeyFile) RemoveKey(groupName string, key string) bool {
+func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19490,13 +21387,16 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) bool {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	ret := C.g_key_file_remove_key(arg0, arg1, arg2)
+	ret := C.g_key_file_remove_key(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SaveToFile writes the contents of @key_file to @filename using
@@ -19506,21 +21406,25 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) bool {
 //
 // This function can fail for any of the reasons that g_file_set_contents() may
 // fail.
-func (keyFile *KeyFile) SaveToFile(filename string) bool {
+func (keyFile *KeyFile) SaveToFile(filename string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_key_file_save_to_file(arg0, arg1)
+	ret := C.g_key_file_save_to_file(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetBoolean associates a new boolean value with @key under @group_name. If
@@ -19536,9 +21440,33 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(value)
+	if value {
+		arg3 = C.TRUE
+	}
 
 	C.g_key_file_set_boolean(arg0, arg1, arg2, arg3)
+}
+
+// SetBooleanList associates a list of boolean values with @key under
+// @group_name. If @key cannot be found then it is created. If @group_name is
+// nil, the start_group is used.
+func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gboolean
+	var arg4 C.gsize
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gboolean)(unsafe.Pointer(&list[0]))
+	arg4 = len(list)
+	defer runtime.KeepAlive(list)
+
+	C.g_key_file_set_boolean_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetComment places a comment above @key from @group_name.
@@ -19549,11 +21477,12 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 //
 // Note that this function prepends a '#' comment marker to each line of
 // @comment.
-func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) bool {
+func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 	arg1 = (*C.gchar)(C.CString(groupName))
@@ -19563,13 +21492,16 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 	arg3 = (*C.gchar)(C.CString(comment))
 	defer C.free(unsafe.Pointer(arg3))
 
-	ret := C.g_key_file_set_comment(arg0, arg1, arg2, arg3)
+	ret := C.g_key_file_set_comment(arg0, arg1, arg2, arg3, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetDouble associates a new double value with @key under @group_name. If @key
@@ -19588,6 +21520,27 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	arg3 = C.gdouble(value)
 
 	C.g_key_file_set_double(arg0, arg1, arg2, arg3)
+}
+
+// SetDoubleList associates a list of double values with @key under @group_name.
+// If @key cannot be found then it is created.
+func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gdouble
+	var arg4 C.gsize
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gdouble)(unsafe.Pointer(&list[0]))
+	arg4 = len(list)
+	defer runtime.KeepAlive(list)
+
+	C.g_key_file_set_double_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetInt64 associates a new integer value with @key under @group_name. If @key
@@ -19626,6 +21579,27 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	C.g_key_file_set_integer(arg0, arg1, arg2, arg3)
 }
 
+// SetIntegerList associates a list of integer values with @key under
+// @group_name. If @key cannot be found then it is created.
+func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gint
+	var arg4 C.gsize
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gint)(unsafe.Pointer(&list[0]))
+	arg4 = len(list)
+	defer runtime.KeepAlive(list)
+
+	C.g_key_file_set_integer_list(arg0, arg1, arg2, arg3, arg4)
+}
+
 // SetListSeparator sets the character which is used to separate values in
 // lists. Typically ';' or ',' are used as separators. The default list
 // separator is ';'.
@@ -19661,6 +21635,46 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 	C.g_key_file_set_locale_string(arg0, arg1, arg2, arg3, arg4)
 }
 
+// SetLocaleStringList associates a list of string values for @key and @locale
+// under @group_name. If the translation for @key cannot be found then it is
+// created.
+func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale string, list []string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+	var arg4 **C.gchar
+	var arg5 C.gsize
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(arg3))
+	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(list))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(list)
+		sliceHeader.Cap = len(list)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(list); i++ {
+			src := list[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg4 = (**C.gchar)(unsafe.Pointer(ptr))
+		arg5 = len(list)
+	}
+
+	C.g_key_file_set_locale_string_list(arg0, arg1, arg2, arg3, arg4, arg5)
+}
+
 // SetString associates a new string value with @key under @group_name. If @key
 // cannot be found then it is created. If @group_name cannot be found then it is
 // created. Unlike g_key_file_set_value(), this function handles characters that
@@ -19680,6 +21694,43 @@ func (keyFile *KeyFile) SetString(groupName string, key string, string string) {
 	defer C.free(unsafe.Pointer(arg3))
 
 	C.g_key_file_set_string(arg0, arg1, arg2, arg3)
+}
+
+// SetStringList associates a list of string values for @key under @group_name.
+// If @key cannot be found then it is created. If @group_name cannot be found
+// then it is created.
+func (keyFile *KeyFile) SetStringList(groupName string, key string, list []string) {
+	var arg0 *C.GKeyFile
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var arg3 **C.gchar
+	var arg4 C.gsize
+
+	arg0 = (*C.GKeyFile)(keyFile.Native())
+	arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(arg2))
+	{
+		var dst []C.utf8
+		ptr := C.malloc(C.sizeof_utf8 * len(list))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(list)
+		sliceHeader.Cap = len(list)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(list); i++ {
+			src := list[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg3 = (**C.gchar)(unsafe.Pointer(ptr))
+		arg4 = len(list)
+	}
+
+	C.g_key_file_set_string_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetUint64 associates a new integer value with @key under @group_name. If @key
@@ -19726,23 +21777,30 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 //
 // Note that this function never reports an error, so it is safe to pass nil as
 // @error.
-func (keyFile *KeyFile) ToData() (length uint, utf8 string) {
+func (keyFile *KeyFile) ToData() (length uint, utf8 string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gsize // out
+	var gError *C.GError
 
 	arg0 = (*C.GKeyFile)(keyFile.Native())
 
-	ret := C.g_key_file_to_data(arg0, &arg1)
+	ret := C.g_key_file_to_data(arg0, &arg1, &gError)
 
 	var ret0 uint
 	var ret1 string
+	var goError error
 
 	ret0 = uint(arg1)
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // Unref decreases the reference count of @key_file by 1. If the reference count
@@ -19781,14 +21839,14 @@ func (l *List) Native() unsafe.Pointer {
 }
 
 // Data gets the field inside the struct.
-func (d *List) Data() interface{} {
+func (l *List) Data() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(l.native.data))
 	return ret
 }
 
 // Next gets the field inside the struct.
-func (n *List) Next() *List {
+func (l *List) Next() *List {
 	var ret *List
 	{
 		ret = WrapList(l.native.next)
@@ -19800,7 +21858,7 @@ func (n *List) Next() *List {
 }
 
 // Prev gets the field inside the struct.
-func (p *List) Prev() *List {
+func (l *List) Prev() *List {
 	var ret *List
 	{
 		ret = WrapList(l.native.prev)
@@ -19843,14 +21901,14 @@ func (l *LogField) Native() unsafe.Pointer {
 }
 
 // Key gets the field inside the struct.
-func (k *LogField) Key() string {
+func (l *LogField) Key() string {
 	var ret string
 	ret = C.GoString(l.native.key)
 	return ret
 }
 
 // Value gets the field inside the struct.
-func (v *LogField) Value() interface{} {
+func (l *LogField) Value() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(l.native.value))
 	return ret
@@ -19921,7 +21979,7 @@ func (context *MainContext) Acquire() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -19939,6 +21997,31 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 	arg2 = C.gint(priority)
 
 	C.g_main_context_add_poll(arg0, arg1, arg2)
+}
+
+// Check passes the results of polling back to the main loop.
+//
+// You must have successfully acquired the context with g_main_context_acquire()
+// before you may call this function.
+func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
+	var arg0 *C.GMainContext
+	var arg1 C.gint
+	var arg2 *C.GPollFD
+	var arg3 C.gint
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = C.gint(maxPriority)
+	arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
+	arg3 = len(fds)
+	defer runtime.KeepAlive(fds)
+
+	ret := C.g_main_context_check(arg0, arg1, arg2, arg3)
+
+	var ret0 bool
+
+	ret0 = ret != C.FALSE
+
+	return ret0
 }
 
 // Dispatch dispatches all pending sources.
@@ -20103,7 +22186,7 @@ func (context *MainContext) IsOwner() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20124,13 +22207,15 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GMainContext)(context.Native())
-	arg1 = gextras.Cbool(mayBlock)
+	if mayBlock {
+		arg1 = C.TRUE
+	}
 
 	ret := C.g_main_context_iteration(arg0, arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20145,7 +22230,7 @@ func (context *MainContext) Pending() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20178,7 +22263,7 @@ func (context *MainContext) Prepare() (priority int, ok bool) {
 
 	ret0 = int(arg1)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -20221,6 +22306,46 @@ func (context *MainContext) PushThreadDefault() {
 	arg0 = (*C.GMainContext)(context.Native())
 
 	C.g_main_context_push_thread_default(arg0)
+}
+
+// Query determines information necessary to poll this main loop.
+//
+// You must have successfully acquired the context with g_main_context_acquire()
+// before you may call this function.
+func (context *MainContext) Query(maxPriority int) (timeout_ int, fds []PollFD, gint int) {
+	var arg0 *C.GMainContext
+	var arg1 C.gint
+	var arg2 *C.gint    // out
+	var arg3 *C.GPollFD // out
+	var arg4 C.gint
+
+	arg0 = (*C.GMainContext)(context.Native())
+	arg1 = C.gint(maxPriority)
+
+	ret := C.g_main_context_query(arg0, arg1, &arg2, &arg3, arg4)
+
+	var ret0 int
+	var ret1 []PollFD
+	var ret2 int
+
+	ret0 = int(arg2)
+
+	{
+		ret1 = make([]PollFD, arg4)
+		for i := 0; i < uintptr(arg4); i++ {
+			src := (C.GPollFD)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			{
+				ret1[i] = WrapPollFD(src)
+				runtime.SetFinalizer(&ret1[i], func(v *PollFD) {
+					C.free(unsafe.Pointer(v.Native()))
+				})
+			}
+		}
+	}
+
+	ret2 = int(ret)
+
+	return ret0, ret1, ret2
 }
 
 // Ref increases the reference count on a Context object by one.
@@ -20329,7 +22454,9 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var arg2 C.gboolean
 
 	arg1 = (*C.GMainContext)(context.Native())
-	arg2 = gextras.Cbool(isRunning)
+	if isRunning {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_main_loop_new(arg1, arg2)
 
@@ -20373,7 +22500,7 @@ func (loop *MainLoop) IsRunning() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -20457,42 +22584,60 @@ func (m *MappedFile) Native() unsafe.Pointer {
 }
 
 // NewMappedFile constructs a struct MappedFile.
-func NewMappedFile(filename string, writable bool) *MappedFile {
+func NewMappedFile(filename string, writable bool) (mappedFile *MappedFile, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gboolean
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(writable)
+	if writable {
+		arg2 = C.TRUE
+	}
 
-	ret := C.g_mapped_file_new(arg1, arg2)
+	ret := C.g_mapped_file_new(arg1, arg2, &gError)
 
 	var ret0 *MappedFile
+	var goError error
 
 	{
 		ret0 = WrapMappedFile(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewMappedFileFromFd constructs a struct MappedFile.
-func NewMappedFileFromFd(fd int, writable bool) *MappedFile {
+func NewMappedFileFromFd(fd int, writable bool) (mappedFile *MappedFile, err error) {
 	var arg1 C.gint
 	var arg2 C.gboolean
+	var gError *C.GError
 
 	arg1 = C.gint(fd)
-	arg2 = gextras.Cbool(writable)
+	if writable {
+		arg2 = C.TRUE
+	}
 
-	ret := C.g_mapped_file_new_from_fd(arg1, arg2)
+	ret := C.g_mapped_file_new_from_fd(arg1, arg2, &gError)
 
 	var ret0 *MappedFile
+	var goError error
 
 	{
 		ret0 = WrapMappedFile(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Free: this call existed before File had refcounting and is currently exactly
@@ -20625,18 +22770,22 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 //
 // This function reports an error if the document isn't complete, for example if
 // elements are still open.
-func (context *MarkupParseContext) EndParse() bool {
+func (context *MarkupParseContext) EndParse() error {
 	var arg0 *C.GMarkupParseContext
+	var gError *C.GError
 
 	arg0 = (*C.GMarkupParseContext)(context.Native())
 
-	ret := C.g_markup_parse_context_end_parse(arg0)
+	ret := C.g_markup_parse_context_end_parse(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Free frees a ParseContext.
@@ -20710,7 +22859,7 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 
 	arg0 = (*C.GMarkupParseContext)(context.Native())
 
-	ret := C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
+	C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -20750,23 +22899,27 @@ func (context *MarkupParseContext) UserData() interface{} {
 // of data into this function, aborting the process if an error occurs. Once an
 // error is reported, no further data may be fed to the ParseContext; all errors
 // are fatal.
-func (context *MarkupParseContext) Parse(text string, textLen int) bool {
+func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	var arg0 *C.GMarkupParseContext
 	var arg1 *C.gchar
 	var arg2 C.gssize
+	var gError *C.GError
 
 	arg0 = (*C.GMarkupParseContext)(context.Native())
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(textLen)
 
-	ret := C.g_markup_parse_context_parse(arg0, arg1, arg2)
+	ret := C.g_markup_parse_context_parse(arg0, arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Pop completes the process of a temporary sub-parser redirection.
@@ -20919,22 +23072,29 @@ func (m *MatchInfo) Native() unsafe.Pointer {
 // merely will be replaced with \n character, while to expand "\0" (whole match)
 // one needs the result of a match. Use g_regex_check_replacement() to find out
 // whether @string_to_expand contains references.
-func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) string {
+func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (utf8 string, err error) {
 	var arg0 *C.GMatchInfo
 	var arg1 *C.gchar
+	var gError *C.GError
 
 	arg0 = (*C.GMatchInfo)(matchInfo.Native())
 	arg1 = (*C.gchar)(C.CString(stringToExpand))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.g_match_info_expand_references(arg0, arg1)
+	ret := C.g_match_info_expand_references(arg0, arg1, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Fetch retrieves the text matching the @match_num'th capturing parentheses. 0
@@ -21061,7 +23221,7 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 
 	ret1 = int(arg3)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -21097,7 +23257,7 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 
 	ret1 = int(arg3)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -21210,7 +23370,7 @@ func (matchInfo *MatchInfo) IsPartialMatch() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -21225,7 +23385,7 @@ func (matchInfo *MatchInfo) Matches() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -21235,18 +23395,22 @@ func (matchInfo *MatchInfo) Matches() bool {
 //
 // The match is done on the string passed to the match function, so you cannot
 // free it before calling this function.
-func (matchInfo *MatchInfo) Next() bool {
+func (matchInfo *MatchInfo) Next() error {
 	var arg0 *C.GMatchInfo
+	var gError *C.GError
 
 	arg0 = (*C.GMatchInfo)(matchInfo.Native())
 
-	ret := C.g_match_info_next(arg0)
+	ret := C.g_match_info_next(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Ref increases reference count of @match_info by 1.
@@ -21304,7 +23468,7 @@ func (n *Node) Native() unsafe.Pointer {
 }
 
 // Data gets the field inside the struct.
-func (d *Node) Data() interface{} {
+func (n *Node) Data() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(n.native.data))
 	return ret
@@ -21323,7 +23487,7 @@ func (n *Node) Next() *Node {
 }
 
 // Prev gets the field inside the struct.
-func (p *Node) Prev() *Node {
+func (n *Node) Prev() *Node {
 	var ret *Node
 	{
 		ret = WrapNode(n.native.prev)
@@ -21335,7 +23499,7 @@ func (p *Node) Prev() *Node {
 }
 
 // Parent gets the field inside the struct.
-func (p *Node) Parent() *Node {
+func (n *Node) Parent() *Node {
 	var ret *Node
 	{
 		ret = WrapNode(n.native.parent)
@@ -21347,7 +23511,7 @@ func (p *Node) Parent() *Node {
 }
 
 // Children gets the field inside the struct.
-func (c *Node) Children() *Node {
+func (n *Node) Children() *Node {
 	var ret *Node
 	{
 		ret = WrapNode(n.native.children)
@@ -21398,7 +23562,7 @@ func (node *Node) ChildPosition(child *Node) int {
 // ChildrenForeach calls a function for each of the children of a #GNode. Note
 // that it doesn't descend beneath the child nodes. @func must not do anything
 // that would modify the structure of the tree.
-func (node *Node) ChildrenForeach(flags TraverseFlags, _func NodeForeachFunc) {
+func (node *Node) ChildrenForeach(flags TraverseFlags, fn NodeForeachFunc) {
 	var arg0 *C.GNode
 	var arg1 C.GTraverseFlags
 	var arg2 C.GNodeForeachFunc
@@ -21407,7 +23571,7 @@ func (node *Node) ChildrenForeach(flags TraverseFlags, _func NodeForeachFunc) {
 	arg0 = (*C.GNode)(node.Native())
 	arg1 = (C.GTraverseFlags)(flags)
 	arg2 = (*[0]byte)(C.gotk4_NodeForeachFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
 	C.g_node_children_foreach(arg0, arg1, arg2, arg3)
 }
@@ -21662,7 +23826,7 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -21818,7 +23982,7 @@ func (node *Node) ReverseChildren() {
 // given function for each node visited. The traversal can be halted at any
 // point by returning true from @func. @func must not do anything that would
 // modify the structure of the tree.
-func (root *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int, _func NodeTraverseFunc) {
+func (root *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int, fn NodeTraverseFunc) {
 	var arg0 *C.GNode
 	var arg1 C.GTraverseType
 	var arg2 C.GTraverseFlags
@@ -21831,7 +23995,7 @@ func (root *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int
 	arg2 = (C.GTraverseFlags)(flags)
 	arg3 = C.gint(maxDepth)
 	arg4 = (*[0]byte)(C.gotk4_NodeTraverseFunc)
-	arg5 = C.gpointer(box.Assign(_func))
+	arg5 = C.gpointer(box.Assign(fn))
 
 	C.g_node_traverse(arg0, arg1, arg2, arg3, arg4, arg5)
 }
@@ -21872,14 +24036,14 @@ func (o *Once) Native() unsafe.Pointer {
 }
 
 // Status gets the field inside the struct.
-func (s *Once) Status() OnceStatus {
+func (o *Once) Status() OnceStatus {
 	var ret OnceStatus
 	ret = OnceStatus(o.native.status)
 	return ret
 }
 
 // Retval gets the field inside the struct.
-func (r *Once) Retval() interface{} {
+func (o *Once) Retval() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(o.native.retval))
 	return ret
@@ -21913,49 +24077,49 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 }
 
 // LongName gets the field inside the struct.
-func (l *OptionEntry) LongName() string {
+func (o *OptionEntry) LongName() string {
 	var ret string
 	ret = C.GoString(o.native.long_name)
 	return ret
 }
 
 // ShortName gets the field inside the struct.
-func (s *OptionEntry) ShortName() byte {
+func (o *OptionEntry) ShortName() byte {
 	var ret byte
 	ret = byte(o.native.short_name)
 	return ret
 }
 
 // Flags gets the field inside the struct.
-func (f *OptionEntry) Flags() int {
+func (o *OptionEntry) Flags() int {
 	var ret int
 	ret = int(o.native.flags)
 	return ret
 }
 
 // Arg gets the field inside the struct.
-func (a *OptionEntry) Arg() OptionArg {
+func (o *OptionEntry) Arg() OptionArg {
 	var ret OptionArg
 	ret = OptionArg(o.native.arg)
 	return ret
 }
 
 // ArgData gets the field inside the struct.
-func (a *OptionEntry) ArgData() interface{} {
+func (o *OptionEntry) ArgData() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(o.native.arg_data))
 	return ret
 }
 
 // Description gets the field inside the struct.
-func (d *OptionEntry) Description() string {
+func (o *OptionEntry) Description() string {
 	var ret string
 	ret = C.GoString(o.native.description)
 	return ret
 }
 
 // ArgDescription gets the field inside the struct.
-func (a *OptionEntry) ArgDescription() string {
+func (o *OptionEntry) ArgDescription() string {
 	var ret string
 	ret = C.GoString(o.native.arg_description)
 	return ret
@@ -22026,7 +24190,20 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 
 	arg0 = (*C.GOptionGroup)(group.Native())
 	{
+		var dst []C.GOptionEntry
+		ptr := C.malloc(C.sizeof_GOptionEntry * (len(entries) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(entries)
+		sliceHeader.Cap = len(entries)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(entries); i++ {
+			src := entries[i]
+			dst[i] = (C.GOptionEntry)(src.Native())
+		}
+
+		arg1 = (*C.GOptionEntry)(unsafe.Pointer(ptr))
 	}
 
 	C.g_option_group_add_entries(arg0, arg1)
@@ -22081,7 +24258,7 @@ func (group *OptionGroup) SetParseHooks(preParseFunc OptionParseFunc, postParseF
 //
 // If you are using gettext(), you only need to set the translation domain, see
 // g_option_group_set_translation_domain().
-func (group *OptionGroup) SetTranslateFunc(_func TranslateFunc) {
+func (group *OptionGroup) SetTranslateFunc(fn TranslateFunc) {
 	var arg0 *C.GOptionGroup
 	var arg1 C.GTranslateFunc
 	var arg2 C.gpointer
@@ -22089,7 +24266,7 @@ func (group *OptionGroup) SetTranslateFunc(_func TranslateFunc) {
 
 	arg0 = (*C.GOptionGroup)(group.Native())
 	arg1 = (*[0]byte)(C.gotk4_TranslateFunc)
-	arg2 = C.gpointer(box.Assign(_func))
+	arg2 = C.gpointer(box.Assign(fn))
 	arg3 = (*[0]byte)(C.callbackDelete)
 
 	C.g_option_group_set_translate_func(arg0, arg1, arg2, arg3)
@@ -22146,21 +24323,21 @@ func (p *PollFD) Native() unsafe.Pointer {
 }
 
 // Fd gets the field inside the struct.
-func (f *PollFD) Fd() int {
+func (p *PollFD) Fd() int {
 	var ret int
 	ret = int(p.native.fd)
 	return ret
 }
 
 // Events gets the field inside the struct.
-func (e *PollFD) Events() uint16 {
+func (p *PollFD) Events() uint16 {
 	var ret uint16
 	ret = uint16(p.native.events)
 	return ret
 }
 
 // Revents gets the field inside the struct.
-func (r *PollFD) Revents() uint16 {
+func (p *PollFD) Revents() uint16 {
 	var ret uint16
 	ret = uint16(p.native.revents)
 	return ret
@@ -22288,7 +24465,7 @@ func (p *PtrArray) Pdata() interface{} {
 }
 
 // Len gets the field inside the struct.
-func (l *PtrArray) Len() uint {
+func (p *PtrArray) Len() uint {
 	var ret uint
 	ret = uint(p.native.len)
 	return ret
@@ -22320,7 +24497,7 @@ func (q *Queue) Native() unsafe.Pointer {
 }
 
 // Head gets the field inside the struct.
-func (h *Queue) Head() *List {
+func (q *Queue) Head() *List {
 	var ret *List
 	{
 		ret = WrapList(q.native.head)
@@ -22332,7 +24509,7 @@ func (h *Queue) Head() *List {
 }
 
 // Tail gets the field inside the struct.
-func (t *Queue) Tail() *List {
+func (q *Queue) Tail() *List {
 	var ret *List
 	{
 		ret = WrapList(q.native.tail)
@@ -22426,14 +24603,14 @@ func (queue *Queue) Find(data interface{}) *List {
 //
 // It is safe for @func to remove the element from @queue, but it must not
 // modify any part of the queue after that element.
-func (queue *Queue) Foreach(_func Func) {
+func (queue *Queue) Foreach(fn Func) {
 	var arg0 *C.GQueue
 	var arg1 C.GFunc
 	var arg2 C.gpointer
 
 	arg0 = (*C.GQueue)(queue.Native())
 	arg1 = (*[0]byte)(C.gotk4_Func)
-	arg2 = C.gpointer(box.Assign(_func))
+	arg2 = C.gpointer(box.Assign(fn))
 
 	C.g_queue_foreach(arg0, arg1, arg2)
 }
@@ -22560,7 +24737,7 @@ func (queue *Queue) InsertBeforeLink(sibling *List, link_ *List) {
 
 // InsertSorted inserts @data into @queue using @func to determine the new
 // position.
-func (queue *Queue) InsertSorted(data interface{}, _func CompareDataFunc) {
+func (queue *Queue) InsertSorted(data interface{}, fn CompareDataFunc) {
 	var arg0 *C.GQueue
 	var arg1 C.gpointer
 	var arg2 C.GCompareDataFunc
@@ -22569,7 +24746,7 @@ func (queue *Queue) InsertSorted(data interface{}, _func CompareDataFunc) {
 	arg0 = (*C.GQueue)(queue.Native())
 	arg1 = C.gpointer(box.Assign(data))
 	arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
 	C.g_queue_insert_sorted(arg0, arg1, arg2, arg3)
 }
@@ -22584,7 +24761,7 @@ func (queue *Queue) IsEmpty() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -22906,7 +25083,7 @@ func (queue *Queue) Remove(data interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23123,7 +25300,7 @@ func (rwLock *RWLock) ReaderTrylock() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23163,7 +25340,7 @@ func (rwLock *RWLock) WriterTrylock() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23289,7 +25466,7 @@ func (recMutex *RecMutex) Trylock() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23391,25 +25568,32 @@ func (r *Regex) Native() unsafe.Pointer {
 }
 
 // NewRegex constructs a struct Regex.
-func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex {
+func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) (regex *Regex, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GRegexCompileFlags
 	var arg3 C.GRegexMatchFlags
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GRegexCompileFlags)(compileOptions)
 	arg3 = (C.GRegexMatchFlags)(matchOptions)
 
-	ret := C.g_regex_new(arg1, arg2, arg3)
+	ret := C.g_regex_new(arg1, arg2, arg3, &gError)
 
 	var ret0 *Regex
+	var goError error
 
 	{
 		ret0 = WrapRegex(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CaptureCount returns the number of capturing subpatterns in the pattern.
@@ -23456,7 +25640,7 @@ func (regex *Regex) HasCrOrLf() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -23601,7 +25785,7 @@ func (regex *Regex) Match(string string, matchOptions RegexMatchFlags) (matchInf
 		ret0 = WrapMatchInfo(arg3)
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -23639,9 +25823,187 @@ func (regex *Regex) MatchAll(string string, matchOptions RegexMatchFlags) (match
 		ret0 = WrapMatchInfo(arg3)
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
+}
+
+// MatchAllFull: using the standard algorithm for regular expression matching
+// only the longest match in the @string is retrieved, it is not possible to
+// obtain all the available matches. For instance matching "<a> <b> <c>" against
+// the pattern "<.*>" you get "<a> <b> <c>".
+//
+// This function uses a different algorithm (called DFA, i.e. deterministic
+// finite automaton), so it can retrieve all the possible matches, all starting
+// at the same point in the string. For instance matching "<a> <b> <c>" against
+// the pattern "<.*>;" you would obtain three matches: "<a> <b> <c>", "<a> <b>"
+// and "<a>".
+//
+// The number of matched strings is retrieved using
+// g_match_info_get_match_count(). To obtain the matched strings and their
+// position you can use, respectively, g_match_info_fetch() and
+// g_match_info_fetch_pos(). Note that the strings are returned in reverse order
+// of length; that is, the longest matching string is given first.
+//
+// Note that the DFA algorithm is slower than the standard one and it is not
+// able to capture substrings, so backreferences do not work.
+//
+// Setting @start_position differs from just passing over a shortened string and
+// setting REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+// of lookbehind assertion, such as "\b".
+//
+// Unless G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
+//
+// A Info structure, used to get information on the match, is stored in
+// @match_info if not nil. Note that if @match_info is not nil then it is
+// created even if the function returns false, i.e. you must free it regardless
+// if regular expression actually matched.
+//
+// @string is not copied and is used in Info internally. If you use any Info
+// method (except g_match_info_free()) after freeing or modifying @string then
+// the behaviour is undefined.
+func (regex *Regex) MatchAllFull(string []string, startPosition int, matchOptions RegexMatchFlags) (matchInfo *MatchInfo, err error) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gint
+	var arg4 C.GRegexMatchFlags
+	var arg5 **C.GMatchInfo // out
+	var gError *C.GError
+
+	arg0 = (*C.GRegex)(regex.Native())
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+	arg3 = C.gint(startPosition)
+	arg4 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_match_all_full(arg0, arg1, arg2, arg3, arg4, &arg5, &gError)
+
+	var ret0 **MatchInfo
+	var goError error
+
+	{
+		ret0 = WrapMatchInfo(arg5)
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// MatchFull scans for a match in @string for the pattern in @regex. The
+// @match_options are combined with the match options specified when the @regex
+// structure was created, letting you have more flexibility in reusing #GRegex
+// structures.
+//
+// Setting @start_position differs from just passing over a shortened string and
+// setting REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+// of lookbehind assertion, such as "\b".
+//
+// Unless G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
+//
+// A Info structure, used to get information on the match, is stored in
+// @match_info if not nil. Note that if @match_info is not nil then it is
+// created even if the function returns false, i.e. you must free it regardless
+// if regular expression actually matched.
+//
+// @string is not copied and is used in Info internally. If you use any Info
+// method (except g_match_info_free()) after freeing or modifying @string then
+// the behaviour is undefined.
+//
+// To retrieve all the non-overlapping matches of the pattern in string you can
+// use g_match_info_next().
+//
+//    static void
+//    print_uppercase_words (const gchar *string)
+//    {
+//      // Print all uppercase-only words.
+//      GRegex *regex;
+//      GMatchInfo *match_info;
+//      GError *error = NULL;
+//
+//      regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+//      g_regex_match_full (regex, string, -1, 0, 0, &match_info, &error);
+//      while (g_match_info_matches (match_info))
+//        {
+//          gchar *word = g_match_info_fetch (match_info, 0);
+//          g_print ("Found: s\n", word);
+//          g_free (word);
+//          g_match_info_next (match_info, &error);
+//        }
+//      g_match_info_free (match_info);
+//      g_regex_unref (regex);
+//      if (error != NULL)
+//        {
+//          g_printerr ("Error while matching: s\n", error->message);
+//          g_error_free (error);
+//        }
+//    }
+func (regex *Regex) MatchFull(string []string, startPosition int, matchOptions RegexMatchFlags) (matchInfo *MatchInfo, err error) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gint
+	var arg4 C.GRegexMatchFlags
+	var arg5 **C.GMatchInfo // out
+	var gError *C.GError
+
+	arg0 = (*C.GRegex)(regex.Native())
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+	arg3 = C.gint(startPosition)
+	arg4 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_match_full(arg0, arg1, arg2, arg3, arg4, &arg5, &gError)
+
+	var ret0 **MatchInfo
+	var goError error
+
+	{
+		ret0 = WrapMatchInfo(arg5)
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Ref increases reference count of @regex by 1.
@@ -23659,6 +26021,228 @@ func (regex *Regex) Ref() *Regex {
 	}
 
 	return ret0
+}
+
+// Replace replaces all occurrences of the pattern in @regex with the
+// replacement text. Backreferences of the form '\number' or '\g<number>' in the
+// replacement text are interpolated by the number-th captured subexpression of
+// the match, '\g<name>' refers to the captured subexpression with the given
+// name. '\0' refers to the complete match, but '\0' followed by a number is the
+// octal representation of a character. To include a literal '\' in the
+// replacement, write '\\\\'.
+//
+// There are also escapes that changes the case of the following text:
+//
+// - \l: Convert to lower case the next character - \u: Convert to upper case
+// the next character - \L: Convert to lower case till \E - \U: Convert to upper
+// case till \E - \E: End case modification
+//
+// If you do not need to use backreferences use g_regex_replace_literal().
+//
+// The @replacement string must be UTF-8 encoded even if REGEX_RAW was passed to
+// g_regex_new(). If you want to use not UTF-8 encoded strings you can use
+// g_regex_replace_literal().
+//
+// Setting @start_position differs from just passing over a shortened string and
+// setting REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+// of lookbehind assertion, such as "\b".
+func (regex *Regex) Replace(string []string, startPosition int, replacement string, matchOptions RegexMatchFlags) (utf8 string, err error) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gint
+	var arg4 *C.gchar
+	var arg5 C.GRegexMatchFlags
+	var gError *C.GError
+
+	arg0 = (*C.GRegex)(regex.Native())
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+	arg3 = C.gint(startPosition)
+	arg4 = (*C.gchar)(C.CString(replacement))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_replace(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 string
+	var goError error
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// ReplaceEval replaces occurrences of the pattern in regex with the output of
+// @eval for that occurrence.
+//
+// Setting @start_position differs from just passing over a shortened string and
+// setting REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+// of lookbehind assertion, such as "\b".
+//
+// The following example uses g_regex_replace_eval() to replace multiple strings
+// at once:
+//
+//    static gboolean
+//    eval_cb (const GMatchInfo *info,
+//             GString          *res,
+//             gpointer          data)
+//    {
+//      gchar *match;
+//      gchar *r;
+//
+//       match = g_match_info_fetch (info, 0);
+//       r = g_hash_table_lookup ((GHashTable *)data, match);
+//       g_string_append (res, r);
+//       g_free (match);
+//
+//       return FALSE;
+//    }
+//
+//    ...
+//
+//    GRegex *reg;
+//    GHashTable *h;
+//    gchar *res;
+//
+//    h = g_hash_table_new (g_str_hash, g_str_equal);
+//
+//    g_hash_table_insert (h, "1", "ONE");
+//    g_hash_table_insert (h, "2", "TWO");
+//    g_hash_table_insert (h, "3", "THREE");
+//    g_hash_table_insert (h, "4", "FOUR");
+//
+//    reg = g_regex_new ("1|2|3|4", 0, 0, NULL);
+//    res = g_regex_replace_eval (reg, text, -1, 0, 0, eval_cb, h, NULL);
+//    g_hash_table_destroy (h);
+//
+//    ...
+func (regex *Regex) ReplaceEval(string []string, startPosition int, matchOptions RegexMatchFlags, eval RegexEvalCallback) (utf8 string, err error) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gint
+	var arg4 C.GRegexMatchFlags
+	var arg5 C.GRegexEvalCallback
+	var arg6 C.gpointer
+	var gError *C.GError
+
+	arg0 = (*C.GRegex)(regex.Native())
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+	arg3 = C.gint(startPosition)
+	arg4 = (C.GRegexMatchFlags)(matchOptions)
+	arg5 = (*[0]byte)(C.gotk4_RegexEvalCallback)
+	arg6 = C.gpointer(box.Assign(eval))
+
+	ret := C.g_regex_replace_eval(arg0, arg1, arg2, arg3, arg4, arg5, arg6, &gError)
+
+	var ret0 string
+	var goError error
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// ReplaceLiteral replaces all occurrences of the pattern in @regex with the
+// replacement text. @replacement is replaced literally, to include
+// backreferences use g_regex_replace().
+//
+// Setting @start_position differs from just passing over a shortened string and
+// setting REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+// of lookbehind assertion, such as "\b".
+func (regex *Regex) ReplaceLiteral(string []string, startPosition int, replacement string, matchOptions RegexMatchFlags) (utf8 string, err error) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gint
+	var arg4 *C.gchar
+	var arg5 C.GRegexMatchFlags
+	var gError *C.GError
+
+	arg0 = (*C.GRegex)(regex.Native())
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+	arg3 = C.gint(startPosition)
+	arg4 = (*C.gchar)(C.CString(replacement))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (C.GRegexMatchFlags)(matchOptions)
+
+	ret := C.g_regex_replace_literal(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 string
+	var goError error
+
+	ret0 = C.GoString(ret)
+	C.free(unsafe.Pointer(ret))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Split breaks the string on the pattern, and returns an array of the tokens.
@@ -23708,6 +26292,85 @@ func (regex *Regex) Split(string string, matchOptions RegexMatchFlags) []string 
 	return ret0
 }
 
+// SplitFull breaks the string on the pattern, and returns an array of the
+// tokens. If the pattern contains capturing parentheses, then the text for each
+// of the substrings will also be returned. If the pattern does not match
+// anywhere in the string, then the whole string is returned as the first token.
+//
+// As a special case, the result of splitting the empty string "" is an empty
+// vector, not a vector containing a single string. The reason for this special
+// case is that being able to represent an empty vector is typically more useful
+// than consistent handling of empty elements. If you do need to represent empty
+// elements, you'll need to check for the empty string before calling this
+// function.
+//
+// A pattern that can match empty strings splits @string into separate
+// characters wherever it matches the empty string between characters. For
+// example splitting "ab c" using as a separator "\s*", you will get "a", "b"
+// and "c".
+//
+// Setting @start_position differs from just passing over a shortened string and
+// setting REGEX_MATCH_NOTBOL in the case of a pattern that begins with any kind
+// of lookbehind assertion, such as "\b".
+func (regex *Regex) SplitFull(string []string, startPosition int, matchOptions RegexMatchFlags, maxTokens int) (utf8s []string, err error) {
+	var arg0 *C.GRegex
+	var arg1 *C.gchar
+	var arg2 C.gssize
+	var arg3 C.gint
+	var arg4 C.GRegexMatchFlags
+	var arg5 C.gint
+	var gError *C.GError
+
+	arg0 = (*C.GRegex)(regex.Native())
+	{
+		var dst []C.gchar
+		ptr := C.malloc(C.sizeof_gchar * len(string))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(string)
+	}
+	arg3 = C.gint(startPosition)
+	arg4 = (C.GRegexMatchFlags)(matchOptions)
+	arg5 = C.gint(maxTokens)
+
+	ret := C.g_regex_split_full(arg0, arg1, arg2, arg3, arg4, arg5, &gError)
+
+	var ret0 []string
+	var goError error
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+			C.free(unsafe.Pointer(src))
+		}
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
 // Unref decreases reference count of @regex by 1. When reference count drops to
 // zero, it frees all the memory associated with the regex structure.
 func (regex *Regex) Unref() {
@@ -23744,14 +26407,14 @@ func (s *SList) Native() unsafe.Pointer {
 }
 
 // Data gets the field inside the struct.
-func (d *SList) Data() interface{} {
+func (s *SList) Data() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(s.native.data))
 	return ret
 }
 
 // Next gets the field inside the struct.
-func (n *SList) Next() *SList {
+func (s *SList) Next() *SList {
 	var ret *SList
 	{
 		ret = WrapSList(s.native.next)
@@ -23798,35 +26461,35 @@ func (s *Scanner) Native() unsafe.Pointer {
 }
 
 // UserData gets the field inside the struct.
-func (u *Scanner) UserData() interface{} {
+func (s *Scanner) UserData() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(s.native.user_data))
 	return ret
 }
 
 // MaxParseErrors gets the field inside the struct.
-func (m *Scanner) MaxParseErrors() uint {
+func (s *Scanner) MaxParseErrors() uint {
 	var ret uint
 	ret = uint(s.native.max_parse_errors)
 	return ret
 }
 
 // ParseErrors gets the field inside the struct.
-func (p *Scanner) ParseErrors() uint {
+func (s *Scanner) ParseErrors() uint {
 	var ret uint
 	ret = uint(s.native.parse_errors)
 	return ret
 }
 
 // InputName gets the field inside the struct.
-func (i *Scanner) InputName() string {
+func (s *Scanner) InputName() string {
 	var ret string
 	ret = C.GoString(s.native.input_name)
 	return ret
 }
 
 // Qdata gets the field inside the struct.
-func (q *Scanner) Qdata() *Data {
+func (s *Scanner) Qdata() *Data {
 	var ret *Data
 	{
 		ret = WrapData(s.native.qdata)
@@ -23838,7 +26501,7 @@ func (q *Scanner) Qdata() *Data {
 }
 
 // Config gets the field inside the struct.
-func (c *Scanner) Config() *ScannerConfig {
+func (s *Scanner) Config() *ScannerConfig {
 	var ret *ScannerConfig
 	{
 		ret = WrapScannerConfig(s.native.config)
@@ -23850,35 +26513,35 @@ func (c *Scanner) Config() *ScannerConfig {
 }
 
 // Token gets the field inside the struct.
-func (t *Scanner) Token() TokenType {
+func (s *Scanner) Token() TokenType {
 	var ret TokenType
 	ret = TokenType(s.native.token)
 	return ret
 }
 
 // Line gets the field inside the struct.
-func (l *Scanner) Line() uint {
+func (s *Scanner) Line() uint {
 	var ret uint
 	ret = uint(s.native.line)
 	return ret
 }
 
 // Position gets the field inside the struct.
-func (p *Scanner) Position() uint {
+func (s *Scanner) Position() uint {
 	var ret uint
 	ret = uint(s.native.position)
 	return ret
 }
 
 // NextLine gets the field inside the struct.
-func (n *Scanner) NextLine() uint {
+func (s *Scanner) NextLine() uint {
 	var ret uint
 	ret = uint(s.native.next_line)
 	return ret
 }
 
 // NextPosition gets the field inside the struct.
-func (n *Scanner) NextPosition() uint {
+func (s *Scanner) NextPosition() uint {
 	var ret uint
 	ret = uint(s.native.next_position)
 	return ret
@@ -23953,7 +26616,7 @@ func (scanner *Scanner) EOF() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24063,7 +26726,7 @@ func (scanner *Scanner) ScopeAddSymbol(scopeID uint, symbol string, value interf
 // ScopeForeachSymbol calls the given function for each of the symbol/value
 // pairs in the given scope of the #GScanner. The function is passed the symbol
 // and value of each pair, and the given @user_data parameter.
-func (scanner *Scanner) ScopeForeachSymbol(scopeID uint, _func HFunc) {
+func (scanner *Scanner) ScopeForeachSymbol(scopeID uint, fn HFunc) {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 C.GHFunc
@@ -24072,7 +26735,7 @@ func (scanner *Scanner) ScopeForeachSymbol(scopeID uint, _func HFunc) {
 	arg0 = (*C.GScanner)(scanner.Native())
 	arg1 = C.guint(scopeID)
 	arg2 = (*[0]byte)(C.gotk4_HFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
 	C.g_scanner_scope_foreach_symbol(arg0, arg1, arg2, arg3)
 }
@@ -24198,35 +26861,35 @@ func (s *ScannerConfig) Native() unsafe.Pointer {
 }
 
 // CsetSkipCharacters gets the field inside the struct.
-func (c *ScannerConfig) CsetSkipCharacters() string {
+func (s *ScannerConfig) CsetSkipCharacters() string {
 	var ret string
 	ret = C.GoString(s.native.cset_skip_characters)
 	return ret
 }
 
 // CsetIdentifierFirst gets the field inside the struct.
-func (c *ScannerConfig) CsetIdentifierFirst() string {
+func (s *ScannerConfig) CsetIdentifierFirst() string {
 	var ret string
 	ret = C.GoString(s.native.cset_identifier_first)
 	return ret
 }
 
 // CsetIdentifierNth gets the field inside the struct.
-func (c *ScannerConfig) CsetIdentifierNth() string {
+func (s *ScannerConfig) CsetIdentifierNth() string {
 	var ret string
 	ret = C.GoString(s.native.cset_identifier_nth)
 	return ret
 }
 
 // CpairCommentSingle gets the field inside the struct.
-func (c *ScannerConfig) CpairCommentSingle() string {
+func (s *ScannerConfig) CpairCommentSingle() string {
 	var ret string
 	ret = C.GoString(s.native.cpair_comment_single)
 	return ret
 }
 
 // CaseSensitive gets the field inside the struct.
-func (c *ScannerConfig) CaseSensitive() uint {
+func (s *ScannerConfig) CaseSensitive() uint {
 	var ret uint
 	ret = uint(s.native.case_sensitive)
 	return ret
@@ -24331,28 +26994,28 @@ func (s *ScannerConfig) ScanStringDq() uint {
 }
 
 // Numbers2Int gets the field inside the struct.
-func (n *ScannerConfig) Numbers2Int() uint {
+func (s *ScannerConfig) Numbers2Int() uint {
 	var ret uint
 	ret = uint(s.native.numbers_2_int)
 	return ret
 }
 
 // Int2Float gets the field inside the struct.
-func (i *ScannerConfig) Int2Float() uint {
+func (s *ScannerConfig) Int2Float() uint {
 	var ret uint
 	ret = uint(s.native.int_2_float)
 	return ret
 }
 
 // Identifier2String gets the field inside the struct.
-func (i *ScannerConfig) Identifier2String() uint {
+func (s *ScannerConfig) Identifier2String() uint {
 	var ret uint
 	ret = uint(s.native.identifier_2_string)
 	return ret
 }
 
 // Char2Token gets the field inside the struct.
-func (c *ScannerConfig) Char2Token() uint {
+func (s *ScannerConfig) Char2Token() uint {
 	var ret uint
 	ret = uint(s.native.char_2_token)
 	return ret
@@ -24551,7 +27214,7 @@ func (source *Source) CanRecurse() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24723,7 +27386,7 @@ func (source *Source) IsDestroyed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -24860,7 +27523,7 @@ func (source *Source) RemoveUnixFd(tag interface{}) {
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
 // the source is dispatched after this call returns.
-func (source *Source) SetCallback(_func SourceFunc) {
+func (source *Source) SetCallback(fn SourceFunc) {
 	var arg0 *C.GSource
 	var arg1 C.GSourceFunc
 	var arg2 C.gpointer
@@ -24868,7 +27531,7 @@ func (source *Source) SetCallback(_func SourceFunc) {
 
 	arg0 = (*C.GSource)(source.Native())
 	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
-	arg2 = C.gpointer(box.Assign(_func))
+	arg2 = C.gpointer(box.Assign(fn))
 	arg3 = (*[0]byte)(C.callbackDelete)
 
 	C.g_source_set_callback(arg0, arg1, arg2, arg3)
@@ -24904,7 +27567,9 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GSource)(source.Native())
-	arg1 = gextras.Cbool(canRecurse)
+	if canRecurse {
+		arg1 = C.TRUE
+	}
 
 	C.g_source_set_can_recurse(arg0, arg1)
 }
@@ -25038,14 +27703,14 @@ func (s *String) Str() string {
 }
 
 // Len gets the field inside the struct.
-func (l *String) Len() uint {
+func (s *String) Len() uint {
 	var ret uint
 	ret = uint(s.native.len)
 	return ret
 }
 
 // AllocatedLen gets the field inside the struct.
-func (a *String) AllocatedLen() uint {
+func (s *String) AllocatedLen() uint {
 	var ret uint
 	ret = uint(s.native.allocated_len)
 	return ret
@@ -25165,7 +27830,9 @@ func (string *String) AppendURIEscaped(unescaped string, reservedCharsAllowed st
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(reservedCharsAllowed))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = gextras.Cbool(allowUTF8)
+	if allowUTF8 {
+		arg3 = C.TRUE
+	}
 
 	ret := C.g_string_append_uri_escaped(arg0, arg1, arg2, arg3)
 
@@ -25279,7 +27946,7 @@ func (v *String) Equal(v2 *String) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -25317,7 +27984,9 @@ func (string *String) Free(freeSegment bool) string {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GString)(string.Native())
-	arg1 = gextras.Cbool(freeSegment)
+	if freeSegment {
+		arg1 = C.TRUE
+	}
 
 	ret := C.g_string_free(arg0, arg1)
 
@@ -25726,42 +28395,42 @@ func (t *TestConfig) Native() unsafe.Pointer {
 // TestInitialized gets the field inside the struct.
 func (t *TestConfig) TestInitialized() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.test_initialized)
+	ret = t.native.test_initialized != C.FALSE
 	return ret
 }
 
 // TestQuick gets the field inside the struct.
 func (t *TestConfig) TestQuick() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.test_quick)
+	ret = t.native.test_quick != C.FALSE
 	return ret
 }
 
 // TestPerf gets the field inside the struct.
 func (t *TestConfig) TestPerf() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.test_perf)
+	ret = t.native.test_perf != C.FALSE
 	return ret
 }
 
 // TestVerbose gets the field inside the struct.
 func (t *TestConfig) TestVerbose() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.test_verbose)
+	ret = t.native.test_verbose != C.FALSE
 	return ret
 }
 
 // TestQuiet gets the field inside the struct.
 func (t *TestConfig) TestQuiet() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.test_quiet)
+	ret = t.native.test_quiet != C.FALSE
 	return ret
 }
 
 // TestUndefined gets the field inside the struct.
 func (t *TestConfig) TestUndefined() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.test_undefined)
+	ret = t.native.test_undefined != C.FALSE
 	return ret
 }
 
@@ -25859,35 +28528,35 @@ func (t *TestLogMsg) Native() unsafe.Pointer {
 }
 
 // LogType gets the field inside the struct.
-func (l *TestLogMsg) LogType() TestLogType {
+func (t *TestLogMsg) LogType() TestLogType {
 	var ret TestLogType
 	ret = TestLogType(t.native.log_type)
 	return ret
 }
 
 // NStrings gets the field inside the struct.
-func (n *TestLogMsg) NStrings() uint {
+func (t *TestLogMsg) NStrings() uint {
 	var ret uint
 	ret = uint(t.native.n_strings)
 	return ret
 }
 
 // Strings gets the field inside the struct.
-func (s *TestLogMsg) Strings() string {
+func (t *TestLogMsg) Strings() string {
 	var ret string
 	ret = C.GoString(t.native.strings)
 	return ret
 }
 
 // NNums gets the field inside the struct.
-func (n *TestLogMsg) NNums() uint {
+func (t *TestLogMsg) NNums() uint {
 	var ret uint
 	ret = uint(t.native.n_nums)
 	return ret
 }
 
 // Nums gets the field inside the struct.
-func (n *TestLogMsg) Nums() float64 {
+func (t *TestLogMsg) Nums() float64 {
 	var ret float64
 	ret = float64(t.native.nums)
 	return ret
@@ -25938,7 +28607,7 @@ func (t *Thread) Native() unsafe.Pointer {
 }
 
 // NewThread constructs a struct Thread.
-func NewThread(name string, _func ThreadFunc) *Thread {
+func NewThread(name string, fn ThreadFunc) *Thread {
 	var arg1 *C.gchar
 	var arg2 C.GThreadFunc
 	var arg3 C.gpointer
@@ -25946,7 +28615,7 @@ func NewThread(name string, _func ThreadFunc) *Thread {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*[0]byte)(C.gotk4_ThreadFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
 	ret := C.g_thread_new(arg1, arg2, arg3)
 
@@ -25960,25 +28629,32 @@ func NewThread(name string, _func ThreadFunc) *Thread {
 }
 
 // NewThreadTry constructs a struct Thread.
-func NewThreadTry(name string, _func ThreadFunc) *Thread {
+func NewThreadTry(name string, fn ThreadFunc) (thread *Thread, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GThreadFunc
 	var arg3 C.gpointer
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*[0]byte)(C.gotk4_ThreadFunc)
-	arg3 = C.gpointer(box.Assign(_func))
+	arg3 = C.gpointer(box.Assign(fn))
 
-	ret := C.g_thread_try_new(arg1, arg2, arg3)
+	ret := C.g_thread_try_new(arg1, arg2, arg3, &gError)
 
 	var ret0 *Thread
+	var goError error
 
 	{
 		ret0 = WrapThread(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Join waits until @thread finishes, i.e. the function @func, as given to
@@ -26068,16 +28744,16 @@ func (t *ThreadPool) Native() unsafe.Pointer {
 }
 
 // UserData gets the field inside the struct.
-func (u *ThreadPool) UserData() interface{} {
+func (t *ThreadPool) UserData() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(t.native.user_data))
 	return ret
 }
 
 // Exclusive gets the field inside the struct.
-func (e *ThreadPool) Exclusive() bool {
+func (t *ThreadPool) Exclusive() bool {
 	var ret bool
-	ret = gextras.Gobool(t.native.exclusive)
+	ret = t.native.exclusive != C.FALSE
 	return ret
 }
 
@@ -26099,8 +28775,12 @@ func (pool *ThreadPool) Free(immediate bool, wait_ bool) {
 	var arg2 C.gboolean
 
 	arg0 = (*C.GThreadPool)(pool.Native())
-	arg1 = gextras.Cbool(immediate)
-	arg2 = gextras.Cbool(wait_)
+	if immediate {
+		arg1 = C.TRUE
+	}
+	if wait_ {
+		arg2 = C.TRUE
+	}
 
 	C.g_thread_pool_free(arg0, arg1, arg2)
 }
@@ -26148,7 +28828,7 @@ func (pool *ThreadPool) MoveToFront(data interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -26165,20 +28845,24 @@ func (pool *ThreadPool) MoveToFront(data interface{}) bool {
 // simply appended to the queue of work to do.
 //
 // Before version 2.32, this function did not return a success status.
-func (pool *ThreadPool) Push(data interface{}) bool {
+func (pool *ThreadPool) Push(data interface{}) error {
 	var arg0 *C.GThreadPool
 	var arg1 C.gpointer
+	var gError *C.GError
 
 	arg0 = (*C.GThreadPool)(pool.Native())
 	arg1 = C.gpointer(box.Assign(data))
 
-	ret := C.g_thread_pool_push(arg0, arg1)
+	ret := C.g_thread_pool_push(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetMaxThreads sets the maximal allowed number of threads for @pool. A value
@@ -26199,20 +28883,24 @@ func (pool *ThreadPool) Push(data interface{}) bool {
 // only occur when a new thread couldn't be created.
 //
 // Before version 2.32, this function did not return a success status.
-func (pool *ThreadPool) SetMaxThreads(maxThreads int) bool {
+func (pool *ThreadPool) SetMaxThreads(maxThreads int) error {
 	var arg0 *C.GThreadPool
 	var arg1 C.gint
+	var gError *C.GError
 
 	arg0 = (*C.GThreadPool)(pool.Native())
 	arg1 = C.gint(maxThreads)
 
-	ret := C.g_thread_pool_set_max_threads(arg0, arg1)
+	ret := C.g_thread_pool_set_max_threads(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetSortFunction sets the function used to sort the list of tasks. This allows
@@ -26223,14 +28911,14 @@ func (pool *ThreadPool) SetMaxThreads(maxThreads int) bool {
 // are executed cannot be guaranteed 100%. Threads are scheduled by the
 // operating system and are executed at random. It cannot be assumed that
 // threads are executed in the order they are created.
-func (pool *ThreadPool) SetSortFunction(_func CompareDataFunc) {
+func (pool *ThreadPool) SetSortFunction(fn CompareDataFunc) {
 	var arg0 *C.GThreadPool
 	var arg1 C.GCompareDataFunc
 	var arg2 C.gpointer
 
 	arg0 = (*C.GThreadPool)(pool.Native())
 	arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
-	arg2 = C.gpointer(box.Assign(_func))
+	arg2 = C.gpointer(box.Assign(fn))
 
 	C.g_thread_pool_set_sort_function(arg0, arg1, arg2)
 }
@@ -26455,13 +29143,13 @@ func NewTimeZoneUtc() *TimeZone {
 // times. If the non-existent local @time_ of 02:30 were requested on March 14th
 // 2010 in Toronto then this function would adjust @time_ to be 03:00 and return
 // the interval containing the adjusted time.
-func (tz *TimeZone) AdjustTime(_type TimeType, time_ int64) int {
+func (tz *TimeZone) AdjustTime(typ TimeType, time_ int64) int {
 	var arg0 *C.GTimeZone
 	var arg1 C.GTimeType
 	var arg2 *C.gint64
 
 	arg0 = (*C.GTimeZone)(tz.Native())
-	arg1 = (C.GTimeType)(_type)
+	arg1 = (C.GTimeType)(typ)
 	arg2 = (*C.gint64)(time_)
 
 	ret := C.g_time_zone_adjust_time(arg0, arg1, arg2)
@@ -26489,13 +29177,13 @@ func (tz *TimeZone) AdjustTime(_type TimeType, time_ int64) int {
 // It is still possible for this function to fail. In Toronto, for example,
 // 02:00 on March 14th 2010 does not exist (due to the leap forward to begin
 // daylight savings time). -1 is returned in that case.
-func (tz *TimeZone) FindInterval(_type TimeType, time_ int64) int {
+func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var arg0 *C.GTimeZone
 	var arg1 C.GTimeType
 	var arg2 C.gint64
 
 	arg0 = (*C.GTimeZone)(tz.Native())
-	arg1 = (C.GTimeType)(_type)
+	arg1 = (C.GTimeType)(typ)
 	arg2 = C.gint64(time_)
 
 	ret := C.g_time_zone_find_interval(arg0, arg1, arg2)
@@ -26585,7 +29273,7 @@ func (tz *TimeZone) IsDst(interval int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -26643,7 +29331,7 @@ func (t *TrashStack) Native() unsafe.Pointer {
 }
 
 // Next gets the field inside the struct.
-func (n *TrashStack) Next() *TrashStack {
+func (t *TrashStack) Next() *TrashStack {
 	var ret *TrashStack
 	{
 		ret = WrapTrashStack(t.native.next)
@@ -26979,25 +29667,32 @@ func (uri *URI) Userinfo() string {
 // URI][relative-absolute-uris], resolves it relative to @base_uri. If the
 // result is not a valid absolute URI, it will be discarded, and an error
 // returned.
-func (baseURI *URI) ParseRelative(uriRef string, flags URIFlags) *URI {
+func (baseURI *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, err error) {
 	var arg0 *C.GUri
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
+	var gError *C.GError
 
 	arg0 = (*C.GUri)(baseURI.Native())
 	arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	ret := C.g_uri_parse_relative(arg0, arg1, arg2)
+	ret := C.g_uri_parse_relative(arg0, arg1, arg2, &gError)
 
 	var ret0 *URI
+	var goError error
 
 	{
 		ret0 = WrapURI(ret)
 	}
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Ref increments the reference count of @uri by one.
@@ -27165,18 +29860,19 @@ func (iter *URIParamsIter) Init(params string, length int, separators string, fl
 //
 // Note that the same @attribute may be returned multiple times, since URIs
 // allow repeated attributes.
-func (iter *URIParamsIter) Next() (attribute string, value string, ok bool) {
+func (iter *URIParamsIter) Next() (attribute string, value string, err error) {
 	var arg0 *C.GUriParamsIter
 	var arg1 **C.gchar // out
 	var arg2 **C.gchar // out
+	var gError *C.GError
 
 	arg0 = (*C.GUriParamsIter)(iter.Native())
 
-	ret := C.g_uri_params_iter_next(arg0, &arg1, &arg2)
+	ret := C.g_uri_params_iter_next(arg0, &arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 string
-	var ret2 bool
+	var goError error
 
 	ret0 = C.GoString(arg1)
 	C.free(unsafe.Pointer(arg1))
@@ -27184,9 +29880,12 @@ func (iter *URIParamsIter) Next() (attribute string, value string, ok bool) {
 	ret1 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret2 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2
+	return ret0, ret1, goError
 }
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -27438,11 +30137,38 @@ func (v *Variant) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
 }
 
+// NewVariantArray constructs a struct Variant.
+func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
+	var arg1 *C.GVariantType
+	var arg2 **C.GVariant
+	var arg3 C.gsize
+
+	arg1 = (*C.GVariantType)(childType.Native())
+	arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
+	arg3 = len(children)
+	defer runtime.KeepAlive(children)
+
+	ret := C.g_variant_new_array(arg1, arg2, arg3)
+
+	var ret0 *Variant
+
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
 // NewVariantBoolean constructs a struct Variant.
 func NewVariantBoolean(value bool) *Variant {
 	var arg1 C.gboolean
 
-	arg1 = gextras.Cbool(value)
+	if value {
+		arg1 = C.TRUE
+	}
 
 	ret := C.g_variant_new_boolean(arg1)
 
@@ -27483,10 +30209,61 @@ func NewVariantBytestring(string []byte) *Variant {
 	var arg1 *C.gchar
 
 	{
+		var dst []C.guint8
+		ptr := C.malloc(C.sizeof_guint8 * (len(string) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(string)
+		sliceHeader.Cap = len(string)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(string); i++ {
+			src := string[i]
+			dst[i] = C.guint8(src)
+		}
+
+		arg1 = (*C.gchar)(unsafe.Pointer(ptr))
 	}
 
 	ret := C.g_variant_new_bytestring(arg1)
+
+	var ret0 *Variant
+
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// NewVariantBytestringArray constructs a struct Variant.
+func NewVariantBytestringArray(strv []string) *Variant {
+	var arg1 **C.gchar
+	var arg2 C.gssize
+
+	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(strv))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(strv)
+		sliceHeader.Cap = len(strv)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(strv); i++ {
+			src := strv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(strv)
+	}
+
+	ret := C.g_variant_new_bytestring_array(arg1, arg2)
 
 	var ret0 *Variant
 
@@ -27569,14 +30346,16 @@ func NewVariantFixedArray(elementType *VariantType, elements interface{}, nEleme
 }
 
 // NewVariantFromBytes constructs a struct Variant.
-func NewVariantFromBytes(_type *VariantType, bytes *Bytes, trusted bool) *Variant {
+func NewVariantFromBytes(typ *VariantType, bytes *Bytes, trusted bool) *Variant {
 	var arg1 *C.GVariantType
 	var arg2 *C.GBytes
 	var arg3 C.gboolean
 
-	arg1 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(typ.Native())
 	arg2 = (*C.GBytes)(bytes.Native())
-	arg3 = gextras.Cbool(trusted)
+	if trusted {
+		arg3 = C.TRUE
+	}
 
 	ret := C.g_variant_new_from_bytes(arg1, arg2, arg3)
 
@@ -27715,6 +30494,44 @@ func NewVariantObjectPath(objectPath string) *Variant {
 	return ret0
 }
 
+// NewVariantObjv constructs a struct Variant.
+func NewVariantObjv(strv []string) *Variant {
+	var arg1 **C.gchar
+	var arg2 C.gssize
+
+	{
+		var dst []C.utf8
+		ptr := C.malloc(C.sizeof_utf8 * len(strv))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(strv)
+		sliceHeader.Cap = len(strv)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(strv); i++ {
+			src := strv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(strv)
+	}
+
+	ret := C.g_variant_new_objv(arg1, arg2)
+
+	var ret0 *Variant
+
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
 // NewVariantSignature constructs a struct Variant.
 func NewVariantSignature(signature string) *Variant {
 	var arg1 *C.gchar
@@ -27757,6 +30574,44 @@ func NewVariantString(string string) *Variant {
 	return ret0
 }
 
+// NewVariantStrv constructs a struct Variant.
+func NewVariantStrv(strv []string) *Variant {
+	var arg1 **C.gchar
+	var arg2 C.gssize
+
+	{
+		var dst []C.utf8
+		ptr := C.malloc(C.sizeof_utf8 * len(strv))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(strv)
+		sliceHeader.Cap = len(strv)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(strv); i++ {
+			src := strv[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.gchar)(unsafe.Pointer(ptr))
+		arg2 = len(strv)
+	}
+
+	ret := C.g_variant_new_strv(arg1, arg2)
+
+	var ret0 *Variant
+
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
 // NewVariantTakeString constructs a struct Variant.
 func NewVariantTakeString(string string) *Variant {
 	var arg1 *C.gchar
@@ -27765,6 +30620,29 @@ func NewVariantTakeString(string string) *Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	ret := C.g_variant_new_take_string(arg1)
+
+	var ret0 *Variant
+
+	{
+		ret0 = WrapVariant(ret)
+		runtime.SetFinalizer(&ret0, func(v **Variant) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// NewVariantTuple constructs a struct Variant.
+func NewVariantTuple(children []*Variant) *Variant {
+	var arg1 **C.GVariant
+	var arg2 C.gsize
+
+	arg1 = (**C.GVariant)(unsafe.Pointer(&children[0]))
+	arg2 = len(children)
+	defer runtime.KeepAlive(children)
+
+	ret := C.g_variant_new_tuple(arg1, arg2)
 
 	var ret0 *Variant
 
@@ -27906,13 +30784,15 @@ func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool
 	arg0 = (*C.GVariant)(value.Native())
 	arg1 = (*C.gchar)(C.CString(formatString))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = gextras.Cbool(copyOnly)
+	if copyOnly {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_variant_check_format_string(arg0, arg1, arg2)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28134,7 +31014,7 @@ func (one *Variant) Equal(two Variant) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28152,7 +31032,7 @@ func (value *Variant) Boolean() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28817,7 +31697,7 @@ func (value *Variant) IsContainer() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28840,7 +31720,7 @@ func (value *Variant) IsFloating() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28866,24 +31746,24 @@ func (value *Variant) IsNormalForm() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // IsOfType checks if a value has a type matching the provided type.
-func (value *Variant) IsOfType(_type *VariantType) bool {
+func (value *Variant) IsOfType(typ *VariantType) bool {
 	var arg0 *C.GVariant
 	var arg1 *C.GVariantType
 
 	arg0 = (*C.GVariant)(value.Native())
-	arg1 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_is_of_type(arg0, arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -28987,7 +31867,9 @@ func (value *Variant) Print(typeAnnotate bool) string {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GVariant)(value.Native())
-	arg1 = gextras.Cbool(typeAnnotate)
+	if typeAnnotate {
+		arg1 = C.TRUE
+	}
 
 	ret := C.g_variant_print(arg0, arg1)
 
@@ -29010,7 +31892,9 @@ func (value *Variant) PrintString(string *String, typeAnnotate bool) *String {
 
 	arg0 = (*C.GVariant)(value.Native())
 	arg1 = (*C.GString)(string.Native())
-	arg2 = gextras.Cbool(typeAnnotate)
+	if typeAnnotate {
+		arg2 = C.TRUE
+	}
 
 	ret := C.g_variant_print_string(arg0, arg1, arg2)
 
@@ -29186,10 +32070,10 @@ func (v *VariantBuilder) Native() unsafe.Pointer {
 }
 
 // NewVariantBuilder constructs a struct VariantBuilder.
-func NewVariantBuilder(_type *VariantType) *VariantBuilder {
+func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	var arg1 *C.GVariantType
 
-	arg1 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_builder_new(arg1)
 
@@ -29314,12 +32198,12 @@ func (builder *VariantBuilder) End() *Variant {
 // to a Builder outside of the control of your own code then you should assume
 // that the person receiving that reference may try to use reference counting;
 // you should use g_variant_builder_new() instead of this function.
-func (builder *VariantBuilder) Init(_type *VariantType) {
+func (builder *VariantBuilder) Init(typ *VariantType) {
 	var arg0 *C.GVariantBuilder
 	var arg1 *C.GVariantType
 
 	arg0 = (*C.GVariantBuilder)(builder.Native())
-	arg1 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(typ.Native())
 
 	C.g_variant_builder_init(arg0, arg1)
 }
@@ -29359,12 +32243,12 @@ func (builder *VariantBuilder) Init(_type *VariantType) {
 //    g_variant_builder_close (&builder);
 //
 //    output = g_variant_builder_end (&builder);
-func (builder *VariantBuilder) Open(_type *VariantType) {
+func (builder *VariantBuilder) Open(typ *VariantType) {
 	var arg0 *C.GVariantBuilder
 	var arg1 *C.GVariantType
 
 	arg0 = (*C.GVariantBuilder)(builder.Native())
-	arg1 = (*C.GVariantType)(_type.Native())
+	arg1 = (*C.GVariantType)(typ.Native())
 
 	C.g_variant_builder_open(arg0, arg1)
 }
@@ -29535,7 +32419,7 @@ func (dict *VariantDict) Contains(key string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -29670,7 +32554,7 @@ func (dict *VariantDict) Remove(key string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30061,12 +32945,32 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	return ret0
 }
 
+// NewVariantTypeTuple constructs a struct VariantType.
+func NewVariantTypeTuple(items []*VariantType) *VariantType {
+	var arg1 **C.GVariantType
+	var arg2 C.gint
+
+	arg1 = (**C.GVariantType)(unsafe.Pointer(&items[0]))
+	arg2 = len(items)
+	defer runtime.KeepAlive(items)
+
+	ret := C.g_variant_type_new_tuple(arg1, arg2)
+
+	var ret0 *VariantType
+
+	{
+		ret0 = WrapVariantType(ret)
+	}
+
+	return ret0
+}
+
 // Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()
 // on the return value. @type may not be nil.
-func (_type *VariantType) Copy() *VariantType {
+func (typ *VariantType) Copy() *VariantType {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_copy(arg0)
 
@@ -30082,10 +32986,10 @@ func (_type *VariantType) Copy() *VariantType {
 // DupString returns a newly-allocated copy of the type string corresponding to
 // @type. The returned string is nul-terminated. It is appropriate to call
 // g_free() on the return value.
-func (_type *VariantType) DupString() string {
+func (typ *VariantType) DupString() string {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_dup_string(arg0)
 
@@ -30100,10 +33004,10 @@ func (_type *VariantType) DupString() string {
 // Element determines the element type of an array or maybe type.
 //
 // This function may only be used with array or maybe types.
-func (_type *VariantType) Element() *VariantType {
+func (typ *VariantType) Element() *VariantType {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_element(arg0)
 
@@ -30140,7 +33044,7 @@ func (type1 *VariantType) Equal(type2 VariantType) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30156,10 +33060,10 @@ func (type1 *VariantType) Equal(type2 VariantType) bool {
 //
 // This call, together with g_variant_type_next() provides an iterator interface
 // over tuple and dictionary entry types.
-func (_type *VariantType) First() *VariantType {
+func (typ *VariantType) First() *VariantType {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_first(arg0)
 
@@ -30181,10 +33085,10 @@ func (_type *VariantType) First() *VariantType {
 // In the case that @type is nil, this function does nothing.
 //
 // Since 2.24
-func (_type *VariantType) Free() {
+func (typ *VariantType) Free() {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	C.g_variant_type_free(arg0)
 }
@@ -30192,10 +33096,10 @@ func (_type *VariantType) Free() {
 // StringLength returns the length of the type string corresponding to the given
 // @type. This function must be used to determine the valid extent of the memory
 // region returned by g_variant_type_peek_string().
-func (_type *VariantType) StringLength() uint {
+func (typ *VariantType) StringLength() uint {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_get_string_length(arg0)
 
@@ -30210,10 +33114,10 @@ func (_type *VariantType) StringLength() uint {
 //
 // The argument type of @type is only #gconstpointer to allow use with Table
 // without function pointer casting. A valid Type must be provided.
-func (_type *VariantType) Hash() uint {
+func (typ *VariantType) Hash() uint {
 	var arg0 C.gpointer
 
-	arg0 = (C.gpointer)(_type.Native())
+	arg0 = (C.gpointer)(typ.Native())
 
 	ret := C.g_variant_type_hash(arg0)
 
@@ -30229,16 +33133,16 @@ func (_type *VariantType) Hash() uint {
 //
 // This function returns true for any indefinite type for which every definite
 // subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
-func (_type *VariantType) IsArray() bool {
+func (typ *VariantType) IsArray() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_array(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30252,16 +33156,16 @@ func (_type *VariantType) IsArray() bool {
 //
 // This function returns false for all indefinite types except
 // G_VARIANT_TYPE_BASIC.
-func (_type *VariantType) IsBasic() bool {
+func (typ *VariantType) IsBasic() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_basic(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30273,16 +33177,16 @@ func (_type *VariantType) IsBasic() bool {
 //
 // This function returns true for any indefinite type for which every definite
 // subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
-func (_type *VariantType) IsContainer() bool {
+func (typ *VariantType) IsContainer() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_container(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30296,16 +33200,16 @@ func (_type *VariantType) IsContainer() bool {
 // function on the result of g_variant_get_type() will always result in true
 // being returned. Calling this function on an indefinite type like
 // G_VARIANT_TYPE_ARRAY, however, will result in false being returned.
-func (_type *VariantType) IsDefinite() bool {
+func (typ *VariantType) IsDefinite() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_definite(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30315,16 +33219,16 @@ func (_type *VariantType) IsDefinite() bool {
 //
 // This function returns true for any indefinite type for which every definite
 // subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
-func (_type *VariantType) IsDictEntry() bool {
+func (typ *VariantType) IsDictEntry() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_dict_entry(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30334,16 +33238,16 @@ func (_type *VariantType) IsDictEntry() bool {
 //
 // This function returns true for any indefinite type for which every definite
 // subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
-func (_type *VariantType) IsMaybe() bool {
+func (typ *VariantType) IsMaybe() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_maybe(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30353,18 +33257,18 @@ func (_type *VariantType) IsMaybe() bool {
 // This function returns true if @type is a subtype of @supertype. All types are
 // considered to be subtypes of themselves. Aside from that, only indefinite
 // types can have subtypes.
-func (_type *VariantType) IsSubtypeOf(supertype *VariantType) bool {
+func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	var arg0 *C.GVariantType
 	var arg1 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 	arg1 = (*C.GVariantType)(supertype.Native())
 
 	ret := C.g_variant_type_is_subtype_of(arg0, arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30374,31 +33278,31 @@ func (_type *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 //
 // This function returns true for any indefinite type for which every definite
 // subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
-func (_type *VariantType) IsTuple() bool {
+func (typ *VariantType) IsTuple() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_tuple(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // IsVariant determines if the given @type is the variant type.
-func (_type *VariantType) IsVariant() bool {
+func (typ *VariantType) IsVariant() bool {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_is_variant(arg0)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -30407,10 +33311,10 @@ func (_type *VariantType) IsVariant() bool {
 //
 // This function may only be used with a dictionary entry type. Other than the
 // additional restriction, this call is equivalent to g_variant_type_first().
-func (_type *VariantType) Key() *VariantType {
+func (typ *VariantType) Key() *VariantType {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_key(arg0)
 
@@ -30433,10 +33337,10 @@ func (_type *VariantType) Key() *VariantType {
 // not be used with the generic tuple type G_VARIANT_TYPE_TUPLE.
 //
 // In the case of a dictionary entry type, this function will always return 2.
-func (_type *VariantType) NItems() uint {
+func (typ *VariantType) NItems() uint {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_n_items(arg0)
 
@@ -30457,10 +33361,10 @@ func (_type *VariantType) NItems() uint {
 // returns nil.
 //
 // For tuples, nil is returned when @type is the last item in a tuple.
-func (_type *VariantType) Next() *VariantType {
+func (typ *VariantType) Next() *VariantType {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_next(arg0)
 
@@ -30481,10 +33385,10 @@ func (_type *VariantType) Next() *VariantType {
 // g_variant_type_get_string_length().
 //
 // To get a nul-terminated string, see g_variant_type_dup_string().
-func (_type *VariantType) PeekString() string {
+func (typ *VariantType) PeekString() string {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_peek_string(arg0)
 
@@ -30498,10 +33402,10 @@ func (_type *VariantType) PeekString() string {
 // Value determines the value type of a dictionary entry type.
 //
 // This function may only be used with a dictionary entry type.
-func (_type *VariantType) Value() *VariantType {
+func (typ *VariantType) Value() *VariantType {
 	var arg0 *C.GVariantType
 
-	arg0 = (*C.GVariantType)(_type.Native())
+	arg0 = (*C.GVariantType)(typ.Native())
 
 	ret := C.g_variant_type_value(arg0)
 

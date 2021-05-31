@@ -1038,7 +1038,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 // deserialize it, asynchronously. When the operation is finished, @callback
 // will be called. You can then call gdk_content_deserialize_finish() to get the
 // result of the operation.
-func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
+func ContentDeserializeAsync(stream gio.InputStream, mimeType string, typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg1 *C.GInputStream
 	var arg2 *C.char
 	var arg3 C.GType
@@ -1050,7 +1050,7 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type exte
 	arg1 = (*C.GInputStream)(stream.Native())
 	arg2 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.GType(_type)
+	arg3 = C.GType(typ)
 	arg4 = C.int(ioPriority)
 	arg5 = (*C.GCancellable)(cancellable.Native())
 	arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -1060,20 +1060,62 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type exte
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
-func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool {
+func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) error {
 	var arg1 *C.GAsyncResult
 	var arg2 *C.GValue
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(result.Native())
 	arg2 = (*C.GValue)(value.GValue)
 
-	ret := C.gdk_content_deserialize_finish(arg1, arg2)
+	ret := C.gdk_content_deserialize_finish(arg1, arg2, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
+}
+
+// ContentRegisterDeserializer registers a function to create objects of a given
+// @type from a serialized representation with the given mime type.
+func ContentRegisterDeserializer(mimeType string, typ externglib.Type, deserialize ContentDeserializeFunc) {
+	var arg1 *C.char
+	var arg2 C.GType
+	var arg3 C.GdkContentDeserializeFunc
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
+
+	arg1 = (*C.gchar)(C.CString(mimeType))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.GType(typ)
+	arg3 = (*[0]byte)(C.gotk4_ContentDeserializeFunc)
+	arg4 = C.gpointer(box.Assign(deserialize))
+	arg5 = (*[0]byte)(C.callbackDelete)
+
+	C.gdk_content_register_deserializer(arg1, arg2, arg3, arg4, arg5)
+}
+
+// ContentRegisterSerializer registers a function to convert objects of the
+// given @type to a serialized representation with the given mime type.
+func ContentRegisterSerializer(typ externglib.Type, mimeType string, serialize ContentSerializeFunc) {
+	var arg1 C.GType
+	var arg2 *C.char
+	var arg3 C.GdkContentSerializeFunc
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
+
+	arg1 = C.GType(typ)
+	arg2 = (*C.gchar)(C.CString(mimeType))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*[0]byte)(C.gotk4_ContentSerializeFunc)
+	arg4 = C.gpointer(box.Assign(serialize))
+	arg5 = (*[0]byte)(C.callbackDelete)
+
+	C.gdk_content_register_serializer(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
@@ -1102,18 +1144,22 @@ func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *exte
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
-func ContentSerializeFinish(result gio.AsyncResult) bool {
+func ContentSerializeFinish(result gio.AsyncResult) error {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_content_serialize_finish(arg1)
+	ret := C.gdk_content_serialize_finish(arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // DragActionIsUnique checks if @action represents a single action or if it
@@ -1129,7 +1175,7 @@ func DragActionIsUnique(action DragAction) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1153,7 +1199,7 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 
 	ret0 = float64(arg3)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -1179,7 +1225,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 
 	ret1 = float64(arg4)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -1202,7 +1248,7 @@ func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 
 	ret0 = float64(arg3)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -1250,7 +1296,7 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 
 	arg1 = C.guint(symbol)
 
-	ret := C.gdk_keyval_convert_case(arg1, &arg2, &arg3)
+	C.gdk_keyval_convert_case(arg1, &arg2, &arg3)
 
 	var ret0 uint
 	var ret1 uint
@@ -1291,7 +1337,7 @@ func KeyvalIsLower(keyval uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1306,7 +1352,7 @@ func KeyvalIsUpper(keyval uint) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1393,7 +1439,7 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 
 	var ret0 Paintable
 
-	ret0 = WrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Paintable)
 
 	return ret0
 }
@@ -1431,45 +1477,6 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	return ret0
 }
 
-// PangoLayoutLineGetClipRegion obtains a clip region which contains the areas
-// where the given ranges of text would be drawn. @x_origin and @y_origin are
-// the top left position of the layout. @index_ranges should contain ranges of
-// bytes in the layout’s text. The clip region will include space to the left or
-// right of the line (to the layout bounding box) if you have indexes above or
-// below the indexes contained inside the line. This is to draw the selection
-// all the way to the side of the layout. However, the clip region is in line
-// coordinates, not layout coordinates.
-//
-// Note that the regions returned correspond to logical extents of the text
-// ranges, not ink extents. So the drawn line may in fact touch areas out of the
-// clip region. The clip region is mainly useful for highlightling parts of
-// text, such as when text is selected.
-func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin int, indexRanges []int, nRanges int) *cairo.Region {
-	var arg1 *C.PangoLayoutLine
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 *C.int
-	var arg5 C.int
-
-	arg1 = (*C.PangoLayoutLine)(line.Native())
-	arg2 = C.int(xOrigin)
-	arg3 = C.int(yOrigin)
-	{
-
-	}
-	arg5 = C.int(nRanges)
-
-	ret := C.gdk_pango_layout_line_get_clip_region(arg1, arg2, arg3, arg4, arg5)
-
-	var ret0 *cairo.Region
-
-	{
-		ret0 = cairo.WrapRegion(ret)
-	}
-
-	return ret0
-}
-
 // PixbufGetFromSurface transfers image data from a #cairo_surface_t and
 // converts it to an RGB(A) representation inside a Pixbuf. This allows you to
 // efficiently read individual pixels from cairo surfaces.
@@ -1493,7 +1500,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 
 	var ret0 gdkpixbuf.Pixbuf
 
-	ret0 = gdkpixbuf.WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
 	return ret0
 }
@@ -1510,7 +1517,7 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 
 	var ret0 gdkpixbuf.Pixbuf
 
-	ret0 = gdkpixbuf.WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
 	return ret0
 }
@@ -1745,7 +1752,7 @@ func (dragSurface dragSurface) Present(width int, height int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1927,7 +1934,7 @@ func (paintable paintable) ComputeConcreteSize(specifiedWidth float64, specified
 	arg3 = C.double(defaultWidth)
 	arg4 = C.double(defaultHeight)
 
-	ret := C.gdk_paintable_compute_concrete_size(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+	C.gdk_paintable_compute_concrete_size(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
 
 	var ret0 float64
 	var ret1 float64
@@ -1955,7 +1962,7 @@ func (paintable paintable) CurrentImage() Paintable {
 
 	var ret0 Paintable
 
-	ret0 = WrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Paintable)
 
 	return ret0
 }
@@ -2178,7 +2185,7 @@ func (popup popup) Autohide() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2193,7 +2200,7 @@ func (popup popup) Parent() Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -2293,7 +2300,7 @@ func (popup popup) Present(width int, height int, layout *PopupLayout) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2549,7 +2556,7 @@ func (toplevel toplevel) Lower() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2566,7 +2573,7 @@ func (toplevel toplevel) Minimize() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2610,7 +2617,9 @@ func (toplevel toplevel) SetDecorated(decorated bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkToplevel)(toplevel.Native())
-	arg1 = gextras.Cbool(decorated)
+	if decorated {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_toplevel_set_decorated(arg0, arg1)
 }
@@ -2622,7 +2631,9 @@ func (toplevel toplevel) SetDeletable(deletable bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkToplevel)(toplevel.Native())
-	arg1 = gextras.Cbool(deletable)
+	if deletable {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_toplevel_set_deletable(arg0, arg1)
 }
@@ -2656,7 +2667,9 @@ func (toplevel toplevel) SetModal(modal bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkToplevel)(toplevel.Native())
-	arg1 = gextras.Cbool(modal)
+	if modal {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_toplevel_set_modal(arg0, arg1)
 }
@@ -2720,7 +2733,7 @@ func (toplevel toplevel) ShowWindowMenu(event Event) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2736,7 +2749,7 @@ func (toplevel toplevel) SupportsEdgeConstraints() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2791,11 +2804,46 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
+// NewContentFormats constructs a struct ContentFormats.
+func NewContentFormats(mimeTypes []string) *ContentFormats {
+	var arg1 **C.char
+	var arg2 C.guint
+
+	{
+		var dst []*C.gchar
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(mimeTypes))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(mimeTypes)
+		sliceHeader.Cap = len(mimeTypes)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(mimeTypes); i++ {
+			src := mimeTypes[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.char)(unsafe.Pointer(ptr))
+		arg2 = len(mimeTypes)
+	}
+
+	ret := C.gdk_content_formats_new(arg1, arg2)
+
+	var ret0 *ContentFormats
+
+	{
+		ret0 = WrapContentFormats(ret)
+	}
+
+	return ret0
+}
+
 // NewContentFormatsForGType constructs a struct ContentFormats.
-func NewContentFormatsForGType(_type externglib.Type) *ContentFormats {
+func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var arg1 C.GType
 
-	arg1 = C.GType(_type)
+	arg1 = C.GType(typ)
 
 	ret := C.gdk_content_formats_new_for_gtype(arg1)
 
@@ -2809,18 +2857,18 @@ func NewContentFormatsForGType(_type externglib.Type) *ContentFormats {
 }
 
 // ContainGType checks if a given #GType is part of the given @formats.
-func (formats *ContentFormats) ContainGType(_type externglib.Type) bool {
+func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var arg0 *C.GdkContentFormats
 	var arg1 C.GType
 
 	arg0 = (*C.GdkContentFormats)(formats.Native())
-	arg1 = C.GType(_type)
+	arg1 = C.GType(typ)
 
 	ret := C.gdk_content_formats_contain_gtype(arg0, arg1)
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2838,7 +2886,7 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2887,7 +2935,7 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3115,12 +3163,12 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 }
 
 // AddGType appends @gtype to @builder if it has not already been added.
-func (builder *ContentFormatsBuilder) AddGType(_type externglib.Type) {
+func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var arg0 *C.GdkContentFormatsBuilder
 	var arg1 C.GType
 
 	arg0 = (*C.GdkContentFormatsBuilder)(builder.Native())
-	arg1 = C.GType(_type)
+	arg1 = C.GType(typ)
 
 	C.gdk_content_formats_builder_add_gtype(arg0, arg1)
 }
@@ -3283,7 +3331,7 @@ func (timings *FrameTimings) Complete() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3437,14 +3485,14 @@ func (k *KeymapKey) Keycode() uint {
 }
 
 // Group gets the field inside the struct.
-func (g *KeymapKey) Group() int {
+func (k *KeymapKey) Group() int {
 	var ret int
 	ret = int(k.native.group)
 	return ret
 }
 
 // Level gets the field inside the struct.
-func (l *KeymapKey) Level() int {
+func (k *KeymapKey) Level() int {
 	var ret int
 	ret = int(k.native.level)
 	return ret
@@ -3556,7 +3604,7 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3604,7 +3652,7 @@ func (layout *PopupLayout) Offset() (dx int, dy int) {
 
 	arg0 = (*C.GdkPopupLayout)(layout.Native())
 
-	ret := C.gdk_popup_layout_get_offset(arg0, &arg1, &arg2)
+	C.gdk_popup_layout_get_offset(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -3768,21 +3816,21 @@ func (r *RGBA) Red() float32 {
 }
 
 // Green gets the field inside the struct.
-func (g *RGBA) Green() float32 {
+func (r *RGBA) Green() float32 {
 	var ret float32
 	ret = float32(r.native.green)
 	return ret
 }
 
 // Blue gets the field inside the struct.
-func (b *RGBA) Blue() float32 {
+func (r *RGBA) Blue() float32 {
 	var ret float32
 	ret = float32(r.native.blue)
 	return ret
 }
 
 // Alpha gets the field inside the struct.
-func (a *RGBA) Alpha() float32 {
+func (r *RGBA) Alpha() float32 {
 	var ret float32
 	ret = float32(r.native.alpha)
 	return ret
@@ -3819,7 +3867,7 @@ func (p1 *RGBA) Equal(p2 RGBA) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3859,7 +3907,7 @@ func (rgba *RGBA) IsClear() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3875,7 +3923,7 @@ func (rgba *RGBA) IsOpaque() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3906,7 +3954,7 @@ func (rgba *RGBA) Parse(spec string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3965,28 +4013,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 }
 
 // X gets the field inside the struct.
-func (x *Rectangle) X() int {
+func (r *Rectangle) X() int {
 	var ret int
 	ret = int(r.native.x)
 	return ret
 }
 
 // Y gets the field inside the struct.
-func (y *Rectangle) Y() int {
+func (r *Rectangle) Y() int {
 	var ret int
 	ret = int(r.native.y)
 	return ret
 }
 
 // Width gets the field inside the struct.
-func (w *Rectangle) Width() int {
+func (r *Rectangle) Width() int {
 	var ret int
 	ret = int(r.native.width)
 	return ret
 }
 
 // Height gets the field inside the struct.
-func (h *Rectangle) Height() int {
+func (r *Rectangle) Height() int {
 	var ret int
 	ret = int(r.native.height)
 	return ret
@@ -4006,7 +4054,7 @@ func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4023,7 +4071,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4053,7 +4101,7 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -4072,7 +4120,7 @@ func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	arg0 = (*C.GdkRectangle)(src1.Native())
 	arg1 = (*C.GdkRectangle)(src2.Native())
 
-	ret := C.gdk_rectangle_union(arg0, arg1, &arg2)
+	C.gdk_rectangle_union(arg0, arg1, &arg2)
 
 	var ret0 *Rectangle
 
@@ -4119,14 +4167,14 @@ func (t *TimeCoord) Time() uint32 {
 }
 
 // Flags gets the field inside the struct.
-func (f *TimeCoord) Flags() AxisFlags {
+func (t *TimeCoord) Flags() AxisFlags {
 	var ret AxisFlags
 	ret = AxisFlags(t.native.flags)
 	return ret
 }
 
 // Axes gets the field inside the struct.
-func (a *TimeCoord) Axes() [12]float64 {
+func (t *TimeCoord) Axes() [12]float64 {
 	var ret [12]float64
 	ret = [12]float64(t.native.axes)
 	return ret
@@ -4204,7 +4252,7 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4223,9 +4271,9 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = gextras.Gobool(arg1)
+	ret0 = arg1 != C.FALSE
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -4241,7 +4289,7 @@ func (layout *ToplevelLayout) FullscreenMonitor() Monitor {
 
 	var ret0 Monitor
 
-	ret0 = WrapMonitor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Monitor)
 
 	return ret0
 }
@@ -4260,9 +4308,9 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = gextras.Gobool(arg1)
+	ret0 = arg1 != C.FALSE
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -4278,7 +4326,7 @@ func (layout *ToplevelLayout) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4308,7 +4356,9 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitor) {
 	var arg2 *C.GdkMonitor
 
 	arg0 = (*C.GdkToplevelLayout)(layout.Native())
-	arg1 = gextras.Cbool(fullscreen)
+	if fullscreen {
+		arg1 = C.TRUE
+	}
 	arg2 = (*C.GdkMonitor)(monitor.Native())
 
 	C.gdk_toplevel_layout_set_fullscreen(arg0, arg1, arg2)
@@ -4321,7 +4371,9 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkToplevelLayout)(layout.Native())
-	arg1 = gextras.Cbool(maximized)
+	if maximized {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_toplevel_layout_set_maximized(arg0, arg1)
 }
@@ -4333,7 +4385,9 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkToplevelLayout)(layout.Native())
-	arg1 = gextras.Cbool(resizable)
+	if resizable {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_toplevel_layout_set_resizable(arg0, arg1)
 }
@@ -4436,7 +4490,7 @@ func (context appLaunchContext) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -4613,7 +4667,7 @@ type Clipboard interface {
 	ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_async().
-	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
+	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream, err error)
 	// ReadTextAsync: asynchronously request the @clipboard contents converted
 	// to a string. When the operation is finished @callback will be called. You
 	// can then call gdk_clipboard_read_text_finish() to get the result.
@@ -4624,7 +4678,7 @@ type Clipboard interface {
 	ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadTextFinish finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_text_async().
-	ReadTextFinish(result gio.AsyncResult) string
+	ReadTextFinish(result gio.AsyncResult) (utf8 string, err error)
 	// ReadTextureAsync: asynchronously request the @clipboard contents
 	// converted to a Pixbuf. When the operation is finished @callback will be
 	// called. You can then call gdk_clipboard_read_texture_finish() to get the
@@ -4636,7 +4690,7 @@ type Clipboard interface {
 	ReadTextureAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadTextureFinish finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_texture_async().
-	ReadTextureFinish(result gio.AsyncResult) Texture
+	ReadTextureFinish(result gio.AsyncResult) (texture Texture, err error)
 	// ReadValueAsync: asynchronously request the @clipboard contents converted
 	// to the given @type. When the operation is finished @callback will be
 	// called. You can then call gdk_clipboard_read_value_finish() to get the
@@ -4645,7 +4699,7 @@ type Clipboard interface {
 	// For local clipboard contents that are available in the given #GType, the
 	// value will be copied directly. Otherwise, GDK will try to use
 	// gdk_content_deserialize_async() to convert the clipboard's data.
-	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// SetContent sets a new content provider on @clipboard. The clipboard will
 	// claim the Display's resources and advertise these new contents to other
 	// applications.
@@ -4673,7 +4727,7 @@ type Clipboard interface {
 	StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// StoreFinish finishes an asynchronous clipboard store started with
 	// gdk_clipboard_store_async().
-	StoreFinish(result gio.AsyncResult) bool
+	StoreFinish(result gio.AsyncResult) error
 }
 
 // clipboard implements the Clipboard interface.
@@ -4709,7 +4763,7 @@ func (clipboard clipboard) Content() ContentProvider {
 
 	var ret0 ContentProvider
 
-	ret0 = WrapContentProvider(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(ContentProvider)
 
 	return ret0
 }
@@ -4724,7 +4778,7 @@ func (clipboard clipboard) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -4764,7 +4818,7 @@ func (clipboard clipboard) IsLocal() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4797,24 +4851,31 @@ func (clipboard clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellab
 
 // ReadFinish finishes an asynchronous clipboard read started with
 // gdk_clipboard_read_async().
-func (clipboard clipboard) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream) {
+func (clipboard clipboard) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_clipboard_read_finish(arg0, arg1, &arg2)
+	ret := C.gdk_clipboard_read_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 gio.InputStream
+	var goError error
 
 	ret0 = C.GoString(arg2)
 
-	ret1 = gio.WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gio.InputStream)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadTextAsync: asynchronously request the @clipboard contents converted
@@ -4840,21 +4901,28 @@ func (clipboard clipboard) ReadTextAsync(cancellable gio.Cancellable, callback g
 
 // ReadTextFinish finishes an asynchronous clipboard read started with
 // gdk_clipboard_read_text_async().
-func (clipboard clipboard) ReadTextFinish(result gio.AsyncResult) string {
+func (clipboard clipboard) ReadTextFinish(result gio.AsyncResult) (utf8 string, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_clipboard_read_text_finish(arg0, arg1)
+	ret := C.gdk_clipboard_read_text_finish(arg0, arg1, &gError)
 
 	var ret0 string
+	var goError error
 
 	ret0 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadTextureAsync: asynchronously request the @clipboard contents
@@ -4881,20 +4949,27 @@ func (clipboard clipboard) ReadTextureAsync(cancellable gio.Cancellable, callbac
 
 // ReadTextureFinish finishes an asynchronous clipboard read started with
 // gdk_clipboard_read_texture_async().
-func (clipboard clipboard) ReadTextureFinish(result gio.AsyncResult) Texture {
+func (clipboard clipboard) ReadTextureFinish(result gio.AsyncResult) (texture Texture, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_clipboard_read_texture_finish(arg0, arg1)
+	ret := C.gdk_clipboard_read_texture_finish(arg0, arg1, &gError)
 
 	var ret0 Texture
+	var goError error
 
-	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Texture)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ReadValueAsync: asynchronously request the @clipboard contents converted
@@ -4905,7 +4980,7 @@ func (clipboard clipboard) ReadTextureFinish(result gio.AsyncResult) Texture {
 // For local clipboard contents that are available in the given #GType, the
 // value will be copied directly. Otherwise, GDK will try to use
 // gdk_content_deserialize_async() to convert the clipboard's data.
-func (clipboard clipboard) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (clipboard clipboard) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 *C.GdkClipboard
 	var arg1 C.GType
 	var arg2 C.int
@@ -4914,7 +4989,7 @@ func (clipboard clipboard) ReadValueAsync(_type externglib.Type, ioPriority int,
 	var arg5 C.gpointer
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
-	arg1 = C.GType(_type)
+	arg1 = C.GType(typ)
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -4945,7 +5020,7 @@ func (clipboard clipboard) SetContent(provider ContentProvider) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5008,20 +5083,24 @@ func (clipboard clipboard) StoreAsync(ioPriority int, cancellable gio.Cancellabl
 
 // StoreFinish finishes an asynchronous clipboard store started with
 // gdk_clipboard_store_async().
-func (clipboard clipboard) StoreFinish(result gio.AsyncResult) bool {
+func (clipboard clipboard) StoreFinish(result gio.AsyncResult) error {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GdkClipboard)(clipboard.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_clipboard_store_finish(arg0, arg1)
+	ret := C.gdk_clipboard_store_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ContentDeserializer: a GdkContentDeserializer is used to deserialize content
@@ -5089,7 +5168,7 @@ func (deserializer contentDeserializer) Cancellable() gio.Cancellable {
 
 	var ret0 gio.Cancellable
 
-	ret0 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.Cancellable)
 
 	return ret0
 }
@@ -5105,7 +5184,7 @@ func (deserializer contentDeserializer) InputStream() gio.InputStream {
 
 	var ret0 gio.InputStream
 
-	ret0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.InputStream)
 
 	return ret0
 }
@@ -5216,7 +5295,7 @@ type ContentProvider interface {
 	// returned by gdk_content_provider_ref_formats(). However, if the given
 	// #GType is not supported, this operation can fail and
 	// IO_ERROR_NOT_SUPPORTED will be reported.
-	Value(value *externglib.Value) bool
+	Value(value *externglib.Value) error
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
 	RefFormats() *ContentFormats
@@ -5240,7 +5319,7 @@ type ContentProvider interface {
 	WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// WriteMIMETypeFinish finishes an asynchronous write operation started with
 	// gdk_content_provider_write_mime_type_async().
-	WriteMIMETypeFinish(result gio.AsyncResult) bool
+	WriteMIMETypeFinish(result gio.AsyncResult) error
 }
 
 // contentProvider implements the ContentProvider interface.
@@ -5277,7 +5356,7 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) ContentProvi
 
 	var ret0 ContentProvider
 
-	ret0 = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ContentProvider)
 
 	return ret0
 }
@@ -5292,7 +5371,38 @@ func NewContentProviderForValue(value *externglib.Value) ContentProvider {
 
 	var ret0 ContentProvider
 
-	ret0 = WrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ContentProvider)
+
+	return ret0
+}
+
+// NewContentProviderUnion constructs a class ContentProvider.
+func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
+	var arg1 **C.GdkContentProvider
+	var arg2 C.gsize
+
+	{
+		var dst []*C.GdkContentProvider
+		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(providers))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(providers)
+		sliceHeader.Cap = len(providers)
+
+		for i := 0; i < len(providers); i++ {
+			src := providers[i]
+			dst[i] = (*C.GdkContentProvider)(src.Native())
+		}
+
+		arg1 = (**C.GdkContentProvider)(unsafe.Pointer(ptr))
+		arg2 = len(providers)
+	}
+
+	ret := C.gdk_content_provider_new_union(arg1, arg2)
+
+	var ret0 ContentProvider
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ContentProvider)
 
 	return ret0
 }
@@ -5313,20 +5423,24 @@ func (provider contentProvider) ContentChanged() {
 // returned by gdk_content_provider_ref_formats(). However, if the given
 // #GType is not supported, this operation can fail and
 // IO_ERROR_NOT_SUPPORTED will be reported.
-func (provider contentProvider) Value(value *externglib.Value) bool {
+func (provider contentProvider) Value(value *externglib.Value) error {
 	var arg0 *C.GdkContentProvider
 	var arg1 *C.GValue
+	var gError *C.GError
 
 	arg0 = (*C.GdkContentProvider)(provider.Native())
 	arg1 = (*C.GValue)(value.GValue)
 
-	ret := C.gdk_content_provider_get_value(arg0, arg1)
+	ret := C.gdk_content_provider_get_value(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // RefFormats gets the formats that the provider can provide its current
@@ -5402,20 +5516,24 @@ func (provider contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.O
 
 // WriteMIMETypeFinish finishes an asynchronous write operation started with
 // gdk_content_provider_write_mime_type_async().
-func (provider contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) bool {
+func (provider contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
 	var arg0 *C.GdkContentProvider
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg0 = (*C.GdkContentProvider)(provider.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_content_provider_write_mime_type_finish(arg0, arg1)
+	ret := C.gdk_content_provider_write_mime_type_finish(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // ContentSerializer: a GdkContentSerializer is used to serialize content for
@@ -5483,7 +5601,7 @@ func (serializer contentSerializer) Cancellable() gio.Cancellable {
 
 	var ret0 gio.Cancellable
 
-	ret0 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.Cancellable)
 
 	return ret0
 }
@@ -5514,7 +5632,7 @@ func (serializer contentSerializer) OutputStream() gio.OutputStream {
 
 	var ret0 gio.OutputStream
 
-	ret0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.OutputStream)
 
 	return ret0
 }
@@ -5660,7 +5778,7 @@ func NewCursorFromName(name string, fallback Cursor) Cursor {
 
 	var ret0 Cursor
 
-	ret0 = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Cursor)
 
 	return ret0
 }
@@ -5681,7 +5799,7 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 
 	var ret0 Cursor
 
-	ret0 = WrapCursor(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Cursor)
 
 	return ret0
 }
@@ -5702,7 +5820,7 @@ func (cursor cursor) Fallback() Cursor {
 
 	var ret0 Cursor
 
-	ret0 = WrapCursor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Cursor)
 
 	return ret0
 }
@@ -5774,7 +5892,7 @@ func (cursor cursor) Texture() Texture {
 
 	var ret0 Texture
 
-	ret0 = WrapTexture(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Texture)
 
 	return ret0
 }
@@ -5894,7 +6012,7 @@ func (device device) CapsLockState() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5909,7 +6027,7 @@ func (device device) DeviceTool() DeviceTool {
 
 	var ret0 DeviceTool
 
-	ret0 = WrapDeviceTool(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DeviceTool)
 
 	return ret0
 }
@@ -5943,7 +6061,7 @@ func (device device) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -5959,7 +6077,7 @@ func (device device) HasCursor() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6007,7 +6125,7 @@ func (device device) NumLockState() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6056,7 +6174,7 @@ func (device device) ScrollLockState() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6071,7 +6189,7 @@ func (device device) Seat() Seat {
 
 	var ret0 Seat
 
-	ret0 = WrapSeat(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Seat)
 
 	return ret0
 }
@@ -6112,7 +6230,7 @@ func (device device) SurfaceAtPosition() (winX float64, winY float64, surface Su
 
 	ret1 = float64(arg2)
 
-	ret2 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0, ret1, ret2
 }
@@ -6167,7 +6285,7 @@ func (device device) HasBidiLayouts() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6502,7 +6620,7 @@ func (display display) DeviceIsGrabbed(device Device) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6536,7 +6654,7 @@ func (display display) AppLaunchContext() AppLaunchContext {
 
 	var ret0 AppLaunchContext
 
-	ret0 = WrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AppLaunchContext)
 
 	return ret0
 }
@@ -6551,7 +6669,7 @@ func (display display) Clipboard() Clipboard {
 
 	var ret0 Clipboard
 
-	ret0 = WrapClipboard(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Clipboard)
 
 	return ret0
 }
@@ -6569,7 +6687,7 @@ func (display display) DefaultSeat() Seat {
 
 	var ret0 Seat
 
-	ret0 = WrapSeat(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Seat)
 
 	return ret0
 }
@@ -6587,7 +6705,7 @@ func (display display) MonitorAtSurface(surface Surface) Monitor {
 
 	var ret0 Monitor
 
-	ret0 = WrapMonitor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Monitor)
 
 	return ret0
 }
@@ -6608,7 +6726,7 @@ func (self display) Monitors() gio.ListModel {
 
 	var ret0 gio.ListModel
 
-	ret0 = gio.WrapListModel(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(gio.ListModel)
 
 	return ret0
 }
@@ -6640,7 +6758,7 @@ func (display display) PrimaryClipboard() Clipboard {
 
 	var ret0 Clipboard
 
-	ret0 = WrapClipboard(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Clipboard)
 
 	return ret0
 }
@@ -6661,7 +6779,7 @@ func (display display) Setting(name string, value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6692,7 +6810,7 @@ func (display display) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6714,7 +6832,7 @@ func (display display) IsComposited() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6738,7 +6856,7 @@ func (display display) IsRGBA() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6805,7 +6923,7 @@ func (display display) MapKeycode(keycode uint) (keys []*KeymapKey, keyvals []ui
 
 	ret2 = int(arg4)
 
-	ret3 = gextras.Gobool(ret)
+	ret3 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3
 }
@@ -6851,7 +6969,7 @@ func (display display) MapKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok 
 
 	ret1 = int(arg3)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -6902,7 +7020,7 @@ func (display display) SupportsInputShapes() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6972,7 +7090,7 @@ func (display display) TranslateKey(keycode uint, state ModifierType, group int)
 
 	ret3 = (*ModifierType)(arg7)
 
-	ret4 = gextras.Gobool(ret)
+	ret4 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -7056,7 +7174,7 @@ func (manager displayManager) DefaultDisplay() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -7091,7 +7209,7 @@ func (manager displayManager) OpenDisplay(name string) Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -7184,7 +7302,9 @@ func (drag drag) DropDone(success bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkDrag)(drag.Native())
-	arg1 = gextras.Cbool(success)
+	if success {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_drag_drop_done(arg0, arg1)
 }
@@ -7215,7 +7335,7 @@ func (drag drag) Content() ContentProvider {
 
 	var ret0 ContentProvider
 
-	ret0 = WrapContentProvider(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(ContentProvider)
 
 	return ret0
 }
@@ -7230,7 +7350,7 @@ func (drag drag) Device() Device {
 
 	var ret0 Device
 
-	ret0 = WrapDevice(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Device)
 
 	return ret0
 }
@@ -7245,7 +7365,7 @@ func (drag drag) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -7264,7 +7384,7 @@ func (drag drag) DragSurface() Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -7314,7 +7434,7 @@ func (drag drag) Surface() Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -7476,7 +7596,7 @@ func (context drawContext) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -7519,7 +7639,7 @@ func (context drawContext) Surface() Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -7537,7 +7657,7 @@ func (context drawContext) IsInFrame() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7583,7 +7703,7 @@ type Drop interface {
 	ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish finishes an async drop read operation, see
 	// gdk_drop_read_async().
-	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
+	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream, err error)
 	// ReadValueAsync: asynchronously request the drag operation's contents
 	// converted to the given @type. When the operation is finished @callback
 	// will be called. You can then call gdk_drop_read_value_finish() to get the
@@ -7592,7 +7712,7 @@ type Drop interface {
 	// For local drag'n'drop operations that are available in the given #GType,
 	// the value will be copied directly. Otherwise, GDK will try to use
 	// gdk_content_deserialize_async() to convert the data.
-	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// Status selects all actions that are potentially supported by the
 	// destination.
 	//
@@ -7680,7 +7800,7 @@ func (self drop) Device() Device {
 
 	var ret0 Device
 
-	ret0 = WrapDevice(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Device)
 
 	return ret0
 }
@@ -7695,7 +7815,7 @@ func (self drop) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -7713,7 +7833,7 @@ func (self drop) Drag() Drag {
 
 	var ret0 Drag
 
-	ret0 = WrapDrag(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Drag)
 
 	return ret0
 }
@@ -7749,7 +7869,7 @@ func (self drop) Surface() Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -7766,7 +7886,21 @@ func (self drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.C
 
 	arg0 = (*C.GdkDrop)(self.Native())
 	{
+		var dst []C.utf8
+		ptr := C.malloc(C.sizeof_utf8 * (len(mimeTypes) + 1))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(mimeTypes)
+		sliceHeader.Cap = len(mimeTypes)
+		defer C.free(unsafe.Pointer(ptr))
 
+		for i := 0; i < len(mimeTypes); i++ {
+			src := mimeTypes[i]
+			dst[i] = (*C.gchar)(C.CString(src))
+			defer C.free(unsafe.Pointer(dst[i]))
+		}
+
+		arg1 = (**C.char)(unsafe.Pointer(ptr))
 	}
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
@@ -7778,25 +7912,32 @@ func (self drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.C
 
 // ReadFinish finishes an async drop read operation, see
 // gdk_drop_read_async().
-func (self drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream) {
+func (self drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream, err error) {
 	var arg0 *C.GdkDrop
 	var arg1 *C.GAsyncResult
 	var arg2 **C.char // out
+	var gError *C.GError
 
 	arg0 = (*C.GdkDrop)(self.Native())
 	arg1 = (*C.GAsyncResult)(result.Native())
 
-	ret := C.gdk_drop_read_finish(arg0, arg1, &arg2)
+	ret := C.gdk_drop_read_finish(arg0, arg1, &arg2, &gError)
 
 	var ret0 string
 	var ret1 gio.InputStream
+	var goError error
 
 	ret0 = C.GoString(arg2)
 	C.free(unsafe.Pointer(arg2))
 
-	ret1 = gio.WrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gio.InputStream)
 
-	return ret0, ret1
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, ret1, goError
 }
 
 // ReadValueAsync: asynchronously request the drag operation's contents
@@ -7807,7 +7948,7 @@ func (self drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputSt
 // For local drag'n'drop operations that are available in the given #GType,
 // the value will be copied directly. Otherwise, GDK will try to use
 // gdk_content_deserialize_async() to convert the data.
-func (self drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (self drop) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 *C.GdkDrop
 	var arg1 C.GType
 	var arg2 C.int
@@ -7816,7 +7957,7 @@ func (self drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellab
 	var arg5 C.gpointer
 
 	arg0 = (*C.GdkDrop)(self.Native())
-	arg1 = C.GType(_type)
+	arg1 = C.GType(typ)
 	arg2 = C.int(ioPriority)
 	arg3 = (*C.GCancellable)(cancellable.Native())
 	arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -8081,7 +8222,7 @@ func (frameClock frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn 
 	arg0 = (*C.GdkFrameClock)(frameClock.Native())
 	arg1 = C.gint64(baseTime)
 
-	ret := C.gdk_frame_clock_get_refresh_info(arg0, arg1, &arg2, &arg3)
+	C.gdk_frame_clock_get_refresh_info(arg0, arg1, &arg2, &arg3)
 
 	var ret0 int64
 	var ret1 int64
@@ -8228,7 +8369,7 @@ type GLContext interface {
 	// Realize realizes the given GLContext.
 	//
 	// It is safe to call this function on a realized GLContext.
-	Realize() bool
+	Realize() error
 	// SetDebugEnabled sets whether the GLContext should perform extra
 	// validations and run time checking. This is useful during development, but
 	// has additional overhead.
@@ -8301,7 +8442,7 @@ func (context glContext) DebugEnabled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8316,7 +8457,7 @@ func (context glContext) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -8332,7 +8473,7 @@ func (context glContext) ForwardCompatible() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8346,7 +8487,7 @@ func (context glContext) RequiredVersion() (major int, minor int) {
 
 	arg0 = (*C.GdkGLContext)(context.Native())
 
-	ret := C.gdk_gl_context_get_required_version(arg0, &arg1, &arg2)
+	C.gdk_gl_context_get_required_version(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -8368,7 +8509,7 @@ func (context glContext) SharedContext() GLContext {
 
 	var ret0 GLContext
 
-	ret0 = WrapGLContext(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(GLContext)
 
 	return ret0
 }
@@ -8383,7 +8524,7 @@ func (context glContext) Surface() Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -8399,7 +8540,7 @@ func (context glContext) UseES() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8414,7 +8555,7 @@ func (context glContext) Version() (major int, minor int) {
 
 	arg0 = (*C.GdkGLContext)(context.Native())
 
-	ret := C.gdk_gl_context_get_version(arg0, &arg1, &arg2)
+	C.gdk_gl_context_get_version(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -8451,7 +8592,7 @@ func (context glContext) IsLegacy() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8468,18 +8609,22 @@ func (context glContext) MakeCurrent() {
 // Realize realizes the given GLContext.
 //
 // It is safe to call this function on a realized GLContext.
-func (context glContext) Realize() bool {
+func (context glContext) Realize() error {
 	var arg0 *C.GdkGLContext
+	var gError *C.GError
 
 	arg0 = (*C.GdkGLContext)(context.Native())
 
-	ret := C.gdk_gl_context_realize(arg0)
+	ret := C.gdk_gl_context_realize(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // SetDebugEnabled sets whether the GLContext should perform extra
@@ -8493,7 +8638,9 @@ func (context glContext) SetDebugEnabled(enabled bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkGLContext)(context.Native())
-	arg1 = gextras.Cbool(enabled)
+	if enabled {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_gl_context_set_debug_enabled(arg0, arg1)
 }
@@ -8513,7 +8660,9 @@ func (context glContext) SetForwardCompatible(compatible bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkGLContext)(context.Native())
-	arg1 = gextras.Cbool(compatible)
+	if compatible {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_gl_context_set_forward_compatible(arg0, arg1)
 }
@@ -8654,7 +8803,7 @@ func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.By
 
 	var ret0 MemoryTexture
 
-	ret0 = WrapMemoryTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MemoryTexture)
 
 	return ret0
 }
@@ -8755,7 +8904,7 @@ func (monitor monitor) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -8769,7 +8918,7 @@ func (monitor monitor) Geometry() Rectangle {
 
 	arg0 = (*C.GdkMonitor)(monitor.Native())
 
-	ret := C.gdk_monitor_get_geometry(arg0, &arg1)
+	C.gdk_monitor_get_geometry(arg0, &arg1)
 
 	var ret0 *Rectangle
 
@@ -8915,7 +9064,7 @@ func (monitor monitor) IsValid() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9004,7 +9153,7 @@ func (seat seat) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -9019,7 +9168,7 @@ func (seat seat) Keyboard() Device {
 
 	var ret0 Device
 
-	ret0 = WrapDevice(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Device)
 
 	return ret0
 }
@@ -9034,7 +9183,7 @@ func (seat seat) Pointer() Device {
 
 	var ret0 Device
 
-	ret0 = WrapDevice(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Device)
 
 	return ret0
 }
@@ -9107,7 +9256,7 @@ type Surface interface {
 	//
 	// Before using the returned GLContext, you will need to call
 	// gdk_gl_context_make_current() or gdk_gl_context_realize().
-	CreateGLContext() GLContext
+	CreateGLContext() (glContext GLContext, err error)
 	// CreateSimilarSurface: create a new surface that is as compatible as
 	// possible with the given @surface. For example the new surface will have
 	// the same fallback resolution and font options as @surface. Generally, the
@@ -9122,7 +9271,7 @@ type Surface interface {
 	// @surface.
 	//
 	// If the creation of the VulkanContext failed, @error will be set.
-	CreateVulkanContext() VulkanContext
+	CreateVulkanContext() (vulkanContext VulkanContext, err error)
 	// Destroy destroys the window system resources associated with @surface and
 	// decrements @surface's reference count. The window system resources for
 	// all children of @surface are also destroyed, but the children’s reference
@@ -9270,13 +9419,15 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	var arg2 C.gboolean
 
 	arg1 = (*C.GdkSurface)(parent.Native())
-	arg2 = gextras.Cbool(autohide)
+	if autohide {
+		arg2 = C.TRUE
+	}
 
 	ret := C.gdk_surface_new_popup(arg1, arg2)
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -9291,7 +9442,7 @@ func NewSurfaceToplevel(display Display) Surface {
 
 	var ret0 Surface
 
-	ret0 = WrapSurface(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Surface)
 
 	return ret0
 }
@@ -9317,7 +9468,7 @@ func (surface surface) CreateCairoContext() CairoContext {
 
 	var ret0 CairoContext
 
-	ret0 = WrapCairoContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(CairoContext)
 
 	return ret0
 }
@@ -9330,18 +9481,25 @@ func (surface surface) CreateCairoContext() CairoContext {
 //
 // Before using the returned GLContext, you will need to call
 // gdk_gl_context_make_current() or gdk_gl_context_realize().
-func (surface surface) CreateGLContext() GLContext {
+func (surface surface) CreateGLContext() (glContext GLContext, err error) {
 	var arg0 *C.GdkSurface
+	var gError *C.GError
 
 	arg0 = (*C.GdkSurface)(surface.Native())
 
-	ret := C.gdk_surface_create_gl_context(arg0)
+	ret := C.gdk_surface_create_gl_context(arg0, &gError)
 
 	var ret0 GLContext
+	var goError error
 
-	ret0 = WrapGLContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(GLContext)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // CreateSimilarSurface: create a new surface that is as compatible as
@@ -9379,18 +9537,25 @@ func (surface surface) CreateSimilarSurface(content cairo.Content, width int, he
 // @surface.
 //
 // If the creation of the VulkanContext failed, @error will be set.
-func (surface surface) CreateVulkanContext() VulkanContext {
+func (surface surface) CreateVulkanContext() (vulkanContext VulkanContext, err error) {
 	var arg0 *C.GdkSurface
+	var gError *C.GError
 
 	arg0 = (*C.GdkSurface)(surface.Native())
 
-	ret := C.gdk_surface_create_vulkan_context(arg0)
+	ret := C.gdk_surface_create_vulkan_context(arg0, &gError)
 
 	var ret0 VulkanContext
+	var goError error
 
-	ret0 = WrapVulkanContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(VulkanContext)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Destroy destroys the window system resources associated with @surface and
@@ -9422,7 +9587,7 @@ func (surface surface) Cursor() Cursor {
 
 	var ret0 Cursor
 
-	ret0 = WrapCursor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Cursor)
 
 	return ret0
 }
@@ -9442,7 +9607,7 @@ func (surface surface) DeviceCursor(device Device) Cursor {
 
 	var ret0 Cursor
 
-	ret0 = WrapCursor(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Cursor)
 
 	return ret0
 }
@@ -9473,7 +9638,7 @@ func (surface surface) DevicePosition(device Device) (x float64, y float64, mask
 
 	ret2 = (*ModifierType)(arg4)
 
-	ret3 = gextras.Gobool(ret)
+	ret3 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3
 }
@@ -9488,7 +9653,7 @@ func (surface surface) Display() Display {
 
 	var ret0 Display
 
-	ret0 = WrapDisplay(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Display)
 
 	return ret0
 }
@@ -9505,7 +9670,7 @@ func (surface surface) FrameClock() FrameClock {
 
 	var ret0 FrameClock
 
-	ret0 = WrapFrameClock(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FrameClock)
 
 	return ret0
 }
@@ -9539,7 +9704,7 @@ func (surface surface) Mapped() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9608,7 +9773,7 @@ func (surface surface) IsDestroyed() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9737,7 +9902,7 @@ func (from surface) TranslateCoordinates(to Surface, x float64, y float64) bool 
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9747,24 +9912,6 @@ type Texture interface {
 	gextras.Objector
 	Paintable
 
-	// Download downloads the @texture into local memory. This may be an
-	// expensive operation, as the actual texture data may reside on a GPU or on
-	// a remote display server.
-	//
-	// The data format of the downloaded data is equivalent to
-	// CAIRO_FORMAT_ARGB32, so every downloaded pixel requires 4 bytes of
-	// memory.
-	//
-	// Downloading a texture into a Cairo image surface:
-	//
-	//    surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-	//                                          gdk_texture_get_width (texture),
-	//                                          gdk_texture_get_height (texture));
-	//    gdk_texture_download (texture,
-	//                          cairo_image_surface_get_data (surface),
-	//                          cairo_image_surface_get_stride (surface));
-	//    cairo_surface_mark_dirty (surface);
-	Download(data []byte, stride uint)
 	// Height returns the height of the @texture, in pixels.
 	Height() int
 	// Width returns the width of @texture, in pixels.
@@ -9811,24 +9958,31 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 
 	var ret0 Texture
 
-	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Texture)
 
 	return ret0
 }
 
 // NewTextureFromFile constructs a class Texture.
-func NewTextureFromFile(file gio.File) Texture {
+func NewTextureFromFile(file gio.File) (texture Texture, err error) {
 	var arg1 *C.GFile
+	var gError *C.GError
 
 	arg1 = (*C.GFile)(file.Native())
 
-	ret := C.gdk_texture_new_from_file(arg1)
+	ret := C.gdk_texture_new_from_file(arg1, &gError)
 
 	var ret0 Texture
+	var goError error
 
-	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Texture)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewTextureFromResource constructs a class Texture.
@@ -9842,40 +9996,9 @@ func NewTextureFromResource(resourcePath string) Texture {
 
 	var ret0 Texture
 
-	ret0 = WrapTexture(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Texture)
 
 	return ret0
-}
-
-// Download downloads the @texture into local memory. This may be an
-// expensive operation, as the actual texture data may reside on a GPU or on
-// a remote display server.
-//
-// The data format of the downloaded data is equivalent to
-// CAIRO_FORMAT_ARGB32, so every downloaded pixel requires 4 bytes of
-// memory.
-//
-// Downloading a texture into a Cairo image surface:
-//
-//    surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-//                                          gdk_texture_get_width (texture),
-//                                          gdk_texture_get_height (texture));
-//    gdk_texture_download (texture,
-//                          cairo_image_surface_get_data (surface),
-//                          cairo_image_surface_get_stride (surface));
-//    cairo_surface_mark_dirty (surface);
-func (texture texture) Download(data []byte, stride uint) {
-	var arg0 *C.GdkTexture
-	var arg1 *C.guchar
-	var arg2 C.gsize
-
-	arg0 = (*C.GdkTexture)(texture.Native())
-	{
-
-	}
-	arg2 = C.gsize(stride)
-
-	C.gdk_texture_download(arg0, arg1, arg2)
 }
 
 // Height returns the height of the @texture, in pixels.
@@ -9926,7 +10049,7 @@ func (texture texture) SaveToPng(filename string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }

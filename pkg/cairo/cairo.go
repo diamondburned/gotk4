@@ -850,28 +850,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 }
 
 // X gets the field inside the struct.
-func (x *Rectangle) X() float64 {
+func (r *Rectangle) X() float64 {
 	var ret float64
 	ret = float64(r.native.x)
 	return ret
 }
 
 // Y gets the field inside the struct.
-func (y *Rectangle) Y() float64 {
+func (r *Rectangle) Y() float64 {
 	var ret float64
 	ret = float64(r.native.y)
 	return ret
 }
 
 // Width gets the field inside the struct.
-func (w *Rectangle) Width() float64 {
+func (r *Rectangle) Width() float64 {
 	var ret float64
 	ret = float64(r.native.width)
 	return ret
 }
 
 // Height gets the field inside the struct.
-func (h *Rectangle) Height() float64 {
+func (r *Rectangle) Height() float64 {
 	var ret float64
 	ret = float64(r.native.height)
 	return ret
@@ -902,28 +902,28 @@ func (r *RectangleInt) Native() unsafe.Pointer {
 }
 
 // X gets the field inside the struct.
-func (x *RectangleInt) X() int {
+func (r *RectangleInt) X() int {
 	var ret int
 	ret = int(r.native.x)
 	return ret
 }
 
 // Y gets the field inside the struct.
-func (y *RectangleInt) Y() int {
+func (r *RectangleInt) Y() int {
 	var ret int
 	ret = int(r.native.y)
 	return ret
 }
 
 // Width gets the field inside the struct.
-func (w *RectangleInt) Width() int {
+func (r *RectangleInt) Width() int {
 	var ret int
 	ret = int(r.native.width)
 	return ret
 }
 
 // Height gets the field inside the struct.
-func (h *RectangleInt) Height() int {
+func (r *RectangleInt) Height() int {
 	var ret int
 	ret = int(r.native.height)
 	return ret

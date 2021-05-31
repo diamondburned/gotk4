@@ -183,7 +183,7 @@ func (buffer *Buffer) Glyphs() (glyphs []*Glyph, nGlyphs int) {
 
 	arg0 = (*C.PangoOTBuffer)(buffer.Native())
 
-	ret := C.pango_ot_buffer_get_glyphs(arg0, &arg1, &arg2)
+	C.pango_ot_buffer_get_glyphs(arg0, &arg1, &arg2)
 
 	var ret0 []*Glyph
 	var ret1 int
@@ -223,7 +223,9 @@ func (buffer *Buffer) SetRTL(rtl bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoOTBuffer)(buffer.Native())
-	arg1 = gextras.Cbool(rtl)
+	if rtl {
+		arg1 = C.TRUE
+	}
 
 	C.pango_ot_buffer_set_rtl(arg0, arg1)
 }
@@ -237,7 +239,9 @@ func (buffer *Buffer) SetZeroWidthMarks(zeroWidthMarks bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoOTBuffer)(buffer.Native())
-	arg1 = gextras.Cbool(zeroWidthMarks)
+	if zeroWidthMarks {
+		arg1 = C.TRUE
+	}
 
 	C.pango_ot_buffer_set_zero_width_marks(arg0, arg1)
 }
@@ -277,7 +281,7 @@ func (f *FeatureMap) FeatureName() [5]byte {
 }
 
 // PropertyBit gets the field inside the struct.
-func (p *FeatureMap) PropertyBit() uint32 {
+func (f *FeatureMap) PropertyBit() uint32 {
 	var ret uint32
 	ret = uint32(f.native.property_bit)
 	return ret
@@ -318,35 +322,35 @@ func (g *Glyph) Glyph() uint32 {
 }
 
 // Properties gets the field inside the struct.
-func (p *Glyph) Properties() uint {
+func (g *Glyph) Properties() uint {
 	var ret uint
 	ret = uint(g.native.properties)
 	return ret
 }
 
 // Cluster gets the field inside the struct.
-func (c *Glyph) Cluster() uint {
+func (g *Glyph) Cluster() uint {
 	var ret uint
 	ret = uint(g.native.cluster)
 	return ret
 }
 
 // Component gets the field inside the struct.
-func (c *Glyph) Component() uint16 {
+func (g *Glyph) Component() uint16 {
 	var ret uint16
 	ret = uint16(g.native.component)
 	return ret
 }
 
 // LigID gets the field inside the struct.
-func (l *Glyph) LigID() uint16 {
+func (g *Glyph) LigID() uint16 {
 	var ret uint16
 	ret = uint16(g.native.ligID)
 	return ret
 }
 
 // Internal gets the field inside the struct.
-func (i *Glyph) Internal() uint {
+func (g *Glyph) Internal() uint {
 	var ret uint
 	ret = uint(g.native.internal)
 	return ret
@@ -383,14 +387,14 @@ func (r *RulesetDescription) Native() unsafe.Pointer {
 }
 
 // Script gets the field inside the struct.
-func (s *RulesetDescription) Script() pango.Script {
+func (r *RulesetDescription) Script() pango.Script {
 	var ret pango.Script
 	ret = pango.Script(r.native.script)
 	return ret
 }
 
 // Language gets the field inside the struct.
-func (l *RulesetDescription) Language() *pango.Language {
+func (r *RulesetDescription) Language() *pango.Language {
 	var ret *pango.Language
 	{
 		ret = pango.WrapLanguage(r.native.language)
@@ -402,7 +406,7 @@ func (l *RulesetDescription) Language() *pango.Language {
 }
 
 // StaticGsubFeatures gets the field inside the struct.
-func (s *RulesetDescription) StaticGsubFeatures() *FeatureMap {
+func (r *RulesetDescription) StaticGsubFeatures() *FeatureMap {
 	var ret *FeatureMap
 	{
 		ret = WrapFeatureMap(r.native.static_gsub_features)
@@ -414,14 +418,14 @@ func (s *RulesetDescription) StaticGsubFeatures() *FeatureMap {
 }
 
 // NStaticGsubFeatures gets the field inside the struct.
-func (n *RulesetDescription) NStaticGsubFeatures() uint {
+func (r *RulesetDescription) NStaticGsubFeatures() uint {
 	var ret uint
 	ret = uint(r.native.n_static_gsub_features)
 	return ret
 }
 
 // StaticGposFeatures gets the field inside the struct.
-func (s *RulesetDescription) StaticGposFeatures() *FeatureMap {
+func (r *RulesetDescription) StaticGposFeatures() *FeatureMap {
 	var ret *FeatureMap
 	{
 		ret = WrapFeatureMap(r.native.static_gpos_features)
@@ -433,14 +437,14 @@ func (s *RulesetDescription) StaticGposFeatures() *FeatureMap {
 }
 
 // NStaticGposFeatures gets the field inside the struct.
-func (n *RulesetDescription) NStaticGposFeatures() uint {
+func (r *RulesetDescription) NStaticGposFeatures() uint {
 	var ret uint
 	ret = uint(r.native.n_static_gpos_features)
 	return ret
 }
 
 // OtherFeatures gets the field inside the struct.
-func (o *RulesetDescription) OtherFeatures() *FeatureMap {
+func (r *RulesetDescription) OtherFeatures() *FeatureMap {
 	var ret *FeatureMap
 	{
 		ret = WrapFeatureMap(r.native.other_features)
@@ -452,7 +456,7 @@ func (o *RulesetDescription) OtherFeatures() *FeatureMap {
 }
 
 // NOtherFeatures gets the field inside the struct.
-func (n *RulesetDescription) NOtherFeatures() uint {
+func (r *RulesetDescription) NOtherFeatures() uint {
 	var ret uint
 	ret = uint(r.native.n_other_features)
 	return ret
@@ -496,7 +500,7 @@ func (desc1 *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -633,7 +637,7 @@ func NewRuleset(info Info) Ruleset {
 
 	var ret0 Ruleset
 
-	ret0 = WrapRuleset(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Ruleset)
 
 	return ret0
 }
@@ -652,7 +656,7 @@ func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Rul
 
 	var ret0 Ruleset
 
-	ret0 = WrapRuleset(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Ruleset)
 
 	return ret0
 }
@@ -669,7 +673,7 @@ func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
 
 	var ret0 Ruleset
 
-	ret0 = WrapRuleset(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Ruleset)
 
 	return ret0
 }

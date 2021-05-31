@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -682,7 +681,7 @@ func (a *Box) ContainsBox(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -699,7 +698,7 @@ func (box *Box) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -716,7 +715,7 @@ func (a *Box) Equal(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -730,7 +729,7 @@ func (box *Box) Expand(point *Point3D) Box {
 	arg0 = (*C.graphene_box_t)(box.Native())
 	arg1 = (*C.graphene_point3d_t)(point.Native())
 
-	ret := C.graphene_box_expand(arg0, arg1, &arg2)
+	C.graphene_box_expand(arg0, arg1, &arg2)
 
 	var ret0 *Box
 
@@ -756,7 +755,7 @@ func (box *Box) ExpandScalar(scalar float32) Box {
 	arg0 = (*C.graphene_box_t)(box.Native())
 	arg1 = C.float(scalar)
 
-	ret := C.graphene_box_expand_scalar(arg0, arg1, &arg2)
+	C.graphene_box_expand_scalar(arg0, arg1, &arg2)
 
 	var ret0 *Box
 
@@ -780,7 +779,7 @@ func (box *Box) ExpandVec3(vec *Vec3) Box {
 	arg0 = (*C.graphene_box_t)(box.Native())
 	arg1 = (*C.graphene_vec3_t)(vec.Native())
 
-	ret := C.graphene_box_expand_vec3(arg0, arg1, &arg2)
+	C.graphene_box_expand_vec3(arg0, arg1, &arg2)
 
 	var ret0 *Box
 
@@ -811,7 +810,7 @@ func (box *Box) BoundingSphere() Sphere {
 
 	arg0 = (*C.graphene_box_t)(box.Native())
 
-	ret := C.graphene_box_get_bounding_sphere(arg0, &arg1)
+	C.graphene_box_get_bounding_sphere(arg0, &arg1)
 
 	var ret0 *Sphere
 
@@ -832,7 +831,7 @@ func (box *Box) Center() Point3D {
 
 	arg0 = (*C.graphene_box_t)(box.Native())
 
-	ret := C.graphene_box_get_center(arg0, &arg1)
+	C.graphene_box_get_center(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -884,7 +883,7 @@ func (box *Box) Max() Point3D {
 
 	arg0 = (*C.graphene_box_t)(box.Native())
 
-	ret := C.graphene_box_get_max(arg0, &arg1)
+	C.graphene_box_get_max(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -906,7 +905,7 @@ func (box *Box) Min() Point3D {
 
 	arg0 = (*C.graphene_box_t)(box.Native())
 
-	ret := C.graphene_box_get_min(arg0, &arg1)
+	C.graphene_box_get_min(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -928,7 +927,7 @@ func (box *Box) Size() Vec3 {
 
 	arg0 = (*C.graphene_box_t)(box.Native())
 
-	ret := C.graphene_box_get_size(arg0, &arg1)
+	C.graphene_box_get_size(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -949,7 +948,7 @@ func (box *Box) Vertices() [8]Vec3 {
 
 	arg0 = (*C.graphene_box_t)(box.Native())
 
-	ret := C.graphene_box_get_vertices(arg0, &arg1)
+	C.graphene_box_get_vertices(arg0, &arg1)
 
 	var ret0 [8]Vec3
 
@@ -1032,6 +1031,34 @@ func (box *Box) InitFromBox(src *Box) *Box {
 	return ret0
 }
 
+// InitFromPoints initializes the given #graphene_box_t with the given array of
+// vertices.
+//
+// If @n_points is 0, the returned box is initialized with graphene_box_empty().
+func (box *Box) InitFromPoints(nPoints uint, points []Point3D) *Box {
+	var arg0 *C.graphene_box_t
+	var arg1 C.uint
+	var arg2 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+	arg1 = len(points)
+	defer runtime.KeepAlive(points)
+
+	ret := C.graphene_box_init_from_points(arg0, arg1, arg2)
+
+	var ret0 *Box
+
+	{
+		ret0 = WrapBox(ret)
+		runtime.SetFinalizer(&ret0, func(v **Box) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
 // InitFromVec3 initializes the given #graphene_box_t with two vertices stored
 // inside #graphene_vec3_t.
 func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
@@ -1044,6 +1071,35 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	arg2 = (*C.graphene_vec3_t)(max.Native())
 
 	ret := C.graphene_box_init_from_vec3(arg0, arg1, arg2)
+
+	var ret0 *Box
+
+	{
+		ret0 = WrapBox(ret)
+		runtime.SetFinalizer(&ret0, func(v **Box) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// InitFromVectors initializes the given #graphene_box_t with the given array of
+// vertices.
+//
+// If @n_vectors is 0, the returned box is initialized with
+// graphene_box_empty().
+func (box *Box) InitFromVectors(nVectors uint, vectors []Vec3) *Box {
+	var arg0 *C.graphene_box_t
+	var arg1 C.uint
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.graphene_box_t)(box.Native())
+	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	arg1 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+
+	ret := C.graphene_box_init_from_vectors(arg0, arg1, arg2)
 
 	var ret0 *Box
 
@@ -1081,7 +1137,7 @@ func (a *Box) Intersection(b *Box) (res Box, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -1095,7 +1151,7 @@ func (a *Box) Union(b *Box) Box {
 	arg0 = (*C.graphene_box_t)(a.Native())
 	arg1 = (*C.graphene_box_t)(b.Native())
 
-	ret := C.graphene_box_union(arg0, arg1, &arg2)
+	C.graphene_box_union(arg0, arg1, &arg2)
 
 	var ret0 *Box
 
@@ -1163,7 +1219,7 @@ func (a *Euler) Equal(b *Euler) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1505,7 +1561,7 @@ func (e *Euler) Reorder(order EulerOrder) Euler {
 	arg0 = (*C.graphene_euler_t)(e.Native())
 	arg1 = (C.graphene_euler_order_t)(order)
 
-	ret := C.graphene_euler_reorder(arg0, arg1, &arg2)
+	C.graphene_euler_reorder(arg0, arg1, &arg2)
 
 	var ret0 *Euler
 
@@ -1541,7 +1597,7 @@ func (e *Euler) ToMatrix() Matrix {
 
 	arg0 = (*C.graphene_euler_t)(e.Native())
 
-	ret := C.graphene_euler_to_matrix(arg0, &arg1)
+	C.graphene_euler_to_matrix(arg0, &arg1)
 
 	var ret0 *Matrix
 
@@ -1562,7 +1618,7 @@ func (e *Euler) ToQuaternion() Quaternion {
 
 	arg0 = (*C.graphene_euler_t)(e.Native())
 
-	ret := C.graphene_euler_to_quaternion(arg0, &arg1)
+	C.graphene_euler_to_quaternion(arg0, &arg1)
 
 	var ret0 *Quaternion
 
@@ -1584,7 +1640,7 @@ func (e *Euler) ToVec3() Vec3 {
 
 	arg0 = (*C.graphene_euler_t)(e.Native())
 
-	ret := C.graphene_euler_to_vec3(arg0, &arg1)
+	C.graphene_euler_to_vec3(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -1653,7 +1709,7 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1670,7 +1726,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1691,7 +1747,7 @@ func (f *Frustum) Planes() [6]Plane {
 
 	arg0 = (*C.graphene_frustum_t)(f.Native())
 
-	ret := C.graphene_frustum_get_planes(arg0, &arg1)
+	C.graphene_frustum_get_planes(arg0, &arg1)
 
 	var ret0 [6]Plane
 
@@ -1803,7 +1859,7 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1821,7 +1877,7 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1930,7 +1986,7 @@ func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, she
 		})
 	}
 
-	ret5 = gextras.Gobool(ret)
+	ret5 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3, ret4, ret5
 }
@@ -1962,7 +2018,7 @@ func (a *Matrix) Equal(b *Matrix) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1998,7 +2054,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2021,7 +2077,7 @@ func (m *Matrix) Row(index_ uint) Vec4 {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = C.uint(index_)
 
-	ret := C.graphene_matrix_get_row(arg0, arg1, &arg2)
+	C.graphene_matrix_get_row(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -2193,10 +2249,8 @@ func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 	var arg1 *C.float
 
 	arg0 = (*C.graphene_matrix_t)(m.Native())
-	{
-		arg1 = (*C.float)(&v)
-		defer runtime.KeepAlive(&v)
-	}
+	arg1 = (*C.float)(&v)
+	defer runtime.KeepAlive(&v)
 
 	ret := C.graphene_matrix_init_from_float(arg0, arg1)
 
@@ -2534,7 +2588,7 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 	arg1 = (*C.graphene_matrix_t)(b.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_matrix_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_matrix_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Matrix
 
@@ -2567,7 +2621,7 @@ func (m *Matrix) Inverse() (res Matrix, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -2583,7 +2637,7 @@ func (m *Matrix) Is2D() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2599,7 +2653,7 @@ func (m *Matrix) IsBackfaceVisible() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2615,7 +2669,7 @@ func (m *Matrix) IsIdentity() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2630,7 +2684,7 @@ func (m *Matrix) IsSingular() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2647,7 +2701,7 @@ func (a *Matrix) Multiply(b *Matrix) Matrix {
 	arg0 = (*C.graphene_matrix_t)(a.Native())
 	arg1 = (*C.graphene_matrix_t)(b.Native())
 
-	ret := C.graphene_matrix_multiply(arg0, arg1, &arg2)
+	C.graphene_matrix_multiply(arg0, arg1, &arg2)
 
 	var ret0 *Matrix
 
@@ -2676,7 +2730,7 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2688,7 +2742,7 @@ func (m *Matrix) Normalize() Matrix {
 
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 
-	ret := C.graphene_matrix_normalize(arg0, &arg1)
+	C.graphene_matrix_normalize(arg0, &arg1)
 
 	var ret0 *Matrix
 
@@ -2711,7 +2765,7 @@ func (m *Matrix) Perspective(depth float32) Matrix {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = C.float(depth)
 
-	ret := C.graphene_matrix_perspective(arg0, arg1, &arg2)
+	C.graphene_matrix_perspective(arg0, arg1, &arg2)
 
 	var ret0 *Matrix
 
@@ -2746,7 +2800,7 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_point_t)(p.Native())
 
-	ret := C.graphene_matrix_project_point(arg0, arg1, &arg2)
+	C.graphene_matrix_project_point(arg0, arg1, &arg2)
 
 	var ret0 *Point
 
@@ -2772,7 +2826,7 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_matrix_project_rect(arg0, arg1, &arg2)
+	C.graphene_matrix_project_rect(arg0, arg1, &arg2)
 
 	var ret0 *Quad
 
@@ -2798,7 +2852,7 @@ func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_matrix_project_rect_bounds(arg0, arg1, &arg2)
+	C.graphene_matrix_project_rect_bounds(arg0, arg1, &arg2)
 
 	var ret0 *Rect
 
@@ -2993,7 +3047,7 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 
 	ret5 = float64(arg6)
 
-	ret6 = gextras.Gobool(ret)
+	ret6 = ret != C.FALSE
 
 	return ret0, ret1, ret2, ret3, ret4, ret5, ret6
 }
@@ -3005,7 +3059,7 @@ func (m *Matrix) ToFloat() [16]float32 {
 
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 
-	ret := C.graphene_matrix_to_float(arg0, &arg1)
+	C.graphene_matrix_to_float(arg0, &arg1)
 
 	var ret0 [16]float32
 
@@ -3029,7 +3083,7 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_matrix_transform_bounds(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_bounds(arg0, arg1, &arg2)
 
 	var ret0 *Rect
 
@@ -3056,7 +3110,7 @@ func (m *Matrix) TransformBox(b *Box) Box {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_box_t)(b.Native())
 
-	ret := C.graphene_matrix_transform_box(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_box(arg0, arg1, &arg2)
 
 	var ret0 *Box
 
@@ -3085,7 +3139,7 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_point_t)(p.Native())
 
-	ret := C.graphene_matrix_transform_point(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_point(arg0, arg1, &arg2)
 
 	var ret0 *Point
 
@@ -3115,7 +3169,7 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_point3d_t)(p.Native())
 
-	ret := C.graphene_matrix_transform_point3d(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_point3d(arg0, arg1, &arg2)
 
 	var ret0 *Point3D
 
@@ -3138,7 +3192,7 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_ray_t)(r.Native())
 
-	ret := C.graphene_matrix_transform_ray(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_ray(arg0, arg1, &arg2)
 
 	var ret0 *Ray
 
@@ -3166,7 +3220,7 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_matrix_transform_rect(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_rect(arg0, arg1, &arg2)
 
 	var ret0 *Quad
 
@@ -3190,7 +3244,7 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_sphere_t)(s.Native())
 
-	ret := C.graphene_matrix_transform_sphere(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_sphere(arg0, arg1, &arg2)
 
 	var ret0 *Sphere
 
@@ -3219,7 +3273,7 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_matrix_transform_vec3(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_vec3(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -3244,7 +3298,7 @@ func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 	arg1 = (*C.graphene_vec4_t)(v.Native())
 
-	ret := C.graphene_matrix_transform_vec4(arg0, arg1, &arg2)
+	C.graphene_matrix_transform_vec4(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -3280,7 +3334,7 @@ func (m *Matrix) Transpose() Matrix {
 
 	arg0 = (*C.graphene_matrix_t)(m.Native())
 
-	ret := C.graphene_matrix_transpose(arg0, &arg1)
+	C.graphene_matrix_transpose(arg0, &arg1)
 
 	var ret0 *Matrix
 
@@ -3306,7 +3360,7 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Po
 	arg1 = (*C.graphene_matrix_t)(modelview.Native())
 	arg2 = (*C.graphene_point3d_t)(point.Native())
 
-	ret := C.graphene_matrix_unproject_point3d(arg0, arg1, arg2, &arg3)
+	C.graphene_matrix_unproject_point3d(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Point3D
 
@@ -3333,7 +3387,7 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 	arg1 = (*C.graphene_rect_t)(r.Native())
 	arg2 = (*C.graphene_rect_t)(bounds.Native())
 
-	ret := C.graphene_matrix_untransform_bounds(arg0, arg1, arg2, &arg3)
+	C.graphene_matrix_untransform_bounds(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Rect
 
@@ -3371,7 +3425,7 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (res Point, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -3447,7 +3501,7 @@ func (a *Plane) Equal(b *Plane) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3485,7 +3539,7 @@ func (p *Plane) Normal() Vec3 {
 
 	arg0 = (*C.graphene_plane_t)(p.Native())
 
-	ret := C.graphene_plane_get_normal(arg0, &arg1)
+	C.graphene_plane_get_normal(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -3633,7 +3687,7 @@ func (p *Plane) Negate() Plane {
 
 	arg0 = (*C.graphene_plane_t)(p.Native())
 
-	ret := C.graphene_plane_negate(arg0, &arg1)
+	C.graphene_plane_negate(arg0, &arg1)
 
 	var ret0 *Plane
 
@@ -3655,7 +3709,7 @@ func (p *Plane) Normalize() Plane {
 
 	arg0 = (*C.graphene_plane_t)(p.Native())
 
-	ret := C.graphene_plane_normalize(arg0, &arg1)
+	C.graphene_plane_normalize(arg0, &arg1)
 
 	var ret0 *Plane
 
@@ -3686,7 +3740,7 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	arg1 = (*C.graphene_matrix_t)(matrix.Native())
 	arg2 = (*C.graphene_matrix_t)(normalMatrix.Native())
 
-	ret := C.graphene_plane_transform(arg0, arg1, arg2, &arg3)
+	C.graphene_plane_transform(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Plane
 
@@ -3740,14 +3794,14 @@ func NewPointAlloc() *Point {
 }
 
 // X gets the field inside the struct.
-func (x *Point) X() float32 {
+func (p *Point) X() float32 {
 	var ret float32
 	ret = float32(p.native.x)
 	return ret
 }
 
 // Y gets the field inside the struct.
-func (y *Point) Y() float32 {
+func (p *Point) Y() float32 {
 	var ret float32
 	ret = float32(p.native.y)
 	return ret
@@ -3794,7 +3848,7 @@ func (a *Point) Equal(b *Point) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3891,7 +3945,7 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	arg1 = (*C.graphene_point_t)(b.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_point_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_point_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Point
 
@@ -3920,7 +3974,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3933,7 +3987,7 @@ func (p *Point) ToVec2() Vec2 {
 
 	arg0 = (*C.graphene_point_t)(p.Native())
 
-	ret := C.graphene_point_to_vec2(arg0, &arg1)
+	C.graphene_point_to_vec2(arg0, &arg1)
 
 	var ret0 *Vec2
 
@@ -3987,21 +4041,21 @@ func NewPoint3DAlloc() *Point3D {
 }
 
 // X gets the field inside the struct.
-func (x *Point3D) X() float32 {
+func (p *Point3D) X() float32 {
 	var ret float32
 	ret = float32(p.native.x)
 	return ret
 }
 
 // Y gets the field inside the struct.
-func (y *Point3D) Y() float32 {
+func (p *Point3D) Y() float32 {
 	var ret float32
 	ret = float32(p.native.y)
 	return ret
 }
 
 // Z gets the field inside the struct.
-func (z *Point3D) Z() float32 {
+func (p *Point3D) Z() float32 {
 	var ret float32
 	ret = float32(p.native.z)
 	return ret
@@ -4016,7 +4070,7 @@ func (a *Point3D) Cross(b *Point3D) Point3D {
 	arg0 = (*C.graphene_point3d_t)(a.Native())
 	arg1 = (*C.graphene_point3d_t)(b.Native())
 
-	ret := C.graphene_point3d_cross(arg0, arg1, &arg2)
+	C.graphene_point3d_cross(arg0, arg1, &arg2)
 
 	var ret0 *Point3D
 
@@ -4085,7 +4139,7 @@ func (a *Point3D) Equal(b *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4183,7 +4237,7 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 	arg1 = (*C.graphene_point3d_t)(b.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_point3d_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_point3d_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Point3D
 
@@ -4228,7 +4282,7 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4241,7 +4295,7 @@ func (p *Point3D) Normalize() Point3D {
 
 	arg0 = (*C.graphene_point3d_t)(p.Native())
 
-	ret := C.graphene_point3d_normalize(arg0, &arg1)
+	C.graphene_point3d_normalize(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -4272,7 +4326,7 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 	arg2 = C.float(zNear)
 	arg3 = C.float(zFar)
 
-	ret := C.graphene_point3d_normalize_viewport(arg0, arg1, arg2, arg3, &arg4)
+	C.graphene_point3d_normalize_viewport(arg0, arg1, arg2, arg3, &arg4)
 
 	var ret0 *Point3D
 
@@ -4296,7 +4350,7 @@ func (p *Point3D) Scale(factor float32) Point3D {
 	arg0 = (*C.graphene_point3d_t)(p.Native())
 	arg1 = C.float(factor)
 
-	ret := C.graphene_point3d_scale(arg0, arg1, &arg2)
+	C.graphene_point3d_scale(arg0, arg1, &arg2)
 
 	var ret0 *Point3D
 
@@ -4318,7 +4372,7 @@ func (p *Point3D) ToVec3() Vec3 {
 
 	arg0 = (*C.graphene_point3d_t)(p.Native())
 
-	ret := C.graphene_point3d_to_vec3(arg0, &arg1)
+	C.graphene_point3d_to_vec3(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -4381,7 +4435,7 @@ func (q *Quad) Bounds() Rect {
 
 	arg0 = (*C.graphene_quad_t)(q.Native())
 
-	ret := C.graphene_quad_bounds(arg0, &arg1)
+	C.graphene_quad_bounds(arg0, &arg1)
 
 	var ret0 *Rect
 
@@ -4408,7 +4462,7 @@ func (q *Quad) Contains(p *Point) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4478,14 +4532,8 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 	var arg1 *C.graphene_point_t
 
 	arg0 = (*C.graphene_quad_t)(q.Native())
-	{
-		dst := &arg1
-
-		for i := 0; i < 4; i++ {
-			src := points[i]
-			dst[i] = (C.graphene_point_t)(src.Native())
-		}
-	}
+	arg1 = (*C.graphene_point_t)(&points)
+	defer runtime.KeepAlive(&points)
 
 	ret := C.graphene_quad_init_from_points(arg0, arg1)
 
@@ -4575,7 +4623,7 @@ func (a *Quaternion) Add(b *Quaternion) Quaternion {
 	arg0 = (*C.graphene_quaternion_t)(a.Native())
 	arg1 = (*C.graphene_quaternion_t)(b.Native())
 
-	ret := C.graphene_quaternion_add(arg0, arg1, &arg2)
+	C.graphene_quaternion_add(arg0, arg1, &arg2)
 
 	var ret0 *Quaternion
 
@@ -4618,7 +4666,7 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4863,7 +4911,7 @@ func (q *Quaternion) Invert() Quaternion {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_invert(arg0, &arg1)
+	C.graphene_quaternion_invert(arg0, &arg1)
 
 	var ret0 *Quaternion
 
@@ -4886,7 +4934,7 @@ func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 	arg0 = (*C.graphene_quaternion_t)(a.Native())
 	arg1 = (*C.graphene_quaternion_t)(b.Native())
 
-	ret := C.graphene_quaternion_multiply(arg0, arg1, &arg2)
+	C.graphene_quaternion_multiply(arg0, arg1, &arg2)
 
 	var ret0 *Quaternion
 
@@ -4907,7 +4955,7 @@ func (q *Quaternion) Normalize() Quaternion {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_normalize(arg0, &arg1)
+	C.graphene_quaternion_normalize(arg0, &arg1)
 
 	var ret0 *Quaternion
 
@@ -4931,7 +4979,7 @@ func (q *Quaternion) Scale(factor float32) Quaternion {
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 	arg1 = C.float(factor)
 
-	ret := C.graphene_quaternion_scale(arg0, arg1, &arg2)
+	C.graphene_quaternion_scale(arg0, arg1, &arg2)
 
 	var ret0 *Quaternion
 
@@ -4958,7 +5006,7 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 	arg1 = (*C.graphene_quaternion_t)(b.Native())
 	arg2 = C.float(factor)
 
-	ret := C.graphene_quaternion_slerp(arg0, arg1, arg2, &arg3)
+	C.graphene_quaternion_slerp(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Quaternion
 
@@ -4980,7 +5028,7 @@ func (q *Quaternion) ToAngleVec3() (angle float32, axis Vec3) {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_to_angle_vec3(arg0, &arg1, &arg2)
+	C.graphene_quaternion_to_angle_vec3(arg0, &arg1, &arg2)
 
 	var ret0 float32
 	var ret1 *Vec3
@@ -5007,7 +5055,7 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_to_angles(arg0, &arg1, &arg2, &arg3)
+	C.graphene_quaternion_to_angles(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 float32
 	var ret1 float32
@@ -5030,7 +5078,7 @@ func (q *Quaternion) ToMatrix() Matrix {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_to_matrix(arg0, &arg1)
+	C.graphene_quaternion_to_matrix(arg0, &arg1)
 
 	var ret0 *Matrix
 
@@ -5054,7 +5102,7 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_to_radians(arg0, &arg1, &arg2, &arg3)
+	C.graphene_quaternion_to_radians(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 float32
 	var ret1 float32
@@ -5077,7 +5125,7 @@ func (q *Quaternion) ToVec4() Vec4 {
 
 	arg0 = (*C.graphene_quaternion_t)(q.Native())
 
-	ret := C.graphene_quaternion_to_vec4(arg0, &arg1)
+	C.graphene_quaternion_to_vec4(arg0, &arg1)
 
 	var ret0 *Vec4
 
@@ -5145,7 +5193,7 @@ func (a *Ray) Equal(b *Ray) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5169,7 +5217,7 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 	arg0 = (*C.graphene_ray_t)(r.Native())
 	arg1 = (*C.graphene_point3d_t)(p.Native())
 
-	ret := C.graphene_ray_get_closest_point_to_point(arg0, arg1, &arg2)
+	C.graphene_ray_get_closest_point_to_point(arg0, arg1, &arg2)
 
 	var ret0 *Point3D
 
@@ -5190,7 +5238,7 @@ func (r *Ray) Direction() Vec3 {
 
 	arg0 = (*C.graphene_ray_t)(r.Native())
 
-	ret := C.graphene_ray_get_direction(arg0, &arg1)
+	C.graphene_ray_get_direction(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -5252,7 +5300,7 @@ func (r *Ray) Origin() Point3D {
 
 	arg0 = (*C.graphene_ray_t)(r.Native())
 
-	ret := C.graphene_ray_get_origin(arg0, &arg1)
+	C.graphene_ray_get_origin(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -5276,7 +5324,7 @@ func (r *Ray) PositionAt(t float32) Point3D {
 	arg0 = (*C.graphene_ray_t)(r.Native())
 	arg1 = C.float(t)
 
-	ret := C.graphene_ray_get_position_at(arg0, arg1, &arg2)
+	C.graphene_ray_get_position_at(arg0, arg1, &arg2)
 
 	var ret0 *Point3D
 
@@ -5443,7 +5491,7 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5463,7 +5511,7 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5483,7 +5531,7 @@ func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5525,7 +5573,7 @@ func (r *Rect) Native() unsafe.Pointer {
 }
 
 // Origin gets the field inside the struct.
-func (o *Rect) Origin() Point {
+func (r *Rect) Origin() Point {
 	var ret Point
 	{
 		ret = WrapPoint(r.native.origin)
@@ -5537,7 +5585,7 @@ func (o *Rect) Origin() Point {
 }
 
 // Size gets the field inside the struct.
-func (s *Rect) Size() Size {
+func (r *Rect) Size() Size {
 	var ret Size
 	{
 		ret = WrapSize(r.native.size)
@@ -5561,7 +5609,7 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5579,7 +5627,7 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5596,7 +5644,7 @@ func (a *Rect) Equal(b *Rect) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5610,7 +5658,7 @@ func (r *Rect) Expand(p *Point) Rect {
 	arg0 = (*C.graphene_rect_t)(r.Native())
 	arg1 = (*C.graphene_point_t)(p.Native())
 
-	ret := C.graphene_rect_expand(arg0, arg1, &arg2)
+	C.graphene_rect_expand(arg0, arg1, &arg2)
 
 	var ret0 *Rect
 
@@ -5656,7 +5704,7 @@ func (r *Rect) BottomLeft() Point {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_get_bottom_left(arg0, &arg1)
+	C.graphene_rect_get_bottom_left(arg0, &arg1)
 
 	var ret0 *Point
 
@@ -5678,7 +5726,7 @@ func (r *Rect) BottomRight() Point {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_get_bottom_right(arg0, &arg1)
+	C.graphene_rect_get_bottom_right(arg0, &arg1)
 
 	var ret0 *Point
 
@@ -5699,7 +5747,7 @@ func (r *Rect) Center() Point {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_get_center(arg0, &arg1)
+	C.graphene_rect_get_center(arg0, &arg1)
 
 	var ret0 *Point
 
@@ -5736,7 +5784,7 @@ func (r *Rect) TopLeft() Point {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_get_top_left(arg0, &arg1)
+	C.graphene_rect_get_top_left(arg0, &arg1)
 
 	var ret0 *Point
 
@@ -5758,7 +5806,7 @@ func (r *Rect) TopRight() Point {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_get_top_right(arg0, &arg1)
+	C.graphene_rect_get_top_right(arg0, &arg1)
 
 	var ret0 *Point
 
@@ -5779,7 +5827,7 @@ func (r *Rect) Vertices() [4]Vec2 {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_get_vertices(arg0, &arg1)
+	C.graphene_rect_get_vertices(arg0, &arg1)
 
 	var ret0 [4]Vec2
 
@@ -5960,7 +6008,7 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	arg1 = C.float(dX)
 	arg2 = C.float(dY)
 
-	ret := C.graphene_rect_inset_r(arg0, arg1, arg2, &arg3)
+	C.graphene_rect_inset_r(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Rect
 
@@ -5986,7 +6034,7 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 	arg1 = (*C.graphene_rect_t)(b.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_rect_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_rect_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Rect
 
@@ -6028,7 +6076,7 @@ func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -6066,7 +6114,7 @@ func (r *Rect) NormalizeR() Rect {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_normalize_r(arg0, &arg1)
+	C.graphene_rect_normalize_r(arg0, &arg1)
 
 	var ret0 *Rect
 
@@ -6119,7 +6167,7 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	arg1 = C.float(dX)
 	arg2 = C.float(dY)
 
-	ret := C.graphene_rect_offset_r(arg0, arg1, arg2, &arg3)
+	C.graphene_rect_offset_r(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Rect
 
@@ -6147,7 +6195,7 @@ func (r *Rect) Round() Rect {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_round(arg0, &arg1)
+	C.graphene_rect_round(arg0, &arg1)
 
 	var ret0 *Rect
 
@@ -6184,7 +6232,7 @@ func (r *Rect) RoundExtents() Rect {
 
 	arg0 = (*C.graphene_rect_t)(r.Native())
 
-	ret := C.graphene_rect_round_extents(arg0, &arg1)
+	C.graphene_rect_round_extents(arg0, &arg1)
 
 	var ret0 *Rect
 
@@ -6232,7 +6280,7 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 	arg1 = C.float(sH)
 	arg2 = C.float(sV)
 
-	ret := C.graphene_rect_scale(arg0, arg1, arg2, &arg3)
+	C.graphene_rect_scale(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Rect
 
@@ -6259,7 +6307,7 @@ func (a *Rect) Union(b *Rect) Rect {
 	arg0 = (*C.graphene_rect_t)(a.Native())
 	arg1 = (*C.graphene_rect_t)(b.Native())
 
-	ret := C.graphene_rect_union(arg0, arg1, &arg2)
+	C.graphene_rect_union(arg0, arg1, &arg2)
 
 	var ret0 *Rect
 
@@ -6361,14 +6409,14 @@ func NewSizeAlloc() *Size {
 }
 
 // Width gets the field inside the struct.
-func (w *Size) Width() float32 {
+func (s *Size) Width() float32 {
 	var ret float32
 	ret = float32(s.native.width)
 	return ret
 }
 
 // Height gets the field inside the struct.
-func (h *Size) Height() float32 {
+func (s *Size) Height() float32 {
 	var ret float32
 	ret = float32(s.native.height)
 	return ret
@@ -6386,7 +6434,7 @@ func (a *Size) Equal(b *Size) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6459,7 +6507,7 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	arg1 = (*C.graphene_size_t)(b.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_size_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_size_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Size
 
@@ -6482,7 +6530,7 @@ func (s *Size) Scale(factor float32) Size {
 	arg0 = (*C.graphene_size_t)(s.Native())
 	arg1 = C.float(factor)
 
-	ret := C.graphene_size_scale(arg0, arg1, &arg2)
+	C.graphene_size_scale(arg0, arg1, &arg2)
 
 	var ret0 *Size
 
@@ -6548,7 +6596,7 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6583,7 +6631,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6605,7 +6653,7 @@ func (s *Sphere) BoundingBox() Box {
 
 	arg0 = (*C.graphene_sphere_t)(s.Native())
 
-	ret := C.graphene_sphere_get_bounding_box(arg0, &arg1)
+	C.graphene_sphere_get_bounding_box(arg0, &arg1)
 
 	var ret0 *Box
 
@@ -6626,7 +6674,7 @@ func (s *Sphere) Center() Point3D {
 
 	arg0 = (*C.graphene_sphere_t)(s.Native())
 
-	ret := C.graphene_sphere_get_center(arg0, &arg1)
+	C.graphene_sphere_get_center(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -6680,6 +6728,68 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	return ret0
 }
 
+// InitFromPoints initializes the given #graphene_sphere_t using the given array
+// of 3D coordinates so that the sphere includes them.
+//
+// The center of the sphere can either be specified, or will be center of the 3D
+// volume that encompasses all @points.
+func (s *Sphere) InitFromPoints(nPoints uint, points []Point3D, center *Point3D) *Sphere {
+	var arg0 *C.graphene_sphere_t
+	var arg1 C.uint
+	var arg2 *C.graphene_point3d_t
+	var arg3 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+	arg1 = len(points)
+	defer runtime.KeepAlive(points)
+	arg3 = (*C.graphene_point3d_t)(center.Native())
+
+	ret := C.graphene_sphere_init_from_points(arg0, arg1, arg2, arg3)
+
+	var ret0 *Sphere
+
+	{
+		ret0 = WrapSphere(ret)
+		runtime.SetFinalizer(&ret0, func(v **Sphere) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// InitFromVectors initializes the given #graphene_sphere_t using the given
+// array of 3D coordinates so that the sphere includes them.
+//
+// The center of the sphere can either be specified, or will be center of the 3D
+// volume that encompasses all @vectors.
+func (s *Sphere) InitFromVectors(nVectors uint, vectors []Vec3, center *Point3D) *Sphere {
+	var arg0 *C.graphene_sphere_t
+	var arg1 C.uint
+	var arg2 *C.graphene_vec3_t
+	var arg3 *C.graphene_point3d_t
+
+	arg0 = (*C.graphene_sphere_t)(s.Native())
+	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	arg1 = len(vectors)
+	defer runtime.KeepAlive(vectors)
+	arg3 = (*C.graphene_point3d_t)(center.Native())
+
+	ret := C.graphene_sphere_init_from_vectors(arg0, arg1, arg2, arg3)
+
+	var ret0 *Sphere
+
+	{
+		ret0 = WrapSphere(ret)
+		runtime.SetFinalizer(&ret0, func(v **Sphere) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
 // IsEmpty checks whether the sphere has a zero radius.
 func (s *Sphere) IsEmpty() bool {
 	var arg0 *C.graphene_sphere_t
@@ -6690,7 +6800,7 @@ func (s *Sphere) IsEmpty() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6705,7 +6815,7 @@ func (s *Sphere) Translate(point *Point3D) Sphere {
 	arg0 = (*C.graphene_sphere_t)(s.Native())
 	arg1 = (*C.graphene_point3d_t)(point.Native())
 
-	ret := C.graphene_sphere_translate(arg0, arg1, &arg2)
+	C.graphene_sphere_translate(arg0, arg1, &arg2)
 
 	var ret0 *Sphere
 
@@ -6770,7 +6880,7 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6787,7 +6897,7 @@ func (a *Triangle) Equal(b *Triangle) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6853,7 +6963,7 @@ func (t *Triangle) Barycoords(p *Point3D) (res Vec2, ok bool) {
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -6865,7 +6975,7 @@ func (t *Triangle) BoundingBox() Box {
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
 
-	ret := C.graphene_triangle_get_bounding_box(arg0, &arg1)
+	C.graphene_triangle_get_bounding_box(arg0, &arg1)
 
 	var ret0 *Box
 
@@ -6891,7 +7001,7 @@ func (t *Triangle) Midpoint() Point3D {
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
 
-	ret := C.graphene_triangle_get_midpoint(arg0, &arg1)
+	C.graphene_triangle_get_midpoint(arg0, &arg1)
 
 	var ret0 *Point3D
 
@@ -6912,7 +7022,7 @@ func (t *Triangle) Normal() Vec3 {
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
 
-	ret := C.graphene_triangle_get_normal(arg0, &arg1)
+	C.graphene_triangle_get_normal(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -6934,7 +7044,7 @@ func (t *Triangle) Plane() Plane {
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
 
-	ret := C.graphene_triangle_get_plane(arg0, &arg1)
+	C.graphene_triangle_get_plane(arg0, &arg1)
 
 	var ret0 *Plane
 
@@ -6958,7 +7068,7 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
 
-	ret := C.graphene_triangle_get_points(arg0, &arg1, &arg2, &arg3)
+	C.graphene_triangle_get_points(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 *Point3D
 	var ret1 *Point3D
@@ -7026,7 +7136,7 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res Vec2, ok
 		})
 	}
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -7040,7 +7150,7 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
 
-	ret := C.graphene_triangle_get_vertices(arg0, &arg1, &arg2, &arg3)
+	C.graphene_triangle_get_vertices(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 *Vec3
 	var ret1 *Vec3
@@ -7080,18 +7190,12 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 	var arg3 *C.float
 
 	arg0 = (*C.graphene_triangle_t)(t.Native())
-	{
-		arg1 = (*C.float)(&a)
-		defer runtime.KeepAlive(&a)
-	}
-	{
-		arg2 = (*C.float)(&b)
-		defer runtime.KeepAlive(&b)
-	}
-	{
-		arg3 = (*C.float)(&c)
-		defer runtime.KeepAlive(&c)
-	}
+	arg1 = (*C.float)(&a)
+	defer runtime.KeepAlive(&a)
+	arg2 = (*C.float)(&b)
+	defer runtime.KeepAlive(&b)
+	arg3 = (*C.float)(&c)
+	defer runtime.KeepAlive(&c)
 
 	ret := C.graphene_triangle_init_from_float(arg0, arg1, arg2, arg3)
 
@@ -7213,7 +7317,7 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(a.Native())
 	arg1 = (*C.graphene_vec2_t)(b.Native())
 
-	ret := C.graphene_vec2_add(arg0, arg1, &arg2)
+	C.graphene_vec2_add(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7238,7 +7342,7 @@ func (a *Vec2) Divide(b *Vec2) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(a.Native())
 	arg1 = (*C.graphene_vec2_t)(b.Native())
 
-	ret := C.graphene_vec2_divide(arg0, arg1, &arg2)
+	C.graphene_vec2_divide(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7281,7 +7385,7 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7357,10 +7461,8 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var arg1 *C.float
 
 	arg0 = (*C.graphene_vec2_t)(v.Native())
-	{
-		arg1 = (*C.float)(&src)
-		defer runtime.KeepAlive(&src)
-	}
+	arg1 = (*C.float)(&src)
+	defer runtime.KeepAlive(&src)
 
 	ret := C.graphene_vec2_init_from_float(arg0, arg1)
 
@@ -7409,7 +7511,7 @@ func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	arg1 = (*C.graphene_vec2_t)(v2.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_vec2_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_vec2_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Vec2
 
@@ -7448,7 +7550,7 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(a.Native())
 	arg1 = (*C.graphene_vec2_t)(b.Native())
 
-	ret := C.graphene_vec2_max(arg0, arg1, &arg2)
+	C.graphene_vec2_max(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7472,7 +7574,7 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(a.Native())
 	arg1 = (*C.graphene_vec2_t)(b.Native())
 
-	ret := C.graphene_vec2_min(arg0, arg1, &arg2)
+	C.graphene_vec2_min(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7496,7 +7598,7 @@ func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(a.Native())
 	arg1 = (*C.graphene_vec2_t)(b.Native())
 
-	ret := C.graphene_vec2_multiply(arg0, arg1, &arg2)
+	C.graphene_vec2_multiply(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7525,7 +7627,7 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7537,7 +7639,7 @@ func (v *Vec2) Negate() Vec2 {
 
 	arg0 = (*C.graphene_vec2_t)(v.Native())
 
-	ret := C.graphene_vec2_negate(arg0, &arg1)
+	C.graphene_vec2_negate(arg0, &arg1)
 
 	var ret0 *Vec2
 
@@ -7558,7 +7660,7 @@ func (v *Vec2) Normalize() Vec2 {
 
 	arg0 = (*C.graphene_vec2_t)(v.Native())
 
-	ret := C.graphene_vec2_normalize(arg0, &arg1)
+	C.graphene_vec2_normalize(arg0, &arg1)
 
 	var ret0 *Vec2
 
@@ -7582,7 +7684,7 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(v.Native())
 	arg1 = C.float(factor)
 
-	ret := C.graphene_vec2_scale(arg0, arg1, &arg2)
+	C.graphene_vec2_scale(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7607,7 +7709,7 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	arg0 = (*C.graphene_vec2_t)(a.Native())
 	arg1 = (*C.graphene_vec2_t)(b.Native())
 
-	ret := C.graphene_vec2_subtract(arg0, arg1, &arg2)
+	C.graphene_vec2_subtract(arg0, arg1, &arg2)
 
 	var ret0 *Vec2
 
@@ -7628,7 +7730,7 @@ func (v *Vec2) ToFloat() [2]float32 {
 
 	arg0 = (*C.graphene_vec2_t)(v.Native())
 
-	ret := C.graphene_vec2_to_float(arg0, &arg1)
+	C.graphene_vec2_to_float(arg0, &arg1)
 
 	var ret0 [2]float32
 
@@ -7689,7 +7791,7 @@ func (a *Vec3) Add(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_add(arg0, arg1, &arg2)
+	C.graphene_vec3_add(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -7712,7 +7814,7 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_cross(arg0, arg1, &arg2)
+	C.graphene_vec3_cross(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -7737,7 +7839,7 @@ func (a *Vec3) Divide(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_divide(arg0, arg1, &arg2)
+	C.graphene_vec3_divide(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -7780,7 +7882,7 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7817,7 +7919,7 @@ func (v *Vec3) XY() Vec2 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_get_xy(arg0, &arg1)
+	C.graphene_vec3_get_xy(arg0, &arg1)
 
 	var ret0 *Vec2
 
@@ -7839,7 +7941,7 @@ func (v *Vec3) XY0() Vec3 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_get_xy0(arg0, &arg1)
+	C.graphene_vec3_get_xy0(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -7861,7 +7963,7 @@ func (v *Vec3) XYZ0() Vec4 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_get_xyz0(arg0, &arg1)
+	C.graphene_vec3_get_xyz0(arg0, &arg1)
 
 	var ret0 *Vec4
 
@@ -7883,7 +7985,7 @@ func (v *Vec3) XYZ1() Vec4 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_get_xyz1(arg0, &arg1)
+	C.graphene_vec3_get_xyz1(arg0, &arg1)
 
 	var ret0 *Vec4
 
@@ -7907,7 +8009,7 @@ func (v *Vec3) Xyzw(w float32) Vec4 {
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 	arg1 = C.float(w)
 
-	ret := C.graphene_vec3_get_xyzw(arg0, arg1, &arg2)
+	C.graphene_vec3_get_xyzw(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -7985,10 +8087,8 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var arg1 *C.float
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
-	{
-		arg1 = (*C.float)(&src)
-		defer runtime.KeepAlive(&src)
-	}
+	arg1 = (*C.float)(&src)
+	defer runtime.KeepAlive(&src)
 
 	ret := C.graphene_vec3_init_from_float(arg0, arg1)
 
@@ -8038,7 +8138,7 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	arg1 = (*C.graphene_vec3_t)(v2.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_vec3_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_vec3_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Vec3
 
@@ -8077,7 +8177,7 @@ func (a *Vec3) Max(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_max(arg0, arg1, &arg2)
+	C.graphene_vec3_max(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -8101,7 +8201,7 @@ func (a *Vec3) Min(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_min(arg0, arg1, &arg2)
+	C.graphene_vec3_min(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -8124,7 +8224,7 @@ func (a *Vec3) Multiply(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_multiply(arg0, arg1, &arg2)
+	C.graphene_vec3_multiply(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -8153,7 +8253,7 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8165,7 +8265,7 @@ func (v *Vec3) Negate() Vec3 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_negate(arg0, &arg1)
+	C.graphene_vec3_negate(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -8186,7 +8286,7 @@ func (v *Vec3) Normalize() Vec3 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_normalize(arg0, &arg1)
+	C.graphene_vec3_normalize(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -8210,7 +8310,7 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 	arg1 = C.float(factor)
 
-	ret := C.graphene_vec3_scale(arg0, arg1, &arg2)
+	C.graphene_vec3_scale(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -8235,7 +8335,7 @@ func (a *Vec3) Subtract(b *Vec3) Vec3 {
 	arg0 = (*C.graphene_vec3_t)(a.Native())
 	arg1 = (*C.graphene_vec3_t)(b.Native())
 
-	ret := C.graphene_vec3_subtract(arg0, arg1, &arg2)
+	C.graphene_vec3_subtract(arg0, arg1, &arg2)
 
 	var ret0 *Vec3
 
@@ -8256,7 +8356,7 @@ func (v *Vec3) ToFloat() [3]float32 {
 
 	arg0 = (*C.graphene_vec3_t)(v.Native())
 
-	ret := C.graphene_vec3_to_float(arg0, &arg1)
+	C.graphene_vec3_to_float(arg0, &arg1)
 
 	var ret0 [3]float32
 
@@ -8317,7 +8417,7 @@ func (a *Vec4) Add(b *Vec4) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(a.Native())
 	arg1 = (*C.graphene_vec4_t)(b.Native())
 
-	ret := C.graphene_vec4_add(arg0, arg1, &arg2)
+	C.graphene_vec4_add(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8342,7 +8442,7 @@ func (a *Vec4) Divide(b *Vec4) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(a.Native())
 	arg1 = (*C.graphene_vec4_t)(b.Native())
 
-	ret := C.graphene_vec4_divide(arg0, arg1, &arg2)
+	C.graphene_vec4_divide(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8385,7 +8485,7 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8437,7 +8537,7 @@ func (v *Vec4) XY() Vec2 {
 
 	arg0 = (*C.graphene_vec4_t)(v.Native())
 
-	ret := C.graphene_vec4_get_xy(arg0, &arg1)
+	C.graphene_vec4_get_xy(arg0, &arg1)
 
 	var ret0 *Vec2
 
@@ -8459,7 +8559,7 @@ func (v *Vec4) XYZ() Vec3 {
 
 	arg0 = (*C.graphene_vec4_t)(v.Native())
 
-	ret := C.graphene_vec4_get_xyz(arg0, &arg1)
+	C.graphene_vec4_get_xyz(arg0, &arg1)
 
 	var ret0 *Vec3
 
@@ -8540,10 +8640,8 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 	var arg1 *C.float
 
 	arg0 = (*C.graphene_vec4_t)(v.Native())
-	{
-		arg1 = (*C.float)(&src)
-		defer runtime.KeepAlive(&src)
-	}
+	arg1 = (*C.float)(&src)
+	defer runtime.KeepAlive(&src)
 
 	ret := C.graphene_vec4_init_from_float(arg0, arg1)
 
@@ -8645,7 +8743,7 @@ func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) Vec4 {
 	arg1 = (*C.graphene_vec4_t)(v2.Native())
 	arg2 = C.double(factor)
 
-	ret := C.graphene_vec4_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_vec4_interpolate(arg0, arg1, arg2, &arg3)
 
 	var ret0 *Vec4
 
@@ -8684,7 +8782,7 @@ func (a *Vec4) Max(b *Vec4) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(a.Native())
 	arg1 = (*C.graphene_vec4_t)(b.Native())
 
-	ret := C.graphene_vec4_max(arg0, arg1, &arg2)
+	C.graphene_vec4_max(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8708,7 +8806,7 @@ func (a *Vec4) Min(b *Vec4) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(a.Native())
 	arg1 = (*C.graphene_vec4_t)(b.Native())
 
-	ret := C.graphene_vec4_min(arg0, arg1, &arg2)
+	C.graphene_vec4_min(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8731,7 +8829,7 @@ func (a *Vec4) Multiply(b *Vec4) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(a.Native())
 	arg1 = (*C.graphene_vec4_t)(b.Native())
 
-	ret := C.graphene_vec4_multiply(arg0, arg1, &arg2)
+	C.graphene_vec4_multiply(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8760,7 +8858,7 @@ func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8772,7 +8870,7 @@ func (v *Vec4) Negate() Vec4 {
 
 	arg0 = (*C.graphene_vec4_t)(v.Native())
 
-	ret := C.graphene_vec4_negate(arg0, &arg1)
+	C.graphene_vec4_negate(arg0, &arg1)
 
 	var ret0 *Vec4
 
@@ -8793,7 +8891,7 @@ func (v *Vec4) Normalize() Vec4 {
 
 	arg0 = (*C.graphene_vec4_t)(v.Native())
 
-	ret := C.graphene_vec4_normalize(arg0, &arg1)
+	C.graphene_vec4_normalize(arg0, &arg1)
 
 	var ret0 *Vec4
 
@@ -8817,7 +8915,7 @@ func (v *Vec4) Scale(factor float32) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(v.Native())
 	arg1 = C.float(factor)
 
-	ret := C.graphene_vec4_scale(arg0, arg1, &arg2)
+	C.graphene_vec4_scale(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8842,7 +8940,7 @@ func (a *Vec4) Subtract(b *Vec4) Vec4 {
 	arg0 = (*C.graphene_vec4_t)(a.Native())
 	arg1 = (*C.graphene_vec4_t)(b.Native())
 
-	ret := C.graphene_vec4_subtract(arg0, arg1, &arg2)
+	C.graphene_vec4_subtract(arg0, arg1, &arg2)
 
 	var ret0 *Vec4
 
@@ -8864,7 +8962,7 @@ func (v *Vec4) ToFloat() [4]float32 {
 
 	arg0 = (*C.graphene_vec4_t)(v.Native())
 
-	ret := C.graphene_vec4_to_float(arg0, &arg1)
+	C.graphene_vec4_to_float(arg0, &arg1)
 
 	var ret0 [4]float32
 

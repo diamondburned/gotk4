@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1017,9 +1016,9 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	var fontset Fontset
 	var font Font
 
-	fontset = WrapFontset(externglib.Take(unsafe.Pointer(arg0.Native())))
+	fontset = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Fontset)
 
-	font = WrapFont(externglib.Take(unsafe.Pointer(arg1.Native())))
+	font = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Font)
 
 	ok := v.(FontsetForeachFunc)(fontset, font)
 }
@@ -1031,7 +1030,9 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var arg1 C.gboolean
 
-	arg1 = gextras.Cbool(allowBreaks)
+	if allowBreaks {
+		arg1 = C.TRUE
+	}
 
 	ret := C.pango_attr_allow_breaks_new(arg1)
 
@@ -1090,7 +1091,9 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 func NewAttrFallback(enableFallback bool) *Attribute {
 	var arg1 C.gboolean
 
-	arg1 = gextras.Cbool(enableFallback)
+	if enableFallback {
+		arg1 = C.TRUE
+	}
 
 	ret := C.pango_attr_fallback_new(arg1)
 
@@ -1238,7 +1241,9 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var arg1 C.gboolean
 
-	arg1 = gextras.Cbool(insertHyphens)
+	if insertHyphens {
+		arg1 = C.TRUE
+	}
 
 	ret := C.pango_attr_insert_hyphens_new(arg1)
 
@@ -1509,7 +1514,9 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var arg1 C.gboolean
 
-	arg1 = gextras.Cbool(strikethrough)
+	if strikethrough {
+		arg1 = C.TRUE
+	}
 
 	ret := C.pango_attr_strikethrough_new(arg1)
 
@@ -1546,10 +1553,10 @@ func NewAttrStyle(style Style) *Attribute {
 //
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
-func AttrTypeGetName(_type AttrType) string {
+func AttrTypeGetName(typ AttrType) string {
 	var arg1 C.PangoAttrType
 
-	arg1 = (C.PangoAttrType)(_type)
+	arg1 = (C.PangoAttrType)(typ)
 
 	ret := C.pango_attr_type_get_name(arg1)
 
@@ -1674,6 +1681,28 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 	return ret0
 }
 
+// Break determines possible line, word, and character breaks for a string of
+// Unicode text with a single analysis.
+//
+// For most purposes you may want to use pango_get_log_attrs().
+func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
+	var arg1 *C.gchar
+	var arg2 C.int
+	var arg3 *C.PangoAnalysis
+	var arg4 *C.PangoLogAttr
+	var arg5 C.int
+
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(length)
+	arg3 = (*C.PangoAnalysis)(analysis.Native())
+	arg4 = (*C.PangoLogAttr)(unsafe.Pointer(&attrs[0]))
+	arg5 = len(attrs)
+	defer runtime.KeepAlive(attrs)
+
+	C.pango_break(arg1, arg2, arg3, arg4, arg5)
+}
+
 // DefaultBreak: this is the default break algorithm.
 //
 // It applies Unicode rules without language-specific tailoring, therefore the
@@ -1764,7 +1793,7 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(length)
 
-	ret := C.pango_find_paragraph_boundary(arg1, arg2, &arg3, &arg4)
+	C.pango_find_paragraph_boundary(arg1, arg2, &arg3, &arg4)
 
 	var ret0 int
 	var ret1 int
@@ -1833,6 +1862,33 @@ func FontDescriptionFromString(str string) *FontDescription {
 	return ret0
 }
 
+// GetLogAttrs computes a `PangoLogAttr` for each character in @text.
+//
+// The @log_attrs array must have one `PangoLogAttr` for each position in @text;
+// if @text contains N characters, it has N+1 positions, including the last
+// position at the end of the text. @text should be an entire paragraph; logical
+// attributes can't be computed without context (for example you need to see
+// spaces on either side of a word to know the word is a word).
+func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
+	var arg1 *C.char
+	var arg2 C.int
+	var arg3 C.int
+	var arg4 *C.PangoLanguage
+	var arg5 *C.PangoLogAttr
+	var arg6 C.int
+
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(length)
+	arg3 = C.int(level)
+	arg4 = (*C.PangoLanguage)(language.Native())
+	arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+	arg6 = len(logAttrs)
+	defer runtime.KeepAlive(logAttrs)
+
+	C.pango_get_log_attrs(arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
 // GetMirrorChar returns the mirrored character of a Unicode character.
 //
 // Mirror characters are determined by the Unicode mirrored property.
@@ -1850,7 +1906,7 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1917,7 +1973,9 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 	var arg4 C.PangoGravityHint
 
 	arg1 = (C.PangoScript)(script)
-	arg2 = gextras.Cbool(wide)
+	if wide {
+		arg2 = C.TRUE
+	}
 	arg3 = (C.PangoGravity)(baseGravity)
 	arg4 = (C.PangoGravityHint)(hint)
 
@@ -1964,7 +2022,7 @@ func IsZeroWidth(ch uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2173,20 +2231,21 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) byt
 // g_markup_parse_context_parse(), use this function to get the list of
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
-func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, text string, accelChar uint32, ok bool) {
+func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, text string, accelChar uint32, err error) {
 	var arg1 *C.GMarkupParseContext
 	var arg2 **C.PangoAttrList // out
 	var arg3 **C.char          // out
 	var arg4 *C.gunichar       // out
+	var gError *C.GError
 
 	arg1 = (*C.GMarkupParseContext)(context.Native())
 
-	ret := C.pango_markup_parser_finish(arg1, &arg2, &arg3, &arg4)
+	ret := C.pango_markup_parser_finish(arg1, &arg2, &arg3, &arg4, &gError)
 
 	var ret0 **AttrList
 	var ret1 string
 	var ret2 uint32
-	var ret3 bool
+	var goError error
 
 	{
 		ret0 = WrapAttrList(arg2)
@@ -2197,9 +2256,12 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, t
 
 	ret2 = uint32(arg4)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // NewMarkupParser: incrementally parses marked-up text to create a plain-text
@@ -2251,17 +2313,19 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 // @possible_values. The list is slash-separated, eg. "none/start/middle/end".
 // If failed and @possible_values is not nil, returned string should be freed
 // using g_free().
-func ParseEnum(_type externglib.Type, str string, warn bool) (value int, possibleValues string, ok bool) {
+func ParseEnum(typ externglib.Type, str string, warn bool) (value int, possibleValues string, ok bool) {
 	var arg1 C.GType
 	var arg2 *C.char
 	var arg3 *C.int // out
 	var arg4 C.gboolean
 	var arg5 **C.char // out
 
-	arg1 = C.GType(_type)
+	arg1 = C.GType(typ)
 	arg2 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg2))
-	arg4 = gextras.Cbool(warn)
+	if warn {
+		arg4 = C.TRUE
+	}
 
 	ret := C.pango_parse_enum(arg1, arg2, &arg3, arg4, &arg5)
 
@@ -2274,7 +2338,7 @@ func ParseEnum(_type externglib.Type, str string, warn bool) (value int, possibl
 	ret1 = C.GoString(arg5)
 	C.free(unsafe.Pointer(arg5))
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -2297,25 +2361,26 @@ func ParseEnum(_type externglib.Type, str string, warn bool) (value int, possibl
 //
 // If any error happens, none of the output arguments are touched except for
 // @error.
-func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *AttrList, text string, accelChar uint32, ok bool) {
+func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *AttrList, text string, accelChar uint32, err error) {
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.gunichar
 	var arg4 **C.PangoAttrList // out
 	var arg5 **C.char          // out
 	var arg6 *C.gunichar       // out
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(length)
 	arg3 = C.gunichar(accelMarker)
 
-	ret := C.pango_parse_markup(arg1, arg2, arg3, &arg4, &arg5, &arg6)
+	ret := C.pango_parse_markup(arg1, arg2, arg3, &arg4, &arg5, &arg6, &gError)
 
 	var ret0 **AttrList
 	var ret1 string
 	var ret2 uint32
-	var ret3 bool
+	var goError error
 
 	{
 		ret0 = WrapAttrList(arg4)
@@ -2326,9 +2391,12 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 
 	ret2 = uint32(arg6)
 
-	ret3 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0, ret1, ret2, ret3
+	return ret0, ret1, ret2, goError
 }
 
 // ParseStretch parses a font stretch.
@@ -2344,7 +2412,9 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
-	arg3 = gextras.Cbool(warn)
+	if warn {
+		arg3 = C.TRUE
+	}
 
 	ret := C.pango_parse_stretch(arg1, &arg2, arg3)
 
@@ -2353,7 +2423,7 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 
 	ret0 = (*Stretch)(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -2369,7 +2439,9 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
-	arg3 = gextras.Cbool(warn)
+	if warn {
+		arg3 = C.TRUE
+	}
 
 	ret := C.pango_parse_style(arg1, &arg2, arg3)
 
@@ -2378,7 +2450,7 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 
 	ret0 = (*Style)(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -2394,7 +2466,9 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
-	arg3 = gextras.Cbool(warn)
+	if warn {
+		arg3 = C.TRUE
+	}
 
 	ret := C.pango_parse_variant(arg1, &arg2, arg3)
 
@@ -2403,7 +2477,7 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 
 	ret0 = (*Variant)(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -2419,7 +2493,9 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
-	arg3 = gextras.Cbool(warn)
+	if warn {
+		arg3 = C.TRUE
+	}
 
 	ret := C.pango_parse_weight(arg1, &arg2, arg3)
 
@@ -2428,7 +2504,7 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 
 	ret0 = (*Weight)(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -2514,7 +2590,7 @@ func ScanInt(pos string) (out int, ok bool) {
 
 	ret0 = int(arg2)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -2535,7 +2611,7 @@ func ScanString(pos string, out *glib.String) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2555,7 +2631,7 @@ func ScanWord(pos string, out *glib.String) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2734,7 +2810,7 @@ func SkipSpace(pos string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -2766,6 +2842,32 @@ func SplitFileList(str string) []string {
 	}
 
 	return ret0
+}
+
+// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
+//
+// The line breaks are assumed to have been produced by [func@default_break].
+//
+// If @offset is not -1, it is used to apply attributes from @analysis that are
+// relevant to line breaking.
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
+	var arg1 *C.char
+	var arg2 C.int
+	var arg3 *C.PangoAnalysis
+	var arg4 C.int
+	var arg5 *C.PangoLogAttr
+	var arg6 C.int
+
+	arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = C.int(length)
+	arg3 = (*C.PangoAnalysis)(analysis.Native())
+	arg4 = C.int(offset)
+	arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+	arg6 = len(logAttrs)
+	defer runtime.KeepAlive(logAttrs)
+
+	C.pango_tailor_break(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // TrimString trims leading and trailing whitespace from a string.
@@ -2935,56 +3037,56 @@ func (a *Analysis) Native() unsafe.Pointer {
 }
 
 // ShapeEngine gets the field inside the struct.
-func (s *Analysis) ShapeEngine() interface{} {
+func (a *Analysis) ShapeEngine() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(a.native.shape_engine))
 	return ret
 }
 
 // LangEngine gets the field inside the struct.
-func (l *Analysis) LangEngine() interface{} {
+func (a *Analysis) LangEngine() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(a.native.lang_engine))
 	return ret
 }
 
 // Font gets the field inside the struct.
-func (f *Analysis) Font() Font {
+func (a *Analysis) Font() Font {
 	var ret Font
-	ret = WrapFont(externglib.Take(unsafe.Pointer(a.native.font.Native())))
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(a.native.font.Native()))).(Font)
 	return ret
 }
 
 // Level gets the field inside the struct.
-func (l *Analysis) Level() byte {
+func (a *Analysis) Level() byte {
 	var ret byte
 	ret = byte(a.native.level)
 	return ret
 }
 
 // Gravity gets the field inside the struct.
-func (g *Analysis) Gravity() byte {
+func (a *Analysis) Gravity() byte {
 	var ret byte
 	ret = byte(a.native.gravity)
 	return ret
 }
 
 // Flags gets the field inside the struct.
-func (f *Analysis) Flags() byte {
+func (a *Analysis) Flags() byte {
 	var ret byte
 	ret = byte(a.native.flags)
 	return ret
 }
 
 // Script gets the field inside the struct.
-func (s *Analysis) Script() byte {
+func (a *Analysis) Script() byte {
 	var ret byte
 	ret = byte(a.native.script)
 	return ret
 }
 
 // Language gets the field inside the struct.
-func (l *Analysis) Language() *Language {
+func (a *Analysis) Language() *Language {
 	var ret *Language
 	{
 		ret = WrapLanguage(a.native.language)
@@ -2996,7 +3098,7 @@ func (l *Analysis) Language() *Language {
 }
 
 // ExtraAttrs gets the field inside the struct.
-func (e *Analysis) ExtraAttrs() *glib.SList {
+func (a *Analysis) ExtraAttrs() *glib.SList {
 	var ret *glib.SList
 	{
 		ret = glib.WrapSList(a.native.extra_attrs)
@@ -3046,7 +3148,7 @@ func (a *AttrColor) Attr() Attribute {
 }
 
 // Color gets the field inside the struct.
-func (c *AttrColor) Color() Color {
+func (a *AttrColor) Color() Color {
 	var ret Color
 	{
 		ret = WrapColor(a.native.color)
@@ -3096,7 +3198,7 @@ func (a *AttrFloat) Attr() Attribute {
 }
 
 // Value gets the field inside the struct.
-func (v *AttrFloat) Value() float64 {
+func (a *AttrFloat) Value() float64 {
 	var ret float64
 	ret = float64(a.native.value)
 	return ret
@@ -3141,7 +3243,7 @@ func (a *AttrFontDesc) Attr() Attribute {
 }
 
 // Desc gets the field inside the struct.
-func (d *AttrFontDesc) Desc() *FontDescription {
+func (a *AttrFontDesc) Desc() *FontDescription {
 	var ret *FontDescription
 	{
 		ret = WrapFontDescription(a.native.desc)
@@ -3191,7 +3293,7 @@ func (a *AttrFontFeatures) Attr() Attribute {
 }
 
 // Features gets the field inside the struct.
-func (f *AttrFontFeatures) Features() string {
+func (a *AttrFontFeatures) Features() string {
 	var ret string
 	ret = C.GoString(a.native.features)
 	return ret
@@ -3236,7 +3338,7 @@ func (a *AttrInt) Attr() Attribute {
 }
 
 // Value gets the field inside the struct.
-func (v *AttrInt) Value() int {
+func (a *AttrInt) Value() int {
 	var ret int
 	ret = int(a.native.value)
 	return ret
@@ -3303,12 +3405,12 @@ func (iterator *AttrIterator) Destroy() {
 // Get: find the current attribute of a particular type at the iterator
 // location. When multiple attributes of the same type overlap, the attribute
 // whose range starts closest to the current location is used.
-func (iterator *AttrIterator) Get(_type AttrType) *Attribute {
+func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 	var arg0 *C.PangoAttrIterator
 	var arg1 C.PangoAttrType
 
 	arg0 = (*C.PangoAttrIterator)(iterator.Native())
-	arg1 = (C.PangoAttrType)(_type)
+	arg1 = (C.PangoAttrType)(typ)
 
 	ret := C.pango_attr_iterator_get(arg0, arg1)
 
@@ -3366,7 +3468,7 @@ func (iterator *AttrIterator) Next() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -3382,7 +3484,7 @@ func (iterator *AttrIterator) Range() (start int, end int) {
 
 	arg0 = (*C.PangoAttrIterator)(iterator.Native())
 
-	ret := C.pango_attr_iterator_range(arg0, &arg1, &arg2)
+	C.pango_attr_iterator_range(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -3433,7 +3535,7 @@ func (a *AttrLanguage) Attr() Attribute {
 }
 
 // Value gets the field inside the struct.
-func (v *AttrLanguage) Value() *Language {
+func (a *AttrLanguage) Value() *Language {
 	var ret *Language
 	{
 		ret = WrapLanguage(a.native.value)
@@ -3543,21 +3645,21 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
 
 // Filter: given a `PangoAttrList` and callback function, removes any elements
 // of @list for which @func returns true and inserts them into a new list.
-func (list *AttrList) Filter(_func AttrFilterFunc) *AttrList {
+func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var arg0 *C.PangoAttrList
 	var arg1 C.PangoAttrFilterFunc
 	var arg2 C.gpointer
 
 	arg0 = (*C.PangoAttrList)(list.Native())
 	arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
-	arg2 = C.gpointer(box.Assign(_func))
+	arg2 = C.gpointer(box.Assign(fn))
 
 	ret := C.pango_attr_list_filter(arg0, arg1, arg2)
 
@@ -3749,7 +3851,7 @@ func (a *AttrShape) Attr() Attribute {
 }
 
 // InkRect gets the field inside the struct.
-func (i *AttrShape) InkRect() Rectangle {
+func (a *AttrShape) InkRect() Rectangle {
 	var ret Rectangle
 	{
 		ret = WrapRectangle(a.native.ink_rect)
@@ -3761,7 +3863,7 @@ func (i *AttrShape) InkRect() Rectangle {
 }
 
 // LogicalRect gets the field inside the struct.
-func (l *AttrShape) LogicalRect() Rectangle {
+func (a *AttrShape) LogicalRect() Rectangle {
 	var ret Rectangle
 	{
 		ret = WrapRectangle(a.native.logical_rect)
@@ -3773,7 +3875,7 @@ func (l *AttrShape) LogicalRect() Rectangle {
 }
 
 // Data gets the field inside the struct.
-func (d *AttrShape) Data() interface{} {
+func (a *AttrShape) Data() interface{} {
 	var ret interface{}
 	ret = box.Get(uintptr(a.native.data))
 	return ret
@@ -3818,7 +3920,7 @@ func (a *AttrSize) Attr() Attribute {
 }
 
 // Size gets the field inside the struct.
-func (s *AttrSize) Size() int {
+func (a *AttrSize) Size() int {
 	var ret int
 	ret = int(a.native.size)
 	return ret
@@ -3870,7 +3972,7 @@ func (a *AttrString) Attr() Attribute {
 }
 
 // Value gets the field inside the struct.
-func (v *AttrString) Value() string {
+func (a *AttrString) Value() string {
 	var ret string
 	ret = C.GoString(a.native.value)
 	return ret
@@ -3909,7 +4011,7 @@ func (a *Attribute) Native() unsafe.Pointer {
 }
 
 // Klass gets the field inside the struct.
-func (k *Attribute) Klass() *AttrClass {
+func (a *Attribute) Klass() *AttrClass {
 	var ret *AttrClass
 	{
 		ret = WrapAttrClass(a.native.klass)
@@ -3921,14 +4023,14 @@ func (k *Attribute) Klass() *AttrClass {
 }
 
 // StartIndex gets the field inside the struct.
-func (s *Attribute) StartIndex() uint {
+func (a *Attribute) StartIndex() uint {
 	var ret uint
 	ret = uint(a.native.start_index)
 	return ret
 }
 
 // EndIndex gets the field inside the struct.
-func (e *Attribute) EndIndex() uint {
+func (a *Attribute) EndIndex() uint {
 	var ret uint
 	ret = uint(a.native.end_index)
 	return ret
@@ -3973,7 +4075,7 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4019,21 +4121,21 @@ func (c *Color) Native() unsafe.Pointer {
 }
 
 // Red gets the field inside the struct.
-func (r *Color) Red() uint16 {
+func (c *Color) Red() uint16 {
 	var ret uint16
 	ret = uint16(c.native.red)
 	return ret
 }
 
 // Green gets the field inside the struct.
-func (g *Color) Green() uint16 {
+func (c *Color) Green() uint16 {
 	var ret uint16
 	ret = uint16(c.native.green)
 	return ret
 }
 
 // Blue gets the field inside the struct.
-func (b *Color) Blue() uint16 {
+func (c *Color) Blue() uint16 {
 	var ret uint16
 	ret = uint16(c.native.blue)
 	return ret
@@ -4089,7 +4191,7 @@ func (color *Color) Parse(spec string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4123,7 +4225,7 @@ func (color *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
 
 	ret0 = uint16(arg1)
 
-	ret1 = gextras.Gobool(ret)
+	ret1 = ret != C.FALSE
 
 	return ret0, ret1
 }
@@ -4215,7 +4317,7 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4277,7 +4379,7 @@ func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4371,7 +4473,7 @@ func (desc *FontDescription) SizeIsAbsolute() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -4494,7 +4596,9 @@ func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting
 
 	arg0 = (*C.PangoFontDescription)(desc.Native())
 	arg1 = (*C.PangoFontDescription)(descToMerge.Native())
-	arg2 = gextras.Cbool(replaceExisting)
+	if replaceExisting {
+		arg2 = C.TRUE
+	}
 
 	C.pango_font_description_merge(arg0, arg1, arg2)
 }
@@ -4513,7 +4617,9 @@ func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceEx
 
 	arg0 = (*C.PangoFontDescription)(desc.Native())
 	arg1 = (*C.PangoFontDescription)(descToMerge.Native())
-	arg2 = gextras.Cbool(replaceExisting)
+	if replaceExisting {
+		arg2 = C.TRUE
+	}
 
 	C.pango_font_description_merge_static(arg0, arg1, arg2)
 }
@@ -5012,7 +5118,7 @@ func (g *GlyphGeometry) Native() unsafe.Pointer {
 }
 
 // Width gets the field inside the struct.
-func (w *GlyphGeometry) Width() GlyphUnit {
+func (g *GlyphGeometry) Width() GlyphUnit {
 	var ret GlyphUnit
 	{
 		var tmp int32
@@ -5023,7 +5129,7 @@ func (w *GlyphGeometry) Width() GlyphUnit {
 }
 
 // XOffset gets the field inside the struct.
-func (x *GlyphGeometry) XOffset() GlyphUnit {
+func (g *GlyphGeometry) XOffset() GlyphUnit {
 	var ret GlyphUnit
 	{
 		var tmp int32
@@ -5034,7 +5140,7 @@ func (x *GlyphGeometry) XOffset() GlyphUnit {
 }
 
 // YOffset gets the field inside the struct.
-func (y *GlyphGeometry) YOffset() GlyphUnit {
+func (g *GlyphGeometry) YOffset() GlyphUnit {
 	var ret GlyphUnit
 	{
 		var tmp int32
@@ -5094,7 +5200,7 @@ func (g *GlyphInfo) Geometry() GlyphGeometry {
 }
 
 // Attr gets the field inside the struct.
-func (a *GlyphInfo) Attr() GlyphVisAttr {
+func (g *GlyphInfo) Attr() GlyphVisAttr {
 	var ret GlyphVisAttr
 	{
 		ret = WrapGlyphVisAttr(g.native.attr)
@@ -5136,7 +5242,7 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 }
 
 // Item gets the field inside the struct.
-func (i *GlyphItem) Item() *Item {
+func (g *GlyphItem) Item() *Item {
 	var ret *Item
 	{
 		ret = WrapItem(g.native.item)
@@ -5221,47 +5327,6 @@ func (glyphItem *GlyphItem) Free() {
 	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
 
 	C.pango_glyph_item_free(arg0)
-}
-
-// LogicalWidths: given a `PangoGlyphItem` and the corresponding text, determine
-// the width corresponding to each character.
-//
-// When multiple characters compose a single cluster, the width of the entire
-// cluster is divided equally among the characters.
-//
-// See also [method@Pango.GlyphString.get_logical_widths].
-func (glyphItem *GlyphItem) LogicalWidths(text string, logicalWidths []int) {
-	var arg0 *C.PangoGlyphItem
-	var arg1 *C.char
-	var arg2 *C.int
-
-	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	{
-
-	}
-
-	C.pango_glyph_item_get_logical_widths(arg0, arg1, arg2)
-}
-
-// LetterSpace adds spacing between the graphemes of @glyph_item to give the
-// effect of typographic letter spacing.
-func (glyphItem *GlyphItem) LetterSpace(text string, logAttrs []LogAttr, letterSpacing int) {
-	var arg0 *C.PangoGlyphItem
-	var arg1 *C.char
-	var arg2 *C.PangoLogAttr
-	var arg3 C.int
-
-	arg0 = (*C.PangoGlyphItem)(glyphItem.Native())
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	{
-
-	}
-	arg3 = C.int(letterSpacing)
-
-	C.pango_glyph_item_letter_space(arg0, arg1, arg2, arg3)
 }
 
 // Split modifies @orig to cover only the text after @split_index, and returns a
@@ -5364,49 +5429,49 @@ func (g *GlyphItemIter) GlyphItem() *GlyphItem {
 }
 
 // Text gets the field inside the struct.
-func (t *GlyphItemIter) Text() string {
+func (g *GlyphItemIter) Text() string {
 	var ret string
 	ret = C.GoString(g.native.text)
 	return ret
 }
 
 // StartGlyph gets the field inside the struct.
-func (s *GlyphItemIter) StartGlyph() int {
+func (g *GlyphItemIter) StartGlyph() int {
 	var ret int
 	ret = int(g.native.start_glyph)
 	return ret
 }
 
 // StartIndex gets the field inside the struct.
-func (s *GlyphItemIter) StartIndex() int {
+func (g *GlyphItemIter) StartIndex() int {
 	var ret int
 	ret = int(g.native.start_index)
 	return ret
 }
 
 // StartChar gets the field inside the struct.
-func (s *GlyphItemIter) StartChar() int {
+func (g *GlyphItemIter) StartChar() int {
 	var ret int
 	ret = int(g.native.start_char)
 	return ret
 }
 
 // EndGlyph gets the field inside the struct.
-func (e *GlyphItemIter) EndGlyph() int {
+func (g *GlyphItemIter) EndGlyph() int {
 	var ret int
 	ret = int(g.native.end_glyph)
 	return ret
 }
 
 // EndIndex gets the field inside the struct.
-func (e *GlyphItemIter) EndIndex() int {
+func (g *GlyphItemIter) EndIndex() int {
 	var ret int
 	ret = int(g.native.end_index)
 	return ret
 }
 
 // EndChar gets the field inside the struct.
-func (e *GlyphItemIter) EndChar() int {
+func (g *GlyphItemIter) EndChar() int {
 	var ret int
 	ret = int(g.native.end_char)
 	return ret
@@ -5456,7 +5521,7 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5479,7 +5544,7 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5496,7 +5561,7 @@ func (iter *GlyphItemIter) NextCluster() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5512,7 +5577,7 @@ func (iter *GlyphItemIter) PrevCluster() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -5561,7 +5626,7 @@ func NewGlyphString() *GlyphString {
 }
 
 // NumGlyphs gets the field inside the struct.
-func (n *GlyphString) NumGlyphs() int {
+func (g *GlyphString) NumGlyphs() int {
 	var ret int
 	ret = int(g.native.num_glyphs)
 	return ret
@@ -5586,7 +5651,7 @@ func (g *GlyphString) Glyphs() []GlyphInfo {
 }
 
 // LogClusters gets the field inside the struct.
-func (l *GlyphString) LogClusters() int {
+func (g *GlyphString) LogClusters() int {
 	var ret int
 	ret = int(g.native.log_clusters)
 	return ret
@@ -5626,7 +5691,7 @@ func (glyphs *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Re
 	arg0 = (*C.PangoGlyphString)(glyphs.Native())
 	arg1 = (*C.PangoFont)(font.Native())
 
-	ret := C.pango_glyph_string_extents(arg0, arg1, &arg2, &arg3)
+	C.pango_glyph_string_extents(arg0, arg1, &arg2, &arg3)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -5666,7 +5731,7 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect 
 	arg2 = C.int(end)
 	arg3 = (*C.PangoFont)(font.Native())
 
-	ret := C.pango_glyph_string_extents_range(arg0, arg1, arg2, arg3, &arg4, &arg5)
+	C.pango_glyph_string_extents_range(arg0, arg1, arg2, arg3, &arg4, &arg5)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -5695,32 +5760,6 @@ func (string *GlyphString) Free() {
 	arg0 = (*C.PangoGlyphString)(string.Native())
 
 	C.pango_glyph_string_free(arg0)
-}
-
-// LogicalWidths: given a `PangoGlyphString` and corresponding text, determine
-// the width corresponding to each character.
-//
-// When multiple characters compose a single cluster, the width of the entire
-// cluster is divided equally among the characters.
-//
-// See also [method@Pango.GlyphItem.get_logical_widths].
-func (glyphs *GlyphString) LogicalWidths(text string, length int, embeddingLevel int, logicalWidths []int) {
-	var arg0 *C.PangoGlyphString
-	var arg1 *C.char
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 *C.int
-
-	arg0 = (*C.PangoGlyphString)(glyphs.Native())
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(length)
-	arg3 = C.int(embeddingLevel)
-	{
-
-	}
-
-	C.pango_glyph_string_get_logical_widths(arg0, arg1, arg2, arg3, arg4)
 }
 
 // Width computes the logical width of the glyph string.
@@ -5762,9 +5801,11 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 	arg2 = C.int(length)
 	arg3 = (*C.PangoAnalysis)(analysis.Native())
 	arg4 = C.int(index_)
-	arg5 = gextras.Cbool(trailing)
+	if trailing {
+		arg5 = C.TRUE
+	}
 
-	ret := C.pango_glyph_string_index_to_x(arg0, arg1, arg2, arg3, arg4, arg5, &arg6)
+	C.pango_glyph_string_index_to_x(arg0, arg1, arg2, arg3, arg4, arg5, &arg6)
 
 	var ret0 int
 
@@ -5807,7 +5848,7 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 	arg3 = (*C.PangoAnalysis)(analysis.Native())
 	arg4 = C.int(xPos)
 
-	ret := C.pango_glyph_string_x_to_index(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+	C.pango_glyph_string_x_to_index(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
 
 	var ret0 int
 	var ret1 int
@@ -5849,7 +5890,7 @@ func (g *GlyphVisAttr) Native() unsafe.Pointer {
 }
 
 // IsClusterStart gets the field inside the struct.
-func (i *GlyphVisAttr) IsClusterStart() uint {
+func (g *GlyphVisAttr) IsClusterStart() uint {
 	var ret uint
 	ret = uint(g.native.is_cluster_start)
 	return ret
@@ -5898,28 +5939,28 @@ func NewItem() *Item {
 }
 
 // Offset gets the field inside the struct.
-func (o *Item) Offset() int {
+func (i *Item) Offset() int {
 	var ret int
 	ret = int(i.native.offset)
 	return ret
 }
 
 // Length gets the field inside the struct.
-func (l *Item) Length() int {
+func (i *Item) Length() int {
 	var ret int
 	ret = int(i.native.length)
 	return ret
 }
 
 // NumChars gets the field inside the struct.
-func (n *Item) NumChars() int {
+func (i *Item) NumChars() int {
 	var ret int
 	ret = int(i.native.num_chars)
 	return ret
 }
 
 // Analysis gets the field inside the struct.
-func (a *Item) Analysis() Analysis {
+func (i *Item) Analysis() Analysis {
 	var ret Analysis
 	{
 		ret = WrapAnalysis(i.native.analysis)
@@ -6131,7 +6172,7 @@ func (language *Language) IncludesScript(script Script) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6154,7 +6195,7 @@ func (language *Language) Matches(rangeList string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6214,7 +6255,7 @@ func (iter *LayoutIter) AtLastLine() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6271,7 +6312,7 @@ func (iter *LayoutIter) CharExtents() Rectangle {
 
 	arg0 = (*C.PangoLayoutIter)(iter.Native())
 
-	ret := C.pango_layout_iter_get_char_extents(arg0, &arg1)
+	C.pango_layout_iter_get_char_extents(arg0, &arg1)
 
 	var ret0 *Rectangle
 
@@ -6294,7 +6335,7 @@ func (iter *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectang
 
 	arg0 = (*C.PangoLayoutIter)(iter.Native())
 
-	ret := C.pango_layout_iter_get_cluster_extents(arg0, &arg1, &arg2)
+	C.pango_layout_iter_get_cluster_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -6344,7 +6385,7 @@ func (iter *LayoutIter) Layout() Layout {
 
 	var ret0 Layout
 
-	ret0 = WrapLayout(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Layout)
 
 	return ret0
 }
@@ -6358,7 +6399,7 @@ func (iter *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangl
 
 	arg0 = (*C.PangoLayoutIter)(iter.Native())
 
-	ret := C.pango_layout_iter_get_layout_extents(arg0, &arg1, &arg2)
+	C.pango_layout_iter_get_layout_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -6416,7 +6457,7 @@ func (iter *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle)
 
 	arg0 = (*C.PangoLayoutIter)(iter.Native())
 
-	ret := C.pango_layout_iter_get_line_extents(arg0, &arg1, &arg2)
+	C.pango_layout_iter_get_line_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -6478,7 +6519,7 @@ func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
 
 	arg0 = (*C.PangoLayoutIter)(iter.Native())
 
-	ret := C.pango_layout_iter_get_line_yrange(arg0, &arg1, &arg2)
+	C.pango_layout_iter_get_line_yrange(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -6529,7 +6570,7 @@ func (iter *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) 
 
 	arg0 = (*C.PangoLayoutIter)(iter.Native())
 
-	ret := C.pango_layout_iter_get_run_extents(arg0, &arg1, &arg2)
+	C.pango_layout_iter_get_run_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -6593,7 +6634,7 @@ func (iter *LayoutIter) NextChar() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6609,7 +6650,7 @@ func (iter *LayoutIter) NextCluster() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6625,7 +6666,7 @@ func (iter *LayoutIter) NextLine() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6641,7 +6682,7 @@ func (iter *LayoutIter) NextRun() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -6679,12 +6720,12 @@ func (l *LayoutLine) Native() unsafe.Pointer {
 // Layout gets the field inside the struct.
 func (l *LayoutLine) Layout() Layout {
 	var ret Layout
-	ret = WrapLayout(externglib.Take(unsafe.Pointer(l.native.layout.Native())))
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(l.native.layout.Native()))).(Layout)
 	return ret
 }
 
 // StartIndex gets the field inside the struct.
-func (s *LayoutLine) StartIndex() int {
+func (l *LayoutLine) StartIndex() int {
 	var ret int
 	ret = int(l.native.start_index)
 	return ret
@@ -6698,7 +6739,7 @@ func (l *LayoutLine) Length() int {
 }
 
 // Runs gets the field inside the struct.
-func (r *LayoutLine) Runs() *glib.SList {
+func (l *LayoutLine) Runs() *glib.SList {
 	var ret *glib.SList
 	{
 		ret = glib.WrapSList(l.native.runs)
@@ -6710,14 +6751,14 @@ func (r *LayoutLine) Runs() *glib.SList {
 }
 
 // IsParagraphStart gets the field inside the struct.
-func (i *LayoutLine) IsParagraphStart() uint {
+func (l *LayoutLine) IsParagraphStart() uint {
 	var ret uint
 	ret = uint(l.native.is_paragraph_start)
 	return ret
 }
 
 // ResolvedDir gets the field inside the struct.
-func (r *LayoutLine) ResolvedDir() uint {
+func (l *LayoutLine) ResolvedDir() uint {
 	var ret uint
 	ret = uint(l.native.resolved_dir)
 	return ret
@@ -6733,7 +6774,7 @@ func (line *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	arg0 = (*C.PangoLayoutLine)(line.Native())
 
-	ret := C.pango_layout_line_get_extents(arg0, &arg1, &arg2)
+	C.pango_layout_line_get_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -6763,7 +6804,7 @@ func (line *LayoutLine) Height() int {
 
 	arg0 = (*C.PangoLayoutLine)(line.Native())
 
-	ret := C.pango_layout_line_get_height(arg0, &arg1)
+	C.pango_layout_line_get_height(arg0, &arg1)
 
 	var ret0 int
 
@@ -6786,7 +6827,7 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rec
 
 	arg0 = (*C.PangoLayoutLine)(layoutLine.Native())
 
-	ret := C.pango_layout_line_get_pixel_extents(arg0, &arg1, &arg2)
+	C.pango_layout_line_get_pixel_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -6824,7 +6865,7 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) (ranges []int, nRa
 	arg1 = C.int(startIndex)
 	arg2 = C.int(endIndex)
 
-	ret := C.pango_layout_line_get_x_ranges(arg0, arg1, arg2, &arg3, &arg4)
+	C.pango_layout_line_get_x_ranges(arg0, arg1, arg2, &arg3, &arg4)
 
 	var ret0 []int
 	var ret1 int
@@ -6851,9 +6892,11 @@ func (line *LayoutLine) IndexToX(index_ int, trailing bool) int {
 
 	arg0 = (*C.PangoLayoutLine)(line.Native())
 	arg1 = C.int(index_)
-	arg2 = gextras.Cbool(trailing)
+	if trailing {
+		arg2 = C.TRUE
+	}
 
-	ret := C.pango_layout_line_index_to_x(arg0, arg1, arg2, &arg3)
+	C.pango_layout_line_index_to_x(arg0, arg1, arg2, &arg3)
 
 	var ret0 int
 
@@ -6918,7 +6961,7 @@ func (line *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 
 	ret1 = int(arg3)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -6950,91 +6993,91 @@ func (l *LogAttr) Native() unsafe.Pointer {
 }
 
 // IsLineBreak gets the field inside the struct.
-func (i *LogAttr) IsLineBreak() uint {
+func (l *LogAttr) IsLineBreak() uint {
 	var ret uint
 	ret = uint(l.native.is_line_break)
 	return ret
 }
 
 // IsMandatoryBreak gets the field inside the struct.
-func (i *LogAttr) IsMandatoryBreak() uint {
+func (l *LogAttr) IsMandatoryBreak() uint {
 	var ret uint
 	ret = uint(l.native.is_mandatory_break)
 	return ret
 }
 
 // IsCharBreak gets the field inside the struct.
-func (i *LogAttr) IsCharBreak() uint {
+func (l *LogAttr) IsCharBreak() uint {
 	var ret uint
 	ret = uint(l.native.is_char_break)
 	return ret
 }
 
 // IsWhite gets the field inside the struct.
-func (i *LogAttr) IsWhite() uint {
+func (l *LogAttr) IsWhite() uint {
 	var ret uint
 	ret = uint(l.native.is_white)
 	return ret
 }
 
 // IsCursorPosition gets the field inside the struct.
-func (i *LogAttr) IsCursorPosition() uint {
+func (l *LogAttr) IsCursorPosition() uint {
 	var ret uint
 	ret = uint(l.native.is_cursor_position)
 	return ret
 }
 
 // IsWordStart gets the field inside the struct.
-func (i *LogAttr) IsWordStart() uint {
+func (l *LogAttr) IsWordStart() uint {
 	var ret uint
 	ret = uint(l.native.is_word_start)
 	return ret
 }
 
 // IsWordEnd gets the field inside the struct.
-func (i *LogAttr) IsWordEnd() uint {
+func (l *LogAttr) IsWordEnd() uint {
 	var ret uint
 	ret = uint(l.native.is_word_end)
 	return ret
 }
 
 // IsSentenceBoundary gets the field inside the struct.
-func (i *LogAttr) IsSentenceBoundary() uint {
+func (l *LogAttr) IsSentenceBoundary() uint {
 	var ret uint
 	ret = uint(l.native.is_sentence_boundary)
 	return ret
 }
 
 // IsSentenceStart gets the field inside the struct.
-func (i *LogAttr) IsSentenceStart() uint {
+func (l *LogAttr) IsSentenceStart() uint {
 	var ret uint
 	ret = uint(l.native.is_sentence_start)
 	return ret
 }
 
 // IsSentenceEnd gets the field inside the struct.
-func (i *LogAttr) IsSentenceEnd() uint {
+func (l *LogAttr) IsSentenceEnd() uint {
 	var ret uint
 	ret = uint(l.native.is_sentence_end)
 	return ret
 }
 
 // BackspaceDeletesCharacter gets the field inside the struct.
-func (b *LogAttr) BackspaceDeletesCharacter() uint {
+func (l *LogAttr) BackspaceDeletesCharacter() uint {
 	var ret uint
 	ret = uint(l.native.backspace_deletes_character)
 	return ret
 }
 
 // IsExpandableSpace gets the field inside the struct.
-func (i *LogAttr) IsExpandableSpace() uint {
+func (l *LogAttr) IsExpandableSpace() uint {
 	var ret uint
 	ret = uint(l.native.is_expandable_space)
 	return ret
 }
 
 // IsWordBoundary gets the field inside the struct.
-func (i *LogAttr) IsWordBoundary() uint {
+func (l *LogAttr) IsWordBoundary() uint {
 	var ret uint
 	ret = uint(l.native.is_word_boundary)
 	return ret
@@ -7073,42 +7116,42 @@ func (m *Matrix) Native() unsafe.Pointer {
 }
 
 // XX gets the field inside the struct.
-func (x *Matrix) XX() float64 {
+func (m *Matrix) XX() float64 {
 	var ret float64
 	ret = float64(m.native.xx)
 	return ret
 }
 
 // XY gets the field inside the struct.
-func (x *Matrix) XY() float64 {
+func (m *Matrix) XY() float64 {
 	var ret float64
 	ret = float64(m.native.xy)
 	return ret
 }
 
 // YX gets the field inside the struct.
-func (y *Matrix) YX() float64 {
+func (m *Matrix) YX() float64 {
 	var ret float64
 	ret = float64(m.native.yx)
 	return ret
 }
 
 // YY gets the field inside the struct.
-func (y *Matrix) YY() float64 {
+func (m *Matrix) YY() float64 {
 	var ret float64
 	ret = float64(m.native.yy)
 	return ret
 }
 
 // X0 gets the field inside the struct.
-func (x *Matrix) X0() float64 {
+func (m *Matrix) X0() float64 {
 	var ret float64
 	ret = float64(m.native.x0)
 	return ret
 }
 
 // Y0 gets the field inside the struct.
-func (y *Matrix) Y0() float64 {
+func (m *Matrix) Y0() float64 {
 	var ret float64
 	ret = float64(m.native.y0)
 	return ret
@@ -7188,7 +7231,7 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 
 	arg0 = (*C.PangoMatrix)(matrix.Native())
 
-	ret := C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
+	C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
 
 	var ret0 float64
 	var ret1 float64
@@ -7357,28 +7400,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 }
 
 // X gets the field inside the struct.
-func (x *Rectangle) X() int {
+func (r *Rectangle) X() int {
 	var ret int
 	ret = int(r.native.x)
 	return ret
 }
 
 // Y gets the field inside the struct.
-func (y *Rectangle) Y() int {
+func (r *Rectangle) Y() int {
 	var ret int
 	ret = int(r.native.y)
 	return ret
 }
 
 // Width gets the field inside the struct.
-func (w *Rectangle) Width() int {
+func (r *Rectangle) Width() int {
 	var ret int
 	ret = int(r.native.width)
 	return ret
 }
 
 // Height gets the field inside the struct.
-func (h *Rectangle) Height() int {
+func (r *Rectangle) Height() int {
 	var ret int
 	ret = int(r.native.height)
 	return ret
@@ -7454,7 +7497,7 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 
 	arg0 = (*C.PangoScriptIter)(iter.Native())
 
-	ret := C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
+	C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 string
 	var ret1 string
@@ -7482,7 +7525,7 @@ func (iter *ScriptIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7521,7 +7564,9 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var arg2 C.gboolean
 
 	arg1 = C.gint(initialSize)
-	arg2 = gextras.Cbool(positionsInPixels)
+	if positionsInPixels {
+		arg2 = C.TRUE
+	}
 
 	ret := C.pango_tab_array_new(arg1, arg2)
 
@@ -7571,7 +7616,7 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -7601,7 +7646,7 @@ func (tabArray *TabArray) Tab(tabIndex int) (alignment TabAlign, location int) {
 	arg0 = (*C.PangoTabArray)(tabArray.Native())
 	arg1 = C.gint(tabIndex)
 
-	ret := C.pango_tab_array_get_tab(arg0, arg1, &arg2, &arg3)
+	C.pango_tab_array_get_tab(arg0, arg1, &arg2, &arg3)
 
 	var ret0 *TabAlign
 	var ret1 int
@@ -7625,7 +7670,7 @@ func (tabArray *TabArray) Tabs() (alignments *TabAlign, locations []int) {
 
 	arg0 = (*C.PangoTabArray)(tabArray.Native())
 
-	ret := C.pango_tab_array_get_tabs(arg0, &arg1, &arg2)
+	C.pango_tab_array_get_tabs(arg0, &arg1, &arg2)
 
 	var ret0 **TabAlign
 	var ret1 []int
@@ -7834,7 +7879,7 @@ func NewContext() Context {
 
 	var ret0 Context
 
-	ret0 = WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Context)
 
 	return ret0
 }
@@ -7917,7 +7962,7 @@ func (context context) FontMap() FontMap {
 
 	var ret0 FontMap
 
-	ret0 = WrapFontMap(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontMap)
 
 	return ret0
 }
@@ -8042,7 +8087,7 @@ func (context context) RoundGlyphPositions() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8081,7 +8126,7 @@ func (context context) ListFamilies() (families []FontFamily, nFamilies int) {
 
 	arg0 = (*C.PangoContext)(context.Native())
 
-	ret := C.pango_context_list_families(arg0, &arg1, &arg2)
+	C.pango_context_list_families(arg0, &arg1, &arg2)
 
 	var ret0 []FontFamily
 	var ret1 int
@@ -8090,7 +8135,7 @@ func (context context) ListFamilies() (families []FontFamily, nFamilies int) {
 		ret0 = make([]FontFamily, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (**C.PangoFontFamily)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = WrapFontFamily(externglib.Take(unsafe.Pointer(src.Native())))
+			ret0[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(FontFamily)
 		}
 	}
 
@@ -8112,7 +8157,7 @@ func (context context) LoadFont(desc *FontDescription) Font {
 
 	var ret0 Font
 
-	ret0 = WrapFont(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Font)
 
 	return ret0
 }
@@ -8132,7 +8177,7 @@ func (context context) LoadFontset(desc *FontDescription, language *Language) Fo
 
 	var ret0 Fontset
 
-	ret0 = WrapFontset(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Fontset)
 
 	return ret0
 }
@@ -8257,7 +8302,9 @@ func (context context) SetRoundGlyphPositions(roundPositions bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoContext)(context.Native())
-	arg1 = gextras.Cbool(roundPositions)
+	if roundPositions {
+		arg1 = C.TRUE
+	}
 
 	C.pango_context_set_round_glyph_positions(arg0, arg1)
 }
@@ -8320,7 +8367,7 @@ func NewCoverage() Coverage {
 
 	var ret0 Coverage
 
-	ret0 = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Coverage)
 
 	return ret0
 }
@@ -8335,7 +8382,7 @@ func (coverage coverage) Copy() Coverage {
 
 	var ret0 Coverage
 
-	ret0 = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Coverage)
 
 	return ret0
 }
@@ -8380,7 +8427,7 @@ func (coverage coverage) Ref() Coverage {
 
 	var ret0 Coverage
 
-	ret0 = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Coverage)
 
 	return ret0
 }
@@ -8406,7 +8453,7 @@ func (coverage coverage) ToBytes() (bytes []byte, nBytes int) {
 
 	arg0 = (*C.PangoCoverage)(coverage.Native())
 
-	ret := C.pango_coverage_to_bytes(arg0, &arg1, &arg2)
+	C.pango_coverage_to_bytes(arg0, &arg1, &arg2)
 
 	var ret0 []byte
 	var ret1 int
@@ -8553,7 +8600,7 @@ func (font font) Coverage(language *Language) Coverage {
 
 	var ret0 Coverage
 
-	ret0 = WrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Coverage)
 
 	return ret0
 }
@@ -8568,7 +8615,7 @@ func (font font) Face() FontFace {
 
 	var ret0 FontFace
 
-	ret0 = WrapFontFace(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFace)
 
 	return ret0
 }
@@ -8592,7 +8639,7 @@ func (font font) FontMap() FontMap {
 
 	var ret0 FontMap
 
-	ret0 = WrapFontMap(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontMap)
 
 	return ret0
 }
@@ -8637,7 +8684,7 @@ func (font font) HasChar(wc uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8737,7 +8784,7 @@ func (face fontFace) Family() FontFamily {
 
 	var ret0 FontFamily
 
-	ret0 = WrapFontFamily(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFamily)
 
 	return ret0
 }
@@ -8754,7 +8801,7 @@ func (face fontFace) IsSynthesized() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8772,7 +8819,7 @@ func (face fontFace) ListSizes() (sizes []int, nSizes int) {
 
 	arg0 = (*C.PangoFontFace)(face.Native())
 
-	ret := C.pango_font_face_list_sizes(arg0, &arg1, &arg2)
+	C.pango_font_face_list_sizes(arg0, &arg1, &arg2)
 
 	var ret0 []int
 	var ret1 int
@@ -8864,7 +8911,7 @@ func (family fontFamily) Face(name string) FontFace {
 
 	var ret0 FontFace
 
-	ret0 = WrapFontFace(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFace)
 
 	return ret0
 }
@@ -8910,7 +8957,7 @@ func (family fontFamily) IsMonospace() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8926,7 +8973,7 @@ func (family fontFamily) IsVariable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -8942,7 +8989,7 @@ func (family fontFamily) ListFaces() (faces []FontFace, nFaces int) {
 
 	arg0 = (*C.PangoFontFamily)(family.Native())
 
-	ret := C.pango_font_family_list_faces(arg0, &arg1, &arg2)
+	C.pango_font_family_list_faces(arg0, &arg1, &arg2)
 
 	var ret0 []FontFace
 	var ret1 int
@@ -8951,7 +8998,7 @@ func (family fontFamily) ListFaces() (faces []FontFace, nFaces int) {
 		ret0 = make([]FontFace, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (**C.PangoFontFace)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = WrapFontFace(externglib.Take(unsafe.Pointer(src.Native())))
+			ret0[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(FontFace)
 		}
 	}
 
@@ -9063,7 +9110,7 @@ func (fontmap fontMap) CreateContext() Context {
 
 	var ret0 Context
 
-	ret0 = WrapContext(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Context)
 
 	return ret0
 }
@@ -9081,7 +9128,7 @@ func (fontmap fontMap) Family(name string) FontFamily {
 
 	var ret0 FontFamily
 
-	ret0 = WrapFontFamily(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFamily)
 
 	return ret0
 }
@@ -9120,7 +9167,7 @@ func (fontmap fontMap) ListFamilies() (families []FontFamily, nFamilies int) {
 
 	arg0 = (*C.PangoFontMap)(fontmap.Native())
 
-	ret := C.pango_font_map_list_families(arg0, &arg1, &arg2)
+	C.pango_font_map_list_families(arg0, &arg1, &arg2)
 
 	var ret0 []FontFamily
 	var ret1 int
@@ -9129,7 +9176,7 @@ func (fontmap fontMap) ListFamilies() (families []FontFamily, nFamilies int) {
 		ret0 = make([]FontFamily, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
 			src := (**C.PangoFontFamily)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = WrapFontFamily(externglib.Take(unsafe.Pointer(src.Native())))
+			ret0[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(FontFamily)
 		}
 	}
 
@@ -9153,7 +9200,7 @@ func (fontmap fontMap) LoadFont(context Context, desc *FontDescription) Font {
 
 	var ret0 Font
 
-	ret0 = WrapFont(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Font)
 
 	return ret0
 }
@@ -9175,7 +9222,7 @@ func (fontmap fontMap) LoadFontset(context Context, desc *FontDescription, langu
 
 	var ret0 Fontset
 
-	ret0 = WrapFontset(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Fontset)
 
 	return ret0
 }
@@ -9194,7 +9241,7 @@ type Fontset interface {
 	// each one.
 	//
 	// If @func returns true, that stops the iteration.
-	Foreach(_func FontsetForeachFunc)
+	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) Font
@@ -9227,14 +9274,14 @@ func marshalFontset(p uintptr) (interface{}, error) {
 // each one.
 //
 // If @func returns true, that stops the iteration.
-func (fontset fontset) Foreach(_func FontsetForeachFunc) {
+func (fontset fontset) Foreach(fn FontsetForeachFunc) {
 	var arg0 *C.PangoFontset
 	var arg1 C.PangoFontsetForeachFunc
 	var arg2 C.gpointer
 
 	arg0 = (*C.PangoFontset)(fontset.Native())
 	arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
-	arg2 = C.gpointer(box.Assign(_func))
+	arg2 = C.gpointer(box.Assign(fn))
 
 	C.pango_fontset_foreach(arg0, arg1, arg2)
 }
@@ -9252,7 +9299,7 @@ func (fontset fontset) Font(wc uint) Font {
 
 	var ret0 Font
 
-	ret0 = WrapFont(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Font)
 
 	return ret0
 }
@@ -9319,7 +9366,7 @@ func NewFontsetSimple(language *Language) FontsetSimple {
 
 	var ret0 FontsetSimple
 
-	ret0 = WrapFontsetSimple(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(FontsetSimple)
 
 	return ret0
 }
@@ -9812,7 +9859,7 @@ func NewLayout(context Context) Layout {
 
 	var ret0 Layout
 
-	ret0 = WrapLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Layout)
 
 	return ret0
 }
@@ -9843,7 +9890,7 @@ func (src layout) Copy() Layout {
 
 	var ret0 Layout
 
-	ret0 = WrapLayout(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Layout)
 
 	return ret0
 }
@@ -9897,7 +9944,7 @@ func (layout layout) AutoDir() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -9943,7 +9990,7 @@ func (layout layout) Context() Context {
 
 	var ret0 Context
 
-	ret0 = WrapContext(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Context)
 
 	return ret0
 }
@@ -9965,7 +10012,7 @@ func (layout layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectang
 	arg0 = (*C.PangoLayout)(layout.Native())
 	arg1 = C.int(index_)
 
-	ret := C.pango_layout_get_cursor_pos(arg0, arg1, &arg2, &arg3)
+	C.pango_layout_get_cursor_pos(arg0, arg1, &arg2, &arg3)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -10042,7 +10089,7 @@ func (layout layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	arg0 = (*C.PangoLayout)(layout.Native())
 
-	ret := C.pango_layout_get_extents(arg0, &arg1, &arg2)
+	C.pango_layout_get_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -10147,7 +10194,7 @@ func (layout layout) Justify() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10291,7 +10338,7 @@ func (layout layout) LogAttrs() (attrs []*LogAttr, nAttrs int) {
 
 	arg0 = (*C.PangoLayout)(layout.Native())
 
-	ret := C.pango_layout_get_log_attrs(arg0, &arg1, &arg2)
+	C.pango_layout_get_log_attrs(arg0, &arg1, &arg2)
 
 	var ret0 []*LogAttr
 	var ret1 int
@@ -10368,7 +10415,7 @@ func (layout layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	arg0 = (*C.PangoLayout)(layout.Native())
 
-	ret := C.pango_layout_get_pixel_extents(arg0, &arg1, &arg2)
+	C.pango_layout_get_pixel_extents(arg0, &arg1, &arg2)
 
 	var ret0 *Rectangle
 	var ret1 *Rectangle
@@ -10403,7 +10450,7 @@ func (layout layout) PixelSize() (width int, height int) {
 
 	arg0 = (*C.PangoLayout)(layout.Native())
 
-	ret := C.pango_layout_get_pixel_size(arg0, &arg1, &arg2)
+	C.pango_layout_get_pixel_size(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -10453,7 +10500,7 @@ func (layout layout) SingleParagraphMode() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10470,7 +10517,7 @@ func (layout layout) Size() (width int, height int) {
 
 	arg0 = (*C.PangoLayout)(layout.Native())
 
-	ret := C.pango_layout_get_size(arg0, &arg1, &arg2)
+	C.pango_layout_get_size(arg0, &arg1, &arg2)
 
 	var ret0 int
 	var ret1 int
@@ -10601,9 +10648,11 @@ func (layout layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int
 
 	arg0 = (*C.PangoLayout)(layout.Native())
 	arg1 = C.int(index_)
-	arg2 = gextras.Cbool(trailing)
+	if trailing {
+		arg2 = C.TRUE
+	}
 
-	ret := C.pango_layout_index_to_line_x(arg0, arg1, arg2, &arg3, &arg4)
+	C.pango_layout_index_to_line_x(arg0, arg1, arg2, &arg3, &arg4)
 
 	var ret0 int
 	var ret1 int
@@ -10630,7 +10679,7 @@ func (layout layout) IndexToPos(index_ int) Rectangle {
 	arg0 = (*C.PangoLayout)(layout.Native())
 	arg1 = C.int(index_)
 
-	ret := C.pango_layout_index_to_pos(arg0, arg1, &arg2)
+	C.pango_layout_index_to_pos(arg0, arg1, &arg2)
 
 	var ret0 *Rectangle
 
@@ -10658,7 +10707,7 @@ func (layout layout) IsEllipsized() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10677,7 +10726,7 @@ func (layout layout) IsWrapped() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -10708,12 +10757,14 @@ func (layout layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing i
 	var arg6 *C.int // out
 
 	arg0 = (*C.PangoLayout)(layout.Native())
-	arg1 = gextras.Cbool(strong)
+	if strong {
+		arg1 = C.TRUE
+	}
 	arg2 = C.int(oldIndex)
 	arg3 = C.int(oldTrailing)
 	arg4 = C.int(direction)
 
-	ret := C.pango_layout_move_cursor_visually(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+	C.pango_layout_move_cursor_visually(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
 
 	var ret0 int
 	var ret1 int
@@ -10770,7 +10821,9 @@ func (layout layout) SetAutoDir(autoDir bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoLayout)(layout.Native())
-	arg1 = gextras.Cbool(autoDir)
+	if autoDir {
+		arg1 = C.TRUE
+	}
 
 	C.pango_layout_set_auto_dir(arg0, arg1)
 }
@@ -10879,7 +10932,9 @@ func (layout layout) SetJustify(justify bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoLayout)(layout.Native())
-	arg1 = gextras.Cbool(justify)
+	if justify {
+		arg1 = C.TRUE
+	}
 
 	C.pango_layout_set_justify(arg0, arg1)
 }
@@ -10952,7 +11007,7 @@ func (layout layout) SetMarkupWithAccel(markup string, length int, accelMarker u
 	arg2 = C.int(length)
 	arg3 = C.gunichar(accelMarker)
 
-	ret := C.pango_layout_set_markup_with_accel(arg0, arg1, arg2, arg3, &arg4)
+	C.pango_layout_set_markup_with_accel(arg0, arg1, arg2, arg3, &arg4)
 
 	var ret0 uint32
 
@@ -10972,7 +11027,9 @@ func (layout layout) SetSingleParagraphMode(setting bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoLayout)(layout.Native())
-	arg1 = gextras.Cbool(setting)
+	if setting {
+		arg1 = C.TRUE
+	}
 
 	C.pango_layout_set_single_paragraph_mode(arg0, arg1)
 }
@@ -11096,7 +11153,7 @@ func (layout layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 
 	ret1 = int(arg4)
 
-	ret2 = gextras.Gobool(ret)
+	ret2 = ret != C.FALSE
 
 	return ret0, ret1, ret2
 }
@@ -11467,7 +11524,7 @@ func (renderer renderer) Layout() Layout {
 
 	var ret0 Layout
 
-	ret0 = WrapLayout(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Layout)
 
 	return ret0
 }

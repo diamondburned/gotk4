@@ -55,7 +55,7 @@ func GetContext(display *xlib.Display, screen int) pango.Context {
 
 	var ret0 pango.Context
 
-	ret0 = pango.WrapContext(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(pango.Context)
 
 	return ret0
 }
@@ -73,7 +73,7 @@ func GetFontMap(display *xlib.Display, screen int) pango.FontMap {
 
 	var ret0 pango.FontMap
 
-	ret0 = pango.WrapFontMap(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(pango.FontMap)
 
 	return ret0
 }
@@ -154,6 +154,26 @@ func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, f
 	arg7 = C.int(y)
 
 	C.pango_xft_render_transformed(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+}
+
+// SetDefaultSubstitute sets a function that will be called to do final
+// configuration substitution on a Pattern before it is used to load the font.
+// This function can be used to do things like set hinting and antialiasing
+// options.
+func SetDefaultSubstitute(display *xlib.Display, screen int, fn SubstituteFunc) {
+	var arg1 *C.Display
+	var arg2 C.int
+	var arg3 C.PangoXftSubstituteFunc
+	var arg4 C.gpointer
+	var arg5 C.GDestroyNotify
+
+	arg1 = (*C.Display)(display.Native())
+	arg2 = C.int(screen)
+	arg3 = (*[0]byte)(C.gotk4_SubstituteFunc)
+	arg4 = C.gpointer(box.Assign(fn))
+	arg5 = (*[0]byte)(C.callbackDelete)
+
+	C.pango_xft_set_default_substitute(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ShutdownDisplay: release any resources that have been cached for the
@@ -319,7 +339,7 @@ func (font font) HasChar(wc uint32) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -434,7 +454,7 @@ func NewRenderer(display *xlib.Display, screen int) Renderer {
 
 	var ret0 Renderer
 
-	ret0 = WrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Renderer)
 
 	return ret0
 }

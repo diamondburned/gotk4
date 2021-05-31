@@ -383,7 +383,7 @@ func (format *PixbufFormat) IsDisabled() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -403,7 +403,7 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -421,7 +421,7 @@ func (format *PixbufFormat) IsScalable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -436,7 +436,7 @@ func (format *PixbufFormat) IsWritable() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -450,7 +450,9 @@ func (format *PixbufFormat) SetDisabled(disabled bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkPixbufFormat)(format.Native())
-	arg1 = gextras.Cbool(disabled)
+	if disabled {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_pixbuf_format_set_disabled(arg0, arg1)
 }
@@ -535,67 +537,95 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 }
 
 // NewPixbufAnimationFromFile constructs a class PixbufAnimation.
-func NewPixbufAnimationFromFile(filename string) PixbufAnimation {
+func NewPixbufAnimationFromFile(filename string) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.gdk_pixbuf_animation_new_from_file(arg1)
+	ret := C.gdk_pixbuf_animation_new_from_file(arg1, &gError)
 
 	var ret0 PixbufAnimation
+	var goError error
 
-	ret0 = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufAnimation)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewPixbufAnimationFromResource constructs a class PixbufAnimation.
-func NewPixbufAnimationFromResource(resourcePath string) PixbufAnimation {
+func NewPixbufAnimationFromResource(resourcePath string) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.gdk_pixbuf_animation_new_from_resource(arg1)
+	ret := C.gdk_pixbuf_animation_new_from_resource(arg1, &gError)
 
 	var ret0 PixbufAnimation
+	var goError error
 
-	ret0 = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufAnimation)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewPixbufAnimationFromStream constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) PixbufAnimation {
+func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.GInputStream
 	var arg2 *C.GCancellable
+	var gError *C.GError
 
 	arg1 = (*C.GInputStream)(stream.Native())
 	arg2 = (*C.GCancellable)(cancellable.Native())
 
-	ret := C.gdk_pixbuf_animation_new_from_stream(arg1, arg2)
+	ret := C.gdk_pixbuf_animation_new_from_stream(arg1, arg2, &gError)
 
 	var ret0 PixbufAnimation
+	var goError error
 
-	ret0 = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufAnimation)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) PixbufAnimation {
+func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.GAsyncResult
+	var gError *C.GError
 
 	arg1 = (*C.GAsyncResult)(asyncResult.Native())
 
-	ret := C.gdk_pixbuf_animation_new_from_stream_finish(arg1)
+	ret := C.gdk_pixbuf_animation_new_from_stream_finish(arg1, &gError)
 
 	var ret0 PixbufAnimation
+	var goError error
 
-	ret0 = WrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufAnimation)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Height queries the height of the bounding box of a pixbuf animation.
@@ -655,7 +685,7 @@ func (animation pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIt
 
 	var ret0 PixbufAnimationIter
 
-	ret0 = WrapPixbufAnimationIter(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufAnimationIter)
 
 	return ret0
 }
@@ -675,7 +705,7 @@ func (animation pixbufAnimation) StaticImage() Pixbuf {
 
 	var ret0 Pixbuf
 
-	ret0 = WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Pixbuf)
 
 	return ret0
 }
@@ -708,7 +738,7 @@ func (animation pixbufAnimation) IsStaticImage() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -723,7 +753,7 @@ func (animation pixbufAnimation) Ref() PixbufAnimation {
 
 	var ret0 PixbufAnimation
 
-	ret0 = WrapPixbufAnimation(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(PixbufAnimation)
 
 	return ret0
 }
@@ -840,7 +870,7 @@ func (iter pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -887,7 +917,7 @@ func (iter pixbufAnimationIter) Pixbuf() Pixbuf {
 
 	var ret0 Pixbuf
 
-	ret0 = WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Pixbuf)
 
 	return ret0
 }
@@ -906,7 +936,7 @@ func (iter pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -926,7 +956,7 @@ type PixbufLoader interface {
 	//
 	// Remember that this does not unref the loader, so if you plan not to use
 	// it anymore, please g_object_unref() it.
-	Close() bool
+	Close() error
 	// Animation queries the PixbufAnimation that a pixbuf loader is currently
 	// creating. In general it only makes sense to call this function after the
 	// "area-prepared" signal has been emitted by the loader. If the loader
@@ -955,6 +985,12 @@ type PixbufLoader interface {
 	// Attempts to set the desired image size are ignored after the emission of
 	// the ::size-prepared signal.
 	SetSize(width int, height int)
+	// Write: this will cause a pixbuf loader to parse the next @count bytes of
+	// an image. It will return true if the data was loaded successfully, and
+	// false if an error occurred. In the latter case, the loader will be
+	// closed, and will not accept further writes. If false is returned, @error
+	// will be set to an error from the K_PIXBUF_ERROR or FILE_ERROR domains.
+	Write(buf []byte) error
 	// WriteBytes: this will cause a pixbuf loader to parse a buffer inside a
 	// #GBytes for an image. It will return true if the data was loaded
 	// successfully, and false if an error occurred. In the latter case, the
@@ -963,7 +999,7 @@ type PixbufLoader interface {
 	// FILE_ERROR domains.
 	//
 	// See also: gdk_pixbuf_loader_write()
-	WriteBytes(buffer *glib.Bytes) bool
+	WriteBytes(buffer *glib.Bytes) error
 }
 
 // pixbufLoader implements the PixbufLoader interface.
@@ -994,41 +1030,55 @@ func NewPixbufLoader() PixbufLoader {
 
 	var ret0 PixbufLoader
 
-	ret0 = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufLoader)
 
 	return ret0
 }
 
 // NewPixbufLoaderWithMIMEType constructs a class PixbufLoader.
-func NewPixbufLoaderWithMIMEType(mimeType string) PixbufLoader {
+func NewPixbufLoaderWithMIMEType(mimeType string) (pixbufLoader PixbufLoader, err error) {
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.gdk_pixbuf_loader_new_with_mime_type(arg1)
+	ret := C.gdk_pixbuf_loader_new_with_mime_type(arg1, &gError)
 
 	var ret0 PixbufLoader
+	var goError error
 
-	ret0 = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufLoader)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // NewPixbufLoaderWithType constructs a class PixbufLoader.
-func NewPixbufLoaderWithType(imageType string) PixbufLoader {
+func NewPixbufLoaderWithType(imageType string) (pixbufLoader PixbufLoader, err error) {
 	var arg1 *C.char
+	var gError *C.GError
 
 	arg1 = (*C.gchar)(C.CString(imageType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	ret := C.gdk_pixbuf_loader_new_with_type(arg1)
+	ret := C.gdk_pixbuf_loader_new_with_type(arg1, &gError)
 
 	var ret0 PixbufLoader
+	var goError error
 
-	ret0 = WrapPixbufLoader(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufLoader)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Close informs a pixbuf loader that no further writes with
@@ -1042,18 +1092,22 @@ func NewPixbufLoaderWithType(imageType string) PixbufLoader {
 //
 // Remember that this does not unref the loader, so if you plan not to use
 // it anymore, please g_object_unref() it.
-func (loader pixbufLoader) Close() bool {
+func (loader pixbufLoader) Close() error {
 	var arg0 *C.GdkPixbufLoader
+	var gError *C.GError
 
 	arg0 = (*C.GdkPixbufLoader)(loader.Native())
 
-	ret := C.gdk_pixbuf_loader_close(arg0)
+	ret := C.gdk_pixbuf_loader_close(arg0, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // Animation queries the PixbufAnimation that a pixbuf loader is currently
@@ -1070,7 +1124,7 @@ func (loader pixbufLoader) Animation() PixbufAnimation {
 
 	var ret0 PixbufAnimation
 
-	ret0 = WrapPixbufAnimation(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(PixbufAnimation)
 
 	return ret0
 }
@@ -1115,7 +1169,7 @@ func (loader pixbufLoader) Pixbuf() Pixbuf {
 
 	var ret0 Pixbuf
 
-	ret0 = WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Pixbuf)
 
 	return ret0
 }
@@ -1139,6 +1193,34 @@ func (loader pixbufLoader) SetSize(width int, height int) {
 	C.gdk_pixbuf_loader_set_size(arg0, arg1, arg2)
 }
 
+// Write: this will cause a pixbuf loader to parse the next @count bytes of
+// an image. It will return true if the data was loaded successfully, and
+// false if an error occurred. In the latter case, the loader will be
+// closed, and will not accept further writes. If false is returned, @error
+// will be set to an error from the K_PIXBUF_ERROR or FILE_ERROR domains.
+func (loader pixbufLoader) Write(buf []byte) error {
+	var arg0 *C.GdkPixbufLoader
+	var arg1 *C.guchar
+	var arg2 C.gsize
+	var gError *C.GError
+
+	arg0 = (*C.GdkPixbufLoader)(loader.Native())
+	arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
+	arg2 = len(buf)
+	defer runtime.KeepAlive(buf)
+
+	ret := C.gdk_pixbuf_loader_write(arg0, arg1, arg2, &gError)
+
+	var goError error
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
+}
+
 // WriteBytes: this will cause a pixbuf loader to parse a buffer inside a
 // #GBytes for an image. It will return true if the data was loaded
 // successfully, and false if an error occurred. In the latter case, the
@@ -1147,20 +1229,24 @@ func (loader pixbufLoader) SetSize(width int, height int) {
 // FILE_ERROR domains.
 //
 // See also: gdk_pixbuf_loader_write()
-func (loader pixbufLoader) WriteBytes(buffer *glib.Bytes) bool {
+func (loader pixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var arg0 *C.GdkPixbufLoader
 	var arg1 *C.GBytes
+	var gError *C.GError
 
 	arg0 = (*C.GdkPixbufLoader)(loader.Native())
 	arg1 = (*C.GBytes)(buffer.Native())
 
-	ret := C.gdk_pixbuf_loader_write_bytes(arg0, arg1)
+	ret := C.gdk_pixbuf_loader_write_bytes(arg0, arg1, &gError)
 
-	var ret0 bool
+	var goError error
 
-	ret0 = gextras.Gobool(ret)
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
 
-	return ret0
+	return goError
 }
 
 // PixbufSimpleAnim: an opaque struct representing a simple animation.
@@ -1213,7 +1299,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 
 	var ret0 PixbufSimpleAnim
 
-	ret0 = WrapPixbufSimpleAnim(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(PixbufSimpleAnim)
 
 	return ret0
 }
@@ -1241,7 +1327,7 @@ func (animation pixbufSimpleAnim) Loop() bool {
 
 	var ret0 bool
 
-	ret0 = gextras.Gobool(ret)
+	ret0 = ret != C.FALSE
 
 	return ret0
 }
@@ -1253,7 +1339,9 @@ func (animation pixbufSimpleAnim) SetLoop(loop bool) {
 	var arg1 C.gboolean
 
 	arg0 = (*C.GdkPixbufSimpleAnim)(animation.Native())
-	arg1 = gextras.Cbool(loop)
+	if loop {
+		arg1 = C.TRUE
+	}
 
 	C.gdk_pixbuf_simple_anim_set_loop(arg0, arg1)
 }

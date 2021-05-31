@@ -3,6 +3,7 @@
 package gdkpixdata
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -100,20 +101,29 @@ const (
 // PixbufFromPixdata converts a Pixdata to a Pixbuf. If @copy_pixels is true or
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixbuf, err error) {
 	var arg1 *C.GdkPixdata
 	var arg2 C.gboolean
+	var gError *C.GError
 
 	arg1 = (*C.GdkPixdata)(pixdata.Native())
-	arg2 = gextras.Cbool(copyPixels)
+	if copyPixels {
+		arg2 = C.TRUE
+	}
 
-	ret := C.gdk_pixbuf_from_pixdata(arg1, arg2)
+	ret := C.gdk_pixbuf_from_pixdata(arg1, arg2, &gError)
 
 	var ret0 gdkpixbuf.Pixbuf
+	var goError error
 
-	ret0 = gdkpixbuf.WrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(ret.Native())))
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret0
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
@@ -143,14 +153,14 @@ func (p *Pixdata) Native() unsafe.Pointer {
 }
 
 // Magic gets the field inside the struct.
-func (m *Pixdata) Magic() uint32 {
+func (p *Pixdata) Magic() uint32 {
 	var ret uint32
 	ret = uint32(p.native.magic)
 	return ret
 }
 
 // Length gets the field inside the struct.
-func (l *Pixdata) Length() int32 {
+func (p *Pixdata) Length() int32 {
 	var ret int32
 	ret = int32(p.native.length)
 	return ret
@@ -164,24 +174,53 @@ func (p *Pixdata) PixdataType() uint32 {
 }
 
 // Rowstride gets the field inside the struct.
-func (r *Pixdata) Rowstride() uint32 {
+func (p *Pixdata) Rowstride() uint32 {
 	var ret uint32
 	ret = uint32(p.native.rowstride)
 	return ret
 }
 
 // Width gets the field inside the struct.
-func (w *Pixdata) Width() uint32 {
+func (p *Pixdata) Width() uint32 {
 	var ret uint32
 	ret = uint32(p.native.width)
 	return ret
 }
 
 // Height gets the field inside the struct.
-func (h *Pixdata) Height() uint32 {
+func (p *Pixdata) Height() uint32 {
 	var ret uint32
 	ret = uint32(p.native.height)
 	return ret
+}
+
+// Deserialize deserializes (reconstruct) a Pixdata structure from a byte
+// stream. The byte stream consists of a straightforward writeout of the Pixdata
+// fields in network byte order, plus the @pixel_data bytes the structure points
+// to. The @pixdata contents are reconstructed byte by byte and are checked for
+// validity. This function may fail with GDK_PIXBUF_ERROR_CORRUPT_IMAGE or
+// GDK_PIXBUF_ERROR_UNKNOWN_TYPE.
+func (pixdata *Pixdata) Deserialize(streamLength uint, stream []byte) error {
+	var arg0 *C.GdkPixdata
+	var arg1 C.guint
+	var arg2 *C.guint8
+	var gError *C.GError
+
+	arg0 = (*C.GdkPixdata)(pixdata.Native())
+	arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
+	arg1 = len(stream)
+	defer runtime.KeepAlive(stream)
+
+	ret := C.gdk_pixdata_deserialize(arg0, arg1, arg2, &gError)
+
+	var goError error
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
 }
 
 // FromPixbuf converts a Pixbuf to a Pixdata. If @use_rle is true, the pixel
@@ -194,7 +233,9 @@ func (pixdata *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interfa
 
 	arg0 = (*C.GdkPixdata)(pixdata.Native())
 	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
-	arg2 = gextras.Cbool(useRle)
+	if useRle {
+		arg2 = C.TRUE
+	}
 
 	ret := C.gdk_pixdata_from_pixbuf(arg0, arg1, arg2)
 

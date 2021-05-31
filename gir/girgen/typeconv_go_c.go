@@ -47,22 +47,22 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		return ""
 	}
 
-	var b pen.Block
-
 	switch {
 	case array.FixedSize > 0:
-		if innerResolved.IsPrimitive() {
+		if !ng.TypeHasPointer(innerResolved) {
 			ng.addImport("runtime")
 
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
-			b.Linef("%s = (%s)(&%s)", conv.Target, outerCGoType, conv.Value)
-			b.Linef("defer runtime.KeepAlive(&%s)", conv.Value)
-			return b.String()
+			return pen.NewPiece().
+				Linef("%s = (%s)(&%s)", conv.Target, outerCGoType, conv.Value).
+				Linef("defer runtime.KeepAlive(&%s)", conv.Value).
+				String()
 		}
 
 		// Target fixed array, so we can directly set the data over. The memory
 		// is ours, and allocation is handled by Go.
+		b := pen.NewBlock()
 		b.Linef("dst := &%s", conv.Target)
 		b.EmptyLine()
 		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
@@ -70,18 +70,22 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		b.Linef("  " + innerConv)
 		b.Linef("}")
 
+		return b.String()
+
 	case array.Length != nil:
 		length := fmt.Sprintf("len(%s)", conv.Value)
 
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
-		if !conv.isTransferring() && innerResolved.IsPrimitive() {
+		if !conv.isTransferring() && !ng.TypeHasPointer(innerResolved) {
 			ng.addImport("runtime")
+			ng.addImport("unsafe")
 
-			b.Linef("%s = (%s)(&%s[0])", conv.Target, outerCGoType, conv.Value)
-			b.Linef("%s = %s", conv.ArgAt(*array.Length), length)
-			b.Linef("defer runtime.KeepAlive(%s)", conv.Value)
-			return b.String()
+			return pen.NewPiece().
+				Linef("%s = (%s)(unsafe.Pointer(&%s[0]))", conv.Target, outerCGoType, conv.Value).
+				Linef("%s = %s", conv.ArgAt(*array.Length), length).
+				Linef("defer runtime.KeepAlive(%s)", conv.Value).
+				String()
 		}
 
 		ng.addImport("reflect")
@@ -90,14 +94,14 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		// Copying is pretty much required here, since the C code will store the
 		// pointer, so we can't reliably do this with Go's memory.
 
-		ptr := fmt.Sprintf("C.malloc(%s * len(%s))", csizeof(ng, innerResolved), conv.Value)
-
+		b := pen.NewBlock()
 		b.Linef("var dst []%s", innerCGoType)
-		b.Linef(goSliceFromPtr("dst", ptr, length))
+		b.Linef("ptr := C.malloc(%s * len(%s))", csizeof(ng, innerResolved), conv.Value)
+		b.Linef(goSliceFromPtr("dst", "ptr", length))
 
 		// C.malloc will allocate on the C side, so we'll have to free it.
 		if !conv.isTransferring() {
-			b.Linef("defer C.free(unsafe.Pointer(sliceHeader.Data))")
+			b.Line("defer C.free(unsafe.Pointer(ptr))")
 		}
 
 		b.EmptyLine()
@@ -106,31 +110,61 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		b.Linef("  " + innerConv)
 		b.Linef("}")
 		b.EmptyLine()
-		b.Linef("%s = (%s)(unsafe.Pointer(sliceHeader.Data))", conv.Target, outerCGoType)
+		b.Linef("%s = (%s)(unsafe.Pointer(ptr))", conv.Target, outerCGoType)
 		b.Linef("%s = %s", conv.ArgAt(*array.Length), length)
+
+		return b.String()
 
 	case array.Name == "GLib.Array":
 		length := fmt.Sprintf("len(%s)", conv.Value)
 
+		ng.addImport("reflect")
+		ng.addImport("unsafe")
+
+		b := pen.NewBlock()
 		b.Linef(
 			"%s = C.g_array_sized_new(%v, false, C.guint(%s), %s)",
 			conv.Target, array.ZeroTerminated, csizeof(ng, innerResolved), length)
 		b.EmptyLine()
-
 		b.Linef("var dst []%s", innerCGoType)
-
-		ng.addImport("reflect")
 		b.Linef(goSliceFromPtr("dst", conv.Target+".data", length))
-
 		b.EmptyLine()
-
 		b.Linef("for i := 0; i < %s; i++ {", length)
 		b.Linef("  src := %s[i]", conv.Value)
 		b.Linef("  " + innerConv)
 		b.Linef("}")
+
+		return b.String()
+
+	case array.IsZeroTerminated():
+		length := fmt.Sprintf("len(%s)", conv.Value)
+
+		ng.addImport("reflect")
+		ng.addImport("unsafe")
+
+		b := pen.NewBlock()
+		b.Linef("var dst []%s", innerCGoType)
+		b.Linef("ptr := C.malloc(%s * (len(%s)+1))", csizeof(ng, innerResolved), conv.Value)
+		b.Linef(goSliceFromPtr("dst", "ptr", length))
+
+		// See above, in the array.Length != nil case.
+		if !conv.isTransferring() {
+			b.Line("defer C.free(unsafe.Pointer(ptr))")
+		}
+
+		b.EmptyLine()
+		b.Linef("for i := 0; i < %s; i++ {", length)
+		b.Linef("  src := %s[i]", conv.Value)
+		b.Linef("  " + innerConv)
+		b.Linef("}")
+		b.EmptyLine()
+		b.Linef("%s = (%s)(unsafe.Pointer(ptr))", conv.Target, outerCGoType)
+
+		return b.String()
 	}
 
-	return b.String()
+	ng.logln(logWarn, conv.ParentName+":", "weird array type to C")
+	return ""
 }
 
 func csizeof(ng *NamespaceGenerator, resolved *ResolvedType) string {
@@ -161,8 +195,11 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 			return p.String()
 
 		case "bool":
-			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-			return conv.call("gextras.Cbool")
+			return pen.NewPiece().
+				Linef("if %s {", conv.Value).
+				Linef("  %s = C.TRUE", conv.Target).
+				Linef("}").
+				String()
 
 		default:
 			return conv.call(anyTypeCGo(conv.Type))

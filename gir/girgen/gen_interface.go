@@ -107,7 +107,6 @@ func (ig *ifaceGenerator) updateMethods() {
 			continue
 		}
 
-		cbgen.Parent = ig.InterfaceName
 		ig.Virtuals = append(ig.Virtuals, cbgen)
 	}
 
@@ -117,7 +116,6 @@ func (ig *ifaceGenerator) updateMethods() {
 			continue
 		}
 
-		cbgen.Parent = ig.InterfaceName
 		ig.Methods = append(ig.Methods, cbgen)
 	}
 

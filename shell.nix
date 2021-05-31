@@ -1,7 +1,7 @@
-{ unstable ? import <unstable> {} }:
+{ pkgs ? import <unstable> {} }:
 
-unstable.mkShell {
-	buildInputs = with unstable; [
+pkgs.mkShell {
+	buildInputs = with pkgs; [
 		# General GTK dependencies.
 		glib
 		gnome3.gtk
@@ -11,7 +11,7 @@ unstable.mkShell {
 		vulkan-headers
 	];
 
-	nativeBuildInputs = with unstable; [
+	nativeBuildInputs = with pkgs; [
 		# Build dependencies.
 		gobjectIntrospection
 		pkgconfig

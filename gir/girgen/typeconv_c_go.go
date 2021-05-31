@@ -134,7 +134,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	default:
-		ng.logln(logWarn, conv.ParentName+":", "weird array type")
+		ng.logln(logWarn, conv.ParentName+":", "weird array type to Go")
 		return ""
 	}
 
@@ -173,8 +173,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 			return p.String()
 
 		case "bool":
-			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-			return directCall(conv.Value, conv.Target, "gextras.Gobool")
+			return fmt.Sprintf("%s = %s != C.FALSE", conv.Target, conv.Value)
 
 		default:
 			return directCall(conv.Value, conv.Target, prim)
@@ -194,7 +193,9 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		return fmt.Sprintf("%s = box.Get(uintptr(%s))%s", conv.Target, conv.Value, castTail)
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		return cgoTakeObject(conv.TypeConversion, "")
+		ng.addImport("unsafe")
+		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
+		return cgoTakeObject(conv.TypeConversion, "gextras.Objector")
 
 	case "GLib.DestroyNotify", "DestroyNotify":
 		// There's no Go equivalent for C's DestroyNotify; the user should never
@@ -253,14 +254,17 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	}
 
 	if result.Class != nil || result.Record != nil || result.Interface != nil {
-		wrapName := resolved.WrapName(resolved.NeedsNamespace(ng.current))
-
 		switch {
 		case result.Class != nil, result.Interface != nil:
 			ng.addImport("unsafe")
-			return cgoTakeObject(conv.TypeConversion, wrapName)
+			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
+			return cgoTakeObject(conv.TypeConversion, goName)
 
 		case result.Record != nil:
+			// We should only use the concrete wrapper for the record, since the
+			// returned type is concretely known here.
+			wrapName := resolved.WrapName(resolved.NeedsNamespace(ng.current))
+
 			b := pen.NewBlock()
 			b.Linef(conv.call(wrapName))
 
@@ -278,28 +282,25 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		}
 	}
 
+	// Callbacks returned don't seem to have an output closure, so we can't get
+	// our closure here.
 	if result.Callback != nil {
-		ng.logln(logWarn, "idk what to do with C->Go callback", goName)
 		return ""
 	}
 
 	// TODO: function
 	// TODO: union
 	// TODO: callback
-	// TODO: interface
 
 	// TODO: callbacks and functions are handled differently. Unsure if they're
 	// doable.
 	// TODO: handle unions.
-	// TODO: interfaces should be wrapped by an unexported type.
 
-	// Assume the wrap function. This so far works for classes and records.
-	// TODO: handle wrap functions from another package.
 	return ""
 }
 
 // cgoTakeObject generates a glib.Take or glib.AssumeOwnership.
-func cgoTakeObject(conv TypeConversion, wrap string) string {
+func cgoTakeObject(conv TypeConversion, ifaceType string) string {
 	var gobjectFunction string
 	if conv.isTransferring() {
 		// Full or container means we implicitly own the object, so we must
@@ -311,15 +312,8 @@ func cgoTakeObject(conv TypeConversion, wrap string) string {
 		gobjectFunction = "Take"
 	}
 
-	if wrap == "" {
-		return fmt.Sprintf(
-			"%s = externglib.%s(unsafe.Pointer(%s.Native()))",
-			conv.Target, gobjectFunction, conv.Value,
-		)
-	}
-
 	return fmt.Sprintf(
-		"%s = %s(externglib.%s(unsafe.Pointer(%s.Native())))",
-		conv.Target, wrap, gobjectFunction, conv.Value,
+		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
+		conv.Target, gobjectFunction, conv.Value, ifaceType,
 	)
 }

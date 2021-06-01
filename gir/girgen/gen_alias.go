@@ -25,8 +25,8 @@ func (ng *NamespaceGenerator) generateAliases() {
 		}
 
 		if goType == "" {
-			// TODO: fix this.
-			goType = "struct{}"
+			ng.logln(logSkip, "alias", alias.Name, "is opaque type")
+			continue
 		}
 
 		ng.pen.BlockTmpl(aliasTmpl, aliasData{

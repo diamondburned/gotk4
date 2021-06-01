@@ -252,8 +252,14 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		rootConv.Type = gir.AnyType{Type: &result.Alias.Type}
 		rootConv.Target = "tmp"
 
+		publicType := ng.PublicType(rootType)
+		if publicType == "" {
+			// likely void type, which is non-sense. See Gdk.XEvent.
+			return ""
+		}
+
 		b := pen.NewBlock()
-		b.Linef("var tmp %s", ng.PublicType(rootType))
+		b.Linef("var tmp %s", publicType)
 		b.Linef(ng.CGoConverter(rootConv))
 		b.Linef("%s = %s(tmp)", conv.Target, goName)
 		return b.String()

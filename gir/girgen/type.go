@@ -223,14 +223,12 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		return nil
 	}
 
-	pkg := gir.GoNamespace(result.Namespace)
-
 	return &ResolvedType{
 		Extern: &ExternType{
 			Result: result,
 		},
-		Import:  gen.ModPath(result.NamespaceFindResult),
-		Package: pkg,
+		Import:  gen.ModPath(result.Namespace),
+		Package: gir.GoNamespace(result.Namespace),
 		GType:   typ.Name,
 		CType:   typ.CType,
 		Ptr:     countPtrs(typ, result),

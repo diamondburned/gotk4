@@ -82,12 +82,6 @@ type DateDay byte
 // is represented with four digits.
 type DateYear uint16
 
-// MainContextPusher: opaque type. See g_main_context_pusher_new() for details.
-type MainContextPusher struct{}
-
-// MutexLocker: opaque type. See g_mutex_locker_new() for details.
-type MutexLocker struct{}
-
 // Pid: a type which is used to hold a process identification.
 //
 // On UNIX, processes are identified by a process id (an integer), while Windows
@@ -100,17 +94,6 @@ type Pid int
 // Quark: a GQuark is a non-zero integer which uniquely identifies a particular
 // string. A GQuark value of zero is associated to nil.
 type Quark uint32
-
-// RWLockReaderLocker: opaque type. See g_rw_lock_reader_locker_new() for
-// details.
-type RWLockReaderLocker struct{}
-
-// RWLockWriterLocker: opaque type. See g_rw_lock_writer_locker_new() for
-// details.
-type RWLockWriterLocker struct{}
-
-// RecMutexLocker: opaque type. See g_rec_mutex_locker_new() for details.
-type RecMutexLocker struct{}
 
 // RefString: a typedef for a reference-counted string. A pointer to a String
 // can be treated like a standard `char*` array by all code, but can

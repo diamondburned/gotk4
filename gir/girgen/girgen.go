@@ -46,7 +46,7 @@ type Generator struct {
 }
 
 // ModulePathFunc returns the Go module import path from the given namespace.
-type ModulePathFunc func(res *gir.NamespaceFindResult) string
+type ModulePathFunc func(*gir.Namespace) string
 
 // NewGenerator creates a new generator with sane defaults.
 func NewGenerator(repos gir.Repositories, modPath ModulePathFunc) *Generator {
@@ -161,7 +161,7 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 		cgo: pen.NewPaperSize(10240), // 10KB
 
 		imports: map[string]string{},
-		pkgPath: g.ModPath(res),
+		pkgPath: g.ModPath(res.Namespace),
 		gen:     g,
 		current: res,
 	}
@@ -362,11 +362,11 @@ func makeImport(importPath, alias string) string {
 		_, err := strconv.Atoi(strings.TrimPrefix(pathBase, "v"))
 		if err == nil {
 			// Valid version part. Trim it.
-			importPath = path.Dir(importPath)
+			pathBase = path.Base(path.Dir(importPath))
 		}
 	}
 
-	if alias == "" || alias == path.Base(importPath) {
+	if alias == "" || alias == pathBase {
 		return strconv.Quote(importPath)
 	}
 

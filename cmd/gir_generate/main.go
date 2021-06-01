@@ -123,10 +123,9 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 	}
 }
 
-func modulePath(res *gir.NamespaceFindResult) string {
-	modulePath := path.Join(module, output, gir.GoPackageName(res.Namespace.Name))
-
-	if version := majorVer(res.Namespace); version > 1 {
+func modulePath(namespace *gir.Namespace) string {
+	modulePath := path.Join(module, output, gir.GoPackageName(namespace.Name))
+	if version := majorVer(namespace); version > 1 {
 		modulePath = path.Join(modulePath, fmt.Sprintf("v%d", version))
 	}
 

@@ -54,8 +54,46 @@ func SplitGIRType(typ string) (namespace, typeName string) {
 	return "", parts[0]
 }
 
+// MajorVersion returns the major version number only.
+func MajorVersion(version string) string {
+	parts := strings.SplitN(version, ".", 2)
+	return parts[0]
+}
+
+// EqVersion compares major versions.
+func EqVersion(v1, v2 string) bool { return MajorVersion(v1) == MajorVersion(v2) }
+
+// VersionedNamespace returns the versioned name for the given namespace.
+func VersionedNamespace(namespace *Namespace) string {
+	return VersionedName(namespace.Name, namespace.Version)
+}
+
+// VersionedName returns the name appended with the version suffix.
+func VersionedName(name, version string) string {
+	return name + "-" + MajorVersion(version)
+}
+
+// ParseVersionName parses the given fullName to return the original name and
+// the version separately. If no versions are available, then the empty string
+// is returned.
+func ParseVersionName(fullName string) (name, majorVersion string) {
+	parts := strings.SplitN(fullName, "-", 2)
+	if len(parts) != 2 {
+		return parts[0], ""
+	}
+
+	return parts[0], parts[1]
+}
+
 // Repositories contains a list of known repositories.
 type Repositories []PkgRepository
+
+// PkgRepository wraps a Repository to add additional information.
+type PkgRepository struct {
+	Repository
+	Pkg  string // arg for pkg-config
+	Path string // gir file path
+}
 
 // AddSelected adds a single package but only searches for the given list of
 // GIR files.
@@ -66,13 +104,20 @@ func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
 		repoNames := r.Namespaces
 		r.Namespaces = repoNames[:0]
 
-		for _, namespace := range repoNames {
-			for _, nsp := range namespaces {
-				if nsp == namespace.Name {
-					r.Namespaces = append(r.Namespaces, namespace)
-					found++
-					break
+		for _, fullName := range namespaces {
+			nsp, version := ParseVersionName(fullName)
+
+			for _, namespace := range repoNames {
+				if namespace.Name != nsp {
+					continue
 				}
+				if version != "" && !EqVersion(namespace.Version, version) {
+					continue
+				}
+
+				r.Namespaces = append(r.Namespaces, namespace)
+				found++
+				break
 			}
 		}
 
@@ -133,12 +178,14 @@ func (repos *Repositories) add(r Repository, pkg, path string) error {
 	for _, repo := range *repos {
 		for _, repoNsp := range repo.Namespaces {
 			for _, addingNsp := range r.Namespaces {
-				if addingNsp.Name == repoNsp.Name {
-					return fmt.Errorf(
-						"colliding namespace %s, got v%s, add v%s",
-						addingNsp.Name, repoNsp.Version, addingNsp.Version,
-					)
+				if addingNsp.Name != repoNsp.Name || !EqVersion(addingNsp.Version, repoNsp.Version) {
+					continue
 				}
+
+				return fmt.Errorf(
+					"colliding namespace %s, got v%s, add v%s",
+					addingNsp.Name, repoNsp.Version, addingNsp.Version,
+				)
 			}
 		}
 	}
@@ -166,18 +213,25 @@ func (res *NamespaceFindResult) Eq(other *NamespaceFindResult) bool {
 
 	return true &&
 		res.Namespace.Name == other.Namespace.Name &&
-		res.Repository.Pkg == other.Repository.Pkg
+		res.Namespace.Version == other.Namespace.Version &&
+		res.Repository.Pkg == other.Repository.Pkg &&
+		res.Repository.Version == other.Repository.Version
 }
 
 // FindNamespace finds the repository and namespace with the given name and
-// version.
+// version. If name doesn't have the version bits, then it panics.
 func (repos *Repositories) FindNamespace(name string) *NamespaceFindResult {
+	name, version := ParseVersionName(name)
+	if version == "" {
+		panic("FindNamespace given namespace unversioned: " + name)
+	}
+
 	for i := range *repos {
 		repository := &(*repos)[i]
 
 		for j := range repository.Namespaces {
 			namespace := &repository.Namespaces[j]
-			if namespace.Name != name {
+			if namespace.Name != name || MajorVersion(namespace.Version) != version {
 				continue
 			}
 
@@ -239,21 +293,77 @@ func (res *TypeFindResult) Info() (name, ctype string) {
 	panic("TypeFindResult has all fields nil")
 }
 
+// FindInclude returns the namespace that the given namespace includes. It
+// resolves imports recursively. This function is primarily used to ensure that
+// proper versions are imported.
+func (repos *Repositories) FindInclude(res *NamespaceFindResult, includes string) *NamespaceFindResult {
+	foundIncludes := make([]*NamespaceFindResult, 0, len(res.Repository.Includes))
+
+	for _, incl := range res.Repository.Includes {
+		nspIncl := repos.FindNamespace(VersionedName(incl.Name, incl.Version))
+		if nspIncl == nil {
+			// We've already seen the import and it's not available, so early
+			// bail.
+			if incl.Name == includes {
+				return nil
+			}
+
+			continue
+		}
+
+		if incl.Name == includes {
+			return nspIncl
+		}
+
+		foundIncludes = append(foundIncludes, nspIncl)
+	}
+
+	for _, nspIncl := range foundIncludes {
+		if res := repos.FindInclude(nspIncl, includes); res != nil {
+			return res
+		}
+	}
+
+	return nil
+}
+
 var (
 	typeResultCache  sync.Map // full GIR type -> *TypeFindResult
 	typeResultFlight singleflight.Group
 )
 
 // FindType finds a type in the repositories from the given current namespace
-// name, version, and the GIR type name. The function will cache the returned
-// TypeFindResult.
-func (repos *Repositories) FindType(nspName, typ string) *TypeFindResult {
-	// Build the full type name for cache querying. Use a faster method to check
-	// if the type name already has a namespace by detecting for a period (".").
-	fullType := typ
-	if !strings.Contains(typ, ".") {
-		fullType = nspName + "." + typ
+// and the GIR type name. The function will cache the returned TypeFindResult.
+func (repos *Repositories) FindType(nsp *NamespaceFindResult, typ string) *TypeFindResult {
+	// Build the full type name for cache querying.
+	namespace, typName := SplitGIRType(typ)
+
+	// Ensure the new fullType string has the version.
+	if namespace != "" {
+		n, version := ParseVersionName(namespace)
+		if version != "" {
+			goto gotNamespace
+		}
+
+		// No versions provided; check if the namespace is the same (redundant).
+		if n == nsp.Namespace.Name {
+			namespace = VersionedNamespace(nsp.Namespace)
+			goto gotNamespace
+		}
+
+		if result := repos.FindInclude(nsp, n); result != nil {
+			namespace = VersionedNamespace(result.Namespace)
+			goto gotNamespace
+		}
+
+		return nil
 	}
+
+	// Type comes from the same namespace. Append the current one.
+	namespace = VersionedNamespace(nsp.Namespace)
+
+gotNamespace:
+	fullType := namespace + "." + typName
 
 	v, ok := typeResultCache.Load(fullType)
 	if ok {
@@ -270,6 +380,43 @@ func (repos *Repositories) FindType(nspName, typ string) *TypeFindResult {
 	})
 
 	return v.(*TypeFindResult)
+}
+
+func (repos *Repositories) findType(fullType string) *TypeFindResult {
+	vNamespace, typ := SplitGIRType(fullType)
+
+	r := TypeFindResult{NamespaceFindResult: repos.FindNamespace(vNamespace)}
+	if r.NamespaceFindResult == nil {
+		return nil
+	}
+
+	v := SearchNamespace(r.Namespace, func(name, _ string) bool { return name == typ })
+	if v == nil {
+		return nil
+	}
+
+	switch v := v.(type) {
+	case *Alias:
+		r.Alias = v
+	case *Class:
+		r.Class = v
+	case *Interface:
+		r.Interface = v
+	case *Record:
+		r.Record = v
+	case *Enum:
+		r.Enum = v
+	case *Function:
+		r.Function = v
+	case *Union:
+		r.Union = v
+	case *Bitfield:
+		r.Bitfield = v
+	case *Callback:
+		r.Callback = v
+	}
+
+	return &r
 }
 
 // SearchNamespace searches the namespace for the given type name. The returned
@@ -330,51 +477,4 @@ func SearchNamespace(namespace *Namespace, f func(typ, ctyp string) bool) interf
 	}
 
 	return nil
-}
-
-func (repos *Repositories) findType(typ string) *TypeFindResult {
-	namespace, typ := SplitGIRType(typ)
-
-	r := TypeFindResult{
-		NamespaceFindResult: repos.FindNamespace(namespace),
-	}
-
-	if r.NamespaceFindResult == nil {
-		return nil
-	}
-
-	v := SearchNamespace(r.Namespace, func(name, _ string) bool { return name == typ })
-	if v == nil {
-		return nil
-	}
-
-	switch v := v.(type) {
-	case *Alias:
-		r.Alias = v
-	case *Class:
-		r.Class = v
-	case *Interface:
-		r.Interface = v
-	case *Record:
-		r.Record = v
-	case *Enum:
-		r.Enum = v
-	case *Function:
-		r.Function = v
-	case *Union:
-		r.Union = v
-	case *Bitfield:
-		r.Bitfield = v
-	case *Callback:
-		r.Callback = v
-	}
-
-	return &r
-}
-
-// PkgRepository wraps a Repository to add additional information.
-type PkgRepository struct {
-	Repository
-	Pkg  string // arg for pkg-config
-	Path string // gir file path
 }

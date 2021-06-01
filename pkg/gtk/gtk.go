@@ -14,6 +14,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
+	"github.com/diamondburned/gotk4/pkg/gobject"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -4736,6 +4737,56 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	return ret0
 }
 
+// EditableDelegateGetProperty gets a property of the Editable delegate for
+// @object.
+//
+// This is helper function that should be called in get_property, before
+// handling your own properties.
+func EditableDelegateGetProperty(object gextras.Objector, propID uint, value *externglib.Value, pspec gobject.ParamSpec) bool {
+	var arg1 *C.GObject
+	var arg2 C.guint
+	var arg3 *C.GValue
+	var arg4 *C.GParamSpec
+
+	arg1 = (*C.GObject)(object.Native())
+	arg2 = C.guint(propID)
+	arg3 = (*C.GValue)(value.GValue)
+	arg4 = (*C.GParamSpec)(pspec.Native())
+
+	ret := C.gtk_editable_delegate_get_property(arg1, arg2, arg3, arg4)
+
+	var ret0 bool
+
+	ret0 = C.BOOL(ret) != 0
+
+	return ret0
+}
+
+// EditableDelegateSetProperty sets a property on the Editable delegate for
+// @object.
+//
+// This is a helper function that should be called in set_property, before
+// handling your own properties.
+func EditableDelegateSetProperty(object gextras.Objector, propID uint, value *externglib.Value, pspec gobject.ParamSpec) bool {
+	var arg1 *C.GObject
+	var arg2 C.guint
+	var arg3 *C.GValue
+	var arg4 *C.GParamSpec
+
+	arg1 = (*C.GObject)(object.Native())
+	arg2 = C.guint(propID)
+	arg3 = (*C.GValue)(value.GValue)
+	arg4 = (*C.GParamSpec)(pspec.Native())
+
+	ret := C.gtk_editable_delegate_set_property(arg1, arg2, arg3, arg4)
+
+	var ret0 bool
+
+	ret0 = C.BOOL(ret) != 0
+
+	return ret0
+}
+
 // FileChooserErrorQuark registers an error quark for FileChooser if necessary.
 func FileChooserErrorQuark() glib.Quark {
 
@@ -5046,6 +5097,33 @@ func PaperSizeGetPaperSizes(includeCustom bool) *glib.List {
 			C.free(unsafe.Pointer(v.Native()))
 		})
 	}
+
+	return ret0
+}
+
+// ParamSpecExpression creates a new Spec instance for a property holding a
+// Expression.
+//
+// See g_param_spec_internal() for details on the property strings.
+func ParamSpecExpression(name string, nick string, blurb string, flags gobject.ParamFlags) gobject.ParamSpec {
+	var arg1 *C.char
+	var arg2 *C.char
+	var arg3 *C.char
+	var arg4 C.GParamFlags
+
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(nick))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = (*C.gchar)(C.CString(blurb))
+	defer C.free(unsafe.Pointer(arg3))
+	arg4 = (C.GParamFlags)(flags)
+
+	ret := C.gtk_param_spec_expression(arg1, arg2, arg3, arg4)
+
+	var ret0 gobject.ParamSpec
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gobject.ParamSpec)
 
 	return ret0
 }
@@ -6309,8 +6387,6 @@ type BuildableOverrider interface {
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
 	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
-	// CustomTagStart: called for each unknown element under `<child>`.
-	CustomTagStart(builder Builder, child gextras.Objector, tagname string) (parser BuildableParser, data interface{}, ok bool)
 
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
@@ -7927,7 +8003,7 @@ func (chooser fileChooser) AddChoice(id string, label string, options []string, 
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(options) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -7944,7 +8020,7 @@ func (chooser fileChooser) AddChoice(id string, label string, options []string, 
 		arg3 = (**C.char)(unsafe.Pointer(ptr))
 	}
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(optionLabels) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -11813,6 +11889,230 @@ func (border_ *Border) Free() {
 	C.gtk_border_free(arg0)
 }
 
+type BuildableParseContext struct {
+	native C.GtkBuildableParseContext
+}
+
+// WrapBuildableParseContext wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBuildableParseContext(ptr unsafe.Pointer) *BuildableParseContext {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*BuildableParseContext)(ptr)
+}
+
+func marshalBuildableParseContext(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapBuildableParseContext(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *BuildableParseContext) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
+}
+
+// Element retrieves the name of the currently open element.
+//
+// If called from the start_element or end_element handlers this will give the
+// element_name as passed to those functions. For the parent elements, see
+// gtk_buildable_parse_context_get_element_stack().
+func (context *BuildableParseContext) Element() string {
+	var arg0 *C.GtkBuildableParseContext
+
+	arg0 = (*C.GtkBuildableParseContext)(context.Native())
+
+	ret := C.gtk_buildable_parse_context_get_element(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// ElementStack retrieves the element stack from the internal state of the
+// parser.
+//
+// The returned Array is an array of strings where the last item is the
+// currently open tag (as would be returned by
+// gtk_buildable_parse_context_get_element()) and the previous item is its
+// immediate parent.
+//
+// This function is intended to be used in the start_element and end_element
+// handlers where gtk_buildable_parse_context_get_element() would merely return
+// the name of the element that is being processed.
+func (context *BuildableParseContext) ElementStack() []string {
+	var arg0 *C.GtkBuildableParseContext
+
+	arg0 = (*C.GtkBuildableParseContext)(context.Native())
+
+	ret := C.gtk_buildable_parse_context_get_element_stack(arg0)
+
+	var ret0 []string
+
+	{
+		var length uint
+		for p := unsafe.Pointer(ret); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		ret0 = make([]string, length)
+		for i := 0; i < length; i++ {
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			ret0[i] = C.GoString(src)
+		}
+	}
+
+	return ret0
+}
+
+// Position retrieves the current line number and the number of the character on
+// that line. Intended for use in error messages; there are no strict semantics
+// for what constitutes the "current" line number other than "the best number we
+// could come up with for error messages."
+func (context *BuildableParseContext) Position() (lineNumber int, charNumber int) {
+	var arg0 *C.GtkBuildableParseContext
+	var arg1 *C.int // out
+	var arg2 *C.int // out
+
+	arg0 = (*C.GtkBuildableParseContext)(context.Native())
+
+	C.gtk_buildable_parse_context_get_position(arg0, &arg1, &arg2)
+
+	var ret0 int
+	var ret1 int
+
+	ret0 = int(arg1)
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
+// Pop completes the process of a temporary sub-parser redirection.
+//
+// This function exists to collect the user_data allocated by a matching call to
+// gtk_buildable_parse_context_push(). It must be called in the end_element
+// handler corresponding to the start_element handler during which
+// gtk_buildable_parse_context_push() was called. You must not call this
+// function from the error callback -- the @user_data is provided directly to
+// the callback in that case.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+func (context *BuildableParseContext) Pop() interface{} {
+	var arg0 *C.GtkBuildableParseContext
+
+	arg0 = (*C.GtkBuildableParseContext)(context.Native())
+
+	ret := C.gtk_buildable_parse_context_pop(arg0)
+
+	var ret0 interface{}
+
+	ret0 = box.Get(uintptr(ret)).(interface{})
+
+	return ret0
+}
+
+type ButtonPrivate struct {
+	native C.GtkButtonPrivate
+}
+
+// WrapButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapButtonPrivate(ptr unsafe.Pointer) *ButtonPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ButtonPrivate)(ptr)
+}
+
+func marshalButtonPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapButtonPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *ButtonPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
+}
+
+type CellAreaContextPrivate struct {
+	native C.GtkCellAreaContextPrivate
+}
+
+// WrapCellAreaContextPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellAreaContextPrivate(ptr unsafe.Pointer) *CellAreaContextPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellAreaContextPrivate)(ptr)
+}
+
+func marshalCellAreaContextPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellAreaContextPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellAreaContextPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
+type CellRendererClassPrivate struct {
+	native C.GtkCellRendererClassPrivate
+}
+
+// WrapCellRendererClassPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererClassPrivate(ptr unsafe.Pointer) *CellRendererClassPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererClassPrivate)(ptr)
+}
+
+func marshalCellRendererClassPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererClassPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererClassPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
+type CellRendererPrivate struct {
+	native C.GtkCellRendererPrivate
+}
+
+// WrapCellRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererPrivate(ptr unsafe.Pointer) *CellRendererPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererPrivate)(ptr)
+}
+
+func marshalCellRendererPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
 // CSSLocation is used to present a location in a file - or other source of data
 // parsed by the CSS engine.
 //
@@ -11881,6 +12181,30 @@ func (c *CSSLocation) LineChars() uint {
 	var ret uint
 	ret = uint(c.native.line_chars)
 	return ret
+}
+
+type CSSProviderPrivate struct {
+	native C.GtkCssProviderPrivate
+}
+
+// WrapCSSProviderPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCSSProviderPrivate(ptr unsafe.Pointer) *CSSProviderPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CSSProviderPrivate)(ptr)
+}
+
+func marshalCSSProviderPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCSSProviderPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CSSProviderPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }
 
 // CSSSection defines a part of a CSS document. Because sections are nested into
@@ -12068,6 +12392,209 @@ func (section *CSSSection) Unref() {
 	C.gtk_css_section_unref(arg0)
 }
 
+type CSSStyleChange struct {
+	native C.GtkCssStyleChange
+}
+
+// WrapCSSStyleChange wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCSSStyleChange(ptr unsafe.Pointer) *CSSStyleChange {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CSSStyleChange)(ptr)
+}
+
+func marshalCSSStyleChange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCSSStyleChange(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CSSStyleChange) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
+type ExpressionWatch struct {
+	native C.GtkExpressionWatch
+}
+
+// WrapExpressionWatch wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapExpressionWatch(ptr unsafe.Pointer) *ExpressionWatch {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ExpressionWatch)(ptr)
+}
+
+func marshalExpressionWatch(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapExpressionWatch(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (e *ExpressionWatch) Native() unsafe.Pointer {
+	return unsafe.Pointer(&e.native)
+}
+
+// Evaluate evaluates the watched expression and on success stores the result in
+// @value.
+//
+// This is equivalent to calling gtk_expression_evaluate() with the expression
+// and this pointer originally used to create @watch.
+func (watch *ExpressionWatch) Evaluate(value *externglib.Value) bool {
+	var arg0 *C.GtkExpressionWatch
+	var arg1 *C.GValue
+
+	arg0 = (*C.GtkExpressionWatch)(watch.Native())
+	arg1 = (*C.GValue)(value.GValue)
+
+	ret := C.gtk_expression_watch_evaluate(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = C.BOOL(ret) != 0
+
+	return ret0
+}
+
+// Ref acquires a reference on the given ExpressionWatch.
+func (watch *ExpressionWatch) Ref() *ExpressionWatch {
+	var arg0 *C.GtkExpressionWatch
+
+	arg0 = (*C.GtkExpressionWatch)(watch.Native())
+
+	ret := C.gtk_expression_watch_ref(arg0)
+
+	var ret0 *ExpressionWatch
+
+	{
+		ret0 = WrapExpressionWatch(unsafe.Pointer(ret))
+	}
+
+	return ret0
+}
+
+// Unref releases a reference on the given ExpressionWatch.
+//
+// If the reference was the last, the resources associated to @self are freed.
+func (watch *ExpressionWatch) Unref() {
+	var arg0 *C.GtkExpressionWatch
+
+	arg0 = (*C.GtkExpressionWatch)(watch.Native())
+
+	C.gtk_expression_watch_unref(arg0)
+}
+
+// Unwatch stops watching an expression that was established via
+// gtk_expression_watch().
+func (watch *ExpressionWatch) Unwatch() {
+	var arg0 *C.GtkExpressionWatch
+
+	arg0 = (*C.GtkExpressionWatch)(watch.Native())
+
+	C.gtk_expression_watch_unwatch(arg0)
+}
+
+type IMContextSimplePrivate struct {
+	native C.GtkIMContextSimplePrivate
+}
+
+// WrapIMContextSimplePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIMContextSimplePrivate(ptr unsafe.Pointer) *IMContextSimplePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IMContextSimplePrivate)(ptr)
+}
+
+func marshalIMContextSimplePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIMContextSimplePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IMContextSimplePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+type IMMulticontextPrivate struct {
+	native C.GtkIMMulticontextPrivate
+}
+
+// WrapIMMulticontextPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIMMulticontextPrivate(ptr unsafe.Pointer) *IMMulticontextPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IMMulticontextPrivate)(ptr)
+}
+
+func marshalIMMulticontextPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIMMulticontextPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IMMulticontextPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+type ListStorePrivate struct {
+	native C.GtkListStorePrivate
+}
+
+// WrapListStorePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapListStorePrivate(ptr unsafe.Pointer) *ListStorePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ListStorePrivate)(ptr)
+}
+
+func marshalListStorePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapListStorePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (l *ListStorePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&l.native)
+}
+
+type MountOperationPrivate struct {
+	native C.GtkMountOperationPrivate
+}
+
+// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MountOperationPrivate)(ptr)
+}
+
+func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MountOperationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {
 	native C.GtkPadActionEntry
@@ -12251,8 +12778,8 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	return ret0
 }
 
-// NewPaperSizeFromGvariant constructs a struct PaperSize.
-func NewPaperSizeFromGvariant(variant *glib.Variant) *PaperSize {
+// NewPaperSizeFromGVariant constructs a struct PaperSize.
+func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -12592,8 +13119,8 @@ func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	C.gtk_paper_size_set_size(arg0, arg1, arg2, arg3)
 }
 
-// ToGvariant: serialize a paper size to an a{sv} variant.
-func (paperSize *PaperSize) ToGvariant() *glib.Variant {
+// ToGVariant: serialize a paper size to an a{sv} variant.
+func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	var arg0 *C.GtkPaperSize
 
 	arg0 = (*C.GtkPaperSize)(paperSize.Native())
@@ -12621,6 +13148,30 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	defer C.free(unsafe.Pointer(arg2))
 
 	C.gtk_paper_size_to_key_file(arg0, arg1, arg2)
+}
+
+type PrintOperationPrivate struct {
+	native C.GtkPrintOperationPrivate
+}
+
+// WrapPrintOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPrintOperationPrivate(ptr unsafe.Pointer) *PrintOperationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*PrintOperationPrivate)(ptr)
+}
+
+func marshalPrintOperationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapPrintOperationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *PrintOperationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -12695,7 +13246,7 @@ func (r *RecentData) Groups() []string {
 
 		ret = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(r.native.groups)) + i))
+			src := (*C.char)(unsafe.Pointer(uintptr(unsafe.Pointer(r.native.groups)) + i))
 			ret[i] = C.GoString(src)
 		}
 	}
@@ -13185,6 +13736,30 @@ func (info *RecentInfo) Unref() {
 	C.gtk_recent_info_unref(arg0)
 }
 
+type RecentManagerPrivate struct {
+	native C.GtkRecentManagerPrivate
+}
+
+// WrapRecentManagerPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRecentManagerPrivate(ptr unsafe.Pointer) *RecentManagerPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*RecentManagerPrivate)(ptr)
+}
+
+func marshalRecentManagerPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapRecentManagerPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *RecentManagerPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
+}
+
 // RequestedSize represents a request of a screen object in a given orientation.
 // These are primarily used in container implementations when allocating a
 // natural size for children calling. See gtk_distribute_natural_allocation().
@@ -13356,6 +13931,54 @@ func (s *SettingsValue) Value() *externglib.Value {
 	var ret *externglib.Value
 	ret = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
 	return ret
+}
+
+type TextBTree struct {
+	native C.GtkTextBTree
+}
+
+// WrapTextBTree wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextBTree(ptr unsafe.Pointer) *TextBTree {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextBTree)(ptr)
+}
+
+func marshalTextBTree(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextBTree(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextBTree) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TextBufferPrivate struct {
+	native C.GtkTextBufferPrivate
+}
+
+// WrapTextBufferPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextBufferPrivate(ptr unsafe.Pointer) *TextBufferPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextBufferPrivate)(ptr)
+}
+
+func marshalTextBufferPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextBufferPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextBufferPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
 // TextIter: you may wish to begin by reading the [text widget conceptual
@@ -15115,6 +15738,54 @@ func (iter *TextIter) TogglesTag(tag TextTag) bool {
 	return ret0
 }
 
+type TextTagPrivate struct {
+	native C.GtkTextTagPrivate
+}
+
+// WrapTextTagPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextTagPrivate(ptr unsafe.Pointer) *TextTagPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextTagPrivate)(ptr)
+}
+
+func marshalTextTagPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextTagPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextTagPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TextViewPrivate struct {
+	native C.GtkTextViewPrivate
+}
+
+// WrapTextViewPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextViewPrivate(ptr unsafe.Pointer) *TextViewPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextViewPrivate)(ptr)
+}
+
+func marshalTextViewPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextViewPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextViewPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
 // TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
 // Models are expected to put a unique integer in the @stamp member, and put
 // model-specific data in the three @user_data members.
@@ -15203,6 +15874,54 @@ func (iter *TreeIter) Free() {
 	arg0 = (*C.GtkTreeIter)(iter.Native())
 
 	C.gtk_tree_iter_free(arg0)
+}
+
+type TreeModelFilterPrivate struct {
+	native C.GtkTreeModelFilterPrivate
+}
+
+// WrapTreeModelFilterPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeModelFilterPrivate(ptr unsafe.Pointer) *TreeModelFilterPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeModelFilterPrivate)(ptr)
+}
+
+func marshalTreeModelFilterPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeModelFilterPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeModelFilterPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TreeModelSortPrivate struct {
+	native C.GtkTreeModelSortPrivate
+}
+
+// WrapTreeModelSortPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeModelSortPrivate(ptr unsafe.Pointer) *TreeModelSortPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeModelSortPrivate)(ptr)
+}
+
+func marshalTreeModelSortPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeModelSortPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeModelSortPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }
 
 type TreePath struct {
@@ -15682,6 +16401,102 @@ func (reference *TreeRowReference) Valid() bool {
 	return ret0
 }
 
+type TreeStorePrivate struct {
+	native C.GtkTreeStorePrivate
+}
+
+// WrapTreeStorePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeStorePrivate(ptr unsafe.Pointer) *TreeStorePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeStorePrivate)(ptr)
+}
+
+func marshalTreeStorePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeStorePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeStorePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type WidgetClassPrivate struct {
+	native C.GtkWidgetClassPrivate
+}
+
+// WrapWidgetClassPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWidgetClassPrivate(ptr unsafe.Pointer) *WidgetClassPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WidgetClassPrivate)(ptr)
+}
+
+func marshalWidgetClassPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWidgetClassPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WidgetClassPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
+}
+
+type WidgetPrivate struct {
+	native C.GtkWidgetPrivate
+}
+
+// WrapWidgetPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWidgetPrivate(ptr unsafe.Pointer) *WidgetPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WidgetPrivate)(ptr)
+}
+
+func marshalWidgetPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWidgetPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WidgetPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
+}
+
+type WindowGroupPrivate struct {
+	native C.GtkWindowGroupPrivate
+}
+
+// WrapWindowGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWindowGroupPrivate(ptr unsafe.Pointer) *WindowGroupPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WindowGroupPrivate)(ptr)
+}
+
+func marshalWindowGroupPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWindowGroupPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WindowGroupPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
+}
+
 // ATContext: gtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
 //
@@ -15978,7 +16793,7 @@ func (about aboutDialog) AddCreditSection(sectionName string, people []string) {
 	arg1 = (*C.gchar)(C.CString(sectionName))
 	defer C.free(unsafe.Pointer(arg1))
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(people) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -16286,7 +17101,7 @@ func (about aboutDialog) SetArtists(artists []string) {
 
 	arg0 = (*C.GtkAboutDialog)(about.Native())
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(artists) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -16314,7 +17129,7 @@ func (about aboutDialog) SetAuthors(authors []string) {
 
 	arg0 = (*C.GtkAboutDialog)(about.Native())
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(authors) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -16368,7 +17183,7 @@ func (about aboutDialog) SetDocumenters(documenters []string) {
 
 	arg0 = (*C.GtkAboutDialog)(about.Native())
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(documenters) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -20071,6 +20886,17 @@ type Builder interface {
 	// SetTranslationDomain sets the translation domain of @builder. See
 	// Builder:translation-domain.
 	SetTranslationDomain(domain string)
+	// ValueFromString: this function demarshals a value from a string. This
+	// function calls g_value_init() on the @value argument, so it need not be
+	// initialised beforehand.
+	//
+	// This function can handle char, uchar, boolean, int, uint, long, ulong,
+	// enum, flags, float, double, string, RGBA and Adjustment type values.
+	// Support for Widget type values is still to come.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR domain.
+	ValueFromString(pspec gobject.ParamSpec, string string) (value externglib.Value, err error)
 	// ValueFromStringType: like gtk_builder_value_from_string(), this function
 	// demarshals a value from a string, but takes a #GType instead of Spec.
 	// This function calls g_value_init() on the @value argument, so it need not
@@ -20626,6 +21452,43 @@ func (builder builder) SetTranslationDomain(domain string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_builder_set_translation_domain(arg0, arg1)
+}
+
+// ValueFromString: this function demarshals a value from a string. This
+// function calls g_value_init() on the @value argument, so it need not be
+// initialised beforehand.
+//
+// This function can handle char, uchar, boolean, int, uint, long, ulong,
+// enum, flags, float, double, string, RGBA and Adjustment type values.
+// Support for Widget type values is still to come.
+//
+// Upon errors false will be returned and @error will be assigned a #GError
+// from the K_BUILDER_ERROR domain.
+func (builder builder) ValueFromString(pspec gobject.ParamSpec, string string) (value externglib.Value, err error) {
+	var arg0 *C.GtkBuilder
+	var arg1 *C.GParamSpec
+	var arg2 *C.char
+	var arg3 *C.GValue // out
+	var gError *C.GError
+
+	arg0 = (*C.GtkBuilder)(builder.Native())
+	arg1 = (*C.GParamSpec)(pspec.Native())
+	arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.gtk_builder_value_from_string(arg0, arg1, arg2, &arg3, &gError)
+
+	var ret0 *externglib.Value
+	var goError error
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
 }
 
 // ValueFromStringType: like gtk_builder_value_from_string(), this function
@@ -28241,7 +29104,7 @@ func (layout constraintLayout) AddConstraintsFromDescriptionv(lines []string, hs
 
 	arg0 = (*C.GtkConstraintLayout)(layout.Native())
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(lines))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -30179,7 +31042,7 @@ func NewDropDownFromStrings(strings []string) DropDown {
 	var arg1 **C.char
 
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(strings) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -34847,8 +35710,8 @@ type FileFilter interface {
 	// will be displayed in the file chooser if there is a selectable list of
 	// filters.
 	SetName(name string)
-	// ToGvariant: serialize a file filter to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize a file filter to an a{sv} variant.
+	ToGVariant() *glib.Variant
 }
 
 // fileFilter implements the FileFilter interface.
@@ -34886,8 +35749,8 @@ func NewFileFilter() FileFilter {
 	return ret0
 }
 
-// NewFileFilterFromGvariant constructs a class FileFilter.
-func NewFileFilterFromGvariant(variant *glib.Variant) FileFilter {
+// NewFileFilterFromGVariant constructs a class FileFilter.
+func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -34998,8 +35861,8 @@ func (filter fileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(arg0, arg1)
 }
 
-// ToGvariant: serialize a file filter to an a{sv} variant.
-func (filter fileFilter) ToGvariant() *glib.Variant {
+// ToGVariant: serialize a file filter to an a{sv} variant.
+func (filter fileFilter) ToGVariant() *glib.Variant {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(filter.Native())
@@ -41680,7 +42543,7 @@ func (self iconTheme) LookupIcon(iconName string, fallbacks []string, size int, 
 	arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(arg1))
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(fallbacks) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -52692,8 +53555,8 @@ type PageSetup interface {
 	SetTopMargin(margin float64, unit Unit)
 	// ToFile: this function saves the information from @setup to @file_name.
 	ToFile(fileName string) error
-	// ToGvariant: serialize page setup to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize page setup to an a{sv} variant.
+	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the page setup from @setup to @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
@@ -52754,8 +53617,8 @@ func NewPageSetupFromFile(fileName string) (pageSetup PageSetup, err error) {
 	return ret0, goError
 }
 
-// NewPageSetupFromGvariant constructs a class PageSetup.
-func NewPageSetupFromGvariant(variant *glib.Variant) PageSetup {
+// NewPageSetupFromGVariant constructs a class PageSetup.
+func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -53146,8 +54009,8 @@ func (setup pageSetup) ToFile(fileName string) error {
 	return goError
 }
 
-// ToGvariant: serialize page setup to an a{sv} variant.
-func (setup pageSetup) ToGvariant() *glib.Variant {
+// ToGVariant: serialize page setup to an a{sv} variant.
+func (setup pageSetup) ToGVariant() *glib.Variant {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(setup.Native())
@@ -56332,8 +57195,8 @@ type PrintSettings interface {
 	// @file_name. If the file could not be loaded then error is set to either a
 	// Error or FileError.
 	ToFile(fileName string) error
-	// ToGvariant: serialize print settings to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize print settings to an a{sv} variant.
+	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the print settings from @settings to
 	// @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
@@ -56398,8 +57261,8 @@ func NewPrintSettingsFromFile(fileName string) (printSettings PrintSettings, err
 	return ret0, goError
 }
 
-// NewPrintSettingsFromGvariant constructs a class PrintSettings.
-func NewPrintSettingsFromGvariant(variant *glib.Variant) PrintSettings {
+// NewPrintSettingsFromGVariant constructs a class PrintSettings.
+func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(variant.Native())
@@ -57497,8 +58360,8 @@ func (settings printSettings) ToFile(fileName string) error {
 	return goError
 }
 
-// ToGvariant: serialize print settings to an a{sv} variant.
-func (settings printSettings) ToGvariant() *glib.Variant {
+// ToGVariant: serialize print settings to an a{sv} variant.
+func (settings printSettings) ToGVariant() *glib.Variant {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(settings.Native())
@@ -59470,7 +60333,7 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) Scal
 	arg2 = C.double(max)
 	arg3 = C.double(step)
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(icons) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -59592,7 +60455,7 @@ func (button scaleButton) SetIcons(icons []string) {
 
 	arg0 = (*C.GtkScaleButton)(button.Native())
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(icons) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -66470,7 +67333,7 @@ func NewStringList(strings []string) StringList {
 	var arg1 **C.char
 
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(strings) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -66566,7 +67429,7 @@ func (self stringList) Splice(position uint, nRemovals uint, additions []string)
 	arg1 = C.guint(position)
 	arg2 = C.guint(nRemovals)
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(additions) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -82386,7 +83249,7 @@ func (widget widget) SetCSSClasses(classes []string) {
 
 	arg0 = (*C.GtkWidget)(widget.Native())
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * (len(classes) + 1))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))

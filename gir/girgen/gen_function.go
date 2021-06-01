@@ -2,7 +2,6 @@ package girgen
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 )
@@ -41,41 +40,11 @@ func (ng *NamespaceGenerator) generateFuncs() {
 		}
 
 		if !fg.Use(function) {
-			ng.logln(logInfo, "skipping function", cFunctionSig(function))
 			continue
 		}
 
 		ng.pen.BlockTmpl(functionTmpl, &fg)
 	}
-}
-
-// cFunctionSig renders the given GIR function in its C function signature
-// string for debugging.
-func cFunctionSig(fn gir.Function) string {
-	b := strings.Builder{}
-	b.Grow(256)
-
-	if fn.ReturnValue != nil {
-		b.WriteString(resolveAnyCType(fn.ReturnValue.AnyType))
-		b.WriteByte(' ')
-	}
-
-	b.WriteString(fn.Name)
-	b.WriteByte('(')
-
-	if fn.Parameters != nil && len(fn.Parameters.Parameters) > 0 {
-		for i, param := range fn.Parameters.Parameters {
-			if i != 0 {
-				b.WriteString(", ")
-			}
-
-			b.WriteString(resolveAnyCType(param.AnyType))
-		}
-	}
-
-	b.WriteByte(')')
-
-	return b.String()
 }
 
 // resolveAnyCType resolves an AnyType and returns the C type signature.

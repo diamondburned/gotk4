@@ -27,7 +27,8 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	array := conv.Type.Array
 
 	if array.Type == nil {
-		ng.logln(logWarn, "skipping nested array", array.CType)
+		ng.logln(logSkip, "nested array", array.CType)
+		return ""
 	}
 
 	innerResolved := ng.ResolveType(*array.Type)
@@ -163,7 +164,7 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		return b.String()
 	}
 
-	ng.logln(logWarn, conv.ParentName+":", "weird array type to C")
+	ng.logln(logSkip, conv.ParentName+":", "weird array type to C")
 	return ""
 }
 
@@ -212,20 +213,16 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		}
 	}
 
-	switch typ.Name {
+	switch ng.ensureNamespace(typ.Name) {
 	case "gpointer":
 		ng.addImport("github.com/diamondburned/gotk4/internal/box")
 		return fmt.Sprintf("%s = C.gpointer(box.Assign(%s))", conv.Target, conv.Value)
 
-	case "GLib.DestroyNotify", "DestroyNotify":
-		// Use conv.Destroy instead.
-		return ""
-
-	case "GType":
+	case "GObject.Type", "GType":
 		// Just a primitive.
 		return fmt.Sprintf("%s = C.GType(%s)", conv.Target, conv.Value)
 
-	case "GObject.GValue", "GObject.Value":
+	case "GObject.Value":
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		return fmt.Sprintf("%s = (*C.GValue)(%s.GValue)", conv.Target, conv.Value)
 
@@ -233,11 +230,17 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		// Use .Native() here instead of directly accessing the native pointer,
 		// since Value might be an Objector interface.
 		return fmt.Sprintf("%s = (*C.GObject)(%s.Native())", conv.Target, conv.Value)
+
 	case "GObject.InitiallyUnowned":
 		return fmt.Sprintf("%s = (*C.GInitiallyUnowned)(%s.Native())", conv.Target, conv.Value)
 	}
 
-	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
+	// Pretend that ignored types don't exist.
+	if ng.mustIgnore(typ.Name, typ.CType) {
+		return ""
+	}
+
+	result := ng.gen.Repos.FindType(ng.current, typ.Name)
 	if result == nil {
 		return ""
 	}
@@ -264,7 +267,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.
 		if conv.Closure == nil {
-			ng.logln(logInfo, "skipping callback", exportedName, "since missing closure")
+			ng.logln(logSkip, "Go->C callback", exportedName, "since missing closure")
 			return ""
 		}
 

@@ -49,7 +49,20 @@ func NewGenerator(repos gir.Repositories, root string) *Generator {
 	return &Generator{
 		Repos:      repos,
 		RootModule: root,
+		Filters: []FilterMatcher{
+			// These are already manually covered in the girgen code; they are
+			// provided by package gotk3/glib.
+			AbsoluteFilter("GObject.Type"),
+			AbsoluteFilter("GObject.Value"),
+			AbsoluteFilter("GObject.Object"),
+			AbsoluteFilter("GObject.InitiallyUnowned"),
+		},
 	}
+}
+
+// AddFilters adds the given list of filters.
+func (g *Generator) AddFilters(filters []FilterMatcher) {
+	g.Filters = append(g.Filters, filters...)
 }
 
 // WithLogger sets the generator's logger.
@@ -61,20 +74,34 @@ func (g *Generator) WithLogger(logger *log.Logger, color bool) {
 type logLevel uint8
 
 const (
-	logInfo logLevel = iota
-	logSummary
-	logWarn
+	logDebug logLevel = iota
+	// logUnsupported is used for logs that report conditions impossible to do
+	// in Go properly.
+	logUnsupported
+	// logUnknown is reserved for logging down unknown types or types that
+	// cannot be resolved.
+	logUnknown
+	// logSkip is reserved for logging down skipped types.
+	logSkip
+	// logUnusuality is reserved for logging down unexpected GIR values or
+	// formats. It may be used to log things yet to be supported but can be.
+	logUnusuality
+	// logError is reserved for fatal and/or unexpected errors.
 	logError
 )
 
 func (lvl logLevel) prefix() string {
 	switch lvl {
-	case logInfo:
-		return "info:"
-	case logSummary:
-		return "summary:"
-	case logWarn:
-		return "warning:"
+	case logDebug:
+		return "debug:"
+	case logUnsupported:
+		return "unsupported:"
+	case logUnknown:
+		return "unknown type:"
+	case logSkip:
+		return "skipped:"
+	case logUnusuality:
+		return "unusuality:"
 	case logError:
 		return "error:"
 	default:
@@ -84,16 +111,20 @@ func (lvl logLevel) prefix() string {
 
 func (lvl logLevel) colorf(f string, v ...interface{}) string {
 	switch lvl {
-	case logInfo:
-		return color.HiBlueString(f, v...)
-	case logSummary:
-		return color.HiGreenString(f, v...)
-	case logWarn:
-		return color.HiYellowString(f, v...)
+	case logUnsupported:
+		return color.YellowString(f, v...)
+	case logUnknown:
+		return color.BlueString(f, v...)
+	case logSkip:
+		return color.GreenString(f, v...)
+	case logUnusuality:
+		return color.RedString(f, v...)
 	case logError:
-		return color.HiRedString(f, v...)
+		return color.New(color.Bold, color.FgHiRed).Sprintf(f, v...)
+	case logDebug:
+		fallthrough
 	default:
-		return fmt.Sprintf(f, v...)
+		return color.New(color.Faint).Sprintf(f, v...)
 	}
 }
 
@@ -103,11 +134,13 @@ func (g *Generator) logln(level logLevel, v ...interface{}) {
 	}
 
 	prefix := level.prefix()
-	if g.color {
-		prefix = level.colorf(prefix)
+	if prefix != "" {
+		if g.color {
+			prefix = level.colorf(prefix)
+		}
+		v = append([]interface{}{prefix}, v...)
 	}
 
-	v = append([]interface{}{prefix}, v...)
 	g.logger.Println(v...)
 }
 
@@ -116,8 +149,8 @@ func (g *Generator) ImportPath(pkgPath string) string {
 }
 
 // UseNamespace creates a new namespace generator using the given namespace.
-func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
-	res := g.Repos.FindNamespace(namespace)
+func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator {
+	res := g.Repos.FindNamespace(gir.VersionedName(namespace, version))
 	if res == nil {
 		return nil
 	}
@@ -401,7 +434,7 @@ func (ng *NamespaceGenerator) logln(level logLevel, v ...interface{}) {
 }
 
 func (ng *NamespaceGenerator) warnUnknownType(typ string) {
-	ng.logln(logWarn, "unknown gir type", strconv.Quote(typ))
+	ng.logln(logUnknown, strconv.Quote(typ))
 }
 
 func (ng *NamespaceGenerator) addImport(pkgPath string) {

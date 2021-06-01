@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib"
+	"github.com/diamondburned/gotk4/pkg/gobject"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -3569,6 +3570,33 @@ func AppInfoResetTypeAssociations(contentType string) {
 	C.g_app_info_reset_type_associations(arg1)
 }
 
+// AsyncInitableNewvAsync: helper function for constructing Initable object.
+// This is similar to g_object_newv() but also initializes the object
+// asynchronously.
+//
+// When the initialization is finished, @callback will be called. You can then
+// call g_async_initable_new_finish() to get the new object and check for any
+// errors.
+func AsyncInitableNewvAsync(objectType externglib.Type, nParameters uint, parameters *gobject.Parameter, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg1 C.GType
+	var arg2 C.guint
+	var arg3 *C.GParameter
+	var arg4 C.int
+	var arg5 *C.GCancellable
+	var arg6 C.GAsyncReadyCallback
+	var arg7 C.gpointer
+
+	arg1 = C.GType(objectType)
+	arg2 = C.guint(nParameters)
+	arg3 = (*C.GParameter)(parameters.Native())
+	arg4 = C.int(ioPriority)
+	arg5 = (*C.GCancellable)(cancellable.Native())
+	arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	arg7 = C.gpointer(box.Assign(callback))
+
+	C.g_async_initable_newv_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+}
+
 // BusGet: asynchronously connects to the message bus specified by @bus_type.
 //
 // When the operation is finished, @callback will be invoked. You can then call
@@ -4419,7 +4447,7 @@ func DBusGenerateGuid() string {
 	return ret0
 }
 
-// DBusGValueToGvariant converts a #GValue to a #GVariant of the type indicated
+// DBusGValueToGVariant converts a #GValue to a #GVariant of the type indicated
 // by the @type parameter.
 //
 // The conversion is using the following rules:
@@ -4440,7 +4468,7 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var arg1 *C.GValue
 	var arg2 *C.GVariantType
 
@@ -4461,7 +4489,7 @@ func DBusGValueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	return ret0
 }
 
-// DBusGvariantToGValue converts a #GVariant to a #GValue. If @value is
+// DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
 // floating, it is consumed.
 //
 // The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
@@ -4472,7 +4500,7 @@ func DBusGValueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DBusGvariantToGValue(value *glib.Variant) externglib.Value {
+func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	var arg1 *C.GVariant
 	var arg2 *C.GValue // out
 
@@ -4863,6 +4891,51 @@ func IconNewForString(str string) (icon Icon, err error) {
 	var goError error
 
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Icon)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// InitableNewv: helper function for constructing #GInitable object. This is
+// similar to g_object_newv() but also initializes the object and returns nil,
+// setting an error on failure.
+func InitableNewv(objectType externglib.Type, nParameters uint, parameters []gobject.Parameter, cancellable Cancellable) (object gextras.Objector, err error) {
+	var arg1 C.GType
+	var arg2 C.guint
+	var arg3 *C.GParameter
+	var arg4 *C.GCancellable
+	var gError *C.GError
+
+	arg1 = C.GType(objectType)
+	{
+		var dst []C.GParameter
+		ptr := C.malloc(C.sizeof_GParameter * len(parameters))
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
+		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
+		sliceHeader.Len = len(parameters)
+		sliceHeader.Cap = len(parameters)
+		defer C.free(unsafe.Pointer(ptr))
+
+		for i := 0; i < len(parameters); i++ {
+			src := parameters[i]
+			dst[i] = (C.GParameter)(src.Native())
+		}
+
+		arg3 = (*C.GParameter)(unsafe.Pointer(ptr))
+		arg2 = len(parameters)
+	}
+	arg4 = (*C.GCancellable)(cancellable.Native())
+
+	ret := C.g_initable_newv(arg1, arg2, arg3, arg4, &gError)
+
+	var ret0 gextras.Objector
+	var goError error
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gextras.Objector)
 
 	if gError != nil {
 		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
@@ -20687,6 +20760,198 @@ func (volume volume) ShouldAutomount() bool {
 	return ret0
 }
 
+type AppLaunchContextPrivate struct {
+	native C.GAppLaunchContextPrivate
+}
+
+// WrapAppLaunchContextPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapAppLaunchContextPrivate(ptr unsafe.Pointer) *AppLaunchContextPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*AppLaunchContextPrivate)(ptr)
+}
+
+func marshalAppLaunchContextPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapAppLaunchContextPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *AppLaunchContextPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
+}
+
+type ApplicationCommandLinePrivate struct {
+	native C.GApplicationCommandLinePrivate
+}
+
+// WrapApplicationCommandLinePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapApplicationCommandLinePrivate(ptr unsafe.Pointer) *ApplicationCommandLinePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ApplicationCommandLinePrivate)(ptr)
+}
+
+func marshalApplicationCommandLinePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapApplicationCommandLinePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *ApplicationCommandLinePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
+}
+
+type ApplicationPrivate struct {
+	native C.GApplicationPrivate
+}
+
+// WrapApplicationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapApplicationPrivate(ptr unsafe.Pointer) *ApplicationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ApplicationPrivate)(ptr)
+}
+
+func marshalApplicationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapApplicationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *ApplicationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
+}
+
+type BufferedInputStreamPrivate struct {
+	native C.GBufferedInputStreamPrivate
+}
+
+// WrapBufferedInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBufferedInputStreamPrivate(ptr unsafe.Pointer) *BufferedInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*BufferedInputStreamPrivate)(ptr)
+}
+
+func marshalBufferedInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapBufferedInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *BufferedInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
+}
+
+type BufferedOutputStreamPrivate struct {
+	native C.GBufferedOutputStreamPrivate
+}
+
+// WrapBufferedOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBufferedOutputStreamPrivate(ptr unsafe.Pointer) *BufferedOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*BufferedOutputStreamPrivate)(ptr)
+}
+
+func marshalBufferedOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapBufferedOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *BufferedOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
+}
+
+type CancellablePrivate struct {
+	native C.GCancellablePrivate
+}
+
+// WrapCancellablePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCancellablePrivate(ptr unsafe.Pointer) *CancellablePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CancellablePrivate)(ptr)
+}
+
+func marshalCancellablePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCancellablePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CancellablePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
+type ConverterInputStreamPrivate struct {
+	native C.GConverterInputStreamPrivate
+}
+
+// WrapConverterInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapConverterInputStreamPrivate(ptr unsafe.Pointer) *ConverterInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ConverterInputStreamPrivate)(ptr)
+}
+
+func marshalConverterInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapConverterInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *ConverterInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
+type ConverterOutputStreamPrivate struct {
+	native C.GConverterOutputStreamPrivate
+}
+
+// WrapConverterOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapConverterOutputStreamPrivate(ptr unsafe.Pointer) *ConverterOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ConverterOutputStreamPrivate)(ptr)
+}
+
+func marshalConverterOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapConverterOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *ConverterOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
 // DBusAnnotationInfo: information about an annotation.
 type DBusAnnotationInfo struct {
 	native C.GDBusAnnotationInfo
@@ -21188,6 +21453,30 @@ func (info *DBusInterfaceInfo) Unref() {
 	C.g_dbus_interface_info_unref(arg0)
 }
 
+type DBusInterfaceSkeletonPrivate struct {
+	native C.GDBusInterfaceSkeletonPrivate
+}
+
+// WrapDBusInterfaceSkeletonPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusInterfaceSkeletonPrivate(ptr unsafe.Pointer) *DBusInterfaceSkeletonPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusInterfaceSkeletonPrivate)(ptr)
+}
+
+func marshalDBusInterfaceSkeletonPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusInterfaceSkeletonPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusInterfaceSkeletonPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
 // DBusInterfaceVTable: virtual table for handling properties and method calls
 // for a D-Bus interface.
 //
@@ -21580,6 +21869,102 @@ func (info *DBusNodeInfo) Unref() {
 	C.g_dbus_node_info_unref(arg0)
 }
 
+type DBusObjectManagerClientPrivate struct {
+	native C.GDBusObjectManagerClientPrivate
+}
+
+// WrapDBusObjectManagerClientPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectManagerClientPrivate(ptr unsafe.Pointer) *DBusObjectManagerClientPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectManagerClientPrivate)(ptr)
+}
+
+func marshalDBusObjectManagerClientPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectManagerClientPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectManagerClientPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
+type DBusObjectManagerServerPrivate struct {
+	native C.GDBusObjectManagerServerPrivate
+}
+
+// WrapDBusObjectManagerServerPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectManagerServerPrivate(ptr unsafe.Pointer) *DBusObjectManagerServerPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectManagerServerPrivate)(ptr)
+}
+
+func marshalDBusObjectManagerServerPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectManagerServerPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectManagerServerPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
+type DBusObjectProxyPrivate struct {
+	native C.GDBusObjectProxyPrivate
+}
+
+// WrapDBusObjectProxyPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectProxyPrivate(ptr unsafe.Pointer) *DBusObjectProxyPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectProxyPrivate)(ptr)
+}
+
+func marshalDBusObjectProxyPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectProxyPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectProxyPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
+type DBusObjectSkeletonPrivate struct {
+	native C.GDBusObjectSkeletonPrivate
+}
+
+// WrapDBusObjectSkeletonPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectSkeletonPrivate(ptr unsafe.Pointer) *DBusObjectSkeletonPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectSkeletonPrivate)(ptr)
+}
+
+func marshalDBusObjectSkeletonPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectSkeletonPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectSkeletonPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
 type DBusPropertyInfo struct {
 	native C.GDBusPropertyInfo
@@ -21683,6 +22068,30 @@ func (info *DBusPropertyInfo) Unref() {
 	arg0 = (*C.GDBusPropertyInfo)(info.Native())
 
 	C.g_dbus_property_info_unref(arg0)
+}
+
+type DBusProxyPrivate struct {
+	native C.GDBusProxyPrivate
+}
+
+// WrapDBusProxyPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusProxyPrivate(ptr unsafe.Pointer) *DBusProxyPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusProxyPrivate)(ptr)
+}
+
+func marshalDBusProxyPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusProxyPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusProxyPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
@@ -21820,6 +22229,78 @@ func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (d *DBusSubtreeVTable) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
+}
+
+type DataInputStreamPrivate struct {
+	native C.GDataInputStreamPrivate
+}
+
+// WrapDataInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDataInputStreamPrivate(ptr unsafe.Pointer) *DataInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DataInputStreamPrivate)(ptr)
+}
+
+func marshalDataInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDataInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DataInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
+type DataOutputStreamPrivate struct {
+	native C.GDataOutputStreamPrivate
+}
+
+// WrapDataOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDataOutputStreamPrivate(ptr unsafe.Pointer) *DataOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DataOutputStreamPrivate)(ptr)
+}
+
+func marshalDataOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDataOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DataOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
+type EmblemedIconPrivate struct {
+	native C.GEmblemedIconPrivate
+}
+
+// WrapEmblemedIconPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapEmblemedIconPrivate(ptr unsafe.Pointer) *EmblemedIconPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*EmblemedIconPrivate)(ptr)
+}
+
+func marshalEmblemedIconPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapEmblemedIconPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (e *EmblemedIconPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&e.native)
 }
 
 // FileAttributeInfo: information about a specific attribute.
@@ -22214,6 +22695,534 @@ func (matcher *FileAttributeMatcher) Unref() {
 	C.g_file_attribute_matcher_unref(arg0)
 }
 
+type FileEnumeratorPrivate struct {
+	native C.GFileEnumeratorPrivate
+}
+
+// WrapFileEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileEnumeratorPrivate(ptr unsafe.Pointer) *FileEnumeratorPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileEnumeratorPrivate)(ptr)
+}
+
+func marshalFileEnumeratorPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileEnumeratorPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileEnumeratorPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
+}
+
+type FileIOStreamPrivate struct {
+	native C.GFileIOStreamPrivate
+}
+
+// WrapFileIOStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileIOStreamPrivate(ptr unsafe.Pointer) *FileIOStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileIOStreamPrivate)(ptr)
+}
+
+func marshalFileIOStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileIOStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileIOStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
+}
+
+type FileInputStreamPrivate struct {
+	native C.GFileInputStreamPrivate
+}
+
+// WrapFileInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileInputStreamPrivate(ptr unsafe.Pointer) *FileInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileInputStreamPrivate)(ptr)
+}
+
+func marshalFileInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
+}
+
+type FileMonitorPrivate struct {
+	native C.GFileMonitorPrivate
+}
+
+// WrapFileMonitorPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileMonitorPrivate(ptr unsafe.Pointer) *FileMonitorPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileMonitorPrivate)(ptr)
+}
+
+func marshalFileMonitorPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileMonitorPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileMonitorPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
+}
+
+type FileOutputStreamPrivate struct {
+	native C.GFileOutputStreamPrivate
+}
+
+// WrapFileOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileOutputStreamPrivate(ptr unsafe.Pointer) *FileOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileOutputStreamPrivate)(ptr)
+}
+
+func marshalFileOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
+}
+
+// IOExtension is an opaque data structure and can only be accessed using the
+// following functions.
+type IOExtension struct {
+	native C.GIOExtension
+}
+
+// WrapIOExtension wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIOExtension(ptr unsafe.Pointer) *IOExtension {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IOExtension)(ptr)
+}
+
+func marshalIOExtension(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIOExtension(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IOExtension) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+// Name gets the name under which @extension was registered.
+//
+// Note that the same type may be registered as extension for multiple extension
+// points, under different names.
+func (extension *IOExtension) Name() string {
+	var arg0 *C.GIOExtension
+
+	arg0 = (*C.GIOExtension)(extension.Native())
+
+	ret := C.g_io_extension_get_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Priority gets the priority with which @extension was registered.
+func (extension *IOExtension) Priority() int {
+	var arg0 *C.GIOExtension
+
+	arg0 = (*C.GIOExtension)(extension.Native())
+
+	ret := C.g_io_extension_get_priority(arg0)
+
+	var ret0 int
+
+	ret0 = int(ret)
+
+	return ret0
+}
+
+// Type gets the type associated with @extension.
+func (extension *IOExtension) Type() externglib.Type {
+	var arg0 *C.GIOExtension
+
+	arg0 = (*C.GIOExtension)(extension.Native())
+
+	ret := C.g_io_extension_get_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
+// IOExtensionPoint is an opaque data structure and can only be accessed using
+// the following functions.
+type IOExtensionPoint struct {
+	native C.GIOExtensionPoint
+}
+
+// WrapIOExtensionPoint wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIOExtensionPoint(ptr unsafe.Pointer) *IOExtensionPoint {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IOExtensionPoint)(ptr)
+}
+
+func marshalIOExtensionPoint(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIOExtensionPoint(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IOExtensionPoint) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+// ExtensionByName finds a OExtension for an extension point by name.
+func (extensionPoint *IOExtensionPoint) ExtensionByName(name string) *IOExtension {
+	var arg0 *C.GIOExtensionPoint
+	var arg1 *C.char
+
+	arg0 = (*C.GIOExtensionPoint)(extensionPoint.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.g_io_extension_point_get_extension_by_name(arg0, arg1)
+
+	var ret0 *IOExtension
+
+	{
+		ret0 = WrapIOExtension(unsafe.Pointer(ret))
+	}
+
+	return ret0
+}
+
+// Extensions gets a list of all extensions that implement this extension point.
+// The list is sorted by priority, beginning with the highest priority.
+func (extensionPoint *IOExtensionPoint) Extensions() *glib.List {
+	var arg0 *C.GIOExtensionPoint
+
+	arg0 = (*C.GIOExtensionPoint)(extensionPoint.Native())
+
+	ret := C.g_io_extension_point_get_extensions(arg0)
+
+	var ret0 *glib.List
+
+	{
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+	}
+
+	return ret0
+}
+
+// RequiredType gets the required type for @extension_point.
+func (extensionPoint *IOExtensionPoint) RequiredType() externglib.Type {
+	var arg0 *C.GIOExtensionPoint
+
+	arg0 = (*C.GIOExtensionPoint)(extensionPoint.Native())
+
+	ret := C.g_io_extension_point_get_required_type(arg0)
+
+	var ret0 externglib.Type
+
+	ret0 = externglib.Type(ret)
+
+	return ret0
+}
+
+// SetRequiredType sets the required type for @extension_point to @type. All
+// implementations must henceforth have this type.
+func (extensionPoint *IOExtensionPoint) SetRequiredType(typ externglib.Type) {
+	var arg0 *C.GIOExtensionPoint
+	var arg1 C.GType
+
+	arg0 = (*C.GIOExtensionPoint)(extensionPoint.Native())
+	arg1 = C.GType(typ)
+
+	C.g_io_extension_point_set_required_type(arg0, arg1)
+}
+
+// IOModuleScope represents a scope for loading IO modules. A scope can be used
+// for blocking duplicate modules, or blocking a module you don't want to load.
+//
+// The scope can be used with g_io_modules_load_all_in_directory_with_scope() or
+// g_io_modules_scan_all_in_directory_with_scope().
+type IOModuleScope struct {
+	native C.GIOModuleScope
+}
+
+// WrapIOModuleScope wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIOModuleScope(ptr unsafe.Pointer) *IOModuleScope {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IOModuleScope)(ptr)
+}
+
+func marshalIOModuleScope(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIOModuleScope(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IOModuleScope) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+// Block: block modules with the given @basename from being loaded when this
+// scope is used with g_io_modules_scan_all_in_directory_with_scope() or
+// g_io_modules_load_all_in_directory_with_scope().
+func (scope *IOModuleScope) Block(basename string) {
+	var arg0 *C.GIOModuleScope
+	var arg1 *C.gchar
+
+	arg0 = (*C.GIOModuleScope)(scope.Native())
+	arg1 = (*C.gchar)(C.CString(basename))
+	defer C.free(unsafe.Pointer(arg1))
+
+	C.g_io_module_scope_block(arg0, arg1)
+}
+
+// Free: free a module scope.
+func (scope *IOModuleScope) Free() {
+	var arg0 *C.GIOModuleScope
+
+	arg0 = (*C.GIOModuleScope)(scope.Native())
+
+	C.g_io_module_scope_free(arg0)
+}
+
+// IOSchedulerJob: opaque class for defining and scheduling IO jobs.
+type IOSchedulerJob struct {
+	native C.GIOSchedulerJob
+}
+
+// WrapIOSchedulerJob wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIOSchedulerJob(ptr unsafe.Pointer) *IOSchedulerJob {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IOSchedulerJob)(ptr)
+}
+
+func marshalIOSchedulerJob(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIOSchedulerJob(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IOSchedulerJob) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+// SendToMainloop: used from an I/O job to send a callback to be run in the
+// thread that the job was started from, waiting for the result (and thus
+// blocking the I/O job).
+func (job *IOSchedulerJob) SendToMainloop(fn glib.SourceFunc) bool {
+	var arg0 *C.GIOSchedulerJob
+	var arg1 C.GSourceFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GIOSchedulerJob)(job.Native())
+	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg2 = C.gpointer(box.Assign(fn))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_io_scheduler_job_send_to_mainloop(arg0, arg1, arg2, arg3)
+
+	var ret0 bool
+
+	ret0 = C.BOOL(ret) != 0
+
+	return ret0
+}
+
+// SendToMainloopAsync: used from an I/O job to send a callback to be run
+// asynchronously in the thread that the job was started from. The callback will
+// be run when the main loop is available, but at that time the I/O job might
+// have finished. The return value from the callback is ignored.
+//
+// Note that if you are passing the @user_data from g_io_scheduler_push_job() on
+// to this function you have to ensure that it is not freed before @func is
+// called, either by passing nil as @notify to g_io_scheduler_push_job() or by
+// using refcounting for @user_data.
+func (job *IOSchedulerJob) SendToMainloopAsync(fn glib.SourceFunc) {
+	var arg0 *C.GIOSchedulerJob
+	var arg1 C.GSourceFunc
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GIOSchedulerJob)(job.Native())
+	arg1 = (*[0]byte)(C.gotk4_SourceFunc)
+	arg2 = C.gpointer(box.Assign(fn))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	C.g_io_scheduler_job_send_to_mainloop_async(arg0, arg1, arg2, arg3)
+}
+
+type IOStreamAdapter struct {
+	native C.GIOStreamAdapter
+}
+
+// WrapIOStreamAdapter wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIOStreamAdapter(ptr unsafe.Pointer) *IOStreamAdapter {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IOStreamAdapter)(ptr)
+}
+
+func marshalIOStreamAdapter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIOStreamAdapter(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IOStreamAdapter) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+type IOStreamPrivate struct {
+	native C.GIOStreamPrivate
+}
+
+// WrapIOStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIOStreamPrivate(ptr unsafe.Pointer) *IOStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IOStreamPrivate)(ptr)
+}
+
+func marshalIOStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIOStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IOStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+type InetAddressMaskPrivate struct {
+	native C.GInetAddressMaskPrivate
+}
+
+// WrapInetAddressMaskPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInetAddressMaskPrivate(ptr unsafe.Pointer) *InetAddressMaskPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InetAddressMaskPrivate)(ptr)
+}
+
+func marshalInetAddressMaskPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInetAddressMaskPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InetAddressMaskPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+type InetAddressPrivate struct {
+	native C.GInetAddressPrivate
+}
+
+// WrapInetAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInetAddressPrivate(ptr unsafe.Pointer) *InetAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InetAddressPrivate)(ptr)
+}
+
+func marshalInetAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInetAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InetAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
+type InetSocketAddressPrivate struct {
+	native C.GInetSocketAddressPrivate
+}
+
+// WrapInetSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInetSocketAddressPrivate(ptr unsafe.Pointer) *InetSocketAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InetSocketAddressPrivate)(ptr)
+}
+
+func marshalInetSocketAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInetSocketAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InetSocketAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
 // InputMessage: structure used for scatter/gather data input when receiving
 // multiple messages or packets in one go. You generally pass in an array of
 // empty Vectors and the operation will use all the buffers as if they were one
@@ -22306,6 +23315,30 @@ func (i *InputMessage) ControlMessages() []SocketControlMessage {
 	return ret
 }
 
+type InputStreamPrivate struct {
+	native C.GInputStreamPrivate
+}
+
+// WrapInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInputStreamPrivate(ptr unsafe.Pointer) *InputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InputStreamPrivate)(ptr)
+}
+
+func marshalInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
+}
+
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -22345,6 +23378,222 @@ func (i *InputVector) Size() uint {
 	var ret uint
 	ret = uint(i.native.size)
 	return ret
+}
+
+type MemoryInputStreamPrivate struct {
+	native C.GMemoryInputStreamPrivate
+}
+
+// WrapMemoryInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMemoryInputStreamPrivate(ptr unsafe.Pointer) *MemoryInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MemoryInputStreamPrivate)(ptr)
+}
+
+func marshalMemoryInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMemoryInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MemoryInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MemoryOutputStreamPrivate struct {
+	native C.GMemoryOutputStreamPrivate
+}
+
+// WrapMemoryOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMemoryOutputStreamPrivate(ptr unsafe.Pointer) *MemoryOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MemoryOutputStreamPrivate)(ptr)
+}
+
+func marshalMemoryOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMemoryOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MemoryOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MenuAttributeIterPrivate struct {
+	native C.GMenuAttributeIterPrivate
+}
+
+// WrapMenuAttributeIterPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMenuAttributeIterPrivate(ptr unsafe.Pointer) *MenuAttributeIterPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MenuAttributeIterPrivate)(ptr)
+}
+
+func marshalMenuAttributeIterPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMenuAttributeIterPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MenuAttributeIterPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MenuLinkIterPrivate struct {
+	native C.GMenuLinkIterPrivate
+}
+
+// WrapMenuLinkIterPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMenuLinkIterPrivate(ptr unsafe.Pointer) *MenuLinkIterPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MenuLinkIterPrivate)(ptr)
+}
+
+func marshalMenuLinkIterPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMenuLinkIterPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MenuLinkIterPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MenuModelPrivate struct {
+	native C.GMenuModelPrivate
+}
+
+// WrapMenuModelPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMenuModelPrivate(ptr unsafe.Pointer) *MenuModelPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MenuModelPrivate)(ptr)
+}
+
+func marshalMenuModelPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMenuModelPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MenuModelPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MountOperationPrivate struct {
+	native C.GMountOperationPrivate
+}
+
+// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MountOperationPrivate)(ptr)
+}
+
+func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MountOperationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type NativeSocketAddressPrivate struct {
+	native C.GNativeSocketAddressPrivate
+}
+
+// WrapNativeSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapNativeSocketAddressPrivate(ptr unsafe.Pointer) *NativeSocketAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*NativeSocketAddressPrivate)(ptr)
+}
+
+func marshalNativeSocketAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapNativeSocketAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (n *NativeSocketAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
+}
+
+type NetworkAddressPrivate struct {
+	native C.GNetworkAddressPrivate
+}
+
+// WrapNetworkAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapNetworkAddressPrivate(ptr unsafe.Pointer) *NetworkAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*NetworkAddressPrivate)(ptr)
+}
+
+func marshalNetworkAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapNetworkAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (n *NetworkAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
+}
+
+type NetworkServicePrivate struct {
+	native C.GNetworkServicePrivate
+}
+
+// WrapNetworkServicePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapNetworkServicePrivate(ptr unsafe.Pointer) *NetworkServicePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*NetworkServicePrivate)(ptr)
+}
+
+func marshalNetworkServicePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapNetworkServicePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (n *NetworkServicePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -22421,6 +23670,30 @@ func (o *OutputMessage) ControlMessages() []SocketControlMessage {
 	return ret
 }
 
+type OutputStreamPrivate struct {
+	native C.GOutputStreamPrivate
+}
+
+// WrapOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapOutputStreamPrivate(ptr unsafe.Pointer) *OutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*OutputStreamPrivate)(ptr)
+}
+
+func marshalOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (o *OutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&o.native)
+}
+
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -22460,6 +23733,102 @@ func (o *OutputVector) Size() uint {
 	var ret uint
 	ret = uint(o.native.size)
 	return ret
+}
+
+type PermissionPrivate struct {
+	native C.GPermissionPrivate
+}
+
+// WrapPermissionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPermissionPrivate(ptr unsafe.Pointer) *PermissionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*PermissionPrivate)(ptr)
+}
+
+func marshalPermissionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapPermissionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *PermissionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
+}
+
+type ProxyAddressEnumeratorPrivate struct {
+	native C.GProxyAddressEnumeratorPrivate
+}
+
+// WrapProxyAddressEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapProxyAddressEnumeratorPrivate(ptr unsafe.Pointer) *ProxyAddressEnumeratorPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ProxyAddressEnumeratorPrivate)(ptr)
+}
+
+func marshalProxyAddressEnumeratorPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapProxyAddressEnumeratorPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *ProxyAddressEnumeratorPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
+}
+
+type ProxyAddressPrivate struct {
+	native C.GProxyAddressPrivate
+}
+
+// WrapProxyAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapProxyAddressPrivate(ptr unsafe.Pointer) *ProxyAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ProxyAddressPrivate)(ptr)
+}
+
+func marshalProxyAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapProxyAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *ProxyAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
+}
+
+type ResolverPrivate struct {
+	native C.GResolverPrivate
+}
+
+// WrapResolverPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapResolverPrivate(ptr unsafe.Pointer) *ResolverPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ResolverPrivate)(ptr)
+}
+
+func marshalResolverPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapResolverPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *ResolverPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }
 
 // Resource applications and libraries often contain binary or textual data that
@@ -22860,6 +24229,54 @@ func (resource *Resource) Unref() {
 	arg0 = (*C.GResource)(resource.Native())
 
 	C.g_resource_unref(arg0)
+}
+
+type SettingsBackendPrivate struct {
+	native C.GSettingsBackendPrivate
+}
+
+// WrapSettingsBackendPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsBackendPrivate(ptr unsafe.Pointer) *SettingsBackendPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SettingsBackendPrivate)(ptr)
+}
+
+func marshalSettingsBackendPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSettingsBackendPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsBackendPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SettingsPrivate struct {
+	native C.GSettingsPrivate
+}
+
+// WrapSettingsPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsPrivate(ptr unsafe.Pointer) *SettingsPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SettingsPrivate)(ptr)
+}
+
+func marshalSettingsPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSettingsPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }
 
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
@@ -23504,6 +24921,198 @@ func (source *SettingsSchemaSource) Unref() {
 	C.g_settings_schema_source_unref(arg0)
 }
 
+type SimpleActionGroupPrivate struct {
+	native C.GSimpleActionGroupPrivate
+}
+
+// WrapSimpleActionGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSimpleActionGroupPrivate(ptr unsafe.Pointer) *SimpleActionGroupPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SimpleActionGroupPrivate)(ptr)
+}
+
+func marshalSimpleActionGroupPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSimpleActionGroupPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SimpleActionGroupPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SimpleProxyResolverPrivate struct {
+	native C.GSimpleProxyResolverPrivate
+}
+
+// WrapSimpleProxyResolverPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSimpleProxyResolverPrivate(ptr unsafe.Pointer) *SimpleProxyResolverPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SimpleProxyResolverPrivate)(ptr)
+}
+
+func marshalSimpleProxyResolverPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSimpleProxyResolverPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SimpleProxyResolverPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SocketClientPrivate struct {
+	native C.GSocketClientPrivate
+}
+
+// WrapSocketClientPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketClientPrivate(ptr unsafe.Pointer) *SocketClientPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketClientPrivate)(ptr)
+}
+
+func marshalSocketClientPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketClientPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketClientPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SocketConnectionPrivate struct {
+	native C.GSocketConnectionPrivate
+}
+
+// WrapSocketConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketConnectionPrivate(ptr unsafe.Pointer) *SocketConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketConnectionPrivate)(ptr)
+}
+
+func marshalSocketConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SocketControlMessagePrivate struct {
+	native C.GSocketControlMessagePrivate
+}
+
+// WrapSocketControlMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketControlMessagePrivate(ptr unsafe.Pointer) *SocketControlMessagePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketControlMessagePrivate)(ptr)
+}
+
+func marshalSocketControlMessagePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketControlMessagePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketControlMessagePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SocketListenerPrivate struct {
+	native C.GSocketListenerPrivate
+}
+
+// WrapSocketListenerPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketListenerPrivate(ptr unsafe.Pointer) *SocketListenerPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketListenerPrivate)(ptr)
+}
+
+func marshalSocketListenerPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketListenerPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketListenerPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SocketPrivate struct {
+	native C.GSocketPrivate
+}
+
+// WrapSocketPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketPrivate(ptr unsafe.Pointer) *SocketPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketPrivate)(ptr)
+}
+
+func marshalSocketPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SocketServicePrivate struct {
+	native C.GSocketServicePrivate
+}
+
+// WrapSocketServicePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketServicePrivate(ptr unsafe.Pointer) *SocketServicePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketServicePrivate)(ptr)
+}
+
+func marshalSocketServicePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketServicePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketServicePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
 // SrvTarget: SRV (service) records are used by some network protocols to
 // provide service-specific aliasing and load-balancing. For example, XMPP
 // (Jabber) uses SRV records to locate the XMPP server for a domain; rather than
@@ -23733,6 +25342,318 @@ func (staticResource *StaticResource) Init() {
 	arg0 = (*C.GStaticResource)(staticResource.Native())
 
 	C.g_static_resource_init(arg0)
+}
+
+type TcpConnectionPrivate struct {
+	native C.GTcpConnectionPrivate
+}
+
+// WrapTcpConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTcpConnectionPrivate(ptr unsafe.Pointer) *TcpConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TcpConnectionPrivate)(ptr)
+}
+
+func marshalTcpConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTcpConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TcpConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TcpWrapperConnectionPrivate struct {
+	native C.GTcpWrapperConnectionPrivate
+}
+
+// WrapTcpWrapperConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTcpWrapperConnectionPrivate(ptr unsafe.Pointer) *TcpWrapperConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TcpWrapperConnectionPrivate)(ptr)
+}
+
+func marshalTcpWrapperConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTcpWrapperConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TcpWrapperConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type ThreadedSocketServicePrivate struct {
+	native C.GThreadedSocketServicePrivate
+}
+
+// WrapThreadedSocketServicePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapThreadedSocketServicePrivate(ptr unsafe.Pointer) *ThreadedSocketServicePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ThreadedSocketServicePrivate)(ptr)
+}
+
+func marshalThreadedSocketServicePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapThreadedSocketServicePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ThreadedSocketServicePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TLSCertificatePrivate struct {
+	native C.GTlsCertificatePrivate
+}
+
+// WrapTLSCertificatePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSCertificatePrivate(ptr unsafe.Pointer) *TLSCertificatePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSCertificatePrivate)(ptr)
+}
+
+func marshalTLSCertificatePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSCertificatePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSCertificatePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TLSConnectionPrivate struct {
+	native C.GTlsConnectionPrivate
+}
+
+// WrapTLSConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSConnectionPrivate(ptr unsafe.Pointer) *TLSConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSConnectionPrivate)(ptr)
+}
+
+func marshalTLSConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TLSDatabasePrivate struct {
+	native C.GTlsDatabasePrivate
+}
+
+// WrapTLSDatabasePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSDatabasePrivate(ptr unsafe.Pointer) *TLSDatabasePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSDatabasePrivate)(ptr)
+}
+
+func marshalTLSDatabasePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSDatabasePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSDatabasePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TLSInteractionPrivate struct {
+	native C.GTlsInteractionPrivate
+}
+
+// WrapTLSInteractionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSInteractionPrivate(ptr unsafe.Pointer) *TLSInteractionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSInteractionPrivate)(ptr)
+}
+
+func marshalTLSInteractionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSInteractionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSInteractionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TLSPasswordPrivate struct {
+	native C.GTlsPasswordPrivate
+}
+
+// WrapTLSPasswordPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSPasswordPrivate(ptr unsafe.Pointer) *TLSPasswordPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSPasswordPrivate)(ptr)
+}
+
+func marshalTLSPasswordPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSPasswordPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSPasswordPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type UnixConnectionPrivate struct {
+	native C.GUnixConnectionPrivate
+}
+
+// WrapUnixConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixConnectionPrivate(ptr unsafe.Pointer) *UnixConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixConnectionPrivate)(ptr)
+}
+
+func marshalUnixConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
+}
+
+type UnixCredentialsMessagePrivate struct {
+	native C.GUnixCredentialsMessagePrivate
+}
+
+// WrapUnixCredentialsMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixCredentialsMessagePrivate(ptr unsafe.Pointer) *UnixCredentialsMessagePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixCredentialsMessagePrivate)(ptr)
+}
+
+func marshalUnixCredentialsMessagePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixCredentialsMessagePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixCredentialsMessagePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
+}
+
+type UnixFDListPrivate struct {
+	native C.GUnixFDListPrivate
+}
+
+// WrapUnixFDListPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixFDListPrivate(ptr unsafe.Pointer) *UnixFDListPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixFDListPrivate)(ptr)
+}
+
+func marshalUnixFDListPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixFDListPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixFDListPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
+}
+
+type UnixFDMessagePrivate struct {
+	native C.GUnixFDMessagePrivate
+}
+
+// WrapUnixFDMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixFDMessagePrivate(ptr unsafe.Pointer) *UnixFDMessagePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixFDMessagePrivate)(ptr)
+}
+
+func marshalUnixFDMessagePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixFDMessagePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixFDMessagePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
+}
+
+type UnixInputStreamPrivate struct {
+	native C.GUnixInputStreamPrivate
+}
+
+// WrapUnixInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixInputStreamPrivate(ptr unsafe.Pointer) *UnixInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixInputStreamPrivate)(ptr)
+}
+
+func marshalUnixInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }
 
 // UnixMountEntry defines a Unix mount entry (e.g.
@@ -23998,6 +25919,54 @@ func (mountPoint *UnixMountPoint) IsUserMountable() bool {
 	ret0 = C.BOOL(ret) != 0
 
 	return ret0
+}
+
+type UnixOutputStreamPrivate struct {
+	native C.GUnixOutputStreamPrivate
+}
+
+// WrapUnixOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixOutputStreamPrivate(ptr unsafe.Pointer) *UnixOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixOutputStreamPrivate)(ptr)
+}
+
+func marshalUnixOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
+}
+
+type UnixSocketAddressPrivate struct {
+	native C.GUnixSocketAddressPrivate
+}
+
+// WrapUnixSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixSocketAddressPrivate(ptr unsafe.Pointer) *UnixSocketAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixSocketAddressPrivate)(ptr)
+}
+
+func marshalUnixSocketAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixSocketAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixSocketAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }
 
 // AppInfoMonitor is a very simple object used for monitoring the app info
@@ -26713,6 +28682,24 @@ type Cancellable interface {
 	// operation's ReadyCallback will not be invoked until the application
 	// returns to the main loop.
 	Cancel()
+	// Connect: convenience function to connect to the #GCancellable::cancelled
+	// signal. Also handles the race condition that may happen if the
+	// cancellable is cancelled right before connecting.
+	//
+	// @callback is called at most once, either directly at the time of the
+	// connect if @cancellable is already cancelled, or when @cancellable is
+	// cancelled in some thread.
+	//
+	// @data_destroy_func will be called when the handler is disconnected, or
+	// immediately if the cancellable is already cancelled.
+	//
+	// See #GCancellable::cancelled for details on how to use this.
+	//
+	// Since GLib 2.40, the lock protecting @cancellable is not held when
+	// @callback is invoked. This lifts a restriction in place for earlier GLib
+	// versions which now makes it easier to write cleanup code that
+	// unconditionally invokes e.g. g_cancellable_cancel().
+	Connect(callback gobject.Callback) uint32
 	// Disconnect disconnects a handler from a cancellable instance similar to
 	// g_signal_handler_disconnect(). Additionally, in the event that a signal
 	// handler is currently running, this call will block until the handler has
@@ -26864,6 +28851,43 @@ func (cancellable cancellable) Cancel() {
 	arg0 = (*C.GCancellable)(cancellable.Native())
 
 	C.g_cancellable_cancel(arg0)
+}
+
+// Connect: convenience function to connect to the #GCancellable::cancelled
+// signal. Also handles the race condition that may happen if the
+// cancellable is cancelled right before connecting.
+//
+// @callback is called at most once, either directly at the time of the
+// connect if @cancellable is already cancelled, or when @cancellable is
+// cancelled in some thread.
+//
+// @data_destroy_func will be called when the handler is disconnected, or
+// immediately if the cancellable is already cancelled.
+//
+// See #GCancellable::cancelled for details on how to use this.
+//
+// Since GLib 2.40, the lock protecting @cancellable is not held when
+// @callback is invoked. This lifts a restriction in place for earlier GLib
+// versions which now makes it easier to write cleanup code that
+// unconditionally invokes e.g. g_cancellable_cancel().
+func (cancellable cancellable) Connect(callback gobject.Callback) uint32 {
+	var arg0 *C.GCancellable
+	var arg1 C.GCallback
+	var arg2 C.gpointer
+	var arg3 C.GDestroyNotify
+
+	arg0 = (*C.GCancellable)(cancellable.Native())
+	arg1 = (*[0]byte)(C.gotk4_Callback)
+	arg2 = C.gpointer(box.Assign(callback))
+	arg3 = (*[0]byte)(C.callbackDelete)
+
+	ret := C.g_cancellable_connect(arg0, arg1, arg2, arg3)
+
+	var ret0 uint32
+
+	ret0 = uint32(ret)
+
+	return ret0
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -30354,7 +32378,7 @@ func (message dBusMessage) HeaderFields() []byte {
 
 		ret0 = make([]byte, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = byte(src)
 		}
 	}
@@ -47722,9 +49746,6 @@ type SimpleActionGroup interface {
 	ActionGroup
 	ActionMap
 
-	// AddEntries: a convenience function for creating multiple Action instances
-	// and adding them to the action group.
-	AddEntries(entries []ActionEntry, userData interface{})
 	// Insert adds an action to the action group.
 	//
 	// If the action group already contains an action with the same name as
@@ -47777,37 +49798,6 @@ func NewSimpleActionGroup() SimpleActionGroup {
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(SimpleActionGroup)
 
 	return ret0
-}
-
-// AddEntries: a convenience function for creating multiple Action instances
-// and adding them to the action group.
-func (simple simpleActionGroup) AddEntries(entries []ActionEntry, userData interface{}) {
-	var arg0 *C.GSimpleActionGroup
-	var arg1 *C.GActionEntry
-	var arg2 C.gint
-	var arg3 C.gpointer
-
-	arg0 = (*C.GSimpleActionGroup)(simple.Native())
-	{
-		var dst []C.GActionEntry
-		ptr := C.malloc(C.sizeof_GActionEntry * len(entries))
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
-		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
-		sliceHeader.Len = len(entries)
-		sliceHeader.Cap = len(entries)
-		defer C.free(unsafe.Pointer(ptr))
-
-		for i := 0; i < len(entries); i++ {
-			src := entries[i]
-			dst[i] = (C.GActionEntry)(src.Native())
-		}
-
-		arg1 = (*C.GActionEntry)(unsafe.Pointer(ptr))
-		arg2 = len(entries)
-	}
-	arg3 = C.gpointer(box.Assign(userData))
-
-	C.g_simple_action_group_add_entries(arg0, arg1, arg2, arg3)
 }
 
 // Insert adds an action to the action group.
@@ -56342,7 +58332,7 @@ func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 	var arg2 C.int
 
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(iconnames))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -59361,7 +61351,7 @@ func (list unixFDList) PeekFds() (length int, gints []int) {
 	{
 		ret1 = make([]int, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret1[i] = int(src)
 		}
 	}

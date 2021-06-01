@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"path"
 	"strings"
-	"sync"
+	"unicode"
 
 	"github.com/diamondburned/gotk4/gir"
-	"golang.org/x/sync/singleflight"
 )
 
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
@@ -178,11 +177,6 @@ type ExternType struct {
 	Result *gir.TypeFindResult
 }
 
-var (
-	typeCache  sync.Map
-	typeFlight singleflight.Group
-)
-
 // builtinType is a convenient function to make a new resolvedType.
 func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 	var pkg string
@@ -225,7 +219,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
 // typeFromResult creates a resolved type from the given type result.
 func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *ResolvedType {
 	if typ.CType == "" {
-		gen.logln(logError, "type", typ.Name, "missing CType")
+		gen.logln(logUnusuality, "type", typ.Name, "missing CType")
 		return nil
 	}
 
@@ -248,11 +242,7 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 func TypeFromResult(ng *NamespaceGenerator, res gir.TypeFindResult) *ResolvedType {
 	res.NamespaceFindResult = ng.current
 	name, ctype := res.Info()
-	t := typeFromResult(ng.gen, gir.Type{Name: name, CType: ctype}, &res)
-	if t == nil {
-		ng.logln(logError, "typeFromResult returned nil for", name)
-	}
-	return t
+	return typeFromResult(ng.gen, gir.Type{Name: name, CType: ctype}, &res)
 }
 
 // IsExternGLib checks that the ResolvedType is exactly the gotk3/glib type with
@@ -488,7 +478,7 @@ func (ng *NamespaceGenerator) ResolveTypeName(girType string) *ResolvedType {
 	var cType string
 
 	// FindType is cached, so we can afford to do this.
-	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, girType)
+	result := ng.gen.Repos.FindType(ng.current, girType)
 	if result != nil {
 		// Use the CType result ONLY. The returned Name from Info does NOT have
 		// the namespace prepended.
@@ -504,44 +494,7 @@ func (ng *NamespaceGenerator) ResolveTypeName(girType string) *ResolvedType {
 // ResolveType resolves the given type from the GIR type field. It returns nil
 // if the type is not known. It does not recursively traverse the type.
 func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
-	// Skip the cache if the type does not have a CType. We want to do this to
-	// prevent filling the cache up with incomplete GIR types.
-	if typ.CType == "" {
-		resolved := ng.resolveTypeUncached(typ)
-		ng.addResolvedImport(resolved)
-
-		return resolved
-	}
-
-	// Build the full type name. This name should only be used for caching; it
-	// does not differentiate properly built-in types and is thus unreliable.
-	//
-	// We also move the pointers from CType to the name to make the name unique
-	// across pointers.
-	fullName := movePtr(typ.CType, ng.fullGIR(typ.Name))
-
-	v, ok := typeCache.Load(fullName)
-	if ok {
-		resolved := v.(*ResolvedType)
-		ng.addResolvedImport(resolved)
-
-		return resolved
-	}
-
-	// Cache miss. Use singleflight to ensure we're not looking up multiple
-	// versions of the same type to prevent cache stampede.
-	v, _, _ = typeFlight.Do(fullName, func() (interface{}, error) {
-		resolved := ng.resolveTypeUncached(typ)
-
-		// Save into the cache within the singleflight callback regardless if
-		// the result is found or not.
-		typeCache.Store(fullName, resolved)
-
-		return resolved, nil
-	})
-
-	// may be a non-nil interface to a nil pointer.
-	resolved := v.(*ResolvedType)
+	resolved := ng.resolveTypeUncached(typ)
 	ng.addResolvedImport(resolved)
 
 	return resolved
@@ -563,17 +516,41 @@ func (ng *NamespaceGenerator) addGLibImport() {
 var unsupportedTypes = []string{
 	"tm", // requires time.h
 	"va_list",
-	"GObject.Closure",    // TODO
-	"GObject.Callback",   // TODO
-	"GObject.EnumValue",  // TODO
-	"GObject.ParamSpec",  // TODO
-	"GObject.Parameter",  // TODO
-	"GObject.TypeModule", // TODO
+	// "GObject.Closure",    // TODO
+	// "GObject.Callback",   // TODO
+	// "GObject.EnumValue",  // TODO
+	// "GObject.ParamSpec",  // TODO
+	// "GObject.Parameter",  // TODO
+	// "GObject.TypeModule", // TODO
+	// "GObject.ParamFlags",
+	// "GObject.ObjectClass",
+}
+
+// ensureNamespace ensures that exported, non-primitive types have the namespace
+// prepended. This is useful for matching hard-coded types.
+func (ng *NamespaceGenerator) ensureNamespace(girType string) string {
+	// Special cases, because GIR is very unusual.
+	switch girType {
+	case "GType":
+		return girType
+	}
+
+	if strings.Contains(girType, ".") {
+		return girType
+	}
+
+	caps := strings.IndexFunc(girType, unicode.IsUpper)
+	// First letter isn't capitalized; this isn't exported.
+	if caps != 0 {
+		return girType
+	}
+
+	return ng.current.Namespace.Name + "." + girType
 }
 
 func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	if typ.Name == "" {
-		ng.logln(logWarn, "empty gir type", typ)
+		// empty gir type
 		return nil
 	}
 
@@ -588,37 +565,33 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	}
 
 	// Resolve the unknown namespace that is GLib and primitive types.
-	switch typ.Name {
+	switch ng.ensureNamespace(typ.Name) {
 	// TODO: ignore field
 	// TODO: aaaaaaaaaaaaaaaaaaaaaaa
 	case "gpointer":
 		return builtinType("", "interface{}", typ)
-	case "GLib.DestroyNotify", "DestroyNotify": // This should be handled externally.
-		return builtinType("unsafe", "Pointer", typ)
-	case "GType":
+	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")
-	case "GObject.GValue", "GObject.Value": // inconsistency???
-		return externGLibType("*Value", typ, "GValue")
+	case "GObject.Value": // inconsistency???
+		return externGLibType("*Value", typ, "GValue*")
 	case "GObject.Object":
-		return externGLibType("*Object", typ, "*GObject")
-	case "GObject.Closure":
-		return externGLibType("*Closure", typ, "*GClosure")
-	case "GObject.Callback":
-		// Callback is a special func(Any) Any type, so we treat it as
-		// interface{} similarly to object.Connect(). We can use glib's Closure
-		// APIs to parse this interface{}.
-		return builtinType("", "interface{}", typ)
+		return externGLibType("*Object", typ, "GObject*")
 	case "GObject.InitiallyUnowned":
-		return externGLibType("InitiallyUnowned", typ, "*GInitiallyUnowned")
+		return externGLibType("InitiallyUnowned", typ, "GInitiallyUnowned*")
 	}
 
 	// CType is required here so we can properly account for pointers.
 	if typ.CType == "" {
-		ng.logln(logWarn, "type name", typ.Name, "missing CType")
+		ng.logln(logUnusuality, "type name", typ.Name, "missing CType")
 		return nil
 	}
 
-	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
+	// Pretend that ignored types don't exist.
+	if ng.mustIgnore(typ.Name, typ.CType) {
+		return nil
+	}
+
+	result := ng.gen.Repos.FindType(ng.current, typ.Name)
 	if result == nil {
 		ng.warnUnknownType(typ.Name)
 		return nil
@@ -627,8 +600,8 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	// Check for edge cases.
 	switch {
 	case result.Record != nil:
-		if !ng.canRecord(*result.Record) {
-			ng.logln(logInfo, "skipping", result.Record.Name, "from canRecord")
+		if !ng.canRecord(*result.Record, false) {
+			return nil
 		}
 	}
 

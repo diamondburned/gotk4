@@ -2786,7 +2786,7 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var arg2 C.guint
 
 	{
-		var dst []*C.gchar
+		var dst []*C.char
 		ptr := C.malloc(unsafe.Sizeof((*struct{})(nil)) * len(mimeTypes))
 		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&dst))
 		sliceHeader.Data = uintptr(unsafe.Pointer(ptr))
@@ -3309,6 +3309,30 @@ func (builder *ContentFormatsBuilder) Unref() {
 	C.gdk_content_formats_builder_unref(arg0)
 }
 
+type DrawingContext struct {
+	native C.GdkDrawingContext
+}
+
+// WrapDrawingContext wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDrawingContext(ptr unsafe.Pointer) *DrawingContext {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DrawingContext)(ptr)
+}
+
+func marshalDrawingContext(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDrawingContext(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DrawingContext) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
+}
+
 // EventSequence: gdkEventSequence is an opaque type representing a sequence of
 // related touch events.
 type EventSequence struct {
@@ -3333,6 +3357,30 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventSequence) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
+}
+
+type FrameClockPrivate struct {
+	native C.GdkFrameClockPrivate
+}
+
+// WrapFrameClockPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFrameClockPrivate(ptr unsafe.Pointer) *FrameClockPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FrameClockPrivate)(ptr)
+}
+
+func marshalFrameClockPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFrameClockPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FrameClockPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
 }
 
 // FrameTimings: a FrameTimings object holds timing information for a single
@@ -4465,6 +4513,113 @@ func (layout *ToplevelLayout) Unref() {
 	arg0 = (*C.GdkToplevelLayout)(layout.Native())
 
 	C.gdk_toplevel_layout_unref(arg0)
+}
+
+// ToplevelSize: the GdkToplevelSIze struct contains information that may be
+// useful for users of GdkToplevel to compute a surface size. It also carries
+// information back with the computational result.
+type ToplevelSize struct {
+	native C.GdkToplevelSize
+}
+
+// WrapToplevelSize wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapToplevelSize(ptr unsafe.Pointer) *ToplevelSize {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ToplevelSize)(ptr)
+}
+
+func marshalToplevelSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapToplevelSize(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ToplevelSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+// Bounds retrieves the bounds the toplevel is placed within.
+//
+// The bounds represent the largest size a toplevel may have while still being
+// able to fit within some type of boundary. Depending on the backend, this may
+// be equivalent to the dimensions of the work area or the monitor on which the
+// window is being presented on, or something else that limits the way a
+// toplevel can be presented.
+func (size *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
+	var arg0 *C.GdkToplevelSize
+	var arg1 *C.int // out
+	var arg2 *C.int // out
+
+	arg0 = (*C.GdkToplevelSize)(size.Native())
+
+	C.gdk_toplevel_size_get_bounds(arg0, &arg1, &arg2)
+
+	var ret0 int
+	var ret1 int
+
+	ret0 = int(arg1)
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
+// SetMinSize: the minimum size corresponds to the limitations the toplevel can
+// be shrunk to, without resulting in incorrect painting. A user of a Toplevel
+// should calculate these given both the existing size, and the bounds retrieved
+// from the ToplevelSize object.
+//
+// The minimum size should be within the bounds (see
+// gdk_toplevel_size_get_bounds()).
+func (size *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
+	var arg0 *C.GdkToplevelSize
+	var arg1 C.int
+	var arg2 C.int
+
+	arg0 = (*C.GdkToplevelSize)(size.Native())
+	arg1 = C.int(minWidth)
+	arg2 = C.int(minHeight)
+
+	C.gdk_toplevel_size_set_min_size(arg0, arg1, arg2)
+}
+
+// SetShadowWidth: the shadow width corresponds to the part of the computed
+// surface size that would consist of the shadow margin surrounding the window,
+// would there be any.
+func (size *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) {
+	var arg0 *C.GdkToplevelSize
+	var arg1 C.int
+	var arg2 C.int
+	var arg3 C.int
+	var arg4 C.int
+
+	arg0 = (*C.GdkToplevelSize)(size.Native())
+	arg1 = C.int(left)
+	arg2 = C.int(right)
+	arg3 = C.int(top)
+	arg4 = C.int(bottom)
+
+	C.gdk_toplevel_size_set_shadow_width(arg0, arg1, arg2, arg3, arg4)
+}
+
+// SetSize sets the size the toplevel prefers to be resized to. The size should
+// be within the bounds (see gdk_toplevel_size_get_bounds()). The set size
+// should be considered as a hint, and should not be assumed to be respected by
+// the windowing system, or backend.
+func (size *ToplevelSize) SetSize(width int, height int) {
+	var arg0 *C.GdkToplevelSize
+	var arg1 C.int
+	var arg2 C.int
+
+	arg0 = (*C.GdkToplevelSize)(size.Native())
+	arg1 = C.int(width)
+	arg2 = C.int(height)
+
+	C.gdk_toplevel_size_set_size(arg0, arg1, arg2)
 }
 
 // AppLaunchContext: gdkAppLaunchContext is an implementation of LaunchContext

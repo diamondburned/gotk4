@@ -30,7 +30,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 	array := conv.Type.Array
 
 	if array.Type == nil {
-		ng.gen.logln(logWarn, "skipping nested array", array.CType)
+		ng.gen.logln(logSkip, "nested array", array.CType)
 		return ""
 	}
 
@@ -134,7 +134,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	default:
-		ng.logln(logWarn, conv.ParentName+":", "weird array type to Go")
+		ng.logln(logSkip, conv.ParentName+":", "weird array type to Go")
 		return ""
 	}
 
@@ -187,7 +187,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	}
 
 	// Resolve special-case GLib types.
-	switch typ.Name {
+	switch ng.ensureNamespace(typ.Name) {
 	case "gpointer":
 		ng.addImport("github.com/diamondburned/gotk4/internal/box")
 
@@ -203,16 +203,11 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
 		return cgoTakeObject(conv.TypeConversion, "gextras.Objector")
 
-	case "GLib.DestroyNotify", "DestroyNotify":
-		// There's no Go equivalent for C's DestroyNotify; the user should never
-		// see this.
-		return ""
-
-	case "GType":
+	case "GObject.Type", "GType":
 		ng.addGLibImport()
 		return conv.call("externglib.Type")
 
-	case "GObject.GValue", "GObject.Value":
+	case "GObject.Value":
 		ng.addGLibImport()
 		ng.addImport("unsafe")
 
@@ -229,7 +224,12 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		return p.String()
 	}
 
-	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
+	// Pretend that ignored types don't exist.
+	if ng.mustIgnore(typ.Name, typ.CType) {
+		return ""
+	}
+
+	result := ng.gen.Repos.FindType(ng.current, typ.Name)
 	if result == nil {
 		// Probably already warned.
 		return ""
@@ -244,7 +244,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	if result.Alias != nil {
 		rootType := ng.ResolveType(result.Alias.Type)
 		if rootType == nil {
-			ng.logln(logWarn, "alias", result.Alias.Name, "lacks conv for", result.Alias.Type.Name)
+			ng.logln(logUnknown, "from alias", result.Alias.Name, "has", result.Alias.Type.Name)
 			return ""
 		}
 

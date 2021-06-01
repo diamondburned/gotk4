@@ -3969,13 +3969,6 @@ func (a *AttrSize) Size() int {
 	return ret
 }
 
-// Absolute gets the field inside the struct.
-func (a *AttrSize) Absolute() uint {
-	var ret uint
-	ret = uint(a.native.absolute)
-	return ret
-}
-
 // AttrString: the `PangoAttrString` structure is used to represent attributes
 // with a string value.
 type AttrString struct {
@@ -4050,15 +4043,6 @@ func (a *Attribute) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Klass gets the field inside the struct.
-func (a *Attribute) Klass() *AttrClass {
-	var ret *AttrClass
-	{
-		ret = WrapAttrClass(unsafe.Pointer(a.native.klass))
-	}
-	return ret
-}
-
 // StartIndex gets the field inside the struct.
 func (a *Attribute) StartIndex() uint {
 	var ret uint
@@ -4118,20 +4102,6 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	ret0 = C.BOOL(ret) != 0
 
 	return ret0
-}
-
-// Init initializes @attr's klass to @klass, it's start_index to
-// PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING and end_index to
-// PANGO_ATTR_INDEX_TO_TEXT_END such that the attribute applies to the entire
-// text by default.
-func (attr *Attribute) Init(klass *AttrClass) {
-	var arg0 *C.PangoAttribute
-	var arg1 *C.PangoAttrClass
-
-	arg0 = (*C.PangoAttribute)(attr.Native())
-	arg1 = (*C.PangoAttrClass)(klass.Native())
-
-	C.pango_attribute_init(arg0, arg1)
 }
 
 // Color: the `PangoColor` structure is used to represent a color in an
@@ -5932,13 +5902,6 @@ func (g *GlyphVisAttr) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// IsClusterStart gets the field inside the struct.
-func (g *GlyphVisAttr) IsClusterStart() uint {
-	var ret uint
-	ret = uint(g.native.is_cluster_start)
-	return ret
-}
-
 // Item: the `PangoItem` structure stores information about a segment of text.
 //
 // You typically obtain `PangoItems` by itemizing a piece of text with
@@ -6760,20 +6723,6 @@ func (l *LayoutLine) Runs() *glib.SList {
 	return ret
 }
 
-// IsParagraphStart gets the field inside the struct.
-func (l *LayoutLine) IsParagraphStart() uint {
-	var ret uint
-	ret = uint(l.native.is_paragraph_start)
-	return ret
-}
-
-// ResolvedDir gets the field inside the struct.
-func (l *LayoutLine) ResolvedDir() uint {
-	var ret uint
-	ret = uint(l.native.resolved_dir)
-	return ret
-}
-
 // Extents computes the logical and ink extents of a layout line. See
 // [method@Pango.Font.get_glyph_extents] for details about the interpretation of
 // the rectangles.
@@ -6994,97 +6943,6 @@ func marshalLogAttr(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (l *LogAttr) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)
-}
-
-// IsLineBreak gets the field inside the struct.
-func (l *LogAttr) IsLineBreak() uint {
-	var ret uint
-	ret = uint(l.native.is_line_break)
-	return ret
-}
-
-// IsMandatoryBreak gets the field inside the struct.
-func (l *LogAttr) IsMandatoryBreak() uint {
-	var ret uint
-	ret = uint(l.native.is_mandatory_break)
-	return ret
-}
-
-// IsCharBreak gets the field inside the struct.
-func (l *LogAttr) IsCharBreak() uint {
-	var ret uint
-	ret = uint(l.native.is_char_break)
-	return ret
-}
-
-// IsWhite gets the field inside the struct.
-func (l *LogAttr) IsWhite() uint {
-	var ret uint
-	ret = uint(l.native.is_white)
-	return ret
-}
-
-// IsCursorPosition gets the field inside the struct.
-func (l *LogAttr) IsCursorPosition() uint {
-	var ret uint
-	ret = uint(l.native.is_cursor_position)
-	return ret
-}
-
-// IsWordStart gets the field inside the struct.
-func (l *LogAttr) IsWordStart() uint {
-	var ret uint
-	ret = uint(l.native.is_word_start)
-	return ret
-}
-
-// IsWordEnd gets the field inside the struct.
-func (l *LogAttr) IsWordEnd() uint {
-	var ret uint
-	ret = uint(l.native.is_word_end)
-	return ret
-}
-
-// IsSentenceBoundary gets the field inside the struct.
-func (l *LogAttr) IsSentenceBoundary() uint {
-	var ret uint
-	ret = uint(l.native.is_sentence_boundary)
-	return ret
-}
-
-// IsSentenceStart gets the field inside the struct.
-func (l *LogAttr) IsSentenceStart() uint {
-	var ret uint
-	ret = uint(l.native.is_sentence_start)
-	return ret
-}
-
-// IsSentenceEnd gets the field inside the struct.
-func (l *LogAttr) IsSentenceEnd() uint {
-	var ret uint
-	ret = uint(l.native.is_sentence_end)
-	return ret
-}
-
-// BackspaceDeletesCharacter gets the field inside the struct.
-func (l *LogAttr) BackspaceDeletesCharacter() uint {
-	var ret uint
-	ret = uint(l.native.backspace_deletes_character)
-	return ret
-}
-
-// IsExpandableSpace gets the field inside the struct.
-func (l *LogAttr) IsExpandableSpace() uint {
-	var ret uint
-	ret = uint(l.native.is_expandable_space)
-	return ret
-}
-
-// IsWordBoundary gets the field inside the struct.
-func (l *LogAttr) IsWordBoundary() uint {
-	var ret uint
-	ret = uint(l.native.is_word_boundary)
-	return ret
 }
 
 // Matrix: a `PangoMatrix` specifies a transformation between user-space and
@@ -7432,6 +7290,30 @@ func (r *Rectangle) Height() int {
 	var ret int
 	ret = int(r.native.height)
 	return ret
+}
+
+type RendererPrivate struct {
+	native C.PangoRendererPrivate
+}
+
+// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*RendererPrivate)(ptr)
+}
+
+func marshalRendererPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapRendererPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *RendererPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }
 
 // ScriptIter: a `PangoScriptIter` is used to iterate through a string and

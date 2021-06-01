@@ -97,10 +97,10 @@ func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
 }
 
 // canRecord returns true if this record is allowed.
-func (ng *NamespaceGenerator) canRecord(rec gir.Record) bool {
+func (ng *NamespaceGenerator) canRecord(rec gir.Record, log bool) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
-	if rec.Disguised || rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
+	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
 		return false
 	}
 
@@ -113,6 +113,7 @@ func (ng *NamespaceGenerator) canRecord(rec gir.Record) bool {
 	// Ignore non-type/array fields.
 	for _, field := range rec.Fields {
 		if field.Type == nil && field.Array == nil {
+			ng.logln(logSkip, "record", rec.Name, "skipped, field", field.Name)
 			return false
 		}
 	}
@@ -121,7 +122,7 @@ func (ng *NamespaceGenerator) canRecord(rec gir.Record) bool {
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {
-	if !rg.Ng.canRecord(rec) {
+	if !rg.Ng.canRecord(rec, true) {
 		return false
 	}
 
@@ -162,6 +163,12 @@ func (rg *recordGenerator) methods() []callableGenerator {
 
 func (rg *recordGenerator) getters() []recordGetter {
 	getters := rg.Getters[:0]
+
+	// Disguised means opaque, so we're not supposed to access these fields.
+	if rg.Disguised {
+		return getters
+	}
+
 	var ignores ignoreIxs
 
 	methodNames := make(map[string]struct{}, len(rg.Methods))
@@ -177,7 +184,13 @@ func (rg *recordGenerator) getters() []recordGetter {
 	for i, field := range rg.Fields {
 		ignores.fieldIgnore(field)
 
-		if field.Private || ignores.ignore(i) {
+		// For "Bits > 0", we can't safely do this in Go (and probably not CGo
+		// either?) so we're not doing it.
+
+		if field.Private || field.Bits > 0 || ignores.ignore(i) {
+			continue
+		}
+		if field.Readable != nil && !*field.Readable {
 			continue
 		}
 
@@ -245,7 +258,6 @@ func (ng *NamespaceGenerator) generateRecords() {
 		}
 
 		if !rg.Use(record) {
-			ng.logln(logInfo, "record", record.Name, "skipped")
 			continue
 		}
 

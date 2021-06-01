@@ -29,23 +29,26 @@ type callbackGenerator struct {
 	Closure *int
 	Destroy *int
 
-	Ng *NamespaceGenerator
+	ng *NamespaceGenerator
 }
 
 func newCallbackGenerator(ng *NamespaceGenerator) callbackGenerator {
-	return callbackGenerator{Ng: ng}
+	return callbackGenerator{ng: ng}
 }
 
 // Use sets the callback generator to the given GIR callback.
 func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 	// We can't use the callback if it has no closure parameters.
 	if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
+		fg.ng.logln(logSkip, "callback", cb.Name, "no closure parameter")
 		return false
 	}
+
 	// Don't generate destroy notifiers. It's an edge case that we handle
 	// separately and mostly manually. There are also no good ways to detect
 	// this.
 	if strings.HasSuffix(cb.Name, "DestroyNotify") {
+		fg.ng.logln(logSkip, "callback", cb.Name, "is DestroyNotify")
 		return false
 	}
 
@@ -57,13 +60,14 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 		}
 	}
 	if fg.Closure == nil {
+		fg.ng.logln(logSkip, "callback", cb.Name, "is DestroyNotify")
 		return false
 	}
 
 	fg.GoName = PascalToGo(cb.Name)
 	fg.Callback = cb
 
-	fg.GoTail = fg.Ng.FnCall(cb.CallableAttrs)
+	fg.GoTail = fg.ng.FnCall(cb.CallableAttrs)
 	if fg.GoTail == "" {
 		return false
 	}
@@ -74,6 +78,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 	for i, param := range cb.Parameters.Parameters {
 		ctype := anyTypeC(param.AnyType)
 		if ctype == "" {
+			fg.ng.logln(logSkip, "callback", cb.Name, "anyTypeC parameter is empty")
 			return false // probably var_args
 		}
 
@@ -88,6 +93,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 	if !returnIsVoid(cb.ReturnValue) {
 		ctype := anyTypeC(cb.ReturnValue.AnyType)
 		if ctype == "" {
+			fg.ng.logln(logSkip, "callback", cb.Name, "anyTypeC return is empty")
 			return false
 		}
 
@@ -95,7 +101,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 		fg.CGoTail += " " + anyTypeCGo(cb.ReturnValue.AnyType)
 	}
 
-	fg.Ng.cgo.Wordf("extern %s %s(%s);", cReturn, callbackPrefix+fg.GoName, ctail.Join())
+	fg.ng.cgo.Wordf("extern %s %s(%s);", cReturn, callbackPrefix+fg.GoName, ctail.Join())
 
 	return true
 }
@@ -103,7 +109,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 func (fg *callbackGenerator) CBlock() string {
 	b := pen.NewBlockSections(128, 1024, 4096, 128, 4096)
 
-	fg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
+	fg.ng.addImport("github.com/diamondburned/gotk4/internal/box")
 
 	b.Linef(0, "v := box.Get(uintptr(arg%d))", *fg.Closure)
 	b.Linef(0, "if v == nil {")
@@ -117,11 +123,11 @@ func (fg *callbackGenerator) CBlock() string {
 
 	iterateParams(fg.CallableAttrs, func(i int, param gir.Parameter) bool {
 		goName := SnakeToGo(false, param.Name)
-		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, true)
+		goType, _ := fg.ng.ResolveAnyType(param.AnyType, true)
 
 		b.Linef(1, "var %s %s", goName, goType)
 
-		converter := fg.Ng.CGoConverter(TypeConversionToGo{
+		converter := fg.ng.CGoConverter(TypeConversionToGo{
 			TypeConversion: TypeConversion{
 				Value:  argAt(i),
 				Target: goName,
@@ -162,7 +168,6 @@ func (ng *NamespaceGenerator) generateCallbacks() {
 		}
 
 		if !cg.Use(callback) {
-			ng.logln(logInfo, "skipping callback", callback.Name)
 			continue
 		}
 

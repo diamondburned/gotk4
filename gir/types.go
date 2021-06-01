@@ -140,9 +140,12 @@ type Enum struct {
 }
 
 type Field struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 field"`
-	Name    string   `xml:"name,attr"`
-	Private bool     `xml:"private,attr"`
+	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 field"`
+	Name     string   `xml:"name,attr"`
+	Private  bool     `xml:"private,attr"`  // default false
+	Writable bool     `xml:"writable,attr"` // default false
+	Readable *bool    `xml:"readable,attr"` // default true
+	Bits     int      `xml:"bits,attr"`
 	AnyType
 	Doc *Doc
 }

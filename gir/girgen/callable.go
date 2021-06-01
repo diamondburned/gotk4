@@ -46,10 +46,44 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 
 	if cg.Block = cg.block(); cg.Block == "" {
 		cg.reset()
+		cg.Ng.logln(logSkip, "callable (no block)", cFunctionSig(cattrs))
 		return false
 	}
 
 	return true
+}
+
+// cFunctionSig renders the given GIR function in its C function signature
+// string for debugging.
+func cFunctionSig(fn gir.CallableAttrs) string {
+	b := strings.Builder{}
+	b.Grow(256)
+
+	if fn.ReturnValue != nil {
+		b.WriteString(resolveAnyCType(fn.ReturnValue.AnyType))
+		b.WriteByte(' ')
+	}
+
+	b.WriteString(fn.Name)
+	b.WriteByte('(')
+
+	if fn.Parameters != nil && len(fn.Parameters.Parameters) > 0 {
+		if fn.Parameters.InstanceParameter != nil {
+			b.WriteString(resolveAnyCType(fn.Parameters.InstanceParameter.AnyType))
+		}
+
+		for i, param := range fn.Parameters.Parameters {
+			if i != 0 || fn.Parameters.InstanceParameter != nil {
+				b.WriteString(", ")
+			}
+
+			b.WriteString(resolveAnyCType(param.AnyType))
+		}
+	}
+
+	b.WriteByte(')')
+
+	return b.String()
 }
 
 // Recv returns the receiver variable name. This method should only be called
@@ -274,12 +308,19 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 	goArgs := make([]string, 0, len(attrs.Parameters.Parameters))
 
 	ok := iterateParams(attrs, func(_ int, param gir.Parameter) bool {
+		goName := SnakeToGo(false, param.Name)
+
 		resolved, ok := ng.ResolveAnyType(param.AnyType, true)
 		if !ok {
+			if goName == "..." {
+				ng.logln(logSkip, "function", attrs.Name, "is variadic")
+			} else {
+				ng.logln(logUnknown, "function argument", goName, "for", attrs.Name)
+			}
+
 			return false
 		}
 
-		goName := SnakeToGo(false, param.Name)
 		goArgs = append(goArgs, goName+" "+resolved)
 		return true
 	})
@@ -299,6 +340,7 @@ func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) 
 	ok := iterateReturns(attrs, func(goName string, i int, any gir.AnyType) bool {
 		typ, ok := ng.ResolveAnyType(any, true)
 		if !ok {
+			ng.logln(logUnknown, "function output", goName, "for", attrs.Name)
 			return false
 		}
 

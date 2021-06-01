@@ -58,7 +58,7 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 	if tree.Resolved.Builtin != nil {
 		if toplevel.IsExternGLib("InitiallyUnowned") {
 			return tree.resolveParents(
-				externGLibType("*Object", gir.Type{}, "*GObject"),
+				externGLibType("*Object", gir.Type{}, "GObject*"),
 			)
 		}
 
@@ -82,7 +82,7 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 		// it's empty.
 		if len(tree.Resolved.Extern.Result.Interface.Prerequisites) == 0 {
 			return tree.resolveParents(
-				externGLibType("*Object", gir.Type{}, "*GObject"),
+				externGLibType("*Object", gir.Type{}, "GObject*"),
 			)
 		}
 
@@ -162,7 +162,8 @@ func (tree *TypeTree) Wrap(obj string) string {
 				}
 			}
 
-			tree.ng.logln(logError, "unknown builtin type being wrapped:", spew.Sdump(typ.Resolved))
+			tree.ng.logln(logUnknown, "builtin wrapping:", spew.Sdump(typ.Resolved))
+
 		glibContinue:
 			continue
 		}

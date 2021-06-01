@@ -90,7 +90,7 @@ func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 
 	resolved := TypeFromResult(ig.Ng, gir.TypeFindResult{Interface: &iface})
 	if !ig.TypeTree.ResolveFromType(resolved) {
-		ig.Ng.logln(logInfo, "skipping interface", ig.InterfaceName, "cannot be type-resolved")
+		ig.Ng.logln(logSkip, "interface", ig.InterfaceName, "cannot be type-resolved")
 		return false
 	}
 

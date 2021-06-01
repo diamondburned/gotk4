@@ -53,8 +53,8 @@ func main() {
 		for _, namespace := range repo.Namespaces {
 			log.Println(
 				"added from package", repo.Pkg,
-				"namespace", namespace.Name,
-				"v"+namespace.Version, repo.Path,
+				"namespace", gir.VersionedNamespace(&namespace),
+				repo.Path,
 			)
 		}
 	}
@@ -64,8 +64,8 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, path.Join(module, output))
-	gen.Filters = filters
 	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.LstdFlags|log.Lmsgprefix), true)
+	gen.AddFilters(filters)
 
 	// Do a clean-up of the target directory.
 	if err := os.RemoveAll(output); err != nil {
@@ -74,7 +74,7 @@ func main() {
 
 	for _, repo := range repos {
 		for _, namespace := range repo.Namespaces {
-			ng := gen.UseNamespace(namespace.Name)
+			ng := gen.UseNamespace(namespace.Name, namespace.Version)
 
 			sema <- struct{}{}
 			wg.Add(1)

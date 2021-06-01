@@ -78,6 +78,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	if class.Parent == "" {
 		// TODO: check what happens if a class has no parent. It should have a
 		// GObject parent, usually.
+		cg.Ng.logln(logSkip, "class", class.Name, "because it has no parents")
 		return false
 	}
 
@@ -87,6 +88,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 
 	resolved := TypeFromResult(cg.Ng, gir.TypeFindResult{Class: &class})
 	if !cg.TypeTree.ResolveFromType(resolved) {
+		cg.Ng.logln(logSkip, "class", class.Name, "because unknown parent type", class.Parent)
 		return false
 	}
 
@@ -154,7 +156,6 @@ func (ng *NamespaceGenerator) generateClasses() {
 		}
 
 		if !cg.Use(class) {
-			ng.logln(logInfo, "skipping class", class.Name)
 			continue
 		}
 

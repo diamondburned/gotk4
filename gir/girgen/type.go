@@ -229,7 +229,7 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		Extern: &ExternType{
 			Result: result,
 		},
-		Import:  gen.ImportPath(pkg),
+		Import:  gen.ModPath(result.NamespaceFindResult),
 		Package: pkg,
 		GType:   typ.Name,
 		CType:   typ.CType,

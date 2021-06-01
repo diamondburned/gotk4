@@ -15,9 +15,9 @@ import (
 
 
 
-"unsafe"
-"runtime"
 "reflect"
+"runtime"
+"unsafe"
 
 
 
@@ -32,13 +32,13 @@ import (
 
 
 "github.com/diamondburned/gotk4/internal/box"
-"github.com/diamondburned/gotk4/pkg/pango"
-"github.com/diamondburned/gotk4/pkg/gobject"
-"github.com/diamondburned/gotk4/pkg/gio"
 "github.com/diamondburned/gotk4/internal/gextras"
-"github.com/diamondburned/gotk4/pkg/glib"
 "github.com/diamondburned/gotk4/pkg/cairo"
 "github.com/diamondburned/gotk4/pkg/gdkpixbuf"
+"github.com/diamondburned/gotk4/pkg/gio"
+"github.com/diamondburned/gotk4/pkg/glib"
+"github.com/diamondburned/gotk4/pkg/gobject"
+"github.com/diamondburned/gotk4/pkg/pango"
 externglib "github.com/gotk3/gotk3/glib"
 )
 

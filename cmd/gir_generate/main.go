@@ -65,7 +65,7 @@ func main() {
 
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
-	gen := girgen.NewGenerator(repos, path.Join(module, output))
+	gen := girgen.NewGenerator(repos, modulePath)
 	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.LstdFlags|log.Lmsgprefix), true)
 	gen.AddFilters(filters)
 
@@ -97,7 +97,7 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 	pkg := ng.PackageName()
 	dir := filepath.Join(output, pkg)
 
-	if version := majorVer(ng); version > 1 {
+	if version := majorVer(ng.Namespace()); version > 1 {
 		// Follow Go's convention of a versioned package, so we can generate
 		// multiple versions.
 		dir = filepath.Join(dir, fmt.Sprintf("v%d", version))
@@ -123,8 +123,18 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 	}
 }
 
-func majorVer(ng *girgen.NamespaceGenerator) int {
-	v, err := strconv.Atoi(gir.MajorVersion(ng.Namespace().Version))
+func modulePath(res *gir.NamespaceFindResult) string {
+	modulePath := path.Join(module, output, gir.GoPackageName(res.Namespace.Name))
+
+	if version := majorVer(res.Namespace); version > 1 {
+		modulePath = path.Join(modulePath, fmt.Sprintf("v%d", version))
+	}
+
+	return modulePath
+}
+
+func majorVer(nsp *gir.Namespace) int {
+	v, err := strconv.Atoi(gir.MajorVersion(nsp.Version))
 	if err != nil {
 		return 0
 	}

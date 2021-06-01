@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"text/template"
@@ -36,19 +37,22 @@ func newGoTemplate(block string) *template.Template {
 
 // Generator is a big generator that manages multiple repositories.
 type Generator struct {
-	Repos      gir.Repositories
-	RootModule string
-	Filters    []FilterMatcher
+	Repos   gir.Repositories
+	ModPath ModulePathFunc
+	Filters []FilterMatcher
 
 	logger *log.Logger
 	color  bool
 }
 
+// ModulePathFunc returns the Go module import path from the given namespace.
+type ModulePathFunc func(res *gir.NamespaceFindResult) string
+
 // NewGenerator creates a new generator with sane defaults.
-func NewGenerator(repos gir.Repositories, root string) *Generator {
+func NewGenerator(repos gir.Repositories, modPath ModulePathFunc) *Generator {
 	return &Generator{
-		Repos:      repos,
-		RootModule: root,
+		Repos:   repos,
+		ModPath: modPath,
 		Filters: []FilterMatcher{
 			// These are already manually covered in the girgen code; they are
 			// provided by package gotk3/glib.
@@ -144,10 +148,6 @@ func (g *Generator) logln(level logLevel, v ...interface{}) {
 	g.logger.Println(v...)
 }
 
-func (g *Generator) ImportPath(pkgPath string) string {
-	return gir.ImportPath(g.RootModule, pkgPath)
-}
-
 // UseNamespace creates a new namespace generator using the given namespace.
 func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator {
 	res := g.Repos.FindNamespace(gir.VersionedName(namespace, version))
@@ -161,7 +161,7 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 		cgo: pen.NewPaperSize(10240), // 10KB
 
 		imports: map[string]string{},
-		pkgPath: g.ImportPath(gir.GoNamespace(res.Namespace)),
+		pkgPath: g.ModPath(res),
 		gen:     g,
 		current: res,
 	}
@@ -302,6 +302,9 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 			}
 		}
 
+		sort.Strings(builtin)
+		sort.Strings(externs)
+
 		pen.Words("import (")
 
 		for _, str := range builtin {
@@ -352,9 +355,21 @@ func (ng *NamespaceGenerator) Generate() ([]byte, error) {
 }
 
 func makeImport(importPath, alias string) string {
+	pathBase := path.Base(importPath)
+
+	// Check if the base is a version part.
+	if strings.HasPrefix(pathBase, "v") {
+		_, err := strconv.Atoi(strings.TrimPrefix(pathBase, "v"))
+		if err == nil {
+			// Valid version part. Trim it.
+			importPath = path.Dir(importPath)
+		}
+	}
+
 	if alias == "" || alias == path.Base(importPath) {
 		return strconv.Quote(importPath)
 	}
+
 	// Only use the import alias if it's provided and does not match the base
 	// name of the import path for idiomaticity.
 	return alias + " " + strconv.Quote(importPath)

@@ -2,11 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -94,7 +96,12 @@ func main() {
 func writeNamespace(ng *girgen.NamespaceGenerator) {
 	pkg := ng.PackageName()
 	dir := filepath.Join(output, pkg)
-	out := filepath.Join(dir, pkg+".go")
+
+	if version := majorVer(ng); version > 1 {
+		// Follow Go's convention of a versioned package, so we can generate
+		// multiple versions.
+		dir = filepath.Join(dir, fmt.Sprintf("v%d", version))
+	}
 
 	if err := os.MkdirAll(dir, os.ModePerm|os.ModeDir); err != nil {
 		log.Println("mkdir -p failed:", err)
@@ -108,8 +115,18 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 
 	// Write to file any non-empty output.
 	if len(b) > 0 {
-		if err := os.WriteFile(out, b, os.ModePerm); err != nil {
+		goFile := filepath.Join(dir, pkg+".go")
+
+		if err := os.WriteFile(goFile, b, os.ModePerm); err != nil {
 			log.Println("failed to write file:", err)
 		}
 	}
+}
+
+func majorVer(ng *girgen.NamespaceGenerator) int {
+	v, err := strconv.Atoi(gir.MajorVersion(ng.Namespace().Version))
+	if err != nil {
+		return 0
+	}
+	return v
 }

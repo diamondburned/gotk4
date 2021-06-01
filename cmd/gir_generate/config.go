@@ -14,10 +14,11 @@ var packages = []Package{
 		"DBus-1.0",
 		"DBusGLib-1.0",
 	}},
-	{"gdk-pixbuf-2.0", []string{"GdkPixbuf-2.0", "GdkPixdata-2.0"}},
+	{"gdk-pixbuf-2.0", nil},
 	{"graphene-1.0", nil},
 	{"pango", nil},
-	{"gtk4", nil}, // includes Gdk
+	{"gtk4", nil},     // includes Gdk
+	{"gtk+-3.0", nil}, // includes Gdk
 }
 
 // filters defines a list of GIR types to be filtered. The map key is the

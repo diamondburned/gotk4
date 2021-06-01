@@ -55,7 +55,7 @@ import (
 // extern GVariant* gotk4_SettingsBindSetMapping(const GValue* _0, const GVariantType* _1, gpointer _2);
 // extern gboolean gotk4_SettingsGetMapping(GVariant* _0, gpointer* _1, gpointer _2);
 // extern gboolean gotk4_SocketSourceFunc(GSocket* _0, GIOCondition _1, gpointer _2);
-// extern GFile* gotk4_VfsFileLookupFunc(GVfs* _0, const char* _1, gpointer _2);
+// extern GFile* gotk4_VFSFileLookupFunc(GVfs* _0, const char* _1, gpointer _2);
 // // extern void callbackDelete(gpointer);
 import "C"
 
@@ -297,7 +297,7 @@ func init() {
 		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitor},
 		{T: externglib.Type(C.g_unix_output_stream_get_type()), F: marshalUnixOutputStream},
 		{T: externglib.Type(C.g_unix_socket_address_get_type()), F: marshalUnixSocketAddress},
-		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVfs},
+		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVFS},
 		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitor},
 		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressor},
 		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressor},
@@ -3189,23 +3189,23 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 //
 // The client should return a reference to the new file that has been created
 // for @uri, or nil to continue with the default implementation.
-type VfsFileLookupFunc func(vfs Vfs, identifier string) File
+type VFSFileLookupFunc func(vfs VFS, identifier string) File
 
-//export gotk4_VfsFileLookupFunc
-func gotk4_VfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
+//export gotk4_VFSFileLookupFunc
+func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
 	v := box.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
-	var vfs Vfs
+	var vfs VFS
 	var identifier string
 
-	vfs = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(Vfs)
+	vfs = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(VFS)
 
 	identifier = C.GoString(arg1)
 
-	file := v.(VfsFileLookupFunc)(vfs, identifier)
+	file := v.(VFSFileLookupFunc)(vfs, identifier)
 }
 
 // ActionNameIsValid checks if @action_name is valid.
@@ -62047,8 +62047,8 @@ func (address unixSocketAddress) PathLen() uint {
 	return ret0
 }
 
-// Vfs: entry point for using GIO functionality.
-type Vfs interface {
+// VFS: entry point for using GIO functionality.
+type VFS interface {
 	gextras.Objector
 
 	// FileForPath gets a #GFile for @path.
@@ -62088,35 +62088,35 @@ type Vfs interface {
 	//
 	// It's an error to call this function twice with the same scheme. To
 	// unregister a custom URI scheme, use g_vfs_unregister_uri_scheme().
-	RegisterURIScheme(scheme string, uriFunc VfsFileLookupFunc, parseNameFunc VfsFileLookupFunc) bool
+	RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNameFunc VFSFileLookupFunc) bool
 	// UnregisterURIScheme unregisters the URI handler for @scheme previously
 	// registered with g_vfs_register_uri_scheme().
 	UnregisterURIScheme(scheme string) bool
 }
 
-// vfs implements the Vfs interface.
-type vfs struct {
+// vfS implements the VFS interface.
+type vfS struct {
 	gextras.Objector
 }
 
-var _ Vfs = (*vfs)(nil)
+var _ VFS = (*vfS)(nil)
 
-// WrapVfs wraps a GObject to the right type. It is
+// WrapVFS wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapVfs(obj *externglib.Object) Vfs {
-	return Vfs{
+func WrapVFS(obj *externglib.Object) VFS {
+	return VFS{
 		Objector: obj,
 	}
 }
 
-func marshalVfs(p uintptr) (interface{}, error) {
+func marshalVFS(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapVfs(obj), nil
+	return WrapVFS(obj), nil
 }
 
 // FileForPath gets a #GFile for @path.
-func (vfs vfs) FileForPath(path string) File {
+func (vfs vfS) FileForPath(path string) File {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -62138,7 +62138,7 @@ func (vfs vfs) FileForPath(path string) File {
 // This operation never fails, but the returned object might not support any
 // I/O operation if the URI is malformed or if the URI scheme is not
 // supported.
-func (vfs vfs) FileForURI(uri string) File {
+func (vfs vfS) FileForURI(uri string) File {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -62156,7 +62156,7 @@ func (vfs vfs) FileForURI(uri string) File {
 }
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
-func (vfs vfs) SupportedURISchemes() []string {
+func (vfs vfS) SupportedURISchemes() []string {
 	var arg0 *C.GVfs
 
 	arg0 = (*C.GVfs)(vfs.Native())
@@ -62182,7 +62182,7 @@ func (vfs vfs) SupportedURISchemes() []string {
 }
 
 // IsActive checks if the VFS is active.
-func (vfs vfs) IsActive() bool {
+func (vfs vfS) IsActive() bool {
 	var arg0 *C.GVfs
 
 	arg0 = (*C.GVfs)(vfs.Native())
@@ -62199,7 +62199,7 @@ func (vfs vfs) IsActive() bool {
 // ParseName: this operation never fails, but the returned object might not
 // support any I/O operations if the @parse_name cannot be parsed by the
 // #GVfs module.
-func (vfs vfs) ParseName(parseName string) File {
+func (vfs vfS) ParseName(parseName string) File {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -62237,7 +62237,7 @@ func (vfs vfs) ParseName(parseName string) File {
 //
 // It's an error to call this function twice with the same scheme. To
 // unregister a custom URI scheme, use g_vfs_unregister_uri_scheme().
-func (vfs vfs) RegisterURIScheme(scheme string, uriFunc VfsFileLookupFunc, parseNameFunc VfsFileLookupFunc) bool {
+func (vfs vfS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNameFunc VFSFileLookupFunc) bool {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 	var arg2 C.GVfsFileLookupFunc
@@ -62250,10 +62250,10 @@ func (vfs vfs) RegisterURIScheme(scheme string, uriFunc VfsFileLookupFunc, parse
 	arg0 = (*C.GVfs)(vfs.Native())
 	arg1 = (*C.gchar)(C.CString(scheme))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*[0]byte)(C.gotk4_VfsFileLookupFunc)
+	arg2 = (*[0]byte)(C.gotk4_VFSFileLookupFunc)
 	arg3 = C.gpointer(box.Assign(uriFunc))
 	arg4 = (*[0]byte)(C.callbackDelete)
-	arg5 = (*[0]byte)(C.gotk4_VfsFileLookupFunc)
+	arg5 = (*[0]byte)(C.gotk4_VFSFileLookupFunc)
 	arg6 = C.gpointer(box.Assign(parseNameFunc))
 	arg7 = (*[0]byte)(C.callbackDelete)
 
@@ -62268,7 +62268,7 @@ func (vfs vfs) RegisterURIScheme(scheme string, uriFunc VfsFileLookupFunc, parse
 
 // UnregisterURIScheme unregisters the URI handler for @scheme previously
 // registered with g_vfs_register_uri_scheme().
-func (vfs vfs) UnregisterURIScheme(scheme string) bool {
+func (vfs vfS) UnregisterURIScheme(scheme string) bool {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 

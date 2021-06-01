@@ -3729,9 +3729,9 @@ func AtomicPointerXor(atomic interface{}, val uint) uint {
 	return ret0
 }
 
-// AtomicRcBoxAcquire: atomically acquires a reference on the data pointed by
+// AtomicRCBoxAcquire: atomically acquires a reference on the data pointed by
 // @mem_block.
-func AtomicRcBoxAcquire(memBlock interface{}) interface{} {
+func AtomicRCBoxAcquire(memBlock interface{}) interface{} {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(memBlock))
@@ -3745,14 +3745,14 @@ func AtomicRcBoxAcquire(memBlock interface{}) interface{} {
 	return ret0
 }
 
-// AtomicRcBoxAlloc allocates @block_size bytes of memory, and adds atomic
+// AtomicRCBoxAlloc allocates @block_size bytes of memory, and adds atomic
 // reference counting semantics to it.
 //
 // The data will be freed when its reference count drops to zero.
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func AtomicRcBoxAlloc(blockSize uint) interface{} {
+func AtomicRCBoxAlloc(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
@@ -3766,7 +3766,7 @@ func AtomicRcBoxAlloc(blockSize uint) interface{} {
 	return ret0
 }
 
-// AtomicRcBoxAlloc0 allocates @block_size bytes of memory, and adds atomic
+// AtomicRCBoxAlloc0 allocates @block_size bytes of memory, and adds atomic
 // reference counting semantics to it.
 //
 // The contents of the returned data is set to zero.
@@ -3775,7 +3775,7 @@ func AtomicRcBoxAlloc(blockSize uint) interface{} {
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func AtomicRcBoxAlloc0(blockSize uint) interface{} {
+func AtomicRCBoxAlloc0(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
@@ -3789,9 +3789,9 @@ func AtomicRcBoxAlloc0(blockSize uint) interface{} {
 	return ret0
 }
 
-// AtomicRcBoxDup allocates a new block of data with atomic reference counting
+// AtomicRCBoxDup allocates a new block of data with atomic reference counting
 // semantics, and copies @block_size bytes of @mem_block into it.
-func AtomicRcBoxDup(blockSize uint, memBlock interface{}) interface{} {
+func AtomicRCBoxDup(blockSize uint, memBlock interface{}) interface{} {
 	var arg1 C.gsize
 	var arg2 C.gpointer
 
@@ -3807,9 +3807,9 @@ func AtomicRcBoxDup(blockSize uint, memBlock interface{}) interface{} {
 	return ret0
 }
 
-// AtomicRcBoxGetSize retrieves the size of the reference counted data pointed
+// AtomicRCBoxGetSize retrieves the size of the reference counted data pointed
 // by @mem_block.
-func AtomicRcBoxGetSize(memBlock interface{}) uint {
+func AtomicRCBoxGetSize(memBlock interface{}) uint {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(memBlock))
@@ -3823,12 +3823,12 @@ func AtomicRcBoxGetSize(memBlock interface{}) uint {
 	return ret0
 }
 
-// AtomicRcBoxRelease: atomically releases a reference on the data pointed by
+// AtomicRCBoxRelease: atomically releases a reference on the data pointed by
 // @mem_block.
 //
 // If the reference was the last one, it will free the resources allocated for
 // @mem_block.
-func AtomicRcBoxRelease(memBlock interface{}) {
+func AtomicRCBoxRelease(memBlock interface{}) {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(memBlock))
@@ -9575,8 +9575,8 @@ func RandomSetSeed(seed uint32) {
 	C.g_random_set_seed(arg1)
 }
 
-// RcBoxAcquire acquires a reference on the data pointed by @mem_block.
-func RcBoxAcquire(memBlock interface{}) interface{} {
+// RCBoxAcquire acquires a reference on the data pointed by @mem_block.
+func RCBoxAcquire(memBlock interface{}) interface{} {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(memBlock))
@@ -9590,14 +9590,14 @@ func RcBoxAcquire(memBlock interface{}) interface{} {
 	return ret0
 }
 
-// RcBoxAlloc allocates @block_size bytes of memory, and adds reference counting
+// RCBoxAlloc allocates @block_size bytes of memory, and adds reference counting
 // semantics to it.
 //
 // The data will be freed when its reference count drops to zero.
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func RcBoxAlloc(blockSize uint) interface{} {
+func RCBoxAlloc(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
@@ -9611,7 +9611,7 @@ func RcBoxAlloc(blockSize uint) interface{} {
 	return ret0
 }
 
-// RcBoxAlloc0 allocates @block_size bytes of memory, and adds reference
+// RCBoxAlloc0 allocates @block_size bytes of memory, and adds reference
 // counting semantics to it.
 //
 // The contents of the returned data is set to zero.
@@ -9620,7 +9620,7 @@ func RcBoxAlloc(blockSize uint) interface{} {
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func RcBoxAlloc0(blockSize uint) interface{} {
+func RCBoxAlloc0(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
@@ -9634,9 +9634,9 @@ func RcBoxAlloc0(blockSize uint) interface{} {
 	return ret0
 }
 
-// RcBoxDup allocates a new block of data with reference counting semantics, and
+// RCBoxDup allocates a new block of data with reference counting semantics, and
 // copies @block_size bytes of @mem_block into it.
-func RcBoxDup(blockSize uint, memBlock interface{}) interface{} {
+func RCBoxDup(blockSize uint, memBlock interface{}) interface{} {
 	var arg1 C.gsize
 	var arg2 C.gpointer
 
@@ -9652,9 +9652,9 @@ func RcBoxDup(blockSize uint, memBlock interface{}) interface{} {
 	return ret0
 }
 
-// RcBoxGetSize retrieves the size of the reference counted data pointed by
+// RCBoxGetSize retrieves the size of the reference counted data pointed by
 // @mem_block.
-func RcBoxGetSize(memBlock interface{}) uint {
+func RCBoxGetSize(memBlock interface{}) uint {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(memBlock))
@@ -9668,11 +9668,11 @@ func RcBoxGetSize(memBlock interface{}) uint {
 	return ret0
 }
 
-// RcBoxRelease releases a reference on the data pointed by @mem_block.
+// RCBoxRelease releases a reference on the data pointed by @mem_block.
 //
 // If the reference was the last one, it will free the resources allocated for
 // @mem_block.
-func RcBoxRelease(memBlock interface{}) {
+func RCBoxRelease(memBlock interface{}) {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(box.Assign(memBlock))

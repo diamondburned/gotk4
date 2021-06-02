@@ -120,7 +120,8 @@ type Doc struct {
 }
 
 type DocElements struct {
-	Doc *Doc
+	Doc            *Doc
+	SourcePosition *SourcePosition
 }
 
 type Enum struct {
@@ -313,6 +314,13 @@ type ReturnValue struct {
 	TransferOwnership
 	DocElements
 	AnyType
+}
+
+type SourcePosition struct {
+	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 source-position"`
+	Filename string   `xml:"filename,attr"`
+	Line     int      `xml:"line,attr"`
+	Column   int      `xml:"column,attr"`
 }
 
 type TransferOwnership struct {

@@ -3,50 +3,23 @@
 package pangoxft
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangoxft
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdbool.h>
+// #include <glib-object.h>
 // #include <pango/pangoxft.h>
-//
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_xft_font_get_type()), F: marshalFont},
 		{T: externglib.Type(C.pango_xft_font_map_get_type()), F: marshalFontMap},
-		{T: externglib.Type(C.pango_xft_renderer_get_type()), F: marshalRenderer},
 	})
-}
-
-type RendererPrivate struct {
-	native C.PangoXftRendererPrivate
-}
-
-// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RendererPrivate)(ptr)
-}
-
-func marshalRendererPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRendererPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RendererPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }
 
 // Font is an implementation of FcFont using the Xft library for rendering. It
@@ -102,11 +75,11 @@ func marshalFont(p uintptr) (interface{}, error) {
 // pango_xft_font_has_char().
 //
 // Use pango_fc_font_get_glyph() instead.
-func (font font) Glyph(wc uint32) uint {
+func (f font) Glyph(wc uint32) uint {
 	var arg0 *C.PangoFont
 	var arg1 C.gunichar
 
-	arg0 = (*C.PangoFont)(font.Native())
+	arg0 = (*C.PangoFont)(f.Native())
 	arg1 = C.gunichar(wc)
 
 	ret := C.pango_xft_font_get_glyph(arg0, arg1)
@@ -122,11 +95,11 @@ func (font font) Glyph(wc uint32) uint {
 // unknown character.
 //
 // Use PANGO_GET_UNKNOWN_GLYPH() instead.
-func (font font) UnknownGlyph(wc uint32) pango.Glyph {
+func (f font) UnknownGlyph(wc uint32) pango.Glyph {
 	var arg0 *C.PangoFont
 	var arg1 C.gunichar
 
-	arg0 = (*C.PangoFont)(font.Native())
+	arg0 = (*C.PangoFont)(f.Native())
 	arg1 = C.gunichar(wc)
 
 	ret := C.pango_xft_font_get_unknown_glyph(arg0, arg1)
@@ -145,18 +118,18 @@ func (font font) UnknownGlyph(wc uint32) pango.Glyph {
 // HasChar determines whether @font has a glyph for the codepoint @wc.
 //
 // Use pango_fc_font_has_char() instead.
-func (font font) HasChar(wc uint32) bool {
+func (f font) HasChar(wc uint32) bool {
 	var arg0 *C.PangoFont
 	var arg1 C.gunichar
 
-	arg0 = (*C.PangoFont)(font.Native())
+	arg0 = (*C.PangoFont)(f.Native())
 	arg1 = C.gunichar(wc)
 
 	ret := C.pango_xft_font_has_char(arg0, arg1)
 
 	var ret0 bool
 
-	ret0 = C.BOOL(ret) != 0
+	ret0 = C.bool(ret) != 0
 
 	return ret0
 }
@@ -165,10 +138,10 @@ func (font font) HasChar(wc uint32) bool {
 // pango_xft_font_lock_face().
 //
 // Use pango_fc_font_unlock_face() instead.
-func (font font) UnlockFace() {
+func (f font) UnlockFace() {
 	var arg0 *C.PangoFont
 
-	arg0 = (*C.PangoFont)(font.Native())
+	arg0 = (*C.PangoFont)(f.Native())
 
 	C.pango_xft_font_unlock_face(arg0)
 }
@@ -198,46 +171,4 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontMap(obj), nil
-}
-
-// Renderer is a subclass of Renderer used for rendering with Pango's Xft
-// backend. It can be used directly, or it can be further subclassed to modify
-// exactly how drawing of individual elements occurs.
-type Renderer interface {
-	pango.Renderer
-
-	// SetDefaultColor sets the default foreground color for a Renderer.
-	SetDefaultColor(defaultColor *pango.Color)
-}
-
-// renderer implements the Renderer interface.
-type renderer struct {
-	pango.Renderer
-}
-
-var _ Renderer = (*renderer)(nil)
-
-// WrapRenderer wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRenderer(obj *externglib.Object) Renderer {
-	return Renderer{
-		pango.Renderer: pango.WrapRenderer(obj),
-	}
-}
-
-func marshalRenderer(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRenderer(obj), nil
-}
-
-// SetDefaultColor sets the default foreground color for a Renderer.
-func (xftrenderer renderer) SetDefaultColor(defaultColor *pango.Color) {
-	var arg0 *C.PangoXftRenderer
-	var arg1 *C.PangoColor
-
-	arg0 = (*C.PangoXftRenderer)(xftrenderer.Native())
-	arg1 = (*C.PangoColor)(defaultColor.Native())
-
-	C.pango_xft_renderer_set_default_color(arg0, arg1)
 }

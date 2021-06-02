@@ -72,25 +72,27 @@ type ifaceGenerator struct {
 	Virtuals []callableGenerator // for interface
 	Methods  []callableGenerator // for object implementation
 
-	Ng *NamespaceGenerator
+	fg *FileGenerator
+	ng *NamespaceGenerator
 }
 
 func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
 	return &ifaceGenerator{
-		Ng:       ng,
+		ng:       ng,
 		TypeTree: *ng.TypeTree(),
 	}
 }
 
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
+	ig.fg = ig.ng.FileFromSource(iface.SourcePosition)
 	ig.Interface = iface
 	ig.InterfaceName = PascalToGo(iface.Name)
 	ig.StructName = UnexportPascal(ig.InterfaceName)
 	ig.updateMethods()
 
-	resolved := TypeFromResult(ig.Ng, gir.TypeFindResult{Interface: &iface})
+	resolved := TypeFromResult(ig.ng, gir.TypeFindResult{Interface: &iface})
 	if !ig.TypeTree.ResolveFromType(resolved) {
-		ig.Ng.logln(logSkip, "interface", ig.InterfaceName, "cannot be type-resolved")
+		ig.fg.Logln(LogSkip, "interface", ig.InterfaceName, "cannot be type-resolved")
 		return false
 	}
 
@@ -102,7 +104,7 @@ func (ig *ifaceGenerator) updateMethods() {
 	ig.Virtuals = callableGrow(ig.Virtuals, len(ig.Interface.VirtualMethods))
 
 	for _, vmethod := range ig.Interface.VirtualMethods {
-		cbgen := newCallableGenerator(ig.Ng)
+		cbgen := newCallableGenerator(ig.ng)
 		if !cbgen.Use(vmethod.CallableAttrs) {
 			continue
 		}
@@ -111,7 +113,7 @@ func (ig *ifaceGenerator) updateMethods() {
 	}
 
 	for _, method := range ig.Interface.Methods {
-		cbgen := newCallableGenerator(ig.Ng)
+		cbgen := newCallableGenerator(ig.ng)
 		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
@@ -146,11 +148,13 @@ func (ng *NamespaceGenerator) generateIfaces() {
 			continue
 		}
 
-		if iface.GLibGetType != "" {
-			ng.addMarshaler(iface.GLibGetType, ig.InterfaceName)
+		if iface.GLibGetType != "" && !ng.mustIgnoreC(iface.GLibGetType) {
+			ig.fg.addMarshaler(iface.GLibGetType, ig.InterfaceName)
 		}
 
-		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-		ng.pen.BlockTmpl(interfaceTmpl, &ig)
+		ig.fg.addImport("github.com/diamondburned/gotk4/internal/gextras")
+		ig.fg.needsGLibObject()
+
+		ig.fg.pen.BlockTmpl(interfaceTmpl, &ig)
 	}
 }

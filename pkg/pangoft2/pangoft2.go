@@ -8,15 +8,15 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangoft2
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <pango/pangoft2.h>
 //
-// // extern void callbackDelete(gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -94,7 +94,6 @@ func GetUnknownGlyph(font pango.Font) pango.Glyph {
 // pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
 // deprecated.
 func ShutdownDisplay() {
-
 	C.pango_ft2_shutdown_display()
 }
 
@@ -147,7 +146,6 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 
 // NewFontMap constructs a class FontMap.
 func NewFontMap() FontMap {
-
 	ret := C.pango_ft2_font_map_new()
 
 	var ret0 FontMap
@@ -158,10 +156,10 @@ func NewFontMap() FontMap {
 }
 
 // CreateContext: create a `PangoContext` for the given fontmap.
-func (fontmap fontMap) CreateContext() pango.Context {
+func (f fontMap) CreateContext() pango.Context {
 	var arg0 *C.PangoFT2FontMap
 
-	arg0 = (*C.PangoFT2FontMap)(fontmap.Native())
+	arg0 = (*C.PangoFT2FontMap)(f.Native())
 
 	ret := C.pango_ft2_font_map_create_context(arg0)
 
@@ -178,13 +176,13 @@ func (fontmap fontMap) CreateContext() pango.Context {
 //
 // This function can be used to do things like set hinting and antialiasing
 // options.
-func (fontmap fontMap) SetDefaultSubstitute(fn SubstituteFunc) {
+func (f fontMap) SetDefaultSubstitute(fn SubstituteFunc) {
 	var arg0 *C.PangoFT2FontMap
 	var arg1 C.PangoFT2SubstituteFunc
 	var arg2 C.gpointer
 	var arg3 C.GDestroyNotify
 
-	arg0 = (*C.PangoFT2FontMap)(fontmap.Native())
+	arg0 = (*C.PangoFT2FontMap)(f.Native())
 	arg1 = (*[0]byte)(C.gotk4_SubstituteFunc)
 	arg2 = C.gpointer(box.Assign(fn))
 	arg3 = (*[0]byte)(C.callbackDelete)
@@ -194,12 +192,12 @@ func (fontmap fontMap) SetDefaultSubstitute(fn SubstituteFunc) {
 
 // SetResolution sets the horizontal and vertical resolutions for the
 // fontmap.
-func (fontmap fontMap) SetResolution(dpiX float64, dpiY float64) {
+func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
 	var arg0 *C.PangoFT2FontMap
 	var arg1 C.double
 	var arg2 C.double
 
-	arg0 = (*C.PangoFT2FontMap)(fontmap.Native())
+	arg0 = (*C.PangoFT2FontMap)(f.Native())
 	arg1 = C.double(dpiX)
 	arg2 = C.double(dpiY)
 
@@ -212,10 +210,10 @@ func (fontmap fontMap) SetResolution(dpiX float64, dpiY float64) {
 //
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
-func (fontmap fontMap) SubstituteChanged() {
+func (f fontMap) SubstituteChanged() {
 	var arg0 *C.PangoFT2FontMap
 
-	arg0 = (*C.PangoFT2FontMap)(fontmap.Native())
+	arg0 = (*C.PangoFT2FontMap)(f.Native())
 
 	C.pango_ft2_font_map_substitute_changed(arg0)
 }

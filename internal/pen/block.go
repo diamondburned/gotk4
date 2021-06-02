@@ -130,15 +130,19 @@ func (sects *BlockSections) String() string {
 	joined.WriteByte('{')
 	joined.WriteByte('\n')
 
+	first := true
+
 	for i := 0; i < sects.len; i++ {
 		// Ignore empty blocks.
 		if sects.strs[i].Len() == 0 {
 			continue
 		}
 
-		if i > 0 {
+		if !first {
 			joined.WriteByte('\n')
 			joined.WriteByte('\n')
+		} else {
+			first = false
 		}
 
 		joined.WriteString(

@@ -3,399 +3,31 @@
 package gdkwayland
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
-//
-// extern void gotk4_WaylandToplevelExported(GdkToplevel* _0, const char* _1, gpointer _2);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_device_get_type()), F: marshalWaylandDevice},
-		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplay},
-		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitor},
-		{T: externglib.Type(C.gdk_wayland_seat_get_type()), F: marshalWaylandSeat},
 		{T: externglib.Type(C.gdk_wayland_surface_get_type()), F: marshalWaylandSurface},
 	})
 }
 
-// WaylandToplevelExported: callback that gets called when the handle for a
-// surface has been obtained from the Wayland compositor. The @handle can be
-// passed to other processes, for the purpose of marking surfaces as transient
-// for out-of-process surfaces.
-type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
-
-//export gotk4_WaylandToplevelExported
-func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var toplevel WaylandToplevel
-	var handle string
-
-	toplevel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(WaylandToplevel)
-
-	handle = C.GoString(arg1)
-
-	v.(WaylandToplevelExported)(toplevel, handle)
-}
-
-type WaylandDevice interface {
-	gdk.Device
-
-	// NodePath returns the `/dev/input/event*` path of this device.
-	//
-	// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
-	// keyboard, touch,...), this function will return nil.
-	//
-	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
-	// GDK_SOURCE_TABLET_PAD.
-	NodePath() string
-	// WlKeyboard returns the Wayland wl_keyboard of a Device.
-	WlKeyboard() interface{}
-	// WlPointer returns the Wayland wl_pointer of a Device.
-	WlPointer() interface{}
-	// WlSeat returns the Wayland wl_seat of a Device.
-	WlSeat() interface{}
-}
-
-// waylandDevice implements the WaylandDevice interface.
-type waylandDevice struct {
-	gdk.Device
-}
-
-var _ WaylandDevice = (*waylandDevice)(nil)
-
-// WrapWaylandDevice wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapWaylandDevice(obj *externglib.Object) WaylandDevice {
-	return WaylandDevice{
-		gdk.Device: gdk.WrapDevice(obj),
-	}
-}
-
-func marshalWaylandDevice(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWaylandDevice(obj), nil
-}
-
-// NodePath returns the `/dev/input/event*` path of this device.
+// WaylandSurface: the Wayland implementation of `GdkSurface`.
 //
-// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
-// keyboard, touch,...), this function will return nil.
-//
-// This is most notably implemented for devices of type GDK_SOURCE_PEN,
-// GDK_SOURCE_TABLET_PAD.
-func (device waylandDevice) NodePath() string {
-	var arg0 *C.GdkDevice
-
-	arg0 = (*C.GdkDevice)(device.Native())
-
-	ret := C.gdk_wayland_device_get_node_path(arg0)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
-// WlKeyboard returns the Wayland wl_keyboard of a Device.
-func (device waylandDevice) WlKeyboard() interface{} {
-	var arg0 *C.GdkDevice
-
-	arg0 = (*C.GdkDevice)(device.Native())
-
-	ret := C.gdk_wayland_device_get_wl_keyboard(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
-// WlPointer returns the Wayland wl_pointer of a Device.
-func (device waylandDevice) WlPointer() interface{} {
-	var arg0 *C.GdkDevice
-
-	arg0 = (*C.GdkDevice)(device.Native())
-
-	ret := C.gdk_wayland_device_get_wl_pointer(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
-// WlSeat returns the Wayland wl_seat of a Device.
-func (device waylandDevice) WlSeat() interface{} {
-	var arg0 *C.GdkDevice
-
-	arg0 = (*C.GdkDevice)(device.Native())
-
-	ret := C.gdk_wayland_device_get_wl_seat(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
-type WaylandDisplay interface {
-	gdk.Display
-
-	// StartupNotificationID gets the startup notification ID for a Wayland
-	// display, or nil if no ID has been defined.
-	StartupNotificationID() string
-	// WlCompositor returns the Wayland global singleton compositor of a
-	// Display.
-	WlCompositor() interface{}
-	// WlDisplay returns the Wayland wl_display of a Display.
-	WlDisplay() interface{}
-	// QueryRegistry returns true if the the interface was found in the display
-	// `wl_registry.global` handler.
-	QueryRegistry(global string) bool
-	// SetCursorTheme sets the cursor theme for the given @display.
-	SetCursorTheme(name string, size int)
-	// SetStartupNotificationID sets the startup notification ID for a display.
-	//
-	// This is usually taken from the value of the DESKTOP_STARTUP_ID
-	// environment variable, but in some cases (such as the application not
-	// being launched using exec()) it can come from other sources.
-	//
-	// The startup ID is also what is used to signal that the startup is
-	// complete (for example, when opening a window or when calling
-	// gdk_display_notify_startup_complete()).
-	SetStartupNotificationID(startupID string)
-}
-
-// waylandDisplay implements the WaylandDisplay interface.
-type waylandDisplay struct {
-	gdk.Display
-}
-
-var _ WaylandDisplay = (*waylandDisplay)(nil)
-
-// WrapWaylandDisplay wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
-	return WaylandDisplay{
-		gdk.Display: gdk.WrapDisplay(obj),
-	}
-}
-
-func marshalWaylandDisplay(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWaylandDisplay(obj), nil
-}
-
-// StartupNotificationID gets the startup notification ID for a Wayland
-// display, or nil if no ID has been defined.
-func (display waylandDisplay) StartupNotificationID() string {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_wayland_display_get_startup_notification_id(arg0)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
-// WlCompositor returns the Wayland global singleton compositor of a
-// Display.
-func (display waylandDisplay) WlCompositor() interface{} {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_wayland_display_get_wl_compositor(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
-// WlDisplay returns the Wayland wl_display of a Display.
-func (display waylandDisplay) WlDisplay() interface{} {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-
-	ret := C.gdk_wayland_display_get_wl_display(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
-// QueryRegistry returns true if the the interface was found in the display
-// `wl_registry.global` handler.
-func (display waylandDisplay) QueryRegistry(global string) bool {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.char
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-	arg1 = (*C.gchar)(C.CString(global))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.gdk_wayland_display_query_registry(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = C.BOOL(ret) != 0
-
-	return ret0
-}
-
-// SetCursorTheme sets the cursor theme for the given @display.
-func (display waylandDisplay) SetCursorTheme(name string, size int) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.char
-	var arg2 C.int
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(size)
-
-	C.gdk_wayland_display_set_cursor_theme(arg0, arg1, arg2)
-}
-
-// SetStartupNotificationID sets the startup notification ID for a display.
-//
-// This is usually taken from the value of the DESKTOP_STARTUP_ID
-// environment variable, but in some cases (such as the application not
-// being launched using exec()) it can come from other sources.
-//
-// The startup ID is also what is used to signal that the startup is
-// complete (for example, when opening a window or when calling
-// gdk_display_notify_startup_complete()).
-func (display waylandDisplay) SetStartupNotificationID(startupID string) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.char
-
-	arg0 = (*C.GdkDisplay)(display.Native())
-	arg1 = (*C.gchar)(C.CString(startupID))
-	defer C.free(unsafe.Pointer(arg1))
-
-	C.gdk_wayland_display_set_startup_notification_id(arg0, arg1)
-}
-
-type WaylandMonitor interface {
-	gdk.Monitor
-
-	// WlOutput returns the Wayland wl_output of a Monitor.
-	WlOutput() interface{}
-}
-
-// waylandMonitor implements the WaylandMonitor interface.
-type waylandMonitor struct {
-	gdk.Monitor
-}
-
-var _ WaylandMonitor = (*waylandMonitor)(nil)
-
-// WrapWaylandMonitor wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
-	return WaylandMonitor{
-		gdk.Monitor: gdk.WrapMonitor(obj),
-	}
-}
-
-func marshalWaylandMonitor(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWaylandMonitor(obj), nil
-}
-
-// WlOutput returns the Wayland wl_output of a Monitor.
-func (monitor waylandMonitor) WlOutput() interface{} {
-	var arg0 *C.GdkMonitor
-
-	arg0 = (*C.GdkMonitor)(monitor.Native())
-
-	ret := C.gdk_wayland_monitor_get_wl_output(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
-type WaylandSeat interface {
-	gdk.Seat
-
-	// WlSeat returns the Wayland `wl_seat` of a Seat.
-	WlSeat() interface{}
-}
-
-// waylandSeat implements the WaylandSeat interface.
-type waylandSeat struct {
-	gdk.Seat
-}
-
-var _ WaylandSeat = (*waylandSeat)(nil)
-
-// WrapWaylandSeat wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapWaylandSeat(obj *externglib.Object) WaylandSeat {
-	return WaylandSeat{
-		gdk.Seat: gdk.WrapSeat(obj),
-	}
-}
-
-func marshalWaylandSeat(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapWaylandSeat(obj), nil
-}
-
-// WlSeat returns the Wayland `wl_seat` of a Seat.
-func (seat waylandSeat) WlSeat() interface{} {
-	var arg0 *C.GdkSeat
-
-	arg0 = (*C.GdkSeat)(seat.Native())
-
-	ret := C.gdk_wayland_seat_get_wl_seat(arg0)
-
-	var ret0 interface{}
-
-	ret0 = box.Get(uintptr(ret)).(interface{})
-
-	return ret0
-}
-
+// Beyond the [class@Gdk.Surface] API, the Wayland implementation offers access
+// to the Wayland `wl_surface` object with
+// [method@GdkWayland.WaylandSurface.get_wl_surface].
 type WaylandSurface interface {
 	gdk.Surface
 
-	// WlSurface returns the Wayland surface of a Surface.
+	// WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
 	WlSurface() interface{}
 }
 
@@ -420,11 +52,11 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return WrapWaylandSurface(obj), nil
 }
 
-// WlSurface returns the Wayland surface of a Surface.
-func (surface waylandSurface) WlSurface() interface{} {
+// WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
+func (s waylandSurface) WlSurface() interface{} {
 	var arg0 *C.GdkSurface
 
-	arg0 = (*C.GdkSurface)(surface.Native())
+	arg0 = (*C.GdkSurface)(s.Native())
 
 	ret := C.gdk_wayland_surface_get_wl_surface(arg0)
 

@@ -13,6 +13,7 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -63,6 +64,9 @@ func main() {
 
 	var wg sync.WaitGroup
 
+	var errMut sync.Mutex
+	var errors []error
+
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, modulePath)
@@ -82,7 +86,11 @@ func main() {
 			wg.Add(1)
 
 			go func() {
-				writeNamespace(ng)
+				if err := writeNamespace(ng); err != nil {
+					errMut.Lock()
+					errors = append(errors, err)
+					errMut.Unlock()
+				}
 
 				<-sema
 				wg.Done()
@@ -91,36 +99,40 @@ func main() {
 	}
 
 	wg.Wait()
+
+	if len(errors) > 0 {
+		for _, err := range errors {
+			log.Println("generation error:", err)
+		}
+
+		os.Exit(1)
+	}
 }
 
-func writeNamespace(ng *girgen.NamespaceGenerator) {
+func writeNamespace(ng *girgen.NamespaceGenerator) error {
 	pkg := ng.PackageName()
 	dir := filepath.Join(output, pkg)
 
-	if version := majorVer(ng.Namespace()); version > 1 {
+	if version := majorVer(ng.Namespace().Namespace); version > 1 {
 		// Follow Go's convention of a versioned package, so we can generate
 		// multiple versions.
 		dir = filepath.Join(dir, fmt.Sprintf("v%d", version))
 	}
 
 	if err := os.MkdirAll(dir, os.ModePerm|os.ModeDir); err != nil {
-		log.Println("mkdir -p failed:", err)
-		return
+		return errors.Wrap(err, "mkdir -p failed")
 	}
 
-	b, err := ng.Generate()
-	if err != nil {
-		log.Println("generation error:", err)
-	}
+	files, genErr := ng.Generate()
 
-	// Write to file any non-empty output.
-	if len(b) > 0 {
-		goFile := filepath.Join(dir, pkg+".go")
-
-		if err := os.WriteFile(goFile, b, os.ModePerm); err != nil {
-			log.Println("failed to write file:", err)
+	for name, data := range files {
+		if err := os.WriteFile(filepath.Join(dir, name), data, 0666); err != nil {
+			return errors.Wrapf(err, "failed to write %s", name)
 		}
 	}
+
+	// Preserve the generation error, but give it last priority.
+	return genErr
 }
 
 func modulePath(namespace *gir.Namespace) string {

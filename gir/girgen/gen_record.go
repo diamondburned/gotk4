@@ -78,7 +78,8 @@ type recordGenerator struct {
 
 	Callable callableGenerator
 
-	Ng *NamespaceGenerator
+	fg *FileGenerator
+	ng *NamespaceGenerator
 }
 
 type recordGetter struct {
@@ -91,13 +92,13 @@ type recordGetter struct {
 
 func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
 	return &recordGenerator{
-		Callable: callableGenerator{Ng: ng},
-		Ng:       ng,
+		Callable: newCallableGenerator(ng),
+		ng:       ng,
 	}
 }
 
 // canRecord returns true if this record is allowed.
-func (ng *NamespaceGenerator) canRecord(rec gir.Record, log bool) bool {
+func canRecord(logger TypeResolver, rec gir.Record, log bool) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
 	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
@@ -113,7 +114,7 @@ func (ng *NamespaceGenerator) canRecord(rec gir.Record, log bool) bool {
 	// Ignore non-type/array fields.
 	for _, field := range rec.Fields {
 		if field.Type == nil && field.Array == nil {
-			ng.logln(logSkip, "record", rec.Name, "skipped, field", field.Name)
+			tryLogln(logger, LogSkip, "record", rec.Name, "skipped, field", field.Name)
 			return false
 		}
 	}
@@ -122,9 +123,11 @@ func (ng *NamespaceGenerator) canRecord(rec gir.Record, log bool) bool {
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {
-	if !rg.Ng.canRecord(rec, true) {
+	if !canRecord(rg.ng, rec, true) {
 		return false
 	}
+
+	rg.fg = rg.ng.FileFromSource(rec.SourcePosition)
 
 	rg.Record = rec
 	rg.GoName = PascalToGo(rec.Name)
@@ -149,7 +152,7 @@ func (rg *recordGenerator) methods() []callableGenerator {
 	callables := callableGrow(rg.Methods, len(rg.Record.Methods))
 
 	for _, method := range rg.Record.Methods {
-		cbgen := newCallableGenerator(rg.Ng)
+		cbgen := newCallableGenerator(rg.ng)
 		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
@@ -202,12 +205,12 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		typ, ok := rg.Ng.ResolveAnyType(field.AnyType, true)
+		typ, ok := GoAnyType(rg.fg, field.AnyType, true)
 		if !ok {
 			continue
 		}
 
-		convert := rg.Ng.CGoConverter(TypeConversionToGo{
+		convert := rg.fg.CGoConverter(TypeConversionToGo{
 			TypeConversion: TypeConversion{
 				Value:  fieldAt(i),
 				Target: "ret",
@@ -250,7 +253,6 @@ func (rg *recordGenerator) needsNative() bool {
 
 func (ng *NamespaceGenerator) generateRecords() {
 	rg := newRecordGenerator(ng)
-	imported := false
 
 	for _, record := range ng.current.Namespace.Records {
 		if ng.mustIgnore(record.Name, record.CType) {
@@ -261,21 +263,13 @@ func (ng *NamespaceGenerator) generateRecords() {
 			continue
 		}
 
-		// Add the needed imports once.
-		if !imported {
-			rg.Ng.addImport("unsafe")
-			imported = true
+		rg.fg.addImport("unsafe")
+		rg.fg.needsGLibObject()
+
+		if record.GLibGetType != "" && !ng.mustIgnoreC(record.GLibGetType) {
+			rg.fg.addMarshaler(record.GLibGetType, rg.GoName)
 		}
 
-		if record.GLibGetType != "" {
-			ng.addMarshaler(record.GLibGetType, rg.GoName)
-		}
-
-		ng.pen.BlockTmpl(recordTmpl, &rg)
-
-		// TODO: record Native() uintptr
-		// TODO: record methods.
-		// TODO: handle transfer-ownership
-		// TODO: free method
+		rg.fg.pen.BlockTmpl(recordTmpl, &rg)
 	}
 }

@@ -11,27 +11,27 @@ import (
 
 // TODO: is there a reason GoCConverter just doesn't take in ParameterAttr?
 
-func (ng *NamespaceGenerator) GoCConverter(conv TypeConversionToC) string {
+// GoCConverter generates code that converts from Go values to C.
+func (fg *FileGenerator) GoCConverter(conv TypeConversionToC) string {
 	switch {
 	case conv.Type.Type != nil:
-		return ng.gocTypeConverter(conv)
+		return fg.gocTypeConverter(conv)
 	case conv.Type.Array != nil:
-		return ng.gocArrayConverter(conv)
+		return fg.gocArrayConverter(conv)
 	default:
 		return ""
 	}
-
 }
 
-func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
+func (fg *FileGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	array := conv.Type.Array
 
 	if array.Type == nil {
-		ng.logln(logSkip, "nested array", array.CType)
+		fg.Logln(LogSkip, "nested array", array.CType)
 		return ""
 	}
 
-	innerResolved := ng.ResolveType(*array.Type)
+	innerResolved := fg.ResolveType(*array.Type)
 	if innerResolved == nil {
 		return ""
 	}
@@ -43,15 +43,15 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	innerTypeConv := conv
 	innerTypeConv.TypeConversion = conv.inner("src", "dst[i]")
 
-	innerConv := ng.GoCConverter(innerTypeConv)
+	innerConv := fg.GoCConverter(innerTypeConv)
 	if innerConv == "" {
 		return ""
 	}
 
 	switch {
 	case array.FixedSize > 0:
-		if !ng.TypeHasPointer(innerResolved) {
-			ng.addImport("runtime")
+		if !TypeHasPointer(fg, innerResolved) {
+			fg.addImport("runtime")
 
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
@@ -78,9 +78,9 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
-		if !conv.isTransferring() && !ng.TypeHasPointer(innerResolved) {
-			ng.addImport("runtime")
-			ng.addImport("unsafe")
+		if !conv.isTransferring() && !TypeHasPointer(fg, innerResolved) {
+			fg.addImport("runtime")
+			fg.addImport("unsafe")
 
 			return pen.NewPiece().
 				Linef("%s = (%s)(unsafe.Pointer(&%s[0]))", conv.Target, outerCGoType, conv.Value).
@@ -89,15 +89,15 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 				String()
 		}
 
-		ng.addImport("reflect")
-		ng.addImport("unsafe")
+		fg.addImport("reflect")
+		fg.addImport("unsafe")
 
 		// Copying is pretty much required here, since the C code will store the
 		// pointer, so we can't reliably do this with Go's memory.
 
 		b := pen.NewBlock()
 		b.Linef("var dst []%s", innerCGoType)
-		b.Linef("ptr := C.malloc(%s * len(%s))", csizeof(ng, innerResolved), conv.Value)
+		b.Linef("ptr := C.malloc(%s * len(%s))", csizeof(fg, innerResolved), conv.Value)
 		b.Linef(goSliceFromPtr("dst", "ptr", length))
 
 		// C.malloc will allocate on the C side, so we'll have to free it.
@@ -119,13 +119,13 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	case array.Name == "GLib.Array":
 		length := fmt.Sprintf("len(%s)", conv.Value)
 
-		ng.addImport("reflect")
-		ng.addImport("unsafe")
+		fg.addImport("reflect")
+		fg.addImport("unsafe")
 
 		b := pen.NewBlock()
 		b.Linef(
 			"%s = C.g_array_sized_new(%v, false, C.guint(%s), %s)",
-			conv.Target, array.ZeroTerminated, csizeof(ng, innerResolved), length)
+			conv.Target, array.ZeroTerminated, csizeof(fg, innerResolved), length)
 		b.EmptyLine()
 		b.Linef("var dst []%s", innerCGoType)
 		b.Linef(goSliceFromPtr("dst", conv.Target+".data", length))
@@ -140,12 +140,12 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	case array.IsZeroTerminated():
 		length := fmt.Sprintf("len(%s)", conv.Value)
 
-		ng.addImport("reflect")
-		ng.addImport("unsafe")
+		fg.addImport("reflect")
+		fg.addImport("unsafe")
 
 		b := pen.NewBlock()
 		b.Linef("var dst []%s", innerCGoType)
-		b.Linef("ptr := C.malloc(%s * (len(%s)+1))", csizeof(ng, innerResolved), conv.Value)
+		b.Linef("ptr := C.malloc(%s * (len(%s)+1))", csizeof(fg, innerResolved), conv.Value)
 		b.Linef(goSliceFromPtr("dst", "ptr", length))
 
 		// See above, in the array.Length != nil case.
@@ -164,24 +164,24 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 		return b.String()
 	}
 
-	ng.logln(logSkip, conv.ParentName+":", "weird array type to C")
+	fg.Logln(LogSkip, conv.ParentName+":", "weird array type to C")
 	return ""
 }
 
-func csizeof(ng *NamespaceGenerator, resolved *ResolvedType) string {
+func csizeof(fg *FileGenerator, resolved *ResolvedType) string {
 	if !strings.Contains(resolved.CType, "*") {
 		return "C.sizeof_" + resolved.CType
 	}
 
-	ng.addImport("unsafe")
+	fg.addImport("unsafe")
 	return "unsafe.Sizeof((*struct{})(nil))"
 }
 
-func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
+func (fg *FileGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	typ := conv.Type.Type
 
-	for _, unsupported := range unsupportedTypes {
-		if unsupported == typ.Name {
+	for _, unsupported := range unsupportedCTypes {
+		if unsupported == typ.CType {
 			return ""
 		}
 	}
@@ -195,7 +195,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 			// If we're not giving ownership this C-allocated string, then we
 			// can free it once done.
 			if !conv.isTransferring() {
-				ng.addImport("unsafe")
+				fg.addImport("unsafe")
 				p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Target)
 			}
 
@@ -213,9 +213,9 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		}
 	}
 
-	switch ng.ensureNamespace(typ.Name) {
+	switch ensureNamespace(fg.Namespace(), typ.Name) {
 	case "gpointer":
-		ng.addImport("github.com/diamondburned/gotk4/internal/box")
+		fg.addImport("github.com/diamondburned/gotk4/internal/box")
 		return fmt.Sprintf("%s = C.gpointer(box.Assign(%s))", conv.Target, conv.Value)
 
 	case "GObject.Type", "GType":
@@ -236,16 +236,16 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	}
 
 	// Pretend that ignored types don't exist.
-	if ng.mustIgnore(typ.Name, typ.CType) {
+	if fg.parent.mustIgnore(typ.Name, typ.CType) {
 		return ""
 	}
 
-	result := ng.gen.Repos.FindType(ng.current, typ.Name)
+	result := fg.FindType(typ.Name)
 	if result == nil {
 		return ""
 	}
 
-	resolved := typeFromResult(ng.gen, *typ, result)
+	resolved := typeFromResult(fg.parent.gen, *typ, result)
 
 	exportedName, _ := resolved.Extern.Result.Info()
 	exportedName = PascalToGo(exportedName)
@@ -267,11 +267,11 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.
 		if conv.Closure == nil {
-			ng.logln(logSkip, "Go->C callback", exportedName, "since missing closure")
+			fg.Logln(LogSkip, "Go->C callback", exportedName, "since missing closure")
 			return ""
 		}
 
-		ng.addImport("github.com/diamondburned/gotk4/internal/box")
+		fg.addImport("github.com/diamondburned/gotk4/internal/box")
 
 		p := pen.NewPiece()
 
@@ -284,7 +284,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 		p.Linef("%s = C.gpointer(box.Assign(%s))", conv.ArgAt(*conv.Closure), conv.Value)
 
 		if conv.Destroy != nil {
-			ng.needsCallbackDelete()
+			fg.needsCallbackDelete()
 			p.Linef("%s = (*[0]byte)(C.callbackDelete)", conv.ArgAt(*conv.Destroy))
 		}
 

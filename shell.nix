@@ -4,6 +4,7 @@ pkgs.mkShell {
 	buildInputs = with pkgs; [
 		# General GTK dependencies.
 		glib
+		graphene
 		# GTK3.
 		gnome3.gtk
 		# GTK4 dependencies.

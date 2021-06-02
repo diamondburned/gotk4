@@ -220,14 +220,14 @@ func (res *NamespaceFindResult) Eq(other *NamespaceFindResult) bool {
 
 // FindNamespace finds the repository and namespace with the given name and
 // version. If name doesn't have the version bits, then it panics.
-func (repos *Repositories) FindNamespace(name string) *NamespaceFindResult {
+func (repos Repositories) FindNamespace(name string) *NamespaceFindResult {
 	name, version := ParseVersionName(name)
 	if version == "" {
 		panic("FindNamespace given namespace unversioned: " + name)
 	}
 
-	for i := range *repos {
-		repository := &(*repos)[i]
+	for i := range repos {
+		repository := &repos[i]
 
 		for j := range repository.Namespaces {
 			namespace := &repository.Namespaces[j]
@@ -296,7 +296,7 @@ func (res *TypeFindResult) Info() (name, ctype string) {
 // FindInclude returns the namespace that the given namespace includes. It
 // resolves imports recursively. This function is primarily used to ensure that
 // proper versions are imported.
-func (repos *Repositories) FindInclude(res *NamespaceFindResult, includes string) *NamespaceFindResult {
+func (repos Repositories) FindInclude(res *NamespaceFindResult, includes string) *NamespaceFindResult {
 	foundIncludes := make([]*NamespaceFindResult, 0, len(res.Repository.Includes))
 
 	for _, incl := range res.Repository.Includes {
@@ -334,7 +334,7 @@ var (
 
 // FindType finds a type in the repositories from the given current namespace
 // and the GIR type name. The function will cache the returned TypeFindResult.
-func (repos *Repositories) FindType(nsp *NamespaceFindResult, typ string) *TypeFindResult {
+func (repos Repositories) FindType(nsp *NamespaceFindResult, typ string) *TypeFindResult {
 	// Build the full type name for cache querying.
 	namespace, typName := SplitGIRType(typ)
 
@@ -382,7 +382,7 @@ gotNamespace:
 	return v.(*TypeFindResult)
 }
 
-func (repos *Repositories) findType(fullType string) *TypeFindResult {
+func (repos Repositories) findType(fullType string) *TypeFindResult {
 	vNamespace, typ := SplitGIRType(fullType)
 
 	r := TypeFindResult{NamespaceFindResult: repos.FindNamespace(vNamespace)}

@@ -15,21 +15,23 @@ type aliasData struct {
 
 func (ng *NamespaceGenerator) generateAliases() {
 	for _, alias := range ng.current.Namespace.Aliases {
-		goType, ok := ng.ResolveToGoType(alias.Type, true)
-		if !ok {
-			continue
-		}
-
 		if ng.mustIgnore(alias.Name, alias.CType) {
 			continue
 		}
 
-		if goType == "" {
-			ng.logln(logSkip, "alias", alias.Name, "is opaque type")
+		fg := ng.FileFromSource(alias.SourcePosition)
+
+		goType, ok := GoType(fg, alias.Type, true)
+		if !ok {
 			continue
 		}
 
-		ng.pen.BlockTmpl(aliasTmpl, aliasData{
+		if goType == "" {
+			fg.Logln(LogSkip, "alias", alias.Name, "is opaque type")
+			continue
+		}
+
+		fg.pen.BlockTmpl(aliasTmpl, aliasData{
 			Alias:  alias,
 			GoType: goType,
 		})

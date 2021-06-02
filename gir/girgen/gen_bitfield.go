@@ -51,11 +51,14 @@ func (ng *NamespaceGenerator) generateBitfields() {
 			continue
 		}
 
-		if bitfield.GLibGetType != "" {
-			ng.addMarshaler(bitfield.GLibGetType, PascalToGo(bitfield.Name))
+		fg := ng.FileFromSource(bitfield.SourcePosition)
+		fg.needsGLibObject()
+
+		if bitfield.GLibGetType != "" && !ng.mustIgnoreC(bitfield.GLibGetType) {
+			fg.addMarshaler(bitfield.GLibGetType, PascalToGo(bitfield.Name))
 		}
 
-		ng.pen.BlockTmpl(bitfieldTmpl, &bitfieldGenerator{
+		fg.pen.BlockTmpl(bitfieldTmpl, &bitfieldGenerator{
 			Bitfield: bitfield,
 			Ng:       ng,
 		})

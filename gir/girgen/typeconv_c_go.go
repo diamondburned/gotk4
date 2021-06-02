@@ -14,38 +14,38 @@ import (
 //
 // The given argPrefix is used to get the nth parameter by concatenating the
 // prefix with the index number. This is used for length parameters.
-func (ng *NamespaceGenerator) CGoConverter(conv TypeConversionToGo) string {
+func (fg *FileGenerator) CGoConverter(conv TypeConversionToGo) string {
 	switch {
 	case conv.Type.Array != nil:
-		return ng.cgoArrayConverter(conv)
+		return fg.cgoArrayConverter(conv)
 	case conv.Type.Type != nil:
-		return ng.cgoTypeConverter(conv)
+		return fg.cgoTypeConverter(conv)
 	}
 
 	// Ignore VarArgs.
 	return ""
 }
 
-func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string {
+func (fg *FileGenerator) cgoArrayConverter(conv TypeConversionToGo) string {
 	array := conv.Type.Array
 
 	if array.Type == nil {
-		ng.gen.logln(logSkip, "nested array", array.CType)
+		fg.Logln(LogSkip, "nested array", array.CType)
 		return ""
 	}
 
-	innerResolved := ng.ResolveType(*array.AnyType.Type)
+	innerResolved := fg.ResolveType(*array.AnyType.Type)
 	if innerResolved == nil {
 		return ""
 	}
-	innerType := ng.PublicType(innerResolved)
+	innerType := GoPublicType(fg, innerResolved)
 	innerCGoType := innerResolved.CGoType()
 
 	// Generate a type converter from "src" to "${target}[i]" variables.
 	innerTypeConv := conv
 	innerTypeConv.TypeConversion = conv.inner("src", conv.Target+"[i]")
 
-	innerConv := ng.CGoConverter(innerTypeConv)
+	innerConv := fg.CGoConverter(innerTypeConv)
 	if innerConv == "" {
 		return ""
 	}
@@ -69,7 +69,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	case array.Length != nil:
-		ng.addImport("unsafe")
+		fg.addImport("unsafe")
 
 		lengthArg := conv.ArgAt(*array.Length)
 
@@ -82,8 +82,8 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
 		if conv.isTransferring() && innerResolved.IsPrimitive() {
-			ng.addImport("runtime")
-			ng.addImport("reflect")
+			fg.addImport("runtime")
+			fg.addImport("reflect")
 
 			b.Linef(goSliceFromPtr(conv.Target, conv.Value, lengthArg))
 
@@ -104,7 +104,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	case array.Name == "GLib.Array": // treat as Go array
-		ng.addImport("unsafe")
+		fg.addImport("unsafe")
 
 		b.Linef("var length uintptr")
 		b.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&length))", conv.Value)
@@ -116,7 +116,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	case array.IsZeroTerminated():
-		ng.addImport("unsafe")
+		fg.addImport("unsafe")
 
 		// Scan for the length.
 		b.Linef("var length uint")
@@ -134,7 +134,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string 
 		b.Linef("}")
 
 	default:
-		ng.logln(logSkip, conv.ParentName+":", "weird array type to Go")
+		fg.Logln(LogSkip, conv.ParentName+":", "weird array type to Go")
 		return ""
 	}
 
@@ -153,10 +153,10 @@ func goSliceFromPtr(target, ptr, len string) string {
 		String()
 }
 
-func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
+func (fg *FileGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	typ := conv.Type.Type
 
-	for _, unsupported := range unsupportedTypes {
+	for _, unsupported := range unsupportedCTypes {
 		if unsupported == typ.Name {
 			return ""
 		}
@@ -172,14 +172,15 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 
 			// Only free this if C is transferring ownership to us.
 			if conv.isTransferring() {
-				ng.addImport("unsafe")
+				fg.addImport("unsafe")
 				p.Linef("C.free(unsafe.Pointer(%s))", conv.Value)
 			}
 
 			return p.String()
 
 		case "bool":
-			return fmt.Sprintf("%s = C.BOOL(%s) != 0", conv.Target, conv.Value)
+			fg.needsStdbool()
+			return fmt.Sprintf("%s = C.bool(%s) != C.false", conv.Target, conv.Value)
 
 		default:
 			return directCall(conv.Value, conv.Target, prim)
@@ -187,9 +188,9 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	}
 
 	// Resolve special-case GLib types.
-	switch ng.ensureNamespace(typ.Name) {
+	switch ensureNamespace(fg.Namespace(), typ.Name) {
 	case "gpointer":
-		ng.addImport("github.com/diamondburned/gotk4/internal/box")
+		fg.addImport("github.com/diamondburned/gotk4/internal/box")
 
 		castTail := conv.BoxCast
 		if castTail != "" {
@@ -199,17 +200,17 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		return fmt.Sprintf("%s = box.Get(uintptr(%s))%s", conv.Target, conv.Value, castTail)
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		ng.addImport("unsafe")
-		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
+		fg.addImport("unsafe")
+		fg.addImport("github.com/diamondburned/gotk4/internal/gextras")
 		return cgoTakeObject(conv.TypeConversion, "gextras.Objector")
 
 	case "GObject.Type", "GType":
-		ng.addGLibImport()
+		fg.addGLibImport()
 		return conv.call("externglib.Type")
 
 	case "GObject.Value":
-		ng.addGLibImport()
-		ng.addImport("unsafe")
+		fg.addGLibImport()
+		fg.addImport("unsafe")
 
 		p := pen.NewPiece()
 		p.Linef("%s = externglib.ValueFromNative(unsafe.Pointer(%s))", conv.Target, conv.Value)
@@ -225,26 +226,26 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	}
 
 	// Pretend that ignored types don't exist.
-	if ng.mustIgnore(typ.Name, typ.CType) {
+	if fg.parent.mustIgnore(typ.Name, typ.CType) {
 		return ""
 	}
 
-	result := ng.gen.Repos.FindType(ng.current, typ.Name)
+	result := fg.parent.gen.Repos.FindType(fg.parent.current, typ.Name)
 	if result == nil {
 		// Probably already warned.
 		return ""
 	}
 
-	resolved := typeFromResult(ng.gen, *typ, result)
+	resolved := typeFromResult(fg.parent.gen, *typ, result)
 
 	// goName contains the pointer.
-	goName := ng.PublicType(resolved)
+	goName := GoPublicType(fg, resolved)
 
 	// Resolve alias.
 	if result.Alias != nil {
-		rootType := ng.ResolveType(result.Alias.Type)
+		rootType := fg.ResolveType(result.Alias.Type)
 		if rootType == nil {
-			ng.logln(logUnknown, "from alias", result.Alias.Name, "has", result.Alias.Type.Name)
+			fg.Logln(LogUnknown, "from alias", result.Alias.Name, "has", result.Alias.Type.Name)
 			return ""
 		}
 
@@ -252,7 +253,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 		rootConv.Type = gir.AnyType{Type: &result.Alias.Type}
 		rootConv.Target = "tmp"
 
-		publicType := ng.PublicType(rootType)
+		publicType := GoPublicType(fg, rootType)
 		if publicType == "" {
 			// likely void type, which is non-sense. See Gdk.XEvent.
 			return ""
@@ -260,7 +261,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 
 		b := pen.NewBlock()
 		b.Linef("var tmp %s", publicType)
-		b.Linef(ng.CGoConverter(rootConv))
+		b.Linef(fg.CGoConverter(rootConv))
 		b.Linef("%s = %s(tmp)", conv.Target, goName)
 		return b.String()
 	}
@@ -273,14 +274,14 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	if result.Class != nil || result.Record != nil || result.Interface != nil {
 		switch {
 		case result.Class != nil, result.Interface != nil:
-			ng.addImport("unsafe")
-			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
+			fg.addImport("unsafe")
+			fg.addImport("github.com/diamondburned/gotk4/internal/gextras")
 			return cgoTakeObject(conv.TypeConversion, goName)
 
 		case result.Record != nil:
 			// We should only use the concrete wrapper for the record, since the
 			// returned type is concretely known here.
-			wrapName := resolved.WrapName(resolved.NeedsNamespace(ng.current))
+			wrapName := resolved.WrapName(resolved.NeedsNamespace(fg.Namespace()))
 
 			b := pen.NewBlock()
 			b.Linef("%s = %s(unsafe.Pointer(%s))", conv.Target, wrapName, conv.Value)
@@ -288,7 +289,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 			// If ownership is being transferred to us on the Go side, then we
 			// should free.
 			if conv.isTransferring() {
-				ng.addImport("runtime")
+				fg.addImport("runtime")
 
 				arg := conv.Target
 				typ := goName

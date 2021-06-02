@@ -16,15 +16,16 @@ type callableGenerator struct {
 
 	Converts []string
 
-	Ng *NamespaceGenerator
+	ng *NamespaceGenerator
+	fg *FileGenerator
 }
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
-	return callableGenerator{Ng: ng}
+	return callableGenerator{ng: ng}
 }
 
 func (cg *callableGenerator) reset() {
-	*cg = callableGenerator{Ng: cg.Ng}
+	*cg = callableGenerator{ng: cg.ng}
 }
 
 func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
@@ -34,7 +35,9 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 		return false
 	}
 
-	call := cg.Ng.FnCall(cattrs)
+	cg.fg = cg.ng.FileFromSource(cattrs.SourcePosition)
+
+	call := cg.fg.fnCall(cattrs)
 	if call == "" {
 		cg.reset()
 		return false
@@ -45,8 +48,8 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	cg.CallableAttrs = cattrs
 
 	if cg.Block = cg.block(); cg.Block == "" {
+		cg.fg.Logln(LogSkip, "callable (no block)", cFunctionSig(cattrs))
 		cg.reset()
-		cg.Ng.logln(logSkip, "callable (no block)", cFunctionSig(cattrs))
 		return false
 	}
 
@@ -90,7 +93,7 @@ func cFunctionSig(fn gir.CallableAttrs) string {
 // for methods.
 func (cg *callableGenerator) Recv() string {
 	if cg.Parameters != nil && cg.Parameters.InstanceParameter != nil {
-		return SnakeToGo(false, cg.Parameters.InstanceParameter.Name)
+		return FirstLetter(cg.Parameters.InstanceParameter.Name)
 	}
 
 	return "v"
@@ -137,7 +140,7 @@ func (cg *callableGenerator) block() string {
 			// Ignored arguments may be covered by GoCConverter if the
 			// attributes are part of the type and not the parameter attributes.
 			if !ignores.ignore(i) {
-				converter := cg.Ng.GoCConverter(TypeConversionToC{
+				converter := cg.fg.GoCConverter(TypeConversionToC{
 					TypeConversion: TypeConversion{
 						Value:      valn,
 						Target:     targ,
@@ -235,13 +238,13 @@ func (cg *callableGenerator) block() string {
 			break
 		}
 
-		goType, _ := cg.Ng.ResolveAnyType(ret.Type, true)
+		goType, _ := GoAnyType(cg.fg, ret.Type, true)
 		retName := fmt.Sprintf("ret%d", i)
 		retvars.Add(retName)
 
 		blocks.Linef(3, "var %s %s", retName, goType)
 
-		converter := cg.Ng.CGoConverter(TypeConversionToGo{
+		converter := cg.fg.CGoConverter(TypeConversionToGo{
 			TypeConversion: TypeConversion{
 				Value:      ret.Name,
 				Target:     retName,
@@ -278,19 +281,19 @@ func (cg *callableGenerator) block() string {
 	return blocks.String()
 }
 
-// FnCall generates the tail of the function, that is, everything underlined
+// fnCall generates the tail of the function, that is, everything underlined
 // below:
 //
 //    func FunctionName(arguments...) (returns...)
 //                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // An empty string is returned if the function cannot be generated.
-func (ng *NamespaceGenerator) FnCall(attrs gir.CallableAttrs) string {
-	args, ok := ng.FnArgs(attrs)
+func (fg *FileGenerator) fnCall(attrs gir.CallableAttrs) string {
+	args, ok := fg.fnArgs(attrs)
 	if !ok {
 		return ""
 	}
 
-	returns, ok := ng.FnReturns(attrs)
+	returns, ok := fg.fnReturns(attrs)
 	if !ok {
 		return ""
 	}
@@ -298,9 +301,9 @@ func (ng *NamespaceGenerator) FnCall(attrs gir.CallableAttrs) string {
 	return "(" + args + ") " + returns
 }
 
-// FnArgs returns the function arguments as a Go string and true. It returns
+// fnArgs returns the function arguments as a Go string and true. It returns
 // false if the argument types cannot be fully resolved.
-func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
+func (fg *FileGenerator) fnArgs(attrs gir.CallableAttrs) (string, bool) {
 	if attrs.Parameters == nil || len(attrs.Parameters.Parameters) == 0 {
 		return "", true
 	}
@@ -310,12 +313,12 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 	ok := iterateParams(attrs, func(_ int, param gir.Parameter) bool {
 		goName := SnakeToGo(false, param.Name)
 
-		resolved, ok := ng.ResolveAnyType(param.AnyType, true)
+		resolved, ok := GoAnyType(fg, param.AnyType, true)
 		if !ok {
 			if goName == "..." {
-				ng.logln(logSkip, "function", attrs.Name, "is variadic")
+				fg.Logln(LogSkip, "function", attrs.Name, "is variadic")
 			} else {
-				ng.logln(logUnknown, "function argument", goName, "for", attrs.Name)
+				fg.Logln(LogUnknown, "function argument", goName, "for", attrs.Name)
 			}
 
 			return false
@@ -332,15 +335,15 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 	return strings.Join(goArgs, ", "), true
 }
 
-// FnReturns returns the function return type and true. It returns false if the
+// fnReturns returns the function return type and true. It returns false if the
 // function's return type cannot be resolved.
-func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) {
+func (fg *FileGenerator) fnReturns(attrs gir.CallableAttrs) (string, bool) {
 	var returns []string
 
 	ok := iterateReturns(attrs, func(goName string, i int, any gir.AnyType) bool {
-		typ, ok := ng.ResolveAnyType(any, true)
+		typ, ok := GoAnyType(fg, any, true)
 		if !ok {
-			ng.logln(logUnknown, "function output", goName, "for", attrs.Name)
+			fg.Logln(LogUnknown, "function output", goName, "for", attrs.Name)
 			return false
 		}
 

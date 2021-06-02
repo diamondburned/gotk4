@@ -8,6 +8,8 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 )
 
+// TODO: refactor to add method accuracy
+
 // FilterMatcher describes a filter for a GIR type.
 type FilterMatcher interface {
 	// Filter matches for the girType within the given namespace from the
@@ -35,7 +37,7 @@ func (abs absoluteFilter) Filter(ng *NamespaceGenerator, girType, cType string) 
 		return cType != abs.matcher
 	}
 
-	typ, eq := EqNamespace(abs.namespace, ng.Namespace(), girType)
+	typ, eq := EqNamespace(abs.namespace, ng.Namespace().Namespace, girType)
 	return !eq || typ != abs.matcher
 }
 
@@ -77,7 +79,7 @@ func (rf *regexFilter) Filter(ng *NamespaceGenerator, girType, cType string) (ke
 		return !rf.matcher.MatchString(cType)
 	}
 
-	typ, eq := EqNamespace(rf.namespace, ng.Namespace(), girType)
+	typ, eq := EqNamespace(rf.namespace, ng.Namespace().Namespace, girType)
 	if !eq {
 		return true
 	}
@@ -89,16 +91,50 @@ func (rf *regexFilter) Filter(ng *NamespaceGenerator, girType, cType string) (ke
 func EqNamespace(nsp string, current *gir.Namespace, girType string) (typ string, ok bool) {
 	fullName, typ := gir.SplitGIRType(girType)
 	namespace, _ := gir.ParseVersionName(fullName)
+	return typ, namespace != nsp
+}
 
-	// Type has namespace; ensure the namespace matches the matcher's.
-	if namespace != "" && namespace != nsp {
-		return "", false
+type fileFilter struct {
+	match *regexp.Regexp
+}
+
+// FileFilter filters based on the source position.
+func FileFilter(regex string) FilterMatcher {
+	return fileFilter{regexp.MustCompile(regex)}
+}
+
+func (ff fileFilter) Filter(ng *NamespaceGenerator, girType, _ string) (keep bool) {
+	res := ng.FindType(girType)
+	if res == nil {
+		return true
 	}
 
-	// Type has no namespace; check the current generator's namespace instead.
-	if namespace == "" && current.Name != nsp {
-		return "", false
+	var source *gir.SourcePosition
+
+	switch {
+	case res.Alias != nil:
+		source = res.Alias.SourcePosition
+	case res.Class != nil:
+		source = res.Class.SourcePosition
+	case res.Interface != nil:
+		source = res.Interface.SourcePosition
+	case res.Record != nil:
+		source = res.Record.SourcePosition
+	case res.Enum != nil:
+		source = res.Enum.SourcePosition
+	case res.Function != nil:
+		source = res.Function.SourcePosition
+	case res.Union != nil:
+		source = res.Union.SourcePosition
+	case res.Bitfield != nil:
+		source = res.Bitfield.SourcePosition
+	case res.Callback != nil:
+		source = res.Callback.SourcePosition
 	}
 
-	return typ, true
+	if source == nil {
+		return true
+	}
+
+	return !ff.match.MatchString(source.Filename)
 }

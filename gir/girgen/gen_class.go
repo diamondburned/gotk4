@@ -63,22 +63,25 @@ type classGenerator struct {
 
 	Callable callableGenerator
 
-	Ng *NamespaceGenerator
+	fg *FileGenerator
+	ng *NamespaceGenerator
 }
 
 func newClassGenerator(ng *NamespaceGenerator) *classGenerator {
 	return &classGenerator{
 		TypeTree: *ng.TypeTree(),
-		Callable: callableGenerator{Ng: ng},
-		Ng:       ng,
+		Callable: newCallableGenerator(ng),
+		ng:       ng,
 	}
 }
 
 func (cg *classGenerator) Use(class gir.Class) bool {
+	cg.fg = cg.ng.FileFromSource(class.SourcePosition)
+
 	if class.Parent == "" {
 		// TODO: check what happens if a class has no parent. It should have a
 		// GObject parent, usually.
-		cg.Ng.logln(logSkip, "class", class.Name, "because it has no parents")
+		cg.fg.Logln(LogSkip, "class", class.Name, "because it has no parents")
 		return false
 	}
 
@@ -86,16 +89,16 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.InterfaceName = PascalToGo(class.Name)
 	cg.StructName = UnexportPascal(cg.InterfaceName)
 
-	resolved := TypeFromResult(cg.Ng, gir.TypeFindResult{Class: &class})
+	resolved := TypeFromResult(cg.ng, gir.TypeFindResult{Class: &class})
 	if !cg.TypeTree.ResolveFromType(resolved) {
-		cg.Ng.logln(logSkip, "class", class.Name, "because unknown parent type", class.Parent)
+		cg.fg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
 		return false
 	}
 
 	cg.Methods = callableGrow(cg.Methods, len(class.Methods))
 
 	for _, method := range class.Methods {
-		cbgen := newCallableGenerator(cg.Ng)
+		cbgen := newCallableGenerator(cg.ng)
 		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
@@ -159,11 +162,13 @@ func (ng *NamespaceGenerator) generateClasses() {
 			continue
 		}
 
-		if class.GLibGetType != "" {
-			ng.addMarshaler(class.GLibGetType, cg.InterfaceName)
+		if class.GLibGetType != "" && !ng.mustIgnoreC(class.GLibGetType) {
+			cg.fg.addMarshaler(class.GLibGetType, cg.InterfaceName)
 		}
 
-		ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-		ng.pen.BlockTmpl(classTmpl, &cg)
+		cg.fg.addImport("github.com/diamondburned/gotk4/internal/gextras")
+		cg.fg.needsGLibObject()
+
+		cg.fg.pen.BlockTmpl(classTmpl, &cg)
 	}
 }

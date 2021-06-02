@@ -40,11 +40,14 @@ func (ng *NamespaceGenerator) generateEnums() {
 			continue
 		}
 
-		if enum.GLibGetType != "" {
-			ng.addMarshaler(enum.GLibGetType, PascalToGo(enum.Name))
+		fg := ng.FileFromSource(enum.SourcePosition)
+		fg.needsGLibObject()
+
+		if enum.GLibGetType != "" && !ng.mustIgnoreC(enum.GLibGetType) {
+			fg.addMarshaler(enum.GLibGetType, PascalToGo(enum.Name))
 		}
 
-		ng.pen.BlockTmpl(enumTmpl, &enumGenerator{
+		fg.pen.BlockTmpl(enumTmpl, &enumGenerator{
 			Enum: enum,
 			Ng:   ng,
 		})

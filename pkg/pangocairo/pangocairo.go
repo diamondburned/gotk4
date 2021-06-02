@@ -14,10 +14,12 @@ import (
 
 // #cgo pkg-config: pangocairo
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <stdbool.h>
+// #include <glib-object.h>
 // #include <pango/pangocairo.h>
 //
 // extern void gotk4_ShapeRendererFunc(cairo_t* _0, PangoAttrShape* _1, gboolean _2, gpointer _3);
-// // extern void callbackDelete(gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -55,7 +57,7 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 		attr = pango.WrapAttrShape(unsafe.Pointer(arg1))
 	}
 
-	doPath = C.BOOL(arg2) != 0
+	doPath = C.bool(arg2) != 0
 
 	v.(ShapeRendererFunc)(cr, attr, doPath)
 }
@@ -231,7 +233,6 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 // gets its own default fontmap. In this way, PangoCairo can be used safely from
 // multiple threads.
 func FontMapGetDefault() pango.FontMap {
-
 	ret := C.pango_cairo_font_map_get_default()
 
 	var ret0 pango.FontMap
@@ -257,7 +258,6 @@ func FontMapGetDefault() pango.FontMap {
 // is returned. Ie. this is only useful for testing, when at least two backends
 // are compiled in.
 func NewFontMap() pango.FontMap {
-
 	ret := C.pango_cairo_font_map_new()
 
 	var ret0 pango.FontMap
@@ -486,10 +486,10 @@ func marshalFont(p uintptr) (interface{}, error) {
 
 // ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
 // can be referenced and kept using cairo_scaled_font_reference().
-func (font font) ScaledFont() *cairo.ScaledFont {
+func (f font) ScaledFont() *cairo.ScaledFont {
 	var arg0 *C.PangoCairoFont
 
-	arg0 = (*C.PangoCairoFont)(font.Native())
+	arg0 = (*C.PangoCairoFont)(f.Native())
 
 	ret := C.pango_cairo_font_get_scaled_font(arg0)
 
@@ -563,10 +563,10 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 }
 
 // CreateContext: create a `PangoContext` for the given fontmap.
-func (fontmap fontMap) CreateContext() pango.Context {
+func (f fontMap) CreateContext() pango.Context {
 	var arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+	arg0 = (*C.PangoCairoFontMap)(f.Native())
 
 	ret := C.pango_cairo_font_map_create_context(arg0)
 
@@ -578,10 +578,10 @@ func (fontmap fontMap) CreateContext() pango.Context {
 }
 
 // FontType gets the type of Cairo font backend that @fontmap uses.
-func (fontmap fontMap) FontType() cairo.FontType {
+func (f fontMap) FontType() cairo.FontType {
 	var arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+	arg0 = (*C.PangoCairoFontMap)(f.Native())
 
 	ret := C.pango_cairo_font_map_get_font_type(arg0)
 
@@ -595,10 +595,10 @@ func (fontmap fontMap) FontType() cairo.FontType {
 // Resolution gets the resolution for the fontmap.
 //
 // See [method@PangoCairo.FontMap.set_resolution].
-func (fontmap fontMap) Resolution() float64 {
+func (f fontMap) Resolution() float64 {
 	var arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+	arg0 = (*C.PangoCairoFontMap)(f.Native())
 
 	ret := C.pango_cairo_font_map_get_resolution(arg0)
 
@@ -623,10 +623,10 @@ func (fontmap fontMap) Resolution() float64 {
 // A value of nil for @fontmap will cause the current default font map to be
 // released and a new default font map to be created on demand, using
 // [type_func@PangoCairo.FontMap.new].
-func (fontmap fontMap) SetDefault() {
+func (f fontMap) SetDefault() {
 	var arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+	arg0 = (*C.PangoCairoFontMap)(f.Native())
 
 	C.pango_cairo_font_map_set_default(arg0)
 }
@@ -636,11 +636,11 @@ func (fontmap fontMap) SetDefault() {
 // This is a scale factor between points specified in a
 // `PangoFontDescription` and Cairo units. The default value is 96, meaning
 // that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
-func (fontmap fontMap) SetResolution(dpi float64) {
+func (f fontMap) SetResolution(dpi float64) {
 	var arg0 *C.PangoCairoFontMap
 	var arg1 C.double
 
-	arg0 = (*C.PangoCairoFontMap)(fontmap.Native())
+	arg0 = (*C.PangoCairoFontMap)(f.Native())
 	arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(arg0, arg1)

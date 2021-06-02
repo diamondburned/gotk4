@@ -83,7 +83,7 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -109,7 +109,7 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

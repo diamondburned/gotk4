@@ -455,7 +455,7 @@ func (d x11Display) UTF8ToCompoundText(str string) (encoding gdk.Atom, format in
 
 	ret3 = int(arg5)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }

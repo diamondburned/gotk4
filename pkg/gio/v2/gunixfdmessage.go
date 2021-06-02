@@ -33,30 +33,6 @@ func init() {
 	})
 }
 
-type UnixFDMessagePrivate struct {
-	native C.GUnixFDMessagePrivate
-}
-
-// WrapUnixFDMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixFDMessagePrivate(ptr unsafe.Pointer) *UnixFDMessagePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixFDMessagePrivate)(ptr)
-}
-
-func marshalUnixFDMessagePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixFDMessagePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixFDMessagePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
-}
-
 // UnixFDMessage: this ControlMessage contains a FDList. It may be sent using
 // g_socket_send_message() and received using g_socket_receive_message() over
 // UNIX sockets (ie: sockets in the G_SOCKET_FAMILY_UNIX family). The file
@@ -235,4 +211,28 @@ func (m unixFDMessage) StealFds() (length int, gints []int) {
 	}
 
 	return ret0, ret1
+}
+
+type UnixFDMessagePrivate struct {
+	native C.GUnixFDMessagePrivate
+}
+
+// WrapUnixFDMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixFDMessagePrivate(ptr unsafe.Pointer) *UnixFDMessagePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixFDMessagePrivate)(ptr)
+}
+
+func marshalUnixFDMessagePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixFDMessagePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixFDMessagePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }

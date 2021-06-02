@@ -440,7 +440,7 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -507,7 +507,7 @@ func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

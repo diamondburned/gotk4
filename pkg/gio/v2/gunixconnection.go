@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type UnixConnectionPrivate struct {
-	native C.GUnixConnectionPrivate
-}
-
-// WrapUnixConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixConnectionPrivate(ptr unsafe.Pointer) *UnixConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixConnectionPrivate)(ptr)
-}
-
-func marshalUnixConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
-}
-
 // UnixConnection: this is the subclass of Connection that is created for UNIX
 // domain sockets.
 //
@@ -386,4 +362,28 @@ func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
 	}
 
 	return goError
+}
+
+type UnixConnectionPrivate struct {
+	native C.GUnixConnectionPrivate
+}
+
+// WrapUnixConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixConnectionPrivate(ptr unsafe.Pointer) *UnixConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixConnectionPrivate)(ptr)
+}
+
+func marshalUnixConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }

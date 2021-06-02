@@ -21,18 +21,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_TickCallback(GtkWidget* _0, GdkFrameClock* _1, gpointer _2);
+// gboolean gotk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidget},
+		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
 }
 
@@ -64,140 +64,6 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 	frameClock = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gdk.FrameClock)
 
 	ok := v.(TickCallback)(widget, frameClock)
-}
-
-// Requisition: a Requisition-struct represents the desired size of a widget.
-// See [GtkWidget’s geometry management section][geometry-management] for more
-// information.
-type Requisition struct {
-	native C.GtkRequisition
-}
-
-// WrapRequisition wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRequisition(ptr unsafe.Pointer) *Requisition {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Requisition)(ptr)
-}
-
-func marshalRequisition(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRequisition(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *Requisition) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}
-
-// NewRequisition constructs a struct Requisition.
-func NewRequisition() *Requisition {
-	ret := C.gtk_requisition_new()
-
-	var ret0 *Requisition
-
-	{
-		ret0 = WrapRequisition(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *Requisition) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Width gets the field inside the struct.
-func (r *Requisition) Width() int {
-	var ret int
-	ret = int(r.native.width)
-	return ret
-}
-
-// Height gets the field inside the struct.
-func (r *Requisition) Height() int {
-	var ret int
-	ret = int(r.native.height)
-	return ret
-}
-
-// Copy copies a `GtkRequisition`.
-func (r *Requisition) Copy() *Requisition {
-	var arg0 *C.GtkRequisition
-
-	arg0 = (*C.GtkRequisition)(r.Native())
-
-	ret := C.gtk_requisition_copy(arg0)
-
-	var ret0 *Requisition
-
-	{
-		ret0 = WrapRequisition(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *Requisition) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Free frees a `GtkRequisition`.
-func (r *Requisition) Free() {
-	var arg0 *C.GtkRequisition
-
-	arg0 = (*C.GtkRequisition)(r.Native())
-
-	C.gtk_requisition_free(arg0)
-}
-
-type WidgetClassPrivate struct {
-	native C.GtkWidgetClassPrivate
-}
-
-// WrapWidgetClassPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWidgetClassPrivate(ptr unsafe.Pointer) *WidgetClassPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WidgetClassPrivate)(ptr)
-}
-
-func marshalWidgetClassPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWidgetClassPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WidgetClassPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
-}
-
-type WidgetPrivate struct {
-	native C.GtkWidgetPrivate
-}
-
-// WrapWidgetPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWidgetPrivate(ptr unsafe.Pointer) *WidgetPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WidgetPrivate)(ptr)
-}
-
-func marshalWidgetPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWidgetPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WidgetPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
 }
 
 // Widget: the base class for all widgets.
@@ -1750,7 +1616,7 @@ func (w widget) Activate() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1778,7 +1644,7 @@ func (w widget) ActivateActionVariant(name string, args *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1938,7 +1804,7 @@ func (w widget) ChildFocus(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1971,7 +1837,7 @@ func (w widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok bool) 
 		ret0 = graphene.WrapRect(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -2000,7 +1866,7 @@ func (w widget) ComputeExpand(orientation Orientation) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2029,7 +1895,7 @@ func (w widget) ComputePoint(target Widget, point *graphene.Point) (outPoint gra
 		ret0 = graphene.WrapPoint(unsafe.Pointer(arg3))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -2053,7 +1919,7 @@ func (w widget) ComputeTransform(target Widget) (outTransform graphene.Matrix, o
 		ret0 = graphene.WrapMatrix(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -2075,7 +1941,7 @@ func (w widget) Contains(x float64, y float64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2143,7 +2009,7 @@ func (w widget) DragCheckThreshold(startX int, startY int, currentX int, current
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2288,7 +2154,7 @@ func (w widget) CanFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2303,7 +2169,7 @@ func (w widget) CanTarget() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2324,7 +2190,7 @@ func (w widget) ChildVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2494,7 +2360,7 @@ func (w widget) FocusOnClick() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2511,7 +2377,7 @@ func (w widget) Focusable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2618,7 +2484,7 @@ func (w widget) HasTooltip() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2668,7 +2534,7 @@ func (w widget) Hexpand() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2692,7 +2558,7 @@ func (w widget) HexpandSet() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2741,7 +2607,7 @@ func (w widget) Mapped() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3015,7 +2881,7 @@ func (w widget) Realized() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3034,7 +2900,7 @@ func (w widget) ReceivesDefault() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3117,7 +2983,7 @@ func (w widget) Sensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3329,7 +3195,7 @@ func (w widget) Vexpand() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3347,7 +3213,7 @@ func (w widget) VexpandSet() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3369,7 +3235,7 @@ func (w widget) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3413,7 +3279,7 @@ func (w widget) GrabFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3431,7 +3297,7 @@ func (w widget) HasCSSClass(cssClass string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3447,7 +3313,7 @@ func (w widget) HasDefault() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3465,7 +3331,7 @@ func (w widget) HasFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3489,7 +3355,7 @@ func (w widget) HasVisibleFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3517,7 +3383,7 @@ func (w widget) InDestruction() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3639,7 +3505,7 @@ func (w widget) IsAncestor(ancestor Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3656,7 +3522,7 @@ func (w widget) IsDrawable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3675,7 +3541,7 @@ func (w widget) IsFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3693,7 +3559,7 @@ func (w widget) IsSensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3714,7 +3580,7 @@ func (w widget) IsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3755,7 +3621,7 @@ func (w widget) KeynavFailed(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3856,7 +3722,7 @@ func (w widget) MnemonicActivate(groupCycling bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4758,7 +4624,7 @@ func (w widget) ShouldLayout() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4834,7 +4700,7 @@ func (s widget) TranslateCoordinates(destWidget Widget, srcX float64, srcY float
 
 	ret1 = float64(arg5)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -4897,4 +4763,138 @@ func (w widget) UnsetStateFlags(flags StateFlags) {
 	arg1 = (C.GtkStateFlags)(flags)
 
 	C.gtk_widget_unset_state_flags(arg0, arg1)
+}
+
+// Requisition: a Requisition-struct represents the desired size of a widget.
+// See [GtkWidget’s geometry management section][geometry-management] for more
+// information.
+type Requisition struct {
+	native C.GtkRequisition
+}
+
+// WrapRequisition wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRequisition(ptr unsafe.Pointer) *Requisition {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*Requisition)(ptr)
+}
+
+func marshalRequisition(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapRequisition(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *Requisition) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
+}
+
+// NewRequisition constructs a struct Requisition.
+func NewRequisition() *Requisition {
+	ret := C.gtk_requisition_new()
+
+	var ret0 *Requisition
+
+	{
+		ret0 = WrapRequisition(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// Width gets the field inside the struct.
+func (r *Requisition) Width() int {
+	var ret int
+	ret = int(r.native.width)
+	return ret
+}
+
+// Height gets the field inside the struct.
+func (r *Requisition) Height() int {
+	var ret int
+	ret = int(r.native.height)
+	return ret
+}
+
+// Copy copies a `GtkRequisition`.
+func (r *Requisition) Copy() *Requisition {
+	var arg0 *C.GtkRequisition
+
+	arg0 = (*C.GtkRequisition)(r.Native())
+
+	ret := C.gtk_requisition_copy(arg0)
+
+	var ret0 *Requisition
+
+	{
+		ret0 = WrapRequisition(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *Requisition) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// Free frees a `GtkRequisition`.
+func (r *Requisition) Free() {
+	var arg0 *C.GtkRequisition
+
+	arg0 = (*C.GtkRequisition)(r.Native())
+
+	C.gtk_requisition_free(arg0)
+}
+
+type WidgetClassPrivate struct {
+	native C.GtkWidgetClassPrivate
+}
+
+// WrapWidgetClassPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWidgetClassPrivate(ptr unsafe.Pointer) *WidgetClassPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WidgetClassPrivate)(ptr)
+}
+
+func marshalWidgetClassPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWidgetClassPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WidgetClassPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
+}
+
+type WidgetPrivate struct {
+	native C.GtkWidgetPrivate
+}
+
+// WrapWidgetPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWidgetPrivate(ptr unsafe.Pointer) *WidgetPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WidgetPrivate)(ptr)
+}
+
+func marshalWidgetPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWidgetPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WidgetPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
 }

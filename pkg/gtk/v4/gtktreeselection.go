@@ -16,8 +16,8 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_TreeSelectionForeachFunc(GtkTreeModel* _0, GtkTreePath* _1, GtkTreeIter* _2, gpointer _3);
-// extern gboolean gotk4_TreeSelectionFunc(GtkTreeSelection* _0, GtkTreeModel* _1, GtkTreePath* _2, gboolean _3, gpointer _4);
+// void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// gboolean gotk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -83,7 +83,7 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 		path = WrapTreePath(unsafe.Pointer(arg2))
 	}
 
-	pathCurrentlySelected = C.bool(arg3) != 0
+	pathCurrentlySelected = C.bool(arg3) != C.false
 
 	ok := v.(TreeSelectionFunc)(selection, model, path, pathCurrentlySelected)
 }

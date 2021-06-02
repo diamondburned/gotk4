@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -20,10 +20,203 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.gtk_style_properties_get_type()), F: marshalStyleProperties},
 		{T: externglib.Type(C.gtk_gradient_get_type()), F: marshalGradient},
 		{T: externglib.Type(C.gtk_symbolic_color_get_type()), F: marshalSymbolicColor},
-		{T: externglib.Type(C.gtk_style_properties_get_type()), F: marshalStyleProperties},
 	})
+}
+
+// StyleProperties gtkStyleProperties provides the storage for style information
+// that is used by StyleContext and other StyleProvider implementations.
+//
+// Before style properties can be stored in GtkStyleProperties, they must be
+// registered with gtk_style_properties_register_property().
+//
+// Unless you are writing a StyleProvider implementation, you are unlikely to
+// use this API directly, as gtk_style_context_get() and its variants are the
+// preferred way to access styling information from widget implementations and
+// theming engine implementations should use the APIs provided by ThemingEngine
+// instead.
+//
+// StyleProperties has been deprecated in GTK 3.16. The CSS machinery does not
+// use it anymore and all users of this object have been deprecated.
+type StyleProperties interface {
+	gextras.Objector
+	StyleProvider
+
+	// Clear clears all style information from @props.
+	Clear()
+	// Property gets a style property from @props for the given state. When done
+	// with @value, g_value_unset() needs to be called to free any allocated
+	// memory.
+	Property(property string, state StateFlags) (value externglib.Value, ok bool)
+	// LookupColor returns the symbolic color that is mapped to @name.
+	LookupColor(name string) *SymbolicColor
+	// MapColor maps @color so it can be referenced by @name. See
+	// gtk_style_properties_lookup_color()
+	MapColor(name string, color *SymbolicColor)
+	// Merge merges into @props all the style information contained in
+	// @props_to_merge. If @replace is true, the values will be overwritten, if
+	// it is false, the older values will prevail.
+	Merge(propsToMerge StyleProperties, replace bool)
+	// SetProperty sets a styling property in @props.
+	SetProperty(property string, state StateFlags, value *externglib.Value)
+	// UnsetProperty unsets a style property in @props.
+	UnsetProperty(property string, state StateFlags)
+}
+
+// styleProperties implements the StyleProperties interface.
+type styleProperties struct {
+	gextras.Objector
+	StyleProvider
+}
+
+var _ StyleProperties = (*styleProperties)(nil)
+
+// WrapStyleProperties wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStyleProperties(obj *externglib.Object) StyleProperties {
+	return StyleProperties{
+		Objector:      obj,
+		StyleProvider: WrapStyleProvider(obj),
+	}
+}
+
+func marshalStyleProperties(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapStyleProperties(obj), nil
+}
+
+// NewStyleProperties constructs a class StyleProperties.
+func NewStyleProperties() StyleProperties {
+	ret := C.gtk_style_properties_new()
+
+	var ret0 StyleProperties
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(StyleProperties)
+
+	return ret0
+}
+
+// Clear clears all style information from @props.
+func (p styleProperties) Clear() {
+	var arg0 *C.GtkStyleProperties
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+
+	C.gtk_style_properties_clear(arg0)
+}
+
+// Property gets a style property from @props for the given state. When done
+// with @value, g_value_unset() needs to be called to free any allocated
+// memory.
+func (p styleProperties) Property(property string, state StateFlags) (value externglib.Value, ok bool) {
+	var arg0 *C.GtkStyleProperties
+	var arg1 *C.gchar
+	var arg2 C.GtkStateFlags
+	var arg3 *C.GValue // out
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+	arg1 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GtkStateFlags)(state)
+
+	ret := C.gtk_style_properties_get_property(arg0, arg1, arg2, &arg3)
+
+	var ret0 *externglib.Value
+	var ret1 bool
+
+	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(ret0, func(v *externglib.Value) {
+		C.g_value_unset((*C.GValue)(v.GValue))
+	})
+
+	ret1 = C.bool(ret) != C.false
+
+	return ret0, ret1
+}
+
+// LookupColor returns the symbolic color that is mapped to @name.
+func (p styleProperties) LookupColor(name string) *SymbolicColor {
+	var arg0 *C.GtkStyleProperties
+	var arg1 *C.gchar
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gtk_style_properties_lookup_color(arg0, arg1)
+
+	var ret0 *SymbolicColor
+
+	{
+		ret0 = WrapSymbolicColor(unsafe.Pointer(ret))
+	}
+
+	return ret0
+}
+
+// MapColor maps @color so it can be referenced by @name. See
+// gtk_style_properties_lookup_color()
+func (p styleProperties) MapColor(name string, color *SymbolicColor) {
+	var arg0 *C.GtkStyleProperties
+	var arg1 *C.gchar
+	var arg2 *C.GtkSymbolicColor
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.GtkSymbolicColor)(color.Native())
+
+	C.gtk_style_properties_map_color(arg0, arg1, arg2)
+}
+
+// Merge merges into @props all the style information contained in
+// @props_to_merge. If @replace is true, the values will be overwritten, if
+// it is false, the older values will prevail.
+func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
+	var arg0 *C.GtkStyleProperties
+	var arg1 *C.GtkStyleProperties
+	var arg2 C.gboolean
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+	arg1 = (*C.GtkStyleProperties)(propsToMerge.Native())
+	if replace {
+		arg2 = C.TRUE
+	}
+
+	C.gtk_style_properties_merge(arg0, arg1, arg2)
+}
+
+// SetProperty sets a styling property in @props.
+func (p styleProperties) SetProperty(property string, state StateFlags, value *externglib.Value) {
+	var arg0 *C.GtkStyleProperties
+	var arg1 *C.gchar
+	var arg2 C.GtkStateFlags
+	var arg3 *C.GValue
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+	arg1 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GtkStateFlags)(state)
+	arg3 = (*C.GValue)(value.GValue)
+
+	C.gtk_style_properties_set_property(arg0, arg1, arg2, arg3)
+}
+
+// UnsetProperty unsets a style property in @props.
+func (p styleProperties) UnsetProperty(property string, state StateFlags) {
+	var arg0 *C.GtkStyleProperties
+	var arg1 *C.gchar
+	var arg2 C.GtkStateFlags
+
+	arg0 = (*C.GtkStyleProperties)(p.Native())
+	arg1 = (*C.gchar)(C.CString(property))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (C.GtkStateFlags)(state)
+
+	C.gtk_style_properties_unset_property(arg0, arg1, arg2)
 }
 
 // Gradient: gtkGradient is a boxed type that represents a gradient. It is the
@@ -177,7 +370,7 @@ func (g *Gradient) Resolve(props StyleProperties) (resolvedGradient *cairo.Patte
 		})
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -467,7 +660,7 @@ func (c *SymbolicColor) Resolve(props StyleProperties) (resolvedColor gdk.RGBA, 
 		ret0 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -500,197 +693,4 @@ func (c *SymbolicColor) Unref() {
 	arg0 = (*C.GtkSymbolicColor)(c.Native())
 
 	C.gtk_symbolic_color_unref(arg0)
-}
-
-// StyleProperties gtkStyleProperties provides the storage for style information
-// that is used by StyleContext and other StyleProvider implementations.
-//
-// Before style properties can be stored in GtkStyleProperties, they must be
-// registered with gtk_style_properties_register_property().
-//
-// Unless you are writing a StyleProvider implementation, you are unlikely to
-// use this API directly, as gtk_style_context_get() and its variants are the
-// preferred way to access styling information from widget implementations and
-// theming engine implementations should use the APIs provided by ThemingEngine
-// instead.
-//
-// StyleProperties has been deprecated in GTK 3.16. The CSS machinery does not
-// use it anymore and all users of this object have been deprecated.
-type StyleProperties interface {
-	gextras.Objector
-	StyleProvider
-
-	// Clear clears all style information from @props.
-	Clear()
-	// Property gets a style property from @props for the given state. When done
-	// with @value, g_value_unset() needs to be called to free any allocated
-	// memory.
-	Property(property string, state StateFlags) (value externglib.Value, ok bool)
-	// LookupColor returns the symbolic color that is mapped to @name.
-	LookupColor(name string) *SymbolicColor
-	// MapColor maps @color so it can be referenced by @name. See
-	// gtk_style_properties_lookup_color()
-	MapColor(name string, color *SymbolicColor)
-	// Merge merges into @props all the style information contained in
-	// @props_to_merge. If @replace is true, the values will be overwritten, if
-	// it is false, the older values will prevail.
-	Merge(propsToMerge StyleProperties, replace bool)
-	// SetProperty sets a styling property in @props.
-	SetProperty(property string, state StateFlags, value *externglib.Value)
-	// UnsetProperty unsets a style property in @props.
-	UnsetProperty(property string, state StateFlags)
-}
-
-// styleProperties implements the StyleProperties interface.
-type styleProperties struct {
-	gextras.Objector
-	StyleProvider
-}
-
-var _ StyleProperties = (*styleProperties)(nil)
-
-// WrapStyleProperties wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapStyleProperties(obj *externglib.Object) StyleProperties {
-	return StyleProperties{
-		Objector:      obj,
-		StyleProvider: WrapStyleProvider(obj),
-	}
-}
-
-func marshalStyleProperties(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapStyleProperties(obj), nil
-}
-
-// NewStyleProperties constructs a class StyleProperties.
-func NewStyleProperties() StyleProperties {
-	ret := C.gtk_style_properties_new()
-
-	var ret0 StyleProperties
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(StyleProperties)
-
-	return ret0
-}
-
-// Clear clears all style information from @props.
-func (p styleProperties) Clear() {
-	var arg0 *C.GtkStyleProperties
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-
-	C.gtk_style_properties_clear(arg0)
-}
-
-// Property gets a style property from @props for the given state. When done
-// with @value, g_value_unset() needs to be called to free any allocated
-// memory.
-func (p styleProperties) Property(property string, state StateFlags) (value externglib.Value, ok bool) {
-	var arg0 *C.GtkStyleProperties
-	var arg1 *C.gchar
-	var arg2 C.GtkStateFlags
-	var arg3 *C.GValue // out
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-	arg1 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GtkStateFlags)(state)
-
-	ret := C.gtk_style_properties_get_property(arg0, arg1, arg2, &arg3)
-
-	var ret0 *externglib.Value
-	var ret1 bool
-
-	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret0, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(v.GValue))
-	})
-
-	ret1 = C.bool(ret) != 0
-
-	return ret0, ret1
-}
-
-// LookupColor returns the symbolic color that is mapped to @name.
-func (p styleProperties) LookupColor(name string) *SymbolicColor {
-	var arg0 *C.GtkStyleProperties
-	var arg1 *C.gchar
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.gtk_style_properties_lookup_color(arg0, arg1)
-
-	var ret0 *SymbolicColor
-
-	{
-		ret0 = WrapSymbolicColor(unsafe.Pointer(ret))
-	}
-
-	return ret0
-}
-
-// MapColor maps @color so it can be referenced by @name. See
-// gtk_style_properties_lookup_color()
-func (p styleProperties) MapColor(name string, color *SymbolicColor) {
-	var arg0 *C.GtkStyleProperties
-	var arg1 *C.gchar
-	var arg2 *C.GtkSymbolicColor
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkSymbolicColor)(color.Native())
-
-	C.gtk_style_properties_map_color(arg0, arg1, arg2)
-}
-
-// Merge merges into @props all the style information contained in
-// @props_to_merge. If @replace is true, the values will be overwritten, if
-// it is false, the older values will prevail.
-func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
-	var arg0 *C.GtkStyleProperties
-	var arg1 *C.GtkStyleProperties
-	var arg2 C.gboolean
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-	arg1 = (*C.GtkStyleProperties)(propsToMerge.Native())
-	if replace {
-		arg2 = C.TRUE
-	}
-
-	C.gtk_style_properties_merge(arg0, arg1, arg2)
-}
-
-// SetProperty sets a styling property in @props.
-func (p styleProperties) SetProperty(property string, state StateFlags, value *externglib.Value) {
-	var arg0 *C.GtkStyleProperties
-	var arg1 *C.gchar
-	var arg2 C.GtkStateFlags
-	var arg3 *C.GValue
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-	arg1 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GtkStateFlags)(state)
-	arg3 = (*C.GValue)(value.GValue)
-
-	C.gtk_style_properties_set_property(arg0, arg1, arg2, arg3)
-}
-
-// UnsetProperty unsets a style property in @props.
-func (p styleProperties) UnsetProperty(property string, state StateFlags) {
-	var arg0 *C.GtkStyleProperties
-	var arg1 *C.gchar
-	var arg2 C.GtkStateFlags
-
-	arg0 = (*C.GtkStyleProperties)(p.Native())
-	arg1 = (*C.gchar)(C.CString(property))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GtkStateFlags)(state)
-
-	C.gtk_style_properties_unset_property(arg0, arg1, arg2)
 }

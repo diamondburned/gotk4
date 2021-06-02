@@ -12,13 +12,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gboolean gotk4_FileFilterFunc(const GtkFileFilterInfo* _0, gpointer _1);
+// gboolean gotk4_FileFilterFunc( GtkFileFilterInfo*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

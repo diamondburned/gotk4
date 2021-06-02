@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -21,30 +21,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_text_buffer_get_type()), F: marshalTextBuffer},
 	})
-}
-
-type TextBufferPrivate struct {
-	native C.GtkTextBufferPrivate
-}
-
-// WrapTextBufferPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextBufferPrivate(ptr unsafe.Pointer) *TextBufferPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextBufferPrivate)(ptr)
-}
-
-func marshalTextBufferPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextBufferPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextBufferPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TextBuffer stores text and attributes for display in a `GtkTextView`.
@@ -669,7 +645,7 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -854,7 +830,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -917,7 +893,7 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -989,7 +965,7 @@ func (b textBuffer) CanRedo() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1004,7 +980,7 @@ func (b textBuffer) CanUndo() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1044,7 +1020,7 @@ func (b textBuffer) EnableUndo() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1084,7 +1060,7 @@ func (b textBuffer) HasSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1149,7 +1125,7 @@ func (b textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
 		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1182,7 +1158,7 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIte
 		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1215,7 +1191,7 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter TextI
 		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1334,7 +1310,7 @@ func (b textBuffer) Modified() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1393,7 +1369,7 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 		ret1 = WrapTextIter(unsafe.Pointer(arg2))
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -1609,7 +1585,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1639,7 +1615,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1738,7 +1714,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1992,4 +1968,28 @@ func (b textBuffer) Undo() {
 	arg0 = (*C.GtkTextBuffer)(b.Native())
 
 	C.gtk_text_buffer_undo(arg0)
+}
+
+type TextBufferPrivate struct {
+	native C.GtkTextBufferPrivate
+}
+
+// WrapTextBufferPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextBufferPrivate(ptr unsafe.Pointer) *TextBufferPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextBufferPrivate)(ptr)
+}
+
+func marshalTextBufferPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextBufferPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextBufferPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

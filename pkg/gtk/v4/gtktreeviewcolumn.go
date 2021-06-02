@@ -14,7 +14,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_TreeCellDataFunc(GtkTreeViewColumn* _0, GtkCellRenderer* _1, GtkTreeModel* _2, GtkTreeIter* _3, gpointer _4);
+// void gotk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

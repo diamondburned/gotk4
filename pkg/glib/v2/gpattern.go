@@ -46,7 +46,7 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -68,7 +68,7 @@ func PatternMatchSimple(pattern string, string string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -88,7 +88,7 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -132,7 +132,7 @@ func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

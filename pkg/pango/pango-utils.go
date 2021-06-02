@@ -30,7 +30,7 @@ func IsZeroWidth(ch uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -97,7 +97,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (value int, possibleV
 	ret1 = C.GoString(arg5)
 	C.free(unsafe.Pointer(arg5))
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -126,7 +126,7 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 
 	ret0 = (*Stretch)(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -153,7 +153,7 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 
 	ret0 = (*Style)(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -180,7 +180,7 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 
 	ret0 = (*Variant)(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -207,7 +207,7 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 
 	ret0 = (*Weight)(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -273,7 +273,7 @@ func ScanInt(pos string) (out int, ok bool) {
 
 	ret0 = int(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -294,7 +294,7 @@ func ScanString(pos string, out *glib.String) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -314,7 +314,7 @@ func ScanWord(pos string, out *glib.String) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -329,7 +329,7 @@ func SkipSpace(pos string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

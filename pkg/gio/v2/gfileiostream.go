@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type FileIOStreamPrivate struct {
-	native C.GFileIOStreamPrivate
-}
-
-// WrapFileIOStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileIOStreamPrivate(ptr unsafe.Pointer) *FileIOStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileIOStreamPrivate)(ptr)
-}
-
-func marshalFileIOStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileIOStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileIOStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}
-
 // FileIOStream: GFileIOStream provides io streams that both read and write to
 // the same file handle.
 //
@@ -241,4 +217,28 @@ func (s fileIOStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, er
 	}
 
 	return ret0, goError
+}
+
+type FileIOStreamPrivate struct {
+	native C.GFileIOStreamPrivate
+}
+
+// WrapFileIOStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileIOStreamPrivate(ptr unsafe.Pointer) *FileIOStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileIOStreamPrivate)(ptr)
+}
+
+func marshalFileIOStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileIOStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileIOStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
 }

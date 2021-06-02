@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type UnixCredentialsMessagePrivate struct {
-	native C.GUnixCredentialsMessagePrivate
-}
-
-// WrapUnixCredentialsMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixCredentialsMessagePrivate(ptr unsafe.Pointer) *UnixCredentialsMessagePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixCredentialsMessagePrivate)(ptr)
-}
-
-func marshalUnixCredentialsMessagePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixCredentialsMessagePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixCredentialsMessagePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
-}
-
 // UnixCredentialsMessage: this ControlMessage contains a #GCredentials
 // instance. It may be sent using g_socket_send_message() and received using
 // g_socket_receive_message() over UNIX sockets (ie: sockets in the
@@ -131,4 +107,28 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Credentials)
 
 	return ret0
+}
+
+type UnixCredentialsMessagePrivate struct {
+	native C.GUnixCredentialsMessagePrivate
+}
+
+// WrapUnixCredentialsMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixCredentialsMessagePrivate(ptr unsafe.Pointer) *UnixCredentialsMessagePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixCredentialsMessagePrivate)(ptr)
+}
+
+func marshalUnixCredentialsMessagePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixCredentialsMessagePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixCredentialsMessagePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }

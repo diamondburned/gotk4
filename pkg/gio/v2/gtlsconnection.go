@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -32,30 +32,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_tls_connection_get_type()), F: marshalTLSConnection},
 	})
-}
-
-type TLSConnectionPrivate struct {
-	native C.GTlsConnectionPrivate
-}
-
-// WrapTLSConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSConnectionPrivate(ptr unsafe.Pointer) *TLSConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSConnectionPrivate)(ptr)
-}
-
-func marshalTLSConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TLSConnection is the base TLS connection class type, which wraps a OStream
@@ -278,7 +254,7 @@ func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLS
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -464,7 +440,7 @@ func (c tlsConnection) RequireCloseNotify() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -481,7 +457,7 @@ func (c tlsConnection) UseSystemCertdb() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -738,4 +714,28 @@ func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
 	}
 
 	C.g_tls_connection_set_use_system_certdb(arg0, arg1)
+}
+
+type TLSConnectionPrivate struct {
+	native C.GTlsConnectionPrivate
+}
+
+// WrapTLSConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSConnectionPrivate(ptr unsafe.Pointer) *TLSConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSConnectionPrivate)(ptr)
+}
+
+func marshalTLSConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

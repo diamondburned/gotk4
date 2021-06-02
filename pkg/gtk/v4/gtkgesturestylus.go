@@ -114,7 +114,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 
 	ret0 = float64(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -160,7 +160,7 @@ func (g gestureStylus) Backlog() (backlog []*gdk.TimeCoord, nElems uint, ok bool
 
 	ret1 = uint(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }

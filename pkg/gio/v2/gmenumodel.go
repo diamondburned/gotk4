@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -34,78 +34,6 @@ func init() {
 		{T: externglib.Type(C.g_menu_link_iter_get_type()), F: marshalMenuLinkIter},
 		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModel},
 	})
-}
-
-type MenuAttributeIterPrivate struct {
-	native C.GMenuAttributeIterPrivate
-}
-
-// WrapMenuAttributeIterPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuAttributeIterPrivate(ptr unsafe.Pointer) *MenuAttributeIterPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuAttributeIterPrivate)(ptr)
-}
-
-func marshalMenuAttributeIterPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuAttributeIterPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuAttributeIterPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}
-
-type MenuLinkIterPrivate struct {
-	native C.GMenuLinkIterPrivate
-}
-
-// WrapMenuLinkIterPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuLinkIterPrivate(ptr unsafe.Pointer) *MenuLinkIterPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuLinkIterPrivate)(ptr)
-}
-
-func marshalMenuLinkIterPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuLinkIterPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuLinkIterPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}
-
-type MenuModelPrivate struct {
-	native C.GMenuModelPrivate
-}
-
-// WrapMenuModelPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuModelPrivate(ptr unsafe.Pointer) *MenuModelPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuModelPrivate)(ptr)
-}
-
-func marshalMenuModelPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuModelPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuModelPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // MenuAttributeIter is an opaque structure type. You must access it using the
@@ -223,7 +151,7 @@ func (i menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok bo
 		})
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -267,7 +195,7 @@ func (i menuAttributeIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -379,7 +307,7 @@ func (i menuLinkIter) GetNext() (outLink string, value MenuModel, ok bool) {
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(MenuModel)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -417,7 +345,7 @@ func (i menuLinkIter) Next() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -699,7 +627,7 @@ func (m menuModel) IsMutable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -772,4 +700,76 @@ func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter {
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(MenuLinkIter)
 
 	return ret0
+}
+
+type MenuAttributeIterPrivate struct {
+	native C.GMenuAttributeIterPrivate
+}
+
+// WrapMenuAttributeIterPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMenuAttributeIterPrivate(ptr unsafe.Pointer) *MenuAttributeIterPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MenuAttributeIterPrivate)(ptr)
+}
+
+func marshalMenuAttributeIterPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMenuAttributeIterPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MenuAttributeIterPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MenuLinkIterPrivate struct {
+	native C.GMenuLinkIterPrivate
+}
+
+// WrapMenuLinkIterPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMenuLinkIterPrivate(ptr unsafe.Pointer) *MenuLinkIterPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MenuLinkIterPrivate)(ptr)
+}
+
+func marshalMenuLinkIterPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMenuLinkIterPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MenuLinkIterPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
+}
+
+type MenuModelPrivate struct {
+	native C.GMenuModelPrivate
+}
+
+// WrapMenuModelPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMenuModelPrivate(ptr unsafe.Pointer) *MenuModelPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MenuModelPrivate)(ptr)
+}
+
+func marshalMenuModelPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMenuModelPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MenuModelPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
 }

@@ -16,8 +16,8 @@ import (
 // #include <glib-object.h>
 // #include <glib.h>
 //
-// extern void gotk4_ChildWatchFunc(GPid _0, gint _1, gpointer _2);
-// extern gboolean gotk4_SourceFunc(gpointer _0);
+// void gotk4_ChildWatchFunc(GPid, gint, gpointer);
+// gboolean gotk4_SourceFunc(gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -168,7 +168,7 @@ func IdleRemoveByData(data interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -360,7 +360,7 @@ func SourceRemove(tag uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -377,7 +377,7 @@ func SourceRemoveByUserData(userData interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -628,7 +628,7 @@ func (c *MainContext) Acquire() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -671,7 +671,7 @@ func (c *MainContext) Check(maxPriority int, fds []PollFD) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -806,7 +806,7 @@ func (c *MainContext) IsOwner() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -835,7 +835,7 @@ func (c *MainContext) Iteration(mayBlock bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -850,7 +850,7 @@ func (c *MainContext) Pending() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -883,7 +883,7 @@ func (c *MainContext) Prepare() (priority int, ok bool) {
 
 	ret0 = int(arg1)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1123,7 +1123,7 @@ func (l *MainLoop) IsRunning() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1335,7 +1335,7 @@ func (s *Source) CanRecurse() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1504,7 +1504,7 @@ func (s *Source) IsDestroyed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

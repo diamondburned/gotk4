@@ -14,8 +14,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -33,30 +33,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_input_stream_get_type()), F: marshalInputStream},
 	})
-}
-
-type InputStreamPrivate struct {
-	native C.GInputStreamPrivate
-}
-
-// WrapInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInputStreamPrivate(ptr unsafe.Pointer) *InputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InputStreamPrivate)(ptr)
-}
-
-func marshalInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }
 
 // InputStream has functions to read from a stream (g_input_stream_read()), to
@@ -435,7 +411,7 @@ func (s inputStream) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -450,7 +426,7 @@ func (s inputStream) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -971,4 +947,28 @@ func (s inputStream) SkipFinish(result AsyncResult) (gssize int, err error) {
 	}
 
 	return ret0, goError
+}
+
+type InputStreamPrivate struct {
+	native C.GInputStreamPrivate
+}
+
+// WrapInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInputStreamPrivate(ptr unsafe.Pointer) *InputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InputStreamPrivate)(ptr)
+}
+
+func marshalInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

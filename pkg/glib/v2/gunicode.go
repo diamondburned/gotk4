@@ -683,7 +683,7 @@ func UnicharCompose(a uint32, b uint32) (ch uint32, ok bool) {
 
 	ret0 = uint32(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -721,7 +721,7 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 
 	ret1 = uint32(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -800,7 +800,7 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -836,7 +836,7 @@ func UnicharIsalnum(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -852,7 +852,7 @@ func UnicharIsalpha(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -868,7 +868,7 @@ func UnicharIscntrl(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -884,7 +884,7 @@ func UnicharIsdefined(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -901,7 +901,7 @@ func UnicharIsdigit(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -919,7 +919,7 @@ func UnicharIsgraph(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -935,7 +935,7 @@ func UnicharIslower(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -956,7 +956,7 @@ func UnicharIsmark(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -973,7 +973,7 @@ func UnicharIsprint(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -989,7 +989,7 @@ func UnicharIspunct(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1009,7 +1009,7 @@ func UnicharIsspace(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1028,7 +1028,7 @@ func UnicharIstitle(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1043,7 +1043,7 @@ func UnicharIsupper(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1059,7 +1059,7 @@ func UnicharIswide(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1082,7 +1082,7 @@ func UnicharIswideCjk(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1097,7 +1097,7 @@ func UnicharIsxdigit(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1120,7 +1120,7 @@ func UnicharIszerowidth(c uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1216,7 +1216,7 @@ func UnicharValidate(ch uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2039,7 +2039,7 @@ func UTF8Validate(str []byte) (end string, ok bool) {
 
 	ret0 = C.GoString(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -2064,7 +2064,7 @@ func UTF8ValidateLen(str []byte) (end string, ok bool) {
 
 	ret0 = C.GoString(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

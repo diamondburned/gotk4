@@ -45,7 +45,7 @@ func TimeValFromIso8601(isoDate string) (time_ TimeVal, ok bool) {
 		ret0 = WrapTimeVal(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -138,7 +138,7 @@ func (t *Timer) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

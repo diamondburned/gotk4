@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -32,30 +32,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeleton},
 	})
-}
-
-type DBusInterfaceSkeletonPrivate struct {
-	native C.GDBusInterfaceSkeletonPrivate
-}
-
-// WrapDBusInterfaceSkeletonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusInterfaceSkeletonPrivate(ptr unsafe.Pointer) *DBusInterfaceSkeletonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DBusInterfaceSkeletonPrivate)(ptr)
-}
-
-func marshalDBusInterfaceSkeletonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusInterfaceSkeletonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusInterfaceSkeletonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
 }
 
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
@@ -322,7 +298,7 @@ func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -363,4 +339,28 @@ func (i dBusInterfaceSkeleton) UnexportFromConnection(connection DBusConnection)
 	arg1 = (*C.GDBusConnection)(connection.Native())
 
 	C.g_dbus_interface_skeleton_unexport_from_connection(arg0, arg1)
+}
+
+type DBusInterfaceSkeletonPrivate struct {
+	native C.GDBusInterfaceSkeletonPrivate
+}
+
+// WrapDBusInterfaceSkeletonPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusInterfaceSkeletonPrivate(ptr unsafe.Pointer) *DBusInterfaceSkeletonPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusInterfaceSkeletonPrivate)(ptr)
+}
+
+func marshalDBusInterfaceSkeletonPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusInterfaceSkeletonPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusInterfaceSkeletonPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
 }

@@ -231,7 +231,7 @@ func (p popover) Autohide() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -247,7 +247,7 @@ func (p popover) CascadePopdown() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -278,7 +278,7 @@ func (p popover) HasArrow() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -293,7 +293,7 @@ func (p popover) MnemonicsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -338,7 +338,7 @@ func (p popover) PointingTo() (rect gdk.Rectangle, ok bool) {
 		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

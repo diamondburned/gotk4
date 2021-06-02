@@ -23,30 +23,6 @@ func init() {
 	})
 }
 
-type IMMulticontextPrivate struct {
-	native C.GtkIMMulticontextPrivate
-}
-
-// WrapIMMulticontextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIMMulticontextPrivate(ptr unsafe.Pointer) *IMMulticontextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*IMMulticontextPrivate)(ptr)
-}
-
-func marshalIMMulticontextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIMMulticontextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *IMMulticontextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}
-
 type IMMulticontext interface {
 	IMContext
 
@@ -136,4 +112,28 @@ func (c imMulticontext) SetContextID(contextID string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_im_multicontext_set_context_id(arg0, arg1)
+}
+
+type IMMulticontextPrivate struct {
+	native C.GtkIMMulticontextPrivate
+}
+
+// WrapIMMulticontextPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIMMulticontextPrivate(ptr unsafe.Pointer) *IMMulticontextPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IMMulticontextPrivate)(ptr)
+}
+
+func marshalIMMulticontextPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIMMulticontextPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IMMulticontextPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

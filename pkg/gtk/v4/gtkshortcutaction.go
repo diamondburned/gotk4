@@ -17,7 +17,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_ShortcutFunc(GtkWidget* _0, GVariant* _1, gpointer _2);
+// gboolean gotk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
 import "C"
 
 func init() {
@@ -345,7 +345,7 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

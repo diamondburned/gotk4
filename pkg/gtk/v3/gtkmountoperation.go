@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -23,30 +23,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_mount_operation_get_type()), F: marshalMountOperation},
 	})
-}
-
-type MountOperationPrivate struct {
-	native C.GtkMountOperationPrivate
-}
-
-// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MountOperationPrivate)(ptr)
-}
-
-func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MountOperationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor
@@ -147,7 +123,7 @@ func (o mountOperation) IsShowing() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -173,4 +149,28 @@ func (o mountOperation) SetScreen(screen gdk.Screen) {
 	arg1 = (*C.GdkScreen)(screen.Native())
 
 	C.gtk_mount_operation_set_screen(arg0, arg1)
+}
+
+type MountOperationPrivate struct {
+	native C.GtkMountOperationPrivate
+}
+
+// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MountOperationPrivate)(ptr)
+}
+
+func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MountOperationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
 }

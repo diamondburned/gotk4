@@ -20,7 +20,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gchar* gotk4_TranslateFunc(const gchar* _0, gpointer _1);
+// gchar* gotk4_TranslateFunc( gchar*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -142,7 +142,7 @@ func StockLookup(stockID string) (item StockItem, ok bool) {
 		ret0 = WrapStockItem(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

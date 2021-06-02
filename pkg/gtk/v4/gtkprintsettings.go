@@ -13,11 +13,11 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_PrintSettingsFunc(const char* _0, const char* _1, gpointer _2);
+// void gotk4_PrintSettingsFunc( char*,  char*, gpointer);
 import "C"
 
 type PrintSettingsFunc func(key string, value string)

@@ -19,10 +19,10 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView* _0, GtkTreeViewColumn* _1, GtkTreeViewColumn* _2, GtkTreeViewColumn* _3, gpointer _4);
-// extern void gotk4_TreeViewMappingFunc(GtkTreeView* _0, GtkTreePath* _1, gpointer _2);
-// extern gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel* _0, GtkTreeIter* _1, gpointer _2);
-// extern gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel* _0, int _1, const char* _2, GtkTreeIter* _3, gpointer _4);
+// gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
+// void gotk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
+// gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel*, int,  char*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -758,7 +758,7 @@ func (t treeView) CollapseRow(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -996,7 +996,7 @@ func (t treeView) ExpandRow(path *TreePath, openAll bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1024,7 +1024,7 @@ func (t treeView) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1189,7 +1189,7 @@ func (t treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeVi
 
 	ret1 = (*TreeViewDropPosition)(arg4)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -1231,7 +1231,7 @@ func (t treeView) EnableSearch() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1247,7 +1247,7 @@ func (t treeView) EnableTreeLines() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1280,7 +1280,7 @@ func (t treeView) FixedHeightMode() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1310,7 +1310,7 @@ func (t treeView) HeadersClickable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1325,7 +1325,7 @@ func (t treeView) HeadersVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1341,7 +1341,7 @@ func (t treeView) HoverExpand() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1357,7 +1357,7 @@ func (t treeView) HoverSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1459,7 +1459,7 @@ func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn
 
 	ret3 = int(arg6)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -1475,7 +1475,7 @@ func (t treeView) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1492,7 +1492,7 @@ func (t treeView) RubberBanding() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1554,7 +1554,7 @@ func (t treeView) ShowExpanders() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1622,7 +1622,7 @@ func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 		ret2 = WrapTreeIter(unsafe.Pointer(arg6))
 	}
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -1658,7 +1658,7 @@ func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 		})
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -1793,7 +1793,7 @@ func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewCol
 
 	ret3 = int(arg6)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -1809,7 +1809,7 @@ func (t treeView) IsRubberBandingActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1884,7 +1884,7 @@ func (t treeView) RowExpanded(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

@@ -24,9 +24,343 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
 		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManager},
+		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
 	})
+}
+
+// RecentManager provides a facility for adding, removing and looking up
+// recently used files. Each recently used file is identified by its URI, and
+// has meta-data associated to it, like the names and command lines of the
+// applications that have registered it, the number of time each application has
+// registered the same file, the mime type of the file and whether the file
+// should be displayed only by the applications that have registered it.
+//
+// The recently used files list is per user.
+//
+// The RecentManager acts like a database of all the recently used files. You
+// can create new RecentManager objects, but it is more efficient to use the
+// default manager created by GTK+.
+//
+// Adding a new recently used file is as simple as:
+//
+//    GtkRecentManager *manager;
+//    GtkRecentInfo *info;
+//    GError *error = NULL;
+//
+//    manager = gtk_recent_manager_get_default ();
+//    info = gtk_recent_manager_lookup_item (manager, file_uri, &error);
+//    if (error)
+//      {
+//        g_warning ("Could not find the file: s", error->message);
+//        g_error_free (error);
+//      }
+//    else
+//     {
+//       // Use the info object
+//       gtk_recent_info_unref (info);
+//     }
+//
+// In order to retrieve the list of recently used files, you can use
+// gtk_recent_manager_get_items(), which returns a list of RecentInfo-structs.
+//
+// A RecentManager is the model used to populate the contents of one, or more
+// RecentChooser implementations.
+//
+// Note that the maximum age of the recently used files list is controllable
+// through the Settings:gtk-recent-files-max-age property.
+//
+// Recently used files are supported since GTK+ 2.10.
+type RecentManager interface {
+	gextras.Objector
+
+	// AddFull adds a new resource, pointed by @uri, into the recently used
+	// resources list, using the metadata specified inside the RecentData-struct
+	// passed in @recent_data.
+	//
+	// The passed URI will be used to identify this resource inside the list.
+	//
+	// In order to register the new recently used resource, metadata about the
+	// resource must be passed as well as the URI; the metadata is stored in a
+	// RecentData-struct, which must contain the MIME type of the resource
+	// pointed by the URI; the name of the application that is registering the
+	// item, and a command line to be used when launching the item.
+	//
+	// Optionally, a RecentData-struct might contain a UTF-8 string to be used
+	// when viewing the item instead of the last component of the URI; a short
+	// description of the item; whether the item should be considered private -
+	// that is, should be displayed only by the applications that have
+	// registered it.
+	AddFull(uri string, recentData *RecentData) bool
+	// AddItem adds a new resource, pointed by @uri, into the recently used
+	// resources list.
+	//
+	// This function automatically retrieves some of the needed metadata and
+	// setting other metadata to common default values; it then feeds the data
+	// to gtk_recent_manager_add_full().
+	//
+	// See gtk_recent_manager_add_full() if you want to explicitly define the
+	// metadata for the resource pointed by @uri.
+	AddItem(uri string) bool
+	// Items gets the list of recently used resources.
+	Items() *glib.List
+	// HasItem checks whether there is a recently used resource registered with
+	// @uri inside the recent manager.
+	HasItem(uri string) bool
+	// LookupItem searches for a URI inside the recently used resources list,
+	// and returns a RecentInfo-struct containing informations about the
+	// resource like its MIME type, or its display name.
+	LookupItem(uri string) (recentInfo *RecentInfo, err error)
+	// MoveItem changes the location of a recently used resource from @uri to
+	// @new_uri.
+	//
+	// Please note that this function will not affect the resource pointed by
+	// the URIs, but only the URI used in the recently used resources list.
+	MoveItem(uri string, newURI string) error
+	// PurgeItems purges every item from the recently used resources list.
+	PurgeItems() (gint int, err error)
+	// RemoveItem removes a resource pointed by @uri from the recently used
+	// resources list handled by a recent manager.
+	RemoveItem(uri string) error
+}
+
+// recentManager implements the RecentManager interface.
+type recentManager struct {
+	gextras.Objector
+}
+
+var _ RecentManager = (*recentManager)(nil)
+
+// WrapRecentManager wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRecentManager(obj *externglib.Object) RecentManager {
+	return RecentManager{
+		Objector: obj,
+	}
+}
+
+func marshalRecentManager(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapRecentManager(obj), nil
+}
+
+// NewRecentManager constructs a class RecentManager.
+func NewRecentManager() RecentManager {
+	ret := C.gtk_recent_manager_new()
+
+	var ret0 RecentManager
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(RecentManager)
+
+	return ret0
+}
+
+// AddFull adds a new resource, pointed by @uri, into the recently used
+// resources list, using the metadata specified inside the RecentData-struct
+// passed in @recent_data.
+//
+// The passed URI will be used to identify this resource inside the list.
+//
+// In order to register the new recently used resource, metadata about the
+// resource must be passed as well as the URI; the metadata is stored in a
+// RecentData-struct, which must contain the MIME type of the resource
+// pointed by the URI; the name of the application that is registering the
+// item, and a command line to be used when launching the item.
+//
+// Optionally, a RecentData-struct might contain a UTF-8 string to be used
+// when viewing the item instead of the last component of the URI; a short
+// description of the item; whether the item should be considered private -
+// that is, should be displayed only by the applications that have
+// registered it.
+func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
+	var arg0 *C.GtkRecentManager
+	var arg1 *C.gchar
+	var arg2 *C.GtkRecentData
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.GtkRecentData)(recentData.Native())
+
+	ret := C.gtk_recent_manager_add_full(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// AddItem adds a new resource, pointed by @uri, into the recently used
+// resources list.
+//
+// This function automatically retrieves some of the needed metadata and
+// setting other metadata to common default values; it then feeds the data
+// to gtk_recent_manager_add_full().
+//
+// See gtk_recent_manager_add_full() if you want to explicitly define the
+// metadata for the resource pointed by @uri.
+func (m recentManager) AddItem(uri string) bool {
+	var arg0 *C.GtkRecentManager
+	var arg1 *C.gchar
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gtk_recent_manager_add_item(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// Items gets the list of recently used resources.
+func (m recentManager) Items() *glib.List {
+	var arg0 *C.GtkRecentManager
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+
+	ret := C.gtk_recent_manager_get_items(arg0)
+
+	var ret0 *glib.List
+
+	{
+		ret0 = glib.WrapList(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.List) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// HasItem checks whether there is a recently used resource registered with
+// @uri inside the recent manager.
+func (m recentManager) HasItem(uri string) bool {
+	var arg0 *C.GtkRecentManager
+	var arg1 *C.gchar
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gtk_recent_manager_has_item(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// LookupItem searches for a URI inside the recently used resources list,
+// and returns a RecentInfo-struct containing informations about the
+// resource like its MIME type, or its display name.
+func (m recentManager) LookupItem(uri string) (recentInfo *RecentInfo, err error) {
+	var arg0 *C.GtkRecentManager
+	var arg1 *C.gchar
+	var gError *C.GError
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gtk_recent_manager_lookup_item(arg0, arg1, &gError)
+
+	var ret0 *RecentInfo
+	var goError error
+
+	{
+		ret0 = WrapRecentInfo(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *RecentInfo) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// MoveItem changes the location of a recently used resource from @uri to
+// @new_uri.
+//
+// Please note that this function will not affect the resource pointed by
+// the URIs, but only the URI used in the recently used resources list.
+func (m recentManager) MoveItem(uri string, newURI string) error {
+	var arg0 *C.GtkRecentManager
+	var arg1 *C.gchar
+	var arg2 *C.gchar
+	var gError *C.GError
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.gchar)(C.CString(newURI))
+	defer C.free(unsafe.Pointer(arg2))
+
+	ret := C.gtk_recent_manager_move_item(arg0, arg1, arg2, &gError)
+
+	var goError error
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
+}
+
+// PurgeItems purges every item from the recently used resources list.
+func (m recentManager) PurgeItems() (gint int, err error) {
+	var arg0 *C.GtkRecentManager
+	var gError *C.GError
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+
+	ret := C.gtk_recent_manager_purge_items(arg0, &gError)
+
+	var ret0 int
+	var goError error
+
+	ret0 = int(ret)
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return ret0, goError
+}
+
+// RemoveItem removes a resource pointed by @uri from the recently used
+// resources list handled by a recent manager.
+func (m recentManager) RemoveItem(uri string) error {
+	var arg0 *C.GtkRecentManager
+	var arg1 *C.gchar
+	var gError *C.GError
+
+	arg0 = (*C.GtkRecentManager)(m.Native())
+	arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.gtk_recent_manager_remove_item(arg0, arg1, &gError)
+
+	var goError error
+
+	if gError != nil {
+		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
+		C.g_error_free(gError)
+	}
+
+	return goError
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -111,7 +445,7 @@ func (r *RecentData) Groups() []string {
 // IsPrivate gets the field inside the struct.
 func (r *RecentData) IsPrivate() bool {
 	var ret bool
-	ret = C.bool(r.native.is_private) != 0
+	ret = C.bool(r.native.is_private) != C.false
 	return ret
 }
 
@@ -180,7 +514,7 @@ func (i *RecentInfo) Exists() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -246,7 +580,7 @@ func (i *RecentInfo) ApplicationInfo(appName string) (appExec string, count uint
 
 	ret2 = int32(arg4)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -412,7 +746,7 @@ func (i *RecentInfo) PrivateHint() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -498,7 +832,7 @@ func (i *RecentInfo) HasApplication(appName string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -517,7 +851,7 @@ func (i *RecentInfo) HasGroup(groupName string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -533,7 +867,7 @@ func (i *RecentInfo) IsLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -567,7 +901,7 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -624,338 +958,4 @@ func marshalRecentManagerPrivate(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RecentManagerPrivate) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// RecentManager provides a facility for adding, removing and looking up
-// recently used files. Each recently used file is identified by its URI, and
-// has meta-data associated to it, like the names and command lines of the
-// applications that have registered it, the number of time each application has
-// registered the same file, the mime type of the file and whether the file
-// should be displayed only by the applications that have registered it.
-//
-// The recently used files list is per user.
-//
-// The RecentManager acts like a database of all the recently used files. You
-// can create new RecentManager objects, but it is more efficient to use the
-// default manager created by GTK+.
-//
-// Adding a new recently used file is as simple as:
-//
-//    GtkRecentManager *manager;
-//    GtkRecentInfo *info;
-//    GError *error = NULL;
-//
-//    manager = gtk_recent_manager_get_default ();
-//    info = gtk_recent_manager_lookup_item (manager, file_uri, &error);
-//    if (error)
-//      {
-//        g_warning ("Could not find the file: s", error->message);
-//        g_error_free (error);
-//      }
-//    else
-//     {
-//       // Use the info object
-//       gtk_recent_info_unref (info);
-//     }
-//
-// In order to retrieve the list of recently used files, you can use
-// gtk_recent_manager_get_items(), which returns a list of RecentInfo-structs.
-//
-// A RecentManager is the model used to populate the contents of one, or more
-// RecentChooser implementations.
-//
-// Note that the maximum age of the recently used files list is controllable
-// through the Settings:gtk-recent-files-max-age property.
-//
-// Recently used files are supported since GTK+ 2.10.
-type RecentManager interface {
-	gextras.Objector
-
-	// AddFull adds a new resource, pointed by @uri, into the recently used
-	// resources list, using the metadata specified inside the RecentData-struct
-	// passed in @recent_data.
-	//
-	// The passed URI will be used to identify this resource inside the list.
-	//
-	// In order to register the new recently used resource, metadata about the
-	// resource must be passed as well as the URI; the metadata is stored in a
-	// RecentData-struct, which must contain the MIME type of the resource
-	// pointed by the URI; the name of the application that is registering the
-	// item, and a command line to be used when launching the item.
-	//
-	// Optionally, a RecentData-struct might contain a UTF-8 string to be used
-	// when viewing the item instead of the last component of the URI; a short
-	// description of the item; whether the item should be considered private -
-	// that is, should be displayed only by the applications that have
-	// registered it.
-	AddFull(uri string, recentData *RecentData) bool
-	// AddItem adds a new resource, pointed by @uri, into the recently used
-	// resources list.
-	//
-	// This function automatically retrieves some of the needed metadata and
-	// setting other metadata to common default values; it then feeds the data
-	// to gtk_recent_manager_add_full().
-	//
-	// See gtk_recent_manager_add_full() if you want to explicitly define the
-	// metadata for the resource pointed by @uri.
-	AddItem(uri string) bool
-	// Items gets the list of recently used resources.
-	Items() *glib.List
-	// HasItem checks whether there is a recently used resource registered with
-	// @uri inside the recent manager.
-	HasItem(uri string) bool
-	// LookupItem searches for a URI inside the recently used resources list,
-	// and returns a RecentInfo-struct containing informations about the
-	// resource like its MIME type, or its display name.
-	LookupItem(uri string) (recentInfo *RecentInfo, err error)
-	// MoveItem changes the location of a recently used resource from @uri to
-	// @new_uri.
-	//
-	// Please note that this function will not affect the resource pointed by
-	// the URIs, but only the URI used in the recently used resources list.
-	MoveItem(uri string, newURI string) error
-	// PurgeItems purges every item from the recently used resources list.
-	PurgeItems() (gint int, err error)
-	// RemoveItem removes a resource pointed by @uri from the recently used
-	// resources list handled by a recent manager.
-	RemoveItem(uri string) error
-}
-
-// recentManager implements the RecentManager interface.
-type recentManager struct {
-	gextras.Objector
-}
-
-var _ RecentManager = (*recentManager)(nil)
-
-// WrapRecentManager wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRecentManager(obj *externglib.Object) RecentManager {
-	return RecentManager{
-		Objector: obj,
-	}
-}
-
-func marshalRecentManager(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRecentManager(obj), nil
-}
-
-// NewRecentManager constructs a class RecentManager.
-func NewRecentManager() RecentManager {
-	ret := C.gtk_recent_manager_new()
-
-	var ret0 RecentManager
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(RecentManager)
-
-	return ret0
-}
-
-// AddFull adds a new resource, pointed by @uri, into the recently used
-// resources list, using the metadata specified inside the RecentData-struct
-// passed in @recent_data.
-//
-// The passed URI will be used to identify this resource inside the list.
-//
-// In order to register the new recently used resource, metadata about the
-// resource must be passed as well as the URI; the metadata is stored in a
-// RecentData-struct, which must contain the MIME type of the resource
-// pointed by the URI; the name of the application that is registering the
-// item, and a command line to be used when launching the item.
-//
-// Optionally, a RecentData-struct might contain a UTF-8 string to be used
-// when viewing the item instead of the last component of the URI; a short
-// description of the item; whether the item should be considered private -
-// that is, should be displayed only by the applications that have
-// registered it.
-func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
-	var arg0 *C.GtkRecentManager
-	var arg1 *C.gchar
-	var arg2 *C.GtkRecentData
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkRecentData)(recentData.Native())
-
-	ret := C.gtk_recent_manager_add_full(arg0, arg1, arg2)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// AddItem adds a new resource, pointed by @uri, into the recently used
-// resources list.
-//
-// This function automatically retrieves some of the needed metadata and
-// setting other metadata to common default values; it then feeds the data
-// to gtk_recent_manager_add_full().
-//
-// See gtk_recent_manager_add_full() if you want to explicitly define the
-// metadata for the resource pointed by @uri.
-func (m recentManager) AddItem(uri string) bool {
-	var arg0 *C.GtkRecentManager
-	var arg1 *C.gchar
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.gtk_recent_manager_add_item(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// Items gets the list of recently used resources.
-func (m recentManager) Items() *glib.List {
-	var arg0 *C.GtkRecentManager
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-
-	ret := C.gtk_recent_manager_get_items(arg0)
-
-	var ret0 *glib.List
-
-	{
-		ret0 = glib.WrapList(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *glib.List) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// HasItem checks whether there is a recently used resource registered with
-// @uri inside the recent manager.
-func (m recentManager) HasItem(uri string) bool {
-	var arg0 *C.GtkRecentManager
-	var arg1 *C.gchar
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.gtk_recent_manager_has_item(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// LookupItem searches for a URI inside the recently used resources list,
-// and returns a RecentInfo-struct containing informations about the
-// resource like its MIME type, or its display name.
-func (m recentManager) LookupItem(uri string) (recentInfo *RecentInfo, err error) {
-	var arg0 *C.GtkRecentManager
-	var arg1 *C.gchar
-	var gError *C.GError
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.gtk_recent_manager_lookup_item(arg0, arg1, &gError)
-
-	var ret0 *RecentInfo
-	var goError error
-
-	{
-		ret0 = WrapRecentInfo(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *RecentInfo) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	if gError != nil {
-		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
-		C.g_error_free(gError)
-	}
-
-	return ret0, goError
-}
-
-// MoveItem changes the location of a recently used resource from @uri to
-// @new_uri.
-//
-// Please note that this function will not affect the resource pointed by
-// the URIs, but only the URI used in the recently used resources list.
-func (m recentManager) MoveItem(uri string, newURI string) error {
-	var arg0 *C.GtkRecentManager
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var gError *C.GError
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(newURI))
-	defer C.free(unsafe.Pointer(arg2))
-
-	ret := C.gtk_recent_manager_move_item(arg0, arg1, arg2, &gError)
-
-	var goError error
-
-	if gError != nil {
-		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
-		C.g_error_free(gError)
-	}
-
-	return goError
-}
-
-// PurgeItems purges every item from the recently used resources list.
-func (m recentManager) PurgeItems() (gint int, err error) {
-	var arg0 *C.GtkRecentManager
-	var gError *C.GError
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-
-	ret := C.gtk_recent_manager_purge_items(arg0, &gError)
-
-	var ret0 int
-	var goError error
-
-	ret0 = int(ret)
-
-	if gError != nil {
-		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
-		C.g_error_free(gError)
-	}
-
-	return ret0, goError
-}
-
-// RemoveItem removes a resource pointed by @uri from the recently used
-// resources list handled by a recent manager.
-func (m recentManager) RemoveItem(uri string) error {
-	var arg0 *C.GtkRecentManager
-	var arg1 *C.gchar
-	var gError *C.GError
-
-	arg0 = (*C.GtkRecentManager)(m.Native())
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.gtk_recent_manager_remove_item(arg0, arg1, &gError)
-
-	var goError error
-
-	if gError != nil {
-		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
-		C.g_error_free(gError)
-	}
-
-	return goError
 }

@@ -222,7 +222,7 @@ func (m selectionModel) IsSelected(position uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -237,7 +237,7 @@ func (m selectionModel) SelectAll() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -258,7 +258,7 @@ func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -281,7 +281,7 @@ func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest boo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -342,7 +342,7 @@ func (m selectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -357,7 +357,7 @@ func (m selectionModel) UnselectAll() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -374,7 +374,7 @@ func (m selectionModel) UnselectItem(position uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -393,7 +393,7 @@ func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

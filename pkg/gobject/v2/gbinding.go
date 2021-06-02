@@ -14,7 +14,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 //
-// extern gboolean gotk4_BindingTransformFunc(GBinding* _0, const GValue* _1, GValue* _2, gpointer _3);
+// gboolean gotk4_BindingTransformFunc(GBinding*,  GValue*, GValue*, gpointer);
 import "C"
 
 // BindingTransformFunc: a function to be called to transform @from_value to

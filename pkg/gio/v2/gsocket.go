@@ -14,8 +14,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -33,30 +33,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocket},
 	})
-}
-
-type SocketPrivate struct {
-	native C.GSocketPrivate
-}
-
-// WrapSocketPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketPrivate(ptr unsafe.Pointer) *SocketPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketPrivate)(ptr)
-}
-
-func marshalSocketPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // Socket: a #GSocket is a low-level networking primitive. It is a more or less
@@ -1224,7 +1200,7 @@ func (s socket) Blocking() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1240,7 +1216,7 @@ func (s socket) Broadcast() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1327,7 +1303,7 @@ func (s socket) Keepalive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1384,7 +1360,7 @@ func (s socket) MulticastLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1539,7 +1515,7 @@ func (s socket) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1560,7 +1536,7 @@ func (s socket) IsConnected() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2668,7 +2644,31 @@ func (s socket) SpeaksIpv4() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
+}
+
+type SocketPrivate struct {
+	native C.GSocketPrivate
+}
+
+// WrapSocketPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketPrivate(ptr unsafe.Pointer) *SocketPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketPrivate)(ptr)
+}
+
+func marshalSocketPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

@@ -18,7 +18,7 @@ import (
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
 //
-// extern void gotk4_ShapeRendererFunc(cairo_t* _0, PangoAttrShape* _1, gboolean _2, gpointer _3);
+// void gotk4_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -57,7 +57,7 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 		attr = pango.WrapAttrShape(unsafe.Pointer(arg1))
 	}
 
-	doPath = C.bool(arg2) != 0
+	doPath = C.bool(arg2) != C.false
 
 	v.(ShapeRendererFunc)(cr, attr, doPath)
 }

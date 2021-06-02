@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_tcp_connection_get_type()), F: marshalTcpConnection},
 	})
-}
-
-type TcpConnectionPrivate struct {
-	native C.GTcpConnectionPrivate
-}
-
-// WrapTcpConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTcpConnectionPrivate(ptr unsafe.Pointer) *TcpConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TcpConnectionPrivate)(ptr)
-}
-
-func marshalTcpConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTcpConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TcpConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TcpConnection: this is the subclass of Connection that is created for TCP/IP
@@ -109,7 +85,7 @@ func (c tcpConnection) GracefulDisconnect() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -134,4 +110,28 @@ func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	}
 
 	C.g_tcp_connection_set_graceful_disconnect(arg0, arg1)
+}
+
+type TcpConnectionPrivate struct {
+	native C.GTcpConnectionPrivate
+}
+
+// WrapTcpConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTcpConnectionPrivate(ptr unsafe.Pointer) *TcpConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TcpConnectionPrivate)(ptr)
+}
+
+func marshalTcpConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTcpConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TcpConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

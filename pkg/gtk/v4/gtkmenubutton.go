@@ -15,7 +15,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_MenuButtonCreatePopupFunc(GtkMenuButton* _0, gpointer _1);
+// void gotk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

@@ -14,7 +14,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_TextTagTableForeach(GtkTextTag* _0, gpointer _1);
+// void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
 // TextTagTableForeach: a function used with gtk_text_tag_table_foreach(), to

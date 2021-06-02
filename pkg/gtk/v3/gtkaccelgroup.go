@@ -43,7 +43,7 @@ func AccelGroupsActivate(object gextras.Objector, accelKey uint, accelMods gdk.M
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -289,9 +289,218 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
+}
+
+// AccelGroup: a AccelGroup represents a group of keyboard accelerators,
+// typically attached to a toplevel Window (with gtk_window_add_accel_group()).
+// Usually you won’t need to create a AccelGroup directly; instead, when using
+// UIManager, GTK+ automatically sets up the accelerators for your menus in the
+// ui manager’s AccelGroup.
+//
+// Note that “accelerators” are different from “mnemonics”. Accelerators are
+// shortcuts for activating a menu item; they appear alongside the menu item
+// they’re a shortcut for. For example “Ctrl+Q” might appear alongside the
+// “Quit” menu item. Mnemonics are shortcuts for GUI elements such as text
+// entries or buttons; they appear as underlined characters. See
+// gtk_label_new_with_mnemonic(). Menu items can have both accelerators and
+// mnemonics, of course.
+type AccelGroup interface {
+	gextras.Objector
+
+	// DisconnectKey removes an accelerator previously installed through
+	// gtk_accel_group_connect().
+	DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool
+	// Find finds the first entry in an accelerator group for which @find_func
+	// returns true and returns its AccelKey.
+	Find(findFunc AccelGroupFindFunc) *AccelKey
+	// IsLocked locks are added and removed using gtk_accel_group_lock() and
+	// gtk_accel_group_unlock().
+	IsLocked() bool
+	// ModifierMask gets a ModifierType representing the mask for this
+	// @accel_group. For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
+	ModifierMask() gdk.ModifierType
+	// Lock locks the given accelerator group.
+	//
+	// Locking an acelerator group prevents the accelerators contained within it
+	// to be changed during runtime. Refer to gtk_accel_map_change_entry() about
+	// runtime accelerator changes.
+	//
+	// If called more than once, @accel_group remains locked until
+	// gtk_accel_group_unlock() has been called an equivalent number of times.
+	Lock()
+	// Query queries an accelerator group for all entries matching @accel_key
+	// and @accel_mods.
+	Query(accelKey uint, accelMods gdk.ModifierType) (nEntries uint, accelGroupEntrys []AccelGroupEntry)
+	// Unlock undoes the last call to gtk_accel_group_lock() on this
+	// @accel_group.
+	Unlock()
+}
+
+// accelGroup implements the AccelGroup interface.
+type accelGroup struct {
+	gextras.Objector
+}
+
+var _ AccelGroup = (*accelGroup)(nil)
+
+// WrapAccelGroup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAccelGroup(obj *externglib.Object) AccelGroup {
+	return AccelGroup{
+		Objector: obj,
+	}
+}
+
+func marshalAccelGroup(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapAccelGroup(obj), nil
+}
+
+// NewAccelGroup constructs a class AccelGroup.
+func NewAccelGroup() AccelGroup {
+	ret := C.gtk_accel_group_new()
+
+	var ret0 AccelGroup
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AccelGroup)
+
+	return ret0
+}
+
+// DisconnectKey removes an accelerator previously installed through
+// gtk_accel_group_connect().
+func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
+	var arg0 *C.GtkAccelGroup
+	var arg1 C.guint
+	var arg2 C.GdkModifierType
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+	arg1 = C.guint(accelKey)
+	arg2 = (C.GdkModifierType)(accelMods)
+
+	ret := C.gtk_accel_group_disconnect_key(arg0, arg1, arg2)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// Find finds the first entry in an accelerator group for which @find_func
+// returns true and returns its AccelKey.
+func (a accelGroup) Find(findFunc AccelGroupFindFunc) *AccelKey {
+	var arg0 *C.GtkAccelGroup
+	var arg1 C.GtkAccelGroupFindFunc
+	var arg2 C.gpointer
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+	arg1 = (*[0]byte)(C.gotk4_AccelGroupFindFunc)
+	arg2 = C.gpointer(box.Assign(findFunc))
+
+	ret := C.gtk_accel_group_find(arg0, arg1, arg2)
+
+	var ret0 *AccelKey
+
+	{
+		ret0 = WrapAccelKey(unsafe.Pointer(ret))
+	}
+
+	return ret0
+}
+
+// IsLocked locks are added and removed using gtk_accel_group_lock() and
+// gtk_accel_group_unlock().
+func (a accelGroup) IsLocked() bool {
+	var arg0 *C.GtkAccelGroup
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+
+	ret := C.gtk_accel_group_get_is_locked(arg0)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// ModifierMask gets a ModifierType representing the mask for this
+// @accel_group. For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
+func (a accelGroup) ModifierMask() gdk.ModifierType {
+	var arg0 *C.GtkAccelGroup
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+
+	ret := C.gtk_accel_group_get_modifier_mask(arg0)
+
+	var ret0 gdk.ModifierType
+
+	ret0 = gdk.ModifierType(ret)
+
+	return ret0
+}
+
+// Lock locks the given accelerator group.
+//
+// Locking an acelerator group prevents the accelerators contained within it
+// to be changed during runtime. Refer to gtk_accel_map_change_entry() about
+// runtime accelerator changes.
+//
+// If called more than once, @accel_group remains locked until
+// gtk_accel_group_unlock() has been called an equivalent number of times.
+func (a accelGroup) Lock() {
+	var arg0 *C.GtkAccelGroup
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+
+	C.gtk_accel_group_lock(arg0)
+}
+
+// Query queries an accelerator group for all entries matching @accel_key
+// and @accel_mods.
+func (a accelGroup) Query(accelKey uint, accelMods gdk.ModifierType) (nEntries uint, accelGroupEntrys []AccelGroupEntry) {
+	var arg0 *C.GtkAccelGroup
+	var arg1 C.guint
+	var arg2 C.GdkModifierType
+	var arg3 *C.guint // out
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+	arg1 = C.guint(accelKey)
+	arg2 = (C.GdkModifierType)(accelMods)
+
+	ret := C.gtk_accel_group_query(arg0, arg1, arg2, &arg3)
+
+	var ret0 uint
+	var ret1 []AccelGroupEntry
+
+	ret0 = uint(arg3)
+
+	{
+		ret1 = make([]AccelGroupEntry, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			src := (C.GtkAccelGroupEntry)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			{
+				ret1[i] = WrapAccelGroupEntry(unsafe.Pointer(src))
+			}
+		}
+	}
+
+	return ret0, ret1
+}
+
+// Unlock undoes the last call to gtk_accel_group_lock() on this
+// @accel_group.
+func (a accelGroup) Unlock() {
+	var arg0 *C.GtkAccelGroup
+
+	arg0 = (*C.GtkAccelGroup)(a.Native())
+
+	C.gtk_accel_group_unlock(arg0)
 }
 
 type AccelGroupEntry struct {
@@ -398,213 +607,4 @@ func (a *AccelKey) AccelMods() gdk.ModifierType {
 	var ret gdk.ModifierType
 	ret = gdk.ModifierType(a.native.accel_mods)
 	return ret
-}
-
-// AccelGroup: a AccelGroup represents a group of keyboard accelerators,
-// typically attached to a toplevel Window (with gtk_window_add_accel_group()).
-// Usually you won’t need to create a AccelGroup directly; instead, when using
-// UIManager, GTK+ automatically sets up the accelerators for your menus in the
-// ui manager’s AccelGroup.
-//
-// Note that “accelerators” are different from “mnemonics”. Accelerators are
-// shortcuts for activating a menu item; they appear alongside the menu item
-// they’re a shortcut for. For example “Ctrl+Q” might appear alongside the
-// “Quit” menu item. Mnemonics are shortcuts for GUI elements such as text
-// entries or buttons; they appear as underlined characters. See
-// gtk_label_new_with_mnemonic(). Menu items can have both accelerators and
-// mnemonics, of course.
-type AccelGroup interface {
-	gextras.Objector
-
-	// DisconnectKey removes an accelerator previously installed through
-	// gtk_accel_group_connect().
-	DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool
-	// Find finds the first entry in an accelerator group for which @find_func
-	// returns true and returns its AccelKey.
-	Find(findFunc AccelGroupFindFunc) *AccelKey
-	// IsLocked locks are added and removed using gtk_accel_group_lock() and
-	// gtk_accel_group_unlock().
-	IsLocked() bool
-	// ModifierMask gets a ModifierType representing the mask for this
-	// @accel_group. For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
-	ModifierMask() gdk.ModifierType
-	// Lock locks the given accelerator group.
-	//
-	// Locking an acelerator group prevents the accelerators contained within it
-	// to be changed during runtime. Refer to gtk_accel_map_change_entry() about
-	// runtime accelerator changes.
-	//
-	// If called more than once, @accel_group remains locked until
-	// gtk_accel_group_unlock() has been called an equivalent number of times.
-	Lock()
-	// Query queries an accelerator group for all entries matching @accel_key
-	// and @accel_mods.
-	Query(accelKey uint, accelMods gdk.ModifierType) (nEntries uint, accelGroupEntrys []AccelGroupEntry)
-	// Unlock undoes the last call to gtk_accel_group_lock() on this
-	// @accel_group.
-	Unlock()
-}
-
-// accelGroup implements the AccelGroup interface.
-type accelGroup struct {
-	gextras.Objector
-}
-
-var _ AccelGroup = (*accelGroup)(nil)
-
-// WrapAccelGroup wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapAccelGroup(obj *externglib.Object) AccelGroup {
-	return AccelGroup{
-		Objector: obj,
-	}
-}
-
-func marshalAccelGroup(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapAccelGroup(obj), nil
-}
-
-// NewAccelGroup constructs a class AccelGroup.
-func NewAccelGroup() AccelGroup {
-	ret := C.gtk_accel_group_new()
-
-	var ret0 AccelGroup
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(AccelGroup)
-
-	return ret0
-}
-
-// DisconnectKey removes an accelerator previously installed through
-// gtk_accel_group_connect().
-func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool {
-	var arg0 *C.GtkAccelGroup
-	var arg1 C.guint
-	var arg2 C.GdkModifierType
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-	arg1 = C.guint(accelKey)
-	arg2 = (C.GdkModifierType)(accelMods)
-
-	ret := C.gtk_accel_group_disconnect_key(arg0, arg1, arg2)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// Find finds the first entry in an accelerator group for which @find_func
-// returns true and returns its AccelKey.
-func (a accelGroup) Find(findFunc AccelGroupFindFunc) *AccelKey {
-	var arg0 *C.GtkAccelGroup
-	var arg1 C.GtkAccelGroupFindFunc
-	var arg2 C.gpointer
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-	arg1 = (*[0]byte)(C.gotk4_AccelGroupFindFunc)
-	arg2 = C.gpointer(box.Assign(findFunc))
-
-	ret := C.gtk_accel_group_find(arg0, arg1, arg2)
-
-	var ret0 *AccelKey
-
-	{
-		ret0 = WrapAccelKey(unsafe.Pointer(ret))
-	}
-
-	return ret0
-}
-
-// IsLocked locks are added and removed using gtk_accel_group_lock() and
-// gtk_accel_group_unlock().
-func (a accelGroup) IsLocked() bool {
-	var arg0 *C.GtkAccelGroup
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-
-	ret := C.gtk_accel_group_get_is_locked(arg0)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// ModifierMask gets a ModifierType representing the mask for this
-// @accel_group. For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
-func (a accelGroup) ModifierMask() gdk.ModifierType {
-	var arg0 *C.GtkAccelGroup
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-
-	ret := C.gtk_accel_group_get_modifier_mask(arg0)
-
-	var ret0 gdk.ModifierType
-
-	ret0 = gdk.ModifierType(ret)
-
-	return ret0
-}
-
-// Lock locks the given accelerator group.
-//
-// Locking an acelerator group prevents the accelerators contained within it
-// to be changed during runtime. Refer to gtk_accel_map_change_entry() about
-// runtime accelerator changes.
-//
-// If called more than once, @accel_group remains locked until
-// gtk_accel_group_unlock() has been called an equivalent number of times.
-func (a accelGroup) Lock() {
-	var arg0 *C.GtkAccelGroup
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-
-	C.gtk_accel_group_lock(arg0)
-}
-
-// Query queries an accelerator group for all entries matching @accel_key
-// and @accel_mods.
-func (a accelGroup) Query(accelKey uint, accelMods gdk.ModifierType) (nEntries uint, accelGroupEntrys []AccelGroupEntry) {
-	var arg0 *C.GtkAccelGroup
-	var arg1 C.guint
-	var arg2 C.GdkModifierType
-	var arg3 *C.guint // out
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-	arg1 = C.guint(accelKey)
-	arg2 = (C.GdkModifierType)(accelMods)
-
-	ret := C.gtk_accel_group_query(arg0, arg1, arg2, &arg3)
-
-	var ret0 uint
-	var ret1 []AccelGroupEntry
-
-	ret0 = uint(arg3)
-
-	{
-		ret1 = make([]AccelGroupEntry, arg3)
-		for i := 0; i < uintptr(arg3); i++ {
-			src := (C.GtkAccelGroupEntry)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			{
-				ret1[i] = WrapAccelGroupEntry(unsafe.Pointer(src))
-			}
-		}
-	}
-
-	return ret0, ret1
-}
-
-// Unlock undoes the last call to gtk_accel_group_lock() on this
-// @accel_group.
-func (a accelGroup) Unlock() {
-	var arg0 *C.GtkAccelGroup
-
-	arg0 = (*C.GtkAccelGroup)(a.Native())
-
-	C.gtk_accel_group_unlock(arg0)
 }

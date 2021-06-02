@@ -121,7 +121,7 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -139,7 +139,7 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -156,7 +156,7 @@ func (a *Rect) Equal(b *Rect) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -549,7 +549,7 @@ func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
 		ret0 = WrapRect(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

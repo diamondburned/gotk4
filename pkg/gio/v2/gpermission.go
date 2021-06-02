@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -31,30 +31,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_permission_get_type()), F: marshalPermission},
 	})
-}
-
-type PermissionPrivate struct {
-	native C.GPermissionPrivate
-}
-
-// WrapPermissionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPermissionPrivate(ptr unsafe.Pointer) *PermissionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PermissionPrivate)(ptr)
-}
-
-func marshalPermissionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPermissionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PermissionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
 }
 
 // Permission: a #GPermission represents the status of the caller's permission
@@ -261,7 +237,7 @@ func (p permission) Allowed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -278,7 +254,7 @@ func (p permission) CanAcquire() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -295,7 +271,7 @@ func (p permission) CanRelease() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -402,4 +378,28 @@ func (p permission) ReleaseFinish(result AsyncResult) error {
 	}
 
 	return goError
+}
+
+type PermissionPrivate struct {
+	native C.GPermissionPrivate
+}
+
+// WrapPermissionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPermissionPrivate(ptr unsafe.Pointer) *PermissionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*PermissionPrivate)(ptr)
+}
+
+func marshalPermissionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapPermissionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *PermissionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }

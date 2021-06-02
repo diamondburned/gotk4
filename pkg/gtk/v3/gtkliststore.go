@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -24,30 +24,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_list_store_get_type()), F: marshalListStore},
 	})
-}
-
-type ListStorePrivate struct {
-	native C.GtkListStorePrivate
-}
-
-// WrapListStorePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapListStorePrivate(ptr unsafe.Pointer) *ListStorePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ListStorePrivate)(ptr)
-}
-
-func marshalListStorePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapListStorePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *ListStorePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
 }
 
 // ListStore: the ListStore object is a list model for use with a TreeView
@@ -391,7 +367,7 @@ func (l listStore) IterIsValid(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -461,7 +437,7 @@ func (l listStore) Remove(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -589,4 +565,28 @@ func (s listStore) Swap(a *TreeIter, b *TreeIter) {
 	arg2 = (*C.GtkTreeIter)(b.Native())
 
 	C.gtk_list_store_swap(arg0, arg1, arg2)
+}
+
+type ListStorePrivate struct {
+	native C.GtkListStorePrivate
+}
+
+// WrapListStorePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapListStorePrivate(ptr unsafe.Pointer) *ListStorePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ListStorePrivate)(ptr)
+}
+
+func marshalListStorePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapListStorePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (l *ListStorePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&l.native)
 }

@@ -43,7 +43,7 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 		})
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

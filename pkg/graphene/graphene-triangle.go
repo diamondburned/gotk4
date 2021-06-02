@@ -75,7 +75,7 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -92,7 +92,7 @@ func (a *Triangle) Equal(b *Triangle) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -155,7 +155,7 @@ func (t *Triangle) Barycoords(p *Point3D) (res Vec2, ok bool) {
 		ret0 = WrapVec2(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -304,7 +304,7 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res Vec2, ok
 		ret0 = WrapVec2(unsafe.Pointer(arg5))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

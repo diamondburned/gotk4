@@ -23,30 +23,6 @@ func init() {
 	})
 }
 
-type CellRendererProgressPrivate struct {
-	native C.GtkCellRendererProgressPrivate
-}
-
-// WrapCellRendererProgressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererProgressPrivate(ptr unsafe.Pointer) *CellRendererProgressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererProgressPrivate)(ptr)
-}
-
-func marshalCellRendererProgressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererProgressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererProgressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}
-
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 //
@@ -88,4 +64,28 @@ func NewCellRendererProgress() CellRendererProgress {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(CellRendererProgress)
 
 	return ret0
+}
+
+type CellRendererProgressPrivate struct {
+	native C.GtkCellRendererProgressPrivate
+}
+
+// WrapCellRendererProgressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererProgressPrivate(ptr unsafe.Pointer) *CellRendererProgressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererProgressPrivate)(ptr)
+}
+
+func marshalCellRendererProgressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererProgressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererProgressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

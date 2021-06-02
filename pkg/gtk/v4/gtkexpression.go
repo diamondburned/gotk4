@@ -18,7 +18,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_ExpressionNotify(gpointer _0);
+// void gotk4_ExpressionNotify(gpointer);
 import "C"
 
 func init() {
@@ -170,7 +170,7 @@ func (w *ExpressionWatch) Evaluate(value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

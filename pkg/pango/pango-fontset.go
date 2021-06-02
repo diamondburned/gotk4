@@ -16,7 +16,7 @@ import (
 // #include <glib-object.h>
 // #include <pango/pango.h>
 //
-// extern gboolean gotk4_FontsetForeachFunc(PangoFontset* _0, PangoFont* _1, gpointer _2);
+// gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {

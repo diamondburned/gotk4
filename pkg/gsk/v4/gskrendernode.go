@@ -15,7 +15,7 @@ import (
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
 //
-// extern void gotk4_ParseErrorFunc(const GskParseLocation* _0, const GskParseLocation* _1, const GError* _2, gpointer _3);
+// void gotk4_ParseErrorFunc( GskParseLocation*,  GskParseLocation*,  GError*, gpointer);
 import "C"
 
 // ParseErrorFunc: type of callback that is called when an error occurs during

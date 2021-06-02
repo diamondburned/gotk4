@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type ProxyAddressEnumeratorPrivate struct {
-	native C.GProxyAddressEnumeratorPrivate
-}
-
-// WrapProxyAddressEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapProxyAddressEnumeratorPrivate(ptr unsafe.Pointer) *ProxyAddressEnumeratorPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ProxyAddressEnumeratorPrivate)(ptr)
-}
-
-func marshalProxyAddressEnumeratorPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapProxyAddressEnumeratorPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *ProxyAddressEnumeratorPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}
-
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.
@@ -86,4 +62,28 @@ func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapProxyAddressEnumerator(obj), nil
+}
+
+type ProxyAddressEnumeratorPrivate struct {
+	native C.GProxyAddressEnumeratorPrivate
+}
+
+// WrapProxyAddressEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapProxyAddressEnumeratorPrivate(ptr unsafe.Pointer) *ProxyAddressEnumeratorPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ProxyAddressEnumeratorPrivate)(ptr)
+}
+
+func marshalProxyAddressEnumeratorPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapProxyAddressEnumeratorPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *ProxyAddressEnumeratorPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }

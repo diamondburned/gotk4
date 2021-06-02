@@ -16,8 +16,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -34,227 +34,6 @@ func init() {
 //export callbackDelete
 func callbackDelete(ptr C.gpointer) {
 	box.Delete(box.Callback, uintptr(ptr))
-}
-
-// ActionEntry structs are used with gtk_action_group_add_actions() to construct
-// actions.
-type ActionEntry struct {
-	native C.GtkActionEntry
-}
-
-// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionEntry)(ptr)
-}
-
-func marshalActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionEntry(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}
-
-// Name gets the field inside the struct.
-func (a *ActionEntry) Name() string {
-	var ret string
-	ret = C.GoString(a.native.name)
-	return ret
-}
-
-// StockID gets the field inside the struct.
-func (a *ActionEntry) StockID() string {
-	var ret string
-	ret = C.GoString(a.native.stock_id)
-	return ret
-}
-
-// Label gets the field inside the struct.
-func (a *ActionEntry) Label() string {
-	var ret string
-	ret = C.GoString(a.native.label)
-	return ret
-}
-
-// Accelerator gets the field inside the struct.
-func (a *ActionEntry) Accelerator() string {
-	var ret string
-	ret = C.GoString(a.native.accelerator)
-	return ret
-}
-
-// Tooltip gets the field inside the struct.
-func (a *ActionEntry) Tooltip() string {
-	var ret string
-	ret = C.GoString(a.native.tooltip)
-	return ret
-}
-
-type ActionGroupPrivate struct {
-	native C.GtkActionGroupPrivate
-}
-
-// WrapActionGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionGroupPrivate(ptr unsafe.Pointer) *ActionGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionGroupPrivate)(ptr)
-}
-
-func marshalActionGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}
-
-// RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
-// to construct groups of radio actions.
-type RadioActionEntry struct {
-	native C.GtkRadioActionEntry
-}
-
-// WrapRadioActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RadioActionEntry)(ptr)
-}
-
-func marshalRadioActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRadioActionEntry(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RadioActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}
-
-// Name gets the field inside the struct.
-func (r *RadioActionEntry) Name() string {
-	var ret string
-	ret = C.GoString(r.native.name)
-	return ret
-}
-
-// StockID gets the field inside the struct.
-func (r *RadioActionEntry) StockID() string {
-	var ret string
-	ret = C.GoString(r.native.stock_id)
-	return ret
-}
-
-// Label gets the field inside the struct.
-func (r *RadioActionEntry) Label() string {
-	var ret string
-	ret = C.GoString(r.native.label)
-	return ret
-}
-
-// Accelerator gets the field inside the struct.
-func (r *RadioActionEntry) Accelerator() string {
-	var ret string
-	ret = C.GoString(r.native.accelerator)
-	return ret
-}
-
-// Tooltip gets the field inside the struct.
-func (r *RadioActionEntry) Tooltip() string {
-	var ret string
-	ret = C.GoString(r.native.tooltip)
-	return ret
-}
-
-// Value gets the field inside the struct.
-func (r *RadioActionEntry) Value() int {
-	var ret int
-	ret = int(r.native.value)
-	return ret
-}
-
-// ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
-// to construct toggle actions.
-type ToggleActionEntry struct {
-	native C.GtkToggleActionEntry
-}
-
-// WrapToggleActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToggleActionEntry)(ptr)
-}
-
-func marshalToggleActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToggleActionEntry(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToggleActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
-// Name gets the field inside the struct.
-func (t *ToggleActionEntry) Name() string {
-	var ret string
-	ret = C.GoString(t.native.name)
-	return ret
-}
-
-// StockID gets the field inside the struct.
-func (t *ToggleActionEntry) StockID() string {
-	var ret string
-	ret = C.GoString(t.native.stock_id)
-	return ret
-}
-
-// Label gets the field inside the struct.
-func (t *ToggleActionEntry) Label() string {
-	var ret string
-	ret = C.GoString(t.native.label)
-	return ret
-}
-
-// Accelerator gets the field inside the struct.
-func (t *ToggleActionEntry) Accelerator() string {
-	var ret string
-	ret = C.GoString(t.native.accelerator)
-	return ret
-}
-
-// Tooltip gets the field inside the struct.
-func (t *ToggleActionEntry) Tooltip() string {
-	var ret string
-	ret = C.GoString(t.native.tooltip)
-	return ret
-}
-
-// IsActive gets the field inside the struct.
-func (t *ToggleActionEntry) IsActive() bool {
-	var ret bool
-	ret = C.bool(t.native.is_active) != 0
-	return ret
 }
 
 // ActionGroup actions are organised into groups. An action group is essentially
@@ -744,7 +523,7 @@ func (a actionGroup) Sensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -761,7 +540,7 @@ func (a actionGroup) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -889,4 +668,225 @@ func (a actionGroup) TranslateString(string string) string {
 	ret0 = C.GoString(ret)
 
 	return ret0
+}
+
+// ActionEntry structs are used with gtk_action_group_add_actions() to construct
+// actions.
+type ActionEntry struct {
+	native C.GtkActionEntry
+}
+
+// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ActionEntry)(ptr)
+}
+
+func marshalActionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapActionEntry(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *ActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
+}
+
+// Name gets the field inside the struct.
+func (a *ActionEntry) Name() string {
+	var ret string
+	ret = C.GoString(a.native.name)
+	return ret
+}
+
+// StockID gets the field inside the struct.
+func (a *ActionEntry) StockID() string {
+	var ret string
+	ret = C.GoString(a.native.stock_id)
+	return ret
+}
+
+// Label gets the field inside the struct.
+func (a *ActionEntry) Label() string {
+	var ret string
+	ret = C.GoString(a.native.label)
+	return ret
+}
+
+// Accelerator gets the field inside the struct.
+func (a *ActionEntry) Accelerator() string {
+	var ret string
+	ret = C.GoString(a.native.accelerator)
+	return ret
+}
+
+// Tooltip gets the field inside the struct.
+func (a *ActionEntry) Tooltip() string {
+	var ret string
+	ret = C.GoString(a.native.tooltip)
+	return ret
+}
+
+type ActionGroupPrivate struct {
+	native C.GtkActionGroupPrivate
+}
+
+// WrapActionGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapActionGroupPrivate(ptr unsafe.Pointer) *ActionGroupPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ActionGroupPrivate)(ptr)
+}
+
+func marshalActionGroupPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapActionGroupPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *ActionGroupPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
+}
+
+// RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
+// to construct groups of radio actions.
+type RadioActionEntry struct {
+	native C.GtkRadioActionEntry
+}
+
+// WrapRadioActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRadioActionEntry(ptr unsafe.Pointer) *RadioActionEntry {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*RadioActionEntry)(ptr)
+}
+
+func marshalRadioActionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapRadioActionEntry(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *RadioActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
+}
+
+// Name gets the field inside the struct.
+func (r *RadioActionEntry) Name() string {
+	var ret string
+	ret = C.GoString(r.native.name)
+	return ret
+}
+
+// StockID gets the field inside the struct.
+func (r *RadioActionEntry) StockID() string {
+	var ret string
+	ret = C.GoString(r.native.stock_id)
+	return ret
+}
+
+// Label gets the field inside the struct.
+func (r *RadioActionEntry) Label() string {
+	var ret string
+	ret = C.GoString(r.native.label)
+	return ret
+}
+
+// Accelerator gets the field inside the struct.
+func (r *RadioActionEntry) Accelerator() string {
+	var ret string
+	ret = C.GoString(r.native.accelerator)
+	return ret
+}
+
+// Tooltip gets the field inside the struct.
+func (r *RadioActionEntry) Tooltip() string {
+	var ret string
+	ret = C.GoString(r.native.tooltip)
+	return ret
+}
+
+// Value gets the field inside the struct.
+func (r *RadioActionEntry) Value() int {
+	var ret int
+	ret = int(r.native.value)
+	return ret
+}
+
+// ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
+// to construct toggle actions.
+type ToggleActionEntry struct {
+	native C.GtkToggleActionEntry
+}
+
+// WrapToggleActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapToggleActionEntry(ptr unsafe.Pointer) *ToggleActionEntry {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ToggleActionEntry)(ptr)
+}
+
+func marshalToggleActionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapToggleActionEntry(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ToggleActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+// Name gets the field inside the struct.
+func (t *ToggleActionEntry) Name() string {
+	var ret string
+	ret = C.GoString(t.native.name)
+	return ret
+}
+
+// StockID gets the field inside the struct.
+func (t *ToggleActionEntry) StockID() string {
+	var ret string
+	ret = C.GoString(t.native.stock_id)
+	return ret
+}
+
+// Label gets the field inside the struct.
+func (t *ToggleActionEntry) Label() string {
+	var ret string
+	ret = C.GoString(t.native.label)
+	return ret
+}
+
+// Accelerator gets the field inside the struct.
+func (t *ToggleActionEntry) Accelerator() string {
+	var ret string
+	ret = C.GoString(t.native.accelerator)
+	return ret
+}
+
+// Tooltip gets the field inside the struct.
+func (t *ToggleActionEntry) Tooltip() string {
+	var ret string
+	ret = C.GoString(t.native.tooltip)
+	return ret
+}
+
+// IsActive gets the field inside the struct.
+func (t *ToggleActionEntry) IsActive() bool {
+	var ret bool
+	ret = C.bool(t.native.is_active) != C.false
+	return ret
 }

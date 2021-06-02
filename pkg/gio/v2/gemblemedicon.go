@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type EmblemedIconPrivate struct {
-	native C.GEmblemedIconPrivate
-}
-
-// WrapEmblemedIconPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEmblemedIconPrivate(ptr unsafe.Pointer) *EmblemedIconPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*EmblemedIconPrivate)(ptr)
-}
-
-func marshalEmblemedIconPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEmblemedIconPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *EmblemedIconPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
-}
-
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
 // an icon. Adding multiple emblems to an icon is ensured via
 // g_emblemed_icon_add_emblem().
@@ -166,4 +142,28 @@ func (e emblemedIcon) Icon() Icon {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Icon)
 
 	return ret0
+}
+
+type EmblemedIconPrivate struct {
+	native C.GEmblemedIconPrivate
+}
+
+// WrapEmblemedIconPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapEmblemedIconPrivate(ptr unsafe.Pointer) *EmblemedIconPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*EmblemedIconPrivate)(ptr)
+}
+
+func marshalEmblemedIconPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapEmblemedIconPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (e *EmblemedIconPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&e.native)
 }

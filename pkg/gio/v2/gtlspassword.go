@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type TLSPasswordPrivate struct {
-	native C.GTlsPasswordPrivate
-}
-
-// WrapTLSPasswordPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSPasswordPrivate(ptr unsafe.Pointer) *TLSPasswordPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSPasswordPrivate)(ptr)
-}
-
-func marshalTLSPasswordPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSPasswordPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSPasswordPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // TLSPassword holds a password used in TLS.
 type TLSPassword interface {
 	gextras.Objector
@@ -289,4 +265,28 @@ func (p tlsPassword) SetWarning(warning string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_tls_password_set_warning(arg0, arg1)
+}
+
+type TLSPasswordPrivate struct {
+	native C.GTlsPasswordPrivate
+}
+
+// WrapTLSPasswordPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSPasswordPrivate(ptr unsafe.Pointer) *TLSPasswordPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSPasswordPrivate)(ptr)
+}
+
+func marshalTLSPasswordPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSPasswordPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSPasswordPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

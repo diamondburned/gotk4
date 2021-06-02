@@ -18,8 +18,8 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_CellAllocCallback(GtkCellRenderer* _0, const GdkRectangle* _1, const GdkRectangle* _2, gpointer _3);
-// extern gboolean gotk4_CellCallback(GtkCellRenderer* _0, gpointer _1);
+// gboolean gotk4_CellAllocCallback(GtkCellRenderer*,  GdkRectangle*,  GdkRectangle*, gpointer);
+// gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer);
 import "C"
 
 func init() {
@@ -438,7 +438,7 @@ func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -465,7 +465,7 @@ func (a cellArea) ActivateCell(widget Widget, renderer CellRenderer, event gdk.E
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -693,7 +693,7 @@ func (a cellArea) Focus(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1065,7 +1065,7 @@ func (a cellArea) HasRenderer(renderer CellRenderer) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1106,7 +1106,7 @@ func (a cellArea) IsActivatable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1126,7 +1126,7 @@ func (a cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

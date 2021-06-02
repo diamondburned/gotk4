@@ -40,7 +40,7 @@ func ContentTypeCanBeExecutable(typ string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -59,7 +59,7 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -215,7 +215,7 @@ func ContentTypeGuess(filename string, data []byte) (resultUncertain bool, utf8 
 	var ret0 bool
 	var ret1 string
 
-	ret0 = C.bool(arg4) != 0
+	ret0 = C.bool(arg4) != C.false
 
 	ret1 = C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
@@ -275,7 +275,7 @@ func ContentTypeIsA(typ string, supertype string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -295,7 +295,7 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -313,7 +313,7 @@ func ContentTypeIsUnknown(typ string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

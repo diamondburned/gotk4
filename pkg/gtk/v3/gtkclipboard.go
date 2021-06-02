@@ -21,12 +21,12 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_ClipboardImageReceivedFunc(GtkClipboard* _0, GdkPixbuf* _1, gpointer _2);
-// extern void gotk4_ClipboardReceivedFunc(GtkClipboard* _0, GtkSelectionData* _1, gpointer _2);
-// extern void gotk4_ClipboardRichTextReceivedFunc(GtkClipboard* _0, GdkAtom _1, const guint8* _2, gsize _3, gpointer _4);
-// extern void gotk4_ClipboardTargetsReceivedFunc(GtkClipboard* _0, GdkAtom* _1, gint _2, gpointer _3);
-// extern void gotk4_ClipboardTextReceivedFunc(GtkClipboard* _0, const gchar* _1, gpointer _2);
-// extern void gotk4_ClipboardURIReceivedFunc(GtkClipboard* _0, gchar** _1, gpointer _2);
+// void gotk4_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
+// void gotk4_ClipboardReceivedFunc(GtkClipboard*, GtkSelectionData*, gpointer);
+// void gotk4_ClipboardRichTextReceivedFunc(GtkClipboard*, GdkAtom,  guint8*, gsize, gpointer);
+// void gotk4_ClipboardTargetsReceivedFunc(GtkClipboard*, GdkAtom*, gint, gpointer);
+// void gotk4_ClipboardTextReceivedFunc(GtkClipboard*,  gchar*, gpointer);
+// void gotk4_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
 import "C"
 
 // ClipboardImageReceivedFunc: a function to be called when the results of

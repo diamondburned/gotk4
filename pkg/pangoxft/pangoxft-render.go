@@ -22,30 +22,6 @@ func init() {
 	})
 }
 
-type RendererPrivate struct {
-	native C.PangoXftRendererPrivate
-}
-
-// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RendererPrivate)(ptr)
-}
-
-func marshalRendererPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRendererPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RendererPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}
-
 // Renderer is a subclass of Renderer used for rendering with Pango's Xft
 // backend. It can be used directly, or it can be further subclassed to modify
 // exactly how drawing of individual elements occurs.
@@ -86,4 +62,28 @@ func (x renderer) SetDefaultColor(defaultColor *pango.Color) {
 	arg1 = (*C.PangoColor)(defaultColor.Native())
 
 	C.pango_xft_renderer_set_default_color(arg0, arg1)
+}
+
+type RendererPrivate struct {
+	native C.PangoXftRendererPrivate
+}
+
+// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*RendererPrivate)(ptr)
+}
+
+func marshalRendererPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapRendererPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *RendererPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }

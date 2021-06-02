@@ -15,8 +15,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -41,30 +41,6 @@ func init() {
 //export callbackDelete
 func callbackDelete(ptr C.gpointer) {
 	box.Delete(box.Callback, uintptr(ptr))
-}
-
-type CancellablePrivate struct {
-	native C.GCancellablePrivate
-}
-
-// WrapCancellablePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCancellablePrivate(ptr unsafe.Pointer) *CancellablePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CancellablePrivate)(ptr)
-}
-
-func marshalCancellablePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCancellablePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CancellablePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // Cancellable: GCancellable is a thread-safe operation cancellation stack used
@@ -356,7 +332,7 @@ func (c cancellable) IsCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -389,7 +365,7 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -502,4 +478,28 @@ func (c cancellable) NewSource() *glib.Source {
 	}
 
 	return ret0
+}
+
+type CancellablePrivate struct {
+	native C.GCancellablePrivate
+}
+
+// WrapCancellablePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCancellablePrivate(ptr unsafe.Pointer) *CancellablePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CancellablePrivate)(ptr)
+}
+
+func marshalCancellablePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCancellablePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CancellablePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

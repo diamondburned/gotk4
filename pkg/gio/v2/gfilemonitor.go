@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitor},
 	})
-}
-
-type FileMonitorPrivate struct {
-	native C.GFileMonitorPrivate
-}
-
-// WrapFileMonitorPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileMonitorPrivate(ptr unsafe.Pointer) *FileMonitorPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileMonitorPrivate)(ptr)
-}
-
-func marshalFileMonitorPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileMonitorPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileMonitorPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -117,7 +93,7 @@ func (m fileMonitor) Cancel() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -152,7 +128,7 @@ func (m fileMonitor) IsCancelled() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -167,4 +143,28 @@ func (m fileMonitor) SetRateLimit(limitMsecs int) {
 	arg1 = C.gint(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(arg0, arg1)
+}
+
+type FileMonitorPrivate struct {
+	native C.GFileMonitorPrivate
+}
+
+// WrapFileMonitorPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileMonitorPrivate(ptr unsafe.Pointer) *FileMonitorPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileMonitorPrivate)(ptr)
+}
+
+func marshalFileMonitorPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileMonitorPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileMonitorPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
 }

@@ -44,7 +44,7 @@ func RCPropertyParseBorder(pspec gobject.ParamSpec, gstring *glib.String, proper
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -68,7 +68,7 @@ func RCPropertyParseColor(pspec gobject.ParamSpec, gstring *glib.String, propert
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -94,7 +94,7 @@ func RCPropertyParseEnum(pspec gobject.ParamSpec, gstring *glib.String, property
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -118,7 +118,7 @@ func RCPropertyParseFlags(pspec gobject.ParamSpec, gstring *glib.String, propert
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -140,71 +140,9 @@ func RCPropertyParseRequisition(pspec gobject.ParamSpec, gstring *glib.String, p
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
-}
-
-type SettingsPrivate struct {
-	native C.GtkSettingsPrivate
-}
-
-// WrapSettingsPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsPrivate(ptr unsafe.Pointer) *SettingsPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SettingsPrivate)(ptr)
-}
-
-func marshalSettingsPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
-type SettingsValue struct {
-	native C.GtkSettingsValue
-}
-
-// WrapSettingsValue wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SettingsValue)(ptr)
-}
-
-func marshalSettingsValue(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsValue(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
-// Origin gets the field inside the struct.
-func (s *SettingsValue) Origin() string {
-	var ret string
-	ret = C.GoString(s.native.origin)
-	return ret
-}
-
-// Value gets the field inside the struct.
-func (s *SettingsValue) Value() *externglib.Value {
-	var ret *externglib.Value
-	ret = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
-	return ret
 }
 
 // Settings gtkSettings provide a mechanism to share global settings between
@@ -353,4 +291,66 @@ func (s settings) SetStringProperty(name string, vString string, origin string) 
 	defer C.free(unsafe.Pointer(arg3))
 
 	C.gtk_settings_set_string_property(arg0, arg1, arg2, arg3)
+}
+
+type SettingsPrivate struct {
+	native C.GtkSettingsPrivate
+}
+
+// WrapSettingsPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsPrivate(ptr unsafe.Pointer) *SettingsPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SettingsPrivate)(ptr)
+}
+
+func marshalSettingsPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSettingsPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+type SettingsValue struct {
+	native C.GtkSettingsValue
+}
+
+// WrapSettingsValue wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SettingsValue)(ptr)
+}
+
+func marshalSettingsValue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSettingsValue(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+// Origin gets the field inside the struct.
+func (s *SettingsValue) Origin() string {
+	var ret string
+	ret = C.GoString(s.native.origin)
+	return ret
+}
+
+// Value gets the field inside the struct.
+func (s *SettingsValue) Value() *externglib.Value {
+	var ret *externglib.Value
+	ret = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
+	return ret
 }

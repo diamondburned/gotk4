@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type ThreadedSocketServicePrivate struct {
-	native C.GThreadedSocketServicePrivate
-}
-
-// WrapThreadedSocketServicePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapThreadedSocketServicePrivate(ptr unsafe.Pointer) *ThreadedSocketServicePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ThreadedSocketServicePrivate)(ptr)
-}
-
-func marshalThreadedSocketServicePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapThreadedSocketServicePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ThreadedSocketServicePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // ThreadedSocketService: a SocketService is a simple subclass of Service that
 // handles incoming connections by creating a worker thread and dispatching the
 // connection to it by emitting the SocketService::run signal in the new thread.
@@ -106,4 +82,28 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(ThreadedSocketService)
 
 	return ret0
+}
+
+type ThreadedSocketServicePrivate struct {
+	native C.GThreadedSocketServicePrivate
+}
+
+// WrapThreadedSocketServicePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapThreadedSocketServicePrivate(ptr unsafe.Pointer) *ThreadedSocketServicePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ThreadedSocketServicePrivate)(ptr)
+}
+
+func marshalThreadedSocketServicePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapThreadedSocketServicePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ThreadedSocketServicePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

@@ -415,7 +415,7 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -570,7 +570,7 @@ func (a actionGroup) HasAction(actionName string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -654,7 +654,7 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	var ret4 **glib.Variant
 	var ret5 bool
 
-	ret0 = C.bool(arg2) != 0
+	ret0 = C.bool(arg2) != C.false
 
 	{
 		ret1 = glib.WrapVariantType(unsafe.Pointer(arg3))
@@ -684,7 +684,7 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 		})
 	}
 
-	ret5 = C.bool(ret) != 0
+	ret5 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4, ret5
 }

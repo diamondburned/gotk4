@@ -14,7 +14,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion* _0, const char* _1, GtkTreeIter* _2, gpointer _3);
+// gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion*,  char*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

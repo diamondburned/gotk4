@@ -44,7 +44,7 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 
 	ret0 = float64(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -72,7 +72,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 
 	ret1 = float64(arg4)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -96,7 +96,7 @@ func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 
 	ret0 = float64(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

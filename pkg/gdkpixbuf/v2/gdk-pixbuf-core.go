@@ -13,7 +13,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 //
-// extern gboolean gotk4_PixbufSaveFunc(const gchar* _0, gsize _1, GError** _2, gpointer _3);
+// gboolean gotk4_PixbufSaveFunc( gchar*, gsize, GError**, gpointer);
 import "C"
 
 // PixbufSaveFunc: save functions used by

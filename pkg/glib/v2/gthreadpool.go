@@ -128,7 +128,7 @@ func (t *ThreadPool) UserData() interface{} {
 // Exclusive gets the field inside the struct.
 func (t *ThreadPool) Exclusive() bool {
 	var ret bool
-	ret = C.bool(t.native.exclusive) != 0
+	ret = C.bool(t.native.exclusive) != C.false
 	return ret
 }
 
@@ -203,7 +203,7 @@ func (p *ThreadPool) MoveToFront(data interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

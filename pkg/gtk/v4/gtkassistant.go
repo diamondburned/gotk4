@@ -15,7 +15,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern int gotk4_AssistantPageFunc(int _0, gpointer _1);
+// int gotk4_AssistantPageFunc(int, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

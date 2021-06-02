@@ -465,7 +465,7 @@ func (s surface) DevicePosition(device Device) (x float64, y float64, mask Modif
 
 	ret2 = (*ModifierType)(arg4)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -534,7 +534,7 @@ func (s surface) Mapped() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -606,7 +606,7 @@ func (s surface) IsDestroyed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -739,7 +739,7 @@ func (f surface) TranslateCoordinates(to Surface, x float64, y float64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

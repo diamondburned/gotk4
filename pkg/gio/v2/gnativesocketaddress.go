@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type NativeSocketAddressPrivate struct {
-	native C.GNativeSocketAddressPrivate
-}
-
-// WrapNativeSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNativeSocketAddressPrivate(ptr unsafe.Pointer) *NativeSocketAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NativeSocketAddressPrivate)(ptr)
-}
-
-func marshalNativeSocketAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNativeSocketAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NativeSocketAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}
-
 // NativeSocketAddress: a socket address of some unknown native type.
 type NativeSocketAddress interface {
 	SocketAddress
@@ -100,4 +76,28 @@ func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(NativeSocketAddress)
 
 	return ret0
+}
+
+type NativeSocketAddressPrivate struct {
+	native C.GNativeSocketAddressPrivate
+}
+
+// WrapNativeSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapNativeSocketAddressPrivate(ptr unsafe.Pointer) *NativeSocketAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*NativeSocketAddressPrivate)(ptr)
+}
+
+func marshalNativeSocketAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapNativeSocketAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (n *NativeSocketAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
 }

@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type NetworkAddressPrivate struct {
-	native C.GNetworkAddressPrivate
-}
-
-// WrapNetworkAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNetworkAddressPrivate(ptr unsafe.Pointer) *NetworkAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NetworkAddressPrivate)(ptr)
-}
-
-func marshalNetworkAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNetworkAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NetworkAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}
-
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to
 // connect to that host, handling the possibility of multiple IP addresses and
 // multiple address families.
@@ -176,4 +152,28 @@ func (a networkAddress) Scheme() string {
 	ret0 = C.GoString(ret)
 
 	return ret0
+}
+
+type NetworkAddressPrivate struct {
+	native C.GNetworkAddressPrivate
+}
+
+// WrapNetworkAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapNetworkAddressPrivate(ptr unsafe.Pointer) *NetworkAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*NetworkAddressPrivate)(ptr)
+}
+
+func marshalNetworkAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapNetworkAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (n *NetworkAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
 }

@@ -15,11 +15,11 @@ import (
 
 // #cgo pkg-config: gdk-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gdk/gdk.h>
 //
-// extern gboolean gotk4_WindowChildFunc(GdkWindow* _0, gpointer _1);
+// gboolean gotk4_WindowChildFunc(GdkWindow*, gpointer);
 import "C"
 
 func init() {
@@ -107,306 +107,6 @@ func OffscreenWindowSetEmbedder(window Window, embedder Window) {
 	arg2 = (*C.GdkWindow)(embedder.Native())
 
 	C.gdk_offscreen_window_set_embedder(arg1, arg2)
-}
-
-// Geometry: the Geometry struct gives the window manager information about a
-// window’s geometry constraints. Normally you would set these on the GTK+ level
-// using gtk_window_set_geometry_hints(). Window then sets the hints on the
-// Window it creates.
-//
-// gdk_window_set_geometry_hints() expects the hints to be fully valid already
-// and simply passes them to the window manager; in contrast,
-// gtk_window_set_geometry_hints() performs some interpretation. For example,
-// Window will apply the hints to the geometry widget instead of the toplevel
-// window, if you set a geometry widget. Also, the
-// @min_width/@min_height/@max_width/@max_height fields may be set to -1, and
-// Window will substitute the size request of the window or geometry widget. If
-// the minimum size hint is not provided, Window will use its requisition as the
-// minimum size. If the minimum size is provided and a geometry widget is set,
-// Window will take the minimum size as the minimum size of the geometry widget
-// rather than the entire window. The base size is treated similarly.
-//
-// The canonical use-case for gtk_window_set_geometry_hints() is to get a
-// terminal widget to resize properly. Here, the terminal text area should be
-// the geometry widget; Window will then automatically set the base size to the
-// size of other widgets in the terminal window, such as the menubar and
-// scrollbar. Then, the @width_inc and @height_inc fields should be set to the
-// size of one character in the terminal. Finally, the base size should be set
-// to the size of one character. The net effect is that the minimum size of the
-// terminal will have a 1x1 character terminal area, and only terminal sizes on
-// the “character grid” will be allowed.
-//
-// Here’s an example of how the terminal example would be implemented, assuming
-// a terminal area widget called “terminal” and a toplevel window “toplevel”:
-//
-//    	GdkGeometry hints;
-//
-//    	hints.base_width = terminal->char_width;
-//            hints.base_height = terminal->char_height;
-//            hints.min_width = terminal->char_width;
-//            hints.min_height = terminal->char_height;
-//            hints.width_inc = terminal->char_width;
-//            hints.height_inc = terminal->char_height;
-//
-//     gtk_window_set_geometry_hints (GTK_WINDOW (toplevel),
-//                                    GTK_WIDGET (terminal),
-//                                    &hints,
-//                                    GDK_HINT_RESIZE_INC |
-//                                    GDK_HINT_MIN_SIZE |
-//                                    GDK_HINT_BASE_SIZE);
-//
-// The other useful fields are the @min_aspect and @max_aspect fields; these
-// contain a width/height ratio as a floating point number. If a geometry widget
-// is set, the aspect applies to the geometry widget rather than the entire
-// window. The most common use of these hints is probably to set @min_aspect and
-// @max_aspect to the same value, thus forcing the window to keep a constant
-// aspect ratio.
-type Geometry struct {
-	native C.GdkGeometry
-}
-
-// WrapGeometry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGeometry(ptr unsafe.Pointer) *Geometry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*Geometry)(ptr)
-}
-
-func marshalGeometry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGeometry(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (g *Geometry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&g.native)
-}
-
-// MinWidth gets the field inside the struct.
-func (g *Geometry) MinWidth() int {
-	var ret int
-	ret = int(g.native.min_width)
-	return ret
-}
-
-// MinHeight gets the field inside the struct.
-func (g *Geometry) MinHeight() int {
-	var ret int
-	ret = int(g.native.min_height)
-	return ret
-}
-
-// MaxWidth gets the field inside the struct.
-func (g *Geometry) MaxWidth() int {
-	var ret int
-	ret = int(g.native.max_width)
-	return ret
-}
-
-// MaxHeight gets the field inside the struct.
-func (g *Geometry) MaxHeight() int {
-	var ret int
-	ret = int(g.native.max_height)
-	return ret
-}
-
-// BaseWidth gets the field inside the struct.
-func (g *Geometry) BaseWidth() int {
-	var ret int
-	ret = int(g.native.base_width)
-	return ret
-}
-
-// BaseHeight gets the field inside the struct.
-func (g *Geometry) BaseHeight() int {
-	var ret int
-	ret = int(g.native.base_height)
-	return ret
-}
-
-// WidthInc gets the field inside the struct.
-func (g *Geometry) WidthInc() int {
-	var ret int
-	ret = int(g.native.width_inc)
-	return ret
-}
-
-// HeightInc gets the field inside the struct.
-func (g *Geometry) HeightInc() int {
-	var ret int
-	ret = int(g.native.height_inc)
-	return ret
-}
-
-// MinAspect gets the field inside the struct.
-func (g *Geometry) MinAspect() float64 {
-	var ret float64
-	ret = float64(g.native.min_aspect)
-	return ret
-}
-
-// MaxAspect gets the field inside the struct.
-func (g *Geometry) MaxAspect() float64 {
-	var ret float64
-	ret = float64(g.native.max_aspect)
-	return ret
-}
-
-// WinGravity gets the field inside the struct.
-func (g *Geometry) WinGravity() Gravity {
-	var ret Gravity
-	ret = Gravity(g.native.win_gravity)
-	return ret
-}
-
-// WindowAttr attributes to use for a newly-created window.
-type WindowAttr struct {
-	native C.GdkWindowAttr
-}
-
-// WrapWindowAttr wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWindowAttr(ptr unsafe.Pointer) *WindowAttr {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WindowAttr)(ptr)
-}
-
-func marshalWindowAttr(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWindowAttr(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WindowAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
-}
-
-// Title gets the field inside the struct.
-func (w *WindowAttr) Title() string {
-	var ret string
-	ret = C.GoString(w.native.title)
-	return ret
-}
-
-// EventMask gets the field inside the struct.
-func (w *WindowAttr) EventMask() int {
-	var ret int
-	ret = int(w.native.event_mask)
-	return ret
-}
-
-// X gets the field inside the struct.
-func (w *WindowAttr) X() int {
-	var ret int
-	ret = int(w.native.x)
-	return ret
-}
-
-// Y gets the field inside the struct.
-func (w *WindowAttr) Y() int {
-	var ret int
-	ret = int(w.native.y)
-	return ret
-}
-
-// Width gets the field inside the struct.
-func (w *WindowAttr) Width() int {
-	var ret int
-	ret = int(w.native.width)
-	return ret
-}
-
-// Height gets the field inside the struct.
-func (w *WindowAttr) Height() int {
-	var ret int
-	ret = int(w.native.height)
-	return ret
-}
-
-// Wclass gets the field inside the struct.
-func (w *WindowAttr) Wclass() WindowWindowClass {
-	var ret WindowWindowClass
-	ret = WindowWindowClass(w.native.wclass)
-	return ret
-}
-
-// Visual gets the field inside the struct.
-func (w *WindowAttr) Visual() Visual {
-	var ret Visual
-	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.visual.Native()))).(Visual)
-	return ret
-}
-
-// WindowType gets the field inside the struct.
-func (w *WindowAttr) WindowType() WindowType {
-	var ret WindowType
-	ret = WindowType(w.native.window_type)
-	return ret
-}
-
-// Cursor gets the field inside the struct.
-func (w *WindowAttr) Cursor() Cursor {
-	var ret Cursor
-	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor.Native()))).(Cursor)
-	return ret
-}
-
-// WmclassName gets the field inside the struct.
-func (w *WindowAttr) WmclassName() string {
-	var ret string
-	ret = C.GoString(w.native.wmclass_name)
-	return ret
-}
-
-// WmclassClass gets the field inside the struct.
-func (w *WindowAttr) WmclassClass() string {
-	var ret string
-	ret = C.GoString(w.native.wmclass_class)
-	return ret
-}
-
-// OverrideRedirect gets the field inside the struct.
-func (w *WindowAttr) OverrideRedirect() bool {
-	var ret bool
-	ret = C.bool(w.native.override_redirect) != 0
-	return ret
-}
-
-// TypeHint gets the field inside the struct.
-func (w *WindowAttr) TypeHint() WindowTypeHint {
-	var ret WindowTypeHint
-	ret = WindowTypeHint(w.native.type_hint)
-	return ret
-}
-
-type WindowRedirect struct {
-	native C.GdkWindowRedirect
-}
-
-// WrapWindowRedirect wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWindowRedirect(ptr unsafe.Pointer) *WindowRedirect {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WindowRedirect)(ptr)
-}
-
-func marshalWindowRedirect(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWindowRedirect(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WindowRedirect) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
 }
 
 type Window interface {
@@ -2166,7 +1866,7 @@ func (w window) EnsureNative() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2280,7 +1980,7 @@ func (w window) AcceptFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2393,7 +2093,7 @@ func (w window) Composited() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2431,7 +2131,7 @@ func (w window) Decorations() (decorations WMDecoration, ok bool) {
 
 	ret0 = (*WMDecoration)(arg1)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -2623,7 +2323,7 @@ func (w window) EventCompression() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2656,7 +2356,7 @@ func (w window) FocusOnMap() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2807,7 +2507,7 @@ func (w window) ModalHint() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2874,7 +2574,7 @@ func (w window) PassThrough() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3067,7 +2767,7 @@ func (w window) SupportMultidevice() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3234,7 +2934,7 @@ func (w window) HasNative() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3378,7 +3078,7 @@ func (w window) IsDestroyed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3393,7 +3093,7 @@ func (w window) IsInputOnly() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3408,7 +3108,7 @@ func (w window) IsShaped() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3425,7 +3125,7 @@ func (w window) IsViewable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3441,7 +3141,7 @@ func (w window) IsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4477,7 +4177,7 @@ func (w window) SetStaticGravities(useStatic bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4730,4 +4430,304 @@ func (w window) Withdraw() {
 	arg0 = (*C.GdkWindow)(w.Native())
 
 	C.gdk_window_withdraw(arg0)
+}
+
+// Geometry: the Geometry struct gives the window manager information about a
+// window’s geometry constraints. Normally you would set these on the GTK+ level
+// using gtk_window_set_geometry_hints(). Window then sets the hints on the
+// Window it creates.
+//
+// gdk_window_set_geometry_hints() expects the hints to be fully valid already
+// and simply passes them to the window manager; in contrast,
+// gtk_window_set_geometry_hints() performs some interpretation. For example,
+// Window will apply the hints to the geometry widget instead of the toplevel
+// window, if you set a geometry widget. Also, the
+// @min_width/@min_height/@max_width/@max_height fields may be set to -1, and
+// Window will substitute the size request of the window or geometry widget. If
+// the minimum size hint is not provided, Window will use its requisition as the
+// minimum size. If the minimum size is provided and a geometry widget is set,
+// Window will take the minimum size as the minimum size of the geometry widget
+// rather than the entire window. The base size is treated similarly.
+//
+// The canonical use-case for gtk_window_set_geometry_hints() is to get a
+// terminal widget to resize properly. Here, the terminal text area should be
+// the geometry widget; Window will then automatically set the base size to the
+// size of other widgets in the terminal window, such as the menubar and
+// scrollbar. Then, the @width_inc and @height_inc fields should be set to the
+// size of one character in the terminal. Finally, the base size should be set
+// to the size of one character. The net effect is that the minimum size of the
+// terminal will have a 1x1 character terminal area, and only terminal sizes on
+// the “character grid” will be allowed.
+//
+// Here’s an example of how the terminal example would be implemented, assuming
+// a terminal area widget called “terminal” and a toplevel window “toplevel”:
+//
+//    	GdkGeometry hints;
+//
+//    	hints.base_width = terminal->char_width;
+//            hints.base_height = terminal->char_height;
+//            hints.min_width = terminal->char_width;
+//            hints.min_height = terminal->char_height;
+//            hints.width_inc = terminal->char_width;
+//            hints.height_inc = terminal->char_height;
+//
+//     gtk_window_set_geometry_hints (GTK_WINDOW (toplevel),
+//                                    GTK_WIDGET (terminal),
+//                                    &hints,
+//                                    GDK_HINT_RESIZE_INC |
+//                                    GDK_HINT_MIN_SIZE |
+//                                    GDK_HINT_BASE_SIZE);
+//
+// The other useful fields are the @min_aspect and @max_aspect fields; these
+// contain a width/height ratio as a floating point number. If a geometry widget
+// is set, the aspect applies to the geometry widget rather than the entire
+// window. The most common use of these hints is probably to set @min_aspect and
+// @max_aspect to the same value, thus forcing the window to keep a constant
+// aspect ratio.
+type Geometry struct {
+	native C.GdkGeometry
+}
+
+// WrapGeometry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapGeometry(ptr unsafe.Pointer) *Geometry {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*Geometry)(ptr)
+}
+
+func marshalGeometry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapGeometry(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (g *Geometry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&g.native)
+}
+
+// MinWidth gets the field inside the struct.
+func (g *Geometry) MinWidth() int {
+	var ret int
+	ret = int(g.native.min_width)
+	return ret
+}
+
+// MinHeight gets the field inside the struct.
+func (g *Geometry) MinHeight() int {
+	var ret int
+	ret = int(g.native.min_height)
+	return ret
+}
+
+// MaxWidth gets the field inside the struct.
+func (g *Geometry) MaxWidth() int {
+	var ret int
+	ret = int(g.native.max_width)
+	return ret
+}
+
+// MaxHeight gets the field inside the struct.
+func (g *Geometry) MaxHeight() int {
+	var ret int
+	ret = int(g.native.max_height)
+	return ret
+}
+
+// BaseWidth gets the field inside the struct.
+func (g *Geometry) BaseWidth() int {
+	var ret int
+	ret = int(g.native.base_width)
+	return ret
+}
+
+// BaseHeight gets the field inside the struct.
+func (g *Geometry) BaseHeight() int {
+	var ret int
+	ret = int(g.native.base_height)
+	return ret
+}
+
+// WidthInc gets the field inside the struct.
+func (g *Geometry) WidthInc() int {
+	var ret int
+	ret = int(g.native.width_inc)
+	return ret
+}
+
+// HeightInc gets the field inside the struct.
+func (g *Geometry) HeightInc() int {
+	var ret int
+	ret = int(g.native.height_inc)
+	return ret
+}
+
+// MinAspect gets the field inside the struct.
+func (g *Geometry) MinAspect() float64 {
+	var ret float64
+	ret = float64(g.native.min_aspect)
+	return ret
+}
+
+// MaxAspect gets the field inside the struct.
+func (g *Geometry) MaxAspect() float64 {
+	var ret float64
+	ret = float64(g.native.max_aspect)
+	return ret
+}
+
+// WinGravity gets the field inside the struct.
+func (g *Geometry) WinGravity() Gravity {
+	var ret Gravity
+	ret = Gravity(g.native.win_gravity)
+	return ret
+}
+
+// WindowAttr attributes to use for a newly-created window.
+type WindowAttr struct {
+	native C.GdkWindowAttr
+}
+
+// WrapWindowAttr wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWindowAttr(ptr unsafe.Pointer) *WindowAttr {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WindowAttr)(ptr)
+}
+
+func marshalWindowAttr(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWindowAttr(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WindowAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
+}
+
+// Title gets the field inside the struct.
+func (w *WindowAttr) Title() string {
+	var ret string
+	ret = C.GoString(w.native.title)
+	return ret
+}
+
+// EventMask gets the field inside the struct.
+func (w *WindowAttr) EventMask() int {
+	var ret int
+	ret = int(w.native.event_mask)
+	return ret
+}
+
+// X gets the field inside the struct.
+func (w *WindowAttr) X() int {
+	var ret int
+	ret = int(w.native.x)
+	return ret
+}
+
+// Y gets the field inside the struct.
+func (w *WindowAttr) Y() int {
+	var ret int
+	ret = int(w.native.y)
+	return ret
+}
+
+// Width gets the field inside the struct.
+func (w *WindowAttr) Width() int {
+	var ret int
+	ret = int(w.native.width)
+	return ret
+}
+
+// Height gets the field inside the struct.
+func (w *WindowAttr) Height() int {
+	var ret int
+	ret = int(w.native.height)
+	return ret
+}
+
+// Wclass gets the field inside the struct.
+func (w *WindowAttr) Wclass() WindowWindowClass {
+	var ret WindowWindowClass
+	ret = WindowWindowClass(w.native.wclass)
+	return ret
+}
+
+// Visual gets the field inside the struct.
+func (w *WindowAttr) Visual() Visual {
+	var ret Visual
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.visual.Native()))).(Visual)
+	return ret
+}
+
+// WindowType gets the field inside the struct.
+func (w *WindowAttr) WindowType() WindowType {
+	var ret WindowType
+	ret = WindowType(w.native.window_type)
+	return ret
+}
+
+// Cursor gets the field inside the struct.
+func (w *WindowAttr) Cursor() Cursor {
+	var ret Cursor
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor.Native()))).(Cursor)
+	return ret
+}
+
+// WmclassName gets the field inside the struct.
+func (w *WindowAttr) WmclassName() string {
+	var ret string
+	ret = C.GoString(w.native.wmclass_name)
+	return ret
+}
+
+// WmclassClass gets the field inside the struct.
+func (w *WindowAttr) WmclassClass() string {
+	var ret string
+	ret = C.GoString(w.native.wmclass_class)
+	return ret
+}
+
+// OverrideRedirect gets the field inside the struct.
+func (w *WindowAttr) OverrideRedirect() bool {
+	var ret bool
+	ret = C.bool(w.native.override_redirect) != C.false
+	return ret
+}
+
+// TypeHint gets the field inside the struct.
+func (w *WindowAttr) TypeHint() WindowTypeHint {
+	var ret WindowTypeHint
+	ret = WindowTypeHint(w.native.type_hint)
+	return ret
+}
+
+type WindowRedirect struct {
+	native C.GdkWindowRedirect
+}
+
+// WrapWindowRedirect wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWindowRedirect(ptr unsafe.Pointer) *WindowRedirect {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WindowRedirect)(ptr)
+}
+
+func marshalWindowRedirect(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWindowRedirect(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WindowRedirect) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
 }

@@ -15,8 +15,8 @@ import (
 // #include <stdbool.h>
 // #include <glib.h>
 //
-// extern void gotk4_LogFunc(const gchar* _0, GLogLevelFlags _1, const gchar* _2, gpointer _3);
-// extern GLogWriterOutput gotk4_LogWriterFunc(GLogLevelFlags _0, const GLogField* _1, gsize _2, gpointer _3);
+// void gotk4_LogFunc( gchar*, GLogLevelFlags,  gchar*, gpointer);
+// GLogWriterOutput gotk4_LogWriterFunc(GLogLevelFlags,  GLogField*, gsize, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -500,7 +500,7 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -569,7 +569,7 @@ func LogWriterIsJournald(outputFd int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -678,7 +678,7 @@ func LogWriterSupportsColor(outputFd int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

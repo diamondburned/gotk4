@@ -19,7 +19,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_CellLayoutDataFunc(GtkCellLayout* _0, GtkCellRenderer* _1, GtkTreeModel* _2, GtkTreeIter* _3, gpointer _4);
+// void gotk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

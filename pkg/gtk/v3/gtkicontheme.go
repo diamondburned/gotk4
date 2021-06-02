@@ -19,8 +19,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -31,30 +31,6 @@ func init() {
 		{T: externglib.Type(C.gtk_icon_info_get_type()), F: marshalIconInfo},
 		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconTheme},
 	})
-}
-
-type IconThemePrivate struct {
-	native C.GtkIconThemePrivate
-}
-
-// WrapIconThemePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIconThemePrivate(ptr unsafe.Pointer) *IconThemePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*IconThemePrivate)(ptr)
-}
-
-func marshalIconThemePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIconThemePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *IconThemePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }
 
 // IconInfo contains information found when looking up an icon in an icon theme.
@@ -299,7 +275,7 @@ func (i iconInfo) AttachPoints() (points []*gdk.Point, nPoints int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -391,7 +367,7 @@ func (i iconInfo) EmbeddedRect() (rectangle gdk.Rectangle, ok bool) {
 		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -427,7 +403,7 @@ func (i iconInfo) IsSymbolic() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -586,7 +562,7 @@ func (i iconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColo
 	var ret1 gdkpixbuf.Pixbuf
 	var goError error
 
-	ret0 = C.bool(arg5) != 0
+	ret0 = C.bool(arg5) != C.false
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
@@ -643,7 +619,7 @@ func (i iconInfo) LoadSymbolicFinish(res gio.AsyncResult) (wasSymbolic bool, pix
 	var ret1 gdkpixbuf.Pixbuf
 	var goError error
 
-	ret0 = C.bool(arg2) != 0
+	ret0 = C.bool(arg2) != C.false
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
@@ -680,7 +656,7 @@ func (i iconInfo) LoadSymbolicForContext(context StyleContext) (wasSymbolic bool
 	var ret1 gdkpixbuf.Pixbuf
 	var goError error
 
-	ret0 = C.bool(arg2) != 0
+	ret0 = C.bool(arg2) != C.false
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
@@ -731,7 +707,7 @@ func (i iconInfo) LoadSymbolicForContextFinish(res gio.AsyncResult) (wasSymbolic
 	var ret1 gdkpixbuf.Pixbuf
 	var goError error
 
-	ret0 = C.bool(arg2) != 0
+	ret0 = C.bool(arg2) != C.false
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
@@ -768,7 +744,7 @@ func (i iconInfo) LoadSymbolicForStyle(style Style, state StateType) (wasSymboli
 	var ret1 gdkpixbuf.Pixbuf
 	var goError error
 
-	ret0 = C.bool(arg3) != 0
+	ret0 = C.bool(arg3) != C.false
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gdkpixbuf.Pixbuf)
 
@@ -1278,7 +1254,7 @@ func (i iconTheme) HasIcon(iconName string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1602,7 +1578,7 @@ func (i iconTheme) RescanIfNeeded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1674,4 +1650,28 @@ func (i iconTheme) SetSearchPath(path []string) {
 	}
 
 	C.gtk_icon_theme_set_search_path(arg0, arg1, arg2)
+}
+
+type IconThemePrivate struct {
+	native C.GtkIconThemePrivate
+}
+
+// WrapIconThemePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIconThemePrivate(ptr unsafe.Pointer) *IconThemePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IconThemePrivate)(ptr)
+}
+
+func marshalIconThemePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIconThemePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IconThemePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

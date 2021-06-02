@@ -19,11 +19,11 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer _0, gpointer _1);
-// extern gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow* _0, gpointer _1);
-// extern void gotk4_ListBoxForeachFunc(GtkListBox* _0, GtkListBoxRow* _1, gpointer _2);
-// extern int gotk4_ListBoxSortFunc(GtkListBoxRow* _0, GtkListBoxRow* _1, gpointer _2);
-// extern void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow* _0, GtkListBoxRow* _1, gpointer _2);
+// GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
+// gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
+// void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// int gotk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -273,7 +273,7 @@ func (r listBoxRow) Activatable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -336,7 +336,7 @@ func (r listBoxRow) Selectable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -352,7 +352,7 @@ func (r listBoxRow) IsSelected() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

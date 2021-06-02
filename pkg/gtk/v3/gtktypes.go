@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_BuilderConnectFunc(GtkBuilder* _0, GObject* _1, const gchar* _2, const gchar* _3, GObject* _4, GConnectFlags _5, gpointer _6);
+// void gotk4_BuilderConnectFunc(GtkBuilder*, GObject*,  gchar*,  gchar*, GObject*, GConnectFlags, gpointer);
 import "C"
 
 func init() {
@@ -426,7 +426,7 @@ func (s *IconSource) DirectionWildcarded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -510,7 +510,7 @@ func (s *IconSource) SizeWildcarded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -541,7 +541,7 @@ func (s *IconSource) StateWildcarded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -917,7 +917,7 @@ func (s *SelectionData) Targets() (targets []*gdk.Atom, nAtoms int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -997,7 +997,7 @@ func (s *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1018,7 +1018,7 @@ func (s *SelectionData) SetText(str string, len int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1052,7 +1052,7 @@ func (s *SelectionData) SetUris(uris []string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1072,7 +1072,7 @@ func (s *SelectionData) TargetsIncludeImage(writable bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1091,7 +1091,7 @@ func (s *SelectionData) TargetsIncludeRichText(buffer TextBuffer) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1107,7 +1107,7 @@ func (s *SelectionData) TargetsIncludeText() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1124,7 +1124,7 @@ func (s *SelectionData) TargetsIncludeURI() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1320,7 +1320,7 @@ func (p *WidgetPath) HasParent(typ externglib.Type) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1338,7 +1338,7 @@ func (p *WidgetPath) IsType(typ externglib.Type) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1530,7 +1530,7 @@ func (p *WidgetPath) IterHasClass(pos int, name string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1551,7 +1551,7 @@ func (p *WidgetPath) IterHasName(pos int, name string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1576,7 +1576,7 @@ func (p *WidgetPath) IterHasRegion(pos int, name string) (flags RegionFlags, ok 
 
 	ret0 = (*RegionFlags)(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

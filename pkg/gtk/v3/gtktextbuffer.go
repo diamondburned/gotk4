@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -23,54 +23,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_text_buffer_get_type()), F: marshalTextBuffer},
 	})
-}
-
-type TextBTree struct {
-	native C.GtkTextBTree
-}
-
-// WrapTextBTree wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextBTree(ptr unsafe.Pointer) *TextBTree {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextBTree)(ptr)
-}
-
-func marshalTextBTree(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextBTree(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextBTree) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
-type TextBufferPrivate struct {
-	native C.GtkTextBufferPrivate
-}
-
-// WrapTextBufferPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextBufferPrivate(ptr unsafe.Pointer) *TextBufferPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextBufferPrivate)(ptr)
-}
-
-func marshalTextBufferPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextBufferPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextBufferPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
@@ -644,7 +596,7 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -800,7 +752,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -857,7 +809,7 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -910,7 +862,7 @@ func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1085,7 +1037,7 @@ func (b textBuffer) HasSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1300,7 +1252,7 @@ func (b textBuffer) Modified() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1377,7 +1329,7 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 		ret1 = WrapTextIter(unsafe.Pointer(arg2))
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -1593,7 +1545,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1622,7 +1574,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1712,7 +1664,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2080,4 +2032,52 @@ func (b textBuffer) UnregisterSerializeFormat(format gdk.Atom) {
 	arg1 = (C.GdkAtom)(format.Native())
 
 	C.gtk_text_buffer_unregister_serialize_format(arg0, arg1)
+}
+
+type TextBTree struct {
+	native C.GtkTextBTree
+}
+
+// WrapTextBTree wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextBTree(ptr unsafe.Pointer) *TextBTree {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextBTree)(ptr)
+}
+
+func marshalTextBTree(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextBTree(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextBTree) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
+}
+
+type TextBufferPrivate struct {
+	native C.GtkTextBufferPrivate
+}
+
+// WrapTextBufferPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextBufferPrivate(ptr unsafe.Pointer) *TextBufferPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextBufferPrivate)(ptr)
+}
+
+func marshalTextBufferPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextBufferPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextBufferPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

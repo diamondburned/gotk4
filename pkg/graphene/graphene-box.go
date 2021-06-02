@@ -171,7 +171,7 @@ func (a *Box) ContainsBox(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -188,7 +188,7 @@ func (b *Box) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -205,7 +205,7 @@ func (a *Box) Equal(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -582,7 +582,7 @@ func (a *Box) Intersection(b *Box) (res Box, ok bool) {
 		ret0 = WrapBox(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

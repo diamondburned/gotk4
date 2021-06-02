@@ -2487,7 +2487,7 @@ func (d device) HasCursor() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2535,7 +2535,7 @@ func (d device) History(window Window, start uint32, stop uint32) (events []**Ti
 
 	ret1 = int(arg5)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -2561,7 +2561,7 @@ func (d device) Key(index_ uint) (keyval uint, modifiers ModifierType, ok bool) 
 
 	ret1 = (*ModifierType)(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -3006,7 +3006,7 @@ func (d device) SetMode(mode InputMode) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3579,7 +3579,7 @@ func (d display) DeviceIsGrabbed(device Device) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3922,7 +3922,7 @@ func (d display) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3937,7 +3937,7 @@ func (d display) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4019,7 +4019,7 @@ func (d display) PointerIsGrabbed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4048,7 +4048,7 @@ func (d display) RequestSelectionNotification(selection Atom) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4115,7 +4115,7 @@ func (d display) SupportsClipboardPersistence() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4134,7 +4134,7 @@ func (d display) SupportsComposite() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4151,7 +4151,7 @@ func (d display) SupportsCursorAlpha() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4168,7 +4168,7 @@ func (d display) SupportsCursorColor() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4184,7 +4184,7 @@ func (d display) SupportsInputShapes() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4200,7 +4200,7 @@ func (d display) SupportsSelectionNotification() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4216,7 +4216,7 @@ func (d display) SupportsShapes() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4636,7 +4636,7 @@ func (c dragContext) ManageDnd(ipcWindow Window, actions DragAction) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4834,7 +4834,7 @@ func (c glContext) DebugEnabled() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4865,7 +4865,7 @@ func (c glContext) ForwardCompatible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4917,7 +4917,7 @@ func (c glContext) UseES() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4984,7 +4984,7 @@ func (c glContext) IsLegacy() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5251,7 +5251,7 @@ func (k keymap) CapsLockState() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5319,7 +5319,7 @@ func (k keymap) EntriesForKeycode(hardwareKeycode uint) (keys []*KeymapKey, keyv
 
 	ret2 = int(arg4)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -5363,7 +5363,7 @@ func (k keymap) EntriesForKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok 
 
 	ret1 = int(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -5418,7 +5418,7 @@ func (k keymap) NumLockState() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5433,7 +5433,7 @@ func (k keymap) ScrollLockState() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5449,7 +5449,7 @@ func (k keymap) HaveBidiLayouts() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5491,7 +5491,7 @@ func (k keymap) MapVirtualModifiers(state *ModifierType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5556,7 +5556,7 @@ func (k keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType,
 
 	ret3 = (*ModifierType)(arg7)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -6181,7 +6181,7 @@ func (s screen) Setting(name string, value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6312,7 +6312,7 @@ func (s screen) IsComposited() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

@@ -17,9 +17,9 @@ import (
 // #include <stdbool.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 //
-// extern void gotk4_PixbufModulePreparedFunc(GdkPixbuf* _0, GdkPixbufAnimation* _1, gpointer _2);
-// extern void gotk4_PixbufModuleSizeFunc(gint* _0, gint* _1, gpointer _2);
-// extern void gotk4_PixbufModuleUpdatedFunc(GdkPixbuf* _0, int _1, int _2, int _3, int _4, gpointer _5);
+// void gotk4_PixbufModulePreparedFunc(GdkPixbuf*, GdkPixbufAnimation*, gpointer);
+// void gotk4_PixbufModuleSizeFunc(gint*, gint*, gpointer);
+// void gotk4_PixbufModuleUpdatedFunc(GdkPixbuf*, int, int, int, int, gpointer);
 import "C"
 
 func init() {
@@ -186,7 +186,7 @@ func (p *PixbufFormat) Flags() uint32 {
 // Disabled gets the field inside the struct.
 func (p *PixbufFormat) Disabled() bool {
 	var ret bool
-	ret = C.bool(p.native.disabled) != 0
+	ret = C.bool(p.native.disabled) != C.false
 	return ret
 }
 
@@ -339,7 +339,7 @@ func (f *PixbufFormat) IsDisabled() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -361,7 +361,7 @@ func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -380,7 +380,7 @@ func (f *PixbufFormat) IsScalable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -395,7 +395,7 @@ func (f *PixbufFormat) IsWritable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

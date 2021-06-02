@@ -20,11 +20,11 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_font_description_get_type()), F: marshalFontDescription},
-		{T: externglib.Type(C.pango_font_metrics_get_type()), F: marshalFontMetrics},
 		{T: externglib.Type(C.pango_font_get_type()), F: marshalFont},
 		{T: externglib.Type(C.pango_font_face_get_type()), F: marshalFontFace},
 		{T: externglib.Type(C.pango_font_family_get_type()), F: marshalFontFamily},
+		{T: externglib.Type(C.pango_font_description_get_type()), F: marshalFontDescription},
+		{T: externglib.Type(C.pango_font_metrics_get_type()), F: marshalFontMetrics},
 	})
 }
 
@@ -86,6 +86,546 @@ func FontDescriptionFromString(str string) *FontDescription {
 	}
 
 	return ret0
+}
+
+// Font: a `PangoFont` is used to represent a font in a
+// rendering-system-independent manner.
+type Font interface {
+	gextras.Objector
+
+	// Describe returns a description of the font, with font size set in points.
+	//
+	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
+	// size in device units.
+	Describe() *FontDescription
+	// DescribeWithAbsoluteSize returns a description of the font, with absolute
+	// font size set in device units.
+	//
+	// Use [method@Pango.Font.describe] if you want the font size in points.
+	DescribeWithAbsoluteSize() *FontDescription
+	// Coverage computes the coverage map for a given font and language tag.
+	Coverage(language *Language) Coverage
+	// Face gets the `PangoFontFace` to which @font belongs.
+	Face() FontFace
+	// FontMap gets the font map for which the font was created.
+	//
+	// Note that the font maintains a *weak* reference to the font map, so if
+	// all references to font map are dropped, the font map will be finalized
+	// even if there are fonts created with the font map that are still alive.
+	// In that case this function will return nil.
+	//
+	// It is the responsibility of the user to ensure that the font map is kept
+	// alive. In most uses this is not an issue as a Context holds a reference
+	// to the font map.
+	FontMap() FontMap
+	// Metrics gets overall metric information for a font.
+	//
+	// Since the metrics may be substantially different for different scripts, a
+	// language tag can be provided to indicate that the metrics should be
+	// retrieved that correspond to the script(s) used by that language.
+	//
+	// If @font is nil, this function gracefully sets some sane values in the
+	// output variables and returns.
+	Metrics(language *Language) *FontMetrics
+	// HasChar returns whether the font provides a glyph for this character.
+	//
+	// Returns true if @font can render @wc
+	HasChar(wc uint32) bool
+}
+
+// font implements the Font interface.
+type font struct {
+	gextras.Objector
+}
+
+var _ Font = (*font)(nil)
+
+// WrapFont wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFont(obj *externglib.Object) Font {
+	return Font{
+		Objector: obj,
+	}
+}
+
+func marshalFont(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFont(obj), nil
+}
+
+// Describe returns a description of the font, with font size set in points.
+//
+// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
+// size in device units.
+func (f font) Describe() *FontDescription {
+	var arg0 *C.PangoFont
+
+	arg0 = (*C.PangoFont)(f.Native())
+
+	ret := C.pango_font_describe(arg0)
+
+	var ret0 *FontDescription
+
+	{
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// DescribeWithAbsoluteSize returns a description of the font, with absolute
+// font size set in device units.
+//
+// Use [method@Pango.Font.describe] if you want the font size in points.
+func (f font) DescribeWithAbsoluteSize() *FontDescription {
+	var arg0 *C.PangoFont
+
+	arg0 = (*C.PangoFont)(f.Native())
+
+	ret := C.pango_font_describe_with_absolute_size(arg0)
+
+	var ret0 *FontDescription
+
+	{
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// Coverage computes the coverage map for a given font and language tag.
+func (f font) Coverage(language *Language) Coverage {
+	var arg0 *C.PangoFont
+	var arg1 *C.PangoLanguage
+
+	arg0 = (*C.PangoFont)(f.Native())
+	arg1 = (*C.PangoLanguage)(language.Native())
+
+	ret := C.pango_font_get_coverage(arg0, arg1)
+
+	var ret0 Coverage
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Coverage)
+
+	return ret0
+}
+
+// Face gets the `PangoFontFace` to which @font belongs.
+func (f font) Face() FontFace {
+	var arg0 *C.PangoFont
+
+	arg0 = (*C.PangoFont)(f.Native())
+
+	ret := C.pango_font_get_face(arg0)
+
+	var ret0 FontFace
+
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFace)
+
+	return ret0
+}
+
+// FontMap gets the font map for which the font was created.
+//
+// Note that the font maintains a *weak* reference to the font map, so if
+// all references to font map are dropped, the font map will be finalized
+// even if there are fonts created with the font map that are still alive.
+// In that case this function will return nil.
+//
+// It is the responsibility of the user to ensure that the font map is kept
+// alive. In most uses this is not an issue as a Context holds a reference
+// to the font map.
+func (f font) FontMap() FontMap {
+	var arg0 *C.PangoFont
+
+	arg0 = (*C.PangoFont)(f.Native())
+
+	ret := C.pango_font_get_font_map(arg0)
+
+	var ret0 FontMap
+
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontMap)
+
+	return ret0
+}
+
+// Metrics gets overall metric information for a font.
+//
+// Since the metrics may be substantially different for different scripts, a
+// language tag can be provided to indicate that the metrics should be
+// retrieved that correspond to the script(s) used by that language.
+//
+// If @font is nil, this function gracefully sets some sane values in the
+// output variables and returns.
+func (f font) Metrics(language *Language) *FontMetrics {
+	var arg0 *C.PangoFont
+	var arg1 *C.PangoLanguage
+
+	arg0 = (*C.PangoFont)(f.Native())
+	arg1 = (*C.PangoLanguage)(language.Native())
+
+	ret := C.pango_font_get_metrics(arg0, arg1)
+
+	var ret0 *FontMetrics
+
+	{
+		ret0 = WrapFontMetrics(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontMetrics) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// HasChar returns whether the font provides a glyph for this character.
+//
+// Returns true if @font can render @wc
+func (f font) HasChar(wc uint32) bool {
+	var arg0 *C.PangoFont
+	var arg1 C.gunichar
+
+	arg0 = (*C.PangoFont)(f.Native())
+	arg1 = C.gunichar(wc)
+
+	ret := C.pango_font_has_char(arg0, arg1)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// FontFace: a `PangoFontFace` is used to represent a group of fonts with the
+// same family, slant, weight, and width, but varying sizes.
+type FontFace interface {
+	gextras.Objector
+
+	// Describe returns the family, style, variant, weight and stretch of a
+	// `PangoFontFace`. The size field of the resulting font description will be
+	// unset.
+	Describe() *FontDescription
+	// FaceName gets a name representing the style of this face among the
+	// different faces in the `PangoFontFamily` for the face. The name is
+	// suitable for displaying to users.
+	FaceName() string
+	// Family gets the `PangoFontFamily` that @face belongs to.
+	Family() FontFamily
+	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+	// underlying font rendering engine from another face, perhaps by shearing,
+	// emboldening, or lightening it.
+	IsSynthesized() bool
+	// ListSizes: list the available sizes for a font.
+	//
+	// This is only applicable to bitmap fonts. For scalable fonts, stores nil
+	// at the location pointed to by @sizes and 0 at the location pointed to by
+	// @n_sizes. The sizes returned are in Pango units and are sorted in
+	// ascending order.
+	ListSizes() (sizes []int, nSizes int)
+}
+
+// fontFace implements the FontFace interface.
+type fontFace struct {
+	gextras.Objector
+}
+
+var _ FontFace = (*fontFace)(nil)
+
+// WrapFontFace wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontFace(obj *externglib.Object) FontFace {
+	return FontFace{
+		Objector: obj,
+	}
+}
+
+func marshalFontFace(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFontFace(obj), nil
+}
+
+// Describe returns the family, style, variant, weight and stretch of a
+// `PangoFontFace`. The size field of the resulting font description will be
+// unset.
+func (f fontFace) Describe() *FontDescription {
+	var arg0 *C.PangoFontFace
+
+	arg0 = (*C.PangoFontFace)(f.Native())
+
+	ret := C.pango_font_face_describe(arg0)
+
+	var ret0 *FontDescription
+
+	{
+		ret0 = WrapFontDescription(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *FontDescription) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// FaceName gets a name representing the style of this face among the
+// different faces in the `PangoFontFamily` for the face. The name is
+// suitable for displaying to users.
+func (f fontFace) FaceName() string {
+	var arg0 *C.PangoFontFace
+
+	arg0 = (*C.PangoFontFace)(f.Native())
+
+	ret := C.pango_font_face_get_face_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// Family gets the `PangoFontFamily` that @face belongs to.
+func (f fontFace) Family() FontFamily {
+	var arg0 *C.PangoFontFace
+
+	arg0 = (*C.PangoFontFace)(f.Native())
+
+	ret := C.pango_font_face_get_family(arg0)
+
+	var ret0 FontFamily
+
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFamily)
+
+	return ret0
+}
+
+// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+// underlying font rendering engine from another face, perhaps by shearing,
+// emboldening, or lightening it.
+func (f fontFace) IsSynthesized() bool {
+	var arg0 *C.PangoFontFace
+
+	arg0 = (*C.PangoFontFace)(f.Native())
+
+	ret := C.pango_font_face_is_synthesized(arg0)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// ListSizes: list the available sizes for a font.
+//
+// This is only applicable to bitmap fonts. For scalable fonts, stores nil
+// at the location pointed to by @sizes and 0 at the location pointed to by
+// @n_sizes. The sizes returned are in Pango units and are sorted in
+// ascending order.
+func (f fontFace) ListSizes() (sizes []int, nSizes int) {
+	var arg0 *C.PangoFontFace
+	var arg1 **C.int // out
+	var arg2 *C.int  // out
+
+	arg0 = (*C.PangoFontFace)(f.Native())
+
+	C.pango_font_face_list_sizes(arg0, &arg1, &arg2)
+
+	var ret0 []int
+	var ret1 int
+
+	{
+		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
+		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
+		sliceHeader.Len = arg2
+		sliceHeader.Cap = arg2
+		runtime.SetFinalizer(&arg1, func() {
+			C.free(unsafe.Pointer(arg1))
+		})
+		defer runtime.KeepAlive(arg1)
+	}
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
+}
+
+// FontFamily: a `PangoFontFamily` is used to represent a family of related font
+// faces.
+//
+// The font faces in a family share a common design, but differ in slant,
+// weight, width or other aspects.
+type FontFamily interface {
+	gextras.Objector
+
+	// Face gets the `PangoFontFace` of @family with the given name.
+	Face(name string) FontFace
+	// Name gets the name of the family.
+	//
+	// The name is unique among all fonts for the font backend and can be used
+	// in a `PangoFontDescription` to specify that a face from this family is
+	// desired.
+	Name() string
+	// IsMonospace: a monospace font is a font designed for text display where
+	// the the characters form a regular grid.
+	//
+	// For Western languages this would mean that the advance width of all
+	// characters are the same, but this categorization also includes Asian
+	// fonts which include double-width characters: characters that occupy two
+	// grid cells. g_unichar_iswide() returns a result that indicates whether a
+	// character is typically double-width in a monospace font.
+	//
+	// The best way to find out the grid-cell size is to call
+	// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
+	// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
+	// by double-width characters.
+	IsMonospace() bool
+	// IsVariable: a variable font is a font which has axes that can be modified
+	// to produce different faces.
+	IsVariable() bool
+	// ListFaces lists the different font faces that make up @family.
+	//
+	// The faces in a family share a common design, but differ in slant, weight,
+	// width and other aspects.
+	ListFaces() (faces []FontFace, nFaces int)
+}
+
+// fontFamily implements the FontFamily interface.
+type fontFamily struct {
+	gextras.Objector
+}
+
+var _ FontFamily = (*fontFamily)(nil)
+
+// WrapFontFamily wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontFamily(obj *externglib.Object) FontFamily {
+	return FontFamily{
+		Objector: obj,
+	}
+}
+
+func marshalFontFamily(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapFontFamily(obj), nil
+}
+
+// Face gets the `PangoFontFace` of @family with the given name.
+func (f fontFamily) Face(name string) FontFace {
+	var arg0 *C.PangoFontFamily
+	var arg1 *C.char
+
+	arg0 = (*C.PangoFontFamily)(f.Native())
+	arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(arg1))
+
+	ret := C.pango_font_family_get_face(arg0, arg1)
+
+	var ret0 FontFace
+
+	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFace)
+
+	return ret0
+}
+
+// Name gets the name of the family.
+//
+// The name is unique among all fonts for the font backend and can be used
+// in a `PangoFontDescription` to specify that a face from this family is
+// desired.
+func (f fontFamily) Name() string {
+	var arg0 *C.PangoFontFamily
+
+	arg0 = (*C.PangoFontFamily)(f.Native())
+
+	ret := C.pango_font_family_get_name(arg0)
+
+	var ret0 string
+
+	ret0 = C.GoString(ret)
+
+	return ret0
+}
+
+// IsMonospace: a monospace font is a font designed for text display where
+// the the characters form a regular grid.
+//
+// For Western languages this would mean that the advance width of all
+// characters are the same, but this categorization also includes Asian
+// fonts which include double-width characters: characters that occupy two
+// grid cells. g_unichar_iswide() returns a result that indicates whether a
+// character is typically double-width in a monospace font.
+//
+// The best way to find out the grid-cell size is to call
+// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
+// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
+// by double-width characters.
+func (f fontFamily) IsMonospace() bool {
+	var arg0 *C.PangoFontFamily
+
+	arg0 = (*C.PangoFontFamily)(f.Native())
+
+	ret := C.pango_font_family_is_monospace(arg0)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// IsVariable: a variable font is a font which has axes that can be modified
+// to produce different faces.
+func (f fontFamily) IsVariable() bool {
+	var arg0 *C.PangoFontFamily
+
+	arg0 = (*C.PangoFontFamily)(f.Native())
+
+	ret := C.pango_font_family_is_variable(arg0)
+
+	var ret0 bool
+
+	ret0 = C.bool(ret) != C.false
+
+	return ret0
+}
+
+// ListFaces lists the different font faces that make up @family.
+//
+// The faces in a family share a common design, but differ in slant, weight,
+// width and other aspects.
+func (f fontFamily) ListFaces() (faces []FontFace, nFaces int) {
+	var arg0 *C.PangoFontFamily
+	var arg1 ***C.PangoFontFace // out
+	var arg2 *C.int             // out
+
+	arg0 = (*C.PangoFontFamily)(f.Native())
+
+	C.pango_font_family_list_faces(arg0, &arg1, &arg2)
+
+	var ret0 []FontFace
+	var ret1 int
+
+	{
+		ret0 = make([]FontFace, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			src := (**C.PangoFontFace)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			ret0[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(FontFace)
+		}
+	}
+
+	ret1 = int(arg2)
+
+	return ret0, ret1
 }
 
 // FontDescription: a `PangoFontDescription` describes a font in an
@@ -158,7 +698,7 @@ func (d *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontD
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -226,7 +766,7 @@ func (d *FontDescription) Equal(desc2 *FontDescription) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -320,7 +860,7 @@ func (d *FontDescription) SizeIsAbsolute() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -939,544 +1479,4 @@ func (m *FontMetrics) Unref() {
 	arg0 = (*C.PangoFontMetrics)(m.Native())
 
 	C.pango_font_metrics_unref(arg0)
-}
-
-// Font: a `PangoFont` is used to represent a font in a
-// rendering-system-independent manner.
-type Font interface {
-	gextras.Objector
-
-	// Describe returns a description of the font, with font size set in points.
-	//
-	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
-	// size in device units.
-	Describe() *FontDescription
-	// DescribeWithAbsoluteSize returns a description of the font, with absolute
-	// font size set in device units.
-	//
-	// Use [method@Pango.Font.describe] if you want the font size in points.
-	DescribeWithAbsoluteSize() *FontDescription
-	// Coverage computes the coverage map for a given font and language tag.
-	Coverage(language *Language) Coverage
-	// Face gets the `PangoFontFace` to which @font belongs.
-	Face() FontFace
-	// FontMap gets the font map for which the font was created.
-	//
-	// Note that the font maintains a *weak* reference to the font map, so if
-	// all references to font map are dropped, the font map will be finalized
-	// even if there are fonts created with the font map that are still alive.
-	// In that case this function will return nil.
-	//
-	// It is the responsibility of the user to ensure that the font map is kept
-	// alive. In most uses this is not an issue as a Context holds a reference
-	// to the font map.
-	FontMap() FontMap
-	// Metrics gets overall metric information for a font.
-	//
-	// Since the metrics may be substantially different for different scripts, a
-	// language tag can be provided to indicate that the metrics should be
-	// retrieved that correspond to the script(s) used by that language.
-	//
-	// If @font is nil, this function gracefully sets some sane values in the
-	// output variables and returns.
-	Metrics(language *Language) *FontMetrics
-	// HasChar returns whether the font provides a glyph for this character.
-	//
-	// Returns true if @font can render @wc
-	HasChar(wc uint32) bool
-}
-
-// font implements the Font interface.
-type font struct {
-	gextras.Objector
-}
-
-var _ Font = (*font)(nil)
-
-// WrapFont wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFont(obj *externglib.Object) Font {
-	return Font{
-		Objector: obj,
-	}
-}
-
-func marshalFont(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFont(obj), nil
-}
-
-// Describe returns a description of the font, with font size set in points.
-//
-// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
-// size in device units.
-func (f font) Describe() *FontDescription {
-	var arg0 *C.PangoFont
-
-	arg0 = (*C.PangoFont)(f.Native())
-
-	ret := C.pango_font_describe(arg0)
-
-	var ret0 *FontDescription
-
-	{
-		ret0 = WrapFontDescription(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *FontDescription) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// DescribeWithAbsoluteSize returns a description of the font, with absolute
-// font size set in device units.
-//
-// Use [method@Pango.Font.describe] if you want the font size in points.
-func (f font) DescribeWithAbsoluteSize() *FontDescription {
-	var arg0 *C.PangoFont
-
-	arg0 = (*C.PangoFont)(f.Native())
-
-	ret := C.pango_font_describe_with_absolute_size(arg0)
-
-	var ret0 *FontDescription
-
-	{
-		ret0 = WrapFontDescription(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *FontDescription) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Coverage computes the coverage map for a given font and language tag.
-func (f font) Coverage(language *Language) Coverage {
-	var arg0 *C.PangoFont
-	var arg1 *C.PangoLanguage
-
-	arg0 = (*C.PangoFont)(f.Native())
-	arg1 = (*C.PangoLanguage)(language.Native())
-
-	ret := C.pango_font_get_coverage(arg0, arg1)
-
-	var ret0 Coverage
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(Coverage)
-
-	return ret0
-}
-
-// Face gets the `PangoFontFace` to which @font belongs.
-func (f font) Face() FontFace {
-	var arg0 *C.PangoFont
-
-	arg0 = (*C.PangoFont)(f.Native())
-
-	ret := C.pango_font_get_face(arg0)
-
-	var ret0 FontFace
-
-	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFace)
-
-	return ret0
-}
-
-// FontMap gets the font map for which the font was created.
-//
-// Note that the font maintains a *weak* reference to the font map, so if
-// all references to font map are dropped, the font map will be finalized
-// even if there are fonts created with the font map that are still alive.
-// In that case this function will return nil.
-//
-// It is the responsibility of the user to ensure that the font map is kept
-// alive. In most uses this is not an issue as a Context holds a reference
-// to the font map.
-func (f font) FontMap() FontMap {
-	var arg0 *C.PangoFont
-
-	arg0 = (*C.PangoFont)(f.Native())
-
-	ret := C.pango_font_get_font_map(arg0)
-
-	var ret0 FontMap
-
-	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontMap)
-
-	return ret0
-}
-
-// Metrics gets overall metric information for a font.
-//
-// Since the metrics may be substantially different for different scripts, a
-// language tag can be provided to indicate that the metrics should be
-// retrieved that correspond to the script(s) used by that language.
-//
-// If @font is nil, this function gracefully sets some sane values in the
-// output variables and returns.
-func (f font) Metrics(language *Language) *FontMetrics {
-	var arg0 *C.PangoFont
-	var arg1 *C.PangoLanguage
-
-	arg0 = (*C.PangoFont)(f.Native())
-	arg1 = (*C.PangoLanguage)(language.Native())
-
-	ret := C.pango_font_get_metrics(arg0, arg1)
-
-	var ret0 *FontMetrics
-
-	{
-		ret0 = WrapFontMetrics(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *FontMetrics) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// HasChar returns whether the font provides a glyph for this character.
-//
-// Returns true if @font can render @wc
-func (f font) HasChar(wc uint32) bool {
-	var arg0 *C.PangoFont
-	var arg1 C.gunichar
-
-	arg0 = (*C.PangoFont)(f.Native())
-	arg1 = C.gunichar(wc)
-
-	ret := C.pango_font_has_char(arg0, arg1)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// FontFace: a `PangoFontFace` is used to represent a group of fonts with the
-// same family, slant, weight, and width, but varying sizes.
-type FontFace interface {
-	gextras.Objector
-
-	// Describe returns the family, style, variant, weight and stretch of a
-	// `PangoFontFace`. The size field of the resulting font description will be
-	// unset.
-	Describe() *FontDescription
-	// FaceName gets a name representing the style of this face among the
-	// different faces in the `PangoFontFamily` for the face. The name is
-	// suitable for displaying to users.
-	FaceName() string
-	// Family gets the `PangoFontFamily` that @face belongs to.
-	Family() FontFamily
-	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
-	// underlying font rendering engine from another face, perhaps by shearing,
-	// emboldening, or lightening it.
-	IsSynthesized() bool
-	// ListSizes: list the available sizes for a font.
-	//
-	// This is only applicable to bitmap fonts. For scalable fonts, stores nil
-	// at the location pointed to by @sizes and 0 at the location pointed to by
-	// @n_sizes. The sizes returned are in Pango units and are sorted in
-	// ascending order.
-	ListSizes() (sizes []int, nSizes int)
-}
-
-// fontFace implements the FontFace interface.
-type fontFace struct {
-	gextras.Objector
-}
-
-var _ FontFace = (*fontFace)(nil)
-
-// WrapFontFace wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFontFace(obj *externglib.Object) FontFace {
-	return FontFace{
-		Objector: obj,
-	}
-}
-
-func marshalFontFace(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFontFace(obj), nil
-}
-
-// Describe returns the family, style, variant, weight and stretch of a
-// `PangoFontFace`. The size field of the resulting font description will be
-// unset.
-func (f fontFace) Describe() *FontDescription {
-	var arg0 *C.PangoFontFace
-
-	arg0 = (*C.PangoFontFace)(f.Native())
-
-	ret := C.pango_font_face_describe(arg0)
-
-	var ret0 *FontDescription
-
-	{
-		ret0 = WrapFontDescription(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *FontDescription) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// FaceName gets a name representing the style of this face among the
-// different faces in the `PangoFontFamily` for the face. The name is
-// suitable for displaying to users.
-func (f fontFace) FaceName() string {
-	var arg0 *C.PangoFontFace
-
-	arg0 = (*C.PangoFontFace)(f.Native())
-
-	ret := C.pango_font_face_get_face_name(arg0)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
-// Family gets the `PangoFontFamily` that @face belongs to.
-func (f fontFace) Family() FontFamily {
-	var arg0 *C.PangoFontFace
-
-	arg0 = (*C.PangoFontFace)(f.Native())
-
-	ret := C.pango_font_face_get_family(arg0)
-
-	var ret0 FontFamily
-
-	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFamily)
-
-	return ret0
-}
-
-// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
-// underlying font rendering engine from another face, perhaps by shearing,
-// emboldening, or lightening it.
-func (f fontFace) IsSynthesized() bool {
-	var arg0 *C.PangoFontFace
-
-	arg0 = (*C.PangoFontFace)(f.Native())
-
-	ret := C.pango_font_face_is_synthesized(arg0)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// ListSizes: list the available sizes for a font.
-//
-// This is only applicable to bitmap fonts. For scalable fonts, stores nil
-// at the location pointed to by @sizes and 0 at the location pointed to by
-// @n_sizes. The sizes returned are in Pango units and are sorted in
-// ascending order.
-func (f fontFace) ListSizes() (sizes []int, nSizes int) {
-	var arg0 *C.PangoFontFace
-	var arg1 **C.int // out
-	var arg2 *C.int  // out
-
-	arg0 = (*C.PangoFontFace)(f.Native())
-
-	C.pango_font_face_list_sizes(arg0, &arg1, &arg2)
-
-	var ret0 []int
-	var ret1 int
-
-	{
-		sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&ret0))
-		sliceHeader.Data = uintptr(unsafe.Pointer(arg1))
-		sliceHeader.Len = arg2
-		sliceHeader.Cap = arg2
-		runtime.SetFinalizer(&arg1, func() {
-			C.free(unsafe.Pointer(arg1))
-		})
-		defer runtime.KeepAlive(arg1)
-	}
-
-	ret1 = int(arg2)
-
-	return ret0, ret1
-}
-
-// FontFamily: a `PangoFontFamily` is used to represent a family of related font
-// faces.
-//
-// The font faces in a family share a common design, but differ in slant,
-// weight, width or other aspects.
-type FontFamily interface {
-	gextras.Objector
-
-	// Face gets the `PangoFontFace` of @family with the given name.
-	Face(name string) FontFace
-	// Name gets the name of the family.
-	//
-	// The name is unique among all fonts for the font backend and can be used
-	// in a `PangoFontDescription` to specify that a face from this family is
-	// desired.
-	Name() string
-	// IsMonospace: a monospace font is a font designed for text display where
-	// the the characters form a regular grid.
-	//
-	// For Western languages this would mean that the advance width of all
-	// characters are the same, but this categorization also includes Asian
-	// fonts which include double-width characters: characters that occupy two
-	// grid cells. g_unichar_iswide() returns a result that indicates whether a
-	// character is typically double-width in a monospace font.
-	//
-	// The best way to find out the grid-cell size is to call
-	// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
-	// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
-	// by double-width characters.
-	IsMonospace() bool
-	// IsVariable: a variable font is a font which has axes that can be modified
-	// to produce different faces.
-	IsVariable() bool
-	// ListFaces lists the different font faces that make up @family.
-	//
-	// The faces in a family share a common design, but differ in slant, weight,
-	// width and other aspects.
-	ListFaces() (faces []FontFace, nFaces int)
-}
-
-// fontFamily implements the FontFamily interface.
-type fontFamily struct {
-	gextras.Objector
-}
-
-var _ FontFamily = (*fontFamily)(nil)
-
-// WrapFontFamily wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapFontFamily(obj *externglib.Object) FontFamily {
-	return FontFamily{
-		Objector: obj,
-	}
-}
-
-func marshalFontFamily(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapFontFamily(obj), nil
-}
-
-// Face gets the `PangoFontFace` of @family with the given name.
-func (f fontFamily) Face(name string) FontFace {
-	var arg0 *C.PangoFontFamily
-	var arg1 *C.char
-
-	arg0 = (*C.PangoFontFamily)(f.Native())
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-
-	ret := C.pango_font_family_get_face(arg0, arg1)
-
-	var ret0 FontFace
-
-	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(FontFace)
-
-	return ret0
-}
-
-// Name gets the name of the family.
-//
-// The name is unique among all fonts for the font backend and can be used
-// in a `PangoFontDescription` to specify that a face from this family is
-// desired.
-func (f fontFamily) Name() string {
-	var arg0 *C.PangoFontFamily
-
-	arg0 = (*C.PangoFontFamily)(f.Native())
-
-	ret := C.pango_font_family_get_name(arg0)
-
-	var ret0 string
-
-	ret0 = C.GoString(ret)
-
-	return ret0
-}
-
-// IsMonospace: a monospace font is a font designed for text display where
-// the the characters form a regular grid.
-//
-// For Western languages this would mean that the advance width of all
-// characters are the same, but this categorization also includes Asian
-// fonts which include double-width characters: characters that occupy two
-// grid cells. g_unichar_iswide() returns a result that indicates whether a
-// character is typically double-width in a monospace font.
-//
-// The best way to find out the grid-cell size is to call
-// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
-// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
-// by double-width characters.
-func (f fontFamily) IsMonospace() bool {
-	var arg0 *C.PangoFontFamily
-
-	arg0 = (*C.PangoFontFamily)(f.Native())
-
-	ret := C.pango_font_family_is_monospace(arg0)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// IsVariable: a variable font is a font which has axes that can be modified
-// to produce different faces.
-func (f fontFamily) IsVariable() bool {
-	var arg0 *C.PangoFontFamily
-
-	arg0 = (*C.PangoFontFamily)(f.Native())
-
-	ret := C.pango_font_family_is_variable(arg0)
-
-	var ret0 bool
-
-	ret0 = C.bool(ret) != 0
-
-	return ret0
-}
-
-// ListFaces lists the different font faces that make up @family.
-//
-// The faces in a family share a common design, but differ in slant, weight,
-// width and other aspects.
-func (f fontFamily) ListFaces() (faces []FontFace, nFaces int) {
-	var arg0 *C.PangoFontFamily
-	var arg1 ***C.PangoFontFace // out
-	var arg2 *C.int             // out
-
-	arg0 = (*C.PangoFontFamily)(f.Native())
-
-	C.pango_font_family_list_faces(arg0, &arg1, &arg2)
-
-	var ret0 []FontFace
-	var ret1 int
-
-	{
-		ret0 = make([]FontFace, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
-			src := (**C.PangoFontFace)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			ret0[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(FontFace)
-		}
-	}
-
-	ret1 = int(arg2)
-
-	return ret0, ret1
 }

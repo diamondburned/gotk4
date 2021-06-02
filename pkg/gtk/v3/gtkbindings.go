@@ -174,7 +174,7 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -192,7 +192,7 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -411,7 +411,7 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

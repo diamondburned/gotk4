@@ -113,7 +113,7 @@ func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, she
 		ret4 = WrapVec4(unsafe.Pointer(arg5))
 	}
 
-	ret5 = C.bool(ret) != 0
+	ret5 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4, ret5
 }
@@ -145,7 +145,7 @@ func (a *Matrix) Equal(b *Matrix) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -181,7 +181,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -700,7 +700,7 @@ func (m *Matrix) Inverse() (res Matrix, ok bool) {
 		ret0 = WrapMatrix(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -716,7 +716,7 @@ func (m *Matrix) Is2D() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -732,7 +732,7 @@ func (m *Matrix) IsBackfaceVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -748,7 +748,7 @@ func (m *Matrix) IsIdentity() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -763,7 +763,7 @@ func (m *Matrix) IsSingular() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -806,7 +806,7 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1108,7 +1108,7 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 
 	ret5 = float64(arg6)
 
-	ret6 = C.bool(ret) != 0
+	ret6 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4, ret5, ret6
 }
@@ -1447,7 +1447,7 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (res Point, ok bool) {
 		ret0 = WrapPoint(unsafe.Pointer(arg3))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

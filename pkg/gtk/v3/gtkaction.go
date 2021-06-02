@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -24,30 +24,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_action_get_type()), F: marshalAction},
 	})
-}
-
-type ActionPrivate struct {
-	native C.GtkActionPrivate
-}
-
-// WrapActionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionPrivate(ptr unsafe.Pointer) *ActionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionPrivate)(ptr)
-}
-
-func marshalActionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
 }
 
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
@@ -418,7 +394,7 @@ func (a action) AlwaysShowImage() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -463,7 +439,7 @@ func (a action) IsImportant() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -528,7 +504,7 @@ func (a action) Sensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -590,7 +566,7 @@ func (a action) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -605,7 +581,7 @@ func (a action) VisibleHorizontal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -620,7 +596,7 @@ func (a action) VisibleVertical() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -635,7 +611,7 @@ func (a action) IsSensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -650,7 +626,7 @@ func (a action) IsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -851,4 +827,28 @@ func (a action) UnblockActivate() {
 	arg0 = (*C.GtkAction)(a.Native())
 
 	C.gtk_action_unblock_activate(arg0)
+}
+
+type ActionPrivate struct {
+	native C.GtkActionPrivate
+}
+
+// WrapActionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapActionPrivate(ptr unsafe.Pointer) *ActionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ActionPrivate)(ptr)
+}
+
+func marshalActionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapActionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *ActionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
 }

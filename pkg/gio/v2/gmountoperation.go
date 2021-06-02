@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_mount_operation_get_type()), F: marshalMountOperation},
 	})
-}
-
-type MountOperationPrivate struct {
-	native C.GMountOperationPrivate
-}
-
-// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MountOperationPrivate)(ptr)
-}
-
-func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MountOperationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // MountOperation provides a mechanism for interacting with the user. It can be
@@ -169,7 +145,7 @@ func (o mountOperation) Anonymous() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -215,7 +191,7 @@ func (o mountOperation) IsTcryptHiddenVolume() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -231,7 +207,7 @@ func (o mountOperation) IsTcryptSystemVolume() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -417,4 +393,28 @@ func (o mountOperation) SetUsername(username string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_mount_operation_set_username(arg0, arg1)
+}
+
+type MountOperationPrivate struct {
+	native C.GMountOperationPrivate
+}
+
+// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MountOperationPrivate)(ptr)
+}
+
+func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MountOperationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
 }

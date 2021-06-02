@@ -28,30 +28,6 @@ func init() {
 	})
 }
 
-type BuilderPrivate struct {
-	native C.GtkBuilderPrivate
-}
-
-// WrapBuilderPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBuilderPrivate(ptr unsafe.Pointer) *BuilderPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*BuilderPrivate)(ptr)
-}
-
-func marshalBuilderPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBuilderPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *BuilderPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
-}
-
 // Builder: a GtkBuilder is an auxiliary object that reads textual descriptions
 // of a user interface and instantiates the described objects. To create a
 // GtkBuilder from a user interface description, call
@@ -1033,4 +1009,28 @@ func (b builder) ValueFromStringType(typ externglib.Type, string string) (value 
 	}
 
 	return ret0, goError
+}
+
+type BuilderPrivate struct {
+	native C.GtkBuilderPrivate
+}
+
+// WrapBuilderPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBuilderPrivate(ptr unsafe.Pointer) *BuilderPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*BuilderPrivate)(ptr)
+}
+
+func marshalBuilderPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapBuilderPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *BuilderPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
 }

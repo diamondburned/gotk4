@@ -18,8 +18,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -76,30 +76,6 @@ func RenderInsertionCursor(context StyleContext, cr *cairo.Context, x float64, y
 	arg7 = (C.PangoDirection)(direction)
 
 	C.gtk_render_insertion_cursor(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-}
-
-type StyleContextPrivate struct {
-	native C.GtkStyleContextPrivate
-}
-
-// WrapStyleContextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStyleContextPrivate(ptr unsafe.Pointer) *StyleContextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*StyleContextPrivate)(ptr)
-}
-
-func marshalStyleContextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStyleContextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *StyleContextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // StyleContext is an object that stores styling information affecting a widget
@@ -959,7 +935,7 @@ func (c styleContext) HasClass(className string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -982,7 +958,7 @@ func (c styleContext) HasRegion(regionName string) (flagsReturn RegionFlags, ok 
 
 	ret0 = (*RegionFlags)(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1057,7 +1033,7 @@ func (c styleContext) LookupColor(colorName string) (color gdk.RGBA, ok bool) {
 		ret0 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1389,7 +1365,7 @@ func (c styleContext) StateIsRunning(state StateType) (progress float64, ok bool
 
 	ret0 = float64(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1418,4 +1394,28 @@ func (c styleContext) String(flags StyleContextPrintFlags) string {
 	C.free(unsafe.Pointer(ret))
 
 	return ret0
+}
+
+type StyleContextPrivate struct {
+	native C.GtkStyleContextPrivate
+}
+
+// WrapStyleContextPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapStyleContextPrivate(ptr unsafe.Pointer) *StyleContextPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*StyleContextPrivate)(ptr)
+}
+
+func marshalStyleContextPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapStyleContextPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *StyleContextPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

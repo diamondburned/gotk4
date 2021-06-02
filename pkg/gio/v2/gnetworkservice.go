@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type NetworkServicePrivate struct {
-	native C.GNetworkServicePrivate
-}
-
-// WrapNetworkServicePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNetworkServicePrivate(ptr unsafe.Pointer) *NetworkServicePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NetworkServicePrivate)(ptr)
-}
-
-func marshalNetworkServicePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNetworkServicePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NetworkServicePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}
-
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
 // that implements that service, handling service priority/weighting, multiple
@@ -199,4 +175,28 @@ func (s networkService) SetScheme(scheme string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_network_service_set_scheme(arg0, arg1)
+}
+
+type NetworkServicePrivate struct {
+	native C.GNetworkServicePrivate
+}
+
+// WrapNetworkServicePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapNetworkServicePrivate(ptr unsafe.Pointer) *NetworkServicePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*NetworkServicePrivate)(ptr)
+}
+
+func marshalNetworkServicePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapNetworkServicePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (n *NetworkServicePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&n.native)
 }

@@ -30,9 +30,9 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitor},
 		{T: externglib.Type(C.g_unix_mount_entry_get_type()), F: marshalUnixMountEntry},
 		{T: externglib.Type(C.g_unix_mount_point_get_type()), F: marshalUnixMountPoint},
-		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitor},
 	})
 }
 
@@ -50,7 +50,7 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -73,7 +73,7 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -95,7 +95,7 @@ func UnixIsSystemFSType(fsType string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -297,7 +297,7 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -345,7 +345,7 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -375,7 +375,7 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -395,7 +395,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -441,7 +441,7 @@ func UnixMountPointsChangedSince(time uint64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -481,7 +481,7 @@ func UnixMountsChangedSince(time uint64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -507,6 +507,67 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 	}
 
 	return ret0, ret1
+}
+
+// UnixMountMonitor watches Mounts for changes.
+type UnixMountMonitor interface {
+	gextras.Objector
+
+	// SetRateLimit: this function does nothing.
+	//
+	// Before 2.44, this was a partially-effective way of controlling the rate
+	// at which events would be reported under some uncommon circumstances.
+	// Since @mount_monitor is a singleton, it also meant that calling this
+	// function would have side effects for other users of the monitor.
+	SetRateLimit(limitMsec int)
+}
+
+// unixMountMonitor implements the UnixMountMonitor interface.
+type unixMountMonitor struct {
+	gextras.Objector
+}
+
+var _ UnixMountMonitor = (*unixMountMonitor)(nil)
+
+// WrapUnixMountMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
+	return UnixMountMonitor{
+		Objector: obj,
+	}
+}
+
+func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapUnixMountMonitor(obj), nil
+}
+
+// NewUnixMountMonitor constructs a class UnixMountMonitor.
+func NewUnixMountMonitor() UnixMountMonitor {
+	ret := C.g_unix_mount_monitor_new()
+
+	var ret0 UnixMountMonitor
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixMountMonitor)
+
+	return ret0
+}
+
+// SetRateLimit: this function does nothing.
+//
+// Before 2.44, this was a partially-effective way of controlling the rate
+// at which events would be reported under some uncommon circumstances.
+// Since @mount_monitor is a singleton, it also meant that calling this
+// function would have side effects for other users of the monitor.
+func (m unixMountMonitor) SetRateLimit(limitMsec int) {
+	var arg0 *C.GUnixMountMonitor
+	var arg1 C.int
+
+	arg0 = (*C.GUnixMountMonitor)(m.Native())
+	arg1 = C.int(limitMsec)
+
+	C.g_unix_mount_monitor_set_rate_limit(arg0, arg1)
 }
 
 // UnixMountEntry defines a Unix mount entry (e.g.
@@ -677,7 +738,7 @@ func (m *UnixMountPoint) GuessCanEject() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -739,7 +800,7 @@ func (m *UnixMountPoint) IsLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -754,7 +815,7 @@ func (m *UnixMountPoint) IsReadonly() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -769,68 +830,7 @@ func (m *UnixMountPoint) IsUserMountable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
-}
-
-// UnixMountMonitor watches Mounts for changes.
-type UnixMountMonitor interface {
-	gextras.Objector
-
-	// SetRateLimit: this function does nothing.
-	//
-	// Before 2.44, this was a partially-effective way of controlling the rate
-	// at which events would be reported under some uncommon circumstances.
-	// Since @mount_monitor is a singleton, it also meant that calling this
-	// function would have side effects for other users of the monitor.
-	SetRateLimit(limitMsec int)
-}
-
-// unixMountMonitor implements the UnixMountMonitor interface.
-type unixMountMonitor struct {
-	gextras.Objector
-}
-
-var _ UnixMountMonitor = (*unixMountMonitor)(nil)
-
-// WrapUnixMountMonitor wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
-	return UnixMountMonitor{
-		Objector: obj,
-	}
-}
-
-func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapUnixMountMonitor(obj), nil
-}
-
-// NewUnixMountMonitor constructs a class UnixMountMonitor.
-func NewUnixMountMonitor() UnixMountMonitor {
-	ret := C.g_unix_mount_monitor_new()
-
-	var ret0 UnixMountMonitor
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(UnixMountMonitor)
-
-	return ret0
-}
-
-// SetRateLimit: this function does nothing.
-//
-// Before 2.44, this was a partially-effective way of controlling the rate
-// at which events would be reported under some uncommon circumstances.
-// Since @mount_monitor is a singleton, it also meant that calling this
-// function would have side effects for other users of the monitor.
-func (m unixMountMonitor) SetRateLimit(limitMsec int) {
-	var arg0 *C.GUnixMountMonitor
-	var arg1 C.int
-
-	arg0 = (*C.GUnixMountMonitor)(m.Native())
-	arg1 = C.int(limitMsec)
-
-	C.g_unix_mount_monitor_set_rate_limit(arg0, arg1)
 }

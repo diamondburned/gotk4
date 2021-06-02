@@ -90,7 +90,7 @@ func (a *Ray) Equal(b *Ray) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -367,7 +367,7 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -387,7 +387,7 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -407,7 +407,7 @@ func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

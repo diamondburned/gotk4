@@ -337,7 +337,7 @@ func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -360,7 +360,7 @@ func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -377,7 +377,7 @@ func (i *GlyphItemIter) NextCluster() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -393,7 +393,7 @@ func (i *GlyphItemIter) PrevCluster() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

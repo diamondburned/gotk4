@@ -35,7 +35,7 @@ func ValueTypeCompatible(srcType externglib.Type, destType externglib.Type) bool
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -55,7 +55,7 @@ func ValueTypeTransformable(srcType externglib.Type, destType externglib.Type) b
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -201,7 +201,7 @@ func (v *Value) FitsPointer() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -216,7 +216,7 @@ func (v *Value) Boolean() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1038,7 +1038,7 @@ func (s *Value) Transform(destValue *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

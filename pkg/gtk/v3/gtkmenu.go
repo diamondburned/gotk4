@@ -16,7 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_MenuPositionFunc(GtkMenu* _0, gint* _1, gint* _2, gboolean* _3, gpointer _4);
+// void gotk4_MenuPositionFunc(GtkMenu*, gint*, gint*, gboolean*, gpointer);
 import "C"
 
 // MenuPositionFunc: a user function supplied when calling gtk_menu_popup()

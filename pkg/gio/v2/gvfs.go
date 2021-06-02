@@ -26,7 +26,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern GFile* gotk4_VFSFileLookupFunc(GVfs* _0, const char* _1, gpointer _2);
+// GFile* gotk4_VFSFileLookupFunc(GVfs*,  char*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -210,7 +210,7 @@ func (v vfS) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -280,7 +280,7 @@ func (v vfS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNa
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -299,7 +299,7 @@ func (v vfS) UnregisterURIScheme(scheme string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

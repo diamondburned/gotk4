@@ -16,7 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gchar* gotk4_CalendarDetailFunc(GtkCalendar* _0, guint _1, guint _2, guint _3, gpointer _4);
+// gchar* gotk4_CalendarDetailFunc(GtkCalendar*, guint, guint, guint, gpointer);
 import "C"
 
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail

@@ -67,7 +67,7 @@ func VariantTypeStringIsValid(typeString string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -102,7 +102,7 @@ func VariantTypeStringScan(string string, limit string) (endptr string, ok bool)
 	ret0 = C.GoString(arg3)
 	C.free(unsafe.Pointer(arg3))
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -449,7 +449,7 @@ func (t *VariantType) Equal(type2 VariantType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -544,7 +544,7 @@ func (t *VariantType) IsArray() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -567,7 +567,7 @@ func (t *VariantType) IsBasic() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -588,7 +588,7 @@ func (t *VariantType) IsContainer() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -611,7 +611,7 @@ func (t *VariantType) IsDefinite() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -630,7 +630,7 @@ func (t *VariantType) IsDictEntry() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -649,7 +649,7 @@ func (t *VariantType) IsMaybe() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -670,7 +670,7 @@ func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -689,7 +689,7 @@ func (t *VariantType) IsTuple() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -704,7 +704,7 @@ func (t *VariantType) IsVariant() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

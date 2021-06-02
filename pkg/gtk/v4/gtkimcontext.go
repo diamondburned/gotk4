@@ -229,7 +229,7 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -262,7 +262,7 @@ func (c imContext) FilterKey(press bool, surface gdk.Surface, device gdk.Device,
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -283,7 +283,7 @@ func (c imContext) FilterKeypress(event gdk.Event) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -380,7 +380,7 @@ func (c imContext) Surrounding() (text string, cursorIndex int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -422,7 +422,7 @@ func (c imContext) SurroundingWithSelection() (text string, cursorIndex int, anc
 
 	ret2 = int(arg3)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }

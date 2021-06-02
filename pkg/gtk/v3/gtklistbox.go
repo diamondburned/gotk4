@@ -16,11 +16,11 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer _0, gpointer _1);
-// extern gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow* _0, gpointer _1);
-// extern void gotk4_ListBoxForeachFunc(GtkListBox* _0, GtkListBoxRow* _1, gpointer _2);
-// extern gint gotk4_ListBoxSortFunc(GtkListBoxRow* _0, GtkListBoxRow* _1, gpointer _2);
-// extern void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow* _0, GtkListBoxRow* _1, gpointer _2);
+// GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
+// gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
+// void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// gint gotk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 import "C"
 
 // ListBoxCreateWidgetFunc: called for list boxes that are bound to a Model with

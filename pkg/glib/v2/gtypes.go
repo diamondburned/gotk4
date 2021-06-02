@@ -13,9 +13,9 @@ import (
 // #include <glib-object.h>
 // #include <glib.h>
 //
-// extern gint gotk4_CompareDataFunc(gconstpointer _0, gconstpointer _1, gpointer _2);
-// extern void gotk4_Func(gpointer _0, gpointer _1);
-// extern void gotk4_HFunc(gpointer _0, gpointer _1, gpointer _2);
+// gint gotk4_CompareDataFunc(gpointer, gpointer, gpointer);
+// void gotk4_Func(gpointer, gpointer);
+// void gotk4_HFunc(gpointer, gpointer, gpointer);
 import "C"
 
 // CompareDataFunc specifies the type of a comparison function used to compare

@@ -151,7 +151,7 @@ func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu *externg
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -177,7 +177,7 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu *exter
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -274,7 +274,7 @@ func SignalHandlerIsConnected(instance gextras.Objector, handlerID uint32) bool 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -329,7 +329,7 @@ func SignalIsValidName(name string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -439,7 +439,7 @@ func SignalParseName(detailedSignal string, itype externglib.Type, forceDetailQu
 		ret1 = *glib.Quark(tmp)
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }

@@ -23,30 +23,6 @@ func init() {
 	})
 }
 
-type CellRendererSpinnerPrivate struct {
-	native C.GtkCellRendererSpinnerPrivate
-}
-
-// WrapCellRendererSpinnerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererSpinnerPrivate(ptr unsafe.Pointer) *CellRendererSpinnerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererSpinnerPrivate)(ptr)
-}
-
-func marshalCellRendererSpinnerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererSpinnerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererSpinnerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}
-
 // CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
 // cell, very similar to Spinner. It can often be used as an alternative to a
 // CellRendererProgress for displaying indefinite activity, instead of actual
@@ -91,4 +67,28 @@ func NewCellRendererSpinner() CellRendererSpinner {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(CellRendererSpinner)
 
 	return ret0
+}
+
+type CellRendererSpinnerPrivate struct {
+	native C.GtkCellRendererSpinnerPrivate
+}
+
+// WrapCellRendererSpinnerPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererSpinnerPrivate(ptr unsafe.Pointer) *CellRendererSpinnerPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererSpinnerPrivate)(ptr)
+}
+
+func marshalCellRendererSpinnerPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererSpinnerPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererSpinnerPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

@@ -51,7 +51,7 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -89,7 +89,7 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

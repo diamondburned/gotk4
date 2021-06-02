@@ -17,8 +17,8 @@ import (
 // #include <stdbool.h>
 // #include <pango/pango.h>
 //
-// extern gpointer gotk4_AttrDataCopyFunc(gconstpointer _0);
-// extern gboolean gotk4_AttrFilterFunc(PangoAttribute* _0, gpointer _1);
+// gpointer gotk4_AttrDataCopyFunc(gpointer);
+// gboolean gotk4_AttrFilterFunc(PangoAttribute*, gpointer);
 import "C"
 
 func init() {
@@ -1274,7 +1274,7 @@ func (i *AttrIterator) Next() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1450,7 +1450,7 @@ func (l *AttrList) Equal(otherList *AttrList) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1861,7 +1861,7 @@ func (a *Attribute) Equal(attr2 *Attribute) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1966,7 +1966,7 @@ func (c *Color) Parse(spec string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2000,7 +2000,7 @@ func (c *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
 
 	ret0 = uint16(arg1)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

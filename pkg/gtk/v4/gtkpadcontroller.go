@@ -24,66 +24,6 @@ func init() {
 	})
 }
 
-// PadActionEntry: struct defining a pad action entry.
-type PadActionEntry struct {
-	native C.GtkPadActionEntry
-}
-
-// WrapPadActionEntry wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PadActionEntry)(ptr)
-}
-
-func marshalPadActionEntry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPadActionEntry(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PadActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}
-
-// Type gets the field inside the struct.
-func (p *PadActionEntry) Type() PadActionType {
-	var ret PadActionType
-	ret = PadActionType(p.native._type)
-	return ret
-}
-
-// Index gets the field inside the struct.
-func (p *PadActionEntry) Index() int {
-	var ret int
-	ret = int(p.native.index)
-	return ret
-}
-
-// Mode gets the field inside the struct.
-func (p *PadActionEntry) Mode() int {
-	var ret int
-	ret = int(p.native.mode)
-	return ret
-}
-
-// Label gets the field inside the struct.
-func (p *PadActionEntry) Label() string {
-	var ret string
-	ret = C.GoString(p.native.label)
-	return ret
-}
-
-// ActionName gets the field inside the struct.
-func (p *PadActionEntry) ActionName() string {
-	var ret string
-	ret = C.GoString(p.native.action_name)
-	return ret
-}
-
 // PadController: `GtkPadController` is an event controller for the pads found
 // in drawing tablets.
 //
@@ -242,4 +182,64 @@ func (c padController) SetActionEntries(entries []PadActionEntry) {
 	}
 
 	C.gtk_pad_controller_set_action_entries(arg0, arg1, arg2)
+}
+
+// PadActionEntry: struct defining a pad action entry.
+type PadActionEntry struct {
+	native C.GtkPadActionEntry
+}
+
+// WrapPadActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*PadActionEntry)(ptr)
+}
+
+func marshalPadActionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapPadActionEntry(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *PadActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
+}
+
+// Type gets the field inside the struct.
+func (p *PadActionEntry) Type() PadActionType {
+	var ret PadActionType
+	ret = PadActionType(p.native._type)
+	return ret
+}
+
+// Index gets the field inside the struct.
+func (p *PadActionEntry) Index() int {
+	var ret int
+	ret = int(p.native.index)
+	return ret
+}
+
+// Mode gets the field inside the struct.
+func (p *PadActionEntry) Mode() int {
+	var ret int
+	ret = int(p.native.mode)
+	return ret
+}
+
+// Label gets the field inside the struct.
+func (p *PadActionEntry) Label() string {
+	var ret string
+	ret = C.GoString(p.native.label)
+	return ret
+}
+
+// ActionName gets the field inside the struct.
+func (p *PadActionEntry) ActionName() string {
+	var ret string
+	ret = C.GoString(p.native.action_name)
+	return ret
 }

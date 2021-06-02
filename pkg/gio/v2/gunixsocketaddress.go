@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -31,30 +31,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_unix_socket_address_get_type()), F: marshalUnixSocketAddress},
 	})
-}
-
-type UnixSocketAddressPrivate struct {
-	native C.GUnixSocketAddressPrivate
-}
-
-// WrapUnixSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixSocketAddressPrivate(ptr unsafe.Pointer) *UnixSocketAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixSocketAddressPrivate)(ptr)
-}
-
-func marshalUnixSocketAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixSocketAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixSocketAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
 }
 
 // UnixSocketAddress: support for UNIX-domain (also known as local) sockets.
@@ -193,7 +169,7 @@ func (a unixSocketAddress) IsAbstract() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -233,4 +209,28 @@ func (a unixSocketAddress) PathLen() uint {
 	ret0 = uint(ret)
 
 	return ret0
+}
+
+type UnixSocketAddressPrivate struct {
+	native C.GUnixSocketAddressPrivate
+}
+
+// WrapUnixSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixSocketAddressPrivate(ptr unsafe.Pointer) *UnixSocketAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixSocketAddressPrivate)(ptr)
+}
+
+func marshalUnixSocketAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixSocketAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixSocketAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }

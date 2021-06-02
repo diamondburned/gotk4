@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -22,30 +22,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_toggle_action_get_type()), F: marshalToggleAction},
 	})
-}
-
-type ToggleActionPrivate struct {
-	native C.GtkToggleActionPrivate
-}
-
-// WrapToggleActionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToggleActionPrivate(ptr unsafe.Pointer) *ToggleActionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToggleActionPrivate)(ptr)
-}
-
-func marshalToggleActionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToggleActionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToggleActionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // ToggleAction: a ToggleAction corresponds roughly to a CheckMenuItem. It has
@@ -126,7 +102,7 @@ func (a toggleAction) Active() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -142,7 +118,7 @@ func (a toggleAction) DrawAsRadio() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -181,4 +157,28 @@ func (a toggleAction) Toggled() {
 	arg0 = (*C.GtkToggleAction)(a.Native())
 
 	C.gtk_toggle_action_toggled(arg0)
+}
+
+type ToggleActionPrivate struct {
+	native C.GtkToggleActionPrivate
+}
+
+// WrapToggleActionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapToggleActionPrivate(ptr unsafe.Pointer) *ToggleActionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ToggleActionPrivate)(ptr)
+}
+
+func marshalToggleActionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapToggleActionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ToggleActionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

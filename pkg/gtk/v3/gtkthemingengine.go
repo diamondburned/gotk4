@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -24,30 +24,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_theming_engine_get_type()), F: marshalThemingEngine},
 	})
-}
-
-type ThemingEnginePrivate struct {
-	native C.GtkThemingEnginePrivate
-}
-
-// WrapThemingEnginePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapThemingEnginePrivate(ptr unsafe.Pointer) *ThemingEnginePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ThemingEnginePrivate)(ptr)
-}
-
-func marshalThemingEnginePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapThemingEnginePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ThemingEnginePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // ThemingEngine was the object used for rendering themed content in GTK+
@@ -405,7 +381,7 @@ func (e themingEngine) HasClass(styleClass string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -429,7 +405,7 @@ func (e themingEngine) HasRegion(styleRegion string) (flags RegionFlags, ok bool
 
 	ret0 = (*RegionFlags)(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -454,7 +430,7 @@ func (e themingEngine) LookupColor(colorName string) (color gdk.RGBA, ok bool) {
 		ret0 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -482,7 +458,31 @@ func (e themingEngine) StateIsRunning(state StateType) (progress float64, ok boo
 
 	ret0 = float64(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
+}
+
+type ThemingEnginePrivate struct {
+	native C.GtkThemingEnginePrivate
+}
+
+// WrapThemingEnginePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapThemingEnginePrivate(ptr unsafe.Pointer) *ThemingEnginePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ThemingEnginePrivate)(ptr)
+}
+
+func marshalThemingEnginePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapThemingEnginePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ThemingEnginePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

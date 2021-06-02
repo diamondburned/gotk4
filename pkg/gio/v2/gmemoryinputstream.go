@@ -33,30 +33,6 @@ func init() {
 	})
 }
 
-type MemoryInputStreamPrivate struct {
-	native C.GMemoryInputStreamPrivate
-}
-
-// WrapMemoryInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMemoryInputStreamPrivate(ptr unsafe.Pointer) *MemoryInputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MemoryInputStreamPrivate)(ptr)
-}
-
-func marshalMemoryInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMemoryInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MemoryInputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}
-
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
 // GIO streaming input operations.
 //
@@ -192,4 +168,28 @@ func (s memoryInputStream) AddData(data []byte) {
 	}
 
 	C.g_memory_input_stream_add_data(arg0, arg1, arg2, arg3)
+}
+
+type MemoryInputStreamPrivate struct {
+	native C.GMemoryInputStreamPrivate
+}
+
+// WrapMemoryInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMemoryInputStreamPrivate(ptr unsafe.Pointer) *MemoryInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MemoryInputStreamPrivate)(ptr)
+}
+
+func marshalMemoryInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMemoryInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MemoryInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
 }

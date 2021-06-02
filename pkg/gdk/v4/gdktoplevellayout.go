@@ -103,7 +103,7 @@ func (l *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -122,9 +122,9 @@ func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = C.bool(arg1) != 0
+	ret0 = C.bool(arg1) != C.false
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -159,9 +159,9 @@ func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var ret0 bool
 	var ret1 bool
 
-	ret0 = C.bool(arg1) != 0
+	ret0 = C.bool(arg1) != C.false
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -177,7 +177,7 @@ func (l *ToplevelLayout) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

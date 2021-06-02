@@ -13,13 +13,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_PrintSettingsFunc(const gchar* _0, const gchar* _1, gpointer _2);
+// void gotk4_PrintSettingsFunc( gchar*,  gchar*, gpointer);
 import "C"
 
 type PrintSettingsFunc func(key string, value string)

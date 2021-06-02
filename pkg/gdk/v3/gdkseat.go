@@ -15,7 +15,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 //
-// extern void gotk4_SeatGrabPrepareFunc(GdkSeat* _0, GdkWindow* _1, gpointer _2);
+// void gotk4_SeatGrabPrepareFunc(GdkSeat*, GdkWindow*, gpointer);
 import "C"
 
 // SeatGrabPrepareFunc: type of the callback used to set up @window so it can be

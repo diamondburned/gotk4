@@ -264,7 +264,7 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 
 	ret0 = uint(arg3)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -309,7 +309,7 @@ func PtrArrayFindWithEqualFunc(haystack []interface{}, needle interface{}, equal
 
 	ret0 = uint(arg4)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -575,7 +575,7 @@ func (b *Bytes) Equal(bytes2 Bytes) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -32,30 +32,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_application_get_type()), F: marshalApplication},
 	})
-}
-
-type ApplicationPrivate struct {
-	native C.GApplicationPrivate
-}
-
-// WrapApplicationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapApplicationPrivate(ptr unsafe.Pointer) *ApplicationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ApplicationPrivate)(ptr)
-}
-
-func marshalApplicationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapApplicationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ApplicationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
 }
 
 // Application: a #GApplication is the foundation of an application. It wraps
@@ -851,7 +827,7 @@ func (a application) IsBusy() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -869,7 +845,7 @@ func (a application) IsRegistered() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -893,7 +869,7 @@ func (a application) IsRemote() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1444,4 +1420,28 @@ func (a application) WithdrawNotification(id string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_application_withdraw_notification(arg0, arg1)
+}
+
+type ApplicationPrivate struct {
+	native C.GApplicationPrivate
+}
+
+// WrapApplicationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapApplicationPrivate(ptr unsafe.Pointer) *ApplicationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ApplicationPrivate)(ptr)
+}
+
+func marshalApplicationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapApplicationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *ApplicationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
 }

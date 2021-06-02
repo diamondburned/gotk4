@@ -15,14 +15,14 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gboolean gotk4_CellAllocCallback(GtkCellRenderer* _0, const GdkRectangle* _1, const GdkRectangle* _2, gpointer _3);
-// extern gboolean gotk4_CellCallback(GtkCellRenderer* _0, gpointer _1);
+// gboolean gotk4_CellAllocCallback(GtkCellRenderer*,  GdkRectangle*,  GdkRectangle*, gpointer);
+// gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer);
 import "C"
 
 func init() {
@@ -76,30 +76,6 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 	renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(CellRenderer)
 
 	ok := v.(CellCallback)(renderer)
-}
-
-type CellAreaPrivate struct {
-	native C.GtkCellAreaPrivate
-}
-
-// WrapCellAreaPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellAreaPrivate(ptr unsafe.Pointer) *CellAreaPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellAreaPrivate)(ptr)
-}
-
-func marshalCellAreaPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellAreaPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellAreaPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // CellArea: the CellArea is an abstract class for CellLayout widgets (also
@@ -458,7 +434,7 @@ func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -661,7 +637,7 @@ func (a cellArea) Focus(direction DirectionType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1033,7 +1009,7 @@ func (a cellArea) HasRenderer(renderer CellRenderer) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1074,7 +1050,7 @@ func (a cellArea) IsActivatable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1094,7 +1070,7 @@ func (a cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1214,4 +1190,28 @@ func (a cellArea) StopEditing(canceled bool) {
 	}
 
 	C.gtk_cell_area_stop_editing(arg0, arg1)
+}
+
+type CellAreaPrivate struct {
+	native C.GtkCellAreaPrivate
+}
+
+// WrapCellAreaPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellAreaPrivate(ptr unsafe.Pointer) *CellAreaPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellAreaPrivate)(ptr)
+}
+
+func marshalCellAreaPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellAreaPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellAreaPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

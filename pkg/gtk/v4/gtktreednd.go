@@ -69,7 +69,7 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 		})
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -138,7 +138,7 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, value *externglib.Value) 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -161,7 +161,7 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value *externglib.Valu
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -228,7 +228,7 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -266,7 +266,7 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

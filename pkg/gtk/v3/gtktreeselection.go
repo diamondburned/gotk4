@@ -20,8 +20,8 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_TreeSelectionForeachFunc(GtkTreeModel* _0, GtkTreePath* _1, GtkTreeIter* _2, gpointer _3);
-// extern gboolean gotk4_TreeSelectionFunc(GtkTreeSelection* _0, GtkTreeModel* _1, GtkTreePath* _2, gboolean _3, gpointer _4);
+// void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// gboolean gotk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -91,33 +91,9 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 		path = WrapTreePath(unsafe.Pointer(arg2))
 	}
 
-	pathCurrentlySelected = C.bool(arg3) != 0
+	pathCurrentlySelected = C.bool(arg3) != C.false
 
 	ok := v.(TreeSelectionFunc)(selection, model, path, pathCurrentlySelected)
-}
-
-type TreeSelectionPrivate struct {
-	native C.GtkTreeSelectionPrivate
-}
-
-// WrapTreeSelectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeSelectionPrivate(ptr unsafe.Pointer) *TreeSelectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeSelectionPrivate)(ptr)
-}
-
-func marshalTreeSelectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeSelectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeSelectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TreeSelection: the TreeSelection object is a helper object to manage the
@@ -288,7 +264,7 @@ func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 		ret1 = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -366,7 +342,7 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -384,7 +360,7 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -526,4 +502,28 @@ func (s treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath) {
 	arg2 = (*C.GtkTreePath)(endPath.Native())
 
 	C.gtk_tree_selection_unselect_range(arg0, arg1, arg2)
+}
+
+type TreeSelectionPrivate struct {
+	native C.GtkTreeSelectionPrivate
+}
+
+// WrapTreeSelectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeSelectionPrivate(ptr unsafe.Pointer) *TreeSelectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeSelectionPrivate)(ptr)
+}
+
+func marshalTreeSelectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeSelectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeSelectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

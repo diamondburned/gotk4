@@ -13,8 +13,8 @@ import (
 // #include <glib-object.h>
 // #include <glib.h>
 //
-// extern void gotk4_DataForeachFunc(GQuark _0, gpointer _1, gpointer _2);
-// extern gpointer gotk4_DuplicateFunc(gpointer _0, gpointer _1);
+// void gotk4_DataForeachFunc(GQuark, gpointer, gpointer);
+// gpointer gotk4_DuplicateFunc(gpointer, gpointer);
 import "C"
 
 // DataForeachFunc specifies the type of function passed to g_dataset_foreach().

@@ -16,10 +16,10 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer _0, gpointer _1);
-// extern gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild* _0, gpointer _1);
-// extern void gotk4_FlowBoxForeachFunc(GtkFlowBox* _0, GtkFlowBoxChild* _1, gpointer _2);
-// extern gint gotk4_FlowBoxSortFunc(GtkFlowBoxChild* _0, GtkFlowBoxChild* _1, gpointer _2);
+// GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
+// void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
+// gint gotk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with

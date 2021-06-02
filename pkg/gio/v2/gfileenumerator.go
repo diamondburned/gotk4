@@ -14,8 +14,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -33,30 +33,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumerator},
 	})
-}
-
-type FileEnumeratorPrivate struct {
-	native C.GFileEnumeratorPrivate
-}
-
-// WrapFileEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileEnumeratorPrivate(ptr unsafe.Pointer) *FileEnumeratorPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileEnumeratorPrivate)(ptr)
-}
-
-func marshalFileEnumeratorPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileEnumeratorPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileEnumeratorPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -352,7 +328,7 @@ func (e fileEnumerator) HasPending() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -367,7 +343,7 @@ func (e fileEnumerator) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -545,4 +521,28 @@ func (e fileEnumerator) SetPending(pending bool) {
 	}
 
 	C.g_file_enumerator_set_pending(arg0, arg1)
+}
+
+type FileEnumeratorPrivate struct {
+	native C.GFileEnumeratorPrivate
+}
+
+// WrapFileEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileEnumeratorPrivate(ptr unsafe.Pointer) *FileEnumeratorPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FileEnumeratorPrivate)(ptr)
+}
+
+func marshalFileEnumeratorPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFileEnumeratorPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FileEnumeratorPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
 }

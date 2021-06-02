@@ -250,7 +250,7 @@ func (c *OptionContext) HelpEnabled() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -266,7 +266,7 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -300,7 +300,7 @@ func (c *OptionContext) StrictPosix() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

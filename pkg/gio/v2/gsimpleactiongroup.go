@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type SimpleActionGroupPrivate struct {
-	native C.GSimpleActionGroupPrivate
-}
-
-// WrapSimpleActionGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSimpleActionGroupPrivate(ptr unsafe.Pointer) *SimpleActionGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SimpleActionGroupPrivate)(ptr)
-}
-
-func marshalSimpleActionGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSimpleActionGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SimpleActionGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup interface {
@@ -163,4 +139,28 @@ func (s simpleActionGroup) Remove(actionName string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_simple_action_group_remove(arg0, arg1)
+}
+
+type SimpleActionGroupPrivate struct {
+	native C.GSimpleActionGroupPrivate
+}
+
+// WrapSimpleActionGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSimpleActionGroupPrivate(ptr unsafe.Pointer) *SimpleActionGroupPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SimpleActionGroupPrivate)(ptr)
+}
+
+func marshalSimpleActionGroupPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSimpleActionGroupPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SimpleActionGroupPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

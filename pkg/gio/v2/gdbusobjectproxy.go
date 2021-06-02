@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type DBusObjectProxyPrivate struct {
-	native C.GDBusObjectProxyPrivate
-}
-
-// WrapDBusObjectProxyPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusObjectProxyPrivate(ptr unsafe.Pointer) *DBusObjectProxyPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DBusObjectProxyPrivate)(ptr)
-}
-
-func marshalDBusObjectProxyPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusObjectProxyPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusObjectProxyPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}
-
 // DBusObjectProxy: a BusObjectProxy is an object used to represent a remote
 // object with one or more D-Bus interfaces. Normally, you don't instantiate a
 // BusObjectProxy yourself - typically BusObjectManagerClient is used to obtain
@@ -121,4 +97,28 @@ func (p dBusObjectProxy) Connection() DBusConnection {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(DBusConnection)
 
 	return ret0
+}
+
+type DBusObjectProxyPrivate struct {
+	native C.GDBusObjectProxyPrivate
+}
+
+// WrapDBusObjectProxyPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectProxyPrivate(ptr unsafe.Pointer) *DBusObjectProxyPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectProxyPrivate)(ptr)
+}
+
+func marshalDBusObjectProxyPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectProxyPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectProxyPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
 }

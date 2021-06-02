@@ -146,7 +146,7 @@ func TypeCheckInstance(instance *TypeInstance) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -180,7 +180,7 @@ func TypeCheckInstanceIsA(instance *TypeInstance, ifaceType externglib.Type) boo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -196,7 +196,7 @@ func TypeCheckInstanceIsFundamentallyA(instance *TypeInstance, fundamentalType e
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -210,7 +210,7 @@ func TypeCheckIsValueType(typ externglib.Type) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -224,7 +224,7 @@ func TypeCheckValue(value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -240,7 +240,7 @@ func TypeCheckValueHolds(value *externglib.Value, typ externglib.Type) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -596,7 +596,7 @@ func TypeIsA(typ externglib.Type, isAType externglib.Type) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -806,7 +806,7 @@ func TypeTestFlags(typ externglib.Type, flags uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

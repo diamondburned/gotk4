@@ -89,7 +89,7 @@ func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -107,7 +107,7 @@ func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -199,7 +199,7 @@ func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -218,7 +218,7 @@ func (s *RoundedRect) IsRectilinear() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

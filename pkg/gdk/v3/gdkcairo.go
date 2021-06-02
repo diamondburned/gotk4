@@ -107,7 +107,7 @@ func CairoGetClipRectangle(cr *cairo.Context) (rect Rectangle, ok bool) {
 		ret0 = WrapRectangle(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

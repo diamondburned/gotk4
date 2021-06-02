@@ -556,7 +556,7 @@ func (d *DateTime) Equal(dt2 DateTime) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1019,7 +1019,7 @@ func (d *DateTime) IsDaylightSavings() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1091,7 +1091,7 @@ func (d *DateTime) ToTimeval(tv *TimeVal) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

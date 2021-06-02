@@ -14,255 +14,16 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gsk/gsk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
 		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShader},
+		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
 	})
-}
-
-// ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
-type ShaderArgsBuilder struct {
-	native C.GskShaderArgsBuilder
-}
-
-// WrapShaderArgsBuilder wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapShaderArgsBuilder(ptr unsafe.Pointer) *ShaderArgsBuilder {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ShaderArgsBuilder)(ptr)
-}
-
-func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapShaderArgsBuilder(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
-// NewShaderArgsBuilder constructs a struct ShaderArgsBuilder.
-func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder {
-	var arg1 *C.GskGLShader
-	var arg2 *C.GBytes
-
-	arg1 = (*C.GskGLShader)(shader.Native())
-	arg2 = (*C.GBytes)(initialValues.Native())
-
-	ret := C.gsk_shader_args_builder_new(arg1, arg2)
-
-	var ret0 *ShaderArgsBuilder
-
-	{
-		ret0 = WrapShaderArgsBuilder(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *ShaderArgsBuilder) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// FreeToArgs creates a new #GBytes args from the current state of the given
-// @builder, and frees the @builder instance.
-//
-// Any uniforms of the shader that have not been explicitly set on the @builder
-// are zero-initialized.
-func (b *ShaderArgsBuilder) FreeToArgs() *glib.Bytes {
-	var arg0 *C.GskShaderArgsBuilder
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-
-	ret := C.gsk_shader_args_builder_free_to_args(arg0)
-
-	var ret0 *glib.Bytes
-
-	{
-		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Ref increases the reference count of a `GskShaderArgsBuilder` by one.
-func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
-	var arg0 *C.GskShaderArgsBuilder
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-
-	ret := C.gsk_shader_args_builder_ref(arg0)
-
-	var ret0 *ShaderArgsBuilder
-
-	{
-		ret0 = WrapShaderArgsBuilder(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *ShaderArgsBuilder) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// SetBool sets the value of the uniform @idx.
-//
-// The uniform must be of bool type.
-func (b *ShaderArgsBuilder) SetBool(idx int, value bool) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 C.gboolean
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	if value {
-		arg2 = C.TRUE
-	}
-
-	C.gsk_shader_args_builder_set_bool(arg0, arg1, arg2)
-}
-
-// SetFloat sets the value of the uniform @idx.
-//
-// The uniform must be of float type.
-func (b *ShaderArgsBuilder) SetFloat(idx int, value float32) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 C.float
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	arg2 = C.float(value)
-
-	C.gsk_shader_args_builder_set_float(arg0, arg1, arg2)
-}
-
-// SetInt sets the value of the uniform @idx.
-//
-// The uniform must be of int type.
-func (b *ShaderArgsBuilder) SetInt(idx int, value int32) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 C.gint32
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	arg2 = C.gint32(value)
-
-	C.gsk_shader_args_builder_set_int(arg0, arg1, arg2)
-}
-
-// SetUint sets the value of the uniform @idx.
-//
-// The uniform must be of uint type.
-func (b *ShaderArgsBuilder) SetUint(idx int, value uint32) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 C.guint32
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	arg2 = C.guint32(value)
-
-	C.gsk_shader_args_builder_set_uint(arg0, arg1, arg2)
-}
-
-// SetVec2 sets the value of the uniform @idx.
-//
-// The uniform must be of vec2 type.
-func (b *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 *C.graphene_vec2_t
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	arg2 = (*C.graphene_vec2_t)(value.Native())
-
-	C.gsk_shader_args_builder_set_vec2(arg0, arg1, arg2)
-}
-
-// SetVec3 sets the value of the uniform @idx.
-//
-// The uniform must be of vec3 type.
-func (b *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 *C.graphene_vec3_t
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	arg2 = (*C.graphene_vec3_t)(value.Native())
-
-	C.gsk_shader_args_builder_set_vec3(arg0, arg1, arg2)
-}
-
-// SetVec4 sets the value of the uniform @idx.
-//
-// The uniform must be of vec4 type.
-func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
-	var arg0 *C.GskShaderArgsBuilder
-	var arg1 C.int
-	var arg2 *C.graphene_vec4_t
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-	arg1 = C.int(idx)
-	arg2 = (*C.graphene_vec4_t)(value.Native())
-
-	C.gsk_shader_args_builder_set_vec4(arg0, arg1, arg2)
-}
-
-// ToArgs creates a new `GBytes` args from the current state of the given
-// @builder.
-//
-// Any uniforms of the shader that have not been explicitly set on the @builder
-// are zero-initialized.
-//
-// The given `GskShaderArgsBuilder` is reset once this function returns; you
-// cannot call this function multiple times on the same @builder instance.
-//
-// This function is intended primarily for bindings. C code should use
-// [method@Gsk.ShaderArgsBuilder.free_to_args].
-func (b *ShaderArgsBuilder) ToArgs() *glib.Bytes {
-	var arg0 *C.GskShaderArgsBuilder
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-
-	ret := C.gsk_shader_args_builder_to_args(arg0)
-
-	var ret0 *glib.Bytes
-
-	{
-		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
-		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
-
-	return ret0
-}
-
-// Unref decreases the reference count of a `GskShaderArgBuilder` by one.
-//
-// If the resulting reference count is zero, frees the builder.
-func (b *ShaderArgsBuilder) Unref() {
-	var arg0 *C.GskShaderArgsBuilder
-
-	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
-
-	C.gsk_shader_args_builder_unref(arg0)
 }
 
 // GLShader: a `GskGLShader` is a snippet of GLSL that is meant to run in the
@@ -547,7 +308,7 @@ func (s glShader) ArgBool(args *glib.Bytes, idx int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -801,4 +562,243 @@ func (s glShader) UniformType(idx int) GLUniformType {
 	ret0 = GLUniformType(ret)
 
 	return ret0
+}
+
+// ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
+type ShaderArgsBuilder struct {
+	native C.GskShaderArgsBuilder
+}
+
+// WrapShaderArgsBuilder wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapShaderArgsBuilder(ptr unsafe.Pointer) *ShaderArgsBuilder {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ShaderArgsBuilder)(ptr)
+}
+
+func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapShaderArgsBuilder(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
+}
+
+// NewShaderArgsBuilder constructs a struct ShaderArgsBuilder.
+func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder {
+	var arg1 *C.GskGLShader
+	var arg2 *C.GBytes
+
+	arg1 = (*C.GskGLShader)(shader.Native())
+	arg2 = (*C.GBytes)(initialValues.Native())
+
+	ret := C.gsk_shader_args_builder_new(arg1, arg2)
+
+	var ret0 *ShaderArgsBuilder
+
+	{
+		ret0 = WrapShaderArgsBuilder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ShaderArgsBuilder) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// FreeToArgs creates a new #GBytes args from the current state of the given
+// @builder, and frees the @builder instance.
+//
+// Any uniforms of the shader that have not been explicitly set on the @builder
+// are zero-initialized.
+func (b *ShaderArgsBuilder) FreeToArgs() *glib.Bytes {
+	var arg0 *C.GskShaderArgsBuilder
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+
+	ret := C.gsk_shader_args_builder_free_to_args(arg0)
+
+	var ret0 *glib.Bytes
+
+	{
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// Ref increases the reference count of a `GskShaderArgsBuilder` by one.
+func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
+	var arg0 *C.GskShaderArgsBuilder
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+
+	ret := C.gsk_shader_args_builder_ref(arg0)
+
+	var ret0 *ShaderArgsBuilder
+
+	{
+		ret0 = WrapShaderArgsBuilder(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *ShaderArgsBuilder) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// SetBool sets the value of the uniform @idx.
+//
+// The uniform must be of bool type.
+func (b *ShaderArgsBuilder) SetBool(idx int, value bool) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 C.gboolean
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	if value {
+		arg2 = C.TRUE
+	}
+
+	C.gsk_shader_args_builder_set_bool(arg0, arg1, arg2)
+}
+
+// SetFloat sets the value of the uniform @idx.
+//
+// The uniform must be of float type.
+func (b *ShaderArgsBuilder) SetFloat(idx int, value float32) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 C.float
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	arg2 = C.float(value)
+
+	C.gsk_shader_args_builder_set_float(arg0, arg1, arg2)
+}
+
+// SetInt sets the value of the uniform @idx.
+//
+// The uniform must be of int type.
+func (b *ShaderArgsBuilder) SetInt(idx int, value int32) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 C.gint32
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	arg2 = C.gint32(value)
+
+	C.gsk_shader_args_builder_set_int(arg0, arg1, arg2)
+}
+
+// SetUint sets the value of the uniform @idx.
+//
+// The uniform must be of uint type.
+func (b *ShaderArgsBuilder) SetUint(idx int, value uint32) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 C.guint32
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	arg2 = C.guint32(value)
+
+	C.gsk_shader_args_builder_set_uint(arg0, arg1, arg2)
+}
+
+// SetVec2 sets the value of the uniform @idx.
+//
+// The uniform must be of vec2 type.
+func (b *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 *C.graphene_vec2_t
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	arg2 = (*C.graphene_vec2_t)(value.Native())
+
+	C.gsk_shader_args_builder_set_vec2(arg0, arg1, arg2)
+}
+
+// SetVec3 sets the value of the uniform @idx.
+//
+// The uniform must be of vec3 type.
+func (b *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 *C.graphene_vec3_t
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	arg2 = (*C.graphene_vec3_t)(value.Native())
+
+	C.gsk_shader_args_builder_set_vec3(arg0, arg1, arg2)
+}
+
+// SetVec4 sets the value of the uniform @idx.
+//
+// The uniform must be of vec4 type.
+func (b *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
+	var arg0 *C.GskShaderArgsBuilder
+	var arg1 C.int
+	var arg2 *C.graphene_vec4_t
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+	arg1 = C.int(idx)
+	arg2 = (*C.graphene_vec4_t)(value.Native())
+
+	C.gsk_shader_args_builder_set_vec4(arg0, arg1, arg2)
+}
+
+// ToArgs creates a new `GBytes` args from the current state of the given
+// @builder.
+//
+// Any uniforms of the shader that have not been explicitly set on the @builder
+// are zero-initialized.
+//
+// The given `GskShaderArgsBuilder` is reset once this function returns; you
+// cannot call this function multiple times on the same @builder instance.
+//
+// This function is intended primarily for bindings. C code should use
+// [method@Gsk.ShaderArgsBuilder.free_to_args].
+func (b *ShaderArgsBuilder) ToArgs() *glib.Bytes {
+	var arg0 *C.GskShaderArgsBuilder
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+
+	ret := C.gsk_shader_args_builder_to_args(arg0)
+
+	var ret0 *glib.Bytes
+
+	{
+		ret0 = glib.WrapBytes(unsafe.Pointer(ret))
+		runtime.SetFinalizer(ret0, func(v *glib.Bytes) {
+			C.free(unsafe.Pointer(v.Native()))
+		})
+	}
+
+	return ret0
+}
+
+// Unref decreases the reference count of a `GskShaderArgBuilder` by one.
+//
+// If the resulting reference count is zero, frees the builder.
+func (b *ShaderArgsBuilder) Unref() {
+	var arg0 *C.GskShaderArgsBuilder
+
+	arg0 = (*C.GskShaderArgsBuilder)(b.Native())
+
+	C.gsk_shader_args_builder_unref(arg0)
 }

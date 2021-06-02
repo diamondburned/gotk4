@@ -15,7 +15,7 @@ import (
 // #include <glib-object.h>
 // #include <glib.h>
 //
-// extern void gotk4_SpawnChildSetupFunc(gpointer _0);
+// void gotk4_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.

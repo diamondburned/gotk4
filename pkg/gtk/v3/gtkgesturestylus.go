@@ -95,7 +95,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 
 	ret0 = float64(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

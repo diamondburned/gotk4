@@ -13,7 +13,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
 //
-// extern void gotk4_WaylandToplevelExported(GdkToplevel* _0, const char* _1, gpointer _2);
+// void gotk4_WaylandToplevelExported(GdkToplevel*,  char*, gpointer);
 import "C"
 
 // WaylandToplevelExported: callback that gets called when the handle for a

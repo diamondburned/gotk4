@@ -27,7 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern void gotk4_DesktopAppLaunchCallback(GDesktopAppInfo* _0, GPid _1, gpointer _2);
+// void gotk4_DesktopAppLaunchCallback(GDesktopAppInfo*, GPid, gpointer);
 import "C"
 
 func init() {
@@ -355,7 +355,7 @@ func (i desktopAppInfo) Boolean(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -418,7 +418,7 @@ func (i desktopAppInfo) IsHidden() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -483,7 +483,7 @@ func (i desktopAppInfo) Nodisplay() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -511,7 +511,7 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -599,7 +599,7 @@ func (i desktopAppInfo) HasKey(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

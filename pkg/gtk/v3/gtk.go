@@ -3885,7 +3885,7 @@ func (c fileChooser) CreateFolders() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3990,7 +3990,7 @@ func (c fileChooser) DoOverwriteConfirmation() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4123,7 +4123,7 @@ func (c fileChooser) LocalOnly() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4206,7 +4206,7 @@ func (c fileChooser) PreviewWidgetActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4222,7 +4222,7 @@ func (c fileChooser) SelectMultiple() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4238,7 +4238,7 @@ func (c fileChooser) ShowHidden() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4296,7 +4296,7 @@ func (c fileChooser) UsePreviewLabel() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4481,7 +4481,7 @@ func (c fileChooser) SelectFilename(filename string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4501,7 +4501,7 @@ func (c fileChooser) SelectURI(uri string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4572,7 +4572,7 @@ func (c fileChooser) SetCurrentFolder(filename string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4618,7 +4618,7 @@ func (c fileChooser) SetCurrentFolderURI(uri string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4775,7 +4775,7 @@ func (c fileChooser) SetFilename(filename string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4931,7 +4931,7 @@ func (c fileChooser) SetURI(uri string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5597,7 +5597,7 @@ func (c clipboard) WaitForTargets() (targets []*gdk.Atom, nTargets int, ok bool)
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -5668,7 +5668,7 @@ func (c clipboard) WaitIsImageAvailable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5693,7 +5693,7 @@ func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5715,7 +5715,7 @@ func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5738,7 +5738,7 @@ func (c clipboard) WaitIsTextAvailable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5761,7 +5761,7 @@ func (c clipboard) WaitIsUrisAvailable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5965,7 +5965,7 @@ func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6856,7 +6856,7 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 
 	ret3 = float64(arg4)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -7290,7 +7290,7 @@ func (s printSettings) Bool(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7305,7 +7305,7 @@ func (s printSettings) Collate() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7783,7 +7783,7 @@ func (s printSettings) Reverse() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7813,7 +7813,7 @@ func (s printSettings) UseColor() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7831,7 +7831,7 @@ func (s printSettings) HasKey(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8578,7 +8578,7 @@ func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

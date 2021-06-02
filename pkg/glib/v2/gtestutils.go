@@ -14,9 +14,9 @@ import (
 // #include <stdbool.h>
 // #include <glib.h>
 //
-// extern void gotk4_TestDataFunc(gconstpointer _0);
-// extern void gotk4_TestFixtureFunc(gpointer _0, gconstpointer _1);
-// extern gboolean gotk4_TestLogFatalFunc(const gchar* _0, GLogLevelFlags _1, const gchar* _2, gpointer _3);
+// void gotk4_TestDataFunc(gpointer);
+// void gotk4_TestFixtureFunc(gpointer, gpointer);
+// gboolean gotk4_TestLogFatalFunc( gchar*, GLogLevelFlags,  gchar*, gpointer);
 import "C"
 
 // TestFileType: the type of file to return the filename for, when used with
@@ -482,7 +482,7 @@ func TestFailed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -771,7 +771,7 @@ func TestSubprocess() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -890,7 +890,7 @@ func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -902,7 +902,7 @@ func TestTrapHasPassed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -914,7 +914,7 @@ func TestTrapReachedTimeout() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1039,42 +1039,42 @@ func (t *TestConfig) Native() unsafe.Pointer {
 // TestInitialized gets the field inside the struct.
 func (t *TestConfig) TestInitialized() bool {
 	var ret bool
-	ret = C.bool(t.native.test_initialized) != 0
+	ret = C.bool(t.native.test_initialized) != C.false
 	return ret
 }
 
 // TestQuick gets the field inside the struct.
 func (t *TestConfig) TestQuick() bool {
 	var ret bool
-	ret = C.bool(t.native.test_quick) != 0
+	ret = C.bool(t.native.test_quick) != C.false
 	return ret
 }
 
 // TestPerf gets the field inside the struct.
 func (t *TestConfig) TestPerf() bool {
 	var ret bool
-	ret = C.bool(t.native.test_perf) != 0
+	ret = C.bool(t.native.test_perf) != C.false
 	return ret
 }
 
 // TestVerbose gets the field inside the struct.
 func (t *TestConfig) TestVerbose() bool {
 	var ret bool
-	ret = C.bool(t.native.test_verbose) != 0
+	ret = C.bool(t.native.test_verbose) != C.false
 	return ret
 }
 
 // TestQuiet gets the field inside the struct.
 func (t *TestConfig) TestQuiet() bool {
 	var ret bool
-	ret = C.bool(t.native.test_quiet) != 0
+	ret = C.bool(t.native.test_quiet) != C.false
 	return ret
 }
 
 // TestUndefined gets the field inside the struct.
 func (t *TestConfig) TestUndefined() bool {
 	var ret bool
-	ret = C.bool(t.native.test_undefined) != 0
+	ret = C.bool(t.native.test_undefined) != C.false
 	return ret
 }
 

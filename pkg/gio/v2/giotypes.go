@@ -27,16 +27,16 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern void gotk4_AsyncReadyCallback(GObject* _0, GAsyncResult* _1, gpointer _2);
-// extern gboolean gotk4_CancellableSourceFunc(GCancellable* _0, gpointer _1);
-// extern GType gotk4_DBusProxyTypeFunc(GDBusObjectManagerClient* _0, const gchar* _1, const gchar* _2, gpointer _3);
-// extern gboolean gotk4_DatagramBasedSourceFunc(GDatagramBased* _0, GIOCondition _1, gpointer _2);
-// extern void gotk4_FileMeasureProgressCallback(gboolean _0, guint64 _1, guint64 _2, guint64 _3, gpointer _4);
-// extern void gotk4_FileProgressCallback(goffset _0, goffset _1, gpointer _2);
-// extern gboolean gotk4_FileReadMoreCallback(const char* _0, goffset _1, gpointer _2);
-// extern gboolean gotk4_IOSchedulerJobFunc(GIOSchedulerJob* _0, GCancellable* _1, gpointer _2);
-// extern gboolean gotk4_PollableSourceFunc(GObject* _0, gpointer _1);
-// extern gboolean gotk4_SocketSourceFunc(GSocket* _0, GIOCondition _1, gpointer _2);
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// gboolean gotk4_CancellableSourceFunc(GCancellable*, gpointer);
+// GType gotk4_DBusProxyTypeFunc(GDBusObjectManagerClient*,  gchar*,  gchar*, gpointer);
+// gboolean gotk4_DatagramBasedSourceFunc(GDatagramBased*, GIOCondition, gpointer);
+// void gotk4_FileMeasureProgressCallback(gboolean, guint64, guint64, guint64, gpointer);
+// void gotk4_FileProgressCallback(goffset, goffset, gpointer);
+// gboolean gotk4_FileReadMoreCallback( char*, goffset, gpointer);
+// gboolean gotk4_IOSchedulerJobFunc(GIOSchedulerJob*, GCancellable*, gpointer);
+// gboolean gotk4_PollableSourceFunc(GObject*, gpointer);
+// gboolean gotk4_SocketSourceFunc(GSocket*, GIOCondition, gpointer);
 import "C"
 
 func init() {
@@ -180,7 +180,7 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	var numDirs uint64
 	var numFiles uint64
 
-	reporting = C.bool(arg0) != 0
+	reporting = C.bool(arg0) != C.false
 
 	currentSize = uint64(arg1)
 
@@ -366,7 +366,7 @@ func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -401,7 +401,7 @@ func (m *FileAttributeMatcher) Matches(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -420,7 +420,7 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -710,7 +710,7 @@ func (j *IOSchedulerJob) SendToMainloop(fn glib.SourceFunc) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

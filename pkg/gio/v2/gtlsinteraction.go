@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type TLSInteractionPrivate struct {
-	native C.GTlsInteractionPrivate
-}
-
-// WrapTLSInteractionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSInteractionPrivate(ptr unsafe.Pointer) *TLSInteractionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSInteractionPrivate)(ptr)
-}
-
-func marshalTLSInteractionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSInteractionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSInteractionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // TLSInteraction provides a mechanism for the TLS connection and database code
 // to interact with the user. It can be used to ask the user for passwords.
 //
@@ -531,4 +507,28 @@ func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (tlsInterac
 	}
 
 	return ret0, goError
+}
+
+type TLSInteractionPrivate struct {
+	native C.GTlsInteractionPrivate
+}
+
+// WrapTLSInteractionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTLSInteractionPrivate(ptr unsafe.Pointer) *TLSInteractionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TLSInteractionPrivate)(ptr)
+}
+
+func marshalTLSInteractionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTLSInteractionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TLSInteractionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

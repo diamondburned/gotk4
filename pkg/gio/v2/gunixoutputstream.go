@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_unix_output_stream_get_type()), F: marshalUnixOutputStream},
 	})
-}
-
-type UnixOutputStreamPrivate struct {
-	native C.GUnixOutputStreamPrivate
-}
-
-// WrapUnixOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixOutputStreamPrivate(ptr unsafe.Pointer) *UnixOutputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixOutputStreamPrivate)(ptr)
-}
-
-func marshalUnixOutputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixOutputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixOutputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
 }
 
 // UnixOutputStream implements Stream for writing to a UNIX file descriptor,
@@ -134,7 +110,7 @@ func (s unixOutputStream) CloseFd() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -166,4 +142,28 @@ func (s unixOutputStream) SetCloseFd(closeFd bool) {
 	}
 
 	C.g_unix_output_stream_set_close_fd(arg0, arg1)
+}
+
+type UnixOutputStreamPrivate struct {
+	native C.GUnixOutputStreamPrivate
+}
+
+// WrapUnixOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixOutputStreamPrivate(ptr unsafe.Pointer) *UnixOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*UnixOutputStreamPrivate)(ptr)
+}
+
+func marshalUnixOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapUnixOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (u *UnixOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&u.native)
 }

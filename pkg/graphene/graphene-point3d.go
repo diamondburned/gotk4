@@ -169,7 +169,7 @@ func (a *Point3D) Equal(b *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -300,7 +300,7 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

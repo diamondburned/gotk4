@@ -15,7 +15,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gint gotk4_AssistantPageFunc(gint _0, gpointer _1);
+// gint gotk4_AssistantPageFunc(gint, gpointer);
 import "C"
 
 // AssistantPageFunc: a function used by gtk_assistant_set_forward_page_func()

@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_dbus_object_manager_server_get_type()), F: marshalDBusObjectManagerServer},
 	})
-}
-
-type DBusObjectManagerServerPrivate struct {
-	native C.GDBusObjectManagerServerPrivate
-}
-
-// WrapDBusObjectManagerServerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusObjectManagerServerPrivate(ptr unsafe.Pointer) *DBusObjectManagerServerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DBusObjectManagerServerPrivate)(ptr)
-}
-
-func marshalDBusObjectManagerServerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusObjectManagerServerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusObjectManagerServerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
 }
 
 // DBusObjectManagerServer is used to export BusObject instances using the
@@ -211,7 +187,7 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -245,7 +221,31 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
+}
+
+type DBusObjectManagerServerPrivate struct {
+	native C.GDBusObjectManagerServerPrivate
+}
+
+// WrapDBusObjectManagerServerPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectManagerServerPrivate(ptr unsafe.Pointer) *DBusObjectManagerServerPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectManagerServerPrivate)(ptr)
+}
+
+func marshalDBusObjectManagerServerPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectManagerServerPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectManagerServerPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
 }

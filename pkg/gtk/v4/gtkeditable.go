@@ -43,7 +43,7 @@ func EditableDelegateGetProperty(object gextras.Objector, propID uint, value *ex
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -69,7 +69,7 @@ func EditableDelegateSetProperty(object gextras.Objector, propID uint, value *ex
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -459,7 +459,7 @@ func (e editable) Editable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -474,7 +474,7 @@ func (e editable) EnableUndo() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -537,7 +537,7 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }

@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-type SocketControlMessagePrivate struct {
-	native C.GSocketControlMessagePrivate
-}
-
-// WrapSocketControlMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketControlMessagePrivate(ptr unsafe.Pointer) *SocketControlMessagePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketControlMessagePrivate)(ptr)
-}
-
-func marshalSocketControlMessagePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketControlMessagePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketControlMessagePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
 // SocketControlMessage: a ControlMessage is a special-purpose utility message
 // that can be sent to or received from a #GSocket. These types of messages are
 // often called "ancillary data".
@@ -176,4 +152,28 @@ func (m socketControlMessage) Serialize(data interface{}) {
 	arg1 = C.gpointer(box.Assign(data))
 
 	C.g_socket_control_message_serialize(arg0, arg1)
+}
+
+type SocketControlMessagePrivate struct {
+	native C.GSocketControlMessagePrivate
+}
+
+// WrapSocketControlMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketControlMessagePrivate(ptr unsafe.Pointer) *SocketControlMessagePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketControlMessagePrivate)(ptr)
+}
+
+func marshalSocketControlMessagePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketControlMessagePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketControlMessagePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

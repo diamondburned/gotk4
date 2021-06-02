@@ -14,8 +14,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -25,30 +25,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIcon},
 	})
-}
-
-type StatusIconPrivate struct {
-	native C.GtkStatusIconPrivate
-}
-
-// WrapStatusIconPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStatusIconPrivate(ptr unsafe.Pointer) *StatusIconPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*StatusIconPrivate)(ptr)
-}
-
-func marshalStatusIconPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStatusIconPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *StatusIconPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // StatusIcon: the “system tray” or notification area is normally used for
@@ -360,7 +336,7 @@ func (s statusIcon) Geometry() (screen gdk.Screen, area gdk.Rectangle, orientati
 
 	ret2 = (*Orientation)(arg3)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -396,7 +372,7 @@ func (s statusIcon) HasTooltip() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -568,7 +544,7 @@ func (s statusIcon) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -609,7 +585,7 @@ func (s statusIcon) IsEmbedded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -779,4 +755,28 @@ func (s statusIcon) SetVisible(visible bool) {
 	}
 
 	C.gtk_status_icon_set_visible(arg0, arg1)
+}
+
+type StatusIconPrivate struct {
+	native C.GtkStatusIconPrivate
+}
+
+// WrapStatusIconPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapStatusIconPrivate(ptr unsafe.Pointer) *StatusIconPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*StatusIconPrivate)(ptr)
+}
+
+func marshalStatusIconPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapStatusIconPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *StatusIconPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

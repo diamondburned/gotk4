@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -31,30 +31,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_socket_connection_get_type()), F: marshalSocketConnection},
 	})
-}
-
-type SocketConnectionPrivate struct {
-	native C.GSocketConnectionPrivate
-}
-
-// WrapSocketConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketConnectionPrivate(ptr unsafe.Pointer) *SocketConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketConnectionPrivate)(ptr)
-}
-
-func marshalSocketConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // SocketConnection is a OStream for a connected socket. They can be created
@@ -274,7 +250,31 @@ func (c socketConnection) IsConnected() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
+}
+
+type SocketConnectionPrivate struct {
+	native C.GSocketConnectionPrivate
+}
+
+// WrapSocketConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketConnectionPrivate(ptr unsafe.Pointer) *SocketConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketConnectionPrivate)(ptr)
+}
+
+func marshalSocketConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

@@ -17,7 +17,7 @@ import (
 // #include <stdbool.h>
 // #include <glib.h>
 //
-// extern gboolean gotk4_RegexEvalCallback(const GMatchInfo* _0, GString* _1, gpointer _2);
+// gboolean gotk4_RegexEvalCallback( GMatchInfo*, GString*, gpointer);
 import "C"
 
 func init() {
@@ -408,7 +408,7 @@ func RegexCheckReplacement(replacement string) (hasReferences bool, err error) {
 	var ret0 bool
 	var goError error
 
-	ret0 = C.bool(arg2) != 0
+	ret0 = C.bool(arg2) != C.false
 
 	if gError != nil {
 		goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))
@@ -507,7 +507,7 @@ func RegexMatchSimple(pattern string, string string, compileOptions RegexCompile
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -762,7 +762,7 @@ func (m *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok boo
 
 	ret1 = int(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -798,7 +798,7 @@ func (m *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 
 	ret1 = int(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -914,7 +914,7 @@ func (m *MatchInfo) IsPartialMatch() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -929,7 +929,7 @@ func (m *MatchInfo) Matches() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1146,7 +1146,7 @@ func (r *Regex) HasCrOrLf() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1294,7 +1294,7 @@ func (r *Regex) Match(string string, matchOptions RegexMatchFlags) (matchInfo *M
 		})
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -1335,7 +1335,7 @@ func (r *Regex) MatchAll(string string, matchOptions RegexMatchFlags) (matchInfo
 		})
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

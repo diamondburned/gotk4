@@ -326,7 +326,7 @@ func RCReparseAll() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -347,7 +347,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -404,6 +404,65 @@ func RCSetDefaultFiles(filenames []string) {
 	}
 
 	C.gtk_rc_set_default_files(arg1)
+}
+
+// RCStyle: the RcStyle-struct is used to represent a set of information about
+// the appearance of a widget. This can later be composited together with other
+// RcStyle-struct<!-- -->s to form a Style.
+type RCStyle interface {
+	gextras.Objector
+
+	// Copy makes a copy of the specified RcStyle. This function will correctly
+	// copy an RC style that is a member of a class derived from RcStyle.
+	Copy() RCStyle
+}
+
+// rcStyle implements the RCStyle interface.
+type rcStyle struct {
+	gextras.Objector
+}
+
+var _ RCStyle = (*rcStyle)(nil)
+
+// WrapRCStyle wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRCStyle(obj *externglib.Object) RCStyle {
+	return RCStyle{
+		Objector: obj,
+	}
+}
+
+func marshalRCStyle(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := externglib.Take(unsafe.Pointer(val))
+	return WrapRCStyle(obj), nil
+}
+
+// NewRCStyle constructs a class RCStyle.
+func NewRCStyle() RCStyle {
+	ret := C.gtk_rc_style_new()
+
+	var ret0 RCStyle
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(RCStyle)
+
+	return ret0
+}
+
+// Copy makes a copy of the specified RcStyle. This function will correctly
+// copy an RC style that is a member of a class derived from RcStyle.
+func (o rcStyle) Copy() RCStyle {
+	var arg0 *C.GtkRcStyle
+
+	arg0 = (*C.GtkRcStyle)(o.Native())
+
+	ret := C.gtk_rc_style_copy(arg0)
+
+	var ret0 RCStyle
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(RCStyle)
+
+	return ret0
 }
 
 type RCContext struct {
@@ -489,63 +548,4 @@ func (r *RCProperty) Value() *externglib.Value {
 	var ret *externglib.Value
 	ret = externglib.ValueFromNative(unsafe.Pointer(r.native.value))
 	return ret
-}
-
-// RCStyle: the RcStyle-struct is used to represent a set of information about
-// the appearance of a widget. This can later be composited together with other
-// RcStyle-struct<!-- -->s to form a Style.
-type RCStyle interface {
-	gextras.Objector
-
-	// Copy makes a copy of the specified RcStyle. This function will correctly
-	// copy an RC style that is a member of a class derived from RcStyle.
-	Copy() RCStyle
-}
-
-// rcStyle implements the RCStyle interface.
-type rcStyle struct {
-	gextras.Objector
-}
-
-var _ RCStyle = (*rcStyle)(nil)
-
-// WrapRCStyle wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapRCStyle(obj *externglib.Object) RCStyle {
-	return RCStyle{
-		Objector: obj,
-	}
-}
-
-func marshalRCStyle(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapRCStyle(obj), nil
-}
-
-// NewRCStyle constructs a class RCStyle.
-func NewRCStyle() RCStyle {
-	ret := C.gtk_rc_style_new()
-
-	var ret0 RCStyle
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(RCStyle)
-
-	return ret0
-}
-
-// Copy makes a copy of the specified RcStyle. This function will correctly
-// copy an RC style that is a member of a class derived from RcStyle.
-func (o rcStyle) Copy() RCStyle {
-	var arg0 *C.GtkRcStyle
-
-	arg0 = (*C.GtkRcStyle)(o.Native())
-
-	ret := C.gtk_rc_style_copy(arg0)
-
-	var ret0 RCStyle
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(RCStyle)
-
-	return ret0
 }

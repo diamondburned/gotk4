@@ -99,7 +99,7 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 
 	ret1 = float64(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }

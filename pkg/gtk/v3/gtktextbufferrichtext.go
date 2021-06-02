@@ -19,8 +19,8 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gboolean gotk4_TextBufferDeserializeFunc(GtkTextBuffer* _0, GtkTextBuffer* _1, GtkTextIter* _2, const guint8* _3, gsize _4, gboolean _5, gpointer _6);
-// extern guint8* gotk4_TextBufferSerializeFunc(GtkTextBuffer* _0, GtkTextBuffer* _1, const GtkTextIter* _2, const GtkTextIter* _3, gsize* _4, gpointer _5);
+// gboolean gotk4_TextBufferDeserializeFunc(GtkTextBuffer*, GtkTextBuffer*, GtkTextIter*,  guint8*, gsize, gboolean, gpointer);
+// guint8* gotk4_TextBufferSerializeFunc(GtkTextBuffer*, GtkTextBuffer*,  GtkTextIter*,  GtkTextIter*, gsize*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -63,7 +63,7 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 		}
 	}
 
-	createTags = C.bool(arg5) != 0
+	createTags = C.bool(arg5) != C.false
 
 	ok := v.(TextBufferDeserializeFunc)(registerBuffer, contentBuffer, iter, data, createTags)
 }

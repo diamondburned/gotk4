@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type ConverterInputStreamPrivate struct {
-	native C.GConverterInputStreamPrivate
-}
-
-// WrapConverterInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapConverterInputStreamPrivate(ptr unsafe.Pointer) *ConverterInputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ConverterInputStreamPrivate)(ptr)
-}
-
-func marshalConverterInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapConverterInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ConverterInputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}
-
 // ConverterInputStream: converter input stream implements Stream and allows
 // conversion of data of various types during reading.
 //
@@ -120,4 +96,28 @@ func (c converterInputStream) Converter() Converter {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(Converter)
 
 	return ret0
+}
+
+type ConverterInputStreamPrivate struct {
+	native C.GConverterInputStreamPrivate
+}
+
+// WrapConverterInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapConverterInputStreamPrivate(ptr unsafe.Pointer) *ConverterInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ConverterInputStreamPrivate)(ptr)
+}
+
+func marshalConverterInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapConverterInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *ConverterInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

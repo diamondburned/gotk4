@@ -13,8 +13,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -22,30 +22,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_store_get_type()), F: marshalTreeStore},
 	})
-}
-
-type TreeStorePrivate struct {
-	native C.GtkTreeStorePrivate
-}
-
-// WrapTreeStorePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeStorePrivate(ptr unsafe.Pointer) *TreeStorePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeStorePrivate)(ptr)
-}
-
-func marshalTreeStorePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeStorePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeStorePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TreeStore: a tree-like data structure that can be used with the GtkTreeView
@@ -419,7 +395,7 @@ func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -457,7 +433,7 @@ func (t treeStore) IterIsValid(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -533,7 +509,7 @@ func (t treeStore) Remove(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -634,4 +610,28 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter) {
 	arg2 = (*C.GtkTreeIter)(b.Native())
 
 	C.gtk_tree_store_swap(arg0, arg1, arg2)
+}
+
+type TreeStorePrivate struct {
+	native C.GtkTreeStorePrivate
+}
+
+// WrapTreeStorePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeStorePrivate(ptr unsafe.Pointer) *TreeStorePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeStorePrivate)(ptr)
+}
+
+func marshalTreeStorePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeStorePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeStorePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

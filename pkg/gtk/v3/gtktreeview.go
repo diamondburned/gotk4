@@ -16,12 +16,12 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_TreeDestroyCountFunc(GtkTreeView* _0, GtkTreePath* _1, gint _2, gpointer _3);
-// extern gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView* _0, GtkTreeViewColumn* _1, GtkTreeViewColumn* _2, GtkTreeViewColumn* _3, gpointer _4);
-// extern void gotk4_TreeViewMappingFunc(GtkTreeView* _0, GtkTreePath* _1, gpointer _2);
-// extern gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel* _0, GtkTreeIter* _1, gpointer _2);
-// extern gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel* _0, gint _1, const gchar* _2, GtkTreeIter* _3, gpointer _4);
-// extern void gotk4_TreeViewSearchPositionFunc(GtkTreeView* _0, GtkWidget* _1, gpointer _2);
+// void gotk4_TreeDestroyCountFunc(GtkTreeView*, GtkTreePath*, gint, gpointer);
+// gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
+// void gotk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
+// gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel*, gint,  gchar*, GtkTreeIter*, gpointer);
+// void gotk4_TreeViewSearchPositionFunc(GtkTreeView*, GtkWidget*, gpointer);
 import "C"
 
 type TreeDestroyCountFunc func(treeView TreeView, path *TreePath, children int)

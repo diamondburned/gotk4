@@ -17,7 +17,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern GListModel* gotk4_TreeListModelCreateModelFunc(gpointer _0, gpointer _1);
+// GListModel* gotk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -181,7 +181,7 @@ func (s treeListModel) Autoexpand() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -243,7 +243,7 @@ func (s treeListModel) Passthrough() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -461,7 +461,7 @@ func (s treeListRow) Expanded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -538,7 +538,7 @@ func (s treeListRow) IsExpandable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

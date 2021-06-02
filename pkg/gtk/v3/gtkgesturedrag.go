@@ -98,7 +98,7 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 	ret1 = float64(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -123,7 +123,7 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	ret1 = float64(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }

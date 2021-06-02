@@ -76,7 +76,7 @@ func anyTypeC(any gir.AnyType) string {
 // ctypeFallback returns the C type OR the GIR type if it's empty.
 func ctypeFallback(c, gir string) string {
 	if c != "" {
-		return c
+		return ctypePrefixEraser.Replace(c)
 	}
 
 	// Handle edge cases with a hard-coded type map. Thanks, GIR, for evading
@@ -85,7 +85,7 @@ func ctypeFallback(c, gir string) string {
 	case "utf8", "filename":
 		return "gchar*"
 	default:
-		return gir
+		return ctypePrefixEraser.Replace(gir)
 	}
 }
 

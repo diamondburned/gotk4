@@ -16,7 +16,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_DrawingAreaDrawFunc(GtkDrawingArea* _0, cairo_t* _1, int _2, int _3, gpointer _4);
+// void gotk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

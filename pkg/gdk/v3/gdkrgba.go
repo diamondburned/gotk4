@@ -110,7 +110,7 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -164,7 +164,7 @@ func (r *RGBA) Parse(spec string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

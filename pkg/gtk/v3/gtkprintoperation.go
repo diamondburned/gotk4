@@ -12,13 +12,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_PageSetupDoneFunc(GtkPageSetup* _0, gpointer _1);
+// void gotk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
 import "C"
 
 func init() {
@@ -93,30 +93,6 @@ func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings P
 	arg5 = C.gpointer(box.Assign(doneCb))
 
 	C.gtk_print_run_page_setup_dialog_async(arg1, arg2, arg3, arg4, arg5)
-}
-
-type PrintOperationPrivate struct {
-	native C.GtkPrintOperationPrivate
-}
-
-// WrapPrintOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPrintOperationPrivate(ptr unsafe.Pointer) *PrintOperationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PrintOperationPrivate)(ptr)
-}
-
-func marshalPrintOperationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPrintOperationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PrintOperationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
 }
 
 // PrintOperation: gtkPrintOperation is the high-level, portable printing API.
@@ -475,7 +451,7 @@ func (o printOperation) EmbedPageSetup() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -503,7 +479,7 @@ func (o printOperation) HasSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -597,7 +573,7 @@ func (o printOperation) SupportSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -618,7 +594,7 @@ func (o printOperation) IsFinished() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -948,4 +924,28 @@ func (o printOperation) SetUseFullPage(fullPage bool) {
 	}
 
 	C.gtk_print_operation_set_use_full_page(arg0, arg1)
+}
+
+type PrintOperationPrivate struct {
+	native C.GtkPrintOperationPrivate
+}
+
+// WrapPrintOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPrintOperationPrivate(ptr unsafe.Pointer) *PrintOperationPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*PrintOperationPrivate)(ptr)
+}
+
+func marshalPrintOperationPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapPrintOperationPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (p *PrintOperationPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&p.native)
 }

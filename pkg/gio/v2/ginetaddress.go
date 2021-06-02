@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_inet_address_get_type()), F: marshalInetAddress},
 	})
-}
-
-type InetAddressPrivate struct {
-	native C.GInetAddressPrivate
-}
-
-// WrapInetAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInetAddressPrivate(ptr unsafe.Pointer) *InetAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InetAddressPrivate)(ptr)
-}
-
-func marshalInetAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInetAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InetAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }
 
 // InetAddress represents an IPv4 or IPv6 internet address. Use
@@ -184,7 +160,7 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -214,7 +190,7 @@ func (a inetAddress) IsAny() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -231,7 +207,7 @@ func (a inetAddress) IsLinkLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -246,7 +222,7 @@ func (a inetAddress) IsLoopback() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -261,7 +237,7 @@ func (a inetAddress) IsMcGlobal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -276,7 +252,7 @@ func (a inetAddress) IsMcLinkLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -291,7 +267,7 @@ func (a inetAddress) IsMcNodeLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -307,7 +283,7 @@ func (a inetAddress) IsMcOrgLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -322,7 +298,7 @@ func (a inetAddress) IsMcSiteLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -337,7 +313,7 @@ func (a inetAddress) IsMulticast() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -355,7 +331,7 @@ func (a inetAddress) IsSiteLocal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -405,4 +381,28 @@ func (a inetAddress) String() string {
 	C.free(unsafe.Pointer(ret))
 
 	return ret0
+}
+
+type InetAddressPrivate struct {
+	native C.GInetAddressPrivate
+}
+
+// WrapInetAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInetAddressPrivate(ptr unsafe.Pointer) *InetAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InetAddressPrivate)(ptr)
+}
+
+func marshalInetAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInetAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InetAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

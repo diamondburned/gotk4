@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -31,30 +31,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_socket_client_get_type()), F: marshalSocketClient},
 	})
-}
-
-type SocketClientPrivate struct {
-	native C.GSocketClientPrivate
-}
-
-// WrapSocketClientPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketClientPrivate(ptr unsafe.Pointer) *SocketClientPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketClientPrivate)(ptr)
-}
-
-func marshalSocketClientPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketClientPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketClientPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // SocketClient is a lightweight high-level utility class for connecting to a
@@ -788,7 +764,7 @@ func (c socketClient) EnableProxy() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -906,7 +882,7 @@ func (c socketClient) TLS() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1080,4 +1056,28 @@ func (c socketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	arg1 = (C.GTlsCertificateFlags)(flags)
 
 	C.g_socket_client_set_tls_validation_flags(arg0, arg1)
+}
+
+type SocketClientPrivate struct {
+	native C.GSocketClientPrivate
+}
+
+// WrapSocketClientPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSocketClientPrivate(ptr unsafe.Pointer) *SocketClientPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SocketClientPrivate)(ptr)
+}
+
+func marshalSocketClientPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSocketClientPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SocketClientPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

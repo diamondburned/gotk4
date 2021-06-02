@@ -76,7 +76,7 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -111,7 +111,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -265,7 +265,7 @@ func (s *Sphere) IsEmpty() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

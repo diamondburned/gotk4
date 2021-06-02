@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -21,54 +21,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_get_type()), F: marshalCellRenderer},
 	})
-}
-
-type CellRendererClassPrivate struct {
-	native C.GtkCellRendererClassPrivate
-}
-
-// WrapCellRendererClassPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererClassPrivate(ptr unsafe.Pointer) *CellRendererClassPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererClassPrivate)(ptr)
-}
-
-func marshalCellRendererClassPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererClassPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererClassPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}
-
-type CellRendererPrivate struct {
-	native C.GtkCellRendererPrivate
-}
-
-// WrapCellRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererPrivate(ptr unsafe.Pointer) *CellRendererPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererPrivate)(ptr)
-}
-
-func marshalCellRendererPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // CellRenderer: an object for rendering a single cell
@@ -236,7 +188,7 @@ func (c cellRenderer) Activate(event gdk.Event, widget Widget, path string, back
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -317,7 +269,7 @@ func (c cellRenderer) IsExpanded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -332,7 +284,7 @@ func (c cellRenderer) IsExpander() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -506,7 +458,7 @@ func (c cellRenderer) Sensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -541,7 +493,7 @@ func (c cellRenderer) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -557,7 +509,7 @@ func (c cellRenderer) IsActivatable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -725,4 +677,52 @@ func (c cellRenderer) StopEditing(canceled bool) {
 	}
 
 	C.gtk_cell_renderer_stop_editing(arg0, arg1)
+}
+
+type CellRendererClassPrivate struct {
+	native C.GtkCellRendererClassPrivate
+}
+
+// WrapCellRendererClassPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererClassPrivate(ptr unsafe.Pointer) *CellRendererClassPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererClassPrivate)(ptr)
+}
+
+func marshalCellRendererClassPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererClassPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererClassPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
+}
+
+type CellRendererPrivate struct {
+	native C.GtkCellRendererPrivate
+}
+
+// WrapCellRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererPrivate(ptr unsafe.Pointer) *CellRendererPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererPrivate)(ptr)
+}
+
+func marshalCellRendererPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

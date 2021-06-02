@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -20,30 +20,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButton},
 	})
-}
-
-type ButtonPrivate struct {
-	native C.GtkButtonPrivate
-}
-
-// WrapButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapButtonPrivate(ptr unsafe.Pointer) *ButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ButtonPrivate)(ptr)
-}
-
-func marshalButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *ButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
 }
 
 // Button: the `GtkButton` widget is generally used to trigger a callback
@@ -240,7 +216,7 @@ func (b button) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -295,7 +271,7 @@ func (b button) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -369,4 +345,28 @@ func (b button) SetUseUnderline(useUnderline bool) {
 	}
 
 	C.gtk_button_set_use_underline(arg0, arg1)
+}
+
+type ButtonPrivate struct {
+	native C.GtkButtonPrivate
+}
+
+// WrapButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapButtonPrivate(ptr unsafe.Pointer) *ButtonPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ButtonPrivate)(ptr)
+}
+
+func marshalButtonPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapButtonPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *ButtonPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
 }

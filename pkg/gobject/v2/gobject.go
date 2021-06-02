@@ -189,155 +189,6 @@ func (p typePlugin) Use() {
 	C.g_type_plugin_use(arg0)
 }
 
-// ObjectConstructParam: the GObjectConstructParam struct is an auxiliary
-// structure used to hand Spec/#GValue pairs to the @constructor of a Class.
-type ObjectConstructParam struct {
-	native C.GObjectConstructParam
-}
-
-// WrapObjectConstructParam wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapObjectConstructParam(ptr unsafe.Pointer) *ObjectConstructParam {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ObjectConstructParam)(ptr)
-}
-
-func marshalObjectConstructParam(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapObjectConstructParam(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (o *ObjectConstructParam) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
-}
-
-// Pspec gets the field inside the struct.
-func (o *ObjectConstructParam) Pspec() ParamSpec {
-	var ret ParamSpec
-	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.pspec.Native()))).(ParamSpec)
-	return ret
-}
-
-// Value gets the field inside the struct.
-func (o *ObjectConstructParam) Value() *externglib.Value {
-	var ret *externglib.Value
-	ret = externglib.ValueFromNative(unsafe.Pointer(o.native.value))
-	return ret
-}
-
-// WeakRef: a structure containing a weak reference to a #GObject. It can either
-// be empty (i.e. point to nil), or point to an object for as long as at least
-// one "strong" reference to that object exists. Before the object's
-// Class.dispose method is called, every Ref associated with becomes empty (i.e.
-// points to nil).
-//
-// Like #GValue, Ref can be statically allocated, stack- or heap-allocated, or
-// embedded in larger structures.
-//
-// Unlike g_object_weak_ref() and g_object_add_weak_pointer(), this weak
-// reference is thread-safe: converting a weak pointer to a reference is atomic
-// with respect to invalidation of weak pointers to destroyed objects.
-//
-// If the object's Class.dispose method results in additional references to the
-// object being held, any Refs taken before it was disposed will continue to
-// point to nil. If Refs are taken after the object is disposed and
-// re-referenced, they will continue to point to it until its refcount goes back
-// to zero, at which point they too will be invalidated.
-type WeakRef struct {
-	native C.GWeakRef
-}
-
-// WrapWeakRef wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWeakRef(ptr unsafe.Pointer) *WeakRef {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WeakRef)(ptr)
-}
-
-func marshalWeakRef(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWeakRef(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WeakRef) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
-}
-
-// Clear frees resources associated with a non-statically-allocated Ref. After
-// this call, the Ref is left in an undefined state.
-//
-// You should only call this on a Ref that previously had g_weak_ref_init()
-// called on it.
-func (w *WeakRef) Clear() {
-	var arg0 *C.GWeakRef
-
-	arg0 = (*C.GWeakRef)(w.Native())
-
-	C.g_weak_ref_clear(arg0)
-}
-
-// Get: if @weak_ref is not empty, atomically acquire a strong reference to the
-// object it points to, and return that reference.
-//
-// This function is needed because of the potential race between taking the
-// pointer value and g_object_ref() on it, if the object was losing its last
-// reference at the same time in a different thread.
-//
-// The caller should release the resulting reference in the usual way, by using
-// g_object_unref().
-func (w *WeakRef) Get() gextras.Objector {
-	var arg0 *C.GWeakRef
-
-	arg0 = (*C.GWeakRef)(w.Native())
-
-	ret := C.g_weak_ref_get(arg0)
-
-	var ret0 gextras.Objector
-
-	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gextras.Objector)
-
-	return ret0
-}
-
-// Init: initialise a non-statically-allocated Ref.
-//
-// This function also calls g_weak_ref_set() with @object on the
-// freshly-initialised weak reference.
-//
-// This function should always be matched with a call to g_weak_ref_clear(). It
-// is not necessary to use this function for a Ref in static storage because it
-// will already be properly initialised. Just use g_weak_ref_set() directly.
-func (w *WeakRef) Init(object gextras.Objector) {
-	var arg0 *C.GWeakRef
-	var arg1 C.gpointer
-
-	arg0 = (*C.GWeakRef)(w.Native())
-	arg1 = (*C.GObject)(object.Native())
-
-	C.g_weak_ref_init(arg0, arg1)
-}
-
-// Set: change the object to which @weak_ref points, or set it to nil.
-//
-// You must own a strong reference on @object while calling this function.
-func (w *WeakRef) Set(object gextras.Objector) {
-	var arg0 *C.GWeakRef
-	var arg1 C.gpointer
-
-	arg0 = (*C.GWeakRef)(w.Native())
-	arg1 = (*C.GObject)(object.Native())
-
-	C.g_weak_ref_set(arg0, arg1)
-}
-
 // Binding is the representation of a binding between a property on a #GObject
 // instance (or source) and another property on another #GObject instance (or
 // target). Whenever the source property changes, the same value is applied to
@@ -643,4 +494,153 @@ func marshalInitiallyUnowned(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapInitiallyUnowned(obj), nil
+}
+
+// ObjectConstructParam: the GObjectConstructParam struct is an auxiliary
+// structure used to hand Spec/#GValue pairs to the @constructor of a Class.
+type ObjectConstructParam struct {
+	native C.GObjectConstructParam
+}
+
+// WrapObjectConstructParam wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapObjectConstructParam(ptr unsafe.Pointer) *ObjectConstructParam {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ObjectConstructParam)(ptr)
+}
+
+func marshalObjectConstructParam(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapObjectConstructParam(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (o *ObjectConstructParam) Native() unsafe.Pointer {
+	return unsafe.Pointer(&o.native)
+}
+
+// Pspec gets the field inside the struct.
+func (o *ObjectConstructParam) Pspec() ParamSpec {
+	var ret ParamSpec
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.pspec.Native()))).(ParamSpec)
+	return ret
+}
+
+// Value gets the field inside the struct.
+func (o *ObjectConstructParam) Value() *externglib.Value {
+	var ret *externglib.Value
+	ret = externglib.ValueFromNative(unsafe.Pointer(o.native.value))
+	return ret
+}
+
+// WeakRef: a structure containing a weak reference to a #GObject. It can either
+// be empty (i.e. point to nil), or point to an object for as long as at least
+// one "strong" reference to that object exists. Before the object's
+// Class.dispose method is called, every Ref associated with becomes empty (i.e.
+// points to nil).
+//
+// Like #GValue, Ref can be statically allocated, stack- or heap-allocated, or
+// embedded in larger structures.
+//
+// Unlike g_object_weak_ref() and g_object_add_weak_pointer(), this weak
+// reference is thread-safe: converting a weak pointer to a reference is atomic
+// with respect to invalidation of weak pointers to destroyed objects.
+//
+// If the object's Class.dispose method results in additional references to the
+// object being held, any Refs taken before it was disposed will continue to
+// point to nil. If Refs are taken after the object is disposed and
+// re-referenced, they will continue to point to it until its refcount goes back
+// to zero, at which point they too will be invalidated.
+type WeakRef struct {
+	native C.GWeakRef
+}
+
+// WrapWeakRef wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWeakRef(ptr unsafe.Pointer) *WeakRef {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WeakRef)(ptr)
+}
+
+func marshalWeakRef(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWeakRef(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WeakRef) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
+}
+
+// Clear frees resources associated with a non-statically-allocated Ref. After
+// this call, the Ref is left in an undefined state.
+//
+// You should only call this on a Ref that previously had g_weak_ref_init()
+// called on it.
+func (w *WeakRef) Clear() {
+	var arg0 *C.GWeakRef
+
+	arg0 = (*C.GWeakRef)(w.Native())
+
+	C.g_weak_ref_clear(arg0)
+}
+
+// Get: if @weak_ref is not empty, atomically acquire a strong reference to the
+// object it points to, and return that reference.
+//
+// This function is needed because of the potential race between taking the
+// pointer value and g_object_ref() on it, if the object was losing its last
+// reference at the same time in a different thread.
+//
+// The caller should release the resulting reference in the usual way, by using
+// g_object_unref().
+func (w *WeakRef) Get() gextras.Objector {
+	var arg0 *C.GWeakRef
+
+	arg0 = (*C.GWeakRef)(w.Native())
+
+	ret := C.g_weak_ref_get(arg0)
+
+	var ret0 gextras.Objector
+
+	ret0 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(ret.Native()))).(gextras.Objector)
+
+	return ret0
+}
+
+// Init: initialise a non-statically-allocated Ref.
+//
+// This function also calls g_weak_ref_set() with @object on the
+// freshly-initialised weak reference.
+//
+// This function should always be matched with a call to g_weak_ref_clear(). It
+// is not necessary to use this function for a Ref in static storage because it
+// will already be properly initialised. Just use g_weak_ref_set() directly.
+func (w *WeakRef) Init(object gextras.Objector) {
+	var arg0 *C.GWeakRef
+	var arg1 C.gpointer
+
+	arg0 = (*C.GWeakRef)(w.Native())
+	arg1 = (*C.GObject)(object.Native())
+
+	C.g_weak_ref_init(arg0, arg1)
+}
+
+// Set: change the object to which @weak_ref points, or set it to nil.
+//
+// You must own a strong reference on @object while calling this function.
+func (w *WeakRef) Set(object gextras.Objector) {
+	var arg0 *C.GWeakRef
+	var arg1 C.gpointer
+
+	arg0 = (*C.GWeakRef)(w.Native())
+	arg1 = (*C.GObject)(object.Native())
+
+	C.g_weak_ref_set(arg0, arg1)
 }

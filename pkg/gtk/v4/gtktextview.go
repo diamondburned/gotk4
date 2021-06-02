@@ -15,8 +15,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -24,30 +24,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_text_view_get_type()), F: marshalTextView},
 	})
-}
-
-type TextViewPrivate struct {
-	native C.GtkTextViewPrivate
-}
-
-// WrapTextViewPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextViewPrivate(ptr unsafe.Pointer) *TextViewPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextViewPrivate)(ptr)
-}
-
-func marshalTextViewPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextViewPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextViewPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TextView: a widget that displays the contents of a [class@Gtk.TextBuffer].
@@ -613,7 +589,7 @@ func (t textView) BackwardDisplayLine(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -639,7 +615,7 @@ func (t textView) BackwardDisplayLineStart(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -691,7 +667,7 @@ func (t textView) ForwardDisplayLine(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -717,7 +693,7 @@ func (t textView) ForwardDisplayLineEnd(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -734,7 +710,7 @@ func (t textView) AcceptsTab() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -827,7 +803,7 @@ func (t textView) CursorVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -844,7 +820,7 @@ func (t textView) Editable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -960,7 +936,7 @@ func (t textView) IterAtLocation(x int, y int) (iter TextIter, ok bool) {
 		ret0 = WrapTextIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -999,7 +975,7 @@ func (t textView) IterAtPosition(x int, y int) (iter TextIter, trailing int, ok 
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -1129,7 +1105,7 @@ func (t textView) Monospace() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1144,7 +1120,7 @@ func (t textView) Overwrite() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1334,7 +1310,7 @@ func (t textView) ImContextFilterKeypress(event gdk.Event) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1352,7 +1328,7 @@ func (t textView) MoveMarkOnscreen(mark TextMark) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1398,7 +1374,7 @@ func (t textView) MoveVisually(iter *TextIter, count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1414,7 +1390,7 @@ func (t textView) PlaceCursorOnscreen() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1506,7 +1482,7 @@ func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1859,7 +1835,7 @@ func (t textView) StartsDisplayLine(iter *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1889,4 +1865,28 @@ func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY 
 	ret1 = int(arg5)
 
 	return ret0, ret1
+}
+
+type TextViewPrivate struct {
+	native C.GtkTextViewPrivate
+}
+
+// WrapTextViewPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextViewPrivate(ptr unsafe.Pointer) *TextViewPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextViewPrivate)(ptr)
+}
+
+func marshalTextViewPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextViewPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextViewPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

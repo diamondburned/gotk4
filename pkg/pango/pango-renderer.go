@@ -21,30 +21,6 @@ func init() {
 	})
 }
 
-type RendererPrivate struct {
-	native C.PangoRendererPrivate
-}
-
-// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RendererPrivate)(ptr)
-}
-
-func marshalRendererPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRendererPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RendererPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}
-
 // Renderer: `PangoRenderer` is a base class for objects that can render text
 // provided as `PangoGlyphString` or `PangoLayout`.
 //
@@ -520,4 +496,28 @@ func (r renderer) SetMatrix(matrix *Matrix) {
 	arg1 = (*C.PangoMatrix)(matrix.Native())
 
 	C.pango_renderer_set_matrix(arg0, arg1)
+}
+
+type RendererPrivate struct {
+	native C.PangoRendererPrivate
+}
+
+// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*RendererPrivate)(ptr)
+}
+
+func marshalRendererPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapRendererPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (r *RendererPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&r.native)
 }

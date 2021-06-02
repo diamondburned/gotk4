@@ -3707,7 +3707,7 @@ func (c fileChooser) CreateFolders() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3832,7 +3832,7 @@ func (c fileChooser) SelectMultiple() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4641,7 +4641,7 @@ func (a aboutDialog) WrapLicense() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5027,7 +5027,7 @@ func (a actionBar) Revealed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5280,7 +5280,7 @@ func (s appChooserButton) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5296,7 +5296,7 @@ func (s appChooserButton) ShowDefaultItem() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5312,7 +5312,7 @@ func (s appChooserButton) ShowDialogItem() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5680,7 +5680,7 @@ func (s appChooserWidget) ShowAll() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5696,7 +5696,7 @@ func (s appChooserWidget) ShowDefault() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5712,7 +5712,7 @@ func (s appChooserWidget) ShowFallback() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5728,7 +5728,7 @@ func (s appChooserWidget) ShowOther() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5744,7 +5744,7 @@ func (s appChooserWidget) ShowRecommended() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -5951,7 +5951,7 @@ func (s aspectFrame) ObeyChild() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6368,7 +6368,7 @@ func (a assistant) PageComplete(page Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6825,7 +6825,7 @@ func (c calendar) DayIsMarked(day uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6843,7 +6843,7 @@ func (s calendar) ShowDayNames() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6860,7 +6860,7 @@ func (s calendar) ShowHeading() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6878,7 +6878,7 @@ func (s calendar) ShowWeekNumbers() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7467,7 +7467,7 @@ func (t cellRendererToggle) Activatable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7483,7 +7483,7 @@ func (t cellRendererToggle) Active() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7499,7 +7499,7 @@ func (t cellRendererToggle) Radio() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7749,7 +7749,7 @@ func (c cellView) DrawSensitive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7765,7 +7765,7 @@ func (c cellView) FitModel() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -7945,7 +7945,7 @@ func (b colorButton) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8712,7 +8712,7 @@ func (c entryCompletion) InlineCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8727,7 +8727,7 @@ func (c entryCompletion) InlineSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8775,7 +8775,7 @@ func (c entryCompletion) PopupCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8791,7 +8791,7 @@ func (c entryCompletion) PopupSetWidth() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8807,7 +8807,7 @@ func (c entryCompletion) PopupSingleMatch() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -9193,7 +9193,7 @@ func (e expander) Expanded() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -9244,7 +9244,7 @@ func (e expander) ResizeToplevel() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -9260,7 +9260,7 @@ func (e expander) UseMarkup() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -9276,7 +9276,7 @@ func (e expander) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -10137,7 +10137,7 @@ func (b flowBox) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -10205,7 +10205,7 @@ func (b flowBox) Homogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -10689,7 +10689,7 @@ func (f fontButton) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -10719,7 +10719,7 @@ func (f fontButton) UseFont() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -10734,7 +10734,7 @@ func (f fontButton) UseSize() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -11118,7 +11118,7 @@ func (b headerBar) ShowTitleButtons() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -11369,7 +11369,7 @@ func (s iconPaintable) IsSymbolic() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -11729,7 +11729,7 @@ func (s iconTheme) HasGIcon(gicon gio.Icon) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -11748,7 +11748,7 @@ func (s iconTheme) HasIcon(iconName string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -12312,7 +12312,7 @@ func (i iconView) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -12340,7 +12340,7 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangl
 		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -12402,7 +12402,7 @@ func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -12434,7 +12434,7 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconV
 
 	ret1 = (*IconViewDropPosition)(arg4)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -12492,7 +12492,7 @@ func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -12676,7 +12676,7 @@ func (i iconView) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -12830,7 +12830,7 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 		ret2 = WrapTreeIter(unsafe.Pointer(arg6))
 	}
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -12866,7 +12866,7 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 		})
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -12895,7 +12895,7 @@ func (i iconView) PathIsSelected(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -14019,7 +14019,7 @@ func (i infoBar) Revealed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -14035,7 +14035,7 @@ func (i infoBar) ShowCloseButton() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -14908,7 +14908,7 @@ func (s label) Selectable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -14931,7 +14931,7 @@ func (s label) SelectionBounds() (start int, end int, ok bool) {
 
 	ret1 = int(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -14946,7 +14946,7 @@ func (s label) SingleLineMode() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -14983,7 +14983,7 @@ func (s label) UseMarkup() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -15001,7 +15001,7 @@ func (s label) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -15035,7 +15035,7 @@ func (s label) Wrap() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -15703,7 +15703,7 @@ func (s levelBar) Inverted() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -15771,7 +15771,7 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 
 	ret0 = float64(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -16017,7 +16017,7 @@ func (l linkButton) Visited() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -16408,7 +16408,7 @@ func (b listBox) ActivateOnSingleClick() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -16530,7 +16530,7 @@ func (b listBox) ShowSeparators() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -17158,7 +17158,7 @@ func (m menuButton) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -17236,7 +17236,7 @@ func (m menuButton) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -17905,7 +17905,7 @@ func (n notebook) Scrollable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -17921,7 +17921,7 @@ func (n notebook) ShowBorder() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -17936,7 +17936,7 @@ func (n notebook) ShowTabs() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -17954,7 +17954,7 @@ func (n notebook) TabDetachable(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -18025,7 +18025,7 @@ func (n notebook) TabReorderable(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -18628,7 +18628,7 @@ func (o overlay) ClipOverlay(widget Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -18646,7 +18646,7 @@ func (o overlay) MeasureOverlay(widget Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -19623,7 +19623,7 @@ func (p paned) ResizeEndChild() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -19638,7 +19638,7 @@ func (p paned) ResizeStartChild() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -19653,7 +19653,7 @@ func (p paned) ShrinkEndChild() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -19668,7 +19668,7 @@ func (p paned) ShrinkStartChild() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -19700,7 +19700,7 @@ func (p paned) WideHandle() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -19997,7 +19997,7 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20030,7 +20030,7 @@ func (p popoverMenu) RemoveChild(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20153,7 +20153,7 @@ func (b popoverMenuBar) AddChild(child Widget, id string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20186,7 +20186,7 @@ func (b popoverMenuBar) RemoveChild(child Widget) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20435,7 +20435,7 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 
 	ret3 = float64(arg4)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -20675,7 +20675,7 @@ func (j printJob) Collate() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20807,7 +20807,7 @@ func (j printJob) Reverse() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20822,7 +20822,7 @@ func (j printJob) Rotate() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -20924,7 +20924,7 @@ func (j printJob) TrackPrintStatus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -21512,7 +21512,7 @@ func (s printSettings) Bool(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -21527,7 +21527,7 @@ func (s printSettings) Collate() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22006,7 +22006,7 @@ func (s printSettings) Reverse() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22036,7 +22036,7 @@ func (s printSettings) UseColor() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22054,7 +22054,7 @@ func (s printSettings) HasKey(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22758,7 +22758,7 @@ func (d printUnixDialog) EmbedPageSetup() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22773,7 +22773,7 @@ func (d printUnixDialog) HasSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22819,7 +22819,7 @@ func (d printUnixDialog) PageSetupSet() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -22869,7 +22869,7 @@ func (d printUnixDialog) SupportSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23118,7 +23118,7 @@ func (p printer) AcceptsPdf() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23133,7 +23133,7 @@ func (p printer) AcceptsPs() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23258,7 +23258,7 @@ func (p printer) HardMargins() (top float64, bottom float64, left float64, right
 
 	ret3 = float64(arg4)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -23299,7 +23299,7 @@ func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bot
 
 	ret3 = float64(arg5)
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }
@@ -23390,7 +23390,7 @@ func (p printer) HasDetails() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23405,7 +23405,7 @@ func (p printer) IsAcceptingJobs() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23421,7 +23421,7 @@ func (p printer) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23436,7 +23436,7 @@ func (p printer) IsDefault() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23453,7 +23453,7 @@ func (p printer) IsPaused() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23469,7 +23469,7 @@ func (p printer) IsVirtual() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23720,7 +23720,7 @@ func (p progressBar) Inverted() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -23754,7 +23754,7 @@ func (p progressBar) ShowText() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24026,7 +24026,7 @@ func (r revealer) ChildRevealed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24045,7 +24045,7 @@ func (r revealer) RevealChild() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24565,7 +24565,7 @@ func (s scrolledWindow) HasFrame() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24595,7 +24595,7 @@ func (s scrolledWindow) KineticScrolling() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24671,7 +24671,7 @@ func (s scrolledWindow) OverlayScrolling() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24727,7 +24727,7 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -24744,7 +24744,7 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -25194,7 +25194,7 @@ func (b searchBar) SearchMode() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -25209,7 +25209,7 @@ func (b searchBar) ShowCloseButton() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26212,7 +26212,7 @@ func (s spinButton) Numeric() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26249,7 +26249,7 @@ func (s spinButton) SnapToTicks() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26312,7 +26312,7 @@ func (s spinButton) Wrap() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26556,7 +26556,7 @@ func (s spinner) Spinning() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26881,7 +26881,7 @@ func (s stack) Hhomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26897,7 +26897,7 @@ func (s stack) InterpolateSize() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26965,7 +26965,7 @@ func (s stack) TransitionRunning() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -26996,7 +26996,7 @@ func (s stack) Vhomogeneous() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -27301,7 +27301,7 @@ func (s stackPage) NeedsAttention() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -27332,7 +27332,7 @@ func (s stackPage) UseUnderline() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -27350,7 +27350,7 @@ func (s stackPage) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -27913,7 +27913,7 @@ func (s _switch) Active() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -27928,7 +27928,7 @@ func (s _switch) State() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28235,7 +28235,7 @@ func (s text) ActivatesDefault() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28285,7 +28285,7 @@ func (s text) EnableEmojiCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28385,7 +28385,7 @@ func (s text) OverwriteMode() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28417,7 +28417,7 @@ func (s text) PropagateTextWidth() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28469,7 +28469,7 @@ func (s text) TruncateMultiline() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28484,7 +28484,7 @@ func (s text) Visibility() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28504,7 +28504,7 @@ func (s text) GrabFocusWithoutSelecting() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -28837,7 +28837,7 @@ func (t textTagTable) Add(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -29263,7 +29263,7 @@ func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 		ret1 = WrapTreeIter(unsafe.Pointer(arg2))
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -29341,7 +29341,7 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -29359,7 +29359,7 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -29795,7 +29795,7 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 
 	ret1 = int(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -29841,7 +29841,7 @@ func (t treeViewColumn) CellIsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -29955,7 +29955,7 @@ func (t treeViewColumn) Clickable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -29970,7 +29970,7 @@ func (t treeViewColumn) Expand() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -30035,7 +30035,7 @@ func (t treeViewColumn) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -30051,7 +30051,7 @@ func (t treeViewColumn) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -30099,7 +30099,7 @@ func (t treeViewColumn) SortIndicator() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -30175,7 +30175,7 @@ func (t treeViewColumn) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -30635,7 +30635,7 @@ func (v viewport) ScrollToFocus() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

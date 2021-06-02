@@ -14,12 +14,12 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_TreeModelFilterModifyFunc(GtkTreeModel* _0, GtkTreeIter* _1, GValue* _2, int _3, gpointer _4);
-// extern gboolean gotk4_TreeModelFilterVisibleFunc(GtkTreeModel* _0, GtkTreeIter* _1, gpointer _2);
+// void gotk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer);
+// gboolean gotk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -85,30 +85,6 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	}
 
 	ok := v.(TreeModelFilterVisibleFunc)(model, iter)
-}
-
-type TreeModelFilterPrivate struct {
-	native C.GtkTreeModelFilterPrivate
-}
-
-// WrapTreeModelFilterPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeModelFilterPrivate(ptr unsafe.Pointer) *TreeModelFilterPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeModelFilterPrivate)(ptr)
-}
-
-func marshalTreeModelFilterPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeModelFilterPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeModelFilterPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TreeModelFilter: a GtkTreeModel which hides parts of an underlying tree model
@@ -325,7 +301,7 @@ func (f treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (filterIter
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -534,4 +510,28 @@ func (f treeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	arg3 = (*[0]byte)(C.callbackDelete)
 
 	C.gtk_tree_model_filter_set_visible_func(arg0, arg1, arg2, arg3)
+}
+
+type TreeModelFilterPrivate struct {
+	native C.GtkTreeModelFilterPrivate
+}
+
+// WrapTreeModelFilterPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeModelFilterPrivate(ptr unsafe.Pointer) *TreeModelFilterPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeModelFilterPrivate)(ptr)
+}
+
+func marshalTreeModelFilterPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeModelFilterPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeModelFilterPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

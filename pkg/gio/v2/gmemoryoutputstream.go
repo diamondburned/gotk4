@@ -34,30 +34,6 @@ func init() {
 	})
 }
 
-type MemoryOutputStreamPrivate struct {
-	native C.GMemoryOutputStreamPrivate
-}
-
-// WrapMemoryOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMemoryOutputStreamPrivate(ptr unsafe.Pointer) *MemoryOutputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MemoryOutputStreamPrivate)(ptr)
-}
-
-func marshalMemoryOutputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMemoryOutputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MemoryOutputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}
-
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
 // GIO streaming output operations.
 //
@@ -259,4 +235,28 @@ func (o memoryOutputStream) StealData() interface{} {
 	ret0 = box.Get(uintptr(ret)).(interface{})
 
 	return ret0
+}
+
+type MemoryOutputStreamPrivate struct {
+	native C.GMemoryOutputStreamPrivate
+}
+
+// WrapMemoryOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMemoryOutputStreamPrivate(ptr unsafe.Pointer) *MemoryOutputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*MemoryOutputStreamPrivate)(ptr)
+}
+
+func marshalMemoryOutputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapMemoryOutputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (m *MemoryOutputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&m.native)
 }

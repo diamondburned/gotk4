@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type InetSocketAddressPrivate struct {
-	native C.GInetSocketAddressPrivate
-}
-
-// WrapInetSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInetSocketAddressPrivate(ptr unsafe.Pointer) *InetSocketAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InetSocketAddressPrivate)(ptr)
-}
-
-func marshalInetSocketAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInetSocketAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InetSocketAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}
-
 // InetSocketAddress: an IPv4 or IPv6 socket address; that is, the combination
 // of a Address and a port number.
 type InetSocketAddress interface {
@@ -191,4 +167,28 @@ func (a inetSocketAddress) ScopeID() uint32 {
 	ret0 = uint32(ret)
 
 	return ret0
+}
+
+type InetSocketAddressPrivate struct {
+	native C.GInetSocketAddressPrivate
+}
+
+// WrapInetSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInetSocketAddressPrivate(ptr unsafe.Pointer) *InetSocketAddressPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InetSocketAddressPrivate)(ptr)
+}
+
+func marshalInetSocketAddressPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInetSocketAddressPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InetSocketAddressPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

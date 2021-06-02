@@ -126,30 +126,6 @@ func NewNullSettingsBackend() SettingsBackend {
 	return ret0
 }
 
-type SettingsBackendPrivate struct {
-	native C.GSettingsBackendPrivate
-}
-
-// WrapSettingsBackendPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsBackendPrivate(ptr unsafe.Pointer) *SettingsBackendPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SettingsBackendPrivate)(ptr)
-}
-
-func marshalSettingsBackendPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsBackendPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsBackendPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
 // SettingsBackend: the Backend interface defines a generic interface for
 // non-strictly-typed data that is stored in a hierarchy. To implement an
 // alternative storage backend for #GSettings, you need to implement the Backend
@@ -442,4 +418,28 @@ func (b settingsBackend) WritableChanged(key string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_settings_backend_writable_changed(arg0, arg1)
+}
+
+type SettingsBackendPrivate struct {
+	native C.GSettingsBackendPrivate
+}
+
+// WrapSettingsBackendPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsBackendPrivate(ptr unsafe.Pointer) *SettingsBackendPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SettingsBackendPrivate)(ptr)
+}
+
+func marshalSettingsBackendPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSettingsBackendPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsBackendPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

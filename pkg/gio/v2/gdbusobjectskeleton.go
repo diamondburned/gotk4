@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type DBusObjectSkeletonPrivate struct {
-	native C.GDBusObjectSkeletonPrivate
-}
-
-// WrapDBusObjectSkeletonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusObjectSkeletonPrivate(ptr unsafe.Pointer) *DBusObjectSkeletonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DBusObjectSkeletonPrivate)(ptr)
-}
-
-func marshalDBusObjectSkeletonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusObjectSkeletonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusObjectSkeletonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}
-
 // DBusObjectSkeleton: a BusObjectSkeleton instance is essentially a group of
 // D-Bus interfaces. The set of exported interfaces on the object may be dynamic
 // and change at runtime.
@@ -192,4 +168,28 @@ func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_dbus_object_skeleton_set_object_path(arg0, arg1)
+}
+
+type DBusObjectSkeletonPrivate struct {
+	native C.GDBusObjectSkeletonPrivate
+}
+
+// WrapDBusObjectSkeletonPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusObjectSkeletonPrivate(ptr unsafe.Pointer) *DBusObjectSkeletonPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*DBusObjectSkeletonPrivate)(ptr)
+}
+
+func marshalDBusObjectSkeletonPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapDBusObjectSkeletonPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (d *DBusObjectSkeletonPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&d.native)
 }

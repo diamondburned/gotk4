@@ -177,7 +177,7 @@ func (s listStore) Find(item gextras.Objector) (position uint, ok bool) {
 
 	ret0 = uint(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

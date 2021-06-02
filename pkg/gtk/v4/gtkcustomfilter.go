@@ -15,7 +15,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_CustomFilterFunc(gpointer _0, gpointer _1);
+// gboolean gotk4_CustomFilterFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

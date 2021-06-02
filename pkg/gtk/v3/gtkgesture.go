@@ -270,7 +270,7 @@ func (g gesture) BoundingBox() (rect gdk.Rectangle, ok bool) {
 		ret0 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -296,7 +296,7 @@ func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 
 	ret1 = float64(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -378,7 +378,7 @@ func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bo
 
 	ret1 = float64(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -471,7 +471,7 @@ func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -487,7 +487,7 @@ func (g gesture) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -504,7 +504,7 @@ func (g gesture) IsGroupedWith(other Gesture) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -522,7 +522,7 @@ func (g gesture) IsRecognized() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -575,7 +575,7 @@ func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequen
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -594,7 +594,7 @@ func (g gesture) SetState(state EventSequenceState) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

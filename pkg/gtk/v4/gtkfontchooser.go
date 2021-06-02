@@ -18,7 +18,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_FontFilterFunc(const PangoFontFamily* _0, const PangoFontFace* _1, gpointer _2);
+// gboolean gotk4_FontFilterFunc( PangoFontFamily*,  PangoFontFace*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -378,7 +378,7 @@ func (f fontChooser) ShowPreviewEntry() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

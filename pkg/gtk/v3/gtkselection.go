@@ -105,7 +105,7 @@ func SelectionConvert(widget Widget, selection gdk.Atom, target gdk.Atom, time_ 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -125,7 +125,7 @@ func SelectionOwnerSet(widget Widget, selection gdk.Atom, time_ uint32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -147,7 +147,7 @@ func SelectionOwnerSetForDisplay(display gdk.Display, widget Widget, selection g
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -241,7 +241,7 @@ func TargetsIncludeImage(targets []gdk.Atom, writable bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -262,7 +262,7 @@ func TargetsIncludeRichText(targets []gdk.Atom, buffer TextBuffer) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -281,7 +281,7 @@ func TargetsIncludeText(targets []gdk.Atom) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -300,7 +300,7 @@ func TargetsIncludeURI(targets []gdk.Atom) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -590,7 +590,7 @@ func (l *TargetList) Find(target gdk.Atom) (info uint, ok bool) {
 
 	ret0 = uint(arg2)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

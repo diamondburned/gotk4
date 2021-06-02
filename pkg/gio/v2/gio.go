@@ -111,7 +111,6 @@ func init() {
 		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIcon},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGroup},
 		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserver},
-		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnection},
 		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModel},
 		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessage},
 		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocation},
@@ -2525,7 +2524,7 @@ func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -2545,7 +2544,7 @@ func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credential
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -3899,7 +3898,7 @@ func (c dBusConnection) ExitOnClose() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4021,7 +4020,7 @@ func (c dBusConnection) IsClosed() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4425,7 +4424,7 @@ func (c dBusConnection) UnregisterObject(registrationID uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4442,7 +4441,7 @@ func (c dBusConnection) UnregisterSubtree(registrationID uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -4957,7 +4956,7 @@ func (m dBusMessage) Locked() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -6061,7 +6060,7 @@ func (s dBusServer) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8120,7 +8119,7 @@ func (s subprocess) IfExited() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8141,7 +8140,7 @@ func (s subprocess) IfSignaled() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -8243,7 +8242,7 @@ func (s subprocess) Successful() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

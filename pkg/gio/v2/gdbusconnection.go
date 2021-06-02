@@ -27,14 +27,14 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern GVariant* gotk4_DBusInterfaceGetPropertyFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GError** _5, gpointer _6);
-// extern void gotk4_DBusInterfaceMethodCallFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GVariant* _5, GDBusMethodInvocation* _6, gpointer _7);
-// extern gboolean gotk4_DBusInterfaceSetPropertyFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GVariant* _5, GError** _6, gpointer _7);
-// extern GDBusMessage* gotk4_DBusMessageFilterFunction(GDBusConnection* _0, GDBusMessage* _1, gboolean _2, gpointer _3);
-// extern void gotk4_DBusSignalCallback(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, GVariant* _5, gpointer _6);
-// extern const GDBusInterfaceVTable* gotk4_DBusSubtreeDispatchFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, const gchar* _4, gpointer* _5, gpointer _6);
-// extern gchar** gotk4_DBusSubtreeEnumerateFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, gpointer _3);
-// extern GDBusInterfaceInfo** gotk4_DBusSubtreeIntrospectFunc(GDBusConnection* _0, const gchar* _1, const gchar* _2, const gchar* _3, gpointer _4);
+// GVariant* gotk4_DBusInterfaceGetPropertyFunc(GDBusConnection*,  gchar*,  gchar*,  gchar*,  gchar*, GError**, gpointer);
+// void gotk4_DBusInterfaceMethodCallFunc(GDBusConnection*,  gchar*,  gchar*,  gchar*,  gchar*, GVariant*, GDBusMethodInvocation*, gpointer);
+// gboolean gotk4_DBusInterfaceSetPropertyFunc(GDBusConnection*,  gchar*,  gchar*,  gchar*,  gchar*, GVariant*, GError**, gpointer);
+// GDBusMessage* gotk4_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer);
+// void gotk4_DBusSignalCallback(GDBusConnection*,  gchar*,  gchar*,  gchar*,  gchar*, GVariant*, gpointer);
+//  GDBusInterfaceVTable* gotk4_DBusSubtreeDispatchFunc(GDBusConnection*,  gchar*,  gchar*,  gchar*,  gchar*, gpointer*, gpointer);
+// gchar** gotk4_DBusSubtreeEnumerateFunc(GDBusConnection*,  gchar*,  gchar*, gpointer);
+// GDBusInterfaceInfo** gotk4_DBusSubtreeIntrospectFunc(GDBusConnection*,  gchar*,  gchar*,  gchar*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -232,7 +232,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 
 	message = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(DBusMessage)
 
-	incoming = C.bool(arg2) != 0
+	incoming = C.bool(arg2) != C.false
 
 	dBusMessage := v.(DBusMessageFilterFunction)(connection, message, incoming)
 }

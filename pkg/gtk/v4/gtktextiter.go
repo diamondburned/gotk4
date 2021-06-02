@@ -20,7 +20,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_TextCharPredicate(gunichar _0, gpointer _1);
+// gboolean gotk4_TextCharPredicate(gunichar, gpointer);
 import "C"
 
 func init() {
@@ -106,7 +106,7 @@ func (i *TextIter) BackwardChar() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -131,7 +131,7 @@ func (i *TextIter) BackwardChars(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -147,7 +147,7 @@ func (i *TextIter) BackwardCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -166,7 +166,7 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -188,7 +188,7 @@ func (i *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) boo
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -210,7 +210,7 @@ func (i *TextIter) BackwardLine() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -235,7 +235,7 @@ func (i *TextIter) BackwardLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -272,7 +272,7 @@ func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *Text
 		ret1 = WrapTextIter(unsafe.Pointer(arg4))
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -293,7 +293,7 @@ func (i *TextIter) BackwardSentenceStart() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -313,7 +313,7 @@ func (i *TextIter) BackwardSentenceStarts(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -335,7 +335,7 @@ func (i *TextIter) BackwardToTagToggle(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -353,7 +353,7 @@ func (i *TextIter) BackwardVisibleCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -372,7 +372,7 @@ func (i *TextIter) BackwardVisibleCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -394,7 +394,7 @@ func (i *TextIter) BackwardVisibleLine() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -419,7 +419,7 @@ func (i *TextIter) BackwardVisibleLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -440,7 +440,7 @@ func (i *TextIter) BackwardVisibleWordStart() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -458,7 +458,7 @@ func (i *TextIter) BackwardVisibleWordStarts(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -479,7 +479,7 @@ func (i *TextIter) BackwardWordStart() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -497,7 +497,7 @@ func (i *TextIter) BackwardWordStarts(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -522,7 +522,7 @@ func (i *TextIter) CanInsert(defaultEditability bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -598,7 +598,7 @@ func (i *TextIter) Editable(defaultSetting bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -622,7 +622,7 @@ func (i *TextIter) EndsLine() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -640,7 +640,7 @@ func (i *TextIter) EndsSentence() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -665,7 +665,7 @@ func (i *TextIter) EndsTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -683,7 +683,7 @@ func (i *TextIter) EndsWord() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -705,7 +705,7 @@ func (l *TextIter) Equal(rhs *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -726,7 +726,7 @@ func (i *TextIter) ForwardChar() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -751,7 +751,7 @@ func (i *TextIter) ForwardChars(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -779,7 +779,7 @@ func (i *TextIter) ForwardCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -798,7 +798,7 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -823,7 +823,7 @@ func (i *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -842,7 +842,7 @@ func (i *TextIter) ForwardLine() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -867,7 +867,7 @@ func (i *TextIter) ForwardLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -909,7 +909,7 @@ func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextI
 		ret1 = WrapTextIter(unsafe.Pointer(arg4))
 	}
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -929,7 +929,7 @@ func (i *TextIter) ForwardSentenceEnd() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -948,7 +948,7 @@ func (i *TextIter) ForwardSentenceEnds(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -985,7 +985,7 @@ func (i *TextIter) ForwardToLineEnd() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1007,7 +1007,7 @@ func (i *TextIter) ForwardToTagToggle(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1025,7 +1025,7 @@ func (i *TextIter) ForwardVisibleCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1044,7 +1044,7 @@ func (i *TextIter) ForwardVisibleCursorPositions(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1063,7 +1063,7 @@ func (i *TextIter) ForwardVisibleLine() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1088,7 +1088,7 @@ func (i *TextIter) ForwardVisibleLines(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1109,7 +1109,7 @@ func (i *TextIter) ForwardVisibleWordEnd() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1127,7 +1127,7 @@ func (i *TextIter) ForwardVisibleWordEnds(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1148,7 +1148,7 @@ func (i *TextIter) ForwardWordEnd() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1165,7 +1165,7 @@ func (i *TextIter) ForwardWordEnds(count int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1607,7 +1607,7 @@ func (i *TextIter) HasTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1628,7 +1628,7 @@ func (i *TextIter) InRange(start *TextIter, end *TextIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1648,7 +1648,7 @@ func (i *TextIter) InsideSentence() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1671,7 +1671,7 @@ func (i *TextIter) InsideWord() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1689,7 +1689,7 @@ func (i *TextIter) IsCursorPosition() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1708,7 +1708,7 @@ func (i *TextIter) IsEnd() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1723,7 +1723,7 @@ func (i *TextIter) IsStart() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1845,7 +1845,7 @@ func (i *TextIter) StartsLine() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1863,7 +1863,7 @@ func (i *TextIter) StartsSentence() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1888,7 +1888,7 @@ func (i *TextIter) StartsTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1906,7 +1906,7 @@ func (i *TextIter) StartsWord() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1927,7 +1927,7 @@ func (i *TextIter) TogglesTag(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

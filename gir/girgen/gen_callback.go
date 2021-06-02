@@ -2,7 +2,6 @@ package girgen
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -85,7 +84,7 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 			return false // probably var_args
 		}
 
-		ctail.Add(ctype + " _" + strconv.Itoa(i))
+		ctail.Add(ctype)
 		cgotype := anyTypeCGo(param.AnyType)
 		cgotail.Addf("arg%d %s", i, cgotype)
 	}
@@ -104,7 +103,7 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 		cg.CGoTail += " " + anyTypeCGo(cb.ReturnValue.AnyType)
 	}
 
-	cg.fg.cgo.Wordf("extern %s %s(%s);", cReturn, callbackPrefix+cg.GoName, ctail.Join())
+	cg.fg.cgo.Wordf("%s %s(%s);", cReturn, callbackPrefix+cg.GoName, ctail.Join())
 
 	return true
 }
@@ -153,11 +152,11 @@ func (cg *callbackGenerator) CBlock() string {
 	})
 
 	if goRets.Len() == 0 {
-		b.Linef(3, "v.(%s)(%s)", cg.GoName, goArgs.Join())
+		b.Linef(2, "v.(%s)(%s)", cg.GoName, goArgs.Join())
 		return b.String()
 	}
 
-	b.Linef(3, "%s := v.(%s)(%s)", goRets.Join(), cg.GoName, goArgs.Join())
+	b.Linef(2, "%s := v.(%s)(%s)", goRets.Join(), cg.GoName, goArgs.Join())
 
 	return b.String()
 }

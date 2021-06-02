@@ -30,30 +30,6 @@ func callbackDelete(ptr C.gpointer) {
 	box.Delete(box.Callback, uintptr(ptr))
 }
 
-type FontMapPrivate struct {
-	native C.PangoFcFontMapPrivate
-}
-
-// WrapFontMapPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontMapPrivate(ptr unsafe.Pointer) *FontMapPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontMapPrivate)(ptr)
-}
-
-func marshalFontMapPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontMapPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FontMapPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}
-
 // FontMap: `PangoFcFontMap` is a base class for font map implementations using
 // the Fontconfig and FreeType libraries.
 //
@@ -254,4 +230,28 @@ func (f fontMap) SubstituteChanged() {
 	arg0 = (*C.PangoFcFontMap)(f.Native())
 
 	C.pango_fc_font_map_substitute_changed(arg0)
+}
+
+type FontMapPrivate struct {
+	native C.PangoFcFontMapPrivate
+}
+
+// WrapFontMapPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFontMapPrivate(ptr unsafe.Pointer) *FontMapPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*FontMapPrivate)(ptr)
+}
+
+func marshalFontMapPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapFontMapPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (f *FontMapPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&f.native)
 }

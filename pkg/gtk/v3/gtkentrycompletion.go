@@ -12,13 +12,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion* _0, const gchar* _1, GtkTreeIter* _2, gpointer _3);
+// gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion*,  gchar*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -61,30 +61,6 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 	}
 
 	ok := v.(EntryCompletionMatchFunc)(completion, key, iter)
-}
-
-type EntryCompletionPrivate struct {
-	native C.GtkEntryCompletionPrivate
-}
-
-// WrapEntryCompletionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEntryCompletionPrivate(ptr unsafe.Pointer) *EntryCompletionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*EntryCompletionPrivate)(ptr)
-}
-
-func marshalEntryCompletionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEntryCompletionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *EntryCompletionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
 }
 
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
@@ -368,7 +344,7 @@ func (c entryCompletion) InlineCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -383,7 +359,7 @@ func (c entryCompletion) InlineSelection() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -430,7 +406,7 @@ func (c entryCompletion) PopupCompletion() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -446,7 +422,7 @@ func (c entryCompletion) PopupSetWidth() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -462,7 +438,7 @@ func (c entryCompletion) PopupSingleMatch() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -660,4 +636,28 @@ func (c entryCompletion) SetTextColumn(column int) {
 	arg1 = C.gint(column)
 
 	C.gtk_entry_completion_set_text_column(arg0, arg1)
+}
+
+type EntryCompletionPrivate struct {
+	native C.GtkEntryCompletionPrivate
+}
+
+// WrapEntryCompletionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapEntryCompletionPrivate(ptr unsafe.Pointer) *EntryCompletionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*EntryCompletionPrivate)(ptr)
+}
+
+func marshalEntryCompletionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapEntryCompletionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (e *EntryCompletionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&e.native)
 }

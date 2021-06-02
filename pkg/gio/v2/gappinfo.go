@@ -528,7 +528,7 @@ func (a appInfo) CanDelete() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -544,7 +544,7 @@ func (a appInfo) CanRemoveSupportsType() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -563,7 +563,7 @@ func (a appInfo) Delete() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -599,7 +599,7 @@ func (a appInfo) Equal(appinfo2 AppInfo) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -979,7 +979,7 @@ func (a appInfo) ShouldShow() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -994,7 +994,7 @@ func (a appInfo) SupportsFiles() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1010,33 +1010,9 @@ func (a appInfo) SupportsUris() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
-}
-
-type AppLaunchContextPrivate struct {
-	native C.GAppLaunchContextPrivate
-}
-
-// WrapAppLaunchContextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAppLaunchContextPrivate(ptr unsafe.Pointer) *AppLaunchContextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AppLaunchContextPrivate)(ptr)
-}
-
-func marshalAppLaunchContextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAppLaunchContextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AppLaunchContextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This
@@ -1225,4 +1201,28 @@ func (c appLaunchContext) Unsetenv(variable string) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_app_launch_context_unsetenv(arg0, arg1)
+}
+
+type AppLaunchContextPrivate struct {
+	native C.GAppLaunchContextPrivate
+}
+
+// WrapAppLaunchContextPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapAppLaunchContextPrivate(ptr unsafe.Pointer) *AppLaunchContextPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*AppLaunchContextPrivate)(ptr)
+}
+
+func marshalAppLaunchContextPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapAppLaunchContextPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (a *AppLaunchContextPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&a.native)
 }

@@ -23,8 +23,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern void gotk4_BusNameAppearedCallback(GDBusConnection* _0, const gchar* _1, const gchar* _2, gpointer _3);
-// extern void gotk4_BusNameVanishedCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
+// void gotk4_BusNameAppearedCallback(GDBusConnection*,  gchar*,  gchar*, gpointer);
+// void gotk4_BusNameVanishedCallback(GDBusConnection*,  gchar*, gpointer);
 import "C"
 
 // BusNameAppearedCallback: invoked when the name being watched is known to have

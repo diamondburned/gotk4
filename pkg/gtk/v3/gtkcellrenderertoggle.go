@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -22,30 +22,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_toggle_get_type()), F: marshalCellRendererToggle},
 	})
-}
-
-type CellRendererTogglePrivate struct {
-	native C.GtkCellRendererTogglePrivate
-}
-
-// WrapCellRendererTogglePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererTogglePrivate(ptr unsafe.Pointer) *CellRendererTogglePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererTogglePrivate)(ptr)
-}
-
-func marshalCellRendererTogglePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererTogglePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererTogglePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
@@ -119,7 +95,7 @@ func (t cellRendererToggle) Activatable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -135,7 +111,7 @@ func (t cellRendererToggle) Active() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -151,7 +127,7 @@ func (t cellRendererToggle) Radio() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -198,4 +174,28 @@ func (t cellRendererToggle) SetRadio(radio bool) {
 	}
 
 	C.gtk_cell_renderer_toggle_set_radio(arg0, arg1)
+}
+
+type CellRendererTogglePrivate struct {
+	native C.GtkCellRendererTogglePrivate
+}
+
+// WrapCellRendererTogglePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererTogglePrivate(ptr unsafe.Pointer) *CellRendererTogglePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererTogglePrivate)(ptr)
+}
+
+func marshalCellRendererTogglePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererTogglePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererTogglePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

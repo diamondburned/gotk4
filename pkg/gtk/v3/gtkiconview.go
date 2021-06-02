@@ -16,7 +16,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_IconViewForeachFunc(GtkIconView* _0, GtkTreePath* _1, gpointer _2);
+// void gotk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 // IconViewForeachFunc: a function used by gtk_icon_view_selected_foreach() to

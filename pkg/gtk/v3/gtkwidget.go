@@ -21,8 +21,8 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_Callback(GtkWidget* _0, gpointer _1);
-// extern gboolean gotk4_TickCallback(GtkWidget* _0, GdkFrameClock* _1, gpointer _2);
+// void gotk4_Callback(GtkWidget*, gpointer);
+// gboolean gotk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 import "C"
 
 func init() {
@@ -95,7 +95,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Window) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

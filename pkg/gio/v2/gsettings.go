@@ -15,8 +15,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,9 +29,9 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern gboolean gotk4_SettingsBindGetMapping(GValue* _0, GVariant* _1, gpointer _2);
-// extern GVariant* gotk4_SettingsBindSetMapping(const GValue* _0, const GVariantType* _1, gpointer _2);
-// extern gboolean gotk4_SettingsGetMapping(GVariant* _0, gpointer* _1, gpointer _2);
+// gboolean gotk4_SettingsBindGetMapping(GValue*, GVariant*, gpointer);
+// GVariant* gotk4_SettingsBindSetMapping( GValue*,  GVariantType*, gpointer);
+// gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer);
 import "C"
 
 func init() {
@@ -113,30 +113,6 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	}
 
 	result, ok := v.(SettingsGetMapping)(value)
-}
-
-type SettingsPrivate struct {
-	native C.GSettingsPrivate
-}
-
-// WrapSettingsPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsPrivate(ptr unsafe.Pointer) *SettingsPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SettingsPrivate)(ptr)
-}
-
-func marshalSettingsPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // Settings: the #GSettings class provides a convenient API for storing and
@@ -1026,7 +1002,7 @@ func (s settings) Boolean(key string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1185,7 +1161,7 @@ func (s settings) HasUnapplied() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1488,7 +1464,7 @@ func (s settings) IsWritable(name string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1580,7 +1556,7 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1637,7 +1613,7 @@ func (s settings) SetBoolean(key string, value bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1662,7 +1638,7 @@ func (s settings) SetDouble(key string, value float64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1690,7 +1666,7 @@ func (s settings) SetEnum(key string, value int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1720,7 +1696,7 @@ func (s settings) SetFlags(key string, value uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1745,7 +1721,7 @@ func (s settings) SetInt(key string, value int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1770,7 +1746,7 @@ func (s settings) SetInt64(key string, value int64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1796,7 +1772,7 @@ func (s settings) SetString(key string, value string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1838,7 +1814,7 @@ func (s settings) SetStrv(key string, value []string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1863,7 +1839,7 @@ func (s settings) SetUint(key string, value uint) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1888,7 +1864,7 @@ func (s settings) SetUint64(key string, value uint64) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1914,7 +1890,31 @@ func (s settings) SetValue(key string, value *glib.Variant) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
+}
+
+type SettingsPrivate struct {
+	native C.GSettingsPrivate
+}
+
+// WrapSettingsPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsPrivate(ptr unsafe.Pointer) *SettingsPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SettingsPrivate)(ptr)
+}
+
+func marshalSettingsPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSettingsPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SettingsPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

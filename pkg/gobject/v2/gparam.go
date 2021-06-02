@@ -86,7 +86,7 @@ func ParamValueConvert(pspec ParamSpec, srcValue *externglib.Value, destValue *e
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -104,7 +104,7 @@ func ParamValueDefaults(pspec ParamSpec, value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -136,7 +136,7 @@ func ParamValueValidate(pspec ParamSpec, value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

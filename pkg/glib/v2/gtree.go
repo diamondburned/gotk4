@@ -240,7 +240,7 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 
 	ret1 = box.Get(uintptr(arg3)).(interface{})
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -383,7 +383,7 @@ func (t *Tree) Remove(key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -500,7 +500,7 @@ func (t *Tree) Steal(key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

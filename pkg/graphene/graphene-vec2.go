@@ -190,7 +190,7 @@ func (v *Vec2) Equal(v2 *Vec2) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -411,7 +411,7 @@ func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

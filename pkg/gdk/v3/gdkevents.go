@@ -17,8 +17,8 @@ import (
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 //
-// extern void gotk4_EventFunc(GdkEvent* _0, gpointer _1);
-// extern GdkFilterReturn gotk4_FilterFunc(GdkXEvent* _0, GdkEvent* _1, gpointer _2);
+// void gotk4_EventFunc(GdkEvent*, gpointer);
+// GdkFilterReturn gotk4_FilterFunc(GdkXEvent*, GdkEvent*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -118,7 +118,7 @@ func EventsPending() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -129,7 +129,7 @@ func GetShowEvents() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -161,7 +161,7 @@ func SettingGet(name string, value *externglib.Value) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -518,7 +518,7 @@ func (e *EventCrossing) Detail() NotifyType {
 // Focus gets the field inside the struct.
 func (e *EventCrossing) Focus() bool {
 	var ret bool
-	ret = C.bool(e.native.focus) != 0
+	ret = C.bool(e.native.focus) != C.false
 	return ret
 }
 
@@ -774,14 +774,14 @@ func (e *EventGrabBroken) SendEvent() int8 {
 // Keyboard gets the field inside the struct.
 func (e *EventGrabBroken) Keyboard() bool {
 	var ret bool
-	ret = C.bool(e.native.keyboard) != 0
+	ret = C.bool(e.native.keyboard) != C.false
 	return ret
 }
 
 // Implicit gets the field inside the struct.
 func (e *EventGrabBroken) Implicit() bool {
 	var ret bool
-	ret = C.bool(e.native.implicit) != 0
+	ret = C.bool(e.native.implicit) != C.false
 	return ret
 }
 
@@ -1803,7 +1803,7 @@ func (e *EventTouch) Sequence() *EventSequence {
 // EmulatingPointer gets the field inside the struct.
 func (e *EventTouch) EmulatingPointer() bool {
 	var ret bool
-	ret = C.bool(e.native.emulating_pointer) != 0
+	ret = C.bool(e.native.emulating_pointer) != C.false
 	return ret
 }
 

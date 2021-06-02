@@ -13,11 +13,11 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_PrinterFunc(GtkPrinter* _0, gpointer _1);
+// gboolean gotk4_PrinterFunc(GtkPrinter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 

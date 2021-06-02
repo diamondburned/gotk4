@@ -17,7 +17,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gpointer gotk4_MapListModelMapFunc(gpointer _0, gpointer _1);
+// gpointer gotk4_MapListModelMapFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -170,7 +170,7 @@ func (s mapListModel) HasMap() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

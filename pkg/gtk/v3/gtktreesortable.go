@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gint gotk4_TreeIterCompareFunc(GtkTreeModel* _0, GtkTreeIter* _1, GtkTreeIter* _2, gpointer _3);
+// gint gotk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -159,7 +159,7 @@ func (s treeSortable) SortColumnID() (sortColumnID int, order SortType, ok bool)
 
 	ret1 = (*SortType)(arg2)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -176,7 +176,7 @@ func (s treeSortable) HasDefaultSortFunc() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

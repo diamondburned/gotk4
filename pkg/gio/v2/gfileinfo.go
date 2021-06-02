@@ -363,7 +363,7 @@ func (i fileInfo) AttributeBoolean(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -413,7 +413,7 @@ func (i fileInfo) AttributeData(attribute string) (typ FileAttributeType, valueP
 
 	ret2 = (*FileAttributeStatus)(arg4)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -728,7 +728,7 @@ func (i fileInfo) IsBackup() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -743,7 +743,7 @@ func (i fileInfo) IsHidden() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -758,7 +758,7 @@ func (i fileInfo) IsSymlink() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -899,7 +899,7 @@ func (i fileInfo) HasAttribute(attribute string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -918,7 +918,7 @@ func (i fileInfo) HasNamespace(nameSpace string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1091,7 +1091,7 @@ func (i fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatu
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

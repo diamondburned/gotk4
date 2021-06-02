@@ -12,13 +12,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_TextTagTableForeach(GtkTextTag* _0, gpointer _1);
+// void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
@@ -41,30 +41,6 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	tag = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(TextTag)
 
 	v.(TextTagTableForeach)(tag)
-}
-
-type TextTagTablePrivate struct {
-	native C.GtkTextTagTablePrivate
-}
-
-// WrapTextTagTablePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextTagTablePrivate(ptr unsafe.Pointer) *TextTagTablePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextTagTablePrivate)(ptr)
-}
-
-func marshalTextTagTablePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextTagTablePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextTagTablePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
@@ -159,7 +135,7 @@ func (t textTagTable) Add(tag TextTag) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -224,4 +200,28 @@ func (t textTagTable) Remove(tag TextTag) {
 	arg1 = (*C.GtkTextTag)(tag.Native())
 
 	C.gtk_text_tag_table_remove(arg0, arg1)
+}
+
+type TextTagTablePrivate struct {
+	native C.GtkTextTagTablePrivate
+}
+
+// WrapTextTagTablePrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextTagTablePrivate(ptr unsafe.Pointer) *TextTagTablePrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextTagTablePrivate)(ptr)
+}
+
+func marshalTextTagTablePrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextTagTablePrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextTagTablePrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

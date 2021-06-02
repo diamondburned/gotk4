@@ -125,7 +125,7 @@ func (s scrollable) Border() (border Border, ok bool) {
 		ret0 = WrapBorder(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

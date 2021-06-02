@@ -19,10 +19,10 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer _0, gpointer _1);
-// extern gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild* _0, gpointer _1);
-// extern void gotk4_FlowBoxForeachFunc(GtkFlowBox* _0, GtkFlowBoxChild* _1, gpointer _2);
-// extern int gotk4_FlowBoxSortFunc(GtkFlowBoxChild* _0, GtkFlowBoxChild* _1, gpointer _2);
+// GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
+// void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
+// int gotk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -263,7 +263,7 @@ func (c flowBoxChild) IsSelected() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

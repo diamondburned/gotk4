@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -21,30 +21,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindow},
 	})
-}
-
-type WindowGroupPrivate struct {
-	native C.GtkWindowGroupPrivate
-}
-
-// WrapWindowGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWindowGroupPrivate(ptr unsafe.Pointer) *WindowGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WindowGroupPrivate)(ptr)
-}
-
-func marshalWindowGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWindowGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WindowGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
 }
 
 // Window: a `GtkWindow` is a toplevel window which can contain other widgets.
@@ -627,7 +603,7 @@ func (w window) Decorated() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -681,7 +657,7 @@ func (w window) Deletable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -697,7 +673,7 @@ func (w window) DestroyWithParent() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -731,7 +707,7 @@ func (w window) FocusVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -764,7 +740,7 @@ func (w window) HandleMenubarAccel() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -780,7 +756,7 @@ func (w window) HideOnClose() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -810,7 +786,7 @@ func (w window) MnemonicsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -825,7 +801,7 @@ func (w window) Modal() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -840,7 +816,7 @@ func (w window) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -901,7 +877,7 @@ func (w window) HasGroup() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -923,7 +899,7 @@ func (w window) IsActive() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -947,7 +923,7 @@ func (w window) IsFullscreen() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -971,7 +947,7 @@ func (w window) IsMaximized() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1489,4 +1465,28 @@ func (w window) Unminimize() {
 	arg0 = (*C.GtkWindow)(w.Native())
 
 	C.gtk_window_unminimize(arg0)
+}
+
+type WindowGroupPrivate struct {
+	native C.GtkWindowGroupPrivate
+}
+
+// WrapWindowGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapWindowGroupPrivate(ptr unsafe.Pointer) *WindowGroupPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*WindowGroupPrivate)(ptr)
+}
+
+func marshalWindowGroupPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapWindowGroupPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (w *WindowGroupPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&w.native)
 }

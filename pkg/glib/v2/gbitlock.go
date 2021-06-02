@@ -55,7 +55,7 @@ func BitTrylock(address int, lockBit int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -106,7 +106,7 @@ func PointerBitTrylock(address interface{}, lockBit int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

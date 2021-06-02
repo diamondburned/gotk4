@@ -15,8 +15,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -618,30 +618,6 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 	C.gtk_paint_vline(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
-type ThemeEngine struct {
-	native C.GtkThemeEngine
-}
-
-// WrapThemeEngine wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapThemeEngine(ptr unsafe.Pointer) *ThemeEngine {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ThemeEngine)(ptr)
-}
-
-func marshalThemeEngine(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapThemeEngine(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ThemeEngine) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // Style: a Style object encapsulates the information that provides the look and
 // feel for a widget.
 //
@@ -829,7 +805,7 @@ func (s style) HasContext() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -856,7 +832,7 @@ func (s style) LookupColor(colorName string) (color gdk.Color, ok bool) {
 		ret0 = gdk.WrapColor(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -924,4 +900,28 @@ func (s style) SetBackground(window gdk.Window, stateType StateType) {
 	arg2 = (C.GtkStateType)(stateType)
 
 	C.gtk_style_set_background(arg0, arg1, arg2)
+}
+
+type ThemeEngine struct {
+	native C.GtkThemeEngine
+}
+
+// WrapThemeEngine wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapThemeEngine(ptr unsafe.Pointer) *ThemeEngine {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*ThemeEngine)(ptr)
+}
+
+func marshalThemeEngine(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapThemeEngine(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *ThemeEngine) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

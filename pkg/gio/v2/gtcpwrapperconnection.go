@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type TcpWrapperConnectionPrivate struct {
-	native C.GTcpWrapperConnectionPrivate
-}
-
-// WrapTcpWrapperConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTcpWrapperConnectionPrivate(ptr unsafe.Pointer) *TcpWrapperConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TcpWrapperConnectionPrivate)(ptr)
-}
-
-func marshalTcpWrapperConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTcpWrapperConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TcpWrapperConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // TcpWrapperConnection: a WrapperConnection can be used to wrap a OStream that
 // is based on a #GSocket, but which is not actually a Connection. This is used
 // by Client so that it can always return a Connection, even when the connection
@@ -117,4 +93,28 @@ func (c tcpWrapperConnection) BaseIOStream() IOStream {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(IOStream)
 
 	return ret0
+}
+
+type TcpWrapperConnectionPrivate struct {
+	native C.GTcpWrapperConnectionPrivate
+}
+
+// WrapTcpWrapperConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTcpWrapperConnectionPrivate(ptr unsafe.Pointer) *TcpWrapperConnectionPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TcpWrapperConnectionPrivate)(ptr)
+}
+
+func marshalTcpWrapperConnectionPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTcpWrapperConnectionPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TcpWrapperConnectionPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

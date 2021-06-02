@@ -21,7 +21,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gint gotk4_KeySnoopFunc(GtkWidget* _0, GdkEventKey* _1, gpointer _2);
+// gint gotk4_KeySnoopFunc(GtkWidget*, GdkEventKey*, gpointer);
 import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
@@ -143,7 +143,7 @@ func EventsPending() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -155,7 +155,7 @@ func False() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -197,7 +197,7 @@ func GetCurrentEventState() (state gdk.ModifierType, ok bool) {
 
 	ret0 = (*gdk.ModifierType)(arg1)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -451,7 +451,7 @@ func InitCheck(argc int, argv []string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -562,7 +562,7 @@ func MainIteration() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -580,7 +580,7 @@ func MainIterationDo(blocking bool) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -640,7 +640,7 @@ func ParseArgs(argc int, argv []string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -689,7 +689,7 @@ func True() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

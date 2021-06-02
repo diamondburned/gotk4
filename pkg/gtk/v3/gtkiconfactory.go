@@ -83,7 +83,7 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 
 	ret1 = int(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -115,7 +115,7 @@ func IconSizeLookupForSettings(settings Settings, size int) (width int, height i
 
 	ret1 = int(arg4)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -153,30 +153,6 @@ func IconSizeRegisterAlias(alias string, target int) {
 	arg2 = C.GtkIconSize(target)
 
 	C.gtk_icon_size_register_alias(arg1, arg2)
-}
-
-type IconFactoryPrivate struct {
-	native C.GtkIconFactoryPrivate
-}
-
-// WrapIconFactoryPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIconFactoryPrivate(ptr unsafe.Pointer) *IconFactoryPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*IconFactoryPrivate)(ptr)
-}
-
-func marshalIconFactoryPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIconFactoryPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *IconFactoryPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }
 
 // IconFactory: an icon factory manages a collection of IconSet; a IconSet
@@ -383,4 +359,28 @@ func (f iconFactory) RemoveDefault() {
 	arg0 = (*C.GtkIconFactory)(f.Native())
 
 	C.gtk_icon_factory_remove_default(arg0)
+}
+
+type IconFactoryPrivate struct {
+	native C.GtkIconFactoryPrivate
+}
+
+// WrapIconFactoryPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapIconFactoryPrivate(ptr unsafe.Pointer) *IconFactoryPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*IconFactoryPrivate)(ptr)
+}
+
+func marshalIconFactoryPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapIconFactoryPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *IconFactoryPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

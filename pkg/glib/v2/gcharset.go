@@ -40,7 +40,7 @@ func GetCharset() (charset string, ok bool) {
 
 	ret0 = C.GoString(arg1)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -83,7 +83,7 @@ func GetConsoleCharset() (charset string, ok bool) {
 
 	ret0 = C.GoString(arg1)
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

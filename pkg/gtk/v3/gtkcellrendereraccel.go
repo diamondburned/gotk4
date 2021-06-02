@@ -23,30 +23,6 @@ func init() {
 	})
 }
 
-type CellRendererAccelPrivate struct {
-	native C.GtkCellRendererAccelPrivate
-}
-
-// WrapCellRendererAccelPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererAccelPrivate(ptr unsafe.Pointer) *CellRendererAccelPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererAccelPrivate)(ptr)
-}
-
-func marshalCellRendererAccelPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererAccelPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererAccelPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}
-
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
 // like `Control + a`). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
@@ -86,4 +62,28 @@ func NewCellRendererAccel() CellRendererAccel {
 	ret0 = gextras.CastObject(externglib.Take(unsafe.Pointer(ret.Native()))).(CellRendererAccel)
 
 	return ret0
+}
+
+type CellRendererAccelPrivate struct {
+	native C.GtkCellRendererAccelPrivate
+}
+
+// WrapCellRendererAccelPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCellRendererAccelPrivate(ptr unsafe.Pointer) *CellRendererAccelPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*CellRendererAccelPrivate)(ptr)
+}
+
+func marshalCellRendererAccelPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapCellRendererAccelPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (c *CellRendererAccelPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&c.native)
 }

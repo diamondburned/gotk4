@@ -434,7 +434,7 @@ func (s *PaperSize) IsCustom() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -451,7 +451,7 @@ func (s *PaperSize) IsEqual(size2 *PaperSize) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -466,7 +466,7 @@ func (s *PaperSize) IsIpp() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

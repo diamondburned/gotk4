@@ -152,7 +152,7 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 		defer runtime.KeepAlive(arg10)
 	}
 
-	ret4 = C.bool(ret) != 0
+	ret4 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3, ret4
 }

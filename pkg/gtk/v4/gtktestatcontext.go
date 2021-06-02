@@ -50,7 +50,7 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -67,7 +67,7 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -85,7 +85,7 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -102,7 +102,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

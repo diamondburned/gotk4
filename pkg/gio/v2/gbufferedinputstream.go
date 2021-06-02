@@ -33,30 +33,6 @@ func init() {
 	})
 }
 
-type BufferedInputStreamPrivate struct {
-	native C.GBufferedInputStreamPrivate
-}
-
-// WrapBufferedInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBufferedInputStreamPrivate(ptr unsafe.Pointer) *BufferedInputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*BufferedInputStreamPrivate)(ptr)
-}
-
-func marshalBufferedInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBufferedInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *BufferedInputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
-}
-
 // BufferedInputStream: buffered input stream implements InputStream and
 // provides for buffered reads.
 //
@@ -419,4 +395,28 @@ func (s bufferedInputStream) SetBufferSize(size uint) {
 	arg1 = C.gsize(size)
 
 	C.g_buffered_input_stream_set_buffer_size(arg0, arg1)
+}
+
+type BufferedInputStreamPrivate struct {
+	native C.GBufferedInputStreamPrivate
+}
+
+// WrapBufferedInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBufferedInputStreamPrivate(ptr unsafe.Pointer) *BufferedInputStreamPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*BufferedInputStreamPrivate)(ptr)
+}
+
+func marshalBufferedInputStreamPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapBufferedInputStreamPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (b *BufferedInputStreamPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&b.native)
 }

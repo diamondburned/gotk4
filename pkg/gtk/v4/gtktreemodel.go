@@ -17,7 +17,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern gboolean gotk4_TreeModelForeachFunc(GtkTreeModel* _0, GtkTreePath* _1, GtkTreeIter* _2, gpointer _3);
+// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -501,7 +501,7 @@ func (t treeModel) Iter(path *TreePath) (iter TreeIter, ok bool) {
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -523,7 +523,7 @@ func (t treeModel) IterFirst() (iter TreeIter, ok bool) {
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -548,7 +548,7 @@ func (t treeModel) IterFromString(pathString string) (iter TreeIter, ok bool) {
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -661,7 +661,7 @@ func (t treeModel) IterChildren(parent *TreeIter) (iter TreeIter, ok bool) {
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -678,7 +678,7 @@ func (t treeModel) IterHasChild(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -719,7 +719,7 @@ func (t treeModel) IterNext(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -750,7 +750,7 @@ func (t treeModel) IterNthChild(parent *TreeIter, n int) (iter TreeIter, ok bool
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -780,7 +780,7 @@ func (t treeModel) IterParent(child *TreeIter) (iter TreeIter, ok bool) {
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -801,7 +801,7 @@ func (t treeModel) IterPrevious(iter *TreeIter) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1247,7 +1247,7 @@ func (p *TreePath) IsAncestor(descendant *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1264,7 +1264,7 @@ func (p *TreePath) IsDescendant(ancestor *TreePath) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1302,7 +1302,7 @@ func (p *TreePath) Prev() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1337,7 +1337,7 @@ func (p *TreePath) Up() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1491,7 +1491,7 @@ func (r *TreeRowReference) Valid() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

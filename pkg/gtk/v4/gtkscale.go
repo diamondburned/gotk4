@@ -17,7 +17,7 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 //
-// extern char* gotk4_ScaleFormatValueFunc(GtkScale* _0, double _1, gpointer _2);
+// char* gotk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -323,7 +323,7 @@ func (s scale) DrawValue() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -338,7 +338,7 @@ func (s scale) HasOrigin() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

@@ -125,7 +125,7 @@ func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec g
 
 	ret0 = externglib.ValueFromNative(unsafe.Pointer(arg4))
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }

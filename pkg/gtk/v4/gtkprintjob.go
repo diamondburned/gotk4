@@ -17,7 +17,7 @@ import (
 // #include <stdbool.h>
 // #include <gtk/gtk.h>
 //
-// extern void gotk4_PrintJobCompleteFunc(GtkPrintJob* _0, gpointer _1, const GError* _2);
+// void gotk4_PrintJobCompleteFunc(GtkPrintJob*, gpointer,  GError*);
 // extern void callbackDelete(gpointer);
 import "C"
 

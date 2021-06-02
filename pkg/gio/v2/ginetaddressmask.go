@@ -11,8 +11,8 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,30 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_inet_address_mask_get_type()), F: marshalInetAddressMask},
 	})
-}
-
-type InetAddressMaskPrivate struct {
-	native C.GInetAddressMaskPrivate
-}
-
-// WrapInetAddressMaskPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInetAddressMaskPrivate(ptr unsafe.Pointer) *InetAddressMaskPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InetAddressMaskPrivate)(ptr)
-}
-
-func marshalInetAddressMaskPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInetAddressMaskPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InetAddressMaskPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }
 
 // InetAddressMask represents a range of IPv4 or IPv6 addresses described by a
@@ -160,7 +136,7 @@ func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -222,7 +198,7 @@ func (m inetAddressMask) Matches(address InetAddress) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -241,4 +217,28 @@ func (m inetAddressMask) String() string {
 	C.free(unsafe.Pointer(ret))
 
 	return ret0
+}
+
+type InetAddressMaskPrivate struct {
+	native C.GInetAddressMaskPrivate
+}
+
+// WrapInetAddressMaskPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInetAddressMaskPrivate(ptr unsafe.Pointer) *InetAddressMaskPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*InetAddressMaskPrivate)(ptr)
+}
+
+func marshalInetAddressMaskPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapInetAddressMaskPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (i *InetAddressMaskPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&i.native)
 }

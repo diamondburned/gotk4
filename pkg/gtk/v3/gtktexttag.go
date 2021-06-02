@@ -24,30 +24,6 @@ func init() {
 	})
 }
 
-type TextTagPrivate struct {
-	native C.GtkTextTagPrivate
-}
-
-// WrapTextTagPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextTagPrivate(ptr unsafe.Pointer) *TextTagPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextTagPrivate)(ptr)
-}
-
-func marshalTextTagPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextTagPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextTagPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // TextTag: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
@@ -173,4 +149,28 @@ func (t textTag) SetPriority(priority int) {
 	arg1 = C.gint(priority)
 
 	C.gtk_text_tag_set_priority(arg0, arg1)
+}
+
+type TextTagPrivate struct {
+	native C.GtkTextTagPrivate
+}
+
+// WrapTextTagPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextTagPrivate(ptr unsafe.Pointer) *TextTagPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TextTagPrivate)(ptr)
+}
+
+func marshalTextTagPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTextTagPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TextTagPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

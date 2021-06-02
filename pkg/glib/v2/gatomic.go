@@ -91,7 +91,7 @@ func AtomicIntCompareAndExchange(atomic int, oldval int, newval int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -114,7 +114,7 @@ func AtomicIntDecAndTest(atomic int) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -321,7 +321,7 @@ func AtomicPointerCompareAndExchange(atomic interface{}, oldval interface{}, new
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

@@ -354,7 +354,7 @@ func (c comboBox) ActiveIter() (iter TreeIter, ok bool) {
 		ret0 = WrapTreeIter(unsafe.Pointer(arg1))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -416,7 +416,7 @@ func (c comboBox) HasEntry() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -462,7 +462,7 @@ func (c comboBox) PopupFixedWidth() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -541,7 +541,7 @@ func (c comboBox) SetActiveID(activeID string) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

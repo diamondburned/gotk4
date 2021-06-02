@@ -12,8 +12,8 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -23,30 +23,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_size_group_get_type()), F: marshalSizeGroup},
 	})
-}
-
-type SizeGroupPrivate struct {
-	native C.GtkSizeGroupPrivate
-}
-
-// WrapSizeGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSizeGroupPrivate(ptr unsafe.Pointer) *SizeGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SizeGroupPrivate)(ptr)
-}
-
-func marshalSizeGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSizeGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SizeGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // SizeGroup provides a mechanism for grouping a number of widgets together so
@@ -213,7 +189,7 @@ func (s sizeGroup) IgnoreHidden() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -289,4 +265,28 @@ func (s sizeGroup) SetMode(mode SizeGroupMode) {
 	arg1 = (C.GtkSizeGroupMode)(mode)
 
 	C.gtk_size_group_set_mode(arg0, arg1)
+}
+
+type SizeGroupPrivate struct {
+	native C.GtkSizeGroupPrivate
+}
+
+// WrapSizeGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSizeGroupPrivate(ptr unsafe.Pointer) *SizeGroupPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SizeGroupPrivate)(ptr)
+}
+
+func marshalSizeGroupPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSizeGroupPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SizeGroupPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

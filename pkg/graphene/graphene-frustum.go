@@ -79,7 +79,7 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -96,7 +96,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -217,7 +217,7 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -235,7 +235,7 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

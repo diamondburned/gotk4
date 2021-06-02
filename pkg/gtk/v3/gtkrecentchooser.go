@@ -20,7 +20,7 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern gint gotk4_RecentSortFunc(GtkRecentInfo* _0, GtkRecentInfo* _1, gpointer _2);
+// gint gotk4_RecentSortFunc(GtkRecentInfo*, GtkRecentInfo*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -322,7 +322,7 @@ func (c recentChooser) LocalOnly() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -337,7 +337,7 @@ func (c recentChooser) SelectMultiple() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -353,7 +353,7 @@ func (c recentChooser) ShowIcons() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -369,7 +369,7 @@ func (c recentChooser) ShowNotFound() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -385,7 +385,7 @@ func (c recentChooser) ShowPrivate() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -401,7 +401,7 @@ func (c recentChooser) ShowTips() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

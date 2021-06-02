@@ -31,30 +31,6 @@ func init() {
 	})
 }
 
-type SimpleProxyResolverPrivate struct {
-	native C.GSimpleProxyResolverPrivate
-}
-
-// WrapSimpleProxyResolverPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSimpleProxyResolverPrivate(ptr unsafe.Pointer) *SimpleProxyResolverPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SimpleProxyResolverPrivate)(ptr)
-}
-
-func marshalSimpleProxyResolverPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSimpleProxyResolverPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SimpleProxyResolverPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
 // SimpleProxyResolver is a simple Resolver implementation that handles a single
 // default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
 // proxies should not be used for.
@@ -162,4 +138,28 @@ func (r simpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
 	defer C.free(unsafe.Pointer(arg2))
 
 	C.g_simple_proxy_resolver_set_uri_proxy(arg0, arg1, arg2)
+}
+
+type SimpleProxyResolverPrivate struct {
+	native C.GSimpleProxyResolverPrivate
+}
+
+// WrapSimpleProxyResolverPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSimpleProxyResolverPrivate(ptr unsafe.Pointer) *SimpleProxyResolverPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*SimpleProxyResolverPrivate)(ptr)
+}
+
+func marshalSimpleProxyResolverPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapSimpleProxyResolverPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (s *SimpleProxyResolverPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&s.native)
 }

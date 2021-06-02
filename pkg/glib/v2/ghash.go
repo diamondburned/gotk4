@@ -15,7 +15,7 @@ import (
 // #include <glib-object.h>
 // #include <glib.h>
 //
-// extern gboolean gotk4_HRFunc(gpointer _0, gpointer _1, gpointer _2);
+// gboolean gotk4_HRFunc(gpointer, gpointer, gpointer);
 import "C"
 
 func init() {
@@ -66,7 +66,7 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -106,7 +106,7 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -154,7 +154,7 @@ func HashTableAdd(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -171,7 +171,7 @@ func HashTableContains(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -211,7 +211,7 @@ func HashTableInsert(hashTable *HashTable, key interface{}, value interface{}) b
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -262,7 +262,7 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origK
 
 	ret1 = box.Get(uintptr(arg4)).(interface{})
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -283,7 +283,7 @@ func HashTableRemove(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -323,7 +323,7 @@ func HashTableReplace(hashTable *HashTable, key interface{}, value interface{}) 
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -356,7 +356,7 @@ func HashTableSteal(hashTable *HashTable, key interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -400,7 +400,7 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolen
 
 	ret1 = box.Get(uintptr(arg4)).(interface{})
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -432,7 +432,7 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -473,7 +473,7 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -517,7 +517,7 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -668,7 +668,7 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 
 	ret1 = box.Get(uintptr(arg2)).(interface{})
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }

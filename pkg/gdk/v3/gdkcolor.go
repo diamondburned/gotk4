@@ -47,7 +47,7 @@ func ColorParse(spec string) (color Color, ok bool) {
 		ret0 = WrapColor(unsafe.Pointer(arg2))
 	}
 
-	ret1 = C.bool(ret) != 0
+	ret1 = C.bool(ret) != C.false
 
 	return ret0, ret1
 }
@@ -140,7 +140,7 @@ func (c *Color) Equal(colorb *Color) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

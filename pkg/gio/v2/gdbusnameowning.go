@@ -23,9 +23,9 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern void gotk4_BusAcquiredCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
-// extern void gotk4_BusNameAcquiredCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
-// extern void gotk4_BusNameLostCallback(GDBusConnection* _0, const gchar* _1, gpointer _2);
+// void gotk4_BusAcquiredCallback(GDBusConnection*,  gchar*, gpointer);
+// void gotk4_BusNameAcquiredCallback(GDBusConnection*,  gchar*, gpointer);
+// void gotk4_BusNameLostCallback(GDBusConnection*,  gchar*, gpointer);
 import "C"
 
 // BusAcquiredCallback: invoked when a connection to a message bus has been

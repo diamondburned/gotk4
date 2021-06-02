@@ -161,7 +161,7 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 
 	ret1 = (*gdk.ModifierType)(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -215,7 +215,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 
 	ret2 = (*gdk.ModifierType)(arg5)
 
-	ret3 = C.bool(ret) != 0
+	ret3 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2, ret3
 }
@@ -237,7 +237,7 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

@@ -13,13 +13,13 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <stdbool.h>
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 //
-// extern void gotk4_TreeCellDataFunc(GtkTreeViewColumn* _0, GtkCellRenderer* _1, GtkTreeModel* _2, GtkTreeIter* _3, gpointer _4);
+// void gotk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -65,30 +65,6 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	}
 
 	v.(TreeCellDataFunc)(treeColumn, cell, treeModel, iter)
-}
-
-type TreeViewColumnPrivate struct {
-	native C.GtkTreeViewColumnPrivate
-}
-
-// WrapTreeViewColumnPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeViewColumnPrivate(ptr unsafe.Pointer) *TreeViewColumnPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeViewColumnPrivate)(ptr)
-}
-
-func marshalTreeViewColumnPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeViewColumnPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeViewColumnPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
@@ -380,7 +356,7 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 
 	ret1 = int(arg3)
 
-	ret2 = C.bool(ret) != 0
+	ret2 = C.bool(ret) != C.false
 
 	return ret0, ret1, ret2
 }
@@ -428,7 +404,7 @@ func (t treeViewColumn) CellIsVisible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -542,7 +518,7 @@ func (t treeViewColumn) Clickable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -557,7 +533,7 @@ func (t treeViewColumn) Expand() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -622,7 +598,7 @@ func (t treeViewColumn) Reorderable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -638,7 +614,7 @@ func (t treeViewColumn) Resizable() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -686,7 +662,7 @@ func (t treeViewColumn) SortIndicator() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -762,7 +738,7 @@ func (t treeViewColumn) Visible() bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -1111,4 +1087,28 @@ func (t treeViewColumn) SetWidget(widget Widget) {
 	arg1 = (*C.GtkWidget)(widget.Native())
 
 	C.gtk_tree_view_column_set_widget(arg0, arg1)
+}
+
+type TreeViewColumnPrivate struct {
+	native C.GtkTreeViewColumnPrivate
+}
+
+// WrapTreeViewColumnPrivate wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeViewColumnPrivate(ptr unsafe.Pointer) *TreeViewColumnPrivate {
+	if ptr == nil {
+		return nil
+	}
+
+	return (*TreeViewColumnPrivate)(ptr)
+}
+
+func marshalTreeViewColumnPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	return WrapTreeViewColumnPrivate(unsafe.Pointer(b)), nil
+}
+
+// Native returns the underlying C source pointer.
+func (t *TreeViewColumnPrivate) Native() unsafe.Pointer {
+	return unsafe.Pointer(&t.native)
 }

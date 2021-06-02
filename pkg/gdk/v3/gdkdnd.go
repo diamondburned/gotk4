@@ -147,7 +147,7 @@ func DragDropSucceeded(context DragContext) bool {
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }
@@ -231,7 +231,7 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 
 	var ret0 bool
 
-	ret0 = C.bool(ret) != 0
+	ret0 = C.bool(ret) != C.false
 
 	return ret0
 }

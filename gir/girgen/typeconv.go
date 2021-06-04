@@ -7,28 +7,22 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 )
 
-// ArgAtFunc is the function to get the argument name at the given index. This
-// function is primarily used for certain type conversions that need to access
-// multiple variables.
-type ArgAtFunc func(i int) string
-
 // TypeConversion describes the type information to convert from and to.
 type TypeConversion struct {
-	Value  string
-	Target string
-	Type   gir.AnyType
-	Owner  gir.TransferOwnership
+	TypeConversionValue
+	Values []TypeConversionValue
 
-	// ArgAt is used for array and closure generation.
-	ArgAt ArgAtFunc
 	// ParentName is used primarily for debugging.
 	ParentName string
 }
 
-// TypeConversionToC contains type information that is only useful when
-// converting from Go to C.
-type TypeConversionToC struct {
-	TypeConversion
+// TypeConversionValue describes a single value in the type conversion.
+type TypeConversionValue struct {
+	In  string
+	Out string
+
+	AnyType   gir.AnyType
+	Ownership gir.TransferOwnership
 
 	// Closure marks the user_data argument. If this is provided, then the
 	// conversion function will set the parameter to the callback ID. The caller
@@ -37,6 +31,12 @@ type TypeConversionToC struct {
 	// Destroy marks the callback to destroy the user_data argument. If this is
 	// provided, then callbackDelete will be set along with Closure.
 	Destroy *int
+}
+
+// TypeConversionToC contains type information that is only useful when
+// converting from Go to C.
+type TypeConversionToC struct {
+	TypeConversion
 }
 
 // TypeConversionToGo contains type information that is only useful when

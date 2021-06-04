@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/pkg/errors"
 )
 
 // NamespaceGenerator is a generator for a specific namespace.
@@ -37,11 +38,11 @@ func (ng *NamespaceGenerator) Generate() (map[string][]byte, error) {
 
 	for _, file := range ng.files {
 		b, err := file.generate()
-		if err != nil {
-			return nil, err
-		}
-
 		files[file.name] = b
+
+		if err != nil {
+			return files, errors.Wrap(err, "package "+ng.PackageName())
+		}
 	}
 
 	return files, nil
@@ -108,10 +109,22 @@ func (ng *NamespaceGenerator) fullGIR(girType string) string {
 
 // pkgconfig returns the current repository's pkg-config names.
 func (ng *NamespaceGenerator) pkgconfig() []string {
-	pkgs := make([]string, len(ng.current.Repository.Packages))
-	for i, pkg := range ng.current.Repository.Packages {
-		pkgs[i] = pkg.Name
+	foundRoot := false
+	pkgs := make([]string, 0, len(ng.current.Repository.Packages)+1)
+
+	for _, pkg := range ng.current.Repository.Packages {
+		if pkg.Name == ng.current.Repository.Pkg {
+			foundRoot = true
+			continue
+		}
+
+		pkgs = append(pkgs, pkg.Name)
 	}
+
+	if !foundRoot {
+		pkgs = append(pkgs, ng.current.Repository.Pkg)
+	}
+
 	return pkgs
 }
 

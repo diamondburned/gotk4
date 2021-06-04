@@ -1,9 +1,11 @@
 package girgen
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 // recordIgnoreSuffixes is a list of suffixes that structs must not have,
@@ -25,7 +27,12 @@ var recordIgnoreSuffixes = []string{
 var recordTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} struct {
+		{{ range .Field.Fields }}
+		{{ GoDoc .Doc 1 .GoName }}
+		{{ .GoName }} {{ .GoType }}
+		{{ else }}
 		native C.{{ .CType }}
+		{{ end }}
 	}
 
 	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
@@ -35,17 +42,16 @@ var recordTmpl = newGoTemplate(`
 			return nil
 		}
 
+		{{ with .Field.Convert }}
+		{{ . }}
+		{{ else }}
 		return (*{{ .GoName }})(ptr)
+		{{ end }}
 	}
 
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 		return Wrap{{ .GoName }}(unsafe.Pointer(b)), nil
-	}
-
-	// Native returns the underlying C source pointer.
-	func ({{ FirstLetter .GoName }} *{{ .GoName }}) Native() unsafe.Pointer {
-		return unsafe.Pointer(&{{ FirstLetter .GoName }}.native)
 	}
 
 	{{ range .Constructors }}
@@ -55,12 +61,17 @@ var recordTmpl = newGoTemplate(`
 	{{ end }}
 	{{ end }}
 
-	{{ range .Getters }}
-	// {{ .GoName }} gets the field inside the struct.
-	func ({{ FirstLetter $.GoName }} *{{ $.GoName }}) {{ .GoName }}() {{ .GoType }} {
-		var ret {{ .GoType }}
-		{{ .Convert }}
-		return ret
+	{{ $recv := (FirstLetter $.GoName) }}
+
+	{{ if (not .Field.Fields) }}
+	// Native returns the underlying C source pointer.
+	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
+		return unsafe.Pointer(&{{ FirstLetter .GoName }}.native)
+	}
+	{{ else }}
+	// Native returns a C copy of this struct.
+	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
+		return nil
 	}
 	{{ end }}
 
@@ -74,7 +85,12 @@ type recordGenerator struct {
 	gir.Record
 	GoName  string
 	Methods []callableGenerator
-	Getters []recordGetter
+
+	// Field is only if canRecordCopy.
+	Field struct {
+		Fields  []recordField
+		Convert string
+	}
 
 	Callable callableGenerator
 
@@ -82,12 +98,10 @@ type recordGenerator struct {
 	ng *NamespaceGenerator
 }
 
-type recordGetter struct {
-	gir.Field
-	Name    string
-	GoName  string
-	GoType  string
-	Convert string // assume first_letter -> "ret"
+type recordField struct {
+	*gir.Field
+	GoName string
+	GoType string
 }
 
 func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
@@ -98,7 +112,7 @@ func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
 }
 
 // canRecord returns true if this record is allowed.
-func canRecord(logger TypeResolver, rec gir.Record, log bool) bool {
+func canRecord(logger TypeResolver, rec gir.Record) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
 	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
@@ -122,8 +136,25 @@ func canRecord(logger TypeResolver, rec gir.Record, log bool) bool {
 	return true
 }
 
+// canRecordCopy returns true if the record can be fully copied to Go.
+func canRecordCopy(resolver TypeResolver, rec gir.Record) bool {
+	for _, field := range rec.Fields {
+		conditions := false ||
+			(field.Private) ||
+			(field.Bits > 0) ||
+			(field.Type == nil) ||
+			(!field.Writable && !field.Readable)
+
+		if conditions {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (rg *recordGenerator) Use(rec gir.Record) bool {
-	if !canRecord(rg.ng, rec, true) {
+	if !canRecord(rg.ng, rec) {
 		return false
 	}
 
@@ -132,7 +163,9 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 	rg.Record = rec
 	rg.GoName = PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
-	rg.Getters = rg.getters()
+
+	if canRecordCopy(rg.fg.parent, rec) {
+	}
 
 	return true
 }
@@ -180,9 +213,6 @@ func (rg *recordGenerator) getters() []recordGetter {
 	}
 
 	recv := FirstLetter(rg.GoName)
-	fieldAt := func(i int) string {
-		return recv + ".native." + cgoField(rg.Fields[i].Name)
-	}
 
 	for i, field := range rg.Fields {
 		ignores.fieldIgnore(field)
@@ -210,22 +240,24 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		convert := rg.fg.CGoConverter(TypeConversionToGo{
-			TypeConversion: TypeConversion{
-				Value:  fieldAt(i),
-				Target: "ret",
-				Type:   field.AnyType,
-				ArgAt:  fieldAt,
-				Owner: gir.TransferOwnership{
-					// Assume we have the ownership of the C value, because we do.
-					TransferOwnership: "none",
+		result := rg.fg.CGoConverter(TypeConversionToGo{
+			Parent: rg.Name,
+			Values: []CValueProp{{
+				ValueProp: ValueProp{
+					In:   fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
+					Out:  "v",
+					Type: field.AnyType,
 				},
-				ParentName: rg.CType,
-			},
+			}},
 		})
-		if convert == "" {
+		if result == nil {
 			continue
 		}
+
+		result.Apply(fg)
+
+		b := pen.NewBlock()
+		b.Linef(result.Conversion)
 
 		getters = append(getters, recordGetter{
 			Field:   field,
@@ -270,6 +302,6 @@ func (ng *NamespaceGenerator) generateRecords() {
 			rg.fg.addMarshaler(record.GLibGetType, rg.GoName)
 		}
 
-		rg.fg.pen.BlockTmpl(recordTmpl, &rg)
+		rg.fg.pen.WriteTmpl(recordTmpl, &rg)
 	}
 }

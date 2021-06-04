@@ -58,7 +58,7 @@ func (ng *NamespaceGenerator) generateBitfields() {
 			fg.addMarshaler(bitfield.GLibGetType, PascalToGo(bitfield.Name))
 		}
 
-		fg.pen.BlockTmpl(bitfieldTmpl, &bitfieldGenerator{
+		fg.pen.WriteTmpl(bitfieldTmpl, &bitfieldGenerator{
 			Bitfield: bitfield,
 			Ng:       ng,
 		})

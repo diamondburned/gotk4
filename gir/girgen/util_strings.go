@@ -43,6 +43,7 @@ var (
 		"Mime",
 		"Rgba",
 		"Ascii",
+		"Iso8601",
 		`[A-Z]fs`,
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,

@@ -78,13 +78,15 @@ type ifaceGenerator struct {
 
 func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
 	return &ifaceGenerator{
-		ng:       ng,
-		TypeTree: *ng.TypeTree(),
+		ng: ng,
 	}
 }
 
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.fg = ig.ng.FileFromSource(iface.SourcePosition)
+	ig.TypeTree = *ig.fg.TypeTree()
+	ig.TypeTree.Level = 2
+
 	ig.Interface = iface
 	ig.InterfaceName = PascalToGo(iface.Name)
 	ig.StructName = UnexportPascal(ig.InterfaceName)
@@ -148,13 +150,11 @@ func (ng *NamespaceGenerator) generateIfaces() {
 			continue
 		}
 
+		ig.fg.needsGLibObject()
 		if iface.GLibGetType != "" && !ng.mustIgnoreC(iface.GLibGetType) {
 			ig.fg.addMarshaler(iface.GLibGetType, ig.InterfaceName)
 		}
 
-		ig.fg.addImport("github.com/diamondburned/gotk4/internal/gextras")
-		ig.fg.needsGLibObject()
-
-		ig.fg.pen.BlockTmpl(interfaceTmpl, &ig)
+		ig.fg.pen.WriteTmpl(interfaceTmpl, &ig)
 	}
 }

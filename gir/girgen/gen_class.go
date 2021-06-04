@@ -69,7 +69,6 @@ type classGenerator struct {
 
 func newClassGenerator(ng *NamespaceGenerator) *classGenerator {
 	return &classGenerator{
-		TypeTree: *ng.TypeTree(),
 		Callable: newCallableGenerator(ng),
 		ng:       ng,
 	}
@@ -77,6 +76,8 @@ func newClassGenerator(ng *NamespaceGenerator) *classGenerator {
 
 func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.fg = cg.ng.FileFromSource(class.SourcePosition)
+	cg.TypeTree = *cg.fg.TypeTree()
+	cg.TypeTree.Level = 2
 
 	if class.Parent == "" {
 		// TODO: check what happens if a class has no parent. It should have a
@@ -162,13 +163,11 @@ func (ng *NamespaceGenerator) generateClasses() {
 			continue
 		}
 
+		cg.fg.needsGLibObject()
 		if class.GLibGetType != "" && !ng.mustIgnoreC(class.GLibGetType) {
 			cg.fg.addMarshaler(class.GLibGetType, cg.InterfaceName)
 		}
 
-		cg.fg.addImport("github.com/diamondburned/gotk4/internal/gextras")
-		cg.fg.needsGLibObject()
-
-		cg.fg.pen.BlockTmpl(classTmpl, &cg)
+		cg.fg.pen.WriteTmpl(classTmpl, &cg)
 	}
 }

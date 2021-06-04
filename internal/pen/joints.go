@@ -12,8 +12,8 @@ type Joints struct {
 }
 
 // NewJoints creates a new Joints instance.
-func NewJoints(sep string, cap int) *Joints {
-	return &Joints{
+func NewJoints(sep string, cap int) Joints {
+	return Joints{
 		sep:  sep,
 		strs: make([]string, 0, cap),
 	}

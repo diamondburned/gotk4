@@ -61,6 +61,10 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 // resolved top-level type.
 func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 	tree.reset()
+	if tree.Level == 0 {
+		return false
+	}
+
 	tree.Resolved = toplevel
 
 	// Edge cases for builtin types.

@@ -143,9 +143,9 @@ type Enum struct {
 type Field struct {
 	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 	Name     string   `xml:"name,attr"`
-	Private  bool     `xml:"private,attr"`  // default false
-	Writable bool     `xml:"writable,attr"` // default false
-	Readable *bool    `xml:"readable,attr"` // default true
+	Private  bool     `xml:"private,attr"`
+	Writable bool     `xml:"writable,attr"`
+	Readable bool     `xml:"readable,attr"`
 	Bits     int      `xml:"bits,attr"`
 	AnyType
 	Doc *Doc
@@ -306,11 +306,11 @@ type ReturnValue struct {
 	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
 	Introspectable bool     `xml:"introspectable,attr"`
 	Nullable       bool     `xml:"nullable,attr"`
-	Closure        int      `xml:"closure,attr"`
 	Scope          string   `xml:"scope,attr"`
-	Destroy        int      `xml:"destroy,attr"`
 	Skip           bool     `xml:"skip,attr"`
 	AllowNone      bool     `xml:"allow-none,attr"`
+	Closure        *int     `xml:"closure,attr"`
+	Destroy        *int     `xml:"destroy,attr"`
 	TransferOwnership
 	DocElements
 	AnyType

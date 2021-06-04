@@ -106,178 +106,128 @@ func (cg *callableGenerator) block() string {
 		Name      string
 		Type      gir.AnyType
 		Owner     gir.TransferOwnership
+		Return    bool
 		AllowNone bool
 	}
 
-	blocks := pen.NewBlockSections(1024, 4096)
+	blocks := pen.NewBlockSections(4096, 256, 4096, 512)
 
-	var args pen.Joints
-	var rets []retVar
+	var (
+		params  pen.Joints
+		returns pen.Joints
 
-	// argNamer returns arg with a +1 offset, except for when i is negative,
-	// then the method receiver is returned.
-	argNamer := func(i int) string {
-		if i < 0 {
-			return cg.Recv()
-		}
-
-		return fmt.Sprintf("arg%d", i+1)
-	}
+		inputValues  []GoValueProp
+		outputValues []CValueProp
+	)
 
 	if cg.Parameters != nil {
-		var ignores ignoreIxs
-		ignores.paramsIgnore(cg.Parameters)
+		cap := len(cg.Parameters.Parameters) + 2
 
-		// Preallocate if possible.
-		args = *pen.NewJoints(", ", len(cg.Parameters.Parameters))
+		params = pen.NewJoints(", ", cap)
+		returns = pen.NewJoints(", ", cap)
 
-		doParam := func(i int, param gir.ParameterAttrs, targ, valn string) bool {
-			// Generate a zero-value variable regardless if we have the
-			// conversions or not.
-			blocks.Linef(0, "var %s %s", targ, anyTypeCGo(param.AnyType))
-			args.Add(targ)
-
-			// Ignored arguments may be covered by GoCConverter if the
-			// attributes are part of the type and not the parameter attributes.
-			if !ignores.ignore(i) {
-				converter := cg.fg.GoCConverter(TypeConversionToC{
-					TypeConversion: TypeConversion{
-						Value:      valn,
-						Target:     targ,
-						Type:       param.AnyType,
-						Owner:      param.TransferOwnership,
-						ArgAt:      argNamer,
-						ParentName: cg.CIdentifier,
-					},
-					Closure: param.Closure,
-					Destroy: param.Destroy,
-				})
-
-				if converter != "" {
-					blocks.Line(1, converter)
-					return true
-				}
-
-				// If null is fine, then we're fine.
-				return param.AllowNone
-			}
-
-			return true
-		}
+		inputValues = make([]GoValueProp, 0, cap)
+		outputValues = make([]CValueProp, 0, cap)
 
 		if cg.Parameters.InstanceParameter != nil {
-			attrs := cg.Parameters.InstanceParameter.ParameterAttrs
-			if !doParam(-1, attrs, "arg0", cg.Recv()) {
-				return ""
-			}
+			in := FirstLetter(cg.Parameters.InstanceParameter.Name)
+			params.Add(in)
+
+			inputValues = append(inputValues, GoValueProp{
+				ValueProp: NewValuePropParam(
+					in, "arg0",
+					cg.Parameters.InstanceParameter.ParameterAttrs,
+				),
+			})
 		}
 
 		for i, param := range cg.Parameters.Parameters {
-			// Be careful with using the index `i`, since the name is different
-			// from the index within the slice.
+			if param.Direction != "out" {
+				in := SnakeToGo(false, param.Name)
+				params.Add(in)
 
-			targ := argNamer(i)
-			valn := SnakeToGo(false, param.Name)
-
-			if param.Direction == "out" {
-				blocks.Linef(0, "var %s %s // out", targ, anyTypeCGo(param.AnyType))
-
-				args.Add("&" + targ)
-				rets = append(rets, retVar{
-					Name:      targ,
-					Type:      param.AnyType,
-					Owner:     param.TransferOwnership,
-					AllowNone: param.AllowNone,
+				inputValues = append(inputValues, GoValueProp{
+					ValueProp: NewValuePropParam(
+						in, fmt.Sprintf("arg%d", i+1), // declared
+						param.ParameterAttrs,
+					),
 				})
-				continue
-			}
+			} else {
+				in := fmt.Sprintf("arg%d", i+1)
+				params.Add("&" + in)
 
-			// TODO: nullability.
-			// TODO: GoCConverter.
+				out := fmt.Sprintf("ret%d", i+1)
+				returns.Add(out)
 
-			if !doParam(i, param.ParameterAttrs, targ, valn) {
-				return ""
+				outputValues = append(outputValues, CValueProp{
+					ValueProp:   NewValuePropParam(in, out, param.ParameterAttrs),
+					OutputParam: true,
+				})
 			}
 		}
 	}
 
+	// If the last return is a bool and the function can throw an error,
+	// then the boolean is probably to indicate that things are OK. We can
+	// skip generating this boolean.
+	if !returnIsVoid(cg.ReturnValue) {
+		if !cg.Throws && anyTypeName(cg.ReturnValue.AnyType, "") != "ok" {
+			out := fmt.Sprintf("ret%d", len(outputValues)+1)
+			returns.Add(out)
+
+			outputValues = append(outputValues, CValueProp{
+				ValueProp: NewValuePropReturn("ret", out, *cg.ReturnValue),
+			})
+		}
+	}
+
 	if cg.Throws {
-		blocks.Linef(0, "var gError *C.GError")
-		args.Add("&gError")
+		blocks.Line(0, "var errout *C.GError")
+		params.Add("&errout")
+
+		blocks.Linef(3, "var goerr error")
+		returns.Add("goerr")
+
+		blocks.Line(3, "if errout != nil {")
+		blocks.Line(3, `  goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))`)
+		blocks.Line(3, "  C.g_error_free(errout)")
+		blocks.Line(3, "}")
+		blocks.EmptyLine(3)
 	}
 
-	funcReturns := !returnIsVoid(cg.ReturnValue)
-	if funcReturns {
-		rets = append(rets, retVar{
-			Name:  "ret",
-			Type:  cg.ReturnValue.AnyType,
-			Owner: cg.ReturnValue.TransferOwnership,
+	var (
+		paramsConv = cg.fg.GoCConverter(TypeConversionToC{
+			Values: inputValues,
+			Parent: cg.Name,
 		})
+		returnsConv = cg.fg.CGoConverter(TypeConversionToGo{
+			Values: outputValues,
+			Parent: cg.Name,
+		})
+	)
+
+	if paramsConv == nil || returnsConv == nil {
+		return ""
 	}
 
-	if !funcReturns {
-		blocks.Linef(2, "C.%s(%s)", cg.CIdentifier, args.Join())
+	paramsConv.Apply(cg.fg)
+	returnsConv.Apply(cg.fg)
+
+	blocks.Linef(0, paramsConv.Conversion)
+	blocks.Linef(0, returnsConv.Preamble)
+	blocks.Linef(2, returnsConv.Conversion)
+
+	if returnIsVoid(cg.ReturnValue) {
+		blocks.Linef(1, "C.%s(%s)", cg.CIdentifier, params.Join())
 	} else {
-		blocks.Linef(2, "ret := C.%s(%s)", cg.CIdentifier, args.Join())
+		blocks.Linef(1, "ret := C.%s(%s)", cg.CIdentifier, params.Join())
 	}
 
-	// If there is no return NOR output parameters, then exit.
-	if len(rets) == 0 {
-		return blocks.String()
+	if len(outputValues) > 0 {
+		blocks.EmptyLine(1)
+		blocks.Line(3, "return "+returns.Join())
 	}
 
-	blocks.EmptyLine(2)
-
-	retvars := pen.NewJoints(", ", len(rets))
-
-	for i, ret := range rets {
-		// If the last return is a bool and the function can throw an error,
-		// then the boolean is probably to indicate that things are OK. We can
-		// skip generating this boolean.
-		if cg.Throws && i == len(rets)-1 && anyTypeName(ret.Type, "") == "ok" {
-			break
-		}
-
-		goType, _ := GoAnyType(cg.fg, ret.Type, true)
-		retName := fmt.Sprintf("ret%d", i)
-		retvars.Add(retName)
-
-		blocks.Linef(3, "var %s %s", retName, goType)
-
-		converter := cg.fg.CGoConverter(TypeConversionToGo{
-			TypeConversion: TypeConversion{
-				Value:      ret.Name,
-				Target:     retName,
-				Type:       ret.Type,
-				Owner:      ret.Owner,
-				ArgAt:      argNamer,
-				ParentName: cg.CIdentifier,
-			},
-			BoxCast: goType,
-		})
-
-		if converter != "" {
-			blocks.Line(4, converter)
-			blocks.EmptyLine(4)
-			continue
-		}
-
-		if !ret.AllowNone {
-			return ""
-		}
-	}
-
-	if cg.Throws {
-		blocks.Linef(3, "var goError error")
-		retvars.Add("goError")
-
-		blocks.Line(4, "if gError != nil {")
-		blocks.Line(4, `  goError = fmt.Errorf("%d: %s", gError.code, C.GoString(gError.message))`)
-		blocks.Line(4, "  C.g_error_free(gError)")
-		blocks.Line(4, "}")
-	}
-
-	blocks.Line(5, "return "+retvars.Join())
 	return blocks.String()
 }
 

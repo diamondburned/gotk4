@@ -31,7 +31,7 @@ func (ng *NamespaceGenerator) generateAliases() {
 			continue
 		}
 
-		fg.pen.BlockTmpl(aliasTmpl, aliasData{
+		fg.pen.WriteTmpl(aliasTmpl, aliasData{
 			Alias:  alias,
 			GoType: goType,
 		})

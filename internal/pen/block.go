@@ -8,7 +8,8 @@ import (
 
 // Block writes a scoped Go block.
 type Block struct {
-	str strings.Builder
+	str  strings.Builder
+	nest []Block
 }
 
 // NewBlock creates a new preallocated block.

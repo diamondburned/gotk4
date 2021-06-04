@@ -1,116 +1,64 @@
-// Package pen contains helper functions to work with strings and code
-// generation.
 package pen
 
 import (
-	"bufio"
 	"fmt"
 	"io"
-	"strings"
+	"log"
 	"text/template"
 )
 
-// Pen is an utility writer.
+// Pen wraps a Pen and its own buffer.
 type Pen struct {
-	bufio.Writer
-	err error
+	PenWriter
 }
 
-// New creates a new Pen.
-func New(w io.Writer) *Pen {
-	bufw, ok := w.(*bufio.Writer)
-	if !ok {
-		bufw = bufio.NewWriter(w)
-	}
-
-	return &Pen{*bufw, nil}
+type PenWriter interface {
+	io.Writer
+	io.ByteWriter
+	io.StringWriter
 }
 
-// Block writes a (whitespace-trimmed) block of text and inserts 2 lines.
-func (p *Pen) Block(block string) {
-	if p.err != nil {
-		return
-	}
-
-	p.WriteString(strings.TrimSpace(block))
-	p.Line()
-	p.Line()
-}
-
-// BlockTmpl writes a template into the pen.
-func (p *Pen) BlockTmpl(tmpl *template.Template, args interface{}) {
-	if p.err != nil {
-		return
-	}
-
-	p.err = tmpl.Execute(&p.Writer, args)
-	p.Line()
+// NewPen creates a new Pen that preallocates 1KB.
+func NewPen(w PenWriter) *Pen {
+	return &Pen{w}
 }
 
 // Words writes a list of words into a single line.
 func (p *Pen) Words(words ...string) {
-	if p.err != nil {
-		return
-	}
-
 	for i, word := range words {
 		if i != 0 {
 			p.WriteByte(' ')
 		}
-
-		_, p.err = p.WriteString(word)
-		if p.err != nil {
-			return
-		}
+		p.WriteString(word)
 	}
-
-	p.Line()
+	p.EmptyLine()
 }
 
-// Wordf writes a Sprintf-formatted line.
-func (p *Pen) Wordf(f string, v ...interface{}) {
-	if p.err != nil {
-		return
-	}
+// Line writes a single line.
+func (p *Pen) Line(line string) { p.Linef(line) }
 
+// Linef writes a Sprintf-formatted line.
+func (p *Pen) Linef(f string, v ...interface{}) {
 	if len(v) == 0 {
-		_, p.err = p.WriteString(f)
+		p.WriteString(f)
 	} else {
-		_, p.err = fmt.Fprintf(&p.Writer, f, v...)
+		fmt.Fprintf(p.PenWriter, f, v...)
 	}
-
-	if p.err != nil {
-		return
-	}
-
-	p.Line()
+	p.EmptyLine()
 }
 
-// Line adds a line.
-func (p *Pen) Line() {
-	if p.err != nil {
-		return
-	}
-
-	p.err = p.WriteByte('\n')
-	return
+// EmptyLine adds an empty line.
+func (p *Pen) EmptyLine() {
+	p.WriteByte('\n')
 }
 
-// Flush flushes multiple pens or any flushers.
-func Flush(flushers ...interface{ Flush() error }) error {
-	for _, flusher := range flushers {
-		if err := flusher.Flush(); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (p *Pen) Descend() { p.Line("{") }
+func (p *Pen) Ascend()  { p.Line("}") }
 
-// Flush flushes the internal buffer into the writer.
-func (p *Pen) Flush() error {
-	if p.err != nil {
-		return p.err
+// WritTmpl writes a template into the pen.
+func (p *Pen) WriteTmpl(tmpl *template.Template, args interface{}) {
+	if err := tmpl.Execute(p.PenWriter, args); err != nil {
+		log.Panicln("template error:", err)
 	}
-
-	return p.Writer.Flush()
+	p.EmptyLine()
 }

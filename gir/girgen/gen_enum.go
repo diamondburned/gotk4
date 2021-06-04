@@ -47,7 +47,7 @@ func (ng *NamespaceGenerator) generateEnums() {
 			fg.addMarshaler(enum.GLibGetType, PascalToGo(enum.Name))
 		}
 
-		fg.pen.BlockTmpl(enumTmpl, &enumGenerator{
+		fg.pen.WriteTmpl(enumTmpl, &enumGenerator{
 			Enum: enum,
 			Ng:   ng,
 		})

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
@@ -427,19 +428,17 @@ func (c cancellable) Reset() {
 // notify that the operation was cancelled.
 func (c cancellable) SetErrorIfCancelled() error {
 	var arg0 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_cancellable_set_error_if_cancelled(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // NewSource creates a source that triggers if @cancellable is cancelled and

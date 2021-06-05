@@ -89,6 +89,21 @@ func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
 	}
 }
 
+// newThrowValue creates a new GError value.
+func newThrowValue(in, out string) ValueProp {
+	return ValueProp{
+		In:  in,
+		Out: out,
+		Type: gir.AnyType{
+			Type: &gir.Type{
+				Name:  "GLib.Error",
+				CType: "GError*",
+			},
+		},
+		AllowNone: true,
+	}
+}
+
 // IsZero returns true if ValueProp is empty.
 func (value *ValueProp) IsZero() bool {
 	return value.In == "" || value.Out == ""
@@ -193,6 +208,11 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 
 	value.inDecl.Linef("var %s %s", value.In, value.InType)
 	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
+
+	// Dereference the output value if this is an outptu parameter.
+	if value.OutputIsParameter {
+		value.Out = "*" + value.Out
+	}
 
 	return true
 }

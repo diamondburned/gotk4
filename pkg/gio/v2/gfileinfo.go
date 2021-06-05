@@ -410,9 +410,9 @@ func (i fileInfo) AttributeData(attribute string) (typ FileAttributeType, valueP
 
 	cret = C.g_file_info_get_attribute_data(arg0, attribute, &arg2, &arg3, &arg4)
 
-	ret2 = *FileAttributeType(arg2)
-	ret3 = C.gpointer(arg3)
-	ret4 = *FileAttributeStatus(arg4)
+	*ret2 = *FileAttributeType(arg2)
+	*ret3 = C.gpointer(arg3)
+	*ret4 = *FileAttributeStatus(arg4)
 	ret4 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret4, ret4
@@ -819,7 +819,7 @@ func (i fileInfo) ModificationTime() glib.TimeVal {
 
 	C.g_file_info_get_modification_time(arg0, &arg1)
 
-	ret1 = glib.WrapTimeVal(unsafe.Pointer(arg1))
+	*ret1 = glib.WrapTimeVal(unsafe.Pointer(arg1))
 
 	return ret1
 }

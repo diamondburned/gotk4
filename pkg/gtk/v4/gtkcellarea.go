@@ -735,7 +735,7 @@ func (a cellArea) CellAllocation(context CellAreaContext, widget Widget, rendere
 
 	C.gtk_cell_area_get_cell_allocation(arg0, context, widget, renderer, cellArea, &arg5)
 
-	ret5 = gdk.WrapRectangle(unsafe.Pointer(arg5))
+	*ret5 = gdk.WrapRectangle(unsafe.Pointer(arg5))
 
 	return ret5
 }
@@ -765,7 +765,7 @@ func (a cellArea) CellAtPosition(context CellAreaContext, widget Widget, cellAre
 
 	cret = C.gtk_cell_area_get_cell_at_position(arg0, context, widget, cellArea, x, y, &arg6)
 
-	ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
+	*ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
 	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRenderer)
 
 	return ret6, ret2
@@ -904,8 +904,8 @@ func (a cellArea) PreferredHeight(context CellAreaContext, widget Widget) (minim
 
 	C.gtk_cell_area_get_preferred_height(arg0, context, widget, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -942,8 +942,8 @@ func (a cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget
 
 	C.gtk_cell_area_get_preferred_height_for_width(arg0, context, widget, width, &arg4, &arg5)
 
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
 
 	return ret4, ret5
 }
@@ -971,8 +971,8 @@ func (a cellArea) PreferredWidth(context CellAreaContext, widget Widget) (minimu
 
 	C.gtk_cell_area_get_preferred_width(arg0, context, widget, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -1009,8 +1009,8 @@ func (a cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget
 
 	C.gtk_cell_area_get_preferred_width_for_height(arg0, context, widget, height, &arg4, &arg5)
 
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
 
 	return ret4, ret5
 }
@@ -1068,7 +1068,7 @@ func (a cellArea) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.Rect
 
 	C.gtk_cell_area_inner_cell_area(arg0, widget, cellArea, &arg3)
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	*ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -1161,8 +1161,8 @@ func (a cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation
 
 	C.gtk_cell_area_request_renderer(arg0, renderer, orientation, widget, forSize, &arg5, &arg6)
 
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
 
 	return ret5, ret6
 }

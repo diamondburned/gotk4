@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -223,20 +225,18 @@ func (p *ThreadPool) MoveToFront(data interface{}) bool {
 func (p *ThreadPool) Push(data interface{}) error {
 	var arg0 *C.GThreadPool
 	var arg1 C.gpointer
-	var errout *C.GError
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	arg1 = C.gpointer(data)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_thread_pool_push(arg0, data, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetMaxThreads sets the maximal allowed number of threads for @pool. A value
@@ -260,20 +260,18 @@ func (p *ThreadPool) Push(data interface{}) error {
 func (p *ThreadPool) SetMaxThreads(maxThreads int) error {
 	var arg0 *C.GThreadPool
 	var arg1 C.gint
-	var errout *C.GError
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	arg1 = C.gint(maxThreads)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_thread_pool_set_max_threads(arg0, maxThreads, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetSortFunction sets the function used to sort the list of tasks. This allows

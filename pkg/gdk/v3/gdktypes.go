@@ -181,7 +181,7 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 
 	cret = C.gdk_rectangle_intersect(arg0, src2, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -205,7 +205,7 @@ func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 
 	C.gdk_rectangle_union(arg0, src2, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }

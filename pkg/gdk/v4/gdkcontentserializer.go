@@ -6,9 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,17 +36,15 @@ func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *exte
 // ContentSerializeFinish finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) error {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_content_serialize_finish(result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

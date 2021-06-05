@@ -149,8 +149,8 @@ func (t *TabArray) Tab(tabIndex int) (alignment TabAlign, location int) {
 
 	C.pango_tab_array_get_tab(arg0, tabIndex, &arg2, &arg3)
 
-	ret2 = *TabAlign(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = *TabAlign(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }

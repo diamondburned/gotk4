@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -40,24 +41,21 @@ func init() {
 func NewTLSServerConnection(baseIOStream IOStream, certificate TLSCertificate) (tlsServerConnection TLSServerConnection, err error) {
 	var arg1 *C.GIOStream
 	var arg2 *C.GTlsCertificate
-	var errout *C.GError
 
 	arg1 = (*C.GIOStream)(unsafe.Pointer(baseIOStream.Native()))
 	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
-	var cret *C.GIOStream
-	var ret1 TLSServerConnection
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIOStream
+	var ret2 TLSServerConnection
 
 	cret = C.g_tls_server_connection_new(baseIOStream, certificate, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSServerConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSServerConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // TLSServerConnection is the server-side subclass of Connection, representing a

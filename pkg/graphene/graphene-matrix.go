@@ -93,11 +93,11 @@ func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, she
 
 	cret = C.graphene_matrix_decompose(arg0, &arg1, &arg2, &arg3, &arg4, &arg5)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
-	ret3 = WrapQuaternion(unsafe.Pointer(arg3))
-	ret4 = WrapVec3(unsafe.Pointer(arg4))
-	ret5 = WrapVec4(unsafe.Pointer(arg5))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret3 = WrapQuaternion(unsafe.Pointer(arg3))
+	*ret4 = WrapVec3(unsafe.Pointer(arg4))
+	*ret5 = WrapVec4(unsafe.Pointer(arg5))
 	ret6 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3, ret4, ret5, ret6
@@ -196,7 +196,7 @@ func (m *Matrix) Row(index_ uint) Vec4 {
 
 	C.graphene_matrix_get_row(arg0, index_, &arg2)
 
-	ret2 = WrapVec4(unsafe.Pointer(arg2))
+	*ret2 = WrapVec4(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -657,7 +657,7 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 
 	C.graphene_matrix_interpolate(arg0, b, factor, &arg3)
 
-	ret3 = WrapMatrix(unsafe.Pointer(arg3))
+	*ret3 = WrapMatrix(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -675,7 +675,7 @@ func (m *Matrix) Inverse() (res Matrix, ok bool) {
 
 	cret = C.graphene_matrix_inverse(arg0, &arg1)
 
-	ret1 = WrapMatrix(unsafe.Pointer(arg1))
+	*ret1 = WrapMatrix(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -764,7 +764,7 @@ func (a *Matrix) Multiply(b *Matrix) Matrix {
 
 	C.graphene_matrix_multiply(arg0, b, &arg2)
 
-	ret2 = WrapMatrix(unsafe.Pointer(arg2))
+	*ret2 = WrapMatrix(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -801,7 +801,7 @@ func (m *Matrix) Normalize() Matrix {
 
 	C.graphene_matrix_normalize(arg0, &arg1)
 
-	ret1 = WrapMatrix(unsafe.Pointer(arg1))
+	*ret1 = WrapMatrix(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -819,7 +819,7 @@ func (m *Matrix) Perspective(depth float32) Matrix {
 
 	C.graphene_matrix_perspective(arg0, depth, &arg2)
 
-	ret2 = WrapMatrix(unsafe.Pointer(arg2))
+	*ret2 = WrapMatrix(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -849,7 +849,7 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 
 	C.graphene_matrix_project_point(arg0, p, &arg2)
 
-	ret2 = WrapPoint(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -870,7 +870,7 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 
 	C.graphene_matrix_project_rect(arg0, r, &arg2)
 
-	ret2 = WrapQuad(unsafe.Pointer(arg2))
+	*ret2 = WrapQuad(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -891,7 +891,7 @@ func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 
 	C.graphene_matrix_project_rect_bounds(arg0, r, &arg2)
 
-	ret2 = WrapRect(unsafe.Pointer(arg2))
+	*ret2 = WrapRect(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1066,12 +1066,12 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 
 	cret = C.graphene_matrix_to_2d(arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
-	ret3 = C.double(arg3)
-	ret4 = C.double(arg4)
-	ret5 = C.double(arg5)
-	ret6 = C.double(arg6)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
+	*ret3 = C.double(arg3)
+	*ret4 = C.double(arg4)
+	*ret5 = C.double(arg5)
+	*ret6 = C.double(arg6)
 	ret7 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3, ret4, ret5, ret6, ret7
@@ -1112,7 +1112,7 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 
 	C.graphene_matrix_transform_bounds(arg0, r, &arg2)
 
-	ret2 = WrapRect(unsafe.Pointer(arg2))
+	*ret2 = WrapRect(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1134,7 +1134,7 @@ func (m *Matrix) TransformBox(b *Box) Box {
 
 	C.graphene_matrix_transform_box(arg0, b, &arg2)
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	*ret2 = WrapBox(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1158,7 +1158,7 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 
 	C.graphene_matrix_transform_point(arg0, p, &arg2)
 
-	ret2 = WrapPoint(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1183,7 +1183,7 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 
 	C.graphene_matrix_transform_point3d(arg0, p, &arg2)
 
-	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1201,7 +1201,7 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 
 	C.graphene_matrix_transform_ray(arg0, r, &arg2)
 
-	ret2 = WrapRay(unsafe.Pointer(arg2))
+	*ret2 = WrapRay(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1224,7 +1224,7 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 
 	C.graphene_matrix_transform_rect(arg0, r, &arg2)
 
-	ret2 = WrapQuad(unsafe.Pointer(arg2))
+	*ret2 = WrapQuad(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1243,7 +1243,7 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 
 	C.graphene_matrix_transform_sphere(arg0, s, &arg2)
 
-	ret2 = WrapSphere(unsafe.Pointer(arg2))
+	*ret2 = WrapSphere(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1267,7 +1267,7 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 
 	C.graphene_matrix_transform_vec3(arg0, v, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1287,7 +1287,7 @@ func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 
 	C.graphene_matrix_transform_vec4(arg0, v, &arg2)
 
-	ret2 = WrapVec4(unsafe.Pointer(arg2))
+	*ret2 = WrapVec4(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1318,7 +1318,7 @@ func (m *Matrix) Transpose() Matrix {
 
 	C.graphene_matrix_transpose(arg0, &arg1)
 
-	ret1 = WrapMatrix(unsafe.Pointer(arg1))
+	*ret1 = WrapMatrix(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1339,7 +1339,7 @@ func (p *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
 
 	C.graphene_matrix_unproject_point3d(arg0, modelview, point, &arg3)
 
-	ret3 = WrapPoint3D(unsafe.Pointer(arg3))
+	*ret3 = WrapPoint3D(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -1361,7 +1361,7 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 
 	C.graphene_matrix_untransform_bounds(arg0, r, bounds, &arg3)
 
-	ret3 = WrapRect(unsafe.Pointer(arg3))
+	*ret3 = WrapRect(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -1384,7 +1384,7 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (res Point, ok bool) {
 
 	cret = C.graphene_matrix_untransform_point(arg0, p, bounds, &arg3)
 
-	ret3 = WrapPoint(unsafe.Pointer(arg3))
+	*ret3 = WrapPoint(unsafe.Pointer(arg3))
 	ret2 = C.bool(cret) != C.false
 
 	return ret3, ret2

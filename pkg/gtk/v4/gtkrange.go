@@ -245,7 +245,7 @@ func (r _range) RangeRect() gdk.Rectangle {
 
 	C.gtk_range_get_range_rect(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -316,8 +316,8 @@ func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 
 	C.gtk_range_get_slider_range(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }

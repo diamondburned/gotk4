@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -80,7 +81,6 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (typ string, input
 	var arg0 *C.GLoadableIcon
 	var arg1 C.int
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	arg1 = C.int(size)
@@ -88,21 +88,19 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (typ string, input
 
 	var arg2 *C.char
 	var ret2 string
-	var cret *C.GInputStream
-	var ret2 InputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GInputStream
+	var ret3 InputStream
 
 	cret = C.g_loadable_icon_load(arg0, size, &arg2, cancellable, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // LoadAsync loads an icon asynchronously. To finish this function, see
@@ -121,26 +119,23 @@ func (i loadableIcon) LoadAsync(size int, cancellable Cancellable, callback Asyn
 func (i loadableIcon) LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg2 *C.char
 	var ret2 string
-	var cret *C.GInputStream
-	var ret2 InputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GInputStream
+	var ret3 InputStream
 
 	cret = C.g_loadable_icon_load_finish(arg0, res, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }

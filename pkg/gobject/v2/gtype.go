@@ -673,7 +673,7 @@ func TypeQuery(typ externglib.Type) TypeQuery {
 
 	C.g_type_query(typ, &arg2)
 
-	ret2 = WrapTypeQuery(unsafe.Pointer(arg2))
+	*ret2 = WrapTypeQuery(unsafe.Pointer(arg2))
 
 	return ret2
 }

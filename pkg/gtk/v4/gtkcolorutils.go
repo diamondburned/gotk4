@@ -29,9 +29,9 @@ func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32)
 
 	C.gtk_hsv_to_rgb(h, s, v, &arg4, &arg5, &arg6)
 
-	ret4 = C.float(arg4)
-	ret5 = C.float(arg5)
-	ret6 = C.float(arg6)
+	*ret4 = C.float(arg4)
+	*ret5 = C.float(arg5)
+	*ret6 = C.float(arg6)
 
 	return ret4, ret5, ret6
 }
@@ -58,9 +58,9 @@ func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32)
 
 	C.gtk_rgb_to_hsv(r, g, b, &arg4, &arg5, &arg6)
 
-	ret4 = C.float(arg4)
-	ret5 = C.float(arg5)
-	ret6 = C.float(arg6)
+	*ret4 = C.float(arg4)
+	*ret5 = C.float(arg5)
+	*ret6 = C.float(arg6)
 
 	return ret4, ret5, ret6
 }

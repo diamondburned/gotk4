@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -279,23 +280,20 @@ func (s surface) CreateCairoContext() CairoContext {
 // gdk_gl_context_make_current() or gdk_gl_context_realize().
 func (s surface) CreateGLContext() (glContext GLContext, err error) {
 	var arg0 *C.GdkSurface
-	var errout *C.GError
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkGLContext
-	var ret1 GLContext
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkGLContext
+	var ret2 GLContext
 
 	cret = C.gdk_surface_create_gl_context(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CreateSimilarSurface: create a new surface that is as compatible as
@@ -337,23 +335,20 @@ func (s surface) CreateSimilarSurface(content cairo.Content, width int, height i
 // If the creation of the VulkanContext failed, @error will be set.
 func (s surface) CreateVulkanContext() (vulkanContext VulkanContext, err error) {
 	var arg0 *C.GdkSurface
-	var errout *C.GError
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkVulkanContext
-	var ret1 VulkanContext
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkVulkanContext
+	var ret2 VulkanContext
 
 	cret = C.gdk_surface_create_vulkan_context(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanContext)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanContext)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Destroy destroys the window system resources associated with @surface and
@@ -433,9 +428,9 @@ func (s surface) DevicePosition(device Device) (x float64, y float64, mask Modif
 
 	cret = C.gdk_surface_get_device_position(arg0, device, &arg2, &arg3, &arg4)
 
-	ret2 = C.double(arg2)
-	ret3 = C.double(arg3)
-	ret4 = *ModifierType(arg4)
+	*ret2 = C.double(arg2)
+	*ret3 = C.double(arg3)
+	*ret4 = *ModifierType(arg4)
 	ret4 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret4, ret4

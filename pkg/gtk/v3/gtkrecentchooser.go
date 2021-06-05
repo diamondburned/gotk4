@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -488,42 +489,38 @@ func (c recentChooser) SelectAll() {
 func (c recentChooser) SelectURI(uri string) error {
 	var arg0 *C.GtkRecentChooser
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_recent_chooser_select_uri(arg0, uri, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetCurrentURI sets @uri as the current URI for @chooser.
 func (c recentChooser) SetCurrentURI(uri string) error {
 	var arg0 *C.GtkRecentChooser
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_recent_chooser_set_current_uri(arg0, uri, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetFilter sets @filter as the current RecentFilter object used by

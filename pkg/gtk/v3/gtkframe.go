@@ -168,8 +168,8 @@ func (f frame) LabelAlign() (xalign float32, yalign float32) {
 
 	C.gtk_frame_get_label_align(arg0, &arg1, &arg2)
 
-	ret1 = C.gfloat(arg1)
-	ret2 = C.gfloat(arg2)
+	*ret1 = C.gfloat(arg1)
+	*ret2 = C.gfloat(arg2)
 
 	return ret1, ret2
 }

@@ -383,8 +383,8 @@ func (i image) GIcon() (gicon gio.Icon, size int) {
 
 	C.gtk_image_get_gicon(arg0, &arg1, &arg2)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*gio.Icon)
-	ret2 = C.GtkIconSize(arg2)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*gio.Icon)
+	*ret2 = C.GtkIconSize(arg2)
 
 	return ret1, ret2
 }
@@ -405,8 +405,8 @@ func (i image) IconName() (iconName string, size int) {
 
 	C.gtk_image_get_icon_name(arg0, &arg1, &arg2)
 
-	ret1 = C.GoString(arg1)
-	ret2 = C.GtkIconSize(arg2)
+	*ret1 = C.GoString(arg1)
+	*ret2 = C.GtkIconSize(arg2)
 
 	return ret1, ret2
 }
@@ -426,8 +426,8 @@ func (i image) IconSet() (iconSet *IconSet, size int) {
 
 	C.gtk_image_get_icon_set(arg0, &arg1, &arg2)
 
-	ret1 = WrapIconSet(unsafe.Pointer(arg1))
-	ret2 = C.GtkIconSize(arg2)
+	*ret1 = WrapIconSet(unsafe.Pointer(arg1))
+	*ret2 = C.GtkIconSize(arg2)
 
 	return ret1, ret2
 }
@@ -483,8 +483,8 @@ func (i image) Stock() (stockID string, size int) {
 
 	C.gtk_image_get_stock(arg0, &arg1, &arg2)
 
-	ret1 = C.GoString(arg1)
-	ret2 = C.GtkIconSize(arg2)
+	*ret1 = C.GoString(arg1)
+	*ret2 = C.GtkIconSize(arg2)
 
 	return ret1, ret2
 }

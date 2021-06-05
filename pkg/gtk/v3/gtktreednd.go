@@ -48,9 +48,9 @@ func TreeGetRowDragData(selectionData *SelectionData) (treeModel TreeModel, path
 
 	cret = C.gtk_tree_get_row_drag_data(selectionData, &arg2, &arg3)
 
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(*TreeModel)
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(*TreeModel)
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret3 = C.bool(cret) != C.false

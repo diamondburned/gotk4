@@ -582,8 +582,8 @@ func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY 
 
 	C.gtk_text_view_buffer_to_window_coords(arg0, win, bufferX, bufferY, &arg4, &arg5)
 
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
 
 	return ret4, ret5
 }
@@ -722,8 +722,8 @@ func (t textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gd
 
 	C.gtk_text_view_get_cursor_locations(arg0, iter, &arg2, &arg3)
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 
 	return ret2, ret3
 }
@@ -871,7 +871,7 @@ func (t textView) IterAtLocation(x int, y int) (iter TextIter, ok bool) {
 
 	cret = C.gtk_text_view_get_iter_at_location(arg0, &arg1, x, y)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -903,8 +903,8 @@ func (t textView) IterAtPosition(x int, y int) (iter TextIter, trailing int, ok 
 
 	cret = C.gtk_text_view_get_iter_at_position(arg0, &arg1, &arg2, x, y)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = C.int(arg2)
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret2 = C.int(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -926,7 +926,7 @@ func (t textView) IterLocation(iter *TextIter) gdk.Rectangle {
 
 	C.gtk_text_view_get_iter_location(arg0, iter, &arg2)
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -983,8 +983,8 @@ func (t textView) LineAtY(y int) (targetIter TextIter, lineTop int) {
 
 	C.gtk_text_view_get_line_at_y(arg0, &arg1, y, &arg3)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret3 = C.int(arg3)
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret3 = C.int(arg3)
 
 	return ret1, ret3
 }
@@ -1007,8 +1007,8 @@ func (t textView) LineYrange(iter *TextIter) (y int, height int) {
 
 	C.gtk_text_view_get_line_yrange(arg0, iter, &arg2, &arg3)
 
-	ret2 = C.int(arg2)
-	ret3 = C.int(arg3)
+	*ret2 = C.int(arg2)
+	*ret3 = C.int(arg3)
 
 	return ret2, ret3
 }
@@ -1169,7 +1169,7 @@ func (t textView) VisibleRect() gdk.Rectangle {
 
 	C.gtk_text_view_get_visible_rect(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1759,8 +1759,8 @@ func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY 
 
 	C.gtk_text_view_window_to_buffer_coords(arg0, win, windowX, windowY, &arg4, &arg5)
 
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
 
 	return ret4, ret5
 }

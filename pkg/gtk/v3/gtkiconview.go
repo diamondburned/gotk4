@@ -400,8 +400,8 @@ func (i iconView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int
 
 	C.gtk_icon_view_convert_widget_to_bin_window_coords(arg0, wx, wy, &arg3, &arg4)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }
@@ -465,7 +465,7 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangl
 
 	cret = C.gtk_icon_view_get_cell_rect(arg0, path, cell, &arg3)
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	*ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	ret2 = C.bool(cret) != C.false
 
 	return ret3, ret2
@@ -522,11 +522,11 @@ func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 
 	cret = C.gtk_icon_view_get_cursor(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
+	*ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -551,11 +551,11 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconV
 
 	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, dragX, dragY, &arg3, &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = *IconViewDropPosition(arg4)
+	*ret4 = *IconViewDropPosition(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -575,11 +575,11 @@ func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition) {
 
 	C.gtk_icon_view_get_drag_dest_item(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = *IconViewDropPosition(arg2)
+	*ret2 = *IconViewDropPosition(arg2)
 
 	return ret1, ret2
 }
@@ -608,11 +608,11 @@ func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok
 
 	cret = C.gtk_icon_view_get_item_at_pos(arg0, x, y, &arg3, &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -958,12 +958,12 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 
 	cret = C.gtk_icon_view_get_tooltip_context(arg0, x, y, keyboardTip, &arg4, &arg5, &arg6)
 
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
-	ret5 = WrapTreePath(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **TreePath) {
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
+	*ret5 = WrapTreePath(unsafe.Pointer(arg5))
+	runtime.SetFinalizer(*ret5, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret6 = WrapTreeIter(unsafe.Pointer(arg6))
+	*ret6 = WrapTreeIter(unsafe.Pointer(arg6))
 	ret4 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret6, ret4
@@ -987,12 +987,12 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 	cret = C.gtk_icon_view_get_visible_range(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = WrapTreePath(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **TreePath) {
+	*ret2 = WrapTreePath(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret3 = C.bool(cret) != C.false

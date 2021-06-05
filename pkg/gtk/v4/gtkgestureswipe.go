@@ -91,8 +91,8 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 
 	cret = C.gtk_gesture_swipe_get_velocity(arg0, &arg1, &arg2)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

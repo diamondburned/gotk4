@@ -6,9 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,20 +30,18 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, typ extern
 func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) error {
 	var arg1 *C.GAsyncResult
 	var arg2 *C.GValue
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 	arg2 = (*C.GValue)(value.GValue)
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_content_deserialize_finish(result, value, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ContentRegisterDeserializer registers a function to create objects of a given

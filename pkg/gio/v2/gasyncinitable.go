@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -265,20 +266,18 @@ func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callba
 func (i asyncInitable) InitFinish(res AsyncResult) error {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_async_initable_init_finish(arg0, res, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // NewFinish finishes the async construction for the various
@@ -286,22 +285,19 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 func (i asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, err error) {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GObject
-	var ret1 gextras.Objector
+	var errout *C.GError
 	var goerr error
+	var cret *C.GObject
+	var ret2 gextras.Objector
 
 	cret = C.g_async_initable_new_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return ret1, goerr
+	return goerr, ret2
 }

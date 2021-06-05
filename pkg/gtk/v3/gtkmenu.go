@@ -45,7 +45,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 	pushIn := fn(menu, x, y, userData)
 
 	if pushIn {
-		arg3 = C.gboolean(1)
+		*arg3 = C.gboolean(1)
 	}
 }
 

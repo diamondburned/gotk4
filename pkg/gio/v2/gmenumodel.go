@@ -144,9 +144,9 @@ func (i menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok bo
 
 	cret = C.g_menu_attribute_iter_get_next(arg0, &arg1, &arg2)
 
-	ret1 = C.GoString(arg1)
-	ret2 = glib.WrapVariant(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **glib.Variant) {
+	*ret1 = C.GoString(arg1)
+	*ret2 = glib.WrapVariant(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret3 = C.bool(cret) != C.false
@@ -303,8 +303,8 @@ func (i menuLinkIter) GetNext() (outLink string, value MenuModel, ok bool) {
 
 	cret = C.g_menu_link_iter_get_next(arg0, &arg1, &arg2)
 
-	ret1 = C.GoString(arg1)
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(MenuModel)
+	*ret1 = C.GoString(arg1)
+	*ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(MenuModel)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -39,24 +40,21 @@ func init() {
 func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) (dtlsClientConnection DTLSClientConnection, err error) {
 	var arg1 *C.GDatagramBased
 	var arg2 *C.GSocketConnectable
-	var errout *C.GError
 
 	arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
 	arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
-	var cret *C.GDatagramBased
-	var ret1 DTLSClientConnection
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDatagramBased
+	var ret2 DTLSClientConnection
 
 	cret = C.g_dtls_client_connection_new(baseSocket, serverIdentity, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSClientConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSClientConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing

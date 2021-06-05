@@ -298,10 +298,10 @@ func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding ui
 
 	C.gtk_box_query_child_packing(arg0, child, &arg2, &arg3, &arg4, &arg5)
 
-	ret2 = C.bool(arg2) != C.false
-	ret3 = C.bool(arg3) != C.false
-	ret4 = C.guint(arg4)
-	ret5 = *PackType(arg5)
+	*ret2 = C.bool(arg2) != C.false
+	*ret3 = C.bool(arg3) != C.false
+	*ret4 = C.guint(arg4)
+	*ret5 = *PackType(arg5)
 
 	return ret2, ret3, ret4, ret5
 }

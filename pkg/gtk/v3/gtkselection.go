@@ -440,7 +440,7 @@ func (l *TargetList) Find(target gdk.Atom) (info uint, ok bool) {
 
 	cret = C.gtk_target_list_find(arg0, target, &arg2)
 
-	ret2 = C.guint(arg2)
+	*ret2 = C.guint(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

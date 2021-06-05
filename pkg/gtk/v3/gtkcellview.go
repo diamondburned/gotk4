@@ -287,7 +287,7 @@ func (c cellView) SizeOfRow(path *TreePath) (requisition Requisition, ok bool) {
 
 	cret = C.gtk_cell_view_get_size_of_row(arg0, path, &arg2)
 
-	ret2 = WrapRequisition(unsafe.Pointer(arg2))
+	*ret2 = WrapRequisition(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

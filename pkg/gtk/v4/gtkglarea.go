@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -97,7 +97,7 @@ type GLArea interface {
 	// Context retrieves the GLContext used by @area.
 	Context() gdk.GLContext
 	// Error gets the current error set on the @area.
-	Error() *glib.Error
+	Error() error
 	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
 	// HasStencilBuffer returns whether the area has a stencil buffer.
@@ -134,7 +134,7 @@ type GLArea interface {
 	// SetError sets an error on the area which will be shown instead of the GL
 	// rendering. This is useful in the GLArea::create-context signal if GL
 	// context creation fails.
-	SetError(error *glib.Error)
+	SetError(error error)
 	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
 	// and enable a depth buffer for the target framebuffer. Otherwise there
 	// will be none.
@@ -242,17 +242,17 @@ func (a glArea) Context() gdk.GLContext {
 }
 
 // Error gets the current error set on the @area.
-func (a glArea) Error() *glib.Error {
+func (a glArea) Error() error {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GError
-	var ret1 *glib.Error
+	var ret1 error
 
 	cret = C.gtk_gl_area_get_error(arg0)
 
-	ret1 = glib.WrapError(unsafe.Pointer(cret))
+	ret1 = gerror.Take(unsafe.Pointer(cret))
 
 	return ret1
 }
@@ -303,8 +303,8 @@ func (a glArea) RequiredVersion() (major int, minor int) {
 
 	C.gtk_gl_area_get_required_version(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -377,12 +377,13 @@ func (a glArea) SetAutoRender(autoRender bool) {
 // SetError sets an error on the area which will be shown instead of the GL
 // rendering. This is useful in the GLArea::create-context signal if GL
 // context creation fails.
-func (a glArea) SetError(error *glib.Error) {
+func (a glArea) SetError(error error) {
 	var arg0 *C.GtkGLArea
 	var arg1 *C.GError
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	C.gtk_gl_area_set_error(arg0, error)
 }

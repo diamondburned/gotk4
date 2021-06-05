@@ -102,7 +102,7 @@ func (a *Point3D) Cross(b *Point3D) Point3D {
 
 	C.graphene_point3d_cross(arg0, b, &arg2)
 
-	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -122,7 +122,7 @@ func (a *Point3D) Distance(b *Point3D) (delta Vec3, gfloat float32) {
 
 	cret = C.graphene_point3d_distance(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 	ret2 = C.float(cret)
 
 	return ret2, ret2
@@ -249,7 +249,7 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 
 	C.graphene_point3d_interpolate(arg0, b, factor, &arg3)
 
-	ret3 = WrapPoint3D(unsafe.Pointer(arg3))
+	*ret3 = WrapPoint3D(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -304,7 +304,7 @@ func (p *Point3D) Normalize() Point3D {
 
 	C.graphene_point3d_normalize(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -330,7 +330,7 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 
 	C.graphene_point3d_normalize_viewport(arg0, viewport, zNear, zFar, &arg4)
 
-	ret4 = WrapPoint3D(unsafe.Pointer(arg4))
+	*ret4 = WrapPoint3D(unsafe.Pointer(arg4))
 
 	return ret4
 }
@@ -349,7 +349,7 @@ func (p *Point3D) Scale(factor float32) Point3D {
 
 	C.graphene_point3d_scale(arg0, factor, &arg2)
 
-	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -366,7 +366,7 @@ func (p *Point3D) ToVec3() Vec3 {
 
 	C.graphene_point3d_to_vec3(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }

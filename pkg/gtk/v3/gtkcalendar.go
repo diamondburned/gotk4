@@ -171,9 +171,9 @@ func (c calendar) Date() (year uint, month uint, day uint) {
 
 	C.gtk_calendar_get_date(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.guint(arg2)
-	ret3 = C.guint(arg3)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.guint(arg2)
+	*ret3 = C.guint(arg3)
 
 	return ret1, ret2, ret3
 }

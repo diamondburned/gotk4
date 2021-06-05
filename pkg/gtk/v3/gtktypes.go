@@ -1529,7 +1529,7 @@ func (p *WidgetPath) IterHasRegion(pos int, name string) (flags RegionFlags, ok 
 
 	cret = C.gtk_widget_path_iter_has_region(arg0, pos, name, &arg3)
 
-	ret3 = *RegionFlags(arg3)
+	*ret3 = *RegionFlags(arg3)
 	ret2 = C.bool(cret) != C.false
 
 	return ret3, ret2

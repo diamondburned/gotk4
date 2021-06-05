@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -166,24 +167,21 @@ func NewUnixFDListFromArray(fds []int) UnixFDList {
 func (l unixFDList) Append(fd int) (gint int, err error) {
 	var arg0 *C.GUnixFDList
 	var arg1 C.gint
-	var errout *C.GError
 
 	arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	arg1 = C.gint(fd)
 
-	var cret C.gint
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gint
+	var ret2 int
 
 	cret = C.g_unix_fd_list_append(arg0, fd, &errout)
 
-	ret1 = C.gint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Get gets a file descriptor out of @list.
@@ -200,24 +198,21 @@ func (l unixFDList) Append(fd int) (gint int, err error) {
 func (l unixFDList) Get(index_ int) (gint int, err error) {
 	var arg0 *C.GUnixFDList
 	var arg1 C.gint
-	var errout *C.GError
 
 	arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	arg1 = C.gint(index_)
 
-	var cret C.gint
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gint
+	var ret2 int
 
 	cret = C.g_unix_fd_list_get(arg0, index_, &errout)
 
-	ret1 = C.gint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Length gets the length of @list (ie: the number of file descriptors

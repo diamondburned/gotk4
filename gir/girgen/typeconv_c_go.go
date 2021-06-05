@@ -308,6 +308,11 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 		value.p.Linef("%s = C.bool(%s) != C.false", value.Out, value.In)
 		return
 
+	case value.resolved.IsBuiltin("error"):
+		conv.sides.addImport(importInternal("gerror"))
+		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.Out, value.In)
+		return
+
 	case value.resolved.IsPrimitive():
 		value.p.Linef("%s = %s(%s)", value.Out, value.InType, value.In)
 		return

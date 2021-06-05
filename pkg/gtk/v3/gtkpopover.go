@@ -334,7 +334,7 @@ func (p popover) PointingTo() (rect gdk.Rectangle, ok bool) {
 
 	cret = C.gtk_popover_get_pointing_to(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

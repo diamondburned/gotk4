@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
@@ -157,20 +158,18 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 func (s glShader) Compile(renderer Renderer) error {
 	var arg0 *C.GskGLShader
 	var arg1 *C.GskRenderer
-	var errout *C.GError
 
 	arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gsk_gl_shader_compile(arg0, renderer, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // FindUniformByName looks for a uniform by the name @name, and returns the

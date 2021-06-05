@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -144,45 +145,39 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 // NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
 func NewDBusObjectManagerClientFinish(res AsyncResult) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret C.GDBusObjectManagerClient
-	var ret1 DBusObjectManagerClient
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusObjectManagerClient
+	var ret2 DBusObjectManagerClient
 
 	cret = C.g_dbus_object_manager_client_new_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerClient)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerClient)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
 func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret C.GDBusObjectManagerClient
-	var ret1 DBusObjectManagerClient
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusObjectManagerClient
+	var ret2 DBusObjectManagerClient
 
 	cret = C.g_dbus_object_manager_client_new_for_bus_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerClient)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerClient)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Connection gets the BusConnection used by @manager.

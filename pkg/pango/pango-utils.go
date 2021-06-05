@@ -95,8 +95,8 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (value int, possibleV
 
 	cret = C.pango_parse_enum(typ, str, &arg3, warn, &arg5)
 
-	ret3 = C.int(arg3)
-	ret5 = C.GoString(arg5)
+	*ret3 = C.int(arg3)
+	*ret5 = C.GoString(arg5)
 	defer C.free(unsafe.Pointer(arg5))
 	ret3 = C.bool(cret) != C.false
 
@@ -126,7 +126,7 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 
 	cret = C.pango_parse_stretch(str, &arg2, warn)
 
-	ret2 = *Stretch(arg2)
+	*ret2 = *Stretch(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -153,7 +153,7 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 
 	cret = C.pango_parse_style(str, &arg2, warn)
 
-	ret2 = *Style(arg2)
+	*ret2 = *Style(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -180,7 +180,7 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 
 	cret = C.pango_parse_variant(str, &arg2, warn)
 
-	ret2 = *Variant(arg2)
+	*ret2 = *Variant(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -207,7 +207,7 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 
 	cret = C.pango_parse_weight(str, &arg2, warn)
 
-	ret2 = *Weight(arg2)
+	*ret2 = *Weight(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -274,7 +274,7 @@ func ScanInt(pos string) (out int, ok bool) {
 
 	cret = C.pango_scan_int(pos, &arg2)
 
-	ret2 = C.int(arg2)
+	*ret2 = C.int(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

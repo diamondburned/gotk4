@@ -164,7 +164,7 @@ func (b colorButton) Color() gdk.Color {
 
 	C.gtk_color_button_get_color(arg0, &arg1)
 
-	ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -180,7 +180,7 @@ func (b colorButton) RGBA() gdk.RGBA {
 
 	C.gtk_color_button_get_rgba(arg0, &arg1)
 
-	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 
 	return ret1
 }

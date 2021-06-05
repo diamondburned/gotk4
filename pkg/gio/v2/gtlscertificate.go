@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -91,75 +92,66 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 // NewTLSCertificateFromFile constructs a class TLSCertificate.
 func NewTLSCertificateFromFile(file string) (tlsCertificate TLSCertificate, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GTlsCertificate
-	var ret1 TLSCertificate
+	var errout *C.GError
 	var goerr error
+	var cret C.GTlsCertificate
+	var ret2 TLSCertificate
 
 	cret = C.g_tls_certificate_new_from_file(file, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewTLSCertificateFromFiles constructs a class TLSCertificate.
 func NewTLSCertificateFromFiles(certFile string, keyFile string) (tlsCertificate TLSCertificate, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(certFile))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(keyFile))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GTlsCertificate
-	var ret1 TLSCertificate
+	var errout *C.GError
 	var goerr error
+	var cret C.GTlsCertificate
+	var ret2 TLSCertificate
 
 	cret = C.g_tls_certificate_new_from_files(certFile, keyFile, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewTLSCertificateFromPem constructs a class TLSCertificate.
 func NewTLSCertificateFromPem(data string, length int) (tlsCertificate TLSCertificate, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gssize
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(data))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(length)
 
-	var cret C.GTlsCertificate
-	var ret1 TLSCertificate
+	var errout *C.GError
 	var goerr error
+	var cret C.GTlsCertificate
+	var ret2 TLSCertificate
 
 	cret = C.g_tls_certificate_new_from_pem(data, length, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Issuer gets the Certificate representing @cert's issuer, if known

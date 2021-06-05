@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -51,7 +52,7 @@ type MediaStream interface {
 	//
 	// To unset an error, the stream must be reset via a call to
 	// gtk_media_stream_unprepared().
-	Gerror(error *glib.Error)
+	Gerror(error error)
 	// Duration gets the duration of the stream. If the duration is not known, 0
 	// will be returned.
 	Duration() int64
@@ -68,7 +69,7 @@ type MediaStream interface {
 	// MediaStream itself does not provide a way to unset an error, but
 	// implementations may provide options. For example, a MediaFile will unset
 	// errors when a new source is set with ie gtk_media_file_set_file().
-	Error() *glib.Error
+	Error() error
 	// Loop returns whether the stream is set to loop. See
 	// gtk_media_stream_set_loop() for details.
 	Loop() bool
@@ -239,12 +240,12 @@ func (s mediaStream) Ended() {
 //
 // To unset an error, the stream must be reset via a call to
 // gtk_media_stream_unprepared().
-func (s mediaStream) Gerror(error *glib.Error) {
+func (s mediaStream) Gerror(error error) {
 	var arg0 *C.GtkMediaStream
 	var arg1 *C.GError
 
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
 
 	C.gtk_media_stream_gerror(arg0, error)
 }
@@ -293,17 +294,17 @@ func (s mediaStream) GetEnded() bool {
 // MediaStream itself does not provide a way to unset an error, but
 // implementations may provide options. For example, a MediaFile will unset
 // errors when a new source is set with ie gtk_media_file_set_file().
-func (s mediaStream) Error() *glib.Error {
+func (s mediaStream) Error() error {
 	var arg0 *C.GtkMediaStream
 
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GError
-	var ret1 *glib.Error
+	var ret1 error
 
 	cret = C.gtk_media_stream_get_error(arg0)
 
-	ret1 = glib.WrapError(unsafe.Pointer(cret))
+	ret1 = gerror.Take(unsafe.Pointer(cret))
 
 	return ret1
 }

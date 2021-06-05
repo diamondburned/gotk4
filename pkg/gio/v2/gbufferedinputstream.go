@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -200,25 +201,22 @@ func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (gssize in
 	var arg0 *C.GBufferedInputStream
 	var arg1 C.gssize
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = C.gssize(count)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_buffered_input_stream_fill(arg0, count, cancellable, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // FillAsync reads data into @stream's buffer asynchronously, up to @count
@@ -239,24 +237,21 @@ func (s bufferedInputStream) FillAsync(count int, ioPriority int, cancellable Ca
 func (s bufferedInputStream) FillFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GBufferedInputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_buffered_input_stream_fill_finish(arg0, result, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Available gets the size of the available data within the stream.
@@ -347,24 +342,21 @@ func (s bufferedInputStream) PeekBuffer() (count uint, guint8s []byte) {
 func (s bufferedInputStream) ReadByte(cancellable Cancellable) (gint int, err error) {
 	var arg0 *C.GBufferedInputStream
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.int
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.int
+	var ret2 int
 
 	cret = C.g_buffered_input_stream_read_byte(arg0, cancellable, &errout)
 
-	ret1 = C.int(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.int(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SetBufferSize sets the size of the internal buffer of @stream to @size,

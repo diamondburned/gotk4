@@ -657,8 +657,8 @@ func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
 
 	C.pango_layout_get_cursor_pos(arg0, index_, &arg2, &arg3)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
-	ret3 = WrapRectangle(unsafe.Pointer(arg3))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret3 = WrapRectangle(unsafe.Pointer(arg3))
 
 	return ret2, ret3
 }
@@ -725,8 +725,8 @@ func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	C.pango_layout_get_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -998,8 +998,8 @@ func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	C.pango_layout_get_pixel_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -1022,8 +1022,8 @@ func (l layout) PixelSize() (width int, height int) {
 
 	C.pango_layout_get_pixel_size(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -1090,8 +1090,8 @@ func (l layout) Size() (width int, height int) {
 
 	C.pango_layout_get_size(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -1231,8 +1231,8 @@ func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 
 	C.pango_layout_index_to_line_x(arg0, index_, trailing, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -1256,7 +1256,7 @@ func (l layout) IndexToPos(index_ int) Rectangle {
 
 	C.pango_layout_index_to_pos(arg0, index_, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1339,8 +1339,8 @@ func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, d
 
 	C.pango_layout_move_cursor_visually(arg0, strong, oldIndex, oldTrailing, direction, &arg5, &arg6)
 
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
 
 	return ret5, ret6
 }
@@ -1580,7 +1580,7 @@ func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32
 
 	C.pango_layout_set_markup_with_accel(arg0, markup, length, accelMarker, &arg4)
 
-	ret4 = C.gunichar(arg4)
+	*ret4 = C.gunichar(arg4)
 
 	return ret4
 }
@@ -1719,8 +1719,8 @@ func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
 
 	cret = C.pango_layout_xy_to_index(arg0, x, y, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -1831,7 +1831,7 @@ func (i *LayoutIter) CharExtents() Rectangle {
 
 	C.pango_layout_iter_get_char_extents(arg0, &arg1)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1850,8 +1850,8 @@ func (i *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle)
 
 	C.pango_layout_iter_get_cluster_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -1905,8 +1905,8 @@ func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) 
 
 	C.pango_layout_iter_get_layout_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -1948,8 +1948,8 @@ func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	C.pango_layout_iter_get_line_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -1995,8 +1995,8 @@ func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
 
 	C.pango_layout_iter_get_line_yrange(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -2015,8 +2015,8 @@ func (i *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	C.pango_layout_iter_get_run_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -2154,8 +2154,8 @@ func (l *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	C.pango_layout_line_get_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -2172,7 +2172,7 @@ func (l *LayoutLine) Height() int {
 
 	C.pango_layout_line_get_height(arg0, &arg1)
 
-	ret1 = C.int(arg1)
+	*ret1 = C.int(arg1)
 
 	return ret1
 }
@@ -2196,8 +2196,8 @@ func (l *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 
 	C.pango_layout_line_get_pixel_extents(arg0, &arg1, &arg2)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -2238,7 +2238,7 @@ func (l *LayoutLine) IndexToX(index_ int, trailing bool) int {
 
 	C.pango_layout_line_index_to_x(arg0, index_, trailing, &arg3)
 
-	ret3 = C.int(arg3)
+	*ret3 = C.int(arg3)
 
 	return ret3
 }
@@ -2298,8 +2298,8 @@ func (l *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 
 	cret = C.pango_layout_line_x_to_index(arg0, xPos, &arg2, &arg3)
 
-	ret2 = C.int(arg2)
-	ret3 = C.int(arg3)
+	*ret2 = C.int(arg2)
+	*ret3 = C.int(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3

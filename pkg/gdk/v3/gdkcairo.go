@@ -103,7 +103,7 @@ func CairoGetClipRectangle(cr *cairo.Context) (rect Rectangle, ok bool) {
 
 	cret = C.gdk_cairo_get_clip_rectangle(cr, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

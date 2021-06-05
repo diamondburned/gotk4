@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -159,21 +160,19 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	var arg0 *C.GNetworkMonitor
 	var arg1 *C.GSocketConnectable
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_network_monitor_can_reach(arg0, connectable, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CanReachAsync: asynchronously attempts to determine whether or not the
@@ -198,20 +197,18 @@ func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable
 func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	var arg0 *C.GNetworkMonitor
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_network_monitor_can_reach_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Connectivity gets a more detailed networking state than

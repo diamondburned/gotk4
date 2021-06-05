@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -136,19 +137,17 @@ func (a socketAddress) ToNative(dest interface{}, destlen uint) error {
 	var arg0 *C.GSocketAddress
 	var arg1 C.gpointer
 	var arg2 C.gsize
-	var errout *C.GError
 
 	arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
 	arg1 = C.gpointer(dest)
 	arg2 = C.gsize(destlen)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_socket_address_to_native(arg0, dest, destlen, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

@@ -3778,21 +3778,19 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 func (c fileChooser) AddShortcutFolder(folder string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.char)(C.CString(folder))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_add_shortcut_folder(arg0, folder, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
@@ -3803,21 +3801,19 @@ func (c fileChooser) AddShortcutFolder(folder string) error {
 func (c fileChooser) AddShortcutFolderURI(uri string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_add_shortcut_folder_uri(arg0, uri, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Action gets the type of operation that the file chooser is performing;
@@ -4391,21 +4387,19 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 func (c fileChooser) RemoveShortcutFolder(folder string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.char)(C.CString(folder))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_remove_shortcut_folder(arg0, folder, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
@@ -4413,21 +4407,19 @@ func (c fileChooser) RemoveShortcutFolder(folder string) error {
 func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_remove_shortcut_folder_uri(arg0, uri, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SelectAll selects all the files in the current folder of a file chooser.
@@ -4444,20 +4436,18 @@ func (c fileChooser) SelectAll() {
 func (c fileChooser) SelectFile(file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_select_file(arg0, file, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SelectFilename selects a filename. If the file name isn’t in the current
@@ -4579,20 +4569,18 @@ func (c fileChooser) SetCurrentFolder(filename string) bool {
 func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_set_current_folder_file(arg0, file, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetCurrentFolderURI sets the current folder for @chooser from an URI. The
@@ -4711,20 +4699,18 @@ func (c fileChooser) SetExtraWidget(extraWidget Widget) {
 func (c fileChooser) SetFile(file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_set_file(arg0, file, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetFilename sets @filename as the current filename for the file chooser,
@@ -6246,24 +6232,21 @@ func NewPageSetup() PageSetup {
 // NewPageSetupFromFile constructs a class PageSetup.
 func NewPageSetupFromFile(fileName string) (pageSetup PageSetup, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkPageSetup
-	var ret1 PageSetup
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPageSetup
+	var ret2 PageSetup
 
 	cret = C.gtk_page_setup_new_from_file(fileName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPageSetupFromGVariant constructs a class PageSetup.
@@ -6286,25 +6269,22 @@ func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup PageSetup, err error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkPageSetup
-	var ret1 PageSetup
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPageSetup
+	var ret2 PageSetup
 
 	cret = C.gtk_page_setup_new_from_key_file(keyFile, groupName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Copy copies a PageSetup.
@@ -6516,21 +6496,19 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 func (s pageSetup) LoadFile(fileName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_page_setup_load_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadKeyFile reads the page setup from the group @group_name in the key
@@ -6539,22 +6517,20 @@ func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_page_setup_load_key_file(arg0, keyFile, groupName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetBottomMargin sets the bottom margin of the PageSetup.
@@ -6648,21 +6624,19 @@ func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
 func (s pageSetup) ToFile(fileName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_page_setup_to_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ToGVariant: serialize page setup to an a{sv} variant.
@@ -6925,10 +6899,10 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 
 	cret = C.gtk_print_context_get_hard_margins(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
-	ret3 = C.gdouble(arg3)
-	ret4 = C.gdouble(arg4)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
+	*ret3 = C.gdouble(arg3)
+	*ret4 = C.gdouble(arg4)
 	ret5 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3, ret4, ret5
@@ -7246,24 +7220,21 @@ func NewPrintSettings() PrintSettings {
 // NewPrintSettingsFromFile constructs a class PrintSettings.
 func NewPrintSettingsFromFile(fileName string) (printSettings PrintSettings, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkPrintSettings
-	var ret1 PrintSettings
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPrintSettings
+	var ret2 PrintSettings
 
 	cret = C.gtk_print_settings_new_from_file(fileName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPrintSettingsFromGVariant constructs a class PrintSettings.
@@ -7286,25 +7257,22 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (printSettings PrintSettings, err error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkPrintSettings
-	var ret1 PrintSettings
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPrintSettings
+	var ret2 PrintSettings
 
 	cret = C.gtk_print_settings_new_from_key_file(keyFile, groupName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Copy copies a PrintSettings object.
@@ -7943,21 +7911,19 @@ func (s printSettings) HasKey(key string) bool {
 func (s printSettings) LoadFile(fileName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_settings_load_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadKeyFile reads the print settings from the group @group_name in
@@ -7967,22 +7933,20 @@ func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) erro
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_settings_load_key_file(arg0, keyFile, groupName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Set associates @value with @key.
@@ -8363,21 +8327,19 @@ func (s printSettings) SetUseColor(useColor bool) {
 func (s printSettings) ToFile(fileName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_settings_to_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ToGVariant: serialize print settings to an a{sv} variant.

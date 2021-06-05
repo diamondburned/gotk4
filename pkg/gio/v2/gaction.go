@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -81,7 +82,6 @@ func ActionNameIsValid(actionName string) bool {
 // and '.'.
 func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(detailedName))
 	defer C.free(unsafe.Pointer(arg1))
@@ -90,20 +90,18 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	var ret2 string
 	var arg3 *C.GVariant
 	var ret3 **glib.Variant
+	var errout *C.GError
 	var goerr error
 
 	C.g_action_parse_detailed_name(detailedName, &arg2, &arg3, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret3 = glib.WrapVariant(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **glib.Variant) {
+	*ret3 = glib.WrapVariant(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, goerr
 }

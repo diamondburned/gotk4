@@ -609,21 +609,21 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 
 	cret = C.g_action_group_query_action(arg0, actionName, &arg2, &arg3, &arg4, &arg5, &arg6)
 
-	ret2 = C.bool(arg2) != C.false
-	ret3 = glib.WrapVariantType(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **glib.VariantType) {
+	*ret2 = C.bool(arg2) != C.false
+	*ret3 = glib.WrapVariantType(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **glib.VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = glib.WrapVariantType(unsafe.Pointer(arg4))
-	runtime.SetFinalizer(ret4, func(v **glib.VariantType) {
+	*ret4 = glib.WrapVariantType(unsafe.Pointer(arg4))
+	runtime.SetFinalizer(*ret4, func(v **glib.VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret5 = glib.WrapVariant(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **glib.Variant) {
+	*ret5 = glib.WrapVariant(unsafe.Pointer(arg5))
+	runtime.SetFinalizer(*ret5, func(v **glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret6 = glib.WrapVariant(unsafe.Pointer(arg6))
-	runtime.SetFinalizer(ret6, func(v **glib.Variant) {
+	*ret6 = glib.WrapVariant(unsafe.Pointer(arg6))
+	runtime.SetFinalizer(*ret6, func(v **glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret6 = C.bool(cret) != C.false

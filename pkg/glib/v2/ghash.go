@@ -265,8 +265,8 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origK
 
 	cret = C.g_hash_table_lookup_extended(hashTable, lookupKey, &arg3, &arg4)
 
-	ret3 = C.gpointer(arg3)
-	ret4 = C.gpointer(arg4)
+	*ret3 = C.gpointer(arg3)
+	*ret4 = C.gpointer(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -406,8 +406,8 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolen
 
 	cret = C.g_hash_table_steal_extended(hashTable, lookupKey, &arg3, &arg4)
 
-	ret3 = C.gpointer(arg3)
-	ret4 = C.gpointer(arg4)
+	*ret3 = C.gpointer(arg3)
+	*ret4 = C.gpointer(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -678,8 +678,8 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 
 	cret = C.g_hash_table_iter_next(arg0, &arg1, &arg2)
 
-	ret1 = C.gpointer(arg1)
-	ret2 = C.gpointer(arg2)
+	*ret1 = C.gpointer(arg1)
+	*ret2 = C.gpointer(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

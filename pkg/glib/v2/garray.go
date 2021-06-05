@@ -163,7 +163,7 @@ func ByteArraySteal(array []byte) (len uint, guint8 byte) {
 
 	cret = C.g_byte_array_steal(array, &arg2)
 
-	ret2 = C.gsize(arg2)
+	*ret2 = C.gsize(arg2)
 	ret2 = *C.guint8(cret)
 
 	return ret2, ret2
@@ -222,7 +222,7 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 
 	cret = C.g_ptr_array_find(haystack, needle, &arg3)
 
-	ret3 = C.guint(arg3)
+	*ret3 = C.guint(arg3)
 	ret2 = C.bool(cret) != C.false
 
 	return ret3, ret2

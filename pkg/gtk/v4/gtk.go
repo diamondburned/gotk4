@@ -3417,20 +3417,18 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 func (c fileChooser) AddShortcutFolder(folder gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_add_shortcut_folder(arg0, folder, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Action gets the type of operation that the file chooser is performing;
@@ -3665,20 +3663,18 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 func (c fileChooser) RemoveShortcutFolder(folder gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_remove_shortcut_folder(arg0, folder, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAction sets the type of operation that the chooser is performing; the
@@ -3732,20 +3728,18 @@ func (c fileChooser) SetCreateFolders(createFolders bool) {
 func (c fileChooser) SetCurrentFolder(file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_set_current_folder(arg0, file, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetCurrentName sets the current name in the file selector, as if entered
@@ -3812,20 +3806,18 @@ func (c fileChooser) SetCurrentName(name string) {
 func (c fileChooser) SetFile(file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_file_chooser_set_file(arg0, file, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetFilter sets the current filter; only the files that pass the filter
@@ -11997,7 +11989,7 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangl
 
 	cret = C.gtk_icon_view_get_cell_rect(arg0, path, cell, &arg3)
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	*ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 	ret2 = C.bool(cret) != C.false
 
 	return ret3, ret2
@@ -12054,11 +12046,11 @@ func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 
 	cret = C.gtk_icon_view_get_cursor(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
+	*ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -12083,11 +12075,11 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconV
 
 	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, dragX, dragY, &arg3, &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = *IconViewDropPosition(arg4)
+	*ret4 = *IconViewDropPosition(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -12107,11 +12099,11 @@ func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition) {
 
 	C.gtk_icon_view_get_drag_dest_item(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = *IconViewDropPosition(arg2)
+	*ret2 = *IconViewDropPosition(arg2)
 
 	return ret1, ret2
 }
@@ -12135,11 +12127,11 @@ func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok
 
 	cret = C.gtk_icon_view_get_item_at_pos(arg0, x, y, &arg3, &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -12479,12 +12471,12 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 
 	cret = C.gtk_icon_view_get_tooltip_context(arg0, x, y, keyboardTip, &arg4, &arg5, &arg6)
 
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
-	ret5 = WrapTreePath(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **TreePath) {
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
+	*ret5 = WrapTreePath(unsafe.Pointer(arg5))
+	runtime.SetFinalizer(*ret5, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret6 = WrapTreeIter(unsafe.Pointer(arg6))
+	*ret6 = WrapTreeIter(unsafe.Pointer(arg6))
 	ret4 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret6, ret4
@@ -12508,12 +12500,12 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 	cret = C.gtk_icon_view_get_visible_range(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = WrapTreePath(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **TreePath) {
+	*ret2 = WrapTreePath(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret3 = C.bool(cret) != C.false
@@ -14243,8 +14235,8 @@ func (s label) LayoutOffsets() (x int, y int) {
 
 	C.gtk_label_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -14350,8 +14342,8 @@ func (s label) SelectionBounds() (start int, end int, ok bool) {
 
 	cret = C.gtk_label_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -15105,7 +15097,7 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 
 	cret = C.gtk_level_bar_get_offset_value(arg0, name, &arg2)
 
-	ret2 = C.double(arg2)
+	*ret2 = C.double(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -18167,24 +18159,21 @@ func NewPageSetup() PageSetup {
 // NewPageSetupFromFile constructs a class PageSetup.
 func NewPageSetupFromFile(fileName string) (pageSetup PageSetup, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkPageSetup
-	var ret1 PageSetup
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPageSetup
+	var ret2 PageSetup
 
 	cret = C.gtk_page_setup_new_from_file(fileName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPageSetupFromGVariant constructs a class PageSetup.
@@ -18207,25 +18196,22 @@ func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup PageSetup, err error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkPageSetup
-	var ret1 PageSetup
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPageSetup
+	var ret2 PageSetup
 
 	cret = C.gtk_page_setup_new_from_key_file(keyFile, groupName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Copy copies a PageSetup.
@@ -18437,21 +18423,19 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 func (s pageSetup) LoadFile(fileName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_page_setup_load_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadKeyFile reads the page setup from the group @group_name in the key
@@ -18460,22 +18444,20 @@ func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_page_setup_load_key_file(arg0, keyFile, groupName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetBottomMargin sets the bottom margin of the PageSetup.
@@ -18569,21 +18551,19 @@ func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
 func (s pageSetup) ToFile(fileName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_page_setup_to_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ToGVariant: serialize page setup to an a{sv} variant.
@@ -19611,10 +19591,10 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 
 	cret = C.gtk_print_context_get_hard_margins(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
-	ret3 = C.double(arg3)
-	ret4 = C.double(arg4)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
+	*ret3 = C.double(arg3)
+	*ret4 = C.double(arg4)
 	ret5 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3, ret4, ret5
@@ -19930,24 +19910,21 @@ func NewPrintSettings() PrintSettings {
 // NewPrintSettingsFromFile constructs a class PrintSettings.
 func NewPrintSettingsFromFile(fileName string) (printSettings PrintSettings, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkPrintSettings
-	var ret1 PrintSettings
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPrintSettings
+	var ret2 PrintSettings
 
 	cret = C.gtk_print_settings_new_from_file(fileName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPrintSettingsFromGVariant constructs a class PrintSettings.
@@ -19970,25 +19947,22 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (printSettings PrintSettings, err error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkPrintSettings
-	var ret1 PrintSettings
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPrintSettings
+	var ret2 PrintSettings
 
 	cret = C.gtk_print_settings_new_from_key_file(keyFile, groupName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Copy copies a PrintSettings object.
@@ -20627,21 +20601,19 @@ func (s printSettings) HasKey(key string) bool {
 func (s printSettings) LoadFile(fileName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_settings_load_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadKeyFile reads the print settings from the group @group_name in
@@ -20651,22 +20623,20 @@ func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) erro
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_settings_load_key_file(arg0, keyFile, groupName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Set associates @value with @key.
@@ -21047,21 +21017,19 @@ func (s printSettings) SetUseColor(useColor bool) {
 func (s printSettings) ToFile(fileName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_settings_to_file(arg0, fileName, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ToGVariant: serialize print settings to an a{sv} variant.
@@ -22275,8 +22243,8 @@ func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy 
 
 	C.gtk_scrolled_window_get_policy(arg0, &arg1, &arg2)
 
-	ret1 = *PolicyType(arg1)
-	ret2 = *PolicyType(arg2)
+	*ret1 = *PolicyType(arg1)
+	*ret2 = *PolicyType(arg2)
 
 	return ret1, ret2
 }
@@ -23657,8 +23625,8 @@ func (s spinButton) Increments() (step float64, page float64) {
 
 	C.gtk_spin_button_get_increments(arg0, &arg1, &arg2)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
 
 	return ret1, ret2
 }
@@ -23694,8 +23662,8 @@ func (s spinButton) Range() (min float64, max float64) {
 
 	C.gtk_spin_button_get_range(arg0, &arg1, &arg2)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
 
 	return ret1, ret2
 }
@@ -26712,8 +26680,8 @@ func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_selection_get_selected(arg0, &arg1, &arg2)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	ret2 = WrapTreeIter(unsafe.Pointer(arg2))
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
+	*ret2 = WrapTreeIter(unsafe.Pointer(arg2))
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -26739,7 +26707,7 @@ func (s treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 
 	cret = C.gtk_tree_selection_get_selected_rows(arg0, &arg1)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
 	ret2 = glib.WrapList(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -27234,8 +27202,8 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 
 	cret = C.gtk_tree_view_column_cell_get_position(arg0, cellRenderer, &arg2, &arg3)
 
-	ret2 = C.int(arg2)
-	ret3 = C.int(arg3)
+	*ret2 = C.int(arg2)
+	*ret3 = C.int(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3
@@ -27259,10 +27227,10 @@ func (t treeViewColumn) CellGetSize() (xOffset int, yOffset int, width int, heig
 
 	C.gtk_tree_view_column_cell_get_size(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret1, ret2, ret3, ret4
 }

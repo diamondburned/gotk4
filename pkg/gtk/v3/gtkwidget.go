@@ -2180,10 +2180,10 @@ func (w widget) ClassPath() (pathLength uint, path string, pathReversed string) 
 
 	C.gtk_widget_class_path(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.GoString(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
 
 	return ret1, ret2, ret3
@@ -3014,7 +3014,7 @@ func (w widget) ChildRequisition() Requisition {
 
 	C.gtk_widget_get_child_requisition(arg0, &arg1)
 
-	ret1 = WrapRequisition(unsafe.Pointer(arg1))
+	*ret1 = WrapRequisition(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -3689,8 +3689,8 @@ func (w widget) Pointer() (x int, y int) {
 
 	C.gtk_widget_get_pointer(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -3716,8 +3716,8 @@ func (w widget) PreferredHeight() (minimumHeight int, naturalHeight int) {
 
 	C.gtk_widget_get_preferred_height(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -3751,10 +3751,10 @@ func (w widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight int
 
 	C.gtk_widget_get_preferred_height_and_baseline_for_width(arg0, width, &arg2, &arg3, &arg4, &arg5)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
-	ret5 = C.gint(arg5)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
+	*ret5 = C.gint(arg5)
 
 	return ret2, ret3, ret4, ret5
 }
@@ -3781,8 +3781,8 @@ func (w widget) PreferredHeightForWidth(width int) (minimumHeight int, naturalHe
 
 	C.gtk_widget_get_preferred_height_for_width(arg0, width, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }
@@ -3814,8 +3814,8 @@ func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisitio
 
 	C.gtk_widget_get_preferred_size(arg0, &arg1, &arg2)
 
-	ret1 = WrapRequisition(unsafe.Pointer(arg1))
-	ret2 = WrapRequisition(unsafe.Pointer(arg2))
+	*ret1 = WrapRequisition(unsafe.Pointer(arg1))
+	*ret2 = WrapRequisition(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -3841,8 +3841,8 @@ func (w widget) PreferredWidth() (minimumWidth int, naturalWidth int) {
 
 	C.gtk_widget_get_preferred_width(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -3869,8 +3869,8 @@ func (w widget) PreferredWidthForHeight(height int) (minimumWidth int, naturalWi
 
 	C.gtk_widget_get_preferred_width_for_height(arg0, height, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }
@@ -3950,7 +3950,7 @@ func (w widget) Requisition() Requisition {
 
 	C.gtk_widget_get_requisition(arg0, &arg1)
 
-	ret1 = WrapRequisition(unsafe.Pointer(arg1))
+	*ret1 = WrapRequisition(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -4079,8 +4079,8 @@ func (w widget) GetSizeRequest() (width int, height int) {
 
 	C.gtk_widget_get_size_request(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -4726,7 +4726,7 @@ func (w widget) Intersect(area *gdk.Rectangle) (intersection gdk.Rectangle, ok b
 
 	cret = C.gtk_widget_intersect(arg0, area, &arg2)
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -5284,10 +5284,10 @@ func (w widget) Path() (pathLength uint, path string, pathReversed string) {
 
 	C.gtk_widget_path(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.GoString(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
 
 	return ret1, ret2, ret3
@@ -6602,7 +6602,7 @@ func (w widget) SizeRequest() Requisition {
 
 	C.gtk_widget_size_request(arg0, &arg1)
 
-	ret1 = WrapRequisition(unsafe.Pointer(arg1))
+	*ret1 = WrapRequisition(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -6673,8 +6673,8 @@ func (s widget) TranslateCoordinates(destWidget Widget, srcX int, srcY int) (des
 
 	cret = C.gtk_widget_translate_coordinates(arg0, destWidget, srcX, srcY, &arg4, &arg5)
 
-	ret4 = C.gint(arg4)
-	ret5 = C.gint(arg5)
+	*ret4 = C.gint(arg4)
+	*ret5 = C.gint(arg5)
 	ret3 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret3

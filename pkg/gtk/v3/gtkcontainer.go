@@ -605,8 +605,8 @@ func (c container) FocusChain() (focusableWidgets *glib.List, ok bool) {
 
 	cret = C.gtk_container_get_focus_chain(arg0, &arg1)
 
-	ret1 = glib.WrapList(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **glib.List) {
+	*ret1 = glib.WrapList(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret2 = C.bool(cret) != C.false

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -76,26 +77,23 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter CharsetConverter, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(toCharset))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(fromCharset))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GCharsetConverter
-	var ret1 CharsetConverter
+	var errout *C.GError
 	var goerr error
+	var cret C.GCharsetConverter
+	var ret2 CharsetConverter
 
 	cret = C.g_charset_converter_new(toCharset, fromCharset, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so

@@ -335,9 +335,9 @@ func (s statusIcon) Geometry() (screen gdk.Screen, area gdk.Rectangle, orientati
 
 	cret = C.gtk_status_icon_get_geometry(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gdk.Screen)
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
-	ret3 = *Orientation(arg3)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gdk.Screen)
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret3 = *Orientation(arg3)
 	ret4 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3, ret4

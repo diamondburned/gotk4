@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -139,20 +140,18 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 func (m unixFDMessage) AppendFd(fd int) error {
 	var arg0 *C.GUnixFDMessage
 	var arg1 C.gint
-	var errout *C.GError
 
 	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 	arg1 = C.gint(fd)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_unix_fd_message_append_fd(arg0, fd, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // FdList gets the FDList contained in @message. This function does not

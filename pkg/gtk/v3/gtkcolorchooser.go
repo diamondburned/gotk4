@@ -81,7 +81,7 @@ func (c colorChooser) RGBA() gdk.RGBA {
 
 	C.gtk_color_chooser_get_rgba(arg0, &arg1)
 
-	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 
 	return ret1
 }

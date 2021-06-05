@@ -35,8 +35,8 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 
 	cret = C.gsk_transform_parse(string, &arg2)
 
-	ret2 = WrapTransform(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **Transform) {
+	*ret2 = WrapTransform(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret2 = C.bool(cret) != C.false

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -162,18 +163,16 @@ func marshalInitable(p uintptr) (interface{}, error) {
 func (i initable) Init(cancellable Cancellable) error {
 	var arg0 *C.GInitable
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GInitable)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_initable_init(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

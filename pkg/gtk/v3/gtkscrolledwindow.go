@@ -508,8 +508,8 @@ func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy 
 
 	C.gtk_scrolled_window_get_policy(arg0, &arg1, &arg2)
 
-	ret1 = *PolicyType(arg1)
-	ret2 = *PolicyType(arg2)
+	*ret1 = *PolicyType(arg1)
+	*ret2 = *PolicyType(arg2)
 
 	return ret1, ret2
 }

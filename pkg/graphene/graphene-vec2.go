@@ -127,7 +127,7 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 
 	C.graphene_vec2_add(arg0, b, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -147,7 +147,7 @@ func (a *Vec2) Divide(b *Vec2) Vec2 {
 
 	C.graphene_vec2_divide(arg0, b, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -303,7 +303,7 @@ func (v *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 
 	C.graphene_vec2_interpolate(arg0, v2, factor, &arg3)
 
-	ret3 = WrapVec2(unsafe.Pointer(arg3))
+	*ret3 = WrapVec2(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -338,7 +338,7 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 
 	C.graphene_vec2_max(arg0, b, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -357,7 +357,7 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 
 	C.graphene_vec2_min(arg0, b, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -376,7 +376,7 @@ func (a *Vec2) Multiply(b *Vec2) Vec2 {
 
 	C.graphene_vec2_multiply(arg0, b, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -413,7 +413,7 @@ func (v *Vec2) Negate() Vec2 {
 
 	C.graphene_vec2_negate(arg0, &arg1)
 
-	ret1 = WrapVec2(unsafe.Pointer(arg1))
+	*ret1 = WrapVec2(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -429,7 +429,7 @@ func (v *Vec2) Normalize() Vec2 {
 
 	C.graphene_vec2_normalize(arg0, &arg1)
 
-	ret1 = WrapVec2(unsafe.Pointer(arg1))
+	*ret1 = WrapVec2(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -448,7 +448,7 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 
 	C.graphene_vec2_scale(arg0, factor, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -468,7 +468,7 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 
 	C.graphene_vec2_subtract(arg0, b, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 
 	return ret2
 }

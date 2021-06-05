@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -37,24 +38,21 @@ func init() {
 // The certificates in @anchors must be PEM encoded.
 func NewTLSFileDatabase(anchors string) (tlsFileDatabase TLSFileDatabase, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(anchors))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GTlsDatabase
-	var ret1 TLSFileDatabase
+	var errout *C.GError
 	var goerr error
+	var cret *C.GTlsDatabase
+	var ret2 TLSFileDatabase
 
 	cret = C.g_tls_file_database_new(anchors, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSFileDatabase)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSFileDatabase)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // TLSFileDatabase is implemented by Database objects which load their

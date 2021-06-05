@@ -76,7 +76,7 @@ func (q *Quad) Bounds() Rect {
 
 	C.graphene_quad_bounds(arg0, &arg1)
 
-	ret1 = WrapRect(unsafe.Pointer(arg1))
+	*ret1 = WrapRect(unsafe.Pointer(arg1))
 
 	return ret1
 }

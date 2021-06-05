@@ -339,8 +339,8 @@ func (s scale) LayoutOffsets() (x int, y int) {
 
 	C.gtk_scale_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }

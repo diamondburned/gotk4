@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -767,7 +768,6 @@ func NewAttrWeight(weight Weight) *Attribute {
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, text string, accelChar uint32, err error) {
 	var arg1 *C.GMarkupParseContext
-	var errout *C.GError
 
 	arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context.Native()))
 
@@ -777,21 +777,19 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, t
 	var ret3 string
 	var arg4 C.gunichar
 	var ret4 uint32
+	var errout *C.GError
 	var goerr error
 
 	C.pango_markup_parser_finish(context, &arg2, &arg3, &arg4, &errout)
 
-	ret2 = WrapAttrList(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **AttrList) {
+	*ret2 = WrapAttrList(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **AttrList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	ret4 = C.gunichar(arg4)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret4 = C.gunichar(arg4)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, ret4, goerr
 }
@@ -855,7 +853,6 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.gunichar
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(arg1))
@@ -868,21 +865,19 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 	var ret5 string
 	var arg6 C.gunichar
 	var ret6 uint32
+	var errout *C.GError
 	var goerr error
 
 	C.pango_parse_markup(markupText, length, accelMarker, &arg4, &arg5, &arg6, &errout)
 
-	ret4 = WrapAttrList(unsafe.Pointer(arg4))
-	runtime.SetFinalizer(ret4, func(v **AttrList) {
+	*ret4 = WrapAttrList(unsafe.Pointer(arg4))
+	runtime.SetFinalizer(*ret4, func(v **AttrList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret5 = C.GoString(arg5)
+	*ret5 = C.GoString(arg5)
 	defer C.free(unsafe.Pointer(arg5))
-	ret6 = C.gunichar(arg6)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret6 = C.gunichar(arg6)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret4, ret5, ret6, goerr
 }
@@ -1213,8 +1208,8 @@ func (i *AttrIterator) Range() (start int, end int) {
 
 	C.pango_attr_iterator_range(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -1863,7 +1858,7 @@ func (c *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
 
 	cret = C.pango_color_parse_with_alpha(arg0, &arg1, spec)
 
-	ret1 = C.guint16(arg1)
+	*ret1 = C.guint16(arg1)
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

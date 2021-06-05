@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +48,6 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 func NewMappedFile(filename string, writable bool) (mappedFile *MappedFile, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gboolean
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
@@ -55,51 +55,46 @@ func NewMappedFile(filename string, writable bool) (mappedFile *MappedFile, err 
 		arg2 = C.gboolean(1)
 	}
 
-	var cret *C.GMappedFile
-	var ret1 *MappedFile
+	var errout *C.GError
 	var goerr error
+	var cret *C.GMappedFile
+	var ret2 *MappedFile
 
 	cret = C.g_mapped_file_new(filename, writable, &errout)
 
-	ret1 = WrapMappedFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *MappedFile) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *MappedFile) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewMappedFileFromFd constructs a struct MappedFile.
 func NewMappedFileFromFd(fd int, writable bool) (mappedFile *MappedFile, err error) {
 	var arg1 C.gint
 	var arg2 C.gboolean
-	var errout *C.GError
 
 	arg1 = C.gint(fd)
 	if writable {
 		arg2 = C.gboolean(1)
 	}
 
-	var cret *C.GMappedFile
-	var ret1 *MappedFile
+	var errout *C.GError
 	var goerr error
+	var cret *C.GMappedFile
+	var ret2 *MappedFile
 
 	cret = C.g_mapped_file_new_from_fd(fd, writable, &errout)
 
-	ret1 = WrapMappedFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *MappedFile) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *MappedFile) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Native returns the underlying C source pointer.

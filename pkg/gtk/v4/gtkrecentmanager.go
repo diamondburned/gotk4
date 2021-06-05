@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -262,28 +263,25 @@ func (m recentManager) HasItem(uri string) bool {
 func (m recentManager) LookupItem(uri string) (recentInfo *RecentInfo, err error) {
 	var arg0 *C.GtkRecentManager
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkRecentInfo
-	var ret1 *RecentInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GtkRecentInfo
+	var ret2 *RecentInfo
 
 	cret = C.gtk_recent_manager_lookup_item(arg0, uri, &errout)
 
-	ret1 = WrapRecentInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *RecentInfo) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapRecentInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *RecentInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // MoveItem changes the location of a recently used resource from @uri to
@@ -295,7 +293,6 @@ func (m recentManager) MoveItem(uri string, newURI string) error {
 	var arg0 *C.GtkRecentManager
 	var arg1 *C.char
 	var arg2 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.char)(C.CString(uri))
@@ -303,37 +300,33 @@ func (m recentManager) MoveItem(uri string, newURI string) error {
 	arg2 = (*C.char)(C.CString(newURI))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_recent_manager_move_item(arg0, uri, newURI, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // PurgeItems purges every item from the recently used resources list.
 func (m recentManager) PurgeItems() (gint int, err error) {
 	var arg0 *C.GtkRecentManager
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.int
+	var ret2 int
 
 	cret = C.gtk_recent_manager_purge_items(arg0, &errout)
 
-	ret1 = C.int(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.int(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // RemoveItem removes a resource pointed by @uri from the recently used
@@ -341,21 +334,19 @@ func (m recentManager) PurgeItems() (gint int, err error) {
 func (m recentManager) RemoveItem(uri string) error {
 	var arg0 *C.GtkRecentManager
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_recent_manager_remove_item(arg0, uri, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -466,25 +457,22 @@ func (r *RecentInfo) Native() unsafe.Pointer {
 func (i *RecentInfo) CreateAppInfo(appName string) (appInfo gio.AppInfo, err error) {
 	var arg0 *C.GtkRecentInfo
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.char)(C.CString(appName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GAppInfo
-	var ret1 gio.AppInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GAppInfo
+	var ret2 gio.AppInfo
 
 	cret = C.gtk_recent_info_create_app_info(arg0, appName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Exists checks whether the resource pointed by @info still exists. At the
@@ -562,9 +550,9 @@ func (i *RecentInfo) ApplicationInfo(appName string) (appExec string, count uint
 
 	cret = C.gtk_recent_info_get_application_info(arg0, appName, &arg2, &arg3, &arg4)
 
-	ret2 = C.GoString(arg2)
-	ret3 = C.guint(arg3)
-	ret4 = glib.WrapDateTime(unsafe.Pointer(arg4))
+	*ret2 = C.GoString(arg2)
+	*ret3 = C.guint(arg3)
+	*ret4 = glib.WrapDateTime(unsafe.Pointer(arg4))
 	ret4 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret4, ret4

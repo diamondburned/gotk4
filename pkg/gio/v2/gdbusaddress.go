@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 )
 
@@ -56,25 +57,22 @@ func DBusAddressEscapeValue(string string) string {
 func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (utf8 string, err error) {
 	var arg1 C.GBusType
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_dbus_address_get_for_bus_sync(busType, cancellable, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // DBusAddressGetStream: asynchronously connects to an endpoint specified by
@@ -97,27 +95,24 @@ func DBusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 // g_dbus_address_get_stream().
 func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg2 *C.gchar
 	var ret2 string
-	var cret *C.GIOStream
-	var ret2 IOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIOStream
+	var ret3 IOStream
 
 	cret = C.g_dbus_address_get_stream_finish(res, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
@@ -131,7 +126,6 @@ func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStr
 func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream, err error) {
 	var arg1 *C.gchar
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(arg1))
@@ -139,21 +133,19 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid 
 
 	var arg2 *C.gchar
 	var ret2 string
-	var cret *C.GIOStream
-	var ret2 IOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIOStream
+	var ret3 IOStream
 
 	cret = C.g_dbus_address_get_stream_sync(address, &arg2, cancellable, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // DBusIsAddress checks if @string is a D-Bus address
@@ -183,18 +175,16 @@ func DBusIsAddress(string string) bool {
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DBusIsSupportedAddress(string string) error {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_is_supported_address(string, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

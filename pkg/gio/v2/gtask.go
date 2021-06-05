@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -269,7 +270,7 @@ type Task interface {
 	// on the error if you need to keep a local copy as well.
 	//
 	// See also g_task_return_new_error().
-	ReturnError(error *glib.Error)
+	ReturnError(error error)
 	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
 	// cancelled, and if so, sets @task's error accordingly and completes the
 	// task (see g_task_return_pointer() for more discussion of exactly what
@@ -586,19 +587,17 @@ func (t task) HadError() bool {
 // the caller, you may only call it once.
 func (t task) PropagateBoolean() error {
 	var arg0 *C.GTask
-	var errout *C.GError
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_task_propagate_boolean(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // PropagateInt gets the result of @task as an integer (#gssize).
@@ -610,23 +609,20 @@ func (t task) PropagateBoolean() error {
 // the caller, you may only call it once.
 func (t task) PropagateInt() (gssize int, err error) {
 	var arg0 *C.GTask
-	var errout *C.GError
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_task_propagate_int(arg0, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // PropagatePointer gets the result of @task as a pointer, and transfers
@@ -639,23 +635,20 @@ func (t task) PropagateInt() (gssize int, err error) {
 // the caller, you may only call it once.
 func (t task) PropagatePointer() (gpointer interface{}, err error) {
 	var arg0 *C.GTask
-	var errout *C.GError
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
+	var errout *C.GError
 	var goerr error
+	var cret C.gpointer
+	var ret2 interface{}
 
 	cret = C.g_task_propagate_pointer(arg0, &errout)
 
-	ret1 = C.gpointer(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gpointer(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // PropagateValue gets the result of @task as a #GValue, and transfers
@@ -670,21 +663,18 @@ func (t task) PropagatePointer() (gpointer interface{}, err error) {
 // the caller, you may only call it once.
 func (t task) PropagateValue() (value externglib.Value, err error) {
 	var arg0 *C.GTask
-	var errout *C.GError
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var arg1 C.GValue
 	var ret1 *externglib.Value
+	var errout *C.GError
 	var goerr error
 
 	C.g_task_propagate_value(arg0, &arg1, &errout)
 
-	ret1 = externglib.ValueFromNative(unsafe.Pointer(arg1))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret1 = externglib.ValueFromNative(unsafe.Pointer(arg1))
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret1, goerr
 }
@@ -713,12 +703,12 @@ func (t task) ReturnBoolean(result bool) {
 // on the error if you need to keep a local copy as well.
 //
 // See also g_task_return_new_error().
-func (t task) ReturnError(error *glib.Error) {
+func (t task) ReturnError(error error) {
 	var arg0 *C.GTask
 	var arg1 *C.GError
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
 
 	C.g_task_return_error(arg0, error)
 }

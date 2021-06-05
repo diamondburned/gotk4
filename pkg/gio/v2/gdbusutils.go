@@ -105,7 +105,7 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 
 	C.g_dbus_gvariant_to_gvalue(value, &arg2)
 
-	ret2 = externglib.ValueFromNative(unsafe.Pointer(arg2))
+	*ret2 = externglib.ValueFromNative(unsafe.Pointer(arg2))
 
 	return ret2
 }

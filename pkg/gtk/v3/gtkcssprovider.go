@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -116,19 +117,16 @@ func NewCSSProvider() CSSProvider {
 func (c cssProvider) LoadFromData(data []byte) error {
 	var arg0 *C.GtkCssProvider
 
-	var errout *C.GError
-
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_css_provider_load_from_data(arg0, data, length, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadFromFile loads the data contained in @file into @css_provider, making
@@ -136,20 +134,18 @@ func (c cssProvider) LoadFromData(data []byte) error {
 func (c cssProvider) LoadFromFile(file gio.File) error {
 	var arg0 *C.GtkCssProvider
 	var arg1 *C.GFile
-	var errout *C.GError
 
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_css_provider_load_from_file(arg0, file, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadFromPath loads the data contained in @path into @css_provider, making
@@ -157,21 +153,19 @@ func (c cssProvider) LoadFromFile(file gio.File) error {
 func (c cssProvider) LoadFromPath(path string) error {
 	var arg0 *C.GtkCssProvider
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_css_provider_load_from_path(arg0, path, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LoadFromResource loads the data contained in the resource at

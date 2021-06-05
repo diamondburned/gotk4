@@ -44,7 +44,7 @@ func ColorParse(spec string) (color Color, ok bool) {
 
 	cret = C.gdk_color_parse(spec, &arg2)
 
-	ret2 = WrapColor(unsafe.Pointer(arg2))
+	*ret2 = WrapColor(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

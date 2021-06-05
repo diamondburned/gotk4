@@ -78,7 +78,7 @@ func (a *Quaternion) Add(b *Quaternion) Quaternion {
 
 	C.graphene_quaternion_add(arg0, b, &arg2)
 
-	ret2 = WrapQuaternion(unsafe.Pointer(arg2))
+	*ret2 = WrapQuaternion(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -327,7 +327,7 @@ func (q *Quaternion) Invert() Quaternion {
 
 	C.graphene_quaternion_invert(arg0, &arg1)
 
-	ret1 = WrapQuaternion(unsafe.Pointer(arg1))
+	*ret1 = WrapQuaternion(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -345,7 +345,7 @@ func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 
 	C.graphene_quaternion_multiply(arg0, b, &arg2)
 
-	ret2 = WrapQuaternion(unsafe.Pointer(arg2))
+	*ret2 = WrapQuaternion(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -361,7 +361,7 @@ func (q *Quaternion) Normalize() Quaternion {
 
 	C.graphene_quaternion_normalize(arg0, &arg1)
 
-	ret1 = WrapQuaternion(unsafe.Pointer(arg1))
+	*ret1 = WrapQuaternion(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -380,7 +380,7 @@ func (q *Quaternion) Scale(factor float32) Quaternion {
 
 	C.graphene_quaternion_scale(arg0, factor, &arg2)
 
-	ret2 = WrapQuaternion(unsafe.Pointer(arg2))
+	*ret2 = WrapQuaternion(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -402,7 +402,7 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 
 	C.graphene_quaternion_slerp(arg0, b, factor, &arg3)
 
-	ret3 = WrapQuaternion(unsafe.Pointer(arg3))
+	*ret3 = WrapQuaternion(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -420,8 +420,8 @@ func (q *Quaternion) ToAngleVec3() (angle float32, axis Vec3) {
 
 	C.graphene_quaternion_to_angle_vec3(arg0, &arg1, &arg2)
 
-	ret1 = C.float(arg1)
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret1 = C.float(arg1)
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -442,9 +442,9 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 
 	C.graphene_quaternion_to_angles(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.float(arg1)
-	ret2 = C.float(arg2)
-	ret3 = C.float(arg3)
+	*ret1 = C.float(arg1)
+	*ret2 = C.float(arg2)
+	*ret3 = C.float(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -461,7 +461,7 @@ func (q *Quaternion) ToMatrix() Matrix {
 
 	C.graphene_quaternion_to_matrix(arg0, &arg1)
 
-	ret1 = WrapMatrix(unsafe.Pointer(arg1))
+	*ret1 = WrapMatrix(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -482,9 +482,9 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 
 	C.graphene_quaternion_to_radians(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.float(arg1)
-	ret2 = C.float(arg2)
-	ret3 = C.float(arg3)
+	*ret1 = C.float(arg1)
+	*ret2 = C.float(arg2)
+	*ret3 = C.float(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -501,7 +501,7 @@ func (q *Quaternion) ToVec4() Vec4 {
 
 	C.graphene_quaternion_to_vec4(arg0, &arg1)
 
-	ret1 = WrapVec4(unsafe.Pointer(arg1))
+	*ret1 = WrapVec4(unsafe.Pointer(arg1))
 
 	return ret1
 }

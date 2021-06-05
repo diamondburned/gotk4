@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -391,22 +392,19 @@ func gotk4_RegexEvalCallback(arg0 *C.GMatchInfo, arg1 *C.GString, arg2 C.gpointe
 // '\0\1' (whole match followed by first subpattern) requires valid Info object.
 func RegexCheckReplacement(replacement string) (hasReferences bool, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(replacement))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.gboolean
 	var ret2 bool
+	var errout *C.GError
 	var goerr error
 
 	C.g_regex_check_replacement(replacement, &arg2, &errout)
 
-	ret2 = C.bool(arg2) != C.false
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.bool(arg2) != C.false
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }
@@ -595,26 +593,23 @@ func (m *MatchInfo) Native() unsafe.Pointer {
 func (m *MatchInfo) ExpandReferences(stringToExpand string) (utf8 string, err error) {
 	var arg0 *C.GMatchInfo
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GMatchInfo)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.gchar)(C.CString(stringToExpand))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_match_info_expand_references(arg0, stringToExpand, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Fetch retrieves the text matching the @match_num'th capturing parentheses. 0
@@ -744,8 +739,8 @@ func (m *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok boo
 
 	cret = C.g_match_info_fetch_named_pos(arg0, name, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3
@@ -779,8 +774,8 @@ func (m *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 
 	cret = C.g_match_info_fetch_pos(arg0, matchNum, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3
@@ -927,19 +922,17 @@ func (m *MatchInfo) Matches() bool {
 // free it before calling this function.
 func (m *MatchInfo) Next() error {
 	var arg0 *C.GMatchInfo
-	var errout *C.GError
 
 	arg0 = (*C.GMatchInfo)(unsafe.Pointer(m.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_match_info_next(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Ref increases reference count of @match_info by 1.
@@ -1054,29 +1047,26 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	var arg1 *C.gchar
 	var arg2 C.GRegexCompileFlags
 	var arg3 C.GRegexMatchFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GRegexCompileFlags)(compileOptions)
 	arg3 = (C.GRegexMatchFlags)(matchOptions)
 
-	var cret *C.GRegex
-	var ret1 *Regex
+	var errout *C.GError
 	var goerr error
+	var cret *C.GRegex
+	var ret2 *Regex
 
 	cret = C.g_regex_new(pattern, compileOptions, matchOptions, &errout)
 
-	ret1 = WrapRegex(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Regex) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapRegex(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *Regex) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Native returns the underlying C source pointer.
@@ -1278,8 +1268,8 @@ func (r *Regex) Match(string string, matchOptions RegexMatchFlags) (matchInfo *M
 
 	cret = C.g_regex_match(arg0, string, matchOptions, &arg3)
 
-	ret3 = WrapMatchInfo(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **MatchInfo) {
+	*ret3 = WrapMatchInfo(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **MatchInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret2 = C.bool(cret) != C.false
@@ -1317,8 +1307,8 @@ func (r *Regex) MatchAll(string string, matchOptions RegexMatchFlags) (matchInfo
 
 	cret = C.g_regex_match_all(arg0, string, matchOptions, &arg3)
 
-	ret3 = WrapMatchInfo(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **MatchInfo) {
+	*ret3 = WrapMatchInfo(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **MatchInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret2 = C.bool(cret) != C.false
@@ -1392,24 +1382,20 @@ func (r *Regex) Ref() *Regex {
 func (r *Regex) ReplaceEval(string []string, startPosition int, matchOptions RegexMatchFlags, eval RegexEvalCallback) (utf8 string, err error) {
 	var arg0 *C.GRegex
 
-	var errout *C.GError
-
 	arg0 = (*C.GRegex)(unsafe.Pointer(r.Native()))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_regex_replace_eval(arg0, string, stringLen, startPosition, matchOptions, eval, userData, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Split breaks the string on the pattern, and returns an array of the tokens.

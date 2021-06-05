@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,24 +45,21 @@ func init() {
 func NewTLSClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) (tlsClientConnection TLSClientConnection, err error) {
 	var arg1 *C.GIOStream
 	var arg2 *C.GSocketConnectable
-	var errout *C.GError
 
 	arg1 = (*C.GIOStream)(unsafe.Pointer(baseIOStream.Native()))
 	arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
-	var cret *C.GIOStream
-	var ret1 TLSClientConnection
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIOStream
+	var ret2 TLSClientConnection
 
 	cret = C.g_tls_client_connection_new(baseIOStream, serverIdentity, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSClientConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSClientConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // TLSClientConnectionOverrider contains methods that are overridable. This

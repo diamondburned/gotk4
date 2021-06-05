@@ -95,7 +95,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 
 	cret = C.gtk_gesture_stylus_get_axis(arg0, axis, &arg2)
 
-	ret2 = C.gdouble(arg2)
+	*ret2 = C.gdouble(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

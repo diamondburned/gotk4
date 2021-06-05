@@ -189,8 +189,8 @@ func (c cellAreaContext) Allocation() (width int, height int) {
 
 	C.gtk_cell_area_context_get_allocation(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -236,8 +236,8 @@ func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int
 
 	C.gtk_cell_area_context_get_preferred_height(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -262,8 +262,8 @@ func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, 
 
 	C.gtk_cell_area_context_get_preferred_height_for_width(arg0, width, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }
@@ -285,8 +285,8 @@ func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 
 	C.gtk_cell_area_context_get_preferred_width(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -311,8 +311,8 @@ func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, 
 
 	C.gtk_cell_area_context_get_preferred_width_for_height(arg0, height, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }

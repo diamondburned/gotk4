@@ -29,8 +29,8 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 
 	C.gdk_keyval_convert_case(symbol, &arg2, &arg3)
 
-	ret2 = C.guint(arg2)
-	ret3 = C.guint(arg3)
+	*ret2 = C.guint(arg2)
+	*ret3 = C.guint(arg3)
 
 	return ret2, ret3
 }

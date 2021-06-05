@@ -5,6 +5,7 @@ package gio
 import (
 	"runtime"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -235,22 +236,20 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	var arg1 C.GIOCondition
 	var arg2 C.gint64
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	arg1 = (C.GIOCondition)(condition)
 	arg2 = C.gint64(timeout)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_datagram_based_condition_wait(arg0, condition, timeout, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CreateSource creates a #GSource that can be attached to a Context to

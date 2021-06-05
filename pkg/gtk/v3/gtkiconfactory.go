@@ -81,8 +81,8 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 
 	cret = C.gtk_icon_size_lookup(size, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3
@@ -112,8 +112,8 @@ func IconSizeLookupForSettings(settings Settings, size int) (width int, height i
 
 	cret = C.gtk_icon_size_lookup_for_settings(settings, size, &arg3, &arg4)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3

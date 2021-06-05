@@ -487,8 +487,8 @@ func (l label) LayoutOffsets() (x int, y int) {
 
 	C.gtk_label_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -628,8 +628,8 @@ func (l label) SelectionBounds() (start int, end int, ok bool) {
 
 	cret = C.gtk_label_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

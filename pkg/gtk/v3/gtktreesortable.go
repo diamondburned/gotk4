@@ -136,8 +136,8 @@ func (s treeSortable) SortColumnID() (sortColumnID int, order SortType, ok bool)
 
 	cret = C.gtk_tree_sortable_get_sort_column_id(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = *SortType(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = *SortType(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

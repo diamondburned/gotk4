@@ -255,13 +255,13 @@ func (c imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos
 
 	C.gtk_im_context_get_preedit_string(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.GoString(arg1)
+	*ret1 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
-	ret2 = pango.WrapAttrList(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **pango.AttrList) {
+	*ret2 = pango.WrapAttrList(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **pango.AttrList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret3 = C.gint(arg3)
+	*ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -292,9 +292,9 @@ func (c imContext) Surrounding() (text string, cursorIndex int, ok bool) {
 
 	cret = C.gtk_im_context_get_surrounding(arg0, &arg1, &arg2)
 
-	ret1 = C.GoString(arg1)
+	*ret1 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
-	ret2 = C.gint(arg2)
+	*ret2 = C.gint(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

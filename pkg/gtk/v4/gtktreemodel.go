@@ -475,7 +475,7 @@ func (t treeModel) Iter(path *TreePath) (iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_model_get_iter(arg0, &arg1, path)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -495,7 +495,7 @@ func (t treeModel) IterFirst() (iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_model_get_iter_first(arg0, &arg1)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -518,7 +518,7 @@ func (t treeModel) IterFromString(pathString string) (iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_model_get_iter_from_string(arg0, &arg1, pathString)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -603,7 +603,7 @@ func (t treeModel) Value(iter *TreeIter, column int) externglib.Value {
 
 	C.gtk_tree_model_get_value(arg0, iter, column, &arg3)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -630,7 +630,7 @@ func (t treeModel) IterChildren(parent *TreeIter) (iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_model_iter_children(arg0, &arg1, parent)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -720,7 +720,7 @@ func (t treeModel) IterNthChild(parent *TreeIter, n int) (iter TreeIter, ok bool
 
 	cret = C.gtk_tree_model_iter_nth_child(arg0, &arg1, parent, n)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -748,7 +748,7 @@ func (t treeModel) IterParent(child *TreeIter) (iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_model_iter_parent(arg0, &arg1, child)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

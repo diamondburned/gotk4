@@ -327,8 +327,8 @@ func (t table) Size() (rows uint, columns uint) {
 
 	C.gtk_table_get_size(arg0, &arg1, &arg2)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.guint(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.guint(arg2)
 
 	return ret1, ret2
 }

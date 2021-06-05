@@ -2981,45 +2981,39 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 // NewDBusConnectionFinish constructs a class DBusConnection.
 func NewDBusConnectionFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret C.GDBusConnection
-	var ret1 DBusConnection
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusConnection
+	var ret2 DBusConnection
 
 	cret = C.g_dbus_connection_new_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusConnectionForAddressFinish constructs a class DBusConnection.
 func NewDBusConnectionForAddressFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret C.GDBusConnection
-	var ret1 DBusConnection
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusConnection
+	var ret2 DBusConnection
 
 	cret = C.g_dbus_connection_new_for_address_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusConnectionForAddressSync constructs a class DBusConnection.
@@ -3028,7 +3022,6 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	var arg2 C.GDBusConnectionFlags
 	var arg3 *C.GDBusAuthObserver
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(arg1))
@@ -3036,19 +3029,17 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GDBusConnection
-	var ret1 DBusConnection
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusConnection
+	var ret2 DBusConnection
 
 	cret = C.g_dbus_connection_new_for_address_sync(address, flags, observer, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusConnectionSync constructs a class DBusConnection.
@@ -3058,7 +3049,6 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	var arg3 C.GDBusConnectionFlags
 	var arg4 *C.GDBusAuthObserver
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	arg2 = (*C.gchar)(C.CString(guid))
@@ -3067,19 +3057,17 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GDBusConnection
-	var ret1 DBusConnection
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusConnection
+	var ret2 DBusConnection
 
 	cret = C.g_dbus_connection_new_sync(stream, guid, flags, observer, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddFilter adds a message filter. Filters are handlers that are run on all
@@ -3178,27 +3166,24 @@ func (c dBusConnection) Call(busName string, objectPath string, interfaceName st
 func (c dBusConnection) CallFinish(res AsyncResult) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret2 *glib.Variant
 
 	cret = C.g_dbus_connection_call_finish(arg0, res, &errout)
 
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CallSync: synchronously invokes the @method_name method on the
@@ -3246,7 +3231,6 @@ func (c dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 	var arg7 C.GDBusCallFlags
 	var arg8 C.gint
 	var arg9 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(busName))
@@ -3263,22 +3247,20 @@ func (c dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 	arg8 = C.gint(timeoutMsec)
 	arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret2 *glib.Variant
 
 	cret = C.g_dbus_connection_call_sync(arg0, busName, objectPath, interfaceName, methodName, parameters, replyType, flags, timeoutMsec, cancellable, &errout)
 
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
@@ -3298,30 +3280,27 @@ func (c dBusConnection) CallWithUnixFdList(busName string, objectPath string, in
 func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg2 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg1 *C.GUnixFDList
 	var ret1 UnixFDList
-	var cret *C.GVariant
-	var ret2 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret3 *glib.Variant
 
 	cret = C.g_dbus_connection_call_with_unix_fd_list_finish(arg0, &arg1, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
-	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
+	*ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret3, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, ret2, goerr
+	return ret1, goerr, ret3
 }
 
 // CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
@@ -3340,7 +3319,6 @@ func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string
 	var arg8 C.gint
 	var arg9 *C.GUnixFDList
 	var arg11 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(busName))
@@ -3360,23 +3338,21 @@ func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string
 
 	var arg10 *C.GUnixFDList
 	var ret10 UnixFDList
-	var cret *C.GVariant
-	var ret2 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret3 *glib.Variant
 
 	cret = C.g_dbus_connection_call_with_unix_fd_list_sync(arg0, busName, objectPath, interfaceName, methodName, parameters, replyType, flags, timeoutMsec, fdList, &arg10, cancellable, &errout)
 
-	ret10 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native()))).(UnixFDList)
-	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
+	*ret10 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native()))).(UnixFDList)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret3, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret10, ret2, goerr
+	return ret10, goerr, ret3
 }
 
 // Close closes @connection. Note that this never causes the process to exit
@@ -3414,20 +3390,18 @@ func (c dBusConnection) Close(cancellable Cancellable, callback AsyncReadyCallba
 func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_connection_close_finish(arg0, res, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CloseSync: synchronously closes @connection. The calling thread is
@@ -3436,20 +3410,18 @@ func (c dBusConnection) CloseFinish(res AsyncResult) error {
 func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_connection_close_sync(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EmitSignal emits a signal.
@@ -3466,7 +3438,6 @@ func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string,
 	var arg3 *C.gchar
 	var arg4 *C.gchar
 	var arg5 *C.GVariant
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(destinationBusName))
@@ -3479,15 +3450,14 @@ func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string,
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_connection_emit_signal(arg0, destinationBusName, objectPath, interfaceName, signalName, parameters, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ExportActionGroup exports @action_group on @connection at @object_path.
@@ -3514,26 +3484,23 @@ func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionG
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GActionGroup
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.g_dbus_connection_export_action_group(arg0, objectPath, actionGroup, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ExportMenuModel exports @menu on @connection at @object_path.
@@ -3552,26 +3519,23 @@ func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (guin
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.g_dbus_connection_export_menu_model(arg0, objectPath, menu, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Flush: asynchronously flushes @connection, that is, writes all queued
@@ -3599,20 +3563,18 @@ func (c dBusConnection) Flush(cancellable Cancellable, callback AsyncReadyCallba
 func (c dBusConnection) FlushFinish(res AsyncResult) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_connection_flush_finish(arg0, res, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // FlushSync: synchronously flushes @connection. The calling thread is
@@ -3621,20 +3583,18 @@ func (c dBusConnection) FlushFinish(res AsyncResult) error {
 func (c dBusConnection) FlushSync(cancellable Cancellable) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_connection_flush_sync(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Capabilities gets the capabilities negotiated with the remote peer
@@ -3841,7 +3801,6 @@ func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFl
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GDBusMessage
 	var arg2 C.GDBusSendMessageFlags
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
@@ -3849,15 +3808,13 @@ func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFl
 
 	var arg3 C.guint32
 	var ret3 uint32
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_connection_send_message(arg0, message, flags, &arg3, &errout)
 
-	ret3 = C.guint32(arg3)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret3 = C.guint32(arg3)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, goerr
 }
@@ -3900,7 +3857,7 @@ func (c dBusConnection) SendMessageWithReply(message DBusMessage, flags DBusSend
 
 	C.g_dbus_connection_send_message_with_reply(arg0, message, flags, timeoutMsec, &arg4, cancellable, callback, userData)
 
-	ret4 = C.guint32(arg4)
+	*ret4 = C.guint32(arg4)
 
 	return ret4
 }
@@ -3919,24 +3876,21 @@ func (c dBusConnection) SendMessageWithReply(message DBusMessage, flags DBusSend
 func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GDBusMessage
-	var ret1 DBusMessage
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDBusMessage
+	var ret2 DBusMessage
 
 	cret = C.g_dbus_connection_send_message_with_reply_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SendMessageWithReplySync: synchronously sends @message to the peer
@@ -3973,7 +3927,6 @@ func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBus
 	var arg2 C.GDBusSendMessageFlags
 	var arg3 C.gint
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
@@ -3983,20 +3936,18 @@ func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBus
 
 	var arg4 C.guint32
 	var ret4 uint32
-	var cret *C.GDBusMessage
-	var ret2 DBusMessage
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDBusMessage
+	var ret3 DBusMessage
 
 	cret = C.g_dbus_connection_send_message_with_reply_sync(arg0, message, flags, timeoutMsec, &arg4, cancellable, &errout)
 
-	ret4 = C.guint32(arg4)
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret4 = C.guint32(arg4)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
 
-	return ret4, ret2, goerr
+	return ret4, goerr, ret3
 }
 
 // SetExitOnClose sets whether the process should be terminated when
@@ -4465,23 +4416,20 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMes
 // the per-process or system-wide open files limit is reached.
 func (m dBusMessage) Copy() (dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusMessage
-	var errout *C.GError
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GDBusMessage
-	var ret1 DBusMessage
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDBusMessage
+	var ret2 DBusMessage
 
 	cret = C.g_dbus_message_copy(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Arg0: convenience to get the first item in the body of @message.
@@ -5132,19 +5080,17 @@ func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 // as the first string item in @message's body.
 func (m dBusMessage) ToGerror() error {
 	var arg0 *C.GDBusMessage
-	var errout *C.GError
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_message_to_gerror(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // DBusMethodInvocation instances of the BusMethodInvocation class are used when
@@ -5218,7 +5164,7 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnGerror(error *glib.Error)
+	ReturnGerror(error error)
 	// ReturnValue finishes handling a D-Bus method call by returning
 	// @parameters. If the @parameters GVariant is floating, it is consumed.
 	//
@@ -5262,7 +5208,7 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	TakeError(error *glib.Error)
+	TakeError(error error)
 }
 
 // dBusMethodInvocation implements the DBusMethodInvocation interface.
@@ -5500,12 +5446,13 @@ func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage str
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
-func (i dBusMethodInvocation) ReturnGerror(error *glib.Error) {
+func (i dBusMethodInvocation) ReturnGerror(error error) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.GError
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	C.g_dbus_method_invocation_return_gerror(arg0, error)
 }
@@ -5573,12 +5520,12 @@ func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
-func (i dBusMethodInvocation) TakeError(error *glib.Error) {
+func (i dBusMethodInvocation) TakeError(error error) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.GError
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
 
 	C.g_dbus_method_invocation_take_error(arg0, error)
 }
@@ -5650,7 +5597,6 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	var arg3 *C.gchar
 	var arg4 *C.GDBusAuthObserver
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(arg1))
@@ -5660,19 +5606,17 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GDBusServer
-	var ret1 DBusServer
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusServer
+	var ret2 DBusServer
 
 	cret = C.g_dbus_server_new_sync(address, flags, guid, observer, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusServer)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusServer)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ClientAddress gets a D-Bus address
@@ -7468,7 +7412,6 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 func NewSubprocessV(argv []string, flags SubprocessFlags) (subprocess Subprocess, err error) {
 	var arg1 **C.gchar
 	var arg2 C.GSubprocessFlags
-	var errout *C.GError
 
 	arg1 = C.malloc(len(argv) * (unsafe.Sizeof(int(0)) + 1))
 	defer C.free(unsafe.Pointer(arg1))
@@ -7484,19 +7427,17 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (subprocess Subprocess
 	}
 	arg2 = (C.GSubprocessFlags)(flags)
 
-	var cret C.GSubprocess
-	var ret1 Subprocess
+	var errout *C.GError
 	var goerr error
+	var cret C.GSubprocess
+	var ret2 Subprocess
 
 	cret = C.g_subprocess_newv(argv, flags, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Subprocess)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Subprocess)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Communicate: communicate with the subprocess until it terminates, and all
@@ -7543,7 +7484,6 @@ func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (
 	var arg0 *C.GSubprocess
 	var arg1 *C.GBytes
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GBytes)(unsafe.Pointer(stdinBuf.Native()))
@@ -7553,22 +7493,20 @@ func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (
 	var ret3 **glib.Bytes
 	var arg4 *C.GBytes
 	var ret4 **glib.Bytes
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_communicate(arg0, stdinBuf, cancellable, &arg3, &arg4, &errout)
 
-	ret3 = glib.WrapBytes(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **glib.Bytes) {
+	*ret3 = glib.WrapBytes(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = glib.WrapBytes(unsafe.Pointer(arg4))
-	runtime.SetFinalizer(ret4, func(v **glib.Bytes) {
+	*ret4 = glib.WrapBytes(unsafe.Pointer(arg4))
+	runtime.SetFinalizer(*ret4, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, ret4, goerr
 }
@@ -7588,7 +7526,6 @@ func (s subprocess) CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellab
 func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -7597,22 +7534,20 @@ func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes
 	var ret2 **glib.Bytes
 	var arg3 *C.GBytes
 	var ret3 **glib.Bytes
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_communicate_finish(arg0, result, &arg2, &arg3, &errout)
 
-	ret2 = glib.WrapBytes(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **glib.Bytes) {
+	*ret2 = glib.WrapBytes(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret3 = glib.WrapBytes(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **glib.Bytes) {
+	*ret3 = glib.WrapBytes(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, goerr
 }
@@ -7627,7 +7562,6 @@ func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (s
 	var arg0 *C.GSubprocess
 	var arg1 *C.char
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(stdinBuf))
@@ -7638,18 +7572,16 @@ func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (s
 	var ret3 string
 	var arg4 *C.char
 	var ret4 string
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_communicate_utf8(arg0, stdinBuf, cancellable, &arg3, &arg4, &errout)
 
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	ret4 = C.GoString(arg4)
+	*ret4 = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(arg4))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, ret4, goerr
 }
@@ -7670,7 +7602,6 @@ func (s subprocess) CommunicateUTF8Async(stdinBuf string, cancellable Cancellabl
 func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -7679,18 +7610,16 @@ func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string,
 	var ret2 string
 	var arg3 *C.char
 	var ret3 string
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_communicate_utf8_finish(arg0, result, &arg2, &arg3, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, goerr
 }
@@ -7951,20 +7880,18 @@ func (s subprocess) SendSignal(signalNum int) {
 func (s subprocess) Wait(cancellable Cancellable) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_wait(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // WaitAsync: wait for the subprocess to terminate.
@@ -7982,20 +7909,18 @@ func (s subprocess) WaitAsync(cancellable Cancellable, callback AsyncReadyCallba
 func (s subprocess) WaitCheck(cancellable Cancellable) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_wait_check(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // WaitCheckAsync combines g_subprocess_wait_async() with
@@ -8015,20 +7940,18 @@ func (s subprocess) WaitCheckAsync(cancellable Cancellable, callback AsyncReadyC
 func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_wait_check_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // WaitFinish collects the result of a previous call to
@@ -8036,20 +7959,18 @@ func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 func (s subprocess) WaitFinish(result AsyncResult) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_subprocess_wait_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SubprocessLauncher: this class contains a set of options for launching child
@@ -8502,7 +8423,6 @@ func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool
 func (s subprocessLauncher) Spawnv(argv []string) (subprocess Subprocess, err error) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 **C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
 	arg1 = C.malloc(len(argv) * (unsafe.Sizeof(int(0)) + 1))
@@ -8518,19 +8438,17 @@ func (s subprocessLauncher) Spawnv(argv []string) (subprocess Subprocess, err er
 		}
 	}
 
-	var cret *C.GSubprocess
-	var ret1 Subprocess
+	var errout *C.GError
 	var goerr error
+	var cret *C.GSubprocess
+	var ret2 Subprocess
 
 	cret = C.g_subprocess_launcher_spawnv(arg0, argv, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Subprocess)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Subprocess)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // TakeFd: transfer an arbitrary file descriptor from parent process to the

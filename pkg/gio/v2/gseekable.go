@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -170,22 +171,20 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	var arg1 C.goffset
 	var arg2 C.GSeekType
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	arg1 = C.goffset(offset)
 	arg2 = (C.GSeekType)(typ)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_seekable_seek(arg0, offset, typ, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Tell tells the current position within the stream.
@@ -218,19 +217,17 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var arg0 *C.GSeekable
 	var arg1 C.goffset
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 	arg1 = C.goffset(offset)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_seekable_truncate(arg0, offset, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

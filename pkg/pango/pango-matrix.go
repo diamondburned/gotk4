@@ -165,8 +165,8 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 
 	C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
 
 	return ret1, ret2
 }

@@ -201,7 +201,7 @@ func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (sortIter Tre
 
 	cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(arg0, &arg1, childIter)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -246,7 +246,7 @@ func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
 
 	C.gtk_tree_model_sort_convert_iter_to_child_iter(arg0, &arg1, sortedIter)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }

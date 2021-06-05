@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -38,27 +39,24 @@ import "C"
 // it, an error from g_mapped_file_new() will be returned.
 func ResourceLoad(filename string) (resource *Resource, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GResource
-	var ret1 *Resource
+	var errout *C.GError
 	var goerr error
+	var cret *C.GResource
+	var ret2 *Resource
 
 	cret = C.g_resource_load(filename, &errout)
 
-	ret1 = WrapResource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Resource) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapResource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *Resource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ResourcesEnumerateChildren returns all the names of children at the specified
@@ -69,18 +67,19 @@ func ResourceLoad(filename string) (resource *Resource, err error) {
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret **C.char
-	var ret1 []string
+	var errout *C.GError
 	var goerr error
+	var cret **C.char
+	var ret2 []string
 
 	cret = C.g_resources_enumerate_children(path, lookupFlags, &errout)
 
+	goerr = gerror.Take(unsafe.Pointer(errout))
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -90,19 +89,15 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 			}
 		}
 
-		ret1 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ResourcesGetInfo looks for a file at the specified @path in the set of
@@ -112,7 +107,6 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
@@ -122,16 +116,14 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 	var ret3 uint
 	var arg4 C.guint32
 	var ret4 uint32
+	var errout *C.GError
 	var goerr error
 
 	C.g_resources_get_info(path, lookupFlags, &arg3, &arg4, &errout)
 
-	ret3 = C.gsize(arg3)
-	ret4 = C.guint32(arg4)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret3 = C.gsize(arg3)
+	*ret4 = C.guint32(arg4)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, ret4, goerr
 }
@@ -152,28 +144,25 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *glib.Bytes, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret *C.GBytes
-	var ret1 *glib.Bytes
+	var errout *C.GError
 	var goerr error
+	var cret *C.GBytes
+	var ret2 *glib.Bytes
 
 	cret = C.g_resources_lookup_data(path, lookupFlags, &errout)
 
-	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ResourcesOpenStream looks for a file at the specified @path in the set of
@@ -184,25 +173,22 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *g
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, err error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret *C.GInputStream
-	var ret1 InputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GInputStream
+	var ret2 InputStream
 
 	cret = C.g_resources_open_stream(path, lookupFlags, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ResourcesRegister registers the resource with the process-global set of

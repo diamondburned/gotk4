@@ -5,6 +5,7 @@ package glib
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
@@ -293,25 +294,22 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 // and might thus be a read-only literal string.
 func DirMakeTmp(tmpl string) (filename string, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_dir_make_tmp(tmpl, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // FileErrorFromErrno gets a Error constant based on the passed-in @err_no. For
@@ -349,19 +347,16 @@ func FileErrorFromErrno(errNo int) FileError {
 // nil and @length is set to zero.
 func FileGetContents(filename string) (contents []byte, length uint, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_get_contents(filename, &arg2, &arg3, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, goerr
 }
@@ -382,28 +377,25 @@ func FileGetContents(filename string) (contents []byte, length uint, err error) 
 // longer. The returned name is in the GLib file name encoding.
 func FileOpenTmp(tmpl string) (nameUsed string, gint int, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 *C.gchar
 	var ret2 string
-	var cret C.gint
-	var ret2 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gint
+	var ret3 int
 
 	cret = C.g_file_open_tmp(tmpl, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = C.gint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = C.gint(cret)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // FileReadLink reads the contents of the symbolic link @filename like the POSIX
@@ -411,25 +403,22 @@ func FileOpenTmp(tmpl string) (nameUsed string, gint int, err error) {
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
 func FileReadLink(filename string) (filename string, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_file_read_link(filename, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // FileSetContents writes all of @contents to a file named @filename. This is a
@@ -439,16 +428,13 @@ func FileReadLink(filename string) (filename string, err error) {
 func FileSetContents(filename string, contents []byte) error {
 
 	var errout *C.GError
-
 	var goerr error
 
 	C.g_file_set_contents(filename, contents, length, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // FileTest returns true if any of the tests in the bitfield @test are true. For

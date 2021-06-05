@@ -90,7 +90,7 @@ func StockLookup(stockID string) (item StockItem, ok bool) {
 
 	cret = C.gtk_stock_lookup(stockID, &arg2)
 
-	ret2 = WrapStockItem(unsafe.Pointer(arg2))
+	*ret2 = WrapStockItem(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

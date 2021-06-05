@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -26,22 +27,20 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 	var arg1 *C.GdkScreen
 	var arg2 *C.gchar
 	var arg3 C.guint32
-	var errout *C.GError
 
 	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	arg2 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.guint32(timestamp)
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_show_uri(screen, uri, timestamp, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ShowURIOnWindow: this is a convenience function for launching the default
@@ -60,20 +59,18 @@ func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
 	var arg1 *C.GtkWindow
 	var arg2 *C.char
 	var arg3 C.guint32
-	var errout *C.GError
 
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.guint32(timestamp)
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_show_uri_on_window(parent, uri, timestamp, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

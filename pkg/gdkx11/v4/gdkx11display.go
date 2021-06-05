@@ -237,8 +237,8 @@ func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 
 	cret = C.gdk_x11_display_get_glx_version(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

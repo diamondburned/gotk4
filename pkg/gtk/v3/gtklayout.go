@@ -175,8 +175,8 @@ func (l layout) Size() (width uint, height uint) {
 
 	C.gtk_layout_get_size(arg0, &arg1, &arg2)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.guint(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.guint(arg2)
 
 	return ret1, ret2
 }

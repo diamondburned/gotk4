@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -107,24 +108,21 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 func (e socketAddressEnumerator) Next(cancellable Cancellable) (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketAddressEnumerator
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GSocketAddress
-	var ret1 SocketAddress
+	var errout *C.GError
 	var goerr error
+	var cret *C.GSocketAddress
+	var ret2 SocketAddress
 
 	cret = C.g_socket_address_enumerator_next(arg0, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NextAsync: asynchronously retrieves the next Address from @enumerator and
@@ -148,22 +146,19 @@ func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback Asy
 func (e socketAddressEnumerator) NextFinish(result AsyncResult) (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketAddressEnumerator
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GSocketAddress
-	var ret1 SocketAddress
+	var errout *C.GError
 	var goerr error
+	var cret *C.GSocketAddress
+	var ret2 SocketAddress
 
 	cret = C.g_socket_address_enumerator_next_finish(arg0, result, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 
-	return ret1, goerr
+	return goerr, ret2
 }

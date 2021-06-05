@@ -219,7 +219,7 @@ func (b *Box) Expand(point *Point3D) Box {
 
 	C.graphene_box_expand(arg0, point, &arg2)
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	*ret2 = WrapBox(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -240,7 +240,7 @@ func (b *Box) ExpandScalar(scalar float32) Box {
 
 	C.graphene_box_expand_scalar(arg0, scalar, &arg2)
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	*ret2 = WrapBox(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -259,7 +259,7 @@ func (b *Box) ExpandVec3(vec *Vec3) Box {
 
 	C.graphene_box_expand_vec3(arg0, vec, &arg2)
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	*ret2 = WrapBox(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -285,7 +285,7 @@ func (b *Box) BoundingSphere() Sphere {
 
 	C.graphene_box_get_bounding_sphere(arg0, &arg1)
 
-	ret1 = WrapSphere(unsafe.Pointer(arg1))
+	*ret1 = WrapSphere(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -301,7 +301,7 @@ func (b *Box) Center() Point3D {
 
 	C.graphene_box_get_center(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -350,7 +350,7 @@ func (b *Box) Max() Point3D {
 
 	C.graphene_box_get_max(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -367,7 +367,7 @@ func (b *Box) Min() Point3D {
 
 	C.graphene_box_get_min(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -384,7 +384,7 @@ func (b *Box) Size() Vec3 {
 
 	C.graphene_box_get_size(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -505,7 +505,7 @@ func (a *Box) Intersection(b *Box) (res Box, ok bool) {
 
 	cret = C.graphene_box_intersection(arg0, b, &arg2)
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	*ret2 = WrapBox(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -524,7 +524,7 @@ func (a *Box) Union(b *Box) Box {
 
 	C.graphene_box_union(arg0, b, &arg2)
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	*ret2 = WrapBox(unsafe.Pointer(arg2))
 
 	return ret2
 }

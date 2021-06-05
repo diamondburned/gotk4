@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -648,19 +649,16 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 func (a desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) error {
 	var arg0 *C.GDesktopAppInfo
 
-	var errout *C.GError
-
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(a.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_desktop_app_info_launch_uris_as_manager(arg0, uris, launchContext, spawnFlags, userSetup, userSetupData, pidCallback, pidCallbackData, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ListActions returns the list of "additional application actions"

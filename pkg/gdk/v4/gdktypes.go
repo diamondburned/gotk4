@@ -181,7 +181,7 @@ func (f *ContentFormats) MIMETypes() (nMIMETypes uint, utf8s []string) {
 
 	cret = C.gdk_content_formats_get_mime_types(arg0, &arg1)
 
-	ret1 = C.gsize(arg1)
+	*ret1 = C.gsize(arg1)
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -588,7 +588,7 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 
 	cret = C.gdk_rectangle_intersect(arg0, src2, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -612,7 +612,7 @@ func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 
 	C.gdk_rectangle_union(arg0, src2, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }

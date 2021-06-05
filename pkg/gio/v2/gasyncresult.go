@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -221,17 +222,15 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 // extracted by virtual methods, to enable subclasses to chain up correctly.
 func (r asyncResult) LegacyPropagateError() error {
 	var arg0 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_async_result_legacy_propagate_error(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

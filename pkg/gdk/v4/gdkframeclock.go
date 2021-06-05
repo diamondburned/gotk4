@@ -255,8 +255,8 @@ func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, pr
 
 	C.gdk_frame_clock_get_refresh_info(arg0, baseTime, &arg2, &arg3)
 
-	ret2 = C.gint64(arg2)
-	ret3 = C.gint64(arg3)
+	*ret2 = C.gint64(arg2)
+	*ret3 = C.gint64(arg3)
 
 	return ret2, ret3
 }

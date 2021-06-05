@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -350,20 +351,18 @@ func (s outputStream) ClearPending() {
 func (s outputStream) Close(cancellable Cancellable) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_close(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -388,20 +387,18 @@ func (s outputStream) CloseAsync(ioPriority int, cancellable Cancellable, callba
 func (s outputStream) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_close_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Flush forces a write of all user-space buffered data for the given
@@ -416,20 +413,18 @@ func (s outputStream) CloseFinish(result AsyncResult) error {
 func (s outputStream) Flush(cancellable Cancellable) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_flush(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // FlushAsync forces an asynchronous write of all user-space buffered data
@@ -449,20 +444,18 @@ func (s outputStream) FlushAsync(ioPriority int, cancellable Cancellable, callba
 func (s outputStream) FlushFinish(result AsyncResult) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_flush_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // HasPending checks if an output stream has pending actions.
@@ -519,19 +512,17 @@ func (s outputStream) IsClosing() bool {
 // already set or @stream is closed, it will return false and set @error.
 func (s outputStream) SetPending() error {
 	var arg0 *C.GOutputStream
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_set_pending(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Splice splices an input stream into an output stream.
@@ -540,26 +531,23 @@ func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, 
 	var arg1 *C.GInputStream
 	var arg2 C.GOutputStreamSpliceFlags
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
 	arg2 = (C.GOutputStreamSpliceFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_output_stream_splice(arg0, source, flags, cancellable, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SpliceAsync splices a stream asynchronously. When the operation is
@@ -580,24 +568,21 @@ func (s outputStream) SpliceAsync(source InputStream, flags OutputStreamSpliceFl
 func (s outputStream) SpliceFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_output_stream_splice_finish(arg0, result, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // WriteAllAsync: request an asynchronous write of @count bytes from @buffer
@@ -635,22 +620,19 @@ func (s outputStream) WriteAllAsync(buffer []byte, ioPriority int, cancellable C
 func (s outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 C.gsize
 	var ret2 uint
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_write_all_finish(arg0, result, &arg2, &errout)
 
-	ret2 = C.gsize(arg2)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.gsize(arg2)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }
@@ -713,25 +695,22 @@ func (s outputStream) WriteBytes(bytes *glib.Bytes, cancellable Cancellable) (gs
 	var arg0 *C.GOutputStream
 	var arg1 *C.GBytes
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_output_stream_write_bytes(arg0, bytes, cancellable, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // WriteBytesAsync: this function is similar to
@@ -760,48 +739,42 @@ func (s outputStream) WriteBytesAsync(bytes *glib.Bytes, ioPriority int, cancell
 func (s outputStream) WriteBytesFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_output_stream_write_bytes_finish(arg0, result, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // WriteFinish finishes a stream write operation.
 func (s outputStream) WriteFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.gssize
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.gssize
+	var ret2 int
 
 	cret = C.g_output_stream_write_finish(arg0, result, &errout)
 
-	ret1 = C.gssize(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.gssize(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // WritevAllAsync: request an asynchronous write of the bytes contained in
@@ -840,22 +813,19 @@ func (s outputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, can
 func (s outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 C.gsize
 	var ret2 uint
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_writev_all_finish(arg0, result, &arg2, &errout)
 
-	ret2 = C.gsize(arg2)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.gsize(arg2)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }
@@ -902,22 +872,19 @@ func (s outputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancel
 func (s outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 C.gsize
 	var ret2 uint
+	var errout *C.GError
 	var goerr error
 
 	C.g_output_stream_writev_finish(arg0, result, &arg2, &errout)
 
-	ret2 = C.gsize(arg2)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.gsize(arg2)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }

@@ -310,8 +310,8 @@ func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectang
 
 	C.pango_glyph_string_extents(arg0, font, &arg2, &arg3)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
-	ret3 = WrapRectangle(unsafe.Pointer(arg3))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret3 = WrapRectangle(unsafe.Pointer(arg3))
 
 	return ret2, ret3
 }
@@ -339,8 +339,8 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 
 	C.pango_glyph_string_extents_range(arg0, start, end, font, &arg4, &arg5)
 
-	ret4 = WrapRectangle(unsafe.Pointer(arg4))
-	ret5 = WrapRectangle(unsafe.Pointer(arg5))
+	*ret4 = WrapRectangle(unsafe.Pointer(arg4))
+	*ret5 = WrapRectangle(unsafe.Pointer(arg5))
 
 	return ret4, ret5
 }
@@ -402,7 +402,7 @@ func (g *GlyphString) IndexToX(text string, length int, analysis *Analysis, inde
 
 	C.pango_glyph_string_index_to_x(arg0, text, length, analysis, index_, trailing, &arg6)
 
-	ret6 = C.int(arg6)
+	*ret6 = C.int(arg6)
 
 	return ret6
 }
@@ -446,8 +446,8 @@ func (g *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos
 
 	C.pango_glyph_string_x_to_index(arg0, text, length, analysis, xPos, &arg5, &arg6)
 
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
 
 	return ret5, ret6
 }

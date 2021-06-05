@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -650,27 +651,24 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 // NewDBusNodeInfoForXml constructs a struct DBusNodeInfo.
 func NewDBusNodeInfoForXml(xmlData string) (dBusNodeInfo *DBusNodeInfo, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(xmlData))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GDBusNodeInfo
-	var ret1 *DBusNodeInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDBusNodeInfo
+	var ret2 *DBusNodeInfo
 
 	cret = C.g_dbus_node_info_new_for_xml(xmlData, &errout)
 
-	ret1 = WrapDBusNodeInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DBusNodeInfo) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapDBusNodeInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *DBusNodeInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Native returns the underlying C source pointer.

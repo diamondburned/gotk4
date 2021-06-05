@@ -193,7 +193,7 @@ func GetCurrentEventState() (state gdk.ModifierType, ok bool) {
 
 	cret = C.gtk_get_current_event_state(&arg1)
 
-	ret1 = *gdk.ModifierType(arg1)
+	*ret1 = *gdk.ModifierType(arg1)
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

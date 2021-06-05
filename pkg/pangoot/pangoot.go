@@ -175,8 +175,8 @@ func (r ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint u
 
 	cret = C.pango_ot_ruleset_get_feature_count(arg0, &arg1, &arg2)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.guint(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.guint(arg2)
 	ret3 = C.guint(cret)
 
 	return ret1, ret2, ret3

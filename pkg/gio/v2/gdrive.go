@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -278,20 +279,18 @@ func (d drive) Eject(flags MountUnmountFlags, cancellable Cancellable, callback 
 func (d drive) EjectFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_drive_eject_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EjectWithOperation ejects a drive. This is an asynchronous operation, and
@@ -311,20 +310,18 @@ func (d drive) EjectWithOperation(flags MountUnmountFlags, mountOperation MountO
 func (d drive) EjectWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_drive_eject_with_operation_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EnumerateIdentifiers gets the kinds of identifiers that @drive has. Use
@@ -586,20 +583,18 @@ func (d drive) PollForMedia(cancellable Cancellable, callback AsyncReadyCallback
 func (d drive) PollForMediaFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_drive_poll_for_media_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Start: asynchronously starts a drive.
@@ -618,20 +613,18 @@ func (d drive) Start(flags DriveStartFlags, mountOperation MountOperation, cance
 func (d drive) StartFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_drive_start_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Stop: asynchronously stops a drive.
@@ -650,18 +643,16 @@ func (d drive) Stop(flags MountUnmountFlags, mountOperation MountOperation, canc
 func (d drive) StopFinish(result AsyncResult) error {
 	var arg0 *C.GDrive
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_drive_stop_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -100,26 +101,23 @@ func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (
 	var arg0 *C.GFileInputStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInfo
+	var ret2 FileInfo
 
 	cret = C.g_file_input_stream_query_info(arg0, attributes, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryInfoAsync queries the stream information asynchronously. When the
@@ -145,24 +143,21 @@ func (s fileInputStream) QueryInfoAsync(attributes string, ioPriority int, cance
 func (s fileInputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileInputStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInfo
+	var ret2 FileInfo
 
 	cret = C.g_file_input_stream_query_info_finish(arg0, result, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 type FileInputStreamPrivate struct {

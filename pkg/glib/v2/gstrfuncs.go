@@ -5,6 +5,7 @@ package glib
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
@@ -213,7 +214,6 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum in
 	var arg2 C.guint
 	var arg3 C.gint64
 	var arg4 C.gint64
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
@@ -223,15 +223,13 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum in
 
 	var arg5 C.gint64
 	var ret5 int64
+	var errout *C.GError
 	var goerr error
 
 	C.g_ascii_string_to_signed(str, base, min, max, &arg5, &errout)
 
-	ret5 = C.gint64(arg5)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret5 = C.gint64(arg5)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret5, goerr
 }
@@ -262,7 +260,6 @@ func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNu
 	var arg2 C.guint
 	var arg3 C.guint64
 	var arg4 C.guint64
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
@@ -272,15 +269,13 @@ func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNu
 
 	var arg5 C.guint64
 	var ret5 uint64
+	var errout *C.GError
 	var goerr error
 
 	C.g_ascii_string_to_unsigned(str, base, min, max, &arg5, &errout)
 
-	ret5 = C.guint64(arg5)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret5 = C.guint64(arg5)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret5, goerr
 }
@@ -350,7 +345,7 @@ func ASCIIStrtod(nptr string) (endptr string, gdouble float64) {
 
 	cret = C.g_ascii_strtod(nptr, &arg2)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	ret2 = C.gdouble(cret)
 
 	return ret2, ret2
@@ -384,7 +379,7 @@ func ASCIIStrtoll(nptr string, base uint) (endptr string, gint64 int64) {
 
 	cret = C.g_ascii_strtoll(nptr, &arg2, base)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	ret2 = C.gint64(cret)
 
 	return ret2, ret2
@@ -423,7 +418,7 @@ func ASCIIStrtoull(nptr string, base uint) (endptr string, guint64 uint64) {
 
 	cret = C.g_ascii_strtoull(nptr, &arg2, base)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	ret2 = C.guint64(cret)
 
 	return ret2, ret2
@@ -1460,7 +1455,7 @@ func Strtod(nptr string) (endptr string, gdouble float64) {
 
 	cret = C.g_strtod(nptr, &arg2)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	ret2 = C.gdouble(cret)
 
 	return ret2, ret2

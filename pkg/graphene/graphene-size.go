@@ -167,7 +167,7 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 
 	C.graphene_size_interpolate(arg0, b, factor, &arg3)
 
-	ret3 = WrapSize(unsafe.Pointer(arg3))
+	*ret3 = WrapSize(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -185,7 +185,7 @@ func (s *Size) Scale(factor float32) Size {
 
 	C.graphene_size_scale(arg0, factor, &arg2)
 
-	ret2 = WrapSize(unsafe.Pointer(arg2))
+	*ret2 = WrapSize(unsafe.Pointer(arg2))
 
 	return ret2
 }

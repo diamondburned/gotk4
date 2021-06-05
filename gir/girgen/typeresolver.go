@@ -310,7 +310,7 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	// TODO: aaaaaaaaaaaaaaaaaaaaaaa
 	case "gpointer":
 		return builtinType("", "interface{}", typ)
-	case "GObject.Error":
+	case "GLib.Error":
 		return builtinType("", "error", typ)
 	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")

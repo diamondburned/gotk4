@@ -152,8 +152,8 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 
 	cret = C.g_tree_lookup_extended(arg0, lookupKey, &arg2, &arg3)
 
-	ret2 = C.gpointer(arg2)
-	ret3 = C.gpointer(arg3)
+	*ret2 = C.gpointer(arg2)
+	*ret3 = C.gpointer(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3

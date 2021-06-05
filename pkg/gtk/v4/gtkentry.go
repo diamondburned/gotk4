@@ -584,7 +584,7 @@ func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 
 	C.gtk_entry_get_icon_area(arg0, iconPos, &arg2)
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }

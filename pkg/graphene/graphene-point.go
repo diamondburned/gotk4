@@ -101,8 +101,8 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 
 	cret = C.graphene_point_distance(arg0, b, &arg2, &arg3)
 
-	ret2 = C.float(arg2)
-	ret3 = C.float(arg3)
+	*ret2 = C.float(arg2)
+	*ret3 = C.float(arg3)
 	ret3 = C.float(cret)
 
 	return ret2, ret3, ret3
@@ -214,7 +214,7 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 
 	C.graphene_point_interpolate(arg0, b, factor, &arg3)
 
-	ret3 = WrapPoint(unsafe.Pointer(arg3))
+	*ret3 = WrapPoint(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -252,7 +252,7 @@ func (p *Point) ToVec2() Vec2 {
 
 	C.graphene_point_to_vec2(arg0, &arg1)
 
-	ret1 = WrapVec2(unsafe.Pointer(arg1))
+	*ret1 = WrapVec2(unsafe.Pointer(arg1))
 
 	return ret1
 }

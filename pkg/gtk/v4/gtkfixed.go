@@ -144,8 +144,8 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 
 	C.gtk_fixed_get_child_position(arg0, widget, &arg2, &arg3)
 
-	ret2 = C.double(arg2)
-	ret3 = C.double(arg3)
+	*ret2 = C.double(arg2)
+	*ret3 = C.double(arg3)
 
 	return ret2, ret3
 }

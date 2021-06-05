@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -202,7 +203,6 @@ func VariantParse(typ *VariantType, text string, limit string, endptr string) (v
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 **C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
 	arg2 = (*C.gchar)(C.CString(text))
@@ -212,22 +212,20 @@ func VariantParse(typ *VariantType, text string, limit string, endptr string) (v
 	arg4 = (**C.gchar)(C.CString(endptr))
 	defer C.free(unsafe.Pointer(arg4))
 
-	var cret *C.GVariant
-	var ret1 *Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret2 *Variant
 
 	cret = C.g_variant_parse(typ, text, limit, endptr, &errout)
 
-	ret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Variant) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // VariantParseErrorPrintContext pretty-prints a message showing the context of
@@ -254,11 +252,12 @@ func VariantParse(typ *VariantType, text string, limit string, endptr string) (v
 // @source_str must be exactly the same string that caused the error. If
 // @source_str was not nul-terminated when you passed it to g_variant_parse()
 // then you must add nul termination before using this function.
-func VariantParseErrorPrintContext(error *Error, sourceStr string) string {
+func VariantParseErrorPrintContext(error error, sourceStr string) string {
 	var arg1 *C.GError
 	var arg2 *C.gchar
 
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 	arg2 = (*C.gchar)(C.CString(sourceStr))
 	defer C.free(unsafe.Pointer(arg2))
 
@@ -1154,7 +1153,7 @@ func (v *Variant) DupString() (length uint, utf8 string) {
 
 	cret = C.g_variant_dup_string(arg0, &arg1)
 
-	ret1 = C.gsize(arg1)
+	*ret1 = C.gsize(arg1)
 	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
@@ -1668,7 +1667,7 @@ func (v *Variant) String() (length uint, utf8 string) {
 
 	cret = C.g_variant_get_string(arg0, &arg1)
 
-	ret1 = C.gsize(arg1)
+	*ret1 = C.gsize(arg1)
 	ret2 = C.GoString(cret)
 
 	return ret1, ret2

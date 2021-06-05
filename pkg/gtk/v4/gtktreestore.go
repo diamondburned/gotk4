@@ -187,7 +187,7 @@ func (t treeStore) Append(parent *TreeIter) TreeIter {
 
 	C.gtk_tree_store_append(arg0, &arg1, parent)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -222,7 +222,7 @@ func (t treeStore) Insert(parent *TreeIter, position int) TreeIter {
 
 	C.gtk_tree_store_insert(arg0, &arg1, parent, position)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -250,7 +250,7 @@ func (t treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter {
 
 	C.gtk_tree_store_insert_after(arg0, &arg1, parent, sibling)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -278,7 +278,7 @@ func (t treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter {
 
 	C.gtk_tree_store_insert_before(arg0, &arg1, parent, sibling)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -296,7 +296,7 @@ func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []i
 
 	C.gtk_tree_store_insert_with_valuesv(arg0, &arg1, parent, position, columns, values, nValues)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -412,7 +412,7 @@ func (t treeStore) Prepend(parent *TreeIter) TreeIter {
 
 	C.gtk_tree_store_prepend(arg0, &arg1, parent)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }

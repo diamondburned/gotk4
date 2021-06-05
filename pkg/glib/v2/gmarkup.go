@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -172,19 +173,17 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 // elements are still open.
 func (c *MarkupParseContext) EndParse() error {
 	var arg0 *C.GMarkupParseContext
-	var errout *C.GError
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_markup_parse_context_end_parse(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Free frees a ParseContext.
@@ -260,8 +259,8 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 
 	C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -299,22 +298,20 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	var arg0 *C.GMarkupParseContext
 	var arg1 *C.gchar
 	var arg2 C.gssize
-	var errout *C.GError
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(textLen)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_markup_parse_context_parse(arg0, text, textLen, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Pop completes the process of a temporary sub-parser redirection.

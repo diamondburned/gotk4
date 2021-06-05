@@ -168,11 +168,11 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 
 	C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.GoString(arg1)
+	*ret1 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret3 = *Script(arg3)
+	*ret3 = *Script(arg3)
 
 	return ret1, ret2, ret3
 }

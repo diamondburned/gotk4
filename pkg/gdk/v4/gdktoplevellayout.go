@@ -119,7 +119,7 @@ func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 
 	cret = C.gdk_toplevel_layout_get_fullscreen(arg0, &arg1)
 
-	ret1 = C.bool(arg1) != C.false
+	*ret1 = C.bool(arg1) != C.false
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -157,7 +157,7 @@ func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 
 	cret = C.gdk_toplevel_layout_get_maximized(arg0, &arg1)
 
-	ret1 = C.bool(arg1) != C.false
+	*ret1 = C.bool(arg1) != C.false
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

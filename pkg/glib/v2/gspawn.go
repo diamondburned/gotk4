@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
@@ -182,19 +183,17 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) error {
 	var arg1 C.gint
-	var errout *C.GError
 
 	arg1 = C.gint(exitStatus)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_spawn_check_exit_status(exitStatus, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -208,20 +207,18 @@ func SpawnCheckExitStatus(exitStatus int) error {
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
 func SpawnCommandLineAsync(commandLine string) error {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_spawn_command_line_async(commandLine, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
@@ -246,7 +243,6 @@ func SpawnCommandLineAsync(commandLine string) error {
 // 'e:\\folder\\argument.txt'".
 func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
@@ -257,6 +253,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var ret3 []byte
 	var arg4 C.gint
 	var ret4 int
+	var errout *C.GError
 	var goerr error
 
 	C.g_spawn_command_line_sync(commandLine, &arg2, &arg3, &arg4, &errout)
@@ -291,11 +288,8 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			ret3[i] = C.guint8(src)
 		}
 	}
-	ret4 = C.gint(arg4)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret4 = C.gint(arg4)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, ret4, goerr
 }

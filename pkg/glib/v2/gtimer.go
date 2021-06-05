@@ -42,7 +42,7 @@ func TimeValFromISO8601(isoDate string) (time_ TimeVal, ok bool) {
 
 	cret = C.g_time_val_from_iso8601(isoDate, &arg2)
 
-	ret2 = WrapTimeVal(unsafe.Pointer(arg2))
+	*ret2 = WrapTimeVal(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

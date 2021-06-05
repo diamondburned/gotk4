@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -1259,8 +1260,8 @@ func (w window) DefaultSize() (width int, height int) {
 
 	C.gtk_window_get_default_size(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -1601,8 +1602,8 @@ func (w window) Position() (rootX int, rootY int) {
 
 	C.gtk_window_get_position(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -1637,7 +1638,7 @@ func (w window) ResizeGripArea() (rect gdk.Rectangle, ok bool) {
 
 	cret = C.gtk_window_get_resize_grip_area(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -1729,8 +1730,8 @@ func (w window) Size() (width int, height int) {
 
 	C.gtk_window_get_size(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -2669,21 +2670,19 @@ func (w window) SetIcon(icon gdkpixbuf.Pixbuf) {
 func (w window) SetIconFromFile(filename string) error {
 	var arg0 *C.GtkWindow
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_window_set_icon_from_file(arg0, filename, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetIconList sets up the icon representing a Window. The icon is used when

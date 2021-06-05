@@ -333,8 +333,8 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 
 	cret = C.gtk_tree_view_column_cell_get_position(arg0, cellRenderer, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3
@@ -360,10 +360,10 @@ func (t treeViewColumn) CellGetSize(cellArea *gdk.Rectangle) (xOffset int, yOffs
 
 	C.gtk_tree_view_column_cell_get_size(arg0, cellArea, &arg2, &arg3, &arg4, &arg5)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
-	ret5 = C.gint(arg5)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
+	*ret5 = C.gint(arg5)
 
 	return ret2, ret3, ret4, ret5
 }

@@ -404,7 +404,7 @@ func SignalQuery(signalID uint) SignalQuery {
 
 	C.g_signal_query(signalID, &arg2)
 
-	ret2 = WrapSignalQuery(unsafe.Pointer(arg2))
+	*ret2 = WrapSignalQuery(unsafe.Pointer(arg2))
 
 	return ret2
 }

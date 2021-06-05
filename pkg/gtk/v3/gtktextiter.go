@@ -236,8 +236,8 @@ func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *Text
 
 	cret = C.gtk_text_iter_backward_search(arg0, str, flags, &arg3, &arg4, limit)
 
-	ret3 = WrapTextIter(unsafe.Pointer(arg3))
-	ret4 = WrapTextIter(unsafe.Pointer(arg4))
+	*ret3 = WrapTextIter(unsafe.Pointer(arg3))
+	*ret4 = WrapTextIter(unsafe.Pointer(arg4))
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -848,8 +848,8 @@ func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextI
 
 	cret = C.gtk_text_iter_forward_search(arg0, str, flags, &arg3, &arg4, limit)
 
-	ret3 = WrapTextIter(unsafe.Pointer(arg3))
-	ret4 = WrapTextIter(unsafe.Pointer(arg4))
+	*ret3 = WrapTextIter(unsafe.Pointer(arg3))
+	*ret4 = WrapTextIter(unsafe.Pointer(arg4))
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -1135,7 +1135,7 @@ func (i *TextIter) Attributes() (values TextAttributes, ok bool) {
 
 	cret = C.gtk_text_iter_get_attributes(arg0, &arg1)
 
-	ret1 = WrapTextAttributes(unsafe.Pointer(arg1))
+	*ret1 = WrapTextAttributes(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

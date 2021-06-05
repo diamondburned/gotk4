@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -227,20 +228,18 @@ func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback
 func (v volume) EjectFinish(result AsyncResult) error {
 	var arg0 *C.GVolume
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_volume_eject_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EjectWithOperation ejects a volume. This is an asynchronous operation,
@@ -260,20 +259,18 @@ func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation Mount
 func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GVolume
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_volume_eject_with_operation_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
@@ -497,20 +494,18 @@ func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, canc
 func (v volume) MountFinish(result AsyncResult) error {
 	var arg0 *C.GVolume
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_volume_mount_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ShouldAutomount returns whether the volume should be automatically

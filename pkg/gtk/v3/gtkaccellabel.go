@@ -143,8 +143,8 @@ func (a accelLabel) Accel() (acceleratorKey uint, acceleratorMods gdk.ModifierTy
 
 	C.gtk_accel_label_get_accel(arg0, &arg1, &arg2)
 
-	ret1 = C.guint(arg1)
-	ret2 = *gdk.ModifierType(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = *gdk.ModifierType(arg2)
 
 	return ret1, ret2
 }

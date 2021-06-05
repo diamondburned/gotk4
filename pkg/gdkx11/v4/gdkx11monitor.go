@@ -64,7 +64,7 @@ func (m x11Monitor) Workarea() gdk.Rectangle {
 
 	C.gdk_x11_monitor_get_workarea(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }

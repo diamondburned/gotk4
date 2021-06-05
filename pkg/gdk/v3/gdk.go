@@ -2148,8 +2148,8 @@ func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 
 	cret = C.gdk_cursor_get_surface(arg0, &arg1, &arg2)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
 	ret3 = cairo.WrapSurface(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret3, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -2534,8 +2534,8 @@ func (d device) Key(index_ uint) (keyval uint, modifiers ModifierType, ok bool) 
 
 	cret = C.gdk_device_get_key(arg0, index_, &arg2, &arg3)
 
-	ret2 = C.guint(arg2)
-	ret3 = *ModifierType(arg3)
+	*ret2 = C.guint(arg2)
+	*ret3 = *ModifierType(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret2, ret3, ret3
@@ -2643,9 +2643,9 @@ func (d device) Position() (screen Screen, x int, y int) {
 
 	C.gdk_device_get_position(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -2668,9 +2668,9 @@ func (d device) PositionDouble() (screen Screen, x float64, y float64) {
 
 	C.gdk_device_get_position_double(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
-	ret2 = C.gdouble(arg2)
-	ret3 = C.gdouble(arg3)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
+	*ret2 = C.gdouble(arg2)
+	*ret3 = C.gdouble(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -2787,8 +2787,8 @@ func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 
 	cret = C.gdk_device_get_window_at_position(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 	ret3 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
 	return ret1, ret2, ret3
@@ -2816,8 +2816,8 @@ func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Win
 
 	cret = C.gdk_device_get_window_at_position_double(arg0, &arg1, &arg2)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
 	ret3 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
 	return ret1, ret2, ret3
@@ -3676,8 +3676,8 @@ func (d display) MaximalCursorSize() (width uint, height uint) {
 
 	C.gdk_display_get_maximal_cursor_size(arg0, &arg1, &arg2)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.guint(arg2)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.guint(arg2)
 
 	return ret1, ret2
 }
@@ -3809,10 +3809,10 @@ func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
 
 	C.gdk_display_get_pointer(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
-	ret4 = *ModifierType(arg4)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
+	*ret4 = *ModifierType(arg4)
 
 	return ret1, ret2, ret3, ret4
 }
@@ -3874,8 +3874,8 @@ func (d display) WindowAtPointer() (winX int, winY int, window Window) {
 
 	cret = C.gdk_display_get_window_at_pointer(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 	ret3 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
 	return ret1, ret2, ret3
@@ -4866,8 +4866,8 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 
 	C.gdk_gl_context_get_required_version(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -4920,8 +4920,8 @@ func (c glContext) Version() (major int, minor int) {
 
 	C.gdk_gl_context_get_version(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -4987,19 +4987,17 @@ func (c glContext) MakeCurrent() {
 // It is safe to call this function on a realized GLContext.
 func (c glContext) Realize() error {
 	var arg0 *C.GdkGLContext
-	var errout *C.GError
 
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_gl_context_realize(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetDebugEnabled sets whether the GLContext should perform extra
@@ -5492,10 +5490,10 @@ func (k keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType,
 
 	cret = C.gdk_keymap_translate_keyboard_state(arg0, hardwareKeycode, state, group, &arg4, &arg5, &arg6, &arg7)
 
-	ret4 = C.guint(arg4)
-	ret5 = C.gint(arg5)
-	ret6 = C.gint(arg6)
-	ret7 = *ModifierType(arg7)
+	*ret4 = C.guint(arg4)
+	*ret5 = C.gint(arg5)
+	*ret6 = C.gint(arg6)
+	*ret7 = *ModifierType(arg7)
 	ret5 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret6, ret7, ret5
@@ -5878,7 +5876,7 @@ func (s screen) MonitorGeometry(monitorNum int) Rectangle {
 
 	C.gdk_screen_get_monitor_geometry(arg0, monitorNum, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -5993,7 +5991,7 @@ func (s screen) MonitorWorkarea(monitorNum int) Rectangle {
 
 	C.gdk_screen_get_monitor_workarea(arg0, monitorNum, &arg2)
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -6650,9 +6648,9 @@ func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 
 	C.gdk_visual_get_blue_pixel_details(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.guint32(arg1)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret1 = C.guint32(arg1)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -6731,9 +6729,9 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 
 	C.gdk_visual_get_green_pixel_details(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.guint32(arg1)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret1 = C.guint32(arg1)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -6758,9 +6756,9 @@ func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
 
 	C.gdk_visual_get_red_pixel_details(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.guint32(arg1)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret1 = C.guint32(arg1)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }

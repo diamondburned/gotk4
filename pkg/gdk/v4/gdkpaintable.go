@@ -224,8 +224,8 @@ func (p paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight f
 
 	C.gdk_paintable_compute_concrete_size(arg0, specifiedWidth, specifiedHeight, defaultWidth, defaultHeight, &arg5, &arg6)
 
-	ret5 = C.double(arg5)
-	ret6 = C.double(arg6)
+	*ret5 = C.double(arg5)
+	*ret6 = C.double(arg6)
 
 	return ret5, ret6
 }

@@ -204,8 +204,8 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 
 	C.gtk_accelerator_parse(accelerator, &arg2, &arg3)
 
-	ret2 = C.guint(arg2)
-	ret3 = *gdk.ModifierType(arg3)
+	*ret2 = C.guint(arg2)
+	*ret3 = *gdk.ModifierType(arg3)
 
 	return ret2, ret3
 }
@@ -238,7 +238,7 @@ func AcceleratorParseWithKeycode(accelerator string) (acceleratorKey uint, accel
 
 	C.gtk_accelerator_parse_with_keycode(accelerator, &arg2, &arg3, &arg4)
 
-	ret2 = C.guint(arg2)
+	*ret2 = C.guint(arg2)
 	{
 		var length int
 		for p := arg3; *p != 0; p = (**C.guint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -254,7 +254,7 @@ func AcceleratorParseWithKeycode(accelerator string) (acceleratorKey uint, accel
 			ret3[i] = *C.guint(src)
 		}
 	}
-	ret4 = *gdk.ModifierType(arg4)
+	*ret4 = *gdk.ModifierType(arg4)
 
 	return ret2, ret3, ret4
 }

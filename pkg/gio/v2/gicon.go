@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -76,24 +77,21 @@ func IconHash(icon interface{}) uint {
 // to calling g_icon_new_for_string().
 func IconNewForString(str string) (icon Icon, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GIcon
-	var ret1 Icon
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIcon
+	var ret2 Icon
 
 	cret = C.g_icon_new_for_string(str, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // IconOverrider contains methods that are overridable. This

@@ -118,7 +118,7 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 
 	C.graphene_ray_get_closest_point_to_point(arg0, p, &arg2)
 
-	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -134,7 +134,7 @@ func (r *Ray) Direction() Vec3 {
 
 	C.graphene_ray_get_direction(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -193,7 +193,7 @@ func (r *Ray) Origin() Point3D {
 
 	C.graphene_ray_get_origin(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -212,7 +212,7 @@ func (r *Ray) PositionAt(t float32) Point3D {
 
 	C.graphene_ray_get_position_at(arg0, t, &arg2)
 
-	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -293,7 +293,7 @@ func (r *Ray) IntersectBox(b *Box) (tOut float32, rayIntersectionKind RayInterse
 
 	cret = C.graphene_ray_intersect_box(arg0, b, &arg2)
 
-	ret2 = C.float(arg2)
+	*ret2 = C.float(arg2)
 	ret2 = RayIntersectionKind(cret)
 
 	return ret2, ret2
@@ -315,7 +315,7 @@ func (r *Ray) IntersectSphere(s *Sphere) (tOut float32, rayIntersectionKind RayI
 
 	cret = C.graphene_ray_intersect_sphere(arg0, s, &arg2)
 
-	ret2 = C.float(arg2)
+	*ret2 = C.float(arg2)
 	ret2 = RayIntersectionKind(cret)
 
 	return ret2, ret2
@@ -337,7 +337,7 @@ func (r *Ray) IntersectTriangle(t *Triangle) (tOut float32, rayIntersectionKind 
 
 	cret = C.graphene_ray_intersect_triangle(arg0, t, &arg2)
 
-	ret2 = C.float(arg2)
+	*ret2 = C.float(arg2)
 	ret2 = RayIntersectionKind(cret)
 
 	return ret2, ret2

@@ -181,8 +181,8 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 
 	C.gdk_drag_find_window_for_screen(context, dragWindow, screen, xRoot, yRoot, &arg6, &arg7)
 
-	ret6 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(Window)
-	ret7 = *DragProtocol(arg7)
+	*ret6 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(Window)
+	*ret7 = *DragProtocol(arg7)
 
 	return ret6, ret7
 }

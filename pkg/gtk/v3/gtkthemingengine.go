@@ -120,7 +120,7 @@ func (e themingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 
 	C.gtk_theming_engine_get_background_color(arg0, state, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -138,7 +138,7 @@ func (e themingEngine) Border(state StateFlags) Border {
 
 	C.gtk_theming_engine_get_border(arg0, state, &arg2)
 
-	ret2 = WrapBorder(unsafe.Pointer(arg2))
+	*ret2 = WrapBorder(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -156,7 +156,7 @@ func (e themingEngine) BorderColor(state StateFlags) gdk.RGBA {
 
 	C.gtk_theming_engine_get_border_color(arg0, state, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -174,7 +174,7 @@ func (e themingEngine) Color(state StateFlags) gdk.RGBA {
 
 	C.gtk_theming_engine_get_color(arg0, state, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -242,7 +242,7 @@ func (e themingEngine) Margin(state StateFlags) Border {
 
 	C.gtk_theming_engine_get_margin(arg0, state, &arg2)
 
-	ret2 = WrapBorder(unsafe.Pointer(arg2))
+	*ret2 = WrapBorder(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -260,7 +260,7 @@ func (e themingEngine) Padding(state StateFlags) Border {
 
 	C.gtk_theming_engine_get_padding(arg0, state, &arg2)
 
-	ret2 = WrapBorder(unsafe.Pointer(arg2))
+	*ret2 = WrapBorder(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -298,8 +298,8 @@ func (e themingEngine) Property(property string, state StateFlags) externglib.Va
 
 	C.gtk_theming_engine_get_property(arg0, property, state, &arg3)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v *externglib.Value) {
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(v.GValue))
 	})
 
@@ -352,7 +352,7 @@ func (e themingEngine) StyleProperty(propertyName string) externglib.Value {
 
 	C.gtk_theming_engine_get_style_property(arg0, propertyName, &arg2)
 
-	ret2 = externglib.ValueFromNative(unsafe.Pointer(arg2))
+	*ret2 = externglib.ValueFromNative(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -395,7 +395,7 @@ func (e themingEngine) HasRegion(styleRegion string) (flags RegionFlags, ok bool
 
 	cret = C.gtk_theming_engine_has_region(arg0, styleRegion, &arg2)
 
-	ret2 = *RegionFlags(arg2)
+	*ret2 = *RegionFlags(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -418,7 +418,7 @@ func (e themingEngine) LookupColor(colorName string) (color gdk.RGBA, ok bool) {
 
 	cret = C.gtk_theming_engine_lookup_color(arg0, colorName, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -446,7 +446,7 @@ func (e themingEngine) StateIsRunning(state StateType) (progress float64, ok boo
 
 	cret = C.gtk_theming_engine_state_is_running(arg0, state, &arg2)
 
-	ret2 = C.gdouble(arg2)
+	*ret2 = C.gdouble(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

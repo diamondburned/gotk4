@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -18,7 +17,7 @@ import "C"
 
 // ParseErrorFunc: the type of callback that is called when a parse error occurs
 // during deserialization of node data.
-type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error *glib.Error)
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error error)
 
 //export gotk4_ParseErrorFunc
 func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {

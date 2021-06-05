@@ -5,6 +5,7 @@ package gdk
 import (
 	"runtime"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -157,20 +158,18 @@ func (p contentProvider) ContentChanged() {
 func (p contentProvider) Value(value *externglib.Value) error {
 	var arg0 *C.GdkContentProvider
 	var arg1 *C.GValue
-	var errout *C.GError
 
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GValue)(value.GValue)
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_content_provider_get_value(arg0, value, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // RefFormats gets the formats that the provider can provide its current
@@ -240,18 +239,16 @@ func (p contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputSt
 func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
 	var arg0 *C.GdkContentProvider
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_content_provider_write_mime_type_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

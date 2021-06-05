@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -112,26 +113,23 @@ func (p proxy) Connect(connection IOStream, proxyAddress ProxyAddress, cancellab
 	var arg1 *C.GIOStream
 	var arg2 *C.GProxyAddress
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
 	arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GIOStream
-	var ret1 IOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIOStream
+	var ret2 IOStream
 
 	cret = C.g_proxy_connect(arg0, connection, proxyAddress, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
@@ -147,24 +145,21 @@ func (p proxy) ConnectAsync(connection IOStream, proxyAddress ProxyAddress, canc
 func (p proxy) ConnectFinish(result AsyncResult) (ioStream IOStream, err error) {
 	var arg0 *C.GProxy
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GIOStream
-	var ret1 IOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GIOStream
+	var ret2 IOStream
 
 	cret = C.g_proxy_connect_finish(arg0, result, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SupportsHostname: some proxy protocols expect to be passed a hostname,

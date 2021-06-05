@@ -102,9 +102,9 @@ func (h hsV) Color() (h float64, s float64, v float64) {
 
 	C.gtk_hsv_get_color(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
-	ret3 = C.gdouble(arg3)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
+	*ret3 = C.gdouble(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -122,8 +122,8 @@ func (h hsV) Metrics() (size int, ringWidth int) {
 
 	C.gtk_hsv_get_metrics(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }

@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,7 +57,7 @@ type DirectoryList interface {
 	//
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
-	Error() *glib.Error
+	Error() error
 	// File gets the file whose children are currently enumerated.
 	File() gio.File
 	// IOPriority gets the IO priority set via
@@ -168,17 +168,17 @@ func (s directoryList) Attributes() string {
 //
 // An error being set does not mean that no files were loaded, and all
 // successfully queried files will remain in the list.
-func (s directoryList) Error() *glib.Error {
+func (s directoryList) Error() error {
 	var arg0 *C.GtkDirectoryList
 
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GError
-	var ret1 *glib.Error
+	var ret1 error
 
 	cret = C.gtk_directory_list_get_error(arg0)
 
-	ret1 = glib.WrapError(unsafe.Pointer(cret))
+	ret1 = gerror.Take(unsafe.Pointer(cret))
 
 	return ret1
 }

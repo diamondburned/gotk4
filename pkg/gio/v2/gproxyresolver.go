@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -141,19 +142,20 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 	var arg0 *C.GProxyResolver
 	var arg1 *C.gchar
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
+	var errout *C.GError
 	var goerr error
+	var cret **C.gchar
+	var ret2 []string
 
 	cret = C.g_proxy_resolver_lookup(arg0, uri, cancellable, &errout)
 
+	goerr = gerror.Take(unsafe.Pointer(errout))
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -163,19 +165,15 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 			}
 		}
 
-		ret1 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
@@ -194,17 +192,18 @@ func (r proxyResolver) LookupAsync(uri string, cancellable Cancellable, callback
 func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err error) {
 	var arg0 *C.GProxyResolver
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
+	var errout *C.GError
 	var goerr error
+	var cret **C.gchar
+	var ret2 []string
 
 	cret = C.g_proxy_resolver_lookup_finish(arg0, result, &errout)
 
+	goerr = gerror.Take(unsafe.Pointer(errout))
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -214,17 +213,13 @@ func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err err
 			}
 		}
 
-		ret1 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }

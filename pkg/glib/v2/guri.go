@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -265,21 +266,19 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bo
 func URIIsValid(uriString string, flags URIFlags) error {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriString))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_uri_is_valid(uriString, flags, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // URIJoin joins the given components together according to @flags to create an
@@ -389,28 +388,25 @@ func URIJoinWithUser(flags URIFlags, scheme string, user string, password string
 func URIParse(uriString string, flags URIFlags) (uri *URI, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriString))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	var cret *C.GUri
-	var ret1 *URI
+	var errout *C.GError
 	var goerr error
+	var cret *C.GUri
+	var ret2 *URI
 
 	cret = C.g_uri_parse(uriString, flags, &errout)
 
-	ret1 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *URI) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapURI(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *URI) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // URIParseParams: many URI schemes include one or more attribute/value pairs as
@@ -442,7 +438,6 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 	var arg2 C.gssize
 	var arg3 *C.gchar
 	var arg4 C.GUriParamsFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(params))
 	defer C.free(unsafe.Pointer(arg1))
@@ -451,22 +446,20 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (C.GUriParamsFlags)(flags)
 
-	var cret *C.GHashTable
-	var ret1 *HashTable
+	var errout *C.GError
 	var goerr error
+	var cret *C.GHashTable
+	var ret2 *HashTable
 
 	cret = C.g_uri_parse_params(params, length, separators, flags, &errout)
 
-	ret1 = WrapHashTable(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *HashTable) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapHashTable(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *HashTable) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // URIParseScheme gets the scheme portion of a URI string. RFC 3986
@@ -528,7 +521,6 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) (ut
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 C.GUriFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(baseURIString))
 	defer C.free(unsafe.Pointer(arg1))
@@ -536,20 +528,18 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) (ut
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (C.GUriFlags)(flags)
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_uri_resolve_relative(baseURIString, uriRef, flags, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // URISplit parses @uri_ref (which can be an [absolute or relative
@@ -570,7 +560,6 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) (ut
 func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(arg1))
@@ -590,27 +579,25 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	var ret8 string
 	var arg9 *C.gchar
 	var ret9 string
+	var errout *C.GError
 	var goerr error
 
 	C.g_uri_split(uriRef, flags, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &errout)
 
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	ret4 = C.GoString(arg4)
+	*ret4 = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(arg4))
-	ret5 = C.GoString(arg5)
+	*ret5 = C.GoString(arg5)
 	defer C.free(unsafe.Pointer(arg5))
-	ret6 = C.gint(arg6)
-	ret7 = C.GoString(arg7)
+	*ret6 = C.gint(arg6)
+	*ret7 = C.GoString(arg7)
 	defer C.free(unsafe.Pointer(arg7))
-	ret8 = C.GoString(arg8)
+	*ret8 = C.GoString(arg8)
 	defer C.free(unsafe.Pointer(arg8))
-	ret9 = C.GoString(arg9)
+	*ret9 = C.GoString(arg9)
 	defer C.free(unsafe.Pointer(arg9))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, ret4, ret5, ret6, ret7, ret8, ret9, goerr
 }
@@ -624,7 +611,6 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriString))
 	defer C.free(unsafe.Pointer(arg1))
@@ -636,19 +622,17 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 	var ret4 string
 	var arg5 C.gint
 	var ret5 int
+	var errout *C.GError
 	var goerr error
 
 	C.g_uri_split_network(uriString, flags, &arg3, &arg4, &arg5, &errout)
 
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	ret4 = C.GoString(arg4)
+	*ret4 = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(arg4))
-	ret5 = C.gint(arg5)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret5 = C.gint(arg5)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, ret4, ret5, goerr
 }
@@ -666,7 +650,6 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(arg1))
@@ -690,31 +673,29 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	var ret10 string
 	var arg11 *C.gchar
 	var ret11 string
+	var errout *C.GError
 	var goerr error
 
 	C.g_uri_split_with_user(uriRef, flags, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &errout)
 
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	ret4 = C.GoString(arg4)
+	*ret4 = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(arg4))
-	ret5 = C.GoString(arg5)
+	*ret5 = C.GoString(arg5)
 	defer C.free(unsafe.Pointer(arg5))
-	ret6 = C.GoString(arg6)
+	*ret6 = C.GoString(arg6)
 	defer C.free(unsafe.Pointer(arg6))
-	ret7 = C.GoString(arg7)
+	*ret7 = C.GoString(arg7)
 	defer C.free(unsafe.Pointer(arg7))
-	ret8 = C.gint(arg8)
-	ret9 = C.GoString(arg9)
+	*ret8 = C.gint(arg8)
+	*ret9 = C.GoString(arg9)
 	defer C.free(unsafe.Pointer(arg9))
-	ret10 = C.GoString(arg10)
+	*ret10 = C.GoString(arg10)
 	defer C.free(unsafe.Pointer(arg10))
-	ret11 = C.GoString(arg11)
+	*ret11 = C.GoString(arg11)
 	defer C.free(unsafe.Pointer(arg11))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, ret4, ret5, ret6, ret7, ret8, ret9, ret10, ret11, goerr
 }
@@ -732,7 +713,6 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 	var arg1 *C.char
 	var arg2 C.gssize
 	var arg3 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(escapedString))
 	defer C.free(unsafe.Pointer(arg1))
@@ -740,22 +720,20 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 	arg3 = (*C.char)(C.CString(illegalCharacters))
 	defer C.free(unsafe.Pointer(arg3))
 
-	var cret *C.GBytes
-	var ret1 *Bytes
+	var errout *C.GError
 	var goerr error
+	var cret *C.GBytes
+	var ret2 *Bytes
 
 	cret = C.g_uri_unescape_bytes(escapedString, length, illegalCharacters, &errout)
 
-	ret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Bytes) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // URIUnescapeSegment unescapes a segment of an escaped string.
@@ -1158,29 +1136,26 @@ func (b *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, err error)
 	var arg0 *C.GUri
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
-	var errout *C.GError
 
 	arg0 = (*C.GUri)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(uriRef))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	var cret *C.GUri
-	var ret1 *URI
+	var errout *C.GError
 	var goerr error
+	var cret *C.GUri
+	var ret2 *URI
 
 	cret = C.g_uri_parse_relative(arg0, uriRef, flags, &errout)
 
-	ret1 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *URI) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapURI(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *URI) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Ref increments the reference count of @uri by one.
@@ -1354,7 +1329,6 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 // allow repeated attributes.
 func (i *URIParamsIter) Next() (attribute string, value string, err error) {
 	var arg0 *C.GUriParamsIter
-	var errout *C.GError
 
 	arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
 
@@ -1362,18 +1336,16 @@ func (i *URIParamsIter) Next() (attribute string, value string, err error) {
 	var ret1 string
 	var arg2 *C.gchar
 	var ret2 string
+	var errout *C.GError
 	var goerr error
 
 	C.g_uri_params_iter_next(arg0, &arg1, &arg2, &errout)
 
-	ret1 = C.GoString(arg1)
+	*ret1 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret1, ret2, goerr
 }

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -411,25 +412,22 @@ func (m uiManager) AddUi(mergeID uint, path string, name string, action string, 
 func (m uiManager) AddUiFromFile(filename string) (guint uint, err error) {
 	var arg0 *C.GtkUIManager
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_ui_manager_add_ui_from_file(arg0, filename, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddUiFromResource parses a resource file containing a [UI
@@ -437,25 +435,22 @@ func (m uiManager) AddUiFromFile(filename string) (guint uint, err error) {
 func (m uiManager) AddUiFromResource(resourcePath string) (guint uint, err error) {
 	var arg0 *C.GtkUIManager
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_ui_manager_add_ui_from_resource(arg0, resourcePath, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddUiFromString parses a string containing a [UI definition][XML-UI] and
@@ -465,26 +460,23 @@ func (m uiManager) AddUiFromString(buffer string, length int) (guint uint, err e
 	var arg0 *C.GtkUIManager
 	var arg1 *C.gchar
 	var arg2 C.gssize
-	var errout *C.GError
 
 	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(length)
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_ui_manager_add_ui_from_string(arg0, buffer, length, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // EnsureUpdate makes sure that all pending updates to the UI have been

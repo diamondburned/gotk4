@@ -144,7 +144,7 @@ func (a *Vec3) Add(b *Vec3) Vec3 {
 
 	C.graphene_vec3_add(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -162,7 +162,7 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 
 	C.graphene_vec3_cross(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -182,7 +182,7 @@ func (a *Vec3) Divide(b *Vec3) Vec3 {
 
 	C.graphene_vec3_divide(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -260,7 +260,7 @@ func (v *Vec3) XY() Vec2 {
 
 	C.graphene_vec3_get_xy(arg0, &arg1)
 
-	ret1 = WrapVec2(unsafe.Pointer(arg1))
+	*ret1 = WrapVec2(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -277,7 +277,7 @@ func (v *Vec3) XY0() Vec3 {
 
 	C.graphene_vec3_get_xy0(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -294,7 +294,7 @@ func (v *Vec3) XYZ0() Vec4 {
 
 	C.graphene_vec3_get_xyz0(arg0, &arg1)
 
-	ret1 = WrapVec4(unsafe.Pointer(arg1))
+	*ret1 = WrapVec4(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -311,7 +311,7 @@ func (v *Vec3) XYZ1() Vec4 {
 
 	C.graphene_vec3_get_xyz1(arg0, &arg1)
 
-	ret1 = WrapVec4(unsafe.Pointer(arg1))
+	*ret1 = WrapVec4(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -330,7 +330,7 @@ func (v *Vec3) Xyzw(w float32) Vec4 {
 
 	C.graphene_vec3_get_xyzw(arg0, w, &arg2)
 
-	ret2 = WrapVec4(unsafe.Pointer(arg2))
+	*ret2 = WrapVec4(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -444,7 +444,7 @@ func (v *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 
 	C.graphene_vec3_interpolate(arg0, v2, factor, &arg3)
 
-	ret3 = WrapVec3(unsafe.Pointer(arg3))
+	*ret3 = WrapVec3(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -479,7 +479,7 @@ func (a *Vec3) Max(b *Vec3) Vec3 {
 
 	C.graphene_vec3_max(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -498,7 +498,7 @@ func (a *Vec3) Min(b *Vec3) Vec3 {
 
 	C.graphene_vec3_min(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -516,7 +516,7 @@ func (a *Vec3) Multiply(b *Vec3) Vec3 {
 
 	C.graphene_vec3_multiply(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -553,7 +553,7 @@ func (v *Vec3) Negate() Vec3 {
 
 	C.graphene_vec3_negate(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -569,7 +569,7 @@ func (v *Vec3) Normalize() Vec3 {
 
 	C.graphene_vec3_normalize(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -588,7 +588,7 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 
 	C.graphene_vec3_scale(arg0, factor, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -608,7 +608,7 @@ func (a *Vec3) Subtract(b *Vec3) Vec3 {
 
 	C.graphene_vec3_subtract(arg0, b, &arg2)
 
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
 
 	return ret2
 }

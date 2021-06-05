@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -820,23 +821,19 @@ func NewThread(name string, fn ThreadFunc) *Thread {
 func NewThreadTry(name string, fn ThreadFunc) (thread *Thread, err error) {
 
 	var errout *C.GError
-
-	var cret *C.GThread
-	var ret1 *Thread
 	var goerr error
+	var cret *C.GThread
+	var ret2 *Thread
 
 	cret = C.g_thread_try_new(name, fn, data, &errout)
 
-	ret1 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Thread) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapThread(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *Thread) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Native returns the underlying C source pointer.

@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -69,19 +71,17 @@ func Chdir(path string) int {
 // handle EINTR, which has platform-specific semantics.
 func Close(fd int) error {
 	var arg1 C.gint
-	var errout *C.GError
 
 	arg1 = C.gint(fd)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_close(fd, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Rmdir: a wrapper for the POSIX rmdir() function. The rmdir() function deletes

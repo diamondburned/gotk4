@@ -183,8 +183,8 @@ func (l *PopupLayout) Offset() (dx int, dy int) {
 
 	C.gdk_popup_layout_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }

@@ -107,7 +107,7 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 
 	C.gtk_render_background_get_clip(context, x, y, width, height, &arg6)
 
-	ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
+	*ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
 
 	return ret6
 }

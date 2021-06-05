@@ -706,7 +706,7 @@ func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 
 	C.gtk_entry_get_icon_area(arg0, iconPos, &arg2)
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -1014,8 +1014,8 @@ func (e entry) LayoutOffsets() (x int, y int) {
 
 	C.gtk_entry_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -1177,7 +1177,7 @@ func (e entry) TextArea() gdk.Rectangle {
 
 	C.gtk_entry_get_text_area(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }

@@ -119,10 +119,10 @@ func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft u
 
 	C.gtk_alignment_get_padding(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = C.guint(arg1)
-	ret2 = C.guint(arg2)
-	ret3 = C.guint(arg3)
-	ret4 = C.guint(arg4)
+	*ret1 = C.guint(arg1)
+	*ret2 = C.guint(arg2)
+	*ret3 = C.guint(arg3)
+	*ret4 = C.guint(arg4)
 
 	return ret1, ret2, ret3, ret4
 }

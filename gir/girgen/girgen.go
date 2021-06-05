@@ -52,6 +52,7 @@ func NewGenerator(repos gir.Repositories, modPath ModulePathFunc) *Generator {
 		Filters: []FilterMatcher{
 			// These are already manually covered in the girgen code; they are
 			// provided by package gotk3/glib.
+			AbsoluteFilter("GLib.Error"),
 			AbsoluteFilter("GObject.Type"),
 			AbsoluteFilter("GObject.Value"),
 			AbsoluteFilter("GObject.Object"),

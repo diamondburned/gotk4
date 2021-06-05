@@ -415,10 +415,10 @@ func (g grid) QueryChild(child Widget) (column int, row int, width int, height i
 
 	C.gtk_grid_query_child(arg0, child, &arg2, &arg3, &arg4, &arg5)
 
-	ret2 = C.int(arg2)
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
+	*ret2 = C.int(arg2)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
 
 	return ret2, ret3, ret4, ret5
 }

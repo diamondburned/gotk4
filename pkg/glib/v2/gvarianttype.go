@@ -101,7 +101,7 @@ func VariantTypeStringScan(string string, limit string) (endptr string, ok bool)
 
 	cret = C.g_variant_type_string_scan(string, limit, &arg3)
 
-	ret3 = C.GoString(arg3)
+	*ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
 	ret2 = C.bool(cret) != C.false
 

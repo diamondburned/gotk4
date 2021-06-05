@@ -855,7 +855,7 @@ func (c *MainContext) Prepare() (priority int, ok bool) {
 
 	cret = C.g_main_context_prepare(arg0, &arg1)
 
-	ret1 = C.gint(arg1)
+	*ret1 = C.gint(arg1)
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

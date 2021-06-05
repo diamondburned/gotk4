@@ -224,7 +224,7 @@ func (c styleContext) Border() Border {
 
 	C.gtk_style_context_get_border(arg0, &arg1)
 
-	ret1 = WrapBorder(unsafe.Pointer(arg1))
+	*ret1 = WrapBorder(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -240,7 +240,7 @@ func (c styleContext) Color() gdk.RGBA {
 
 	C.gtk_style_context_get_color(arg0, &arg1)
 
-	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -272,7 +272,7 @@ func (c styleContext) Margin() Border {
 
 	C.gtk_style_context_get_margin(arg0, &arg1)
 
-	ret1 = WrapBorder(unsafe.Pointer(arg1))
+	*ret1 = WrapBorder(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -288,7 +288,7 @@ func (c styleContext) Padding() Border {
 
 	C.gtk_style_context_get_padding(arg0, &arg1)
 
-	ret1 = WrapBorder(unsafe.Pointer(arg1))
+	*ret1 = WrapBorder(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -366,7 +366,7 @@ func (c styleContext) LookupColor(colorName string) (color gdk.RGBA, ok bool) {
 
 	cret = C.gtk_style_context_lookup_color(arg0, colorName, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

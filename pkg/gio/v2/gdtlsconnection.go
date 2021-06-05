@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -310,20 +311,18 @@ func marshalDTLSConnection(p uintptr) (interface{}, error) {
 func (c dtlsConnection) Close(cancellable Cancellable) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_close(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CloseAsync: asynchronously close the DTLS connection. See
@@ -341,20 +340,18 @@ func (c dtlsConnection) CloseAsync(ioPriority int, cancellable Cancellable, call
 func (c dtlsConnection) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_close_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EmitAcceptCertificate: used by Connection implementations to emit the
@@ -412,13 +409,13 @@ func (c dtlsConnection) Certificate() TLSCertificate {
 func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error) {
 	var arg0 *C.GDtlsConnection
 	var arg1 C.GTlsChannelBindingType
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GTlsChannelBindingType)(typ)
 
 	var arg2 *C.GByteArray
 	var ret2 []byte
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_get_channel_binding_data(arg0, typ, &arg2, &errout)
@@ -438,10 +435,7 @@ func (c dtlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []by
 			ret2[i] = C.guint8(src)
 		}
 	}
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }
@@ -601,20 +595,18 @@ func (c dtlsConnection) RequireCloseNotify() bool {
 func (c dtlsConnection) Handshake(cancellable Cancellable) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_handshake(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
@@ -632,20 +624,18 @@ func (c dtlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellable, 
 func (c dtlsConnection) HandshakeFinish(result AsyncResult) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_handshake_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -808,7 +798,6 @@ func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancella
 	var arg1 C.gboolean
 	var arg2 C.gboolean
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	if shutdownRead {
@@ -819,15 +808,14 @@ func (c dtlsConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancella
 	}
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_shutdown(arg0, shutdownRead, shutdownWrite, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ShutdownAsync: asynchronously shut down part or all of the DTLS
@@ -845,18 +833,16 @@ func (c dtlsConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioP
 func (c dtlsConnection) ShutdownFinish(result AsyncResult) error {
 	var arg0 *C.GDtlsConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dtls_connection_shutdown_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

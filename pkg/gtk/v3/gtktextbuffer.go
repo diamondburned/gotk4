@@ -829,19 +829,16 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error {
 	var arg0 *C.GtkTextBuffer
 
-	var errout *C.GError
-
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(r.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_text_buffer_deserialize(arg0, contentBuffer, format, iter, data, length, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // DeserializeGetCanCreateTags: this functions returns the value set with
@@ -919,8 +916,8 @@ func (b textBuffer) Bounds() (start TextIter, end TextIter) {
 
 	C.gtk_text_buffer_get_bounds(arg0, &arg1, &arg2)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = WrapTextIter(unsafe.Pointer(arg2))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret2 = WrapTextIter(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -1004,7 +1001,7 @@ func (b textBuffer) EndIter() TextIter {
 
 	C.gtk_text_buffer_get_end_iter(arg0, &arg1)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1057,7 +1054,7 @@ func (b textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_child_anchor(arg0, &arg1, anchor)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1077,7 +1074,7 @@ func (b textBuffer) IterAtLine(lineNumber int) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_line(arg0, &arg1, lineNumber)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1105,7 +1102,7 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_line_index(arg0, &arg1, lineNumber, byteIndex)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1134,7 +1131,7 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_line_offset(arg0, &arg1, lineNumber, charOffset)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1152,7 +1149,7 @@ func (b textBuffer) IterAtMark(mark TextMark) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_mark(arg0, &arg1, mark)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1173,7 +1170,7 @@ func (b textBuffer) IterAtOffset(charOffset int) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_offset(arg0, &arg1, charOffset)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1298,8 +1295,8 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 
 	cret = C.gtk_text_buffer_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = WrapTextIter(unsafe.Pointer(arg2))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret2 = WrapTextIter(unsafe.Pointer(arg2))
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -1374,7 +1371,7 @@ func (b textBuffer) StartIter() TextIter {
 
 	C.gtk_text_buffer_get_start_iter(arg0, &arg1)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }

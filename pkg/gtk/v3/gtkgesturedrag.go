@@ -96,8 +96,8 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 	cret = C.gtk_gesture_drag_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -120,8 +120,8 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	cret = C.gtk_gesture_drag_get_start_point(arg0, &arg1, &arg2)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3

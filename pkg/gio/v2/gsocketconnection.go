@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -108,21 +109,19 @@ func (c socketConnection) Connect(address SocketAddress, cancellable Cancellable
 	var arg0 *C.GSocketConnection
 	var arg1 *C.GSocketAddress
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_socket_connection_connect(arg0, address, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ConnectAsync: asynchronously connect @connection to the specified remote
@@ -145,42 +144,37 @@ func (c socketConnection) ConnectAsync(address SocketAddress, cancellable Cancel
 func (c socketConnection) ConnectFinish(result AsyncResult) error {
 	var arg0 *C.GSocketConnection
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_socket_connection_connect_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LocalAddress: try to get the local address of a socket connection.
 func (c socketConnection) LocalAddress() (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketConnection
-	var errout *C.GError
 
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSocketAddress
-	var ret1 SocketAddress
+	var errout *C.GError
 	var goerr error
+	var cret *C.GSocketAddress
+	var ret2 SocketAddress
 
 	cret = C.g_socket_connection_get_local_address(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // RemoteAddress: try to get the remote address of a socket connection.
@@ -192,23 +186,20 @@ func (c socketConnection) LocalAddress() (socketAddress SocketAddress, err error
 // e.g. "Connecting to example.com (10.42.77.3)...".
 func (c socketConnection) RemoteAddress() (socketAddress SocketAddress, err error) {
 	var arg0 *C.GSocketConnection
-	var errout *C.GError
 
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSocketAddress
-	var ret1 SocketAddress
+	var errout *C.GError
 	var goerr error
+	var cret *C.GSocketAddress
+	var ret2 SocketAddress
 
 	cret = C.g_socket_connection_get_remote_address(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Socket gets the underlying #GSocket object of the connection. This can be

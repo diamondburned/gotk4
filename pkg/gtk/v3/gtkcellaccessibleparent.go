@@ -110,7 +110,7 @@ func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 
 	C.gtk_cell_accessible_parent_get_cell_area(arg0, cell, &arg2)
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -129,8 +129,8 @@ func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column
 
 	C.gtk_cell_accessible_parent_get_cell_position(arg0, cell, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }

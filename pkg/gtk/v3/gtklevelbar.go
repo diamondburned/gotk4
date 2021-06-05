@@ -258,7 +258,7 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 
 	cret = C.gtk_level_bar_get_offset_value(arg0, name, &arg2)
 
-	ret2 = C.gdouble(arg2)
+	*ret2 = C.gdouble(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

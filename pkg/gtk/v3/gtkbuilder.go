@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -468,25 +469,22 @@ func NewBuilderFromString(string string, length int) Builder {
 func (b builder) AddFromFile(filename string) (guint uint, err error) {
 	var arg0 *C.GtkBuilder
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_add_from_file(arg0, filename, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddFromResource parses a resource file containing a [GtkBuilder UI
@@ -504,25 +502,22 @@ func (b builder) AddFromFile(filename string) (guint uint, err error) {
 func (b builder) AddFromResource(resourcePath string) (guint uint, err error) {
 	var arg0 *C.GtkBuilder
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_add_from_resource(arg0, resourcePath, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddFromString parses a string containing a [GtkBuilder UI
@@ -541,26 +536,23 @@ func (b builder) AddFromString(buffer string, length uint) (guint uint, err erro
 	var arg0 *C.GtkBuilder
 	var arg1 *C.gchar
 	var arg2 C.gsize
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(buffer))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gsize(length)
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_add_from_string(arg0, buffer, length, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddObjectsFromFile parses a file containing a [GtkBuilder UI
@@ -577,7 +569,6 @@ func (b builder) AddObjectsFromFile(filename string, objectIds []string) (guint 
 	var arg0 *C.GtkBuilder
 	var arg1 *C.gchar
 	var arg2 **C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(filename))
@@ -595,19 +586,17 @@ func (b builder) AddObjectsFromFile(filename string, objectIds []string) (guint 
 		}
 	}
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_add_objects_from_file(arg0, filename, objectIds, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
@@ -624,7 +613,6 @@ func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string)
 	var arg0 *C.GtkBuilder
 	var arg1 *C.gchar
 	var arg2 **C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -642,19 +630,17 @@ func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string)
 		}
 	}
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_add_objects_from_resource(arg0, resourcePath, objectIds, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AddObjectsFromString parses a string containing a [GtkBuilder UI
@@ -672,7 +658,6 @@ func (b builder) AddObjectsFromString(buffer string, length uint, objectIds []st
 	var arg1 *C.gchar
 	var arg2 C.gsize
 	var arg3 **C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.gchar)(C.CString(buffer))
@@ -691,19 +676,17 @@ func (b builder) AddObjectsFromString(buffer string, length uint, objectIds []st
 		}
 	}
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_add_objects_from_string(arg0, buffer, length, objectIds, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ConnectSignals: this method is a simpler variation of
@@ -775,7 +758,6 @@ func (b builder) ExtendWithTemplate(widget Widget, templateType externglib.Type,
 	var arg2 C.GType
 	var arg3 *C.gchar
 	var arg4 C.gsize
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -784,19 +766,17 @@ func (b builder) ExtendWithTemplate(widget Widget, templateType externglib.Type,
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = C.gsize(length)
 
-	var cret C.guint
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.guint
+	var ret2 uint
 
 	cret = C.gtk_builder_extend_with_template(arg0, widget, templateType, buffer, length, &errout)
 
-	ret1 = C.guint(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.guint(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Application gets the Application associated with the builder.
@@ -941,7 +921,6 @@ func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (value 
 	var arg0 *C.GtkBuilder
 	var arg1 *C.GParamSpec
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
@@ -950,15 +929,13 @@ func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (value 
 
 	var arg3 C.GValue
 	var ret3 *externglib.Value
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_builder_value_from_string(arg0, pspec, string, &arg3, &errout)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, goerr
 }
@@ -974,7 +951,6 @@ func (b builder) ValueFromStringType(typ externglib.Type, string string) (value 
 	var arg0 *C.GtkBuilder
 	var arg1 C.GType
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 	arg1 := C.GType(typ)
@@ -983,15 +959,13 @@ func (b builder) ValueFromStringType(typ externglib.Type, string string) (value 
 
 	var arg3 C.GValue
 	var ret3 *externglib.Value
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_builder_value_from_string_type(arg0, typ, string, &arg3, &errout)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret3, goerr
 }

@@ -235,10 +235,10 @@ func (m layoutManager) Measure(widget Widget, orientation Orientation, forSize i
 
 	C.gtk_layout_manager_measure(arg0, widget, orientation, forSize, &arg4, &arg5, &arg6, &arg7)
 
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
-	ret7 = C.int(arg7)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
+	*ret7 = C.int(arg7)
 
 	return ret4, ret5, ret6, ret7
 }

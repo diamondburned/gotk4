@@ -139,7 +139,7 @@ func (p *Plane) Normal() Vec3 {
 
 	C.graphene_plane_get_normal(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -262,7 +262,7 @@ func (p *Plane) Negate() Plane {
 
 	C.graphene_plane_negate(arg0, &arg1)
 
-	ret1 = WrapPlane(unsafe.Pointer(arg1))
+	*ret1 = WrapPlane(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -279,7 +279,7 @@ func (p *Plane) Normalize() Plane {
 
 	C.graphene_plane_normalize(arg0, &arg1)
 
-	ret1 = WrapPlane(unsafe.Pointer(arg1))
+	*ret1 = WrapPlane(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -305,7 +305,7 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 
 	C.graphene_plane_transform(arg0, matrix, normalMatrix, &arg3)
 
-	ret3 = WrapPlane(unsafe.Pointer(arg3))
+	*ret3 = WrapPlane(unsafe.Pointer(arg3))
 
 	return ret3
 }

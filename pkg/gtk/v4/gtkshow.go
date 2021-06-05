@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -46,18 +47,16 @@ func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Ca
 func ShowURIFullFinish(parent Window, result gio.AsyncResult) error {
 	var arg1 *C.GtkWindow
 	var arg2 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_show_uri_full_finish(parent, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

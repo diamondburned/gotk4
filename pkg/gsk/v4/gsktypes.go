@@ -318,12 +318,12 @@ func (s *Transform) To2D() (outXX float32, outYX float32, outXY float32, outYY f
 
 	C.gsk_transform_to_2d(arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6)
 
-	ret1 = C.float(arg1)
-	ret2 = C.float(arg2)
-	ret3 = C.float(arg3)
-	ret4 = C.float(arg4)
-	ret5 = C.float(arg5)
-	ret6 = C.float(arg6)
+	*ret1 = C.float(arg1)
+	*ret2 = C.float(arg2)
+	*ret3 = C.float(arg3)
+	*ret4 = C.float(arg4)
+	*ret5 = C.float(arg5)
+	*ret6 = C.float(arg6)
 
 	return ret1, ret2, ret3, ret4, ret5, ret6
 }
@@ -347,10 +347,10 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 
 	C.gsk_transform_to_affine(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = C.float(arg1)
-	ret2 = C.float(arg2)
-	ret3 = C.float(arg3)
-	ret4 = C.float(arg4)
+	*ret1 = C.float(arg1)
+	*ret2 = C.float(arg2)
+	*ret3 = C.float(arg3)
+	*ret4 = C.float(arg4)
 
 	return ret1, ret2, ret3, ret4
 }
@@ -367,7 +367,7 @@ func (s *Transform) ToMatrix() graphene.Matrix {
 
 	C.gsk_transform_to_matrix(arg0, &arg1)
 
-	ret1 = graphene.WrapMatrix(unsafe.Pointer(arg1))
+	*ret1 = graphene.WrapMatrix(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -408,8 +408,8 @@ func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
 
 	C.gsk_transform_to_translate(arg0, &arg1, &arg2)
 
-	ret1 = C.float(arg1)
-	ret2 = C.float(arg2)
+	*ret1 = C.float(arg1)
+	*ret2 = C.float(arg2)
 
 	return ret1, ret2
 }
@@ -449,7 +449,7 @@ func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 
 	C.gsk_transform_transform_bounds(arg0, rect, &arg2)
 
-	ret2 = graphene.WrapRect(unsafe.Pointer(arg2))
+	*ret2 = graphene.WrapRect(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -468,7 +468,7 @@ func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 
 	C.gsk_transform_transform_point(arg0, point, &arg2)
 
-	ret2 = graphene.WrapPoint(unsafe.Pointer(arg2))
+	*ret2 = graphene.WrapPoint(unsafe.Pointer(arg2))
 
 	return ret2
 }

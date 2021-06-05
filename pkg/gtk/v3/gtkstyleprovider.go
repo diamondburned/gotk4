@@ -126,7 +126,7 @@ func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec g
 
 	cret = C.gtk_style_provider_get_style_property(arg0, path, state, pspec, &arg4)
 
-	ret4 = externglib.ValueFromNative(unsafe.Pointer(arg4))
+	*ret4 = externglib.ValueFromNative(unsafe.Pointer(arg4))
 	ret2 = C.bool(cret) != C.false
 
 	return ret4, ret2

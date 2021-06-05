@@ -71,8 +71,8 @@ func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 
 	C.gdk_toplevel_size_get_bounds(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }

@@ -154,7 +154,7 @@ func (t *Triangle) Barycoords(p *Point3D) (res Vec2, ok bool) {
 
 	cret = C.graphene_triangle_get_barycoords(arg0, p, &arg2)
 
-	ret2 = WrapVec2(unsafe.Pointer(arg2))
+	*ret2 = WrapVec2(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -171,7 +171,7 @@ func (t *Triangle) BoundingBox() Box {
 
 	C.graphene_triangle_get_bounding_box(arg0, &arg1)
 
-	ret1 = WrapBox(unsafe.Pointer(arg1))
+	*ret1 = WrapBox(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -192,7 +192,7 @@ func (t *Triangle) Midpoint() Point3D {
 
 	C.graphene_triangle_get_midpoint(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -208,7 +208,7 @@ func (t *Triangle) Normal() Vec3 {
 
 	C.graphene_triangle_get_normal(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -225,7 +225,7 @@ func (t *Triangle) Plane() Plane {
 
 	C.graphene_triangle_get_plane(arg0, &arg1)
 
-	ret1 = WrapPlane(unsafe.Pointer(arg1))
+	*ret1 = WrapPlane(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -246,9 +246,9 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 
 	C.graphene_triangle_get_points(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
-	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
-	ret3 = WrapPoint3D(unsafe.Pointer(arg3))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	*ret3 = WrapPoint3D(unsafe.Pointer(arg3))
 
 	return ret1, ret2, ret3
 }
@@ -285,7 +285,7 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res Vec2, ok
 
 	cret = C.graphene_triangle_get_uv(arg0, p, uvA, uvB, uvC, &arg5)
 
-	ret5 = WrapVec2(unsafe.Pointer(arg5))
+	*ret5 = WrapVec2(unsafe.Pointer(arg5))
 	ret2 = C.bool(cret) != C.false
 
 	return ret5, ret2
@@ -306,9 +306,9 @@ func (t *Triangle) Vertices() (a Vec3, b Vec3, c Vec3) {
 
 	C.graphene_triangle_get_vertices(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
-	ret2 = WrapVec3(unsafe.Pointer(arg2))
-	ret3 = WrapVec3(unsafe.Pointer(arg3))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret2 = WrapVec3(unsafe.Pointer(arg2))
+	*ret3 = WrapVec3(unsafe.Pointer(arg3))
 
 	return ret1, ret2, ret3
 }

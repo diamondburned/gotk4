@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -214,26 +215,23 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 	var arg0 *C.GResolver
 	var arg1 *C.GInetAddress
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_resolver_lookup_by_address(arg0, address, cancellable, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupByAddressAsync begins asynchronously reverse-resolving @address to
@@ -256,25 +254,22 @@ func (r resolver) LookupByAddressAsync(address InetAddress, cancellable Cancella
 func (r resolver) LookupByAddressFinish(result AsyncResult) (utf8 string, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.gchar
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.gchar
+	var ret2 string
 
 	cret = C.g_resolver_lookup_by_address_finish(arg0, result, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupByName: synchronously resolves @hostname to determine its
@@ -302,29 +297,26 @@ func (r resolver) LookupByName(hostname string, cancellable Cancellable) (list *
 	var arg0 *C.GResolver
 	var arg1 *C.gchar
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_by_name(arg0, hostname, cancellable, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupByNameAsync begins asynchronously resolving @hostname to determine
@@ -348,27 +340,24 @@ func (r resolver) LookupByNameAsync(hostname string, cancellable Cancellable, ca
 func (r resolver) LookupByNameFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_by_name_finish(arg0, result, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
@@ -379,7 +368,6 @@ func (r resolver) LookupByNameWithFlags(hostname string, flags ResolverNameLooku
 	var arg1 *C.gchar
 	var arg2 C.GResolverNameLookupFlags
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.gchar)(C.CString(hostname))
@@ -387,22 +375,20 @@ func (r resolver) LookupByNameWithFlags(hostname string, flags ResolverNameLooku
 	arg2 = (C.GResolverNameLookupFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_by_name_with_flags(arg0, hostname, flags, cancellable, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
@@ -426,27 +412,24 @@ func (r resolver) LookupByNameWithFlagsAsync(hostname string, flags ResolverName
 func (r resolver) LookupByNameWithFlagsFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_by_name_with_flags_finish(arg0, result, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupRecords: synchronously performs a DNS record lookup for the given
@@ -463,7 +446,6 @@ func (r resolver) LookupRecords(rrname string, recordType ResolverRecordType, ca
 	var arg1 *C.gchar
 	var arg2 C.GResolverRecordType
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.gchar)(C.CString(rrname))
@@ -471,22 +453,20 @@ func (r resolver) LookupRecords(rrname string, recordType ResolverRecordType, ca
 	arg2 = (C.GResolverRecordType)(recordType)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_records(arg0, rrname, recordType, cancellable, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupRecordsAsync begins asynchronously performing a DNS lookup for the
@@ -512,27 +492,24 @@ func (r resolver) LookupRecordsAsync(rrname string, recordType ResolverRecordTyp
 func (r resolver) LookupRecordsFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_records_finish(arg0, result, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupService: synchronously performs a DNS SRV lookup for the given
@@ -560,7 +537,6 @@ func (r resolver) LookupService(service string, protocol string, domain string, 
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.gchar)(C.CString(service))
@@ -571,22 +547,20 @@ func (r resolver) LookupService(service string, protocol string, domain string, 
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_service(arg0, service, protocol, domain, cancellable, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
@@ -610,27 +584,24 @@ func (r resolver) LookupServiceAsync(service string, protocol string, domain str
 func (r resolver) LookupServiceFinish(result AsyncResult) (list *glib.List, err error) {
 	var arg0 *C.GResolver
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
+	var errout *C.GError
 	var goerr error
+	var cret *C.GList
+	var ret2 *glib.List
 
 	cret = C.g_resolver_lookup_service_finish(arg0, result, &errout)
 
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SetDefault sets @resolver to be the application's default resolver

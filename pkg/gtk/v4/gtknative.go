@@ -128,8 +128,8 @@ func (s native) SurfaceTransform() (x float64, y float64) {
 
 	C.gtk_native_get_surface_transform(arg0, &arg1, &arg2)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
 
 	return ret1, ret2
 }

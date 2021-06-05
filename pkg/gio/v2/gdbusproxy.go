@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -271,45 +272,39 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 // NewDBusProxyFinish constructs a class DBusProxy.
 func NewDBusProxyFinish(res AsyncResult) (dBusProxy DBusProxy, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret C.GDBusProxy
-	var ret1 DBusProxy
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusProxy
+	var ret2 DBusProxy
 
 	cret = C.g_dbus_proxy_new_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusProxyForBusFinish constructs a class DBusProxy.
 func NewDBusProxyForBusFinish(res AsyncResult) (dBusProxy DBusProxy, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret C.GDBusProxy
-	var ret1 DBusProxy
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusProxy
+	var ret2 DBusProxy
 
 	cret = C.g_dbus_proxy_new_for_bus_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusProxyForBusSync constructs a class DBusProxy.
@@ -321,7 +316,6 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	var arg5 *C.gchar
 	var arg6 *C.gchar
 	var arg7 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (C.GDBusProxyFlags)(flags)
@@ -334,19 +328,17 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	defer C.free(unsafe.Pointer(arg6))
 	arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GDBusProxy
-	var ret1 DBusProxy
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusProxy
+	var ret2 DBusProxy
 
 	cret = C.g_dbus_proxy_new_for_bus_sync(busType, flags, info, name, objectPath, interfaceName, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewDBusProxySync constructs a class DBusProxy.
@@ -358,7 +350,6 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	var arg5 *C.gchar
 	var arg6 *C.gchar
 	var arg7 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	arg2 = (C.GDBusProxyFlags)(flags)
@@ -371,19 +362,17 @@ func NewDBusProxySync(connection DBusConnection, flags DBusProxyFlags, info *DBu
 	defer C.free(unsafe.Pointer(arg6))
 	arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GDBusProxy
-	var ret1 DBusProxy
+	var errout *C.GError
 	var goerr error
+	var cret C.GDBusProxy
+	var ret2 DBusProxy
 
 	cret = C.g_dbus_proxy_new_sync(connection, flags, info, name, objectPath, interfaceName, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusProxy)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Call: asynchronously invokes the @method_name method on @proxy.
@@ -437,27 +426,24 @@ func (p dBusProxy) Call(methodName string, parameters *glib.Variant, flags DBusC
 func (p dBusProxy) CallFinish(res AsyncResult) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusProxy
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret2 *glib.Variant
 
 	cret = C.g_dbus_proxy_call_finish(arg0, res, &errout)
 
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CallSync: synchronously invokes the @method_name method on @proxy.
@@ -498,7 +484,6 @@ func (p dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags D
 	var arg3 C.GDBusCallFlags
 	var arg4 C.gint
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.gchar)(C.CString(methodName))
@@ -508,22 +493,20 @@ func (p dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags D
 	arg4 = C.gint(timeoutMsec)
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret2 *glib.Variant
 
 	cret = C.g_dbus_proxy_call_sync(arg0, methodName, parameters, flags, timeoutMsec, cancellable, &errout)
 
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
@@ -543,30 +526,27 @@ func (p dBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Varian
 func (p dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusProxy
 	var arg2 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
 	arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg1 *C.GUnixFDList
 	var ret1 UnixFDList
-	var cret *C.GVariant
-	var ret2 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret3 *glib.Variant
 
 	cret = C.g_dbus_proxy_call_with_unix_fd_list_finish(arg0, &arg1, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
-	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
+	*ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret3, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, ret2, goerr
+	return ret1, goerr, ret3
 }
 
 // CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
@@ -581,7 +561,6 @@ func (p dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Va
 	var arg4 C.gint
 	var arg5 *C.GUnixFDList
 	var arg7 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GDBusProxy)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.gchar)(C.CString(methodName))
@@ -594,23 +573,21 @@ func (p dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Va
 
 	var arg6 *C.GUnixFDList
 	var ret6 UnixFDList
-	var cret *C.GVariant
-	var ret2 *glib.Variant
+	var errout *C.GError
 	var goerr error
+	var cret *C.GVariant
+	var ret3 *glib.Variant
 
 	cret = C.g_dbus_proxy_call_with_unix_fd_list_sync(arg0, methodName, parameters, flags, timeoutMsec, fdList, &arg6, cancellable, &errout)
 
-	ret6 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(UnixFDList)
-	ret2 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *glib.Variant) {
+	*ret6 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(UnixFDList)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret3, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret6, ret2, goerr
+	return ret6, goerr, ret3
 }
 
 // CachedProperty looks up the value for a property from the cache. This

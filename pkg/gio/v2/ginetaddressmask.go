@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -81,47 +82,41 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 func NewInetAddressMask(addr InetAddress, length uint) (inetAddressMask InetAddressMask, err error) {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint
-	var errout *C.GError
 
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
 	arg2 = C.guint(length)
 
-	var cret C.GInetAddressMask
-	var ret1 InetAddressMask
+	var errout *C.GError
 	var goerr error
+	var cret C.GInetAddressMask
+	var ret2 InetAddressMask
 
 	cret = C.g_inet_address_mask_new(addr, length, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddressMask)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddressMask)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewInetAddressMaskFromString constructs a class InetAddressMask.
 func NewInetAddressMaskFromString(maskString string) (inetAddressMask InetAddressMask, err error) {
 	var arg1 *C.gchar
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(maskString))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GInetAddressMask
-	var ret1 InetAddressMask
+	var errout *C.GError
 	var goerr error
+	var cret C.GInetAddressMask
+	var ret2 InetAddressMask
 
 	cret = C.g_inet_address_mask_new_from_string(maskString, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddressMask)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddressMask)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Equal tests if @mask and @mask2 are the same mask.

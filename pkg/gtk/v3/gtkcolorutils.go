@@ -31,9 +31,9 @@ func RGBToHSV(r float64, g float64, b float64) (h float64, s float64, v float64)
 
 	C.gtk_rgb_to_hsv(r, g, b, &arg4, &arg5, &arg6)
 
-	ret4 = C.gdouble(arg4)
-	ret5 = C.gdouble(arg5)
-	ret6 = C.gdouble(arg6)
+	*ret4 = C.gdouble(arg4)
+	*ret5 = C.gdouble(arg5)
+	*ret6 = C.gdouble(arg6)
 
 	return ret4, ret5, ret6
 }

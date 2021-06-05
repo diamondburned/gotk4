@@ -505,7 +505,7 @@ func (e *Euler) Reorder(order EulerOrder) Euler {
 
 	C.graphene_euler_reorder(arg0, order, &arg2)
 
-	ret2 = WrapEuler(unsafe.Pointer(arg2))
+	*ret2 = WrapEuler(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -536,7 +536,7 @@ func (e *Euler) ToMatrix() Matrix {
 
 	C.graphene_euler_to_matrix(arg0, &arg1)
 
-	ret1 = WrapMatrix(unsafe.Pointer(arg1))
+	*ret1 = WrapMatrix(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -552,7 +552,7 @@ func (e *Euler) ToQuaternion() Quaternion {
 
 	C.graphene_euler_to_quaternion(arg0, &arg1)
 
-	ret1 = WrapQuaternion(unsafe.Pointer(arg1))
+	*ret1 = WrapQuaternion(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -569,7 +569,7 @@ func (e *Euler) ToVec3() Vec3 {
 
 	C.graphene_euler_to_vec3(arg0, &arg1)
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	*ret1 = WrapVec3(unsafe.Pointer(arg1))
 
 	return ret1
 }

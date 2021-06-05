@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -181,28 +182,25 @@ func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSi
 func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (paperSize *PaperSize, err error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret *C.GtkPaperSize
-	var ret1 *PaperSize
+	var errout *C.GError
 	var goerr error
+	var cret *C.GtkPaperSize
+	var ret2 *PaperSize
 
 	cret = C.gtk_paper_size_new_from_key_file(keyFile, groupName, &errout)
 
-	ret1 = WrapPaperSize(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *PaperSize) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapPaperSize(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPaperSizeFromPpd constructs a struct PaperSize.

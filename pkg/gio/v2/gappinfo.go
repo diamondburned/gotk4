@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -48,7 +49,6 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.GAppInfoCreateFlags
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(commandline))
 	defer C.free(unsafe.Pointer(arg1))
@@ -56,19 +56,17 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (C.GAppInfoCreateFlags)(flags)
 
-	var cret *C.GAppInfo
-	var ret1 AppInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GAppInfo
+	var ret2 AppInfo
 
 	cret = C.g_app_info_create_from_commandline(commandline, applicationName, flags, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AppInfoGetAll gets a list of all of the applications currently registered on
@@ -210,21 +208,19 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List {
 func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) error {
 	var arg1 *C.char
 	var arg2 *C.GAppLaunchContext
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_launch_default_for_uri(uri, context, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // AppInfoLaunchDefaultForURIAsync: async version of
@@ -246,19 +242,17 @@ func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContext, cance
 // launch-default-for-uri operation.
 func AppInfoLaunchDefaultForURIFinish(result AsyncResult) error {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_launch_default_for_uri_finish(result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // AppInfoResetTypeAssociations removes all changes to the type associations
@@ -483,21 +477,19 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 func (a appInfo) AddSupportsType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_add_supports_type(arg0, contentType, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CanDelete obtains the information whether the Info can be deleted. See
@@ -779,21 +771,19 @@ func (a appInfo) Launch(files *glib.List, context AppLaunchContext) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GList
 	var arg2 *C.GAppLaunchContext
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GList)(unsafe.Pointer(files.Native()))
 	arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_launch(arg0, files, context, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LaunchUris launches the application. This passes the @uris to the
@@ -810,21 +800,19 @@ func (a appInfo) LaunchUris(uris *glib.List, context AppLaunchContext) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GList
 	var arg2 *C.GAppLaunchContext
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GList)(unsafe.Pointer(uris.Native()))
 	arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_launch_uris(arg0, uris, context, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // LaunchUrisAsync: async version of g_app_info_launch_uris().
@@ -845,20 +833,18 @@ func (a appInfo) LaunchUrisAsync(uris *glib.List, context AppLaunchContext, canc
 func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_launch_uris_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // RemoveSupportsType removes a supported type from an application, if
@@ -866,21 +852,19 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 func (a appInfo) RemoveSupportsType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_remove_supports_type(arg0, contentType, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAsDefaultForExtension sets the application as the default handler for
@@ -888,21 +872,19 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.char)(C.CString(extension))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_set_as_default_for_extension(arg0, extension, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAsDefaultForType sets the application as the default handler for a
@@ -910,21 +892,19 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 func (a appInfo) SetAsDefaultForType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_set_as_default_for_type(arg0, contentType, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAsLastUsedForType sets the application as the last used application
@@ -934,21 +914,19 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.char)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_app_info_set_as_last_used_for_type(arg0, contentType, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ShouldShow checks if the application info should be shown in menus that

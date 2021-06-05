@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -271,20 +272,18 @@ func (m mount) Eject(flags MountUnmountFlags, cancellable Cancellable, callback 
 func (m mount) EjectFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_mount_eject_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EjectWithOperation ejects a mount. This is an asynchronous operation, and
@@ -304,20 +303,18 @@ func (m mount) EjectWithOperation(flags MountUnmountFlags, mountOperation MountO
 func (m mount) EjectWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_mount_eject_with_operation_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // DefaultLocation gets the default location of @mount. The default location
@@ -499,17 +496,18 @@ func (m mount) GuessContentType(forceRescan bool, cancellable Cancellable, callb
 func (m mount) GuessContentTypeFinish(result AsyncResult) (utf8s []string, err error) {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
+	var errout *C.GError
 	var goerr error
+	var cret **C.gchar
+	var ret2 []string
 
 	cret = C.g_mount_guess_content_type_finish(arg0, result, &errout)
 
+	goerr = gerror.Take(unsafe.Pointer(errout))
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -519,19 +517,15 @@ func (m mount) GuessContentTypeFinish(result AsyncResult) (utf8s []string, err e
 			}
 		}
 
-		ret1 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // GuessContentTypeSync tries to guess the type of content stored on @mount.
@@ -547,7 +541,6 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 	var arg0 *C.GMount
 	var arg1 C.gboolean
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	if forceRescan {
@@ -555,12 +548,14 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 	}
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
+	var errout *C.GError
 	var goerr error
+	var cret **C.gchar
+	var ret2 []string
 
 	cret = C.g_mount_guess_content_type_sync(arg0, forceRescan, cancellable, &errout)
 
+	goerr = gerror.Take(unsafe.Pointer(errout))
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -570,19 +565,15 @@ func (m mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellable) (
 			}
 		}
 
-		ret1 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // IsShadowed determines if @mount is shadowed. Applications or libraries
@@ -643,20 +634,18 @@ func (m mount) Remount(flags MountMountFlags, mountOperation MountOperation, can
 func (m mount) RemountFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_mount_remount_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Shadow increments the shadow count on @mount. Usually used by Monitor
@@ -688,20 +677,18 @@ func (m mount) Unmount(flags MountUnmountFlags, cancellable Cancellable, callbac
 func (m mount) UnmountFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_mount_unmount_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // UnmountWithOperation unmounts a mount. This is an asynchronous operation,
@@ -721,20 +708,18 @@ func (m mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation Moun
 func (m mount) UnmountWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GMount
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GMount)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_mount_unmount_with_operation_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Unshadow decrements the shadow count on @mount. Usually used by Monitor

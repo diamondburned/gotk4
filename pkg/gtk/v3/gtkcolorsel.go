@@ -156,7 +156,7 @@ func (c colorSelection) CurrentColor() gdk.Color {
 
 	C.gtk_color_selection_get_current_color(arg0, &arg1)
 
-	ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -173,7 +173,7 @@ func (c colorSelection) CurrentRGBA() gdk.RGBA {
 
 	C.gtk_color_selection_get_current_rgba(arg0, &arg1)
 
-	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -237,7 +237,7 @@ func (c colorSelection) PreviousColor() gdk.Color {
 
 	C.gtk_color_selection_get_previous_color(arg0, &arg1)
 
-	ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -253,7 +253,7 @@ func (c colorSelection) PreviousRGBA() gdk.RGBA {
 
 	C.gtk_color_selection_get_previous_rgba(arg0, &arg1)
 
-	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 
 	return ret1
 }

@@ -172,6 +172,14 @@ func (cg *callableGenerator) block() string {
 		}
 	}
 
+	if cg.Throws {
+		params.Add("&errout")
+		returns.Add("goerr")
+		outputValues = append(outputValues, CValueProp{
+			ValueProp: newThrowValue("errout", "goerr"),
+		})
+	}
+
 	// If the last return is a bool and the function can throw an error,
 	// then the boolean is probably to indicate that things are OK. We can
 	// skip generating this boolean.
@@ -212,21 +220,6 @@ func (cg *callableGenerator) block() string {
 	if !convO {
 		cg.fg.Logln(LogSkip, "callable (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
 		return ""
-	}
-
-	if cg.Throws {
-		blocks.Line(secInputDecl, "var errout *C.GError")
-		params.Add("&errout")
-
-		blocks.Linef(secReturnDecl, "var goerr error")
-		returns.Add("goerr")
-
-		o := blocks.Section(secOutputConv)
-		o.Line("if errout != nil {")
-		o.Line(`  goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))`)
-		o.Line("  C.g_error_free(errout)")
-		o.Line("}")
-		o.EmptyLine()
 	}
 
 	if !hasReturn {

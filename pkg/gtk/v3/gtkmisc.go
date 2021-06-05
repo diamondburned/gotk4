@@ -90,8 +90,8 @@ func (m misc) Alignment() (xalign float32, yalign float32) {
 
 	C.gtk_misc_get_alignment(arg0, &arg1, &arg2)
 
-	ret1 = C.gfloat(arg1)
-	ret2 = C.gfloat(arg2)
+	*ret1 = C.gfloat(arg1)
+	*ret2 = C.gfloat(arg2)
 
 	return ret1, ret2
 }
@@ -110,8 +110,8 @@ func (m misc) Padding() (xpad int, ypad int) {
 
 	C.gtk_misc_get_padding(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }

@@ -3,9 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -37,10 +37,11 @@ import "C"
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DBusErrorEncodeGerror(error *glib.Error) string {
+func DBusErrorEncodeGerror(error error) string {
 	var arg1 *C.GError
 
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	var cret *C.gchar
 	var ret1 string
@@ -59,10 +60,11 @@ func DBusErrorEncodeGerror(error *glib.Error) string {
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on @error.
-func DBusErrorGetRemoteError(error *glib.Error) string {
+func DBusErrorGetRemoteError(error error) string {
 	var arg1 *C.GError
 
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	var cret *C.gchar
 	var ret1 string
@@ -78,10 +80,11 @@ func DBusErrorGetRemoteError(error *glib.Error) string {
 // DBusErrorIsRemoteError checks if @error represents an error received via
 // D-Bus from a remote peer. If so, use g_dbus_error_get_remote_error() to get
 // the name of the error.
-func DBusErrorIsRemoteError(error *glib.Error) bool {
+func DBusErrorIsRemoteError(error error) bool {
 	var arg1 *C.GError
 
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	var cret C.gboolean
 	var ret1 bool
@@ -118,7 +121,7 @@ func DBusErrorIsRemoteError(error *glib.Error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) *glib.Error {
+func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) error {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -128,14 +131,11 @@ func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) *gl
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GError
-	var ret1 *glib.Error
+	var ret1 error
 
 	cret = C.g_dbus_error_new_for_dbus_error(dbusErrorName, dbusErrorMessage)
 
-	ret1 = glib.WrapError(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Error) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	ret1 = gerror.Take(unsafe.Pointer(cret))
 
 	return ret1
 }
@@ -153,10 +153,11 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uin
 // wire.
 //
 // This is typically used when presenting errors to the end user.
-func DBusErrorStripRemoteError(error *glib.Error) bool {
+func DBusErrorStripRemoteError(error error) bool {
 	var arg1 *C.GError
 
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	var cret C.gboolean
 	var ret1 bool

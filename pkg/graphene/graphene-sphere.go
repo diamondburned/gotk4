@@ -139,7 +139,7 @@ func (s *Sphere) BoundingBox() Box {
 
 	C.graphene_sphere_get_bounding_box(arg0, &arg1)
 
-	ret1 = WrapBox(unsafe.Pointer(arg1))
+	*ret1 = WrapBox(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -155,7 +155,7 @@ func (s *Sphere) Center() Point3D {
 
 	C.graphene_sphere_get_center(arg0, &arg1)
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -227,7 +227,7 @@ func (s *Sphere) Translate(point *Point3D) Sphere {
 
 	C.graphene_sphere_translate(arg0, point, &arg2)
 
-	ret2 = WrapSphere(unsafe.Pointer(arg2))
+	*ret2 = WrapSphere(unsafe.Pointer(arg2))
 
 	return ret2
 }

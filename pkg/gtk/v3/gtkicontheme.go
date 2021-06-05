@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -351,7 +352,7 @@ func (i iconInfo) EmbeddedRect() (rectangle gdk.Rectangle, ok bool) {
 
 	cret = C.gtk_icon_info_get_embedded_rect(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -408,23 +409,20 @@ func (i iconInfo) IsSymbolic() bool {
 // to the exact size.
 func (i iconInfo) LoadIcon() (pixbuf gdkpixbuf.Pixbuf, err error) {
 	var arg0 *C.GtkIconInfo
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret2 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_icon(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LoadIconAsync: asynchronously load, render and scale an icon previously
@@ -445,24 +443,21 @@ func (i iconInfo) LoadIconAsync(cancellable gio.Cancellable, callback gio.AsyncR
 func (i iconInfo) LoadIconFinish(res gio.AsyncResult) (pixbuf gdkpixbuf.Pixbuf, err error) {
 	var arg0 *C.GtkIconInfo
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret2 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_icon_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LoadSurface renders an icon previously looked up in an icon theme using
@@ -479,27 +474,24 @@ func (i iconInfo) LoadIconFinish(res gio.AsyncResult) (pixbuf gdkpixbuf.Pixbuf, 
 func (i iconInfo) LoadSurface(forWindow gdk.Window) (surface *cairo.Surface, err error) {
 	var arg0 *C.GtkIconInfo
 	var arg1 *C.GdkWindow
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
-	var cret *C.cairo_surface_t
-	var ret1 *cairo.Surface
+	var errout *C.GError
 	var goerr error
+	var cret *C.cairo_surface_t
+	var ret2 *cairo.Surface
 
 	cret = C.gtk_icon_info_load_surface(arg0, forWindow, &errout)
 
-	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *cairo.Surface) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LoadSymbolic loads an icon, modifying it to match the system colours for
@@ -526,7 +518,6 @@ func (i iconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColo
 	var arg2 *C.GdkRGBA
 	var arg3 *C.GdkRGBA
 	var arg4 *C.GdkRGBA
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GdkRGBA)(unsafe.Pointer(fg.Native()))
@@ -536,20 +527,18 @@ func (i iconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColo
 
 	var arg5 C.gboolean
 	var ret5 bool
-	var cret *C.GdkPixbuf
-	var ret2 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret3 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_symbolic(arg0, fg, successColor, warningColor, errorColor, &arg5, &errout)
 
-	ret5 = C.bool(arg5) != C.false
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret5 = C.bool(arg5) != C.false
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret5, ret2, goerr
+	return ret5, goerr, ret3
 }
 
 // LoadSymbolicAsync: asynchronously load, render and scale a symbolic icon
@@ -571,27 +560,24 @@ func (i iconInfo) LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warnin
 func (i iconInfo) LoadSymbolicFinish(res gio.AsyncResult) (wasSymbolic bool, pixbuf gdkpixbuf.Pixbuf, err error) {
 	var arg0 *C.GtkIconInfo
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg2 C.gboolean
 	var ret2 bool
-	var cret *C.GdkPixbuf
-	var ret2 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret3 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_symbolic_finish(arg0, res, &arg2, &errout)
 
-	ret2 = C.bool(arg2) != C.false
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.bool(arg2) != C.false
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // LoadSymbolicForContext loads an icon, modifying it to match the system
@@ -607,27 +593,24 @@ func (i iconInfo) LoadSymbolicFinish(res gio.AsyncResult) (wasSymbolic bool, pix
 func (i iconInfo) LoadSymbolicForContext(context StyleContext) (wasSymbolic bool, pixbuf gdkpixbuf.Pixbuf, err error) {
 	var arg0 *C.GtkIconInfo
 	var arg1 *C.GtkStyleContext
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	var arg2 C.gboolean
 	var ret2 bool
-	var cret *C.GdkPixbuf
-	var ret2 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret3 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_symbolic_for_context(arg0, context, &arg2, &errout)
 
-	ret2 = C.bool(arg2) != C.false
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.bool(arg2) != C.false
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // LoadSymbolicForContextAsync: asynchronously load, render and scale a
@@ -649,27 +632,24 @@ func (i iconInfo) LoadSymbolicForContextAsync(context StyleContext, cancellable 
 func (i iconInfo) LoadSymbolicForContextFinish(res gio.AsyncResult) (wasSymbolic bool, pixbuf gdkpixbuf.Pixbuf, err error) {
 	var arg0 *C.GtkIconInfo
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg2 C.gboolean
 	var ret2 bool
-	var cret *C.GdkPixbuf
-	var ret2 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret3 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_symbolic_for_context_finish(arg0, res, &arg2, &errout)
 
-	ret2 = C.bool(arg2) != C.false
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.bool(arg2) != C.false
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // LoadSymbolicForStyle loads an icon, modifying it to match the system
@@ -684,7 +664,6 @@ func (i iconInfo) LoadSymbolicForStyle(style Style, state StateType) (wasSymboli
 	var arg0 *C.GtkIconInfo
 	var arg1 *C.GtkStyle
 	var arg2 C.GtkStateType
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
@@ -692,20 +671,18 @@ func (i iconInfo) LoadSymbolicForStyle(style Style, state StateType) (wasSymboli
 
 	var arg3 C.gboolean
 	var ret3 bool
-	var cret *C.GdkPixbuf
-	var ret2 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret3 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_info_load_symbolic_for_style(arg0, style, state, &arg3, &errout)
 
-	ret3 = C.bool(arg3) != C.false
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret3 = C.bool(arg3) != C.false
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret3, ret2, goerr
+	return ret3, goerr, ret3
 }
 
 // SetRawCoordinates sets whether the coordinates returned by
@@ -1261,7 +1238,6 @@ func (i iconTheme) LoadIcon(iconName string, size int, flags IconLookupFlags) (p
 	var arg1 *C.gchar
 	var arg2 C.gint
 	var arg3 C.GtkIconLookupFlags
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.gchar)(C.CString(iconName))
@@ -1269,19 +1245,17 @@ func (i iconTheme) LoadIcon(iconName string, size int, flags IconLookupFlags) (p
 	arg2 = C.gint(size)
 	arg3 = (C.GtkIconLookupFlags)(flags)
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret2 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_theme_load_icon(arg0, iconName, size, flags, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LoadIconForScale looks up an icon in an icon theme for a particular
@@ -1302,7 +1276,6 @@ func (i iconTheme) LoadIconForScale(iconName string, size int, scale int, flags 
 	var arg2 C.gint
 	var arg3 C.gint
 	var arg4 C.GtkIconLookupFlags
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.gchar)(C.CString(iconName))
@@ -1311,19 +1284,17 @@ func (i iconTheme) LoadIconForScale(iconName string, size int, scale int, flags 
 	arg3 = C.gint(scale)
 	arg4 = (C.GtkIconLookupFlags)(flags)
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkPixbuf
+	var ret2 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_icon_theme_load_icon_for_scale(arg0, iconName, size, scale, flags, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LoadSurface looks up an icon in an icon theme for a particular window
@@ -1342,7 +1313,6 @@ func (i iconTheme) LoadSurface(iconName string, size int, scale int, forWindow g
 	var arg3 C.gint
 	var arg4 *C.GdkWindow
 	var arg5 C.GtkIconLookupFlags
-	var errout *C.GError
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.gchar)(C.CString(iconName))
@@ -1352,22 +1322,20 @@ func (i iconTheme) LoadSurface(iconName string, size int, scale int, forWindow g
 	arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 	arg5 = (C.GtkIconLookupFlags)(flags)
 
-	var cret *C.cairo_surface_t
-	var ret1 *cairo.Surface
+	var errout *C.GError
 	var goerr error
+	var cret *C.cairo_surface_t
+	var ret2 *cairo.Surface
 
 	cret = C.gtk_icon_theme_load_surface(arg0, iconName, size, scale, forWindow, flags, &errout)
 
-	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *cairo.Surface) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // LookupByGIcon looks up an icon and returns a IconInfo containing

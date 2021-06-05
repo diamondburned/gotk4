@@ -138,7 +138,7 @@ func (m monitor) Geometry() Rectangle {
 
 	C.gdk_monitor_get_geometry(arg0, &arg1)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }

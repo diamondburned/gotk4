@@ -121,7 +121,7 @@ func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEn
 
 	cret = C.g_unix_mount_at(mountPath, &arg2)
 
-	ret2 = C.guint64(arg2)
+	*ret2 = C.guint64(arg2)
 	ret2 = WrapUnixMountEntry(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *UnixMountEntry) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -185,7 +185,7 @@ func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEn
 
 	cret = C.g_unix_mount_for(filePath, &arg2)
 
-	ret2 = C.guint64(arg2)
+	*ret2 = C.guint64(arg2)
 	ret2 = WrapUnixMountEntry(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *UnixMountEntry) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -430,7 +430,7 @@ func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMo
 
 	cret = C.g_unix_mount_point_at(mountPath, &arg2)
 
-	ret2 = C.guint64(arg2)
+	*ret2 = C.guint64(arg2)
 	ret2 = WrapUnixMountPoint(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *UnixMountPoint) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -468,7 +468,7 @@ func UnixMountPointsGet() (timeRead uint64, list *glib.List) {
 
 	cret = C.g_unix_mount_points_get(&arg1)
 
-	ret1 = C.guint64(arg1)
+	*ret1 = C.guint64(arg1)
 	ret2 = glib.WrapList(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
@@ -505,7 +505,7 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 
 	cret = C.g_unix_mounts_get(&arg1)
 
-	ret1 = C.guint64(arg1)
+	*ret1 = C.guint64(arg1)
 	ret2 = glib.WrapList(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))

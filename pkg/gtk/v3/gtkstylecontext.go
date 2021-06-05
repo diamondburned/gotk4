@@ -573,7 +573,7 @@ func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 
 	C.gtk_style_context_get_background_color(arg0, state, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -594,7 +594,7 @@ func (c styleContext) Border(state StateFlags) Border {
 
 	C.gtk_style_context_get_border(arg0, state, &arg2)
 
-	ret2 = WrapBorder(unsafe.Pointer(arg2))
+	*ret2 = WrapBorder(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -612,7 +612,7 @@ func (c styleContext) BorderColor(state StateFlags) gdk.RGBA {
 
 	C.gtk_style_context_get_border_color(arg0, state, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -633,7 +633,7 @@ func (c styleContext) Color(state StateFlags) gdk.RGBA {
 
 	C.gtk_style_context_get_color(arg0, state, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -721,7 +721,7 @@ func (c styleContext) Margin(state StateFlags) Border {
 
 	C.gtk_style_context_get_margin(arg0, state, &arg2)
 
-	ret2 = WrapBorder(unsafe.Pointer(arg2))
+	*ret2 = WrapBorder(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -740,7 +740,7 @@ func (c styleContext) Padding(state StateFlags) Border {
 
 	C.gtk_style_context_get_padding(arg0, state, &arg2)
 
-	ret2 = WrapBorder(unsafe.Pointer(arg2))
+	*ret2 = WrapBorder(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -806,8 +806,8 @@ func (c styleContext) Property(property string, state StateFlags) externglib.Val
 
 	C.gtk_style_context_get_property(arg0, property, state, &arg3)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v *externglib.Value) {
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(v.GValue))
 	})
 
@@ -950,7 +950,7 @@ func (c styleContext) HasRegion(regionName string) (flagsReturn RegionFlags, ok 
 
 	cret = C.gtk_style_context_has_region(arg0, regionName, &arg2)
 
-	ret2 = *RegionFlags(arg2)
+	*ret2 = *RegionFlags(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -1021,7 +1021,7 @@ func (c styleContext) LookupColor(colorName string) (color gdk.RGBA, ok bool) {
 
 	cret = C.gtk_style_context_lookup_color(arg0, colorName, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -1352,7 +1352,7 @@ func (c styleContext) StateIsRunning(state StateType) (progress float64, ok bool
 
 	cret = C.gtk_style_context_state_is_running(arg0, state, &arg2)
 
-	ret2 = C.gdouble(arg2)
+	*ret2 = C.gdouble(arg2)
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

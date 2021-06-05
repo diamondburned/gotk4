@@ -249,7 +249,7 @@ func RCParseColor(scanner *glib.Scanner) (color gdk.Color, guint uint) {
 
 	cret = C.gtk_rc_parse_color(scanner, &arg2)
 
-	ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
 	ret2 = C.guint(cret)
 
 	return ret2, ret2
@@ -272,7 +272,7 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (color gdk.Color, gu
 
 	cret = C.gtk_rc_parse_color_full(scanner, style, &arg3)
 
-	ret3 = gdk.WrapColor(unsafe.Pointer(arg3))
+	*ret3 = gdk.WrapColor(unsafe.Pointer(arg3))
 	ret2 = C.guint(cret)
 
 	return ret3, ret2
@@ -311,7 +311,7 @@ func RCParseState(scanner *glib.Scanner) (state StateType, guint uint) {
 
 	cret = C.gtk_rc_parse_state(scanner, &arg2)
 
-	ret2 = *StateType(arg2)
+	*ret2 = *StateType(arg2)
 	ret2 = C.guint(cret)
 
 	return ret2, ret2

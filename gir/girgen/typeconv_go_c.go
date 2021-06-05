@@ -333,6 +333,14 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		value.p.Linef("if %s { %s = %s(1) }", value.In, value.Out, value.OutType)
 		return
 
+	case value.resolved.IsBuiltin("error"):
+		conv.sides.addImport(importInternal("gerror"))
+		value.p.Linef("%s = (*C.GError)(gerror.New(unsafe.Pointer(%s)))", value.Out, value.In)
+		if !value.isTransferring() {
+			value.p.Linef("defer C.g_error_free(%s)", value.Out)
+		}
+		return
+
 	case value.resolved.IsPrimitive():
 		value.p.Linef("%s = %s(%s)", value.Out, value.OutType, value.In)
 		return

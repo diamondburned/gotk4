@@ -167,7 +167,7 @@ func (r *Rect) Expand(p *Point) Rect {
 
 	C.graphene_rect_expand(arg0, p, &arg2)
 
-	ret2 = WrapRect(unsafe.Pointer(arg2))
+	*ret2 = WrapRect(unsafe.Pointer(arg2))
 
 	return ret2
 }
@@ -209,7 +209,7 @@ func (r *Rect) BottomLeft() Point {
 
 	C.graphene_rect_get_bottom_left(arg0, &arg1)
 
-	ret1 = WrapPoint(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -226,7 +226,7 @@ func (r *Rect) BottomRight() Point {
 
 	C.graphene_rect_get_bottom_right(arg0, &arg1)
 
-	ret1 = WrapPoint(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -242,7 +242,7 @@ func (r *Rect) Center() Point {
 
 	C.graphene_rect_get_center(arg0, &arg1)
 
-	ret1 = WrapPoint(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -275,7 +275,7 @@ func (r *Rect) TopLeft() Point {
 
 	C.graphene_rect_get_top_left(arg0, &arg1)
 
-	ret1 = WrapPoint(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -292,7 +292,7 @@ func (r *Rect) TopRight() Point {
 
 	C.graphene_rect_get_top_right(arg0, &arg1)
 
-	ret1 = WrapPoint(unsafe.Pointer(arg1))
+	*ret1 = WrapPoint(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -474,7 +474,7 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 
 	C.graphene_rect_inset_r(arg0, dX, dY, &arg3)
 
-	ret3 = WrapRect(unsafe.Pointer(arg3))
+	*ret3 = WrapRect(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -495,7 +495,7 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 
 	C.graphene_rect_interpolate(arg0, b, factor, &arg3)
 
-	ret3 = WrapRect(unsafe.Pointer(arg3))
+	*ret3 = WrapRect(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -522,7 +522,7 @@ func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
 
 	cret = C.graphene_rect_intersection(arg0, b, &arg2)
 
-	ret2 = WrapRect(unsafe.Pointer(arg2))
+	*ret2 = WrapRect(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -561,7 +561,7 @@ func (r *Rect) NormalizeR() Rect {
 
 	C.graphene_rect_normalize_r(arg0, &arg1)
 
-	ret1 = WrapRect(unsafe.Pointer(arg1))
+	*ret1 = WrapRect(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -605,7 +605,7 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 
 	C.graphene_rect_offset_r(arg0, dX, dY, &arg3)
 
-	ret3 = WrapRect(unsafe.Pointer(arg3))
+	*ret3 = WrapRect(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -628,7 +628,7 @@ func (r *Rect) Round() Rect {
 
 	C.graphene_rect_round(arg0, &arg1)
 
-	ret1 = WrapRect(unsafe.Pointer(arg1))
+	*ret1 = WrapRect(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -660,7 +660,7 @@ func (r *Rect) RoundExtents() Rect {
 
 	C.graphene_rect_round_extents(arg0, &arg1)
 
-	ret1 = WrapRect(unsafe.Pointer(arg1))
+	*ret1 = WrapRect(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -699,7 +699,7 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 
 	C.graphene_rect_scale(arg0, sH, sV, &arg3)
 
-	ret3 = WrapRect(unsafe.Pointer(arg3))
+	*ret3 = WrapRect(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -721,7 +721,7 @@ func (a *Rect) Union(b *Rect) Rect {
 
 	C.graphene_rect_union(arg0, b, &arg2)
 
-	ret2 = WrapRect(unsafe.Pointer(arg2))
+	*ret2 = WrapRect(unsafe.Pointer(arg2))
 
 	return ret2
 }

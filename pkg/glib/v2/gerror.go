@@ -3,9 +3,9 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,16 +25,13 @@ func init() {
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() error {
 	var errout *C.GError
-
 	var goerr error
 
 	C.g_clear_error(&errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // PropagateError: if @dest is nil, free @src; otherwise, moves @src into
@@ -45,20 +42,17 @@ func ClearError() error {
 // Note that @src is no longer valid after this call. If you want to keep using
 // the same GError*, you need to set it to nil after calling this function on
 // it.
-func PropagateError(src *Error) *Error {
+func PropagateError(src error) error {
 	var arg2 *C.GError
 
-	arg2 = (*C.GError)(unsafe.Pointer(src.Native()))
+	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
 
 	var arg1 *C.GError
-	var ret1 **Error
+	var ret1 error
 
 	C.g_propagate_error(&arg1, src)
 
-	ret1 = WrapError(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **Error) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	*ret1 = gerror.Take(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -100,20 +94,18 @@ func (e *Error) Message() string {
 }
 
 // Copy makes a copy of @error.
-func (e *Error) Copy() *Error {
+func (e *Error) Copy() error {
 	var arg0 *C.GError
 
-	arg0 = (*C.GError)(unsafe.Pointer(e.Native()))
+	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
+	defer C.g_error_free(arg0)
 
 	var cret *C.GError
-	var ret1 *Error
+	var ret1 error
 
 	cret = C.g_error_copy(arg0)
 
-	ret1 = WrapError(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Error) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	ret1 = gerror.Take(unsafe.Pointer(cret))
 
 	return ret1
 }
@@ -122,7 +114,8 @@ func (e *Error) Copy() *Error {
 func (e *Error) Free() {
 	var arg0 *C.GError
 
-	arg0 = (*C.GError)(unsafe.Pointer(e.Native()))
+	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
+	defer C.g_error_free(arg0)
 
 	C.g_error_free(arg0)
 }

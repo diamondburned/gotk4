@@ -1292,27 +1292,24 @@ func (c clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellable gio.C
 func (c clipboard) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 *C.char
 	var ret2 string
-	var cret *C.GInputStream
-	var ret2 gio.InputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GInputStream
+	var ret3 gio.InputStream
 
 	cret = C.gdk_clipboard_read_finish(arg0, result, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.GoString(arg2)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // ReadTextAsync: asynchronously request the @clipboard contents converted
@@ -1335,25 +1332,22 @@ func (c clipboard) ReadTextAsync(cancellable gio.Cancellable, callback gio.Async
 func (c clipboard) ReadTextFinish(result gio.AsyncResult) (utf8 string, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.char
-	var ret1 string
+	var errout *C.GError
 	var goerr error
+	var cret *C.char
+	var ret2 string
 
 	cret = C.gdk_clipboard_read_text_finish(arg0, result, &errout)
 
-	ret1 = C.GoString(cret)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ReadTextureAsync: asynchronously request the @clipboard contents
@@ -1377,24 +1371,21 @@ func (c clipboard) ReadTextureAsync(cancellable gio.Cancellable, callback gio.As
 func (c clipboard) ReadTextureFinish(result gio.AsyncResult) (texture Texture, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GdkTexture
-	var ret1 Texture
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkTexture
+	var ret2 Texture
 
 	cret = C.gdk_clipboard_read_texture_finish(arg0, result, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ReadValueAsync: asynchronously request the @clipboard contents converted
@@ -1418,24 +1409,21 @@ func (c clipboard) ReadValueAsync(typ externglib.Type, ioPriority int, cancellab
 func (c clipboard) ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, err error) {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GValue
-	var ret1 *externglib.Value
+	var errout *C.GError
 	var goerr error
+	var cret *C.GValue
+	var ret2 *externglib.Value
 
 	cret = C.gdk_clipboard_read_value_finish(arg0, result, &errout)
 
-	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = externglib.ValueFromNative(unsafe.Pointer(cret))
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SetContent sets a new content provider on @clipboard. The clipboard will
@@ -1519,20 +1507,18 @@ func (c clipboard) StoreAsync(ioPriority int, cancellable gio.Cancellable, callb
 func (c clipboard) StoreFinish(result gio.AsyncResult) error {
 	var arg0 *C.GdkClipboard
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_clipboard_store_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ContentDeserializer: a GdkContentDeserializer is used to deserialize content
@@ -1564,7 +1550,7 @@ type ContentDeserializer interface {
 	Value() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
 	// This function consumes @error.
-	ReturnError(error *glib.Error)
+	ReturnError(error error)
 	// ReturnSuccess: indicate that the deserialization has been successfully
 	// completed.
 	ReturnSuccess()
@@ -1728,12 +1714,13 @@ func (d contentDeserializer) Value() *externglib.Value {
 
 // ReturnError: indicate that the deserialization has ended with an error.
 // This function consumes @error.
-func (d contentDeserializer) ReturnError(error *glib.Error) {
+func (d contentDeserializer) ReturnError(error error) {
 	var arg0 *C.GdkContentDeserializer
 	var arg1 *C.GError
 
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	C.gdk_content_deserializer_return_error(arg0, error)
 }
@@ -1777,7 +1764,7 @@ type ContentSerializer interface {
 	Value() *externglib.Value
 	// ReturnError: indicate that the serialization has ended with an error.
 	// This function consumes @error.
-	ReturnError(error *glib.Error)
+	ReturnError(error error)
 	// ReturnSuccess: indicate that the serialization has been successfully
 	// completed.
 	ReturnSuccess()
@@ -1941,12 +1928,13 @@ func (s contentSerializer) Value() *externglib.Value {
 
 // ReturnError: indicate that the serialization has ended with an error.
 // This function consumes @error.
-func (s contentSerializer) ReturnError(error *glib.Error) {
+func (s contentSerializer) ReturnError(error error) {
 	var arg0 *C.GdkContentSerializer
 	var arg1 *C.GError
 
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	defer C.g_error_free(arg1)
 
 	C.gdk_content_serializer_return_error(arg0, error)
 }
@@ -2501,8 +2489,8 @@ func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface
 
 	cret = C.gdk_device_get_surface_at_position(arg0, &arg1, &arg2)
 
-	ret1 = C.double(arg1)
-	ret2 = C.double(arg2)
+	*ret1 = C.double(arg1)
+	*ret2 = C.double(arg2)
 	ret3 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
 	return ret1, ret2, ret3
@@ -3338,10 +3326,10 @@ func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyv
 
 	cret = C.gdk_display_translate_key(arg0, keycode, state, group, &arg4, &arg5, &arg6, &arg7)
 
-	ret4 = C.guint(arg4)
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
-	ret7 = *ModifierType(arg7)
+	*ret4 = C.guint(arg4)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
+	*ret7 = *ModifierType(arg7)
 	ret5 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret6, ret7, ret5
@@ -4151,28 +4139,25 @@ func (s drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Canc
 func (s drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream, err error) {
 	var arg0 *C.GdkDrop
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 *C.char
 	var ret2 string
-	var cret *C.GInputStream
-	var ret2 gio.InputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GInputStream
+	var ret3 gio.InputStream
 
 	cret = C.gdk_drop_read_finish(arg0, result, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // ReadValueAsync: asynchronously request the drag operation's contents
@@ -4196,24 +4181,21 @@ func (s drop) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable gi
 func (s drop) ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, err error) {
 	var arg0 *C.GdkDrop
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GValue
-	var ret1 *externglib.Value
+	var errout *C.GError
 	var goerr error
+	var cret *C.GValue
+	var ret2 *externglib.Value
 
 	cret = C.gdk_drop_read_value_finish(arg0, result, &errout)
 
-	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = externglib.ValueFromNative(unsafe.Pointer(cret))
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Status selects all actions that are potentially supported by the
@@ -4461,8 +4443,8 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 
 	C.gdk_gl_context_get_required_version(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -4531,8 +4513,8 @@ func (c glContext) Version() (major int, minor int) {
 
 	C.gdk_gl_context_get_version(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -4582,19 +4564,17 @@ func (c glContext) MakeCurrent() {
 // It is safe to call this function on a realized GLContext.
 func (c glContext) Realize() error {
 	var arg0 *C.GdkGLContext
-	var errout *C.GError
 
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_gl_context_realize(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetDebugEnabled sets whether the GLContext should perform extra

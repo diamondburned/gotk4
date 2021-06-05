@@ -231,8 +231,8 @@ func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 
 	cret = C.gtk_tree_selection_get_selected(arg0, &arg1, &arg2)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	ret2 = WrapTreeIter(unsafe.Pointer(arg2))
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
+	*ret2 = WrapTreeIter(unsafe.Pointer(arg2))
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -258,7 +258,7 @@ func (s treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 
 	cret = C.gtk_tree_selection_get_selected_rows(arg0, &arg1)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
+	*ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
 	ret2 = glib.WrapList(unsafe.Pointer(cret))
 	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))

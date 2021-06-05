@@ -456,24 +456,21 @@ func NewPixbufFromData(data []byte, colorspace Colorspace, hasAlpha bool, bitsPe
 // NewPixbufFromFile constructs a class Pixbuf.
 func NewPixbufFromFile(filename string) (pixbuf Pixbuf, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_file(filename, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromFileAtScale constructs a class Pixbuf.
@@ -482,7 +479,6 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 	var arg2 C.int
 	var arg3 C.int
 	var arg4 C.gboolean
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
@@ -492,19 +488,17 @@ func NewPixbufFromFileAtScale(filename string, width int, height int, preserveAs
 		arg4 = C.gboolean(1)
 	}
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_file_at_scale(filename, width, height, preserveAspectRatio, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromFileAtSize constructs a class Pixbuf.
@@ -512,49 +506,43 @@ func NewPixbufFromFileAtSize(filename string, width int, height int) (pixbuf Pix
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.int
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(width)
 	arg3 = C.int(height)
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_file_at_size(filename, width, height, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromResource constructs a class Pixbuf.
 func NewPixbufFromResource(resourcePath string) (pixbuf Pixbuf, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_resource(resourcePath, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromResourceAtScale constructs a class Pixbuf.
@@ -563,7 +551,6 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 	var arg2 C.int
 	var arg3 C.int
 	var arg4 C.gboolean
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
@@ -573,43 +560,38 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 		arg4 = C.gboolean(1)
 	}
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_resource_at_scale(resourcePath, width, height, preserveAspectRatio, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromStream constructs a class Pixbuf.
 func NewPixbufFromStream(stream gio.InputStream, cancellable gio.Cancellable) (pixbuf Pixbuf, err error) {
 	var arg1 *C.GInputStream
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_stream(stream, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromStreamAtScale constructs a class Pixbuf.
@@ -619,7 +601,6 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	var arg3 C.gint
 	var arg4 C.gboolean
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	arg2 = C.gint(width)
@@ -629,41 +610,36 @@ func NewPixbufFromStreamAtScale(stream gio.InputStream, width int, height int, p
 	}
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_stream_at_scale(stream, width, height, preserveAspectRatio, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromStreamFinish constructs a class Pixbuf.
 func NewPixbufFromStreamFinish(asyncResult gio.AsyncResult) (pixbuf Pixbuf, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
-	var cret C.GdkPixbuf
-	var ret1 Pixbuf
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbuf
+	var ret2 Pixbuf
 
 	cret = C.gdk_pixbuf_new_from_stream_finish(asyncResult, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Pixbuf)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufFromXpmData constructs a class Pixbuf.
@@ -1343,7 +1319,6 @@ func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []
 	var arg3 **C.char
 	var arg4 **C.char
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
@@ -1375,15 +1350,14 @@ func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []
 	}
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_pixbuf_save_to_streamv(arg0, stream, typ, optionKeys, optionValues, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SaveToStreamvAsync saves @pixbuf to an output stream asynchronously.
@@ -1411,7 +1385,6 @@ func (p pixbuf) Savev(filename string, typ string, optionKeys []string, optionVa
 	var arg2 *C.char
 	var arg3 **C.char
 	var arg4 **C.char
-	var errout *C.GError
 
 	arg0 = (*C.GdkPixbuf)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.char)(C.CString(filename))
@@ -1443,15 +1416,14 @@ func (p pixbuf) Savev(filename string, typ string, optionKeys []string, optionVa
 		}
 	}
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_pixbuf_savev(arg0, filename, typ, optionKeys, optionValues, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Scale creates a transformation of the source image @src by scaling by
@@ -1645,93 +1617,81 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 // NewPixbufAnimationFromFile constructs a class PixbufAnimation.
 func NewPixbufAnimationFromFile(filename string) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkPixbufAnimation
-	var ret1 PixbufAnimation
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbufAnimation
+	var ret2 PixbufAnimation
 
 	cret = C.gdk_pixbuf_animation_new_from_file(filename, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufAnimationFromResource constructs a class PixbufAnimation.
 func NewPixbufAnimationFromResource(resourcePath string) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkPixbufAnimation
-	var ret1 PixbufAnimation
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbufAnimation
+	var ret2 PixbufAnimation
 
 	cret = C.gdk_pixbuf_animation_new_from_resource(resourcePath, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufAnimationFromStream constructs a class PixbufAnimation.
 func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.GInputStream
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GdkPixbufAnimation
-	var ret1 PixbufAnimation
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbufAnimation
+	var ret2 PixbufAnimation
 
 	cret = C.gdk_pixbuf_animation_new_from_stream(stream, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
 func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (pixbufAnimation PixbufAnimation, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
 
-	var cret C.GdkPixbufAnimation
-	var ret1 PixbufAnimation
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbufAnimation
+	var ret2 PixbufAnimation
 
 	cret = C.gdk_pixbuf_animation_new_from_stream_finish(asyncResult, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Height queries the height of the bounding box of a pixbuf animation.

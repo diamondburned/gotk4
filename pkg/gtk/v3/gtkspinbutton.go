@@ -277,8 +277,8 @@ func (s spinButton) Increments() (step float64, page float64) {
 
 	C.gtk_spin_button_get_increments(arg0, &arg1, &arg2)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
 
 	return ret1, ret2
 }
@@ -314,8 +314,8 @@ func (s spinButton) Range() (min float64, max float64) {
 
 	C.gtk_spin_button_get_range(arg0, &arg1, &arg2)
 
-	ret1 = C.gdouble(arg1)
-	ret2 = C.gdouble(arg2)
+	*ret1 = C.gdouble(arg1)
+	*ret2 = C.gdouble(arg2)
 
 	return ret1, ret2
 }

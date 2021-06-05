@@ -45,8 +45,8 @@ func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) Typ
 
 	C.g_enum_complete_type_info(gEnumType, &arg2, constValues)
 
-	ret2 = WrapTypeInfo(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v *TypeInfo) {
+	*ret2 = WrapTypeInfo(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v *TypeInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
@@ -114,8 +114,8 @@ func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) 
 
 	C.g_flags_complete_type_info(gFlagsType, &arg2, constValues)
 
-	ret2 = WrapTypeInfo(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v *TypeInfo) {
+	*ret2 = WrapTypeInfo(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v *TypeInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 

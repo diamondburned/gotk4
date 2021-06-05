@@ -5,6 +5,7 @@ package gdkpixbuf
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -119,47 +120,41 @@ func NewPixbufLoader() PixbufLoader {
 // NewPixbufLoaderWithMIMEType constructs a class PixbufLoader.
 func NewPixbufLoaderWithMIMEType(mimeType string) (pixbufLoader PixbufLoader, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkPixbufLoader
-	var ret1 PixbufLoader
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbufLoader
+	var ret2 PixbufLoader
 
 	cret = C.gdk_pixbuf_loader_new_with_mime_type(mimeType, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // NewPixbufLoaderWithType constructs a class PixbufLoader.
 func NewPixbufLoaderWithType(imageType string) (pixbufLoader PixbufLoader, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(imageType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkPixbufLoader
-	var ret1 PixbufLoader
+	var errout *C.GError
 	var goerr error
+	var cret C.GdkPixbufLoader
+	var ret2 PixbufLoader
 
 	cret = C.gdk_pixbuf_loader_new_with_type(imageType, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Close informs a pixbuf loader that no further writes with
@@ -175,19 +170,17 @@ func NewPixbufLoaderWithType(imageType string) (pixbufLoader PixbufLoader, err e
 // it anymore, please g_object_unref() it.
 func (l pixbufLoader) Close() error {
 	var arg0 *C.GdkPixbufLoader
-	var errout *C.GError
 
 	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_pixbuf_loader_close(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Animation queries the PixbufAnimation that a pixbuf loader is currently
@@ -279,19 +272,16 @@ func (l pixbufLoader) SetSize(width int, height int) {
 func (l pixbufLoader) Write(buf []byte) error {
 	var arg0 *C.GdkPixbufLoader
 
-	var errout *C.GError
-
 	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_pixbuf_loader_write(arg0, buf, count, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // WriteBytes: this will cause a pixbuf loader to parse a buffer inside a
@@ -305,18 +295,16 @@ func (l pixbufLoader) Write(buf []byte) error {
 func (l pixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var arg0 *C.GdkPixbufLoader
 	var arg1 *C.GBytes
-	var errout *C.GError
 
 	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.GBytes)(unsafe.Pointer(buffer.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gdk_pixbuf_loader_write_bytes(arg0, buffer, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

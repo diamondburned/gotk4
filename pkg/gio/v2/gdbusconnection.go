@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -31,7 +32,7 @@ import "C"
 
 // DBusInterfaceGetPropertyFunc: the type of the @get_property function in
 // BusInterfaceVTable.
-type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error **glib.Error) *glib.Variant
+type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error error) *glib.Variant
 
 //export gotk4_DBusInterfaceGetPropertyFunc
 func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) *C.GVariant {
@@ -65,7 +66,7 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 
 // DBusInterfaceSetPropertyFunc: the type of the @set_property function in
 // BusInterfaceVTable.
-type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error **glib.Error) bool
+type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error error) bool
 
 //export gotk4_DBusInterfaceSetPropertyFunc
 func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) C.gboolean {
@@ -295,23 +296,20 @@ func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallbac
 // BusConnection:exit-on-close property set to true.
 func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GDBusConnection
-	var ret1 DBusConnection
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDBusConnection
+	var ret2 DBusConnection
 
 	cret = C.g_bus_get_finish(res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // BusGetSync: synchronously connects to the message bus specified by @bus_type.
@@ -332,24 +330,21 @@ func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
 	var arg1 C.GBusType
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GDBusConnection
-	var ret1 DBusConnection
+	var errout *C.GError
 	var goerr error
+	var cret *C.GDBusConnection
+	var ret2 DBusConnection
 
 	cret = C.g_bus_get_sync(busType, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

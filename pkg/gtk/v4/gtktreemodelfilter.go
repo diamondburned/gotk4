@@ -42,7 +42,7 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	fn := v.(TreeModelFilterModifyFunc)
 	value := fn(model, iter, column, data)
 
-	arg2 = (*C.GValue)(value.GValue)
+	*arg2 = (*C.GValue)(value.GValue)
 }
 
 // TreeModelFilterVisibleFunc: a function which decides whether the row
@@ -275,7 +275,7 @@ func (f treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (filterIter
 
 	cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(arg0, &arg1, childIter)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -320,7 +320,7 @@ func (f treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 
 	C.gtk_tree_model_filter_convert_iter_to_child_iter(arg0, &arg1, filterIter)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 
 	return ret1
 }

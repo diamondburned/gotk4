@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -162,20 +163,18 @@ func marshalPermission(p uintptr) (interface{}, error) {
 func (p permission) Acquire(cancellable Cancellable) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_permission_acquire(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // AcquireAsync attempts to acquire the permission represented by
@@ -199,20 +198,18 @@ func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCal
 func (p permission) AcquireFinish(result AsyncResult) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_permission_acquire_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Allowed gets the value of the 'allowed' property. This property is true
@@ -312,20 +309,18 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 func (p permission) Release(cancellable Cancellable) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_permission_release(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // ReleaseAsync attempts to release the permission represented by
@@ -349,20 +344,18 @@ func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCal
 func (p permission) ReleaseFinish(result AsyncResult) error {
 	var arg0 *C.GPermission
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_permission_release_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 type PermissionPrivate struct {

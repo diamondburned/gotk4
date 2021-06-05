@@ -33,8 +33,8 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 
 	cret = C.gtk_bitset_iter_init_at(&arg1, set, target, &arg4)
 
-	ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	ret4 = C.guint(arg4)
+	*ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
+	*ret4 = C.guint(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret4, ret3
@@ -57,8 +57,8 @@ func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 
 	cret = C.gtk_bitset_iter_init_first(&arg1, set, &arg3)
 
-	ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	ret3 = C.guint(arg3)
+	*ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
+	*ret3 = C.guint(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret3, ret3
@@ -80,8 +80,8 @@ func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 
 	cret = C.gtk_bitset_iter_init_last(&arg1, set, &arg3)
 
-	ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	ret3 = C.guint(arg3)
+	*ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
+	*ret3 = C.guint(arg3)
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret3, ret3
@@ -164,7 +164,7 @@ func (i *BitsetIter) Next() (value uint, ok bool) {
 
 	cret = C.gtk_bitset_iter_next(arg0, &arg1)
 
-	ret1 = C.guint(arg1)
+	*ret1 = C.guint(arg1)
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -185,7 +185,7 @@ func (i *BitsetIter) Previous() (value uint, ok bool) {
 
 	cret = C.gtk_bitset_iter_previous(arg0, &arg1)
 
-	ret1 = C.guint(arg1)
+	*ret1 = C.guint(arg1)
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

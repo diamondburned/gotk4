@@ -325,7 +325,7 @@ func (c comboBox) ActiveIter() (iter TreeIter, ok bool) {
 
 	cret = C.gtk_combo_box_get_active_iter(arg0, &arg1)
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2

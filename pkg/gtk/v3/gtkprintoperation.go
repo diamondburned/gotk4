@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -450,19 +451,17 @@ func (o printOperation) EmbedPageSetup() bool {
 // The returned #GError will contain more details on what went wrong.
 func (o printOperation) Error() error {
 	var arg0 *C.GtkPrintOperation
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.gtk_print_operation_get_error(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // HasSelection gets the value of PrintOperation:has-selection property.
@@ -659,25 +658,22 @@ func (o printOperation) Run(action PrintOperationAction, parent Window) (printOp
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.GtkPrintOperationAction
 	var arg2 *C.GtkWindow
-	var errout *C.GError
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	arg1 = (C.GtkPrintOperationAction)(action)
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	var cret C.GtkPrintOperationResult
-	var ret1 PrintOperationResult
+	var errout *C.GError
 	var goerr error
+	var cret C.GtkPrintOperationResult
+	var ret2 PrintOperationResult
 
 	cret = C.gtk_print_operation_run(arg0, action, parent, &errout)
 
-	ret1 = PrintOperationResult(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = PrintOperationResult(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SetAllowAsync sets whether the gtk_print_operation_run() may return

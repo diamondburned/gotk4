@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -1612,8 +1613,8 @@ func (w window) CoordsFromParent(parentX float64, parentY float64) (x float64, y
 
 	C.gdk_window_coords_from_parent(arg0, parentX, parentY, &arg3, &arg4)
 
-	ret3 = C.gdouble(arg3)
-	ret4 = C.gdouble(arg4)
+	*ret3 = C.gdouble(arg3)
+	*ret4 = C.gdouble(arg4)
 
 	return ret3, ret4
 }
@@ -1649,8 +1650,8 @@ func (w window) CoordsToParent(x float64, y float64) (parentX float64, parentY f
 
 	C.gdk_window_coords_to_parent(arg0, x, y, &arg3, &arg4)
 
-	ret3 = C.gdouble(arg3)
-	ret4 = C.gdouble(arg4)
+	*ret3 = C.gdouble(arg3)
+	*ret4 = C.gdouble(arg4)
 
 	return ret3, ret4
 }
@@ -1665,23 +1666,20 @@ func (w window) CoordsToParent(x float64, y float64) (parentX float64, parentY f
 // gdk_gl_context_make_current() or gdk_gl_context_realize().
 func (w window) CreateGLContext() (glContext GLContext, err error) {
 	var arg0 *C.GdkWindow
-	var errout *C.GError
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GdkGLContext
-	var ret1 GLContext
+	var errout *C.GError
 	var goerr error
+	var cret *C.GdkGLContext
+	var ret2 GLContext
 
 	cret = C.gdk_window_create_gl_context(arg0, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CreateSimilarImageSurface: create a new image surface that is efficient
@@ -2126,7 +2124,7 @@ func (w window) Decorations() (decorations WMDecoration, ok bool) {
 
 	cret = C.gdk_window_get_decorations(arg0, &arg1)
 
-	ret1 = *WMDecoration(arg1)
+	*ret1 = *WMDecoration(arg1)
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -2196,9 +2194,9 @@ func (w window) DevicePosition(device Device) (x int, y int, mask ModifierType, 
 
 	cret = C.gdk_window_get_device_position(arg0, device, &arg2, &arg3, &arg4)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
-	ret4 = *ModifierType(arg4)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
+	*ret4 = *ModifierType(arg4)
 	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
 	return ret2, ret3, ret4, ret4
@@ -2225,9 +2223,9 @@ func (w window) DevicePositionDouble(device Device) (x float64, y float64, mask 
 
 	cret = C.gdk_window_get_device_position_double(arg0, device, &arg2, &arg3, &arg4)
 
-	ret2 = C.gdouble(arg2)
-	ret3 = C.gdouble(arg3)
-	ret4 = *ModifierType(arg4)
+	*ret2 = C.gdouble(arg2)
+	*ret3 = C.gdouble(arg3)
+	*ret4 = *ModifierType(arg4)
 	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
 	return ret2, ret3, ret4, ret4
@@ -2262,7 +2260,7 @@ func (w window) DragProtocol() (target Window, dragProtocol DragProtocol) {
 
 	cret = C.gdk_window_get_drag_protocol(arg0, &arg1)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(Window)
+	*ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(Window)
 	ret2 = DragProtocol(cret)
 
 	return ret1, ret2
@@ -2393,7 +2391,7 @@ func (w window) FrameExtents() Rectangle {
 
 	C.gdk_window_get_frame_extents(arg0, &arg1)
 
-	ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -2450,10 +2448,10 @@ func (w window) Geometry() (x int, y int, width int, height int) {
 
 	C.gdk_window_get_geometry(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 
 	return ret1, ret2, ret3, ret4
 }
@@ -2529,8 +2527,8 @@ func (w window) Origin() (x int, y int, gint int) {
 
 	cret = C.gdk_window_get_origin(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 	ret3 = C.gint(cret)
 
 	return ret1, ret2, ret3
@@ -2599,9 +2597,9 @@ func (w window) Pointer() (x int, y int, mask ModifierType, window Window) {
 
 	cret = C.gdk_window_get_pointer(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
-	ret3 = *ModifierType(arg3)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
+	*ret3 = *ModifierType(arg3)
 	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
 	return ret1, ret2, ret3, ret4
@@ -2626,8 +2624,8 @@ func (w window) Position() (x int, y int) {
 
 	C.gdk_window_get_position(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -2651,8 +2649,8 @@ func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
 
 	C.gdk_window_get_root_coords(arg0, x, y, &arg3, &arg4)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }
@@ -2671,8 +2669,8 @@ func (w window) RootOrigin() (x int, y int) {
 
 	C.gdk_window_get_root_origin(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -2849,7 +2847,7 @@ func (w window) UserData() interface{} {
 
 	C.gdk_window_get_user_data(arg0, &arg1)
 
-	ret1 = C.gpointer(arg1)
+	*ret1 = C.gpointer(arg1)
 
 	return ret1
 }

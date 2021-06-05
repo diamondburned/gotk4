@@ -1476,7 +1476,7 @@ func (w widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok bool) 
 
 	cret = C.gtk_widget_compute_bounds(arg0, target, &arg2)
 
-	ret2 = graphene.WrapRect(unsafe.Pointer(arg2))
+	*ret2 = graphene.WrapRect(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -1529,7 +1529,7 @@ func (w widget) ComputePoint(target Widget, point *graphene.Point) (outPoint gra
 
 	cret = C.gtk_widget_compute_point(arg0, target, point, &arg3)
 
-	ret3 = graphene.WrapPoint(unsafe.Pointer(arg3))
+	*ret3 = graphene.WrapPoint(unsafe.Pointer(arg3))
 	ret2 = C.bool(cret) != C.false
 
 	return ret3, ret2
@@ -1551,7 +1551,7 @@ func (w widget) ComputeTransform(target Widget) (outTransform graphene.Matrix, o
 
 	cret = C.gtk_widget_compute_transform(arg0, target, &arg2)
 
-	ret2 = graphene.WrapMatrix(unsafe.Pointer(arg2))
+	*ret2 = graphene.WrapMatrix(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2
@@ -2431,8 +2431,8 @@ func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisitio
 
 	C.gtk_widget_get_preferred_size(arg0, &arg1, &arg2)
 
-	ret1 = WrapRequisition(unsafe.Pointer(arg1))
-	ret2 = WrapRequisition(unsafe.Pointer(arg2))
+	*ret1 = WrapRequisition(unsafe.Pointer(arg1))
+	*ret2 = WrapRequisition(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -2654,8 +2654,8 @@ func (w widget) SizeRequest() (width int, height int) {
 
 	C.gtk_widget_get_size_request(arg0, &arg1, &arg2)
 
-	ret1 = C.int(arg1)
-	ret2 = C.int(arg2)
+	*ret1 = C.int(arg1)
+	*ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -3285,10 +3285,10 @@ func (w widget) Measure(orientation Orientation, forSize int) (minimum int, natu
 
 	C.gtk_widget_measure(arg0, orientation, forSize, &arg3, &arg4, &arg5, &arg6)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
 
 	return ret3, ret4, ret5, ret6
 }
@@ -4248,8 +4248,8 @@ func (s widget) TranslateCoordinates(destWidget Widget, srcX float64, srcY float
 
 	cret = C.gtk_widget_translate_coordinates(arg0, destWidget, srcX, srcY, &arg4, &arg5)
 
-	ret4 = C.double(arg4)
-	ret5 = C.double(arg5)
+	*ret4 = C.double(arg4)
+	*ret5 = C.double(arg5)
 	ret3 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret3

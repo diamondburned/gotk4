@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -177,23 +178,20 @@ func (c credentials) Native(nativeType CredentialsType) interface{} {
 // G_CREDENTIALS_TYPE_APPLE_XUCRED).
 func (c credentials) UnixPid() (gint int, err error) {
 	var arg0 *C.GCredentials
-	var errout *C.GError
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
-	var cret C.pid_t
-	var ret1 int
+	var errout *C.GError
 	var goerr error
+	var cret C.pid_t
+	var ret2 int
 
 	cret = C.g_credentials_get_unix_pid(arg0, &errout)
 
-	ret1 = C.pid_t(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.pid_t(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // UnixUser tries to get the UNIX user identifier from @credentials. This
@@ -204,23 +202,20 @@ func (c credentials) UnixPid() (gint int, err error) {
 // user.
 func (c credentials) UnixUser() (guint uint, err error) {
 	var arg0 *C.GCredentials
-	var errout *C.GError
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
-	var cret C.uid_t
-	var ret1 uint
+	var errout *C.GError
 	var goerr error
+	var cret C.uid_t
+	var ret2 uint
 
 	cret = C.g_credentials_get_unix_user(arg0, &errout)
 
-	ret1 = C.uid_t(cret)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.uid_t(cret)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // IsSameUser checks if @credentials and @other_credentials is the same
@@ -230,20 +225,18 @@ func (c credentials) UnixUser() (guint uint, err error) {
 func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	var arg0 *C.GCredentials
 	var arg1 *C.GCredentials
-	var errout *C.GError
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_credentials_is_same_user(arg0, otherCredentials, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetNative copies the native credentials of type @native_type from @native
@@ -274,20 +267,18 @@ func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
 func (c credentials) SetUnixUser(uid uint) error {
 	var arg0 *C.GCredentials
 	var arg1 C.uid_t
-	var errout *C.GError
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	arg1 = C.uid_t(uid)
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_credentials_set_unix_user(arg0, uid, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // String creates a human-readable textual representation of @credentials

@@ -837,8 +837,8 @@ func (b textBuffer) Bounds() (start TextIter, end TextIter) {
 
 	C.gtk_text_buffer_get_bounds(arg0, &arg1, &arg2)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = WrapTextIter(unsafe.Pointer(arg2))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret2 = WrapTextIter(unsafe.Pointer(arg2))
 
 	return ret1, ret2
 }
@@ -931,7 +931,7 @@ func (b textBuffer) EndIter() TextIter {
 
 	C.gtk_text_buffer_get_end_iter(arg0, &arg1)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -984,7 +984,7 @@ func (b textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_child_anchor(arg0, &arg1, anchor)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1006,7 +1006,7 @@ func (b textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
 
 	cret = C.gtk_text_buffer_get_iter_at_line(arg0, &arg1, lineNumber)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -1035,7 +1035,7 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIte
 
 	cret = C.gtk_text_buffer_get_iter_at_line_index(arg0, &arg1, lineNumber, byteIndex)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -1066,7 +1066,7 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter TextI
 
 	cret = C.gtk_text_buffer_get_iter_at_line_offset(arg0, &arg1, lineNumber, charOffset)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 	ret2 = C.bool(cret) != C.false
 
 	return ret1, ret2
@@ -1085,7 +1085,7 @@ func (b textBuffer) IterAtMark(mark TextMark) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_mark(arg0, &arg1, mark)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1106,7 +1106,7 @@ func (b textBuffer) IterAtOffset(charOffset int) TextIter {
 
 	C.gtk_text_buffer_get_iter_at_offset(arg0, &arg1, charOffset)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1230,8 +1230,8 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 
 	cret = C.gtk_text_buffer_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = WrapTextIter(unsafe.Pointer(arg2))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret2 = WrapTextIter(unsafe.Pointer(arg2))
 	ret3 = C.bool(cret) != C.false
 
 	return ret1, ret2, ret3
@@ -1301,7 +1301,7 @@ func (b textBuffer) StartIter() TextIter {
 
 	C.gtk_text_buffer_get_start_iter(arg0, &arg1)
 
-	ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
 
 	return ret1
 }

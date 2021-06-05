@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -143,27 +144,24 @@ func FileNewForURI(uri string) File {
 // file could not be created.
 func FileNewTmp(tmpl string) (iostream FileIOStream, file File, err error) {
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg1 = (*C.char)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 *C.GFileIOStream
 	var ret2 FileIOStream
-	var cret *C.GFile
-	var ret2 File
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFile
+	var ret3 File
 
 	cret = C.g_file_new_tmp(tmpl, &arg2, &errout)
 
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileIOStream)
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileIOStream)
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // FileParseName constructs a #GFile with the given @parse_name (i.e. something
@@ -1495,25 +1493,22 @@ func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (fileOutp
 	var arg0 *C.GFile
 	var arg1 C.GFileCreateFlags
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (C.GFileCreateFlags)(flags)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileOutputStream
-	var ret1 FileOutputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileOutputStream
+	var ret2 FileOutputStream
 
 	cret = C.g_file_append_to(arg0, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // AppendToAsync: asynchronously opens @file for appending.
@@ -1536,24 +1531,21 @@ func (f file) AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable C
 func (f file) AppendToFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileOutputStream
-	var ret1 FileOutputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileOutputStream
+	var ret2 FileOutputStream
 
 	cret = C.g_file_append_to_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Copy copies the file @source to the location specified by @destination.
@@ -1599,19 +1591,16 @@ func (f file) AppendToFinish(res AsyncResult) (fileOutputStream FileOutputStream
 func (s file) Copy(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
 	var arg0 *C.GFile
 
-	var errout *C.GError
-
 	arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_copy(arg0, destination, flags, cancellable, progressCallback, progressCallbackData, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CopyAsync copies the file @source to the location specified by
@@ -1645,42 +1634,38 @@ func (s file) CopyAttributes(destination File, flags FileCopyFlags, cancellable 
 	var arg1 *C.GFile
 	var arg2 C.GFileCopyFlags
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
 	arg2 = (C.GFileCopyFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_copy_attributes(arg0, destination, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CopyFinish finishes copying the file started with g_file_copy_async().
 func (f file) CopyFinish(res AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_copy_finish(arg0, res, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Create creates a new file and returns an output stream for writing to it.
@@ -1705,25 +1690,22 @@ func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (fileOutput
 	var arg0 *C.GFile
 	var arg1 C.GFileCreateFlags
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (C.GFileCreateFlags)(flags)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileOutputStream
-	var ret1 FileOutputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileOutputStream
+	var ret2 FileOutputStream
 
 	cret = C.g_file_create(arg0, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CreateAsync: asynchronously creates a new file and returns an output
@@ -1747,24 +1729,21 @@ func (f file) CreateAsync(flags FileCreateFlags, ioPriority int, cancellable Can
 func (f file) CreateFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileOutputStream
-	var ret1 FileOutputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileOutputStream
+	var ret2 FileOutputStream
 
 	cret = C.g_file_create_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CreateReadwrite creates a new file and returns a stream for reading and
@@ -1793,25 +1772,22 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (f
 	var arg0 *C.GFile
 	var arg1 C.GFileCreateFlags
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (C.GFileCreateFlags)(flags)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileIOStream
-	var ret1 FileIOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileIOStream
+	var ret2 FileIOStream
 
 	cret = C.g_file_create_readwrite(arg0, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // CreateReadwriteAsync: asynchronously creates a new file and returns a
@@ -1835,24 +1811,21 @@ func (f file) CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, cancel
 func (f file) CreateReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileIOStream
-	var ret1 FileIOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileIOStream
+	var ret2 FileIOStream
 
 	cret = C.g_file_create_readwrite_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Delete deletes a file. If the @file is a directory, it will only be
@@ -1879,20 +1852,18 @@ func (f file) CreateReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream,
 func (f file) Delete(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_delete(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // DeleteAsync: asynchronously delete a file. If the @file is a directory,
@@ -1910,20 +1881,18 @@ func (f file) DeleteAsync(ioPriority int, cancellable Cancellable, callback Asyn
 func (f file) DeleteFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_delete_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Dup duplicates a #GFile handle. This operation does not duplicate the
@@ -1971,20 +1940,18 @@ func (f file) EjectMountable(flags MountUnmountFlags, cancellable Cancellable, c
 func (f file) EjectMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_eject_mountable_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EjectMountableWithOperation starts an asynchronous eject on a mountable.
@@ -2008,20 +1975,18 @@ func (f file) EjectMountableWithOperation(flags MountUnmountFlags, mountOperatio
 func (f file) EjectMountableWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_eject_mountable_with_operation_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // EnumerateChildren gets the requested information about the files in a
@@ -2049,7 +2014,6 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	var arg1 *C.char
 	var arg2 C.GFileQueryInfoFlags
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attributes))
@@ -2057,19 +2021,17 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	arg2 = (C.GFileQueryInfoFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileEnumerator
-	var ret1 FileEnumerator
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileEnumerator
+	var ret2 FileEnumerator
 
 	cret = C.g_file_enumerate_children(arg0, attributes, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // EnumerateChildrenAsync: asynchronously gets the requested information
@@ -2095,24 +2057,21 @@ func (f file) EnumerateChildrenAsync(attributes string, flags FileQueryInfoFlags
 func (f file) EnumerateChildrenFinish(res AsyncResult) (fileEnumerator FileEnumerator, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileEnumerator
-	var ret1 FileEnumerator
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileEnumerator
+	var ret2 FileEnumerator
 
 	cret = C.g_file_enumerate_children_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Equal checks if the two given #GFiles refer to the same file.
@@ -2150,24 +2109,21 @@ func (f file) Equal(file2 File) bool {
 func (f file) FindEnclosingMount(cancellable Cancellable) (mount Mount, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GMount
-	var ret1 Mount
+	var errout *C.GError
 	var goerr error
+	var cret *C.GMount
+	var ret2 Mount
 
 	cret = C.g_file_find_enclosing_mount(arg0, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // FindEnclosingMountAsync: asynchronously gets the mount for the file.
@@ -2191,24 +2147,21 @@ func (f file) FindEnclosingMountAsync(ioPriority int, cancellable Cancellable, c
 func (f file) FindEnclosingMountFinish(res AsyncResult) (mount Mount, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GMount
-	var ret1 Mount
+	var errout *C.GError
 	var goerr error
+	var cret *C.GMount
+	var ret2 Mount
 
 	cret = C.g_file_find_enclosing_mount_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Basename gets the base name (the last component of the path) for a given
@@ -2277,25 +2230,22 @@ func (f file) Child(name string) File {
 func (f file) ChildForDisplayName(displayName string) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.char
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GFile
-	var ret1 File
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFile
+	var ret2 File
 
 	cret = C.g_file_get_child_for_display_name(arg0, displayName, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Parent gets the parent directory for the @file. If the @file represents
@@ -2561,31 +2511,28 @@ func (f file) IsNative() bool {
 func (f file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var arg2 *C.gchar
 	var ret2 string
-	var cret *C.GBytes
-	var ret2 *glib.Bytes
+	var errout *C.GError
 	var goerr error
+	var cret *C.GBytes
+	var ret3 *glib.Bytes
 
 	cret = C.g_file_load_bytes(arg0, cancellable, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *glib.Bytes) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret3, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // LoadBytesAsync: asynchronously loads the contents of @file as #GBytes.
@@ -2619,31 +2566,28 @@ func (f file) LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallbac
 func (f file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 *C.gchar
 	var ret2 string
-	var cret *C.GBytes
-	var ret2 *glib.Bytes
+	var errout *C.GError
 	var goerr error
+	var cret *C.GBytes
+	var ret3 *glib.Bytes
 
 	cret = C.g_file_load_bytes_finish(arg0, result, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	ret2 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *glib.Bytes) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret3 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret3, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret2, ret2, goerr
+	return ret2, goerr, ret3
 }
 
 // LoadContentsAsync starts an asynchronous load of the @file's contents.
@@ -2703,20 +2647,18 @@ func (f file) LoadPartialContentsAsync(cancellable Cancellable, readMoreCallback
 func (f file) MakeDirectory(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_make_directory(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // MakeDirectoryAsync: asynchronously creates a directory.
@@ -2733,20 +2675,18 @@ func (f file) MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callba
 func (f file) MakeDirectoryFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_make_directory_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // MakeDirectoryWithParents creates a directory and any parent directories
@@ -2765,20 +2705,18 @@ func (f file) MakeDirectoryFinish(result AsyncResult) error {
 func (f file) MakeDirectoryWithParents(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_make_directory_with_parents(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // MakeSymbolicLink creates a symbolic link named @file which contains the
@@ -2791,22 +2729,20 @@ func (f file) MakeSymbolicLink(symlinkValue string, cancellable Cancellable) err
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(symlinkValue))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_make_symbolic_link(arg0, symlinkValue, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // MeasureDiskUsageAsync: recursively measures the disk usage of @file.
@@ -2827,7 +2763,6 @@ func (f file) MeasureDiskUsageAsync(flags FileMeasureFlags, ioPriority int, canc
 func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
@@ -2838,17 +2773,15 @@ func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numD
 	var ret3 uint64
 	var arg4 C.guint64
 	var ret4 uint64
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_measure_disk_usage_finish(arg0, result, &arg2, &arg3, &arg4, &errout)
 
-	ret2 = C.guint64(arg2)
-	ret3 = C.guint64(arg3)
-	ret4 = C.guint64(arg4)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = C.guint64(arg2)
+	*ret3 = C.guint64(arg3)
+	*ret4 = C.guint64(arg4)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, ret3, ret4, goerr
 }
@@ -2863,25 +2796,22 @@ func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (fileMoni
 	var arg0 *C.GFile
 	var arg1 C.GFileMonitorFlags
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (C.GFileMonitorFlags)(flags)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileMonitor
-	var ret1 FileMonitor
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileMonitor
+	var ret2 FileMonitor
 
 	cret = C.g_file_monitor(arg0, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // MonitorDirectory obtains a directory monitor for the given file. This may
@@ -2900,25 +2830,22 @@ func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) 
 	var arg0 *C.GFile
 	var arg1 C.GFileMonitorFlags
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (C.GFileMonitorFlags)(flags)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileMonitor
-	var ret1 FileMonitor
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileMonitor
+	var ret2 FileMonitor
 
 	cret = C.g_file_monitor_directory(arg0, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // MonitorFile obtains a file monitor for the given file. If no file
@@ -2938,25 +2865,22 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (file
 	var arg0 *C.GFile
 	var arg1 C.GFileMonitorFlags
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (C.GFileMonitorFlags)(flags)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileMonitor
-	var ret1 FileMonitor
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileMonitor
+	var ret2 FileMonitor
 
 	cret = C.g_file_monitor_file(arg0, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // MountEnclosingVolume starts a @mount_operation, mounting the volume that
@@ -2982,20 +2906,18 @@ func (l file) MountEnclosingVolume(flags MountMountFlags, mountOperation MountOp
 func (l file) MountEnclosingVolumeFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_mount_enclosing_volume_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE. Using
@@ -3024,24 +2946,21 @@ func (f file) MountMountable(flags MountMountFlags, mountOperation MountOperatio
 func (f file) MountMountableFinish(result AsyncResult) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GFile
-	var ret1 File
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFile
+	var ret2 File
 
 	cret = C.g_file_mount_mountable_finish(arg0, result, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Move tries to move the file or directory @source to the location
@@ -3080,19 +2999,16 @@ func (f file) MountMountableFinish(result AsyncResult) (file File, err error) {
 func (s file) Move(destination File, flags FileCopyFlags, cancellable Cancellable, progressCallback FileProgressCallback) error {
 	var arg0 *C.GFile
 
-	var errout *C.GError
-
 	arg0 = (*C.GFile)(unsafe.Pointer(s.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_move(arg0, destination, flags, cancellable, progressCallback, progressCallbackData, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // OpenReadwrite opens an existing file for reading and writing. The result
@@ -3113,24 +3029,21 @@ func (s file) Move(destination File, flags FileCopyFlags, cancellable Cancellabl
 func (f file) OpenReadwrite(cancellable Cancellable) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileIOStream
-	var ret1 FileIOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileIOStream
+	var ret2 FileIOStream
 
 	cret = C.g_file_open_readwrite(arg0, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // OpenReadwriteAsync: asynchronously opens @file for reading and writing.
@@ -3153,24 +3066,21 @@ func (f file) OpenReadwriteAsync(ioPriority int, cancellable Cancellable, callba
 func (f file) OpenReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileIOStream
-	var ret1 FileIOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileIOStream
+	var ret2 FileIOStream
 
 	cret = C.g_file_open_readwrite_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // PeekPath: exactly like g_file_get_path(), but caches the result via
@@ -3218,20 +3128,18 @@ func (f file) PollMountable(cancellable Cancellable, callback AsyncReadyCallback
 func (f file) PollMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_poll_mountable_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // QueryDefaultHandler returns the Info that is registered as the default
@@ -3243,24 +3151,21 @@ func (f file) PollMountableFinish(result AsyncResult) error {
 func (f file) QueryDefaultHandler(cancellable Cancellable) (appInfo AppInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GAppInfo
-	var ret1 AppInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GAppInfo
+	var ret2 AppInfo
 
 	cret = C.g_file_query_default_handler(arg0, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryDefaultHandlerAsync: async version of
@@ -3278,24 +3183,21 @@ func (f file) QueryDefaultHandlerAsync(ioPriority int, cancellable Cancellable, 
 func (f file) QueryDefaultHandlerFinish(result AsyncResult) (appInfo AppInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GAppInfo
-	var ret1 AppInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GAppInfo
+	var ret2 AppInfo
 
 	cret = C.g_file_query_default_handler_finish(arg0, result, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryExists: utility function to check if a particular file exists. This
@@ -3390,26 +3292,23 @@ func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (f
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInfo
+	var ret2 FileInfo
 
 	cret = C.g_file_query_filesystem_info(arg0, attributes, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryFilesystemInfoAsync: asynchronously gets the requested information
@@ -3435,24 +3334,21 @@ func (f file) QueryFilesystemInfoAsync(attributes string, ioPriority int, cancel
 func (f file) QueryFilesystemInfoFinish(res AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInfo
+	var ret2 FileInfo
 
 	cret = C.g_file_query_filesystem_info_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryInfo gets the requested information about specified @file. The
@@ -3487,7 +3383,6 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	var arg1 *C.char
 	var arg2 C.GFileQueryInfoFlags
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attributes))
@@ -3495,19 +3390,17 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	arg2 = (C.GFileQueryInfoFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInfo
+	var ret2 FileInfo
 
 	cret = C.g_file_query_info(arg0, attributes, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryInfoAsync: asynchronously gets the requested information about
@@ -3532,24 +3425,21 @@ func (f file) QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioPrio
 func (f file) QueryInfoFinish(res AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInfo
+	var ret2 FileInfo
 
 	cret = C.g_file_query_info_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QuerySettableAttributes: obtain the list of settable attributes for the
@@ -3566,27 +3456,24 @@ func (f file) QueryInfoFinish(res AsyncResult) (fileInfo FileInfo, err error) {
 func (f file) QuerySettableAttributes(cancellable Cancellable) (fileAttributeInfoList *FileAttributeInfoList, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileAttributeInfoList
-	var ret1 *FileAttributeInfoList
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileAttributeInfoList
+	var ret2 *FileAttributeInfoList
 
 	cret = C.g_file_query_settable_attributes(arg0, cancellable, &errout)
 
-	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *FileAttributeInfoList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // QueryWritableNamespaces: obtain the list of attribute namespaces where
@@ -3599,27 +3486,24 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (fileAttributeInf
 func (f file) QueryWritableNamespaces(cancellable Cancellable) (fileAttributeInfoList *FileAttributeInfoList, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileAttributeInfoList
-	var ret1 *FileAttributeInfoList
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileAttributeInfoList
+	var ret2 *FileAttributeInfoList
 
 	cret = C.g_file_query_writable_namespaces(arg0, cancellable, &errout)
 
-	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *FileAttributeInfoList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Read opens a file for reading. The result is a InputStream that can be
@@ -3636,24 +3520,21 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (fileAttributeInf
 func (f file) Read(cancellable Cancellable) (fileInputStream FileInputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileInputStream
-	var ret1 FileInputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInputStream
+	var ret2 FileInputStream
 
 	cret = C.g_file_read(arg0, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ReadAsync: asynchronously opens @file for reading.
@@ -3676,24 +3557,21 @@ func (f file) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncR
 func (f file) ReadFinish(res AsyncResult) (fileInputStream FileInputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileInputStream
-	var ret1 FileInputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileInputStream
+	var ret2 FileInputStream
 
 	cret = C.g_file_read_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Replace returns an output stream for overwriting the file, possibly
@@ -3740,7 +3618,6 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	var arg2 C.gboolean
 	var arg3 C.GFileCreateFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(etag))
@@ -3751,19 +3628,17 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	arg3 = (C.GFileCreateFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileOutputStream
-	var ret1 FileOutputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileOutputStream
+	var ret2 FileOutputStream
 
 	cret = C.g_file_replace(arg0, etag, makeBackup, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ReplaceAsync: asynchronously overwrites the file, replacing the contents,
@@ -3831,23 +3706,20 @@ func (f file) ReplaceContentsBytesAsync(contents *glib.Bytes, etag string, makeB
 func (f file) ReplaceContentsFinish(res AsyncResult) (newEtag string, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg2 *C.char
 	var ret2 string
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_replace_contents_finish(arg0, res, &arg2, &errout)
 
-	ret2 = C.GoString(arg2)
+	*ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }
@@ -3857,24 +3729,21 @@ func (f file) ReplaceContentsFinish(res AsyncResult) (newEtag string, err error)
 func (f file) ReplaceFinish(res AsyncResult) (fileOutputStream FileOutputStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileOutputStream
-	var ret1 FileOutputStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileOutputStream
+	var ret2 FileOutputStream
 
 	cret = C.g_file_replace_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ReplaceReadwrite returns an output stream for overwriting the file in
@@ -3893,7 +3762,6 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	var arg2 C.gboolean
 	var arg3 C.GFileCreateFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(etag))
@@ -3904,19 +3772,17 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	arg3 = (C.GFileCreateFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileIOStream
-	var ret1 FileIOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileIOStream
+	var ret2 FileIOStream
 
 	cret = C.g_file_replace_readwrite(arg0, etag, makeBackup, flags, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
@@ -3942,24 +3808,21 @@ func (f file) ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCrea
 func (f file) ReplaceReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFileIOStream
-	var ret1 FileIOStream
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFileIOStream
+	var ret2 FileIOStream
 
 	cret = C.g_file_replace_readwrite_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // ResolveRelativePath resolves a relative path for @file to an absolute
@@ -4000,7 +3863,6 @@ func (f file) SetAttribute(attribute string, typ FileAttributeType, valueP inter
 	var arg3 C.gpointer
 	var arg4 C.GFileQueryInfoFlags
 	var arg5 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4010,15 +3872,14 @@ func (f file) SetAttribute(attribute string, typ FileAttributeType, valueP inter
 	arg4 = (C.GFileQueryInfoFlags)(flags)
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute(arg0, attribute, typ, valueP, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributeByteString sets @attribute of type
@@ -4034,7 +3895,6 @@ func (f file) SetAttributeByteString(attribute string, value string, flags FileQ
 	var arg2 *C.char
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4044,15 +3904,14 @@ func (f file) SetAttributeByteString(attribute string, value string, flags FileQ
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute_byte_string(arg0, attribute, value, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributeInt32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
@@ -4067,7 +3926,6 @@ func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryIn
 	var arg2 C.gint32
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4076,15 +3934,14 @@ func (f file) SetAttributeInt32(attribute string, value int32, flags FileQueryIn
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute_int32(arg0, attribute, value, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributeInt64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
@@ -4099,7 +3956,6 @@ func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryIn
 	var arg2 C.gint64
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4108,15 +3964,14 @@ func (f file) SetAttributeInt64(attribute string, value int64, flags FileQueryIn
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute_int64(arg0, attribute, value, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributeString sets @attribute of type G_FILE_ATTRIBUTE_TYPE_STRING
@@ -4132,7 +3987,6 @@ func (f file) SetAttributeString(attribute string, value string, flags FileQuery
 	var arg2 *C.char
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4142,15 +3996,14 @@ func (f file) SetAttributeString(attribute string, value string, flags FileQuery
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute_string(arg0, attribute, value, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributeUint32 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32
@@ -4166,7 +4019,6 @@ func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQuery
 	var arg2 C.guint32
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4175,15 +4027,14 @@ func (f file) SetAttributeUint32(attribute string, value uint32, flags FileQuery
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute_uint32(arg0, attribute, value, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributeUint64 sets @attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64
@@ -4199,7 +4050,6 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 	var arg2 C.guint64
 	var arg3 C.GFileQueryInfoFlags
 	var arg4 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(attribute))
@@ -4208,15 +4058,14 @@ func (f file) SetAttributeUint64(attribute string, value uint64, flags FileQuery
 	arg3 = (C.GFileQueryInfoFlags)(flags)
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attribute_uint64(arg0, attribute, value, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetAttributesAsync: asynchronously sets the attributes of @file with
@@ -4240,22 +4089,19 @@ func (f file) SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioPrio
 func (f file) SetAttributesFinish(result AsyncResult) (info FileInfo, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var arg2 *C.GFileInfo
 	var ret2 FileInfo
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attributes_finish(arg0, result, &arg2, &errout)
 
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileInfo)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	*ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileInfo)
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
 }
@@ -4277,22 +4123,20 @@ func (f file) SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, can
 	var arg1 *C.GFileInfo
 	var arg2 C.GFileQueryInfoFlags
 	var arg3 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	arg2 = (C.GFileQueryInfoFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_set_attributes_from_info(arg0, info, flags, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SetDisplayName renames @file to the specified display name.
@@ -4314,26 +4158,23 @@ func (f file) SetDisplayName(displayName string, cancellable Cancellable) (file 
 	var arg0 *C.GFile
 	var arg1 *C.char
 	var arg2 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.char)(C.CString(displayName))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFile
-	var ret1 File
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFile
+	var ret2 File
 
 	cret = C.g_file_set_display_name(arg0, displayName, cancellable, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // SetDisplayNameAsync: asynchronously sets the display name for a given
@@ -4357,24 +4198,21 @@ func (f file) SetDisplayNameAsync(displayName string, ioPriority int, cancellabl
 func (f file) SetDisplayNameFinish(res AsyncResult) (file File, err error) {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GFile
-	var ret1 File
+	var errout *C.GError
 	var goerr error
+	var cret *C.GFile
+	var ret2 File
 
 	cret = C.g_file_set_display_name_finish(arg0, res, &errout)
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // StartMountable starts a file of type FILE_TYPE_MOUNTABLE. Using
@@ -4403,20 +4241,18 @@ func (f file) StartMountable(flags DriveStartFlags, startOperation MountOperatio
 func (f file) StartMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_start_mountable_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // StopMountable stops a file of type FILE_TYPE_MOUNTABLE.
@@ -4443,20 +4279,18 @@ func (f file) StopMountable(flags MountUnmountFlags, mountOperation MountOperati
 func (f file) StopMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_stop_mountable_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SupportsThreadContexts checks if @file supports [thread-default
@@ -4492,20 +4326,18 @@ func (f file) SupportsThreadContexts() bool {
 func (f file) Trash(cancellable Cancellable) error {
 	var arg0 *C.GFile
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_trash(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // TrashAsync: asynchronously sends @file to the Trash location, if
@@ -4523,20 +4355,18 @@ func (f file) TrashAsync(ioPriority int, cancellable Cancellable, callback Async
 func (f file) TrashFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_trash_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
@@ -4564,20 +4394,18 @@ func (f file) UnmountMountable(flags MountUnmountFlags, cancellable Cancellable,
 func (f file) UnmountMountableFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_unmount_mountable_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // UnmountMountableWithOperation unmounts a file of type
@@ -4606,18 +4434,16 @@ func (f file) UnmountMountableWithOperation(flags MountUnmountFlags, mountOperat
 func (f file) UnmountMountableWithOperationFinish(result AsyncResult) error {
 	var arg0 *C.GFile
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_file_unmount_mountable_with_operation_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }

@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -216,20 +217,18 @@ func (s ioStream) ClearPending() {
 func (s ioStream) Close(cancellable Cancellable) error {
 	var arg0 *C.GIOStream
 	var arg1 *C.GCancellable
-	var errout *C.GError
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_io_stream_close(arg0, cancellable, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -254,20 +253,18 @@ func (s ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callback A
 func (s ioStream) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GIOStream
 	var arg1 *C.GAsyncResult
-	var errout *C.GError
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_io_stream_close_finish(arg0, result, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // InputStream gets the input stream for this object. This is used for
@@ -340,19 +337,17 @@ func (s ioStream) IsClosed() bool {
 // already set or @stream is closed, it will return false and set @error.
 func (s ioStream) SetPending() error {
 	var arg0 *C.GIOStream
-	var errout *C.GError
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_io_stream_set_pending(arg0, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // SpliceAsync: asynchronously splice the output stream of @stream1 to the

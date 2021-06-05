@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -553,7 +554,6 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var arg1 *C.gchar
 	var arg2 *C.GSettingsSchemaSource
 	var arg3 C.gboolean
-	var errout *C.GError
 
 	arg1 = (*C.gchar)(C.CString(directory))
 	defer C.free(unsafe.Pointer(arg1))
@@ -562,22 +562,20 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 		arg3 = C.gboolean(1)
 	}
 
-	var cret *C.GSettingsSchemaSource
-	var ret1 *SettingsSchemaSource
+	var errout *C.GError
 	var goerr error
+	var cret *C.GSettingsSchemaSource
+	var ret2 *SettingsSchemaSource
 
 	cret = C.g_settings_schema_source_new_from_directory(directory, parent, trusted, &errout)
 
-	ret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SettingsSchemaSource) {
+	goerr = gerror.Take(unsafe.Pointer(errout))
+	ret2 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *SettingsSchemaSource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
 
-	return ret1, goerr
+	return goerr, ret2
 }
 
 // Native returns the underlying C source pointer.

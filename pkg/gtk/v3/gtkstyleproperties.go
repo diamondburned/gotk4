@@ -129,8 +129,8 @@ func (p styleProperties) Property(property string, state StateFlags) (value exte
 
 	cret = C.gtk_style_properties_get_property(arg0, property, state, &arg3)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v *externglib.Value) {
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(v.GValue))
 	})
 	ret2 = C.bool(cret) != C.false
@@ -361,8 +361,8 @@ func (g *Gradient) Resolve(props StyleProperties) (resolvedGradient *cairo.Patte
 
 	cret = C.gtk_gradient_resolve(arg0, props, &arg2)
 
-	ret2 = cairo.WrapPattern(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **cairo.Pattern) {
+	*ret2 = cairo.WrapPattern(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **cairo.Pattern) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret2 = C.bool(cret) != C.false
@@ -645,7 +645,7 @@ func (c *SymbolicColor) Resolve(props StyleProperties) (resolvedColor gdk.RGBA, 
 
 	cret = C.gtk_symbolic_color_resolve(arg0, props, &arg2)
 
-	ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapRGBA(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

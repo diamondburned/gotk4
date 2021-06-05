@@ -768,8 +768,8 @@ func (t treeView) ConvertBinWindowToTreeCoords(bx int, by int) (tx int, ty int) 
 
 	C.gtk_tree_view_convert_bin_window_to_tree_coords(arg0, bx, by, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -792,8 +792,8 @@ func (t treeView) ConvertBinWindowToWidgetCoords(bx int, by int) (wx int, wy int
 
 	C.gtk_tree_view_convert_bin_window_to_widget_coords(arg0, bx, by, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -816,8 +816,8 @@ func (t treeView) ConvertTreeToBinWindowCoords(tx int, ty int) (bx int, by int) 
 
 	C.gtk_tree_view_convert_tree_to_bin_window_coords(arg0, tx, ty, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -840,8 +840,8 @@ func (t treeView) ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy int) {
 
 	C.gtk_tree_view_convert_tree_to_widget_coords(arg0, tx, ty, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -864,8 +864,8 @@ func (t treeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int
 
 	C.gtk_tree_view_convert_widget_to_bin_window_coords(arg0, wx, wy, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -888,8 +888,8 @@ func (t treeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int) {
 
 	C.gtk_tree_view_convert_widget_to_tree_coords(arg0, wx, wy, &arg3, &arg4)
 
-	ret3 = C.int(arg3)
-	ret4 = C.int(arg4)
+	*ret3 = C.int(arg3)
+	*ret4 = C.int(arg4)
 
 	return ret3, ret4
 }
@@ -1027,7 +1027,7 @@ func (t treeView) BackgroundArea(path *TreePath, column TreeViewColumn) gdk.Rect
 
 	C.gtk_tree_view_get_background_area(arg0, path, column, &arg3)
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	*ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -1055,7 +1055,7 @@ func (t treeView) CellArea(path *TreePath, column TreeViewColumn) gdk.Rectangle 
 
 	C.gtk_tree_view_get_cell_area(arg0, path, column, &arg3)
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	*ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -1116,11 +1116,11 @@ func (t treeView) Cursor() (path *TreePath, focusColumn TreeViewColumn) {
 
 	C.gtk_tree_view_get_cursor(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeViewColumn)
+	*ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeViewColumn)
 
 	return ret1, ret2
 }
@@ -1148,11 +1148,11 @@ func (t treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeVi
 
 	cret = C.gtk_tree_view_get_dest_row_at_pos(arg0, dragX, dragY, &arg3, &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = *TreeViewDropPosition(arg4)
+	*ret4 = *TreeViewDropPosition(arg4)
 	ret3 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret3
@@ -1172,11 +1172,11 @@ func (t treeView) DragDestRow() (path *TreePath, pos TreeViewDropPosition) {
 
 	C.gtk_tree_view_get_drag_dest_row(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = *TreeViewDropPosition(arg2)
+	*ret2 = *TreeViewDropPosition(arg2)
 
 	return ret1, ret2
 }
@@ -1420,13 +1420,13 @@ func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn
 
 	cret = C.gtk_tree_view_get_path_at_pos(arg0, x, y, &arg3, &arg4, &arg5, &arg6)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeViewColumn)
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeViewColumn)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
 	ret5 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret5, ret6, ret5
@@ -1585,12 +1585,12 @@ func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 
 	cret = C.gtk_tree_view_get_tooltip_context(arg0, x, y, keyboardTip, &arg4, &arg5, &arg6)
 
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
-	ret5 = WrapTreePath(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **TreePath) {
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
+	*ret5 = WrapTreePath(unsafe.Pointer(arg5))
+	runtime.SetFinalizer(*ret5, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret6 = WrapTreeIter(unsafe.Pointer(arg6))
+	*ret6 = WrapTreeIter(unsafe.Pointer(arg6))
 	ret4 = C.bool(cret) != C.false
 
 	return ret4, ret5, ret6, ret4
@@ -1614,12 +1614,12 @@ func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 	cret = C.gtk_tree_view_get_visible_range(arg0, &arg1, &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
+	*ret1 = WrapTreePath(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(*ret1, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = WrapTreePath(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **TreePath) {
+	*ret2 = WrapTreePath(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(*ret2, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret3 = C.bool(cret) != C.false
@@ -1642,7 +1642,7 @@ func (t treeView) VisibleRect() gdk.Rectangle {
 
 	C.gtk_tree_view_get_visible_rect(arg0, &arg1)
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	*ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 
 	return ret1
 }
@@ -1732,13 +1732,13 @@ func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewCol
 
 	cret = C.gtk_tree_view_is_blank_at_pos(arg0, x, y, &arg3, &arg4, &arg5, &arg6)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
+	*ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(*ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeViewColumn)
-	ret5 = C.int(arg5)
-	ret6 = C.int(arg6)
+	*ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeViewColumn)
+	*ret5 = C.int(arg5)
+	*ret6 = C.int(arg6)
 	ret5 = C.bool(cret) != C.false
 
 	return ret3, ret4, ret5, ret6, ret5

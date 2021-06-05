@@ -70,8 +70,8 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 
 	C.pango_find_paragraph_boundary(text, length, &arg3, &arg4)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }

@@ -178,7 +178,7 @@ func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellAr
 
 	C.gtk_cell_renderer_get_aligned_area(arg0, widget, flags, cellArea, &arg4)
 
-	ret4 = gdk.WrapRectangle(unsafe.Pointer(arg4))
+	*ret4 = gdk.WrapRectangle(unsafe.Pointer(arg4))
 
 	return ret4
 }
@@ -197,8 +197,8 @@ func (c cellRenderer) Alignment() (xalign float32, yalign float32) {
 
 	C.gtk_cell_renderer_get_alignment(arg0, &arg1, &arg2)
 
-	ret1 = C.gfloat(arg1)
-	ret2 = C.gfloat(arg2)
+	*ret1 = C.gfloat(arg1)
+	*ret2 = C.gfloat(arg2)
 
 	return ret1, ret2
 }
@@ -216,8 +216,8 @@ func (c cellRenderer) FixedSize() (width int, height int) {
 
 	C.gtk_cell_renderer_get_fixed_size(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -235,8 +235,8 @@ func (c cellRenderer) Padding() (xpad int, ypad int) {
 
 	C.gtk_cell_renderer_get_padding(arg0, &arg1, &arg2)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -257,8 +257,8 @@ func (c cellRenderer) PreferredHeight(widget Widget) (minimumSize int, naturalSi
 
 	C.gtk_cell_renderer_get_preferred_height(arg0, widget, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }
@@ -281,8 +281,8 @@ func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimum
 
 	C.gtk_cell_renderer_get_preferred_height_for_width(arg0, widget, width, &arg3, &arg4)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }
@@ -303,8 +303,8 @@ func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, nat
 
 	C.gtk_cell_renderer_get_preferred_size(arg0, widget, &arg2, &arg3)
 
-	ret2 = WrapRequisition(unsafe.Pointer(arg2))
-	ret3 = WrapRequisition(unsafe.Pointer(arg3))
+	*ret2 = WrapRequisition(unsafe.Pointer(arg2))
+	*ret3 = WrapRequisition(unsafe.Pointer(arg3))
 
 	return ret2, ret3
 }
@@ -325,8 +325,8 @@ func (c cellRenderer) PreferredWidth(widget Widget) (minimumSize int, naturalSiz
 
 	C.gtk_cell_renderer_get_preferred_width(arg0, widget, &arg2, &arg3)
 
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }
@@ -349,8 +349,8 @@ func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimu
 
 	C.gtk_cell_renderer_get_preferred_width_for_height(arg0, widget, height, &arg3, &arg4)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }
@@ -415,10 +415,10 @@ func (c cellRenderer) Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int,
 
 	C.gtk_cell_renderer_get_size(arg0, widget, cellArea, &arg3, &arg4, &arg5, &arg6)
 
-	ret3 = C.gint(arg3)
-	ret4 = C.gint(arg4)
-	ret5 = C.gint(arg5)
-	ret6 = C.gint(arg6)
+	*ret3 = C.gint(arg3)
+	*ret4 = C.gint(arg4)
+	*ret5 = C.gint(arg5)
+	*ret6 = C.gint(arg6)
 
 	return ret3, ret4, ret5, ret6
 }

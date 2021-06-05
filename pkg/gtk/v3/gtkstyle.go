@@ -793,7 +793,7 @@ func (s style) StyleProperty(widgetType externglib.Type, propertyName string) ex
 
 	C.gtk_style_get_style_property(arg0, widgetType, propertyName, &arg3)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
 
 	return ret3
 }
@@ -833,7 +833,7 @@ func (s style) LookupColor(colorName string) (color gdk.Color, ok bool) {
 
 	cret = C.gtk_style_lookup_color(arg0, colorName, &arg2)
 
-	ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
+	*ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
 	ret2 = C.bool(cret) != C.false
 
 	return ret2, ret2

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -127,22 +128,20 @@ func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath stri
 	var arg0 *C.GDBusInterfaceSkeleton
 	var arg1 *C.GDBusConnection
 	var arg2 *C.gchar
-	var errout *C.GError
 
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var errout *C.GError
 	var goerr error
 
 	C.g_dbus_interface_skeleton_export(arg0, connection, objectPath, &errout)
 
-	if errout != nil {
-		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
-		C.g_error_free(errout)
-	}
+	goerr = gerror.Take(unsafe.Pointer(errout))
 
+	return goerr
 }
 
 // Flush: if @interface_ has outstanding changes, request for these changes

@@ -948,9 +948,9 @@ func (d *DateTime) Ymd() (year int, month int, day int) {
 
 	C.g_date_time_get_ymd(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.gint(arg1)
-	ret2 = C.gint(arg2)
-	ret3 = C.gint(arg3)
+	*ret1 = C.gint(arg1)
+	*ret2 = C.gint(arg2)
+	*ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }

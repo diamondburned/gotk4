@@ -61,11 +61,11 @@ func NewGestureLongPress(widget Widget) GestureLongPress {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.GtkGestureLongPress
-	var goret1 GestureLongPress
+	var ret1 GestureLongPress
 
 	cret = C.gtk_gesture_long_press_new(widget)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureLongPress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureLongPress)
 
-	return goret1
+	return ret1
 }

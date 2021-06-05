@@ -41,18 +41,18 @@ func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificat
 	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	var cret *C.GDatagramBased
-	var goret1 DTLSServerConnection
+	var ret1 DTLSServerConnection
 	var goerr error
 
 	cret = C.g_dtls_server_connection_new(baseSocket, certificate, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSServerConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSServerConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // DTLSServerConnection is the server-side subclass of Connection, representing

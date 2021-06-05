@@ -86,23 +86,23 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (typ string, input
 	arg1 = C.int(size)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg2 **C.char
+	var arg2 *C.char
 	var ret2 string
 	var cret *C.GInputStream
-	var goret2 InputStream
+	var ret2 InputStream
 	var goerr error
 
 	cret = C.g_loadable_icon_load(arg0, size, &arg2, cancellable, &errout)
 
 	ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	goret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // LoadAsync loads an icon asynchronously. To finish this function, see
@@ -126,21 +126,21 @@ func (i loadableIcon) LoadFinish(res AsyncResult) (typ string, inputStream Input
 	arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var arg2 **C.char
+	var arg2 *C.char
 	var ret2 string
 	var cret *C.GInputStream
-	var goret2 InputStream
+	var ret2 InputStream
 	var goerr error
 
 	cret = C.g_loadable_icon_load_finish(arg0, res, &arg2, &errout)
 
 	ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	goret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }

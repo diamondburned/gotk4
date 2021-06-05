@@ -167,13 +167,13 @@ func (r asyncResult) SourceObject() gextras.Objector {
 	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GObject
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.g_async_result_get_source_object(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // UserData gets the user data from a Result.
@@ -183,13 +183,13 @@ func (r asyncResult) UserData() interface{} {
 	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_result_get_user_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsTagged checks if @res has the given @source_tag (generally a function
@@ -202,13 +202,13 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 	arg1 = C.gpointer(sourceTag)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_async_result_is_tagged(arg0, sourceTag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LegacyPropagateError: if @res is a AsyncResult, this is equivalent to

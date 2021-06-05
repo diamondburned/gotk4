@@ -72,13 +72,13 @@ func (d waylandDevice) NodePath() string {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_wayland_device_get_node_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // WlKeyboard returns the Wayland wl_keyboard of a Device.
@@ -88,13 +88,13 @@ func (d waylandDevice) WlKeyboard() interface{} {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.wl_keyboard
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_device_get_wl_keyboard(arg0)
 
-	goret1 = *C.wl_keyboard(cret)
+	ret1 = *C.wl_keyboard(cret)
 
-	return goret1
+	return ret1
 }
 
 // WlPointer returns the Wayland wl_pointer of a Device.
@@ -104,13 +104,13 @@ func (d waylandDevice) WlPointer() interface{} {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.wl_pointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_device_get_wl_pointer(arg0)
 
-	goret1 = *C.wl_pointer(cret)
+	ret1 = *C.wl_pointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // WlSeat returns the Wayland wl_seat of a Device.
@@ -120,11 +120,11 @@ func (d waylandDevice) WlSeat() interface{} {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.wl_seat
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_device_get_wl_seat(arg0)
 
-	goret1 = *C.wl_seat(cret)
+	ret1 = *C.wl_seat(cret)
 
-	return goret1
+	return ret1
 }

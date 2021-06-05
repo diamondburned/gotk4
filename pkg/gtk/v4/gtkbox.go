@@ -132,13 +132,13 @@ func NewBox(orientation Orientation, spacing int) Box {
 	arg2 = C.int(spacing)
 
 	var cret C.GtkBox
-	var goret1 Box
+	var ret1 Box
 
 	cret = C.gtk_box_new(orientation, spacing)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
 
-	return goret1
+	return ret1
 }
 
 // Append adds @child as the last child to @box.
@@ -159,13 +159,13 @@ func (b box) BaselinePosition() BaselinePosition {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkBaselinePosition
-	var goret1 BaselinePosition
+	var ret1 BaselinePosition
 
 	cret = C.gtk_box_get_baseline_position(arg0)
 
-	goret1 = BaselinePosition(cret)
+	ret1 = BaselinePosition(cret)
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
@@ -176,13 +176,13 @@ func (b box) Homogeneous() bool {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_box_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
@@ -192,13 +192,13 @@ func (b box) Spacing() int {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_box_get_spacing(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertChildAfter inserts @child in the position after @sibling in the

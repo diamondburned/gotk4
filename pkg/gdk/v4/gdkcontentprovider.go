@@ -100,13 +100,13 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) ContentProvi
 	arg2 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
 	var cret C.GdkContentProvider
-	var goret1 ContentProvider
+	var ret1 ContentProvider
 
 	cret = C.gdk_content_provider_new_for_bytes(mimeType, bytes)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // NewContentProviderForValue constructs a class ContentProvider.
@@ -116,26 +116,26 @@ func NewContentProviderForValue(value *externglib.Value) ContentProvider {
 	arg1 = (*C.GValue)(value.GValue)
 
 	var cret C.GdkContentProvider
-	var goret1 ContentProvider
+	var ret1 ContentProvider
 
 	cret = C.gdk_content_provider_new_for_value(value)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // NewContentProviderUnion constructs a class ContentProvider.
 func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
 
 	var cret C.GdkContentProvider
-	var goret1 ContentProvider
+	var ret1 ContentProvider
 
 	cret = C.gdk_content_provider_new_union(providers, nProviders)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // ContentChanged emits the ContentProvider::content-changed signal.
@@ -181,16 +181,16 @@ func (p contentProvider) RefFormats() *ContentFormats {
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_provider_ref_formats(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // RefStorableFormats gets the formats that the provider suggests other
@@ -204,16 +204,16 @@ func (p contentProvider) RefStorableFormats() *ContentFormats {
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_provider_ref_storable_formats(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // WriteMIMETypeAsync: asynchronously writes the contents of @provider to

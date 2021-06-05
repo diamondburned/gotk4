@@ -133,13 +133,13 @@ const (
 func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, fn IOFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_io_add_watch_full(channel, priority, condition, fn, userData, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IOChannelErrorFromErrno converts an `errno` error number to a OChannelError.
@@ -149,13 +149,13 @@ func IOChannelErrorFromErrno(en int) IOChannelError {
 	arg1 = C.gint(en)
 
 	var cret C.GIOChannelError
-	var goret1 IOChannelError
+	var ret1 IOChannelError
 
 	cret = C.g_io_channel_error_from_errno(en)
 
-	goret1 = IOChannelError(cret)
+	ret1 = IOChannelError(cret)
 
-	return goret1
+	return ret1
 }
 
 // IOCreateWatch creates a #GSource that's dispatched when @condition is met for
@@ -180,16 +180,16 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	arg2 = (C.GIOCondition)(condition)
 
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_io_create_watch(channel, condition)
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Source) {
+	ret1 = WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // IOChannel: a data structure representing an IO Channel. The fields should be
@@ -225,13 +225,13 @@ func NewIOChannelFile(filename string, mode string) (ioChannel *IOChannel, err e
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GIOChannel
-	var goret1 *IOChannel
+	var ret1 *IOChannel
 	var goerr error
 
 	cret = C.g_io_channel_new_file(filename, mode, &errout)
 
-	goret1 = WrapIOChannel(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *IOChannel) {
+	ret1 = WrapIOChannel(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *IOChannel) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -239,7 +239,7 @@ func NewIOChannelFile(filename string, mode string) (ioChannel *IOChannel, err e
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NewIOChannelUnix constructs a struct IOChannel.
@@ -249,16 +249,16 @@ func NewIOChannelUnix(fd int) *IOChannel {
 	arg1 = C.int(fd)
 
 	var cret *C.GIOChannel
-	var goret1 *IOChannel
+	var ret1 *IOChannel
 
 	cret = C.g_io_channel_unix_new(fd)
 
-	goret1 = WrapIOChannel(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *IOChannel) {
+	ret1 = WrapIOChannel(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *IOChannel) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -285,18 +285,18 @@ func (c *IOChannel) Flush() (ioStatus IOStatus, err error) {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_flush(arg0, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // BufferCondition: this function returns a OCondition depending on whether
@@ -308,13 +308,13 @@ func (c *IOChannel) BufferCondition() IOCondition {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.GIOCondition
-	var goret1 IOCondition
+	var ret1 IOCondition
 
 	cret = C.g_io_channel_get_buffer_condition(arg0)
 
-	goret1 = IOCondition(cret)
+	ret1 = IOCondition(cret)
 
-	return goret1
+	return ret1
 }
 
 // BufferSize gets the buffer size.
@@ -324,13 +324,13 @@ func (c *IOChannel) BufferSize() uint {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_io_channel_get_buffer_size(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Buffered returns whether @channel is buffered.
@@ -340,13 +340,13 @@ func (c *IOChannel) Buffered() bool {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_io_channel_get_buffered(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CloseOnUnref returns whether the file/socket/whatever associated with
@@ -359,13 +359,13 @@ func (c *IOChannel) CloseOnUnref() bool {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_io_channel_get_close_on_unref(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Encoding gets the encoding for the input/output of the channel. The internal
@@ -377,13 +377,13 @@ func (c *IOChannel) Encoding() string {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_io_channel_get_encoding(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Flags gets the current flags for a OChannel, including read-only flags such
@@ -400,13 +400,13 @@ func (c *IOChannel) Flags() IOFlags {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.GIOFlags
-	var goret1 IOFlags
+	var ret1 IOFlags
 
 	cret = C.g_io_channel_get_flags(arg0)
 
-	goret1 = IOFlags(cret)
+	ret1 = IOFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // LineTerm: this returns the string that OChannel uses to determine where in
@@ -419,13 +419,13 @@ func (c *IOChannel) LineTerm(length int) string {
 	arg1 = *C.gint(length)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_io_channel_get_line_term(arg0, length)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Init initializes a OChannel struct.
@@ -455,13 +455,13 @@ func (c *IOChannel) Read(buf string, count uint, bytesRead uint) IOError {
 	arg3 = *C.gsize(bytesRead)
 
 	var cret C.GIOError
-	var goret1 IOError
+	var ret1 IOError
 
 	cret = C.g_io_channel_read(arg0, buf, count, bytesRead)
 
-	goret1 = IOError(cret)
+	ret1 = IOError(cret)
 
-	return goret1
+	return ret1
 }
 
 // ReadLine reads a line, including the terminating character(s), from a
@@ -473,29 +473,29 @@ func (c *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uin
 
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var arg1 **C.gchar
+	var arg1 *C.gchar
 	var ret1 string
-	var arg2 *C.gsize
+	var arg2 C.gsize
 	var ret2 uint
-	var arg3 *C.gsize
+	var arg3 C.gsize
 	var ret3 uint
 	var cret C.GIOStatus
-	var goret4 IOStatus
+	var ret4 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_read_line(arg0, &arg1, &arg2, &arg3, &errout)
 
 	ret1 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
-	ret2 = *C.gsize(arg2)
-	ret3 = *C.gsize(arg3)
-	goret4 = IOStatus(cret)
+	ret2 = C.gsize(arg2)
+	ret3 = C.gsize(arg3)
+	ret4 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret1, ret2, ret3, goret4, goerr
+	return ret1, ret2, ret3, ret4, goerr
 }
 
 // ReadLineString reads a line from a OChannel, using a #GString as a buffer.
@@ -510,18 +510,18 @@ func (c *IOChannel) ReadLineString(buffer *String, terminatorPos uint) (ioStatus
 	arg2 = *C.gsize(terminatorPos)
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_read_line_string(arg0, buffer, terminatorPos, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReadToEnd reads all the remaining data from the file.
@@ -532,18 +532,18 @@ func (c *IOChannel) ReadToEnd() (strReturn []byte, length uint, ioStatus IOStatu
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.GIOStatus
-	var goret3 IOStatus
+	var ret3 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_read_to_end(arg0, &arg1, &arg2, &errout)
 
-	goret3 = IOStatus(cret)
+	ret3 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret1, ret2, goret3, goerr
+	return ret1, ret2, ret3, goerr
 }
 
 // ReadUnichar reads a Unicode character from @channel. This function cannot be
@@ -554,22 +554,22 @@ func (c *IOChannel) ReadUnichar() (thechar uint32, ioStatus IOStatus, err error)
 
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.gunichar
+	var arg1 C.gunichar
 	var ret1 uint32
 	var cret C.GIOStatus
-	var goret2 IOStatus
+	var ret2 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_read_unichar(arg0, &arg1, &errout)
 
-	ret1 = *C.gunichar(arg1)
-	goret2 = IOStatus(cret)
+	ret1 = C.gunichar(arg1)
+	ret2 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret1, goret2, goerr
+	return ret1, ret2, goerr
 }
 
 // Ref increments the reference count of a OChannel.
@@ -579,16 +579,16 @@ func (c *IOChannel) Ref() *IOChannel {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GIOChannel
-	var goret1 *IOChannel
+	var ret1 *IOChannel
 
 	cret = C.g_io_channel_ref(arg0)
 
-	goret1 = WrapIOChannel(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *IOChannel) {
+	ret1 = WrapIOChannel(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *IOChannel) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Seek sets the current position in the OChannel, similar to the standard
@@ -603,13 +603,13 @@ func (c *IOChannel) Seek(offset int64, typ SeekType) IOError {
 	arg2 = (C.GSeekType)(typ)
 
 	var cret C.GIOError
-	var goret1 IOError
+	var ret1 IOError
 
 	cret = C.g_io_channel_seek(arg0, offset, typ)
 
-	goret1 = IOError(cret)
+	ret1 = IOError(cret)
 
-	return goret1
+	return ret1
 }
 
 // SeekPosition: replacement for g_io_channel_seek() with the new API.
@@ -624,18 +624,18 @@ func (c *IOChannel) SeekPosition(offset int64, typ SeekType) (ioStatus IOStatus,
 	arg2 = (C.GSeekType)(typ)
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_seek_position(arg0, offset, typ, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetBufferSize sets the buffer size.
@@ -737,18 +737,18 @@ func (c *IOChannel) SetEncoding(encoding string) (ioStatus IOStatus, err error) 
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_set_encoding(arg0, encoding, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetFlags sets the (writeable) flags in @channel to (@flags &
@@ -762,18 +762,18 @@ func (c *IOChannel) SetFlags(flags IOFlags) (ioStatus IOStatus, err error) {
 	arg1 = (C.GIOFlags)(flags)
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_set_flags(arg0, flags, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetLineTerm: this sets the string that OChannel uses to determine where in
@@ -805,18 +805,18 @@ func (c *IOChannel) Shutdown(flush bool) (ioStatus IOStatus, err error) {
 	}
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_shutdown(arg0, flush, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // UnixGetFd returns the file descriptor of the OChannel.
@@ -829,13 +829,13 @@ func (c *IOChannel) UnixGetFd() int {
 	arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_io_channel_unix_get_fd(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Unref decrements the reference count of a OChannel.
@@ -861,13 +861,13 @@ func (c *IOChannel) Write(buf string, count uint, bytesWritten uint) IOError {
 	arg3 = *C.gsize(bytesWritten)
 
 	var cret C.GIOError
-	var goret1 IOError
+	var ret1 IOError
 
 	cret = C.g_io_channel_write(arg0, buf, count, bytesWritten)
 
-	goret1 = IOError(cret)
+	ret1 = IOError(cret)
 
-	return goret1
+	return ret1
 }
 
 // WriteUnichar writes a Unicode character to @channel. This function cannot be
@@ -881,16 +881,16 @@ func (c *IOChannel) WriteUnichar(thechar uint32) (ioStatus IOStatus, err error) 
 	arg1 = C.gunichar(thechar)
 
 	var cret C.GIOStatus
-	var goret1 IOStatus
+	var ret1 IOStatus
 	var goerr error
 
 	cret = C.g_io_channel_write_unichar(arg0, thechar, &errout)
 
-	goret1 = IOStatus(cret)
+	ret1 = IOStatus(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }

@@ -72,13 +72,13 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 // NewWindowGroup constructs a class WindowGroup.
 func NewWindowGroup() WindowGroup {
 	var cret C.GtkWindowGroup
-	var goret1 WindowGroup
+	var ret1 WindowGroup
 
 	cret = C.gtk_window_group_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
 
-	return goret1
+	return ret1
 }
 
 // AddWindow adds a window to a WindowGroup.
@@ -99,16 +99,16 @@ func (w windowGroup) ListWindows() *glib.List {
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_window_group_list_windows(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // RemoveWindow removes a window from a WindowGroup.

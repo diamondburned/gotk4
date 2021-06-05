@@ -50,13 +50,13 @@ func init() {
 // performed against the default source should probably be done recursively.
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	var cret *C.GSettingsSchemaSource
-	var goret1 *SettingsSchemaSource
+	var ret1 *SettingsSchemaSource
 
 	cret = C.g_settings_schema_source_get_default()
 
-	goret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
+	ret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
@@ -119,13 +119,13 @@ func (s *SettingsSchema) ID() string {
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_settings_schema_get_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Key gets the key named @name from @schema.
@@ -141,16 +141,16 @@ func (s *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GSettingsSchemaKey
-	var goret1 *SettingsSchemaKey
+	var ret1 *SettingsSchemaKey
 
 	cret = C.g_settings_schema_get_key(arg0, name)
 
-	goret1 = WrapSettingsSchemaKey(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SettingsSchemaKey) {
+	ret1 = WrapSettingsSchemaKey(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SettingsSchemaKey) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Path gets the path associated with @schema, or nil.
@@ -168,13 +168,13 @@ func (s *SettingsSchema) Path() string {
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_settings_schema_get_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasKey checks if @schema has a key named @name.
@@ -187,13 +187,13 @@ func (s *SettingsSchema) HasKey(name string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_schema_has_key(arg0, name)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ListChildren gets the list of children in @schema.
@@ -205,7 +205,7 @@ func (s *SettingsSchema) ListChildren() []string {
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_settings_schema_list_children(arg0)
 
@@ -218,15 +218,15 @@ func (s *SettingsSchema) ListChildren() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ListKeys introspects the list of keys on @schema.
@@ -240,7 +240,7 @@ func (s *SettingsSchema) ListKeys() []string {
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_settings_schema_list_keys(arg0)
 
@@ -253,15 +253,15 @@ func (s *SettingsSchema) ListKeys() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Ref: increase the reference count of @schema, returning a new reference.
@@ -271,16 +271,16 @@ func (s *SettingsSchema) Ref() *SettingsSchema {
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GSettingsSchema
-	var goret1 *SettingsSchema
+	var ret1 *SettingsSchema
 
 	cret = C.g_settings_schema_ref(arg0)
 
-	goret1 = WrapSettingsSchema(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SettingsSchema) {
+	ret1 = WrapSettingsSchema(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SettingsSchema) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref: decrease the reference count of @schema, possibly freeing it.
@@ -328,16 +328,16 @@ func (k *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_settings_schema_key_get_default_value(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Description gets the description for @key.
@@ -358,13 +358,13 @@ func (k *SettingsSchemaKey) Description() string {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_settings_schema_key_get_description(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Name gets the name of @key.
@@ -374,13 +374,13 @@ func (k *SettingsSchemaKey) Name() string {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_settings_schema_key_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Range queries the range of a key.
@@ -423,16 +423,16 @@ func (k *SettingsSchemaKey) Range() *glib.Variant {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_settings_schema_key_get_range(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Summary gets the summary for @key.
@@ -452,13 +452,13 @@ func (k *SettingsSchemaKey) Summary() string {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_settings_schema_key_get_summary(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ValueType gets the Type of @key.
@@ -468,13 +468,13 @@ func (k *SettingsSchemaKey) ValueType() *glib.VariantType {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *glib.VariantType
+	var ret1 *glib.VariantType
 
 	cret = C.g_settings_schema_key_get_value_type(arg0)
 
-	goret1 = glib.WrapVariantType(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RangeCheck checks if the given @value is of the correct type and within the
@@ -490,13 +490,13 @@ func (k *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_schema_key_range_check(arg0, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Ref: increase the reference count of @key, returning a new reference.
@@ -506,16 +506,16 @@ func (k *SettingsSchemaKey) Ref() *SettingsSchemaKey {
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
 	var cret *C.GSettingsSchemaKey
-	var goret1 *SettingsSchemaKey
+	var ret1 *SettingsSchemaKey
 
 	cret = C.g_settings_schema_key_ref(arg0)
 
-	goret1 = WrapSettingsSchemaKey(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SettingsSchemaKey) {
+	ret1 = WrapSettingsSchemaKey(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SettingsSchemaKey) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref: decrease the reference count of @key, possibly freeing it.
@@ -563,13 +563,13 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	}
 
 	var cret *C.GSettingsSchemaSource
-	var goret1 *SettingsSchemaSource
+	var ret1 *SettingsSchemaSource
 	var goerr error
 
 	cret = C.g_settings_schema_source_new_from_directory(directory, parent, trusted, &errout)
 
-	goret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SettingsSchemaSource) {
+	ret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SettingsSchemaSource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -577,7 +577,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -671,16 +671,16 @@ func (s *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *Settings
 	}
 
 	var cret *C.GSettingsSchema
-	var goret1 *SettingsSchema
+	var ret1 *SettingsSchema
 
 	cret = C.g_settings_schema_source_lookup(arg0, schemaID, recursive)
 
-	goret1 = WrapSettingsSchema(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SettingsSchema) {
+	ret1 = WrapSettingsSchema(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SettingsSchema) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Ref: increase the reference count of @source, returning a new reference.
@@ -690,16 +690,16 @@ func (s *SettingsSchemaSource) Ref() *SettingsSchemaSource {
 	arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GSettingsSchemaSource
-	var goret1 *SettingsSchemaSource
+	var ret1 *SettingsSchemaSource
 
 	cret = C.g_settings_schema_source_ref(arg0)
 
-	goret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SettingsSchemaSource) {
+	ret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SettingsSchemaSource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref: decrease the reference count of @source, possibly freeing it.

@@ -120,13 +120,13 @@ func (s pollableOutputStream) CanPoll() bool {
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pollable_output_stream_can_poll(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CreateSource creates a #GSource that triggers when @stream can be
@@ -145,16 +145,16 @@ func (s pollableOutputStream) CreateSource(cancellable Cancellable) *glib.Source
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSource
-	var goret1 *glib.Source
+	var ret1 *glib.Source
 
 	cret = C.g_pollable_output_stream_create_source(arg0, cancellable)
 
-	goret1 = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Source) {
+	ret1 = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // IsWritable checks if @stream can be written.
@@ -170,11 +170,11 @@ func (s pollableOutputStream) IsWritable() bool {
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pollable_output_stream_is_writable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

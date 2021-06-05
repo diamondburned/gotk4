@@ -78,13 +78,13 @@ func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
 	var cret *C.GtkIconFactory
-	var goret1 IconFactory
+	var ret1 IconFactory
 
 	cret = C.gtk_style_provider_get_icon_factory(arg0, path)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconFactory)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconFactory)
 
-	return goret1
+	return ret1
 }
 
 // Style returns the style settings affecting a widget defined by @path, or
@@ -97,13 +97,13 @@ func (p styleProvider) Style(path *WidgetPath) StyleProperties {
 	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
 	var cret *C.GtkStyleProperties
-	var goret1 StyleProperties
+	var ret1 StyleProperties
 
 	cret = C.gtk_style_provider_get_style(arg0, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StyleProperties)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StyleProperties)
 
-	return goret1
+	return ret1
 }
 
 // StyleProperty looks up a widget style property as defined by @provider
@@ -119,15 +119,15 @@ func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec g
 	arg2 = (C.GtkStateFlags)(state)
 	arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	var arg4 *C.GValue
+	var arg4 C.GValue
 	var ret4 *externglib.Value
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_style_provider_get_style_property(arg0, path, state, pspec, &arg4)
 
 	ret4 = externglib.ValueFromNative(unsafe.Pointer(arg4))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret4, goret2
+	return ret4, ret2
 }

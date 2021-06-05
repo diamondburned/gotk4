@@ -62,11 +62,11 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 // NewHPaned constructs a class HPaned.
 func NewHPaned() HPaned {
 	var cret C.GtkHPaned
-	var goret1 HPaned
+	var ret1 HPaned
 
 	cret = C.gtk_hpaned_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HPaned)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HPaned)
 
-	return goret1
+	return ret1
 }

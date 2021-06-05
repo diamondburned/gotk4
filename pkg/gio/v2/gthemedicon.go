@@ -87,26 +87,26 @@ func NewThemedIcon(iconname string) ThemedIcon {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GThemedIcon
-	var goret1 ThemedIcon
+	var ret1 ThemedIcon
 
 	cret = C.g_themed_icon_new(iconname)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
 
-	return goret1
+	return ret1
 }
 
 // NewThemedIconFromNames constructs a class ThemedIcon.
 func NewThemedIconFromNames(iconnames []string) ThemedIcon {
 
 	var cret C.GThemedIcon
-	var goret1 ThemedIcon
+	var ret1 ThemedIcon
 
 	cret = C.g_themed_icon_new_from_names(iconnames, len)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
 
-	return goret1
+	return ret1
 }
 
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
@@ -117,13 +117,13 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GThemedIcon
-	var goret1 ThemedIcon
+	var ret1 ThemedIcon
 
 	cret = C.g_themed_icon_new_with_default_fallbacks(iconname)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
 
-	return goret1
+	return ret1
 }
 
 // AppendName: append a name to the list of icons from within @icon.
@@ -148,7 +148,7 @@ func (i themedIcon) Names() []string {
 	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_themed_icon_get_names(arg0)
 
@@ -161,14 +161,14 @@ func (i themedIcon) Names() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // PrependName: prepend a name to the list of icons from within @icon.

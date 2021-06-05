@@ -117,14 +117,14 @@ func (s fileIOStream) Etag() string {
 	arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_io_stream_get_etag(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // QueryInfo queries a file io stream for the given @attributes. This
@@ -155,18 +155,18 @@ func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (fil
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_io_stream_query_info(arg0, attributes, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryInfoAsync: asynchronously queries the @stream for a Info. When
@@ -194,18 +194,18 @@ func (s fileIOStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, er
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_io_stream_query_info_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 type FileIOStreamPrivate struct {

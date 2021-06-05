@@ -272,13 +272,13 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 // NewSnapshot constructs a class Snapshot.
 func NewSnapshot() Snapshot {
 	var cret C.GtkSnapshot
-	var goret1 Snapshot
+	var ret1 Snapshot
 
 	cret = C.gtk_snapshot_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Snapshot)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Snapshot)
 
-	return goret1
+	return ret1
 }
 
 // AppendBorder appends a stroked border rectangle inside the given
@@ -313,16 +313,16 @@ func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
 	var cret *C.cairo_t
-	var goret1 *cairo.Context
+	var ret1 *cairo.Context
 
 	cret = C.gtk_snapshot_append_cairo(arg0, bounds)
 
-	goret1 = cairo.WrapContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Context) {
+	ret1 = cairo.WrapContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // AppendColor creates a new render node drawing the @color into the given
@@ -481,13 +481,13 @@ func (s snapshot) FreeToNode() gsk.RenderNode {
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GskRenderNode
-	var goret1 gsk.RenderNode
+	var ret1 gsk.RenderNode
 
 	cret = C.gtk_snapshot_free_to_node(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
 
-	return goret1
+	return ret1
 }
 
 // FreeToPaintable returns a paintable for the node that was constructed by
@@ -500,13 +500,13 @@ func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable {
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 gdk.Paintable
+	var ret1 gdk.Paintable
 
 	cret = C.gtk_snapshot_free_to_paintable(arg0, size)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
 
-	return goret1
+	return ret1
 }
 
 // GLShaderPopTexture removes the top element from the stack of render nodes
@@ -921,13 +921,13 @@ func (s snapshot) ToNode() gsk.RenderNode {
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GskRenderNode
-	var goret1 gsk.RenderNode
+	var ret1 gsk.RenderNode
 
 	cret = C.gtk_snapshot_to_node(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
 
-	return goret1
+	return ret1
 }
 
 // ToPaintable returns a paintable encapsulating the render node that was
@@ -942,13 +942,13 @@ func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable {
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 gdk.Paintable
+	var ret1 gdk.Paintable
 
 	cret = C.gtk_snapshot_to_paintable(arg0, size)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
 
-	return goret1
+	return ret1
 }
 
 // Transform transforms @snapshot's coordinate system with the given

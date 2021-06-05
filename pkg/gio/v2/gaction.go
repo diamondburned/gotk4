@@ -47,13 +47,13 @@ func ActionNameIsValid(actionName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_action_name_is_valid(actionName)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ActionParseDetailedName parses a detailed action name into its separate name
@@ -86,9 +86,9 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	arg1 = (*C.gchar)(C.CString(detailedName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
-	var arg3 **C.GVariant
+	var arg3 *C.GVariant
 	var ret3 **glib.Variant
 	var goerr error
 
@@ -128,14 +128,14 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 	arg2 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_action_print_detailed_name(actionName, targetValue)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ActionOverrider contains methods that are overridable. This
@@ -317,13 +317,13 @@ func (a action) Enabled() bool {
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_action_get_enabled(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Name queries the name of @action.
@@ -333,13 +333,13 @@ func (a action) Name() string {
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_action_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ParameterType queries the type of the parameter that must be given when
@@ -356,13 +356,13 @@ func (a action) ParameterType() *glib.VariantType {
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *glib.VariantType
+	var ret1 *glib.VariantType
 
 	cret = C.g_action_get_parameter_type(arg0)
 
-	goret1 = glib.WrapVariantType(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // State queries the current state of @action.
@@ -379,16 +379,16 @@ func (a action) State() *glib.Variant {
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_action_get_state(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // StateHint requests a hint about the valid range of values for the state
@@ -415,16 +415,16 @@ func (a action) StateHint() *glib.Variant {
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_action_get_state_hint(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // StateType queries the type of the state of @action.
@@ -444,11 +444,11 @@ func (a action) StateType() *glib.VariantType {
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *glib.VariantType
+	var ret1 *glib.VariantType
 
 	cret = C.g_action_get_state_type(arg0)
 
-	goret1 = glib.WrapVariantType(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

@@ -68,16 +68,16 @@ func NewBuffer(font pangofc.Font) *Buffer {
 	arg1 = (*C.PangoFcFont)(unsafe.Pointer(font.Native()))
 
 	var cret *C.PangoOTBuffer
-	var goret1 *Buffer
+	var ret1 *Buffer
 
 	cret = C.pango_ot_buffer_new(font)
 
-	goret1 = WrapBuffer(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Buffer) {
+	ret1 = WrapBuffer(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Buffer) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -349,16 +349,16 @@ func (d *RulesetDescription) Copy() *RulesetDescription {
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 
 	var cret *C.PangoOTRulesetDescription
-	var goret1 *RulesetDescription
+	var ret1 *RulesetDescription
 
 	cret = C.pango_ot_ruleset_description_copy(arg0)
 
-	goret1 = WrapRulesetDescription(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *RulesetDescription) {
+	ret1 = WrapRulesetDescription(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *RulesetDescription) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Equal compares two ruleset descriptions for equality. Two ruleset
@@ -376,13 +376,13 @@ func (d *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 	arg1 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_ot_ruleset_description_equal(arg0, desc2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Free frees a ruleset description allocated by
@@ -403,11 +403,11 @@ func (d *RulesetDescription) Hash() uint {
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.pango_ot_ruleset_description_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }

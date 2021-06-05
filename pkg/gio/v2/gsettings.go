@@ -99,7 +99,7 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	fn := v.(SettingsGetMapping)
 	result, ret := fn(value, userData)
 
-	*arg1 = C.gpointer(result)
+	arg1 = C.gpointer(result)
 	if ret {
 		cret = C.gboolean(1)
 	}
@@ -774,13 +774,13 @@ func NewSettings(schemaID string) Settings {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GSettings
-	var goret1 Settings
+	var ret1 Settings
 
 	cret = C.g_settings_new(schemaID)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
 
-	return goret1
+	return ret1
 }
 
 // NewSettingsFull constructs a class Settings.
@@ -795,13 +795,13 @@ func NewSettingsFull(schema *SettingsSchema, backend SettingsBackend, path strin
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GSettings
-	var goret1 Settings
+	var ret1 Settings
 
 	cret = C.g_settings_new_full(schema, backend, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
 
-	return goret1
+	return ret1
 }
 
 // NewSettingsWithBackend constructs a class Settings.
@@ -814,13 +814,13 @@ func NewSettingsWithBackend(schemaID string, backend SettingsBackend) Settings {
 	arg2 = (*C.GSettingsBackend)(unsafe.Pointer(backend.Native()))
 
 	var cret C.GSettings
-	var goret1 Settings
+	var ret1 Settings
 
 	cret = C.g_settings_new_with_backend(schemaID, backend)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
 
-	return goret1
+	return ret1
 }
 
 // NewSettingsWithBackendAndPath constructs a class Settings.
@@ -836,13 +836,13 @@ func NewSettingsWithBackendAndPath(schemaID string, backend SettingsBackend, pat
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GSettings
-	var goret1 Settings
+	var ret1 Settings
 
 	cret = C.g_settings_new_with_backend_and_path(schemaID, backend, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
 
-	return goret1
+	return ret1
 }
 
 // NewSettingsWithPath constructs a class Settings.
@@ -856,13 +856,13 @@ func NewSettingsWithPath(schemaID string, path string) Settings {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GSettings
-	var goret1 Settings
+	var ret1 Settings
 
 	cret = C.g_settings_new_with_path(schemaID, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
 
-	return goret1
+	return ret1
 }
 
 // Apply applies any changes that have been made to the settings. This
@@ -991,13 +991,13 @@ func (s settings) CreateAction(key string) Action {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GAction
-	var goret1 Action
+	var ret1 Action
 
 	cret = C.g_settings_create_action(arg0, key)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Action)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Action)
 
-	return goret1
+	return ret1
 }
 
 // Delay changes the #GSettings object into 'delay-apply' mode. In this
@@ -1026,13 +1026,13 @@ func (s settings) Boolean(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_get_boolean(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Child creates a child settings object which has a base path of
@@ -1049,13 +1049,13 @@ func (s settings) Child(name string) Settings {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GSettings
-	var goret1 Settings
+	var ret1 Settings
 
 	cret = C.g_settings_get_child(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Settings)
 
-	return goret1
+	return ret1
 }
 
 // DefaultValue gets the "default value" of a key.
@@ -1087,16 +1087,16 @@ func (s settings) DefaultValue(key string) *glib.Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_settings_get_default_value(arg0, key)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Double gets the value that is stored at @key in @settings.
@@ -1114,13 +1114,13 @@ func (s settings) Double(key string) float64 {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_settings_get_double(arg0, key)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // Enum gets the value that is stored in @settings for @key and converts it
@@ -1143,13 +1143,13 @@ func (s settings) Enum(key string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_settings_get_enum(arg0, key)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Flags gets the value that is stored in @settings for @key and converts it
@@ -1172,13 +1172,13 @@ func (s settings) Flags(key string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_settings_get_flags(arg0, key)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasUnapplied returns whether the #GSettings object has any unapplied
@@ -1189,13 +1189,13 @@ func (s settings) HasUnapplied() bool {
 	arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_get_has_unapplied(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Int gets the value that is stored at @key in @settings.
@@ -1213,13 +1213,13 @@ func (s settings) Int(key string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_settings_get_int(arg0, key)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Int64 gets the value that is stored at @key in @settings.
@@ -1237,13 +1237,13 @@ func (s settings) Int64(key string) int64 {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_settings_get_int64(arg0, key)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // Mapped gets the value that is stored at @key in @settings, subject to
@@ -1279,13 +1279,13 @@ func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
 	arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_settings_get_mapped(arg0, key, mapping, userData)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Range queries the range of a key.
@@ -1298,16 +1298,16 @@ func (s settings) Range(key string) *glib.Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_settings_get_range(arg0, key)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // String gets the value that is stored at @key in @settings.
@@ -1325,14 +1325,14 @@ func (s settings) String(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_settings_get_string(arg0, key)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strv: a convenience variant of g_settings_get() for string arrays.
@@ -1348,7 +1348,7 @@ func (s settings) Strv(key string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_settings_get_strv(arg0, key)
 
@@ -1361,15 +1361,15 @@ func (s settings) Strv(key string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Uint gets the value that is stored at @key in @settings.
@@ -1387,13 +1387,13 @@ func (s settings) Uint(key string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_settings_get_uint(arg0, key)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Uint64 gets the value that is stored at @key in @settings.
@@ -1411,13 +1411,13 @@ func (s settings) Uint64(key string) uint64 {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint64
-	var goret1 uint64
+	var ret1 uint64
 
 	cret = C.g_settings_get_uint64(arg0, key)
 
-	goret1 = C.guint64(cret)
+	ret1 = C.guint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // UserValue checks the "user value" of a key, if there is one.
@@ -1446,16 +1446,16 @@ func (s settings) UserValue(key string) *glib.Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_settings_get_user_value(arg0, key)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Value gets the value that is stored in @settings for @key.
@@ -1471,16 +1471,16 @@ func (s settings) Value(key string) *glib.Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_settings_get_value(arg0, key)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // IsWritable finds out if a key can be written or not
@@ -1493,13 +1493,13 @@ func (s settings) IsWritable(name string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_is_writable(arg0, name)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ListChildren gets the list of children on @settings.
@@ -1519,7 +1519,7 @@ func (s settings) ListChildren() []string {
 	arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_settings_list_children(arg0)
 
@@ -1532,15 +1532,15 @@ func (s settings) ListChildren() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ListKeys introspects the list of keys on @settings.
@@ -1557,7 +1557,7 @@ func (s settings) ListKeys() []string {
 	arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_settings_list_keys(arg0)
 
@@ -1570,15 +1570,15 @@ func (s settings) ListKeys() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // RangeCheck checks if the given @value is of the correct type and within
@@ -1594,13 +1594,13 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 	arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_range_check(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Reset resets @key to its default value.
@@ -1652,13 +1652,13 @@ func (s settings) SetBoolean(key string, value bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_boolean(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetDouble sets @key in @settings to @value.
@@ -1678,13 +1678,13 @@ func (s settings) SetDouble(key string, value float64) bool {
 	arg2 = C.gdouble(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_double(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetEnum looks up the enumerated type nick for @value and writes it to
@@ -1707,13 +1707,13 @@ func (s settings) SetEnum(key string, value int) bool {
 	arg2 = C.gint(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_enum(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetFlags looks up the flags type nicks for the bits specified by @value,
@@ -1738,13 +1738,13 @@ func (s settings) SetFlags(key string, value uint) bool {
 	arg2 = C.guint(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_flags(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetInt sets @key in @settings to @value.
@@ -1764,13 +1764,13 @@ func (s settings) SetInt(key string, value int) bool {
 	arg2 = C.gint(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_int(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetInt64 sets @key in @settings to @value.
@@ -1790,13 +1790,13 @@ func (s settings) SetInt64(key string, value int64) bool {
 	arg2 = C.gint64(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_int64(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetString sets @key in @settings to @value.
@@ -1817,13 +1817,13 @@ func (s settings) SetString(key string, value string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_string(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetStrv sets @key in @settings to @value.
@@ -1855,13 +1855,13 @@ func (s settings) SetStrv(key string, value []string) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_strv(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetUint sets @key in @settings to @value.
@@ -1881,13 +1881,13 @@ func (s settings) SetUint(key string, value uint) bool {
 	arg2 = C.guint(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_uint(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetUint64 sets @key in @settings to @value.
@@ -1907,13 +1907,13 @@ func (s settings) SetUint64(key string, value uint64) bool {
 	arg2 = C.guint64(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_uint64(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetValue sets @key in @settings to @value.
@@ -1934,13 +1934,13 @@ func (s settings) SetValue(key string, value *glib.Variant) bool {
 	arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_settings_set_value(arg0, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 type SettingsPrivate struct {

@@ -89,13 +89,13 @@ func (m fileMonitor) Cancel() bool {
 	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_monitor_cancel(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EmitEvent emits the Monitor::changed signal if a change has taken place.
@@ -125,13 +125,13 @@ func (m fileMonitor) IsCancelled() bool {
 	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_monitor_is_cancelled(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetRateLimit sets the rate limit to which the @monitor will report

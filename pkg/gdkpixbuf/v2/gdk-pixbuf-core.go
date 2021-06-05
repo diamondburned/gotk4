@@ -36,7 +36,7 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	fn := v.(PixbufSaveFunc)
 	error, ret := fn(buf, count, data)
 
-	*arg2 = (*C.GError)(unsafe.Pointer(error.Native()))
+	arg2 = (*C.GError)(unsafe.Pointer(error.Native()))
 	if ret {
 		cret = C.gboolean(1)
 	}

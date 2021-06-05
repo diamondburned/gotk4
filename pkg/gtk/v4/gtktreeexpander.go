@@ -110,13 +110,13 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 // NewTreeExpander constructs a class TreeExpander.
 func NewTreeExpander() TreeExpander {
 	var cret C.GtkTreeExpander
-	var goret1 TreeExpander
+	var ret1 TreeExpander
 
 	cret = C.gtk_tree_expander_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeExpander)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeExpander)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget displayed by @self.
@@ -126,13 +126,13 @@ func (s treeExpander) Child() Widget {
 	arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_tree_expander_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Item forwards the item set on the TreeListRow that @self is managing.
@@ -146,13 +146,13 @@ func (s treeExpander) Item() gextras.Objector {
 	arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_tree_expander_get_item(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // ListRow gets the list row managed by @self.
@@ -162,13 +162,13 @@ func (s treeExpander) ListRow() TreeListRow {
 	arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeListRow
-	var goret1 TreeListRow
+	var ret1 TreeListRow
 
 	cret = C.gtk_tree_expander_get_list_row(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeListRow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeListRow)
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the content widget to display.

@@ -71,13 +71,13 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 // NewFilenameCompleter constructs a class FilenameCompleter.
 func NewFilenameCompleter() FilenameCompleter {
 	var cret C.GFilenameCompleter
-	var goret1 FilenameCompleter
+	var ret1 FilenameCompleter
 
 	cret = C.g_filename_completer_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilenameCompleter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilenameCompleter)
 
-	return goret1
+	return ret1
 }
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
@@ -90,14 +90,14 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_filename_completer_get_completion_suffix(arg0, initialText)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Completions gets an array of completion strings for a given initial text.
@@ -110,7 +110,7 @@ func (c filenameCompleter) Completions(initialText string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_filename_completer_get_completions(arg0, initialText)
 
@@ -123,15 +123,15 @@ func (c filenameCompleter) Completions(initialText string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // SetDirsOnly: if @dirs_only is true, @completer will only complete

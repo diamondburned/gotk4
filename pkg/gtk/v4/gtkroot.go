@@ -78,13 +78,13 @@ func (s root) Display() gdk.Display {
 	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 gdk.Display
+	var ret1 gdk.Display
 
 	cret = C.gtk_root_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
 
-	return goret1
+	return ret1
 }
 
 // Focus retrieves the current focused widget within the root.
@@ -98,13 +98,13 @@ func (s root) Focus() Widget {
 	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_root_get_focus(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetFocus: if @focus is not the current focus widget, and is focusable,

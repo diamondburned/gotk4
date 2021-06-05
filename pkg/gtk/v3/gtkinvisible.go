@@ -65,13 +65,13 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 // NewInvisible constructs a class Invisible.
 func NewInvisible() Invisible {
 	var cret C.GtkInvisible
-	var goret1 Invisible
+	var ret1 Invisible
 
 	cret = C.gtk_invisible_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Invisible)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Invisible)
 
-	return goret1
+	return ret1
 }
 
 // NewInvisibleForScreen constructs a class Invisible.
@@ -81,13 +81,13 @@ func NewInvisibleForScreen(screen gdk.Screen) Invisible {
 	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	var cret C.GtkInvisible
-	var goret1 Invisible
+	var ret1 Invisible
 
 	cret = C.gtk_invisible_new_for_screen(screen)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Invisible)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Invisible)
 
-	return goret1
+	return ret1
 }
 
 // Screen returns the Screen object associated with @invisible
@@ -97,13 +97,13 @@ func (i invisible) Screen() gdk.Screen {
 	arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GdkScreen
-	var goret1 gdk.Screen
+	var ret1 gdk.Screen
 
 	cret = C.gtk_invisible_get_screen(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
 
-	return goret1
+	return ret1
 }
 
 // SetScreen sets the Screen where the Invisible object will be displayed.

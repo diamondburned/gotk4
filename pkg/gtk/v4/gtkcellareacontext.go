@@ -174,15 +174,15 @@ func (c cellAreaContext) Allocation() (width int, height int) {
 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_cell_area_context_get_allocation(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -202,13 +202,13 @@ func (c cellAreaContext) Area() CellArea {
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkCellArea
-	var goret1 CellArea
+	var ret1 CellArea
 
 	cret = C.gtk_cell_area_context_get_area(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
 
-	return goret1
+	return ret1
 }
 
 // PreferredHeight gets the accumulative preferred height for all rows which
@@ -221,15 +221,15 @@ func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int
 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_cell_area_context_get_preferred_height(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -247,15 +247,15 @@ func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(width)
 
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
-	var arg3 *C.int
+	var arg3 C.int
 	var ret3 int
 
 	C.gtk_cell_area_context_get_preferred_height_for_width(arg0, width, &arg2, &arg3)
 
-	ret2 = *C.int(arg2)
-	ret3 = *C.int(arg3)
+	ret2 = C.int(arg2)
+	ret3 = C.int(arg3)
 
 	return ret2, ret3
 }
@@ -270,15 +270,15 @@ func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_cell_area_context_get_preferred_width(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -296,15 +296,15 @@ func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(height)
 
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
-	var arg3 *C.int
+	var arg3 C.int
 	var ret3 int
 
 	C.gtk_cell_area_context_get_preferred_width_for_height(arg0, height, &arg2, &arg3)
 
-	ret2 = *C.int(arg2)
-	ret3 = *C.int(arg3)
+	ret2 = C.int(arg2)
+	ret3 = C.int(arg3)
 
 	return ret2, ret3
 }

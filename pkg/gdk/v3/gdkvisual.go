@@ -23,16 +23,16 @@ import "C"
 // Call g_list_free() on the return value when you’re finished with it.
 func ListVisuals() *glib.List {
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_list_visuals()
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // QueryDepths: this function returns the available bit depths for the default

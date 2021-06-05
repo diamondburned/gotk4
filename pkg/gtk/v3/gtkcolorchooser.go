@@ -76,7 +76,7 @@ func (c colorChooser) RGBA() gdk.RGBA {
 
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.GdkRGBA
+	var arg1 C.GdkRGBA
 	var ret1 *gdk.RGBA
 
 	C.gtk_color_chooser_get_rgba(arg0, &arg1)
@@ -93,13 +93,13 @@ func (c colorChooser) UseAlpha() bool {
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_color_chooser_get_use_alpha(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetRGBA sets the color.

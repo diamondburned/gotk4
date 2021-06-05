@@ -35,17 +35,17 @@ func TimeValFromISO8601(isoDate string) (time_ TimeVal, ok bool) {
 	arg1 = (*C.gchar)(C.CString(isoDate))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 *C.GTimeVal
+	var arg2 C.GTimeVal
 	var ret2 *TimeVal
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_time_val_from_iso8601(isoDate, &arg2)
 
 	ret2 = WrapTimeVal(unsafe.Pointer(arg2))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Usleep pauses the current thread for the given number of microseconds.
@@ -118,13 +118,13 @@ func (t *Timer) Elapsed(microseconds uint32) float64 {
 	arg1 = *C.gulong(microseconds)
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_timer_elapsed(arg0, microseconds)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsActive exposes whether the timer is currently active.
@@ -134,13 +134,13 @@ func (t *Timer) IsActive() bool {
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_timer_is_active(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Reset: this function is useless; it's fine to call g_timer_start() on an

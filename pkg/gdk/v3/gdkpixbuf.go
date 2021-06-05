@@ -36,13 +36,13 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	arg5 = C.gint(height)
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gdk_pixbuf_get_from_surface(surface, srcX, srcY, width, height)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // PixbufGetFromWindow transfers image data from a Window and converts it to an
@@ -85,11 +85,11 @@ func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height in
 	arg5 = C.gint(height)
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gdk_pixbuf_get_from_window(window, srcX, srcY, width, height)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }

@@ -98,13 +98,13 @@ func NewEditableLabel(str string) EditableLabel {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkEditableLabel
-	var goret1 EditableLabel
+	var ret1 EditableLabel
 
 	cret = C.gtk_editable_label_new(str)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EditableLabel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EditableLabel)
 
-	return goret1
+	return ret1
 }
 
 // Editing returns whether the label is currently in “editing mode”.
@@ -114,13 +114,13 @@ func (s editableLabel) Editing() bool {
 	arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_editable_label_get_editing(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartEditing switches the label into “editing mode”.

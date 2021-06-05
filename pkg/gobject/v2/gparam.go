@@ -77,13 +77,13 @@ func NewParamSpecPool(typePrefixing bool) *ParamSpecPool {
 	}
 
 	var cret *C.GParamSpecPool
-	var goret1 *ParamSpecPool
+	var ret1 *ParamSpecPool
 
 	cret = C.g_param_spec_pool_new(typePrefixing)
 
-	goret1 = WrapParamSpecPool(unsafe.Pointer(cret))
+	ret1 = WrapParamSpecPool(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ParamValueConvert transforms @src_value into @dest_value if possible, and
@@ -107,13 +107,13 @@ func ParamValueConvert(pspec ParamSpec, srcValue *externglib.Value, destValue *e
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_param_value_convert(pspec, srcValue, destValue, strictValidation)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ParamValueDefaults checks whether @value contains the default value as
@@ -126,13 +126,13 @@ func ParamValueDefaults(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_param_value_defaults(pspec, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ParamValueSetDefault sets @value to its default value as specified in @pspec.
@@ -159,13 +159,13 @@ func ParamValueValidate(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_param_value_validate(pspec, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ParamValuesCmp compares @value1 with @value2 according to @pspec, and return
@@ -181,13 +181,13 @@ func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externgli
 	arg3 = (*C.GValue)(value2.GValue)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_param_values_cmp(pspec, value1, value2)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ParamSpecPool: a SpecPool maintains a collection of Specs which can be
@@ -241,17 +241,17 @@ func (p *ParamSpecPool) List(ownerType externglib.Type) (nPspecsP uint, paramSpe
 
 	var cret **C.GParamSpec
 	var arg2 *C.guint
-	var goret2 []ParamSpec
+	var ret2 []ParamSpec
 
 	cret = C.g_param_spec_pool_list(arg0, ownerType, &arg2)
 
-	goret2 = make([]ParamSpec, arg2)
+	ret2 = make([]ParamSpec, arg2)
 	for i := 0; i < uintptr(arg2); i++ {
 		src := (*C.GParamSpec)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(ParamSpec)
+		ret2[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(ParamSpec)
 	}
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // ListOwned gets an #GList of all Specs owned by @owner_type in the pool.
@@ -263,16 +263,16 @@ func (p *ParamSpecPool) ListOwned(ownerType externglib.Type) *glib.List {
 	arg1 := C.GType(ownerType)
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_param_spec_pool_list_owned(arg0, ownerType)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Lookup looks up a Spec in the pool.
@@ -291,13 +291,13 @@ func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walk
 	}
 
 	var cret *C.GParamSpec
-	var goret1 ParamSpec
+	var ret1 ParamSpec
 
 	cret = C.g_param_spec_pool_lookup(arg0, paramName, ownerType, walkAncestors)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
 
-	return goret1
+	return ret1
 }
 
 // Remove removes a Spec from the pool.

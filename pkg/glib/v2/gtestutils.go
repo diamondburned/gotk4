@@ -264,13 +264,13 @@ func Strcmp0(str1 string, str2 string) int {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_strcmp0(str1, str2)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
@@ -339,13 +339,13 @@ func TestCreateSuite(suiteName string) *TestSuite {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GTestSuite
-	var goret1 *TestSuite
+	var ret1 *TestSuite
 
 	cret = C.g_test_create_suite(suiteName)
 
-	goret1 = WrapTestSuite(unsafe.Pointer(cret))
+	ret1 = WrapTestSuite(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // TestExpectMessage indicates that a message with the given @log_domain and
@@ -420,13 +420,13 @@ func TestFail() {
 // inside a test function.
 func TestFailed() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_test_failed()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestGetDir gets the pathname of the directory containing test files of the
@@ -440,25 +440,25 @@ func TestGetDir(fileType TestFileType) string {
 	arg1 = (C.GTestFileType)(fileType)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_test_get_dir(fileType)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestGetRoot: get the toplevel test suite for the test path API.
 func TestGetRoot() *TestSuite {
 	var cret *C.GTestSuite
-	var goret1 *TestSuite
+	var ret1 *TestSuite
 
 	cret = C.g_test_get_root()
 
-	goret1 = WrapTestSuite(unsafe.Pointer(cret))
+	ret1 = WrapTestSuite(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // TestIncomplete indicates that a test failed because of some incomplete
@@ -508,13 +508,13 @@ func TestLogTypeName(logType TestLogType) string {
 	arg1 = (C.GTestLogType)(logType)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_test_log_type_name(logType)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
@@ -532,13 +532,13 @@ func TestQueueFree(gfreePointer interface{}) {
 // g_test_rand_int() for details on test case random numbers.
 func TestRandDouble() float64 {
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_test_rand_double()
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestRandDoubleRange: get a reproducible random floating pointer number out of
@@ -552,13 +552,13 @@ func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64 {
 	arg2 = C.double(rangeEnd)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_test_rand_double_range(rangeStart, rangeEnd)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestRandInt: get a reproducible random integer number.
@@ -572,13 +572,13 @@ func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64 {
 // cases.
 func TestRandInt() int32 {
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.g_test_rand_int()
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestRandIntRange: get a reproducible random integer number out of a specified
@@ -591,13 +591,13 @@ func TestRandIntRange(begin int32, end int32) int32 {
 	arg2 = C.gint32(end)
 
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.g_test_rand_int_range(begin, end)
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestRun runs all tests under the toplevel suite which can be retrieved with
@@ -631,13 +631,13 @@ func TestRandIntRange(begin int32, end int32) int32 {
 // by Automake) otherwise.
 func TestRun() int {
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_test_run()
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestRunSuite: execute the tests within @suite and all nested Suites. The test
@@ -652,13 +652,13 @@ func TestRunSuite(suite *TestSuite) int {
 	arg1 = (*C.GTestSuite)(unsafe.Pointer(suite.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_test_run_suite(suite)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestSetNonfatalAssertions changes the behaviour of the various `g_assert_*()`
@@ -696,13 +696,13 @@ func TestSkip(msg string) {
 // program is running under g_test_trap_subprocess().
 func TestSubprocess() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_test_subprocess()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestSummary: set the summary for a test, which describes what the test
@@ -735,25 +735,25 @@ func TestSummary(summary string) {
 // g_test_timer_start().
 func TestTimerElapsed() float64 {
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_test_timer_elapsed()
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestTimerLast: report the last result of g_test_timer_elapsed().
 func TestTimerLast() float64 {
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_test_timer_last()
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // TestTimerStart: start a timing test. Call g_test_timer_elapsed() when the
@@ -818,39 +818,39 @@ func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
 	arg2 = (C.GTestTrapFlags)(testTrapFlags)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_test_trap_fork(usecTimeout, testTrapFlags)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestTrapHasPassed: check the result of the last g_test_trap_subprocess()
 // call.
 func TestTrapHasPassed() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_test_trap_has_passed()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestTrapReachedTimeout: check the result of the last g_test_trap_subprocess()
 // call.
 func TestTrapReachedTimeout() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_test_trap_reached_timeout()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestTrapSubprocess respawns the test program to run only @test_path in a
@@ -1042,13 +1042,13 @@ func (t *TestLogBuffer) Pop() *TestLogMsg {
 	arg0 = (*C.GTestLogBuffer)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GTestLogMsg
-	var goret1 *TestLogMsg
+	var ret1 *TestLogMsg
 
 	cret = C.g_test_log_buffer_pop(arg0)
 
-	goret1 = WrapTestLogMsg(unsafe.Pointer(cret))
+	ret1 = WrapTestLogMsg(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Push: internal function for gtester to decode test log messages, no ABI

@@ -56,13 +56,13 @@ func NewMappedFile(filename string, writable bool) (mappedFile *MappedFile, err 
 	}
 
 	var cret *C.GMappedFile
-	var goret1 *MappedFile
+	var ret1 *MappedFile
 	var goerr error
 
 	cret = C.g_mapped_file_new(filename, writable, &errout)
 
-	goret1 = WrapMappedFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MappedFile) {
+	ret1 = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MappedFile) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -70,7 +70,7 @@ func NewMappedFile(filename string, writable bool) (mappedFile *MappedFile, err 
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NewMappedFileFromFd constructs a struct MappedFile.
@@ -85,13 +85,13 @@ func NewMappedFileFromFd(fd int, writable bool) (mappedFile *MappedFile, err err
 	}
 
 	var cret *C.GMappedFile
-	var goret1 *MappedFile
+	var ret1 *MappedFile
 	var goerr error
 
 	cret = C.g_mapped_file_new_from_fd(fd, writable, &errout)
 
-	goret1 = WrapMappedFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MappedFile) {
+	ret1 = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MappedFile) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -99,7 +99,7 @@ func NewMappedFileFromFd(fd int, writable bool) (mappedFile *MappedFile, err err
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -126,16 +126,16 @@ func (f *MappedFile) Bytes() *Bytes {
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_mapped_file_get_bytes(arg0)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Contents returns the contents of a File.
@@ -150,14 +150,14 @@ func (f *MappedFile) Contents() string {
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_mapped_file_get_contents(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Length returns the length of the contents of a File.
@@ -167,13 +167,13 @@ func (f *MappedFile) Length() uint {
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_mapped_file_get_length(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref increments the reference count of @file by one. It is safe to call this
@@ -184,16 +184,16 @@ func (f *MappedFile) Ref() *MappedFile {
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GMappedFile
-	var goret1 *MappedFile
+	var ret1 *MappedFile
 
 	cret = C.g_mapped_file_ref(arg0)
 
-	goret1 = WrapMappedFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MappedFile) {
+	ret1 = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MappedFile) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decrements the reference count of @file by one. If the reference count

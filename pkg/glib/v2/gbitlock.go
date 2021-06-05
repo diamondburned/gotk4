@@ -48,13 +48,13 @@ func BitTrylock(address int, lockBit int) bool {
 	arg2 = C.gint(lockBit)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_bit_trylock(address, lockBit)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BitUnlock clears the indicated @lock_bit in @address. If another thread is
@@ -100,13 +100,13 @@ func PointerBitTrylock(address interface{}, lockBit int) bool {
 	arg2 = C.gint(lockBit)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pointer_bit_trylock(address, lockBit)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PointerBitUnlock: this is equivalent to g_bit_unlock, but working on pointers

@@ -127,13 +127,13 @@ func NewFrame(label string) Frame {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkFrame
-	var goret1 Frame
+	var ret1 Frame
 
 	cret = C.gtk_frame_new(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Frame)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Frame)
 
-	return goret1
+	return ret1
 }
 
 // Label: if the frame’s label widget is a Label, returns the text in the
@@ -145,13 +145,13 @@ func (f frame) Label() string {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_frame_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // LabelAlign retrieves the X and Y alignment of the frame’s label. See
@@ -161,15 +161,15 @@ func (f frame) LabelAlign() (xalign float32, yalign float32) {
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var arg1 *C.gfloat
+	var arg1 C.gfloat
 	var ret1 float32
-	var arg2 *C.gfloat
+	var arg2 C.gfloat
 	var ret2 float32
 
 	C.gtk_frame_get_label_align(arg0, &arg1, &arg2)
 
-	ret1 = *C.gfloat(arg1)
-	ret2 = *C.gfloat(arg2)
+	ret1 = C.gfloat(arg1)
+	ret2 = C.gfloat(arg2)
 
 	return ret1, ret2
 }
@@ -182,13 +182,13 @@ func (f frame) LabelWidget() Widget {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_frame_get_label_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ShadowType retrieves the shadow type of the frame. See
@@ -199,13 +199,13 @@ func (f frame) ShadowType() ShadowType {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret C.GtkShadowType
-	var goret1 ShadowType
+	var ret1 ShadowType
 
 	cret = C.gtk_frame_get_shadow_type(arg0)
 
-	goret1 = ShadowType(cret)
+	ret1 = ShadowType(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetLabel removes the current Frame:label-widget. If @label is not nil,

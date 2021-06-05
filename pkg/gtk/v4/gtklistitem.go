@@ -117,13 +117,13 @@ func (s listItem) Activatable() bool {
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_item_get_activatable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child previously set via gtk_list_item_set_child() or nil
@@ -134,13 +134,13 @@ func (s listItem) Child() Widget {
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_list_item_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Item gets the item that is currently displayed in model that @self is
@@ -151,13 +151,13 @@ func (s listItem) Item() gextras.Objector {
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_list_item_get_item(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // Position gets the position in the model that @self currently displays. If
@@ -168,13 +168,13 @@ func (s listItem) Position() uint {
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_list_item_get_position(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Selectable checks if a list item has been set to be selectable via
@@ -187,13 +187,13 @@ func (s listItem) Selectable() bool {
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_item_get_selectable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Selected checks if the item is displayed as selected. The selected state
@@ -205,13 +205,13 @@ func (s listItem) Selected() bool {
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_item_get_selected(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActivatable sets @self to be activatable.

@@ -28,11 +28,11 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	arg3 = C.guint(requiredMicro)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.glib_check_version(requiredMajor, requiredMinor, requiredMicro)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }

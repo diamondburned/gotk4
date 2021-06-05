@@ -57,13 +57,13 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 // NewGestureZoom constructs a class GestureZoom.
 func NewGestureZoom() GestureZoom {
 	var cret C.GtkGestureZoom
-	var goret1 GestureZoom
+	var ret1 GestureZoom
 
 	cret = C.gtk_gesture_zoom_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
 
-	return goret1
+	return ret1
 }
 
 // ScaleDelta: if @gesture is active, this function returns the zooming
@@ -75,11 +75,11 @@ func (g gestureZoom) ScaleDelta() float64 {
 	arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_gesture_zoom_get_scale_delta(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }

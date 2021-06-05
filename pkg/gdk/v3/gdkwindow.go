@@ -52,13 +52,13 @@ func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
 // inside) for the default display and screen.
 func GetDefaultRootWindow() Window {
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_get_default_root_window()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // OffscreenWindowGetEmbedder gets the window that @window is embedded in.
@@ -68,13 +68,13 @@ func OffscreenWindowGetEmbedder(window Window) Window {
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_offscreen_window_get_embedder(window)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
@@ -86,13 +86,13 @@ func OffscreenWindowGetSurface(window Window) *cairo.Surface {
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	var cret *C.cairo_surface_t
-	var goret1 *cairo.Surface
+	var ret1 *cairo.Surface
 
 	cret = C.gdk_offscreen_window_get_surface(window)
 
-	goret1 = cairo.WrapSurface(unsafe.Pointer(cret))
+	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // OffscreenWindowSetEmbedder sets @window to be embedded in @embedder.
@@ -1339,13 +1339,13 @@ func NewWindow(parent Window, attributes *WindowAttr, attributesMask WindowAttri
 	arg3 = (C.gint)(attributesMask)
 
 	var cret C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_window_new(parent, attributes, attributesMask)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // AddFilter adds an event filter to @window, allowing you to intercept
@@ -1410,13 +1410,13 @@ func (w window) BeginDrawFrame(region *cairo.Region) DrawingContext {
 	arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	var cret *C.GdkDrawingContext
-	var goret1 DrawingContext
+	var ret1 DrawingContext
 
 	cret = C.gdk_window_begin_draw_frame(arg0, region)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingContext)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingContext)
 
-	return goret1
+	return ret1
 }
 
 // BeginMoveDrag begins a window move operation (for a toplevel window).
@@ -1605,15 +1605,15 @@ func (w window) CoordsFromParent(parentX float64, parentY float64) (x float64, y
 	arg1 = C.gdouble(parentX)
 	arg2 = C.gdouble(parentY)
 
-	var arg3 *C.gdouble
+	var arg3 C.gdouble
 	var ret3 float64
-	var arg4 *C.gdouble
+	var arg4 C.gdouble
 	var ret4 float64
 
 	C.gdk_window_coords_from_parent(arg0, parentX, parentY, &arg3, &arg4)
 
-	ret3 = *C.gdouble(arg3)
-	ret4 = *C.gdouble(arg4)
+	ret3 = C.gdouble(arg3)
+	ret4 = C.gdouble(arg4)
 
 	return ret3, ret4
 }
@@ -1642,15 +1642,15 @@ func (w window) CoordsToParent(x float64, y float64) (parentX float64, parentY f
 	arg1 = C.gdouble(x)
 	arg2 = C.gdouble(y)
 
-	var arg3 *C.gdouble
+	var arg3 C.gdouble
 	var ret3 float64
-	var arg4 *C.gdouble
+	var arg4 C.gdouble
 	var ret4 float64
 
 	C.gdk_window_coords_to_parent(arg0, x, y, &arg3, &arg4)
 
-	ret3 = *C.gdouble(arg3)
-	ret4 = *C.gdouble(arg4)
+	ret3 = C.gdouble(arg3)
+	ret4 = C.gdouble(arg4)
 
 	return ret3, ret4
 }
@@ -1670,18 +1670,18 @@ func (w window) CreateGLContext() (glContext GLContext, err error) {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkGLContext
-	var goret1 GLContext
+	var ret1 GLContext
 	var goerr error
 
 	cret = C.gdk_window_create_gl_context(arg0, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // CreateSimilarImageSurface: create a new image surface that is efficient
@@ -1723,16 +1723,16 @@ func (w window) CreateSimilarImageSurface(format cairo.Format, width int, height
 	arg4 = C.int(scale)
 
 	var cret *C.cairo_surface_t
-	var goret1 *cairo.Surface
+	var ret1 *cairo.Surface
 
 	cret = C.gdk_window_create_similar_image_surface(arg0, format, width, height, scale)
 
-	goret1 = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Surface) {
+	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // CreateSimilarSurface: create a new surface that is as compatible as
@@ -1756,16 +1756,16 @@ func (w window) CreateSimilarSurface(content cairo.Content, width int, height in
 	arg3 = C.int(height)
 
 	var cret *C.cairo_surface_t
-	var goret1 *cairo.Surface
+	var ret1 *cairo.Surface
 
 	cret = C.gdk_window_create_similar_surface(arg0, content, width, height)
 
-	goret1 = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Surface) {
+	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Deiconify: attempt to deiconify (unminimize) @window. On X11 the window
@@ -1859,13 +1859,13 @@ func (w window) EnsureNative() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_ensure_native(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Flush: this function does nothing.
@@ -1974,13 +1974,13 @@ func (w window) AcceptFocus() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_accept_focus(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackgroundPattern gets the pattern used to clear the background on
@@ -1991,13 +1991,13 @@ func (w window) BackgroundPattern() *cairo.Pattern {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.cairo_pattern_t
-	var goret1 *cairo.Pattern
+	var ret1 *cairo.Pattern
 
 	cret = C.gdk_window_get_background_pattern(arg0)
 
-	goret1 = cairo.WrapPattern(unsafe.Pointer(cret))
+	ret1 = cairo.WrapPattern(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Children gets the list of children of @window known to GDK. This function
@@ -2013,16 +2013,16 @@ func (w window) Children() *glib.List {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_window_get_children(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ChildrenWithUserData gets the list of children of @window known to GDK
@@ -2041,16 +2041,16 @@ func (w window) ChildrenWithUserData(userData interface{}) *glib.List {
 	arg1 = C.gpointer(userData)
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_window_get_children_with_user_data(arg0, userData)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ClipRegion computes the region of a window that potentially can be
@@ -2063,16 +2063,16 @@ func (w window) ClipRegion() *cairo.Region {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_window_get_clip_region(arg0)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Composited determines whether @window is composited.
@@ -2084,13 +2084,13 @@ func (w window) Composited() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_composited(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Cursor retrieves a Cursor pointer for the cursor currently set on the
@@ -2103,13 +2103,13 @@ func (w window) Cursor() Cursor {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_window_get_cursor(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // Decorations returns the decorations set on the GdkWindow with
@@ -2119,17 +2119,17 @@ func (w window) Decorations() (decorations WMDecoration, ok bool) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.GdkWMDecoration
+	var arg1 C.GdkWMDecoration
 	var ret1 *WMDecoration
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gdk_window_get_decorations(arg0, &arg1)
 
 	ret1 = *WMDecoration(arg1)
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // DeviceCursor retrieves a Cursor pointer for the @device currently set on
@@ -2144,13 +2144,13 @@ func (w window) DeviceCursor(device Device) Cursor {
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	var cret *C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_window_get_device_cursor(arg0, device)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // DeviceEvents returns the event mask for @window corresponding to an
@@ -2163,13 +2163,13 @@ func (w window) DeviceEvents(device Device) EventMask {
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	var cret C.GdkEventMask
-	var goret1 EventMask
+	var ret1 EventMask
 
 	cret = C.gdk_window_get_device_events(arg0, device)
 
-	goret1 = EventMask(cret)
+	ret1 = EventMask(cret)
 
-	return goret1
+	return ret1
 }
 
 // DevicePosition obtains the current device position and modifier state.
@@ -2185,23 +2185,23 @@ func (w window) DevicePosition(device Device) (x int, y int, mask ModifierType, 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
-	var arg4 *C.GdkModifierType
+	var arg4 C.GdkModifierType
 	var ret4 *ModifierType
 	var cret *C.GdkWindow
-	var goret4 Window
+	var ret4 Window
 
 	cret = C.gdk_window_get_device_position(arg0, device, &arg2, &arg3, &arg4)
 
-	ret2 = *C.gint(arg2)
-	ret3 = *C.gint(arg3)
+	ret2 = C.gint(arg2)
+	ret3 = C.gint(arg3)
 	ret4 = *ModifierType(arg4)
-	goret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return ret2, ret3, ret4, goret4
+	return ret2, ret3, ret4, ret4
 }
 
 // DevicePositionDouble obtains the current device position in doubles and
@@ -2214,23 +2214,23 @@ func (w window) DevicePositionDouble(device Device) (x float64, y float64, mask 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var arg2 *C.gdouble
+	var arg2 C.gdouble
 	var ret2 float64
-	var arg3 *C.gdouble
+	var arg3 C.gdouble
 	var ret3 float64
-	var arg4 *C.GdkModifierType
+	var arg4 C.GdkModifierType
 	var ret4 *ModifierType
 	var cret *C.GdkWindow
-	var goret4 Window
+	var ret4 Window
 
 	cret = C.gdk_window_get_device_position_double(arg0, device, &arg2, &arg3, &arg4)
 
-	ret2 = *C.gdouble(arg2)
-	ret3 = *C.gdouble(arg3)
+	ret2 = C.gdouble(arg2)
+	ret3 = C.gdouble(arg3)
 	ret4 = *ModifierType(arg4)
-	goret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return ret2, ret3, ret4, goret4
+	return ret2, ret3, ret4, ret4
 }
 
 // Display gets the Display associated with a Window.
@@ -2240,13 +2240,13 @@ func (w window) Display() Display {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_window_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // DragProtocol finds out the DND protocol supported by a window.
@@ -2255,17 +2255,17 @@ func (w window) DragProtocol() (target Window, dragProtocol DragProtocol) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 **C.GdkWindow
+	var arg1 *C.GdkWindow
 	var ret1 Window
 	var cret C.GdkDragProtocol
-	var goret2 DragProtocol
+	var ret2 DragProtocol
 
 	cret = C.gdk_window_get_drag_protocol(arg0, &arg1)
 
 	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(Window)
-	goret2 = DragProtocol(cret)
+	ret2 = DragProtocol(cret)
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // EffectiveParent obtains the parent of @window, as known to GDK. Works
@@ -2279,13 +2279,13 @@ func (w window) EffectiveParent() Window {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_window_get_effective_parent(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // EffectiveToplevel gets the toplevel window that’s an ancestor of @window.
@@ -2300,13 +2300,13 @@ func (w window) EffectiveToplevel() Window {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_window_get_effective_toplevel(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // EventCompression: get the current event compression setting for this
@@ -2317,13 +2317,13 @@ func (w window) EventCompression() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_event_compression(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Events gets the event mask for @window for all master input devices. See
@@ -2334,13 +2334,13 @@ func (w window) Events() EventMask {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.GdkEventMask
-	var goret1 EventMask
+	var ret1 EventMask
 
 	cret = C.gdk_window_get_events(arg0)
 
-	goret1 = EventMask(cret)
+	ret1 = EventMask(cret)
 
-	return goret1
+	return ret1
 }
 
 // FocusOnMap determines whether or not the desktop environment should be
@@ -2352,13 +2352,13 @@ func (w window) FocusOnMap() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_focus_on_map(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // FrameClock gets the frame clock for the window. The frame clock for a
@@ -2370,13 +2370,13 @@ func (w window) FrameClock() FrameClock {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkFrameClock
-	var goret1 FrameClock
+	var ret1 FrameClock
 
 	cret = C.gdk_window_get_frame_clock(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FrameClock)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FrameClock)
 
-	return goret1
+	return ret1
 }
 
 // FrameExtents obtains the bounding box of the window, including window
@@ -2388,7 +2388,7 @@ func (w window) FrameExtents() Rectangle {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.GdkRectangle
+	var arg1 C.GdkRectangle
 	var ret1 *Rectangle
 
 	C.gdk_window_get_frame_extents(arg0, &arg1)
@@ -2405,13 +2405,13 @@ func (w window) FullscreenMode() FullscreenMode {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.GdkFullscreenMode
-	var goret1 FullscreenMode
+	var ret1 FullscreenMode
 
 	cret = C.gdk_window_get_fullscreen_mode(arg0)
 
-	goret1 = FullscreenMode(cret)
+	ret1 = FullscreenMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Geometry: any of the return location arguments to this function may be
@@ -2439,21 +2439,21 @@ func (w window) Geometry() (x int, y int, width int, height int) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
-	var arg4 *C.gint
+	var arg4 C.gint
 	var ret4 int
 
 	C.gdk_window_get_geometry(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
-	ret3 = *C.gint(arg3)
-	ret4 = *C.gint(arg4)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
+	ret3 = C.gint(arg3)
+	ret4 = C.gint(arg4)
 
 	return ret1, ret2, ret3, ret4
 }
@@ -2466,13 +2466,13 @@ func (w window) Group() Window {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_window_get_group(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // Height returns the height of the given @window.
@@ -2486,13 +2486,13 @@ func (w window) Height() int {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_window_get_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ModalHint determines whether or not the window manager is hinted that
@@ -2503,13 +2503,13 @@ func (w window) ModalHint() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_modal_hint(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Origin obtains the position of a window in root window coordinates.
@@ -2520,20 +2520,20 @@ func (w window) Origin() (x int, y int, gint int) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 	var cret C.gint
-	var goret3 int
+	var ret3 int
 
 	cret = C.gdk_window_get_origin(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
-	goret3 = C.gint(cret)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
+	ret3 = C.gint(cret)
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // Parent obtains the parent of @window, as known to GDK. Does not query the
@@ -2552,13 +2552,13 @@ func (w window) Parent() Window {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_window_get_parent(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // PassThrough returns whether input to the window is passed through to the
@@ -2571,13 +2571,13 @@ func (w window) PassThrough() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_pass_through(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Pointer obtains the current pointer position and modifier state. The
@@ -2588,23 +2588,23 @@ func (w window) Pointer() (x int, y int, mask ModifierType, window Window) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
-	var arg3 *C.GdkModifierType
+	var arg3 C.GdkModifierType
 	var ret3 *ModifierType
 	var cret *C.GdkWindow
-	var goret4 Window
+	var ret4 Window
 
 	cret = C.gdk_window_get_pointer(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 	ret3 = *ModifierType(arg3)
-	goret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return ret1, ret2, ret3, goret4
+	return ret1, ret2, ret3, ret4
 }
 
 // Position obtains the position of the window as reported in the
@@ -2619,15 +2619,15 @@ func (w window) Position() (x int, y int) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 
 	C.gdk_window_get_position(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -2644,15 +2644,15 @@ func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
 	arg1 = C.gint(x)
 	arg2 = C.gint(y)
 
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
-	var arg4 *C.gint
+	var arg4 C.gint
 	var ret4 int
 
 	C.gdk_window_get_root_coords(arg0, x, y, &arg3, &arg4)
 
-	ret3 = *C.gint(arg3)
-	ret4 = *C.gint(arg4)
+	ret3 = C.gint(arg3)
+	ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }
@@ -2664,15 +2664,15 @@ func (w window) RootOrigin() (x int, y int) {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 
 	C.gdk_window_get_root_origin(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -2695,13 +2695,13 @@ func (w window) ScaleFactor() int {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_window_get_scale_factor(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Screen gets the Screen associated with a Window.
@@ -2711,13 +2711,13 @@ func (w window) Screen() Screen {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkScreen
-	var goret1 Screen
+	var ret1 Screen
 
 	cret = C.gdk_window_get_screen(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Screen)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Screen)
 
-	return goret1
+	return ret1
 }
 
 // SourceEvents returns the event mask for @window corresponding to the
@@ -2730,13 +2730,13 @@ func (w window) SourceEvents(source InputSource) EventMask {
 	arg1 = (C.GdkInputSource)(source)
 
 	var cret C.GdkEventMask
-	var goret1 EventMask
+	var ret1 EventMask
 
 	cret = C.gdk_window_get_source_events(arg0, source)
 
-	goret1 = EventMask(cret)
+	ret1 = EventMask(cret)
 
-	return goret1
+	return ret1
 }
 
 // State gets the bitwise OR of the currently active window state flags,
@@ -2747,13 +2747,13 @@ func (w window) State() WindowState {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.GdkWindowState
-	var goret1 WindowState
+	var ret1 WindowState
 
 	cret = C.gdk_window_get_state(arg0)
 
-	goret1 = WindowState(cret)
+	ret1 = WindowState(cret)
 
-	return goret1
+	return ret1
 }
 
 // SupportMultidevice returns true if the window is aware of the existence
@@ -2764,13 +2764,13 @@ func (w window) SupportMultidevice() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_get_support_multidevice(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Toplevel gets the toplevel window that’s an ancestor of @window.
@@ -2788,13 +2788,13 @@ func (w window) Toplevel() Window {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_window_get_toplevel(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // TypeHint: this function returns the type hint set for a window.
@@ -2804,13 +2804,13 @@ func (w window) TypeHint() WindowTypeHint {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.GdkWindowTypeHint
-	var goret1 WindowTypeHint
+	var ret1 WindowTypeHint
 
 	cret = C.gdk_window_get_type_hint(arg0)
 
-	goret1 = WindowTypeHint(cret)
+	ret1 = WindowTypeHint(cret)
 
-	return goret1
+	return ret1
 }
 
 // UpdateArea transfers ownership of the update area from @window to the
@@ -2825,16 +2825,16 @@ func (w window) UpdateArea() *cairo.Region {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_window_get_update_area(arg0)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // UserData retrieves the user data for @window, which is normally the
@@ -2844,12 +2844,12 @@ func (w window) UserData() interface{} {
 
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var arg1 *C.gpointer
+	var arg1 C.gpointer
 	var ret1 interface{}
 
 	C.gdk_window_get_user_data(arg0, &arg1)
 
-	ret1 = *C.gpointer(arg1)
+	ret1 = C.gpointer(arg1)
 
 	return ret1
 }
@@ -2863,16 +2863,16 @@ func (w window) VisibleRegion() *cairo.Region {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_window_get_visible_region(arg0)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Visual gets the Visual describing the pixel format of @window.
@@ -2882,13 +2882,13 @@ func (w window) Visual() Visual {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GdkVisual
-	var goret1 Visual
+	var ret1 Visual
 
 	cret = C.gdk_window_get_visual(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Visual)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Visual)
 
-	return goret1
+	return ret1
 }
 
 // Width returns the width of the given @window.
@@ -2902,13 +2902,13 @@ func (w window) Width() int {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_window_get_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // WindowType gets the type of the window. See WindowType.
@@ -2918,13 +2918,13 @@ func (w window) WindowType() WindowType {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.GdkWindowType
-	var goret1 WindowType
+	var ret1 WindowType
 
 	cret = C.gdk_window_get_window_type(arg0)
 
-	goret1 = WindowType(cret)
+	ret1 = WindowType(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasNative checks whether the window has a native window or not. Note that
@@ -2935,13 +2935,13 @@ func (w window) HasNative() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_has_native(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Hide: for toplevel windows, withdraws them, so they will no longer be
@@ -3074,13 +3074,13 @@ func (w window) IsDestroyed() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_is_destroyed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsInputOnly determines whether or not the window is an input only window.
@@ -3090,13 +3090,13 @@ func (w window) IsInputOnly() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_is_input_only(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsShaped determines whether or not the window is shaped.
@@ -3106,13 +3106,13 @@ func (w window) IsShaped() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_is_shaped(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsViewable: check if the window and all ancestors of the window are
@@ -3124,13 +3124,13 @@ func (w window) IsViewable() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_is_viewable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsVisible checks whether the window has been mapped (with
@@ -3141,13 +3141,13 @@ func (w window) IsVisible() bool {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_is_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Lower lowers @window to the bottom of the Z-order (stacking order), so
@@ -3340,13 +3340,13 @@ func (w window) PeekChildren() *glib.List {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_window_peek_children(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ProcessUpdates sends one or more expose events to @window. The areas in
@@ -4173,13 +4173,13 @@ func (w window) SetStaticGravities(useStatic bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_window_set_static_gravities(arg0, useStatic)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetSupportMultidevice: this function will enable multidevice features in

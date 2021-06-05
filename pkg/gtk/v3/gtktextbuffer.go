@@ -493,13 +493,13 @@ func NewTextBuffer(table TextTagTable) TextBuffer {
 	arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 
 	var cret C.GtkTextBuffer
-	var goret1 TextBuffer
+	var ret1 TextBuffer
 
 	cret = C.gtk_text_buffer_new(table)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextBuffer)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextBuffer)
 
-	return goret1
+	return ret1
 }
 
 // AddMark adds the mark at position @where. The mark must not be added to
@@ -594,13 +594,13 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_backspace(arg0, iter, interactive, defaultEditable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BeginUserAction: called to indicate that the buffer operations between
@@ -651,13 +651,13 @@ func (b textBuffer) CreateChildAnchor(iter *TextIter) TextChildAnchor {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 
 	var cret *C.GtkTextChildAnchor
-	var goret1 TextChildAnchor
+	var ret1 TextChildAnchor
 
 	cret = C.gtk_text_buffer_create_child_anchor(arg0, iter)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
 
-	return goret1
+	return ret1
 }
 
 // CreateMark creates a mark at position @where. If @mark_name is nil, the
@@ -691,13 +691,13 @@ func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity boo
 	}
 
 	var cret *C.GtkTextMark
-	var goret1 TextMark
+	var ret1 TextMark
 
 	cret = C.gtk_text_buffer_create_mark(arg0, markName, where, leftGravity)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
 
-	return goret1
+	return ret1
 }
 
 // CutClipboard copies the currently-selected text to a clipboard, then
@@ -753,13 +753,13 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_delete_interactive(arg0, startIter, endIter, defaultEditable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DeleteMark deletes @mark, so that it’s no longer located anywhere in the
@@ -811,13 +811,13 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_delete_selection(arg0, interactive, defaultEditable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Deserialize: this function deserializes rich text in format @format and
@@ -854,13 +854,13 @@ func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
 	arg1 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_deserialize_get_can_create_tags(arg0, format)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DeserializeSetCanCreateTags: use this function to allow a rich text
@@ -912,9 +912,9 @@ func (b textBuffer) Bounds() (start TextIter, end TextIter) {
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
-	var arg2 *C.GtkTextIter
+	var arg2 C.GtkTextIter
 	var ret2 *TextIter
 
 	C.gtk_text_buffer_get_bounds(arg0, &arg1, &arg2)
@@ -935,13 +935,13 @@ func (b textBuffer) CharCount() int {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_buffer_get_char_count(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // CopyTargetList: this function returns the list of targets this text
@@ -955,13 +955,13 @@ func (b textBuffer) CopyTargetList() *TargetList {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkTargetList
-	var goret1 *TargetList
+	var ret1 *TargetList
 
 	cret = C.gtk_text_buffer_get_copy_target_list(arg0)
 
-	goret1 = WrapTargetList(unsafe.Pointer(cret))
+	ret1 = WrapTargetList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // DeserializeFormats: this function returns the rich text deserialize
@@ -975,17 +975,17 @@ func (b textBuffer) DeserializeFormats() (nFormats int, atoms []gdk.Atom) {
 
 	var cret *C.GdkAtom
 	var arg1 *C.gint
-	var goret2 []gdk.Atom
+	var ret2 []gdk.Atom
 
 	cret = C.gtk_text_buffer_get_deserialize_formats(arg0, &arg1)
 
-	goret2 = make([]gdk.Atom, arg1)
+	ret2 = make([]gdk.Atom, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.GdkAtom)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = gdk.WrapAtom(unsafe.Pointer(src))
+		ret2[i] = gdk.WrapAtom(unsafe.Pointer(src))
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // EndIter initializes @iter with the “end iterator,” one past the last
@@ -999,7 +999,7 @@ func (b textBuffer) EndIter() TextIter {
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_end_iter(arg0, &arg1)
@@ -1017,13 +1017,13 @@ func (b textBuffer) HasSelection() bool {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_get_has_selection(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // GetInsert returns the mark that represents the cursor (insertion point).
@@ -1035,13 +1035,13 @@ func (b textBuffer) GetInsert() TextMark {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkTextMark
-	var goret1 TextMark
+	var ret1 TextMark
 
 	cret = C.gtk_text_buffer_get_insert(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
 
-	return goret1
+	return ret1
 }
 
 // IterAtChildAnchor obtains the location of @anchor within @buffer.
@@ -1052,7 +1052,7 @@ func (b textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_iter_at_child_anchor(arg0, &arg1, anchor)
@@ -1072,7 +1072,7 @@ func (b textBuffer) IterAtLine(lineNumber int) TextIter {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg2 = C.gint(lineNumber)
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_iter_at_line(arg0, &arg1, lineNumber)
@@ -1100,7 +1100,7 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) TextIter {
 	arg2 = C.gint(lineNumber)
 	arg3 = C.gint(byteIndex)
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_iter_at_line_index(arg0, &arg1, lineNumber, byteIndex)
@@ -1129,7 +1129,7 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) TextIter {
 	arg2 = C.gint(lineNumber)
 	arg3 = C.gint(charOffset)
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_iter_at_line_offset(arg0, &arg1, lineNumber, charOffset)
@@ -1147,7 +1147,7 @@ func (b textBuffer) IterAtMark(mark TextMark) TextIter {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg2 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_iter_at_mark(arg0, &arg1, mark)
@@ -1168,7 +1168,7 @@ func (b textBuffer) IterAtOffset(charOffset int) TextIter {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg2 = C.gint(charOffset)
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_iter_at_offset(arg0, &arg1, charOffset)
@@ -1186,13 +1186,13 @@ func (b textBuffer) LineCount() int {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_buffer_get_line_count(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Mark returns the mark named @name in buffer @buffer, or nil if no such
@@ -1206,13 +1206,13 @@ func (b textBuffer) Mark(name string) TextMark {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkTextMark
-	var goret1 TextMark
+	var ret1 TextMark
 
 	cret = C.gtk_text_buffer_get_mark(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
 
-	return goret1
+	return ret1
 }
 
 // Modified indicates whether the buffer has been modified since the last
@@ -1224,13 +1224,13 @@ func (b textBuffer) Modified() bool {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_get_modified(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PasteTargetList: this function returns the list of targets this text
@@ -1244,13 +1244,13 @@ func (b textBuffer) PasteTargetList() *TargetList {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkTargetList
-	var goret1 *TargetList
+	var ret1 *TargetList
 
 	cret = C.gtk_text_buffer_get_paste_target_list(arg0)
 
-	goret1 = WrapTargetList(unsafe.Pointer(cret))
+	ret1 = WrapTargetList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SelectionBound returns the mark that represents the selection bound.
@@ -1270,13 +1270,13 @@ func (b textBuffer) SelectionBound() TextMark {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkTextMark
-	var goret1 TextMark
+	var ret1 TextMark
 
 	cret = C.gtk_text_buffer_get_selection_bound(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
 
-	return goret1
+	return ret1
 }
 
 // SelectionBounds returns true if some text is selected; places the bounds
@@ -1289,20 +1289,20 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
-	var arg2 *C.GtkTextIter
+	var arg2 C.GtkTextIter
 	var ret2 *TextIter
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_text_buffer_get_selection_bounds(arg0, &arg1, &arg2)
 
 	ret1 = WrapTextIter(unsafe.Pointer(arg1))
 	ret2 = WrapTextIter(unsafe.Pointer(arg2))
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // SerializeFormats: this function returns the rich text serialize formats
@@ -1315,17 +1315,17 @@ func (b textBuffer) SerializeFormats() (nFormats int, atoms []gdk.Atom) {
 
 	var cret *C.GdkAtom
 	var arg1 *C.gint
-	var goret2 []gdk.Atom
+	var ret2 []gdk.Atom
 
 	cret = C.gtk_text_buffer_get_serialize_formats(arg0, &arg1)
 
-	goret2 = make([]gdk.Atom, arg1)
+	ret2 = make([]gdk.Atom, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.GdkAtom)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = gdk.WrapAtom(unsafe.Pointer(src))
+		ret2[i] = gdk.WrapAtom(unsafe.Pointer(src))
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Slice returns the text in the range [@start,@end). Excludes undisplayed
@@ -1351,14 +1351,14 @@ func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars boo
 	}
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_buffer_get_slice(arg0, start, end, includeHiddenChars)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StartIter: initialized @iter with the first position in the text buffer.
@@ -1369,7 +1369,7 @@ func (b textBuffer) StartIter() TextIter {
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var arg1 *C.GtkTextIter
+	var arg1 C.GtkTextIter
 	var ret1 *TextIter
 
 	C.gtk_text_buffer_get_start_iter(arg0, &arg1)
@@ -1386,13 +1386,13 @@ func (b textBuffer) TagTable() TextTagTable {
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkTextTagTable
-	var goret1 TextTagTable
+	var ret1 TextTagTable
 
 	cret = C.gtk_text_buffer_get_tag_table(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTagTable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTagTable)
 
-	return goret1
+	return ret1
 }
 
 // Text returns the text in the range [@start,@end). Excludes undisplayed
@@ -1415,14 +1415,14 @@ func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool
 	}
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_buffer_get_text(arg0, start, end, includeHiddenChars)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts @len bytes of @text at position @iter. If @len is -1,
@@ -1508,13 +1508,13 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_insert_interactive(arg0, iter, text, len, defaultEditable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InsertInteractiveAtCursor calls gtk_text_buffer_insert_interactive() at
@@ -1538,13 +1538,13 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_insert_interactive_at_cursor(arg0, text, len, defaultEditable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InsertMarkup inserts the text in @markup at position @iter. @markup will
@@ -1629,13 +1629,13 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_buffer_insert_range_interactive(arg0, iter, start, end, defaultEditable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MoveMark moves @mark to the new location @where. Emits the
@@ -1715,13 +1715,13 @@ func (b textBuffer) RegisterDeserializeFormat(mimeType string, function TextBuff
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.GdkAtom
-	var goret1 gdk.Atom
+	var ret1 gdk.Atom
 
 	cret = C.gtk_text_buffer_register_deserialize_format(arg0, mimeType, function, userData, userDataDestroy)
 
-	goret1 = gdk.WrapAtom(unsafe.Pointer(cret))
+	ret1 = gdk.WrapAtom(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RegisterDeserializeTagset: this function registers GTK+’s internal rich
@@ -1736,13 +1736,13 @@ func (b textBuffer) RegisterDeserializeTagset(tagsetName string) gdk.Atom {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GdkAtom
-	var goret1 gdk.Atom
+	var ret1 gdk.Atom
 
 	cret = C.gtk_text_buffer_register_deserialize_tagset(arg0, tagsetName)
 
-	goret1 = gdk.WrapAtom(unsafe.Pointer(cret))
+	ret1 = gdk.WrapAtom(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RegisterSerializeFormat: this function registers a rich text
@@ -1754,13 +1754,13 @@ func (b textBuffer) RegisterSerializeFormat(mimeType string, function TextBuffer
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.GdkAtom
-	var goret1 gdk.Atom
+	var ret1 gdk.Atom
 
 	cret = C.gtk_text_buffer_register_serialize_format(arg0, mimeType, function, userData, userDataDestroy)
 
-	goret1 = gdk.WrapAtom(unsafe.Pointer(cret))
+	ret1 = gdk.WrapAtom(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RegisterSerializeTagset: this function registers GTK+’s internal rich
@@ -1789,13 +1789,13 @@ func (b textBuffer) RegisterSerializeTagset(tagsetName string) gdk.Atom {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GdkAtom
-	var goret1 gdk.Atom
+	var ret1 gdk.Atom
 
 	cret = C.gtk_text_buffer_register_serialize_tagset(arg0, tagsetName)
 
-	goret1 = gdk.WrapAtom(unsafe.Pointer(cret))
+	ret1 = gdk.WrapAtom(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RemoveAllTags removes all tags in the range between @start and @end. Be
@@ -1900,16 +1900,16 @@ func (r textBuffer) Serialize(contentBuffer TextBuffer, format gdk.Atom, start *
 
 	var cret *C.guint8
 	var arg5 *C.gsize
-	var goret2 []byte
+	var ret2 []byte
 
 	cret = C.gtk_text_buffer_serialize(arg0, contentBuffer, format, start, end, &arg5)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg5))
-	runtime.SetFinalizer(&goret2, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg5))
+	runtime.SetFinalizer(&ret2, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret5, goret2
+	return ret5, ret2
 }
 
 // SetModified: used to keep track of whether the buffer has been modified

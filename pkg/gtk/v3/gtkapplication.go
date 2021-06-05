@@ -351,13 +351,13 @@ func NewApplication(applicationID string, flags gio.ApplicationFlags) Applicatio
 	arg2 = (C.GApplicationFlags)(flags)
 
 	var cret C.GtkApplication
-	var goret1 Application
+	var ret1 Application
 
 	cret = C.gtk_application_new(applicationID, flags)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
 
-	return goret1
+	return ret1
 }
 
 // AddAccelerator installs an accelerator that will cause the named action
@@ -427,7 +427,7 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_application_get_accels_for_action(arg0, detailedActionName)
 
@@ -440,15 +440,15 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ActionsForAccel returns the list of actions (possibly empty) that @accel
@@ -475,7 +475,7 @@ func (a application) ActionsForAccel(accel string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_application_get_actions_for_accel(arg0, accel)
 
@@ -488,15 +488,15 @@ func (a application) ActionsForAccel(accel string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ActiveWindow gets the “active” window for the application.
@@ -511,13 +511,13 @@ func (a application) ActiveWindow() Window {
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gtk_application_get_active_window(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // AppMenu returns the menu model that has been set with
@@ -528,13 +528,13 @@ func (a application) AppMenu() gio.MenuModel {
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_application_get_app_menu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // MenuByID gets a menu from automatically loaded resources. See [Automatic
@@ -548,13 +548,13 @@ func (a application) MenuByID(id string) gio.Menu {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GMenu
-	var goret1 gio.Menu
+	var ret1 gio.Menu
 
 	cret = C.gtk_application_get_menu_by_id(arg0, id)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Menu)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Menu)
 
-	return goret1
+	return ret1
 }
 
 // Menubar returns the menu model that has been set with
@@ -565,13 +565,13 @@ func (a application) Menubar() gio.MenuModel {
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_application_get_menubar(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // WindowByID returns the ApplicationWindow with the given ID.
@@ -586,13 +586,13 @@ func (a application) WindowByID(id uint) Window {
 	arg1 = C.guint(id)
 
 	var cret *C.GtkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gtk_application_get_window_by_id(arg0, id)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // Windows gets a list of the Windows associated with @application.
@@ -609,13 +609,13 @@ func (a application) Windows() *glib.List {
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_application_get_windows(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Inhibit: inform the session manager that certain types of actions should
@@ -652,13 +652,13 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_application_inhibit(arg0, window, flags, reason)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsInhibited determines if any of the actions specified in @flags are
@@ -674,13 +674,13 @@ func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 	arg1 = (C.GtkApplicationInhibitFlags)(flags)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_application_is_inhibited(arg0, flags)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ListActionDescriptions lists the detailed action names which have
@@ -691,7 +691,7 @@ func (a application) ListActionDescriptions() []string {
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_application_list_action_descriptions(arg0)
 
@@ -704,15 +704,15 @@ func (a application) ListActionDescriptions() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // PrefersAppMenu determines if the desktop environment in which the
@@ -753,13 +753,13 @@ func (a application) PrefersAppMenu() bool {
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_application_prefers_app_menu(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RemoveAccelerator removes an accelerator that has been previously added

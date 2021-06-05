@@ -22,13 +22,13 @@ import "C"
 // GDK_LOCK_MASK.
 func AcceleratorGetDefaultModMask() gdk.ModifierType {
 	var cret C.GdkModifierType
-	var goret1 gdk.ModifierType
+	var ret1 gdk.ModifierType
 
 	cret = C.gtk_accelerator_get_default_mod_mask()
 
-	goret1 = gdk.ModifierType(cret)
+	ret1 = gdk.ModifierType(cret)
 
-	return goret1
+	return ret1
 }
 
 // AcceleratorGetLabel converts an accelerator keyval and modifier mask into a
@@ -41,14 +41,14 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	arg2 = (C.GdkModifierType)(acceleratorMods)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_accelerator_get_label(acceleratorKey, acceleratorMods)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AcceleratorGetLabelWithKeycode converts an accelerator keyval and modifier
@@ -69,14 +69,14 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 	arg4 = (C.GdkModifierType)(acceleratorMods)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_accelerator_get_label_with_keycode(display, acceleratorKey, keycode, acceleratorMods)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AcceleratorName converts an accelerator keyval and modifier mask into a
@@ -93,14 +93,14 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	arg2 = (C.GdkModifierType)(acceleratorMods)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_accelerator_name(acceleratorKey, acceleratorMods)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AcceleratorNameWithKeycode converts an accelerator keyval and modifier mask
@@ -120,14 +120,14 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 	arg4 = (C.GdkModifierType)(acceleratorMods)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_accelerator_name_with_keycode(display, acceleratorKey, keycode, acceleratorMods)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AcceleratorParse parses a string representing an accelerator. The format
@@ -146,20 +146,20 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 	arg1 = (*C.char)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 *C.guint
+	var arg2 C.guint
 	var ret2 uint
-	var arg3 *C.GdkModifierType
+	var arg3 C.GdkModifierType
 	var ret3 *gdk.ModifierType
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_accelerator_parse(accelerator, &arg2, &arg3)
 
-	ret2 = *C.guint(arg2)
+	ret2 = C.guint(arg2)
 	ret3 = *gdk.ModifierType(arg3)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret2, ret3, goret3
+	return ret2, ret3, ret3
 }
 
 // AcceleratorParseWithKeycode parses a string representing an accelerator,
@@ -183,18 +183,18 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	var arg3 *C.guint
+	var arg3 C.guint
 	var ret3 uint
 	var arg4 **C.guint
 	var ret4 []uint
-	var arg5 *C.GdkModifierType
+	var arg5 C.GdkModifierType
 	var ret5 *gdk.ModifierType
 	var cret C.gboolean
-	var goret4 bool
+	var ret4 bool
 
 	cret = C.gtk_accelerator_parse_with_keycode(accelerator, display, &arg3, &arg4, &arg5)
 
-	ret3 = *C.guint(arg3)
+	ret3 = C.guint(arg3)
 	{
 		var length int
 		for p := arg4; *p != 0; p = (**C.guint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -211,9 +211,9 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 		}
 	}
 	ret5 = *gdk.ModifierType(arg5)
-	goret4 = C.bool(cret) != C.false
+	ret4 = C.bool(cret) != C.false
 
-	return ret3, ret4, ret5, goret4
+	return ret3, ret4, ret5, ret4
 }
 
 // AcceleratorValid determines whether a given keyval and modifier mask
@@ -228,11 +228,11 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	arg2 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_accelerator_valid(keyval, modifiers)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

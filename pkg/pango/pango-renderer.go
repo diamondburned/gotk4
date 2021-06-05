@@ -342,13 +342,13 @@ func (r renderer) Alpha(part RenderPart) uint16 {
 	arg1 = (C.PangoRenderPart)(part)
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.pango_renderer_get_alpha(arg0, part)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // Color gets the current rendering color for the specified part.
@@ -360,13 +360,13 @@ func (r renderer) Color(part RenderPart) *Color {
 	arg1 = (C.PangoRenderPart)(part)
 
 	var cret *C.PangoColor
-	var goret1 *Color
+	var ret1 *Color
 
 	cret = C.pango_renderer_get_color(arg0, part)
 
-	goret1 = WrapColor(unsafe.Pointer(cret))
+	ret1 = WrapColor(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Layout gets the layout currently being rendered using @renderer.
@@ -381,13 +381,13 @@ func (r renderer) Layout() Layout {
 	arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.PangoLayout
-	var goret1 Layout
+	var ret1 Layout
 
 	cret = C.pango_renderer_get_layout(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
 
-	return goret1
+	return ret1
 }
 
 // LayoutLine gets the layout line currently being rendered using @renderer.
@@ -403,13 +403,13 @@ func (r renderer) LayoutLine() *LayoutLine {
 	arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.PangoLayoutLine
-	var goret1 *LayoutLine
+	var ret1 *LayoutLine
 
 	cret = C.pango_renderer_get_layout_line(arg0)
 
-	goret1 = WrapLayoutLine(unsafe.Pointer(cret))
+	ret1 = WrapLayoutLine(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Matrix gets the transformation matrix that will be applied when
@@ -422,13 +422,13 @@ func (r renderer) Matrix() *Matrix {
 	arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.PangoMatrix
-	var goret1 *Matrix
+	var ret1 *Matrix
 
 	cret = C.pango_renderer_get_matrix(arg0)
 
-	goret1 = WrapMatrix(unsafe.Pointer(cret))
+	ret1 = WrapMatrix(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PartChanged informs Pango that the way that the rendering is done for

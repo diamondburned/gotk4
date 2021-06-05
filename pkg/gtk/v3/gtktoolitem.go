@@ -191,13 +191,13 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 // NewToolItem constructs a class ToolItem.
 func NewToolItem() ToolItem {
 	var cret C.GtkToolItem
-	var goret1 ToolItem
+	var ret1 ToolItem
 
 	cret = C.gtk_tool_item_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
 
-	return goret1
+	return ret1
 }
 
 // EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
@@ -209,13 +209,13 @@ func (t toolItem) EllipsizeMode() pango.EllipsizeMode {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret1 pango.EllipsizeMode
+	var ret1 pango.EllipsizeMode
 
 	cret = C.gtk_tool_item_get_ellipsize_mode(arg0)
 
-	goret1 = pango.EllipsizeMode(cret)
+	ret1 = pango.EllipsizeMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Expand returns whether @tool_item is allocated extra space. See
@@ -226,13 +226,13 @@ func (t toolItem) Expand() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tool_item_get_expand(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether @tool_item is the same size as other
@@ -243,13 +243,13 @@ func (t toolItem) Homogeneous() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tool_item_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IconSize returns the icon size used for @tool_item. Custom subclasses of
@@ -261,13 +261,13 @@ func (t toolItem) IconSize() int {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkIconSize
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tool_item_get_icon_size(arg0)
 
-	goret1 = C.GtkIconSize(cret)
+	ret1 = C.GtkIconSize(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsImportant returns whether @tool_item is considered important. See
@@ -278,13 +278,13 @@ func (t toolItem) IsImportant() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tool_item_get_is_important(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Orientation returns the orientation used for @tool_item. Custom
@@ -296,13 +296,13 @@ func (t toolItem) Orientation() Orientation {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkOrientation
-	var goret1 Orientation
+	var ret1 Orientation
 
 	cret = C.gtk_tool_item_get_orientation(arg0)
 
-	goret1 = Orientation(cret)
+	ret1 = Orientation(cret)
 
-	return goret1
+	return ret1
 }
 
 // ProxyMenuItem: if @menu_item_id matches the string passed to
@@ -321,13 +321,13 @@ func (t toolItem) ProxyMenuItem(menuItemID string) Widget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_tool_item_get_proxy_menu_item(arg0, menuItemID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ReliefStyle returns the relief style of @tool_item. See
@@ -340,13 +340,13 @@ func (t toolItem) ReliefStyle() ReliefStyle {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkReliefStyle
-	var goret1 ReliefStyle
+	var ret1 ReliefStyle
 
 	cret = C.gtk_tool_item_get_relief_style(arg0)
 
-	goret1 = ReliefStyle(cret)
+	ret1 = ReliefStyle(cret)
 
-	return goret1
+	return ret1
 }
 
 // TextAlignment returns the text alignment used for @tool_item. Custom
@@ -358,13 +358,13 @@ func (t toolItem) TextAlignment() float32 {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gfloat
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_tool_item_get_text_alignment(arg0)
 
-	goret1 = C.gfloat(cret)
+	ret1 = C.gfloat(cret)
 
-	return goret1
+	return ret1
 }
 
 // TextOrientation returns the text orientation used for @tool_item. Custom
@@ -376,13 +376,13 @@ func (t toolItem) TextOrientation() Orientation {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkOrientation
-	var goret1 Orientation
+	var ret1 Orientation
 
 	cret = C.gtk_tool_item_get_text_orientation(arg0)
 
-	goret1 = Orientation(cret)
+	ret1 = Orientation(cret)
 
-	return goret1
+	return ret1
 }
 
 // TextSizeGroup returns the size group used for labels in @tool_item.
@@ -394,13 +394,13 @@ func (t toolItem) TextSizeGroup() SizeGroup {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkSizeGroup
-	var goret1 SizeGroup
+	var ret1 SizeGroup
 
 	cret = C.gtk_tool_item_get_text_size_group(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
 
-	return goret1
+	return ret1
 }
 
 // ToolbarStyle returns the toolbar style used for @tool_item. Custom
@@ -419,13 +419,13 @@ func (t toolItem) ToolbarStyle() ToolbarStyle {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkToolbarStyle
-	var goret1 ToolbarStyle
+	var ret1 ToolbarStyle
 
 	cret = C.gtk_tool_item_get_toolbar_style(arg0)
 
-	goret1 = ToolbarStyle(cret)
+	ret1 = ToolbarStyle(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseDragWindow returns whether @tool_item has a drag window. See
@@ -436,13 +436,13 @@ func (t toolItem) UseDragWindow() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tool_item_get_use_drag_window(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VisibleHorizontal returns whether the @tool_item is visible on toolbars
@@ -453,13 +453,13 @@ func (t toolItem) VisibleHorizontal() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tool_item_get_visible_horizontal(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VisibleVertical returns whether @tool_item is visible when the toolbar is
@@ -470,13 +470,13 @@ func (t toolItem) VisibleVertical() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tool_item_get_visible_vertical(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RebuildMenu: calling this function signals to the toolbar that the
@@ -502,13 +502,13 @@ func (t toolItem) RetrieveProxyMenuItem() Widget {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_tool_item_retrieve_proxy_menu_item(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetExpand sets whether @tool_item is allocated extra space when there is

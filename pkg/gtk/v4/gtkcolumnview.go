@@ -206,13 +206,13 @@ func NewColumnView(model SelectionModel) ColumnView {
 	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkColumnView
-	var goret1 ColumnView
+	var ret1 ColumnView
 
 	cret = C.gtk_column_view_new(model)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColumnView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColumnView)
 
-	return goret1
+	return ret1
 }
 
 // AppendColumn appends the @column to the end of the columns in @self.
@@ -235,13 +235,13 @@ func (s columnView) Columns() gio.ListModel {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_column_view_get_columns(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with
@@ -252,13 +252,13 @@ func (s columnView) EnableRubberband() bool {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_get_enable_rubberband(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that's currently used to read the items displayed.
@@ -268,13 +268,13 @@ func (s columnView) Model() SelectionModel {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSelectionModel
-	var goret1 SelectionModel
+	var ret1 SelectionModel
 
 	cret = C.gtk_column_view_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
 
-	return goret1
+	return ret1
 }
 
 // Reorderable returns whether columns are reorderable.
@@ -284,13 +284,13 @@ func (s columnView) Reorderable() bool {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_get_reorderable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowColumnSeparators returns whether the list should show separators
@@ -301,13 +301,13 @@ func (s columnView) ShowColumnSeparators() bool {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_get_show_column_separators(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowRowSeparators returns whether the list should show separators between
@@ -318,13 +318,13 @@ func (s columnView) ShowRowSeparators() bool {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_get_show_row_separators(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SingleClickActivate returns whether rows will be activated on single
@@ -335,13 +335,13 @@ func (s columnView) SingleClickActivate() bool {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_get_single_click_activate(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Sorter returns a special sorter that reflects the users sorting choices
@@ -368,13 +368,13 @@ func (s columnView) Sorter() Sorter {
 	arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSorter
-	var goret1 Sorter
+	var ret1 Sorter
 
 	cret = C.gtk_column_view_get_sorter(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
 
-	return goret1
+	return ret1
 }
 
 // InsertColumn inserts a column at the given position in the columns of

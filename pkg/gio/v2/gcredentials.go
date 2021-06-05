@@ -136,13 +136,13 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 // NewCredentials constructs a class Credentials.
 func NewCredentials() Credentials {
 	var cret C.GCredentials
-	var goret1 Credentials
+	var ret1 Credentials
 
 	cret = C.g_credentials_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
 
-	return goret1
+	return ret1
 }
 
 // Native gets a pointer to native credentials of type @native_type from
@@ -159,13 +159,13 @@ func (c credentials) Native(nativeType CredentialsType) interface{} {
 	arg1 = (C.GCredentialsType)(nativeType)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_credentials_get_native(arg0, nativeType)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // UnixPid tries to get the UNIX process identifier from @credentials. This
@@ -182,18 +182,18 @@ func (c credentials) UnixPid() (gint int, err error) {
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var cret C.pid_t
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_credentials_get_unix_pid(arg0, &errout)
 
-	goret1 = C.pid_t(cret)
+	ret1 = C.pid_t(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // UnixUser tries to get the UNIX user identifier from @credentials. This
@@ -209,18 +209,18 @@ func (c credentials) UnixUser() (guint uint, err error) {
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var cret C.uid_t
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.g_credentials_get_unix_user(arg0, &errout)
 
-	goret1 = C.uid_t(cret)
+	ret1 = C.uid_t(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // IsSameUser checks if @credentials and @other_credentials is the same
@@ -299,12 +299,12 @@ func (c credentials) String() string {
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_credentials_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

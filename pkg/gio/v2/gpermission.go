@@ -224,13 +224,13 @@ func (p permission) Allowed() bool {
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_permission_get_allowed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanAcquire gets the value of the 'can-acquire' property. This property is
@@ -242,13 +242,13 @@ func (p permission) CanAcquire() bool {
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_permission_get_can_acquire(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanRelease gets the value of the 'can-release' property. This property is
@@ -260,13 +260,13 @@ func (p permission) CanRelease() bool {
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_permission_get_can_release(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ImplUpdate: this function is called by the #GPermission implementation to

@@ -121,13 +121,13 @@ func marshalButton(p uintptr) (interface{}, error) {
 // NewButton constructs a class Button.
 func NewButton() Button {
 	var cret C.GtkButton
-	var goret1 Button
+	var ret1 Button
 
 	cret = C.gtk_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
 
-	return goret1
+	return ret1
 }
 
 // NewButtonFromIconName constructs a class Button.
@@ -138,13 +138,13 @@ func NewButtonFromIconName(iconName string) Button {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkButton
-	var goret1 Button
+	var ret1 Button
 
 	cret = C.gtk_button_new_from_icon_name(iconName)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
 
-	return goret1
+	return ret1
 }
 
 // NewButtonWithLabel constructs a class Button.
@@ -155,13 +155,13 @@ func NewButtonWithLabel(label string) Button {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkButton
-	var goret1 Button
+	var ret1 Button
 
 	cret = C.gtk_button_new_with_label(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
 
-	return goret1
+	return ret1
 }
 
 // NewButtonWithMnemonic constructs a class Button.
@@ -172,13 +172,13 @@ func NewButtonWithMnemonic(label string) Button {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkButton
-	var goret1 Button
+	var ret1 Button
 
 	cret = C.gtk_button_new_with_mnemonic(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @button.
@@ -188,13 +188,13 @@ func (b button) Child() Widget {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_button_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // HasFrame returns whether the button has a frame.
@@ -204,13 +204,13 @@ func (b button) HasFrame() bool {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_button_get_has_frame(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IconName returns the icon name set via gtk_button_set_icon_name().
@@ -220,13 +220,13 @@ func (b button) IconName() string {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_button_get_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Label fetches the text from the label of the button, as set by
@@ -239,13 +239,13 @@ func (b button) Label() string {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_button_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns whether an embedded underline in the button label
@@ -256,13 +256,13 @@ func (b button) UseUnderline() bool {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_button_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @button.

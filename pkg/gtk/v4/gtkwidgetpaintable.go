@@ -81,13 +81,13 @@ func NewWidgetPaintable(widget Widget) WidgetPaintable {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.GtkWidgetPaintable
-	var goret1 WidgetPaintable
+	var ret1 WidgetPaintable
 
 	cret = C.gtk_widget_paintable_new(widget)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WidgetPaintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WidgetPaintable)
 
-	return goret1
+	return ret1
 }
 
 // Widget returns the widget that is observed or nil if none.
@@ -97,13 +97,13 @@ func (s widgetPaintable) Widget() Widget {
 	arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_widget_paintable_get_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetWidget sets the widget that should be observed.

@@ -77,13 +77,13 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 // NewGestureStylus constructs a class GestureStylus.
 func NewGestureStylus() GestureStylus {
 	var cret C.GtkGestureStylus
-	var goret1 GestureStylus
+	var ret1 GestureStylus
 
 	cret = C.gtk_gesture_stylus_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureStylus)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureStylus)
 
-	return goret1
+	return ret1
 }
 
 // Axis returns the current value for the requested @axis.
@@ -98,17 +98,17 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 	arg1 = (C.GdkAxisUse)(axis)
 
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_gesture_stylus_get_axis(arg0, axis, &arg2)
 
-	ret2 = *C.double(arg2)
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.double(arg2)
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Backlog: by default, GTK will limit rate of input events. On stylus input
@@ -128,13 +128,13 @@ func (g gestureStylus) Backlog() (backlog []*gdk.TimeCoord, nElems uint, ok bool
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_gesture_stylus_get_backlog(arg0, &arg1, &arg2)
 
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // DeviceTool returns the DeviceTool currently driving input through this
@@ -147,11 +147,11 @@ func (g gestureStylus) DeviceTool() gdk.DeviceTool {
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 
 	var cret *C.GdkDeviceTool
-	var goret1 gdk.DeviceTool
+	var ret1 gdk.DeviceTool
 
 	cret = C.gtk_gesture_stylus_get_device_tool(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.DeviceTool)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.DeviceTool)
 
-	return goret1
+	return ret1
 }

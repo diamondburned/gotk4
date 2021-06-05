@@ -49,13 +49,13 @@ const (
 // a parameter to g_thread_pool_new() for CPU bound tasks and similar cases.
 func GetNumProcessors() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_get_num_processors()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // OnceInitEnter: function to be called when starting a critical initialization
@@ -83,13 +83,13 @@ func OnceInitEnter(location interface{}) bool {
 	arg1 = *C.void(location)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_once_init_enter(location)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // OnceInitLeave: counterpart to g_once_init_enter(). Expects a location of a
@@ -137,13 +137,13 @@ func ThreadExit(retval interface{}) {
 // functions (such as g_thread_join()) on these threads.
 func ThreadSelf() *Thread {
 	var cret *C.GThread
-	var goret1 *Thread
+	var ret1 *Thread
 
 	cret = C.g_thread_self()
 
-	goret1 = WrapThread(unsafe.Pointer(cret))
+	ret1 = WrapThread(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ThreadYield causes the calling thread to voluntarily relinquish the CPU, so
@@ -385,13 +385,13 @@ func (k *Private) Get() interface{} {
 	arg0 = (*C.GPrivate)(unsafe.Pointer(k.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_private_get(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Replace sets the thread local variable @key to have the value @value in the
@@ -580,13 +580,13 @@ func (r *RWLock) ReaderTrylock() bool {
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_rw_lock_reader_trylock(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ReaderUnlock: release a read lock on @rw_lock.
@@ -621,13 +621,13 @@ func (r *RWLock) WriterTrylock() bool {
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_rw_lock_writer_trylock(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // WriterUnlock: release a write lock on @rw_lock.
@@ -748,13 +748,13 @@ func (r *RecMutex) Trylock() bool {
 	arg0 = (*C.GRecMutex)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_rec_mutex_trylock(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Unlock unlocks @rec_mutex. If another thread is blocked in a
@@ -804,16 +804,16 @@ func marshalThread(p uintptr) (interface{}, error) {
 func NewThread(name string, fn ThreadFunc) *Thread {
 
 	var cret *C.GThread
-	var goret1 *Thread
+	var ret1 *Thread
 
 	cret = C.g_thread_new(name, fn, data)
 
-	goret1 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Thread) {
+	ret1 = WrapThread(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Thread) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewThreadTry constructs a struct Thread.
@@ -822,13 +822,13 @@ func NewThreadTry(name string, fn ThreadFunc) (thread *Thread, err error) {
 	var errout *C.GError
 
 	var cret *C.GThread
-	var goret1 *Thread
+	var ret1 *Thread
 	var goerr error
 
 	cret = C.g_thread_try_new(name, fn, data, &errout)
 
-	goret1 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Thread) {
+	ret1 = WrapThread(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Thread) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -836,7 +836,7 @@ func NewThreadTry(name string, fn ThreadFunc) (thread *Thread, err error) {
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -865,13 +865,13 @@ func (t *Thread) Join() interface{} {
 	arg0 = (*C.GThread)(unsafe.Pointer(t.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_thread_join(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref: increase the reference count on @thread.
@@ -881,16 +881,16 @@ func (t *Thread) Ref() *Thread {
 	arg0 = (*C.GThread)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GThread
-	var goret1 *Thread
+	var ret1 *Thread
 
 	cret = C.g_thread_ref(arg0)
 
-	goret1 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Thread) {
+	ret1 = WrapThread(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Thread) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref: decrease the reference count on @thread, possibly freeing all

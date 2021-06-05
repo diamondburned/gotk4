@@ -126,13 +126,13 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 // NewMountOperation constructs a class MountOperation.
 func NewMountOperation() MountOperation {
 	var cret C.GMountOperation
-	var goret1 MountOperation
+	var ret1 MountOperation
 
 	cret = C.g_mount_operation_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
 
-	return goret1
+	return ret1
 }
 
 // Anonymous: check to see whether the mount operation is being used for an
@@ -143,13 +143,13 @@ func (o mountOperation) Anonymous() bool {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_mount_operation_get_anonymous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Choice gets a choice from the mount operation.
@@ -159,13 +159,13 @@ func (o mountOperation) Choice() int {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_mount_operation_get_choice(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Domain gets the domain of the mount operation.
@@ -175,13 +175,13 @@ func (o mountOperation) Domain() string {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_mount_operation_get_domain(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsTcryptHiddenVolume: check to see whether the mount operation is being
@@ -192,13 +192,13 @@ func (o mountOperation) IsTcryptHiddenVolume() bool {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsTcryptSystemVolume: check to see whether the mount operation is being
@@ -209,13 +209,13 @@ func (o mountOperation) IsTcryptSystemVolume() bool {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_mount_operation_get_is_tcrypt_system_volume(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Password gets a password from the mount operation.
@@ -225,13 +225,13 @@ func (o mountOperation) Password() string {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_mount_operation_get_password(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PasswordSave gets the state of saving passwords for the mount operation.
@@ -241,13 +241,13 @@ func (o mountOperation) PasswordSave() PasswordSave {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.GPasswordSave
-	var goret1 PasswordSave
+	var ret1 PasswordSave
 
 	cret = C.g_mount_operation_get_password_save(arg0)
 
-	goret1 = PasswordSave(cret)
+	ret1 = PasswordSave(cret)
 
-	return goret1
+	return ret1
 }
 
 // Pim gets a PIM from the mount operation.
@@ -257,13 +257,13 @@ func (o mountOperation) Pim() uint {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_mount_operation_get_pim(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Username: get the user name from the mount operation.
@@ -273,13 +273,13 @@ func (o mountOperation) Username() string {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_mount_operation_get_username(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Reply emits the Operation::reply signal.

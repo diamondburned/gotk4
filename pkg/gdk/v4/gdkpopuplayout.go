@@ -84,16 +84,16 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	arg3 = (C.GdkGravity)(surfaceAnchor)
 
 	var cret *C.GdkPopupLayout
-	var goret1 *PopupLayout
+	var ret1 *PopupLayout
 
 	cret = C.gdk_popup_layout_new(anchorRect, rectAnchor, surfaceAnchor)
 
-	goret1 = WrapPopupLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *PopupLayout) {
+	ret1 = WrapPopupLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *PopupLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -108,16 +108,16 @@ func (l *PopupLayout) Copy() *PopupLayout {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkPopupLayout
-	var goret1 *PopupLayout
+	var ret1 *PopupLayout
 
 	cret = C.gdk_popup_layout_copy(arg0)
 
-	goret1 = WrapPopupLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *PopupLayout) {
+	ret1 = WrapPopupLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *PopupLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Equal: check whether @layout and @other has identical layout properties.
@@ -129,13 +129,13 @@ func (l *PopupLayout) Equal(other *PopupLayout) bool {
 	arg1 = (*C.GdkPopupLayout)(unsafe.Pointer(other.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_popup_layout_equal(arg0, other)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // AnchorHints: get the AnchorHints.
@@ -145,13 +145,13 @@ func (l *PopupLayout) AnchorHints() AnchorHints {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.GdkAnchorHints
-	var goret1 AnchorHints
+	var ret1 AnchorHints
 
 	cret = C.gdk_popup_layout_get_anchor_hints(arg0)
 
-	goret1 = AnchorHints(cret)
+	ret1 = AnchorHints(cret)
 
-	return goret1
+	return ret1
 }
 
 // AnchorRect: get the anchor rectangle.
@@ -161,13 +161,13 @@ func (l *PopupLayout) AnchorRect() *Rectangle {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkRectangle
-	var goret1 *Rectangle
+	var ret1 *Rectangle
 
 	cret = C.gdk_popup_layout_get_anchor_rect(arg0)
 
-	goret1 = WrapRectangle(unsafe.Pointer(cret))
+	ret1 = WrapRectangle(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Offset retrieves the offset for the anchor rectangle.
@@ -176,15 +176,15 @@ func (l *PopupLayout) Offset() (dx int, dy int) {
 
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gdk_popup_layout_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -196,13 +196,13 @@ func (l *PopupLayout) RectAnchor() Gravity {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.GdkGravity
-	var goret1 Gravity
+	var ret1 Gravity
 
 	cret = C.gdk_popup_layout_get_rect_anchor(arg0)
 
-	goret1 = Gravity(cret)
+	ret1 = Gravity(cret)
 
-	return goret1
+	return ret1
 }
 
 // SurfaceAnchor returns the anchor position on the popup surface.
@@ -212,13 +212,13 @@ func (l *PopupLayout) SurfaceAnchor() Gravity {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.GdkGravity
-	var goret1 Gravity
+	var ret1 Gravity
 
 	cret = C.gdk_popup_layout_get_surface_anchor(arg0)
 
-	goret1 = Gravity(cret)
+	ret1 = Gravity(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref increases the reference count of @value.
@@ -228,16 +228,16 @@ func (l *PopupLayout) Ref() *PopupLayout {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkPopupLayout
-	var goret1 *PopupLayout
+	var ret1 *PopupLayout
 
 	cret = C.gdk_popup_layout_ref(arg0)
 
-	goret1 = WrapPopupLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *PopupLayout) {
+	ret1 = WrapPopupLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *PopupLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SetAnchorHints: set new anchor hints.

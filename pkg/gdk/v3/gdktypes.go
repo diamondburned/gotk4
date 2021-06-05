@@ -53,14 +53,14 @@ func (a *Atom) Name() string {
 	arg0 = (C.GdkAtom)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_atom_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Point defines the x and y coordinates of a point.
@@ -153,13 +153,13 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_rectangle_equal(arg0, rect2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Intersect calculates the intersection of two rectangles. It is allowed for
@@ -174,17 +174,17 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 	arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	var arg2 *C.GdkRectangle
+	var arg2 C.GdkRectangle
 	var ret2 *Rectangle
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gdk_rectangle_intersect(arg0, src2, &arg2)
 
 	ret2 = WrapRectangle(unsafe.Pointer(arg2))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Union calculates the union of two rectangles. The union of rectangles @src1
@@ -200,7 +200,7 @@ func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 	arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	var arg2 *C.GdkRectangle
+	var arg2 C.GdkRectangle
 	var ret2 *Rectangle
 
 	C.gdk_rectangle_union(arg0, src2, &arg2)

@@ -103,13 +103,13 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GDBusInterface
-	var goret1 DBusInterface
+	var ret1 DBusInterface
 
 	cret = C.g_dbus_object_manager_get_interface(arg0, objectPath, interfaceName)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
 
-	return goret1
+	return ret1
 }
 
 // Object gets the BusObjectProxy at @object_path, if any.
@@ -122,13 +122,13 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GDBusObject
-	var goret1 DBusObject
+	var ret1 DBusObject
 
 	cret = C.g_dbus_object_manager_get_object(arg0, objectPath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
 
-	return goret1
+	return ret1
 }
 
 // ObjectPath gets the object path that @manager is for.
@@ -138,13 +138,13 @@ func (m dBusObjectManager) ObjectPath() string {
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dbus_object_manager_get_object_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Objects gets all BusObject objects known to @manager.
@@ -154,14 +154,14 @@ func (m dBusObjectManager) Objects() *glib.List {
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_dbus_object_manager_get_objects(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

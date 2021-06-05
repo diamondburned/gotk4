@@ -81,13 +81,13 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 // NewOffscreenWindow constructs a class OffscreenWindow.
 func NewOffscreenWindow() OffscreenWindow {
 	var cret C.GtkOffscreenWindow
-	var goret1 OffscreenWindow
+	var ret1 OffscreenWindow
 
 	cret = C.gtk_offscreen_window_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OffscreenWindow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OffscreenWindow)
 
-	return goret1
+	return ret1
 }
 
 // Pixbuf retrieves a snapshot of the contained widget in the form of a
@@ -99,13 +99,13 @@ func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
 	arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_offscreen_window_get_pixbuf(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // Surface retrieves a snapshot of the contained widget in the form of a
@@ -117,11 +117,11 @@ func (o offscreenWindow) Surface() *cairo.Surface {
 	arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
 
 	var cret *C.cairo_surface_t
-	var goret1 *cairo.Surface
+	var ret1 *cairo.Surface
 
 	cret = C.gtk_offscreen_window_get_surface(arg0)
 
-	goret1 = cairo.WrapSurface(unsafe.Pointer(cret))
+	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

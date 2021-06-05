@@ -15,13 +15,13 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 	arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix.Native()))
 
 	var cret C.PangoGravity
-	var goret1 Gravity
+	var ret1 Gravity
 
 	cret = C.pango_gravity_get_for_matrix(matrix)
 
-	goret1 = Gravity(cret)
+	ret1 = Gravity(cret)
 
-	return goret1
+	return ret1
 }
 
 // GravityGetForScript returns the gravity to use in laying out a `PangoItem`.
@@ -41,13 +41,13 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 	arg3 = (C.PangoGravityHint)(hint)
 
 	var cret C.PangoGravity
-	var goret1 Gravity
+	var ret1 Gravity
 
 	cret = C.pango_gravity_get_for_script(script, baseGravity, hint)
 
-	goret1 = Gravity(cret)
+	ret1 = Gravity(cret)
 
-	return goret1
+	return ret1
 }
 
 // GravityGetForScriptAndWidth returns the gravity to use in laying out a single
@@ -78,13 +78,13 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 	arg4 = (C.PangoGravityHint)(hint)
 
 	var cret C.PangoGravity
-	var goret1 Gravity
+	var ret1 Gravity
 
 	cret = C.pango_gravity_get_for_script_and_width(script, wide, baseGravity, hint)
 
-	goret1 = Gravity(cret)
+	ret1 = Gravity(cret)
 
-	return goret1
+	return ret1
 }
 
 // GravityToRotation converts a Gravity value to its natural rotation in
@@ -99,11 +99,11 @@ func GravityToRotation(gravity Gravity) float64 {
 	arg1 = (C.PangoGravity)(gravity)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.pango_gravity_to_rotation(gravity)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }

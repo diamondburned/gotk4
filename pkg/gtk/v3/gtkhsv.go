@@ -77,13 +77,13 @@ func marshalHSV(p uintptr) (interface{}, error) {
 // NewHSV constructs a class HSV.
 func NewHSV() HSV {
 	var cret C.GtkHSV
-	var goret1 HSV
+	var ret1 HSV
 
 	cret = C.gtk_hsv_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HSV)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HSV)
 
-	return goret1
+	return ret1
 }
 
 // Color queries the current color in an HSV color selector. Returned values
@@ -93,18 +93,18 @@ func (h hsV) Color() (h float64, s float64, v float64) {
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
-	var arg1 *C.gdouble
+	var arg1 C.gdouble
 	var ret1 float64
-	var arg2 *C.gdouble
+	var arg2 C.gdouble
 	var ret2 float64
-	var arg3 *C.gdouble
+	var arg3 C.gdouble
 	var ret3 float64
 
 	C.gtk_hsv_get_color(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = *C.gdouble(arg1)
-	ret2 = *C.gdouble(arg2)
-	ret3 = *C.gdouble(arg3)
+	ret1 = C.gdouble(arg1)
+	ret2 = C.gdouble(arg2)
+	ret3 = C.gdouble(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -115,15 +115,15 @@ func (h hsV) Metrics() (size int, ringWidth int) {
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 
 	C.gtk_hsv_get_metrics(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -138,13 +138,13 @@ func (h hsV) IsAdjusting() bool {
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_hsv_is_adjusting(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetColor sets the current color in an HSV color selector. Color component

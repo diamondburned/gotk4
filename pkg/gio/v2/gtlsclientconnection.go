@@ -50,18 +50,18 @@ func NewTLSClientConnection(baseIOStream IOStream, serverIdentity SocketConnecta
 	arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
 	var cret *C.GIOStream
-	var goret1 TLSClientConnection
+	var ret1 TLSClientConnection
 	var goerr error
 
 	cret = C.g_tls_client_connection_new(baseIOStream, serverIdentity, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSClientConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSClientConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // TLSClientConnectionOverrider contains methods that are overridable. This
@@ -210,16 +210,16 @@ func (c tlsClientConnection) AcceptedCAS() *glib.List {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_tls_client_connection_get_accepted_cas(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ServerIdentity gets @conn's expected server identity
@@ -229,13 +229,13 @@ func (c tlsClientConnection) ServerIdentity() SocketConnectable {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketConnectable
-	var goret1 SocketConnectable
+	var ret1 SocketConnectable
 
 	cret = C.g_tls_client_connection_get_server_identity(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
 
-	return goret1
+	return ret1
 }
 
 // UseSSL3: SSL 3.0 is no longer supported. See
@@ -246,13 +246,13 @@ func (c tlsClientConnection) UseSSL3() bool {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_tls_client_connection_get_use_ssl3(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ValidationFlags gets @conn's validation flags
@@ -262,13 +262,13 @@ func (c tlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsCertificateFlags
-	var goret1 TLSCertificateFlags
+	var ret1 TLSCertificateFlags
 
 	cret = C.g_tls_client_connection_get_validation_flags(arg0)
 
-	goret1 = TLSCertificateFlags(cret)
+	ret1 = TLSCertificateFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used

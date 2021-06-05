@@ -32,17 +32,17 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var arg3 *C.double
+	var arg3 C.double
 	var ret3 float64
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gdk_events_get_angle(event1, event2, &arg3)
 
-	ret3 = *C.double(arg3)
-	goret2 = C.bool(cret) != C.false
+	ret3 = C.double(arg3)
+	ret2 = C.bool(cret) != C.false
 
-	return ret3, goret2
+	return ret3, ret2
 }
 
 // EventsGetCenter: if both events contain X/Y information, the center of both
@@ -54,20 +54,20 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var arg3 *C.double
+	var arg3 C.double
 	var ret3 float64
-	var arg4 *C.double
+	var arg4 C.double
 	var ret4 float64
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gdk_events_get_center(event1, event2, &arg3, &arg4)
 
-	ret3 = *C.double(arg3)
-	ret4 = *C.double(arg4)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.double(arg3)
+	ret4 = C.double(arg4)
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // EventsGetDistance: if both events have X/Y information, the distance between
@@ -80,17 +80,17 @@ func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var arg3 *C.double
+	var arg3 C.double
 	var ret3 float64
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gdk_events_get_distance(event1, event2, &arg3)
 
-	ret3 = *C.double(arg3)
-	goret2 = C.bool(cret) != C.false
+	ret3 = C.double(arg3)
+	ret2 = C.bool(cret) != C.false
 
-	return ret3, goret2
+	return ret3, ret2
 }
 
 // EventSequence: gdkEventSequence is an opaque type representing a sequence of

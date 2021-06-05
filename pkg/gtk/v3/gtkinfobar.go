@@ -176,13 +176,13 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 // NewInfoBar constructs a class InfoBar.
 func NewInfoBar() InfoBar {
 	var cret C.GtkInfoBar
-	var goret1 InfoBar
+	var ret1 InfoBar
 
 	cret = C.gtk_info_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InfoBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InfoBar)
 
-	return goret1
+	return ret1
 }
 
 // AddActionWidget: add an activatable widget to the action area of a
@@ -216,13 +216,13 @@ func (i infoBar) AddButton(buttonText string, responseID int) Button {
 	arg2 = C.gint(responseID)
 
 	var cret *C.GtkWidget
-	var goret1 Button
+	var ret1 Button
 
 	cret = C.gtk_info_bar_add_button(arg0, buttonText, responseID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
 
-	return goret1
+	return ret1
 }
 
 // ActionArea returns the action area of @info_bar.
@@ -232,13 +232,13 @@ func (i infoBar) ActionArea() Box {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Box
+	var ret1 Box
 
 	cret = C.gtk_info_bar_get_action_area(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
 
-	return goret1
+	return ret1
 }
 
 // ContentArea returns the content area of @info_bar.
@@ -248,13 +248,13 @@ func (i infoBar) ContentArea() Box {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Box
+	var ret1 Box
 
 	cret = C.gtk_info_bar_get_content_area(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
 
-	return goret1
+	return ret1
 }
 
 // MessageType returns the message type of the message area.
@@ -264,13 +264,13 @@ func (i infoBar) MessageType() MessageType {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkMessageType
-	var goret1 MessageType
+	var ret1 MessageType
 
 	cret = C.gtk_info_bar_get_message_type(arg0)
 
-	goret1 = MessageType(cret)
+	ret1 = MessageType(cret)
 
-	return goret1
+	return ret1
 }
 
 func (i infoBar) Revealed() bool {
@@ -279,13 +279,13 @@ func (i infoBar) Revealed() bool {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_info_bar_get_revealed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowCloseButton returns whether the widget will display a standard close
@@ -296,13 +296,13 @@ func (i infoBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_info_bar_get_show_close_button(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Response emits the “response” signal with the given @response_id.

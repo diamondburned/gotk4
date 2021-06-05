@@ -98,18 +98,18 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixb
 	}
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 	var goerr error
 
 	cret = C.gdk_pixbuf_from_pixdata(pixdata, copyPixels, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
@@ -183,13 +183,13 @@ func (p *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
 	}
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_pixdata_from_pixbuf(arg0, pixbuf, useRle)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
@@ -202,16 +202,16 @@ func (p *Pixdata) Serialize() (streamLengthP uint, guint8s []byte) {
 
 	var cret *C.guint8
 	var arg1 *C.guint
-	var goret2 []byte
+	var ret2 []byte
 
 	cret = C.gdk_pixdata_serialize(arg0, &arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret2, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&ret2, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // ToCsource generates C source code suitable for compiling images directly into
@@ -231,14 +231,14 @@ func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String 
 	arg2 = (C.GdkPixdataDumpType)(dumpType)
 
 	var cret *C.GString
-	var goret1 *glib.String
+	var ret1 *glib.String
 
 	cret = C.gdk_pixdata_to_csource(arg0, name, dumpType)
 
-	goret1 = glib.WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.String) {
+	ret1 = glib.WrapString(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

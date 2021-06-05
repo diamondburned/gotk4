@@ -164,18 +164,18 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (credentials
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GCredentials
-	var goret1 Credentials
+	var ret1 Credentials
 	var goerr error
 
 	cret = C.g_unix_connection_receive_credentials(arg0, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReceiveCredentialsAsync: asynchronously receive credentials.
@@ -205,18 +205,18 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (credential
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GCredentials
-	var goret1 Credentials
+	var ret1 Credentials
 	var goerr error
 
 	cret = C.g_unix_connection_receive_credentials_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReceiveFd receives a file descriptor from the sending end of the
@@ -234,18 +234,18 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (gint int, err error)
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_unix_connection_receive_fd(arg0, cancellable, &errout)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SendCredentials passes the credentials of the current user the receiving

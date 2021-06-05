@@ -97,26 +97,26 @@ func NewUnixSocketAddress(path string) UnixSocketAddress {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GUnixSocketAddress
-	var goret1 UnixSocketAddress
+	var ret1 UnixSocketAddress
 
 	cret = C.g_unix_socket_address_new(path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
 
-	return goret1
+	return ret1
 }
 
 // NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
 func NewUnixSocketAddressAbstract(path []byte) UnixSocketAddress {
 
 	var cret C.GUnixSocketAddress
-	var goret1 UnixSocketAddress
+	var ret1 UnixSocketAddress
 
 	cret = C.g_unix_socket_address_new_abstract(path, pathLen)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
 
-	return goret1
+	return ret1
 }
 
 // AddressType gets @address's type.
@@ -126,13 +126,13 @@ func (a unixSocketAddress) AddressType() UnixSocketAddressType {
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.GUnixSocketAddressType
-	var goret1 UnixSocketAddressType
+	var ret1 UnixSocketAddressType
 
 	cret = C.g_unix_socket_address_get_address_type(arg0)
 
-	goret1 = UnixSocketAddressType(cret)
+	ret1 = UnixSocketAddressType(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsAbstract tests if @address is abstract.
@@ -142,13 +142,13 @@ func (a unixSocketAddress) IsAbstract() bool {
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_unix_socket_address_get_is_abstract(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Path gets @address's path, or for abstract sockets the "name".
@@ -163,13 +163,13 @@ func (a unixSocketAddress) Path() string {
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_unix_socket_address_get_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PathLen gets the length of @address's path.
@@ -181,13 +181,13 @@ func (a unixSocketAddress) PathLen() uint {
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_unix_socket_address_get_path_len(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 type UnixSocketAddressPrivate struct {

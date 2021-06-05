@@ -32,13 +32,13 @@ func Access(filename string, mode int) int {
 	arg2 = C.int(mode)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_access(filename, mode)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Chdir: a wrapper for the POSIX chdir() function. The function changes the
@@ -52,13 +52,13 @@ func Chdir(path string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_chdir(path)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Close: this wraps the close() call; in case of error, errno will be
@@ -96,13 +96,13 @@ func Rmdir(filename string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_rmdir(filename)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Unlink: a wrapper for the POSIX unlink() function. The unlink() function
@@ -119,13 +119,13 @@ func Unlink(filename string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_unlink(filename)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // StatBuf: a type corresponding to the appropriate struct type for the stat()

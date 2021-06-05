@@ -113,18 +113,18 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (socketAddress So
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSocketAddress
-	var goret1 SocketAddress
+	var ret1 SocketAddress
 	var goerr error
 
 	cret = C.g_socket_address_enumerator_next(arg0, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NextAsync: asynchronously retrieves the next Address from @enumerator and
@@ -154,16 +154,16 @@ func (e socketAddressEnumerator) NextFinish(result AsyncResult) (socketAddress S
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GSocketAddress
-	var goret1 SocketAddress
+	var ret1 SocketAddress
 	var goerr error
 
 	cret = C.g_socket_address_enumerator_next_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }

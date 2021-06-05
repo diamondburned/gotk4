@@ -123,13 +123,13 @@ func (a actionable) ActionName() string {
 	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_actionable_get_action_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ActionTargetValue gets the current target value of @actionable.
@@ -141,13 +141,13 @@ func (a actionable) ActionTargetValue() *glib.Variant {
 	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.gtk_actionable_get_action_target_value(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SetActionName specifies the name of the action with which this widget

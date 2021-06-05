@@ -68,13 +68,13 @@ func NewBoolFilter(expression Expression) BoolFilter {
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	var cret C.GtkBoolFilter
-	var goret1 BoolFilter
+	var ret1 BoolFilter
 
 	cret = C.gtk_bool_filter_new(expression)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoolFilter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoolFilter)
 
-	return goret1
+	return ret1
 }
 
 // Expression gets the expression that the filter uses to evaluate if an
@@ -85,13 +85,13 @@ func (s boolFilter) Expression() Expression {
 	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkExpression
-	var goret1 Expression
+	var ret1 Expression
 
 	cret = C.gtk_bool_filter_get_expression(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
 
-	return goret1
+	return ret1
 }
 
 // Invert returns whether the filter inverts the expression.
@@ -101,13 +101,13 @@ func (s boolFilter) Invert() bool {
 	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_bool_filter_get_invert(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetExpression sets the expression that the filter uses to check if items

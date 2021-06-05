@@ -105,7 +105,7 @@ func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var arg2 *C.GdkRectangle
+	var arg2 C.GdkRectangle
 	var ret2 *gdk.Rectangle
 
 	C.gtk_cell_accessible_parent_get_cell_area(arg0, cell, &arg2)
@@ -122,15 +122,15 @@ func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column
 	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
 
 	C.gtk_cell_accessible_parent_get_cell_position(arg0, cell, &arg2, &arg3)
 
-	ret2 = *C.gint(arg2)
-	ret3 = *C.gint(arg3)
+	ret2 = C.gint(arg2)
+	ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }
@@ -143,13 +143,13 @@ func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_cell_accessible_parent_get_child_index(arg0, cell)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererState {
@@ -160,13 +160,13 @@ func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererSta
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	var cret C.GtkCellRendererState
-	var goret1 CellRendererState
+	var ret1 CellRendererState
 
 	cret = C.gtk_cell_accessible_parent_get_renderer_state(arg0, cell)
 
-	goret1 = CellRendererState(cret)
+	ret1 = CellRendererState(cret)
 
-	return goret1
+	return ret1
 }
 
 func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
@@ -177,11 +177,11 @@ func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_cell_accessible_parent_grab_focus(arg0, cell)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

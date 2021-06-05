@@ -53,13 +53,13 @@ func (q *AsyncQueue) Length() int {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_async_queue_length(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // LengthUnlocked returns the length of the queue.
@@ -77,13 +77,13 @@ func (q *AsyncQueue) LengthUnlocked() int {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_async_queue_length_unlocked(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Lock acquires the @queue's lock. If another thread is already holding the
@@ -109,13 +109,13 @@ func (q *AsyncQueue) Pop() interface{} {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_pop(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // PopUnlocked pops data from the @queue. If @queue is empty, this function
@@ -128,13 +128,13 @@ func (q *AsyncQueue) PopUnlocked() interface{} {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_pop_unlocked(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Push pushes the @data into the @queue. @data must not be nil.
@@ -239,13 +239,13 @@ func (q *AsyncQueue) Ref() *AsyncQueue {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret *C.GAsyncQueue
-	var goret1 *AsyncQueue
+	var ret1 *AsyncQueue
 
 	cret = C.g_async_queue_ref(arg0)
 
-	goret1 = WrapAsyncQueue(unsafe.Pointer(cret))
+	ret1 = WrapAsyncQueue(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RefUnlocked increases the reference count of the asynchronous @queue by 1.
@@ -266,13 +266,13 @@ func (q *AsyncQueue) Remove(item interface{}) bool {
 	arg1 = C.gpointer(item)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_async_queue_remove(arg0, item)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RemoveUnlocked: remove an item from the queue.
@@ -286,13 +286,13 @@ func (q *AsyncQueue) RemoveUnlocked(item interface{}) bool {
 	arg1 = C.gpointer(item)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_async_queue_remove_unlocked(arg0, item)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Sort sorts @queue using @func.
@@ -354,13 +354,13 @@ func (q *AsyncQueue) TimedPop(endTime *TimeVal) interface{} {
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(endTime.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_timed_pop(arg0, endTime)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TimedPopUnlocked pops data from the @queue. If the queue is empty, blocks
@@ -380,13 +380,13 @@ func (q *AsyncQueue) TimedPopUnlocked(endTime *TimeVal) interface{} {
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(endTime.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_timed_pop_unlocked(arg0, endTime)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TimeoutPop pops data from the @queue. If the queue is empty, blocks for
@@ -401,13 +401,13 @@ func (q *AsyncQueue) TimeoutPop(timeout uint64) interface{} {
 	arg1 = C.guint64(timeout)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_timeout_pop(arg0, timeout)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TimeoutPopUnlocked pops data from the @queue. If the queue is empty, blocks
@@ -424,13 +424,13 @@ func (q *AsyncQueue) TimeoutPopUnlocked(timeout uint64) interface{} {
 	arg1 = C.guint64(timeout)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_timeout_pop_unlocked(arg0, timeout)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryPop tries to pop data from the @queue. If no data is available, nil is
@@ -441,13 +441,13 @@ func (q *AsyncQueue) TryPop() interface{} {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_try_pop(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryPopUnlocked tries to pop data from the @queue. If no data is available,
@@ -460,13 +460,13 @@ func (q *AsyncQueue) TryPopUnlocked() interface{} {
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_async_queue_try_pop_unlocked(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Unlock releases the queue's lock.

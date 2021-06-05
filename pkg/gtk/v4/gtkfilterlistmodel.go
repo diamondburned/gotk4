@@ -112,13 +112,13 @@ func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
 	arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
 	var cret C.GtkFilterListModel
-	var goret1 FilterListModel
+	var ret1 FilterListModel
 
 	cret = C.gtk_filter_list_model_new(model, filter)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilterListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilterListModel)
 
-	return goret1
+	return ret1
 }
 
 // Filter gets the Filter currently set on @self.
@@ -128,13 +128,13 @@ func (s filterListModel) Filter() Filter {
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkFilter
-	var goret1 Filter
+	var ret1 Filter
 
 	cret = C.gtk_filter_list_model_get_filter(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Filter)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Filter)
 
-	return goret1
+	return ret1
 }
 
 // Incremental returns whether incremental filtering was enabled via
@@ -145,13 +145,13 @@ func (s filterListModel) Incremental() bool {
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_filter_list_model_get_incremental(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model currently filtered or nil if none.
@@ -161,13 +161,13 @@ func (s filterListModel) Model() gio.ListModel {
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_filter_list_model_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Pending returns the number of items that have not been filtered yet.
@@ -189,13 +189,13 @@ func (s filterListModel) Pending() uint {
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_filter_list_model_get_pending(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetFilter sets the filter used to filter items.

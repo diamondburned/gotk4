@@ -84,18 +84,18 @@ func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GCharsetConverter
-	var goret1 CharsetConverter
+	var ret1 CharsetConverter
 	var goerr error
 
 	cret = C.g_charset_converter_new(toCharset, fromCharset, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so
@@ -106,13 +106,13 @@ func (c charsetConverter) NumFallbacks() uint {
 	arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_charset_converter_get_num_fallbacks(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseFallback gets the Converter:use-fallback property.
@@ -122,13 +122,13 @@ func (c charsetConverter) UseFallback() bool {
 	arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_charset_converter_get_use_fallback(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetUseFallback sets the Converter:use-fallback property.

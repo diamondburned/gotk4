@@ -160,13 +160,13 @@ func (f fontMap) CreateContext() pango.Context {
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.pango_fc_font_map_create_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final

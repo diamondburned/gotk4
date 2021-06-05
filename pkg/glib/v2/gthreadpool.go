@@ -21,38 +21,38 @@ import "C"
 // are not stopped.
 func ThreadPoolGetMaxIdleTime() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_thread_pool_get_max_idle_time()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ThreadPoolGetMaxUnusedThreads returns the maximal allowed number of unused
 // threads.
 func ThreadPoolGetMaxUnusedThreads() int {
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_thread_pool_get_max_unused_threads()
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ThreadPoolGetNumUnusedThreads returns the number of currently unused threads.
 func ThreadPoolGetNumUnusedThreads() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_thread_pool_get_num_unused_threads()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ThreadPoolSetMaxIdleTime: this function will set the maximum @interval that a
@@ -164,13 +164,13 @@ func (p *ThreadPool) MaxThreads() int {
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_thread_pool_get_max_threads(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NumThreads returns the number of threads currently running in @pool.
@@ -180,13 +180,13 @@ func (p *ThreadPool) NumThreads() uint {
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_thread_pool_get_num_threads(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MoveToFront moves the item to the front of the queue of unprocessed items, so
@@ -199,13 +199,13 @@ func (p *ThreadPool) MoveToFront(data interface{}) bool {
 	arg1 = C.gpointer(data)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_thread_pool_move_to_front(arg0, data)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Push inserts @data into the list of tasks to be executed by @pool.
@@ -299,11 +299,11 @@ func (p *ThreadPool) Unprocessed() uint {
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_thread_pool_unprocessed(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }

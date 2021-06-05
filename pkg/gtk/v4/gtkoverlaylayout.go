@@ -56,13 +56,13 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 // NewOverlayLayout constructs a class OverlayLayout.
 func NewOverlayLayout() OverlayLayout {
 	var cret C.GtkOverlayLayout
-	var goret1 OverlayLayout
+	var ret1 OverlayLayout
 
 	cret = C.gtk_overlay_layout_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(OverlayLayout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(OverlayLayout)
 
-	return goret1
+	return ret1
 }
 
 type OverlayLayoutChild interface {
@@ -106,13 +106,13 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 	arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_overlay_layout_child_get_clip_overlay(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Measure retrieves whether the child is measured.
@@ -122,13 +122,13 @@ func (c overlayLayoutChild) Measure() bool {
 	arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_overlay_layout_child_get_measure(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetClipOverlay sets whether to clip this child.

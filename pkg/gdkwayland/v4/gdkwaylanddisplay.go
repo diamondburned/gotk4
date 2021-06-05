@@ -79,13 +79,13 @@ func (d waylandDisplay) StartupNotificationID() string {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_wayland_display_get_startup_notification_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // WlCompositor returns the Wayland global singleton compositor of a
@@ -96,13 +96,13 @@ func (d waylandDisplay) WlCompositor() interface{} {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.wl_compositor
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_display_get_wl_compositor(arg0)
 
-	goret1 = *C.wl_compositor(cret)
+	ret1 = *C.wl_compositor(cret)
 
-	return goret1
+	return ret1
 }
 
 // WlDisplay returns the Wayland wl_display of a Display.
@@ -112,13 +112,13 @@ func (d waylandDisplay) WlDisplay() interface{} {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.wl_display
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_display_get_wl_display(arg0)
 
-	goret1 = *C.wl_display(cret)
+	ret1 = *C.wl_display(cret)
 
-	return goret1
+	return ret1
 }
 
 // QueryRegistry returns true if the the interface was found in the display
@@ -132,13 +132,13 @@ func (d waylandDisplay) QueryRegistry(global string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_wayland_display_query_registry(arg0, global)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetCursorTheme sets the cursor theme for the given @display.

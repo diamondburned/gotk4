@@ -49,11 +49,11 @@ func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 // NewVulkanRenderer constructs a class VulkanRenderer.
 func NewVulkanRenderer() VulkanRenderer {
 	var cret C.GskVulkanRenderer
-	var goret1 VulkanRenderer
+	var ret1 VulkanRenderer
 
 	cret = C.gsk_vulkan_renderer_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanRenderer)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanRenderer)
 
-	return goret1
+	return ret1
 }

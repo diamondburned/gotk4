@@ -76,13 +76,13 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkShortcutLabel
-	var goret1 ShortcutLabel
+	var ret1 ShortcutLabel
 
 	cret = C.gtk_shortcut_label_new(accelerator)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutLabel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutLabel)
 
-	return goret1
+	return ret1
 }
 
 // Accelerator retrieves the current accelerator of @self.
@@ -92,13 +92,13 @@ func (s shortcutLabel) Accelerator() string {
 	arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_shortcut_label_get_accelerator(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // DisabledText retrieves the text that is displayed when no accelerator is
@@ -109,13 +109,13 @@ func (s shortcutLabel) DisabledText() string {
 	arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_shortcut_label_get_disabled_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetAccelerator sets the accelerator to be displayed by @self.

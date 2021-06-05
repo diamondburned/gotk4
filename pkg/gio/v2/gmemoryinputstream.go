@@ -73,13 +73,13 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 // NewMemoryInputStream constructs a class MemoryInputStream.
 func NewMemoryInputStream() MemoryInputStream {
 	var cret C.GMemoryInputStream
-	var goret1 MemoryInputStream
+	var ret1 MemoryInputStream
 
 	cret = C.g_memory_input_stream_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
 
-	return goret1
+	return ret1
 }
 
 // NewMemoryInputStreamFromBytes constructs a class MemoryInputStream.
@@ -89,13 +89,13 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream {
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
 	var cret C.GMemoryInputStream
-	var goret1 MemoryInputStream
+	var ret1 MemoryInputStream
 
 	cret = C.g_memory_input_stream_new_from_bytes(bytes)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
 
-	return goret1
+	return ret1
 }
 
 // AddBytes appends @bytes to data that can be read from the input stream.

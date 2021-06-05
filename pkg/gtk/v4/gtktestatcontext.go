@@ -47,13 +47,13 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 	arg2 = (C.GtkAccessibleProperty)(property)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_test_accessible_has_property(accessible, property)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestAccessibleHasRelation checks whether the Accessible has @relation set.
@@ -65,13 +65,13 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 	arg2 = (C.GtkAccessibleRelation)(relation)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_test_accessible_has_relation(accessible, relation)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestAccessibleHasRole checks whether the Accessible:accessible-role of the
@@ -84,13 +84,13 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 	arg2 = (C.GtkAccessibleRole)(role)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_test_accessible_has_role(accessible, role)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TestAccessibleHasState checks whether the Accessible has @state set.
@@ -102,11 +102,11 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 	arg2 = (C.GtkAccessibleState)(state)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_test_accessible_has_state(accessible, state)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

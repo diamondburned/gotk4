@@ -130,11 +130,11 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 // NewDrawingArea constructs a class DrawingArea.
 func NewDrawingArea() DrawingArea {
 	var cret C.GtkDrawingArea
-	var goret1 DrawingArea
+	var ret1 DrawingArea
 
 	cret = C.gtk_drawing_area_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingArea)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingArea)
 
-	return goret1
+	return ret1
 }

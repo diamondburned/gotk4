@@ -103,13 +103,13 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 // NewUnixFDMessage constructs a class UnixFDMessage.
 func NewUnixFDMessage() UnixFDMessage {
 	var cret C.GUnixFDMessage
-	var goret1 UnixFDMessage
+	var ret1 UnixFDMessage
 
 	cret = C.g_unix_fd_message_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
 
-	return goret1
+	return ret1
 }
 
 // NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
@@ -119,13 +119,13 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
 	var cret C.GUnixFDMessage
-	var goret1 UnixFDMessage
+	var ret1 UnixFDMessage
 
 	cret = C.g_unix_fd_message_new_with_fd_list(fdList)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
 
-	return goret1
+	return ret1
 }
 
 // AppendFd adds a file descriptor to @message.
@@ -164,13 +164,13 @@ func (m unixFDMessage) FdList() UnixFDList {
 	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GUnixFDList
-	var goret1 UnixFDList
+	var ret1 UnixFDList
 
 	cret = C.g_unix_fd_message_get_fd_list(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
 
-	return goret1
+	return ret1
 }
 
 // StealFds returns the array of file descriptors that is contained in this
@@ -195,16 +195,16 @@ func (m unixFDMessage) StealFds() (length int, gints []int) {
 
 	var cret *C.gint
 	var arg1 *C.gint
-	var goret2 []int
+	var ret2 []int
 
 	cret = C.g_unix_fd_message_steal_fds(arg0, &arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret2, func(v *[]int) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&ret2, func(v *[]int) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 type UnixFDMessagePrivate struct {

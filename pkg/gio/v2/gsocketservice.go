@@ -110,13 +110,13 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 // NewSocketService constructs a class SocketService.
 func NewSocketService() SocketService {
 	var cret C.GSocketService
-	var goret1 SocketService
+	var ret1 SocketService
 
 	cret = C.g_socket_service_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketService)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketService)
 
-	return goret1
+	return ret1
 }
 
 // IsActive: check whether the service is active or not. An active service
@@ -128,13 +128,13 @@ func (s socketService) IsActive() bool {
 	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_socket_service_is_active(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Start restarts the service, i.e. start accepting connections from the

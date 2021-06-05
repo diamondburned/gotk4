@@ -29,13 +29,13 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_checked_(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 func VariantTypeStringGetDepth_(typeString string) uint {
@@ -45,13 +45,13 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_type_string_get_depth_(typeString)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // VariantTypeStringIsValid checks if @type_string is a valid GVariant type
@@ -64,13 +64,13 @@ func VariantTypeStringIsValid(typeString string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_string_is_valid(typeString)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VariantTypeStringScan: scan for a single complete and valid GVariant type
@@ -94,18 +94,18 @@ func VariantTypeStringScan(string string, limit string) (endptr string, ok bool)
 	arg2 = (*C.gchar)(C.CString(limit))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var arg3 **C.gchar
+	var arg3 *C.gchar
 	var ret3 string
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_variant_type_string_scan(string, limit, &arg3)
 
 	ret3 = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(arg3))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret3, goret2
+	return ret3, ret2
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,
@@ -268,16 +268,16 @@ func NewVariantType(typeString string) *VariantType {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_new(typeString)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantType) {
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewVariantTypeArray constructs a struct VariantType.
@@ -287,16 +287,16 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 	arg1 = (*C.GVariantType)(unsafe.Pointer(element.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_new_array(element)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantType) {
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewVariantTypeDictEntry constructs a struct VariantType.
@@ -308,16 +308,16 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 	arg2 = (*C.GVariantType)(unsafe.Pointer(value.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_new_dict_entry(key, value)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantType) {
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewVariantTypeMaybe constructs a struct VariantType.
@@ -327,32 +327,32 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	arg1 = (*C.GVariantType)(unsafe.Pointer(element.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_new_maybe(element)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantType) {
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewVariantTypeTuple constructs a struct VariantType.
 func NewVariantTypeTuple(items []*VariantType) *VariantType {
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_new_tuple(items, length)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantType) {
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -368,16 +368,16 @@ func (t *VariantType) Copy() *VariantType {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_copy(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantType) {
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantType) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // DupString returns a newly-allocated copy of the type string corresponding to
@@ -389,14 +389,14 @@ func (t *VariantType) DupString() string {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_variant_type_dup_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Element determines the element type of an array or maybe type.
@@ -408,13 +408,13 @@ func (t *VariantType) Element() *VariantType {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_element(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Equal compares @type1 and @type2 for equality.
@@ -435,13 +435,13 @@ func (t *VariantType) Equal(type2 VariantType) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(type2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_equal(arg0, type2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // First determines the first item type of a tuple or dictionary entry type.
@@ -461,13 +461,13 @@ func (t *VariantType) First() *VariantType {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_first(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Free frees a Type that was allocated with g_variant_type_copy(),
@@ -493,13 +493,13 @@ func (t *VariantType) StringLength() uint {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_type_get_string_length(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Hash hashes @type.
@@ -512,13 +512,13 @@ func (t *VariantType) Hash() uint {
 	arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_type_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsArray determines if the given @type is an array type. This is true if the
@@ -532,13 +532,13 @@ func (t *VariantType) IsArray() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_array(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsBasic determines if the given @type is a basic type.
@@ -556,13 +556,13 @@ func (t *VariantType) IsBasic() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_basic(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsContainer determines if the given @type is a container type.
@@ -578,13 +578,13 @@ func (t *VariantType) IsContainer() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_container(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsDefinite determines if the given @type is definite (ie: not indefinite).
@@ -602,13 +602,13 @@ func (t *VariantType) IsDefinite() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_definite(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsDictEntry determines if the given @type is a dictionary entry type. This is
@@ -622,13 +622,13 @@ func (t *VariantType) IsDictEntry() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_dict_entry(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsMaybe determines if the given @type is a maybe type. This is true if the
@@ -642,13 +642,13 @@ func (t *VariantType) IsMaybe() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_maybe(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsSubtypeOf checks if @type is a subtype of @supertype.
@@ -664,13 +664,13 @@ func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	arg1 = (*C.GVariantType)(unsafe.Pointer(supertype.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_subtype_of(arg0, supertype)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsTuple determines if the given @type is a tuple type. This is true if the
@@ -684,13 +684,13 @@ func (t *VariantType) IsTuple() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_tuple(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsVariant determines if the given @type is the variant type.
@@ -700,13 +700,13 @@ func (t *VariantType) IsVariant() bool {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_type_is_variant(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Key determines the key type of a dictionary entry type.
@@ -719,13 +719,13 @@ func (t *VariantType) Key() *VariantType {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_key(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NItems determines the number of items contained in a tuple or dictionary
@@ -741,13 +741,13 @@ func (t *VariantType) NItems() uint {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_type_n_items(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Next determines the next item type of a tuple or dictionary entry type.
@@ -766,13 +766,13 @@ func (t *VariantType) Next() *VariantType {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_next(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PeekString returns the type string corresponding to the given @type. The
@@ -786,13 +786,13 @@ func (t *VariantType) PeekString() string {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_variant_type_peek_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Value determines the value type of a dictionary entry type.
@@ -804,11 +804,11 @@ func (t *VariantType) Value() *VariantType {
 	arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_type_value(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

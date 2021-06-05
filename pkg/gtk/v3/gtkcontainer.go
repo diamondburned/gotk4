@@ -509,13 +509,13 @@ func (c container) ChildType() externglib.Type {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.gtk_container_child_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // Forall invokes @callback on each direct child of @container, including
@@ -559,13 +559,13 @@ func (c container) BorderWidth() uint {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_container_get_border_width(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Children returns the container’s non-internal children. See
@@ -577,16 +577,16 @@ func (c container) Children() *glib.List {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_container_get_children(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // FocusChain retrieves the focus chain of the container, if one has been
@@ -598,10 +598,10 @@ func (c container) FocusChain() (focusableWidgets *glib.List, ok bool) {
 
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
-	var arg1 **C.GList
+	var arg1 *C.GList
 	var ret1 **glib.List
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_container_get_focus_chain(arg0, &arg1)
 
@@ -609,9 +609,9 @@ func (c container) FocusChain() (focusableWidgets *glib.List, ok bool) {
 	runtime.SetFinalizer(ret1, func(v **glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // FocusChild returns the current focus child widget inside @container. This
@@ -623,13 +623,13 @@ func (c container) FocusChild() Widget {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_container_get_focus_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // FocusHAdjustment retrieves the horizontal focus adjustment for the
@@ -640,13 +640,13 @@ func (c container) FocusHAdjustment() Adjustment {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_container_get_focus_hadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // FocusVAdjustment retrieves the vertical focus adjustment for the
@@ -657,13 +657,13 @@ func (c container) FocusVAdjustment() Adjustment {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_container_get_focus_vadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // PathForChild returns a newly created widget path representing all the
@@ -676,16 +676,16 @@ func (c container) PathForChild(child Widget) *WidgetPath {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidgetPath
-	var goret1 *WidgetPath
+	var ret1 *WidgetPath
 
 	cret = C.gtk_container_get_path_for_child(arg0, child)
 
-	goret1 = WrapWidgetPath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *WidgetPath) {
+	ret1 = WrapWidgetPath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *WidgetPath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ResizeMode returns the resize mode for the container. See
@@ -696,13 +696,13 @@ func (c container) ResizeMode() ResizeMode {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkResizeMode
-	var goret1 ResizeMode
+	var ret1 ResizeMode
 
 	cret = C.gtk_container_get_resize_mode(arg0)
 
-	goret1 = ResizeMode(cret)
+	ret1 = ResizeMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // PropagateDraw: when a container receives a call to the draw function, it

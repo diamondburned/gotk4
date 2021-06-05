@@ -152,13 +152,13 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	arg1 = (C.GtkSizeGroupMode)(mode)
 
 	var cret C.GtkSizeGroup
-	var goret1 SizeGroup
+	var ret1 SizeGroup
 
 	cret = C.gtk_size_group_new(mode)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
 
-	return goret1
+	return ret1
 }
 
 // AddWidget adds a widget to a SizeGroup. In the future, the requisition of
@@ -187,13 +187,13 @@ func (s sizeGroup) IgnoreHidden() bool {
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_size_group_get_ignore_hidden(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Mode gets the current mode of the size group. See
@@ -204,13 +204,13 @@ func (s sizeGroup) Mode() SizeGroupMode {
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSizeGroupMode
-	var goret1 SizeGroupMode
+	var ret1 SizeGroupMode
 
 	cret = C.gtk_size_group_get_mode(arg0)
 
-	goret1 = SizeGroupMode(cret)
+	ret1 = SizeGroupMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Widgets returns the list of widgets associated with @size_group.
@@ -220,13 +220,13 @@ func (s sizeGroup) Widgets() *glib.SList {
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_size_group_get_widgets(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RemoveWidget removes a widget from a SizeGroup.

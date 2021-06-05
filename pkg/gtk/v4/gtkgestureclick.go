@@ -53,11 +53,11 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 // NewGestureClick constructs a class GestureClick.
 func NewGestureClick() GestureClick {
 	var cret C.GtkGestureClick
-	var goret1 GestureClick
+	var ret1 GestureClick
 
 	cret = C.gtk_gesture_click_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureClick)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureClick)
 
-	return goret1
+	return ret1
 }

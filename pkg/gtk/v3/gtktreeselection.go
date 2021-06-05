@@ -186,13 +186,13 @@ func (s treeSelection) CountSelectedRows() int {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_selection_count_selected_rows(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Mode gets the selection mode for @selection. See
@@ -203,13 +203,13 @@ func (s treeSelection) Mode() SelectionMode {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret1 SelectionMode
+	var ret1 SelectionMode
 
 	cret = C.gtk_tree_selection_get_mode(arg0)
 
-	goret1 = SelectionMode(cret)
+	ret1 = SelectionMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Selected sets @iter to the currently selected node if @selection is set
@@ -222,20 +222,20 @@ func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	var arg1 **C.GtkTreeModel
+	var arg1 *C.GtkTreeModel
 	var ret1 *TreeModel
-	var arg2 *C.GtkTreeIter
+	var arg2 C.GtkTreeIter
 	var ret2 *TreeIter
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_tree_selection_get_selected(arg0, &arg1, &arg2)
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
 	ret2 = WrapTreeIter(unsafe.Pointer(arg2))
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // SelectedRows creates a list of path of all selected rows. Additionally,
@@ -251,20 +251,20 @@ func (s treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	var arg1 **C.GtkTreeModel
+	var arg1 *C.GtkTreeModel
 	var ret1 *TreeModel
 	var cret *C.GList
-	var goret2 *glib.List
+	var ret2 *glib.List
 
 	cret = C.gtk_tree_selection_get_selected_rows(arg0, &arg1)
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	goret2 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret2, func(v *glib.List) {
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // TreeView returns the tree view associated with @selection.
@@ -274,13 +274,13 @@ func (s treeSelection) TreeView() TreeView {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeView
-	var goret1 TreeView
+	var ret1 TreeView
 
 	cret = C.gtk_tree_selection_get_tree_view(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
 
-	return goret1
+	return ret1
 }
 
 // UserData returns the user data for the selection function.
@@ -290,13 +290,13 @@ func (s treeSelection) UserData() interface{} {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gtk_tree_selection_get_user_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // IterIsSelected returns true if the row at @iter is currently selected.
@@ -308,13 +308,13 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_selection_iter_is_selected(arg0, iter)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PathIsSelected returns true if the row pointed to by @path is currently
@@ -327,13 +327,13 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_selection_path_is_selected(arg0, path)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectAll selects all the nodes. @selection must be set to

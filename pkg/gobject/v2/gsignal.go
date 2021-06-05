@@ -143,13 +143,13 @@ func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu *externg
 	arg4 = C.gpointer(dummy)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_signal_accumulator_first_wins(ihint, returnAccu, handlerReturn, dummy)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SignalAccumulatorTrueHandled: a predefined Accumulator for signals that
@@ -170,13 +170,13 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu *exter
 	arg4 = C.gpointer(dummy)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_signal_accumulator_true_handled(ihint, returnAccu, handlerReturn, dummy)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SignalAddEmissionHook adds an emission hook for a signal, which will get
@@ -185,13 +185,13 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu *exter
 func SignalAddEmissionHook(signalID uint, detail glib.Quark, hookFunc SignalEmissionHook) uint32 {
 
 	var cret C.gulong
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_signal_add_emission_hook(signalID, detail, hookFunc, hookData, dataDestroy)
 
-	goret1 = C.gulong(cret)
+	ret1 = C.gulong(cret)
 
-	return goret1
+	return ret1
 }
 
 // SignalGetInvocationHint returns the invocation hint of the innermost signal
@@ -202,13 +202,13 @@ func SignalGetInvocationHint(instance gextras.Objector) *SignalInvocationHint {
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 
 	var cret *C.GSignalInvocationHint
-	var goret1 *SignalInvocationHint
+	var ret1 *SignalInvocationHint
 
 	cret = C.g_signal_get_invocation_hint(instance)
 
-	goret1 = WrapSignalInvocationHint(unsafe.Pointer(cret))
+	ret1 = WrapSignalInvocationHint(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SignalHandlerBlock blocks a handler of an instance so it will not be called
@@ -255,13 +255,13 @@ func SignalHandlerIsConnected(instance gextras.Objector, handlerID uint32) bool 
 	arg2 = C.gulong(handlerID)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_signal_handler_is_connected(instance, handlerID)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SignalHandlerUnblock undoes the effect of a previous g_signal_handler_block()
@@ -311,13 +311,13 @@ func SignalIsValidName(name string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_signal_is_valid_name(name)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SignalListIds lists the signals by id that a certain instance or interface
@@ -330,16 +330,16 @@ func SignalListIds(itype externglib.Type) (nIds uint, guints []uint) {
 
 	var cret *C.guint
 	var arg2 *C.guint
-	var goret2 []uint
+	var ret2 []uint
 
 	cret = C.g_signal_list_ids(itype, &arg2)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&goret2, func(v *[]uint) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg2))
+	runtime.SetFinalizer(&ret2, func(v *[]uint) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // SignalLookup: given the name of the signal and the type of object it connects
@@ -362,13 +362,13 @@ func SignalLookup(name string, itype externglib.Type) uint {
 	arg2 := C.GType(itype)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_signal_lookup(name, itype)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SignalName: given the signal's identifier, finds its name.
@@ -380,13 +380,13 @@ func SignalName(signalID uint) string {
 	arg1 = C.guint(signalID)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_signal_name(signalID)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SignalQuery queries the signal system for in-depth information about a
@@ -399,7 +399,7 @@ func SignalQuery(signalID uint) SignalQuery {
 
 	arg1 = C.guint(signalID)
 
-	var arg2 *C.GSignalQuery
+	var arg2 C.GSignalQuery
 	var ret2 *SignalQuery
 
 	C.g_signal_query(signalID, &arg2)

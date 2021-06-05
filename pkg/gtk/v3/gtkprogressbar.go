@@ -151,13 +151,13 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 // NewProgressBar constructs a class ProgressBar.
 func NewProgressBar() ProgressBar {
 	var cret C.GtkProgressBar
-	var goret1 ProgressBar
+	var ret1 ProgressBar
 
 	cret = C.gtk_progress_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProgressBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProgressBar)
 
-	return goret1
+	return ret1
 }
 
 // Ellipsize returns the ellipsizing position of the progress bar. See
@@ -168,13 +168,13 @@ func (p progressBar) Ellipsize() pango.EllipsizeMode {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret1 pango.EllipsizeMode
+	var ret1 pango.EllipsizeMode
 
 	cret = C.gtk_progress_bar_get_ellipsize(arg0)
 
-	goret1 = pango.EllipsizeMode(cret)
+	ret1 = pango.EllipsizeMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -184,13 +184,13 @@ func (p progressBar) Fraction() float64 {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_progress_bar_get_fraction(arg0)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // Inverted gets the value set by gtk_progress_bar_set_inverted().
@@ -200,13 +200,13 @@ func (p progressBar) Inverted() bool {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_progress_bar_get_inverted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PulseStep retrieves the pulse step set with
@@ -217,13 +217,13 @@ func (p progressBar) PulseStep() float64 {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_progress_bar_get_pulse_step(arg0)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowText gets the value of the ProgressBar:show-text property. See
@@ -234,13 +234,13 @@ func (p progressBar) ShowText() bool {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_progress_bar_get_show_text(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Text retrieves the text that is displayed with the progress bar, if any,
@@ -252,13 +252,13 @@ func (p progressBar) Text() string {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_progress_bar_get_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Pulse indicates that some progress has been made, but you don’t know how

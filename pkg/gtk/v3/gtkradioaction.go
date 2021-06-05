@@ -118,13 +118,13 @@ func NewRadioAction(name string, label string, tooltip string, stockID string, v
 	arg5 = C.gint(value)
 
 	var cret C.GtkRadioAction
-	var goret1 RadioAction
+	var ret1 RadioAction
 
 	cret = C.gtk_radio_action_new(name, label, tooltip, stockID, value)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RadioAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RadioAction)
 
-	return goret1
+	return ret1
 }
 
 // CurrentValue obtains the value property of the currently active member of
@@ -135,13 +135,13 @@ func (a radioAction) CurrentValue() int {
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_radio_action_get_current_value(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Group returns the list representing the radio group for this object. Note
@@ -165,13 +165,13 @@ func (a radioAction) Group() *glib.SList {
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_radio_action_get_group(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // JoinGroup joins a radio action object to the group of another radio

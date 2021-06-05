@@ -64,13 +64,13 @@ func (d *Dir) ReadName() string {
 	arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dir_read_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Rewind resets the given directory. The next call to g_dir_read_name() will

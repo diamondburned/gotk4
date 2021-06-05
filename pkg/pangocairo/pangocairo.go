@@ -51,13 +51,13 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	var cret *C.cairo_font_options_t
-	var goret1 *cairo.FontOptions
+	var ret1 *cairo.FontOptions
 
 	cret = C.pango_cairo_context_get_font_options(context)
 
-	goret1 = cairo.WrapFontOptions(unsafe.Pointer(cret))
+	ret1 = cairo.WrapFontOptions(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ContextGetResolution gets the resolution for the context. See
@@ -68,13 +68,13 @@ func ContextGetResolution(context pango.Context) float64 {
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.pango_cairo_context_get_resolution(context)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // ContextSetFontOptions sets the font options used when rendering text with
@@ -132,13 +132,13 @@ func CreateContext(cr *cairo.Context) pango.Context {
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.pango_cairo_create_context(cr)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // CreateLayout creates a layout object set up to match the current
@@ -159,13 +159,13 @@ func CreateLayout(cr *cairo.Context) pango.Layout {
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	var cret *C.PangoLayout
-	var goret1 pango.Layout
+	var ret1 pango.Layout
 
 	cret = C.pango_cairo_create_layout(cr)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
 
-	return goret1
+	return ret1
 }
 
 // ErrorUnderlinePath: add a squiggly line to the current path in the specified
@@ -205,13 +205,13 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 // multiple threads.
 func FontMapGetDefault() pango.FontMap {
 	var cret *C.PangoFontMap
-	var goret1 pango.FontMap
+	var ret1 pango.FontMap
 
 	cret = C.pango_cairo_font_map_get_default()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
 
-	return goret1
+	return ret1
 }
 
 // NewFontMap creates a new `PangoCairoFontMap` object.
@@ -231,13 +231,13 @@ func FontMapGetDefault() pango.FontMap {
 // are compiled in.
 func NewFontMap() pango.FontMap {
 	var cret *C.PangoFontMap
-	var goret1 pango.FontMap
+	var ret1 pango.FontMap
 
 	cret = C.pango_cairo_font_map_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.FontMap)
 
-	return goret1
+	return ret1
 }
 
 // FontMapNewForFontType creates a new `PangoCairoFontMap` object of the type
@@ -251,13 +251,13 @@ func FontMapNewForFontType(fonttype cairo.FontType) pango.FontMap {
 	arg1 = (C.cairo_font_type_t)(fonttype)
 
 	var cret *C.PangoFontMap
-	var goret1 pango.FontMap
+	var ret1 pango.FontMap
 
 	cret = C.pango_cairo_font_map_new_for_font_type(fonttype)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.FontMap)
 
-	return goret1
+	return ret1
 }
 
 // GlyphStringPath adds the glyphs in @glyphs to the current path in the
@@ -466,13 +466,13 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 	arg0 = (*C.PangoCairoFont)(unsafe.Pointer(f.Native()))
 
 	var cret *C.cairo_scaled_font_t
-	var goret1 *cairo.ScaledFont
+	var ret1 *cairo.ScaledFont
 
 	cret = C.pango_cairo_font_get_scaled_font(arg0)
 
-	goret1 = cairo.WrapScaledFont(unsafe.Pointer(cret))
+	ret1 = cairo.WrapScaledFont(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FontMap: `PangoCairoFontMap` is an interface exported by font maps for use
@@ -542,13 +542,13 @@ func (f fontMap) CreateContext() pango.Context {
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.pango_cairo_font_map_create_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // FontType gets the type of Cairo font backend that @fontmap uses.
@@ -558,13 +558,13 @@ func (f fontMap) FontType() cairo.FontType {
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret C.cairo_font_type_t
-	var goret1 cairo.FontType
+	var ret1 cairo.FontType
 
 	cret = C.pango_cairo_font_map_get_font_type(arg0)
 
-	goret1 = cairo.FontType(cret)
+	ret1 = cairo.FontType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Resolution gets the resolution for the fontmap.
@@ -576,13 +576,13 @@ func (f fontMap) Resolution() float64 {
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.pango_cairo_font_map_get_resolution(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetDefault sets a default `PangoCairoFontMap` to use with Cairo.

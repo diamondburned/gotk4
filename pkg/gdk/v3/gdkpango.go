@@ -31,13 +31,13 @@ import "C"
 // rendering settings.
 func PangoContextGet() pango.Context {
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.gdk_pango_context_get()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // PangoContextGetForDisplay creates a Context for @display.
@@ -59,13 +59,13 @@ func PangoContextGetForDisplay(display Display) pango.Context {
 	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.gdk_pango_context_get_for_display(display)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // PangoContextGetForScreen creates a Context for @screen.
@@ -87,13 +87,13 @@ func PangoContextGetForScreen(screen Screen) pango.Context {
 	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.gdk_pango_context_get_for_screen(screen)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // PangoLayoutGetClipRegion obtains a clip region which contains the areas where
@@ -119,14 +119,14 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	arg5 = C.gint(nRanges)
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_pango_layout_get_clip_region(layout, xOrigin, yOrigin, indexRanges, nRanges)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

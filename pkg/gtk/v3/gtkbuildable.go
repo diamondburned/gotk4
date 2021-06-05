@@ -130,13 +130,13 @@ func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GObject
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_buildable_construct_child(arg0, builder, name)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // CustomFinished: this is similar to gtk_buildable_parser_finished() but is
@@ -190,13 +190,13 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GObject
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_buildable_get_internal_child(arg0, builder, childname)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // Name gets the name of the @buildable object.
@@ -209,13 +209,13 @@ func (b buildable) Name() string {
 	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_buildable_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ParserFinished: called when the builder finishes the parsing of a

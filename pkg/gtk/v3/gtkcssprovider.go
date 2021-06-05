@@ -102,13 +102,13 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 // NewCSSProvider constructs a class CSSProvider.
 func NewCSSProvider() CSSProvider {
 	var cret C.GtkCssProvider
-	var goret1 CSSProvider
+	var ret1 CSSProvider
 
 	cret = C.gtk_css_provider_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CSSProvider)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CSSProvider)
 
-	return goret1
+	return ret1
 }
 
 // LoadFromData loads @data into @css_provider, and by doing so clears any
@@ -202,14 +202,14 @@ func (p cssProvider) String() string {
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_css_provider_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 type CSSProviderPrivate struct {

@@ -49,16 +49,16 @@ func NewValueArray(nPrealloced uint) *ValueArray {
 	arg1 = C.guint(nPrealloced)
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_new(nPrealloced)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ValueArray) {
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ValueArray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -86,13 +86,13 @@ func (v *ValueArray) Append(value *externglib.Value) *ValueArray {
 	arg1 = (*C.GValue)(value.GValue)
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_append(arg0, value)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Copy: construct an exact copy of a Array by duplicating all its contents.
@@ -102,16 +102,16 @@ func (v *ValueArray) Copy() *ValueArray {
 	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_copy(arg0)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ValueArray) {
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ValueArray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free: free a Array including its contents.
@@ -132,13 +132,13 @@ func (v *ValueArray) Nth(index_ uint) *externglib.Value {
 	arg1 = C.guint(index_)
 
 	var cret *C.GValue
-	var goret1 *externglib.Value
+	var ret1 *externglib.Value
 
 	cret = C.g_value_array_get_nth(arg0, index_)
 
-	goret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
+	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Insert: insert a copy of @value at specified position into @value_array. If
@@ -153,13 +153,13 @@ func (v *ValueArray) Insert(index_ uint, value *externglib.Value) *ValueArray {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_insert(arg0, index_, value)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Prepend: insert a copy of @value as first element of @value_array. If @value
@@ -172,13 +172,13 @@ func (v *ValueArray) Prepend(value *externglib.Value) *ValueArray {
 	arg1 = (*C.GValue)(value.GValue)
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_prepend(arg0, value)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Remove: remove the value at position @index_ from @value_array.
@@ -190,13 +190,13 @@ func (v *ValueArray) Remove(index_ uint) *ValueArray {
 	arg1 = C.guint(index_)
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_remove(arg0, index_)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SortWithData: sort @value_array using @compare_func to compare the elements
@@ -210,11 +210,11 @@ func (v *ValueArray) SortWithData(compareFunc glib.CompareDataFunc) *ValueArray 
 	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GValueArray
-	var goret1 *ValueArray
+	var ret1 *ValueArray
 
 	cret = C.g_value_array_sort_with_data(arg0, compareFunc, userData)
 
-	goret1 = WrapValueArray(unsafe.Pointer(cret))
+	ret1 = WrapValueArray(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

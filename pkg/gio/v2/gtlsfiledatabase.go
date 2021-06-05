@@ -43,18 +43,18 @@ func NewTLSFileDatabase(anchors string) (tlsFileDatabase TLSFileDatabase, err er
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GTlsDatabase
-	var goret1 TLSFileDatabase
+	var ret1 TLSFileDatabase
 	var goerr error
 
 	cret = C.g_tls_file_database_new(anchors, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSFileDatabase)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSFileDatabase)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // TLSFileDatabase is implemented by Database objects which load their

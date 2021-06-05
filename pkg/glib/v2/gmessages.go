@@ -214,13 +214,13 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	arg1 = (C.GLogLevelFlags)(fatalMask)
 
 	var cret C.GLogLevelFlags
-	var goret1 LogLevelFlags
+	var ret1 LogLevelFlags
 
 	cret = C.g_log_set_always_fatal(fatalMask)
 
-	goret1 = LogLevelFlags(cret)
+	ret1 = LogLevelFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // LogSetFatalMask sets the log levels which are fatal in the given domain.
@@ -245,13 +245,13 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	arg2 = (C.GLogLevelFlags)(fatalMask)
 
 	var cret C.GLogLevelFlags
-	var goret1 LogLevelFlags
+	var ret1 LogLevelFlags
 
 	cret = C.g_log_set_fatal_mask(logDomain, fatalMask)
 
-	goret1 = LogLevelFlags(cret)
+	ret1 = LogLevelFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
@@ -262,13 +262,13 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_log_set_handler_full(logDomain, logLevels, logFunc, userData, destroy)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // LogSetWriterFunc: set a writer function which will be called to format and
@@ -343,13 +343,13 @@ func LogWriterIsJournald(outputFd int) bool {
 	arg1 = C.gint(outputFd)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_log_writer_is_journald(outputFd)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LogWriterSupportsColor: check whether the given @output_fd file descriptor
@@ -361,13 +361,13 @@ func LogWriterSupportsColor(outputFd int) bool {
 	arg1 = C.gint(outputFd)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_log_writer_supports_color(outputFd)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ReturnIfFailWarning: internal function used to print messages from the public

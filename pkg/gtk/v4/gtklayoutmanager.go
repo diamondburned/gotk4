@@ -155,13 +155,13 @@ func (m layoutManager) LayoutChild(child Widget) LayoutChild {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkLayoutChild
-	var goret1 LayoutChild
+	var ret1 LayoutChild
 
 	cret = C.gtk_layout_manager_get_layout_child(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutChild)
 
-	return goret1
+	return ret1
 }
 
 // RequestMode retrieves the request mode of @manager.
@@ -171,13 +171,13 @@ func (m layoutManager) RequestMode() SizeRequestMode {
 	arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
 	var cret C.GtkSizeRequestMode
-	var goret1 SizeRequestMode
+	var ret1 SizeRequestMode
 
 	cret = C.gtk_layout_manager_get_request_mode(arg0)
 
-	goret1 = SizeRequestMode(cret)
+	ret1 = SizeRequestMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Widget retrieves the Widget using the given LayoutManager.
@@ -187,13 +187,13 @@ func (m layoutManager) Widget() Widget {
 	arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_layout_manager_get_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // LayoutChanged queues a resize on the Widget using @manager, if any.
@@ -224,21 +224,21 @@ func (m layoutManager) Measure(widget Widget, orientation Orientation, forSize i
 	arg2 = (C.GtkOrientation)(orientation)
 	arg3 = C.int(forSize)
 
-	var arg4 *C.int
+	var arg4 C.int
 	var ret4 int
-	var arg5 *C.int
+	var arg5 C.int
 	var ret5 int
-	var arg6 *C.int
+	var arg6 C.int
 	var ret6 int
-	var arg7 *C.int
+	var arg7 C.int
 	var ret7 int
 
 	C.gtk_layout_manager_measure(arg0, widget, orientation, forSize, &arg4, &arg5, &arg6, &arg7)
 
-	ret4 = *C.int(arg4)
-	ret5 = *C.int(arg5)
-	ret6 = *C.int(arg6)
-	ret7 = *C.int(arg7)
+	ret4 = C.int(arg4)
+	ret5 = C.int(arg5)
+	ret6 = C.int(arg6)
+	ret7 = C.int(arg7)
 
 	return ret4, ret5, ret6, ret7
 }

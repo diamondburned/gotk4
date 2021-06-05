@@ -218,13 +218,13 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 // NewEntryCompletion constructs a class EntryCompletion.
 func NewEntryCompletion() EntryCompletion {
 	var cret C.GtkEntryCompletion
-	var goret1 EntryCompletion
+	var ret1 EntryCompletion
 
 	cret = C.gtk_entry_completion_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
 
-	return goret1
+	return ret1
 }
 
 // NewEntryCompletionWithArea constructs a class EntryCompletion.
@@ -234,13 +234,13 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkEntryCompletion
-	var goret1 EntryCompletion
+	var ret1 EntryCompletion
 
 	cret = C.gtk_entry_completion_new_with_area(area)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
 
-	return goret1
+	return ret1
 }
 
 // Complete requests a completion operation, or in other words a refiltering
@@ -267,14 +267,14 @@ func (c entryCompletion) ComputePrefix(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_entry_completion_compute_prefix(arg0, key)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // DeleteAction deletes the action at @index_ from @completion’s action
@@ -300,13 +300,13 @@ func (c entryCompletion) CompletionPrefix() string {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_entry_completion_get_completion_prefix(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Entry gets the entry @completion has been attached to.
@@ -316,13 +316,13 @@ func (c entryCompletion) Entry() Widget {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_entry_completion_get_entry(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // InlineCompletion returns whether the common prefix of the possible
@@ -333,13 +333,13 @@ func (c entryCompletion) InlineCompletion() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_inline_completion(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InlineSelection returns true if inline-selection mode is turned on.
@@ -349,13 +349,13 @@ func (c entryCompletion) InlineSelection() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_inline_selection(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MinimumKeyLength returns the minimum key length as set for @completion.
@@ -365,13 +365,13 @@ func (c entryCompletion) MinimumKeyLength() int {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_entry_completion_get_minimum_key_length(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Model returns the model the EntryCompletion is using as data source.
@@ -382,13 +382,13 @@ func (c entryCompletion) Model() TreeModel {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret1 TreeModel
+	var ret1 TreeModel
 
 	cret = C.gtk_entry_completion_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
 
-	return goret1
+	return ret1
 }
 
 // PopupCompletion returns whether the completions should be presented in a
@@ -399,13 +399,13 @@ func (c entryCompletion) PopupCompletion() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_popup_completion(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PopupSetWidth returns whether the completion popup window will be resized
@@ -416,13 +416,13 @@ func (c entryCompletion) PopupSetWidth() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_popup_set_width(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PopupSingleMatch returns whether the completion popup window will appear
@@ -433,13 +433,13 @@ func (c entryCompletion) PopupSingleMatch() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_popup_single_match(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TextColumn returns the column in the model of @completion to get strings
@@ -450,13 +450,13 @@ func (c entryCompletion) TextColumn() int {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_entry_completion_get_text_column(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertActionMarkup inserts an action in @completion’s action item list at

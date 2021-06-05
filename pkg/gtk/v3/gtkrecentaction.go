@@ -88,13 +88,13 @@ func NewRecentAction(name string, label string, tooltip string, stockID string) 
 	defer C.free(unsafe.Pointer(arg4))
 
 	var cret C.GtkRecentAction
-	var goret1 RecentAction
+	var ret1 RecentAction
 
 	cret = C.gtk_recent_action_new(name, label, tooltip, stockID)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
 
-	return goret1
+	return ret1
 }
 
 // NewRecentActionForManager constructs a class RecentAction.
@@ -116,13 +116,13 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	var cret C.GtkRecentAction
-	var goret1 RecentAction
+	var ret1 RecentAction
 
 	cret = C.gtk_recent_action_new_for_manager(name, label, tooltip, stockID, manager)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
 
-	return goret1
+	return ret1
 }
 
 // ShowNumbers returns the value set by
@@ -133,13 +133,13 @@ func (a recentAction) ShowNumbers() bool {
 	arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_recent_action_get_show_numbers(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetShowNumbers sets whether a number should be added to the items shown

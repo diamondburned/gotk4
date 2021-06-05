@@ -168,13 +168,13 @@ func marshalPicture(p uintptr) (interface{}, error) {
 // NewPicture constructs a class Picture.
 func NewPicture() Picture {
 	var cret C.GtkPicture
-	var goret1 Picture
+	var ret1 Picture
 
 	cret = C.gtk_picture_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
 
-	return goret1
+	return ret1
 }
 
 // NewPictureForFile constructs a class Picture.
@@ -184,13 +184,13 @@ func NewPictureForFile(file gio.File) Picture {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkPicture
-	var goret1 Picture
+	var ret1 Picture
 
 	cret = C.gtk_picture_new_for_file(file)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
 
-	return goret1
+	return ret1
 }
 
 // NewPictureForFilename constructs a class Picture.
@@ -201,13 +201,13 @@ func NewPictureForFilename(filename string) Picture {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkPicture
-	var goret1 Picture
+	var ret1 Picture
 
 	cret = C.gtk_picture_new_for_filename(filename)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
 
-	return goret1
+	return ret1
 }
 
 // NewPictureForPaintable constructs a class Picture.
@@ -217,13 +217,13 @@ func NewPictureForPaintable(paintable gdk.Paintable) Picture {
 	arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	var cret C.GtkPicture
-	var goret1 Picture
+	var ret1 Picture
 
 	cret = C.gtk_picture_new_for_paintable(paintable)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
 
-	return goret1
+	return ret1
 }
 
 // NewPictureForPixbuf constructs a class Picture.
@@ -233,13 +233,13 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	var cret C.GtkPicture
-	var goret1 Picture
+	var ret1 Picture
 
 	cret = C.gtk_picture_new_for_pixbuf(pixbuf)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
 
-	return goret1
+	return ret1
 }
 
 // NewPictureForResource constructs a class Picture.
@@ -250,13 +250,13 @@ func NewPictureForResource(resourcePath string) Picture {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkPicture
-	var goret1 Picture
+	var ret1 Picture
 
 	cret = C.gtk_picture_new_for_resource(resourcePath)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
 
-	return goret1
+	return ret1
 }
 
 // AlternativeText gets the alternative textual description of the picture
@@ -267,13 +267,13 @@ func (s picture) AlternativeText() string {
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_picture_get_alternative_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // CanShrink gets the value set via gtk_picture_set_can_shrink().
@@ -283,13 +283,13 @@ func (s picture) CanShrink() bool {
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_picture_get_can_shrink(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // File gets the #GFile currently displayed if @self is displaying a file.
@@ -301,13 +301,13 @@ func (s picture) File() gio.File {
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_picture_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // KeepAspectRatio gets the value set via
@@ -318,13 +318,13 @@ func (s picture) KeepAspectRatio() bool {
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_picture_get_keep_aspect_ratio(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Paintable gets the Paintable being displayed by the Picture.
@@ -334,13 +334,13 @@ func (s picture) Paintable() gdk.Paintable {
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 gdk.Paintable
+	var ret1 gdk.Paintable
 
 	cret = C.gtk_picture_get_paintable(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
 
-	return goret1
+	return ret1
 }
 
 // SetAlternativeText sets an alternative textual description for the

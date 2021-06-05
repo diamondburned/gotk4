@@ -102,13 +102,13 @@ func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkMenuToolButton
-	var goret1 MenuToolButton
+	var ret1 MenuToolButton
 
 	cret = C.gtk_menu_tool_button_new(iconWidget, label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuToolButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuToolButton)
 
-	return goret1
+	return ret1
 }
 
 // NewMenuToolButtonFromStock constructs a class MenuToolButton.
@@ -119,13 +119,13 @@ func NewMenuToolButtonFromStock(stockID string) MenuToolButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkMenuToolButton
-	var goret1 MenuToolButton
+	var ret1 MenuToolButton
 
 	cret = C.gtk_menu_tool_button_new_from_stock(stockID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuToolButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuToolButton)
 
-	return goret1
+	return ret1
 }
 
 // Menu gets the Menu associated with MenuToolButton.
@@ -135,13 +135,13 @@ func (b menuToolButton) Menu() Widget {
 	arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_menu_tool_button_get_menu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip

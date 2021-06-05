@@ -155,13 +155,13 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	arg2 = (C.GdkDragAction)(actions)
 
 	var cret C.GtkDropTarget
-	var goret1 DropTarget
+	var ret1 DropTarget
 
 	cret = C.gtk_drop_target_new(typ, actions)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropTarget)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropTarget)
 
-	return goret1
+	return ret1
 }
 
 // Actions gets the actions that this drop target supports.
@@ -171,13 +171,13 @@ func (s dropTarget) Actions() gdk.DragAction {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkDragAction
-	var goret1 gdk.DragAction
+	var ret1 gdk.DragAction
 
 	cret = C.gtk_drop_target_get_actions(arg0)
 
-	goret1 = gdk.DragAction(cret)
+	ret1 = gdk.DragAction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Drop gets the currently handled drop operation.
@@ -189,13 +189,13 @@ func (s dropTarget) Drop() gdk.Drop {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDrop
-	var goret1 gdk.Drop
+	var ret1 gdk.Drop
 
 	cret = C.gtk_drop_target_get_drop(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drop)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drop)
 
-	return goret1
+	return ret1
 }
 
 // Formats gets the data formats that this drop target accepts.
@@ -207,16 +207,16 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *gdk.ContentFormats
+	var ret1 *gdk.ContentFormats
 
 	cret = C.gtk_drop_target_get_formats(arg0)
 
-	goret1 = gdk.WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *gdk.ContentFormats) {
+	ret1 = gdk.WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *gdk.ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // GTypes gets the list of supported #GTypes for @self. If no type have been
@@ -228,17 +228,17 @@ func (s dropTarget) GTypes() (nTypes uint, gTypes []externglib.Type) {
 
 	var cret *C.GType
 	var arg1 *C.gsize
-	var goret2 []externglib.Type
+	var ret2 []externglib.Type
 
 	cret = C.gtk_drop_target_get_gtypes(arg0, &arg1)
 
-	goret2 = make([]externglib.Type, arg1)
+	ret2 = make([]externglib.Type, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = externglib.Type(src)
+		ret2[i] = externglib.Type(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Preload gets the value of the GtkDropTarget:preload property.
@@ -248,13 +248,13 @@ func (s dropTarget) Preload() bool {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_drop_target_get_preload(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Value gets the value of the GtkDropTarget:value property.
@@ -264,13 +264,13 @@ func (s dropTarget) Value() *externglib.Value {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GValue
-	var goret1 *externglib.Value
+	var ret1 *externglib.Value
 
 	cret = C.gtk_drop_target_get_value(arg0)
 
-	goret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
+	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Reject rejects the ongoing drop operation.

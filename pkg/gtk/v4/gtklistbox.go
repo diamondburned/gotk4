@@ -200,13 +200,13 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 // NewListBoxRow constructs a class ListBoxRow.
 func NewListBoxRow() ListBoxRow {
 	var cret C.GtkListBoxRow
-	var goret1 ListBoxRow
+	var ret1 ListBoxRow
 
 	cret = C.gtk_list_box_row_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
 
-	return goret1
+	return ret1
 }
 
 // Changed marks @row as changed, causing any state that depends on this to
@@ -240,13 +240,13 @@ func (r listBoxRow) Activatable() bool {
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_box_row_get_activatable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @row.
@@ -256,13 +256,13 @@ func (r listBoxRow) Child() Widget {
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_list_box_row_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Header returns the current header of the @row. This can be used in a
@@ -274,13 +274,13 @@ func (r listBoxRow) Header() Widget {
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_list_box_row_get_header(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Index gets the current index of the @row in its ListBox container.
@@ -290,13 +290,13 @@ func (r listBoxRow) Index() int {
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_list_box_row_get_index(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Selectable gets the value of the ListBoxRow:selectable property for this
@@ -307,13 +307,13 @@ func (r listBoxRow) Selectable() bool {
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_box_row_get_selectable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsSelected returns whether the child is currently selected in its ListBox
@@ -324,13 +324,13 @@ func (r listBoxRow) IsSelected() bool {
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_box_row_is_selected(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActivatable: set the ListBoxRow:activatable property for this row.

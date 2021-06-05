@@ -25,16 +25,16 @@ func Base64Decode(text string) (outLen uint, guint8s []byte) {
 
 	var cret *C.guchar
 	var arg2 *C.gsize
-	var goret2 []byte
+	var ret2 []byte
 
 	cret = C.g_base64_decode(text, &arg2)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&goret2, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg2))
+	runtime.SetFinalizer(&ret2, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
@@ -42,13 +42,13 @@ func Base64Decode(text string) (outLen uint, guint8s []byte) {
 func Base64DecodeInplace(text []byte) byte {
 
 	var cret *C.guchar
-	var goret1 byte
+	var ret1 byte
 
 	cret = C.g_base64_decode_inplace(text, outLen)
 
-	goret1 = *C.guchar(cret)
+	ret1 = *C.guchar(cret)
 
-	return goret1
+	return ret1
 }
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
@@ -56,12 +56,12 @@ func Base64DecodeInplace(text []byte) byte {
 func Base64Encode(data []byte) string {
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_base64_encode(data, len)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

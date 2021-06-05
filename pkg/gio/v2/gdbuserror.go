@@ -43,14 +43,14 @@ func DBusErrorEncodeGerror(error *glib.Error) string {
 	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dbus_error_encode_gerror(error)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // DBusErrorGetRemoteError gets the D-Bus error name used for @error, if any.
@@ -65,14 +65,14 @@ func DBusErrorGetRemoteError(error *glib.Error) string {
 	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dbus_error_get_remote_error(error)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // DBusErrorIsRemoteError checks if @error represents an error received via
@@ -84,13 +84,13 @@ func DBusErrorIsRemoteError(error *glib.Error) bool {
 	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_dbus_error_is_remote_error(error)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DBusErrorNewForDBusError creates a #GError based on the contents of
@@ -128,16 +128,16 @@ func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) *gl
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GError
-	var goret1 *glib.Error
+	var ret1 *glib.Error
 
 	cret = C.g_dbus_error_new_for_dbus_error(dbusErrorName, dbusErrorMessage)
 
-	goret1 = glib.WrapError(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Error) {
+	ret1 = glib.WrapError(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Error) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // DBusErrorRegisterErrorDomain: helper function for associating a #GError error
@@ -159,13 +159,13 @@ func DBusErrorStripRemoteError(error *glib.Error) bool {
 	arg1 = (*C.GError)(unsafe.Pointer(error.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_dbus_error_strip_remote_error(error)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().

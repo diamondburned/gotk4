@@ -40,13 +40,13 @@ func EditableDelegateGetProperty(object gextras.Objector, propID uint, value *ex
 	arg4 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_editable_delegate_get_property(object, propID, value, pspec)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EditableDelegateSetProperty sets a property on the Editable delegate for
@@ -66,13 +66,13 @@ func EditableDelegateSetProperty(object gextras.Objector, propID uint, value *ex
 	arg4 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_editable_delegate_set_property(object, propID, value, pspec)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EditableOverrider contains methods that are overridable. This
@@ -402,13 +402,13 @@ func (e editable) Alignment() float32 {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_editable_get_alignment(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Chars retrieves a sequence of characters. The characters that are
@@ -427,14 +427,14 @@ func (e editable) Chars(startPos int, endPos int) string {
 	arg2 = C.int(endPos)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_editable_get_chars(arg0, startPos, endPos)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Delegate gets the Editable that @editable is delegating its
@@ -445,13 +445,13 @@ func (e editable) Delegate() Editable {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkEditable
-	var goret1 Editable
+	var ret1 Editable
 
 	cret = C.gtk_editable_get_delegate(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Editable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Editable)
 
-	return goret1
+	return ret1
 }
 
 // Editable retrieves whether @editable is editable. See
@@ -462,13 +462,13 @@ func (e editable) Editable() bool {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_editable_get_editable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EnableUndo gets if undo/redo actions are enabled for @editable
@@ -478,13 +478,13 @@ func (e editable) EnableUndo() bool {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_editable_get_enable_undo(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MaxWidthChars retrieves the desired maximum width of @editable, in
@@ -495,13 +495,13 @@ func (e editable) MaxWidthChars() int {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_editable_get_max_width_chars(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Position retrieves the current position of the cursor relative to the
@@ -514,13 +514,13 @@ func (e editable) Position() int {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_editable_get_position(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectionBounds retrieves the selection bound of the editable.
@@ -535,20 +535,20 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_editable_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // Text retrieves the contents of @editable. The returned string is owned by
@@ -559,13 +559,13 @@ func (e editable) Text() string {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_editable_get_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // WidthChars gets the value set by gtk_editable_set_width_chars().
@@ -575,13 +575,13 @@ func (e editable) WidthChars() int {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_editable_get_width_chars(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // InitDelegate sets up a delegate for Editable, assuming that the

@@ -66,11 +66,11 @@ func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.By
 	arg5 = C.gsize(stride)
 
 	var cret C.GdkMemoryTexture
-	var goret1 MemoryTexture
+	var ret1 MemoryTexture
 
 	cret = C.gdk_memory_texture_new(width, height, format, bytes, stride)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryTexture)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryTexture)
 
-	return goret1
+	return ret1
 }

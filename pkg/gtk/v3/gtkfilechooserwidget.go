@@ -72,13 +72,13 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	arg1 = (C.GtkFileChooserAction)(action)
 
 	var cret C.GtkFileChooserWidget
-	var goret1 FileChooserWidget
+	var ret1 FileChooserWidget
 
 	cret = C.gtk_file_chooser_widget_new(action)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 type FileChooserWidgetPrivate struct {

@@ -40,13 +40,13 @@ func RCPropertyParseBorder(pspec gobject.ParamSpec, gstring *glib.String, proper
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_rc_property_parse_border(pspec, gstring, propertyValue)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RCPropertyParseColor: a RcPropertyParser for use with
@@ -65,13 +65,13 @@ func RCPropertyParseColor(pspec gobject.ParamSpec, gstring *glib.String, propert
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_rc_property_parse_color(pspec, gstring, propertyValue)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RCPropertyParseEnum: a RcPropertyParser for use with
@@ -92,13 +92,13 @@ func RCPropertyParseEnum(pspec gobject.ParamSpec, gstring *glib.String, property
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_rc_property_parse_enum(pspec, gstring, propertyValue)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RCPropertyParseFlags: a RcPropertyParser for use with
@@ -117,13 +117,13 @@ func RCPropertyParseFlags(pspec gobject.ParamSpec, gstring *glib.String, propert
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_rc_property_parse_flags(pspec, gstring, propertyValue)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RCPropertyParseRequisition: a RcPropertyParser for use with
@@ -140,13 +140,13 @@ func RCPropertyParseRequisition(pspec gobject.ParamSpec, gstring *glib.String, p
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_rc_property_parse_requisition(pspec, gstring, propertyValue)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Settings gtkSettings provide a mechanism to share global settings between

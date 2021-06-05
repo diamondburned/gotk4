@@ -106,13 +106,13 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 // NewTextTagTable constructs a class TextTagTable.
 func NewTextTagTable() TextTagTable {
 	var cret C.GtkTextTagTable
-	var goret1 TextTagTable
+	var ret1 TextTagTable
 
 	cret = C.gtk_text_tag_table_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
 
-	return goret1
+	return ret1
 }
 
 // Add: add a tag to the table. The tag is assigned the highest priority in
@@ -128,13 +128,13 @@ func (t textTagTable) Add(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_tag_table_add(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Foreach calls @func on each tag in @table, with user data @data. Note
@@ -155,13 +155,13 @@ func (t textTagTable) Size() int {
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_tag_table_get_size(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Lookup: look up a named tag.
@@ -174,13 +174,13 @@ func (t textTagTable) Lookup(name string) TextTag {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkTextTag
-	var goret1 TextTag
+	var ret1 TextTag
 
 	cret = C.gtk_text_tag_table_lookup(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
 
-	return goret1
+	return ret1
 }
 
 // Remove: remove a tag from the table. If a TextBuffer has @table as its

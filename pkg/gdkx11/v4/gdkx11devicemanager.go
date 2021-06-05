@@ -22,11 +22,11 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11
 	arg2 = C.int(deviceID)
 
 	var cret *C.GdkDevice
-	var goret1 X11DeviceXI2
+	var ret1 X11DeviceXI2
 
 	cret = C.gdk_x11_device_manager_lookup(deviceManager, deviceID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(X11DeviceXI2)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(X11DeviceXI2)
 
-	return goret1
+	return ret1
 }

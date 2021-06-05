@@ -149,13 +149,13 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 	}
 
 	var cret C.GtkTable
-	var goret1 Table
+	var ret1 Table
 
 	cret = C.gtk_table_new(rows, columns, homogeneous)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Table)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Table)
 
-	return goret1
+	return ret1
 }
 
 // Attach adds a widget to a table. The number of “cells” that a widget will
@@ -233,13 +233,13 @@ func (t table) ColSpacing(column uint) uint {
 	arg1 = C.guint(column)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_table_get_col_spacing(arg0, column)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DefaultColSpacing gets the default column spacing for the table. This is
@@ -251,13 +251,13 @@ func (t table) DefaultColSpacing() uint {
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_table_get_default_col_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DefaultRowSpacing gets the default row spacing for the table. This is the
@@ -269,13 +269,13 @@ func (t table) DefaultRowSpacing() uint {
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_table_get_default_row_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether the table cells are all constrained to the
@@ -286,13 +286,13 @@ func (t table) Homogeneous() bool {
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_table_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RowSpacing gets the amount of space between row @row, and row @row + 1.
@@ -305,13 +305,13 @@ func (t table) RowSpacing(row uint) uint {
 	arg1 = C.guint(row)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_table_get_row_spacing(arg0, row)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Size gets the number of rows and columns in the table.
@@ -320,15 +320,15 @@ func (t table) Size() (rows uint, columns uint) {
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
-	var arg2 *C.guint
+	var arg2 C.guint
 	var ret2 uint
 
 	C.gtk_table_get_size(arg0, &arg1, &arg2)
 
-	ret1 = *C.guint(arg1)
-	ret2 = *C.guint(arg2)
+	ret1 = C.guint(arg1)
+	ret2 = C.guint(arg2)
 
 	return ret1, ret2
 }

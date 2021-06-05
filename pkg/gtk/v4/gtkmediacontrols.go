@@ -69,13 +69,13 @@ func NewMediaControls(stream MediaStream) MediaControls {
 	arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	var cret C.GtkMediaControls
-	var goret1 MediaControls
+	var ret1 MediaControls
 
 	cret = C.gtk_media_controls_new(stream)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaControls)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaControls)
 
-	return goret1
+	return ret1
 }
 
 // MediaStream gets the media stream managed by @controls or nil if none.
@@ -85,13 +85,13 @@ func (c mediaControls) MediaStream() MediaStream {
 	arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkMediaStream
-	var goret1 MediaStream
+	var ret1 MediaStream
 
 	cret = C.gtk_media_controls_get_media_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
 
-	return goret1
+	return ret1
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.

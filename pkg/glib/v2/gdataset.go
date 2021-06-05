@@ -85,13 +85,13 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_datalist_get_data(datalist, key)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // DatalistGetFlags gets flags values packed in together with the datalist. See
@@ -102,13 +102,13 @@ func DatalistGetFlags(datalist **Data) uint {
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_datalist_get_flags(datalist)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
@@ -127,13 +127,13 @@ func DatalistGetFlags(datalist **Data) uint {
 func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) interface{} {
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_datalist_id_dup_data(datalist, keyID, dupFunc, userData)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call

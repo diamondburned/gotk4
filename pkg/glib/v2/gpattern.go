@@ -43,13 +43,13 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 	defer C.free(unsafe.Pointer(arg4))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pattern_match(pspec, stringLength, string, stringReversed)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PatternMatchSimple matches a string against a pattern given as a string. If
@@ -66,13 +66,13 @@ func PatternMatchSimple(pattern string, string string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pattern_match_simple(pattern, string)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PatternMatchString matches a string against a compiled pattern. If the string
@@ -87,13 +87,13 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pattern_match_string(pspec, string)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PatternSpec: a GPatternSpec struct is the 'compiled' form of a pattern. This
@@ -132,13 +132,13 @@ func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 	arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_pattern_spec_equal(arg0, pspec2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Free frees the memory allocated for the Spec.

@@ -35,13 +35,13 @@ func init() {
 // TLSBackendGetDefault gets the default Backend for the system.
 func TLSBackendGetDefault() TLSBackend {
 	var cret *C.GTlsBackend
-	var goret1 TLSBackend
+	var ret1 TLSBackend
 
 	cret = C.g_tls_backend_get_default()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSBackend)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSBackend)
 
-	return goret1
+	return ret1
 }
 
 // TLSBackendOverrider contains methods that are overridable. This
@@ -120,13 +120,13 @@ func (b tlsBackend) CertificateType() externglib.Type {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_tls_backend_get_certificate_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // ClientConnectionType gets the #GType of @backend's ClientConnection
@@ -137,13 +137,13 @@ func (b tlsBackend) ClientConnectionType() externglib.Type {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_tls_backend_get_client_connection_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // DefaultDatabase gets the default Database used to verify TLS connections.
@@ -153,13 +153,13 @@ func (b tlsBackend) DefaultDatabase() TLSDatabase {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GTlsDatabase
-	var goret1 TLSDatabase
+	var ret1 TLSDatabase
 
 	cret = C.g_tls_backend_get_default_database(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSDatabase)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSDatabase)
 
-	return goret1
+	return ret1
 }
 
 // DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
@@ -170,13 +170,13 @@ func (b tlsBackend) DTLSClientConnectionType() externglib.Type {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_tls_backend_get_dtls_client_connection_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
@@ -187,13 +187,13 @@ func (b tlsBackend) DTLSServerConnectionType() externglib.Type {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_tls_backend_get_dtls_server_connection_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // FileDatabaseType gets the #GType of @backend's FileDatabase
@@ -204,13 +204,13 @@ func (b tlsBackend) FileDatabaseType() externglib.Type {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_tls_backend_get_file_database_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // ServerConnectionType gets the #GType of @backend's ServerConnection
@@ -221,13 +221,13 @@ func (b tlsBackend) ServerConnectionType() externglib.Type {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_tls_backend_get_server_connection_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultDatabase: set the default Database used to verify TLS
@@ -258,13 +258,13 @@ func (b tlsBackend) SupportsDTLS() bool {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_tls_backend_supports_dtls(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SupportsTLS checks if TLS is supported; if this returns false for the
@@ -275,11 +275,11 @@ func (b tlsBackend) SupportsTLS() bool {
 	arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_tls_backend_supports_tls(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

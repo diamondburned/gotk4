@@ -91,13 +91,13 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 // NewConstraintGuide constructs a class ConstraintGuide.
 func NewConstraintGuide() ConstraintGuide {
 	var cret C.GtkConstraintGuide
-	var goret1 ConstraintGuide
+	var ret1 ConstraintGuide
 
 	cret = C.gtk_constraint_guide_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConstraintGuide)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConstraintGuide)
 
-	return goret1
+	return ret1
 }
 
 // MaxSize gets the maximum size of @guide.
@@ -133,13 +133,13 @@ func (g constraintGuide) Name() string {
 	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_constraint_guide_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NatSize gets the natural size of @guide.
@@ -163,13 +163,13 @@ func (g constraintGuide) Strength() ConstraintStrength {
 	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
 
 	var cret C.GtkConstraintStrength
-	var goret1 ConstraintStrength
+	var ret1 ConstraintStrength
 
 	cret = C.gtk_constraint_guide_get_strength(arg0)
 
-	goret1 = ConstraintStrength(cret)
+	ret1 = ConstraintStrength(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetMaxSize sets the maximum size of @guide.

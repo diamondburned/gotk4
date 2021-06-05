@@ -32,13 +32,13 @@ func DisableSetlocale() {
 // function for details.
 func GetDefaultLanguage() *pango.Language {
 	var cret *C.PangoLanguage
-	var goret1 *pango.Language
+	var ret1 *pango.Language
 
 	cret = C.gtk_get_default_language()
 
-	goret1 = pango.WrapLanguage(unsafe.Pointer(cret))
+	ret1 = pango.WrapLanguage(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the
@@ -61,13 +61,13 @@ func GetDefaultLanguage() *pango.Language {
 //    gtk_widget_set_default_direction (direction);
 func GetLocaleDirection() TextDirection {
 	var cret C.GtkTextDirection
-	var goret1 TextDirection
+	var ret1 TextDirection
 
 	cret = C.gtk_get_locale_direction()
 
-	goret1 = TextDirection(cret)
+	ret1 = TextDirection(cret)
 
-	return goret1
+	return ret1
 }
 
 // Init: call this function before using any other GTK functions in your GUI
@@ -98,24 +98,24 @@ func Init() {
 // with the user - for example a curses or command line interface.
 func InitCheck() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_init_check()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_is_initialized()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

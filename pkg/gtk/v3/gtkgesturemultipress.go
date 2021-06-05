@@ -80,13 +80,13 @@ func NewGestureMultiPress(widget Widget) GestureMultiPress {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.GtkGestureMultiPress
-	var goret1 GestureMultiPress
+	var ret1 GestureMultiPress
 
 	cret = C.gtk_gesture_multi_press_new(widget)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureMultiPress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureMultiPress)
 
-	return goret1
+	return ret1
 }
 
 // Area: if an area was set through gtk_gesture_multi_press_set_area(), this
@@ -98,17 +98,17 @@ func (g gestureMultiPress) Area() (rect gdk.Rectangle, ok bool) {
 
 	arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
 
-	var arg1 *C.GdkRectangle
+	var arg1 C.GdkRectangle
 	var ret1 *gdk.Rectangle
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_gesture_multi_press_get_area(arg0, &arg1)
 
 	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // SetArea: if @rect is non-nil, the press area will be checked to be

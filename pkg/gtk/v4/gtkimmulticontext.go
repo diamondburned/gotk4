@@ -57,13 +57,13 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 // NewIMMulticontext constructs a class IMMulticontext.
 func NewIMMulticontext() IMMulticontext {
 	var cret C.GtkIMMulticontext
-	var goret1 IMMulticontext
+	var ret1 IMMulticontext
 
 	cret = C.gtk_im_multicontext_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMMulticontext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMMulticontext)
 
-	return goret1
+	return ret1
 }
 
 // ContextID gets the id of the currently active delegate of the @context.
@@ -73,13 +73,13 @@ func (c imMulticontext) ContextID() string {
 	arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_im_multicontext_get_context_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetContextID sets the context id for @context.

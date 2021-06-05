@@ -103,13 +103,13 @@ func (b buildable) BuildableID() string {
 	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_buildable_get_buildable_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 type BuildableParseContext struct {
@@ -147,13 +147,13 @@ func (c *BuildableParseContext) Element() string {
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_buildable_parse_context_get_element(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -173,7 +173,7 @@ func (c *BuildableParseContext) ElementStack() []string {
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GPtrArray
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_buildable_parse_context_get_element_stack(arg0)
 
@@ -186,14 +186,14 @@ func (c *BuildableParseContext) ElementStack() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Position retrieves the current line number and the number of the character on
@@ -205,15 +205,15 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_buildable_parse_context_get_position(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -236,11 +236,11 @@ func (c *BuildableParseContext) Pop() interface{} {
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gtk_buildable_parse_context_pop(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }

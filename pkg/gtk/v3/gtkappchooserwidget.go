@@ -122,13 +122,13 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAppChooserWidget
-	var goret1 AppChooserWidget
+	var ret1 AppChooserWidget
 
 	cret = C.gtk_app_chooser_widget_new(contentType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 // DefaultText returns the text that is shown if there are not applications
@@ -139,13 +139,13 @@ func (s appChooserWidget) DefaultText() string {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_app_chooser_widget_get_default_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowAll returns the current value of the AppChooserWidget:show-all
@@ -156,13 +156,13 @@ func (s appChooserWidget) ShowAll() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_all(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowDefault returns the current value of the
@@ -173,13 +173,13 @@ func (s appChooserWidget) ShowDefault() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_default(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowFallback returns the current value of the
@@ -190,13 +190,13 @@ func (s appChooserWidget) ShowFallback() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_fallback(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowOther returns the current value of the AppChooserWidget:show-other
@@ -207,13 +207,13 @@ func (s appChooserWidget) ShowOther() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_other(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowRecommended returns the current value of the
@@ -224,13 +224,13 @@ func (s appChooserWidget) ShowRecommended() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_recommended(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultText sets the text that is shown if there are not applications

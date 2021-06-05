@@ -136,13 +136,13 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 // NewToggleButton constructs a class ToggleButton.
 func NewToggleButton() ToggleButton {
 	var cret C.GtkToggleButton
-	var goret1 ToggleButton
+	var ret1 ToggleButton
 
 	cret = C.gtk_toggle_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
 
-	return goret1
+	return ret1
 }
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
@@ -153,13 +153,13 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleButton
-	var goret1 ToggleButton
+	var ret1 ToggleButton
 
 	cret = C.gtk_toggle_button_new_with_label(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
 
-	return goret1
+	return ret1
 }
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
@@ -170,13 +170,13 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleButton
-	var goret1 ToggleButton
+	var ret1 ToggleButton
 
 	cret = C.gtk_toggle_button_new_with_mnemonic(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
 
-	return goret1
+	return ret1
 }
 
 // Active queries a ToggleButton and returns its current state. Returns true
@@ -187,13 +187,13 @@ func (t toggleButton) Active() bool {
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_toggle_button_get_active(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActive sets the status of the toggle button. Set to true if you want

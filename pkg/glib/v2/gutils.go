@@ -76,13 +76,13 @@ func BitNthLsf(mask uint32, nthBit int) int {
 	arg2 = C.gint(nthBit)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_bit_nth_lsf(mask, nthBit)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // BitNthMsf: find the position of the first bit set in @mask, searching from
@@ -97,13 +97,13 @@ func BitNthMsf(mask uint32, nthBit int) int {
 	arg2 = C.gint(nthBit)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_bit_nth_msf(mask, nthBit)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // BitStorage gets the number of bits used to hold @number, e.g. if @number is
@@ -114,13 +114,13 @@ func BitStorage(number uint32) uint {
 	arg1 = C.gulong(number)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_bit_storage(number)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // FindProgramInPath locates the first executable named @program in the user's
@@ -144,14 +144,14 @@ func FindProgramInPath(program string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_find_program_in_path(program)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FormatSize formats a size (for example the size of a file) into a human
@@ -173,14 +173,14 @@ func FormatSize(size uint64) string {
 	arg1 = C.guint64(size)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_format_size(size)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FormatSizeForDisplay formats a size (for example the size of a file) into a
@@ -197,14 +197,14 @@ func FormatSizeForDisplay(size int64) string {
 	arg1 = C.goffset(size)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_format_size_for_display(size)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FormatSizeFull formats a size.
@@ -219,14 +219,14 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	arg2 = (C.GFormatSizeFlags)(flags)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_format_size_full(size, flags)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // GetApplicationName gets a human-readable name for the application, as set by
@@ -237,13 +237,13 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // not been called).
 func GetApplicationName() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_application_name()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetHomeDir gets the current user's home directory.
@@ -268,13 +268,13 @@ func GetApplicationName() string {
 // functions in GLib.
 func GetHomeDir() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_home_dir()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetHostName: return a name for the machine.
@@ -291,13 +291,13 @@ func GetHomeDir() string {
 // The encoding of the returned string is UTF-8.
 func GetHostName() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_host_name()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetOsInfo: get information about the operating system.
@@ -315,14 +315,14 @@ func GetOsInfo(keyName string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_os_info(keyName)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // GetPrgname gets the name of the program. This name should not be localized,
@@ -334,13 +334,13 @@ func GetOsInfo(keyName string) string {
 // is found by taking the last component of @argv[0].
 func GetPrgname() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_prgname()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetRealName gets the real name of the user. This usually comes from the
@@ -349,13 +349,13 @@ func GetPrgname() string {
 // name cannot be determined, the string "Unknown" is returned.
 func GetRealName() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_real_name()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetSystemConfigDirs returns an ordered list of base directories in which to
@@ -376,7 +376,7 @@ func GetRealName() string {
 // available to anyone using the computer.
 func GetSystemConfigDirs() []string {
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_get_system_config_dirs()
 
@@ -389,14 +389,14 @@ func GetSystemConfigDirs() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // GetSystemDataDirs returns an ordered list of base directories in which to
@@ -429,7 +429,7 @@ func GetSystemConfigDirs() []string {
 // function is called.
 func GetSystemDataDirs() []string {
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_get_system_data_dirs()
 
@@ -442,14 +442,14 @@ func GetSystemDataDirs() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // GetTmpDir gets the directory to use for temporary files.
@@ -465,13 +465,13 @@ func GetSystemDataDirs() []string {
 // always UTF-8. The return value is never nil or the empty string.
 func GetTmpDir() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_tmp_dir()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetUserCacheDir returns a base directory in which to store non-essential,
@@ -490,13 +490,13 @@ func GetTmpDir() string {
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_internet_cache).
 func GetUserCacheDir() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_user_cache_dir()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetUserConfigDir returns a base directory in which to store user-specific
@@ -516,13 +516,13 @@ func GetUserCacheDir() string {
 // g_get_user_data_dir() returns.
 func GetUserConfigDir() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_user_config_dir()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetUserDataDir returns a base directory in which to access application data
@@ -542,13 +542,13 @@ func GetUserConfigDir() string {
 // g_get_user_config_dir() returns.
 func GetUserDataDir() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_user_data_dir()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetUserName gets the user name of the current user. The encoding of the
@@ -557,13 +557,13 @@ func GetUserDataDir() string {
 // consistent on a machine. On Windows, it is always UTF-8.
 func GetUserName() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_user_name()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetUserRuntimeDir returns a directory that is unique to the current user on
@@ -576,13 +576,13 @@ func GetUserName() string {
 // g_get_user_cache_dir(), after verifying that it exists.
 func GetUserRuntimeDir() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_user_runtime_dir()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetUserSpecialDir returns the full path of a special directory using its
@@ -601,13 +601,13 @@ func GetUserSpecialDir(directory UserDirectory) string {
 	arg1 = (C.GUserDirectory)(directory)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_user_special_dir(directory)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NullifyPointer: set the pointer at the specified location to nil.
@@ -632,13 +632,13 @@ func NullifyPointer(nullifyLocation interface{}) {
 func ParseDebugString(string string, keys []DebugKey) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_parse_debug_string(string, keys, nkeys)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ReloadUserSpecialDirsCache resets the cache used for

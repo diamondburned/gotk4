@@ -57,11 +57,11 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 // NewVButtonBox constructs a class VButtonBox.
 func NewVButtonBox() VButtonBox {
 	var cret C.GtkVButtonBox
-	var goret1 VButtonBox
+	var ret1 VButtonBox
 
 	cret = C.gtk_vbutton_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VButtonBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VButtonBox)
 
-	return goret1
+	return ret1
 }

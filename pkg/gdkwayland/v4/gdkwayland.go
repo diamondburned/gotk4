@@ -81,13 +81,13 @@ func (s waylandSurface) WlSurface() interface{} {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.wl_surface
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_surface_get_wl_surface(arg0)
 
-	goret1 = *C.wl_surface(cret)
+	ret1 = *C.wl_surface(cret)
 
-	return goret1
+	return ret1
 }
 
 type WaylandToplevel interface {
@@ -176,13 +176,13 @@ func (t waylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_wayland_toplevel_export_handle(arg0, callback, userData, destroyFunc)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetApplicationID sets the application id on a Toplevel.
@@ -213,13 +213,13 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_wayland_toplevel_set_transient_for_exported(arg0, parentHandleStr)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UnexportHandle destroys the handle that was obtained with

@@ -35,13 +35,13 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	arg5 = C.int(height)
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gdk_pixbuf_get_from_surface(surface, srcX, srcY, width, height)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // PixbufGetFromTexture creates a new pixbuf from @texture. This should
@@ -53,11 +53,11 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 	arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gdk_pixbuf_get_from_texture(texture)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }

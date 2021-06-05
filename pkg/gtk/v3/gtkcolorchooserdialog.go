@@ -66,13 +66,13 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkColorChooserDialog
-	var goret1 ColorChooserDialog
+	var ret1 ColorChooserDialog
 
 	cret = C.gtk_color_chooser_dialog_new(title, parent)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 type ColorChooserDialogPrivate struct {

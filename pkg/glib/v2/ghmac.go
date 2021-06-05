@@ -26,14 +26,14 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) strin
 	arg3 = (*C.GBytes)(unsafe.Pointer(data.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_compute_hmac_for_bytes(digestType, key, data)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ComputeHMACForData computes the HMAC for a binary @data of @length. This is a
@@ -43,14 +43,14 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) strin
 func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_compute_hmac_for_data(digestType, key, keyLen, data, length)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HMAC: an opaque structure representing a HMAC operation. To create a new
@@ -88,13 +88,13 @@ func (h *HMAC) Copy() *HMAC {
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
 	var cret *C.GHmac
-	var goret1 *HMAC
+	var ret1 *HMAC
 
 	cret = C.g_hmac_copy(arg0)
 
-	goret1 = WrapHMAC(unsafe.Pointer(cret))
+	ret1 = WrapHMAC(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Digest gets the digest from @checksum as a raw binary array and places it
@@ -122,13 +122,13 @@ func (h *HMAC) String() string {
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_hmac_get_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref: atomically increments the reference count of @hmac by one.
@@ -140,13 +140,13 @@ func (h *HMAC) Ref() *HMAC {
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
 	var cret *C.GHmac
-	var goret1 *HMAC
+	var ret1 *HMAC
 
 	cret = C.g_hmac_ref(arg0)
 
-	goret1 = WrapHMAC(unsafe.Pointer(cret))
+	ret1 = WrapHMAC(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Unref: atomically decrements the reference count of @hmac by one.

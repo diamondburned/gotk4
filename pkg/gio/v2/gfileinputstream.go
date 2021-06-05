@@ -108,18 +108,18 @@ func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_input_stream_query_info(arg0, attributes, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryInfoAsync queries the stream information asynchronously. When the
@@ -151,18 +151,18 @@ func (s fileInputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo,
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_input_stream_query_info_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 type FileInputStreamPrivate struct {

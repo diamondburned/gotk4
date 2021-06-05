@@ -80,13 +80,13 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 // NewFixedLayout constructs a class FixedLayout.
 func NewFixedLayout() FixedLayout {
 	var cret C.GtkFixedLayout
-	var goret1 FixedLayout
+	var ret1 FixedLayout
 
 	cret = C.gtk_fixed_layout_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FixedLayout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FixedLayout)
 
-	return goret1
+	return ret1
 }
 
 type FixedLayoutChild interface {
@@ -126,13 +126,13 @@ func (c fixedLayoutChild) Transform() *gsk.Transform {
 	arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GskTransform
-	var goret1 *gsk.Transform
+	var ret1 *gsk.Transform
 
 	cret = C.gtk_fixed_layout_child_get_transform(arg0)
 
-	goret1 = gsk.WrapTransform(unsafe.Pointer(cret))
+	ret1 = gsk.WrapTransform(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SetTransform sets the transformation of the child of a FixedLayout.

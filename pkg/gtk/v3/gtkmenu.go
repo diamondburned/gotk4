@@ -45,7 +45,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 	pushIn := fn(menu, x, y, userData)
 
 	if pushIn {
-		*arg3 = C.gboolean(1)
+		arg3 = C.gboolean(1)
 	}
 }
 
@@ -257,13 +257,13 @@ func marshalMenu(p uintptr) (interface{}, error) {
 // NewMenu constructs a class Menu.
 func NewMenu() Menu {
 	var cret C.GtkMenu
-	var goret1 Menu
+	var ret1 Menu
 
 	cret = C.gtk_menu_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
 
-	return goret1
+	return ret1
 }
 
 // NewMenuFromModel constructs a class Menu.
@@ -273,13 +273,13 @@ func NewMenuFromModel(model gio.MenuModel) Menu {
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkMenu
-	var goret1 Menu
+	var ret1 Menu
 
 	cret = C.gtk_menu_new_from_model(model)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
 
-	return goret1
+	return ret1
 }
 
 // Attach adds a new MenuItem to a (table) menu. The number of “cells” that
@@ -326,13 +326,13 @@ func (m menu) AccelGroup() AccelGroup {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkAccelGroup
-	var goret1 AccelGroup
+	var ret1 AccelGroup
 
 	cret = C.gtk_menu_get_accel_group(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelGroup)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelGroup)
 
-	return goret1
+	return ret1
 }
 
 // AccelPath retrieves the accelerator path set on the menu.
@@ -342,13 +342,13 @@ func (m menu) AccelPath() string {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_menu_get_accel_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Active returns the selected menu item from the menu. This is used by the
@@ -359,13 +359,13 @@ func (m menu) Active() Widget {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_menu_get_active(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // AttachWidget returns the Widget that the menu is attached to.
@@ -375,13 +375,13 @@ func (m menu) AttachWidget() Widget {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_menu_get_attach_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Monitor retrieves the number of the monitor on which to show the menu.
@@ -391,13 +391,13 @@ func (m menu) Monitor() int {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_menu_get_monitor(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ReserveToggleSize returns whether the menu reserves space for toggles and
@@ -408,13 +408,13 @@ func (m menu) ReserveToggleSize() bool {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_get_reserve_toggle_size(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TearoffState returns whether the menu is torn off. See
@@ -425,13 +425,13 @@ func (m menu) TearoffState() bool {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_get_tearoff_state(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Title returns the title of the menu. See gtk_menu_set_title().
@@ -441,13 +441,13 @@ func (m menu) Title() string {
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_menu_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PlaceOnMonitor places @menu on the given monitor.

@@ -214,13 +214,13 @@ func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOConditi
 	arg1 = (C.GIOCondition)(condition)
 
 	var cret C.GIOCondition
-	var goret1 glib.IOCondition
+	var ret1 glib.IOCondition
 
 	cret = C.g_datagram_based_condition_check(arg0, condition)
 
-	goret1 = glib.IOCondition(cret)
+	ret1 = glib.IOCondition(cret)
 
-	return goret1
+	return ret1
 }
 
 // ConditionWait waits for up to @timeout microseconds for condition to
@@ -277,14 +277,14 @@ func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Canc
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSource
-	var goret1 *glib.Source
+	var ret1 *glib.Source
 
 	cret = C.g_datagram_based_create_source(arg0, condition, cancellable)
 
-	goret1 = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Source) {
+	ret1 = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

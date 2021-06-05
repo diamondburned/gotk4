@@ -107,11 +107,6 @@ func (value *ValueProp) loadIgnore(ignores map[int]struct{}) {
 	}
 }
 
-// outDeref returns true if the output is dereferenced.
-func (value *ValueProp) outDeref() bool {
-	return strings.HasPrefix(value.Out, "*")
-}
-
 // inner is used only for arrays.
 func (value ValueProp) inner(in, out string) ValueProp {
 	if value.Type.Array == nil {
@@ -181,7 +176,7 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 	}
 
 	cgoType := value.resolved.CGoType()
-	if !inputC && value.outDeref() {
+	if value.OutputIsParameter {
 		// Output is dereferenced; trim a pointer from the CGo type.
 		cgoType = strings.TrimPrefix(cgoType, "*")
 	}

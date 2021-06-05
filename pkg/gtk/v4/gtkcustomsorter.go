@@ -63,13 +63,13 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter {
 
 	var cret C.GtkCustomSorter
-	var goret1 CustomSorter
+	var ret1 CustomSorter
 
 	cret = C.gtk_custom_sorter_new(sortFunc, userData, userDestroy)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomSorter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomSorter)
 
-	return goret1
+	return ret1
 }
 
 // SetSortFunc sets (or unsets) the function used for sorting items.

@@ -164,16 +164,16 @@ func (m selectionModel) Selection() *Bitset {
 	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkBitset
-	var goret1 *Bitset
+	var ret1 *Bitset
 
 	cret = C.gtk_selection_model_get_selection(arg0)
 
-	goret1 = WrapBitset(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bitset) {
+	ret1 = WrapBitset(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bitset) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SelectionInRange gets a set containing a set where the values in the
@@ -194,16 +194,16 @@ func (m selectionModel) SelectionInRange(position uint, nItems uint) *Bitset {
 	arg2 = C.guint(nItems)
 
 	var cret *C.GtkBitset
-	var goret1 *Bitset
+	var ret1 *Bitset
 
 	cret = C.gtk_selection_model_get_selection_in_range(arg0, position, nItems)
 
-	goret1 = WrapBitset(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bitset) {
+	ret1 = WrapBitset(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bitset) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // IsSelected checks if the given item is selected.
@@ -215,13 +215,13 @@ func (m selectionModel) IsSelected(position uint) bool {
 	arg1 = C.guint(position)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_is_selected(arg0, position)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectAll requests to select all items in the model.
@@ -231,13 +231,13 @@ func (m selectionModel) SelectAll() bool {
 	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_select_all(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectItem requests to select an item in the model.
@@ -253,13 +253,13 @@ func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_select_item(arg0, position, unselectRest)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectRange requests to select a range of items in the model.
@@ -277,13 +277,13 @@ func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest boo
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_select_range(arg0, position, nItems, unselectRest)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectionChanged: helper function for implementations of SelectionModel.
@@ -337,13 +337,13 @@ func (m selectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(mask.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_set_selection(arg0, selected, mask)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UnselectAll requests to unselect all items in the model.
@@ -353,13 +353,13 @@ func (m selectionModel) UnselectAll() bool {
 	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_unselect_all(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UnselectItem requests to unselect an item in the model.
@@ -371,13 +371,13 @@ func (m selectionModel) UnselectItem(position uint) bool {
 	arg1 = C.guint(position)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_unselect_item(arg0, position)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UnselectRange requests to unselect a range of items in the model.
@@ -391,11 +391,11 @@ func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
 	arg2 = C.guint(nItems)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_selection_model_unselect_range(arg0, position, nItems)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

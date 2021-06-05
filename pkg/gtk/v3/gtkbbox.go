@@ -90,13 +90,13 @@ func NewButtonBox(orientation Orientation) ButtonBox {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkButtonBox
-	var goret1 ButtonBox
+	var ret1 ButtonBox
 
 	cret = C.gtk_button_box_new(orientation)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ButtonBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ButtonBox)
 
-	return goret1
+	return ret1
 }
 
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
@@ -109,13 +109,13 @@ func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_button_box_get_child_non_homogeneous(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ChildSecondary returns whether @child should appear in a secondary group
@@ -128,13 +128,13 @@ func (w buttonBox) ChildSecondary(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_button_box_get_child_secondary(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Layout retrieves the method being used to arrange the buttons in a button
@@ -145,13 +145,13 @@ func (w buttonBox) Layout() ButtonBoxStyle {
 	arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 
 	var cret C.GtkButtonBoxStyle
-	var goret1 ButtonBoxStyle
+	var ret1 ButtonBoxStyle
 
 	cret = C.gtk_button_box_get_layout(arg0)
 
-	goret1 = ButtonBoxStyle(cret)
+	ret1 = ButtonBoxStyle(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetChildNonHomogeneous sets whether the child is exempted from homogeous

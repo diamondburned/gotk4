@@ -68,13 +68,13 @@ func NewMultiSelection(model gio.ListModel) MultiSelection {
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkMultiSelection
-	var goret1 MultiSelection
+	var ret1 MultiSelection
 
 	cret = C.gtk_multi_selection_new(model)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
 
-	return goret1
+	return ret1
 }
 
 // Model returns the underlying model of @self.
@@ -84,13 +84,13 @@ func (s multiSelection) Model() gio.ListModel {
 	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_multi_selection_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // SetModel sets the model that @self should wrap. If @model is nil, @self

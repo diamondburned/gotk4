@@ -134,13 +134,13 @@ func VariantIsObjectPath(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_is_object_path(string)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VariantIsSignature determines if a given string is a valid D-Bus type
@@ -156,13 +156,13 @@ func VariantIsSignature(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_is_signature(string)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VariantParse parses a #GVariant from a text representation.
@@ -213,13 +213,13 @@ func VariantParse(typ *VariantType, text string, limit string, endptr string) (v
 	defer C.free(unsafe.Pointer(arg4))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 	var goerr error
 
 	cret = C.g_variant_parse(typ, text, limit, endptr, &errout)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -227,7 +227,7 @@ func VariantParse(typ *VariantType, text string, limit string, endptr string) (v
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // VariantParseErrorPrintContext pretty-prints a message showing the context of
@@ -263,14 +263,14 @@ func VariantParseErrorPrintContext(error *Error, sourceStr string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_variant_parse_error_print_context(error, sourceStr)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -521,13 +521,13 @@ func marshalVariant(p uintptr) (interface{}, error) {
 func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_array(childType, children, nChildren)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantBoolean constructs a struct Variant.
@@ -539,13 +539,13 @@ func NewVariantBoolean(value bool) *Variant {
 	}
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_boolean(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantByte constructs a struct Variant.
@@ -555,13 +555,13 @@ func NewVariantByte(value byte) *Variant {
 	arg1 = C.guint8(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_byte(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantBytestring constructs a struct Variant.
@@ -581,26 +581,26 @@ func NewVariantBytestring(string []byte) *Variant {
 	}
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_bytestring(string)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantBytestringArray constructs a struct Variant.
 func NewVariantBytestringArray(strv []string) *Variant {
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_bytestring_array(strv, length)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantDictEntry constructs a struct Variant.
@@ -612,13 +612,13 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 	arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_dict_entry(key, value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantDouble constructs a struct Variant.
@@ -628,13 +628,13 @@ func NewVariantDouble(value float64) *Variant {
 	arg1 = C.gdouble(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_double(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantFixedArray constructs a struct Variant.
@@ -650,13 +650,13 @@ func NewVariantFixedArray(elementType *VariantType, elements interface{}, nEleme
 	arg4 = C.gsize(elementSize)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_fixed_array(elementType, elements, nElements, elementSize)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantFromBytes constructs a struct Variant.
@@ -672,13 +672,13 @@ func NewVariantFromBytes(typ *VariantType, bytes *Bytes, trusted bool) *Variant 
 	}
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_from_bytes(typ, bytes, trusted)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantHandle constructs a struct Variant.
@@ -688,13 +688,13 @@ func NewVariantHandle(value int32) *Variant {
 	arg1 = C.gint32(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_handle(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantInt16 constructs a struct Variant.
@@ -704,13 +704,13 @@ func NewVariantInt16(value int16) *Variant {
 	arg1 = C.gint16(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_int16(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantInt32 constructs a struct Variant.
@@ -720,13 +720,13 @@ func NewVariantInt32(value int32) *Variant {
 	arg1 = C.gint32(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_int32(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantInt64 constructs a struct Variant.
@@ -736,13 +736,13 @@ func NewVariantInt64(value int64) *Variant {
 	arg1 = C.gint64(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_int64(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantMaybe constructs a struct Variant.
@@ -754,13 +754,13 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 	arg2 = (*C.GVariant)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_maybe(childType, child)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantObjectPath constructs a struct Variant.
@@ -771,26 +771,26 @@ func NewVariantObjectPath(objectPath string) *Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_object_path(objectPath)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantObjv constructs a struct Variant.
 func NewVariantObjv(strv []string) *Variant {
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_objv(strv, length)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantSignature constructs a struct Variant.
@@ -801,13 +801,13 @@ func NewVariantSignature(signature string) *Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_signature(signature)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantString constructs a struct Variant.
@@ -818,26 +818,26 @@ func NewVariantString(string string) *Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_string(string)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantStrv constructs a struct Variant.
 func NewVariantStrv(strv []string) *Variant {
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_strv(strv, length)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantTakeString constructs a struct Variant.
@@ -848,26 +848,26 @@ func NewVariantTakeString(string string) *Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_take_string(string)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantTuple constructs a struct Variant.
 func NewVariantTuple(children []*Variant) *Variant {
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_tuple(children, nChildren)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantUint16 constructs a struct Variant.
@@ -877,13 +877,13 @@ func NewVariantUint16(value uint16) *Variant {
 	arg1 = C.guint16(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_uint16(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantUint32 constructs a struct Variant.
@@ -893,13 +893,13 @@ func NewVariantUint32(value uint32) *Variant {
 	arg1 = C.guint32(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_uint32(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantUint64 constructs a struct Variant.
@@ -909,13 +909,13 @@ func NewVariantUint64(value uint64) *Variant {
 	arg1 = C.guint64(value)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_uint64(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewVariantVariant constructs a struct Variant.
@@ -925,13 +925,13 @@ func NewVariantVariant(value *Variant) *Variant {
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_new_variant(value)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -955,16 +955,16 @@ func (v *Variant) Byteswap() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_byteswap(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // CheckFormatString checks if calling g_variant_get() with @format_string on
@@ -994,13 +994,13 @@ func (v *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_check_format_string(arg0, formatString, copyOnly)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Classify classifies @value according to its top-level type.
@@ -1010,13 +1010,13 @@ func (v *Variant) Classify() VariantClass {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.GVariantClass
-	var goret1 VariantClass
+	var ret1 VariantClass
 
 	cret = C.g_variant_classify(arg0)
 
-	goret1 = VariantClass(cret)
+	ret1 = VariantClass(cret)
 
-	return goret1
+	return ret1
 }
 
 // Compare compares @one and @two.
@@ -1045,13 +1045,13 @@ func (o *Variant) Compare(two Variant) int {
 	arg1 = (C.gpointer)(unsafe.Pointer(two.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_variant_compare(arg0, two)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DupBytestring: similar to g_variant_get_bytestring() except that instead of
@@ -1065,16 +1065,16 @@ func (v *Variant) DupBytestring() (length uint, guint8s []byte) {
 
 	var cret *C.gchar
 	var arg1 *C.gsize
-	var goret2 []byte
+	var ret2 []byte
 
 	cret = C.g_variant_dup_bytestring(arg0, &arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret2, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&ret2, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // DupBytestringArray gets the contents of an array of array of bytes #GVariant.
@@ -1093,18 +1093,18 @@ func (v *Variant) DupBytestringArray() (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg1 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_variant_dup_bytestring_array(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 		defer C.free(unsafe.Pointer(src))
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // DupObjv gets the contents of an array of object paths #GVariant. This call
@@ -1122,18 +1122,18 @@ func (v *Variant) DupObjv() (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg1 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_variant_dup_objv(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 		defer C.free(unsafe.Pointer(src))
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // DupString: similar to g_variant_get_string() except that instead of returning
@@ -1147,18 +1147,18 @@ func (v *Variant) DupString() (length uint, utf8 string) {
 
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
-	var arg1 *C.gsize
+	var arg1 C.gsize
 	var ret1 uint
 	var cret *C.gchar
-	var goret2 string
+	var ret2 string
 
 	cret = C.g_variant_dup_string(arg0, &arg1)
 
-	ret1 = *C.gsize(arg1)
-	goret2 = C.GoString(cret)
+	ret1 = C.gsize(arg1)
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // DupStrv gets the contents of an array of strings #GVariant. This call makes a
@@ -1176,18 +1176,18 @@ func (v *Variant) DupStrv() (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg1 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_variant_dup_strv(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 		defer C.free(unsafe.Pointer(src))
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Equal checks if @one and @two have the same type and value.
@@ -1202,13 +1202,13 @@ func (o *Variant) Equal(two Variant) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(two.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_equal(arg0, two)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Boolean returns the boolean value of @value.
@@ -1221,13 +1221,13 @@ func (v *Variant) Boolean() bool {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_get_boolean(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Byte returns the byte value of @value.
@@ -1240,13 +1240,13 @@ func (v *Variant) Byte() byte {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.guint8
-	var goret1 byte
+	var ret1 byte
 
 	cret = C.g_variant_get_byte(arg0)
 
-	goret1 = C.guint8(cret)
+	ret1 = C.guint8(cret)
 
-	return goret1
+	return ret1
 }
 
 // Bytestring returns the string value of a #GVariant instance with an
@@ -1273,7 +1273,7 @@ func (v *Variant) Bytestring() []byte {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.gchar
-	var goret1 []byte
+	var ret1 []byte
 
 	cret = C.g_variant_get_bytestring(arg0)
 
@@ -1286,14 +1286,14 @@ func (v *Variant) Bytestring() []byte {
 			}
 		}
 
-		goret1 = make([]byte, length)
+		ret1 = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.guint8(src)
+			ret1[i] = C.guint8(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // BytestringArray gets the contents of an array of array of bytes #GVariant.
@@ -1312,17 +1312,17 @@ func (v *Variant) BytestringArray() (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg1 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_variant_get_bytestring_array(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // ChildValue reads a child item out of a container #GVariant instance. This
@@ -1355,16 +1355,16 @@ func (v *Variant) ChildValue(index_ uint) *Variant {
 	arg1 = C.gsize(index_)
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_get_child_value(arg0, index_)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Data returns a pointer to the serialised form of a #GVariant instance. The
@@ -1395,13 +1395,13 @@ func (v *Variant) Data() interface{} {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_variant_get_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // DataAsBytes returns a pointer to the serialised form of a #GVariant instance.
@@ -1413,16 +1413,16 @@ func (v *Variant) DataAsBytes() *Bytes {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_variant_get_data_as_bytes(arg0)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Double returns the double precision floating point value of @value.
@@ -1435,13 +1435,13 @@ func (v *Variant) Double() float64 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_variant_get_double(arg0)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // Handle returns the 32-bit signed integer value of @value.
@@ -1458,13 +1458,13 @@ func (v *Variant) Handle() int32 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.g_variant_get_handle(arg0)
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // Int16 returns the 16-bit signed integer value of @value.
@@ -1477,13 +1477,13 @@ func (v *Variant) Int16() int16 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gint16
-	var goret1 int16
+	var ret1 int16
 
 	cret = C.g_variant_get_int16(arg0)
 
-	goret1 = C.gint16(cret)
+	ret1 = C.gint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // Int32 returns the 32-bit signed integer value of @value.
@@ -1496,13 +1496,13 @@ func (v *Variant) Int32() int32 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.g_variant_get_int32(arg0)
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // Int64 returns the 64-bit signed integer value of @value.
@@ -1515,13 +1515,13 @@ func (v *Variant) Int64() int64 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_variant_get_int64(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // Maybe: given a maybe-typed #GVariant instance, extract its value. If the
@@ -1532,16 +1532,16 @@ func (v *Variant) Maybe() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_get_maybe(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NormalForm gets a #GVariant instance that has the same value as @value and is
@@ -1573,16 +1573,16 @@ func (v *Variant) NormalForm() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_get_normal_form(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Objv gets the contents of an array of object paths #GVariant. This call makes
@@ -1601,17 +1601,17 @@ func (v *Variant) Objv() (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg1 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_variant_get_objv(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Size determines the number of bytes that would be required to store @value
@@ -1630,13 +1630,13 @@ func (v *Variant) Size() uint {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_get_size(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // String returns the string value of a #GVariant instance with a string type.
@@ -1661,17 +1661,17 @@ func (v *Variant) String() (length uint, utf8 string) {
 
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
-	var arg1 *C.gsize
+	var arg1 C.gsize
 	var ret1 uint
 	var cret *C.gchar
-	var goret2 string
+	var ret2 string
 
 	cret = C.g_variant_get_string(arg0, &arg1)
 
-	ret1 = *C.gsize(arg1)
-	goret2 = C.GoString(cret)
+	ret1 = C.gsize(arg1)
+	ret2 = C.GoString(cret)
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Strv gets the contents of an array of strings #GVariant. This call makes a
@@ -1690,17 +1690,17 @@ func (v *Variant) Strv() (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg1 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_variant_get_strv(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Type determines the type of @value.
@@ -1712,13 +1712,13 @@ func (v *Variant) Type() *VariantType {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariantType
-	var goret1 *VariantType
+	var ret1 *VariantType
 
 	cret = C.g_variant_get_type(arg0)
 
-	goret1 = WrapVariantType(unsafe.Pointer(cret))
+	ret1 = WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // TypeString returns the type string of @value. Unlike the result of calling
@@ -1730,13 +1730,13 @@ func (v *Variant) TypeString() string {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_variant_get_type_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Uint16 returns the 16-bit unsigned integer value of @value.
@@ -1749,13 +1749,13 @@ func (v *Variant) Uint16() uint16 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.g_variant_get_uint16(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // Uint32 returns the 32-bit unsigned integer value of @value.
@@ -1768,13 +1768,13 @@ func (v *Variant) Uint32() uint32 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_variant_get_uint32(arg0)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // Uint64 returns the 64-bit unsigned integer value of @value.
@@ -1787,13 +1787,13 @@ func (v *Variant) Uint64() uint64 {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.guint64
-	var goret1 uint64
+	var ret1 uint64
 
 	cret = C.g_variant_get_uint64(arg0)
 
-	goret1 = C.guint64(cret)
+	ret1 = C.guint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // Variant unboxes @value. The result is the #GVariant instance that was
@@ -1804,16 +1804,16 @@ func (v *Variant) Variant() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_get_variant(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Hash generates a hash value for a #GVariant instance.
@@ -1831,13 +1831,13 @@ func (v *Variant) Hash() uint {
 	arg0 = (C.gpointer)(unsafe.Pointer(v.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsContainer checks if @value is a container.
@@ -1847,13 +1847,13 @@ func (v *Variant) IsContainer() bool {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_is_container(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsFloating checks whether @value has a floating reference count.
@@ -1871,13 +1871,13 @@ func (v *Variant) IsFloating() bool {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_is_floating(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsNormalForm checks if @value is in normal form.
@@ -1898,13 +1898,13 @@ func (v *Variant) IsNormalForm() bool {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_is_normal_form(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsOfType checks if a value has a type matching the provided type.
@@ -1916,13 +1916,13 @@ func (v *Variant) IsOfType(typ *VariantType) bool {
 	arg1 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_is_of_type(arg0, typ)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // NewIter creates a heap-allocated Iter for iterating over the items in @value.
@@ -1938,16 +1938,16 @@ func (v *Variant) NewIter() *VariantIter {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariantIter
-	var goret1 *VariantIter
+	var ret1 *VariantIter
 
 	cret = C.g_variant_iter_new(arg0)
 
-	goret1 = WrapVariantIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantIter) {
+	ret1 = WrapVariantIter(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantIter) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // LookupValue looks up a value in a dictionary #GVariant.
@@ -1982,16 +1982,16 @@ func (d *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 	arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_lookup_value(arg0, key, expectedType)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NChildren determines the number of children in a container #GVariant
@@ -2010,13 +2010,13 @@ func (v *Variant) NChildren() uint {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_n_children(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Print pretty-prints @value in the format understood by g_variant_parse().
@@ -2034,14 +2034,14 @@ func (v *Variant) Print(typeAnnotate bool) string {
 	}
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_variant_print(arg0, typeAnnotate)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PrintString behaves as g_variant_print(), but operates on a #GString.
@@ -2060,16 +2060,16 @@ func (v *Variant) PrintString(string *String, typeAnnotate bool) *String {
 	}
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_variant_print_string(arg0, string, typeAnnotate)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *String) {
+	ret1 = WrapString(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Ref increases the reference count of @value.
@@ -2079,16 +2079,16 @@ func (v *Variant) Ref() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_ref(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // RefSink uses a floating reference count system. All functions with names
@@ -2117,16 +2117,16 @@ func (v *Variant) RefSink() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_ref_sink(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Store stores the serialised form of @value at @data. @data should be large
@@ -2186,16 +2186,16 @@ func (v *Variant) TakeRef() *Variant {
 	arg0 = (*C.GVariant)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_take_ref(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decreases the reference count of @value. When its reference count drops
@@ -2242,16 +2242,16 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	arg1 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
 
 	var cret *C.GVariantBuilder
-	var goret1 *VariantBuilder
+	var ret1 *VariantBuilder
 
 	cret = C.g_variant_builder_new(typ)
 
-	goret1 = WrapVariantBuilder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantBuilder) {
+	ret1 = WrapVariantBuilder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantBuilder) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -2333,13 +2333,13 @@ func (b *VariantBuilder) End() *Variant {
 	arg0 = (*C.GVariantBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_builder_end(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Init initialises a Builder structure.
@@ -2432,16 +2432,16 @@ func (b *VariantBuilder) Ref() *VariantBuilder {
 	arg0 = (*C.GVariantBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GVariantBuilder
-	var goret1 *VariantBuilder
+	var ret1 *VariantBuilder
 
 	cret = C.g_variant_builder_ref(arg0)
 
-	goret1 = WrapVariantBuilder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantBuilder) {
+	ret1 = WrapVariantBuilder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantBuilder) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decreases the reference count on @builder.
@@ -2542,16 +2542,16 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	arg1 = (*C.GVariant)(unsafe.Pointer(fromAsv.Native()))
 
 	var cret *C.GVariantDict
-	var goret1 *VariantDict
+	var ret1 *VariantDict
 
 	cret = C.g_variant_dict_new(fromAsv)
 
-	goret1 = WrapVariantDict(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantDict) {
+	ret1 = WrapVariantDict(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantDict) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -2589,13 +2589,13 @@ func (d *VariantDict) Contains(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_dict_contains(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // End returns the current value of @dict as a #GVariant of type
@@ -2611,13 +2611,13 @@ func (d *VariantDict) End() *Variant {
 	arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_dict_end(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
+	ret1 = WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Init initialises a Dict structure.
@@ -2682,16 +2682,16 @@ func (d *VariantDict) LookupValue(key string, expectedType *VariantType) *Varian
 	arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_dict_lookup_value(arg0, key, expectedType)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Ref increases the reference count on @dict.
@@ -2703,16 +2703,16 @@ func (d *VariantDict) Ref() *VariantDict {
 	arg0 = (*C.GVariantDict)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GVariantDict
-	var goret1 *VariantDict
+	var ret1 *VariantDict
 
 	cret = C.g_variant_dict_ref(arg0)
 
-	goret1 = WrapVariantDict(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantDict) {
+	ret1 = WrapVariantDict(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantDict) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Remove removes a key and its associated value from a Dict.
@@ -2725,13 +2725,13 @@ func (d *VariantDict) Remove(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_variant_dict_remove(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Unref decreases the reference count on @dict.
@@ -2790,16 +2790,16 @@ func (i *VariantIter) Copy() *VariantIter {
 	arg0 = (*C.GVariantIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GVariantIter
-	var goret1 *VariantIter
+	var ret1 *VariantIter
 
 	cret = C.g_variant_iter_copy(arg0)
 
-	goret1 = WrapVariantIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *VariantIter) {
+	ret1 = WrapVariantIter(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *VariantIter) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free frees a heap-allocated Iter. Only call this function on iterators that
@@ -2825,13 +2825,13 @@ func (i *VariantIter) Init(value *Variant) uint {
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_iter_init(arg0, value)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // NChildren queries the number of child items in the container that we are
@@ -2845,13 +2845,13 @@ func (i *VariantIter) NChildren() uint {
 	arg0 = (*C.GVariantIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_variant_iter_n_children(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // NextValue gets the next item in the container. If no more items remain then
@@ -2886,14 +2886,14 @@ func (i *VariantIter) NextValue() *Variant {
 	arg0 = (*C.GVariantIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GVariant
-	var goret1 *Variant
+	var ret1 *Variant
 
 	cret = C.g_variant_iter_next_value(arg0)
 
-	goret1 = WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Variant) {
+	ret1 = WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

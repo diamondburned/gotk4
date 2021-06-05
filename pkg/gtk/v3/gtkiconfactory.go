@@ -34,13 +34,13 @@ func IconSizeFromName(name string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkIconSize
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_size_from_name(name)
 
-	goret1 = C.GtkIconSize(cret)
+	ret1 = C.GtkIconSize(cret)
 
-	return goret1
+	return ret1
 }
 
 // IconSizeGetName gets the canonical name of the given icon size. The returned
@@ -51,13 +51,13 @@ func IconSizeGetName(size int) string {
 	arg1 = C.GtkIconSize(size)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_icon_size_get_name(size)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IconSizeLookup obtains the pixel size of a semantic icon size @size:
@@ -72,20 +72,20 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 
 	arg1 = C.GtkIconSize(size)
 
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_icon_size_lookup(size, &arg2, &arg3)
 
-	ret2 = *C.gint(arg2)
-	ret3 = *C.gint(arg3)
-	goret3 = C.bool(cret) != C.false
+	ret2 = C.gint(arg2)
+	ret3 = C.gint(arg3)
+	ret3 = C.bool(cret) != C.false
 
-	return ret2, ret3, goret3
+	return ret2, ret3, ret3
 }
 
 // IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
@@ -103,20 +103,20 @@ func IconSizeLookupForSettings(settings Settings, size int) (width int, height i
 	arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	arg2 = C.GtkIconSize(size)
 
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
-	var arg4 *C.gint
+	var arg4 C.gint
 	var ret4 int
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_icon_size_lookup_for_settings(settings, size, &arg3, &arg4)
 
-	ret3 = *C.gint(arg3)
-	ret4 = *C.gint(arg4)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.gint(arg3)
+	ret4 = C.gint(arg4)
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // IconSizeRegister registers a new icon size, along the same lines as
@@ -132,13 +132,13 @@ func IconSizeRegister(name string, width int, height int) int {
 	arg3 = C.gint(height)
 
 	var cret C.GtkIconSize
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_size_register(name, width, height)
 
-	goret1 = C.GtkIconSize(cret)
+	ret1 = C.GtkIconSize(cret)
 
-	return goret1
+	return ret1
 }
 
 // IconSizeRegisterAlias registers @alias as another name for @target. So
@@ -282,13 +282,13 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 // NewIconFactory constructs a class IconFactory.
 func NewIconFactory() IconFactory {
 	var cret C.GtkIconFactory
-	var goret1 IconFactory
+	var ret1 IconFactory
 
 	cret = C.gtk_icon_factory_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconFactory)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconFactory)
 
-	return goret1
+	return ret1
 }
 
 // Add adds the given @icon_set to the icon factory, under the name
@@ -341,13 +341,13 @@ func (f iconFactory) Lookup(stockID string) *IconSet {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkIconSet
-	var goret1 *IconSet
+	var ret1 *IconSet
 
 	cret = C.gtk_icon_factory_lookup(arg0, stockID)
 
-	goret1 = WrapIconSet(unsafe.Pointer(cret))
+	ret1 = WrapIconSet(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RemoveDefault removes an icon factory from the list of default icon

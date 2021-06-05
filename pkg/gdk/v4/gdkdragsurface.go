@@ -60,11 +60,11 @@ func (d dragSurface) Present(width int, height int) bool {
 	arg2 = C.int(height)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_drag_surface_present(arg0, width, height)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

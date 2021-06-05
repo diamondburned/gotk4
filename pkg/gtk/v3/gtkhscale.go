@@ -68,13 +68,13 @@ func NewHScale(adjustment Adjustment) HScale {
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkHScale
-	var goret1 HScale
+	var ret1 HScale
 
 	cret = C.gtk_hscale_new(adjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
 
-	return goret1
+	return ret1
 }
 
 // NewHScaleWithRange constructs a class HScale.
@@ -88,11 +88,11 @@ func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 	arg3 = C.gdouble(step)
 
 	var cret C.GtkHScale
-	var goret1 HScale
+	var ret1 HScale
 
 	cret = C.gtk_hscale_new_with_range(min, max, step)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
 
-	return goret1
+	return ret1
 }

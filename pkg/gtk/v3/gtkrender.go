@@ -102,7 +102,7 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 	arg4 = C.gdouble(width)
 	arg5 = C.gdouble(height)
 
-	var arg6 *C.GdkRectangle
+	var arg6 C.GdkRectangle
 	var ret6 *gdk.Rectangle
 
 	C.gtk_render_background_get_clip(context, x, y, width, height, &arg6)
@@ -333,13 +333,13 @@ func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpix
 	arg3 = C.GtkIconSize(size)
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_render_icon_pixbuf(context, source, size)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // RenderIconSurface renders the icon in @surface at the specified @x and @y

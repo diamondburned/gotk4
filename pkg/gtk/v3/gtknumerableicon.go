@@ -128,13 +128,13 @@ func (s numerableIcon) BackgroundGIcon() gio.Icon {
 	arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GIcon
-	var goret1 gio.Icon
+	var ret1 gio.Icon
 
 	cret = C.gtk_numerable_icon_get_background_gicon(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
 
-	return goret1
+	return ret1
 }
 
 // BackgroundIconName returns the icon name used as the base background
@@ -145,13 +145,13 @@ func (s numerableIcon) BackgroundIconName() string {
 	arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_numerable_icon_get_background_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Count returns the value currently displayed by @self.
@@ -161,13 +161,13 @@ func (s numerableIcon) Count() int {
 	arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_numerable_icon_get_count(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Label returns the currently displayed label of the icon, or nil.
@@ -177,13 +177,13 @@ func (s numerableIcon) Label() string {
 	arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_numerable_icon_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // StyleContext returns the StyleContext used by the icon for theming, or
@@ -194,13 +194,13 @@ func (s numerableIcon) StyleContext() StyleContext {
 	arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkStyleContext
-	var goret1 StyleContext
+	var ret1 StyleContext
 
 	cret = C.gtk_numerable_icon_get_style_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StyleContext)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StyleContext)
 
-	return goret1
+	return ret1
 }
 
 // SetBackgroundGIcon updates the icon to use @icon as the base background

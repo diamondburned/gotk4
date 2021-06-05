@@ -126,13 +126,13 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc) MapListModel {
 
 	var cret C.GtkMapListModel
-	var goret1 MapListModel
+	var ret1 MapListModel
 
 	cret = C.gtk_map_list_model_new(model, mapFunc, userData, userDestroy)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MapListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MapListModel)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that is currently being mapped or nil if none.
@@ -142,13 +142,13 @@ func (s mapListModel) Model() gio.ListModel {
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_map_list_model_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // HasMap checks if a map function is currently set on @self
@@ -158,13 +158,13 @@ func (s mapListModel) HasMap() bool {
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_map_list_model_has_map(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetMapFunc sets the function used to map items. The function will be

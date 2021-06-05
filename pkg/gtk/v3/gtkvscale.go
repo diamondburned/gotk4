@@ -68,13 +68,13 @@ func NewVScale(adjustment Adjustment) VScale {
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkVScale
-	var goret1 VScale
+	var ret1 VScale
 
 	cret = C.gtk_vscale_new(adjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScale)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScale)
 
-	return goret1
+	return ret1
 }
 
 // NewVScaleWithRange constructs a class VScale.
@@ -88,11 +88,11 @@ func NewVScaleWithRange(min float64, max float64, step float64) VScale {
 	arg3 = C.gdouble(step)
 
 	var cret C.GtkVScale
-	var goret1 VScale
+	var ret1 VScale
 
 	cret = C.gtk_vscale_new_with_range(min, max, step)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScale)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScale)
 
-	return goret1
+	return ret1
 }

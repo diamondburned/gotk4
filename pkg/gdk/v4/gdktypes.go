@@ -70,16 +70,16 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_new(mimeTypes, nMIMETypes)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewContentFormatsForGType constructs a struct ContentFormats.
@@ -89,16 +89,16 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	arg1 := C.GType(typ)
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_new_for_gtype(typ)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -115,13 +115,13 @@ func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 	arg1 := C.GType(typ)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_content_formats_contain_gtype(arg0, typ)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContainMIMEType checks if a given mime type is part of the given @formats.
@@ -134,13 +134,13 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_content_formats_contain_mime_type(arg0, mimeType)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // GTypes gets the #GTypes included in @formats. Note that @formats may not
@@ -153,17 +153,17 @@ func (f *ContentFormats) GTypes() (nGTypes uint, gTypes []externglib.Type) {
 
 	var cret *C.GType
 	var arg1 *C.gsize
-	var goret2 []externglib.Type
+	var ret2 []externglib.Type
 
 	cret = C.gdk_content_formats_get_gtypes(arg0, &arg1)
 
-	goret2 = make([]externglib.Type, arg1)
+	ret2 = make([]externglib.Type, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = externglib.Type(src)
+		ret2[i] = externglib.Type(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // MIMETypes gets the mime types included in @formats. Note that @formats may
@@ -174,14 +174,14 @@ func (f *ContentFormats) MIMETypes() (nMIMETypes uint, utf8s []string) {
 
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
-	var arg1 *C.gsize
+	var arg1 C.gsize
 	var ret1 uint
 	var cret **C.char
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.gdk_content_formats_get_mime_types(arg0, &arg1)
 
-	ret1 = *C.gsize(arg1)
+	ret1 = C.gsize(arg1)
 	{
 		var length int
 		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -191,14 +191,14 @@ func (f *ContentFormats) MIMETypes() (nMIMETypes uint, utf8s []string) {
 			}
 		}
 
-		goret2 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret2[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 		}
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Match checks if @first and @second have any matching formats.
@@ -210,13 +210,13 @@ func (f *ContentFormats) Match(second *ContentFormats) bool {
 	arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_content_formats_match(arg0, second)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MatchGType finds the first #GType from @first that is also contained in
@@ -229,13 +229,13 @@ func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 	arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.gdk_content_formats_match_gtype(arg0, second)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // MatchMIMEType finds the first mime type from @first that is also contained in
@@ -248,13 +248,13 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_content_formats_match_mime_type(arg0, second)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Print prints the given @formats into a string for human consumption. This is
@@ -279,16 +279,16 @@ func (f *ContentFormats) Ref() *ContentFormats {
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_ref(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // String prints the given @formats into a human-readable string. This is a
@@ -299,14 +299,14 @@ func (f *ContentFormats) String() string {
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_content_formats_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Union: append all missing types from @second to @first, in the order they had
@@ -319,16 +319,16 @@ func (f *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_union(arg0, second)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // UnionDeserializeGTypes: add GTypes for mime types in @formats for which
@@ -339,16 +339,16 @@ func (f *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_union_deserialize_gtypes(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // UnionDeserializeMIMETypes: add mime types for GTypes in @formats for which
@@ -359,16 +359,16 @@ func (f *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_union_deserialize_mime_types(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // UnionSerializeGTypes: add GTypes for the mime types in @formats for which
@@ -379,16 +379,16 @@ func (f *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_union_serialize_gtypes(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // UnionSerializeMIMETypes: add mime types for GTypes in @formats for which
@@ -399,16 +399,16 @@ func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_content_formats_union_serialize_mime_types(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ContentFormats) {
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decreases the reference count of a ContentFormats by one. If the
@@ -542,13 +542,13 @@ func (r *Rectangle) ContainsPoint(x int, y int) bool {
 	arg2 = C.int(y)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_rectangle_contains_point(arg0, x, y)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Equal checks if the two given rectangles are equal.
@@ -560,13 +560,13 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_rectangle_equal(arg0, rect2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Intersect calculates the intersection of two rectangles. It is allowed for
@@ -581,17 +581,17 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 	arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	var arg2 *C.GdkRectangle
+	var arg2 C.GdkRectangle
 	var ret2 *Rectangle
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gdk_rectangle_intersect(arg0, src2, &arg2)
 
 	ret2 = WrapRectangle(unsafe.Pointer(arg2))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Union calculates the union of two rectangles. The union of rectangles @src1
@@ -607,7 +607,7 @@ func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 	arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	var arg2 *C.GdkRectangle
+	var arg2 C.GdkRectangle
 	var ret2 *Rectangle
 
 	C.gdk_rectangle_union(arg0, src2, &arg2)

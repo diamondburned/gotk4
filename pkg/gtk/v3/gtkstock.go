@@ -63,16 +63,16 @@ func StockAddStatic(items []StockItem) {
 // g_slist_free(), and each string in the list must be freed with g_free().
 func StockListIds() *glib.SList {
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_stock_list_ids()
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.SList) {
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // StockLookup fills @item with the registered values for @stock_id, returning
@@ -83,17 +83,17 @@ func StockLookup(stockID string) (item StockItem, ok bool) {
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 *C.GtkStockItem
+	var arg2 C.GtkStockItem
 	var ret2 *StockItem
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_stock_lookup(stockID, &arg2)
 
 	ret2 = WrapStockItem(unsafe.Pointer(arg2))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // StockSetTranslateFunc sets a function to be used for translating the @label
@@ -188,13 +188,13 @@ func (i *StockItem) Copy() *StockItem {
 	arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkStockItem
-	var goret1 *StockItem
+	var ret1 *StockItem
 
 	cret = C.gtk_stock_item_copy(arg0)
 
-	goret1 = WrapStockItem(unsafe.Pointer(cret))
+	ret1 = WrapStockItem(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by

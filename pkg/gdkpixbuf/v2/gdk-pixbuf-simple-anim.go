@@ -69,13 +69,13 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	arg3 = C.gfloat(rate)
 
 	var cret C.GdkPixbufSimpleAnim
-	var goret1 PixbufSimpleAnim
+	var ret1 PixbufSimpleAnim
 
 	cret = C.gdk_pixbuf_simple_anim_new(width, height, rate)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufSimpleAnim)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufSimpleAnim)
 
-	return goret1
+	return ret1
 }
 
 // AddFrame adds a new frame to @animation. The @pixbuf must have the
@@ -98,13 +98,13 @@ func (a pixbufSimpleAnim) Loop() bool {
 	arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_pixbuf_simple_anim_get_loop(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetLoop sets whether @animation should loop indefinitely when it reaches

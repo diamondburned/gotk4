@@ -59,13 +59,13 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 // NewEventControllerFocus constructs a class EventControllerFocus.
 func NewEventControllerFocus() EventControllerFocus {
 	var cret C.GtkEventControllerFocus
-	var goret1 EventControllerFocus
+	var ret1 EventControllerFocus
 
 	cret = C.gtk_event_controller_focus_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerFocus)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerFocus)
 
-	return goret1
+	return ret1
 }
 
 // ContainsFocus returns the value of the
@@ -76,13 +76,13 @@ func (s eventControllerFocus) ContainsFocus() bool {
 	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_controller_focus_contains_focus(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsFocus returns the value of the GtkEventControllerFocus:is-focus
@@ -93,11 +93,11 @@ func (s eventControllerFocus) IsFocus() bool {
 	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_controller_focus_is_focus(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

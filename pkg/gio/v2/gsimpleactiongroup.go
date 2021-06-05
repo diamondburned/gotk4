@@ -83,13 +83,13 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 // NewSimpleActionGroup constructs a class SimpleActionGroup.
 func NewSimpleActionGroup() SimpleActionGroup {
 	var cret C.GSimpleActionGroup
-	var goret1 SimpleActionGroup
+	var ret1 SimpleActionGroup
 
 	cret = C.g_simple_action_group_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SimpleActionGroup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SimpleActionGroup)
 
-	return goret1
+	return ret1
 }
 
 // Insert adds an action to the action group.
@@ -120,13 +120,13 @@ func (s simpleActionGroup) Lookup(actionName string) Action {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GAction
-	var goret1 Action
+	var ret1 Action
 
 	cret = C.g_simple_action_group_lookup(arg0, actionName)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
 
-	return goret1
+	return ret1
 }
 
 // Remove removes the named action from the action group.

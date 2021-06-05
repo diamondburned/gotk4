@@ -132,13 +132,13 @@ func NewStringList(strings []string) StringList {
 	}
 
 	var cret C.GtkStringList
-	var goret1 StringList
+	var ret1 StringList
 
 	cret = C.gtk_string_list_new(strings)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringList)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringList)
 
-	return goret1
+	return ret1
 }
 
 // Append appends @string to @self.
@@ -169,13 +169,13 @@ func (s stringList) String(position uint) string {
 	arg1 = C.guint(position)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_string_list_get_string(arg0, position)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Remove removes the string at @position from @self. @position must be
@@ -279,13 +279,13 @@ func NewStringObject(string string) StringObject {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkStringObject
-	var goret1 StringObject
+	var ret1 StringObject
 
 	cret = C.gtk_string_object_new(string)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringObject)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringObject)
 
-	return goret1
+	return ret1
 }
 
 // String returns the string contained in a StringObject.
@@ -295,11 +295,11 @@ func (s stringObject) String() string {
 	arg0 = (*C.GtkStringObject)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_string_object_get_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }

@@ -24,13 +24,13 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 	arg1 = C.gunichar(ch)
 
 	var cret C.PangoBidiType
-	var goret1 BidiType
+	var ret1 BidiType
 
 	cret = C.pango_bidi_type_for_unichar(ch)
 
-	goret1 = BidiType(cret)
+	ret1 = BidiType(cret)
 
-	return goret1
+	return ret1
 }
 
 // FindBaseDir searches a string the first character that has a strong
@@ -44,13 +44,13 @@ func FindBaseDir(text string, length int) Direction {
 	arg2 = C.gint(length)
 
 	var cret C.PangoDirection
-	var goret1 Direction
+	var ret1 Direction
 
 	cret = C.pango_find_base_dir(text, length)
 
-	goret1 = Direction(cret)
+	ret1 = Direction(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetMirrorChar returns the mirrored character of a Unicode character.
@@ -67,13 +67,13 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 	arg2 = *C.gunichar(mirroredCh)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_get_mirror_char(ch, mirroredCh)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UnicharDirection determines the inherent direction of a character.
@@ -91,11 +91,11 @@ func UnicharDirection(ch uint32) Direction {
 	arg1 = C.gunichar(ch)
 
 	var cret C.PangoDirection
-	var goret1 Direction
+	var ret1 Direction
 
 	cret = C.pango_unichar_direction(ch)
 
-	goret1 = Direction(cret)
+	ret1 = Direction(cret)
 
-	return goret1
+	return ret1
 }

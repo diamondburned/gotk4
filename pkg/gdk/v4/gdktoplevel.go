@@ -223,13 +223,13 @@ func (t toplevel) State() ToplevelState {
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.GdkToplevelState
-	var goret1 ToplevelState
+	var ret1 ToplevelState
 
 	cret = C.gdk_toplevel_get_state(arg0)
 
-	goret1 = ToplevelState(cret)
+	ret1 = ToplevelState(cret)
 
-	return goret1
+	return ret1
 }
 
 // InhibitSystemShortcuts requests that the @toplevel inhibit the system
@@ -271,13 +271,13 @@ func (t toplevel) Lower() bool {
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_toplevel_lower(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Minimize asks to minimize the @toplevel.
@@ -289,13 +289,13 @@ func (t toplevel) Minimize() bool {
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_toplevel_minimize(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Present: present @toplevel after having processed the ToplevelLayout
@@ -450,13 +450,13 @@ func (t toplevel) ShowWindowMenu(event Event) bool {
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_toplevel_show_window_menu(arg0, event)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SupportsEdgeConstraints returns whether the desktop environment supports
@@ -467,11 +467,11 @@ func (t toplevel) SupportsEdgeConstraints() bool {
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_toplevel_supports_edge_constraints(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

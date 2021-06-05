@@ -64,13 +64,13 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 // NewGestureDrag constructs a class GestureDrag.
 func NewGestureDrag() GestureDrag {
 	var cret C.GtkGestureDrag
-	var goret1 GestureDrag
+	var ret1 GestureDrag
 
 	cret = C.gtk_gesture_drag_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
 
-	return goret1
+	return ret1
 }
 
 // Offset: if the @gesture is active, this function returns true and fills
@@ -81,20 +81,20 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_gesture_drag_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // StartPoint: if the @gesture is active, this function returns true and
@@ -105,18 +105,18 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_gesture_drag_get_start_point(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }

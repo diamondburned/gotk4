@@ -83,15 +83,15 @@ func (m misc) Alignment() (xalign float32, yalign float32) {
 
 	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
-	var arg1 *C.gfloat
+	var arg1 C.gfloat
 	var ret1 float32
-	var arg2 *C.gfloat
+	var arg2 C.gfloat
 	var ret2 float32
 
 	C.gtk_misc_get_alignment(arg0, &arg1, &arg2)
 
-	ret1 = *C.gfloat(arg1)
-	ret2 = *C.gfloat(arg2)
+	ret1 = C.gfloat(arg1)
+	ret2 = C.gfloat(arg2)
 
 	return ret1, ret2
 }
@@ -103,15 +103,15 @@ func (m misc) Padding() (xpad int, ypad int) {
 
 	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 
 	C.gtk_misc_get_padding(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }

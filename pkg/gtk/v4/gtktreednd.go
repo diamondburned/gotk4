@@ -35,13 +35,13 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 	arg2 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret *C.GdkContentProvider
-	var goret1 gdk.ContentProvider
+	var ret1 gdk.ContentProvider
 
 	cret = C.gtk_tree_create_row_drag_content(treeModel, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // TreeGetRowDragData obtains a @tree_model and @path from value of target type
@@ -53,12 +53,12 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 
 	arg1 = (*C.GValue)(value.GValue)
 
-	var arg2 **C.GtkTreeModel
+	var arg2 *C.GtkTreeModel
 	var ret2 *TreeModel
-	var arg3 **C.GtkTreePath
+	var arg3 *C.GtkTreePath
 	var ret3 **TreePath
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_tree_get_row_drag_data(value, &arg2, &arg3)
 
@@ -67,9 +67,9 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 	runtime.SetFinalizer(ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret2, ret3, goret3
+	return ret2, ret3, ret3
 }
 
 // TreeDragDestOverrider contains methods that are overridable. This
@@ -132,13 +132,13 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, value *externglib.Value) 
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_drag_dest_drag_data_received(arg0, dest, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RowDropPossible determines whether a drop is possible before the given
@@ -156,13 +156,13 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value *externglib.Valu
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_drag_dest_row_drop_possible(arg0, destPath, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TreeDragSourceOverrider contains methods that are overridable. This
@@ -223,13 +223,13 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_drag_source_drag_data_delete(arg0, path)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DragDataGet asks the TreeDragSource to return a ContentProvider
@@ -243,13 +243,13 @@ func (d treeDragSource) DragDataGet(path *TreePath) gdk.ContentProvider {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret *C.GdkContentProvider
-	var goret1 gdk.ContentProvider
+	var ret1 gdk.ContentProvider
 
 	cret = C.gtk_tree_drag_source_drag_data_get(arg0, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // RowDraggable asks the TreeDragSource whether a particular row can be used
@@ -263,11 +263,11 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_drag_source_row_draggable(arg0, path)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

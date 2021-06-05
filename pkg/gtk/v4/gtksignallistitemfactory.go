@@ -88,11 +88,11 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 // NewSignalListItemFactory constructs a class SignalListItemFactory.
 func NewSignalListItemFactory() SignalListItemFactory {
 	var cret C.GtkSignalListItemFactory
-	var goret1 SignalListItemFactory
+	var ret1 SignalListItemFactory
 
 	cret = C.gtk_signal_list_item_factory_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalListItemFactory)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalListItemFactory)
 
-	return goret1
+	return ret1
 }

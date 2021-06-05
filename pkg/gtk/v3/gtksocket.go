@@ -105,13 +105,13 @@ func marshalSocket(p uintptr) (interface{}, error) {
 // NewSocket constructs a class Socket.
 func NewSocket() Socket {
 	var cret C.GtkSocket
-	var goret1 Socket
+	var ret1 Socket
 
 	cret = C.gtk_socket_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Socket)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Socket)
 
-	return goret1
+	return ret1
 }
 
 // PlugWindow retrieves the window of the plug. Use this to check if the
@@ -122,13 +122,13 @@ func (s socket) PlugWindow() gdk.Window {
 	arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 gdk.Window
+	var ret1 gdk.Window
 
 	cret = C.gtk_socket_get_plug_window(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
 
-	return goret1
+	return ret1
 }
 
 type SocketPrivate struct {

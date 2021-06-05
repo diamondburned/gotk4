@@ -292,13 +292,13 @@ func NewScrolledWindow(hadjustment Adjustment, vadjustment Adjustment) ScrolledW
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	var cret C.GtkScrolledWindow
-	var goret1 ScrolledWindow
+	var ret1 ScrolledWindow
 
 	cret = C.gtk_scrolled_window_new(hadjustment, vadjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScrolledWindow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScrolledWindow)
 
-	return goret1
+	return ret1
 }
 
 // AddWithViewport: used to add children without native scrolling
@@ -334,13 +334,13 @@ func (s scrolledWindow) CaptureButtonPress() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_capture_button_press(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HAdjustment returns the horizontal scrollbar’s adjustment, used to
@@ -352,13 +352,13 @@ func (s scrolledWindow) HAdjustment() Adjustment {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrolled_window_get_hadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // HScrollbar returns the horizontal scrollbar of @scrolled_window.
@@ -368,13 +368,13 @@ func (s scrolledWindow) HScrollbar() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_scrolled_window_get_hscrollbar(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // KineticScrolling returns the specified kinetic scrolling behavior.
@@ -384,13 +384,13 @@ func (s scrolledWindow) KineticScrolling() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_kinetic_scrolling(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MaxContentHeight returns the maximum content height set.
@@ -400,13 +400,13 @@ func (s scrolledWindow) MaxContentHeight() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_max_content_height(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MaxContentWidth returns the maximum content width set.
@@ -416,13 +416,13 @@ func (s scrolledWindow) MaxContentWidth() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_max_content_width(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinContentHeight gets the minimal content height of @scrolled_window, or
@@ -433,13 +433,13 @@ func (s scrolledWindow) MinContentHeight() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_min_content_height(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinContentWidth gets the minimum content width of @scrolled_window, or -1
@@ -450,13 +450,13 @@ func (s scrolledWindow) MinContentWidth() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_min_content_width(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // OverlayScrolling returns whether overlay scrolling is enabled for this
@@ -467,13 +467,13 @@ func (s scrolledWindow) OverlayScrolling() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_overlay_scrolling(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Placement gets the placement of the contents with respect to the
@@ -485,13 +485,13 @@ func (s scrolledWindow) Placement() CornerType {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkCornerType
-	var goret1 CornerType
+	var ret1 CornerType
 
 	cret = C.gtk_scrolled_window_get_placement(arg0)
 
-	goret1 = CornerType(cret)
+	ret1 = CornerType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Policy retrieves the current policy values for the horizontal and
@@ -501,9 +501,9 @@ func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy 
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.GtkPolicyType
+	var arg1 C.GtkPolicyType
 	var ret1 *PolicyType
-	var arg2 *C.GtkPolicyType
+	var arg2 C.GtkPolicyType
 	var ret2 *PolicyType
 
 	C.gtk_scrolled_window_get_policy(arg0, &arg1, &arg2)
@@ -523,13 +523,13 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_propagate_natural_height(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PropagateNaturalWidth reports whether the natural width of the child will
@@ -541,13 +541,13 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_propagate_natural_width(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShadowType gets the shadow type of the scrolled window. See
@@ -558,13 +558,13 @@ func (s scrolledWindow) ShadowType() ShadowType {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkShadowType
-	var goret1 ShadowType
+	var ret1 ShadowType
 
 	cret = C.gtk_scrolled_window_get_shadow_type(arg0)
 
-	goret1 = ShadowType(cret)
+	ret1 = ShadowType(cret)
 
-	return goret1
+	return ret1
 }
 
 // VAdjustment returns the vertical scrollbar’s adjustment, used to connect
@@ -576,13 +576,13 @@ func (s scrolledWindow) VAdjustment() Adjustment {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrolled_window_get_vadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // VScrollbar returns the vertical scrollbar of @scrolled_window.
@@ -592,13 +592,13 @@ func (s scrolledWindow) VScrollbar() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_scrolled_window_get_vscrollbar(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetCaptureButtonPress changes the behaviour of @scrolled_window with

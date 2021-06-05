@@ -59,13 +59,13 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 // NewEventControllerMotion constructs a class EventControllerMotion.
 func NewEventControllerMotion() EventControllerMotion {
 	var cret C.GtkEventControllerMotion
-	var goret1 EventControllerMotion
+	var ret1 EventControllerMotion
 
 	cret = C.gtk_event_controller_motion_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
 
-	return goret1
+	return ret1
 }
 
 // ContainsPointer returns the value of the
@@ -76,13 +76,13 @@ func (s eventControllerMotion) ContainsPointer() bool {
 	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_controller_motion_contains_pointer(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsPointer returns the value of the GtkEventControllerMotion:is-pointer
@@ -93,11 +93,11 @@ func (s eventControllerMotion) IsPointer() bool {
 	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_controller_motion_is_pointer(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

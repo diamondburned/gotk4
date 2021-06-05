@@ -99,13 +99,13 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GTlsPassword
-	var goret1 TLSPassword
+	var ret1 TLSPassword
 
 	cret = C.g_tls_password_new(flags, description)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSPassword)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSPassword)
 
-	return goret1
+	return ret1
 }
 
 // Description: get a description string about what the password will be
@@ -116,13 +116,13 @@ func (p tlsPassword) Description() string {
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_tls_password_get_description(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Flags: get flags about the password.
@@ -132,13 +132,13 @@ func (p tlsPassword) Flags() TLSPasswordFlags {
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
 	var cret C.GTlsPasswordFlags
-	var goret1 TLSPasswordFlags
+	var ret1 TLSPasswordFlags
 
 	cret = C.g_tls_password_get_flags(arg0)
 
-	goret1 = TLSPasswordFlags(cret)
+	ret1 = TLSPasswordFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // Value: get the password value. If @length is not nil then it will be
@@ -153,13 +153,13 @@ func (p tlsPassword) Value(length uint) byte {
 	arg1 = *C.gsize(length)
 
 	var cret *C.guchar
-	var goret1 byte
+	var ret1 byte
 
 	cret = C.g_tls_password_get_value(arg0, length)
 
-	goret1 = *C.guchar(cret)
+	ret1 = *C.guchar(cret)
 
-	return goret1
+	return ret1
 }
 
 // Warning: get a user readable translated warning. Usually this warning is
@@ -171,13 +171,13 @@ func (p tlsPassword) Warning() string {
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_tls_password_get_warning(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetDescription: set a description string about what the password will be

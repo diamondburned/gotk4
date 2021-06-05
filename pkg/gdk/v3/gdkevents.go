@@ -100,25 +100,25 @@ func EventRequestMotions(event *EventMotion) {
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_events_pending()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // GetShowEvents gets whether event debugging output is enabled.
 func GetShowEvents() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_get_show_events()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetShowEvents sets whether a trace of received events is output. Note that
@@ -145,13 +145,13 @@ func SettingGet(name string, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_setting_get(name, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EventAny contains the fields which are common to all event structs. Any event

@@ -33,13 +33,13 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
 	var cret *C.PangoCoverage
-	var goret1 pango.Coverage
+	var ret1 pango.Coverage
 
 	cret = C.pango_ft2_font_get_coverage(font, language)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Coverage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Coverage)
 
-	return goret1
+	return ret1
 }
 
 // GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
@@ -53,13 +53,13 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 	arg2 = C.double(dpiY)
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.pango_ft2_get_context(dpiX, dpiY)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // ShutdownDisplay: free the global fontmap. (See
@@ -119,13 +119,13 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // NewFontMap constructs a class FontMap.
 func NewFontMap() FontMap {
 	var cret C.PangoFT2FontMap
-	var goret1 FontMap
+	var ret1 FontMap
 
 	cret = C.pango_ft2_font_map_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontMap)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontMap)
 
-	return goret1
+	return ret1
 }
 
 // CreateContext: create a `PangoContext` for the given fontmap.
@@ -135,13 +135,13 @@ func (f fontMap) CreateContext() pango.Context {
 	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.pango_ft2_font_map_create_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final

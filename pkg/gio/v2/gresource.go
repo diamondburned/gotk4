@@ -44,13 +44,13 @@ func ResourceLoad(filename string) (resource *Resource, err error) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GResource
-	var goret1 *Resource
+	var ret1 *Resource
 	var goerr error
 
 	cret = C.g_resource_load(filename, &errout)
 
-	goret1 = WrapResource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Resource) {
+	ret1 = WrapResource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Resource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -58,7 +58,7 @@ func ResourceLoad(filename string) (resource *Resource, err error) {
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ResourcesEnumerateChildren returns all the names of children at the specified
@@ -76,7 +76,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 	var goerr error
 
 	cret = C.g_resources_enumerate_children(path, lookupFlags, &errout)
@@ -90,10 +90,10 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -102,7 +102,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ResourcesGetInfo looks for a file at the specified @path in the set of
@@ -118,16 +118,16 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var arg3 *C.gsize
+	var arg3 C.gsize
 	var ret3 uint
-	var arg4 *C.guint32
+	var arg4 C.guint32
 	var ret4 uint32
 	var goerr error
 
 	C.g_resources_get_info(path, lookupFlags, &arg3, &arg4, &errout)
 
-	ret3 = *C.gsize(arg3)
-	ret4 = *C.guint32(arg4)
+	ret3 = C.gsize(arg3)
+	ret4 = C.guint32(arg4)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -159,13 +159,13 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *g
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 	var goerr error
 
 	cret = C.g_resources_lookup_data(path, lookupFlags, &errout)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Bytes) {
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -173,7 +173,7 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *g
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ResourcesOpenStream looks for a file at the specified @path in the set of
@@ -191,18 +191,18 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStr
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret *C.GInputStream
-	var goret1 InputStream
+	var ret1 InputStream
 	var goerr error
 
 	cret = C.g_resources_open_stream(path, lookupFlags, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ResourcesRegister registers the resource with the process-global set of
@@ -277,13 +277,13 @@ func (s *StaticResource) Resource() *Resource {
 	arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GResource
-	var goret1 *Resource
+	var ret1 *Resource
 
 	cret = C.g_static_resource_get_resource(arg0)
 
-	goret1 = WrapResource(unsafe.Pointer(cret))
+	ret1 = WrapResource(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Init initializes a GResource from static data using a GStaticResource.

@@ -98,13 +98,13 @@ func (i *TextIter) BackwardChar() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_char(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardChars moves @count characters backward, if possible (if @count would
@@ -121,13 +121,13 @@ func (i *TextIter) BackwardChars(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_chars(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardCursorPosition: like gtk_text_iter_forward_cursor_position(), but
@@ -138,13 +138,13 @@ func (i *TextIter) BackwardCursorPosition() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_cursor_position(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardCursorPositions moves up to @count cursor positions. See
@@ -157,13 +157,13 @@ func (i *TextIter) BackwardCursorPositions(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_cursor_positions(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardLine moves @iter to the start of the previous line. Returns true if
@@ -179,13 +179,13 @@ func (i *TextIter) BackwardLine() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_line(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardLines moves @count lines backward, if possible (if @count would move
@@ -202,13 +202,13 @@ func (i *TextIter) BackwardLines(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_lines(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardSearch: same as gtk_text_iter_forward_search(), but moves backward.
@@ -227,20 +227,20 @@ func (i *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *Text
 	arg2 = (C.GtkTextSearchFlags)(flags)
 	arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
 
-	var arg3 *C.GtkTextIter
+	var arg3 C.GtkTextIter
 	var ret3 *TextIter
-	var arg4 *C.GtkTextIter
+	var arg4 C.GtkTextIter
 	var ret4 *TextIter
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_text_iter_backward_search(arg0, str, flags, &arg3, &arg4, limit)
 
 	ret3 = WrapTextIter(unsafe.Pointer(arg3))
 	ret4 = WrapTextIter(unsafe.Pointer(arg4))
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // BackwardSentenceStart moves backward to the previous sentence start; if @iter
@@ -254,13 +254,13 @@ func (i *TextIter) BackwardSentenceStart() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_sentence_start(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardSentenceStarts calls gtk_text_iter_backward_sentence_start() up to
@@ -274,13 +274,13 @@ func (i *TextIter) BackwardSentenceStarts(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_sentence_starts(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardToTagToggle moves backward to the next toggle (on or off) of the
@@ -296,13 +296,13 @@ func (i *TextIter) BackwardToTagToggle(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_to_tag_toggle(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardVisibleCursorPosition moves @iter forward to the previous visible
@@ -313,13 +313,13 @@ func (i *TextIter) BackwardVisibleCursorPosition() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_visible_cursor_position(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardVisibleCursorPositions moves up to @count visible cursor positions.
@@ -332,13 +332,13 @@ func (i *TextIter) BackwardVisibleCursorPositions(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_visible_cursor_positions(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardVisibleLine moves @iter to the start of the previous visible line.
@@ -354,13 +354,13 @@ func (i *TextIter) BackwardVisibleLine() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_visible_line(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardVisibleLines moves @count visible lines backward, if possible (if
@@ -378,13 +378,13 @@ func (i *TextIter) BackwardVisibleLines(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_visible_lines(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardVisibleWordStart moves backward to the previous visible word start.
@@ -398,13 +398,13 @@ func (i *TextIter) BackwardVisibleWordStart() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_visible_word_start(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardVisibleWordStarts calls gtk_text_iter_backward_visible_word_start()
@@ -417,13 +417,13 @@ func (i *TextIter) BackwardVisibleWordStarts(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_visible_word_starts(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardWordStart moves backward to the previous word start. (If @iter is
@@ -436,13 +436,13 @@ func (i *TextIter) BackwardWordStart() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_word_start(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BackwardWordStarts calls gtk_text_iter_backward_word_start() up to @count
@@ -455,13 +455,13 @@ func (i *TextIter) BackwardWordStarts(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_backward_word_starts(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BeginsTag returns true if @tag is toggled on at exactly this point. If @tag
@@ -480,13 +480,13 @@ func (i *TextIter) BeginsTag(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_begins_tag(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanInsert: considering the default editability of the buffer, and tags that
@@ -504,13 +504,13 @@ func (i *TextIter) CanInsert(defaultEditability bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_can_insert(arg0, defaultEditability)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Compare: a qsort()-style function that returns negative if @lhs is less than
@@ -525,13 +525,13 @@ func (l *TextIter) Compare(rhs *TextIter) int {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(rhs.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_compare(arg0, rhs)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Copy creates a dynamically-allocated copy of an iterator. This function is
@@ -543,16 +543,16 @@ func (i *TextIter) Copy() *TextIter {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkTextIter
-	var goret1 *TextIter
+	var ret1 *TextIter
 
 	cret = C.gtk_text_iter_copy(arg0)
 
-	goret1 = WrapTextIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TextIter) {
+	ret1 = WrapTextIter(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TextIter) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Editable returns whether the character at @iter is within an editable region
@@ -576,13 +576,13 @@ func (i *TextIter) Editable(defaultSetting bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_editable(arg0, defaultSetting)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EndsLine returns true if @iter points to the start of the paragraph delimiter
@@ -598,13 +598,13 @@ func (i *TextIter) EndsLine() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_ends_line(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EndsSentence determines whether @iter ends a sentence. Sentence boundaries
@@ -616,13 +616,13 @@ func (i *TextIter) EndsSentence() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_ends_sentence(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EndsTag returns true if @tag is toggled off at exactly this point. If @tag is
@@ -641,13 +641,13 @@ func (i *TextIter) EndsTag(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_ends_tag(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EndsWord determines whether @iter ends a natural-language word. Word breaks
@@ -659,13 +659,13 @@ func (i *TextIter) EndsWord() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_ends_word(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Equal tests whether two iterators are equal, using the fastest possible
@@ -680,13 +680,13 @@ func (l *TextIter) Equal(rhs *TextIter) bool {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(rhs.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_equal(arg0, rhs)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardChar moves @iter forward by one character offset. Note that images
@@ -702,13 +702,13 @@ func (i *TextIter) ForwardChar() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_char(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardChars moves @count characters if possible (if @count would move past
@@ -725,13 +725,13 @@ func (i *TextIter) ForwardChars(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_chars(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardCursorPosition moves @iter forward by a single cursor position. Cursor
@@ -749,13 +749,13 @@ func (i *TextIter) ForwardCursorPosition() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_cursor_position(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardCursorPositions moves up to @count cursor positions. See
@@ -768,13 +768,13 @@ func (i *TextIter) ForwardCursorPositions(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_cursor_positions(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardLine moves @iter to the start of the next line. If the iter is already
@@ -787,13 +787,13 @@ func (i *TextIter) ForwardLine() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_line(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardLines moves @count lines forward, if possible (if @count would move
@@ -810,13 +810,13 @@ func (i *TextIter) ForwardLines(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_lines(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardSearch searches forward for @str. Any match is returned by setting
@@ -839,20 +839,20 @@ func (i *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextI
 	arg2 = (C.GtkTextSearchFlags)(flags)
 	arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit.Native()))
 
-	var arg3 *C.GtkTextIter
+	var arg3 C.GtkTextIter
 	var ret3 *TextIter
-	var arg4 *C.GtkTextIter
+	var arg4 C.GtkTextIter
 	var ret4 *TextIter
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_text_iter_forward_search(arg0, str, flags, &arg3, &arg4, limit)
 
 	ret3 = WrapTextIter(unsafe.Pointer(arg3))
 	ret4 = WrapTextIter(unsafe.Pointer(arg4))
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // ForwardSentenceEnd moves forward to the next sentence end. (If @iter is at
@@ -866,13 +866,13 @@ func (i *TextIter) ForwardSentenceEnd() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_sentence_end(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardSentenceEnds calls gtk_text_iter_forward_sentence_end() @count times
@@ -886,13 +886,13 @@ func (i *TextIter) ForwardSentenceEnds(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_sentence_ends(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardToEnd moves @iter forward to the “end iterator,” which points one past
@@ -919,13 +919,13 @@ func (i *TextIter) ForwardToLineEnd() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_to_line_end(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardToTagToggle moves forward to the next toggle (on or off) of the
@@ -941,13 +941,13 @@ func (i *TextIter) ForwardToTagToggle(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_to_tag_toggle(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardVisibleCursorPosition moves @iter forward to the next visible cursor
@@ -958,13 +958,13 @@ func (i *TextIter) ForwardVisibleCursorPosition() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_visible_cursor_position(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardVisibleCursorPositions moves up to @count visible cursor positions.
@@ -977,13 +977,13 @@ func (i *TextIter) ForwardVisibleCursorPositions(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_visible_cursor_positions(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardVisibleLine moves @iter to the start of the next visible line. Returns
@@ -996,13 +996,13 @@ func (i *TextIter) ForwardVisibleLine() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_visible_line(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardVisibleLines moves @count visible lines forward, if possible (if
@@ -1020,13 +1020,13 @@ func (i *TextIter) ForwardVisibleLines(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_visible_lines(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardVisibleWordEnd moves forward to the next visible word end. (If @iter
@@ -1039,13 +1039,13 @@ func (i *TextIter) ForwardVisibleWordEnd() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_visible_word_end(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardVisibleWordEnds calls gtk_text_iter_forward_visible_word_end() up to
@@ -1058,13 +1058,13 @@ func (i *TextIter) ForwardVisibleWordEnds(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_visible_word_ends(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardWordEnd moves forward to the next word end. (If @iter is currently on
@@ -1077,13 +1077,13 @@ func (i *TextIter) ForwardWordEnd() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_word_end(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ForwardWordEnds calls gtk_text_iter_forward_word_end() up to @count times.
@@ -1095,13 +1095,13 @@ func (i *TextIter) ForwardWordEnds(count int) bool {
 	arg1 = C.gint(count)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_forward_word_ends(arg0, count)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Free: free an iterator allocated on the heap. This function is intended for
@@ -1128,17 +1128,17 @@ func (i *TextIter) Attributes() (values TextAttributes, ok bool) {
 
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
-	var arg1 *C.GtkTextAttributes
+	var arg1 C.GtkTextAttributes
 	var ret1 *TextAttributes
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_text_iter_get_attributes(arg0, &arg1)
 
 	ret1 = WrapTextAttributes(unsafe.Pointer(arg1))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Buffer returns the TextBuffer this iterator is associated with.
@@ -1148,13 +1148,13 @@ func (i *TextIter) Buffer() TextBuffer {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkTextBuffer
-	var goret1 TextBuffer
+	var ret1 TextBuffer
 
 	cret = C.gtk_text_iter_get_buffer(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextBuffer)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextBuffer)
 
-	return goret1
+	return ret1
 }
 
 // BytesInLine returns the number of bytes in the line containing @iter,
@@ -1165,13 +1165,13 @@ func (i *TextIter) BytesInLine() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_bytes_in_line(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Char: the Unicode character at this iterator is returned. (Equivalent to
@@ -1186,13 +1186,13 @@ func (i *TextIter) Char() uint32 {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gunichar
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.gtk_text_iter_get_char(arg0)
 
-	goret1 = C.gunichar(cret)
+	ret1 = C.gunichar(cret)
 
-	return goret1
+	return ret1
 }
 
 // CharsInLine returns the number of characters in the line containing @iter,
@@ -1203,13 +1203,13 @@ func (i *TextIter) CharsInLine() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_chars_in_line(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ChildAnchor: if the location at @iter contains a child anchor, the anchor is
@@ -1220,13 +1220,13 @@ func (i *TextIter) ChildAnchor() TextChildAnchor {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkTextChildAnchor
-	var goret1 TextChildAnchor
+	var ret1 TextChildAnchor
 
 	cret = C.gtk_text_iter_get_child_anchor(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
 
-	return goret1
+	return ret1
 }
 
 // Language: a convenience wrapper around gtk_text_iter_get_attributes(), which
@@ -1239,16 +1239,16 @@ func (i *TextIter) Language() *pango.Language {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.PangoLanguage
-	var goret1 *pango.Language
+	var ret1 *pango.Language
 
 	cret = C.gtk_text_iter_get_language(arg0)
 
-	goret1 = pango.WrapLanguage(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *pango.Language) {
+	ret1 = pango.WrapLanguage(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *pango.Language) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Line returns the line number containing the iterator. Lines in a TextBuffer
@@ -1259,13 +1259,13 @@ func (i *TextIter) Line() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_line(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // LineIndex returns the byte index of the iterator, counting from the start of
@@ -1277,13 +1277,13 @@ func (i *TextIter) LineIndex() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_line_index(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // LineOffset returns the character offset of the iterator, counting from the
@@ -1295,13 +1295,13 @@ func (i *TextIter) LineOffset() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_line_offset(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Marks returns a list of all TextMark at this location. Because marks are not
@@ -1314,16 +1314,16 @@ func (i *TextIter) Marks() *glib.SList {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_text_iter_get_marks(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.SList) {
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Offset returns the character offset of an iterator. Each character in a
@@ -1336,13 +1336,13 @@ func (i *TextIter) Offset() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_offset(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Pixbuf: if the element at @iter is a pixbuf, the pixbuf is returned (with no
@@ -1353,13 +1353,13 @@ func (i *TextIter) Pixbuf() gdkpixbuf.Pixbuf {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_text_iter_get_pixbuf(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // Slice returns the text in the given range. A “slice” is an array of
@@ -1377,14 +1377,14 @@ func (s *TextIter) Slice(end *TextIter) string {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_iter_get_slice(arg0, end)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Tags returns a list of tags that apply to @iter, in ascending order of
@@ -1396,16 +1396,16 @@ func (i *TextIter) Tags() *glib.SList {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_text_iter_get_tags(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.SList) {
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Text returns text in the given range. If the range contains non-text elements
@@ -1420,14 +1420,14 @@ func (s *TextIter) Text(end *TextIter) string {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_iter_get_text(arg0, end)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ToggledTags returns a list of TextTag that are toggled on or off at this
@@ -1445,16 +1445,16 @@ func (i *TextIter) ToggledTags(toggledOn bool) *glib.SList {
 	}
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_text_iter_get_toggled_tags(arg0, toggledOn)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.SList) {
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // VisibleLineIndex returns the number of bytes from the start of the line to
@@ -1466,13 +1466,13 @@ func (i *TextIter) VisibleLineIndex() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_visible_line_index(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // VisibleLineOffset returns the offset in characters from the start of the line
@@ -1484,13 +1484,13 @@ func (i *TextIter) VisibleLineOffset() int {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_iter_get_visible_line_offset(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // VisibleSlice: like gtk_text_iter_get_slice(), but invisible text is not
@@ -1504,14 +1504,14 @@ func (s *TextIter) VisibleSlice(end *TextIter) string {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_iter_get_visible_slice(arg0, end)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // VisibleText: like gtk_text_iter_get_text(), but invisible text is not
@@ -1525,14 +1525,14 @@ func (s *TextIter) VisibleText(end *TextIter) string {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_iter_get_visible_text(arg0, end)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HasTag returns true if @iter points to a character that is part of a range
@@ -1546,13 +1546,13 @@ func (i *TextIter) HasTag(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_has_tag(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InRange checks whether @iter falls in the range [@start, @end). @start and
@@ -1567,13 +1567,13 @@ func (i *TextIter) InRange(start *TextIter, end *TextIter) bool {
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_in_range(arg0, start, end)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InsideSentence determines whether @iter is inside a sentence (as opposed to
@@ -1587,13 +1587,13 @@ func (i *TextIter) InsideSentence() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_inside_sentence(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InsideWord determines whether the character pointed by @iter is part of a
@@ -1609,13 +1609,13 @@ func (i *TextIter) InsideWord() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_inside_word(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsCursorPosition: see gtk_text_iter_forward_cursor_position() or LogAttr or
@@ -1626,13 +1626,13 @@ func (i *TextIter) IsCursorPosition() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_is_cursor_position(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsEnd returns true if @iter is the end iterator, i.e. one past the last
@@ -1644,13 +1644,13 @@ func (i *TextIter) IsEnd() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_is_end(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsStart returns true if @iter is the first iterator in the buffer, that is if
@@ -1661,13 +1661,13 @@ func (i *TextIter) IsStart() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_is_start(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Order swaps the value of @first and @second if @second comes before @first in
@@ -1775,13 +1775,13 @@ func (i *TextIter) StartsLine() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_starts_line(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartsSentence determines whether @iter begins a sentence. Sentence
@@ -1794,13 +1794,13 @@ func (i *TextIter) StartsSentence() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_starts_sentence(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartsTag returns true if @tag is toggled on at exactly this point. If @tag
@@ -1819,13 +1819,13 @@ func (i *TextIter) StartsTag(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_starts_tag(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartsWord determines whether @iter begins a natural-language word. Word
@@ -1837,13 +1837,13 @@ func (i *TextIter) StartsWord() bool {
 	arg0 = (*C.GtkTextIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_starts_word(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TogglesTag: this is equivalent to (gtk_text_iter_starts_tag() ||
@@ -1857,11 +1857,11 @@ func (i *TextIter) TogglesTag(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_iter_toggles_tag(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

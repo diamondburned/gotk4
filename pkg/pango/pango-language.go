@@ -40,13 +40,13 @@ func LanguageFromString(language string) *Language {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.PangoLanguage
-	var goret1 *Language
+	var ret1 *Language
 
 	cret = C.pango_language_from_string(language)
 
-	goret1 = WrapLanguage(unsafe.Pointer(cret))
+	ret1 = WrapLanguage(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // LanguageGetDefault returns the `PangoLanguage` for the current locale of the
@@ -75,13 +75,13 @@ func LanguageFromString(language string) *Language {
 // Note that the default language can change over the life of an application.
 func LanguageGetDefault() *Language {
 	var cret *C.PangoLanguage
-	var goret1 *Language
+	var ret1 *Language
 
 	cret = C.pango_language_get_default()
 
-	goret1 = WrapLanguage(unsafe.Pointer(cret))
+	ret1 = WrapLanguage(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // LanguageGetPreferred returns the list of languages that the user prefers.
@@ -95,13 +95,13 @@ func LanguageGetDefault() *Language {
 // default language, followed by the languages returned by this function.
 func LanguageGetPreferred() **Language {
 	var cret **C.PangoLanguage
-	var goret1 **Language
+	var ret1 **Language
 
 	cret = C.pango_language_get_preferred()
 
-	goret1 = WrapLanguage(unsafe.Pointer(cret))
+	ret1 = WrapLanguage(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Language: the `PangoLanguage` structure is used to represent a language.
@@ -155,13 +155,13 @@ func (l *Language) SampleString() string {
 	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.pango_language_get_sample_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Scripts determines the scripts used to to write @language.
@@ -192,17 +192,17 @@ func (l *Language) Scripts() (numScripts int, scripts []Script) {
 
 	var cret *C.PangoScript
 	var arg1 *C.int
-	var goret2 []Script
+	var ret2 []Script
 
 	cret = C.pango_language_get_scripts(arg0, &arg1)
 
-	goret2 = make([]Script, arg1)
+	ret2 = make([]Script, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.PangoScript)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = Script(src)
+		ret2[i] = Script(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // IncludesScript determines if @script is one of the scripts used to write
@@ -223,13 +223,13 @@ func (l *Language) IncludesScript(script Script) bool {
 	arg1 = (C.PangoScript)(script)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_language_includes_script(arg0, script)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Matches checks if a language tag matches one of the elements in a list of
@@ -247,13 +247,13 @@ func (l *Language) Matches(rangeList string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_language_matches(arg0, rangeList)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // String gets the RFC-3066 format string representing the given language tag.
@@ -263,11 +263,11 @@ func (l *Language) String() string {
 	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.pango_language_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }

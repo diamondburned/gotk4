@@ -316,13 +316,13 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 // NewFlowBox constructs a class FlowBox.
 func NewFlowBox() FlowBox {
 	var cret C.GtkFlowBox
-	var goret1 FlowBox
+	var ret1 FlowBox
 
 	cret = C.gtk_flow_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
 
-	return goret1
+	return ret1
 }
 
 // BindModel binds @model to @box.
@@ -355,13 +355,13 @@ func (b flowBox) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_flow_box_get_activate_on_single_click(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ChildAtIndex gets the nth child in the @box.
@@ -373,13 +373,13 @@ func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 	arg1 = C.gint(idx)
 
 	var cret *C.GtkFlowBoxChild
-	var goret1 FlowBoxChild
+	var ret1 FlowBoxChild
 
 	cret = C.gtk_flow_box_get_child_at_index(arg0, idx)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
 
-	return goret1
+	return ret1
 }
 
 // ChildAtPos gets the child in the (@x, @y) position.
@@ -393,13 +393,13 @@ func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 	arg2 = C.gint(y)
 
 	var cret *C.GtkFlowBoxChild
-	var goret1 FlowBoxChild
+	var ret1 FlowBoxChild
 
 	cret = C.gtk_flow_box_get_child_at_pos(arg0, x, y)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
 
-	return goret1
+	return ret1
 }
 
 // ColumnSpacing gets the horizontal spacing.
@@ -409,13 +409,13 @@ func (b flowBox) ColumnSpacing() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_column_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
@@ -426,13 +426,13 @@ func (b flowBox) Homogeneous() bool {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_flow_box_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MaxChildrenPerLine gets the maximum number of children per line.
@@ -442,13 +442,13 @@ func (b flowBox) MaxChildrenPerLine() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_max_children_per_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinChildrenPerLine gets the minimum number of children per line.
@@ -458,13 +458,13 @@ func (b flowBox) MinChildrenPerLine() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_min_children_per_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // RowSpacing gets the vertical spacing.
@@ -474,13 +474,13 @@ func (b flowBox) RowSpacing() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_row_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectedChildren creates a list of all selected children.
@@ -490,16 +490,16 @@ func (b flowBox) SelectedChildren() *glib.List {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_flow_box_get_selected_children(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SelectionMode gets the selection mode of @box.
@@ -509,13 +509,13 @@ func (b flowBox) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret1 SelectionMode
+	var ret1 SelectionMode
 
 	cret = C.gtk_flow_box_get_selection_mode(arg0)
 
-	goret1 = SelectionMode(cret)
+	ret1 = SelectionMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts the @widget into @box at @position.
@@ -836,13 +836,13 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 // NewFlowBoxChild constructs a class FlowBoxChild.
 func NewFlowBoxChild() FlowBoxChild {
 	var cret C.GtkFlowBoxChild
-	var goret1 FlowBoxChild
+	var ret1 FlowBoxChild
 
 	cret = C.gtk_flow_box_child_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
 
-	return goret1
+	return ret1
 }
 
 // Changed marks @child as changed, causing any state that depends on this
@@ -875,13 +875,13 @@ func (c flowBoxChild) Index() int {
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_flow_box_child_get_index(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsSelected returns whether the @child is currently selected in its
@@ -892,11 +892,11 @@ func (c flowBoxChild) IsSelected() bool {
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_flow_box_child_is_selected(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

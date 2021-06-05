@@ -37,14 +37,14 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	arg5 = C.int(nRanges)
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_pango_layout_get_clip_region(layout, xOrigin, yOrigin, indexRanges, nRanges)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

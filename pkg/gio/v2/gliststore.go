@@ -130,13 +130,13 @@ func NewListStore(itemType externglib.Type) ListStore {
 	arg1 := C.GType(itemType)
 
 	var cret C.GListStore
-	var goret1 ListStore
+	var ret1 ListStore
 
 	cret = C.g_list_store_new(itemType)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ListStore)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ListStore)
 
-	return goret1
+	return ret1
 }
 
 // Append appends @item to @store. @item must be of type Store:item-type.
@@ -168,17 +168,17 @@ func (s listStore) Find(item gextras.Objector) (position uint, ok bool) {
 	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	var arg2 *C.guint
+	var arg2 C.guint
 	var ret2 uint
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_list_store_find(arg0, item, &arg2)
 
-	ret2 = *C.guint(arg2)
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.guint(arg2)
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Insert inserts @item into @store at @position. @item must be of type
@@ -215,13 +215,13 @@ func (s listStore) InsertSorted(item gextras.Objector, compareFunc glib.CompareD
 	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_list_store_insert_sorted(arg0, item, compareFunc, userData)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Remove removes the item from @store that is at @position. @position must

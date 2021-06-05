@@ -20,11 +20,11 @@ func X11DeviceGetID(device X11DeviceCore) int {
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_x11_device_get_id(device)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }

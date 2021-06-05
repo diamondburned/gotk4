@@ -24,20 +24,20 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(set.Native()))
 	arg3 = C.guint(target)
 
-	var arg1 *C.GtkBitsetIter
+	var arg1 C.GtkBitsetIter
 	var ret1 *BitsetIter
-	var arg4 *C.guint
+	var arg4 C.guint
 	var ret4 uint
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_bitset_iter_init_at(&arg1, set, target, &arg4)
 
 	ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	ret4 = *C.guint(arg4)
-	goret3 = C.bool(cret) != C.false
+	ret4 = C.guint(arg4)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret4, goret3
+	return ret1, ret4, ret3
 }
 
 // BitsetIterInitFirst initializes an iterator for @set and points it to the
@@ -48,20 +48,20 @@ func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(set.Native()))
 
-	var arg1 *C.GtkBitsetIter
+	var arg1 C.GtkBitsetIter
 	var ret1 *BitsetIter
-	var arg3 *C.guint
+	var arg3 C.guint
 	var ret3 uint
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_bitset_iter_init_first(&arg1, set, &arg3)
 
 	ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	ret3 = *C.guint(arg3)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.guint(arg3)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret3, goret3
+	return ret1, ret3, ret3
 }
 
 // BitsetIterInitLast initializes an iterator for @set and points it to the last
@@ -71,20 +71,20 @@ func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(set.Native()))
 
-	var arg1 *C.GtkBitsetIter
+	var arg1 C.GtkBitsetIter
 	var ret1 *BitsetIter
-	var arg3 *C.guint
+	var arg3 C.guint
 	var ret3 uint
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_bitset_iter_init_last(&arg1, set, &arg3)
 
 	ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	ret3 = *C.guint(arg3)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.guint(arg3)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret3, goret3
+	return ret1, ret3, ret3
 }
 
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
@@ -125,13 +125,13 @@ func (i *BitsetIter) Value() uint {
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_bitset_iter_get_value(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsValid checks if @iter points to a valid value.
@@ -141,13 +141,13 @@ func (i *BitsetIter) IsValid() bool {
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_bitset_iter_is_valid(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Next moves @iter to the next value in the set. If it was already pointing to
@@ -157,17 +157,17 @@ func (i *BitsetIter) Next() (value uint, ok bool) {
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_bitset_iter_next(arg0, &arg1)
 
-	ret1 = *C.guint(arg1)
-	goret2 = C.bool(cret) != C.false
+	ret1 = C.guint(arg1)
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Previous moves @iter to the previous value in the set. If it was already
@@ -178,15 +178,15 @@ func (i *BitsetIter) Previous() (value uint, ok bool) {
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_bitset_iter_previous(arg0, &arg1)
 
-	ret1 = *C.guint(arg1)
-	goret2 = C.bool(cret) != C.false
+	ret1 = C.guint(arg1)
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }

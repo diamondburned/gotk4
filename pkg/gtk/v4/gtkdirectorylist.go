@@ -135,13 +135,13 @@ func NewDirectoryList(attributes string, file gio.File) DirectoryList {
 	arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkDirectoryList
-	var goret1 DirectoryList
+	var ret1 DirectoryList
 
 	cret = C.gtk_directory_list_new(attributes, file)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DirectoryList)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DirectoryList)
 
-	return goret1
+	return ret1
 }
 
 // Attributes gets the attributes queried on the children.
@@ -151,13 +151,13 @@ func (s directoryList) Attributes() string {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_directory_list_get_attributes(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Error gets the loading error, if any.
@@ -174,13 +174,13 @@ func (s directoryList) Error() *glib.Error {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GError
-	var goret1 *glib.Error
+	var ret1 *glib.Error
 
 	cret = C.gtk_directory_list_get_error(arg0)
 
-	goret1 = glib.WrapError(unsafe.Pointer(cret))
+	ret1 = glib.WrapError(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // File gets the file whose children are currently enumerated.
@@ -190,13 +190,13 @@ func (s directoryList) File() gio.File {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_directory_list_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // IOPriority gets the IO priority set via
@@ -207,13 +207,13 @@ func (s directoryList) IOPriority() int {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_directory_list_get_io_priority(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Monitored returns whether the directory list is monitoring the directory
@@ -224,13 +224,13 @@ func (s directoryList) Monitored() bool {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_directory_list_get_monitored(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsLoading returns true if the children enumeration is currently in
@@ -244,13 +244,13 @@ func (s directoryList) IsLoading() bool {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_directory_list_is_loading(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetAttributes sets the @attributes to be enumerated and starts the

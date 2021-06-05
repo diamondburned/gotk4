@@ -128,13 +128,13 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 // NewCheckButton constructs a class CheckButton.
 func NewCheckButton() CheckButton {
 	var cret C.GtkCheckButton
-	var goret1 CheckButton
+	var ret1 CheckButton
 
 	cret = C.gtk_check_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
 
-	return goret1
+	return ret1
 }
 
 // NewCheckButtonWithLabel constructs a class CheckButton.
@@ -145,13 +145,13 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCheckButton
-	var goret1 CheckButton
+	var ret1 CheckButton
 
 	cret = C.gtk_check_button_new_with_label(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
 
-	return goret1
+	return ret1
 }
 
 // NewCheckButtonWithMnemonic constructs a class CheckButton.
@@ -162,13 +162,13 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCheckButton
-	var goret1 CheckButton
+	var ret1 CheckButton
 
 	cret = C.gtk_check_button_new_with_mnemonic(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
 
-	return goret1
+	return ret1
 }
 
 // Active returns the current value of the CheckButton:active property.
@@ -178,13 +178,13 @@ func (s checkButton) Active() bool {
 	arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_check_button_get_active(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Inconsistent returns whether the check button is in an inconsistent
@@ -195,13 +195,13 @@ func (c checkButton) Inconsistent() bool {
 	arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_check_button_get_inconsistent(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Label returns the label of the checkbutton.
@@ -211,13 +211,13 @@ func (s checkButton) Label() string {
 	arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_check_button_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns the current value of the CheckButton:use-underline
@@ -228,13 +228,13 @@ func (s checkButton) UseUnderline() bool {
 	arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_check_button_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActive sets the new value of the CheckButton:active property. See also

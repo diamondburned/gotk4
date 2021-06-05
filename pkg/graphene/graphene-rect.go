@@ -27,29 +27,29 @@ func init() {
 // The contents of the returned rectangle are undefined.
 func RectAlloc() *Rect {
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_alloc()
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Rect) {
+	ret1 = WrapRect(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Rect) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // RectZero returns a degenerate rectangle with origin fixed at (0, 0) and a
 // size of 0, 0.
 func RectZero() *Rect {
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_zero()
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Rect: the location and size of a rectangle region.
@@ -108,13 +108,13 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_rect_contains_point(arg0, p)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContainsRect checks whether a #graphene_rect_t fully contains the given
@@ -127,13 +127,13 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_rect_contains_rect(arg0, b)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Equal checks whether the two given rectangle are equal.
@@ -145,13 +145,13 @@ func (a *Rect) Equal(b *Rect) bool {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_rect_equal(arg0, b)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Expand expands a #graphene_rect_t to contain the given #graphene_point_t.
@@ -162,7 +162,7 @@ func (r *Rect) Expand(p *Point) Rect {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	var arg2 *C.graphene_rect_t
+	var arg2 C.graphene_rect_t
 	var ret2 *Rect
 
 	C.graphene_rect_expand(arg0, p, &arg2)
@@ -188,13 +188,13 @@ func (r *Rect) Area() float32 {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.graphene_rect_get_area(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // BottomLeft retrieves the coordinates of the bottom-left corner of the given
@@ -204,7 +204,7 @@ func (r *Rect) BottomLeft() Point {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_point_t
+	var arg1 C.graphene_point_t
 	var ret1 *Point
 
 	C.graphene_rect_get_bottom_left(arg0, &arg1)
@@ -221,7 +221,7 @@ func (r *Rect) BottomRight() Point {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_point_t
+	var arg1 C.graphene_point_t
 	var ret1 *Point
 
 	C.graphene_rect_get_bottom_right(arg0, &arg1)
@@ -237,7 +237,7 @@ func (r *Rect) Center() Point {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_point_t
+	var arg1 C.graphene_point_t
 	var ret1 *Point
 
 	C.graphene_rect_get_center(arg0, &arg1)
@@ -254,13 +254,13 @@ func (r *Rect) Height() float32 {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.graphene_rect_get_height(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // TopLeft retrieves the coordinates of the top-left corner of the given
@@ -270,7 +270,7 @@ func (r *Rect) TopLeft() Point {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_point_t
+	var arg1 C.graphene_point_t
 	var ret1 *Point
 
 	C.graphene_rect_get_top_left(arg0, &arg1)
@@ -287,7 +287,7 @@ func (r *Rect) TopRight() Point {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_point_t
+	var arg1 C.graphene_point_t
 	var ret1 *Point
 
 	C.graphene_rect_get_top_right(arg0, &arg1)
@@ -326,13 +326,13 @@ func (r *Rect) Width() float32 {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.graphene_rect_get_width(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // X retrieves the normalized X coordinate of the origin of the given rectangle.
@@ -342,13 +342,13 @@ func (r *Rect) X() float32 {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.graphene_rect_get_x(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Y retrieves the normalized Y coordinate of the origin of the given rectangle.
@@ -358,13 +358,13 @@ func (r *Rect) Y() float32 {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.graphene_rect_get_y(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Init initializes the given #graphene_rect_t with the given values.
@@ -385,13 +385,13 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	arg4 = C.float(height)
 
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_init(arg0, x, y, width, height)
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InitFromRect initializes @r using the given @src rectangle.
@@ -406,13 +406,13 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(src.Native()))
 
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_init_from_rect(arg0, src)
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Inset changes the given rectangle to be smaller, or larger depending on the
@@ -438,13 +438,13 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	arg2 = C.float(dY)
 
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_inset(arg0, dX, dY)
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsetR changes the given rectangle to be smaller, or larger depending on the
@@ -469,7 +469,7 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	arg1 = C.float(dX)
 	arg2 = C.float(dY)
 
-	var arg3 *C.graphene_rect_t
+	var arg3 C.graphene_rect_t
 	var ret3 *Rect
 
 	C.graphene_rect_inset_r(arg0, dX, dY, &arg3)
@@ -490,7 +490,7 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 	arg2 = C.double(factor)
 
-	var arg3 *C.graphene_rect_t
+	var arg3 C.graphene_rect_t
 	var ret3 *Rect
 
 	C.graphene_rect_interpolate(arg0, b, factor, &arg3)
@@ -515,17 +515,17 @@ func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 *C.graphene_rect_t
+	var arg2 C.graphene_rect_t
 	var ret2 *Rect
 	var cret C._Bool
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.graphene_rect_intersection(arg0, b, &arg2)
 
 	ret2 = WrapRect(unsafe.Pointer(arg2))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Normalize normalizes the passed rectangle.
@@ -538,13 +538,13 @@ func (r *Rect) Normalize() *Rect {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_normalize(arg0)
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NormalizeR normalizes the passed rectangle.
@@ -556,7 +556,7 @@ func (r *Rect) NormalizeR() Rect {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_rect_t
+	var arg1 C.graphene_rect_t
 	var ret1 *Rect
 
 	C.graphene_rect_normalize_r(arg0, &arg1)
@@ -579,13 +579,13 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	arg2 = C.float(dY)
 
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_offset(arg0, dX, dY)
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // OffsetR offsets the origin of the given rectangle by @d_x and @d_y.
@@ -600,7 +600,7 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	arg1 = C.float(dX)
 	arg2 = C.float(dY)
 
-	var arg3 *C.graphene_rect_t
+	var arg3 C.graphene_rect_t
 	var ret3 *Rect
 
 	C.graphene_rect_offset_r(arg0, dX, dY, &arg3)
@@ -623,7 +623,7 @@ func (r *Rect) Round() Rect {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_rect_t
+	var arg1 C.graphene_rect_t
 	var ret1 *Rect
 
 	C.graphene_rect_round(arg0, &arg1)
@@ -655,7 +655,7 @@ func (r *Rect) RoundExtents() Rect {
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.graphene_rect_t
+	var arg1 C.graphene_rect_t
 	var ret1 *Rect
 
 	C.graphene_rect_round_extents(arg0, &arg1)
@@ -674,13 +674,13 @@ func (r *Rect) RoundToPixel() *Rect {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var cret *C.graphene_rect_t
-	var goret1 *Rect
+	var ret1 *Rect
 
 	cret = C.graphene_rect_round_to_pixel(arg0)
 
-	goret1 = WrapRect(unsafe.Pointer(cret))
+	ret1 = WrapRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Scale scales the size and origin of a rectangle horizontaly by @s_h, and
@@ -694,7 +694,7 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 	arg1 = C.float(sH)
 	arg2 = C.float(sV)
 
-	var arg3 *C.graphene_rect_t
+	var arg3 C.graphene_rect_t
 	var ret3 *Rect
 
 	C.graphene_rect_scale(arg0, sH, sV, &arg3)
@@ -716,7 +716,7 @@ func (a *Rect) Union(b *Rect) Rect {
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 *C.graphene_rect_t
+	var arg2 C.graphene_rect_t
 	var ret2 *Rect
 
 	C.graphene_rect_union(arg0, b, &arg2)

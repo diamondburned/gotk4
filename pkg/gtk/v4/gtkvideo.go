@@ -103,13 +103,13 @@ func marshalVideo(p uintptr) (interface{}, error) {
 // NewVideo constructs a class Video.
 func NewVideo() Video {
 	var cret C.GtkVideo
-	var goret1 Video
+	var ret1 Video
 
 	cret = C.gtk_video_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
 
-	return goret1
+	return ret1
 }
 
 // NewVideoForFile constructs a class Video.
@@ -119,13 +119,13 @@ func NewVideoForFile(file gio.File) Video {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkVideo
-	var goret1 Video
+	var ret1 Video
 
 	cret = C.gtk_video_new_for_file(file)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
 
-	return goret1
+	return ret1
 }
 
 // NewVideoForFilename constructs a class Video.
@@ -136,13 +136,13 @@ func NewVideoForFilename(filename string) Video {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkVideo
-	var goret1 Video
+	var ret1 Video
 
 	cret = C.gtk_video_new_for_filename(filename)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
 
-	return goret1
+	return ret1
 }
 
 // NewVideoForMediaStream constructs a class Video.
@@ -152,13 +152,13 @@ func NewVideoForMediaStream(stream MediaStream) Video {
 	arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	var cret C.GtkVideo
-	var goret1 Video
+	var ret1 Video
 
 	cret = C.gtk_video_new_for_media_stream(stream)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
 
-	return goret1
+	return ret1
 }
 
 // NewVideoForResource constructs a class Video.
@@ -169,13 +169,13 @@ func NewVideoForResource(resourcePath string) Video {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkVideo
-	var goret1 Video
+	var ret1 Video
 
 	cret = C.gtk_video_new_for_resource(resourcePath)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Video)
 
-	return goret1
+	return ret1
 }
 
 // Autoplay returns true if videos have been set to loop via
@@ -186,13 +186,13 @@ func (s video) Autoplay() bool {
 	arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_video_get_autoplay(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // File gets the file played by @self or nil if not playing back a file.
@@ -202,13 +202,13 @@ func (s video) File() gio.File {
 	arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_video_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // Loop returns true if videos have been set to loop via
@@ -219,13 +219,13 @@ func (s video) Loop() bool {
 	arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_video_get_loop(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MediaStream gets the media stream managed by @self or nil if none.
@@ -235,13 +235,13 @@ func (s video) MediaStream() MediaStream {
 	arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkMediaStream
-	var goret1 MediaStream
+	var ret1 MediaStream
 
 	cret = C.gtk_video_get_media_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
 
-	return goret1
+	return ret1
 }
 
 // SetAutoplay sets whether @self automatically starts playback when it

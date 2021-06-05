@@ -179,7 +179,7 @@ func (cg *callableGenerator) block() string {
 		!(cg.Throws && anyTypeName(cg.ReturnValue.AnyType, "") == "ok")
 
 	if hasReturn {
-		out := fmt.Sprintf("goret%d", len(outputValues)+1)
+		out := fmt.Sprintf("ret%d", len(outputValues)+1)
 		returns.Add(out)
 
 		outputValues = append(outputValues, CValueProp{

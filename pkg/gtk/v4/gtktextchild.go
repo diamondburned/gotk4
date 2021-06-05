@@ -65,13 +65,13 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 // NewTextChildAnchor constructs a class TextChildAnchor.
 func NewTextChildAnchor() TextChildAnchor {
 	var cret C.GtkTextChildAnchor
-	var goret1 TextChildAnchor
+	var ret1 TextChildAnchor
 
 	cret = C.gtk_text_child_anchor_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
 
-	return goret1
+	return ret1
 }
 
 // Deleted determines whether a child anchor has been deleted from the
@@ -85,13 +85,13 @@ func (a textChildAnchor) Deleted() bool {
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_child_anchor_get_deleted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Widgets gets a list of all widgets anchored at this child anchor.
@@ -104,15 +104,15 @@ func (a textChildAnchor) Widgets() (outLen uint, widgets []Widget) {
 
 	var cret **C.GtkWidget
 	var arg1 *C.guint
-	var goret2 []Widget
+	var ret2 []Widget
 
 	cret = C.gtk_text_child_anchor_get_widgets(arg0, &arg1)
 
-	goret2 = make([]Widget, arg1)
+	ret2 = make([]Widget, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.GtkWidget)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(Widget)
+		ret2[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(Widget)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }

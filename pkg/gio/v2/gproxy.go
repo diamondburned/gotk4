@@ -41,13 +41,13 @@ func ProxyGetDefaultForProtocol(protocol string) Proxy {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GProxy
-	var goret1 Proxy
+	var ret1 Proxy
 
 	cret = C.g_proxy_get_default_for_protocol(protocol)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Proxy)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Proxy)
 
-	return goret1
+	return ret1
 }
 
 // ProxyOverrider contains methods that are overridable. This
@@ -120,18 +120,18 @@ func (p proxy) Connect(connection IOStream, proxyAddress ProxyAddress, cancellab
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GIOStream
-	var goret1 IOStream
+	var ret1 IOStream
 	var goerr error
 
 	cret = C.g_proxy_connect(arg0, connection, proxyAddress, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
@@ -153,18 +153,18 @@ func (p proxy) ConnectFinish(result AsyncResult) (ioStream IOStream, err error) 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GIOStream
-	var goret1 IOStream
+	var ret1 IOStream
 	var goerr error
 
 	cret = C.g_proxy_connect_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -180,11 +180,11 @@ func (p proxy) SupportsHostname() bool {
 	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_proxy_supports_hostname(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

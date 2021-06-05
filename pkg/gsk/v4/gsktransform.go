@@ -28,10 +28,10 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.GskTransform
+	var arg2 *C.GskTransform
 	var ret2 **Transform
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gsk_transform_parse(string, &arg2)
 
@@ -39,7 +39,7 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 	runtime.SetFinalizer(ret2, func(v **Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }

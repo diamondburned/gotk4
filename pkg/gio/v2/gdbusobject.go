@@ -89,13 +89,13 @@ func (o dBusObject) Interface(interfaceName string) DBusInterface {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GDBusInterface
-	var goret1 DBusInterface
+	var ret1 DBusInterface
 
 	cret = C.g_dbus_object_get_interface(arg0, interfaceName)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
 
-	return goret1
+	return ret1
 }
 
 // Interfaces gets the D-Bus interfaces associated with @object.
@@ -105,16 +105,16 @@ func (o dBusObject) Interfaces() *glib.List {
 	arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_dbus_object_get_interfaces(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ObjectPath gets the object path for @object.
@@ -124,11 +124,11 @@ func (o dBusObject) ObjectPath() string {
 	arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dbus_object_get_object_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }

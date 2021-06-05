@@ -61,13 +61,13 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_direct_equal(v1, v2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DirectHash converts a gpointer to a hash value. It can be passed to
@@ -82,13 +82,13 @@ func DirectHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_direct_hash(v)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DoubleEqual compares the two #gdouble values being pointed to and returns
@@ -103,13 +103,13 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_double_equal(v1, v2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DoubleHash converts a pointer to a #gdouble to a hash value. It can be passed
@@ -122,13 +122,13 @@ func DoubleHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_double_hash(v)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // HashTableAdd: this is a convenience function for using a Table as a set. It
@@ -153,13 +153,13 @@ func HashTableAdd(hashTable *HashTable, key interface{}) bool {
 	arg2 = C.gpointer(key)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hash_table_add(hashTable, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HashTableContains checks if @key is in @hash_table.
@@ -171,13 +171,13 @@ func HashTableContains(hashTable *HashTable, key interface{}) bool {
 	arg2 = C.gpointer(key)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hash_table_contains(hashTable, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HashTableDestroy destroys all keys and values in the Table and decrements its
@@ -212,13 +212,13 @@ func HashTableInsert(hashTable *HashTable, key interface{}, value interface{}) b
 	arg3 = C.gpointer(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hash_table_insert(hashTable, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HashTableLookup looks up a key in a Table. Note that this function cannot
@@ -233,13 +233,13 @@ func HashTableLookup(hashTable *HashTable, key interface{}) interface{} {
 	arg2 = C.gpointer(key)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_hash_table_lookup(hashTable, key)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // HashTableLookupExtended looks up a key in the Table, returning the original
@@ -256,20 +256,20 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey interface{}) (origK
 	arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable.Native()))
 	arg2 = C.gpointer(lookupKey)
 
-	var arg3 *C.gpointer
+	var arg3 C.gpointer
 	var ret3 interface{}
-	var arg4 *C.gpointer
+	var arg4 C.gpointer
 	var ret4 interface{}
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.g_hash_table_lookup_extended(hashTable, lookupKey, &arg3, &arg4)
 
-	ret3 = *C.gpointer(arg3)
-	ret4 = *C.gpointer(arg4)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.gpointer(arg3)
+	ret4 = C.gpointer(arg4)
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // HashTableRemove removes a key and its associated value from a Table.
@@ -285,13 +285,13 @@ func HashTableRemove(hashTable *HashTable, key interface{}) bool {
 	arg2 = C.gpointer(key)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hash_table_remove(hashTable, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HashTableRemoveAll removes all keys and their associated values from a Table.
@@ -326,13 +326,13 @@ func HashTableReplace(hashTable *HashTable, key interface{}, value interface{}) 
 	arg3 = C.gpointer(value)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hash_table_replace(hashTable, key, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HashTableSize returns the number of elements contained in the Table.
@@ -342,13 +342,13 @@ func HashTableSize(hashTable *HashTable) uint {
 	arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_hash_table_size(hashTable)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // HashTableSteal removes a key and its associated value from a Table without
@@ -361,13 +361,13 @@ func HashTableSteal(hashTable *HashTable, key interface{}) bool {
 	arg2 = C.gpointer(key)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hash_table_steal(hashTable, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HashTableStealAll removes all keys and their associated values from a Table
@@ -397,20 +397,20 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey interface{}) (stolen
 	arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable.Native()))
 	arg2 = C.gpointer(lookupKey)
 
-	var arg3 *C.gpointer
+	var arg3 C.gpointer
 	var ret3 interface{}
-	var arg4 *C.gpointer
+	var arg4 C.gpointer
 	var ret4 interface{}
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.g_hash_table_steal_extended(hashTable, lookupKey, &arg3, &arg4)
 
-	ret3 = *C.gpointer(arg3)
-	ret4 = *C.gpointer(arg4)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.gpointer(arg3)
+	ret4 = C.gpointer(arg4)
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // HashTableUnref: atomically decrements the reference count of @hash_table by
@@ -437,13 +437,13 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_int64_equal(v1, v2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Int64Hash converts a pointer to a #gint64 to a hash value.
@@ -456,13 +456,13 @@ func Int64Hash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_int64_hash(v)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IntEqual compares the two #gint values being pointed to and returns true if
@@ -480,13 +480,13 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_int_equal(v1, v2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IntHash converts a pointer to a #gint to a hash value. It can be passed to
@@ -502,13 +502,13 @@ func IntHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_int_hash(v)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // StrEqual compares two strings for byte-by-byte equality and returns true if
@@ -526,13 +526,13 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_str_equal(v1, v2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrHash converts a string to a hash value.
@@ -553,13 +553,13 @@ func StrHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_str_hash(v)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
@@ -627,13 +627,13 @@ func (i *HashTableIter) HashTable() *HashTable {
 	arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GHashTable
-	var goret1 *HashTable
+	var ret1 *HashTable
 
 	cret = C.g_hash_table_iter_get_hash_table(arg0)
 
-	goret1 = WrapHashTable(unsafe.Pointer(cret))
+	ret1 = WrapHashTable(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Init initializes a key/value pair iterator and associates it with
@@ -669,20 +669,20 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 
 	arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 
-	var arg1 *C.gpointer
+	var arg1 C.gpointer
 	var ret1 interface{}
-	var arg2 *C.gpointer
+	var arg2 C.gpointer
 	var ret2 interface{}
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.g_hash_table_iter_next(arg0, &arg1, &arg2)
 
-	ret1 = *C.gpointer(arg1)
-	ret2 = *C.gpointer(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret1 = C.gpointer(arg1)
+	ret2 = C.gpointer(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // Remove removes the key/value pair currently pointed to by the iterator from

@@ -85,13 +85,13 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 	arg2 = C.guint16(port)
 
 	var cret C.GNetworkAddress
-	var goret1 NetworkAddress
+	var ret1 NetworkAddress
 
 	cret = C.g_network_address_new(hostname, port)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
 
-	return goret1
+	return ret1
 }
 
 // NewNetworkAddressLoopback constructs a class NetworkAddress.
@@ -101,13 +101,13 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 	arg1 = C.guint16(port)
 
 	var cret C.GNetworkAddress
-	var goret1 NetworkAddress
+	var ret1 NetworkAddress
 
 	cret = C.g_network_address_new_loopback(port)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
 
-	return goret1
+	return ret1
 }
 
 // Hostname gets @addr's hostname. This might be either UTF-8 or
@@ -118,13 +118,13 @@ func (a networkAddress) Hostname() string {
 	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_network_address_get_hostname(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Port gets @addr's port number
@@ -134,13 +134,13 @@ func (a networkAddress) Port() uint16 {
 	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.g_network_address_get_port(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // Scheme gets @addr's scheme
@@ -150,13 +150,13 @@ func (a networkAddress) Scheme() string {
 	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_network_address_get_scheme(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 type NetworkAddressPrivate struct {

@@ -108,13 +108,13 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 // NewFontButton constructs a class FontButton.
 func NewFontButton() FontButton {
 	var cret C.GtkFontButton
-	var goret1 FontButton
+	var ret1 FontButton
 
 	cret = C.gtk_font_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
 
-	return goret1
+	return ret1
 }
 
 // NewFontButtonWithFont constructs a class FontButton.
@@ -125,13 +125,13 @@ func NewFontButtonWithFont(fontname string) FontButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkFontButton
-	var goret1 FontButton
+	var ret1 FontButton
 
 	cret = C.gtk_font_button_new_with_font(fontname)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
 
-	return goret1
+	return ret1
 }
 
 // FontName retrieves the name of the currently selected font. This name
@@ -146,13 +146,13 @@ func (f fontButton) FontName() string {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_button_get_font_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowSize returns whether the font size will be shown in the label.
@@ -162,13 +162,13 @@ func (f fontButton) ShowSize() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_show_size(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowStyle returns whether the name of the font style will be shown in the
@@ -179,13 +179,13 @@ func (f fontButton) ShowStyle() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_show_style(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Title retrieves the title of the font chooser dialog.
@@ -195,13 +195,13 @@ func (f fontButton) Title() string {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_button_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseFont returns whether the selected font is used in the label.
@@ -211,13 +211,13 @@ func (f fontButton) UseFont() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_use_font(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UseSize returns whether the selected size is used in the label.
@@ -227,13 +227,13 @@ func (f fontButton) UseSize() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_use_size(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetFontName sets or updates the currently-displayed font in font picker
@@ -247,13 +247,13 @@ func (f fontButton) SetFontName(fontname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_set_font_name(arg0, fontname)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetShowSize: if @show_size is true, the font size will be displayed along

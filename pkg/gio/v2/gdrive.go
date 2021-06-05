@@ -189,13 +189,13 @@ func (d drive) CanEject() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_can_eject(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanPollForMedia checks if a drive can be polled for media changes.
@@ -205,13 +205,13 @@ func (d drive) CanPollForMedia() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_can_poll_for_media(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanStart checks if a drive can be started.
@@ -221,13 +221,13 @@ func (d drive) CanStart() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_can_start(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanStartDegraded checks if a drive can be started degraded.
@@ -237,13 +237,13 @@ func (d drive) CanStartDegraded() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_can_start_degraded(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanStop checks if a drive can be stopped.
@@ -253,13 +253,13 @@ func (d drive) CanStop() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_can_stop(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Eject: asynchronously ejects a drive.
@@ -335,7 +335,7 @@ func (d drive) EnumerateIdentifiers() []string {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_drive_enumerate_identifiers(arg0)
 
@@ -348,15 +348,15 @@ func (d drive) EnumerateIdentifiers() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Icon gets the icon for @drive.
@@ -366,13 +366,13 @@ func (d drive) Icon() Icon {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GIcon
-	var goret1 Icon
+	var ret1 Icon
 
 	cret = C.g_drive_get_icon(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 
-	return goret1
+	return ret1
 }
 
 // Identifier gets the identifier of the given kind for @drive. The only
@@ -386,14 +386,14 @@ func (d drive) Identifier(kind string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_drive_get_identifier(arg0, kind)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Name gets the name of @drive.
@@ -403,14 +403,14 @@ func (d drive) Name() string {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_drive_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SortKey gets the sort key for @drive, if any.
@@ -420,13 +420,13 @@ func (d drive) SortKey() string {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_drive_get_sort_key(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // StartStopType gets a hint about how a drive can be started/stopped.
@@ -436,13 +436,13 @@ func (d drive) StartStopType() DriveStartStopType {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.GDriveStartStopType
-	var goret1 DriveStartStopType
+	var ret1 DriveStartStopType
 
 	cret = C.g_drive_get_start_stop_type(arg0)
 
-	goret1 = DriveStartStopType(cret)
+	ret1 = DriveStartStopType(cret)
 
-	return goret1
+	return ret1
 }
 
 // SymbolicIcon gets the icon for @drive.
@@ -452,13 +452,13 @@ func (d drive) SymbolicIcon() Icon {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GIcon
-	var goret1 Icon
+	var ret1 Icon
 
 	cret = C.g_drive_get_symbolic_icon(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 
-	return goret1
+	return ret1
 }
 
 // Volumes: get a list of mountable volumes for @drive.
@@ -471,16 +471,16 @@ func (d drive) Volumes() *glib.List {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_drive_get_volumes(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // HasMedia checks if the @drive has media. Note that the OS may not be
@@ -492,13 +492,13 @@ func (d drive) HasMedia() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_has_media(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasVolumes: check if @drive has any mountable volumes.
@@ -508,13 +508,13 @@ func (d drive) HasVolumes() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_has_volumes(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsMediaCheckAutomatic checks if @drive is capable of automatically
@@ -525,13 +525,13 @@ func (d drive) IsMediaCheckAutomatic() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_is_media_check_automatic(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsMediaRemovable checks if the @drive supports removable media.
@@ -541,13 +541,13 @@ func (d drive) IsMediaRemovable() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_is_media_removable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsRemovable checks if the #GDrive and/or its media is considered
@@ -558,13 +558,13 @@ func (d drive) IsRemovable() bool {
 	arg0 = (*C.GDrive)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_drive_is_removable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PollForMedia: asynchronously polls @drive to see if media has been

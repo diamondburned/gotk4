@@ -85,13 +85,13 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScope, bytes *glib.Bytes) B
 	arg2 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
 	var cret C.GtkBuilderListItemFactory
-	var goret1 BuilderListItemFactory
+	var ret1 BuilderListItemFactory
 
 	cret = C.gtk_builder_list_item_factory_new_from_bytes(scope, bytes)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // NewBuilderListItemFactoryFromResource constructs a class BuilderListItemFactory.
@@ -104,13 +104,13 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkBuilderListItemFactory
-	var goret1 BuilderListItemFactory
+	var ret1 BuilderListItemFactory
 
 	cret = C.gtk_builder_list_item_factory_new_from_resource(scope, resourcePath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // Bytes gets the data used as the Builder UI template for constructing
@@ -121,13 +121,13 @@ func (s builderListItemFactory) Bytes() *glib.Bytes {
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 
 	cret = C.gtk_builder_list_item_factory_get_bytes(arg0)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Resource: if the data references a resource, gets the path of that
@@ -138,13 +138,13 @@ func (s builderListItemFactory) Resource() string {
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_builder_list_item_factory_get_resource(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Scope gets the scope used when constructing listitems.
@@ -154,11 +154,11 @@ func (s builderListItemFactory) Scope() BuilderScope {
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkBuilderScope
-	var goret1 BuilderScope
+	var ret1 BuilderScope
 
 	cret = C.gtk_builder_list_item_factory_get_scope(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
 
-	return goret1
+	return ret1
 }

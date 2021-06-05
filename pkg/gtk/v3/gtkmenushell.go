@@ -281,13 +281,13 @@ func (m menuShell) ParentShell() Widget {
 	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_menu_shell_get_parent_shell(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SelectedItem gets the currently selected item.
@@ -297,13 +297,13 @@ func (m menuShell) SelectedItem() Widget {
 	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_menu_shell_get_selected_item(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // TakeFocus returns true if the menu shell will take the keyboard focus on
@@ -314,13 +314,13 @@ func (m menuShell) TakeFocus() bool {
 	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_shell_get_take_focus(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Insert adds a new MenuItem to the menu shell’s item list at the position

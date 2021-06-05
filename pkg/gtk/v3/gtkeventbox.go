@@ -105,13 +105,13 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 // NewEventBox constructs a class EventBox.
 func NewEventBox() EventBox {
 	var cret C.GtkEventBox
-	var goret1 EventBox
+	var ret1 EventBox
 
 	cret = C.gtk_event_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EventBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EventBox)
 
-	return goret1
+	return ret1
 }
 
 // AboveChild returns whether the event box window is above or below the
@@ -122,13 +122,13 @@ func (e eventBox) AboveChild() bool {
 	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_box_get_above_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VisibleWindow returns whether the event box has a visible window. See
@@ -139,13 +139,13 @@ func (e eventBox) VisibleWindow() bool {
 	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_box_get_visible_window(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetAboveChild: set whether the event box window is positioned above the

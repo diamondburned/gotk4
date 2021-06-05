@@ -309,13 +309,13 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 // NewNotebook constructs a class Notebook.
 func NewNotebook() Notebook {
 	var cret C.GtkNotebook
-	var goret1 Notebook
+	var ret1 Notebook
 
 	cret = C.gtk_notebook_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Notebook)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Notebook)
 
-	return goret1
+	return ret1
 }
 
 // AppendPage appends a page to @notebook.
@@ -329,13 +329,13 @@ func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_append_page(arg0, child, tabLabel)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // AppendPageMenu appends a page to @notebook, specifying the widget to use
@@ -352,13 +352,13 @@ func (n notebook) AppendPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_append_page_menu(arg0, child, tabLabel, menuLabel)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DetachTab removes the child from the notebook.
@@ -386,13 +386,13 @@ func (n notebook) ActionWidget(packType PackType) Widget {
 	arg1 = (C.GtkPackType)(packType)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_action_widget(arg0, packType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // CurrentPage returns the page number of the current page.
@@ -402,13 +402,13 @@ func (n notebook) CurrentPage() int {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_get_current_page(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // GroupName gets the current group name for @notebook.
@@ -418,13 +418,13 @@ func (n notebook) GroupName() string {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_notebook_get_group_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // MenuLabel retrieves the menu label widget of the page containing @child.
@@ -436,13 +436,13 @@ func (n notebook) MenuLabel(child Widget) Widget {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_menu_label(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // MenuLabelText retrieves the text of the menu label for the page
@@ -455,13 +455,13 @@ func (n notebook) MenuLabelText(child Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_notebook_get_menu_label_text(arg0, child)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NPages gets the number of pages in a notebook.
@@ -471,13 +471,13 @@ func (n notebook) NPages() int {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_get_n_pages(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NthPage returns the child widget contained in page number @page_num.
@@ -489,13 +489,13 @@ func (n notebook) NthPage(pageNum int) Widget {
 	arg1 = C.gint(pageNum)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_nth_page(arg0, pageNum)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.
@@ -506,13 +506,13 @@ func (n notebook) Scrollable() bool {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_scrollable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowBorder returns whether a bevel will be drawn around the notebook
@@ -523,13 +523,13 @@ func (n notebook) ShowBorder() bool {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_show_border(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowTabs returns whether the tabs of the notebook are shown. See
@@ -540,13 +540,13 @@ func (n notebook) ShowTabs() bool {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_show_tabs(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TabDetachable returns whether the tab contents can be detached from
@@ -559,13 +559,13 @@ func (n notebook) TabDetachable(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_tab_detachable(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TabHborder returns the horizontal width of a tab border.
@@ -575,13 +575,13 @@ func (n notebook) TabHborder() uint16 {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.gtk_notebook_get_tab_hborder(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // TabLabel returns the tab label widget for the page @child. nil is
@@ -595,13 +595,13 @@ func (n notebook) TabLabel(child Widget) Widget {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_tab_label(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // TabLabelText retrieves the text of the tab label for the page containing
@@ -614,13 +614,13 @@ func (n notebook) TabLabelText(child Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_notebook_get_tab_label_text(arg0, child)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TabPos gets the edge at which the tabs for switching pages in the
@@ -631,13 +631,13 @@ func (n notebook) TabPos() PositionType {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.GtkPositionType
-	var goret1 PositionType
+	var ret1 PositionType
 
 	cret = C.gtk_notebook_get_tab_pos(arg0)
 
-	goret1 = PositionType(cret)
+	ret1 = PositionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // TabReorderable gets whether the tab can be reordered via drag and drop or
@@ -650,13 +650,13 @@ func (n notebook) TabReorderable(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_tab_reorderable(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TabVborder returns the vertical width of a tab border.
@@ -666,13 +666,13 @@ func (n notebook) TabVborder() uint16 {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.gtk_notebook_get_tab_vborder(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertPage: insert a page into @notebook at the given position.
@@ -688,13 +688,13 @@ func (n notebook) InsertPage(child Widget, tabLabel Widget, position int) int {
 	arg3 = C.gint(position)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_insert_page(arg0, child, tabLabel, position)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertPageMenu: insert a page into @notebook at the given position,
@@ -713,13 +713,13 @@ func (n notebook) InsertPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	arg4 = C.gint(position)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_insert_page_menu(arg0, child, tabLabel, menuLabel, position)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NextPage switches to the next page. Nothing happens if the current page
@@ -742,13 +742,13 @@ func (n notebook) PageNum(child Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_page_num(arg0, child)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PopupDisable disables the popup menu.
@@ -782,13 +782,13 @@ func (n notebook) PrependPage(child Widget, tabLabel Widget) int {
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_prepend_page(arg0, child, tabLabel)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrependPageMenu prepends a page to @notebook, specifying the widget to
@@ -805,13 +805,13 @@ func (n notebook) PrependPageMenu(child Widget, tabLabel Widget, menuLabel Widge
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_prepend_page_menu(arg0, child, tabLabel, menuLabel)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrevPage switches to the previous page. Nothing happens if the current

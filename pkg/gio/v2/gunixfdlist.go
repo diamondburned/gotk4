@@ -129,26 +129,26 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 // NewUnixFDList constructs a class UnixFDList.
 func NewUnixFDList() UnixFDList {
 	var cret C.GUnixFDList
-	var goret1 UnixFDList
+	var ret1 UnixFDList
 
 	cret = C.g_unix_fd_list_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDList)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDList)
 
-	return goret1
+	return ret1
 }
 
 // NewUnixFDListFromArray constructs a class UnixFDList.
 func NewUnixFDListFromArray(fds []int) UnixFDList {
 
 	var cret C.GUnixFDList
-	var goret1 UnixFDList
+	var ret1 UnixFDList
 
 	cret = C.g_unix_fd_list_new_from_array(fds, nFds)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDList)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDList)
 
-	return goret1
+	return ret1
 }
 
 // Append adds a file descriptor to @list.
@@ -172,18 +172,18 @@ func (l unixFDList) Append(fd int) (gint int, err error) {
 	arg1 = C.gint(fd)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_unix_fd_list_append(arg0, fd, &errout)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Get gets a file descriptor out of @list.
@@ -206,18 +206,18 @@ func (l unixFDList) Get(index_ int) (gint int, err error) {
 	arg1 = C.gint(index_)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_unix_fd_list_get(arg0, index_, &errout)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Length gets the length of @list (ie: the number of file descriptors
@@ -228,13 +228,13 @@ func (l unixFDList) Length() int {
 	arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_unix_fd_list_get_length(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PeekFds returns the array of file descriptors that is contained in this
@@ -256,17 +256,17 @@ func (l unixFDList) PeekFds() (length int, gints []int) {
 
 	var cret *C.gint
 	var arg1 *C.gint
-	var goret2 []int
+	var ret2 []int
 
 	cret = C.g_unix_fd_list_peek_fds(arg0, &arg1)
 
-	goret2 = make([]int, arg1)
+	ret2 = make([]int, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.gint)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.gint(src)
+		ret2[i] = C.gint(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // StealFds returns the array of file descriptors that is contained in this
@@ -292,16 +292,16 @@ func (l unixFDList) StealFds() (length int, gints []int) {
 
 	var cret *C.gint
 	var arg1 *C.gint
-	var goret2 []int
+	var ret2 []int
 
 	cret = C.g_unix_fd_list_steal_fds(arg0, &arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret2, func(v *[]int) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&ret2, func(v *[]int) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 type UnixFDListPrivate struct {

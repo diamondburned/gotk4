@@ -184,13 +184,10 @@ func (cg *callbackGenerator) block() string {
 			in := SnakeToGo(false, param.Name)
 			goRets.Add(in)
 
-			// Set to the pointer. MUST ignore the declares.
-			out := "*" + inputAt(i)
-
 			// No need to have this declare a variable, since we're using the
 			// walrus operator in the function call.
 			outputValues = append(outputValues, GoValueProp{
-				ValueProp: NewValuePropParam(in, out, &i, param.ParameterAttrs),
+				ValueProp: NewValuePropParam(in, inputAt(i), &i, param.ParameterAttrs),
 			})
 		}
 	}

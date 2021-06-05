@@ -91,13 +91,13 @@ func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
 func ChildWatchAddFull(priority int, pid Pid, function ChildWatchFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_child_watch_add_full(priority, pid, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
@@ -122,13 +122,13 @@ func GetCurrentTime(result *TimeVal) {
 // always be possible to do this.
 func GetMonotonicTime() int64 {
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_get_monotonic_time()
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetRealTime queries the system wall-clock time.
@@ -141,13 +141,13 @@ func GetMonotonicTime() int64 {
 // intervals.
 func GetRealTime() int64 {
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_get_real_time()
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // IdleAddFull adds a function to be called whenever there are no higher
@@ -165,13 +165,13 @@ func GetRealTime() int64 {
 func IdleAddFull(priority int, function SourceFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_idle_add_full(priority, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IdleRemoveByData removes the idle function with the given data.
@@ -181,13 +181,13 @@ func IdleRemoveByData(data interface{}) bool {
 	arg1 = C.gpointer(data)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_idle_remove_by_data(data)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // NewIdleSource creates a new idle source.
@@ -198,16 +198,16 @@ func IdleRemoveByData(data interface{}) bool {
 // other sources which have a default priority of G_PRIORITY_DEFAULT.
 func NewIdleSource() *Source {
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_idle_source_new()
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Source) {
+	ret1 = WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // MainContextDefault returns the global default main context. This is the main
@@ -216,13 +216,13 @@ func NewIdleSource() *Source {
 // g_main_context_get_thread_default().
 func MainContextDefault() *MainContext {
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_main_context_default()
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // MainContextGetThreadDefault gets the thread-default Context for this thread.
@@ -237,13 +237,13 @@ func MainContextDefault() *MainContext {
 // g_main_context_ref_thread_default() instead.
 func MainContextGetThreadDefault() *MainContext {
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_main_context_get_thread_default()
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // MainContextRefThreadDefault gets the thread-default Context for this thread,
@@ -254,28 +254,28 @@ func MainContextGetThreadDefault() *MainContext {
 // it) rather than returning nil.
 func MainContextRefThreadDefault() *MainContext {
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_main_context_ref_thread_default()
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MainContext) {
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MainContext) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // MainCurrentSource returns the currently firing source for this thread.
 func MainCurrentSource() *Source {
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_main_current_source()
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
+	ret1 = WrapSource(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // MainDepth returns the depth of the stack of calls to
@@ -337,13 +337,13 @@ func MainCurrentSource() *Source {
 // loop and then get called again when there is more work to do.
 func MainDepth() int {
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_main_depth()
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SourceRemove removes the source with the given ID from the default main
@@ -370,13 +370,13 @@ func SourceRemove(tag uint) bool {
 	arg1 = C.guint(tag)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_source_remove(tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SourceRemoveByUserData removes a source from the default main loop context
@@ -388,13 +388,13 @@ func SourceRemoveByUserData(userData interface{}) bool {
 	arg1 = C.gpointer(userData)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_source_remove_by_user_data(userData)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SourceSetNameByID sets the name of a source using its ID.
@@ -449,13 +449,13 @@ func SourceSetNameByID(tag uint, name string) {
 func TimeoutAddFull(priority int, interval uint, function SourceFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_timeout_add_full(priority, interval, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // TimeoutAddSecondsFull sets a function to be called at regular intervals, with
@@ -499,13 +499,13 @@ func TimeoutAddFull(priority int, interval uint, function SourceFunc) uint {
 func TimeoutAddSecondsFull(priority int, interval uint, function SourceFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_timeout_add_seconds_full(priority, interval, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NewTimeoutSource creates a new timeout source.
@@ -521,16 +521,16 @@ func NewTimeoutSource(interval uint) *Source {
 	arg1 = C.guint(interval)
 
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_timeout_source_new(interval)
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Source) {
+	ret1 = WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // TimeoutSourceNewSeconds creates a new timeout source.
@@ -549,16 +549,16 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	arg1 = C.guint(interval)
 
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_timeout_source_new_seconds(interval)
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Source) {
+	ret1 = WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // MainContext: the `GMainContext` struct is an opaque data type representing a
@@ -585,16 +585,16 @@ func marshalMainContext(p uintptr) (interface{}, error) {
 // NewMainContext constructs a struct MainContext.
 func NewMainContext() *MainContext {
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_main_context_new()
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MainContext) {
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MainContext) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -617,13 +617,13 @@ func (c *MainContext) Acquire() bool {
 	arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_main_context_acquire(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // AddPoll adds a file descriptor to the set of file descriptors polled for this
@@ -651,13 +651,13 @@ func (c *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_main_context_check(arg0, maxPriority, fds, nFds)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Dispatch dispatches all pending sources.
@@ -691,13 +691,13 @@ func (c *MainContext) FindSourceByID(sourceID uint) *Source {
 	arg1 = C.guint(sourceID)
 
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_main_context_find_source_by_id(arg0, sourceID)
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
+	ret1 = WrapSource(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FindSourceByUserData finds a source with the given user data for the
@@ -711,13 +711,13 @@ func (c *MainContext) FindSourceByUserData(userData interface{}) *Source {
 	arg1 = C.gpointer(userData)
 
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_main_context_find_source_by_user_data(arg0, userData)
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
+	ret1 = WrapSource(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Invoke invokes a function in such a way that @context is owned during the
@@ -773,13 +773,13 @@ func (c *MainContext) IsOwner() bool {
 	arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_main_context_is_owner(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Iteration runs a single iteration for the given main loop. This involves
@@ -803,13 +803,13 @@ func (c *MainContext) Iteration(mayBlock bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_main_context_iteration(arg0, mayBlock)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Pending checks if any sources have pending events for the given context.
@@ -819,13 +819,13 @@ func (c *MainContext) Pending() bool {
 	arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_main_context_pending(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PopThreadDefault pops @context off the thread-default context stack
@@ -848,17 +848,17 @@ func (c *MainContext) Prepare() (priority int, ok bool) {
 
 	arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_main_context_prepare(arg0, &arg1)
 
-	ret1 = *C.gint(arg1)
-	goret2 = C.bool(cret) != C.false
+	ret1 = C.gint(arg1)
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // PushThreadDefault acquires @context and sets it as the thread-default context
@@ -915,13 +915,13 @@ func (c *MainContext) Query(maxPriority int) (timeout_ int, fds []PollFD, gint i
 	arg4 = C.gint(nFds)
 
 	var cret C.gint
-	var goret3 int
+	var ret3 int
 
 	cret = C.g_main_context_query(arg0, maxPriority, &arg2, &arg3, nFds)
 
-	goret3 = C.gint(cret)
+	ret3 = C.gint(cret)
 
-	return ret2, ret3, goret3
+	return ret2, ret3, ret3
 }
 
 // Ref increases the reference count on a Context object by one.
@@ -931,16 +931,16 @@ func (c *MainContext) Ref() *MainContext {
 	arg0 = (*C.GMainContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_main_context_ref(arg0)
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MainContext) {
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MainContext) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Release releases ownership of a context previously acquired by this thread
@@ -1032,16 +1032,16 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	}
 
 	var cret *C.GMainLoop
-	var goret1 *MainLoop
+	var ret1 *MainLoop
 
 	cret = C.g_main_loop_new(context, isRunning)
 
-	goret1 = WrapMainLoop(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MainLoop) {
+	ret1 = WrapMainLoop(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MainLoop) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -1056,13 +1056,13 @@ func (l *MainLoop) Context() *MainContext {
 	arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_main_loop_get_context(arg0)
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IsRunning checks to see if the main loop is currently being run via
@@ -1073,13 +1073,13 @@ func (l *MainLoop) IsRunning() bool {
 	arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_main_loop_is_running(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Quit stops a Loop from running. Any calls to g_main_loop_run() for the loop
@@ -1102,16 +1102,16 @@ func (l *MainLoop) Ref() *MainLoop {
 	arg0 = (*C.GMainLoop)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GMainLoop
-	var goret1 *MainLoop
+	var ret1 *MainLoop
 
 	cret = C.g_main_loop_ref(arg0)
 
-	goret1 = WrapMainLoop(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MainLoop) {
+	ret1 = WrapMainLoop(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MainLoop) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Run runs a main loop until g_main_loop_quit() is called on the loop. If this
@@ -1231,13 +1231,13 @@ func (s *Source) AddUnixFd(fd int, events IOCondition) interface{} {
 	arg2 = (C.GIOCondition)(events)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_source_add_unix_fd(arg0, fd, events)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Attach adds a #GSource to a @context so that it will be executed within that
@@ -1253,13 +1253,13 @@ func (s *Source) Attach(context *MainContext) uint {
 	arg1 = (*C.GMainContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_source_attach(arg0, context)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Destroy removes a source from its Context, if any, and mark it as destroyed.
@@ -1287,13 +1287,13 @@ func (s *Source) CanRecurse() bool {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_source_get_can_recurse(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Context gets the Context with which the source is associated.
@@ -1309,13 +1309,13 @@ func (s *Source) Context() *MainContext {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GMainContext
-	var goret1 *MainContext
+	var ret1 *MainContext
 
 	cret = C.g_source_get_context(arg0)
 
-	goret1 = WrapMainContext(unsafe.Pointer(cret))
+	ret1 = WrapMainContext(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // CurrentTime: this function ignores @source and is otherwise the same as
@@ -1345,13 +1345,13 @@ func (s *Source) ID() uint {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_source_get_id(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Name gets a name for the source, used in debugging and profiling. The name
@@ -1362,13 +1362,13 @@ func (s *Source) Name() string {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_source_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Priority gets the priority of a source.
@@ -1378,13 +1378,13 @@ func (s *Source) Priority() int {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_source_get_priority(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ReadyTime gets the "ready time" of @source, as set by
@@ -1398,13 +1398,13 @@ func (s *Source) ReadyTime() int64 {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_source_get_ready_time(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // Time gets the time to be used when checking this source. The advantage of
@@ -1420,13 +1420,13 @@ func (s *Source) Time() int64 {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_source_get_time(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsDestroyed returns whether @source has been destroyed.
@@ -1461,13 +1461,13 @@ func (s *Source) IsDestroyed() bool {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_source_is_destroyed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ModifyUnixFd updates the event mask to watch for the fd identified by @tag.
@@ -1511,13 +1511,13 @@ func (s *Source) QueryUnixFd(tag interface{}) IOCondition {
 	arg1 = C.gpointer(tag)
 
 	var cret C.GIOCondition
-	var goret1 IOCondition
+	var ret1 IOCondition
 
 	cret = C.g_source_query_unix_fd(arg0, tag)
 
-	goret1 = IOCondition(cret)
+	ret1 = IOCondition(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref increases the reference count on a source by one.
@@ -1527,16 +1527,16 @@ func (s *Source) Ref() *Source {
 	arg0 = (*C.GSource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GSource
-	var goret1 *Source
+	var ret1 *Source
 
 	cret = C.g_source_ref(arg0)
 
-	goret1 = WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Source) {
+	ret1 = WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // RemoveChildSource detaches @child_source from @source and destroys it.

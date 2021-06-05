@@ -191,13 +191,13 @@ func NewListView(model SelectionModel, factory ListItemFactory) ListView {
 	arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	var cret C.GtkListView
-	var goret1 ListView
+	var ret1 ListView
 
 	cret = C.gtk_list_view_new(model, factory)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListView)
 
-	return goret1
+	return ret1
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with
@@ -208,13 +208,13 @@ func (s listView) EnableRubberband() bool {
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_view_get_enable_rubberband(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Factory gets the factory that's currently used to populate list items.
@@ -224,13 +224,13 @@ func (s listView) Factory() ListItemFactory {
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkListItemFactory
-	var goret1 ListItemFactory
+	var ret1 ListItemFactory
 
 	cret = C.gtk_list_view_get_factory(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that's currently used to read the items displayed.
@@ -240,13 +240,13 @@ func (s listView) Model() SelectionModel {
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSelectionModel
-	var goret1 SelectionModel
+	var ret1 SelectionModel
 
 	cret = C.gtk_list_view_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
 
-	return goret1
+	return ret1
 }
 
 // ShowSeparators returns whether the list box should show separators
@@ -257,13 +257,13 @@ func (s listView) ShowSeparators() bool {
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_view_get_show_separators(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SingleClickActivate returns whether rows will be activated on single
@@ -274,13 +274,13 @@ func (s listView) SingleClickActivate() bool {
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_view_get_single_click_activate(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetEnableRubberband sets whether selections can be changed by dragging

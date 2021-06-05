@@ -177,13 +177,13 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 	arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	var cret C.GtkApplicationWindow
-	var goret1 ApplicationWindow
+	var ret1 ApplicationWindow
 
 	cret = C.gtk_application_window_new(application)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ApplicationWindow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ApplicationWindow)
 
-	return goret1
+	return ret1
 }
 
 // HelpOverlay gets the ShortcutsWindow that has been set up with a prior
@@ -194,13 +194,13 @@ func (w applicationWindow) HelpOverlay() ShortcutsWindow {
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GtkShortcutsWindow
-	var goret1 ShortcutsWindow
+	var ret1 ShortcutsWindow
 
 	cret = C.gtk_application_window_get_help_overlay(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutsWindow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutsWindow)
 
-	return goret1
+	return ret1
 }
 
 // ID returns the unique ID of the window. If the window has not yet been
@@ -211,13 +211,13 @@ func (w applicationWindow) ID() uint {
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_application_window_get_id(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowMenubar returns whether the window will display a menubar for the app
@@ -228,13 +228,13 @@ func (w applicationWindow) ShowMenubar() bool {
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_application_window_get_show_menubar(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetHelpOverlay associates a shortcuts window with the application window,

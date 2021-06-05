@@ -30,13 +30,13 @@ func NativeGetForSurface(surface gdk.Surface) Native {
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	var cret *C.GtkNative
-	var goret1 Native
+	var ret1 Native
 
 	cret = C.gtk_native_get_for_surface(surface)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Native)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Native)
 
-	return goret1
+	return ret1
 }
 
 // Native is the interface implemented by all widgets that can provide a
@@ -88,13 +88,13 @@ func (s native) Renderer() gsk.Renderer {
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GskRenderer
-	var goret1 gsk.Renderer
+	var ret1 gsk.Renderer
 
 	cret = C.gtk_native_get_renderer(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gsk.Renderer)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gsk.Renderer)
 
-	return goret1
+	return ret1
 }
 
 // Surface returns the surface of this Native.
@@ -104,13 +104,13 @@ func (s native) Surface() gdk.Surface {
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 gdk.Surface
+	var ret1 gdk.Surface
 
 	cret = C.gtk_native_get_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
 
-	return goret1
+	return ret1
 }
 
 // SurfaceTransform retrieves the surface transform of @self. This is the
@@ -121,15 +121,15 @@ func (s native) SurfaceTransform() (x float64, y float64) {
 
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 
 	C.gtk_native_get_surface_transform(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
 
 	return ret1, ret2
 }

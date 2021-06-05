@@ -50,7 +50,7 @@ func PropagateError(src *Error) *Error {
 
 	arg2 = (*C.GError)(unsafe.Pointer(src.Native()))
 
-	var arg1 **C.GError
+	var arg1 *C.GError
 	var ret1 **Error
 
 	C.g_propagate_error(&arg1, src)
@@ -106,16 +106,16 @@ func (e *Error) Copy() *Error {
 	arg0 = (*C.GError)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GError
-	var goret1 *Error
+	var ret1 *Error
 
 	cret = C.g_error_copy(arg0)
 
-	goret1 = WrapError(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Error) {
+	ret1 = WrapError(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Error) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free frees a #GError and associated resources.

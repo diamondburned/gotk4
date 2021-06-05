@@ -77,13 +77,13 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 // NewFontChooserWidget constructs a class FontChooserWidget.
 func NewFontChooserWidget() FontChooserWidget {
 	var cret C.GtkFontChooserWidget
-	var goret1 FontChooserWidget
+	var ret1 FontChooserWidget
 
 	cret = C.gtk_font_chooser_widget_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 type FontChooserWidgetPrivate struct {

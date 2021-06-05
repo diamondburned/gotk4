@@ -72,13 +72,13 @@ func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkFontChooserDialog
-	var goret1 FontChooserDialog
+	var ret1 FontChooserDialog
 
 	cret = C.gtk_font_chooser_dialog_new(title, parent)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 type FontChooserDialogPrivate struct {

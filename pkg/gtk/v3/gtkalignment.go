@@ -92,13 +92,13 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 	arg4 = C.gfloat(yscale)
 
 	var cret C.GtkAlignment
-	var goret1 Alignment
+	var ret1 Alignment
 
 	cret = C.gtk_alignment_new(xalign, yalign, xscale, yscale)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Alignment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Alignment)
 
-	return goret1
+	return ret1
 }
 
 // Padding gets the padding on the different sides of the widget. See
@@ -108,21 +108,21 @@ func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft u
 
 	arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
-	var arg2 *C.guint
+	var arg2 C.guint
 	var ret2 uint
-	var arg3 *C.guint
+	var arg3 C.guint
 	var ret3 uint
-	var arg4 *C.guint
+	var arg4 C.guint
 	var ret4 uint
 
 	C.gtk_alignment_get_padding(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = *C.guint(arg1)
-	ret2 = *C.guint(arg2)
-	ret3 = *C.guint(arg3)
-	ret4 = *C.guint(arg4)
+	ret1 = C.guint(arg1)
+	ret2 = C.guint(arg2)
+	ret3 = C.guint(arg3)
+	ret4 = C.guint(arg4)
 
 	return ret1, ret2, ret3, ret4
 }

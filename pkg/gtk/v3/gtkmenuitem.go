@@ -151,13 +151,13 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 // NewMenuItem constructs a class MenuItem.
 func NewMenuItem() MenuItem {
 	var cret C.GtkMenuItem
-	var goret1 MenuItem
+	var ret1 MenuItem
 
 	cret = C.gtk_menu_item_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
 
-	return goret1
+	return ret1
 }
 
 // NewMenuItemWithLabel constructs a class MenuItem.
@@ -168,13 +168,13 @@ func NewMenuItemWithLabel(label string) MenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkMenuItem
-	var goret1 MenuItem
+	var ret1 MenuItem
 
 	cret = C.gtk_menu_item_new_with_label(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
 
-	return goret1
+	return ret1
 }
 
 // NewMenuItemWithMnemonic constructs a class MenuItem.
@@ -185,13 +185,13 @@ func NewMenuItemWithMnemonic(label string) MenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkMenuItem
-	var goret1 MenuItem
+	var ret1 MenuItem
 
 	cret = C.gtk_menu_item_new_with_mnemonic(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
 
-	return goret1
+	return ret1
 }
 
 // Activate emits the MenuItem::activate signal on the given item
@@ -222,13 +222,13 @@ func (m menuItem) AccelPath() string {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_menu_item_get_accel_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Label sets @text on the @menu_item label
@@ -238,13 +238,13 @@ func (m menuItem) Label() string {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_menu_item_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ReserveIndicator returns whether the @menu_item reserves space for the
@@ -255,13 +255,13 @@ func (m menuItem) ReserveIndicator() bool {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_item_get_reserve_indicator(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RightJustified gets whether the menu item appears justified at the right
@@ -272,13 +272,13 @@ func (m menuItem) RightJustified() bool {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_item_get_right_justified(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Submenu gets the submenu underneath this menu item, if any. See
@@ -289,13 +289,13 @@ func (m menuItem) Submenu() Widget {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_menu_item_get_submenu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline checks if an underline in the text indicates the next
@@ -306,13 +306,13 @@ func (m menuItem) UseUnderline() bool {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_item_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Select emits the MenuItem::select signal on the given item.

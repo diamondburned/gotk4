@@ -71,13 +71,13 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 // NewUnixCredentialsMessage constructs a class UnixCredentialsMessage.
 func NewUnixCredentialsMessage() UnixCredentialsMessage {
 	var cret C.GUnixCredentialsMessage
-	var goret1 UnixCredentialsMessage
+	var ret1 UnixCredentialsMessage
 
 	cret = C.g_unix_credentials_message_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
 
-	return goret1
+	return ret1
 }
 
 // NewUnixCredentialsMessageWithCredentials constructs a class UnixCredentialsMessage.
@@ -87,13 +87,13 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 	arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	var cret C.GUnixCredentialsMessage
-	var goret1 UnixCredentialsMessage
+	var ret1 UnixCredentialsMessage
 
 	cret = C.g_unix_credentials_message_new_with_credentials(credentials)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
 
-	return goret1
+	return ret1
 }
 
 // Credentials gets the credentials stored in @message.
@@ -103,13 +103,13 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 	arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GCredentials
-	var goret1 Credentials
+	var ret1 Credentials
 
 	cret = C.g_unix_credentials_message_get_credentials(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
 
-	return goret1
+	return ret1
 }
 
 type UnixCredentialsMessagePrivate struct {

@@ -156,12 +156,12 @@ func (t *TimeVal) ToISO8601() string {
 	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_time_val_to_iso8601(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

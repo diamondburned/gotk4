@@ -89,13 +89,13 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
 	var cret C.GDataOutputStream
-	var goret1 DataOutputStream
+	var ret1 DataOutputStream
 
 	cret = C.g_data_output_stream_new(baseStream)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DataOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DataOutputStream)
 
-	return goret1
+	return ret1
 }
 
 // ByteOrder gets the byte order for the stream.
@@ -105,13 +105,13 @@ func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
 	arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.GDataStreamByteOrder
-	var goret1 DataStreamByteOrder
+	var ret1 DataStreamByteOrder
 
 	cret = C.g_data_output_stream_get_byte_order(arg0)
 
-	goret1 = DataStreamByteOrder(cret)
+	ret1 = DataStreamByteOrder(cret)
 
-	return goret1
+	return ret1
 }
 
 // PutByte puts a byte into the output stream.

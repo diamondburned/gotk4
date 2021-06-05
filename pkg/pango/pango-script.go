@@ -38,13 +38,13 @@ func ScriptForUnichar(ch uint32) Script {
 	arg1 = C.gunichar(ch)
 
 	var cret C.PangoScript
-	var goret1 Script
+	var ret1 Script
 
 	cret = C.pango_script_for_unichar(ch)
 
-	goret1 = Script(cret)
+	ret1 = Script(cret)
 
-	return goret1
+	return ret1
 }
 
 // ScriptGetSampleLanguage finds a language tag that is reasonably
@@ -78,16 +78,16 @@ func ScriptGetSampleLanguage(script Script) *Language {
 	arg1 = (C.PangoScript)(script)
 
 	var cret *C.PangoLanguage
-	var goret1 *Language
+	var ret1 *Language
 
 	cret = C.pango_script_get_sample_language(script)
 
-	goret1 = WrapLanguage(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Language) {
+	ret1 = WrapLanguage(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Language) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ScriptIter: a `PangoScriptIter` is used to iterate through a string and
@@ -121,16 +121,16 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	arg2 = C.int(length)
 
 	var cret *C.PangoScriptIter
-	var goret1 *ScriptIter
+	var ret1 *ScriptIter
 
 	cret = C.pango_script_iter_new(text, length)
 
-	goret1 = WrapScriptIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ScriptIter) {
+	ret1 = WrapScriptIter(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ScriptIter) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -159,11 +159,11 @@ func (i *ScriptIter) Range() (start string, end string, script Script) {
 
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
-	var arg1 **C.char
+	var arg1 *C.char
 	var ret1 string
-	var arg2 **C.char
+	var arg2 *C.char
 	var ret2 string
-	var arg3 *C.PangoScript
+	var arg3 C.PangoScript
 	var ret3 *Script
 
 	C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
@@ -185,11 +185,11 @@ func (i *ScriptIter) Next() bool {
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_script_iter_next(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

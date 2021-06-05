@@ -111,13 +111,13 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GAppInfo
-	var goret1 AppInfo
+	var ret1 AppInfo
 
 	cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(arg0, uriScheme)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
 
-	return goret1
+	return ret1
 }
 
 // DesktopAppInfo is an implementation of Info based on desktop files.
@@ -260,13 +260,13 @@ func NewDesktopAppInfo(desktopID string) DesktopAppInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GDesktopAppInfo
-	var goret1 DesktopAppInfo
+	var ret1 DesktopAppInfo
 
 	cret = C.g_desktop_app_info_new(desktopID)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
 
-	return goret1
+	return ret1
 }
 
 // NewDesktopAppInfoFromFilename constructs a class DesktopAppInfo.
@@ -277,13 +277,13 @@ func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GDesktopAppInfo
-	var goret1 DesktopAppInfo
+	var ret1 DesktopAppInfo
 
 	cret = C.g_desktop_app_info_new_from_filename(filename)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
 
-	return goret1
+	return ret1
 }
 
 // NewDesktopAppInfoFromKeyfile constructs a class DesktopAppInfo.
@@ -293,13 +293,13 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 
 	var cret C.GDesktopAppInfo
-	var goret1 DesktopAppInfo
+	var ret1 DesktopAppInfo
 
 	cret = C.g_desktop_app_info_new_from_keyfile(keyFile)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
 
-	return goret1
+	return ret1
 }
 
 // ActionName gets the user-visible display name of the "additional
@@ -316,14 +316,14 @@ func (i desktopAppInfo) ActionName(actionName string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_action_name(arg0, actionName)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Boolean looks up a boolean value in the keyfile backing @info.
@@ -338,13 +338,13 @@ func (i desktopAppInfo) Boolean(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_desktop_app_info_get_boolean(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Categories gets the categories from the desktop file.
@@ -354,13 +354,13 @@ func (i desktopAppInfo) Categories() string {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_categories(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Filename: when @info was created from a known filename, return it. In
@@ -372,13 +372,13 @@ func (i desktopAppInfo) Filename() string {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_filename(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GenericName gets the generic name from the destkop file.
@@ -388,13 +388,13 @@ func (i desktopAppInfo) GenericName() string {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_generic_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsHidden: a desktop file is hidden if the Hidden key in it is set to
@@ -405,13 +405,13 @@ func (i desktopAppInfo) IsHidden() bool {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_desktop_app_info_get_is_hidden(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Keywords gets the keywords from the desktop file.
@@ -421,7 +421,7 @@ func (i desktopAppInfo) Keywords() []string {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_desktop_app_info_get_keywords(arg0)
 
@@ -434,14 +434,14 @@ func (i desktopAppInfo) Keywords() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // LocaleString looks up a localized string value in the keyfile backing
@@ -457,14 +457,14 @@ func (i desktopAppInfo) LocaleString(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_locale_string(arg0, key)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Nodisplay gets the value of the NoDisplay key, which helps determine if
@@ -476,13 +476,13 @@ func (i desktopAppInfo) Nodisplay() bool {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_desktop_app_info_get_nodisplay(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowIn checks if the application info should be shown in menus that list
@@ -505,13 +505,13 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_desktop_app_info_get_show_in(arg0, desktopEnv)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartupWmClass retrieves the StartupWMClass field from @info. This
@@ -523,13 +523,13 @@ func (i desktopAppInfo) StartupWmClass() string {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_startup_wm_class(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // String looks up a string value in the keyfile backing @info.
@@ -544,14 +544,14 @@ func (i desktopAppInfo) String(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_desktop_app_info_get_string(arg0, key)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StringList looks up a string list value in the keyfile backing @info.
@@ -567,18 +567,18 @@ func (i desktopAppInfo) StringList(key string) (length uint, utf8s []string) {
 
 	var cret **C.gchar
 	var arg2 *C.gsize
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_desktop_app_info_get_string_list(arg0, key, &arg2)
 
-	goret2 = make([]string, arg2)
+	ret2 = make([]string, arg2)
 	for i := 0; i < uintptr(arg2); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 		defer C.free(unsafe.Pointer(src))
 	}
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // HasKey returns whether @key exists in the "Desktop Entry" group of the
@@ -592,13 +592,13 @@ func (i desktopAppInfo) HasKey(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_desktop_app_info_has_key(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LaunchAction activates the named application action.
@@ -674,7 +674,7 @@ func (i desktopAppInfo) ListActions() []string {
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_desktop_app_info_list_actions(arg0)
 
@@ -687,12 +687,12 @@ func (i desktopAppInfo) ListActions() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }

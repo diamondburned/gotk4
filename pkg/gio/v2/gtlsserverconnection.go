@@ -46,18 +46,18 @@ func NewTLSServerConnection(baseIOStream IOStream, certificate TLSCertificate) (
 	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	var cret *C.GIOStream
-	var goret1 TLSServerConnection
+	var ret1 TLSServerConnection
 	var goerr error
 
 	cret = C.g_tls_server_connection_new(baseIOStream, certificate, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSServerConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSServerConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // TLSServerConnection is the server-side subclass of Connection, representing a

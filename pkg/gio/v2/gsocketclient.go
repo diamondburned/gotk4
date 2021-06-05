@@ -315,13 +315,13 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 // NewSocketClient constructs a class SocketClient.
 func NewSocketClient() SocketClient {
 	var cret C.GSocketClient
-	var goret1 SocketClient
+	var ret1 SocketClient
 
 	cret = C.g_socket_client_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketClient)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketClient)
 
-	return goret1
+	return ret1
 }
 
 // AddApplicationProxy: enable proxy protocols to be handled by the
@@ -384,18 +384,18 @@ func (c socketClient) Connect(connectable SocketConnectable, cancellable Cancell
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect(arg0, connectable, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectAsync: this is the asynchronous version of
@@ -422,18 +422,18 @@ func (c socketClient) ConnectFinish(result AsyncResult) (socketConnection Socket
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectToHost: this is a helper function for g_socket_client_connect().
@@ -479,18 +479,18 @@ func (c socketClient) ConnectToHost(hostAndPort string, defaultPort uint16, canc
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_to_host(arg0, hostAndPort, defaultPort, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectToHostAsync: this is the asynchronous version of
@@ -518,18 +518,18 @@ func (c socketClient) ConnectToHostFinish(result AsyncResult) (socketConnection 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_to_host_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectToService attempts to create a TCP connection to a service.
@@ -560,18 +560,18 @@ func (c socketClient) ConnectToService(domain string, service string, cancellabl
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_to_service(arg0, domain, service, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectToServiceAsync: this is the asynchronous version of
@@ -595,18 +595,18 @@ func (c socketClient) ConnectToServiceFinish(result AsyncResult) (socketConnecti
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_to_service_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectToURI: this is a helper function for g_socket_client_connect().
@@ -642,18 +642,18 @@ func (c socketClient) ConnectToURI(uri string, defaultPort uint16, cancellable C
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_to_uri(arg0, uri, defaultPort, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectToURIAsync: this is the asynchronous version of
@@ -681,18 +681,18 @@ func (c socketClient) ConnectToURIFinish(result AsyncResult) (socketConnection S
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GSocketConnection
-	var goret1 SocketConnection
+	var ret1 SocketConnection
 	var goerr error
 
 	cret = C.g_socket_client_connect_to_uri_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // EnableProxy gets the proxy enable state; see
@@ -703,13 +703,13 @@ func (c socketClient) EnableProxy() bool {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_socket_client_get_enable_proxy(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Family gets the socket family of the socket client.
@@ -721,13 +721,13 @@ func (c socketClient) Family() SocketFamily {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.GSocketFamily
-	var goret1 SocketFamily
+	var ret1 SocketFamily
 
 	cret = C.g_socket_client_get_family(arg0)
 
-	goret1 = SocketFamily(cret)
+	ret1 = SocketFamily(cret)
 
-	return goret1
+	return ret1
 }
 
 // LocalAddress gets the local address of the socket client.
@@ -739,13 +739,13 @@ func (c socketClient) LocalAddress() SocketAddress {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketAddress
-	var goret1 SocketAddress
+	var ret1 SocketAddress
 
 	cret = C.g_socket_client_get_local_address(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketAddress)
 
-	return goret1
+	return ret1
 }
 
 // Protocol gets the protocol name type of the socket client.
@@ -757,13 +757,13 @@ func (c socketClient) Protocol() SocketProtocol {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.GSocketProtocol
-	var goret1 SocketProtocol
+	var ret1 SocketProtocol
 
 	cret = C.g_socket_client_get_protocol(arg0)
 
-	goret1 = SocketProtocol(cret)
+	ret1 = SocketProtocol(cret)
 
-	return goret1
+	return ret1
 }
 
 // ProxyResolver gets the Resolver being used by @client. Normally, this
@@ -775,13 +775,13 @@ func (c socketClient) ProxyResolver() ProxyResolver {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GProxyResolver
-	var goret1 ProxyResolver
+	var ret1 ProxyResolver
 
 	cret = C.g_socket_client_get_proxy_resolver(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProxyResolver)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProxyResolver)
 
-	return goret1
+	return ret1
 }
 
 // SocketType gets the socket type of the socket client.
@@ -793,13 +793,13 @@ func (c socketClient) SocketType() SocketType {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.GSocketType
-	var goret1 SocketType
+	var ret1 SocketType
 
 	cret = C.g_socket_client_get_socket_type(arg0)
 
-	goret1 = SocketType(cret)
+	ret1 = SocketType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Timeout gets the I/O timeout time for sockets created by @client.
@@ -811,13 +811,13 @@ func (c socketClient) Timeout() uint {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_socket_client_get_timeout(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // TLS gets whether @client creates TLS connections. See
@@ -828,13 +828,13 @@ func (c socketClient) TLS() bool {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_socket_client_get_tls(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TLSValidationFlags gets the TLS validation flags used creating TLS
@@ -845,13 +845,13 @@ func (c socketClient) TLSValidationFlags() TLSCertificateFlags {
 	arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsCertificateFlags
-	var goret1 TLSCertificateFlags
+	var ret1 TLSCertificateFlags
 
 	cret = C.g_socket_client_get_tls_validation_flags(arg0)
 
-	goret1 = TLSCertificateFlags(cret)
+	ret1 = TLSCertificateFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetEnableProxy sets whether or not @client attempts to make connections

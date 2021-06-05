@@ -69,13 +69,13 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 	arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	var cret C.GtkATContext
-	var goret1 ATContext
+	var ret1 ATContext
 
 	cret = C.gtk_at_context_create(accessibleRole, accessible, display)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ATContext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ATContext)
 
-	return goret1
+	return ret1
 }
 
 // Accessible retrieves the Accessible using this context.
@@ -85,13 +85,13 @@ func (s atContext) Accessible() Accessible {
 	arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAccessible
-	var goret1 Accessible
+	var ret1 Accessible
 
 	cret = C.gtk_at_context_get_accessible(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Accessible)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Accessible)
 
-	return goret1
+	return ret1
 }
 
 // AccessibleRole retrieves the accessible role of this context.
@@ -101,11 +101,11 @@ func (s atContext) AccessibleRole() AccessibleRole {
 	arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkAccessibleRole
-	var goret1 AccessibleRole
+	var ret1 AccessibleRole
 
 	cret = C.gtk_at_context_get_accessible_role(arg0)
 
-	goret1 = AccessibleRole(cret)
+	ret1 = AccessibleRole(cret)
 
-	return goret1
+	return ret1
 }

@@ -163,13 +163,13 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 // NewFlowBoxChild constructs a class FlowBoxChild.
 func NewFlowBoxChild() FlowBoxChild {
 	var cret C.GtkFlowBoxChild
-	var goret1 FlowBoxChild
+	var ret1 FlowBoxChild
 
 	cret = C.gtk_flow_box_child_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
 
-	return goret1
+	return ret1
 }
 
 // Changed marks @child as changed, causing any state that depends on this
@@ -202,13 +202,13 @@ func (s flowBoxChild) Child() Widget {
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_flow_box_child_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Index gets the current index of the @child in its FlowBox container.
@@ -218,13 +218,13 @@ func (c flowBoxChild) Index() int {
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_flow_box_child_get_index(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsSelected returns whether the @child is currently selected in its
@@ -235,13 +235,13 @@ func (c flowBoxChild) IsSelected() bool {
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_flow_box_child_is_selected(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @self.

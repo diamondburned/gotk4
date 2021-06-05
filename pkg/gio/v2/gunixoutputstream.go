@@ -91,13 +91,13 @@ func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	}
 
 	var cret C.GUnixOutputStream
-	var goret1 UnixOutputStream
+	var ret1 UnixOutputStream
 
 	cret = C.g_unix_output_stream_new(fd, closeFd)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixOutputStream)
 
-	return goret1
+	return ret1
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed
@@ -108,13 +108,13 @@ func (s unixOutputStream) CloseFd() bool {
 	arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_unix_output_stream_get_close_fd(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Fd: return the UNIX file descriptor that the stream writes to.
@@ -124,13 +124,13 @@ func (s unixOutputStream) Fd() int {
 	arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_unix_output_stream_get_fd(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetCloseFd sets whether the file descriptor of @stream shall be closed

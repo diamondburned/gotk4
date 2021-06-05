@@ -187,13 +187,13 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 // NewDrawingArea constructs a class DrawingArea.
 func NewDrawingArea() DrawingArea {
 	var cret C.GtkDrawingArea
-	var goret1 DrawingArea
+	var ret1 DrawingArea
 
 	cret = C.gtk_drawing_area_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingArea)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingArea)
 
-	return goret1
+	return ret1
 }
 
 // ContentHeight retrieves the value previously set via
@@ -204,13 +204,13 @@ func (s drawingArea) ContentHeight() int {
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_drawing_area_get_content_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ContentWidth retrieves the value previously set via
@@ -221,13 +221,13 @@ func (s drawingArea) ContentWidth() int {
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_drawing_area_get_content_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetContentHeight sets the desired height of the contents of the drawing

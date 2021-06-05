@@ -206,13 +206,13 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 // NewAssistant constructs a class Assistant.
 func NewAssistant() Assistant {
 	var cret C.GtkAssistant
-	var goret1 Assistant
+	var ret1 Assistant
 
 	cret = C.gtk_assistant_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Assistant)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Assistant)
 
-	return goret1
+	return ret1
 }
 
 // AddActionWidget adds a widget to the action area of a Assistant.
@@ -235,13 +235,13 @@ func (a assistant) AppendPage(page Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_append_page(arg0, page)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Commit erases the visited page history so the back button is not shown on
@@ -266,13 +266,13 @@ func (a assistant) CurrentPage() int {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_get_current_page(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NPages returns the number of pages in the @assistant
@@ -282,13 +282,13 @@ func (a assistant) NPages() int {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_get_n_pages(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NthPage returns the child widget contained in page number @page_num.
@@ -300,13 +300,13 @@ func (a assistant) NthPage(pageNum int) Widget {
 	arg1 = C.gint(pageNum)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_assistant_get_nth_page(arg0, pageNum)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // PageComplete gets whether @page is complete.
@@ -318,13 +318,13 @@ func (a assistant) PageComplete(page Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_assistant_get_page_complete(arg0, page)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PageHasPadding gets whether page has padding.
@@ -336,13 +336,13 @@ func (a assistant) PageHasPadding(page Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_assistant_get_page_has_padding(arg0, page)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PageHeaderImage gets the header image for @page.
@@ -354,13 +354,13 @@ func (a assistant) PageHeaderImage(page Widget) gdkpixbuf.Pixbuf {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_assistant_get_page_header_image(arg0, page)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // PageSideImage gets the side image for @page.
@@ -372,13 +372,13 @@ func (a assistant) PageSideImage(page Widget) gdkpixbuf.Pixbuf {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret1 gdkpixbuf.Pixbuf
+	var ret1 gdkpixbuf.Pixbuf
 
 	cret = C.gtk_assistant_get_page_side_image(arg0, page)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return goret1
+	return ret1
 }
 
 // PageTitle gets the title for @page.
@@ -390,13 +390,13 @@ func (a assistant) PageTitle(page Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_assistant_get_page_title(arg0, page)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PageType gets the page type of @page.
@@ -408,13 +408,13 @@ func (a assistant) PageType(page Widget) AssistantPageType {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.GtkAssistantPageType
-	var goret1 AssistantPageType
+	var ret1 AssistantPageType
 
 	cret = C.gtk_assistant_get_page_type(arg0, page)
 
-	goret1 = AssistantPageType(cret)
+	ret1 = AssistantPageType(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
@@ -428,13 +428,13 @@ func (a assistant) InsertPage(page Widget, position int) int {
 	arg2 = C.gint(position)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_insert_page(arg0, page, position)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NextPage: navigate to the next page.
@@ -461,13 +461,13 @@ func (a assistant) PrependPage(page Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_prepend_page(arg0, page)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PreviousPage: navigate to the previous visited page.

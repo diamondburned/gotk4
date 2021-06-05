@@ -87,13 +87,13 @@ func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListMod
 	arg3 = C.guint(size)
 
 	var cret C.GtkSliceListModel
-	var goret1 SliceListModel
+	var ret1 SliceListModel
 
 	cret = C.gtk_slice_list_model_new(model, offset, size)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SliceListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SliceListModel)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that is currently being used or nil if none.
@@ -103,13 +103,13 @@ func (s sliceListModel) Model() gio.ListModel {
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_slice_list_model_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset()
@@ -119,13 +119,13 @@ func (s sliceListModel) Offset() uint {
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_slice_list_model_get_offset(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Size gets the size set via gtk_slice_list_model_set_size().
@@ -135,13 +135,13 @@ func (s sliceListModel) Size() uint {
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_slice_list_model_get_size(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetModel sets the model to show a slice of. The model's item type must

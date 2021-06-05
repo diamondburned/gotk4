@@ -141,13 +141,13 @@ func NewGridView(model SelectionModel, factory ListItemFactory) GridView {
 	arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	var cret C.GtkGridView
-	var goret1 GridView
+	var ret1 GridView
 
 	cret = C.gtk_grid_view_new(model, factory)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GridView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GridView)
 
-	return goret1
+	return ret1
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with
@@ -158,13 +158,13 @@ func (s gridView) EnableRubberband() bool {
 	arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_grid_view_get_enable_rubberband(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Factory gets the factory that's currently used to populate list items.
@@ -174,13 +174,13 @@ func (s gridView) Factory() ListItemFactory {
 	arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkListItemFactory
-	var goret1 ListItemFactory
+	var ret1 ListItemFactory
 
 	cret = C.gtk_grid_view_get_factory(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // MaxColumns gets the maximum number of columns that the grid will use.
@@ -190,13 +190,13 @@ func (s gridView) MaxColumns() uint {
 	arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_grid_view_get_max_columns(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinColumns gets the minimum number of columns that the grid will use.
@@ -206,13 +206,13 @@ func (s gridView) MinColumns() uint {
 	arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_grid_view_get_min_columns(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that's currently used to read the items displayed.
@@ -222,13 +222,13 @@ func (s gridView) Model() SelectionModel {
 	arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSelectionModel
-	var goret1 SelectionModel
+	var ret1 SelectionModel
 
 	cret = C.gtk_grid_view_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
 
-	return goret1
+	return ret1
 }
 
 // SingleClickActivate returns whether items will be activated on single
@@ -239,13 +239,13 @@ func (s gridView) SingleClickActivate() bool {
 	arg0 = (*C.GtkGridView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_grid_view_get_single_click_activate(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetEnableRubberband sets whether selections can be changed by dragging

@@ -73,13 +73,13 @@ func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gsk_rounded_rect_contains_point(arg0, point)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContainsRect checks if the given @rect is contained inside the rounded
@@ -93,13 +93,13 @@ func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gsk_rounded_rect_contains_rect(arg0, rect)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Init initializes the given RoundedRect with the given values.
@@ -121,13 +121,13 @@ func (s *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRig
 	arg5 = (*C.graphene_size_t)(unsafe.Pointer(bottomLeft.Native()))
 
 	var cret *C.GskRoundedRect
-	var goret1 *RoundedRect
+	var ret1 *RoundedRect
 
 	cret = C.gsk_rounded_rect_init(arg0, bounds, topLeft, topRight, bottomRight, bottomLeft)
 
-	goret1 = WrapRoundedRect(unsafe.Pointer(cret))
+	ret1 = WrapRoundedRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InitCopy initializes @self using the given @src rectangle.
@@ -142,13 +142,13 @@ func (s *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	arg1 = (*C.GskRoundedRect)(unsafe.Pointer(src.Native()))
 
 	var cret *C.GskRoundedRect
-	var goret1 *RoundedRect
+	var ret1 *RoundedRect
 
 	cret = C.gsk_rounded_rect_init_copy(arg0, src)
 
-	goret1 = WrapRoundedRect(unsafe.Pointer(cret))
+	ret1 = WrapRoundedRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InitFromRect initializes @self to the given @bounds and sets the radius of
@@ -163,13 +163,13 @@ func (s *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Round
 	arg2 = C.float(radius)
 
 	var cret *C.GskRoundedRect
-	var goret1 *RoundedRect
+	var ret1 *RoundedRect
 
 	cret = C.gsk_rounded_rect_init_from_rect(arg0, bounds, radius)
 
-	goret1 = WrapRoundedRect(unsafe.Pointer(cret))
+	ret1 = WrapRoundedRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IntersectsRect checks if part of the given @rect is contained inside the
@@ -183,13 +183,13 @@ func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gsk_rounded_rect_intersects_rect(arg0, rect)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsRectilinear checks if all corners of @self are right angles and the
@@ -203,13 +203,13 @@ func (s *RoundedRect) IsRectilinear() bool {
 	arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gsk_rounded_rect_is_rectilinear(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Normalize normalizes the passed rectangle.
@@ -222,13 +222,13 @@ func (s *RoundedRect) Normalize() *RoundedRect {
 	arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GskRoundedRect
-	var goret1 *RoundedRect
+	var ret1 *RoundedRect
 
 	cret = C.gsk_rounded_rect_normalize(arg0)
 
-	goret1 = WrapRoundedRect(unsafe.Pointer(cret))
+	ret1 = WrapRoundedRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Offset offsets the bound's origin by @dx and @dy.
@@ -244,13 +244,13 @@ func (s *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	arg2 = C.float(dy)
 
 	var cret *C.GskRoundedRect
-	var goret1 *RoundedRect
+	var ret1 *RoundedRect
 
 	cret = C.gsk_rounded_rect_offset(arg0, dx, dy)
 
-	goret1 = WrapRoundedRect(unsafe.Pointer(cret))
+	ret1 = WrapRoundedRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Shrink shrinks (or grows) the given rectangle by moving the 4 sides according
@@ -273,11 +273,11 @@ func (s *RoundedRect) Shrink(top float32, right float32, bottom float32, left fl
 	arg4 = C.float(left)
 
 	var cret *C.GskRoundedRect
-	var goret1 *RoundedRect
+	var ret1 *RoundedRect
 
 	cret = C.gsk_rounded_rect_shrink(arg0, top, right, bottom, left)
 
-	goret1 = WrapRoundedRect(unsafe.Pointer(cret))
+	ret1 = WrapRoundedRect(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

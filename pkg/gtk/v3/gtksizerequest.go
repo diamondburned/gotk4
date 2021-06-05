@@ -30,13 +30,13 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_distribute_natural_allocation(extraSpace, nRequestedSizes, sizes)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // RequestedSize represents a request of a screen object in a given orientation.

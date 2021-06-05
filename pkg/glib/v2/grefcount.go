@@ -18,13 +18,13 @@ func AtomicRefCountCompare(arc int, val int) bool {
 	arg2 = C.gint(val)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_atomic_ref_count_compare(arc, val)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // AtomicRefCountDec: atomically decreases the reference count.
@@ -34,13 +34,13 @@ func AtomicRefCountDec(arc int) bool {
 	arg1 = *C.gatomicrefcount(arc)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_atomic_ref_count_dec(arc)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // AtomicRefCountInc: atomically increases the reference count.
@@ -70,13 +70,13 @@ func RefCountCompare(rc int, val int) bool {
 	arg2 = C.gint(val)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_ref_count_compare(rc, val)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RefCountDec decreases the reference count.
@@ -86,13 +86,13 @@ func RefCountDec(rc int) bool {
 	arg1 = *C.grefcount(rc)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_ref_count_dec(rc)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RefCountInc increases the reference count.

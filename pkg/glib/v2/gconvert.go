@@ -65,14 +65,14 @@ func FilenameDisplayBasename(filename string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_filename_display_basename(filename)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FilenameDisplayName converts a filename into a valid UTF-8 string. The
@@ -97,14 +97,14 @@ func FilenameDisplayName(filename string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_filename_display_name(filename)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FilenameFromURI converts an escaped ASCII-encoded URI to a local filename in
@@ -116,24 +116,24 @@ func FilenameFromURI(uri string) (hostname string, filename string, err error) {
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret *C.gchar
-	var goret2 string
+	var ret2 string
 	var goerr error
 
 	cret = C.g_filename_from_uri(uri, &arg2, &errout)
 
 	ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	goret2 = C.GoString(cret)
+	ret2 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // FilenameFromUTF8 converts a string from UTF-8 to the encoding GLib uses for
@@ -155,26 +155,26 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	var arg3 *C.gsize
+	var arg3 C.gsize
 	var ret3 uint
-	var arg4 *C.gsize
+	var arg4 C.gsize
 	var ret4 uint
 	var cret *C.gchar
-	var goret3 string
+	var ret3 string
 	var goerr error
 
 	cret = C.g_filename_from_utf8(utf8String, len, &arg3, &arg4, &errout)
 
-	ret3 = *C.gsize(arg3)
-	ret4 = *C.gsize(arg4)
-	goret3 = C.GoString(cret)
+	ret3 = C.gsize(arg3)
+	ret4 = C.gsize(arg4)
+	ret3 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret3, ret4, goret3, goerr
+	return ret3, ret4, ret3, goerr
 }
 
 // FilenameToURI converts an absolute filename to an escaped ASCII-encoded URI,
@@ -190,19 +190,19 @@ func FilenameToURI(filename string, hostname string) (utf8 string, err error) {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 	var goerr error
 
 	cret = C.g_filename_to_uri(filename, hostname, &errout)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // FilenameToUTF8 converts a string which is in the encoding used by GLib for
@@ -225,26 +225,26 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	var arg3 *C.gsize
+	var arg3 C.gsize
 	var ret3 uint
-	var arg4 *C.gsize
+	var arg4 C.gsize
 	var ret4 uint
 	var cret *C.gchar
-	var goret3 string
+	var ret3 string
 	var goerr error
 
 	cret = C.g_filename_to_utf8(opsysstring, len, &arg3, &arg4, &errout)
 
-	ret3 = *C.gsize(arg3)
-	ret4 = *C.gsize(arg4)
-	goret3 = C.GoString(cret)
+	ret3 = C.gsize(arg3)
+	ret4 = C.gsize(arg4)
+	ret3 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret3, ret4, goret3, goerr
+	return ret3, ret4, ret3, goerr
 }
 
 // GetFilenameCharsets determines the preferred character sets used for
@@ -274,7 +274,7 @@ func GetFilenameCharsets() (filenameCharsets []string, ok bool) {
 	var arg1 ***C.gchar
 	var ret1 []string
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_get_filename_charsets(&arg1)
 
@@ -293,9 +293,9 @@ func GetFilenameCharsets() (filenameCharsets []string, ok bool) {
 			ret1[i] = C.GoString(src)
 		}
 	}
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Iconv: same as the standard UNIX routine iconv(), but may be implemented via
@@ -326,13 +326,13 @@ func Iconv(converter IConv, inbuf string, inbytesLeft uint, outbuf string, outby
 	arg5 = *C.gsize(outbytesLeft)
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_iconv(converter, inbuf, inbytesLeft, outbuf, outbytesLeft)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // IconvOpen: same as the standard UNIX routine iconv_open(), but may be
@@ -350,13 +350,13 @@ func IconvOpen(toCodeset string, fromCodeset string) IConv {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GIConv
-	var goret1 IConv
+	var ret1 IConv
 
 	cret = C.g_iconv_open(toCodeset, fromCodeset)
 
-	goret1 = WrapIConv(unsafe.Pointer(cret))
+	ret1 = WrapIConv(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // LocaleFromUTF8 converts a string from UTF-8 to the encoding used for strings
@@ -378,13 +378,13 @@ func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten ui
 
 	var cret *C.gchar
 	var arg3 *C.gsize
-	var goret3 []byte
+	var ret3 []byte
 	var goerr error
 
 	cret = C.g_locale_from_utf8(utf8String, len, &arg3, &arg4, &errout)
 
-	ptr.SetSlice(unsafe.Pointer(&goret3), unsafe.Pointer(cret), int(arg3))
-	runtime.SetFinalizer(&goret3, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&ret3), unsafe.Pointer(cret), int(arg3))
+	runtime.SetFinalizer(&ret3, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 	if errout != nil {
@@ -392,7 +392,7 @@ func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten ui
 		C.g_error_free(errout)
 	}
 
-	return ret3, ret4, goret3, goerr
+	return ret3, ret4, ret3, goerr
 }
 
 // URIListExtractUris splits an URI list conforming to the text/uri-list mime
@@ -405,7 +405,7 @@ func URIListExtractUris(uriList string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_uri_list_extract_uris(uriList)
 
@@ -418,15 +418,15 @@ func URIListExtractUris(uriList string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // IConv: the GIConv struct wraps an iconv() conversion descriptor. It contains
@@ -483,13 +483,13 @@ func (c *IConv) _(inbuf string, inbytesLeft uint, outbuf string, outbytesLeft ui
 	arg4 = *C.gsize(outbytesLeft)
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_iconv(arg0, inbuf, inbytesLeft, outbuf, outbytesLeft)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Close: same as the standard UNIX routine iconv_close(), but may be
@@ -505,11 +505,11 @@ func (c *IConv) Close() int {
 	arg0 = (C.GIConv)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_iconv_close(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }

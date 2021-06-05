@@ -364,13 +364,13 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_action_group_get_action_enabled(arg0, actionName)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ActionParameterType queries the type of the parameter that must be given
@@ -395,13 +395,13 @@ func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariantType
-	var goret1 *glib.VariantType
+	var ret1 *glib.VariantType
 
 	cret = C.g_action_group_get_action_parameter_type(arg0, actionName)
 
-	goret1 = glib.WrapVariantType(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ActionState queries the current state of the named action within
@@ -422,16 +422,16 @@ func (a actionGroup) ActionState(actionName string) *glib.Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_action_group_get_action_state(arg0, actionName)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ActionStateHint requests a hint about the valid range of values for the
@@ -461,16 +461,16 @@ func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_action_group_get_action_state_hint(arg0, actionName)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ActionStateType queries the type of the state of the named action within
@@ -497,13 +497,13 @@ func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariantType
-	var goret1 *glib.VariantType
+	var ret1 *glib.VariantType
 
 	cret = C.g_action_group_get_action_state_type(arg0, actionName)
 
-	goret1 = glib.WrapVariantType(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariantType(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HasAction checks if the named action exists within @action_group.
@@ -516,13 +516,13 @@ func (a actionGroup) HasAction(actionName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_action_group_has_action(arg0, actionName)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ListActions lists the actions contained within @action_group.
@@ -535,7 +535,7 @@ func (a actionGroup) ListActions() []string {
 	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_action_group_list_actions(arg0)
 
@@ -548,15 +548,15 @@ func (a actionGroup) ListActions() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // QueryAction queries all aspects of the named action within an
@@ -594,18 +594,18 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 *C.gboolean
+	var arg2 C.gboolean
 	var ret2 bool
-	var arg3 **C.GVariantType
+	var arg3 *C.GVariantType
 	var ret3 **glib.VariantType
-	var arg4 **C.GVariantType
+	var arg4 *C.GVariantType
 	var ret4 **glib.VariantType
-	var arg5 **C.GVariant
+	var arg5 *C.GVariant
 	var ret5 **glib.Variant
-	var arg6 **C.GVariant
+	var arg6 *C.GVariant
 	var ret6 **glib.Variant
 	var cret C.gboolean
-	var goret6 bool
+	var ret6 bool
 
 	cret = C.g_action_group_query_action(arg0, actionName, &arg2, &arg3, &arg4, &arg5, &arg6)
 
@@ -626,7 +626,7 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	runtime.SetFinalizer(ret6, func(v **glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goret6 = C.bool(cret) != C.false
+	ret6 = C.bool(cret) != C.false
 
-	return ret2, ret3, ret4, ret5, ret6, goret6
+	return ret2, ret3, ret4, ret5, ret6, ret6
 }

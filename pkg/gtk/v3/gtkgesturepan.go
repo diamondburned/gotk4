@@ -75,13 +75,13 @@ func NewGesturePan(widget Widget, orientation Orientation) GesturePan {
 	arg2 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkGesturePan
-	var goret1 GesturePan
+	var ret1 GesturePan
 
 	cret = C.gtk_gesture_pan_new(widget, orientation)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
 
-	return goret1
+	return ret1
 }
 
 // Orientation returns the orientation of the pan gestures that this
@@ -92,13 +92,13 @@ func (g gesturePan) Orientation() Orientation {
 	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
 	var cret C.GtkOrientation
-	var goret1 Orientation
+	var ret1 Orientation
 
 	cret = C.gtk_gesture_pan_get_orientation(arg0)
 
-	goret1 = Orientation(cret)
+	ret1 = Orientation(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.

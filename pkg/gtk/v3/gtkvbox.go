@@ -89,11 +89,11 @@ func NewVBox(homogeneous bool, spacing int) VBox {
 	arg2 = C.gint(spacing)
 
 	var cret C.GtkVBox
-	var goret1 VBox
+	var ret1 VBox
 
 	cret = C.gtk_vbox_new(homogeneous, spacing)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VBox)
 
-	return goret1
+	return ret1
 }

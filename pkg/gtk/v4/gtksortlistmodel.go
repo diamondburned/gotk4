@@ -115,13 +115,13 @@ func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel {
 	arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	var cret C.GtkSortListModel
-	var goret1 SortListModel
+	var ret1 SortListModel
 
 	cret = C.gtk_sort_list_model_new(model, sorter)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SortListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SortListModel)
 
-	return goret1
+	return ret1
 }
 
 // Incremental returns whether incremental sorting was enabled via
@@ -132,13 +132,13 @@ func (s sortListModel) Incremental() bool {
 	arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_sort_list_model_get_incremental(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model currently sorted or nil if none.
@@ -148,13 +148,13 @@ func (s sortListModel) Model() gio.ListModel {
 	arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_sort_list_model_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Pending estimates progress of an ongoing sorting operation
@@ -177,13 +177,13 @@ func (s sortListModel) Pending() uint {
 	arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_sort_list_model_get_pending(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Sorter gets the sorter that is used to sort @self.
@@ -193,13 +193,13 @@ func (s sortListModel) Sorter() Sorter {
 	arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSorter
-	var goret1 Sorter
+	var ret1 Sorter
 
 	cret = C.gtk_sort_list_model_get_sorter(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
 
-	return goret1
+	return ret1
 }
 
 // SetIncremental sets the sort model to do an incremental sort.

@@ -72,13 +72,13 @@ func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
 	arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	var cret C.GtkTreeListRowSorter
-	var goret1 TreeListRowSorter
+	var ret1 TreeListRowSorter
 
 	cret = C.gtk_tree_list_row_sorter_new(sorter)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRowSorter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRowSorter)
 
-	return goret1
+	return ret1
 }
 
 // Sorter returns the sorter used by @self.
@@ -88,13 +88,13 @@ func (s treeListRowSorter) Sorter() Sorter {
 	arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSorter
-	var goret1 Sorter
+	var ret1 Sorter
 
 	cret = C.gtk_tree_list_row_sorter_get_sorter(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
 
-	return goret1
+	return ret1
 }
 
 // SetSorter sets the sorter to use for items with the same parent.

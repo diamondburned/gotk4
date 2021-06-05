@@ -87,16 +87,16 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_cairo_region_create_from_surface(surface)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // CairoSetSourcePixbuf sets the given pixbuf as the source pattern for @cr.

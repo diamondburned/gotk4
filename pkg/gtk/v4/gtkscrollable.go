@@ -113,17 +113,17 @@ func (s scrollable) Border() (border Border, ok bool) {
 
 	arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.GtkBorder
+	var arg1 C.GtkBorder
 	var ret1 *Border
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_scrollable_get_border(arg0, &arg1)
 
 	ret1 = WrapBorder(unsafe.Pointer(arg1))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // HAdjustment retrieves the Adjustment used for horizontal scrolling.
@@ -133,13 +133,13 @@ func (s scrollable) HAdjustment() Adjustment {
 	arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrollable_get_hadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // HScrollPolicy gets the horizontal ScrollablePolicy.
@@ -149,13 +149,13 @@ func (s scrollable) HScrollPolicy() ScrollablePolicy {
 	arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkScrollablePolicy
-	var goret1 ScrollablePolicy
+	var ret1 ScrollablePolicy
 
 	cret = C.gtk_scrollable_get_hscroll_policy(arg0)
 
-	goret1 = ScrollablePolicy(cret)
+	ret1 = ScrollablePolicy(cret)
 
-	return goret1
+	return ret1
 }
 
 // VAdjustment retrieves the Adjustment used for vertical scrolling.
@@ -165,13 +165,13 @@ func (s scrollable) VAdjustment() Adjustment {
 	arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrollable_get_vadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // VScrollPolicy gets the vertical ScrollablePolicy.
@@ -181,13 +181,13 @@ func (s scrollable) VScrollPolicy() ScrollablePolicy {
 	arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkScrollablePolicy
-	var goret1 ScrollablePolicy
+	var ret1 ScrollablePolicy
 
 	cret = C.gtk_scrollable_get_vscroll_policy(arg0)
 
-	goret1 = ScrollablePolicy(cret)
+	ret1 = ScrollablePolicy(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetHAdjustment sets the horizontal adjustment of the Scrollable.

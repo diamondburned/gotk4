@@ -69,13 +69,13 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 // NewIMContextSimple constructs a class IMContextSimple.
 func NewIMContextSimple() IMContextSimple {
 	var cret C.GtkIMContextSimple
-	var goret1 IMContextSimple
+	var ret1 IMContextSimple
 
 	cret = C.gtk_im_context_simple_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMContextSimple)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMContextSimple)
 
-	return goret1
+	return ret1
 }
 
 // AddComposeFile adds an additional table from the X11 compose file.

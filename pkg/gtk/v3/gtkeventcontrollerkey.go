@@ -68,13 +68,13 @@ func NewEventControllerKey(widget Widget) EventControllerKey {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.GtkEventControllerKey
-	var goret1 EventControllerKey
+	var ret1 EventControllerKey
 
 	cret = C.gtk_event_controller_key_new(widget)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerKey)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerKey)
 
-	return goret1
+	return ret1
 }
 
 func (c eventControllerKey) Forward(widget Widget) bool {
@@ -85,13 +85,13 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_event_controller_key_forward(arg0, widget)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 func (c eventControllerKey) Group() uint {
@@ -100,13 +100,13 @@ func (c eventControllerKey) Group() uint {
 	arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_event_controller_key_get_group(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ImContext gets the IM context of a key controller.
@@ -116,13 +116,13 @@ func (c eventControllerKey) ImContext() IMContext {
 	arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkIMContext
-	var goret1 IMContext
+	var ret1 IMContext
 
 	cret = C.gtk_event_controller_key_get_im_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IMContext)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IMContext)
 
-	return goret1
+	return ret1
 }
 
 func (c eventControllerKey) SetImContext(imContext IMContext) {

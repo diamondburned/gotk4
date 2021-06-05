@@ -65,13 +65,13 @@ func ASCIIDigitValue(c byte) int {
 	arg1 = C.gchar(c)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_ascii_digit_value(c)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ASCIIDtostr converts a #gdouble to a string, using the '.' as decimal point.
@@ -92,14 +92,14 @@ func ASCIIDtostr(buffer string, bufLen int, d float64) string {
 	arg3 = C.gdouble(d)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ascii_dtostr(buffer, bufLen, d)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ASCIIFormatd converts a #gdouble to a string, using the '.' as decimal point.
@@ -124,14 +124,14 @@ func ASCIIFormatd(buffer string, bufLen int, format string, d float64) string {
 	arg4 = C.gdouble(d)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ascii_formatd(buffer, bufLen, format, d)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ASCIIStrcasecmp: compare two strings, ignoring the case of ASCII characters.
@@ -158,13 +158,13 @@ func ASCIIStrcasecmp(s1 string, s2 string) int {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_ascii_strcasecmp(s1, s2)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ASCIIStrdown converts all upper case ASCII letters to lower case ASCII
@@ -178,14 +178,14 @@ func ASCIIStrdown(str string, len int) string {
 	arg2 = C.gssize(len)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ascii_strdown(str, len)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ASCIIStringToSigned: a convenience function for converting a string to a
@@ -221,13 +221,13 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64) (outNum in
 	arg3 = C.gint64(min)
 	arg4 = C.gint64(max)
 
-	var arg5 *C.gint64
+	var arg5 C.gint64
 	var ret5 int64
 	var goerr error
 
 	C.g_ascii_string_to_signed(str, base, min, max, &arg5, &errout)
 
-	ret5 = *C.gint64(arg5)
+	ret5 = C.gint64(arg5)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -270,13 +270,13 @@ func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (outNu
 	arg3 = C.guint64(min)
 	arg4 = C.guint64(max)
 
-	var arg5 *C.guint64
+	var arg5 C.guint64
 	var ret5 uint64
 	var goerr error
 
 	C.g_ascii_string_to_unsigned(str, base, min, max, &arg5, &errout)
 
-	ret5 = *C.guint64(arg5)
+	ret5 = C.guint64(arg5)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -307,13 +307,13 @@ func ASCIIStrncasecmp(s1 string, s2 string, n uint) int {
 	arg3 = C.gsize(n)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_ascii_strncasecmp(s1, s2, n)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ASCIIStrtod converts a string to a #gdouble value.
@@ -343,17 +343,17 @@ func ASCIIStrtod(nptr string) (endptr string, gdouble float64) {
 	arg1 = (*C.gchar)(C.CString(nptr))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret C.gdouble
-	var goret2 float64
+	var ret2 float64
 
 	cret = C.g_ascii_strtod(nptr, &arg2)
 
 	ret2 = C.GoString(arg2)
-	goret2 = C.gdouble(cret)
+	ret2 = C.gdouble(cret)
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // ASCIIStrtoll converts a string to a #gint64 value. This function behaves like
@@ -377,17 +377,17 @@ func ASCIIStrtoll(nptr string, base uint) (endptr string, gint64 int64) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg3 = C.guint(base)
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret C.gint64
-	var goret2 int64
+	var ret2 int64
 
 	cret = C.g_ascii_strtoll(nptr, &arg2, base)
 
 	ret2 = C.GoString(arg2)
-	goret2 = C.gint64(cret)
+	ret2 = C.gint64(cret)
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // ASCIIStrtoull converts a string to a #guint64 value. This function behaves
@@ -416,17 +416,17 @@ func ASCIIStrtoull(nptr string, base uint) (endptr string, guint64 uint64) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg3 = C.guint(base)
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret C.guint64
-	var goret2 uint64
+	var ret2 uint64
 
 	cret = C.g_ascii_strtoull(nptr, &arg2, base)
 
 	ret2 = C.GoString(arg2)
-	goret2 = C.guint64(cret)
+	ret2 = C.guint64(cret)
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // ASCIIStrup converts all lower case ASCII letters to upper case ASCII letters.
@@ -439,14 +439,14 @@ func ASCIIStrup(str string, len int) string {
 	arg2 = C.gssize(len)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ascii_strup(str, len)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ASCIIToLower: convert a character to ASCII lower case.
@@ -463,13 +463,13 @@ func ASCIIToLower(c byte) byte {
 	arg1 = C.gchar(c)
 
 	var cret C.gchar
-	var goret1 byte
+	var ret1 byte
 
 	cret = C.g_ascii_tolower(c)
 
-	goret1 = C.gchar(cret)
+	ret1 = C.gchar(cret)
 
-	return goret1
+	return ret1
 }
 
 // ASCIIToUpper: convert a character to ASCII upper case.
@@ -486,13 +486,13 @@ func ASCIIToUpper(c byte) byte {
 	arg1 = C.gchar(c)
 
 	var cret C.gchar
-	var goret1 byte
+	var ret1 byte
 
 	cret = C.g_ascii_toupper(c)
 
-	goret1 = C.gchar(cret)
+	ret1 = C.gchar(cret)
 
-	return goret1
+	return ret1
 }
 
 // ASCIIXDigitValue determines the numeric value of a character as a hexadecimal
@@ -504,13 +504,13 @@ func ASCIIXDigitValue(c byte) int {
 	arg1 = C.gchar(c)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_ascii_xdigit_value(c)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Memdup allocates @byte_size bytes of memory, and copies @byte_size bytes into
@@ -523,13 +523,13 @@ func Memdup(mem interface{}, byteSize uint) interface{} {
 	arg2 = C.guint(byteSize)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_memdup(mem, byteSize)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Stpcpy copies a nul-terminated string into the dest buffer, include the
@@ -546,14 +546,14 @@ func Stpcpy(dest string, src string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_stpcpy(dest, src)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StrHasPrefix looks whether the string @str begins with @prefix.
@@ -567,13 +567,13 @@ func StrHasPrefix(str string, prefix string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_str_has_prefix(str, prefix)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrHasSuffix looks whether the string @str ends with @suffix.
@@ -587,13 +587,13 @@ func StrHasSuffix(str string, suffix string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_str_has_suffix(str, suffix)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrIsASCII determines if a string is pure ASCII. A string is pure ASCII if it
@@ -605,13 +605,13 @@ func StrIsASCII(str string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_str_is_ascii(str)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrMatchString checks if a search conducted for @search_term should match
@@ -648,13 +648,13 @@ func StrMatchString(searchTerm string, potentialHit string, acceptAlternates boo
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_str_match_string(searchTerm, potentialHit, acceptAlternates)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrToASCII: transliterate @str to plain ASCII.
@@ -683,14 +683,14 @@ func StrToASCII(str string, fromLocale string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_str_to_ascii(str, fromLocale)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StrTokenizeAndFold tokenises @string and performs folding on each token.
@@ -719,7 +719,7 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 	var arg3 ***C.gchar
 	var ret3 []string
 	var cret **C.gchar
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_str_tokenize_and_fold(string, translitLocale, &arg3)
 
@@ -748,15 +748,15 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 			}
 		}
 
-		goret2 = make([]string, length)
+		ret2 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret2[i] = C.GoString(src)
+			ret2[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return ret3, goret2
+	return ret3, ret2
 }
 
 // Strcanon: for each character in @string, if the character is not in
@@ -779,14 +779,14 @@ func Strcanon(string string, validChars string, substitutor byte) string {
 	arg3 = C.gchar(substitutor)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strcanon(string, validChars, substitutor)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strcasecmp: a case-insensitive string comparison, corresponding to the
@@ -801,13 +801,13 @@ func Strcasecmp(s1 string, s2 string) int {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_strcasecmp(s1, s2)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strchomp removes trailing whitespace from a string.
@@ -825,14 +825,14 @@ func Strchomp(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strchomp(string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strchug removes leading whitespace from a string, by moving the rest of the
@@ -851,14 +851,14 @@ func Strchug(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strchug(string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strcompress replaces all escaped characters with their one byte equivalent.
@@ -871,14 +871,14 @@ func Strcompress(source string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strcompress(source)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strdelimit converts any delimiter characters in @string to @new_delimiter.
@@ -901,14 +901,14 @@ func Strdelimit(string string, delimiters string, newDelimiter byte) string {
 	arg3 = C.gchar(newDelimiter)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strdelimit(string, delimiters, newDelimiter)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strdown converts a string to lower case.
@@ -919,14 +919,14 @@ func Strdown(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strdown(string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strdup duplicates a string. If @str is nil it returns nil. The returned
@@ -938,14 +938,14 @@ func Strdup(str string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strdup(str)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strdupv copies nil-terminated array of strings. The copy is a deep copy; the
@@ -959,7 +959,7 @@ func Strdupv(strArray string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_strdupv(strArray)
 
@@ -972,14 +972,14 @@ func Strdupv(strArray string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Strerror returns a string corresponding to the given error code, e.g. "no
@@ -1005,13 +1005,13 @@ func Strerror(errnum int) string {
 	arg1 = C.gint(errnum)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strerror(errnum)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strescape escapes the special characters '\b', '\f', '\n', '\r', '\t', '\v',
@@ -1032,14 +1032,14 @@ func Strescape(source string, exceptions string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strescape(source, exceptions)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strfreev frees a nil-terminated array of strings, as well as each string it
@@ -1072,14 +1072,14 @@ func Strjoinv(separator string, strArray string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strjoinv(separator, strArray)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strlcat: portability wrapper that calls strlcat() on systems which have it,
@@ -1107,13 +1107,13 @@ func Strlcat(dest string, src string, destSize uint) uint {
 	arg3 = C.gsize(destSize)
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_strlcat(dest, src, destSize)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strlcpy: portability wrapper that calls strlcpy() on systems which have it,
@@ -1141,13 +1141,13 @@ func Strlcpy(dest string, src string, destSize uint) uint {
 	arg3 = C.gsize(destSize)
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_strlcpy(dest, src, destSize)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strncasecmp: a case-insensitive string comparison, corresponding to the
@@ -1166,13 +1166,13 @@ func Strncasecmp(s1 string, s2 string, n uint) int {
 	arg3 = C.guint(n)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_strncasecmp(s1, s2, n)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strndup duplicates the first @n bytes of a string, returning a
@@ -1191,14 +1191,14 @@ func Strndup(str string, n uint) string {
 	arg2 = C.gsize(n)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strndup(str, n)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strnfill creates a new string @length bytes long filled with @fill_char. The
@@ -1211,14 +1211,14 @@ func Strnfill(length uint, fillChar byte) string {
 	arg2 = C.gchar(fillChar)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strnfill(length, fillChar)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strreverse reverses all of the bytes in a string. For example, `g_strreverse
@@ -1233,14 +1233,14 @@ func Strreverse(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strreverse(string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strrstr searches the string @haystack for the last occurrence of the string
@@ -1255,14 +1255,14 @@ func Strrstr(haystack string, needle string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strrstr(haystack, needle)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StrrstrLen searches the string @haystack for the last occurrence of the
@@ -1279,14 +1279,14 @@ func StrrstrLen(haystack string, haystackLen int, needle string) string {
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strrstr_len(haystack, haystackLen, needle)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strsignal returns a string describing the given signal, e.g. "Segmentation
@@ -1299,13 +1299,13 @@ func Strsignal(signum int) string {
 	arg1 = C.gint(signum)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strsignal(signum)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strsplit splits a string into a maximum of @max_tokens pieces, using the
@@ -1334,7 +1334,7 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 	arg3 = C.gint(maxTokens)
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_strsplit(string, delimiter, maxTokens)
 
@@ -1347,14 +1347,14 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // StrsplitSet splits @string into a number of tokens not containing any of the
@@ -1389,7 +1389,7 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 	arg3 = C.gint(maxTokens)
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_strsplit_set(string, delimiters, maxTokens)
 
@@ -1402,14 +1402,14 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // StrstrLen searches the string @haystack for the first occurrence of the
@@ -1426,14 +1426,14 @@ func StrstrLen(haystack string, haystackLen int, needle string) string {
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strstr_len(haystack, haystackLen, needle)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Strtod converts a string to a #gdouble value. It calls the standard strtod()
@@ -1453,17 +1453,17 @@ func Strtod(nptr string) (endptr string, gdouble float64) {
 	arg1 = (*C.gchar)(C.CString(nptr))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret C.gdouble
-	var goret2 float64
+	var ret2 float64
 
 	cret = C.g_strtod(nptr, &arg2)
 
 	ret2 = C.GoString(arg2)
-	goret2 = C.gdouble(cret)
+	ret2 = C.gdouble(cret)
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Strup converts a string to upper case.
@@ -1474,14 +1474,14 @@ func Strup(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strup(string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StrvContains checks if @strv contains @str. @strv must not be nil.
@@ -1495,13 +1495,13 @@ func StrvContains(strv string, str string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_strv_contains(strv, str)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrvEqual checks if @strv1 and @strv2 contain exactly the same elements in
@@ -1520,13 +1520,13 @@ func StrvEqual(strv1 string, strv2 string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_strv_equal(strv1, strv2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StrvLength returns the length of the given nil-terminated string array
@@ -1538,11 +1538,11 @@ func StrvLength(strArray string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_strv_length(strArray)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }

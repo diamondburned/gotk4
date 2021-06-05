@@ -58,13 +58,13 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 // NewContainerCellAccessible constructs a class ContainerCellAccessible.
 func NewContainerCellAccessible() ContainerCellAccessible {
 	var cret C.GtkContainerCellAccessible
-	var goret1 ContainerCellAccessible
+	var ret1 ContainerCellAccessible
 
 	cret = C.gtk_container_cell_accessible_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContainerCellAccessible)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContainerCellAccessible)
 
-	return goret1
+	return ret1
 }
 
 func (c containerCellAccessible) AddChild(child CellAccessible) {
@@ -84,13 +84,13 @@ func (c containerCellAccessible) Children() *glib.List {
 	arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_container_cell_accessible_get_children(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 func (c containerCellAccessible) RemoveChild(child CellAccessible) {

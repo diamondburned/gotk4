@@ -173,7 +173,7 @@ func (l listStore) Append() TreeIter {
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	var arg1 *C.GtkTreeIter
+	var arg1 C.GtkTreeIter
 	var ret1 *TreeIter
 
 	C.gtk_list_store_append(arg0, &arg1)
@@ -204,7 +204,7 @@ func (l listStore) Insert(position int) TreeIter {
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	arg2 = C.int(position)
 
-	var arg1 *C.GtkTreeIter
+	var arg1 C.GtkTreeIter
 	var ret1 *TreeIter
 
 	C.gtk_list_store_insert(arg0, &arg1, position)
@@ -226,7 +226,7 @@ func (l listStore) InsertAfter(sibling *TreeIter) TreeIter {
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	var arg1 *C.GtkTreeIter
+	var arg1 C.GtkTreeIter
 	var ret1 *TreeIter
 
 	C.gtk_list_store_insert_after(arg0, &arg1, sibling)
@@ -248,7 +248,7 @@ func (l listStore) InsertBefore(sibling *TreeIter) TreeIter {
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	var arg1 *C.GtkTreeIter
+	var arg1 C.GtkTreeIter
 	var ret1 *TreeIter
 
 	C.gtk_list_store_insert_before(arg0, &arg1, sibling)
@@ -266,7 +266,7 @@ func (l listStore) InsertWithValuesv(position int, columns []int, values []*exte
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	var arg1 *C.GtkTreeIter
+	var arg1 C.GtkTreeIter
 	var ret1 *TreeIter
 
 	C.gtk_list_store_insert_with_valuesv(arg0, &arg1, position, columns, values, nValues)
@@ -288,13 +288,13 @@ func (l listStore) IterIsValid(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_store_iter_is_valid(arg0, iter)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MoveAfter moves @iter in @store to the position after @position. Note
@@ -336,7 +336,7 @@ func (l listStore) Prepend() TreeIter {
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	var arg1 *C.GtkTreeIter
+	var arg1 C.GtkTreeIter
 	var ret1 *TreeIter
 
 	C.gtk_list_store_prepend(arg0, &arg1)
@@ -357,13 +357,13 @@ func (l listStore) Remove(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_store_remove(arg0, iter)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Reorder reorders @store to follow the order indicated by @new_order. Note

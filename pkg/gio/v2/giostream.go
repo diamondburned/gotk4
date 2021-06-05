@@ -278,13 +278,13 @@ func (s ioStream) InputStream() InputStream {
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GInputStream
-	var goret1 InputStream
+	var ret1 InputStream
 
 	cret = C.g_io_stream_get_input_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
 
-	return goret1
+	return ret1
 }
 
 // OutputStream gets the output stream for this object. This is used for
@@ -295,13 +295,13 @@ func (s ioStream) OutputStream() OutputStream {
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GOutputStream
-	var goret1 OutputStream
+	var ret1 OutputStream
 
 	cret = C.g_io_stream_get_output_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
 
-	return goret1
+	return ret1
 }
 
 // HasPending checks if a stream has pending actions.
@@ -311,13 +311,13 @@ func (s ioStream) HasPending() bool {
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_io_stream_has_pending(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsClosed checks if a stream is closed.
@@ -327,13 +327,13 @@ func (s ioStream) IsClosed() bool {
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_io_stream_is_closed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is

@@ -71,13 +71,13 @@ func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) Altern
 	arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(second.Native()))
 
 	var cret C.GtkAlternativeTrigger
-	var goret1 AlternativeTrigger
+	var ret1 AlternativeTrigger
 
 	cret = C.gtk_alternative_trigger_new(first, second)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AlternativeTrigger)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AlternativeTrigger)
 
-	return goret1
+	return ret1
 }
 
 // First gets the first of the two alternative triggers that may trigger
@@ -88,13 +88,13 @@ func (s alternativeTrigger) First() ShortcutTrigger {
 	arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkShortcutTrigger
-	var goret1 ShortcutTrigger
+	var ret1 ShortcutTrigger
 
 	cret = C.gtk_alternative_trigger_get_first(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
 
-	return goret1
+	return ret1
 }
 
 // Second gets the second of the two alternative triggers that may trigger
@@ -105,13 +105,13 @@ func (s alternativeTrigger) Second() ShortcutTrigger {
 	arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkShortcutTrigger
-	var goret1 ShortcutTrigger
+	var ret1 ShortcutTrigger
 
 	cret = C.gtk_alternative_trigger_get_second(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
 
-	return goret1
+	return ret1
 }
 
 // KeyvalTrigger: a ShortcutTrigger that triggers when a specific keyval and
@@ -156,13 +156,13 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
 	arg2 = (C.GdkModifierType)(modifiers)
 
 	var cret C.GtkKeyvalTrigger
-	var goret1 KeyvalTrigger
+	var ret1 KeyvalTrigger
 
 	cret = C.gtk_keyval_trigger_new(keyval, modifiers)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(KeyvalTrigger)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(KeyvalTrigger)
 
-	return goret1
+	return ret1
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
@@ -172,13 +172,13 @@ func (s keyvalTrigger) Keyval() uint {
 	arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_keyval_trigger_get_keyval(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Modifiers gets the modifiers that must be present to succeed triggering
@@ -189,13 +189,13 @@ func (s keyvalTrigger) Modifiers() gdk.ModifierType {
 	arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkModifierType
-	var goret1 gdk.ModifierType
+	var ret1 gdk.ModifierType
 
 	cret = C.gtk_keyval_trigger_get_modifiers(arg0)
 
-	goret1 = gdk.ModifierType(cret)
+	ret1 = gdk.ModifierType(cret)
 
-	return goret1
+	return ret1
 }
 
 // MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
@@ -235,13 +235,13 @@ func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
 	arg1 = C.guint(keyval)
 
 	var cret C.GtkMnemonicTrigger
-	var goret1 MnemonicTrigger
+	var ret1 MnemonicTrigger
 
 	cret = C.gtk_mnemonic_trigger_new(keyval)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MnemonicTrigger)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MnemonicTrigger)
 
-	return goret1
+	return ret1
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
@@ -251,13 +251,13 @@ func (s mnemonicTrigger) Keyval() uint {
 	arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_mnemonic_trigger_get_keyval(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NeverTrigger: a ShortcutTrigger that never triggers.
@@ -383,13 +383,13 @@ func NewShortcutTriggerParseString(string string) ShortcutTrigger {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkShortcutTrigger
-	var goret1 ShortcutTrigger
+	var ret1 ShortcutTrigger
 
 	cret = C.gtk_shortcut_trigger_parse_string(string)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
 
-	return goret1
+	return ret1
 }
 
 // Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
@@ -403,13 +403,13 @@ func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 	arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_shortcut_trigger_compare(arg0, trigger2)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Equal checks if @trigger1 and @trigger2 trigger under the same
@@ -425,13 +425,13 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_shortcut_trigger_equal(arg0, trigger2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Hash generates a hash value for a ShortcutTrigger.
@@ -449,13 +449,13 @@ func (t shortcutTrigger) Hash() uint {
 	arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_shortcut_trigger_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Print prints the given trigger into a string for the developer. This is
@@ -493,13 +493,13 @@ func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bo
 	arg2 = (*C.GString)(unsafe.Pointer(string.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_shortcut_trigger_print_label(arg0, display, string)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ToLabel gets textual representation for the given trigger. This function
@@ -520,14 +520,14 @@ func (s shortcutTrigger) ToLabel(display gdk.Display) string {
 	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_shortcut_trigger_to_label(arg0, display)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // String prints the given trigger into a human-readable string. This is a
@@ -538,14 +538,14 @@ func (s shortcutTrigger) String() string {
 	arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_shortcut_trigger_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Trigger checks if the given @event triggers @self.
@@ -561,11 +561,11 @@ func (s shortcutTrigger) Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyM
 	}
 
 	var cret C.GdkKeyMatch
-	var goret1 gdk.KeyMatch
+	var ret1 gdk.KeyMatch
 
 	cret = C.gtk_shortcut_trigger_trigger(arg0, event, enableMnemonics)
 
-	goret1 = gdk.KeyMatch(cret)
+	ret1 = gdk.KeyMatch(cret)
 
-	return goret1
+	return ret1
 }

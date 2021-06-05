@@ -125,13 +125,13 @@ func (s seekable) CanSeek() bool {
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_seekable_can_seek(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CanTruncate tests if the length of the stream can be adjusted with
@@ -142,13 +142,13 @@ func (s seekable) CanTruncate() bool {
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_seekable_can_truncate(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Seek seeks in the stream by the given @offset, modified by @type.
@@ -195,13 +195,13 @@ func (s seekable) Tell() int64 {
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.goffset
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_seekable_tell(arg0)
 
-	goret1 = C.goffset(cret)
+	ret1 = C.goffset(cret)
 
-	return goret1
+	return ret1
 }
 
 // Truncate sets the length of the stream to @offset. If the stream was

@@ -40,7 +40,7 @@ func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) Typ
 	arg1 := C.GType(gEnumType)
 	arg3 = (*C.GEnumValue)(unsafe.Pointer(constValues.Native()))
 
-	var arg2 *C.GTypeInfo
+	var arg2 C.GTypeInfo
 	var ret2 *TypeInfo
 
 	C.g_enum_complete_type_info(gEnumType, &arg2, constValues)
@@ -68,13 +68,13 @@ func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Ty
 	arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_enum_register_static(name, constStaticValues)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // EnumToString pretty-prints @value in the form of the enum’s name.
@@ -89,14 +89,14 @@ func EnumToString(gEnumType externglib.Type, value int) string {
 	arg2 = C.gint(value)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_enum_to_string(gEnumType, value)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FlagsCompleteTypeInfo: this function is meant to be called from the
@@ -109,7 +109,7 @@ func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) 
 	arg1 := C.GType(gFlagsType)
 	arg3 = (*C.GFlagsValue)(unsafe.Pointer(constValues.Native()))
 
-	var arg2 *C.GTypeInfo
+	var arg2 C.GTypeInfo
 	var ret2 *TypeInfo
 
 	C.g_flags_complete_type_info(gFlagsType, &arg2, constValues)
@@ -136,13 +136,13 @@ func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.
 	arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_flags_register_static(name, constStaticValues)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // FlagsToString pretty-prints @value in the form of the flag names separated by
@@ -159,14 +159,14 @@ func FlagsToString(flagsType externglib.Type, value uint) string {
 	arg2 = C.guint(value)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_flags_to_string(flagsType, value)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // EnumValue: a structure which contains a single enum value, its name, and its

@@ -93,13 +93,13 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
 	var cret C.GBufferedOutputStream
-	var goret1 BufferedOutputStream
+	var ret1 BufferedOutputStream
 
 	cret = C.g_buffered_output_stream_new(baseStream)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
 
-	return goret1
+	return ret1
 }
 
 // NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
@@ -111,13 +111,13 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 	arg2 = C.gsize(size)
 
 	var cret C.GBufferedOutputStream
-	var goret1 BufferedOutputStream
+	var ret1 BufferedOutputStream
 
 	cret = C.g_buffered_output_stream_new_sized(baseStream, size)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
 
-	return goret1
+	return ret1
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.
@@ -127,13 +127,13 @@ func (s bufferedOutputStream) AutoGrow() bool {
 	arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_buffered_output_stream_get_auto_grow(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BufferSize gets the size of the buffer in the @stream.
@@ -143,13 +143,13 @@ func (s bufferedOutputStream) BufferSize() uint {
 	arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_buffered_output_stream_get_buffer_size(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetAutoGrow sets whether or not the @stream's buffer should automatically

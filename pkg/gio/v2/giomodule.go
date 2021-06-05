@@ -46,13 +46,13 @@ func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, e
 	arg4 = C.gint(priority)
 
 	var cret *C.GIOExtension
-	var goret1 *IOExtension
+	var ret1 *IOExtension
 
 	cret = C.g_io_extension_point_implement(extensionPointName, typ, extensionName, priority)
 
-	goret1 = WrapIOExtension(unsafe.Pointer(cret))
+	ret1 = WrapIOExtension(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IOExtensionPointLookup looks up an existing extension point.
@@ -63,13 +63,13 @@ func IOExtensionPointLookup(name string) *IOExtensionPoint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GIOExtensionPoint
-	var goret1 *IOExtensionPoint
+	var ret1 *IOExtensionPoint
 
 	cret = C.g_io_extension_point_lookup(name)
 
-	goret1 = WrapIOExtensionPoint(unsafe.Pointer(cret))
+	ret1 = WrapIOExtensionPoint(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IOExtensionPointRegister registers an extension point.
@@ -80,13 +80,13 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GIOExtensionPoint
-	var goret1 *IOExtensionPoint
+	var ret1 *IOExtensionPoint
 
 	cret = C.g_io_extension_point_register(name)
 
-	goret1 = WrapIOExtensionPoint(unsafe.Pointer(cret))
+	ret1 = WrapIOExtensionPoint(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IOModulesLoadAllInDirectory loads all the modules in the specified directory.
@@ -101,16 +101,16 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_io_modules_load_all_in_directory(dirname)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // IOModulesLoadAllInDirectoryWithScope loads all the modules in the specified
@@ -128,16 +128,16 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_io_modules_load_all_in_directory_with_scope(dirname, scope)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,

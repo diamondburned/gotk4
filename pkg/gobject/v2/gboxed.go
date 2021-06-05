@@ -23,13 +23,13 @@ func BoxedCopy(boxedType externglib.Type, srcBoxed interface{}) interface{} {
 	arg2 = C.gpointer(srcBoxed)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_boxed_copy(boxedType, srcBoxed)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // BoxedFree: free the boxed structure @boxed which is of type @boxed_type.

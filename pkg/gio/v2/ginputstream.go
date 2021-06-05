@@ -316,13 +316,13 @@ func (s inputStream) HasPending() bool {
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_input_stream_has_pending(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsClosed checks if an input stream is closed.
@@ -332,13 +332,13 @@ func (s inputStream) IsClosed() bool {
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_input_stream_is_closed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ReadAllFinish finishes an asynchronous stream read operation started with
@@ -358,13 +358,13 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, err erro
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.gsize
+	var arg2 C.gsize
 	var ret2 uint
 	var goerr error
 
 	C.g_input_stream_read_all_finish(arg0, result, &arg2, &errout)
 
-	ret2 = *C.gsize(arg2)
+	ret2 = C.gsize(arg2)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -405,13 +405,13 @@ func (s inputStream) ReadBytes(count uint, cancellable Cancellable) (bytes *glib
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 	var goerr error
 
 	cret = C.g_input_stream_read_bytes(arg0, count, cancellable, &errout)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Bytes) {
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -419,7 +419,7 @@ func (s inputStream) ReadBytes(count uint, cancellable Cancellable) (bytes *glib
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReadBytesAsync: request an asynchronous read of @count bytes from the
@@ -461,13 +461,13 @@ func (s inputStream) ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes, err
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 	var goerr error
 
 	cret = C.g_input_stream_read_bytes_finish(arg0, result, &errout)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Bytes) {
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -475,7 +475,7 @@ func (s inputStream) ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes, err
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReadFinish finishes an asynchronous stream read operation.
@@ -488,18 +488,18 @@ func (s inputStream) ReadFinish(result AsyncResult) (gssize int, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_input_stream_read_finish(arg0, result, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
@@ -547,18 +547,18 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (gssize int, err 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_input_stream_skip(arg0, count, cancellable, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SkipAsync: request an asynchronous skip of @count bytes from the stream.
@@ -602,18 +602,18 @@ func (s inputStream) SkipFinish(result AsyncResult) (gssize int, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_input_stream_skip_finish(arg0, result, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 type InputStreamPrivate struct {

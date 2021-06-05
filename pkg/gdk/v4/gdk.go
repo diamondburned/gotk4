@@ -931,13 +931,13 @@ func (c appLaunchContext) Display() Display {
 	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_app_launch_context_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // SetDesktop sets the workspace on which applications will be launched when
@@ -1060,16 +1060,16 @@ func (s cairoContext) CairoCreate() *cairo.Context {
 	arg0 = (*C.GdkCairoContext)(unsafe.Pointer(s.Native()))
 
 	var cret *C.cairo_t
-	var goret1 *cairo.Context
+	var ret1 *cairo.Context
 
 	cret = C.gdk_cairo_context_cairo_create(arg0)
 
-	goret1 = cairo.WrapContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Context) {
+	ret1 = cairo.WrapContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Clipboard: the Clipboard object represents a clipboard of data shared between
@@ -1210,13 +1210,13 @@ func (c clipboard) Content() ContentProvider {
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkContentProvider
-	var goret1 ContentProvider
+	var ret1 ContentProvider
 
 	cret = C.gdk_clipboard_get_content(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // Display gets the Display that the clipboard was created for.
@@ -1226,13 +1226,13 @@ func (c clipboard) Display() Display {
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_clipboard_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // Formats gets the formats that the clipboard can provide its current
@@ -1243,13 +1243,13 @@ func (c clipboard) Formats() *ContentFormats {
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_clipboard_get_formats(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IsLocal returns if the clipboard is local. A clipboard is considered
@@ -1263,13 +1263,13 @@ func (c clipboard) IsLocal() bool {
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_clipboard_is_local(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ReadAsync: asynchronously requests an input stream to read the
@@ -1297,22 +1297,22 @@ func (c clipboard) ReadFinish(result gio.AsyncResult) (outMIMEType string, input
 	arg0 = (*C.GdkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 **C.char
+	var arg2 *C.char
 	var ret2 string
 	var cret *C.GInputStream
-	var goret2 gio.InputStream
+	var ret2 gio.InputStream
 	var goerr error
 
 	cret = C.gdk_clipboard_read_finish(arg0, result, &arg2, &errout)
 
 	ret2 = C.GoString(arg2)
-	goret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // ReadTextAsync: asynchronously request the @clipboard contents converted
@@ -1341,19 +1341,19 @@ func (c clipboard) ReadTextFinish(result gio.AsyncResult) (utf8 string, err erro
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 	var goerr error
 
 	cret = C.gdk_clipboard_read_text_finish(arg0, result, &errout)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReadTextureAsync: asynchronously request the @clipboard contents
@@ -1383,18 +1383,18 @@ func (c clipboard) ReadTextureFinish(result gio.AsyncResult) (texture Texture, e
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GdkTexture
-	var goret1 Texture
+	var ret1 Texture
 	var goerr error
 
 	cret = C.gdk_clipboard_read_texture_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReadValueAsync: asynchronously request the @clipboard contents converted
@@ -1424,18 +1424,18 @@ func (c clipboard) ReadValueFinish(result gio.AsyncResult) (value *externglib.Va
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GValue
-	var goret1 *externglib.Value
+	var ret1 *externglib.Value
 	var goerr error
 
 	cret = C.gdk_clipboard_read_value_finish(arg0, result, &errout)
 
-	goret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
+	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetContent sets a new content provider on @clipboard. The clipboard will
@@ -1457,13 +1457,13 @@ func (c clipboard) SetContent(provider ContentProvider) bool {
 	arg1 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_clipboard_set_content(arg0, provider)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetText puts the given @text into the clipboard.
@@ -1601,13 +1601,13 @@ func (d contentDeserializer) Cancellable() gio.Cancellable {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GCancellable
-	var goret1 gio.Cancellable
+	var ret1 gio.Cancellable
 
 	cret = C.gdk_content_deserializer_get_cancellable(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Cancellable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Cancellable)
 
-	return goret1
+	return ret1
 }
 
 // GType gets the GType to create an instance of.
@@ -1617,13 +1617,13 @@ func (d contentDeserializer) GType() externglib.Type {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.gdk_content_deserializer_get_gtype(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // InputStream gets the input stream that was passed to
@@ -1634,13 +1634,13 @@ func (d contentDeserializer) InputStream() gio.InputStream {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GInputStream
-	var goret1 gio.InputStream
+	var ret1 gio.InputStream
 
 	cret = C.gdk_content_deserializer_get_input_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.InputStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.InputStream)
 
-	return goret1
+	return ret1
 }
 
 // MIMEType gets the mime type to deserialize from.
@@ -1650,13 +1650,13 @@ func (d contentDeserializer) MIMEType() string {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_content_deserializer_get_mime_type(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Priority gets the io priority that was passed to
@@ -1667,13 +1667,13 @@ func (d contentDeserializer) Priority() int {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_content_deserializer_get_priority(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TaskData gets the data that was associated with @deserializer via
@@ -1684,13 +1684,13 @@ func (d contentDeserializer) TaskData() interface{} {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_content_deserializer_get_task_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // UserData gets the user data that was passed when the deserializer was
@@ -1701,13 +1701,13 @@ func (d contentDeserializer) UserData() interface{} {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_content_deserializer_get_user_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Value gets the #GValue to store the deserialized object in.
@@ -1717,13 +1717,13 @@ func (d contentDeserializer) Value() *externglib.Value {
 	arg0 = (*C.GdkContentDeserializer)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GValue
-	var goret1 *externglib.Value
+	var ret1 *externglib.Value
 
 	cret = C.gdk_content_deserializer_get_value(arg0)
 
-	goret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
+	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ReturnError: indicate that the deserialization has ended with an error.
@@ -1814,13 +1814,13 @@ func (s contentSerializer) Cancellable() gio.Cancellable {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GCancellable
-	var goret1 gio.Cancellable
+	var ret1 gio.Cancellable
 
 	cret = C.gdk_content_serializer_get_cancellable(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Cancellable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Cancellable)
 
-	return goret1
+	return ret1
 }
 
 // GType gets the GType to of the object to serialize.
@@ -1830,13 +1830,13 @@ func (s contentSerializer) GType() externglib.Type {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.gdk_content_serializer_get_gtype(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // MIMEType gets the mime type to serialize to.
@@ -1846,13 +1846,13 @@ func (s contentSerializer) MIMEType() string {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_content_serializer_get_mime_type(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // OutputStream gets the output stream that was passed to
@@ -1863,13 +1863,13 @@ func (s contentSerializer) OutputStream() gio.OutputStream {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GOutputStream
-	var goret1 gio.OutputStream
+	var ret1 gio.OutputStream
 
 	cret = C.gdk_content_serializer_get_output_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.OutputStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.OutputStream)
 
-	return goret1
+	return ret1
 }
 
 // Priority gets the io priority that was passed to
@@ -1880,13 +1880,13 @@ func (s contentSerializer) Priority() int {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_content_serializer_get_priority(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TaskData gets the data that was associated with @serializer via
@@ -1897,13 +1897,13 @@ func (s contentSerializer) TaskData() interface{} {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_content_serializer_get_task_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // UserData gets the user data that was passed when the serializer was
@@ -1914,13 +1914,13 @@ func (s contentSerializer) UserData() interface{} {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_content_serializer_get_user_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Value gets the #GValue to read the object to serialize from.
@@ -1930,13 +1930,13 @@ func (s contentSerializer) Value() *externglib.Value {
 	arg0 = (*C.GdkContentSerializer)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GValue
-	var goret1 *externglib.Value
+	var ret1 *externglib.Value
 
 	cret = C.gdk_content_serializer_get_value(arg0)
 
-	goret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
+	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ReturnError: indicate that the serialization has ended with an error.
@@ -2029,13 +2029,13 @@ func NewCursorFromName(name string, fallback Cursor) Cursor {
 	arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
 
 	var cret C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_cursor_new_from_name(name, fallback)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // NewCursorFromTexture constructs a class Cursor.
@@ -2051,13 +2051,13 @@ func NewCursorFromTexture(texture Texture, hotspotX int, hotspotY int, fallback 
 	arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
 
 	var cret C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_cursor_new_from_texture(texture, hotspotX, hotspotY, fallback)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // Fallback returns the fallback for this @cursor. The fallback will be used
@@ -2073,13 +2073,13 @@ func (c cursor) Fallback() Cursor {
 	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_cursor_get_fallback(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // HotspotX returns the horizontal offset of the hotspot. The hotspot
@@ -2094,13 +2094,13 @@ func (c cursor) HotspotX() int {
 	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_cursor_get_hotspot_x(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // HotspotY returns the vertical offset of the hotspot. The hotspot
@@ -2115,13 +2115,13 @@ func (c cursor) HotspotY() int {
 	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_cursor_get_hotspot_y(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Name returns the name of the cursor. If the cursor is not a named cursor,
@@ -2132,13 +2132,13 @@ func (c cursor) Name() string {
 	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_cursor_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Texture returns the texture for the cursor. If the cursor is a named
@@ -2149,13 +2149,13 @@ func (c cursor) Texture() Texture {
 	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkTexture
-	var goret1 Texture
+	var ret1 Texture
 
 	cret = C.gdk_cursor_get_texture(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Texture)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Texture)
 
-	return goret1
+	return ret1
 }
 
 // Device: the Device object represents a single input device, such as a
@@ -2270,13 +2270,13 @@ func (d device) CapsLockState() bool {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_device_get_caps_lock_state(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DeviceTool retrieves the DeviceTool associated to @device.
@@ -2286,13 +2286,13 @@ func (d device) DeviceTool() DeviceTool {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkDeviceTool
-	var goret1 DeviceTool
+	var ret1 DeviceTool
 
 	cret = C.gdk_device_get_device_tool(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DeviceTool)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DeviceTool)
 
-	return goret1
+	return ret1
 }
 
 // Direction returns the direction of effective layout of the keyboard, if
@@ -2306,13 +2306,13 @@ func (d device) Direction() pango.Direction {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.PangoDirection
-	var goret1 pango.Direction
+	var ret1 pango.Direction
 
 	cret = C.gdk_device_get_direction(arg0)
 
-	goret1 = pango.Direction(cret)
+	ret1 = pango.Direction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Display returns the Display to which @device pertains.
@@ -2322,13 +2322,13 @@ func (d device) Display() Display {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_device_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // HasCursor determines whether the pointer follows device motion. This is
@@ -2339,13 +2339,13 @@ func (d device) HasCursor() bool {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_device_get_has_cursor(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ModifierState retrieves the current modifier state of the keyboard, if
@@ -2356,13 +2356,13 @@ func (d device) ModifierState() ModifierType {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.GdkModifierType
-	var goret1 ModifierType
+	var ret1 ModifierType
 
 	cret = C.gdk_device_get_modifier_state(arg0)
 
-	goret1 = ModifierType(cret)
+	ret1 = ModifierType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Name determines the name of the device, suitable for showing in a user
@@ -2373,13 +2373,13 @@ func (d device) Name() string {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_device_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NumLockState retrieves whether the Num Lock modifier of the keyboard is
@@ -2390,13 +2390,13 @@ func (d device) NumLockState() bool {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_device_get_num_lock_state(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // NumTouches retrieves the number of touch points associated to @device.
@@ -2406,13 +2406,13 @@ func (d device) NumTouches() uint {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gdk_device_get_num_touches(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ProductID returns the product ID of this device, or nil if this
@@ -2425,13 +2425,13 @@ func (d device) ProductID() string {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_device_get_product_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ScrollLockState retrieves whether the Scroll Lock modifier of the
@@ -2442,13 +2442,13 @@ func (d device) ScrollLockState() bool {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_device_get_scroll_lock_state(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Seat returns the Seat the device belongs to.
@@ -2458,13 +2458,13 @@ func (d device) Seat() Seat {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkSeat
-	var goret1 Seat
+	var ret1 Seat
 
 	cret = C.gdk_device_get_seat(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Seat)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Seat)
 
-	return goret1
+	return ret1
 }
 
 // Source determines the type of the device.
@@ -2474,13 +2474,13 @@ func (d device) Source() InputSource {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.GdkInputSource
-	var goret1 InputSource
+	var ret1 InputSource
 
 	cret = C.gdk_device_get_source(arg0)
 
-	goret1 = InputSource(cret)
+	ret1 = InputSource(cret)
 
-	return goret1
+	return ret1
 }
 
 // SurfaceAtPosition obtains the surface underneath @device, returning the
@@ -2492,20 +2492,20 @@ func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 	var cret *C.GdkSurface
-	var goret3 Surface
+	var ret3 Surface
 
 	cret = C.gdk_device_get_surface_at_position(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
-	goret3 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
+	ret3 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // VendorID returns the vendor ID of this device, or nil if this information
@@ -2538,13 +2538,13 @@ func (d device) VendorID() string {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_device_get_vendor_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasBidiLayouts determines if keyboard layouts for both right-to-left and
@@ -2556,13 +2556,13 @@ func (d device) HasBidiLayouts() bool {
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_device_has_bidi_layouts(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DeviceTool: a physical tool associated to a Device.
@@ -2616,13 +2616,13 @@ func (t deviceTool) Axes() AxisFlags {
 	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
 	var cret C.GdkAxisFlags
-	var goret1 AxisFlags
+	var ret1 AxisFlags
 
 	cret = C.gdk_device_tool_get_axes(arg0)
 
-	goret1 = AxisFlags(cret)
+	ret1 = AxisFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known.
@@ -2640,13 +2640,13 @@ func (t deviceTool) HardwareID() uint64 {
 	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint64
-	var goret1 uint64
+	var ret1 uint64
 
 	cret = C.gdk_device_tool_get_hardware_id(arg0)
 
-	goret1 = C.guint64(cret)
+	ret1 = C.guint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // Serial gets the serial of this tool, this value can be used to identify a
@@ -2657,13 +2657,13 @@ func (t deviceTool) Serial() uint64 {
 	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint64
-	var goret1 uint64
+	var ret1 uint64
 
 	cret = C.gdk_device_tool_get_serial(arg0)
 
-	goret1 = C.guint64(cret)
+	ret1 = C.guint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // ToolType gets the DeviceToolType of the tool.
@@ -2673,13 +2673,13 @@ func (t deviceTool) ToolType() DeviceToolType {
 	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
 	var cret C.GdkDeviceToolType
-	var goret1 DeviceToolType
+	var ret1 DeviceToolType
 
 	cret = C.gdk_device_tool_get_tool_type(arg0)
 
-	goret1 = DeviceToolType(cret)
+	ret1 = DeviceToolType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Display: gdkDisplay objects are the GDK representation of a workstation.
@@ -2896,13 +2896,13 @@ func (d display) DeviceIsGrabbed(device Device) bool {
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_display_device_is_grabbed(arg0, device)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Flush flushes any requests queued for the windowing system; this happens
@@ -2931,13 +2931,13 @@ func (d display) AppLaunchContext() AppLaunchContext {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkAppLaunchContext
-	var goret1 AppLaunchContext
+	var ret1 AppLaunchContext
 
 	cret = C.gdk_display_get_app_launch_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppLaunchContext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppLaunchContext)
 
-	return goret1
+	return ret1
 }
 
 // Clipboard gets the clipboard used for copy/paste operations.
@@ -2947,13 +2947,13 @@ func (d display) Clipboard() Clipboard {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkClipboard
-	var goret1 Clipboard
+	var ret1 Clipboard
 
 	cret = C.gdk_display_get_clipboard(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Clipboard)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Clipboard)
 
-	return goret1
+	return ret1
 }
 
 // DefaultSeat returns the default Seat for this display.
@@ -2966,13 +2966,13 @@ func (d display) DefaultSeat() Seat {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkSeat
-	var goret1 Seat
+	var ret1 Seat
 
 	cret = C.gdk_display_get_default_seat(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Seat)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Seat)
 
-	return goret1
+	return ret1
 }
 
 // MonitorAtSurface gets the monitor in which the largest area of @surface
@@ -2985,13 +2985,13 @@ func (d display) MonitorAtSurface(surface Surface) Monitor {
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	var cret *C.GdkMonitor
-	var goret1 Monitor
+	var ret1 Monitor
 
 	cret = C.gdk_display_get_monitor_at_surface(arg0, surface)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
 
-	return goret1
+	return ret1
 }
 
 // Monitors gets the list of monitors associated with this display.
@@ -3007,13 +3007,13 @@ func (s display) Monitors() gio.ListModel {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gdk_display_get_monitors(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Name gets the name of the display.
@@ -3023,13 +3023,13 @@ func (d display) Name() string {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_display_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrimaryClipboard gets the clipboard used for the primary selection. On
@@ -3041,13 +3041,13 @@ func (d display) PrimaryClipboard() Clipboard {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkClipboard
-	var goret1 Clipboard
+	var ret1 Clipboard
 
 	cret = C.gdk_display_get_primary_clipboard(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Clipboard)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Clipboard)
 
-	return goret1
+	return ret1
 }
 
 // Setting retrieves a desktop-wide setting such as double-click time for
@@ -3063,13 +3063,13 @@ func (d display) Setting(name string, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_display_get_setting(arg0, name, value)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartupNotificationID gets the startup notification ID for a Wayland
@@ -3080,13 +3080,13 @@ func (d display) StartupNotificationID() string {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_display_get_startup_notification_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsClosed finds out if the display has been closed.
@@ -3096,13 +3096,13 @@ func (d display) IsClosed() bool {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_display_is_closed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsComposited returns whether surfaces can reasonably be expected to have
@@ -3119,13 +3119,13 @@ func (d display) IsComposited() bool {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_display_is_composited(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsRGBA returns whether surfaces on this @display are created with an
@@ -3144,13 +3144,13 @@ func (d display) IsRGBA() bool {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_display_is_rgba(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ListSeats returns the list of seats known to @display.
@@ -3160,16 +3160,16 @@ func (d display) ListSeats() *glib.List {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_display_list_seats(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // MapKeycode returns the keyvals bound to @keycode. The Nth KeymapKey in
@@ -3188,13 +3188,13 @@ func (d display) MapKeycode(keycode uint) (keys []*KeymapKey, keyvals []uint, nE
 	arg1 = C.guint(keycode)
 
 	var cret C.gboolean
-	var goret4 bool
+	var ret4 bool
 
 	cret = C.gdk_display_map_keycode(arg0, keycode, &arg2, &arg3, &arg4)
 
-	goret4 = C.bool(cret) != C.false
+	ret4 = C.bool(cret) != C.false
 
-	return ret2, ret3, ret4, goret4
+	return ret2, ret3, ret4, ret4
 }
 
 // MapKeyval obtains a list of keycode/group/level combinations that will
@@ -3219,13 +3219,13 @@ func (d display) MapKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok bool) 
 	arg1 = C.guint(keyval)
 
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gdk_display_map_keyval(arg0, keyval, &arg2, &arg3)
 
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret2, ret3, goret3
+	return ret2, ret3, ret3
 }
 
 // NotifyStartupComplete indicates to the GUI environment that the
@@ -3271,13 +3271,13 @@ func (d display) SupportsInputShapes() bool {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_display_supports_input_shapes(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Sync flushes any requests queued for the windowing system and waits until
@@ -3325,26 +3325,26 @@ func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyv
 	arg2 = (C.GdkModifierType)(state)
 	arg3 = C.int(group)
 
-	var arg4 *C.guint
+	var arg4 C.guint
 	var ret4 uint
-	var arg5 *C.int
+	var arg5 C.int
 	var ret5 int
-	var arg6 *C.int
+	var arg6 C.int
 	var ret6 int
-	var arg7 *C.GdkModifierType
+	var arg7 C.GdkModifierType
 	var ret7 *ModifierType
 	var cret C.gboolean
-	var goret5 bool
+	var ret5 bool
 
 	cret = C.gdk_display_translate_key(arg0, keycode, state, group, &arg4, &arg5, &arg6, &arg7)
 
-	ret4 = *C.guint(arg4)
-	ret5 = *C.int(arg5)
-	ret6 = *C.int(arg6)
+	ret4 = C.guint(arg4)
+	ret5 = C.int(arg5)
+	ret6 = C.int(arg6)
 	ret7 = *ModifierType(arg7)
-	goret5 = C.bool(cret) != C.false
+	ret5 = C.bool(cret) != C.false
 
-	return ret4, ret5, ret6, ret7, goret5
+	return ret4, ret5, ret6, ret7, ret5
 }
 
 // DisplayManager: the purpose of the DisplayManager singleton object is to
@@ -3423,13 +3423,13 @@ func (m displayManager) DefaultDisplay() Display {
 	arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_display_manager_get_default_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // ListDisplays: list all currently open displays.
@@ -3439,16 +3439,16 @@ func (m displayManager) ListDisplays() *glib.SList {
 	arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gdk_display_manager_list_displays(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.SList) {
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // OpenDisplay opens a display.
@@ -3461,13 +3461,13 @@ func (m displayManager) OpenDisplay(name string) Display {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_display_manager_open_display(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultDisplay sets @display as the default display.
@@ -3573,13 +3573,13 @@ func (d drag) Actions() DragAction {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret C.GdkDragAction
-	var goret1 DragAction
+	var ret1 DragAction
 
 	cret = C.gdk_drag_get_actions(arg0)
 
-	goret1 = DragAction(cret)
+	ret1 = DragAction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Content returns the ContentProvider associated to the GdkDrag object.
@@ -3589,13 +3589,13 @@ func (d drag) Content() ContentProvider {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkContentProvider
-	var goret1 ContentProvider
+	var ret1 ContentProvider
 
 	cret = C.gdk_drag_get_content(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // Device returns the Device associated to the GdkDrag object.
@@ -3605,13 +3605,13 @@ func (d drag) Device() Device {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkDevice
-	var goret1 Device
+	var ret1 Device
 
 	cret = C.gdk_drag_get_device(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
 
-	return goret1
+	return ret1
 }
 
 // Display gets the Display that the drag object was created for.
@@ -3621,13 +3621,13 @@ func (d drag) Display() Display {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_drag_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // DragSurface returns the surface on which the drag icon should be rendered
@@ -3641,13 +3641,13 @@ func (d drag) DragSurface() Surface {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_drag_get_drag_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // Formats retrieves the formats supported by this GdkDrag object.
@@ -3657,13 +3657,13 @@ func (d drag) Formats() *ContentFormats {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_drag_get_formats(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SelectedAction determines the action chosen by the drag destination.
@@ -3673,13 +3673,13 @@ func (d drag) SelectedAction() DragAction {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret C.GdkDragAction
-	var goret1 DragAction
+	var ret1 DragAction
 
 	cret = C.gdk_drag_get_selected_action(arg0)
 
-	goret1 = DragAction(cret)
+	ret1 = DragAction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Surface returns the Surface where the drag originates.
@@ -3689,13 +3689,13 @@ func (d drag) Surface() Surface {
 	arg0 = (*C.GdkDrag)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_drag_get_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // SetHotspot sets the position of the drag surface that will be kept under
@@ -3852,13 +3852,13 @@ func (c drawContext) Display() Display {
 	arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_draw_context_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // FrameRegion retrieves the region that is currently in the process of
@@ -3876,13 +3876,13 @@ func (c drawContext) FrameRegion() *cairo.Region {
 	arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_draw_context_get_frame_region(arg0)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Surface retrieves the Surface used by the @context.
@@ -3892,13 +3892,13 @@ func (c drawContext) Surface() Surface {
 	arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_draw_context_get_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // IsInFrame returns true if @context is in the process of drawing to its
@@ -3911,13 +3911,13 @@ func (c drawContext) IsInFrame() bool {
 	arg0 = (*C.GdkDrawContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_draw_context_is_in_frame(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Drop: the GdkDrop struct contains only private fields and should not be
@@ -4043,13 +4043,13 @@ func (s drop) Actions() DragAction {
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkDragAction
-	var goret1 DragAction
+	var ret1 DragAction
 
 	cret = C.gdk_drop_get_actions(arg0)
 
-	goret1 = DragAction(cret)
+	ret1 = DragAction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Device returns the Device performing the drop.
@@ -4059,13 +4059,13 @@ func (s drop) Device() Device {
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDevice
-	var goret1 Device
+	var ret1 Device
 
 	cret = C.gdk_drop_get_device(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
 
-	return goret1
+	return ret1
 }
 
 // Display gets the Display that @self was created for.
@@ -4075,13 +4075,13 @@ func (s drop) Display() Display {
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_drop_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // Drag: if this is an in-app drag-and-drop operation, returns the Drag that
@@ -4094,13 +4094,13 @@ func (s drop) Drag() Drag {
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDrag
-	var goret1 Drag
+	var ret1 Drag
 
 	cret = C.gdk_drop_get_drag(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Drag)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Drag)
 
-	return goret1
+	return ret1
 }
 
 // Formats returns the ContentFormats that the drop offers the data to be
@@ -4111,13 +4111,13 @@ func (s drop) Formats() *ContentFormats {
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkContentFormats
-	var goret1 *ContentFormats
+	var ret1 *ContentFormats
 
 	cret = C.gdk_drop_get_formats(arg0)
 
-	goret1 = WrapContentFormats(unsafe.Pointer(cret))
+	ret1 = WrapContentFormats(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Surface returns the Surface performing the drop.
@@ -4127,13 +4127,13 @@ func (s drop) Surface() Surface {
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_drop_get_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // ReadAsync: asynchronously read the dropped data from a Drop in a format
@@ -4156,23 +4156,23 @@ func (s drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStrea
 	arg0 = (*C.GdkDrop)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 **C.char
+	var arg2 *C.char
 	var ret2 string
 	var cret *C.GInputStream
-	var goret2 gio.InputStream
+	var ret2 gio.InputStream
 	var goerr error
 
 	cret = C.gdk_drop_read_finish(arg0, result, &arg2, &errout)
 
 	ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	goret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.InputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // ReadValueAsync: asynchronously request the drag operation's contents
@@ -4202,18 +4202,18 @@ func (s drop) ReadValueFinish(result gio.AsyncResult) (value *externglib.Value, 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GValue
-	var goret1 *externglib.Value
+	var ret1 *externglib.Value
 	var goerr error
 
 	cret = C.gdk_drop_read_value_finish(arg0, result, &errout)
 
-	goret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
+	ret1 = externglib.ValueFromNative(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Status selects all actions that are potentially supported by the
@@ -4405,13 +4405,13 @@ func (c glContext) DebugEnabled() bool {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_gl_context_get_debug_enabled(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Display retrieves the Display the @context is created for
@@ -4421,13 +4421,13 @@ func (c glContext) Display() Display {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_gl_context_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // ForwardCompatible retrieves the value set using
@@ -4438,13 +4438,13 @@ func (c glContext) ForwardCompatible() bool {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_gl_context_get_forward_compatible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RequiredVersion retrieves the major and minor version requested by
@@ -4454,15 +4454,15 @@ func (c glContext) RequiredVersion() (major int, minor int) {
 
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gdk_gl_context_get_required_version(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -4474,13 +4474,13 @@ func (c glContext) SharedContext() GLContext {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkGLContext
-	var goret1 GLContext
+	var ret1 GLContext
 
 	cret = C.gdk_gl_context_get_shared_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLContext)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLContext)
 
-	return goret1
+	return ret1
 }
 
 // Surface retrieves the Surface used by the @context.
@@ -4490,13 +4490,13 @@ func (c glContext) Surface() Surface {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_gl_context_get_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // UseES checks whether the @context is using an OpenGL or OpenGL ES
@@ -4507,13 +4507,13 @@ func (c glContext) UseES() bool {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_gl_context_get_use_es(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Version retrieves the OpenGL version of the @context.
@@ -4524,15 +4524,15 @@ func (c glContext) Version() (major int, minor int) {
 
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gdk_gl_context_get_version(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -4559,13 +4559,13 @@ func (c glContext) IsLegacy() bool {
 	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_gl_context_is_legacy(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MakeCurrent makes the @context the current one.
@@ -4724,13 +4724,13 @@ func (s seat) Capabilities() SeatCapabilities {
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkSeatCapabilities
-	var goret1 SeatCapabilities
+	var ret1 SeatCapabilities
 
 	cret = C.gdk_seat_get_capabilities(arg0)
 
-	goret1 = SeatCapabilities(cret)
+	ret1 = SeatCapabilities(cret)
 
-	return goret1
+	return ret1
 }
 
 // Devices returns the devices that match the given capabilities.
@@ -4742,16 +4742,16 @@ func (s seat) Devices(capabilities SeatCapabilities) *glib.List {
 	arg1 = (C.GdkSeatCapabilities)(capabilities)
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_seat_get_devices(arg0, capabilities)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Display returns the Display this seat belongs to.
@@ -4761,13 +4761,13 @@ func (s seat) Display() Display {
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_seat_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // Keyboard returns the device that routes keyboard events.
@@ -4777,13 +4777,13 @@ func (s seat) Keyboard() Device {
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDevice
-	var goret1 Device
+	var ret1 Device
 
 	cret = C.gdk_seat_get_keyboard(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
 
-	return goret1
+	return ret1
 }
 
 // Pointer returns the device that routes pointer events.
@@ -4793,13 +4793,13 @@ func (s seat) Pointer() Device {
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDevice
-	var goret1 Device
+	var ret1 Device
 
 	cret = C.gdk_seat_get_pointer(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
 
-	return goret1
+	return ret1
 }
 
 // Tools returns all DeviceTools that are known to the application.
@@ -4809,16 +4809,16 @@ func (s seat) Tools() *glib.List {
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gdk_seat_get_tools(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // VulkanContext is an object representing the platform-specific Vulkan draw

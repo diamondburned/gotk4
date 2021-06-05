@@ -23,13 +23,13 @@ func AtomIntern(atomName string, onlyIfExists bool) Atom {
 	}
 
 	var cret C.GdkAtom
-	var goret1 Atom
+	var ret1 Atom
 
 	cret = C.gdk_atom_intern(atomName, onlyIfExists)
 
-	goret1 = WrapAtom(unsafe.Pointer(cret))
+	ret1 = WrapAtom(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AtomInternStaticString finds or creates an atom corresponding to a given
@@ -49,13 +49,13 @@ func AtomInternStaticString(atomName string) Atom {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GdkAtom
-	var goret1 Atom
+	var ret1 Atom
 
 	cret = C.gdk_atom_intern_static_string(atomName)
 
-	goret1 = WrapAtom(unsafe.Pointer(cret))
+	ret1 = WrapAtom(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PropertyChange changes the contents of a property on a window.
@@ -101,12 +101,12 @@ func UTF8ToStringTarget(str string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_utf8_to_string_target(str)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

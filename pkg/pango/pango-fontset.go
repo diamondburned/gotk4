@@ -110,13 +110,13 @@ func (f fontset) Font(wc uint) Font {
 	arg1 = C.guint(wc)
 
 	var cret *C.PangoFont
-	var goret1 Font
+	var ret1 Font
 
 	cret = C.pango_fontset_get_font(arg0, wc)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
 
-	return goret1
+	return ret1
 }
 
 // Metrics: get overall metric information for the fonts in the fontset.
@@ -126,16 +126,16 @@ func (f fontset) Metrics() *FontMetrics {
 	arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoFontMetrics
-	var goret1 *FontMetrics
+	var ret1 *FontMetrics
 
 	cret = C.pango_fontset_get_metrics(arg0)
 
-	goret1 = WrapFontMetrics(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *FontMetrics) {
+	ret1 = WrapFontMetrics(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *FontMetrics) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
@@ -180,13 +180,13 @@ func NewFontsetSimple(language *Language) FontsetSimple {
 	arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
 	var cret C.PangoFontsetSimple
-	var goret1 FontsetSimple
+	var ret1 FontsetSimple
 
 	cret = C.pango_fontset_simple_new(language)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontsetSimple)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontsetSimple)
 
-	return goret1
+	return ret1
 }
 
 // Append adds a font to the fontset.
@@ -207,11 +207,11 @@ func (f fontsetSimple) Size() int {
 	arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.pango_fontset_simple_size(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }

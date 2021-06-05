@@ -58,13 +58,13 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 // NewAnyFilter constructs a class AnyFilter.
 func NewAnyFilter() AnyFilter {
 	var cret C.GtkAnyFilter
-	var goret1 AnyFilter
+	var ret1 AnyFilter
 
 	cret = C.gtk_any_filter_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
 
-	return goret1
+	return ret1
 }
 
 type EveryFilter interface {
@@ -101,13 +101,13 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 // NewEveryFilter constructs a class EveryFilter.
 func NewEveryFilter() EveryFilter {
 	var cret C.GtkEveryFilter
-	var goret1 EveryFilter
+	var ret1 EveryFilter
 
 	cret = C.gtk_every_filter_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
 
-	return goret1
+	return ret1
 }
 
 // MultiFilter: gtkMultiFilter is the base type that implements support for

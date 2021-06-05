@@ -127,13 +127,13 @@ func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
 
 	var cret C.GtkOrdering
-	var goret1 Ordering
+	var ret1 Ordering
 
 	cret = C.gtk_sorter_compare(arg0, item1, item2)
 
-	goret1 = Ordering(cret)
+	ret1 = Ordering(cret)
 
-	return goret1
+	return ret1
 }
 
 // Order gets the order that @self conforms to. See SorterOrder for details
@@ -146,11 +146,11 @@ func (s sorter) Order() SorterOrder {
 	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSorterOrder
-	var goret1 SorterOrder
+	var ret1 SorterOrder
 
 	cret = C.gtk_sorter_get_order(arg0)
 
-	goret1 = SorterOrder(cret)
+	ret1 = SorterOrder(cret)
 
-	return goret1
+	return ret1
 }

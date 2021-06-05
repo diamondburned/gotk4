@@ -49,11 +49,11 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 // NewGLRenderer constructs a class GLRenderer.
 func NewGLRenderer() GLRenderer {
 	var cret C.GskGLRenderer
-	var goret1 GLRenderer
+	var ret1 GLRenderer
 
 	cret = C.gsk_gl_renderer_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLRenderer)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLRenderer)
 
-	return goret1
+	return ret1
 }

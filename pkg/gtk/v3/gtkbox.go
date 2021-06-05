@@ -158,13 +158,13 @@ func NewBox(orientation Orientation, spacing int) Box {
 	arg2 = C.gint(spacing)
 
 	var cret C.GtkBox
-	var goret1 Box
+	var ret1 Box
 
 	cret = C.gtk_box_new(orientation, spacing)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
 
-	return goret1
+	return ret1
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
@@ -174,13 +174,13 @@ func (b box) BaselinePosition() BaselinePosition {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkBaselinePosition
-	var goret1 BaselinePosition
+	var ret1 BaselinePosition
 
 	cret = C.gtk_box_get_baseline_position(arg0)
 
-	goret1 = BaselinePosition(cret)
+	ret1 = BaselinePosition(cret)
 
-	return goret1
+	return ret1
 }
 
 // CenterWidget retrieves the center widget of the box.
@@ -190,13 +190,13 @@ func (b box) CenterWidget() Widget {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_box_get_center_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
@@ -207,13 +207,13 @@ func (b box) Homogeneous() bool {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_box_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
@@ -223,13 +223,13 @@ func (b box) Spacing() int {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_box_get_spacing(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds @child to @box, packed with reference to the end of @box.
@@ -287,20 +287,20 @@ func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding ui
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	var arg2 *C.gboolean
+	var arg2 C.gboolean
 	var ret2 bool
-	var arg3 *C.gboolean
+	var arg3 C.gboolean
 	var ret3 bool
-	var arg4 *C.guint
+	var arg4 C.guint
 	var ret4 uint
-	var arg5 *C.GtkPackType
+	var arg5 C.GtkPackType
 	var ret5 *PackType
 
 	C.gtk_box_query_child_packing(arg0, child, &arg2, &arg3, &arg4, &arg5)
 
 	ret2 = C.bool(arg2) != C.false
 	ret3 = C.bool(arg3) != C.false
-	ret4 = *C.guint(arg4)
+	ret4 = C.guint(arg4)
 	ret5 = *PackType(arg5)
 
 	return ret2, ret3, ret4, ret5

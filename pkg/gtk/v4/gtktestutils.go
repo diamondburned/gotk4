@@ -20,17 +20,17 @@ func TestListAllTypes() (nTypes uint, gTypes []externglib.Type) {
 
 	var cret *C.GType
 	var arg1 *C.guint
-	var goret2 []externglib.Type
+	var ret2 []externglib.Type
 
 	cret = C.gtk_test_list_all_types(&arg1)
 
-	goret2 = make([]externglib.Type, arg1)
+	ret2 = make([]externglib.Type, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = externglib.Type(src)
+		ret2[i] = externglib.Type(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // TestRegisterAllTypes: force registration of all core GTK object types.

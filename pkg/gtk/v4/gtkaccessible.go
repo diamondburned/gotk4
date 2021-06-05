@@ -103,13 +103,13 @@ func (s accessible) AccessibleRole() AccessibleRole {
 	arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkAccessibleRole
-	var goret1 AccessibleRole
+	var ret1 AccessibleRole
 
 	cret = C.gtk_accessible_get_accessible_role(arg0)
 
-	goret1 = AccessibleRole(cret)
+	ret1 = AccessibleRole(cret)
 
-	return goret1
+	return ret1
 }
 
 // ResetProperty resets the accessible @property to its default value.

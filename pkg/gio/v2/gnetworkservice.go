@@ -94,13 +94,13 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GNetworkService
-	var goret1 NetworkService
+	var ret1 NetworkService
 
 	cret = C.g_network_service_new(service, protocol, domain)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkService)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkService)
 
-	return goret1
+	return ret1
 }
 
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
@@ -111,13 +111,13 @@ func (s networkService) Domain() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_network_service_get_domain(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Protocol gets @srv's protocol name (eg, "tcp").
@@ -127,13 +127,13 @@ func (s networkService) Protocol() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_network_service_get_protocol(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the
@@ -144,13 +144,13 @@ func (s networkService) Scheme() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_network_service_get_scheme(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Service gets @srv's service name (eg, "ldap").
@@ -160,13 +160,13 @@ func (s networkService) Service() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_network_service_get_service(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the

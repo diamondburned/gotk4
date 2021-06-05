@@ -114,13 +114,13 @@ func (m monitor) Display() Display {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_monitor_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // Geometry retrieves the size and position of an individual monitor within
@@ -131,7 +131,7 @@ func (m monitor) Geometry() Rectangle {
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var arg1 *C.GdkRectangle
+	var arg1 C.GdkRectangle
 	var ret1 *Rectangle
 
 	C.gdk_monitor_get_geometry(arg0, &arg1)
@@ -148,13 +148,13 @@ func (m monitor) HeightMm() int {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_monitor_get_height_mm(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
@@ -169,13 +169,13 @@ func (m monitor) Manufacturer() string {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_monitor_get_manufacturer(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the a string identifying the monitor model, if available.
@@ -185,13 +185,13 @@ func (m monitor) Model() string {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_monitor_get_model(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // RefreshRate gets the refresh rate of the monitor, if available.
@@ -204,13 +204,13 @@ func (m monitor) RefreshRate() int {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_monitor_get_refresh_rate(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ScaleFactor gets the internal scale factor that maps from monitor
@@ -226,13 +226,13 @@ func (m monitor) ScaleFactor() int {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_monitor_get_scale_factor(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SubpixelLayout gets information about the layout of red, green and blue
@@ -243,13 +243,13 @@ func (m monitor) SubpixelLayout() SubpixelLayout {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.GdkSubpixelLayout
-	var goret1 SubpixelLayout
+	var ret1 SubpixelLayout
 
 	cret = C.gdk_monitor_get_subpixel_layout(arg0)
 
-	goret1 = SubpixelLayout(cret)
+	ret1 = SubpixelLayout(cret)
 
-	return goret1
+	return ret1
 }
 
 // WidthMm gets the width in millimeters of the monitor.
@@ -259,13 +259,13 @@ func (m monitor) WidthMm() int {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_monitor_get_width_mm(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Workarea retrieves the size and position of the “work area” on a monitor
@@ -285,7 +285,7 @@ func (m monitor) Workarea() Rectangle {
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var arg1 *C.GdkRectangle
+	var arg1 C.GdkRectangle
 	var ret1 *Rectangle
 
 	C.gdk_monitor_get_workarea(arg0, &arg1)
@@ -303,11 +303,11 @@ func (m monitor) IsPrimary() bool {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_monitor_is_primary(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

@@ -117,13 +117,13 @@ func (m messageDialog) MessageArea() Widget {
 	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_message_dialog_get_message_area(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked

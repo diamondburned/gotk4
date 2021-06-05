@@ -106,13 +106,13 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 // NewPasswordEntry constructs a class PasswordEntry.
 func NewPasswordEntry() PasswordEntry {
 	var cret C.GtkPasswordEntry
-	var goret1 PasswordEntry
+	var ret1 PasswordEntry
 
 	cret = C.gtk_password_entry_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PasswordEntry)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PasswordEntry)
 
-	return goret1
+	return ret1
 }
 
 // ExtraMenu gets the menu model set with
@@ -123,13 +123,13 @@ func (e passwordEntry) ExtraMenu() gio.MenuModel {
 	arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_password_entry_get_extra_menu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // ShowPeekIcon returns whether the entry is showing a clickable icon to
@@ -140,13 +140,13 @@ func (e passwordEntry) ShowPeekIcon() bool {
 	arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_password_entry_get_show_peek_icon(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetExtraMenu sets a menu model to add when constructing the context menu

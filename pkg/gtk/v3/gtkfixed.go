@@ -96,13 +96,13 @@ func marshalFixed(p uintptr) (interface{}, error) {
 // NewFixed constructs a class Fixed.
 func NewFixed() Fixed {
 	var cret C.GtkFixed
-	var goret1 Fixed
+	var ret1 Fixed
 
 	cret = C.gtk_fixed_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
 
-	return goret1
+	return ret1
 }
 
 // Move moves a child of a Fixed container to the given position.

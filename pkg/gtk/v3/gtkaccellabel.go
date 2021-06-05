@@ -120,13 +120,13 @@ func NewAccelLabel(string string) AccelLabel {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAccelLabel
-	var goret1 AccelLabel
+	var ret1 AccelLabel
 
 	cret = C.gtk_accel_label_new(string)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelLabel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelLabel)
 
-	return goret1
+	return ret1
 }
 
 // Accel gets the keyval and modifier mask set with
@@ -136,14 +136,14 @@ func (a accelLabel) Accel() (acceleratorKey uint, acceleratorMods gdk.ModifierTy
 
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
-	var arg2 *C.GdkModifierType
+	var arg2 C.GdkModifierType
 	var ret2 *gdk.ModifierType
 
 	C.gtk_accel_label_get_accel(arg0, &arg1, &arg2)
 
-	ret1 = *C.guint(arg1)
+	ret1 = C.guint(arg1)
 	ret2 = *gdk.ModifierType(arg2)
 
 	return ret1, ret2
@@ -157,13 +157,13 @@ func (a accelLabel) AccelWidget() Widget {
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_accel_label_get_accel_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // AccelWidth returns the width needed to display the accelerator key(s).
@@ -175,13 +175,13 @@ func (a accelLabel) AccelWidth() uint {
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_accel_label_get_accel_width(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Refetch recreates the string representing the accelerator keys. This
@@ -193,13 +193,13 @@ func (a accelLabel) Refetch() bool {
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_accel_label_refetch(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetAccel: manually sets a keyval and modifier mask as the accelerator

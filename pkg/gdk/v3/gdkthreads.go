@@ -53,13 +53,13 @@ import "C"
 func ThreadsAddIdleFull(priority int, function glib.SourceFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gdk_threads_add_idle_full(priority, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ThreadsAddTimeoutFull sets a function to be called at regular intervals
@@ -106,13 +106,13 @@ func ThreadsAddIdleFull(priority int, function glib.SourceFunc) uint {
 func ThreadsAddTimeoutFull(priority int, interval uint, function glib.SourceFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gdk_threads_add_timeout_full(priority, interval, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ThreadsAddTimeoutSecondsFull: a variant of gdk_threads_add_timeout_full()
@@ -122,13 +122,13 @@ func ThreadsAddTimeoutFull(priority int, interval uint, function glib.SourceFunc
 func ThreadsAddTimeoutSecondsFull(priority int, interval uint, function glib.SourceFunc) uint {
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gdk_threads_add_timeout_seconds_full(priority, interval, function, data, notify)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ThreadsEnter: this function marks the beginning of a critical section in

@@ -89,13 +89,13 @@ func NewBoxLayout(orientation Orientation) BoxLayout {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkBoxLayout
-	var goret1 BoxLayout
+	var ret1 BoxLayout
 
 	cret = C.gtk_box_layout_new(orientation)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoxLayout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoxLayout)
 
-	return goret1
+	return ret1
 }
 
 // BaselinePosition gets the value set by
@@ -106,13 +106,13 @@ func (b boxLayout) BaselinePosition() BaselinePosition {
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkBaselinePosition
-	var goret1 BaselinePosition
+	var ret1 BaselinePosition
 
 	cret = C.gtk_box_layout_get_baseline_position(arg0)
 
-	goret1 = BaselinePosition(cret)
+	ret1 = BaselinePosition(cret)
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether the layout is set to be homogeneous.
@@ -122,13 +122,13 @@ func (b boxLayout) Homogeneous() bool {
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_box_layout_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Spacing returns the space that @box_layout puts between children.
@@ -138,13 +138,13 @@ func (b boxLayout) Spacing() uint {
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_box_layout_get_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetBaselinePosition sets the baseline position of a box layout.

@@ -55,13 +55,13 @@ func NewRendererCellAccessible(renderer CellRenderer) RendererCellAccessible {
 	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
 	var cret C.GtkRendererCellAccessible
-	var goret1 RendererCellAccessible
+	var ret1 RendererCellAccessible
 
 	cret = C.gtk_renderer_cell_accessible_new(renderer)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RendererCellAccessible)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RendererCellAccessible)
 
-	return goret1
+	return ret1
 }
 
 type RendererCellAccessiblePrivate struct {

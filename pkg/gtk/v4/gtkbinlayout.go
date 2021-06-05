@@ -54,11 +54,11 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 // NewBinLayout constructs a class BinLayout.
 func NewBinLayout() BinLayout {
 	var cret C.GtkBinLayout
-	var goret1 BinLayout
+	var ret1 BinLayout
 
 	cret = C.gtk_bin_layout_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BinLayout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BinLayout)
 
-	return goret1
+	return ret1
 }

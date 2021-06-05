@@ -22,13 +22,13 @@ func TrashStackHeight(stackP **TrashStack) uint {
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_trash_stack_height(stackP)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // TrashStackPeek returns the element at the top of a Stack which may be nil.
@@ -38,13 +38,13 @@ func TrashStackPeek(stackP **TrashStack) interface{} {
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_trash_stack_peek(stackP)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TrashStackPop pops a piece of memory off a Stack.
@@ -54,13 +54,13 @@ func TrashStackPop(stackP **TrashStack) interface{} {
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_trash_stack_pop(stackP)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TrashStackPush pushes a piece of memory onto a Stack.

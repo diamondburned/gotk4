@@ -18,16 +18,16 @@ import "C"
 // compositing is not available. Otherwise behaves like a transparent pattern.
 func X11GetParentRelativePattern() *cairo.Pattern {
 	var cret *C.cairo_pattern_t
-	var goret1 *cairo.Pattern
+	var ret1 *cairo.Pattern
 
 	cret = C.gdk_x11_get_parent_relative_pattern()
 
-	goret1 = cairo.WrapPattern(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Pattern) {
+	ret1 = cairo.WrapPattern(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Pattern) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // X11GrabServer: call gdk_x11_display_grab() on the default display. To ungrab

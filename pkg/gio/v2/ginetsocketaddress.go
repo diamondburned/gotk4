@@ -81,13 +81,13 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	arg2 = C.guint16(port)
 
 	var cret C.GInetSocketAddress
-	var goret1 InetSocketAddress
+	var ret1 InetSocketAddress
 
 	cret = C.g_inet_socket_address_new(address, port)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
 
-	return goret1
+	return ret1
 }
 
 // NewInetSocketAddressFromString constructs a class InetSocketAddress.
@@ -100,13 +100,13 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 	arg2 = C.guint(port)
 
 	var cret C.GInetSocketAddress
-	var goret1 InetSocketAddress
+	var ret1 InetSocketAddress
 
 	cret = C.g_inet_socket_address_new_from_string(address, port)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
 
-	return goret1
+	return ret1
 }
 
 // Address gets @address's Address.
@@ -116,13 +116,13 @@ func (a inetSocketAddress) Address() InetAddress {
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GInetAddress
-	var goret1 InetAddress
+	var ret1 InetAddress
 
 	cret = C.g_inet_socket_address_get_address(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InetAddress)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InetAddress)
 
-	return goret1
+	return ret1
 }
 
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
@@ -133,13 +133,13 @@ func (a inetSocketAddress) Flowinfo() uint32 {
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_inet_socket_address_get_flowinfo(arg0)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // Port gets @address's port.
@@ -149,13 +149,13 @@ func (a inetSocketAddress) Port() uint16 {
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.g_inet_socket_address_get_port(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // ScopeID gets the `sin6_scope_id` field from @address, which must be an
@@ -166,13 +166,13 @@ func (a inetSocketAddress) ScopeID() uint32 {
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_inet_socket_address_get_scope_id(arg0)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 type InetSocketAddressPrivate struct {

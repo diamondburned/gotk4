@@ -71,13 +71,13 @@ func NewNoSelection(model gio.ListModel) NoSelection {
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkNoSelection
-	var goret1 NoSelection
+	var ret1 NoSelection
 
 	cret = C.gtk_no_selection_new(model)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NoSelection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NoSelection)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that @self is wrapping.
@@ -87,13 +87,13 @@ func (s noSelection) Model() gio.ListModel {
 	arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_no_selection_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // SetModel sets the model that @self should wrap. If @model is nil, this

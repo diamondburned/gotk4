@@ -113,13 +113,13 @@ func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	var cret C.GtkLayout
-	var goret1 Layout
+	var ret1 Layout
 
 	cret = C.gtk_layout_new(hadjustment, vadjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
 
-	return goret1
+	return ret1
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing
@@ -130,13 +130,13 @@ func (l layout) BinWindow() gdk.Window {
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 gdk.Window
+	var ret1 gdk.Window
 
 	cret = C.gtk_layout_get_bin_window(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
 
-	return goret1
+	return ret1
 }
 
 // HAdjustment: this function should only be called after the layout has
@@ -151,13 +151,13 @@ func (l layout) HAdjustment() Adjustment {
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_layout_get_hadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // Size gets the size that has been set on the layout, and that determines
@@ -168,15 +168,15 @@ func (l layout) Size() (width uint, height uint) {
 
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
-	var arg2 *C.guint
+	var arg2 C.guint
 	var ret2 uint
 
 	C.gtk_layout_get_size(arg0, &arg1, &arg2)
 
-	ret1 = *C.guint(arg1)
-	ret2 = *C.guint(arg2)
+	ret1 = C.guint(arg1)
+	ret2 = C.guint(arg2)
 
 	return ret1, ret2
 }
@@ -193,13 +193,13 @@ func (l layout) VAdjustment() Adjustment {
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_layout_get_vadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // Move moves a current child of @layout to a new position.

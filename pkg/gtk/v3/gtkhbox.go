@@ -82,11 +82,11 @@ func NewHBox(homogeneous bool, spacing int) HBox {
 	arg2 = C.gint(spacing)
 
 	var cret C.GtkHBox
-	var goret1 HBox
+	var ret1 HBox
 
 	cret = C.gtk_hbox_new(homogeneous, spacing)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HBox)
 
-	return goret1
+	return ret1
 }

@@ -65,13 +65,13 @@ func (s *CSSSection) EndLine() uint {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_css_section_get_end_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // EndPosition returns the offset in bytes from the start of the current line
@@ -86,13 +86,13 @@ func (s *CSSSection) EndPosition() uint {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_css_section_get_end_position(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // File gets the file that @section was parsed from. If no such file exists, for
@@ -104,13 +104,13 @@ func (s *CSSSection) File() gio.File {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_css_section_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // Parent gets the parent section for the given @section. The parent section is
@@ -125,13 +125,13 @@ func (s *CSSSection) Parent() *CSSSection {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkCssSection
-	var goret1 *CSSSection
+	var ret1 *CSSSection
 
 	cret = C.gtk_css_section_get_parent(arg0)
 
-	goret1 = WrapCSSSection(unsafe.Pointer(cret))
+	ret1 = WrapCSSSection(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SectionType gets the type of information that @section describes.
@@ -141,13 +141,13 @@ func (s *CSSSection) SectionType() CSSSectionType {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkCssSectionType
-	var goret1 CSSSectionType
+	var ret1 CSSSectionType
 
 	cret = C.gtk_css_section_get_section_type(arg0)
 
-	goret1 = CSSSectionType(cret)
+	ret1 = CSSSectionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // StartLine returns the line in the CSS document where this section starts. The
@@ -158,13 +158,13 @@ func (s *CSSSection) StartLine() uint {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_css_section_get_start_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // StartPosition returns the offset in bytes from the start of the current line
@@ -175,13 +175,13 @@ func (s *CSSSection) StartPosition() uint {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_css_section_get_start_position(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref increments the reference count on @section.
@@ -191,16 +191,16 @@ func (s *CSSSection) Ref() *CSSSection {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkCssSection
-	var goret1 *CSSSection
+	var ret1 *CSSSection
 
 	cret = C.gtk_css_section_ref(arg0)
 
-	goret1 = WrapCSSSection(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *CSSSection) {
+	ret1 = WrapCSSSection(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *CSSSection) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decrements the reference count on @section, freeing the structure if

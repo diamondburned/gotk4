@@ -115,13 +115,13 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 // NewDragSource constructs a class DragSource.
 func NewDragSource() DragSource {
 	var cret C.GtkDragSource
-	var goret1 DragSource
+	var ret1 DragSource
 
 	cret = C.gtk_drag_source_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DragSource)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DragSource)
 
-	return goret1
+	return ret1
 }
 
 // DragCancel cancels a currently ongoing drag operation.
@@ -140,13 +140,13 @@ func (s dragSource) Actions() gdk.DragAction {
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkDragAction
-	var goret1 gdk.DragAction
+	var ret1 gdk.DragAction
 
 	cret = C.gtk_drag_source_get_actions(arg0)
 
-	goret1 = gdk.DragAction(cret)
+	ret1 = gdk.DragAction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Content gets the current content provider of a DragSource.
@@ -156,13 +156,13 @@ func (s dragSource) Content() gdk.ContentProvider {
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkContentProvider
-	var goret1 gdk.ContentProvider
+	var ret1 gdk.ContentProvider
 
 	cret = C.gtk_drag_source_get_content(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
 
-	return goret1
+	return ret1
 }
 
 // Drag returns the underlying Drag object for an ongoing drag.
@@ -172,13 +172,13 @@ func (s dragSource) Drag() gdk.Drag {
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDrag
-	var goret1 gdk.Drag
+	var ret1 gdk.Drag
 
 	cret = C.gtk_drag_source_get_drag(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drag)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drag)
 
-	return goret1
+	return ret1
 }
 
 // SetActions sets the actions on the DragSource.

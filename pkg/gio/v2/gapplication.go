@@ -562,13 +562,13 @@ func NewApplication(applicationID string, flags ApplicationFlags) Application {
 	arg2 = (C.GApplicationFlags)(flags)
 
 	var cret C.GApplication
-	var goret1 Application
+	var ret1 Application
 
 	cret = C.g_application_new(applicationID, flags)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
 
-	return goret1
+	return ret1
 }
 
 // Activate activates the application.
@@ -751,13 +751,13 @@ func (a application) ApplicationID() string {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_application_get_application_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // DBusConnection gets the BusConnection being used by the application, or
@@ -779,13 +779,13 @@ func (a application) DBusConnection() DBusConnection {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GDBusConnection
-	var goret1 DBusConnection
+	var ret1 DBusConnection
 
 	cret = C.g_application_get_dbus_connection(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return goret1
+	return ret1
 }
 
 // DBusObjectPath gets the D-Bus object path being used by the application,
@@ -809,13 +809,13 @@ func (a application) DBusObjectPath() string {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_application_get_dbus_object_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Flags gets the flags for @application.
@@ -827,13 +827,13 @@ func (a application) Flags() ApplicationFlags {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.GApplicationFlags
-	var goret1 ApplicationFlags
+	var ret1 ApplicationFlags
 
 	cret = C.g_application_get_flags(arg0)
 
-	goret1 = ApplicationFlags(cret)
+	ret1 = ApplicationFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // InactivityTimeout gets the current inactivity timeout for the
@@ -847,13 +847,13 @@ func (a application) InactivityTimeout() uint {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_application_get_inactivity_timeout(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsBusy gets the application's current busy state, as set through
@@ -864,13 +864,13 @@ func (a application) IsBusy() bool {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_application_get_is_busy(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsRegistered checks if @application is registered.
@@ -883,13 +883,13 @@ func (a application) IsRegistered() bool {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_application_get_is_registered(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsRemote checks if @application is remote.
@@ -908,13 +908,13 @@ func (a application) IsRemote() bool {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_application_get_is_remote(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ResourceBasePath gets the resource base path of @application.
@@ -926,13 +926,13 @@ func (a application) ResourceBasePath() string {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_application_get_resource_base_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Hold increases the use count of @application.

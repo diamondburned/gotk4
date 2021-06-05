@@ -37,13 +37,13 @@ func ContentTypeCanBeExecutable(typ string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_content_type_can_be_executable(typ)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeEquals compares two content types for equality.
@@ -57,13 +57,13 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_content_type_equals(type1, type2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeFromMIMEType tries to find a content type based on the mime type
@@ -75,14 +75,14 @@ func ContentTypeFromMIMEType(mimeType string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_content_type_from_mime_type(mimeType)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGetDescription gets the human readable description of the content
@@ -94,14 +94,14 @@ func ContentTypeGetDescription(typ string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_content_type_get_description(typ)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGetGenericIconName gets the generic icon name for a content type.
@@ -116,14 +116,14 @@ func ContentTypeGetGenericIconName(typ string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_content_type_get_generic_icon_name(typ)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
@@ -134,20 +134,20 @@ func ContentTypeGetIcon(typ string) Icon {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GIcon
-	var goret1 Icon
+	var ret1 Icon
 
 	cret = C.g_content_type_get_icon(typ)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
 // from. See g_content_type_set_mime_dirs() for details.
 func ContentTypeGetMIMEDirs() []string {
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_content_type_get_mime_dirs()
 
@@ -160,14 +160,14 @@ func ContentTypeGetMIMEDirs() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
@@ -179,14 +179,14 @@ func ContentTypeGetMIMEType(typ string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_content_type_get_mime_type(typ)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
@@ -197,13 +197,13 @@ func ContentTypeGetSymbolicIcon(typ string) Icon {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GIcon
-	var goret1 Icon
+	var ret1 Icon
 
 	cret = C.g_content_type_get_symbolic_icon(typ)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeGuessForTree tries to guess the type of the tree with root @root,
@@ -224,7 +224,7 @@ func ContentTypeGuessForTree(root File) []string {
 	arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_content_type_guess_for_tree(root)
 
@@ -237,15 +237,15 @@ func ContentTypeGuessForTree(root File) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeIsA determines if @type is a subset of @supertype.
@@ -259,13 +259,13 @@ func ContentTypeIsA(typ string, supertype string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_content_type_is_a(typ, supertype)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
@@ -280,13 +280,13 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_content_type_is_mime_type(typ, mimeType)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeIsUnknown checks if the content type is the generic "unknown"
@@ -299,13 +299,13 @@ func ContentTypeIsUnknown(typ string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_content_type_is_unknown(typ)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
@@ -353,14 +353,14 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 // freed using `g_list_free_full (list, g_free)`.
 func ContentTypesGetRegistered() *glib.List {
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_content_types_get_registered()
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

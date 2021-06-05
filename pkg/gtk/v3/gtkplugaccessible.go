@@ -55,14 +55,14 @@ func (p plugAccessible) ID() string {
 	arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_plug_accessible_get_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 type PlugAccessiblePrivate struct {

@@ -85,13 +85,13 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 	arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
 
 	var cret C.GtkShortcut
-	var goret1 Shortcut
+	var ret1 Shortcut
 
 	cret = C.gtk_shortcut_new(trigger, action)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Shortcut)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Shortcut)
 
-	return goret1
+	return ret1
 }
 
 // Action gets the action that is activated by this shortcut.
@@ -101,13 +101,13 @@ func (s shortcut) Action() ShortcutAction {
 	arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkShortcutAction
-	var goret1 ShortcutAction
+	var ret1 ShortcutAction
 
 	cret = C.gtk_shortcut_get_action(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutAction)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutAction)
 
-	return goret1
+	return ret1
 }
 
 // Arguments gets the arguments that are passed when activating the
@@ -118,13 +118,13 @@ func (s shortcut) Arguments() *glib.Variant {
 	arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.gtk_shortcut_get_arguments(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Trigger gets the trigger used to trigger @self.
@@ -134,13 +134,13 @@ func (s shortcut) Trigger() ShortcutTrigger {
 	arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkShortcutTrigger
-	var goret1 ShortcutTrigger
+	var ret1 ShortcutTrigger
 
 	cret = C.gtk_shortcut_get_trigger(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
 
-	return goret1
+	return ret1
 }
 
 // SetAction sets the new action for @self to be @action.

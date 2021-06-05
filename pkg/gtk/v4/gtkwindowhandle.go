@@ -76,13 +76,13 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 // NewWindowHandle constructs a class WindowHandle.
 func NewWindowHandle() WindowHandle {
 	var cret C.GtkWindowHandle
-	var goret1 WindowHandle
+	var ret1 WindowHandle
 
 	cret = C.gtk_window_handle_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowHandle)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowHandle)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @self.
@@ -92,13 +92,13 @@ func (s windowHandle) Child() Widget {
 	arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_window_handle_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @self.

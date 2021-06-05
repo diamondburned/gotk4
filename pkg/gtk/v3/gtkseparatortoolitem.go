@@ -80,13 +80,13 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 // NewSeparatorToolItem constructs a class SeparatorToolItem.
 func NewSeparatorToolItem() SeparatorToolItem {
 	var cret C.GtkSeparatorToolItem
-	var goret1 SeparatorToolItem
+	var ret1 SeparatorToolItem
 
 	cret = C.gtk_separator_tool_item_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorToolItem)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorToolItem)
 
-	return goret1
+	return ret1
 }
 
 // Draw returns whether @item is drawn as a line, or just blank. See
@@ -97,13 +97,13 @@ func (i separatorToolItem) Draw() bool {
 	arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_separator_tool_item_get_draw(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetDraw: whether @item is drawn as a vertical line, or just blank.

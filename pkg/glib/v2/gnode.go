@@ -120,13 +120,13 @@ func (n *Node) ChildIndex(data interface{}) int {
 	arg1 = C.gpointer(data)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_node_child_index(arg0, data)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ChildPosition gets the position of a #GNode with respect to its siblings.
@@ -140,13 +140,13 @@ func (n *Node) ChildPosition(child *Node) int {
 	arg1 = (*C.GNode)(unsafe.Pointer(child.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_node_child_position(arg0, child)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ChildrenForeach calls a function for each of the children of a #GNode. Note
@@ -168,13 +168,13 @@ func (n *Node) Copy() *Node {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_copy(arg0)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // CopyDeep: recursively copies a #GNode and its data.
@@ -184,13 +184,13 @@ func (n *Node) CopyDeep(copyFunc CopyFunc) *Node {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_copy_deep(arg0, copyFunc, data)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Depth gets the depth of a #GNode.
@@ -203,13 +203,13 @@ func (n *Node) Depth() uint {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_node_depth(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Destroy removes @root and its children from the tree, freeing any memory
@@ -235,13 +235,13 @@ func (r *Node) Find(order TraverseType, flags TraverseFlags, data interface{}) *
 	arg3 = C.gpointer(data)
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_find(arg0, order, flags, data)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FindChild finds the first child of a #GNode with the given data.
@@ -255,13 +255,13 @@ func (n *Node) FindChild(flags TraverseFlags, data interface{}) *Node {
 	arg2 = C.gpointer(data)
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_find_child(arg0, flags, data)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FirstSibling gets the first sibling of a #GNode. This could possibly be the
@@ -272,13 +272,13 @@ func (n *Node) FirstSibling() *Node {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_first_sibling(arg0)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Root gets the root of a tree.
@@ -288,13 +288,13 @@ func (n *Node) Root() *Node {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_get_root(arg0)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts a #GNode beneath the parent at the given position.
@@ -308,13 +308,13 @@ func (p *Node) Insert(position int, node *Node) *Node {
 	arg2 = (*C.GNode)(unsafe.Pointer(node.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_insert(arg0, position, node)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertAfter inserts a #GNode beneath the parent after the given sibling.
@@ -328,13 +328,13 @@ func (p *Node) InsertAfter(sibling *Node, node *Node) *Node {
 	arg2 = (*C.GNode)(unsafe.Pointer(node.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_insert_after(arg0, sibling, node)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertBefore inserts a #GNode beneath the parent before the given sibling.
@@ -348,13 +348,13 @@ func (p *Node) InsertBefore(sibling *Node, node *Node) *Node {
 	arg2 = (*C.GNode)(unsafe.Pointer(node.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_insert_before(arg0, sibling, node)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IsAncestor returns true if @node is an ancestor of @descendant. This is true
@@ -368,13 +368,13 @@ func (n *Node) IsAncestor(descendant *Node) bool {
 	arg1 = (*C.GNode)(unsafe.Pointer(descendant.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_node_is_ancestor(arg0, descendant)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LastChild gets the last child of a #GNode.
@@ -384,13 +384,13 @@ func (n *Node) LastChild() *Node {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_last_child(arg0)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // LastSibling gets the last sibling of a #GNode. This could possibly be the
@@ -401,13 +401,13 @@ func (n *Node) LastSibling() *Node {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_last_sibling(arg0)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // MaxHeight gets the maximum height of all branches beneath a #GNode. This is
@@ -421,13 +421,13 @@ func (r *Node) MaxHeight() uint {
 	arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_node_max_height(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NChildren gets the number of children of a #GNode.
@@ -437,13 +437,13 @@ func (n *Node) NChildren() uint {
 	arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_node_n_children(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NNodes gets the number of nodes in a tree.
@@ -455,13 +455,13 @@ func (r *Node) NNodes(flags TraverseFlags) uint {
 	arg1 = (C.GTraverseFlags)(flags)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_node_n_nodes(arg0, flags)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NthChild gets a child of a #GNode, using the given index. The first child is
@@ -474,13 +474,13 @@ func (n *Node) NthChild(n uint) *Node {
 	arg1 = C.guint(n)
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_nth_child(arg0, n)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Prepend inserts a #GNode as the first child of the given parent.
@@ -492,13 +492,13 @@ func (p *Node) Prepend(node *Node) *Node {
 	arg1 = (*C.GNode)(unsafe.Pointer(node.Native()))
 
 	var cret *C.GNode
-	var goret1 *Node
+	var ret1 *Node
 
 	cret = C.g_node_prepend(arg0, node)
 
-	goret1 = WrapNode(unsafe.Pointer(cret))
+	ret1 = WrapNode(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ReverseChildren reverses the order of the children of a #GNode. (It doesn't

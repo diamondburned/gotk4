@@ -68,13 +68,13 @@ func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
 	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkSelectionFilterModel
-	var goret1 SelectionFilterModel
+	var ret1 SelectionFilterModel
 
 	cret = C.gtk_selection_filter_model_new(model)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionFilterModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionFilterModel)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model currently filtered or nil if none.
@@ -84,13 +84,13 @@ func (s selectionFilterModel) Model() SelectionModel {
 	arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSelectionModel
-	var goret1 SelectionModel
+	var ret1 SelectionModel
 
 	cret = C.gtk_selection_filter_model_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
 
-	return goret1
+	return ret1
 }
 
 // SetModel sets the model to be filtered.

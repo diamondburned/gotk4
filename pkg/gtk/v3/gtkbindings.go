@@ -44,13 +44,13 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GTokenType
-	var goret1 glib.TokenType
+	var ret1 glib.TokenType
 
 	cret = C.gtk_binding_entry_add_signal_from_string(bindingSet, signalDesc)
 
-	goret1 = glib.TokenType(cret)
+	ret1 = glib.TokenType(cret)
 
-	return goret1
+	return ret1
 }
 
 // BindingEntryAddSignall: override or install a new key binding for @keyval
@@ -109,13 +109,13 @@ func BindingSetByClass(objectClass interface{}) *BindingSet {
 	arg1 = C.gpointer(objectClass)
 
 	var cret *C.GtkBindingSet
-	var goret1 *BindingSet
+	var ret1 *BindingSet
 
 	cret = C.gtk_binding_set_by_class(objectClass)
 
-	goret1 = WrapBindingSet(unsafe.Pointer(cret))
+	ret1 = WrapBindingSet(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // BindingSetFind: find a binding set by its globally unique name.
@@ -129,13 +129,13 @@ func BindingSetFind(setName string) *BindingSet {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkBindingSet
-	var goret1 *BindingSet
+	var ret1 *BindingSet
 
 	cret = C.gtk_binding_set_find(setName)
 
-	goret1 = WrapBindingSet(unsafe.Pointer(cret))
+	ret1 = WrapBindingSet(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // NewBindingSet: GTK+ maintains a global list of binding sets. Each binding set
@@ -147,13 +147,13 @@ func NewBindingSet(setName string) *BindingSet {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkBindingSet
-	var goret1 *BindingSet
+	var ret1 *BindingSet
 
 	cret = C.gtk_binding_set_new(setName)
 
-	goret1 = WrapBindingSet(unsafe.Pointer(cret))
+	ret1 = WrapBindingSet(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // BindingsActivate: find a key binding matching @keyval and @modifiers and
@@ -168,13 +168,13 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 	arg3 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_bindings_activate(object, keyval, modifiers)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
@@ -187,13 +187,13 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_bindings_activate_event(object, event)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // BindingArg: a BindingArg holds the data associated with an argument for a key
@@ -361,13 +361,13 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 	arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_binding_set_activate(arg0, keyval, modifiers, object)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // AddPath: this function was used internally by the GtkRC parsing mechanism to

@@ -127,20 +127,20 @@ func (s treeSortable) SortColumnID() (sortColumnID int, order SortType, ok bool)
 
 	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.GtkSortType
+	var arg2 C.GtkSortType
 	var ret2 *SortType
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_tree_sortable_get_sort_column_id(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
+	ret1 = C.gint(arg1)
 	ret2 = *SortType(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // HasDefaultSortFunc returns true if the model has a default sort function.
@@ -152,13 +152,13 @@ func (s treeSortable) HasDefaultSortFunc() bool {
 	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_sortable_has_default_sort_func(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultSortFunc sets the default comparison function used when sorting

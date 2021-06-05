@@ -210,13 +210,13 @@ func marshalDialog(p uintptr) (interface{}, error) {
 // NewDialog constructs a class Dialog.
 func NewDialog() Dialog {
 	var cret C.GtkDialog
-	var goret1 Dialog
+	var ret1 Dialog
 
 	cret = C.gtk_dialog_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Dialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Dialog)
 
-	return goret1
+	return ret1
 }
 
 // AddActionWidget adds an activatable widget to the action area of a
@@ -252,13 +252,13 @@ func (d dialog) AddButton(buttonText string, responseID int) Widget {
 	arg2 = C.int(responseID)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_dialog_add_button(arg0, buttonText, responseID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ContentArea returns the content area of @dialog.
@@ -268,13 +268,13 @@ func (d dialog) ContentArea() Box {
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Box
+	var ret1 Box
 
 	cret = C.gtk_dialog_get_content_area(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
 
-	return goret1
+	return ret1
 }
 
 // HeaderBar returns the header bar of @dialog. Note that the headerbar is
@@ -285,13 +285,13 @@ func (d dialog) HeaderBar() HeaderBar {
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 HeaderBar
+	var ret1 HeaderBar
 
 	cret = C.gtk_dialog_get_header_bar(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
 
-	return goret1
+	return ret1
 }
 
 // ResponseForWidget gets the response id of a widget in the action area of
@@ -304,13 +304,13 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_dialog_get_response_for_widget(arg0, widget)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // WidgetForResponse gets the widget button that uses the given response ID
@@ -323,13 +323,13 @@ func (d dialog) WidgetForResponse(responseID int) Widget {
 	arg1 = C.int(responseID)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_dialog_get_widget_for_response(arg0, responseID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Response emits the Dialog::response signal with the given response ID.

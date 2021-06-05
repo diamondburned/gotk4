@@ -69,13 +69,13 @@ func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
 	arg2 = C.gsize(len)
 
 	var cret C.GNativeSocketAddress
-	var goret1 NativeSocketAddress
+	var ret1 NativeSocketAddress
 
 	cret = C.g_native_socket_address_new(native, len)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NativeSocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NativeSocketAddress)
 
-	return goret1
+	return ret1
 }
 
 type NativeSocketAddressPrivate struct {

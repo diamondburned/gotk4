@@ -60,13 +60,13 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 
 	cret = C.gtk_print_run_page_setup_dialog(parent, pageSetup, settings)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return goret1
+	return ret1
 }
 
 // PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
@@ -375,13 +375,13 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 // NewPrintOperation constructs a class PrintOperation.
 func NewPrintOperation() PrintOperation {
 	var cret C.GtkPrintOperation
-	var goret1 PrintOperation
+	var ret1 PrintOperation
 
 	cret = C.gtk_print_operation_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
 
-	return goret1
+	return ret1
 }
 
 // Cancel cancels a running print operation. This function may be called
@@ -418,13 +418,13 @@ func (o printOperation) DefaultPageSetup() PageSetup {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 
 	cret = C.gtk_print_operation_get_default_page_setup(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return goret1
+	return ret1
 }
 
 // EmbedPageSetup gets the value of PrintOperation:embed-page-setup
@@ -435,13 +435,13 @@ func (o printOperation) EmbedPageSetup() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_operation_get_embed_page_setup(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Error: call this when the result of a print operation is
@@ -472,13 +472,13 @@ func (o printOperation) HasSelection() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_operation_get_has_selection(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // NPagesToPrint returns the number of pages that will be printed.
@@ -496,13 +496,13 @@ func (o printOperation) NPagesToPrint() int {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_operation_get_n_pages_to_print(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrintSettings returns the current print settings.
@@ -516,13 +516,13 @@ func (o printOperation) PrintSettings() PrintSettings {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPrintSettings
-	var goret1 PrintSettings
+	var ret1 PrintSettings
 
 	cret = C.gtk_print_operation_get_print_settings(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return goret1
+	return ret1
 }
 
 // Status returns the status of the print operation. Also see
@@ -533,13 +533,13 @@ func (o printOperation) Status() PrintStatus {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.GtkPrintStatus
-	var goret1 PrintStatus
+	var ret1 PrintStatus
 
 	cret = C.gtk_print_operation_get_status(arg0)
 
-	goret1 = PrintStatus(cret)
+	ret1 = PrintStatus(cret)
 
-	return goret1
+	return ret1
 }
 
 // StatusString returns a string representation of the status of the print
@@ -554,13 +554,13 @@ func (o printOperation) StatusString() string {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_operation_get_status_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SupportSelection gets the value of PrintOperation:support-selection
@@ -571,13 +571,13 @@ func (o printOperation) SupportSelection() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_operation_get_support_selection(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsFinished: a convenience function to find out if the print operation is
@@ -593,13 +593,13 @@ func (o printOperation) IsFinished() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_operation_is_finished(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Run runs the print operation, by first letting the user modify print
@@ -666,18 +666,18 @@ func (o printOperation) Run(action PrintOperationAction, parent Window) (printOp
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkPrintOperationResult
-	var goret1 PrintOperationResult
+	var ret1 PrintOperationResult
 	var goerr error
 
 	cret = C.gtk_print_operation_run(arg0, action, parent, &errout)
 
-	goret1 = PrintOperationResult(cret)
+	ret1 = PrintOperationResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetAllowAsync sets whether the gtk_print_operation_run() may return

@@ -260,13 +260,13 @@ func (c applicationCommandLine) CreateFileForArg(arg string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_application_command_line_create_file_for_arg(arg0, arg)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // Arguments gets the list of arguments that was passed on the command line.
@@ -287,18 +287,18 @@ func (c applicationCommandLine) Arguments() (argc int, filenames []string) {
 
 	var cret **C.gchar
 	var arg1 *C.int
-	var goret2 []string
+	var ret2 []string
 
 	cret = C.g_application_command_line_get_arguments(arg0, &arg1)
 
-	goret2 = make([]string, arg1)
+	ret2 = make([]string, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.GoString(src)
+		ret2[i] = C.GoString(src)
 		defer C.free(unsafe.Pointer(src))
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Cwd gets the working directory of the command line invocation. The string
@@ -315,13 +315,13 @@ func (c applicationCommandLine) Cwd() string {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_application_command_line_get_cwd(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Environ gets the contents of the 'environ' variable of the command line
@@ -345,7 +345,7 @@ func (c applicationCommandLine) Environ() []string {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_application_command_line_get_environ(arg0)
 
@@ -358,14 +358,14 @@ func (c applicationCommandLine) Environ() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ExitStatus gets the exit status of @cmdline. See
@@ -376,13 +376,13 @@ func (c applicationCommandLine) ExitStatus() int {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_application_command_line_get_exit_status(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsRemote determines if @cmdline represents a remote invocation.
@@ -392,13 +392,13 @@ func (c applicationCommandLine) IsRemote() bool {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_application_command_line_get_is_remote(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // OptionsDict gets the options there were passed to
@@ -417,13 +417,13 @@ func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GVariantDict
-	var goret1 *glib.VariantDict
+	var ret1 *glib.VariantDict
 
 	cret = C.g_application_command_line_get_options_dict(arg0)
 
-	goret1 = glib.WrapVariantDict(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariantDict(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PlatformData gets the platform data associated with the invocation of
@@ -440,16 +440,16 @@ func (c applicationCommandLine) PlatformData() *glib.Variant {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_application_command_line_get_platform_data(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Stdin gets the stdin of the invoking process.
@@ -467,13 +467,13 @@ func (c applicationCommandLine) Stdin() InputStream {
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GInputStream
-	var goret1 InputStream
+	var ret1 InputStream
 
 	cret = C.g_application_command_line_get_stdin(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 
-	return goret1
+	return ret1
 }
 
 // env gets the value of a particular environment variable of the command
@@ -496,13 +496,13 @@ func (c applicationCommandLine) env(name string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_application_command_line_getenv(arg0, name)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetExitStatus sets the exit status that will be used when the invoking

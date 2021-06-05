@@ -35,13 +35,13 @@ func HookDestroy(hookList *HookList, hookID uint32) bool {
 	arg2 = C.gulong(hookID)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hook_destroy(hookList, hookID)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HookDestroyLink removes one #GHook from a List, marking it inactive and
@@ -175,13 +175,13 @@ func (n *Hook) CompareIds(sibling *Hook) int {
 	arg1 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_hook_compare_ids(arg0, sibling)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // HookList: the List struct represents a list of hook functions.

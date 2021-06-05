@@ -72,13 +72,13 @@ func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) TcpWrapperCon
 	arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
 	var cret C.GTcpWrapperConnection
-	var goret1 TcpWrapperConnection
+	var ret1 TcpWrapperConnection
 
 	cret = C.g_tcp_wrapper_connection_new(baseIOStream, socket)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TcpWrapperConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TcpWrapperConnection)
 
-	return goret1
+	return ret1
 }
 
 // BaseIOStream gets @conn's base OStream
@@ -88,13 +88,13 @@ func (c tcpWrapperConnection) BaseIOStream() IOStream {
 	arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GIOStream
-	var goret1 IOStream
+	var ret1 IOStream
 
 	cret = C.g_tcp_wrapper_connection_get_base_io_stream(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IOStream)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IOStream)
 
-	return goret1
+	return ret1
 }
 
 type TcpWrapperConnectionPrivate struct {

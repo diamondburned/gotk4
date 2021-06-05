@@ -16,13 +16,13 @@ import "C"
 // [0..1).
 func RandomDouble() float64 {
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_random_double()
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // RandomDoubleRange returns a random #gdouble equally distributed over the
@@ -35,26 +35,26 @@ func RandomDoubleRange(begin float64, end float64) float64 {
 	arg2 = C.gdouble(end)
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_random_double_range(begin, end)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // RandomInt: return a random #guint32 equally distributed over the range
 // [0..2^32-1].
 func RandomInt() uint32 {
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_random_int()
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // RandomIntRange returns a random #gint32 equally distributed over the range
@@ -67,13 +67,13 @@ func RandomIntRange(begin int32, end int32) int32 {
 	arg2 = C.gint32(end)
 
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.g_random_int_range(begin, end)
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // RandomSetSeed sets the seed for the global random number generator, which is
@@ -121,13 +121,13 @@ func (r *Rand) Copy() *Rand {
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GRand
-	var goret1 *Rand
+	var ret1 *Rand
 
 	cret = C.g_rand_copy(arg0)
 
-	goret1 = WrapRand(unsafe.Pointer(cret))
+	ret1 = WrapRand(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Double returns the next random #gdouble from @rand_ equally distributed over
@@ -138,13 +138,13 @@ func (r *Rand) Double() float64 {
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_rand_double(arg0)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // DoubleRange returns the next random #gdouble from @rand_ equally distributed
@@ -159,13 +159,13 @@ func (r *Rand) DoubleRange(begin float64, end float64) float64 {
 	arg2 = C.gdouble(end)
 
 	var cret C.gdouble
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.g_rand_double_range(arg0, begin, end)
 
-	goret1 = C.gdouble(cret)
+	ret1 = C.gdouble(cret)
 
-	return goret1
+	return ret1
 }
 
 // Free frees the memory allocated for the #GRand.
@@ -185,13 +185,13 @@ func (r *Rand) Int() uint32 {
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_rand_int(arg0)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // IntRange returns the next random #gint32 from @rand_ equally distributed over
@@ -206,13 +206,13 @@ func (r *Rand) IntRange(begin int32, end int32) int32 {
 	arg2 = C.gint32(end)
 
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.g_rand_int_range(arg0, begin, end)
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetSeed sets the seed for the random number generator #GRand to @seed.

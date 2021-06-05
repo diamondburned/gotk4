@@ -35,13 +35,13 @@ func init() {
 // NetworkMonitorGetDefault gets the default Monitor for the system.
 func NetworkMonitorGetDefault() NetworkMonitor {
 	var cret *C.GNetworkMonitor
-	var goret1 NetworkMonitor
+	var ret1 NetworkMonitor
 
 	cret = C.g_network_monitor_get_default()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NetworkMonitor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NetworkMonitor)
 
-	return goret1
+	return ret1
 }
 
 // NetworkMonitorOverrider contains methods that are overridable. This
@@ -239,13 +239,13 @@ func (m networkMonitor) Connectivity() NetworkConnectivity {
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.GNetworkConnectivity
-	var goret1 NetworkConnectivity
+	var ret1 NetworkConnectivity
 
 	cret = C.g_network_monitor_get_connectivity(arg0)
 
-	goret1 = NetworkConnectivity(cret)
+	ret1 = NetworkConnectivity(cret)
 
-	return goret1
+	return ret1
 }
 
 // NetworkAvailable checks if the network is available. "Available" here
@@ -258,13 +258,13 @@ func (m networkMonitor) NetworkAvailable() bool {
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_network_monitor_get_network_available(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // NetworkMetered checks if the network is metered. See
@@ -275,11 +275,11 @@ func (m networkMonitor) NetworkMetered() bool {
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_network_monitor_get_network_metered(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

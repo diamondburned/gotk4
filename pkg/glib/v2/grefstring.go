@@ -29,14 +29,14 @@ func RefStringAcquire(str string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ref_string_acquire(str)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RefStringLength retrieves the length of @str.
@@ -47,13 +47,13 @@ func RefStringLength(str string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_ref_string_length(str)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // NewRefString creates a new reference counted string and copies the contents
@@ -65,14 +65,14 @@ func NewRefString(str string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ref_string_new(str)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RefStringNewIntern creates a new reference counted string and copies the
@@ -88,14 +88,14 @@ func RefStringNewIntern(str string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ref_string_new_intern(str)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RefStringNewLen creates a new reference counted string and copies the
@@ -112,14 +112,14 @@ func RefStringNewLen(str string, len int) string {
 	arg2 = C.gssize(len)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_ref_string_new_len(str, len)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RefStringRelease releases a reference on a string; if it was the last

@@ -83,13 +83,13 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 // NewStackSwitcher constructs a class StackSwitcher.
 func NewStackSwitcher() StackSwitcher {
 	var cret C.GtkStackSwitcher
-	var goret1 StackSwitcher
+	var ret1 StackSwitcher
 
 	cret = C.gtk_stack_switcher_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
 
-	return goret1
+	return ret1
 }
 
 // Stack retrieves the stack. See gtk_stack_switcher_set_stack().
@@ -99,13 +99,13 @@ func (s stackSwitcher) Stack() Stack {
 	arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkStack
-	var goret1 Stack
+	var ret1 Stack
 
 	cret = C.gtk_stack_switcher_get_stack(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
 
-	return goret1
+	return ret1
 }
 
 // SetStack sets the stack to control.

@@ -54,13 +54,13 @@ func FileNewForCommandlineArg(arg string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_new_for_commandline_arg(arg)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // FileNewForCommandlineArgAndCwd creates a #GFile with the given argument from
@@ -84,13 +84,13 @@ func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_new_for_commandline_arg_and_cwd(arg, cwd)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // FileNewForPath constructs a #GFile for a given path. This operation never
@@ -103,13 +103,13 @@ func FileNewForPath(path string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_new_for_path(path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // FileNewForURI constructs a #GFile for a given URI. This operation never
@@ -122,13 +122,13 @@ func FileNewForURI(uri string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_new_for_uri(uri)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // FileNewTmp opens a file in the preferred directory for temporary files (as
@@ -148,22 +148,22 @@ func FileNewTmp(tmpl string) (iostream FileIOStream, file File, err error) {
 	arg1 = (*C.char)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.GFileIOStream
+	var arg2 *C.GFileIOStream
 	var ret2 FileIOStream
 	var cret *C.GFile
-	var goret2 File
+	var ret2 File
 	var goerr error
 
 	cret = C.g_file_new_tmp(tmpl, &arg2, &errout)
 
 	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg2.Native()))).(FileIOStream)
-	goret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // FileParseName constructs a #GFile with the given @parse_name (i.e. something
@@ -177,13 +177,13 @@ func FileParseName(parseName string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_parse_name(parseName)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // FileOverrider contains methods that are overridable. This
@@ -1502,18 +1502,18 @@ func (f file) AppendTo(flags FileCreateFlags, cancellable Cancellable) (fileOutp
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileOutputStream
-	var goret1 FileOutputStream
+	var ret1 FileOutputStream
 	var goerr error
 
 	cret = C.g_file_append_to(arg0, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AppendToAsync: asynchronously opens @file for appending.
@@ -1542,18 +1542,18 @@ func (f file) AppendToFinish(res AsyncResult) (fileOutputStream FileOutputStream
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileOutputStream
-	var goret1 FileOutputStream
+	var ret1 FileOutputStream
 	var goerr error
 
 	cret = C.g_file_append_to_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Copy copies the file @source to the location specified by @destination.
@@ -1712,18 +1712,18 @@ func (f file) Create(flags FileCreateFlags, cancellable Cancellable) (fileOutput
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileOutputStream
-	var goret1 FileOutputStream
+	var ret1 FileOutputStream
 	var goerr error
 
 	cret = C.g_file_create(arg0, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // CreateAsync: asynchronously creates a new file and returns an output
@@ -1753,18 +1753,18 @@ func (f file) CreateFinish(res AsyncResult) (fileOutputStream FileOutputStream, 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileOutputStream
-	var goret1 FileOutputStream
+	var ret1 FileOutputStream
 	var goerr error
 
 	cret = C.g_file_create_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // CreateReadwrite creates a new file and returns a stream for reading and
@@ -1800,18 +1800,18 @@ func (f file) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable) (f
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileIOStream
-	var goret1 FileIOStream
+	var ret1 FileIOStream
 	var goerr error
 
 	cret = C.g_file_create_readwrite(arg0, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // CreateReadwriteAsync: asynchronously creates a new file and returns a
@@ -1841,18 +1841,18 @@ func (f file) CreateReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream,
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileIOStream
-	var goret1 FileIOStream
+	var ret1 FileIOStream
 	var goerr error
 
 	cret = C.g_file_create_readwrite_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Delete deletes a file. If the @file is a directory, it will only be
@@ -1942,13 +1942,13 @@ func (f file) Dup() File {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_dup(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // EjectMountable starts an asynchronous eject on a mountable. When this
@@ -2058,18 +2058,18 @@ func (f file) EnumerateChildren(attributes string, flags FileQueryInfoFlags, can
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileEnumerator
-	var goret1 FileEnumerator
+	var ret1 FileEnumerator
 	var goerr error
 
 	cret = C.g_file_enumerate_children(arg0, attributes, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // EnumerateChildrenAsync: asynchronously gets the requested information
@@ -2101,18 +2101,18 @@ func (f file) EnumerateChildrenFinish(res AsyncResult) (fileEnumerator FileEnume
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileEnumerator
-	var goret1 FileEnumerator
+	var ret1 FileEnumerator
 	var goerr error
 
 	cret = C.g_file_enumerate_children_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileEnumerator)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Equal checks if the two given #GFiles refer to the same file.
@@ -2129,13 +2129,13 @@ func (f file) Equal(file2 File) bool {
 	arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_equal(arg0, file2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // FindEnclosingMount gets a #GMount for the #GFile.
@@ -2156,18 +2156,18 @@ func (f file) FindEnclosingMount(cancellable Cancellable) (mount Mount, err erro
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GMount
-	var goret1 Mount
+	var ret1 Mount
 	var goerr error
 
 	cret = C.g_file_find_enclosing_mount(arg0, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // FindEnclosingMountAsync: asynchronously gets the mount for the file.
@@ -2197,18 +2197,18 @@ func (f file) FindEnclosingMountFinish(res AsyncResult) (mount Mount, err error)
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GMount
-	var goret1 Mount
+	var ret1 Mount
 	var goerr error
 
 	cret = C.g_file_find_enclosing_mount_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Basename gets the base name (the last component of the path) for a given
@@ -2231,14 +2231,14 @@ func (f file) Basename() string {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_get_basename(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Child gets a child of @file with basename equal to @name.
@@ -2257,13 +2257,13 @@ func (f file) Child(name string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_get_child(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // ChildForDisplayName gets the child of @file for a given @display_name
@@ -2284,18 +2284,18 @@ func (f file) ChildForDisplayName(displayName string) (file File, err error) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 	var goerr error
 
 	cret = C.g_file_get_child_for_display_name(arg0, displayName, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Parent gets the parent directory for the @file. If the @file represents
@@ -2308,13 +2308,13 @@ func (f file) Parent() File {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_get_parent(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // ParseName gets the parse name of the @file. A parse name is a UTF-8
@@ -2335,14 +2335,14 @@ func (f file) ParseName() string {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_get_parse_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Path gets the local pathname for #GFile, if one exists. If non-nil, this
@@ -2356,14 +2356,14 @@ func (f file) Path() string {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_get_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RelativePath gets the path for @descendant relative to @parent.
@@ -2377,14 +2377,14 @@ func (p file) RelativePath(descendant File) string {
 	arg1 = (*C.GFile)(unsafe.Pointer(descendant.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_get_relative_path(arg0, descendant)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // URI gets the URI for the @file.
@@ -2396,14 +2396,14 @@ func (f file) URI() string {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_get_uri(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme
@@ -2420,14 +2420,14 @@ func (f file) URIScheme() string {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_get_uri_scheme(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HasParent checks if @file has a parent, and optionally, if it is @parent.
@@ -2443,13 +2443,13 @@ func (f file) HasParent(parent File) bool {
 	arg1 = (*C.GFile)(unsafe.Pointer(parent.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_has_parent(arg0, parent)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasPrefix checks whether @file has the prefix specified by @prefix.
@@ -2473,13 +2473,13 @@ func (f file) HasPrefix(prefix File) bool {
 	arg1 = (*C.GFile)(unsafe.Pointer(prefix.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_has_prefix(arg0, prefix)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasURIScheme checks to see if a #GFile has a given URI scheme.
@@ -2494,13 +2494,13 @@ func (f file) HasURIScheme(uriScheme string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_has_uri_scheme(arg0, uriScheme)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Hash creates a hash value for a #GFile.
@@ -2512,13 +2512,13 @@ func (f file) Hash() uint {
 	arg0 = (C.gpointer)(unsafe.Pointer(f.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_file_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsNative checks to see if a file is native to the platform.
@@ -2538,13 +2538,13 @@ func (f file) IsNative() bool {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_is_native(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LoadBytes loads the contents of @file and returns it as #GBytes.
@@ -2566,18 +2566,18 @@ func (f file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.By
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret *C.GBytes
-	var goret2 *glib.Bytes
+	var ret2 *glib.Bytes
 	var goerr error
 
 	cret = C.g_file_load_bytes(arg0, cancellable, &arg2, &errout)
 
 	ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	goret2 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret2, func(v *glib.Bytes) {
+	ret2 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -2585,7 +2585,7 @@ func (f file) LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.By
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // LoadBytesAsync: asynchronously loads the contents of @file as #GBytes.
@@ -2624,18 +2624,18 @@ func (f file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.B
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 **C.gchar
+	var arg2 *C.gchar
 	var ret2 string
 	var cret *C.GBytes
-	var goret2 *glib.Bytes
+	var ret2 *glib.Bytes
 	var goerr error
 
 	cret = C.g_file_load_bytes_finish(arg0, result, &arg2, &errout)
 
 	ret2 = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(arg2))
-	goret2 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret2, func(v *glib.Bytes) {
+	ret2 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -2643,7 +2643,7 @@ func (f file) LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.B
 		C.g_error_free(errout)
 	}
 
-	return ret2, goret2, goerr
+	return ret2, ret2, goerr
 }
 
 // LoadContentsAsync starts an asynchronous load of the @file's contents.
@@ -2832,19 +2832,19 @@ func (f file) MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numD
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.guint64
+	var arg2 C.guint64
 	var ret2 uint64
-	var arg3 *C.guint64
+	var arg3 C.guint64
 	var ret3 uint64
-	var arg4 *C.guint64
+	var arg4 C.guint64
 	var ret4 uint64
 	var goerr error
 
 	C.g_file_measure_disk_usage_finish(arg0, result, &arg2, &arg3, &arg4, &errout)
 
-	ret2 = *C.guint64(arg2)
-	ret3 = *C.guint64(arg3)
-	ret4 = *C.guint64(arg4)
+	ret2 = C.guint64(arg2)
+	ret3 = C.guint64(arg3)
+	ret4 = C.guint64(arg4)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -2870,18 +2870,18 @@ func (f file) Monitor(flags FileMonitorFlags, cancellable Cancellable) (fileMoni
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileMonitor
-	var goret1 FileMonitor
+	var ret1 FileMonitor
 	var goerr error
 
 	cret = C.g_file_monitor(arg0, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // MonitorDirectory obtains a directory monitor for the given file. This may
@@ -2907,18 +2907,18 @@ func (f file) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileMonitor
-	var goret1 FileMonitor
+	var ret1 FileMonitor
 	var goerr error
 
 	cret = C.g_file_monitor_directory(arg0, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // MonitorFile obtains a file monitor for the given file. If no file
@@ -2945,18 +2945,18 @@ func (f file) MonitorFile(flags FileMonitorFlags, cancellable Cancellable) (file
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileMonitor
-	var goret1 FileMonitor
+	var ret1 FileMonitor
 	var goerr error
 
 	cret = C.g_file_monitor_file(arg0, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileMonitor)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // MountEnclosingVolume starts a @mount_operation, mounting the volume that
@@ -3030,18 +3030,18 @@ func (f file) MountMountableFinish(result AsyncResult) (file File, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 	var goerr error
 
 	cret = C.g_file_mount_mountable_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Move tries to move the file or directory @source to the location
@@ -3119,18 +3119,18 @@ func (f file) OpenReadwrite(cancellable Cancellable) (fileIOStream FileIOStream,
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileIOStream
-	var goret1 FileIOStream
+	var ret1 FileIOStream
 	var goerr error
 
 	cret = C.g_file_open_readwrite(arg0, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // OpenReadwriteAsync: asynchronously opens @file for reading and writing.
@@ -3159,18 +3159,18 @@ func (f file) OpenReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream, e
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileIOStream
-	var goret1 FileIOStream
+	var ret1 FileIOStream
 	var goerr error
 
 	cret = C.g_file_open_readwrite_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // PeekPath: exactly like g_file_get_path(), but caches the result via
@@ -3185,13 +3185,13 @@ func (f file) PeekPath() string {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_peek_path(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PollMountable polls a file of type FILE_TYPE_MOUNTABLE.
@@ -3249,18 +3249,18 @@ func (f file) QueryDefaultHandler(cancellable Cancellable) (appInfo AppInfo, err
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GAppInfo
-	var goret1 AppInfo
+	var ret1 AppInfo
 	var goerr error
 
 	cret = C.g_file_query_default_handler(arg0, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryDefaultHandlerAsync: async version of
@@ -3284,18 +3284,18 @@ func (f file) QueryDefaultHandlerFinish(result AsyncResult) (appInfo AppInfo, er
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GAppInfo
-	var goret1 AppInfo
+	var ret1 AppInfo
 	var goerr error
 
 	cret = C.g_file_query_default_handler_finish(arg0, result, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryExists: utility function to check if a particular file exists. This
@@ -3329,13 +3329,13 @@ func (f file) QueryExists(cancellable Cancellable) bool {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_query_exists(arg0, cancellable)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // QueryFileType: utility function to inspect the Type of a file. This is
@@ -3353,13 +3353,13 @@ func (f file) QueryFileType(flags FileQueryInfoFlags, cancellable Cancellable) F
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.GFileType
-	var goret1 FileType
+	var ret1 FileType
 
 	cret = C.g_file_query_file_type(arg0, flags, cancellable)
 
-	goret1 = FileType(cret)
+	ret1 = FileType(cret)
 
-	return goret1
+	return ret1
 }
 
 // QueryFilesystemInfo: similar to g_file_query_info(), but obtains
@@ -3398,18 +3398,18 @@ func (f file) QueryFilesystemInfo(attributes string, cancellable Cancellable) (f
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_query_filesystem_info(arg0, attributes, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryFilesystemInfoAsync: asynchronously gets the requested information
@@ -3441,18 +3441,18 @@ func (f file) QueryFilesystemInfoFinish(res AsyncResult) (fileInfo FileInfo, err
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_query_filesystem_info_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryInfo gets the requested information about specified @file. The
@@ -3496,18 +3496,18 @@ func (f file) QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_query_info(arg0, attributes, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryInfoAsync: asynchronously gets the requested information about
@@ -3538,18 +3538,18 @@ func (f file) QueryInfoFinish(res AsyncResult) (fileInfo FileInfo, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileInfo
-	var goret1 FileInfo
+	var ret1 FileInfo
 	var goerr error
 
 	cret = C.g_file_query_info_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QuerySettableAttributes: obtain the list of settable attributes for the
@@ -3572,13 +3572,13 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (fileAttributeInf
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileAttributeInfoList
-	var goret1 *FileAttributeInfoList
+	var ret1 *FileAttributeInfoList
 	var goerr error
 
 	cret = C.g_file_query_settable_attributes(arg0, cancellable, &errout)
 
-	goret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *FileAttributeInfoList) {
+	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -3586,7 +3586,7 @@ func (f file) QuerySettableAttributes(cancellable Cancellable) (fileAttributeInf
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // QueryWritableNamespaces: obtain the list of attribute namespaces where
@@ -3605,13 +3605,13 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (fileAttributeInf
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileAttributeInfoList
-	var goret1 *FileAttributeInfoList
+	var ret1 *FileAttributeInfoList
 	var goerr error
 
 	cret = C.g_file_query_writable_namespaces(arg0, cancellable, &errout)
 
-	goret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *FileAttributeInfoList) {
+	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -3619,7 +3619,7 @@ func (f file) QueryWritableNamespaces(cancellable Cancellable) (fileAttributeInf
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Read opens a file for reading. The result is a InputStream that can be
@@ -3642,18 +3642,18 @@ func (f file) Read(cancellable Cancellable) (fileInputStream FileInputStream, er
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileInputStream
-	var goret1 FileInputStream
+	var ret1 FileInputStream
 	var goerr error
 
 	cret = C.g_file_read(arg0, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReadAsync: asynchronously opens @file for reading.
@@ -3682,18 +3682,18 @@ func (f file) ReadFinish(res AsyncResult) (fileInputStream FileInputStream, err 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileInputStream
-	var goret1 FileInputStream
+	var ret1 FileInputStream
 	var goerr error
 
 	cret = C.g_file_read_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Replace returns an output stream for overwriting the file, possibly
@@ -3752,18 +3752,18 @@ func (f file) Replace(etag string, makeBackup bool, flags FileCreateFlags, cance
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileOutputStream
-	var goret1 FileOutputStream
+	var ret1 FileOutputStream
 	var goerr error
 
 	cret = C.g_file_replace(arg0, etag, makeBackup, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReplaceAsync: asynchronously overwrites the file, replacing the contents,
@@ -3836,7 +3836,7 @@ func (f file) ReplaceContentsFinish(res AsyncResult) (newEtag string, err error)
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var arg2 **C.char
+	var arg2 *C.char
 	var ret2 string
 	var goerr error
 
@@ -3863,18 +3863,18 @@ func (f file) ReplaceFinish(res AsyncResult) (fileOutputStream FileOutputStream,
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileOutputStream
-	var goret1 FileOutputStream
+	var ret1 FileOutputStream
 	var goerr error
 
 	cret = C.g_file_replace_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileOutputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReplaceReadwrite returns an output stream for overwriting the file in
@@ -3905,18 +3905,18 @@ func (f file) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFla
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFileIOStream
-	var goret1 FileIOStream
+	var ret1 FileIOStream
 	var goerr error
 
 	cret = C.g_file_replace_readwrite(arg0, etag, makeBackup, flags, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
@@ -3948,18 +3948,18 @@ func (f file) ReplaceReadwriteFinish(res AsyncResult) (fileIOStream FileIOStream
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFileIOStream
-	var goret1 FileIOStream
+	var ret1 FileIOStream
 	var goerr error
 
 	cret = C.g_file_replace_readwrite_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIOStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ResolveRelativePath resolves a relative path for @file to an absolute
@@ -3975,13 +3975,13 @@ func (f file) ResolveRelativePath(relativePath string) File {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 
 	cret = C.g_file_resolve_relative_path(arg0, relativePath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 
-	return goret1
+	return ret1
 }
 
 // SetAttribute sets an attribute in the file with attribute name @attribute
@@ -4245,7 +4245,7 @@ func (f file) SetAttributesFinish(result AsyncResult) (info FileInfo, err error)
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 **C.GFileInfo
+	var arg2 *C.GFileInfo
 	var ret2 FileInfo
 	var goerr error
 
@@ -4322,18 +4322,18 @@ func (f file) SetDisplayName(displayName string, cancellable Cancellable) (file 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 	var goerr error
 
 	cret = C.g_file_set_display_name(arg0, displayName, cancellable, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetDisplayNameAsync: asynchronously sets the display name for a given
@@ -4363,18 +4363,18 @@ func (f file) SetDisplayNameFinish(res AsyncResult) (file File, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cret *C.GFile
-	var goret1 File
+	var ret1 File
 	var goerr error
 
 	cret = C.g_file_set_display_name_finish(arg0, res, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // StartMountable starts a file of type FILE_TYPE_MOUNTABLE. Using
@@ -4469,13 +4469,13 @@ func (f file) SupportsThreadContexts() bool {
 	arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_supports_thread_contexts(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Trash sends @file to the "Trashcan", if possible. This is similar to

@@ -35,13 +35,13 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	arg3 = C.guint(requiredMicro)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_check_version(requiredMajor, requiredMinor, requiredMicro)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetBinaryAge returns the binary age as passed to `libtool` when building the
@@ -49,13 +49,13 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 // you, don't worry about it.
 func GetBinaryAge() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_get_binary_age()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetInterfaceAge returns the interface age as passed to `libtool` when
@@ -63,13 +63,13 @@ func GetBinaryAge() uint {
 // nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_get_interface_age()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetMajorVersion returns the major version number of the GTK library. (e.g. in
@@ -81,13 +81,13 @@ func GetInterfaceAge() uint {
 // compiling your code.
 func GetMajorVersion() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_get_major_version()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetMicroVersion returns the micro version number of the GTK library. (e.g. in
@@ -99,13 +99,13 @@ func GetMajorVersion() uint {
 // compiling your code.
 func GetMicroVersion() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_get_micro_version()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetMinorVersion returns the minor version number of the GTK library. (e.g. in
@@ -117,11 +117,11 @@ func GetMicroVersion() uint {
 // compiling your code.
 func GetMinorVersion() uint {
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_get_minor_version()
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }

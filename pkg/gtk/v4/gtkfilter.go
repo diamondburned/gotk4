@@ -115,13 +115,13 @@ func (s filter) Strictness() FilterMatch {
 	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkFilterMatch
-	var goret1 FilterMatch
+	var ret1 FilterMatch
 
 	cret = C.gtk_filter_get_strictness(arg0)
 
-	goret1 = FilterMatch(cret)
+	ret1 = FilterMatch(cret)
 
-	return goret1
+	return ret1
 }
 
 // Match checks if the given @item is matched by the filter or not.
@@ -133,11 +133,11 @@ func (s filter) Match(item gextras.Objector) bool {
 	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_filter_match(arg0, item)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

@@ -65,13 +65,13 @@ func (l layoutChild) ChildWidget() Widget {
 	arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_layout_child_get_child_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // LayoutManager retrieves the LayoutManager instance that created the given
@@ -82,11 +82,11 @@ func (l layoutChild) LayoutManager() LayoutManager {
 	arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GtkLayoutManager
-	var goret1 LayoutManager
+	var ret1 LayoutManager
 
 	cret = C.gtk_layout_child_get_layout_manager(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutManager)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutManager)
 
-	return goret1
+	return ret1
 }

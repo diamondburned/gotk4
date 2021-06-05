@@ -169,18 +169,18 @@ func (c socketConnection) LocalAddress() (socketAddress SocketAddress, err error
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketAddress
-	var goret1 SocketAddress
+	var ret1 SocketAddress
 	var goerr error
 
 	cret = C.g_socket_connection_get_local_address(arg0, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // RemoteAddress: try to get the remote address of a socket connection.
@@ -197,18 +197,18 @@ func (c socketConnection) RemoteAddress() (socketAddress SocketAddress, err erro
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketAddress
-	var goret1 SocketAddress
+	var ret1 SocketAddress
 	var goerr error
 
 	cret = C.g_socket_connection_get_remote_address(arg0, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Socket gets the underlying #GSocket object of the connection. This can be
@@ -220,13 +220,13 @@ func (c socketConnection) Socket() Socket {
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocket
-	var goret1 Socket
+	var ret1 Socket
 
 	cret = C.g_socket_connection_get_socket(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Socket)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Socket)
 
-	return goret1
+	return ret1
 }
 
 // IsConnected checks if @connection is connected. This is equivalent to
@@ -237,13 +237,13 @@ func (c socketConnection) IsConnected() bool {
 	arg0 = (*C.GSocketConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_socket_connection_is_connected(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 type SocketConnectionPrivate struct {

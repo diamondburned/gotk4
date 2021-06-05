@@ -114,13 +114,13 @@ func (a actionMap) LookupAction(actionName string) Action {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GAction
-	var goret1 Action
+	var ret1 Action
 
 	cret = C.g_action_map_lookup_action(arg0, actionName)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
 
-	return goret1
+	return ret1
 }
 
 // RemoveAction removes the named action from the action map.

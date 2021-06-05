@@ -120,16 +120,16 @@ func marshalItem(p uintptr) (interface{}, error) {
 // NewItem constructs a struct Item.
 func NewItem() *Item {
 	var cret *C.PangoItem
-	var goret1 *Item
+	var ret1 *Item
 
 	cret = C.pango_item_new()
 
-	goret1 = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Item) {
+	ret1 = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -184,16 +184,16 @@ func (i *Item) Copy() *Item {
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
 	var cret *C.PangoItem
-	var goret1 *Item
+	var ret1 *Item
 
 	cret = C.pango_item_copy(arg0)
 
-	goret1 = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Item) {
+	ret1 = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free: free a `PangoItem` and all associated memory.
@@ -225,14 +225,14 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	arg2 = C.int(splitOffset)
 
 	var cret *C.PangoItem
-	var goret1 *Item
+	var ret1 *Item
 
 	cret = C.pango_item_split(arg0, splitIndex, splitOffset)
 
-	goret1 = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Item) {
+	ret1 = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

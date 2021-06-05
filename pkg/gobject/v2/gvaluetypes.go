@@ -18,13 +18,13 @@ import "C"
 
 func GTypeGetType() externglib.Type {
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_gtype_get_type()
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // PointerTypeRegisterStatic creates a new G_TYPE_POINTER derived type id for a
@@ -36,13 +36,13 @@ func PointerTypeRegisterStatic(name string) externglib.Type {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_pointer_type_register_static(name)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // StrdupValueContents: return a newly allocated string, which describes the
@@ -55,12 +55,12 @@ func StrdupValueContents(value *externglib.Value) string {
 	arg1 = (*C.GValue)(value.GValue)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strdup_value_contents(value)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

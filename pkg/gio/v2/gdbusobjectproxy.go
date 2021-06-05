@@ -76,13 +76,13 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObject
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GDBusObjectProxy
-	var goret1 DBusObjectProxy
+	var ret1 DBusObjectProxy
 
 	cret = C.g_dbus_object_proxy_new(connection, objectPath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectProxy)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectProxy)
 
-	return goret1
+	return ret1
 }
 
 // Connection gets the connection that @proxy is for.
@@ -92,13 +92,13 @@ func (p dBusObjectProxy) Connection() DBusConnection {
 	arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GDBusConnection
-	var goret1 DBusConnection
+	var ret1 DBusConnection
 
 	cret = C.g_dbus_object_proxy_get_connection(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return goret1
+	return ret1
 }
 
 type DBusObjectProxyPrivate struct {

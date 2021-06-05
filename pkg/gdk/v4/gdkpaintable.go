@@ -33,13 +33,13 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 	arg2 = C.int(intrinsicHeight)
 
 	var cret *C.GdkPaintable
-	var goret1 Paintable
+	var ret1 Paintable
 
 	cret = C.gdk_paintable_new_empty(intrinsicWidth, intrinsicHeight)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Paintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Paintable)
 
-	return goret1
+	return ret1
 }
 
 // PaintableOverrider contains methods that are overridable. This
@@ -217,15 +217,15 @@ func (p paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight f
 	arg3 = C.double(defaultWidth)
 	arg4 = C.double(defaultHeight)
 
-	var arg5 *C.double
+	var arg5 C.double
 	var ret5 float64
-	var arg6 *C.double
+	var arg6 C.double
 	var ret6 float64
 
 	C.gdk_paintable_compute_concrete_size(arg0, specifiedWidth, specifiedHeight, defaultWidth, defaultHeight, &arg5, &arg6)
 
-	ret5 = *C.double(arg5)
-	ret6 = *C.double(arg6)
+	ret5 = C.double(arg5)
+	ret6 = C.double(arg6)
 
 	return ret5, ret6
 }
@@ -243,13 +243,13 @@ func (p paintable) CurrentImage() Paintable {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 Paintable
+	var ret1 Paintable
 
 	cret = C.gdk_paintable_get_current_image(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Paintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Paintable)
 
-	return goret1
+	return ret1
 }
 
 // Flags: get flags for the paintable. This is oftentimes useful for
@@ -262,13 +262,13 @@ func (p paintable) Flags() PaintableFlags {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.GdkPaintableFlags
-	var goret1 PaintableFlags
+	var ret1 PaintableFlags
 
 	cret = C.gdk_paintable_get_flags(arg0)
 
-	goret1 = PaintableFlags(cret)
+	ret1 = PaintableFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
@@ -293,13 +293,13 @@ func (p paintable) IntrinsicAspectRatio() float64 {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gdk_paintable_get_intrinsic_aspect_ratio(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // IntrinsicHeight gets the preferred height the @paintable would like to be
@@ -317,13 +317,13 @@ func (p paintable) IntrinsicHeight() int {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_paintable_get_intrinsic_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // IntrinsicWidth gets the preferred width the @paintable would like to be
@@ -341,13 +341,13 @@ func (p paintable) IntrinsicWidth() int {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_paintable_get_intrinsic_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // InvalidateContents: called by implementations of Paintable to invalidate

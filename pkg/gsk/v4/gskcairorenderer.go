@@ -49,11 +49,11 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 // NewCairoRenderer constructs a class CairoRenderer.
 func NewCairoRenderer() CairoRenderer {
 	var cret C.GskCairoRenderer
-	var goret1 CairoRenderer
+	var ret1 CairoRenderer
 
 	cret = C.gsk_cairo_renderer_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoRenderer)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoRenderer)
 
-	return goret1
+	return ret1
 }

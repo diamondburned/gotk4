@@ -127,14 +127,14 @@ func MarkupEscapeText(text string, length int) string {
 	arg2 = C.gssize(length)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_markup_escape_text(text, length)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
@@ -210,13 +210,13 @@ func (c *MarkupParseContext) Element() string {
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_markup_parse_context_get_element(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -235,13 +235,13 @@ func (c *MarkupParseContext) ElementStack() *SList {
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSList
-	var goret1 *SList
+	var ret1 *SList
 
 	cret = C.g_markup_parse_context_get_element_stack(arg0)
 
-	goret1 = WrapSList(unsafe.Pointer(cret))
+	ret1 = WrapSList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Position retrieves the current line number and the number of the character on
@@ -253,15 +253,15 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 
 	C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -277,13 +277,13 @@ func (c *MarkupParseContext) UserData() interface{} {
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_markup_parse_context_get_user_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Parse: feed some data to the ParseContext.
@@ -335,13 +335,13 @@ func (c *MarkupParseContext) Pop() interface{} {
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_markup_parse_context_pop(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ref increases the reference count of @context.
@@ -351,16 +351,16 @@ func (c *MarkupParseContext) Ref() *MarkupParseContext {
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GMarkupParseContext
-	var goret1 *MarkupParseContext
+	var ret1 *MarkupParseContext
 
 	cret = C.g_markup_parse_context_ref(arg0)
 
-	goret1 = WrapMarkupParseContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *MarkupParseContext) {
+	ret1 = WrapMarkupParseContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *MarkupParseContext) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decreases the reference count of @context. When its reference count

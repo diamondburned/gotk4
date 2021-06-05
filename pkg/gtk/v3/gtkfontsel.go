@@ -102,13 +102,13 @@ func marshalFontSelection(p uintptr) (interface{}, error) {
 // NewFontSelection constructs a class FontSelection.
 func NewFontSelection() FontSelection {
 	var cret C.GtkFontSelection
-	var goret1 FontSelection
+	var ret1 FontSelection
 
 	cret = C.gtk_font_selection_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontSelection)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontSelection)
 
-	return goret1
+	return ret1
 }
 
 // Face gets the FontFace representing the selected font group details (i.e.
@@ -119,13 +119,13 @@ func (f fontSelection) Face() pango.FontFace {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoFontFace
-	var goret1 pango.FontFace
+	var ret1 pango.FontFace
 
 	cret = C.gtk_font_selection_get_face(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFace)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFace)
 
-	return goret1
+	return ret1
 }
 
 // FaceList: this returns the TreeView which lists all styles available for
@@ -136,13 +136,13 @@ func (f fontSelection) FaceList() Widget {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_get_face_list(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Family gets the FontFamily representing the selected font family.
@@ -152,13 +152,13 @@ func (f fontSelection) Family() pango.FontFamily {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoFontFamily
-	var goret1 pango.FontFamily
+	var ret1 pango.FontFamily
 
 	cret = C.gtk_font_selection_get_family(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFamily)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFamily)
 
-	return goret1
+	return ret1
 }
 
 // FamilyList: this returns the TreeView that lists font families, for
@@ -169,13 +169,13 @@ func (f fontSelection) FamilyList() Widget {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_get_family_list(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // FontName gets the currently-selected font name.
@@ -192,14 +192,14 @@ func (f fontSelection) FontName() string {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_selection_get_font_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PreviewEntry: this returns the Entry used to display the font as a
@@ -210,13 +210,13 @@ func (f fontSelection) PreviewEntry() Widget {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_get_preview_entry(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // PreviewText gets the text displayed in the preview area.
@@ -226,13 +226,13 @@ func (f fontSelection) PreviewText() string {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_selection_get_preview_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Size: the selected font size.
@@ -242,13 +242,13 @@ func (f fontSelection) Size() int {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_font_selection_get_size(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SizeEntry: this returns the Entry used to allow the user to edit the font
@@ -259,13 +259,13 @@ func (f fontSelection) SizeEntry() Widget {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_get_size_entry(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SizeList: this returns the TreeView used to list font sizes.
@@ -275,13 +275,13 @@ func (f fontSelection) SizeList() Widget {
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_get_size_list(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetFontName sets the currently-selected font.
@@ -298,13 +298,13 @@ func (f fontSelection) SetFontName(fontname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_selection_set_font_name(arg0, fontname)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetPreviewText sets the text displayed in the preview area. The @text is
@@ -378,13 +378,13 @@ func NewFontSelectionDialog(title string) FontSelectionDialog {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkFontSelectionDialog
-	var goret1 FontSelectionDialog
+	var ret1 FontSelectionDialog
 
 	cret = C.gtk_font_selection_dialog_new(title)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontSelectionDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontSelectionDialog)
 
-	return goret1
+	return ret1
 }
 
 // CancelButton gets the “Cancel” button.
@@ -394,13 +394,13 @@ func (f fontSelectionDialog) CancelButton() Widget {
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_dialog_get_cancel_button(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // FontName gets the currently-selected font name.
@@ -417,14 +417,14 @@ func (f fontSelectionDialog) FontName() string {
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_selection_dialog_get_font_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FontSelection retrieves the FontSelection widget embedded in the dialog.
@@ -434,13 +434,13 @@ func (f fontSelectionDialog) FontSelection() Widget {
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_dialog_get_font_selection(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // OkButton gets the “OK” button.
@@ -450,13 +450,13 @@ func (f fontSelectionDialog) OkButton() Widget {
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_font_selection_dialog_get_ok_button(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // PreviewText gets the text displayed in the preview area.
@@ -466,13 +466,13 @@ func (f fontSelectionDialog) PreviewText() string {
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_selection_dialog_get_preview_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetFontName sets the currently selected font.
@@ -485,13 +485,13 @@ func (f fontSelectionDialog) SetFontName(fontname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_selection_dialog_set_font_name(arg0, fontname)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetPreviewText sets the text displayed in the preview area.

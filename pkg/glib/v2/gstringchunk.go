@@ -77,14 +77,14 @@ func (c *StringChunk) Insert(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_string_chunk_insert(arg0, string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertConst adds a copy of @string to the Chunk, unless the same string has
@@ -106,14 +106,14 @@ func (c *StringChunk) InsertConst(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_string_chunk_insert_const(arg0, string)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertLen adds a copy of the first @len bytes of @string to the Chunk. The
@@ -135,12 +135,12 @@ func (c *StringChunk) InsertLen(string string, len int) string {
 	arg2 = C.gssize(len)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_string_chunk_insert_len(arg0, string, len)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

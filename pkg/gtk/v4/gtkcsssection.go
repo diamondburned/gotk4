@@ -57,16 +57,16 @@ func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSect
 	arg3 = (*C.GtkCssLocation)(unsafe.Pointer(end.Native()))
 
 	var cret *C.GtkCssSection
-	var goret1 *CSSSection
+	var ret1 *CSSSection
 
 	cret = C.gtk_css_section_new(file, start, end)
 
-	goret1 = WrapCSSSection(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *CSSSection) {
+	ret1 = WrapCSSSection(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *CSSSection) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -81,13 +81,13 @@ func (s *CSSSection) EndLocation() *CSSLocation {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkCssLocation
-	var goret1 *CSSLocation
+	var ret1 *CSSLocation
 
 	cret = C.gtk_css_section_get_end_location(arg0)
 
-	goret1 = WrapCSSLocation(unsafe.Pointer(cret))
+	ret1 = WrapCSSLocation(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // File gets the file that @section was parsed from. If no such file exists, for
@@ -99,13 +99,13 @@ func (s *CSSSection) File() gio.File {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_css_section_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // Parent gets the parent section for the given @section. The parent section is
@@ -120,13 +120,13 @@ func (s *CSSSection) Parent() *CSSSection {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkCssSection
-	var goret1 *CSSSection
+	var ret1 *CSSSection
 
 	cret = C.gtk_css_section_get_parent(arg0)
 
-	goret1 = WrapCSSSection(unsafe.Pointer(cret))
+	ret1 = WrapCSSSection(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StartLocation returns the location in the CSS document where this section
@@ -137,13 +137,13 @@ func (s *CSSSection) StartLocation() *CSSLocation {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkCssLocation
-	var goret1 *CSSLocation
+	var ret1 *CSSLocation
 
 	cret = C.gtk_css_section_get_start_location(arg0)
 
-	goret1 = WrapCSSLocation(unsafe.Pointer(cret))
+	ret1 = WrapCSSLocation(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Print prints the @section into @string in a human-readable form. This is a
@@ -166,16 +166,16 @@ func (s *CSSSection) Ref() *CSSSection {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkCssSection
-	var goret1 *CSSSection
+	var ret1 *CSSSection
 
 	cret = C.gtk_css_section_ref(arg0)
 
-	goret1 = WrapCSSSection(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *CSSSection) {
+	ret1 = WrapCSSSection(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *CSSSection) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // String prints the section into a human-readable text form using
@@ -186,14 +186,14 @@ func (s *CSSSection) String() string {
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_css_section_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Unref decrements the reference count on @section, freeing the structure if

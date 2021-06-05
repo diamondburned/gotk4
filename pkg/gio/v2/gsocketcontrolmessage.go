@@ -97,13 +97,13 @@ func (m socketControlMessage) Level() int {
 	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_socket_control_message_get_level(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MsgType returns the protocol specific type of the control message. For
@@ -114,13 +114,13 @@ func (m socketControlMessage) MsgType() int {
 	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_socket_control_message_get_msg_type(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Size returns the space required for the control message, not including
@@ -131,13 +131,13 @@ func (m socketControlMessage) Size() uint {
 	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_socket_control_message_get_size(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Serialize converts the data in the message to bytes placed in the

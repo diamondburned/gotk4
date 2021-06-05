@@ -187,13 +187,13 @@ func (s *Scanner) CurLine() uint {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_scanner_cur_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // CurPosition returns the current position in the current line (counting from
@@ -205,13 +205,13 @@ func (s *Scanner) CurPosition() uint {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_scanner_cur_position(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // CurToken gets the current token type. This is simply the @token field in the
@@ -222,13 +222,13 @@ func (s *Scanner) CurToken() TokenType {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.GTokenType
-	var goret1 TokenType
+	var ret1 TokenType
 
 	cret = C.g_scanner_cur_token(arg0)
 
-	goret1 = TokenType(cret)
+	ret1 = TokenType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Destroy frees all memory used by the #GScanner.
@@ -248,13 +248,13 @@ func (s *Scanner) EOF() bool {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_scanner_eof(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // NextToken parses the next token just like g_scanner_peek_next_token() and
@@ -266,13 +266,13 @@ func (s *Scanner) NextToken() TokenType {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.GTokenType
-	var goret1 TokenType
+	var ret1 TokenType
 
 	cret = C.g_scanner_get_next_token(arg0)
 
-	goret1 = TokenType(cret)
+	ret1 = TokenType(cret)
 
-	return goret1
+	return ret1
 }
 
 // InputFile prepares to scan a file.
@@ -311,13 +311,13 @@ func (s *Scanner) LookupSymbol(symbol string) interface{} {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_scanner_lookup_symbol(arg0, symbol)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // PeekNextToken parses the next token, without removing it from the input
@@ -337,13 +337,13 @@ func (s *Scanner) PeekNextToken() TokenType {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.GTokenType
-	var goret1 TokenType
+	var ret1 TokenType
 
 	cret = C.g_scanner_peek_next_token(arg0)
 
-	goret1 = TokenType(cret)
+	ret1 = TokenType(cret)
 
-	return goret1
+	return ret1
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
@@ -386,13 +386,13 @@ func (s *Scanner) ScopeLookupSymbol(scopeID uint, symbol string) interface{} {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_scanner_scope_lookup_symbol(arg0, scopeID, symbol)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // ScopeRemoveSymbol removes a symbol from a scope.
@@ -418,13 +418,13 @@ func (s *Scanner) SetScope(scopeID uint) uint {
 	arg1 = C.guint(scopeID)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_scanner_set_scope(arg0, scopeID)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SyncFileOffset rewinds the filedescriptor to the current buffer position and

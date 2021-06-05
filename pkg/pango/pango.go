@@ -932,13 +932,13 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 // NewCoverage constructs a class Coverage.
 func NewCoverage() Coverage {
 	var cret C.PangoCoverage
-	var goret1 Coverage
+	var ret1 Coverage
 
 	cret = C.pango_coverage_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
 
-	return goret1
+	return ret1
 }
 
 // Copy: copy an existing `PangoCoverage`.
@@ -948,13 +948,13 @@ func (c coverage) Copy() Coverage {
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoCoverage
-	var goret1 Coverage
+	var ret1 Coverage
 
 	cret = C.pango_coverage_copy(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
 
-	return goret1
+	return ret1
 }
 
 // Get: determine whether a particular index is covered by @coverage.
@@ -966,13 +966,13 @@ func (c coverage) Get(index_ int) CoverageLevel {
 	arg1 = C.int(index_)
 
 	var cret C.PangoCoverageLevel
-	var goret1 CoverageLevel
+	var ret1 CoverageLevel
 
 	cret = C.pango_coverage_get(arg0, index_)
 
-	goret1 = CoverageLevel(cret)
+	ret1 = CoverageLevel(cret)
 
-	return goret1
+	return ret1
 }
 
 // Max: set the coverage for each index in @coverage to be the max (better)
@@ -995,13 +995,13 @@ func (c coverage) Ref() Coverage {
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoCoverage
-	var goret1 Coverage
+	var ret1 Coverage
 
 	cret = C.pango_coverage_ref(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
 
-	return goret1
+	return ret1
 }
 
 // Set: modify a particular index within @coverage

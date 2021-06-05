@@ -30,16 +30,16 @@ func NewString(init string) *String {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_new(init)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *String) {
+	ret1 = WrapString(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // StringNewLen creates a new #GString with @len bytes of the @init buffer.
@@ -57,16 +57,16 @@ func StringNewLen(init string, len int) *String {
 	arg2 = C.gssize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_new_len(init, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *String) {
+	ret1 = WrapString(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewStringSized creates a new #GString, with enough space for @dfl_size bytes.
@@ -78,16 +78,16 @@ func NewStringSized(dflSize uint) *String {
 	arg1 = C.gsize(dflSize)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_sized_new(dflSize)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *String) {
+	ret1 = WrapString(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // String: the GString struct contains the public fields of a GString.
@@ -140,13 +140,13 @@ func (s *String) Append(val string) *String {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_append(arg0, val)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AppendC adds a byte onto the end of a #GString, expanding it if necessary.
@@ -158,13 +158,13 @@ func (s *String) AppendC(c byte) *String {
 	arg1 = C.gchar(c)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_append_c(arg0, c)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AppendLen appends @len bytes of @val to @string.
@@ -187,13 +187,13 @@ func (s *String) AppendLen(val string, len int) *String {
 	arg2 = C.gssize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_append_len(arg0, val, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AppendUnichar converts a Unicode character into UTF-8, and appends it to the
@@ -206,13 +206,13 @@ func (s *String) AppendUnichar(wc uint32) *String {
 	arg1 = C.gunichar(wc)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_append_unichar(arg0, wc)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // AppendURIEscaped appends @unescaped to @string, escaping any characters that
@@ -233,13 +233,13 @@ func (s *String) AppendURIEscaped(unescaped string, reservedCharsAllowed string,
 	}
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_append_uri_escaped(arg0, unescaped, reservedCharsAllowed, allowUTF8)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ASCIIDown converts all uppercase ASCII letters to lowercase ASCII letters.
@@ -249,13 +249,13 @@ func (s *String) ASCIIDown() *String {
 	arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_ascii_down(arg0)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ASCIIUp converts all lowercase ASCII letters to uppercase ASCII letters.
@@ -265,13 +265,13 @@ func (s *String) ASCIIUp() *String {
 	arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_ascii_up(arg0)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Assign copies the bytes from a string into a #GString, destroying any
@@ -286,13 +286,13 @@ func (s *String) Assign(rval string) *String {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_assign(arg0, rval)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Down converts a #GString to lowercase.
@@ -302,13 +302,13 @@ func (s *String) Down() *String {
 	arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_down(arg0)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Equal compares two strings for equality, returning true if they are equal.
@@ -321,13 +321,13 @@ func (v *String) Equal(v2 *String) bool {
 	arg1 = (*C.GString)(unsafe.Pointer(v2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_string_equal(arg0, v2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Erase removes @len bytes from a #GString, starting at position @pos. The rest
@@ -342,13 +342,13 @@ func (s *String) Erase(pos int, len int) *String {
 	arg2 = C.gssize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_erase(arg0, pos, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Free frees the memory allocated for the #GString. If @free_segment is true it
@@ -364,14 +364,14 @@ func (s *String) Free(freeSegment bool) string {
 	}
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_string_free(arg0, freeSegment)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FreeToBytes transfers ownership of the contents of @string to a newly
@@ -387,16 +387,16 @@ func (s *String) FreeToBytes() *Bytes {
 	arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_string_free_to_bytes(arg0)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Hash creates a hash code for @str; for use with Table.
@@ -406,13 +406,13 @@ func (s *String) Hash() uint {
 	arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_string_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts a copy of a string into a #GString, expanding it if necessary.
@@ -427,13 +427,13 @@ func (s *String) Insert(pos int, val string) *String {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_insert(arg0, pos, val)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertC inserts a byte into a #GString, expanding it if necessary.
@@ -447,13 +447,13 @@ func (s *String) InsertC(pos int, c byte) *String {
 	arg2 = C.gchar(c)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_insert_c(arg0, pos, c)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertLen inserts @len bytes of @val into @string at @pos.
@@ -479,13 +479,13 @@ func (s *String) InsertLen(pos int, val string, len int) *String {
 	arg3 = C.gssize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_insert_len(arg0, pos, val, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InsertUnichar converts a Unicode character into UTF-8, and insert it into the
@@ -500,13 +500,13 @@ func (s *String) InsertUnichar(pos int, wc uint32) *String {
 	arg2 = C.gunichar(wc)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_insert_unichar(arg0, pos, wc)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Overwrite overwrites part of a string, lengthening it if necessary.
@@ -521,13 +521,13 @@ func (s *String) Overwrite(pos uint, val string) *String {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_overwrite(arg0, pos, val)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // OverwriteLen overwrites part of a string, lengthening it if necessary. This
@@ -545,13 +545,13 @@ func (s *String) OverwriteLen(pos uint, val string, len int) *String {
 	arg3 = C.gssize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_overwrite_len(arg0, pos, val, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Prepend adds a string on to the start of a #GString, expanding it if
@@ -565,13 +565,13 @@ func (s *String) Prepend(val string) *String {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_prepend(arg0, val)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PrependC adds a byte onto the start of a #GString, expanding it if necessary.
@@ -583,13 +583,13 @@ func (s *String) PrependC(c byte) *String {
 	arg1 = C.gchar(c)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_prepend_c(arg0, c)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PrependLen prepends @len bytes of @val to @string.
@@ -612,13 +612,13 @@ func (s *String) PrependLen(val string, len int) *String {
 	arg2 = C.gssize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_prepend_len(arg0, val, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PrependUnichar converts a Unicode character into UTF-8, and prepends it to
@@ -631,13 +631,13 @@ func (s *String) PrependUnichar(wc uint32) *String {
 	arg1 = C.gunichar(wc)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_prepend_unichar(arg0, wc)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SetSize sets the length of a #GString. If the length is less than the current
@@ -652,13 +652,13 @@ func (s *String) SetSize(len uint) *String {
 	arg1 = C.gsize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_set_size(arg0, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Truncate cuts off the end of the GString, leaving the first @len bytes.
@@ -670,13 +670,13 @@ func (s *String) Truncate(len uint) *String {
 	arg1 = C.gsize(len)
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_truncate(arg0, len)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Up converts a #GString to uppercase.
@@ -686,11 +686,11 @@ func (s *String) Up() *String {
 	arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GString
-	var goret1 *String
+	var ret1 *String
 
 	cret = C.g_string_up(arg0)
 
-	goret1 = WrapString(unsafe.Pointer(cret))
+	ret1 = WrapString(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

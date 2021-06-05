@@ -196,13 +196,13 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 // NewCancellable constructs a class Cancellable.
 func NewCancellable() Cancellable {
 	var cret C.GCancellable
-	var goret1 Cancellable
+	var ret1 Cancellable
 
 	cret = C.g_cancellable_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cancellable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cancellable)
 
-	return goret1
+	return ret1
 }
 
 // Cancel: will set @cancellable to cancelled, and will emit the
@@ -253,13 +253,13 @@ func (c cancellable) Connect(callback gobject.Callback) uint32 {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.gulong
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.g_cancellable_connect(arg0, callback, data, dataDestroyFunc)
 
-	goret1 = C.gulong(cret)
+	ret1 = C.gulong(cret)
 
-	return goret1
+	return ret1
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -302,13 +302,13 @@ func (c cancellable) Fd() int {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_cancellable_get_fd(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
@@ -318,13 +318,13 @@ func (c cancellable) IsCancelled() bool {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_cancellable_is_cancelled(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MakePollfd creates a FD corresponding to @cancellable; this can be passed
@@ -352,13 +352,13 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_cancellable_make_pollfd(arg0, pollfd)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PopCurrent pops @cancellable off the cancellable stack (verifying that
@@ -457,16 +457,16 @@ func (c cancellable) NewSource() *glib.Source {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSource
-	var goret1 *glib.Source
+	var ret1 *glib.Source
 
 	cret = C.g_cancellable_source_new(arg0)
 
-	goret1 = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Source) {
+	ret1 = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 type CancellablePrivate struct {

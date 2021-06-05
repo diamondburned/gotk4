@@ -125,13 +125,13 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) TreeListModel {
 
 	var cret C.GtkTreeListModel
-	var goret1 TreeListModel
+	var ret1 TreeListModel
 
 	cret = C.gtk_tree_list_model_new(root, passthrough, autoexpand, createFunc, userData, userDestroy)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListModel)
 
-	return goret1
+	return ret1
 }
 
 // Autoexpand gets whether the model is set to automatically expand new rows
@@ -143,13 +143,13 @@ func (s treeListModel) Autoexpand() bool {
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_list_model_get_autoexpand(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ChildRow gets the row item corresponding to the child at index @position
@@ -167,13 +167,13 @@ func (s treeListModel) ChildRow(position uint) TreeListRow {
 	arg1 = C.guint(position)
 
 	var cret *C.GtkTreeListRow
-	var goret1 TreeListRow
+	var ret1 TreeListRow
 
 	cret = C.gtk_tree_list_model_get_child_row(arg0, position)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the root model that @self was created with.
@@ -183,13 +183,13 @@ func (s treeListModel) Model() gio.ListModel {
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_tree_list_model_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Passthrough: if this function returns false, the Model functions for
@@ -205,13 +205,13 @@ func (s treeListModel) Passthrough() bool {
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_list_model_get_passthrough(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Row gets the row object for the given row. If @position is greater than
@@ -236,13 +236,13 @@ func (s treeListModel) Row(position uint) TreeListRow {
 	arg1 = C.guint(position)
 
 	var cret *C.GtkTreeListRow
-	var goret1 TreeListRow
+	var ret1 TreeListRow
 
 	cret = C.gtk_tree_list_model_get_row(arg0, position)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
 
-	return goret1
+	return ret1
 }
 
 // SetAutoexpand: if set to true, the model will recursively expand all rows
@@ -355,13 +355,13 @@ func (s treeListRow) ChildRow(position uint) TreeListRow {
 	arg1 = C.guint(position)
 
 	var cret *C.GtkTreeListRow
-	var goret1 TreeListRow
+	var ret1 TreeListRow
 
 	cret = C.gtk_tree_list_row_get_child_row(arg0, position)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
 
-	return goret1
+	return ret1
 }
 
 // Children: if the row is expanded, gets the model holding the children of
@@ -376,13 +376,13 @@ func (s treeListRow) Children() gio.ListModel {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_tree_list_row_get_children(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Depth gets the depth of this row. Rows that correspond to items in the
@@ -396,13 +396,13 @@ func (s treeListRow) Depth() uint {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_tree_list_row_get_depth(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Expanded gets if a row is currently expanded.
@@ -412,13 +412,13 @@ func (s treeListRow) Expanded() bool {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_list_row_get_expanded(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Item gets the item corresponding to this row,
@@ -431,13 +431,13 @@ func (s treeListRow) Item() gextras.Objector {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_tree_list_row_get_item(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // Parent gets the row representing the parent for @self. That is the row
@@ -453,13 +453,13 @@ func (s treeListRow) Parent() TreeListRow {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeListRow
-	var goret1 TreeListRow
+	var ret1 TreeListRow
 
 	cret = C.gtk_tree_list_row_get_parent(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
 
-	return goret1
+	return ret1
 }
 
 // Position returns the position in the TreeListModel that @self occupies at
@@ -470,13 +470,13 @@ func (s treeListRow) Position() uint {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_tree_list_row_get_position(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsExpandable checks if a row can be expanded. This does not mean that the
@@ -490,13 +490,13 @@ func (s treeListRow) IsExpandable() bool {
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_list_row_is_expandable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetExpanded expands or collapses a row.

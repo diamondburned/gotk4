@@ -293,16 +293,16 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GFileAttributeMatcher
-	var goret1 *FileAttributeMatcher
+	var ret1 *FileAttributeMatcher
 
 	cret = C.g_file_attribute_matcher_new(attributes)
 
-	goret1 = WrapFileAttributeMatcher(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *FileAttributeMatcher) {
+	ret1 = WrapFileAttributeMatcher(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *FileAttributeMatcher) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -325,13 +325,13 @@ func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_attribute_matcher_enumerate_namespace(arg0, ns)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // EnumerateNext gets the next matched attribute from a AttributeMatcher.
@@ -341,13 +341,13 @@ func (m *FileAttributeMatcher) EnumerateNext() string {
 	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_attribute_matcher_enumerate_next(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Matches checks if an attribute will be matched by an attribute matcher. If
@@ -362,13 +362,13 @@ func (m *FileAttributeMatcher) Matches(attribute string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_attribute_matcher_matches(arg0, attribute)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MatchesOnly checks if a attribute matcher only matches a given attribute.
@@ -382,13 +382,13 @@ func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_file_attribute_matcher_matches_only(arg0, attribute)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Ref references a file attribute matcher.
@@ -398,16 +398,16 @@ func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GFileAttributeMatcher
-	var goret1 *FileAttributeMatcher
+	var ret1 *FileAttributeMatcher
 
 	cret = C.g_file_attribute_matcher_ref(arg0)
 
-	goret1 = WrapFileAttributeMatcher(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *FileAttributeMatcher) {
+	ret1 = WrapFileAttributeMatcher(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *FileAttributeMatcher) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Subtract subtracts all attributes of @subtract from @matcher and returns a
@@ -425,16 +425,16 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 	arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract.Native()))
 
 	var cret *C.GFileAttributeMatcher
-	var goret1 *FileAttributeMatcher
+	var ret1 *FileAttributeMatcher
 
 	cret = C.g_file_attribute_matcher_subtract(arg0, subtract)
 
-	goret1 = WrapFileAttributeMatcher(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *FileAttributeMatcher) {
+	ret1 = WrapFileAttributeMatcher(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *FileAttributeMatcher) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // String prints what the matcher is matching against. The format will be equal
@@ -447,14 +447,14 @@ func (m *FileAttributeMatcher) String() string {
 	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_file_attribute_matcher_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Unref unreferences @matcher. If the reference count falls below 1, the
@@ -503,13 +503,13 @@ func (e *IOExtension) Name() string {
 	arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_io_extension_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Priority gets the priority with which @extension was registered.
@@ -519,13 +519,13 @@ func (e *IOExtension) Priority() int {
 	arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_io_extension_get_priority(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Type gets the type associated with @extension.
@@ -535,13 +535,13 @@ func (e *IOExtension) Type() externglib.Type {
 	arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_io_extension_get_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // IOExtensionPoint is an opaque data structure and can only be accessed using
@@ -580,13 +580,13 @@ func (e *IOExtensionPoint) ExtensionByName(name string) *IOExtension {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GIOExtension
-	var goret1 *IOExtension
+	var ret1 *IOExtension
 
 	cret = C.g_io_extension_point_get_extension_by_name(arg0, name)
 
-	goret1 = WrapIOExtension(unsafe.Pointer(cret))
+	ret1 = WrapIOExtension(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Extensions gets a list of all extensions that implement this extension point.
@@ -597,13 +597,13 @@ func (e *IOExtensionPoint) Extensions() *glib.List {
 	arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_io_extension_point_get_extensions(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RequiredType gets the required type for @extension_point.
@@ -613,13 +613,13 @@ func (e *IOExtensionPoint) RequiredType() externglib.Type {
 	arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_io_extension_point_get_required_type(arg0)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetRequiredType sets the required type for @extension_point to @type. All
@@ -668,13 +668,13 @@ func (j *IOSchedulerJob) SendToMainloop(fn glib.SourceFunc) bool {
 	arg0 = (*C.GIOSchedulerJob)(unsafe.Pointer(j.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_io_scheduler_job_send_to_mainloop(arg0, fn, userData, notify)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SendToMainloopAsync: used from an I/O job to send a callback to be run
@@ -1086,13 +1086,13 @@ func NewResourceFromData(data *glib.Bytes) (resource *Resource, err error) {
 	arg1 = (*C.GBytes)(unsafe.Pointer(data.Native()))
 
 	var cret *C.GResource
-	var goret1 *Resource
+	var ret1 *Resource
 	var goerr error
 
 	cret = C.g_resource_new_from_data(data, &errout)
 
-	goret1 = WrapResource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Resource) {
+	ret1 = WrapResource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Resource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -1100,7 +1100,7 @@ func NewResourceFromData(data *glib.Bytes) (resource *Resource, err error) {
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -1148,7 +1148,7 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 	var goerr error
 
 	cret = C.g_resource_enumerate_children(arg0, path, lookupFlags, &errout)
@@ -1162,10 +1162,10 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -1174,7 +1174,7 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Info looks for a file at the specified @path in the resource and if found
@@ -1192,16 +1192,16 @@ func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (size uint
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var arg3 *C.gsize
+	var arg3 C.gsize
 	var ret3 uint
-	var arg4 *C.guint32
+	var arg4 C.guint32
 	var ret4 uint32
 	var goerr error
 
 	C.g_resource_get_info(arg0, path, lookupFlags, &arg3, &arg4, &errout)
 
-	ret3 = *C.gsize(arg3)
-	ret4 = *C.guint32(arg4)
+	ret3 = C.gsize(arg3)
+	ret4 = C.guint32(arg4)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -1234,13 +1234,13 @@ func (r *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) (byt
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 	var goerr error
 
 	cret = C.g_resource_lookup_data(arg0, path, lookupFlags, &errout)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Bytes) {
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -1248,7 +1248,7 @@ func (r *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) (byt
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // OpenStream looks for a file at the specified @path in the resource and
@@ -1267,18 +1267,18 @@ func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (inp
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret *C.GInputStream
-	var goret1 InputStream
+	var ret1 InputStream
 	var goerr error
 
 	cret = C.g_resource_open_stream(arg0, path, lookupFlags, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Ref: atomically increments the reference count of @resource by one. This
@@ -1289,16 +1289,16 @@ func (r *Resource) Ref() *Resource {
 	arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GResource
-	var goret1 *Resource
+	var ret1 *Resource
 
 	cret = C.g_resource_ref(arg0)
 
-	goret1 = WrapResource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Resource) {
+	ret1 = WrapResource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Resource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref: atomically decrements the reference count of @resource by one. If the
@@ -1357,16 +1357,16 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	arg4 = C.guint16(weight)
 
 	var cret *C.GSrvTarget
-	var goret1 *SrvTarget
+	var ret1 *SrvTarget
 
 	cret = C.g_srv_target_new(hostname, port, priority, weight)
 
-	goret1 = WrapSrvTarget(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SrvTarget) {
+	ret1 = WrapSrvTarget(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SrvTarget) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -1381,16 +1381,16 @@ func (t *SrvTarget) Copy() *SrvTarget {
 	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GSrvTarget
-	var goret1 *SrvTarget
+	var ret1 *SrvTarget
 
 	cret = C.g_srv_target_copy(arg0)
 
-	goret1 = WrapSrvTarget(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *SrvTarget) {
+	ret1 = WrapSrvTarget(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *SrvTarget) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free frees @target
@@ -1412,13 +1412,13 @@ func (t *SrvTarget) Hostname() string {
 	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_srv_target_get_hostname(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Port gets @target's port
@@ -1428,13 +1428,13 @@ func (t *SrvTarget) Port() uint16 {
 	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.g_srv_target_get_port(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // Priority gets @target's priority. You should not need to look at this;
@@ -1445,13 +1445,13 @@ func (t *SrvTarget) Priority() uint16 {
 	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.g_srv_target_get_priority(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // Weight gets @target's weight. You should not need to look at this; #GResolver
@@ -1462,11 +1462,11 @@ func (t *SrvTarget) Weight() uint16 {
 	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.g_srv_target_get_weight(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }

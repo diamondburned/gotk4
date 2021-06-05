@@ -123,13 +123,13 @@ func NewFrame(label string) Frame {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkFrame
-	var goret1 Frame
+	var ret1 Frame
 
 	cret = C.gtk_frame_new(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Frame)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Frame)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @frame.
@@ -139,13 +139,13 @@ func (f frame) Child() Widget {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_frame_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Label: if the frame’s label widget is a Label, returns the text in the
@@ -157,13 +157,13 @@ func (f frame) Label() string {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_frame_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // LabelAlign retrieves the X alignment of the frame’s label. See
@@ -174,13 +174,13 @@ func (f frame) LabelAlign() float32 {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_frame_get_label_align(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // LabelWidget retrieves the label widget for the frame. See
@@ -191,13 +191,13 @@ func (f frame) LabelWidget() Widget {
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_frame_get_label_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @frame.

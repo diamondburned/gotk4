@@ -153,25 +153,25 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 // NewComboBoxText constructs a class ComboBoxText.
 func NewComboBoxText() ComboBoxText {
 	var cret C.GtkComboBoxText
-	var goret1 ComboBoxText
+	var ret1 ComboBoxText
 
 	cret = C.gtk_combo_box_text_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
 
-	return goret1
+	return ret1
 }
 
 // NewComboBoxTextWithEntry constructs a class ComboBoxText.
 func NewComboBoxTextWithEntry() ComboBoxText {
 	var cret C.GtkComboBoxText
-	var goret1 ComboBoxText
+	var ret1 ComboBoxText
 
 	cret = C.gtk_combo_box_text_new_with_entry()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
 
-	return goret1
+	return ret1
 }
 
 // Append appends @text to the list of strings stored in @combo_box. If @id
@@ -218,14 +218,14 @@ func (c comboBoxText) ActiveText() string {
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_combo_box_text_get_active_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts @text at @position in the list of strings stored in

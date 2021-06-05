@@ -56,16 +56,16 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	}
 
 	var cret *C.PangoTabArray
-	var goret1 *TabArray
+	var ret1 *TabArray
 
 	cret = C.pango_tab_array_new(initialSize, positionsInPixels)
 
-	goret1 = WrapTabArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TabArray) {
+	ret1 = WrapTabArray(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TabArray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -80,16 +80,16 @@ func (s *TabArray) Copy() *TabArray {
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoTabArray
-	var goret1 *TabArray
+	var ret1 *TabArray
 
 	cret = C.pango_tab_array_copy(arg0)
 
-	goret1 = WrapTabArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TabArray) {
+	ret1 = WrapTabArray(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TabArray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free frees a tab array and associated resources.
@@ -109,13 +109,13 @@ func (t *TabArray) PositionsInPixels() bool {
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_tab_array_get_positions_in_pixels(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Size gets the number of tab stops in @tab_array.
@@ -125,13 +125,13 @@ func (t *TabArray) Size() int {
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.pango_tab_array_get_size(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Tab gets the alignment and position of a tab stop.
@@ -142,15 +142,15 @@ func (t *TabArray) Tab(tabIndex int) (alignment TabAlign, location int) {
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 	arg1 = C.gint(tabIndex)
 
-	var arg2 *C.PangoTabAlign
+	var arg2 C.PangoTabAlign
 	var ret2 *TabAlign
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
 
 	C.pango_tab_array_get_tab(arg0, tabIndex, &arg2, &arg3)
 
 	ret2 = *TabAlign(arg2)
-	ret3 = *C.gint(arg3)
+	ret3 = C.gint(arg3)
 
 	return ret2, ret3
 }

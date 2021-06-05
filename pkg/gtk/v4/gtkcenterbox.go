@@ -119,13 +119,13 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 // NewCenterBox constructs a class CenterBox.
 func NewCenterBox() CenterBox {
 	var cret C.GtkCenterBox
-	var goret1 CenterBox
+	var ret1 CenterBox
 
 	cret = C.gtk_center_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CenterBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CenterBox)
 
-	return goret1
+	return ret1
 }
 
 // BaselinePosition gets the value set by
@@ -136,13 +136,13 @@ func (s centerBox) BaselinePosition() BaselinePosition {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkBaselinePosition
-	var goret1 BaselinePosition
+	var ret1 BaselinePosition
 
 	cret = C.gtk_center_box_get_baseline_position(arg0)
 
-	goret1 = BaselinePosition(cret)
+	ret1 = BaselinePosition(cret)
 
-	return goret1
+	return ret1
 }
 
 // CenterWidget gets the center widget, or nil if there is none.
@@ -152,13 +152,13 @@ func (s centerBox) CenterWidget() Widget {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_center_box_get_center_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // EndWidget gets the end widget, or nil if there is none.
@@ -168,13 +168,13 @@ func (s centerBox) EndWidget() Widget {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_center_box_get_end_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // StartWidget gets the start widget, or nil if there is none.
@@ -184,13 +184,13 @@ func (s centerBox) StartWidget() Widget {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_center_box_get_start_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetBaselinePosition sets the baseline position of a center box.

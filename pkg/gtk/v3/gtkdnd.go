@@ -66,13 +66,13 @@ func DragGetSourceWidget(context gdk.DragContext) Widget {
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_drag_get_source_widget(context)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // DragSetIconDefault sets the icon for a particular drag to the default icon.

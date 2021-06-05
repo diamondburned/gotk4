@@ -388,13 +388,13 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 // NewBuilder constructs a class Builder.
 func NewBuilder() Builder {
 	var cret C.GtkBuilder
-	var goret1 Builder
+	var ret1 Builder
 
 	cret = C.gtk_builder_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
 
-	return goret1
+	return ret1
 }
 
 // NewBuilderFromFile constructs a class Builder.
@@ -405,13 +405,13 @@ func NewBuilderFromFile(filename string) Builder {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkBuilder
-	var goret1 Builder
+	var ret1 Builder
 
 	cret = C.gtk_builder_new_from_file(filename)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
 
-	return goret1
+	return ret1
 }
 
 // NewBuilderFromResource constructs a class Builder.
@@ -422,13 +422,13 @@ func NewBuilderFromResource(resourcePath string) Builder {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkBuilder
-	var goret1 Builder
+	var ret1 Builder
 
 	cret = C.gtk_builder_new_from_resource(resourcePath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
 
-	return goret1
+	return ret1
 }
 
 // NewBuilderFromString constructs a class Builder.
@@ -441,13 +441,13 @@ func NewBuilderFromString(string string, length int) Builder {
 	arg2 = C.gssize(length)
 
 	var cret C.GtkBuilder
-	var goret1 Builder
+	var ret1 Builder
 
 	cret = C.gtk_builder_new_from_string(string, length)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
 
-	return goret1
+	return ret1
 }
 
 // AddFromFile parses a file containing a [GtkBuilder UI
@@ -475,18 +475,18 @@ func (b builder) AddFromFile(filename string) (guint uint, err error) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_add_from_file(arg0, filename, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AddFromResource parses a resource file containing a [GtkBuilder UI
@@ -511,18 +511,18 @@ func (b builder) AddFromResource(resourcePath string) (guint uint, err error) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_add_from_resource(arg0, resourcePath, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AddFromString parses a string containing a [GtkBuilder UI
@@ -549,18 +549,18 @@ func (b builder) AddFromString(buffer string, length uint) (guint uint, err erro
 	arg2 = C.gsize(length)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_add_from_string(arg0, buffer, length, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AddObjectsFromFile parses a file containing a [GtkBuilder UI
@@ -596,18 +596,18 @@ func (b builder) AddObjectsFromFile(filename string, objectIds []string) (guint 
 	}
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_add_objects_from_file(arg0, filename, objectIds, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
@@ -643,18 +643,18 @@ func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string)
 	}
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_add_objects_from_resource(arg0, resourcePath, objectIds, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AddObjectsFromString parses a string containing a [GtkBuilder UI
@@ -692,18 +692,18 @@ func (b builder) AddObjectsFromString(buffer string, length uint, objectIds []st
 	}
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_add_objects_from_string(arg0, buffer, length, objectIds, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // ConnectSignals: this method is a simpler variation of
@@ -785,18 +785,18 @@ func (b builder) ExtendWithTemplate(widget Widget, templateType externglib.Type,
 	arg4 = C.gsize(length)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 	var goerr error
 
 	cret = C.gtk_builder_extend_with_template(arg0, widget, templateType, buffer, length, &errout)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Application gets the Application associated with the builder.
@@ -813,13 +813,13 @@ func (b builder) Application() Application {
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkApplication
-	var goret1 Application
+	var ret1 Application
 
 	cret = C.gtk_builder_get_application(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Application)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Application)
 
-	return goret1
+	return ret1
 }
 
 // Object gets the object named @name. Note that this function does not
@@ -833,13 +833,13 @@ func (b builder) Object(name string) gextras.Objector {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GObject
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_builder_get_object(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // Objects gets all objects that have been constructed by @builder. Note
@@ -851,16 +851,16 @@ func (b builder) Objects() *glib.SList {
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_builder_get_objects(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.SList) {
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // TranslationDomain gets the translation domain of @builder.
@@ -870,13 +870,13 @@ func (b builder) TranslationDomain() string {
 	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_builder_get_translation_domain(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TypeFromName looks up a type by name, using the virtual function that
@@ -891,13 +891,13 @@ func (b builder) TypeFromName(typeName string) externglib.Type {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.gtk_builder_get_type_from_name(arg0, typeName)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetApplication sets the application associated with @builder.
@@ -948,7 +948,7 @@ func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (value 
 	arg2 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var arg3 *C.GValue
+	var arg3 C.GValue
 	var ret3 *externglib.Value
 	var goerr error
 
@@ -981,7 +981,7 @@ func (b builder) ValueFromStringType(typ externglib.Type, string string) (value 
 	arg2 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var arg3 *C.GValue
+	var arg3 C.GValue
 	var ret3 *externglib.Value
 	var goerr error
 

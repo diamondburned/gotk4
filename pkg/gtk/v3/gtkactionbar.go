@@ -78,13 +78,13 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 // NewActionBar constructs a class ActionBar.
 func NewActionBar() ActionBar {
 	var cret C.GtkActionBar
-	var goret1 ActionBar
+	var ret1 ActionBar
 
 	cret = C.gtk_action_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
 
-	return goret1
+	return ret1
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
@@ -94,13 +94,13 @@ func (a actionBar) CenterWidget() Widget {
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_action_bar_get_center_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of

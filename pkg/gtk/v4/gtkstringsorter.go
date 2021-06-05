@@ -73,13 +73,13 @@ func NewStringSorter(expression Expression) StringSorter {
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	var cret C.GtkStringSorter
-	var goret1 StringSorter
+	var ret1 StringSorter
 
 	cret = C.gtk_string_sorter_new(expression)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringSorter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringSorter)
 
-	return goret1
+	return ret1
 }
 
 // Expression gets the expression that is evaluated to obtain strings from
@@ -90,13 +90,13 @@ func (s stringSorter) Expression() Expression {
 	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkExpression
-	var goret1 Expression
+	var ret1 Expression
 
 	cret = C.gtk_string_sorter_get_expression(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
 
-	return goret1
+	return ret1
 }
 
 // IgnoreCase gets whether the sorter ignores case differences.
@@ -106,13 +106,13 @@ func (s stringSorter) IgnoreCase() bool {
 	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_string_sorter_get_ignore_case(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetExpression sets the expression that is evaluated to obtain strings

@@ -132,13 +132,13 @@ func NewWindowControls(side PackType) WindowControls {
 	arg1 = (C.GtkPackType)(side)
 
 	var cret C.GtkWindowControls
-	var goret1 WindowControls
+	var ret1 WindowControls
 
 	cret = C.gtk_window_controls_new(side)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowControls)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowControls)
 
-	return goret1
+	return ret1
 }
 
 // DecorationLayout gets the decoration layout set with
@@ -149,13 +149,13 @@ func (s windowControls) DecorationLayout() string {
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_window_controls_get_decoration_layout(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Empty gets whether the widget has any window buttons.
@@ -165,13 +165,13 @@ func (s windowControls) Empty() bool {
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_window_controls_get_empty(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Side gets the side set with gtk_window_controls_set_side().
@@ -181,13 +181,13 @@ func (s windowControls) Side() PackType {
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPackType
-	var goret1 PackType
+	var ret1 PackType
 
 	cret = C.gtk_window_controls_get_side(arg0)
 
-	goret1 = PackType(cret)
+	ret1 = PackType(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetDecorationLayout sets the decoration layout for the title buttons,

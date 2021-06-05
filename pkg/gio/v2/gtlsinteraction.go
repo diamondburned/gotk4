@@ -228,18 +228,18 @@ func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellabl
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.GTlsInteractionResult
-	var goret1 TLSInteractionResult
+	var ret1 TLSInteractionResult
 	var goerr error
 
 	cret = C.g_tls_interaction_ask_password(arg0, password, cancellable, &errout)
 
-	goret1 = TLSInteractionResult(cret)
+	ret1 = TLSInteractionResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // AskPasswordAsync: run asynchronous interaction to ask the user for a
@@ -285,18 +285,18 @@ func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (tlsInteractionRes
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.GTlsInteractionResult
-	var goret1 TLSInteractionResult
+	var ret1 TLSInteractionResult
 	var goerr error
 
 	cret = C.g_tls_interaction_ask_password_finish(arg0, result, &errout)
 
-	goret1 = TLSInteractionResult(cret)
+	ret1 = TLSInteractionResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // InvokeAskPassword: invoke the interaction to ask the user for a password.
@@ -330,18 +330,18 @@ func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Canc
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.GTlsInteractionResult
-	var goret1 TLSInteractionResult
+	var ret1 TLSInteractionResult
 	var goerr error
 
 	cret = C.g_tls_interaction_invoke_ask_password(arg0, password, cancellable, &errout)
 
-	goret1 = TLSInteractionResult(cret)
+	ret1 = TLSInteractionResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // InvokeRequestCertificate: invoke the interaction to ask the user to
@@ -377,18 +377,18 @@ func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.GTlsInteractionResult
-	var goret1 TLSInteractionResult
+	var ret1 TLSInteractionResult
 	var goerr error
 
 	cret = C.g_tls_interaction_invoke_request_certificate(arg0, connection, flags, cancellable, &errout)
 
-	goret1 = TLSInteractionResult(cret)
+	ret1 = TLSInteractionResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // RequestCertificate: run synchronous interaction to ask the user to choose
@@ -422,18 +422,18 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.GTlsInteractionResult
-	var goret1 TLSInteractionResult
+	var ret1 TLSInteractionResult
 	var goerr error
 
 	cret = C.g_tls_interaction_request_certificate(arg0, connection, flags, cancellable, &errout)
 
-	goret1 = TLSInteractionResult(cret)
+	ret1 = TLSInteractionResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // RequestCertificateAsync: run asynchronous interaction to ask the user for
@@ -475,18 +475,18 @@ func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (tlsInterac
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.GTlsInteractionResult
-	var goret1 TLSInteractionResult
+	var ret1 TLSInteractionResult
 	var goerr error
 
 	cret = C.g_tls_interaction_request_certificate_finish(arg0, result, &errout)
 
-	goret1 = TLSInteractionResult(cret)
+	ret1 = TLSInteractionResult(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 type TLSInteractionPrivate struct {

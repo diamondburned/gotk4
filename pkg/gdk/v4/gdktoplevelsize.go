@@ -16,13 +16,13 @@ import "C"
 
 func ToplevelSizeGetType() externglib.Type {
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.gdk_toplevel_size_get_type()
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // ToplevelSize: the GdkToplevelSIze struct contains information that may be
@@ -64,15 +64,15 @@ func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 
 	arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gdk_toplevel_size_get_bounds(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }

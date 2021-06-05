@@ -184,13 +184,13 @@ func (d x11Display) ErrorTrapPop() int {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_x11_display_error_trap_pop(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // ErrorTrapPopIgnored pops the error trap pushed by
@@ -229,13 +229,13 @@ func (d x11Display) StartupNotificationID() string {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_x11_display_get_startup_notification_id(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UserTime returns the timestamp of the last user interaction on @display.
@@ -247,13 +247,13 @@ func (d x11Display) UserTime() uint32 {
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.gdk_x11_display_get_user_time(arg0)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // Grab: call XGrabServer() on @display. To ungrab the display again, use
@@ -344,13 +344,13 @@ func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format 
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gint
-	var goret5 int
+	var ret5 int
 
 	cret = C.gdk_x11_display_string_to_compound_text(arg0, str, &arg2, &arg3, &arg4, &arg5)
 
-	goret5 = C.gint(cret)
+	ret5 = C.gint(cret)
 
-	return ret2, ret3, ret4, ret5, goret5
+	return ret2, ret3, ret4, ret5, ret5
 }
 
 // TextPropertyToTextList: convert a text string from the encoding as it is
@@ -374,13 +374,13 @@ func (d x11Display) TextPropertyToTextList(encoding gdk.Atom, format int, text b
 	defer C.free(unsafe.Pointer(arg5))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_x11_display_text_property_to_text_list(arg0, encoding, format, text, length, list)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ungrab: ungrab @display after it has been grabbed with
@@ -403,11 +403,11 @@ func (d x11Display) UTF8ToCompoundText(str string) (encoding gdk.Atom, format in
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret5 bool
+	var ret5 bool
 
 	cret = C.gdk_x11_display_utf8_to_compound_text(arg0, str, &arg2, &arg3, &arg4, &arg5)
 
-	goret5 = C.bool(cret) != C.false
+	ret5 = C.bool(cret) != C.false
 
-	return ret2, ret3, ret4, ret5, goret5
+	return ret2, ret3, ret4, ret5, ret5
 }

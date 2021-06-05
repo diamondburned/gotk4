@@ -221,19 +221,19 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 	var goerr error
 
 	cret = C.g_resolver_lookup_by_address(arg0, address, cancellable, &errout)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupByAddressAsync begins asynchronously reverse-resolving @address to
@@ -262,19 +262,19 @@ func (r resolver) LookupByAddressFinish(result AsyncResult) (utf8 string, err er
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 	var goerr error
 
 	cret = C.g_resolver_lookup_by_address_finish(arg0, result, &errout)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupByName: synchronously resolves @hostname to determine its
@@ -310,13 +310,13 @@ func (r resolver) LookupByName(hostname string, cancellable Cancellable) (list *
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_by_name(arg0, hostname, cancellable, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -324,7 +324,7 @@ func (r resolver) LookupByName(hostname string, cancellable Cancellable) (list *
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupByNameAsync begins asynchronously resolving @hostname to determine
@@ -354,13 +354,13 @@ func (r resolver) LookupByNameFinish(result AsyncResult) (list *glib.List, err e
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_by_name_finish(arg0, result, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -368,7 +368,7 @@ func (r resolver) LookupByNameFinish(result AsyncResult) (list *glib.List, err e
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
@@ -388,13 +388,13 @@ func (r resolver) LookupByNameWithFlags(hostname string, flags ResolverNameLooku
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_by_name_with_flags(arg0, hostname, flags, cancellable, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -402,7 +402,7 @@ func (r resolver) LookupByNameWithFlags(hostname string, flags ResolverNameLooku
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
@@ -432,13 +432,13 @@ func (r resolver) LookupByNameWithFlagsFinish(result AsyncResult) (list *glib.Li
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_by_name_with_flags_finish(arg0, result, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -446,7 +446,7 @@ func (r resolver) LookupByNameWithFlagsFinish(result AsyncResult) (list *glib.Li
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupRecords: synchronously performs a DNS record lookup for the given
@@ -472,13 +472,13 @@ func (r resolver) LookupRecords(rrname string, recordType ResolverRecordType, ca
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_records(arg0, rrname, recordType, cancellable, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -486,7 +486,7 @@ func (r resolver) LookupRecords(rrname string, recordType ResolverRecordType, ca
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupRecordsAsync begins asynchronously performing a DNS lookup for the
@@ -518,13 +518,13 @@ func (r resolver) LookupRecordsFinish(result AsyncResult) (list *glib.List, err 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_records_finish(arg0, result, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -532,7 +532,7 @@ func (r resolver) LookupRecordsFinish(result AsyncResult) (list *glib.List, err 
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupService: synchronously performs a DNS SRV lookup for the given
@@ -572,13 +572,13 @@ func (r resolver) LookupService(service string, protocol string, domain string, 
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_service(arg0, service, protocol, domain, cancellable, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -586,7 +586,7 @@ func (r resolver) LookupService(service string, protocol string, domain string, 
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
@@ -616,13 +616,13 @@ func (r resolver) LookupServiceFinish(result AsyncResult) (list *glib.List, err 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 	var goerr error
 
 	cret = C.g_resolver_lookup_service_finish(arg0, result, &errout)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if errout != nil {
@@ -630,7 +630,7 @@ func (r resolver) LookupServiceFinish(result AsyncResult) (list *glib.List, err 
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SetDefault sets @resolver to be the application's default resolver

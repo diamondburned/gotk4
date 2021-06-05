@@ -126,13 +126,13 @@ func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn
 	arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	var cret C.GtkColumnViewColumn
-	var goret1 ColumnViewColumn
+	var ret1 ColumnViewColumn
 
 	cret = C.gtk_column_view_column_new(title, factory)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ColumnViewColumn)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ColumnViewColumn)
 
-	return goret1
+	return ret1
 }
 
 // ColumnView gets the column view that's currently displaying this column.
@@ -144,13 +144,13 @@ func (s columnViewColumn) ColumnView() ColumnView {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkColumnView
-	var goret1 ColumnView
+	var ret1 ColumnView
 
 	cret = C.gtk_column_view_column_get_column_view(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColumnView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColumnView)
 
-	return goret1
+	return ret1
 }
 
 // Expand returns whether this column should expand.
@@ -160,13 +160,13 @@ func (s columnViewColumn) Expand() bool {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_column_get_expand(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Factory gets the factory that's currently used to populate list items for
@@ -177,13 +177,13 @@ func (s columnViewColumn) Factory() ListItemFactory {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkListItemFactory
-	var goret1 ListItemFactory
+	var ret1 ListItemFactory
 
 	cret = C.gtk_column_view_column_get_factory(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // FixedWidth gets the fixed width of the column.
@@ -193,13 +193,13 @@ func (s columnViewColumn) FixedWidth() int {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_column_view_column_get_fixed_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // HeaderMenu gets the menu model that is used to create the context menu
@@ -210,13 +210,13 @@ func (s columnViewColumn) HeaderMenu() gio.MenuModel {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_column_view_column_get_header_menu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // Resizable returns whether this column is resizable.
@@ -226,13 +226,13 @@ func (s columnViewColumn) Resizable() bool {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_column_get_resizable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Sorter returns the sorter that is associated with the column.
@@ -242,13 +242,13 @@ func (s columnViewColumn) Sorter() Sorter {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSorter
-	var goret1 Sorter
+	var ret1 Sorter
 
 	cret = C.gtk_column_view_column_get_sorter(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
 
-	return goret1
+	return ret1
 }
 
 // Title returns the title set with gtk_column_view_column_set_title().
@@ -258,13 +258,13 @@ func (s columnViewColumn) Title() string {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_column_view_column_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Visible returns whether this column is visible.
@@ -274,13 +274,13 @@ func (s columnViewColumn) Visible() bool {
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_column_view_column_get_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetExpand sets the column to take available extra space.

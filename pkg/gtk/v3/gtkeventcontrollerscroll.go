@@ -96,13 +96,13 @@ func NewEventControllerScroll(widget Widget, flags EventControllerScrollFlags) E
 	arg2 = (C.GtkEventControllerScrollFlags)(flags)
 
 	var cret C.GtkEventControllerScroll
-	var goret1 EventControllerScroll
+	var ret1 EventControllerScroll
 
 	cret = C.gtk_event_controller_scroll_new(widget, flags)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerScroll)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerScroll)
 
-	return goret1
+	return ret1
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.
@@ -112,13 +112,13 @@ func (c eventControllerScroll) Flags() EventControllerScrollFlags {
 	arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkEventControllerScrollFlags
-	var goret1 EventControllerScrollFlags
+	var ret1 EventControllerScrollFlags
 
 	cret = C.gtk_event_controller_scroll_get_flags(arg0)
 
-	goret1 = EventControllerScrollFlags(cret)
+	ret1 = EventControllerScrollFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetFlags sets the flags conditioning scroll controller behavior.

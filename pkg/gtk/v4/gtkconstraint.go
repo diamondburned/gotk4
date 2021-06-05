@@ -143,13 +143,13 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 	arg8 = C.int(strength)
 
 	var cret C.GtkConstraint
-	var goret1 Constraint
+	var ret1 Constraint
 
 	cret = C.gtk_constraint_new(target, targetAttribute, relation, source, sourceAttribute, multiplier, constant, strength)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
 
-	return goret1
+	return ret1
 }
 
 // NewConstraintConstant constructs a class Constraint.
@@ -167,13 +167,13 @@ func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAt
 	arg5 = C.int(strength)
 
 	var cret C.GtkConstraint
-	var goret1 Constraint
+	var ret1 Constraint
 
 	cret = C.gtk_constraint_new_constant(target, targetAttribute, relation, constant, strength)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
 
-	return goret1
+	return ret1
 }
 
 // Constant retrieves the constant factor added to the source attributes'
@@ -184,13 +184,13 @@ func (c constraint) Constant() float64 {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_constraint_get_constant(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Multiplier retrieves the multiplication factor applied to the source
@@ -201,13 +201,13 @@ func (c constraint) Multiplier() float64 {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_constraint_get_multiplier(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Relation: the order relation between the terms of the @constraint.
@@ -217,13 +217,13 @@ func (c constraint) Relation() ConstraintRelation {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkConstraintRelation
-	var goret1 ConstraintRelation
+	var ret1 ConstraintRelation
 
 	cret = C.gtk_constraint_get_relation(arg0)
 
-	goret1 = ConstraintRelation(cret)
+	ret1 = ConstraintRelation(cret)
 
-	return goret1
+	return ret1
 }
 
 // Source retrieves the ConstraintTarget used as the source for @constraint.
@@ -236,13 +236,13 @@ func (c constraint) Source() ConstraintTarget {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkConstraintTarget
-	var goret1 ConstraintTarget
+	var ret1 ConstraintTarget
 
 	cret = C.gtk_constraint_get_source(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
 
-	return goret1
+	return ret1
 }
 
 // SourceAttribute retrieves the attribute of the source to be read by the
@@ -253,13 +253,13 @@ func (c constraint) SourceAttribute() ConstraintAttribute {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkConstraintAttribute
-	var goret1 ConstraintAttribute
+	var ret1 ConstraintAttribute
 
 	cret = C.gtk_constraint_get_source_attribute(arg0)
 
-	goret1 = ConstraintAttribute(cret)
+	ret1 = ConstraintAttribute(cret)
 
-	return goret1
+	return ret1
 }
 
 // Strength retrieves the strength of the constraint.
@@ -269,13 +269,13 @@ func (c constraint) Strength() int {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_constraint_get_strength(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Target retrieves the ConstraintTarget used as the target for @constraint.
@@ -288,13 +288,13 @@ func (c constraint) Target() ConstraintTarget {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkConstraintTarget
-	var goret1 ConstraintTarget
+	var ret1 ConstraintTarget
 
 	cret = C.gtk_constraint_get_target(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
 
-	return goret1
+	return ret1
 }
 
 // TargetAttribute retrieves the attribute of the target to be set by the
@@ -305,13 +305,13 @@ func (c constraint) TargetAttribute() ConstraintAttribute {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkConstraintAttribute
-	var goret1 ConstraintAttribute
+	var ret1 ConstraintAttribute
 
 	cret = C.gtk_constraint_get_target_attribute(arg0)
 
-	goret1 = ConstraintAttribute(cret)
+	ret1 = ConstraintAttribute(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsAttached checks whether the @constraint is attached to a
@@ -322,13 +322,13 @@ func (c constraint) IsAttached() bool {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_constraint_is_attached(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsConstant checks whether the @constraint describes a relation between an
@@ -339,13 +339,13 @@ func (c constraint) IsConstant() bool {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_constraint_is_constant(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsRequired checks whether the @constraint is a required relation for
@@ -356,11 +356,11 @@ func (c constraint) IsRequired() bool {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_constraint_is_required(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

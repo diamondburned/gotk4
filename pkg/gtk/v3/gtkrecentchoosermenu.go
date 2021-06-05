@@ -88,13 +88,13 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 // NewRecentChooserMenu constructs a class RecentChooserMenu.
 func NewRecentChooserMenu() RecentChooserMenu {
 	var cret C.GtkRecentChooserMenu
-	var goret1 RecentChooserMenu
+	var ret1 RecentChooserMenu
 
 	cret = C.gtk_recent_chooser_menu_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
 
-	return goret1
+	return ret1
 }
 
 // NewRecentChooserMenuForManager constructs a class RecentChooserMenu.
@@ -104,13 +104,13 @@ func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
 	arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	var cret C.GtkRecentChooserMenu
-	var goret1 RecentChooserMenu
+	var ret1 RecentChooserMenu
 
 	cret = C.gtk_recent_chooser_menu_new_for_manager(manager)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
 
-	return goret1
+	return ret1
 }
 
 // ShowNumbers returns the value set by
@@ -121,13 +121,13 @@ func (m recentChooserMenu) ShowNumbers() bool {
 	arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_recent_chooser_menu_get_show_numbers(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetShowNumbers sets whether a number should be added to the items of

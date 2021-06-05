@@ -472,13 +472,13 @@ func (s outputStream) HasPending() bool {
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_output_stream_has_pending(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsClosed checks if an output stream has already been closed.
@@ -488,13 +488,13 @@ func (s outputStream) IsClosed() bool {
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_output_stream_is_closed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsClosing checks if an output stream is being closed. This can be used
@@ -506,13 +506,13 @@ func (s outputStream) IsClosing() bool {
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_output_stream_is_closing(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
@@ -548,18 +548,18 @@ func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, 
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_output_stream_splice(arg0, source, flags, cancellable, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // SpliceAsync splices a stream asynchronously. When the operation is
@@ -586,18 +586,18 @@ func (s outputStream) SpliceFinish(result AsyncResult) (gssize int, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_output_stream_splice_finish(arg0, result, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // WriteAllAsync: request an asynchronous write of @count bytes from @buffer
@@ -640,13 +640,13 @@ func (s outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, err
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.gsize
+	var arg2 C.gsize
 	var ret2 uint
 	var goerr error
 
 	C.g_output_stream_write_all_finish(arg0, result, &arg2, &errout)
 
-	ret2 = *C.gsize(arg2)
+	ret2 = C.gsize(arg2)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -720,18 +720,18 @@ func (s outputStream) WriteBytes(bytes *glib.Bytes, cancellable Cancellable) (gs
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_output_stream_write_bytes(arg0, bytes, cancellable, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // WriteBytesAsync: this function is similar to
@@ -766,18 +766,18 @@ func (s outputStream) WriteBytesFinish(result AsyncResult) (gssize int, err erro
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_output_stream_write_bytes_finish(arg0, result, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // WriteFinish finishes a stream write operation.
@@ -790,18 +790,18 @@ func (s outputStream) WriteFinish(result AsyncResult) (gssize int, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 	var goerr error
 
 	cret = C.g_output_stream_write_finish(arg0, result, &errout)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // WritevAllAsync: request an asynchronous write of the bytes contained in
@@ -845,13 +845,13 @@ func (s outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, er
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.gsize
+	var arg2 C.gsize
 	var ret2 uint
 	var goerr error
 
 	C.g_output_stream_writev_all_finish(arg0, result, &arg2, &errout)
 
-	ret2 = *C.gsize(arg2)
+	ret2 = C.gsize(arg2)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
@@ -907,13 +907,13 @@ func (s outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, err e
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.gsize
+	var arg2 C.gsize
 	var ret2 uint
 	var goerr error
 
 	C.g_output_stream_writev_finish(arg0, result, &arg2, &errout)
 
-	ret2 = *C.gsize(arg2)
+	ret2 = C.gsize(arg2)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)

@@ -48,16 +48,16 @@ func marshalFrustum(p uintptr) (interface{}, error) {
 // NewFrustumAlloc constructs a struct Frustum.
 func NewFrustumAlloc() *Frustum {
 	var cret *C.graphene_frustum_t
-	var goret1 *Frustum
+	var ret1 *Frustum
 
 	cret = C.graphene_frustum_alloc()
 
-	goret1 = WrapFrustum(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Frustum) {
+	ret1 = WrapFrustum(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Frustum) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -75,13 +75,13 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_frustum_contains_point(arg0, point)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Equal checks whether the two given #graphene_frustum_t are equal.
@@ -93,13 +93,13 @@ func (a *Frustum) Equal(b *Frustum) bool {
 	arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_frustum_equal(arg0, b)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Free frees the resources allocated by graphene_frustum_alloc().
@@ -153,13 +153,13 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 	arg6 = (*C.graphene_plane_t)(unsafe.Pointer(p5.Native()))
 
 	var cret *C.graphene_frustum_t
-	var goret1 *Frustum
+	var ret1 *Frustum
 
 	cret = C.graphene_frustum_init(arg0, p0, p1, p2, p3, p4, p5)
 
-	goret1 = WrapFrustum(unsafe.Pointer(cret))
+	ret1 = WrapFrustum(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InitFromFrustum initializes the given #graphene_frustum_t using the clipping
@@ -172,13 +172,13 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 	arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(src.Native()))
 
 	var cret *C.graphene_frustum_t
-	var goret1 *Frustum
+	var ret1 *Frustum
 
 	cret = C.graphene_frustum_init_from_frustum(arg0, src)
 
-	goret1 = WrapFrustum(unsafe.Pointer(cret))
+	ret1 = WrapFrustum(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // InitFromMatrix initializes a #graphene_frustum_t using the given @matrix.
@@ -190,13 +190,13 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
 
 	var cret *C.graphene_frustum_t
-	var goret1 *Frustum
+	var ret1 *Frustum
 
 	cret = C.graphene_frustum_init_from_matrix(arg0, matrix)
 
-	goret1 = WrapFrustum(unsafe.Pointer(cret))
+	ret1 = WrapFrustum(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // IntersectsBox checks whether the given @box intersects a plane of a
@@ -209,13 +209,13 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(box.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_frustum_intersects_box(arg0, box)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IntersectsSphere checks whether the given @sphere intersects a plane of a
@@ -228,11 +228,11 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(sphere.Native()))
 
 	var cret C._Bool
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.graphene_frustum_intersects_sphere(arg0, sphere)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

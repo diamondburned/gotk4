@@ -189,13 +189,13 @@ func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkScale
-	var goret1 Scale
+	var ret1 Scale
 
 	cret = C.gtk_scale_new(orientation, adjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scale)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scale)
 
-	return goret1
+	return ret1
 }
 
 // NewScaleWithRange constructs a class Scale.
@@ -211,13 +211,13 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	arg4 = C.gdouble(step)
 
 	var cret C.GtkScale
-	var goret1 Scale
+	var ret1 Scale
 
 	cret = C.gtk_scale_new_with_range(orientation, min, max, step)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scale)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scale)
 
-	return goret1
+	return ret1
 }
 
 // AddMark adds a mark at @value.
@@ -261,13 +261,13 @@ func (s scale) Digits() int {
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scale_get_digits(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // DrawValue returns whether the current value is displayed as a string next
@@ -278,13 +278,13 @@ func (s scale) DrawValue() bool {
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scale_get_draw_value(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasOrigin returns whether the scale has an origin.
@@ -294,13 +294,13 @@ func (s scale) HasOrigin() bool {
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scale_get_has_origin(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Layout gets the Layout used to display the scale. The returned object is
@@ -311,13 +311,13 @@ func (s scale) Layout() pango.Layout {
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoLayout
-	var goret1 pango.Layout
+	var ret1 pango.Layout
 
 	cret = C.gtk_scale_get_layout(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
 
-	return goret1
+	return ret1
 }
 
 // LayoutOffsets obtains the coordinates where the scale will draw the
@@ -332,15 +332,15 @@ func (s scale) LayoutOffsets() (x int, y int) {
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.gint
+	var arg1 C.gint
 	var ret1 int
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 
 	C.gtk_scale_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = *C.gint(arg1)
-	ret2 = *C.gint(arg2)
+	ret1 = C.gint(arg1)
+	ret2 = C.gint(arg2)
 
 	return ret1, ret2
 }
@@ -352,13 +352,13 @@ func (s scale) ValuePos() PositionType {
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPositionType
-	var goret1 PositionType
+	var ret1 PositionType
 
 	cret = C.gtk_scale_get_value_pos(arg0)
 
-	goret1 = PositionType(cret)
+	ret1 = PositionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetDigits sets the number of decimal places that are displayed in the

@@ -255,7 +255,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	var ret2 []byte
 	var arg3 **C.gchar
 	var ret3 []byte
-	var arg4 *C.gint
+	var arg4 C.gint
 	var ret4 int
 	var goerr error
 
@@ -291,7 +291,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			ret3[i] = C.guint8(src)
 		}
 	}
-	ret4 = *C.gint(arg4)
+	ret4 = C.gint(arg4)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)

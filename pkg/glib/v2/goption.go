@@ -191,13 +191,13 @@ func (c *OptionContext) Description() string {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_option_context_get_description(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Help returns a formatted, translated help text for the given context. To
@@ -218,14 +218,14 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 	arg2 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_option_context_get_help(arg0, mainHelp, group)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HelpEnabled returns whether automatic `--help` generation is turned on for
@@ -236,13 +236,13 @@ func (c *OptionContext) HelpEnabled() bool {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_option_context_get_help_enabled(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IgnoreUnknownOptions returns whether unknown options are ignored or not. See
@@ -253,13 +253,13 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_option_context_get_ignore_unknown_options(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MainGroup returns a pointer to the main group of @context.
@@ -269,13 +269,13 @@ func (c *OptionContext) MainGroup() *OptionGroup {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GOptionGroup
-	var goret1 *OptionGroup
+	var ret1 *OptionGroup
 
 	cret = C.g_option_context_get_main_group(arg0)
 
-	goret1 = WrapOptionGroup(unsafe.Pointer(cret))
+	ret1 = WrapOptionGroup(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // StrictPosix returns whether strict POSIX code is enabled.
@@ -287,13 +287,13 @@ func (c *OptionContext) StrictPosix() bool {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_option_context_get_strict_posix(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Summary returns the summary. See g_option_context_set_summary().
@@ -303,13 +303,13 @@ func (c *OptionContext) Summary() string {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_option_context_get_summary(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetDescription adds a string to be displayed in `--help` output after the
@@ -591,16 +591,16 @@ func (g *OptionGroup) Ref() *OptionGroup {
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
 	var cret *C.GOptionGroup
-	var goret1 *OptionGroup
+	var ret1 *OptionGroup
 
 	cret = C.g_option_group_ref(arg0)
 
-	goret1 = WrapOptionGroup(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *OptionGroup) {
+	ret1 = WrapOptionGroup(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *OptionGroup) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SetTranslateFunc sets the function which is used to translate user-visible

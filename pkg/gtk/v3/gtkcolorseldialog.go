@@ -63,13 +63,13 @@ func NewColorSelectionDialog(title string) ColorSelectionDialog {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkColorSelectionDialog
-	var goret1 ColorSelectionDialog
+	var ret1 ColorSelectionDialog
 
 	cret = C.gtk_color_selection_dialog_new(title)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorSelectionDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorSelectionDialog)
 
-	return goret1
+	return ret1
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the
@@ -80,13 +80,13 @@ func (c colorSelectionDialog) ColorSelection() Widget {
 	arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_color_selection_dialog_get_color_selection(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 type ColorSelectionDialogPrivate struct {

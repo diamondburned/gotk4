@@ -152,13 +152,13 @@ func NewExpander(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret1 Expander
+	var ret1 Expander
 
 	cret = C.gtk_expander_new(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
 
-	return goret1
+	return ret1
 }
 
 // NewExpanderWithMnemonic constructs a class Expander.
@@ -169,13 +169,13 @@ func NewExpanderWithMnemonic(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret1 Expander
+	var ret1 Expander
 
 	cret = C.gtk_expander_new_with_mnemonic(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
 
-	return goret1
+	return ret1
 }
 
 // Expanded queries a Expander and returns its current state. Returns true
@@ -188,13 +188,13 @@ func (e expander) Expanded() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_expanded(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Label fetches the text from a label widget including any embedded
@@ -213,13 +213,13 @@ func (e expander) Label() string {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_expander_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // LabelFill returns whether the label widget will fill all available
@@ -230,13 +230,13 @@ func (e expander) LabelFill() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_label_fill(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LabelWidget retrieves the label widget for the frame. See
@@ -247,13 +247,13 @@ func (e expander) LabelWidget() Widget {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_expander_get_label_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel
@@ -264,13 +264,13 @@ func (e expander) ResizeToplevel() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_resize_toplevel(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Spacing gets the value set by gtk_expander_set_spacing().
@@ -280,13 +280,13 @@ func (e expander) Spacing() int {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_expander_get_spacing(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseMarkup returns whether the label’s text is interpreted as marked up
@@ -298,13 +298,13 @@ func (e expander) UseMarkup() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_use_markup(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns whether an embedded underline in the expander label
@@ -315,13 +315,13 @@ func (e expander) UseUnderline() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetExpanded sets the state of the expander. Set to true, if you want the

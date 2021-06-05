@@ -68,13 +68,13 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 // NewMultiSorter constructs a class MultiSorter.
 func NewMultiSorter() MultiSorter {
 	var cret C.GtkMultiSorter
-	var goret1 MultiSorter
+	var ret1 MultiSorter
 
 	cret = C.gtk_multi_sorter_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
 
-	return goret1
+	return ret1
 }
 
 // Append: add @sorter to @self to use for sorting at the end. @self will

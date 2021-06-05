@@ -174,13 +174,13 @@ func (r _range) Adjustment() Adjustment {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_range_get_adjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // FillLevel gets the current position of the fill level indicator.
@@ -190,13 +190,13 @@ func (r _range) FillLevel() float64 {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_range_get_fill_level(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Flippable gets the value set by gtk_range_set_flippable().
@@ -206,13 +206,13 @@ func (r _range) Flippable() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_range_get_flippable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Inverted gets the value set by gtk_range_set_inverted().
@@ -222,13 +222,13 @@ func (r _range) Inverted() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_range_get_inverted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RangeRect: this function returns the area that contains the range’s
@@ -240,7 +240,7 @@ func (r _range) RangeRect() gdk.Rectangle {
 
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.GdkRectangle
+	var arg1 C.GdkRectangle
 	var ret1 *gdk.Rectangle
 
 	C.gtk_range_get_range_rect(arg0, &arg1)
@@ -258,13 +258,13 @@ func (r _range) RestrictToFillLevel() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_range_get_restrict_to_fill_level(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RoundDigits gets the number of digits to round the value to when it
@@ -275,13 +275,13 @@ func (r _range) RoundDigits() int {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_range_get_round_digits(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowFillLevel gets whether the range displays the fill level graphically.
@@ -291,13 +291,13 @@ func (r _range) ShowFillLevel() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_range_get_show_fill_level(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SliderRange: this function returns sliders range along the long
@@ -309,15 +309,15 @@ func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_range_get_slider_range(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -331,13 +331,13 @@ func (r _range) SliderSizeFixed() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_range_get_slider_size_fixed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Value gets the current value of the range.
@@ -347,13 +347,13 @@ func (r _range) Value() float64 {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_range_get_value(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetAdjustment sets the adjustment to be used as the “model” object for

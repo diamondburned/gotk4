@@ -284,13 +284,13 @@ func (b binding) Flags() BindingFlags {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret C.GBindingFlags
-	var goret1 BindingFlags
+	var ret1 BindingFlags
 
 	cret = C.g_binding_get_flags(arg0)
 
-	goret1 = BindingFlags(cret)
+	ret1 = BindingFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // Source retrieves the #GObject instance used as the source of the binding.
@@ -300,13 +300,13 @@ func (b binding) Source() gextras.Objector {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GObject
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.g_binding_get_source(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // SourceProperty retrieves the name of the property of #GBinding:source
@@ -317,13 +317,13 @@ func (b binding) SourceProperty() string {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_binding_get_source_property(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Target retrieves the #GObject instance used as the target of the binding.
@@ -333,13 +333,13 @@ func (b binding) Target() gextras.Objector {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GObject
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.g_binding_get_target(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // TargetProperty retrieves the name of the property of #GBinding:target
@@ -350,13 +350,13 @@ func (b binding) TargetProperty() string {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_binding_get_target_property(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Unbind: explicitly releases the binding between the source and the target
@@ -506,13 +506,13 @@ func (w *WeakRef) Get() gextras.Objector {
 	arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
 
 	var cret C.gpointer
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.g_weak_ref_get(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // Init: initialise a non-statically-allocated Ref.

@@ -206,13 +206,13 @@ func marshalPopover(p uintptr) (interface{}, error) {
 // NewPopover constructs a class Popover.
 func NewPopover() Popover {
 	var cret C.GtkPopover
-	var goret1 Popover
+	var ret1 Popover
 
 	cret = C.gtk_popover_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
 
-	return goret1
+	return ret1
 }
 
 // Autohide returns whether the popover is modal.
@@ -224,13 +224,13 @@ func (p popover) Autohide() bool {
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_get_autohide(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CascadePopdown returns whether the popover will close after a modal child
@@ -241,13 +241,13 @@ func (p popover) CascadePopdown() bool {
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_get_cascade_popdown(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @popover.
@@ -257,13 +257,13 @@ func (p popover) Child() Widget {
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_popover_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // HasArrow gets whether this popover is showing an arrow pointing at the
@@ -274,13 +274,13 @@ func (p popover) HasArrow() bool {
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_get_has_arrow(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MnemonicsVisible gets the value of the Popover:mnemonics-visible
@@ -291,13 +291,13 @@ func (p popover) MnemonicsVisible() bool {
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_get_mnemonics_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Offset gets the offset previous set with gtk_popover_set_offset().
@@ -306,15 +306,15 @@ func (p popover) Offset() (xOffset int, yOffset int) {
 
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_popover_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -327,17 +327,17 @@ func (p popover) PointingTo() (rect gdk.Rectangle, ok bool) {
 
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var arg1 *C.GdkRectangle
+	var arg1 C.GdkRectangle
 	var ret1 *gdk.Rectangle
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_popover_get_pointing_to(arg0, &arg1)
 
 	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Position returns the preferred position of @popover.
@@ -347,13 +347,13 @@ func (p popover) Position() PositionType {
 	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var cret C.GtkPositionType
-	var goret1 PositionType
+	var ret1 PositionType
 
 	cret = C.gtk_popover_get_position(arg0)
 
-	goret1 = PositionType(cret)
+	ret1 = PositionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Popdown pops @popover down.This is different than a gtk_widget_hide()

@@ -217,13 +217,13 @@ func NewSurfacePopup(parent Surface, autohide bool) Surface {
 	}
 
 	var cret C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_surface_new_popup(parent, autohide)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // NewSurfaceToplevel constructs a class Surface.
@@ -233,13 +233,13 @@ func NewSurfaceToplevel(display Display) Surface {
 	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	var cret C.GdkSurface
-	var goret1 Surface
+	var ret1 Surface
 
 	cret = C.gdk_surface_new_toplevel(display)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Surface)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Surface)
 
-	return goret1
+	return ret1
 }
 
 // Beep emits a short beep associated to @surface in the appropriate
@@ -260,13 +260,13 @@ func (s surface) CreateCairoContext() CairoContext {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkCairoContext
-	var goret1 CairoContext
+	var ret1 CairoContext
 
 	cret = C.gdk_surface_create_cairo_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoContext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoContext)
 
-	return goret1
+	return ret1
 }
 
 // CreateGLContext creates a new GLContext matching the framebuffer format
@@ -284,18 +284,18 @@ func (s surface) CreateGLContext() (glContext GLContext, err error) {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkGLContext
-	var goret1 GLContext
+	var ret1 GLContext
 	var goerr error
 
 	cret = C.gdk_surface_create_gl_context(arg0, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLContext)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // CreateSimilarSurface: create a new surface that is as compatible as
@@ -319,16 +319,16 @@ func (s surface) CreateSimilarSurface(content cairo.Content, width int, height i
 	arg3 = C.int(height)
 
 	var cret *C.cairo_surface_t
-	var goret1 *cairo.Surface
+	var ret1 *cairo.Surface
 
 	cret = C.gdk_surface_create_similar_surface(arg0, content, width, height)
 
-	goret1 = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Surface) {
+	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // CreateVulkanContext creates a new VulkanContext for rendering on
@@ -342,18 +342,18 @@ func (s surface) CreateVulkanContext() (vulkanContext VulkanContext, err error) 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkVulkanContext
-	var goret1 VulkanContext
+	var ret1 VulkanContext
 	var goerr error
 
 	cret = C.gdk_surface_create_vulkan_context(arg0, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanContext)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanContext)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Destroy destroys the window system resources associated with @surface and
@@ -382,13 +382,13 @@ func (s surface) Cursor() Cursor {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_surface_get_cursor(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // DeviceCursor retrieves a Cursor pointer for the @device currently set on
@@ -403,13 +403,13 @@ func (s surface) DeviceCursor(device Device) Cursor {
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	var cret *C.GdkCursor
-	var goret1 Cursor
+	var ret1 Cursor
 
 	cret = C.gdk_surface_get_device_cursor(arg0, device)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cursor)
 
-	return goret1
+	return ret1
 }
 
 // DevicePosition obtains the current device position in doubles and
@@ -422,23 +422,23 @@ func (s surface) DevicePosition(device Device) (x float64, y float64, mask Modif
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
-	var arg3 *C.double
+	var arg3 C.double
 	var ret3 float64
-	var arg4 *C.GdkModifierType
+	var arg4 C.GdkModifierType
 	var ret4 *ModifierType
 	var cret C.gboolean
-	var goret4 bool
+	var ret4 bool
 
 	cret = C.gdk_surface_get_device_position(arg0, device, &arg2, &arg3, &arg4)
 
-	ret2 = *C.double(arg2)
-	ret3 = *C.double(arg3)
+	ret2 = C.double(arg2)
+	ret3 = C.double(arg3)
 	ret4 = *ModifierType(arg4)
-	goret4 = C.bool(cret) != C.false
+	ret4 = C.bool(cret) != C.false
 
-	return ret2, ret3, ret4, goret4
+	return ret2, ret3, ret4, ret4
 }
 
 // Display gets the Display associated with a Surface.
@@ -448,13 +448,13 @@ func (s surface) Display() Display {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 Display
+	var ret1 Display
 
 	cret = C.gdk_surface_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
 
-	return goret1
+	return ret1
 }
 
 // FrameClock gets the frame clock for the surface. The frame clock for a
@@ -466,13 +466,13 @@ func (s surface) FrameClock() FrameClock {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkFrameClock
-	var goret1 FrameClock
+	var ret1 FrameClock
 
 	cret = C.gdk_surface_get_frame_clock(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FrameClock)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FrameClock)
 
-	return goret1
+	return ret1
 }
 
 // Height returns the height of the given @surface.
@@ -485,13 +485,13 @@ func (s surface) Height() int {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_surface_get_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Mapped checks whether the surface has been mapped (with
@@ -502,13 +502,13 @@ func (s surface) Mapped() bool {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_surface_get_mapped(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ScaleFactor returns the internal scale factor that maps from surface
@@ -528,13 +528,13 @@ func (s surface) ScaleFactor() int {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_surface_get_scale_factor(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Width returns the width of the given @surface.
@@ -547,13 +547,13 @@ func (s surface) Width() int {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_surface_get_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Hide: for toplevel surfaces, withdraws them, so they will no longer be
@@ -574,13 +574,13 @@ func (s surface) IsDestroyed() bool {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_surface_is_destroyed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // QueueRender forces a Surface::render signal emission for @surface to be
@@ -704,11 +704,11 @@ func (f surface) TranslateCoordinates(to Surface, x float64, y float64) bool {
 	arg3 = *C.double(y)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_surface_translate_coordinates(arg0, to, x, y)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

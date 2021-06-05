@@ -103,16 +103,16 @@ func (m *Matrix) Copy() *Matrix {
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
 	var cret *C.PangoMatrix
-	var goret1 *Matrix
+	var ret1 *Matrix
 
 	cret = C.pango_matrix_copy(arg0)
 
-	goret1 = WrapMatrix(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Matrix) {
+	ret1 = WrapMatrix(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Matrix) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Free: free a `PangoMatrix`.
@@ -136,13 +136,13 @@ func (m *Matrix) FontScaleFactor() float64 {
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.pango_matrix_get_font_scale_factor(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // FontScaleFactors calculates the scale factor of a matrix on the width and
@@ -158,15 +158,15 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 
 	C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
 
 	return ret1, ret2
 }

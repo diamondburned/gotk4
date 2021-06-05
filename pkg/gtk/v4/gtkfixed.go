@@ -117,13 +117,13 @@ func marshalFixed(p uintptr) (interface{}, error) {
 // NewFixed constructs a class Fixed.
 func NewFixed() Fixed {
 	var cret C.GtkFixed
-	var goret1 Fixed
+	var ret1 Fixed
 
 	cret = C.gtk_fixed_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
 
-	return goret1
+	return ret1
 }
 
 // ChildPosition retrieves the translation transformation of the given child
@@ -137,15 +137,15 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
-	var arg3 *C.double
+	var arg3 C.double
 	var ret3 float64
 
 	C.gtk_fixed_get_child_position(arg0, widget, &arg2, &arg3)
 
-	ret2 = *C.double(arg2)
-	ret3 = *C.double(arg3)
+	ret2 = C.double(arg2)
+	ret3 = C.double(arg3)
 
 	return ret2, ret3
 }
@@ -160,13 +160,13 @@ func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret *C.GskTransform
-	var goret1 *gsk.Transform
+	var ret1 *gsk.Transform
 
 	cret = C.gtk_fixed_get_child_transform(arg0, widget)
 
-	goret1 = gsk.WrapTransform(unsafe.Pointer(cret))
+	ret1 = gsk.WrapTransform(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Move sets a translation transformation to the given @x and @y coordinates

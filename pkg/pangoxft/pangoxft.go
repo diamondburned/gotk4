@@ -78,13 +78,13 @@ func (f font) Glyph(wc uint32) uint {
 	arg1 = C.gunichar(wc)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.pango_xft_font_get_glyph(arg0, wc)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
@@ -98,13 +98,13 @@ func (f font) HasChar(wc uint32) bool {
 	arg1 = C.gunichar(wc)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.pango_xft_font_has_char(arg0, wc)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UnlockFace releases a font previously obtained with

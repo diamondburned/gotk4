@@ -186,13 +186,13 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 // NewGLArea constructs a class GLArea.
 func NewGLArea() GLArea {
 	var cret C.GtkGLArea
-	var goret1 GLArea
+	var ret1 GLArea
 
 	cret = C.gtk_gl_area_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLArea)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLArea)
 
-	return goret1
+	return ret1
 }
 
 // AttachBuffers ensures that the @area framebuffer object is made the
@@ -216,13 +216,13 @@ func (a glArea) AutoRender() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_gl_area_get_auto_render(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Context retrieves the GLContext used by @area.
@@ -232,13 +232,13 @@ func (a glArea) Context() gdk.GLContext {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GdkGLContext
-	var goret1 gdk.GLContext
+	var ret1 gdk.GLContext
 
 	cret = C.gtk_gl_area_get_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.GLContext)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.GLContext)
 
-	return goret1
+	return ret1
 }
 
 // Error gets the current error set on the @area.
@@ -248,13 +248,13 @@ func (a glArea) Error() *glib.Error {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GError
-	var goret1 *glib.Error
+	var ret1 *glib.Error
 
 	cret = C.gtk_gl_area_get_error(arg0)
 
-	goret1 = glib.WrapError(unsafe.Pointer(cret))
+	ret1 = glib.WrapError(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HasDepthBuffer returns whether the area has a depth buffer.
@@ -264,13 +264,13 @@ func (a glArea) HasDepthBuffer() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_gl_area_get_has_depth_buffer(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasStencilBuffer returns whether the area has a stencil buffer.
@@ -280,13 +280,13 @@ func (a glArea) HasStencilBuffer() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_gl_area_get_has_stencil_buffer(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RequiredVersion retrieves the required version of OpenGL set using
@@ -296,15 +296,15 @@ func (a glArea) RequiredVersion() (major int, minor int) {
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_gl_area_get_required_version(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -316,13 +316,13 @@ func (a glArea) UseES() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_gl_area_get_use_es(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MakeCurrent ensures that the GLContext used by @area is associated with

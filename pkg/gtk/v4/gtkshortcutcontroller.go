@@ -139,13 +139,13 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 // NewShortcutController constructs a class ShortcutController.
 func NewShortcutController() ShortcutController {
 	var cret C.GtkShortcutController
-	var goret1 ShortcutController
+	var ret1 ShortcutController
 
 	cret = C.gtk_shortcut_controller_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
 
-	return goret1
+	return ret1
 }
 
 // NewShortcutControllerForModel constructs a class ShortcutController.
@@ -155,13 +155,13 @@ func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkShortcutController
-	var goret1 ShortcutController
+	var ret1 ShortcutController
 
 	cret = C.gtk_shortcut_controller_new_for_model(model)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
 
-	return goret1
+	return ret1
 }
 
 // AddShortcut adds @shortcut to the list of shortcuts handled by @self.
@@ -187,13 +187,13 @@ func (s shortcutController) MnemonicsModifiers() gdk.ModifierType {
 	arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkModifierType
-	var goret1 gdk.ModifierType
+	var ret1 gdk.ModifierType
 
 	cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(arg0)
 
-	goret1 = gdk.ModifierType(cret)
+	ret1 = gdk.ModifierType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Scope gets the scope for when this controller activates its shortcuts.
@@ -204,13 +204,13 @@ func (s shortcutController) Scope() ShortcutScope {
 	arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkShortcutScope
-	var goret1 ShortcutScope
+	var ret1 ShortcutScope
 
 	cret = C.gtk_shortcut_controller_get_scope(arg0)
 
-	goret1 = ShortcutScope(cret)
+	ret1 = ShortcutScope(cret)
 
-	return goret1
+	return ret1
 }
 
 // RemoveShortcut removes @shortcut from the list of shortcuts handled by

@@ -45,18 +45,18 @@ func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConn
 	arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
 	var cret *C.GDatagramBased
-	var goret1 DTLSClientConnection
+	var ret1 DTLSClientConnection
 	var goerr error
 
 	cret = C.g_dtls_client_connection_new(baseSocket, serverIdentity, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSClientConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSClientConnection)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
@@ -123,16 +123,16 @@ func (c dtlsClientConnection) AcceptedCAS() *glib.List {
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_dtls_client_connection_get_accepted_cas(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // ServerIdentity gets @conn's expected server identity
@@ -142,13 +142,13 @@ func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketConnectable
-	var goret1 SocketConnectable
+	var ret1 SocketConnectable
 
 	cret = C.g_dtls_client_connection_get_server_identity(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
 
-	return goret1
+	return ret1
 }
 
 // ValidationFlags gets @conn's validation flags
@@ -158,13 +158,13 @@ func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsCertificateFlags
-	var goret1 TLSCertificateFlags
+	var ret1 TLSCertificateFlags
 
 	cret = C.g_dtls_client_connection_get_validation_flags(arg0)
 
-	goret1 = TLSCertificateFlags(cret)
+	ret1 = TLSCertificateFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used

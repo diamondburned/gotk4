@@ -69,13 +69,13 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 // NewRecentChooserWidget constructs a class RecentChooserWidget.
 func NewRecentChooserWidget() RecentChooserWidget {
 	var cret C.GtkRecentChooserWidget
-	var goret1 RecentChooserWidget
+	var ret1 RecentChooserWidget
 
 	cret = C.gtk_recent_chooser_widget_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 // NewRecentChooserWidgetForManager constructs a class RecentChooserWidget.
@@ -85,13 +85,13 @@ func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget
 	arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	var cret C.GtkRecentChooserWidget
-	var goret1 RecentChooserWidget
+	var ret1 RecentChooserWidget
 
 	cret = C.gtk_recent_chooser_widget_new_for_manager(manager)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 type RecentChooserWidgetPrivate struct {

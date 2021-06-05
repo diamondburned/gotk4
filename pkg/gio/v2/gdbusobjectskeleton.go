@@ -95,13 +95,13 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GDBusObjectSkeleton
-	var goret1 DBusObjectSkeleton
+	var ret1 DBusObjectSkeleton
 
 	cret = C.g_dbus_object_skeleton_new(objectPath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectSkeleton)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectSkeleton)
 
-	return goret1
+	return ret1
 }
 
 // AddInterface adds @interface_ to @object.

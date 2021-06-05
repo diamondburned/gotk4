@@ -100,13 +100,13 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	var cret C.GtkViewport
-	var goret1 Viewport
+	var ret1 Viewport
 
 	cret = C.gtk_viewport_new(hadjustment, vadjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
 
-	return goret1
+	return ret1
 }
 
 // BinWindow gets the bin window of the Viewport.
@@ -116,13 +116,13 @@ func (v viewport) BinWindow() gdk.Window {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 gdk.Window
+	var ret1 gdk.Window
 
 	cret = C.gtk_viewport_get_bin_window(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
 
-	return goret1
+	return ret1
 }
 
 // HAdjustment returns the horizontal adjustment of the viewport.
@@ -132,13 +132,13 @@ func (v viewport) HAdjustment() Adjustment {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_viewport_get_hadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // ShadowType gets the shadow type of the Viewport. See
@@ -149,13 +149,13 @@ func (v viewport) ShadowType() ShadowType {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret C.GtkShadowType
-	var goret1 ShadowType
+	var ret1 ShadowType
 
 	cret = C.gtk_viewport_get_shadow_type(arg0)
 
-	goret1 = ShadowType(cret)
+	ret1 = ShadowType(cret)
 
-	return goret1
+	return ret1
 }
 
 // VAdjustment returns the vertical adjustment of the viewport.
@@ -165,13 +165,13 @@ func (v viewport) VAdjustment() Adjustment {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_viewport_get_vadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // ViewWindow gets the view window of the Viewport.
@@ -181,13 +181,13 @@ func (v viewport) ViewWindow() gdk.Window {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 gdk.Window
+	var ret1 gdk.Window
 
 	cret = C.gtk_viewport_get_view_window(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
 
-	return goret1
+	return ret1
 }
 
 // SetHAdjustment sets the horizontal adjustment of the viewport.

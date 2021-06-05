@@ -36,13 +36,13 @@ func SelectionOwnerGet(selection Atom) Window {
 	arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_selection_owner_get(selection)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // SelectionOwnerGetForDisplay: determine the owner of the given selection.
@@ -58,13 +58,13 @@ func SelectionOwnerGetForDisplay(display Display, selection Atom) Window {
 	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_selection_owner_get_for_display(display, selection)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // SelectionOwnerSet sets the owner of the given selection.
@@ -82,13 +82,13 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_selection_owner_set(owner, selection, time_, sendEvent)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectionOwnerSetForDisplay sets the Window @owner as the current owner of
@@ -109,13 +109,13 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 	}
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_selection_owner_set_for_display(display, owner, selection, time_, sendEvent)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectionPropertyGet retrieves selection data that was stored by the
@@ -134,13 +134,13 @@ func SelectionPropertyGet(requestor Window, data byte, propType *Atom, propForma
 	arg4 = *C.gint(propFormat)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_selection_property_get(requestor, data, propType, propFormat)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectionSendNotify sends a response to SelectionRequest event.

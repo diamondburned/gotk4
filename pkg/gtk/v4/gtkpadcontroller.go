@@ -111,13 +111,13 @@ func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController {
 	arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
 	var cret C.GtkPadController
-	var goret1 PadController
+	var ret1 PadController
 
 	cret = C.gtk_pad_controller_new(group, pad)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
 
-	return goret1
+	return ret1
 }
 
 // SetAction adds an individual action to @controller. This action will only

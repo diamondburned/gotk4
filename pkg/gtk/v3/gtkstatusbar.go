@@ -109,13 +109,13 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 // NewStatusbar constructs a class Statusbar.
 func NewStatusbar() Statusbar {
 	var cret C.GtkStatusbar
-	var goret1 Statusbar
+	var ret1 Statusbar
 
 	cret = C.gtk_statusbar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
 
-	return goret1
+	return ret1
 }
 
 // ContextID returns a new context identifier, given a description of the
@@ -129,13 +129,13 @@ func (s statusbar) ContextID(contextDescription string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_statusbar_get_context_id(arg0, contextDescription)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MessageArea retrieves the box containing the label widget.
@@ -145,13 +145,13 @@ func (s statusbar) MessageArea() Box {
 	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Box
+	var ret1 Box
 
 	cret = C.gtk_statusbar_get_message_area(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
 
-	return goret1
+	return ret1
 }
 
 // Pop removes the first message in the Statusbar’s stack with the given
@@ -181,13 +181,13 @@ func (s statusbar) Push(contextID uint, text string) uint {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_statusbar_push(arg0, contextID, text)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The

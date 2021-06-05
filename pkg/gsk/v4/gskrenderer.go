@@ -90,13 +90,13 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	var cret C.GskRenderer
-	var goret1 Renderer
+	var ret1 Renderer
 
 	cret = C.gsk_renderer_new_for_surface(surface)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Renderer)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Renderer)
 
-	return goret1
+	return ret1
 }
 
 // Surface retrieves the Surface set using gsk_renderer_realize(). If the
@@ -107,13 +107,13 @@ func (r renderer) Surface() gdk.Surface {
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GdkSurface
-	var goret1 gdk.Surface
+	var ret1 gdk.Surface
 
 	cret = C.gsk_renderer_get_surface(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
 
-	return goret1
+	return ret1
 }
 
 // IsRealized checks whether the @renderer is realized or not.
@@ -123,13 +123,13 @@ func (r renderer) IsRealized() bool {
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gsk_renderer_is_realized(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Realize creates the resources needed by the @renderer to render the scene
@@ -193,13 +193,13 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
 
 	var cret *C.GdkTexture
-	var goret1 gdk.Texture
+	var ret1 gdk.Texture
 
 	cret = C.gsk_renderer_render_texture(arg0, root, viewport)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Texture)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Texture)
 
-	return goret1
+	return ret1
 }
 
 // Unrealize releases all the resources created by gsk_renderer_realize().

@@ -91,13 +91,13 @@ func NewBookmarkList(filename string, attributes string) BookmarkList {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkBookmarkList
-	var goret1 BookmarkList
+	var ret1 BookmarkList
 
 	cret = C.gtk_bookmark_list_new(filename, attributes)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BookmarkList)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BookmarkList)
 
-	return goret1
+	return ret1
 }
 
 // Attributes gets the attributes queried on the children.
@@ -107,13 +107,13 @@ func (s bookmarkList) Attributes() string {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_bookmark_list_get_attributes(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Filename returns the filename of the bookmark file that this list is
@@ -124,13 +124,13 @@ func (s bookmarkList) Filename() string {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_bookmark_list_get_filename(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IOPriority gets the IO priority set via
@@ -141,13 +141,13 @@ func (s bookmarkList) IOPriority() int {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_bookmark_list_get_io_priority(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsLoading returns true if the files are currently being loaded.
@@ -160,13 +160,13 @@ func (s bookmarkList) IsLoading() bool {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_bookmark_list_is_loading(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetAttributes sets the @attributes to be enumerated and starts the

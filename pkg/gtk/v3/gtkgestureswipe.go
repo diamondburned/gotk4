@@ -71,13 +71,13 @@ func NewGestureSwipe(widget Widget) GestureSwipe {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.GtkGestureSwipe
-	var goret1 GestureSwipe
+	var ret1 GestureSwipe
 
 	cret = C.gtk_gesture_swipe_new(widget)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureSwipe)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureSwipe)
 
-	return goret1
+	return ret1
 }
 
 // Velocity: if the gesture is recognized, this function returns true and
@@ -88,18 +88,18 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 
 	arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
 
-	var arg1 *C.gdouble
+	var arg1 C.gdouble
 	var ret1 float64
-	var arg2 *C.gdouble
+	var arg2 C.gdouble
 	var ret2 float64
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_gesture_swipe_get_velocity(arg0, &arg1, &arg2)
 
-	ret1 = *C.gdouble(arg1)
-	ret2 = *C.gdouble(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret1 = C.gdouble(arg1)
+	ret2 = C.gdouble(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }

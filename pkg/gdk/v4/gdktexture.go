@@ -72,13 +72,13 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	var cret C.GdkTexture
-	var goret1 Texture
+	var ret1 Texture
 
 	cret = C.gdk_texture_new_for_pixbuf(pixbuf)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
 
-	return goret1
+	return ret1
 }
 
 // NewTextureFromFile constructs a class Texture.
@@ -89,18 +89,18 @@ func NewTextureFromFile(file gio.File) (texture Texture, err error) {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GdkTexture
-	var goret1 Texture
+	var ret1 Texture
 	var goerr error
 
 	cret = C.gdk_texture_new_from_file(file, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NewTextureFromResource constructs a class Texture.
@@ -111,13 +111,13 @@ func NewTextureFromResource(resourcePath string) Texture {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GdkTexture
-	var goret1 Texture
+	var ret1 Texture
 
 	cret = C.gdk_texture_new_from_resource(resourcePath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
 
-	return goret1
+	return ret1
 }
 
 // Height returns the height of the @texture, in pixels.
@@ -127,13 +127,13 @@ func (t texture) Height() int {
 	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_texture_get_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Width returns the width of @texture, in pixels.
@@ -143,13 +143,13 @@ func (t texture) Width() int {
 	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gdk_texture_get_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SaveToPng: store the given @texture to the @filename as a PNG file.
@@ -167,11 +167,11 @@ func (t texture) SaveToPng(filename string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_texture_save_to_png(arg0, filename)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

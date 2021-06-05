@@ -90,16 +90,16 @@ func marshalTextAttributes(p uintptr) (interface{}, error) {
 // NewTextAttributes constructs a struct TextAttributes.
 func NewTextAttributes() *TextAttributes {
 	var cret *C.GtkTextAttributes
-	var goret1 *TextAttributes
+	var ret1 *TextAttributes
 
 	cret = C.gtk_text_attributes_new()
 
-	goret1 = WrapTextAttributes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TextAttributes) {
+	ret1 = WrapTextAttributes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TextAttributes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -189,16 +189,16 @@ func (s *TextAttributes) Copy() *TextAttributes {
 	arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTextAttributes
-	var goret1 *TextAttributes
+	var ret1 *TextAttributes
 
 	cret = C.gtk_text_attributes_copy(arg0)
 
-	goret1 = WrapTextAttributes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TextAttributes) {
+	ret1 = WrapTextAttributes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TextAttributes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // CopyValues copies the values from @src to @dest so that @dest has the same
@@ -220,16 +220,16 @@ func (v *TextAttributes) Ref() *TextAttributes {
 	arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GtkTextAttributes
-	var goret1 *TextAttributes
+	var ret1 *TextAttributes
 
 	cret = C.gtk_text_attributes_ref(arg0)
 
-	goret1 = WrapTextAttributes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TextAttributes) {
+	ret1 = WrapTextAttributes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TextAttributes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decrements the reference count on @values, freeing the structure if the

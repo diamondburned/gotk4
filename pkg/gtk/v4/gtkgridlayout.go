@@ -107,13 +107,13 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 // NewGridLayout constructs a class GridLayout.
 func NewGridLayout() GridLayout {
 	var cret C.GtkGridLayout
-	var goret1 GridLayout
+	var ret1 GridLayout
 
 	cret = C.gtk_grid_layout_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GridLayout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GridLayout)
 
-	return goret1
+	return ret1
 }
 
 // BaselineRow retrieves the row set with
@@ -124,13 +124,13 @@ func (g gridLayout) BaselineRow() int {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_grid_layout_get_baseline_row(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ColumnHomogeneous checks whether all columns of @grid should have the
@@ -141,13 +141,13 @@ func (g gridLayout) ColumnHomogeneous() bool {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_grid_layout_get_column_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ColumnSpacing retrieves the spacing set with
@@ -158,13 +158,13 @@ func (g gridLayout) ColumnSpacing() uint {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_grid_layout_get_column_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // RowBaselinePosition returns the baseline position of @row as set by
@@ -178,13 +178,13 @@ func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
 	arg1 = C.int(row)
 
 	var cret C.GtkBaselinePosition
-	var goret1 BaselinePosition
+	var ret1 BaselinePosition
 
 	cret = C.gtk_grid_layout_get_row_baseline_position(arg0, row)
 
-	goret1 = BaselinePosition(cret)
+	ret1 = BaselinePosition(cret)
 
-	return goret1
+	return ret1
 }
 
 // RowHomogeneous checks whether all rows of @grid should have the same
@@ -195,13 +195,13 @@ func (g gridLayout) RowHomogeneous() bool {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_grid_layout_get_row_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RowSpacing retrieves the spacing set with
@@ -212,13 +212,13 @@ func (g gridLayout) RowSpacing() uint {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_grid_layout_get_row_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetBaselineRow sets which row defines the global baseline for the entire
@@ -355,13 +355,13 @@ func (c gridLayoutChild) Column() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_grid_layout_child_get_column(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ColumnSpan retrieves the number of columns that @child spans to.
@@ -371,13 +371,13 @@ func (c gridLayoutChild) ColumnSpan() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_grid_layout_child_get_column_span(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Row retrieves the row number to which @child attaches its top side.
@@ -387,13 +387,13 @@ func (c gridLayoutChild) Row() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_grid_layout_child_get_row(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // RowSpan retrieves the number of rows that @child spans to.
@@ -403,13 +403,13 @@ func (c gridLayoutChild) RowSpan() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_grid_layout_child_get_row_span(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetColumn sets the column number to attach the left side of @child.

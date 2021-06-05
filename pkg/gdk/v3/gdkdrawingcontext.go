@@ -85,13 +85,13 @@ func (c drawingContext) CairoContext() *cairo.Context {
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.cairo_t
-	var goret1 *cairo.Context
+	var ret1 *cairo.Context
 
 	cret = C.gdk_drawing_context_get_cairo_context(arg0)
 
-	goret1 = cairo.WrapContext(unsafe.Pointer(cret))
+	ret1 = cairo.WrapContext(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Clip retrieves a copy of the clip region used when creating the @context.
@@ -101,16 +101,16 @@ func (c drawingContext) Clip() *cairo.Region {
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.cairo_region_t
-	var goret1 *cairo.Region
+	var ret1 *cairo.Region
 
 	cret = C.gdk_drawing_context_get_clip(arg0)
 
-	goret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *cairo.Region) {
+	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Window retrieves the window that created the drawing @context.
@@ -120,13 +120,13 @@ func (c drawingContext) Window() Window {
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkWindow
-	var goret1 Window
+	var ret1 Window
 
 	cret = C.gdk_drawing_context_get_window(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
 
-	return goret1
+	return ret1
 }
 
 // IsValid checks whether the given DrawingContext is valid.
@@ -136,11 +136,11 @@ func (c drawingContext) IsValid() bool {
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_drawing_context_is_valid(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

@@ -36,13 +36,13 @@ func init() {
 // ProxyResolverGetDefault gets the default Resolver for the system.
 func ProxyResolverGetDefault() ProxyResolver {
 	var cret *C.GProxyResolver
-	var goret1 ProxyResolver
+	var ret1 ProxyResolver
 
 	cret = C.g_proxy_resolver_get_default()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProxyResolver)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProxyResolver)
 
-	return goret1
+	return ret1
 }
 
 // ProxyResolverOverrider contains methods that are overridable. This
@@ -116,13 +116,13 @@ func (r proxyResolver) IsSupported() bool {
 	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_proxy_resolver_is_supported(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Lookup looks into the system proxy configuration to determine what proxy,
@@ -149,7 +149,7 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 	var goerr error
 
 	cret = C.g_proxy_resolver_lookup(arg0, uri, cancellable, &errout)
@@ -163,10 +163,10 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -175,7 +175,7 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
@@ -200,7 +200,7 @@ func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err err
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 	var goerr error
 
 	cret = C.g_proxy_resolver_lookup_finish(arg0, result, &errout)
@@ -214,10 +214,10 @@ func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err err
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -226,5 +226,5 @@ func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err err
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }

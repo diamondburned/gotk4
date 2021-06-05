@@ -252,13 +252,13 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 // NewConstraintLayout constructs a class ConstraintLayout.
 func NewConstraintLayout() ConstraintLayout {
 	var cret C.GtkConstraintLayout
-	var goret1 ConstraintLayout
+	var ret1 ConstraintLayout
 
 	cret = C.gtk_constraint_layout_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConstraintLayout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConstraintLayout)
 
-	return goret1
+	return ret1
 }
 
 // AddConstraint adds a Constraint to the layout manager.
@@ -313,13 +313,13 @@ func (l constraintLayout) ObserveConstraints() gio.ListModel {
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_constraint_layout_observe_constraints(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // ObserveGuides returns a Model to track the guides that are part of
@@ -337,13 +337,13 @@ func (l constraintLayout) ObserveGuides() gio.ListModel {
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_constraint_layout_observe_guides(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // RemoveAllConstraints removes all constraints from the layout manager.

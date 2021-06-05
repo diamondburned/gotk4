@@ -54,11 +54,11 @@ func (m waylandMonitor) WlOutput() interface{} {
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret *C.wl_output
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_monitor_get_wl_output(arg0)
 
-	goret1 = *C.wl_output(cret)
+	ret1 = *C.wl_output(cret)
 
-	return goret1
+	return ret1
 }

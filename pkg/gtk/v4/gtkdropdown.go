@@ -131,13 +131,13 @@ func NewDropDown(model gio.ListModel, expression Expression) DropDown {
 	arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
 	var cret C.GtkDropDown
-	var goret1 DropDown
+	var ret1 DropDown
 
 	cret = C.gtk_drop_down_new(model, expression)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DropDown)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DropDown)
 
-	return goret1
+	return ret1
 }
 
 // NewDropDownFromStrings constructs a class DropDown.
@@ -158,13 +158,13 @@ func NewDropDownFromStrings(strings []string) DropDown {
 	}
 
 	var cret C.GtkDropDown
-	var goret1 DropDown
+	var ret1 DropDown
 
 	cret = C.gtk_drop_down_new_from_strings(strings)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DropDown)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DropDown)
 
-	return goret1
+	return ret1
 }
 
 // EnableSearch returns whether search is enabled.
@@ -174,13 +174,13 @@ func (s dropDown) EnableSearch() bool {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_drop_down_get_enable_search(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Expression gets the expression set with gtk_drop_down_set_expression().
@@ -190,13 +190,13 @@ func (s dropDown) Expression() Expression {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkExpression
-	var goret1 Expression
+	var ret1 Expression
 
 	cret = C.gtk_drop_down_get_expression(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
 
-	return goret1
+	return ret1
 }
 
 // Factory gets the factory that's currently used to populate list items.
@@ -210,13 +210,13 @@ func (s dropDown) Factory() ListItemFactory {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkListItemFactory
-	var goret1 ListItemFactory
+	var ret1 ListItemFactory
 
 	cret = C.gtk_drop_down_get_factory(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // ListFactory gets the factory that's currently used to populate list items
@@ -227,13 +227,13 @@ func (s dropDown) ListFactory() ListItemFactory {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkListItemFactory
-	var goret1 ListItemFactory
+	var ret1 ListItemFactory
 
 	cret = C.gtk_drop_down_get_list_factory(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
 
-	return goret1
+	return ret1
 }
 
 // Model gets the model that provides the displayed items.
@@ -243,13 +243,13 @@ func (s dropDown) Model() gio.ListModel {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_drop_down_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Selected gets the position of the selected item.
@@ -259,13 +259,13 @@ func (s dropDown) Selected() uint {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_drop_down_get_selected(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectedItem gets the selected item. If no item is selected, nil is
@@ -276,13 +276,13 @@ func (s dropDown) SelectedItem() gextras.Objector {
 	arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 gextras.Objector
+	var ret1 gextras.Objector
 
 	cret = C.gtk_drop_down_get_selected_item(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 
-	return goret1
+	return ret1
 }
 
 // SetEnableSearch sets whether a search entry will be shown in the popup

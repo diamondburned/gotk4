@@ -118,13 +118,13 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GDBusObjectManagerServer
-	var goret1 DBusObjectManagerServer
+	var ret1 DBusObjectManagerServer
 
 	cret = C.g_dbus_object_manager_server_new(objectPath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerServer)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerServer)
 
-	return goret1
+	return ret1
 }
 
 // Export exports @object on @manager.
@@ -168,13 +168,13 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 	arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GDBusConnection
-	var goret1 DBusConnection
+	var ret1 DBusConnection
 
 	cret = C.g_dbus_object_manager_server_get_connection(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 
-	return goret1
+	return ret1
 }
 
 // IsExported returns whether @object is currently exported on @manager.
@@ -186,13 +186,13 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_dbus_object_manager_server_is_exported(arg0, object)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetConnection exports all objects managed by @manager on @connection. If
@@ -221,13 +221,13 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_dbus_object_manager_server_unexport(arg0, objectPath)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 type DBusObjectManagerServerPrivate struct {

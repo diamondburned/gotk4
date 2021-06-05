@@ -99,16 +99,16 @@ func (v volumeMonitor) ConnectedDrives() *glib.List {
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_volume_monitor_get_connected_drives(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
@@ -121,13 +121,13 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GMount
-	var goret1 Mount
+	var ret1 Mount
 
 	cret = C.g_volume_monitor_get_mount_for_uuid(arg0, uuid)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
 
-	return goret1
+	return ret1
 }
 
 // Mounts gets a list of the mounts on the system.
@@ -140,16 +140,16 @@ func (v volumeMonitor) Mounts() *glib.List {
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_volume_monitor_get_mounts(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // VolumeForUUID finds a #GVolume object by its UUID (see
@@ -163,13 +163,13 @@ func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVolume
-	var goret1 Volume
+	var ret1 Volume
 
 	cret = C.g_volume_monitor_get_volume_for_uuid(arg0, uuid)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Volume)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Volume)
 
-	return goret1
+	return ret1
 }
 
 // Volumes gets a list of the volumes on the system.
@@ -182,14 +182,14 @@ func (v volumeMonitor) Volumes() *glib.List {
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.g_volume_monitor_get_volumes(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }

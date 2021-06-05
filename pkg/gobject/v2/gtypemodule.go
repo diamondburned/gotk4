@@ -178,13 +178,13 @@ func (m typeModule) RegisterEnum(name string, constStaticValues *EnumValue) exte
 	arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_type_module_register_enum(arg0, name, constStaticValues)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // RegisterFlags looks up or registers a flags type that is implemented with
@@ -208,13 +208,13 @@ func (m typeModule) RegisterFlags(name string, constStaticValues *FlagsValue) ex
 	arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_type_module_register_flags(arg0, name, constStaticValues)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // RegisterType looks up or registers a type that is implemented with a
@@ -246,13 +246,13 @@ func (m typeModule) RegisterType(parentType externglib.Type, typeName string, ty
 	arg4 = (C.GTypeFlags)(flags)
 
 	var cret C.GType
-	var goret1 externglib.Type
+	var ret1 externglib.Type
 
 	cret = C.g_type_module_register_type(arg0, parentType, typeName, typeInfo, flags)
 
-	goret1 = externglib.Type(cret)
+	ret1 = externglib.Type(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetName sets the name for a Module
@@ -288,11 +288,11 @@ func (m typeModule) Use() bool {
 	arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_type_module_use(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

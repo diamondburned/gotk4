@@ -141,13 +141,13 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketAddressEnumerator
-	var goret1 SocketAddressEnumerator
+	var ret1 SocketAddressEnumerator
 
 	cret = C.g_socket_connectable_enumerate(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
 
-	return goret1
+	return ret1
 }
 
 // ProxyEnumerate creates a AddressEnumerator for @connectable that will
@@ -163,13 +163,13 @@ func (c socketConnectable) ProxyEnumerate() SocketAddressEnumerator {
 	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketAddressEnumerator
-	var goret1 SocketAddressEnumerator
+	var ret1 SocketAddressEnumerator
 
 	cret = C.g_socket_connectable_proxy_enumerate(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
 
-	return goret1
+	return ret1
 }
 
 // String: format a Connectable as a string. This is a human-readable format
@@ -185,12 +185,12 @@ func (c socketConnectable) String() string {
 	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_socket_connectable_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

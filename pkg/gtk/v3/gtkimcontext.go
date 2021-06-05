@@ -186,13 +186,13 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 	arg2 = C.gint(nChars)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_im_context_delete_surrounding(arg0, offset, nChars)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // FilterKeypress: allow an input method to internally handle key press and
@@ -206,13 +206,13 @@ func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 	arg1 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_im_context_filter_keypress(arg0, event)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // FocusIn: notify the input method that the widget to which this input
@@ -246,11 +246,11 @@ func (c imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos
 
 	arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 **C.gchar
+	var arg1 *C.gchar
 	var ret1 string
-	var arg2 **C.PangoAttrList
+	var arg2 *C.PangoAttrList
 	var ret2 **pango.AttrList
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
 
 	C.gtk_im_context_get_preedit_string(arg0, &arg1, &arg2, &arg3)
@@ -261,7 +261,7 @@ func (c imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos
 	runtime.SetFinalizer(ret2, func(v **pango.AttrList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret3 = *C.gint(arg3)
+	ret3 = C.gint(arg3)
 
 	return ret1, ret2, ret3
 }
@@ -283,21 +283,21 @@ func (c imContext) Surrounding() (text string, cursorIndex int, ok bool) {
 
 	arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 **C.gchar
+	var arg1 *C.gchar
 	var ret1 string
-	var arg2 *C.gint
+	var arg2 C.gint
 	var ret2 int
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_im_context_get_surrounding(arg0, &arg1, &arg2)
 
 	ret1 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
-	ret2 = *C.gint(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret2 = C.gint(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // Reset: notify the input method that a change such as a change in cursor

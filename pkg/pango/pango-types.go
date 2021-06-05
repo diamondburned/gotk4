@@ -53,13 +53,13 @@ func UnitsFromDouble(d float64) int {
 	arg1 = C.double(d)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.pango_units_from_double(d)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // UnitsToDouble converts a number in Pango units to floating-point.
@@ -71,13 +71,13 @@ func UnitsToDouble(i int) float64 {
 	arg1 = C.int(i)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.pango_units_to_double(i)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.

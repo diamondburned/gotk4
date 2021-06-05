@@ -27,13 +27,13 @@ func Malloc(nBytes uint) interface{} {
 	arg1 = C.gsize(nBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_malloc(nBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Malloc0 allocates @n_bytes bytes of memory, initialized to 0's. If @n_bytes
@@ -44,13 +44,13 @@ func Malloc0(nBytes uint) interface{} {
 	arg1 = C.gsize(nBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_malloc0(nBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // Malloc0N: this function is similar to g_malloc0(), allocating (@n_blocks *
@@ -64,13 +64,13 @@ func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 	arg2 = C.gsize(nBlockBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_malloc0_n(nBlocks, nBlockBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // MallocN: this function is similar to g_malloc(), allocating (@n_blocks *
@@ -84,13 +84,13 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 	arg2 = C.gsize(nBlockBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_malloc_n(nBlocks, nBlockBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // MemIsSystemMalloc checks whether the allocator used by g_malloc() is the
@@ -100,13 +100,13 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 // returned by a non-GLib-based API.
 func MemIsSystemMalloc() bool {
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_mem_is_system_malloc()
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MemProfile: GLib used to support some tools for memory profiling, but this no
@@ -129,13 +129,13 @@ func Realloc(mem interface{}, nBytes uint) interface{} {
 	arg2 = C.gsize(nBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_realloc(mem, nBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // ReallocN: this function is similar to g_realloc(), allocating (@n_blocks *
@@ -151,13 +151,13 @@ func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 	arg3 = C.gsize(nBlockBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_realloc_n(mem, nBlocks, nBlockBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryMalloc attempts to allocate @n_bytes, and returns nil on failure. Contrast
@@ -168,13 +168,13 @@ func TryMalloc(nBytes uint) interface{} {
 	arg1 = C.gsize(nBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_try_malloc(nBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryMalloc0 attempts to allocate @n_bytes, initialized to 0's, and returns nil
@@ -185,13 +185,13 @@ func TryMalloc0(nBytes uint) interface{} {
 	arg1 = C.gsize(nBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_try_malloc0(nBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryMalloc0N: this function is similar to g_try_malloc0(), allocating
@@ -205,13 +205,13 @@ func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 	arg2 = C.gsize(nBlockBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_try_malloc0_n(nBlocks, nBlockBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryMallocN: this function is similar to g_try_malloc(), allocating (@n_blocks
@@ -225,13 +225,13 @@ func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
 	arg2 = C.gsize(nBlockBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_try_malloc_n(nBlocks, nBlockBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryRealloc attempts to realloc @mem to a new size, @n_bytes, and returns nil
@@ -246,13 +246,13 @@ func TryRealloc(mem interface{}, nBytes uint) interface{} {
 	arg2 = C.gsize(nBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_try_realloc(mem, nBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // TryReallocN: this function is similar to g_try_realloc(), allocating
@@ -268,11 +268,11 @@ func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 	arg3 = C.gsize(nBlockBytes)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_try_realloc_n(mem, nBlocks, nBlockBytes)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }

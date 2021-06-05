@@ -83,13 +83,13 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 	arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkAppChooserDialog
-	var goret1 AppChooserDialog
+	var ret1 AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new(parent, flags, file)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 // NewAppChooserDialogForContentType constructs a class AppChooserDialog.
@@ -104,13 +104,13 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GtkAppChooserDialog
-	var goret1 AppChooserDialog
+	var ret1 AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new_for_content_type(parent, flags, contentType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 // Heading returns the text to display at the top of the dialog.
@@ -120,13 +120,13 @@ func (s appChooserDialog) Heading() string {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_app_chooser_dialog_get_heading(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Widget returns the AppChooserWidget of this dialog.
@@ -136,13 +136,13 @@ func (s appChooserDialog) Widget() Widget {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_app_chooser_dialog_get_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the

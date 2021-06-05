@@ -106,13 +106,13 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 func NewCallbackAction(callback ShortcutFunc) CallbackAction {
 
 	var cret C.GtkCallbackAction
-	var goret1 CallbackAction
+	var ret1 CallbackAction
 
 	cret = C.gtk_callback_action_new(callback, data, destroy)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CallbackAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CallbackAction)
 
-	return goret1
+	return ret1
 }
 
 // MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
@@ -178,13 +178,13 @@ func NewNamedAction(name string) NamedAction {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkNamedAction
-	var goret1 NamedAction
+	var ret1 NamedAction
 
 	cret = C.gtk_named_action_new(name)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NamedAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NamedAction)
 
-	return goret1
+	return ret1
 }
 
 // ActionName returns the name of the action that will be activated.
@@ -194,13 +194,13 @@ func (s namedAction) ActionName() string {
 	arg0 = (*C.GtkNamedAction)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_named_action_get_action_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NothingAction: a ShortcutAction that does nothing.
@@ -305,13 +305,13 @@ func NewShortcutActionParseString(string string) ShortcutAction {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkShortcutAction
-	var goret1 ShortcutAction
+	var ret1 ShortcutAction
 
 	cret = C.gtk_shortcut_action_parse_string(string)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutAction)
 
-	return goret1
+	return ret1
 }
 
 // Activate activates the action on the @widget with the given @args.
@@ -333,13 +333,13 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 	arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_shortcut_action_activate(arg0, flags, widget, args)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Print prints the given action into a string for the developer. This is
@@ -365,14 +365,14 @@ func (s shortcutAction) String() string {
 	arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_shortcut_action_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SignalAction: a ShortcutAction that emits a signal.
@@ -415,13 +415,13 @@ func NewSignalAction(signalName string) SignalAction {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkSignalAction
-	var goret1 SignalAction
+	var ret1 SignalAction
 
 	cret = C.gtk_signal_action_new(signalName)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalAction)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalAction)
 
-	return goret1
+	return ret1
 }
 
 // SignalName returns the name of the signal that will be emitted.
@@ -431,11 +431,11 @@ func (s signalAction) SignalName() string {
 	arg0 = (*C.GtkSignalAction)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_signal_action_get_signal_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }

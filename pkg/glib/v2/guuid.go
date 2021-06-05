@@ -27,13 +27,13 @@ func UUIDStringIsValid(str string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_uuid_string_is_valid(str)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UUIDStringRandom generates a random UUID (RFC 4122 version 4) as a string. It
@@ -42,12 +42,12 @@ func UUIDStringIsValid(str string) bool {
 // pads.
 func UUIDStringRandom() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_uuid_string_random()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

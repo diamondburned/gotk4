@@ -322,13 +322,13 @@ func (s simpleAsyncResult) OpResGboolean() bool {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_simple_async_result_get_op_res_gboolean(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // OpResGpointer gets a pointer result as returned by the asynchronous
@@ -339,13 +339,13 @@ func (s simpleAsyncResult) OpResGpointer() interface{} {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_simple_async_result_get_op_res_gpointer(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // OpResGssize gets a gssize from the asynchronous result.
@@ -355,13 +355,13 @@ func (s simpleAsyncResult) OpResGssize() int {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gssize
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_simple_async_result_get_op_res_gssize(arg0)
 
-	goret1 = C.gssize(cret)
+	ret1 = C.gssize(cret)
 
-	return goret1
+	return ret1
 }
 
 // SourceTag gets the source tag for the AsyncResult.
@@ -371,13 +371,13 @@ func (s simpleAsyncResult) SourceTag() interface{} {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_simple_async_result_get_source_tag(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // PropagateError propagates an error from within the simple asynchronous

@@ -44,13 +44,13 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	arg3 = C.gint(timeout)
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_poll(fds, nfds, timeout)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PollFD represents a file descriptor, which events to poll for, and which

@@ -87,13 +87,13 @@ func (i dBusInterface) DupObject() DBusObject {
 	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GDBusObject
-	var goret1 DBusObject
+	var ret1 DBusObject
 
 	cret = C.g_dbus_interface_dup_object(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
 
-	return goret1
+	return ret1
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface
@@ -104,13 +104,13 @@ func (i dBusInterface) Info() *DBusInterfaceInfo {
 	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GDBusInterfaceInfo
-	var goret1 *DBusInterfaceInfo
+	var ret1 *DBusInterfaceInfo
 
 	cret = C.g_dbus_interface_get_info(arg0)
 
-	goret1 = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+	ret1 = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // SetObject sets the BusObject for @interface_ to @object.

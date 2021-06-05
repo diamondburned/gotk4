@@ -82,13 +82,13 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
 	arg2 = (C.GtkShadowType)(shadowType)
 
 	var cret C.GtkArrow
-	var goret1 Arrow
+	var ret1 Arrow
 
 	cret = C.gtk_arrow_new(arrowType, shadowType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Arrow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Arrow)
 
-	return goret1
+	return ret1
 }
 
 // Set sets the direction and style of the Arrow, @arrow.

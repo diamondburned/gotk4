@@ -150,13 +150,13 @@ func (f frameClock) CurrentTimings() *FrameTimings {
 	arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GdkFrameTimings
-	var goret1 *FrameTimings
+	var ret1 *FrameTimings
 
 	cret = C.gdk_frame_clock_get_current_timings(arg0)
 
-	goret1 = WrapFrameTimings(unsafe.Pointer(cret))
+	ret1 = WrapFrameTimings(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FrameCounter: a FrameClock maintains a 64-bit counter that increments for
@@ -167,13 +167,13 @@ func (f frameClock) FrameCounter() int64 {
 	arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.gdk_frame_clock_get_frame_counter(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // FrameTime gets the time that should currently be used for animations.
@@ -187,13 +187,13 @@ func (f frameClock) FrameTime() int64 {
 	arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.gdk_frame_clock_get_frame_time(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // HistoryStart: FrameClock internally keeps a history of FrameTimings
@@ -207,13 +207,13 @@ func (f frameClock) HistoryStart() int64 {
 	arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.gdk_frame_clock_get_history_start(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // RefreshInfo: using the frame history stored in the frame clock, finds the
@@ -228,15 +228,15 @@ func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, pr
 	arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 	arg1 = C.gint64(baseTime)
 
-	var arg2 *C.gint64
+	var arg2 C.gint64
 	var ret2 int64
-	var arg3 *C.gint64
+	var arg3 C.gint64
 	var ret3 int64
 
 	C.gdk_frame_clock_get_refresh_info(arg0, baseTime, &arg2, &arg3)
 
-	ret2 = *C.gint64(arg2)
-	ret3 = *C.gint64(arg3)
+	ret2 = C.gint64(arg2)
+	ret3 = C.gint64(arg3)
 
 	return ret2, ret3
 }
@@ -252,13 +252,13 @@ func (f frameClock) Timings(frameCounter int64) *FrameTimings {
 	arg1 = C.gint64(frameCounter)
 
 	var cret *C.GdkFrameTimings
-	var goret1 *FrameTimings
+	var ret1 *FrameTimings
 
 	cret = C.gdk_frame_clock_get_timings(arg0, frameCounter)
 
-	goret1 = WrapFrameTimings(unsafe.Pointer(cret))
+	ret1 = WrapFrameTimings(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RequestPhase asks the frame clock to run a particular phase. The signal

@@ -33,30 +33,30 @@ import "C"
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetCharset() (charset string, ok bool) {
-	var arg1 **C.char
+	var arg1 *C.char
 	var ret1 string
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_get_charset(&arg1)
 
 	ret1 = C.GoString(arg1)
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // GetCodeset gets the character set for the current locale.
 func GetCodeset() string {
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_get_codeset()
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // GetConsoleCharset obtains the character set used by the console attached to
@@ -76,17 +76,17 @@ func GetCodeset() string {
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetConsoleCharset() (charset string, ok bool) {
-	var arg1 **C.char
+	var arg1 *C.char
 	var ret1 string
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_get_console_charset(&arg1)
 
 	ret1 = C.GoString(arg1)
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // GetLanguageNames computes a list of applicable locale names, which can be
@@ -101,7 +101,7 @@ func GetConsoleCharset() (charset string, ok bool) {
 // `LC_MESSAGES` and `LANG` to find the list of locales specified by the user.
 func GetLanguageNames() []string {
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_get_language_names()
 
@@ -114,14 +114,14 @@ func GetLanguageNames() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // GetLanguageNamesWithCategory computes a list of applicable locale names with
@@ -141,7 +141,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_get_language_names_with_category(categoryName)
 
@@ -154,14 +154,14 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // GetLocaleVariants returns a list of derived variants of @locale, which can be
@@ -186,7 +186,7 @@ func GetLocaleVariants(locale string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.gchar
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.g_get_locale_variants(locale)
 
@@ -199,13 +199,13 @@ func GetLocaleVariants(locale string) []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }

@@ -257,13 +257,13 @@ func (s mediaStream) Duration() int64 {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.gtk_media_stream_get_duration(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // GetEnded returns whether the streams playback is finished.
@@ -273,13 +273,13 @@ func (s mediaStream) GetEnded() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_get_ended(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Error: if the stream is in an error state, returns the #GError explaining
@@ -299,13 +299,13 @@ func (s mediaStream) Error() *glib.Error {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GError
-	var goret1 *glib.Error
+	var ret1 *glib.Error
 
 	cret = C.gtk_media_stream_get_error(arg0)
 
-	goret1 = glib.WrapError(unsafe.Pointer(cret))
+	ret1 = glib.WrapError(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Loop returns whether the stream is set to loop. See
@@ -316,13 +316,13 @@ func (s mediaStream) Loop() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_get_loop(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Muted returns whether the audio for the stream is muted. See
@@ -333,13 +333,13 @@ func (s mediaStream) Muted() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_get_muted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Playing: return whether the stream is currently playing.
@@ -349,13 +349,13 @@ func (s mediaStream) Playing() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_get_playing(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Timestamp returns the current presentation timestamp in microseconds.
@@ -365,13 +365,13 @@ func (s mediaStream) Timestamp() int64 {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.gtk_media_stream_get_timestamp(arg0)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 // Volume returns the volume of the audio for the stream. See
@@ -382,13 +382,13 @@ func (s mediaStream) Volume() float64 {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_media_stream_get_volume(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasAudio returns whether the stream has audio.
@@ -398,13 +398,13 @@ func (s mediaStream) HasAudio() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_has_audio(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasVideo returns whether the stream has video.
@@ -414,13 +414,13 @@ func (s mediaStream) HasVideo() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_has_video(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsPrepared returns whether the stream has finished initializing and
@@ -431,13 +431,13 @@ func (s mediaStream) IsPrepared() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_is_prepared(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsSeekable checks if a stream may be seekable.
@@ -455,13 +455,13 @@ func (s mediaStream) IsSeekable() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_is_seekable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IsSeeking checks if there is currently a seek operation going on.
@@ -471,13 +471,13 @@ func (s mediaStream) IsSeeking() bool {
 	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_media_stream_is_seeking(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Pause pauses playback of the stream. If the stream is not playing, do

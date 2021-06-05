@@ -37,13 +37,13 @@ func SliceAlloc(blockSize uint) interface{} {
 	arg1 = C.gsize(blockSize)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_slice_alloc(blockSize)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // SliceAlloc0 allocates a block of memory via g_slice_alloc() and initializes
@@ -56,13 +56,13 @@ func SliceAlloc0(blockSize uint) interface{} {
 	arg1 = C.gsize(blockSize)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_slice_alloc0(blockSize)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // SliceCopy allocates a block of memory from the slice allocator and copies
@@ -77,13 +77,13 @@ func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 	arg2 = C.gpointer(memBlock)
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.g_slice_copy(blockSize, memBlock)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // SliceFree1 frees a block of memory.
@@ -134,13 +134,13 @@ func SliceGetConfig(ckey SliceConfig) int64 {
 	arg1 = (C.GSliceConfig)(ckey)
 
 	var cret C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_slice_get_config(ckey)
 
-	goret1 = C.gint64(cret)
+	ret1 = C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
@@ -153,13 +153,13 @@ func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
 	arg3 = *C.guint(nValues)
 
 	var cret *C.gint64
-	var goret1 int64
+	var ret1 int64
 
 	cret = C.g_slice_get_config_state(ckey, address, nValues)
 
-	goret1 = *C.gint64(cret)
+	ret1 = *C.gint64(cret)
 
-	return goret1
+	return ret1
 }
 
 func SliceSetConfig(ckey SliceConfig, value int64) {

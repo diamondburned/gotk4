@@ -37,17 +37,17 @@ func ColorParse(spec string) (color Color, ok bool) {
 	arg1 = (*C.gchar)(C.CString(spec))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 *C.GdkColor
+	var arg2 C.GdkColor
 	var ret2 *Color
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gdk_color_parse(spec, &arg2)
 
 	ret2 = WrapColor(unsafe.Pointer(arg2))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Color: a Color is used to describe a color, similar to the XColor struct used
@@ -105,16 +105,16 @@ func (c *Color) Copy() *Color {
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkColor
-	var goret1 *Color
+	var ret1 *Color
 
 	cret = C.gdk_color_copy(arg0)
 
-	goret1 = WrapColor(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Color) {
+	ret1 = WrapColor(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Color) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Equal compares two colors.
@@ -126,13 +126,13 @@ func (c *Color) Equal(colorb *Color) bool {
 	arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_color_equal(arg0, colorb)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Free frees a Color created with gdk_color_copy().
@@ -151,13 +151,13 @@ func (c *Color) Hash() uint {
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gdk_color_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // String returns a textual specification of @color in the hexadecimal form
@@ -171,12 +171,12 @@ func (c *Color) String() string {
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gdk_color_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

@@ -54,11 +54,11 @@ func (s waylandSeat) WlSeat() interface{} {
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
 	var cret *C.wl_seat
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gdk_wayland_seat_get_wl_seat(arg0)
 
-	goret1 = *C.wl_seat(cret)
+	ret1 = *C.wl_seat(cret)
 
-	return goret1
+	return ret1
 }

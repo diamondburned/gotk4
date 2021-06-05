@@ -59,11 +59,11 @@ func NewEventControllerMotion(widget Widget) EventControllerMotion {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.GtkEventControllerMotion
-	var goret1 EventControllerMotion
+	var ret1 EventControllerMotion
 
 	cret = C.gtk_event_controller_motion_new(widget)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
 
-	return goret1
+	return ret1
 }

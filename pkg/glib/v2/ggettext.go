@@ -27,13 +27,13 @@ func Dcgettext(domain string, msgid string, category int) string {
 	arg3 = C.gint(category)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dcgettext(domain, msgid, category)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Dgettext: this function is a wrapper of dgettext() which does not translate
@@ -77,13 +77,13 @@ func Dgettext(domain string, msgid string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dgettext(domain, msgid)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Dngettext: this function is a wrapper of dngettext() which does not translate
@@ -106,13 +106,13 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 	arg4 = C.gulong(n)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dngettext(domain, msgid, msgidPlural, n)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Dpgettext: this function is a variant of g_dgettext() which supports a
@@ -138,13 +138,13 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 	arg3 = C.gsize(msgidoffset)
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dpgettext(domain, msgctxtid, msgidoffset)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Dpgettext2: this function is a variant of g_dgettext() which supports a
@@ -169,13 +169,13 @@ func Dpgettext2(domain string, context string, msgid string) string {
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dpgettext2(domain, context, msgid)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // StripContext: an auxiliary function for gettext() support (see Q_()).
@@ -189,11 +189,11 @@ func StripContext(msgid string, msgval string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_strip_context(msgid, msgval)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }

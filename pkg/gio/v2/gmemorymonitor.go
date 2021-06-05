@@ -35,13 +35,13 @@ func init() {
 // system.
 func MemoryMonitorDupDefault() MemoryMonitor {
 	var cret *C.GMemoryMonitor
-	var goret1 MemoryMonitor
+	var ret1 MemoryMonitor
 
 	cret = C.g_memory_monitor_dup_default()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryMonitor)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryMonitor)
 
-	return goret1
+	return ret1
 }
 
 // MemoryMonitorOverrider contains methods that are overridable. This

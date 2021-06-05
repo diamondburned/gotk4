@@ -85,13 +85,13 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 func NewCustomFilter(matchFunc CustomFilterFunc) CustomFilter {
 
 	var cret C.GtkCustomFilter
-	var goret1 CustomFilter
+	var ret1 CustomFilter
 
 	cret = C.gtk_custom_filter_new(matchFunc, userData, userDestroy)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
 
-	return goret1
+	return ret1
 }
 
 // SetFilterFunc sets (or unsets) the function used for filtering items.

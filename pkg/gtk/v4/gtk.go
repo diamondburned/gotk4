@@ -3105,13 +3105,13 @@ func (s appChooser) AppInfo() gio.AppInfo {
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GAppInfo
-	var goret1 gio.AppInfo
+	var ret1 gio.AppInfo
 
 	cret = C.gtk_app_chooser_get_app_info(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
 
-	return goret1
+	return ret1
 }
 
 // ContentType returns the current value of the AppChooser:content-type
@@ -3122,14 +3122,14 @@ func (s appChooser) ContentType() string {
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_app_chooser_get_content_type(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Refresh reloads the list of applications.
@@ -3441,13 +3441,13 @@ func (c fileChooser) Action() FileChooserAction {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkFileChooserAction
-	var goret1 FileChooserAction
+	var ret1 FileChooserAction
 
 	cret = C.gtk_file_chooser_get_action(arg0)
 
-	goret1 = FileChooserAction(cret)
+	ret1 = FileChooserAction(cret)
 
-	return goret1
+	return ret1
 }
 
 // Choice gets the currently selected option in the 'choice' with the given
@@ -3461,13 +3461,13 @@ func (c fileChooser) Choice(id string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_file_chooser_get_choice(arg0, id)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // CreateFolders gets whether file chooser will offer to create new folders.
@@ -3478,13 +3478,13 @@ func (c fileChooser) CreateFolders() bool {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_file_chooser_get_create_folders(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CurrentFolder gets the current folder of @chooser as #GFile.
@@ -3494,13 +3494,13 @@ func (c fileChooser) CurrentFolder() gio.File {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_file_chooser_get_current_folder(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // CurrentName gets the current name in the file selector, as entered by the
@@ -3514,14 +3514,14 @@ func (c fileChooser) CurrentName() string {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_file_chooser_get_current_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // File gets the #GFile for the currently selected file in the file
@@ -3536,13 +3536,13 @@ func (c fileChooser) File() gio.File {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_file_chooser_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // Files lists all the selected files and subfolders in the current folder
@@ -3553,13 +3553,13 @@ func (c fileChooser) Files() gio.ListModel {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_file_chooser_get_files(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Filter gets the current filter; see gtk_file_chooser_set_filter().
@@ -3569,13 +3569,13 @@ func (c fileChooser) Filter() FileFilter {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkFileFilter
-	var goret1 FileFilter
+	var ret1 FileFilter
 
 	cret = C.gtk_file_chooser_get_filter(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileFilter)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileFilter)
 
-	return goret1
+	return ret1
 }
 
 // Filters gets the current set of user-selectable filters, as a list model;
@@ -3589,13 +3589,13 @@ func (c fileChooser) Filters() gio.ListModel {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_file_chooser_get_filters(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file
@@ -3606,13 +3606,13 @@ func (c fileChooser) SelectMultiple() bool {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_file_chooser_get_select_multiple(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShortcutFolders queries the list of shortcut folders in the file chooser,
@@ -3626,13 +3626,13 @@ func (c fileChooser) ShortcutFolders() gio.ListModel {
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_file_chooser_get_shortcut_folders(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // RemoveChoice removes a 'choice' that has been added with
@@ -4078,13 +4078,13 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 // NewAboutDialog constructs a class AboutDialog.
 func NewAboutDialog() AboutDialog {
 	var cret C.GtkAboutDialog
-	var goret1 AboutDialog
+	var ret1 AboutDialog
 
 	cret = C.gtk_about_dialog_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AboutDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AboutDialog)
 
-	return goret1
+	return ret1
 }
 
 // AddCreditSection creates a new section in the Credits page.
@@ -4120,7 +4120,7 @@ func (a aboutDialog) Artists() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_about_dialog_get_artists(arg0)
 
@@ -4133,14 +4133,14 @@ func (a aboutDialog) Artists() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Authors returns the string which are displayed in the authors tab of the
@@ -4151,7 +4151,7 @@ func (a aboutDialog) Authors() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_about_dialog_get_authors(arg0)
 
@@ -4164,14 +4164,14 @@ func (a aboutDialog) Authors() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Comments returns the comments string.
@@ -4181,13 +4181,13 @@ func (a aboutDialog) Comments() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_comments(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Copyright returns the copyright string.
@@ -4197,13 +4197,13 @@ func (a aboutDialog) Copyright() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_copyright(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Documenters returns the string which are displayed in the documenters tab
@@ -4214,7 +4214,7 @@ func (a aboutDialog) Documenters() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_about_dialog_get_documenters(arg0)
 
@@ -4227,14 +4227,14 @@ func (a aboutDialog) Documenters() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // License returns the license information.
@@ -4244,13 +4244,13 @@ func (a aboutDialog) License() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_license(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // LicenseType retrieves the license set using
@@ -4261,13 +4261,13 @@ func (a aboutDialog) LicenseType() License {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret C.GtkLicense
-	var goret1 License
+	var ret1 License
 
 	cret = C.gtk_about_dialog_get_license_type(arg0)
 
-	goret1 = License(cret)
+	ret1 = License(cret)
 
-	return goret1
+	return ret1
 }
 
 // Logo returns the paintable displayed as logo in the about dialog.
@@ -4277,13 +4277,13 @@ func (a aboutDialog) Logo() gdk.Paintable {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 gdk.Paintable
+	var ret1 gdk.Paintable
 
 	cret = C.gtk_about_dialog_get_logo(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
 
-	return goret1
+	return ret1
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -4293,13 +4293,13 @@ func (a aboutDialog) LogoIconName() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_logo_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ProgramName returns the program name displayed in the about dialog.
@@ -4309,13 +4309,13 @@ func (a aboutDialog) ProgramName() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_program_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SystemInformation returns the system information that is shown in the
@@ -4326,13 +4326,13 @@ func (a aboutDialog) SystemInformation() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_system_information(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TranslatorCredits returns the translator credits string which is
@@ -4343,13 +4343,13 @@ func (a aboutDialog) TranslatorCredits() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_translator_credits(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Version returns the version string.
@@ -4359,13 +4359,13 @@ func (a aboutDialog) Version() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_version(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Website returns the website URL.
@@ -4375,13 +4375,13 @@ func (a aboutDialog) Website() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_website(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // WebsiteLabel returns the label used for the website link.
@@ -4391,13 +4391,13 @@ func (a aboutDialog) WebsiteLabel() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_about_dialog_get_website_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // WrapLicense returns whether the license text in @about is automatically
@@ -4408,13 +4408,13 @@ func (a aboutDialog) WrapLicense() bool {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_about_dialog_get_wrap_license(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetArtists sets the strings which are displayed in the artists tab of the
@@ -4741,13 +4741,13 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 // NewActionBar constructs a class ActionBar.
 func NewActionBar() ActionBar {
 	var cret C.GtkActionBar
-	var goret1 ActionBar
+	var ret1 ActionBar
 
 	cret = C.gtk_action_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
 
-	return goret1
+	return ret1
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
@@ -4757,13 +4757,13 @@ func (a actionBar) CenterWidget() Widget {
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_action_bar_get_center_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Revealed gets the value of the ActionBar:revealed property.
@@ -4773,13 +4773,13 @@ func (a actionBar) Revealed() bool {
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_action_bar_get_revealed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of
@@ -4955,13 +4955,13 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAppChooserButton
-	var goret1 AppChooserButton
+	var ret1 AppChooserButton
 
 	cret = C.gtk_app_chooser_button_new(contentType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
 
-	return goret1
+	return ret1
 }
 
 // AppendCustomItem appends a custom item to the list of applications that
@@ -5003,13 +5003,13 @@ func (s appChooserButton) Heading() string {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_app_chooser_button_get_heading(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Modal gets whether the dialog is modal.
@@ -5019,13 +5019,13 @@ func (s appChooserButton) Modal() bool {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_button_get_modal(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowDefaultItem returns the current value of the
@@ -5036,13 +5036,13 @@ func (s appChooserButton) ShowDefaultItem() bool {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_button_get_show_default_item(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowDialogItem returns the current value of the
@@ -5053,13 +5053,13 @@ func (s appChooserButton) ShowDialogItem() bool {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_button_get_show_dialog_item(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActiveCustomItem selects a custom item previously added with
@@ -5206,13 +5206,13 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 	arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkAppChooserDialog
-	var goret1 AppChooserDialog
+	var ret1 AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new(parent, flags, file)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 // NewAppChooserDialogForContentType constructs a class AppChooserDialog.
@@ -5227,13 +5227,13 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GtkAppChooserDialog
-	var goret1 AppChooserDialog
+	var ret1 AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new_for_content_type(parent, flags, contentType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 // Heading returns the text to display at the top of the dialog.
@@ -5243,13 +5243,13 @@ func (s appChooserDialog) Heading() string {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_app_chooser_dialog_get_heading(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Widget returns the AppChooserWidget of this dialog.
@@ -5259,13 +5259,13 @@ func (s appChooserDialog) Widget() Widget {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_app_chooser_dialog_get_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the
@@ -5382,13 +5382,13 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAppChooserWidget
-	var goret1 AppChooserWidget
+	var ret1 AppChooserWidget
 
 	cret = C.gtk_app_chooser_widget_new(contentType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 // DefaultText returns the text that is shown if there are not applications
@@ -5399,13 +5399,13 @@ func (s appChooserWidget) DefaultText() string {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_app_chooser_widget_get_default_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowAll returns the current value of the AppChooserWidget:show-all
@@ -5416,13 +5416,13 @@ func (s appChooserWidget) ShowAll() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_all(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowDefault returns the current value of the
@@ -5433,13 +5433,13 @@ func (s appChooserWidget) ShowDefault() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_default(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowFallback returns the current value of the
@@ -5450,13 +5450,13 @@ func (s appChooserWidget) ShowFallback() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_fallback(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowOther returns the current value of the AppChooserWidget:show-other
@@ -5467,13 +5467,13 @@ func (s appChooserWidget) ShowOther() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_other(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowRecommended returns the current value of the
@@ -5484,13 +5484,13 @@ func (s appChooserWidget) ShowRecommended() bool {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_app_chooser_widget_get_show_recommended(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetDefaultText sets the text that is shown if there are not applications
@@ -5664,13 +5664,13 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 	}
 
 	var cret C.GtkAspectFrame
-	var goret1 AspectFrame
+	var ret1 AspectFrame
 
 	cret = C.gtk_aspect_frame_new(xalign, yalign, ratio, obeyChild)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @self.
@@ -5680,13 +5680,13 @@ func (s aspectFrame) Child() Widget {
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_aspect_frame_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ObeyChild returns whether the child's size request should override the
@@ -5697,13 +5697,13 @@ func (s aspectFrame) ObeyChild() bool {
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_aspect_frame_get_obey_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Ratio returns the desired aspect ratio of the child set using
@@ -5714,13 +5714,13 @@ func (s aspectFrame) Ratio() float32 {
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_aspect_frame_get_ratio(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Xalign returns the horizontal alignment of the child within the
@@ -5731,13 +5731,13 @@ func (s aspectFrame) Xalign() float32 {
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_aspect_frame_get_xalign(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Yalign returns the vertical alignment of the child within the allocation
@@ -5748,13 +5748,13 @@ func (s aspectFrame) Yalign() float32 {
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_aspect_frame_get_yalign(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @self.
@@ -5987,13 +5987,13 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 // NewAssistant constructs a class Assistant.
 func NewAssistant() Assistant {
 	var cret C.GtkAssistant
-	var goret1 Assistant
+	var ret1 Assistant
 
 	cret = C.gtk_assistant_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Assistant)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Assistant)
 
-	return goret1
+	return ret1
 }
 
 // AddActionWidget adds a widget to the action area of a Assistant.
@@ -6016,13 +6016,13 @@ func (a assistant) AppendPage(page Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_append_page(arg0, page)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Commit erases the visited page history so the back button is not shown on
@@ -6047,13 +6047,13 @@ func (a assistant) CurrentPage() int {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_get_current_page(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NPages returns the number of pages in the @assistant
@@ -6063,13 +6063,13 @@ func (a assistant) NPages() int {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_get_n_pages(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NthPage returns the child widget contained in page number @page_num.
@@ -6081,13 +6081,13 @@ func (a assistant) NthPage(pageNum int) Widget {
 	arg1 = C.int(pageNum)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_assistant_get_nth_page(arg0, pageNum)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Page returns the AssistantPage object for @child.
@@ -6099,13 +6099,13 @@ func (a assistant) Page(child Widget) AssistantPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkAssistantPage
-	var goret1 AssistantPage
+	var ret1 AssistantPage
 
 	cret = C.gtk_assistant_get_page(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AssistantPage)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AssistantPage)
 
-	return goret1
+	return ret1
 }
 
 // PageComplete gets whether @page is complete.
@@ -6117,13 +6117,13 @@ func (a assistant) PageComplete(page Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_assistant_get_page_complete(arg0, page)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PageTitle gets the title for @page.
@@ -6135,13 +6135,13 @@ func (a assistant) PageTitle(page Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_assistant_get_page_title(arg0, page)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PageType gets the page type of @page.
@@ -6153,13 +6153,13 @@ func (a assistant) PageType(page Widget) AssistantPageType {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.GtkAssistantPageType
-	var goret1 AssistantPageType
+	var ret1 AssistantPageType
 
 	cret = C.gtk_assistant_get_page_type(arg0, page)
 
-	goret1 = AssistantPageType(cret)
+	ret1 = AssistantPageType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Pages gets a list model of the assistant pages.
@@ -6169,13 +6169,13 @@ func (a assistant) Pages() gio.ListModel {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_assistant_get_pages(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
@@ -6189,13 +6189,13 @@ func (a assistant) InsertPage(page Widget, position int) int {
 	arg2 = C.int(position)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_insert_page(arg0, page, position)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NextPage: navigate to the next page.
@@ -6222,13 +6222,13 @@ func (a assistant) PrependPage(page Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_assistant_prepend_page(arg0, page)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // PreviousPage: navigate to the previous visited page.
@@ -6398,13 +6398,13 @@ func (p assistantPage) Child() Widget {
 	arg0 = (*C.GtkAssistantPage)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_assistant_page_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
@@ -6516,13 +6516,13 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 // NewCalendar constructs a class Calendar.
 func NewCalendar() Calendar {
 	var cret C.GtkCalendar
-	var goret1 Calendar
+	var ret1 Calendar
 
 	cret = C.gtk_calendar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
 
-	return goret1
+	return ret1
 }
 
 // ClearMarks: remove all visual markers.
@@ -6542,16 +6542,16 @@ func (s calendar) Date() *glib.DateTime {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GDateTime
-	var goret1 *glib.DateTime
+	var ret1 *glib.DateTime
 
 	cret = C.gtk_calendar_get_date(arg0)
 
-	goret1 = glib.WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.DateTime) {
+	ret1 = glib.WrapDateTime(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.DateTime) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
@@ -6563,13 +6563,13 @@ func (c calendar) DayIsMarked(day uint) bool {
 	arg1 = C.guint(day)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_calendar_get_day_is_marked(arg0, day)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowDayNames returns whether @self is currently showing the names of the
@@ -6581,13 +6581,13 @@ func (s calendar) ShowDayNames() bool {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_calendar_get_show_day_names(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowHeading returns whether @self is currently showing the heading, i.e.
@@ -6598,13 +6598,13 @@ func (s calendar) ShowHeading() bool {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_calendar_get_show_heading(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowWeekNumbers returns whether @self is showing week numbers right now,
@@ -6615,13 +6615,13 @@ func (s calendar) ShowWeekNumbers() bool {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_calendar_get_show_week_numbers(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MarkDay places a visual marker on a particular day.
@@ -6765,13 +6765,13 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 // NewCellAreaBox constructs a class CellAreaBox.
 func NewCellAreaBox() CellAreaBox {
 	var cret C.GtkCellAreaBox
-	var goret1 CellAreaBox
+	var ret1 CellAreaBox
 
 	cret = C.gtk_cell_area_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
 
-	return goret1
+	return ret1
 }
 
 // Spacing gets the spacing added between cell renderers.
@@ -6781,13 +6781,13 @@ func (b cellAreaBox) Spacing() int {
 	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_cell_area_box_get_spacing(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds @renderer to @box, packed with reference to the end of @box.
@@ -6885,13 +6885,13 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 // NewCellRendererAccel constructs a class CellRendererAccel.
 func NewCellRendererAccel() CellRendererAccel {
 	var cret C.GtkCellRendererAccel
-	var goret1 CellRendererAccel
+	var ret1 CellRendererAccel
 
 	cret = C.gtk_cell_renderer_accel_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererAccel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererAccel)
 
-	return goret1
+	return ret1
 }
 
 // CellRendererCombo renders text in a cell like CellRendererText from which it
@@ -6932,13 +6932,13 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 // NewCellRendererCombo constructs a class CellRendererCombo.
 func NewCellRendererCombo() CellRendererCombo {
 	var cret C.GtkCellRendererCombo
-	var goret1 CellRendererCombo
+	var ret1 CellRendererCombo
 
 	cret = C.gtk_cell_renderer_combo_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererCombo)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererCombo)
 
-	return goret1
+	return ret1
 }
 
 // CellRendererPixbuf: a CellRendererPixbuf can be used to render an image in a
@@ -6981,13 +6981,13 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 // NewCellRendererPixbuf constructs a class CellRendererPixbuf.
 func NewCellRendererPixbuf() CellRendererPixbuf {
 	var cret C.GtkCellRendererPixbuf
-	var goret1 CellRendererPixbuf
+	var ret1 CellRendererPixbuf
 
 	cret = C.gtk_cell_renderer_pixbuf_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererPixbuf)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererPixbuf)
 
-	return goret1
+	return ret1
 }
 
 // CellRendererProgress renders a numeric value as a progress par in a cell.
@@ -7023,13 +7023,13 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 // NewCellRendererProgress constructs a class CellRendererProgress.
 func NewCellRendererProgress() CellRendererProgress {
 	var cret C.GtkCellRendererProgress
-	var goret1 CellRendererProgress
+	var ret1 CellRendererProgress
 
 	cret = C.gtk_cell_renderer_progress_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererProgress)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererProgress)
 
-	return goret1
+	return ret1
 }
 
 // CellRendererSpin renders text in a cell like CellRendererText from which it
@@ -7073,13 +7073,13 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 // NewCellRendererSpin constructs a class CellRendererSpin.
 func NewCellRendererSpin() CellRendererSpin {
 	var cret C.GtkCellRendererSpin
-	var goret1 CellRendererSpin
+	var ret1 CellRendererSpin
 
 	cret = C.gtk_cell_renderer_spin_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpin)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpin)
 
-	return goret1
+	return ret1
 }
 
 // CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
@@ -7120,13 +7120,13 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 // NewCellRendererSpinner constructs a class CellRendererSpinner.
 func NewCellRendererSpinner() CellRendererSpinner {
 	var cret C.GtkCellRendererSpinner
-	var goret1 CellRendererSpinner
+	var ret1 CellRendererSpinner
 
 	cret = C.gtk_cell_renderer_spinner_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpinner)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpinner)
 
-	return goret1
+	return ret1
 }
 
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
@@ -7181,13 +7181,13 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 // NewCellRendererToggle constructs a class CellRendererToggle.
 func NewCellRendererToggle() CellRendererToggle {
 	var cret C.GtkCellRendererToggle
-	var goret1 CellRendererToggle
+	var ret1 CellRendererToggle
 
 	cret = C.gtk_cell_renderer_toggle_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
 
-	return goret1
+	return ret1
 }
 
 // Activatable returns whether the cell renderer is activatable. See
@@ -7198,13 +7198,13 @@ func (t cellRendererToggle) Activatable() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_cell_renderer_toggle_get_activatable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Active returns whether the cell renderer is active. See
@@ -7215,13 +7215,13 @@ func (t cellRendererToggle) Active() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_cell_renderer_toggle_get_active(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Radio returns whether we’re rendering radio toggles rather than
@@ -7232,13 +7232,13 @@ func (t cellRendererToggle) Radio() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_cell_renderer_toggle_get_radio(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActivatable makes the cell renderer activatable.
@@ -7380,13 +7380,13 @@ func marshalCellView(p uintptr) (interface{}, error) {
 // NewCellView constructs a class CellView.
 func NewCellView() CellView {
 	var cret C.GtkCellView
-	var goret1 CellView
+	var ret1 CellView
 
 	cret = C.gtk_cell_view_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
 
-	return goret1
+	return ret1
 }
 
 // NewCellViewWithContext constructs a class CellView.
@@ -7398,13 +7398,13 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.GtkCellView
-	var goret1 CellView
+	var ret1 CellView
 
 	cret = C.gtk_cell_view_new_with_context(area, context)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
 
-	return goret1
+	return ret1
 }
 
 // NewCellViewWithMarkup constructs a class CellView.
@@ -7415,13 +7415,13 @@ func NewCellViewWithMarkup(markup string) CellView {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCellView
-	var goret1 CellView
+	var ret1 CellView
 
 	cret = C.gtk_cell_view_new_with_markup(markup)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
 
-	return goret1
+	return ret1
 }
 
 // NewCellViewWithText constructs a class CellView.
@@ -7432,13 +7432,13 @@ func NewCellViewWithText(text string) CellView {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCellView
-	var goret1 CellView
+	var ret1 CellView
 
 	cret = C.gtk_cell_view_new_with_text(text)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
 
-	return goret1
+	return ret1
 }
 
 // NewCellViewWithTexture constructs a class CellView.
@@ -7448,13 +7448,13 @@ func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	var cret C.GtkCellView
-	var goret1 CellView
+	var ret1 CellView
 
 	cret = C.gtk_cell_view_new_with_texture(texture)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
 
-	return goret1
+	return ret1
 }
 
 // DisplayedRow returns a TreePath referring to the currently displayed row.
@@ -7465,16 +7465,16 @@ func (c cellView) DisplayedRow() *TreePath {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreePath
-	var goret1 *TreePath
+	var ret1 *TreePath
 
 	cret = C.gtk_cell_view_get_displayed_row(arg0)
 
-	goret1 = WrapTreePath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TreePath) {
+	ret1 = WrapTreePath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // DrawSensitive gets whether @cell_view is configured to draw all of its
@@ -7485,13 +7485,13 @@ func (c cellView) DrawSensitive() bool {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_cell_view_get_draw_sensitive(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // FitModel gets whether @cell_view is configured to request space to fit
@@ -7502,13 +7502,13 @@ func (c cellView) FitModel() bool {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_cell_view_get_fit_model(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Model returns the model for @cell_view. If no model is used nil is
@@ -7519,13 +7519,13 @@ func (c cellView) Model() TreeModel {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret1 TreeModel
+	var ret1 TreeModel
 
 	cret = C.gtk_cell_view_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
 
-	return goret1
+	return ret1
 }
 
 // SetDisplayedRow sets the row of the model that is currently displayed by
@@ -7652,13 +7652,13 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 // NewColorButton constructs a class ColorButton.
 func NewColorButton() ColorButton {
 	var cret C.GtkColorButton
-	var goret1 ColorButton
+	var ret1 ColorButton
 
 	cret = C.gtk_color_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
 
-	return goret1
+	return ret1
 }
 
 // NewColorButtonWithRGBA constructs a class ColorButton.
@@ -7668,13 +7668,13 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
 	var cret C.GtkColorButton
-	var goret1 ColorButton
+	var ret1 ColorButton
 
 	cret = C.gtk_color_button_new_with_rgba(rgba)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
 
-	return goret1
+	return ret1
 }
 
 // Modal gets whether the dialog is modal.
@@ -7684,13 +7684,13 @@ func (b colorButton) Modal() bool {
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_color_button_get_modal(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Title gets the title of the color selection dialog.
@@ -7700,13 +7700,13 @@ func (b colorButton) Title() string {
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_color_button_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetModal sets whether the dialog should be modal.
@@ -7792,13 +7792,13 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkColorChooserDialog
-	var goret1 ColorChooserDialog
+	var ret1 ColorChooserDialog
 
 	cret = C.gtk_color_chooser_dialog_new(title, parent)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 // ColorChooserWidget: the ColorChooserWidget widget lets the user select a
@@ -7861,13 +7861,13 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 // NewColorChooserWidget constructs a class ColorChooserWidget.
 func NewColorChooserWidget() ColorChooserWidget {
 	var cret C.GtkColorChooserWidget
-	var goret1 ColorChooserWidget
+	var ret1 ColorChooserWidget
 
 	cret = C.gtk_color_chooser_widget_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 // ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
@@ -8006,25 +8006,25 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 // NewComboBoxText constructs a class ComboBoxText.
 func NewComboBoxText() ComboBoxText {
 	var cret C.GtkComboBoxText
-	var goret1 ComboBoxText
+	var ret1 ComboBoxText
 
 	cret = C.gtk_combo_box_text_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
 
-	return goret1
+	return ret1
 }
 
 // NewComboBoxTextWithEntry constructs a class ComboBoxText.
 func NewComboBoxTextWithEntry() ComboBoxText {
 	var cret C.GtkComboBoxText
-	var goret1 ComboBoxText
+	var ret1 ComboBoxText
 
 	cret = C.gtk_combo_box_text_new_with_entry()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
 
-	return goret1
+	return ret1
 }
 
 // Append appends @text to the list of strings stored in @combo_box. If @id
@@ -8071,14 +8071,14 @@ func (c comboBoxText) ActiveText() string {
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_combo_box_text_get_active_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts @text at @position in the list of strings stored in
@@ -8322,13 +8322,13 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 // NewEntryCompletion constructs a class EntryCompletion.
 func NewEntryCompletion() EntryCompletion {
 	var cret C.GtkEntryCompletion
-	var goret1 EntryCompletion
+	var ret1 EntryCompletion
 
 	cret = C.gtk_entry_completion_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
 
-	return goret1
+	return ret1
 }
 
 // NewEntryCompletionWithArea constructs a class EntryCompletion.
@@ -8338,13 +8338,13 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkEntryCompletion
-	var goret1 EntryCompletion
+	var ret1 EntryCompletion
 
 	cret = C.gtk_entry_completion_new_with_area(area)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
 
-	return goret1
+	return ret1
 }
 
 // Complete requests a completion operation, or in other words a refiltering
@@ -8371,14 +8371,14 @@ func (c entryCompletion) ComputePrefix(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_entry_completion_compute_prefix(arg0, key)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // CompletionPrefix: get the original text entered by the user that
@@ -8389,13 +8389,13 @@ func (c entryCompletion) CompletionPrefix() string {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_entry_completion_get_completion_prefix(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Entry gets the entry @completion has been attached to.
@@ -8405,13 +8405,13 @@ func (c entryCompletion) Entry() Widget {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_entry_completion_get_entry(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // InlineCompletion returns whether the common prefix of the possible
@@ -8422,13 +8422,13 @@ func (c entryCompletion) InlineCompletion() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_inline_completion(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InlineSelection returns true if inline-selection mode is turned on.
@@ -8438,13 +8438,13 @@ func (c entryCompletion) InlineSelection() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_inline_selection(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MinimumKeyLength returns the minimum key length as set for @completion.
@@ -8454,13 +8454,13 @@ func (c entryCompletion) MinimumKeyLength() int {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_entry_completion_get_minimum_key_length(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Model returns the model the EntryCompletion is using as data source.
@@ -8471,13 +8471,13 @@ func (c entryCompletion) Model() TreeModel {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret1 TreeModel
+	var ret1 TreeModel
 
 	cret = C.gtk_entry_completion_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
 
-	return goret1
+	return ret1
 }
 
 // PopupCompletion returns whether the completions should be presented in a
@@ -8488,13 +8488,13 @@ func (c entryCompletion) PopupCompletion() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_popup_completion(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PopupSetWidth returns whether the completion popup window will be resized
@@ -8505,13 +8505,13 @@ func (c entryCompletion) PopupSetWidth() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_popup_set_width(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PopupSingleMatch returns whether the completion popup window will appear
@@ -8522,13 +8522,13 @@ func (c entryCompletion) PopupSingleMatch() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_entry_completion_get_popup_single_match(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TextColumn returns the column in the model of @completion to get strings
@@ -8539,13 +8539,13 @@ func (c entryCompletion) TextColumn() int {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_entry_completion_get_text_column(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertPrefix requests a prefix insertion.
@@ -8818,13 +8818,13 @@ func NewExpander(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret1 Expander
+	var ret1 Expander
 
 	cret = C.gtk_expander_new(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
 
-	return goret1
+	return ret1
 }
 
 // NewExpanderWithMnemonic constructs a class Expander.
@@ -8835,13 +8835,13 @@ func NewExpanderWithMnemonic(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret1 Expander
+	var ret1 Expander
 
 	cret = C.gtk_expander_new_with_mnemonic(label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @expander.
@@ -8851,13 +8851,13 @@ func (e expander) Child() Widget {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_expander_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Expanded queries a Expander and returns its current state. Returns true
@@ -8870,13 +8870,13 @@ func (e expander) Expanded() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_expanded(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Label fetches the text from a label widget including any embedded
@@ -8895,13 +8895,13 @@ func (e expander) Label() string {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_expander_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // LabelWidget retrieves the label widget for the frame. See
@@ -8912,13 +8912,13 @@ func (e expander) LabelWidget() Widget {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_expander_get_label_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel
@@ -8929,13 +8929,13 @@ func (e expander) ResizeToplevel() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_resize_toplevel(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UseMarkup returns whether the label’s text is interpreted as marked up
@@ -8947,13 +8947,13 @@ func (e expander) UseMarkup() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_use_markup(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns whether an embedded underline in the expander label
@@ -8964,13 +8964,13 @@ func (e expander) UseUnderline() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_expander_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @expander.
@@ -9324,13 +9324,13 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	arg1 = (C.GtkFileChooserAction)(action)
 
 	var cret C.GtkFileChooserWidget
-	var goret1 FileChooserWidget
+	var ret1 FileChooserWidget
 
 	cret = C.gtk_file_chooser_widget_new(action)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -9426,13 +9426,13 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 // NewFileFilter constructs a class FileFilter.
 func NewFileFilter() FileFilter {
 	var cret C.GtkFileFilter
-	var goret1 FileFilter
+	var ret1 FileFilter
 
 	cret = C.gtk_file_filter_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
 
-	return goret1
+	return ret1
 }
 
 // NewFileFilterFromGVariant constructs a class FileFilter.
@@ -9442,13 +9442,13 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
 	var cret C.GtkFileFilter
-	var goret1 FileFilter
+	var ret1 FileFilter
 
 	cret = C.gtk_file_filter_new_from_gvariant(variant)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
 
-	return goret1
+	return ret1
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
@@ -9499,7 +9499,7 @@ func (f fileFilter) Attributes() []string {
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_file_filter_get_attributes(arg0)
 
@@ -9512,14 +9512,14 @@ func (f fileFilter) Attributes() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // Name gets the human-readable name for the filter. See
@@ -9530,13 +9530,13 @@ func (f fileFilter) Name() string {
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_file_filter_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetName sets a human-readable name of the filter; this is the string that
@@ -9560,13 +9560,13 @@ func (f fileFilter) ToGVariant() *glib.Variant {
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.gtk_file_filter_to_gvariant(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
@@ -9793,13 +9793,13 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 // NewFlowBox constructs a class FlowBox.
 func NewFlowBox() FlowBox {
 	var cret C.GtkFlowBox
-	var goret1 FlowBox
+	var ret1 FlowBox
 
 	cret = C.gtk_flow_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
 
-	return goret1
+	return ret1
 }
 
 // BindModel binds @model to @box.
@@ -9831,13 +9831,13 @@ func (b flowBox) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_flow_box_get_activate_on_single_click(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ChildAtIndex gets the nth child in the @box.
@@ -9849,13 +9849,13 @@ func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 	arg1 = C.int(idx)
 
 	var cret *C.GtkFlowBoxChild
-	var goret1 FlowBoxChild
+	var ret1 FlowBoxChild
 
 	cret = C.gtk_flow_box_get_child_at_index(arg0, idx)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
 
-	return goret1
+	return ret1
 }
 
 // ChildAtPos gets the child in the (@x, @y) position. Both @x and @y are
@@ -9870,13 +9870,13 @@ func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 	arg2 = C.int(y)
 
 	var cret *C.GtkFlowBoxChild
-	var goret1 FlowBoxChild
+	var ret1 FlowBoxChild
 
 	cret = C.gtk_flow_box_get_child_at_pos(arg0, x, y)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
 
-	return goret1
+	return ret1
 }
 
 // ColumnSpacing gets the horizontal spacing.
@@ -9886,13 +9886,13 @@ func (b flowBox) ColumnSpacing() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_column_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
@@ -9903,13 +9903,13 @@ func (b flowBox) Homogeneous() bool {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_flow_box_get_homogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MaxChildrenPerLine gets the maximum number of children per line.
@@ -9919,13 +9919,13 @@ func (b flowBox) MaxChildrenPerLine() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_max_children_per_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinChildrenPerLine gets the minimum number of children per line.
@@ -9935,13 +9935,13 @@ func (b flowBox) MinChildrenPerLine() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_min_children_per_line(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // RowSpacing gets the vertical spacing.
@@ -9951,13 +9951,13 @@ func (b flowBox) RowSpacing() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_flow_box_get_row_spacing(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectedChildren creates a list of all selected children.
@@ -9967,16 +9967,16 @@ func (b flowBox) SelectedChildren() *glib.List {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_flow_box_get_selected_children(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SelectionMode gets the selection mode of @box.
@@ -9986,13 +9986,13 @@ func (b flowBox) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret1 SelectionMode
+	var ret1 SelectionMode
 
 	cret = C.gtk_flow_box_get_selection_mode(arg0)
 
-	goret1 = SelectionMode(cret)
+	ret1 = SelectionMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Insert inserts the @widget into @box at @position.
@@ -10341,13 +10341,13 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 // NewFontButton constructs a class FontButton.
 func NewFontButton() FontButton {
 	var cret C.GtkFontButton
-	var goret1 FontButton
+	var ret1 FontButton
 
 	cret = C.gtk_font_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
 
-	return goret1
+	return ret1
 }
 
 // NewFontButtonWithFont constructs a class FontButton.
@@ -10358,13 +10358,13 @@ func NewFontButtonWithFont(fontname string) FontButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkFontButton
-	var goret1 FontButton
+	var ret1 FontButton
 
 	cret = C.gtk_font_button_new_with_font(fontname)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
 
-	return goret1
+	return ret1
 }
 
 // Modal gets whether the dialog is modal.
@@ -10374,13 +10374,13 @@ func (f fontButton) Modal() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_modal(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Title retrieves the title of the font chooser dialog.
@@ -10390,13 +10390,13 @@ func (f fontButton) Title() string {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_font_button_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseFont returns whether the selected font is used in the label.
@@ -10406,13 +10406,13 @@ func (f fontButton) UseFont() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_use_font(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UseSize returns whether the selected size is used in the label.
@@ -10422,13 +10422,13 @@ func (f fontButton) UseSize() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_font_button_get_use_size(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetModal sets whether the dialog should be modal.
@@ -10548,13 +10548,13 @@ func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkFontChooserDialog
-	var goret1 FontChooserDialog
+	var ret1 FontChooserDialog
 
 	cret = C.gtk_font_chooser_dialog_new(title, parent)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
 
-	return goret1
+	return ret1
 }
 
 // FontChooserWidget: the FontChooserWidget widget lists the available fonts,
@@ -10614,13 +10614,13 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 // NewFontChooserWidget constructs a class FontChooserWidget.
 func NewFontChooserWidget() FontChooserWidget {
 	var cret C.GtkFontChooserWidget
-	var goret1 FontChooserWidget
+	var ret1 FontChooserWidget
 
 	cret = C.gtk_font_chooser_widget_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
 
-	return goret1
+	return ret1
 }
 
 // HeaderBar: gtkHeaderBar is similar to a horizontal Box. It allows children to
@@ -10770,13 +10770,13 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 // NewHeaderBar constructs a class HeaderBar.
 func NewHeaderBar() HeaderBar {
 	var cret C.GtkHeaderBar
-	var goret1 HeaderBar
+	var ret1 HeaderBar
 
 	cret = C.gtk_header_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
 
-	return goret1
+	return ret1
 }
 
 // DecorationLayout gets the decoration layout set with
@@ -10787,13 +10787,13 @@ func (b headerBar) DecorationLayout() string {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_header_bar_get_decoration_layout(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowTitleButtons returns whether this header bar shows the standard
@@ -10804,13 +10804,13 @@ func (b headerBar) ShowTitleButtons() bool {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_header_bar_get_show_title_buttons(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TitleWidget retrieves the title widget of the header. See
@@ -10821,13 +10821,13 @@ func (b headerBar) TitleWidget() Widget {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_header_bar_get_title_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the
@@ -10988,13 +10988,13 @@ func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
 	arg3 = C.int(scale)
 
 	var cret C.GtkIconPaintable
-	var goret1 IconPaintable
+	var ret1 IconPaintable
 
 	cret = C.gtk_icon_paintable_new_for_file(file, size, scale)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
 
-	return goret1
+	return ret1
 }
 
 // File gets the #GFile that was used to load the icon, or nil if the icon
@@ -11005,13 +11005,13 @@ func (s iconPaintable) File() gio.File {
 	arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret1 gio.File
+	var ret1 gio.File
 
 	cret = C.gtk_icon_paintable_get_file(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
 
-	return goret1
+	return ret1
 }
 
 // IconName: get the icon name being used for this icon.
@@ -11028,13 +11028,13 @@ func (s iconPaintable) IconName() string {
 	arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_icon_paintable_get_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IsSymbolic checks if the icon is symbolic or not. This currently uses
@@ -11049,13 +11049,13 @@ func (s iconPaintable) IsSymbolic() bool {
 	arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_icon_paintable_is_symbolic(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IconTheme provides a facility for looking up icons by name and size. The main
@@ -11198,13 +11198,13 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 // NewIconTheme constructs a class IconTheme.
 func NewIconTheme() IconTheme {
 	var cret C.GtkIconTheme
-	var goret1 IconTheme
+	var ret1 IconTheme
 
 	cret = C.gtk_icon_theme_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconTheme)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconTheme)
 
-	return goret1
+	return ret1
 }
 
 // AddResourcePath adds a resource path that will be looked at when looking
@@ -11245,13 +11245,13 @@ func (s iconTheme) Display() gdk.Display {
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret1 gdk.Display
+	var ret1 gdk.Display
 
 	cret = C.gtk_icon_theme_get_display(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
 
-	return goret1
+	return ret1
 }
 
 // IconNames lists the names of icons in the current icon theme.
@@ -11261,7 +11261,7 @@ func (s iconTheme) IconNames() []string {
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_icon_theme_get_icon_names(arg0)
 
@@ -11274,15 +11274,15 @@ func (s iconTheme) IconNames() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // IconSizes returns an array of integers describing the sizes at which the
@@ -11297,7 +11297,7 @@ func (s iconTheme) IconSizes(iconName string) []int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.int
-	var goret1 []int
+	var ret1 []int
 
 	cret = C.gtk_icon_theme_get_icon_sizes(arg0, iconName)
 
@@ -11310,14 +11310,14 @@ func (s iconTheme) IconSizes(iconName string) []int {
 			}
 		}
 
-		goret1 = make([]int, length)
+		ret1 = make([]int, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_int {
 			src := (C.int)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.int(src)
+			ret1[i] = C.int(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ResourcePath gets the current resource path.
@@ -11329,7 +11329,7 @@ func (s iconTheme) ResourcePath() []string {
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_icon_theme_get_resource_path(arg0)
 
@@ -11342,15 +11342,15 @@ func (s iconTheme) ResourcePath() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // SearchPath gets the current search path. See
@@ -11361,7 +11361,7 @@ func (s iconTheme) SearchPath() []string {
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret **C.char
-	var goret1 []string
+	var ret1 []string
 
 	cret = C.gtk_icon_theme_get_search_path(arg0)
 
@@ -11374,15 +11374,15 @@ func (s iconTheme) SearchPath() []string {
 			}
 		}
 
-		goret1 = make([]string, length)
+		ret1 = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.GoString(src)
+			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ThemeName gets the current icon theme name.
@@ -11394,14 +11394,14 @@ func (s iconTheme) ThemeName() string {
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_icon_theme_get_theme_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HasIcon checks whether an icon theme includes an icon for a particular
@@ -11415,13 +11415,13 @@ func (s iconTheme) HasIcon(iconName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_icon_theme_has_icon(arg0, iconName)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LookupByGIcon looks up a icon for a desired size and window scale,
@@ -11443,13 +11443,13 @@ func (s iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction T
 	arg5 = (C.GtkIconLookupFlags)(flags)
 
 	var cret *C.GtkIconPaintable
-	var goret1 IconPaintable
+	var ret1 IconPaintable
 
 	cret = C.gtk_icon_theme_lookup_by_gicon(arg0, icon, size, scale, direction, flags)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
 
-	return goret1
+	return ret1
 }
 
 // LookupIcon looks up a named icon for a desired size and window scale,
@@ -11496,13 +11496,13 @@ func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, sca
 	arg6 = (C.GtkIconLookupFlags)(flags)
 
 	var cret *C.GtkIconPaintable
-	var goret1 IconPaintable
+	var ret1 IconPaintable
 
 	cret = C.gtk_icon_theme_lookup_icon(arg0, iconName, fallbacks, size, scale, direction, flags)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
 
-	return goret1
+	return ret1
 }
 
 // SetResourcePath sets the resource paths that will be looked at when
@@ -11870,13 +11870,13 @@ func marshalIconView(p uintptr) (interface{}, error) {
 // NewIconView constructs a class IconView.
 func NewIconView() IconView {
 	var cret C.GtkIconView
-	var goret1 IconView
+	var ret1 IconView
 
 	cret = C.gtk_icon_view_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
 
-	return goret1
+	return ret1
 }
 
 // NewIconViewWithArea constructs a class IconView.
@@ -11886,13 +11886,13 @@ func NewIconViewWithArea(area CellArea) IconView {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkIconView
-	var goret1 IconView
+	var ret1 IconView
 
 	cret = C.gtk_icon_view_new_with_area(area)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
 
-	return goret1
+	return ret1
 }
 
 // NewIconViewWithModel constructs a class IconView.
@@ -11902,13 +11902,13 @@ func NewIconViewWithModel(model TreeModel) IconView {
 	arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkIconView
-	var goret1 IconView
+	var ret1 IconView
 
 	cret = C.gtk_icon_view_new_with_model(model)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
 
-	return goret1
+	return ret1
 }
 
 // CreateDragIcon creates a #cairo_surface_t representation of the item at
@@ -11921,13 +11921,13 @@ func (i iconView) CreateDragIcon(path *TreePath) gdk.Paintable {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 gdk.Paintable
+	var ret1 gdk.Paintable
 
 	cret = C.gtk_icon_view_create_drag_icon(arg0, path)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
 
-	return goret1
+	return ret1
 }
 
 // EnableModelDragDest turns @icon_view into a drop destination for
@@ -11968,13 +11968,13 @@ func (i iconView) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_icon_view_get_activate_on_single_click(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CellRect fills the bounding rectangle in widget coordinates for the cell
@@ -11990,17 +11990,17 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangl
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
-	var arg3 *C.GdkRectangle
+	var arg3 C.GdkRectangle
 	var ret3 *gdk.Rectangle
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_icon_view_get_cell_rect(arg0, path, cell, &arg3)
 
 	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.bool(cret) != C.false
 
-	return ret3, goret2
+	return ret3, ret2
 }
 
 // ColumnSpacing returns the value of the ::column-spacing property.
@@ -12010,13 +12010,13 @@ func (i iconView) ColumnSpacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_column_spacing(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Columns returns the value of the ::columns property.
@@ -12026,13 +12026,13 @@ func (i iconView) Columns() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_columns(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Cursor fills in @path and @cell with the current cursor path and cell. If
@@ -12045,12 +12045,12 @@ func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	var arg1 **C.GtkTreePath
+	var arg1 *C.GtkTreePath
 	var ret1 **TreePath
-	var arg2 **C.GtkCellRenderer
+	var arg2 *C.GtkCellRenderer
 	var ret2 CellRenderer
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_icon_view_get_cursor(arg0, &arg1, &arg2)
 
@@ -12059,9 +12059,9 @@ func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // DestItemAtPos determines the destination item for a given position.
@@ -12074,12 +12074,12 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconV
 	arg1 = C.int(dragX)
 	arg2 = C.int(dragY)
 
-	var arg3 **C.GtkTreePath
+	var arg3 *C.GtkTreePath
 	var ret3 **TreePath
-	var arg4 *C.GtkIconViewDropPosition
+	var arg4 C.GtkIconViewDropPosition
 	var ret4 *IconViewDropPosition
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, dragX, dragY, &arg3, &arg4)
 
@@ -12088,9 +12088,9 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconV
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret4 = *IconViewDropPosition(arg4)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // DragDestItem gets information about the item that is highlighted for
@@ -12100,9 +12100,9 @@ func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition) {
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	var arg1 **C.GtkTreePath
+	var arg1 *C.GtkTreePath
 	var ret1 **TreePath
-	var arg2 *C.GtkIconViewDropPosition
+	var arg2 C.GtkIconViewDropPosition
 	var ret2 *IconViewDropPosition
 
 	C.gtk_icon_view_get_drag_dest_item(arg0, &arg1, &arg2)
@@ -12126,12 +12126,12 @@ func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok
 	arg1 = C.int(x)
 	arg2 = C.int(y)
 
-	var arg3 **C.GtkTreePath
+	var arg3 *C.GtkTreePath
 	var ret3 **TreePath
-	var arg4 **C.GtkCellRenderer
+	var arg4 *C.GtkCellRenderer
 	var ret4 CellRenderer
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_icon_view_get_item_at_pos(arg0, x, y, &arg3, &arg4)
 
@@ -12140,9 +12140,9 @@ func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret3, ret4, goret3
+	return ret3, ret4, ret3
 }
 
 // ItemColumn gets the column in which the item @path is currently
@@ -12155,13 +12155,13 @@ func (i iconView) ItemColumn(path *TreePath) int {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_item_column(arg0, path)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ItemOrientation returns the value of the ::item-orientation property
@@ -12173,13 +12173,13 @@ func (i iconView) ItemOrientation() Orientation {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkOrientation
-	var goret1 Orientation
+	var ret1 Orientation
 
 	cret = C.gtk_icon_view_get_item_orientation(arg0)
 
-	goret1 = Orientation(cret)
+	ret1 = Orientation(cret)
 
-	return goret1
+	return ret1
 }
 
 // ItemPadding returns the value of the ::item-padding property.
@@ -12189,13 +12189,13 @@ func (i iconView) ItemPadding() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_item_padding(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ItemRow gets the row in which the item @path is currently displayed. Row
@@ -12208,13 +12208,13 @@ func (i iconView) ItemRow(path *TreePath) int {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_item_row(arg0, path)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ItemWidth returns the value of the ::item-width property.
@@ -12224,13 +12224,13 @@ func (i iconView) ItemWidth() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_item_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Margin returns the value of the ::margin property.
@@ -12240,13 +12240,13 @@ func (i iconView) Margin() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_margin(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MarkupColumn returns the column with markup text for @icon_view.
@@ -12256,13 +12256,13 @@ func (i iconView) MarkupColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_markup_column(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Model returns the model the IconView is based on. Returns nil if the
@@ -12273,13 +12273,13 @@ func (i iconView) Model() TreeModel {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret1 TreeModel
+	var ret1 TreeModel
 
 	cret = C.gtk_icon_view_get_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
 
-	return goret1
+	return ret1
 }
 
 // PathAtPos gets the path for the icon at the given position.
@@ -12293,16 +12293,16 @@ func (i iconView) PathAtPos(x int, y int) *TreePath {
 	arg2 = C.int(y)
 
 	var cret *C.GtkTreePath
-	var goret1 *TreePath
+	var ret1 *TreePath
 
 	cret = C.gtk_icon_view_get_path_at_pos(arg0, x, y)
 
-	goret1 = WrapTreePath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *TreePath) {
+	ret1 = WrapTreePath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // PixbufColumn returns the column with pixbufs for @icon_view.
@@ -12312,13 +12312,13 @@ func (i iconView) PixbufColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_pixbuf_column(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Reorderable retrieves whether the user can reorder the list via
@@ -12329,13 +12329,13 @@ func (i iconView) Reorderable() bool {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_icon_view_get_reorderable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RowSpacing returns the value of the ::row-spacing property.
@@ -12345,13 +12345,13 @@ func (i iconView) RowSpacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_row_spacing(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectedItems creates a list of paths of all selected items.
@@ -12368,16 +12368,16 @@ func (i iconView) SelectedItems() *glib.List {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_icon_view_get_selected_items(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SelectionMode gets the selection mode of the @icon_view.
@@ -12387,13 +12387,13 @@ func (i iconView) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret1 SelectionMode
+	var ret1 SelectionMode
 
 	cret = C.gtk_icon_view_get_selection_mode(arg0)
 
-	goret1 = SelectionMode(cret)
+	ret1 = SelectionMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Spacing returns the value of the ::spacing property.
@@ -12403,13 +12403,13 @@ func (i iconView) Spacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_spacing(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TextColumn returns the column with text for @icon_view.
@@ -12419,13 +12419,13 @@ func (i iconView) TextColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_text_column(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TooltipColumn returns the column of @icon_view’s model which is being
@@ -12436,13 +12436,13 @@ func (i iconView) TooltipColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_icon_view_get_tooltip_column(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // TooltipContext: this function is supposed to be used in a
@@ -12468,14 +12468,14 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 		arg3 = C.gboolean(1)
 	}
 
-	var arg4 **C.GtkTreeModel
+	var arg4 *C.GtkTreeModel
 	var ret4 *TreeModel
-	var arg5 **C.GtkTreePath
+	var arg5 *C.GtkTreePath
 	var ret5 **TreePath
-	var arg6 *C.GtkTreeIter
+	var arg6 C.GtkTreeIter
 	var ret6 *TreeIter
 	var cret C.gboolean
-	var goret4 bool
+	var ret4 bool
 
 	cret = C.gtk_icon_view_get_tooltip_context(arg0, x, y, keyboardTip, &arg4, &arg5, &arg6)
 
@@ -12485,9 +12485,9 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeMode
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	ret6 = WrapTreeIter(unsafe.Pointer(arg6))
-	goret4 = C.bool(cret) != C.false
+	ret4 = C.bool(cret) != C.false
 
-	return ret4, ret5, ret6, goret4
+	return ret4, ret5, ret6, ret4
 }
 
 // VisibleRange sets @start_path and @end_path to be the first and last
@@ -12499,12 +12499,12 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	var arg1 **C.GtkTreePath
+	var arg1 *C.GtkTreePath
 	var ret1 **TreePath
-	var arg2 **C.GtkTreePath
+	var arg2 *C.GtkTreePath
 	var ret2 **TreePath
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_icon_view_get_visible_range(arg0, &arg1, &arg2)
 
@@ -12516,9 +12516,9 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 	runtime.SetFinalizer(ret2, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // ItemActivated activates the item determined by @path.
@@ -12542,13 +12542,13 @@ func (i iconView) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_icon_view_path_is_selected(arg0, path)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ScrollToPath moves the alignments of @icon_view to the position specified
@@ -13080,13 +13080,13 @@ func marshalImage(p uintptr) (interface{}, error) {
 // NewImage constructs a class Image.
 func NewImage() Image {
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // NewImageFromFile constructs a class Image.
@@ -13097,13 +13097,13 @@ func NewImageFromFile(filename string) Image {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new_from_file(filename)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // NewImageFromGIcon constructs a class Image.
@@ -13113,13 +13113,13 @@ func NewImageFromGIcon(icon gio.Icon) Image {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new_from_gicon(icon)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // NewImageFromIconName constructs a class Image.
@@ -13130,13 +13130,13 @@ func NewImageFromIconName(iconName string) Image {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new_from_icon_name(iconName)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // NewImageFromPaintable constructs a class Image.
@@ -13146,13 +13146,13 @@ func NewImageFromPaintable(paintable gdk.Paintable) Image {
 	arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new_from_paintable(paintable)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // NewImageFromPixbuf constructs a class Image.
@@ -13162,13 +13162,13 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new_from_pixbuf(pixbuf)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // NewImageFromResource constructs a class Image.
@@ -13179,13 +13179,13 @@ func NewImageFromResource(resourcePath string) Image {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImage
-	var goret1 Image
+	var ret1 Image
 
 	cret = C.gtk_image_new_from_resource(resourcePath)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
 
-	return goret1
+	return ret1
 }
 
 // Clear resets the image to be empty.
@@ -13211,13 +13211,13 @@ func (i image) GIcon() gio.Icon {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GIcon
-	var goret1 gio.Icon
+	var ret1 gio.Icon
 
 	cret = C.gtk_image_get_gicon(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
 
-	return goret1
+	return ret1
 }
 
 // IconName gets the icon name and size being displayed by the Image. The
@@ -13234,13 +13234,13 @@ func (i image) IconName() string {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_image_get_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // IconSize gets the icon size used by the @image when rendering icons.
@@ -13250,13 +13250,13 @@ func (i image) IconSize() IconSize {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkIconSize
-	var goret1 IconSize
+	var ret1 IconSize
 
 	cret = C.gtk_image_get_icon_size(arg0)
 
-	goret1 = IconSize(cret)
+	ret1 = IconSize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Paintable gets the image Paintable being displayed by the Image. The
@@ -13269,13 +13269,13 @@ func (i image) Paintable() gdk.Paintable {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GdkPaintable
-	var goret1 gdk.Paintable
+	var ret1 gdk.Paintable
 
 	cret = C.gtk_image_get_paintable(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
 
-	return goret1
+	return ret1
 }
 
 // PixelSize gets the pixel size used for named icons.
@@ -13285,13 +13285,13 @@ func (i image) PixelSize() int {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_image_get_pixel_size(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // StorageType gets the type of representation being used by the Image to
@@ -13303,13 +13303,13 @@ func (i image) StorageType() ImageType {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkImageType
-	var goret1 ImageType
+	var ret1 ImageType
 
 	cret = C.gtk_image_get_storage_type(arg0)
 
-	goret1 = ImageType(cret)
+	ret1 = ImageType(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetFromFile: see gtk_image_new_from_file() for details.
@@ -13574,13 +13574,13 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 // NewInfoBar constructs a class InfoBar.
 func NewInfoBar() InfoBar {
 	var cret C.GtkInfoBar
-	var goret1 InfoBar
+	var ret1 InfoBar
 
 	cret = C.gtk_info_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InfoBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InfoBar)
 
-	return goret1
+	return ret1
 }
 
 // AddActionWidget: add an activatable widget to the action area of a
@@ -13614,13 +13614,13 @@ func (i infoBar) AddButton(buttonText string, responseID int) Button {
 	arg2 = C.int(responseID)
 
 	var cret *C.GtkWidget
-	var goret1 Button
+	var ret1 Button
 
 	cret = C.gtk_info_bar_add_button(arg0, buttonText, responseID)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
 
-	return goret1
+	return ret1
 }
 
 // AddChild adds a widget to the content area of the info bar.
@@ -13641,13 +13641,13 @@ func (i infoBar) MessageType() MessageType {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkMessageType
-	var goret1 MessageType
+	var ret1 MessageType
 
 	cret = C.gtk_info_bar_get_message_type(arg0)
 
-	goret1 = MessageType(cret)
+	ret1 = MessageType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Revealed returns whether the info bar is currently revealed.
@@ -13657,13 +13657,13 @@ func (i infoBar) Revealed() bool {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_info_bar_get_revealed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowCloseButton returns whether the widget will display a standard close
@@ -13674,13 +13674,13 @@ func (i infoBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_info_bar_get_show_close_button(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RemoveActionWidget removes a widget from the action area of @info_bar,
@@ -14071,13 +14071,13 @@ func NewLabel(str string) Label {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLabel
-	var goret1 Label
+	var ret1 Label
 
 	cret = C.gtk_label_new(str)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
 
-	return goret1
+	return ret1
 }
 
 // NewLabelWithMnemonic constructs a class Label.
@@ -14088,13 +14088,13 @@ func NewLabelWithMnemonic(str string) Label {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLabel
-	var goret1 Label
+	var ret1 Label
 
 	cret = C.gtk_label_new_with_mnemonic(str)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
 
-	return goret1
+	return ret1
 }
 
 // Attributes gets the attribute list that was set on the label using
@@ -14108,13 +14108,13 @@ func (s label) Attributes() *pango.AttrList {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoAttrList
-	var goret1 *pango.AttrList
+	var ret1 *pango.AttrList
 
 	cret = C.gtk_label_get_attributes(arg0)
 
-	goret1 = pango.WrapAttrList(unsafe.Pointer(cret))
+	ret1 = pango.WrapAttrList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // CurrentURI returns the URI for the currently active link in the label.
@@ -14129,13 +14129,13 @@ func (s label) CurrentURI() string {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_label_get_current_uri(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Ellipsize returns the ellipsizing position of the label. See
@@ -14146,13 +14146,13 @@ func (s label) Ellipsize() pango.EllipsizeMode {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret1 pango.EllipsizeMode
+	var ret1 pango.EllipsizeMode
 
 	cret = C.gtk_label_get_ellipsize(arg0)
 
-	goret1 = pango.EllipsizeMode(cret)
+	ret1 = pango.EllipsizeMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // ExtraMenu gets the menu model set with gtk_label_set_extra_menu().
@@ -14162,13 +14162,13 @@ func (s label) ExtraMenu() gio.MenuModel {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_label_get_extra_menu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // Justify returns the justification of the label. See
@@ -14179,13 +14179,13 @@ func (s label) Justify() Justification {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkJustification
-	var goret1 Justification
+	var ret1 Justification
 
 	cret = C.gtk_label_get_justify(arg0)
 
-	goret1 = Justification(cret)
+	ret1 = Justification(cret)
 
-	return goret1
+	return ret1
 }
 
 // Label fetches the text from a label widget including any embedded
@@ -14197,13 +14197,13 @@ func (s label) Label() string {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_label_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Layout gets the Layout used to display the label. The layout is useful to
@@ -14217,13 +14217,13 @@ func (s label) Layout() pango.Layout {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoLayout
-	var goret1 pango.Layout
+	var ret1 pango.Layout
 
 	cret = C.gtk_label_get_layout(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
 
-	return goret1
+	return ret1
 }
 
 // LayoutOffsets obtains the coordinates where the label will draw the
@@ -14236,15 +14236,15 @@ func (s label) LayoutOffsets() (x int, y int) {
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 
 	C.gtk_label_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
 
 	return ret1, ret2
 }
@@ -14257,13 +14257,13 @@ func (s label) Lines() int {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_label_get_lines(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MaxWidthChars retrieves the desired maximum width of @label, in
@@ -14274,13 +14274,13 @@ func (s label) MaxWidthChars() int {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_label_get_max_width_chars(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MnemonicKeyval: if the label has been set so that it has a mnemonic key
@@ -14292,13 +14292,13 @@ func (s label) MnemonicKeyval() uint {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_label_get_mnemonic_keyval(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
@@ -14309,13 +14309,13 @@ func (s label) MnemonicWidget() Widget {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_label_get_mnemonic_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Selectable gets the value set by gtk_label_set_selectable().
@@ -14325,13 +14325,13 @@ func (s label) Selectable() bool {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_label_get_selectable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectionBounds gets the selected range of characters in the label,
@@ -14341,20 +14341,20 @@ func (s label) SelectionBounds() (start int, end int, ok bool) {
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_label_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
-	goret3 = C.bool(cret) != C.false
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // SingleLineMode returns whether the label is in single line mode.
@@ -14364,13 +14364,13 @@ func (s label) SingleLineMode() bool {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_label_get_single_line_mode(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Text fetches the text from a label widget, as displayed on the screen.
@@ -14382,13 +14382,13 @@ func (s label) Text() string {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_label_get_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseMarkup returns whether the label’s text is interpreted as marked up
@@ -14400,13 +14400,13 @@ func (s label) UseMarkup() bool {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_label_get_use_markup(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns whether an embedded underline in the label indicates
@@ -14417,13 +14417,13 @@ func (s label) UseUnderline() bool {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_label_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // WidthChars retrieves the desired width of @label, in characters. See
@@ -14434,13 +14434,13 @@ func (s label) WidthChars() int {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_label_get_width_chars(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Wrap returns whether lines in the label are automatically wrapped. See
@@ -14451,13 +14451,13 @@ func (s label) Wrap() bool {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_label_get_wrap(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // WrapMode returns line wrap mode used by the label. See
@@ -14468,13 +14468,13 @@ func (s label) WrapMode() pango.WrapMode {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.PangoWrapMode
-	var goret1 pango.WrapMode
+	var ret1 pango.WrapMode
 
 	cret = C.gtk_label_get_wrap_mode(arg0)
 
-	goret1 = pango.WrapMode(cret)
+	ret1 = pango.WrapMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Xalign gets the Label:xalign property for @label.
@@ -14484,13 +14484,13 @@ func (s label) Xalign() float32 {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_label_get_xalign(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Yalign gets the Label:yalign property for @label.
@@ -14500,13 +14500,13 @@ func (s label) Yalign() float32 {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_label_get_yalign(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // SelectRegion selects a range of characters in the label, if the label is
@@ -14978,13 +14978,13 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 // NewLevelBar constructs a class LevelBar.
 func NewLevelBar() LevelBar {
 	var cret C.GtkLevelBar
-	var goret1 LevelBar
+	var ret1 LevelBar
 
 	cret = C.gtk_level_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
 
-	return goret1
+	return ret1
 }
 
 // NewLevelBarForInterval constructs a class LevelBar.
@@ -14996,13 +14996,13 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	arg2 = C.double(maxValue)
 
 	var cret C.GtkLevelBar
-	var goret1 LevelBar
+	var ret1 LevelBar
 
 	cret = C.gtk_level_bar_new_for_interval(minValue, maxValue)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
 
-	return goret1
+	return ret1
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position
@@ -15031,13 +15031,13 @@ func (s levelBar) Inverted() bool {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_level_bar_get_inverted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MaxValue returns the value of the LevelBar:max-value property.
@@ -15047,13 +15047,13 @@ func (s levelBar) MaxValue() float64 {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_level_bar_get_max_value(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinValue returns the value of the LevelBar:min-value property.
@@ -15063,13 +15063,13 @@ func (s levelBar) MinValue() float64 {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_level_bar_get_min_value(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Mode returns the value of the LevelBar:mode property.
@@ -15079,13 +15079,13 @@ func (s levelBar) Mode() LevelBarMode {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkLevelBarMode
-	var goret1 LevelBarMode
+	var ret1 LevelBarMode
 
 	cret = C.gtk_level_bar_get_mode(arg0)
 
-	goret1 = LevelBarMode(cret)
+	ret1 = LevelBarMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in
@@ -15098,17 +15098,17 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.gtk_level_bar_get_offset_value(arg0, name, &arg2)
 
-	ret2 = *C.double(arg2)
-	goret2 = C.bool(cret) != C.false
+	ret2 = C.double(arg2)
+	ret2 = C.bool(cret) != C.false
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // Value returns the value of the LevelBar:value property.
@@ -15118,13 +15118,13 @@ func (s levelBar) Value() float64 {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_level_bar_get_value(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // RemoveOffsetValue removes an offset marker previously added with
@@ -15288,13 +15288,13 @@ func NewLinkButton(uri string) LinkButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLinkButton
-	var goret1 LinkButton
+	var ret1 LinkButton
 
 	cret = C.gtk_link_button_new(uri)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
 
-	return goret1
+	return ret1
 }
 
 // NewLinkButtonWithLabel constructs a class LinkButton.
@@ -15308,13 +15308,13 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkLinkButton
-	var goret1 LinkButton
+	var ret1 LinkButton
 
 	cret = C.gtk_link_button_new_with_label(uri, label)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
 
-	return goret1
+	return ret1
 }
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
@@ -15324,13 +15324,13 @@ func (l linkButton) URI() string {
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_link_button_get_uri(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Visited retrieves the “visited” state of the URI where the LinkButton
@@ -15344,13 +15344,13 @@ func (l linkButton) Visited() bool {
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_link_button_get_visited(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
@@ -15620,13 +15620,13 @@ func marshalListBox(p uintptr) (interface{}, error) {
 // NewListBox constructs a class ListBox.
 func NewListBox() ListBox {
 	var cret C.GtkListBox
-	var goret1 ListBox
+	var ret1 ListBox
 
 	cret = C.gtk_list_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBox)
 
-	return goret1
+	return ret1
 }
 
 // Append: append a widget to the list. If a sort function is set, the
@@ -15697,13 +15697,13 @@ func (b listBox) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_box_get_activate_on_single_click(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Adjustment gets the adjustment (if any) that the widget uses to for
@@ -15714,13 +15714,13 @@ func (b listBox) Adjustment() Adjustment {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_list_box_get_adjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // RowAtIndex gets the n-th child in the list (not counting headers). If
@@ -15734,13 +15734,13 @@ func (b listBox) RowAtIndex(index_ int) ListBoxRow {
 	arg1 = C.int(index_)
 
 	var cret *C.GtkListBoxRow
-	var goret1 ListBoxRow
+	var ret1 ListBoxRow
 
 	cret = C.gtk_list_box_get_row_at_index(arg0, index_)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
 
-	return goret1
+	return ret1
 }
 
 // RowAtY gets the row at the @y position.
@@ -15752,13 +15752,13 @@ func (b listBox) RowAtY(y int) ListBoxRow {
 	arg1 = C.int(y)
 
 	var cret *C.GtkListBoxRow
-	var goret1 ListBoxRow
+	var ret1 ListBoxRow
 
 	cret = C.gtk_list_box_get_row_at_y(arg0, y)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
 
-	return goret1
+	return ret1
 }
 
 // SelectedRow gets the selected row.
@@ -15771,13 +15771,13 @@ func (b listBox) SelectedRow() ListBoxRow {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkListBoxRow
-	var goret1 ListBoxRow
+	var ret1 ListBoxRow
 
 	cret = C.gtk_list_box_get_selected_row(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
 
-	return goret1
+	return ret1
 }
 
 // SelectedRows creates a list of all selected children.
@@ -15787,16 +15787,16 @@ func (b listBox) SelectedRows() *glib.List {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GList
-	var goret1 *glib.List
+	var ret1 *glib.List
 
 	cret = C.gtk_list_box_get_selected_rows(arg0)
 
-	goret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.List) {
+	ret1 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SelectionMode gets the selection mode of the listbox.
@@ -15806,13 +15806,13 @@ func (b listBox) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret1 SelectionMode
+	var ret1 SelectionMode
 
 	cret = C.gtk_list_box_get_selection_mode(arg0)
 
-	goret1 = SelectionMode(cret)
+	ret1 = SelectionMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowSeparators returns whether the list box should show separators
@@ -15823,13 +15823,13 @@ func (b listBox) ShowSeparators() bool {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_list_box_get_show_separators(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Insert: insert the @child into the @box at @position. If a sort function
@@ -16175,13 +16175,13 @@ func NewLockButton(permission gio.Permission) LockButton {
 	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	var cret C.GtkLockButton
-	var goret1 LockButton
+	var ret1 LockButton
 
 	cret = C.gtk_lock_button_new(permission)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
 
-	return goret1
+	return ret1
 }
 
 // Permission obtains the #GPermission object that controls @button.
@@ -16191,13 +16191,13 @@ func (b lockButton) Permission() gio.Permission {
 	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GPermission
-	var goret1 gio.Permission
+	var ret1 gio.Permission
 
 	cret = C.gtk_lock_button_get_permission(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
 
-	return goret1
+	return ret1
 }
 
 // SetPermission sets the #GPermission object that controls @button.
@@ -16407,13 +16407,13 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 // NewMenuButton constructs a class MenuButton.
 func NewMenuButton() MenuButton {
 	var cret C.GtkMenuButton
-	var goret1 MenuButton
+	var ret1 MenuButton
 
 	cret = C.gtk_menu_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuButton)
 
-	return goret1
+	return ret1
 }
 
 // Direction returns the direction the popup will be pointing at when popped
@@ -16424,13 +16424,13 @@ func (m menuButton) Direction() ArrowType {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.GtkArrowType
-	var goret1 ArrowType
+	var ret1 ArrowType
 
 	cret = C.gtk_menu_button_get_direction(arg0)
 
-	goret1 = ArrowType(cret)
+	ret1 = ArrowType(cret)
 
-	return goret1
+	return ret1
 }
 
 // HasFrame returns whether the button has a frame.
@@ -16440,13 +16440,13 @@ func (m menuButton) HasFrame() bool {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_button_get_has_frame(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // IconName gets the name of the icon shown in the button.
@@ -16456,13 +16456,13 @@ func (m menuButton) IconName() string {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_menu_button_get_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Label gets the label shown in the button
@@ -16472,13 +16472,13 @@ func (m menuButton) Label() string {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_menu_button_get_label(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // MenuModel returns the Model used to generate the popup.
@@ -16488,13 +16488,13 @@ func (m menuButton) MenuModel() gio.MenuModel {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_menu_button_get_menu_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // Popover returns the Popover that pops out of the button. If the button is
@@ -16505,13 +16505,13 @@ func (m menuButton) Popover() Popover {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkPopover
-	var goret1 Popover
+	var ret1 Popover
 
 	cret = C.gtk_menu_button_get_popover(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns whether an embedded underline in the text indicates
@@ -16522,13 +16522,13 @@ func (m menuButton) UseUnderline() bool {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_menu_button_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Popdown dismiss the menu.
@@ -16972,13 +16972,13 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 // NewNotebook constructs a class Notebook.
 func NewNotebook() Notebook {
 	var cret C.GtkNotebook
-	var goret1 Notebook
+	var ret1 Notebook
 
 	cret = C.gtk_notebook_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Notebook)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Notebook)
 
-	return goret1
+	return ret1
 }
 
 // AppendPage appends a page to @notebook.
@@ -16992,13 +16992,13 @@ func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_append_page(arg0, child, tabLabel)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // AppendPageMenu appends a page to @notebook, specifying the widget to use
@@ -17015,13 +17015,13 @@ func (n notebook) AppendPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_append_page_menu(arg0, child, tabLabel, menuLabel)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // DetachTab removes the child from the notebook.
@@ -17049,13 +17049,13 @@ func (n notebook) ActionWidget(packType PackType) Widget {
 	arg1 = (C.GtkPackType)(packType)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_action_widget(arg0, packType)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // CurrentPage returns the page number of the current page.
@@ -17065,13 +17065,13 @@ func (n notebook) CurrentPage() int {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_get_current_page(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // GroupName gets the current group name for @notebook.
@@ -17081,13 +17081,13 @@ func (n notebook) GroupName() string {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_notebook_get_group_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // MenuLabel retrieves the menu label widget of the page containing @child.
@@ -17099,13 +17099,13 @@ func (n notebook) MenuLabel(child Widget) Widget {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_menu_label(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // MenuLabelText retrieves the text of the menu label for the page
@@ -17118,13 +17118,13 @@ func (n notebook) MenuLabelText(child Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_notebook_get_menu_label_text(arg0, child)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NPages gets the number of pages in a notebook.
@@ -17134,13 +17134,13 @@ func (n notebook) NPages() int {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_get_n_pages(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NthPage returns the child widget contained in page number @page_num.
@@ -17152,13 +17152,13 @@ func (n notebook) NthPage(pageNum int) Widget {
 	arg1 = C.int(pageNum)
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_nth_page(arg0, pageNum)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Page returns the NotebookPage for @child.
@@ -17170,13 +17170,13 @@ func (n notebook) Page(child Widget) NotebookPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkNotebookPage
-	var goret1 NotebookPage
+	var ret1 NotebookPage
 
 	cret = C.gtk_notebook_get_page(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NotebookPage)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NotebookPage)
 
-	return goret1
+	return ret1
 }
 
 // Pages returns a Model that contains the pages of the notebook, and can be
@@ -17187,13 +17187,13 @@ func (n notebook) Pages() gio.ListModel {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret *C.GListModel
-	var goret1 gio.ListModel
+	var ret1 gio.ListModel
 
 	cret = C.gtk_notebook_get_pages(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
 
-	return goret1
+	return ret1
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.
@@ -17204,13 +17204,13 @@ func (n notebook) Scrollable() bool {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_scrollable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowBorder returns whether a bevel will be drawn around the notebook
@@ -17221,13 +17221,13 @@ func (n notebook) ShowBorder() bool {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_show_border(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowTabs returns whether the tabs of the notebook are shown. See
@@ -17238,13 +17238,13 @@ func (n notebook) ShowTabs() bool {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_show_tabs(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TabDetachable returns whether the tab contents can be detached from
@@ -17257,13 +17257,13 @@ func (n notebook) TabDetachable(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_tab_detachable(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TabLabel returns the tab label widget for the page @child. nil is
@@ -17277,13 +17277,13 @@ func (n notebook) TabLabel(child Widget) Widget {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_get_tab_label(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // TabLabelText retrieves the text of the tab label for the page containing
@@ -17296,13 +17296,13 @@ func (n notebook) TabLabelText(child Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_notebook_get_tab_label_text(arg0, child)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TabPos gets the edge at which the tabs for switching pages in the
@@ -17313,13 +17313,13 @@ func (n notebook) TabPos() PositionType {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.GtkPositionType
-	var goret1 PositionType
+	var ret1 PositionType
 
 	cret = C.gtk_notebook_get_tab_pos(arg0)
 
-	goret1 = PositionType(cret)
+	ret1 = PositionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // TabReorderable gets whether the tab can be reordered via drag and drop or
@@ -17332,13 +17332,13 @@ func (n notebook) TabReorderable(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_notebook_get_tab_reorderable(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InsertPage: insert a page into @notebook at the given position.
@@ -17354,13 +17354,13 @@ func (n notebook) InsertPage(child Widget, tabLabel Widget, position int) int {
 	arg3 = C.int(position)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_insert_page(arg0, child, tabLabel, position)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // InsertPageMenu: insert a page into @notebook at the given position,
@@ -17379,13 +17379,13 @@ func (n notebook) InsertPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	arg4 = C.int(position)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_insert_page_menu(arg0, child, tabLabel, menuLabel, position)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NextPage switches to the next page. Nothing happens if the current page
@@ -17408,13 +17408,13 @@ func (n notebook) PageNum(child Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_page_num(arg0, child)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // PopupDisable disables the popup menu.
@@ -17448,13 +17448,13 @@ func (n notebook) PrependPage(child Widget, tabLabel Widget) int {
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_prepend_page(arg0, child, tabLabel)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrependPageMenu prepends a page to @notebook, specifying the widget to
@@ -17471,13 +17471,13 @@ func (n notebook) PrependPageMenu(child Widget, tabLabel Widget, menuLabel Widge
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_notebook_prepend_page_menu(arg0, child, tabLabel, menuLabel)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrevPage switches to the previous page. Nothing happens if the current
@@ -17784,13 +17784,13 @@ func (p notebookPage) Child() Widget {
 	arg0 = (*C.GtkNotebookPage)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_notebook_page_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Overlay: gtkOverlay is a container which contains a single main child, on top
@@ -17888,13 +17888,13 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 // NewOverlay constructs a class Overlay.
 func NewOverlay() Overlay {
 	var cret C.GtkOverlay
-	var goret1 Overlay
+	var ret1 Overlay
 
 	cret = C.gtk_overlay_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
 
-	return goret1
+	return ret1
 }
 
 // AddOverlay adds @widget to @overlay.
@@ -17921,13 +17921,13 @@ func (o overlay) Child() Widget {
 	arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_overlay_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ClipOverlay gets whether @widget should be clipped within the parent.
@@ -17939,13 +17939,13 @@ func (o overlay) ClipOverlay(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_overlay_get_clip_overlay(arg0, widget)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MeasureOverlay gets whether @widget's size is included in the measurement
@@ -17958,13 +17958,13 @@ func (o overlay) MeasureOverlay(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_overlay_get_measure_overlay(arg0, widget)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RemoveOverlay removes an overlay that was added with
@@ -18155,13 +18155,13 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 // NewPageSetup constructs a class PageSetup.
 func NewPageSetup() PageSetup {
 	var cret C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 
 	cret = C.gtk_page_setup_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return goret1
+	return ret1
 }
 
 // NewPageSetupFromFile constructs a class PageSetup.
@@ -18173,18 +18173,18 @@ func NewPageSetupFromFile(fileName string) (pageSetup PageSetup, err error) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 	var goerr error
 
 	cret = C.gtk_page_setup_new_from_file(fileName, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NewPageSetupFromGVariant constructs a class PageSetup.
@@ -18194,13 +18194,13 @@ func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
 	var cret C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 
 	cret = C.gtk_page_setup_new_from_gvariant(variant)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return goret1
+	return ret1
 }
 
 // NewPageSetupFromKeyFile constructs a class PageSetup.
@@ -18214,18 +18214,18 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 	var goerr error
 
 	cret = C.gtk_page_setup_new_from_key_file(keyFile, groupName, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Copy copies a PageSetup.
@@ -18235,13 +18235,13 @@ func (o pageSetup) Copy() PageSetup {
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 
 	cret = C.gtk_page_setup_copy(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return goret1
+	return ret1
 }
 
 // BottomMargin gets the bottom margin in units of @unit.
@@ -18253,13 +18253,13 @@ func (s pageSetup) BottomMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_bottom_margin(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // LeftMargin gets the left margin in units of @unit.
@@ -18271,13 +18271,13 @@ func (s pageSetup) LeftMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_left_margin(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Orientation gets the page orientation of the PageSetup.
@@ -18287,13 +18287,13 @@ func (s pageSetup) Orientation() PageOrientation {
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPageOrientation
-	var goret1 PageOrientation
+	var ret1 PageOrientation
 
 	cret = C.gtk_page_setup_get_orientation(arg0)
 
-	goret1 = PageOrientation(cret)
+	ret1 = PageOrientation(cret)
 
-	return goret1
+	return ret1
 }
 
 // PageHeight returns the page height in units of @unit.
@@ -18308,13 +18308,13 @@ func (s pageSetup) PageHeight(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_page_height(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // PageWidth returns the page width in units of @unit.
@@ -18329,13 +18329,13 @@ func (s pageSetup) PageWidth(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_page_width(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // PaperHeight returns the paper height in units of @unit.
@@ -18350,13 +18350,13 @@ func (s pageSetup) PaperHeight(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_paper_height(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // PaperSize gets the paper size of the PageSetup.
@@ -18366,13 +18366,13 @@ func (s pageSetup) PaperSize() *PaperSize {
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkPaperSize
-	var goret1 *PaperSize
+	var ret1 *PaperSize
 
 	cret = C.gtk_page_setup_get_paper_size(arg0)
 
-	goret1 = WrapPaperSize(unsafe.Pointer(cret))
+	ret1 = WrapPaperSize(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // PaperWidth returns the paper width in units of @unit.
@@ -18387,13 +18387,13 @@ func (s pageSetup) PaperWidth(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_paper_width(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // RightMargin gets the right margin in units of @unit.
@@ -18405,13 +18405,13 @@ func (s pageSetup) RightMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_right_margin(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // TopMargin gets the top margin in units of @unit.
@@ -18423,13 +18423,13 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_page_setup_get_top_margin(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // LoadFile reads the page setup from the file @file_name. See
@@ -18593,13 +18593,13 @@ func (s pageSetup) ToGVariant() *glib.Variant {
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.gtk_page_setup_to_gvariant(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ToKeyFile: this function adds the page setup from @setup to @key_file.
@@ -18739,13 +18739,13 @@ func NewPaned(orientation Orientation) Paned {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkPaned
-	var goret1 Paned
+	var ret1 Paned
 
 	cret = C.gtk_paned_new(orientation)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
 
-	return goret1
+	return ret1
 }
 
 // EndChild retrieves the end child of the given Paned.
@@ -18757,13 +18757,13 @@ func (p paned) EndChild() Widget {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_paned_get_end_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Position obtains the position of the divider between the two panes.
@@ -18773,13 +18773,13 @@ func (p paned) Position() int {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_paned_get_position(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ResizeEndChild returns whether the end child can be resized.
@@ -18789,13 +18789,13 @@ func (p paned) ResizeEndChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_paned_get_resize_end_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ResizeStartChild returns whether the start child can be resized.
@@ -18805,13 +18805,13 @@ func (p paned) ResizeStartChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_paned_get_resize_start_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShrinkEndChild returns whether the end child can be shrunk.
@@ -18821,13 +18821,13 @@ func (p paned) ShrinkEndChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_paned_get_shrink_end_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShrinkStartChild returns whether the start child can be shrunk.
@@ -18837,13 +18837,13 @@ func (p paned) ShrinkStartChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_paned_get_shrink_start_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // StartChild retrieves the start child of the given Paned.
@@ -18855,13 +18855,13 @@ func (p paned) StartChild() Widget {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_paned_get_start_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // WideHandle gets the Paned:wide-handle property.
@@ -18871,13 +18871,13 @@ func (p paned) WideHandle() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_paned_get_wide_handle(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetEndChild sets the end child of @paned to @child.
@@ -19126,13 +19126,13 @@ func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkPopoverMenu
-	var goret1 PopoverMenu
+	var ret1 PopoverMenu
 
 	cret = C.gtk_popover_menu_new_from_model(model)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
 
-	return goret1
+	return ret1
 }
 
 // NewPopoverMenuFromModelFull constructs a class PopoverMenu.
@@ -19144,13 +19144,13 @@ func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Po
 	arg2 = (C.GtkPopoverMenuFlags)(flags)
 
 	var cret C.GtkPopoverMenu
-	var goret1 PopoverMenu
+	var ret1 PopoverMenu
 
 	cret = C.gtk_popover_menu_new_from_model_full(model, flags)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PopoverMenu)
 
-	return goret1
+	return ret1
 }
 
 // AddChild adds a custom widget to a generated menu.
@@ -19168,13 +19168,13 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_menu_add_child(arg0, child, id)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MenuModel returns the menu model used to populate the popover.
@@ -19184,13 +19184,13 @@ func (p popoverMenu) MenuModel() gio.MenuModel {
 	arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_popover_menu_get_menu_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // RemoveChild removes a widget that has previously been added with
@@ -19203,13 +19203,13 @@ func (p popoverMenu) RemoveChild(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_menu_remove_child(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetMenuModel sets a new menu model on @popover.
@@ -19304,13 +19304,13 @@ func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkPopoverMenuBar
-	var goret1 PopoverMenuBar
+	var ret1 PopoverMenuBar
 
 	cret = C.gtk_popover_menu_bar_new_from_model(model)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenuBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenuBar)
 
-	return goret1
+	return ret1
 }
 
 // AddChild adds a custom widget to a generated menubar.
@@ -19328,13 +19328,13 @@ func (b popoverMenuBar) AddChild(child Widget, id string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_menu_bar_add_child(arg0, child, id)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MenuModel returns the model from which the contents of @bar are taken.
@@ -19344,13 +19344,13 @@ func (b popoverMenuBar) MenuModel() gio.MenuModel {
 	arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_popover_menu_bar_get_menu_model(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // RemoveChild removes a widget that has previously been added with
@@ -19363,13 +19363,13 @@ func (b popoverMenuBar) RemoveChild(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_popover_menu_bar_remove_child(arg0, child)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetMenuModel sets a menu model from which @bar should take its contents.
@@ -19514,13 +19514,13 @@ func (c printContext) CreatePangoContext() pango.Context {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoContext
-	var goret1 pango.Context
+	var ret1 pango.Context
 
 	cret = C.gtk_print_context_create_pango_context(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	return goret1
+	return ret1
 }
 
 // CreatePangoLayout creates a new Layout that is suitable for use with the
@@ -19531,13 +19531,13 @@ func (c printContext) CreatePangoLayout() pango.Layout {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoLayout
-	var goret1 pango.Layout
+	var ret1 pango.Layout
 
 	cret = C.gtk_print_context_create_pango_layout(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
 
-	return goret1
+	return ret1
 }
 
 // CairoContext obtains the cairo context that is associated with the
@@ -19548,13 +19548,13 @@ func (c printContext) CairoContext() *cairo.Context {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.cairo_t
-	var goret1 *cairo.Context
+	var ret1 *cairo.Context
 
 	cret = C.gtk_print_context_get_cairo_context(arg0)
 
-	goret1 = cairo.WrapContext(unsafe.Pointer(cret))
+	ret1 = cairo.WrapContext(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // DPIX obtains the horizontal resolution of the PrintContext, in dots per
@@ -19565,13 +19565,13 @@ func (c printContext) DPIX() float64 {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_context_get_dpi_x(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // DPIY obtains the vertical resolution of the PrintContext, in dots per
@@ -19582,13 +19582,13 @@ func (c printContext) DPIY() float64 {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_context_get_dpi_y(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // HardMargins obtains the hardware printer margins of the PrintContext, in
@@ -19598,26 +19598,26 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
-	var arg3 *C.double
+	var arg3 C.double
 	var ret3 float64
-	var arg4 *C.double
+	var arg4 C.double
 	var ret4 float64
 	var cret C.gboolean
-	var goret5 bool
+	var ret5 bool
 
 	cret = C.gtk_print_context_get_hard_margins(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
-	ret3 = *C.double(arg3)
-	ret4 = *C.double(arg4)
-	goret5 = C.bool(cret) != C.false
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
+	ret3 = C.double(arg3)
+	ret4 = C.double(arg4)
+	ret5 = C.bool(cret) != C.false
 
-	return ret1, ret2, ret3, ret4, goret5
+	return ret1, ret2, ret3, ret4, ret5
 }
 
 // Height obtains the height of the PrintContext, in pixels.
@@ -19627,13 +19627,13 @@ func (c printContext) Height() float64 {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_context_get_height(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // PageSetup obtains the PageSetup that determines the page dimensions of
@@ -19644,13 +19644,13 @@ func (c printContext) PageSetup() PageSetup {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret1 PageSetup
+	var ret1 PageSetup
 
 	cret = C.gtk_print_context_get_page_setup(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
 
-	return goret1
+	return ret1
 }
 
 // PangoFontmap returns a FontMap that is suitable for use with the
@@ -19661,13 +19661,13 @@ func (c printContext) PangoFontmap() pango.FontMap {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoFontMap
-	var goret1 pango.FontMap
+	var ret1 pango.FontMap
 
 	cret = C.gtk_print_context_get_pango_fontmap(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
 
-	return goret1
+	return ret1
 }
 
 // Width obtains the width of the PrintContext, in pixels.
@@ -19677,13 +19677,13 @@ func (c printContext) Width() float64 {
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_context_get_width(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetCairoContext sets a new cairo context on a print context.
@@ -19918,13 +19918,13 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 // NewPrintSettings constructs a class PrintSettings.
 func NewPrintSettings() PrintSettings {
 	var cret C.GtkPrintSettings
-	var goret1 PrintSettings
+	var ret1 PrintSettings
 
 	cret = C.gtk_print_settings_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return goret1
+	return ret1
 }
 
 // NewPrintSettingsFromFile constructs a class PrintSettings.
@@ -19936,18 +19936,18 @@ func NewPrintSettingsFromFile(fileName string) (printSettings PrintSettings, err
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkPrintSettings
-	var goret1 PrintSettings
+	var ret1 PrintSettings
 	var goerr error
 
 	cret = C.gtk_print_settings_new_from_file(fileName, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // NewPrintSettingsFromGVariant constructs a class PrintSettings.
@@ -19957,13 +19957,13 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
 	var cret C.GtkPrintSettings
-	var goret1 PrintSettings
+	var ret1 PrintSettings
 
 	cret = C.gtk_print_settings_new_from_gvariant(variant)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return goret1
+	return ret1
 }
 
 // NewPrintSettingsFromKeyFile constructs a class PrintSettings.
@@ -19977,18 +19977,18 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (print
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkPrintSettings
-	var goret1 PrintSettings
+	var ret1 PrintSettings
 	var goerr error
 
 	cret = C.gtk_print_settings_new_from_key_file(keyFile, groupName, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // Copy copies a PrintSettings object.
@@ -19998,13 +19998,13 @@ func (o printSettings) Copy() PrintSettings {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPrintSettings
-	var goret1 PrintSettings
+	var ret1 PrintSettings
 
 	cret = C.gtk_print_settings_copy(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 
-	return goret1
+	return ret1
 }
 
 // Foreach calls @func for each key-value pair of @settings.
@@ -20026,13 +20026,13 @@ func (s printSettings) Get(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get(arg0, key)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Bool returns the boolean represented by the value that is associated with
@@ -20048,13 +20048,13 @@ func (s printSettings) Bool(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_settings_get_bool(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
@@ -20064,13 +20064,13 @@ func (s printSettings) Collate() bool {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_settings_get_collate(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
@@ -20080,13 +20080,13 @@ func (s printSettings) DefaultSource() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get_default_source(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
@@ -20096,13 +20096,13 @@ func (s printSettings) Dither() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get_dither(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Double returns the double value associated with @key, or 0.
@@ -20115,13 +20115,13 @@ func (s printSettings) Double(key string) float64 {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_double(arg0, key)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // DoubleWithDefault returns the floating point number represented by the
@@ -20140,13 +20140,13 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 	arg2 = C.double(def)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_double_with_default(arg0, key, def)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
@@ -20156,13 +20156,13 @@ func (s printSettings) Duplex() PrintDuplex {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPrintDuplex
-	var goret1 PrintDuplex
+	var ret1 PrintDuplex
 
 	cret = C.gtk_print_settings_get_duplex(arg0)
 
-	goret1 = PrintDuplex(cret)
+	ret1 = PrintDuplex(cret)
 
-	return goret1
+	return ret1
 }
 
 // Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
@@ -20172,13 +20172,13 @@ func (s printSettings) Finishings() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get_finishings(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Int returns the integer value of @key, or 0.
@@ -20191,13 +20191,13 @@ func (s printSettings) Int(key string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_int(arg0, key)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // IntWithDefault returns the value of @key, interpreted as an integer, or
@@ -20213,13 +20213,13 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 	arg2 = C.int(def)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_int_with_default(arg0, key, def)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Length returns the value associated with @key, interpreted as a length.
@@ -20235,13 +20235,13 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 	arg2 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_length(arg0, key, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
@@ -20253,13 +20253,13 @@ func (s printSettings) MediaType() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get_media_type(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
@@ -20269,13 +20269,13 @@ func (s printSettings) NCopies() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_n_copies(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
@@ -20285,13 +20285,13 @@ func (s printSettings) NumberUp() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_number_up(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
@@ -20301,13 +20301,13 @@ func (s printSettings) NumberUpLayout() NumberUpLayout {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkNumberUpLayout
-	var goret1 NumberUpLayout
+	var ret1 NumberUpLayout
 
 	cret = C.gtk_print_settings_get_number_up_layout(arg0)
 
-	goret1 = NumberUpLayout(cret)
+	ret1 = NumberUpLayout(cret)
 
-	return goret1
+	return ret1
 }
 
 // Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
@@ -20318,13 +20318,13 @@ func (s printSettings) Orientation() PageOrientation {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPageOrientation
-	var goret1 PageOrientation
+	var ret1 PageOrientation
 
 	cret = C.gtk_print_settings_get_orientation(arg0)
 
-	goret1 = PageOrientation(cret)
+	ret1 = PageOrientation(cret)
 
-	return goret1
+	return ret1
 }
 
 // OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
@@ -20334,13 +20334,13 @@ func (s printSettings) OutputBin() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get_output_bin(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
@@ -20351,20 +20351,20 @@ func (s printSettings) PageRanges() (numRanges int, pageRanges []PageRange) {
 
 	var cret *C.GtkPageRange
 	var arg1 *C.int
-	var goret2 []PageRange
+	var ret2 []PageRange
 
 	cret = C.gtk_print_settings_get_page_ranges(arg0, &arg1)
 
-	goret2 = make([]PageRange, arg1)
+	ret2 = make([]PageRange, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.GtkPageRange)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = WrapPageRange(unsafe.Pointer(src))
-		runtime.SetFinalizer(goret2[i], func(v PageRange) {
+		ret2[i] = WrapPageRange(unsafe.Pointer(src))
+		runtime.SetFinalizer(ret2[i], func(v PageRange) {
 			C.free(unsafe.Pointer(v.Native()))
 		})
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
@@ -20374,13 +20374,13 @@ func (s printSettings) PageSet() PageSet {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPageSet
-	var goret1 PageSet
+	var ret1 PageSet
 
 	cret = C.gtk_print_settings_get_page_set(arg0)
 
-	goret1 = PageSet(cret)
+	ret1 = PageSet(cret)
 
-	return goret1
+	return ret1
 }
 
 // PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
@@ -20393,13 +20393,13 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_paper_height(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
@@ -20410,16 +20410,16 @@ func (s printSettings) PaperSize() *PaperSize {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkPaperSize
-	var goret1 *PaperSize
+	var ret1 *PaperSize
 
 	cret = C.gtk_print_settings_get_paper_size(arg0)
 
-	goret1 = WrapPaperSize(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *PaperSize) {
+	ret1 = WrapPaperSize(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
@@ -20432,13 +20432,13 @@ func (s printSettings) PaperWidth(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_paper_width(arg0, unit)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
@@ -20448,13 +20448,13 @@ func (s printSettings) PrintPages() PrintPages {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPrintPages
-	var goret1 PrintPages
+	var ret1 PrintPages
 
 	cret = C.gtk_print_settings_get_print_pages(arg0)
 
-	goret1 = PrintPages(cret)
+	ret1 = PrintPages(cret)
 
-	return goret1
+	return ret1
 }
 
 // Printer: convenience function to obtain the value of
@@ -20465,13 +20465,13 @@ func (s printSettings) Printer() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_print_settings_get_printer(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
@@ -20481,13 +20481,13 @@ func (s printSettings) PrinterLpi() float64 {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_printer_lpi(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
@@ -20497,13 +20497,13 @@ func (s printSettings) Quality() PrintQuality {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPrintQuality
-	var goret1 PrintQuality
+	var ret1 PrintQuality
 
 	cret = C.gtk_print_settings_get_quality(arg0)
 
-	goret1 = PrintQuality(cret)
+	ret1 = PrintQuality(cret)
 
-	return goret1
+	return ret1
 }
 
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
@@ -20513,13 +20513,13 @@ func (s printSettings) Resolution() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_resolution(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
@@ -20529,13 +20529,13 @@ func (s printSettings) ResolutionX() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_resolution_x(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
@@ -20545,13 +20545,13 @@ func (s printSettings) ResolutionY() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_print_settings_get_resolution_y(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
@@ -20561,13 +20561,13 @@ func (s printSettings) Reverse() bool {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_settings_get_reverse(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
@@ -20577,13 +20577,13 @@ func (s printSettings) Scale() float64 {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_print_settings_get_scale(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
@@ -20593,13 +20593,13 @@ func (s printSettings) UseColor() bool {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_settings_get_use_color(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HasKey returns true, if a value is associated with @key.
@@ -20612,13 +20612,13 @@ func (s printSettings) HasKey(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_print_settings_has_key(arg0, key)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LoadFile reads the print settings from @file_name. If the file could not
@@ -21071,13 +21071,13 @@ func (s printSettings) ToGVariant() *glib.Variant {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.gtk_print_settings_to_gvariant(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // ToKeyFile: this function adds the print settings from @settings to
@@ -21245,13 +21245,13 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 // NewProgressBar constructs a class ProgressBar.
 func NewProgressBar() ProgressBar {
 	var cret C.GtkProgressBar
-	var goret1 ProgressBar
+	var ret1 ProgressBar
 
 	cret = C.gtk_progress_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProgressBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProgressBar)
 
-	return goret1
+	return ret1
 }
 
 // Ellipsize returns the ellipsizing position of the progress bar. See
@@ -21262,13 +21262,13 @@ func (p progressBar) Ellipsize() pango.EllipsizeMode {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret1 pango.EllipsizeMode
+	var ret1 pango.EllipsizeMode
 
 	cret = C.gtk_progress_bar_get_ellipsize(arg0)
 
-	goret1 = pango.EllipsizeMode(cret)
+	ret1 = pango.EllipsizeMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -21278,13 +21278,13 @@ func (p progressBar) Fraction() float64 {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_progress_bar_get_fraction(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Inverted gets the value set by gtk_progress_bar_set_inverted().
@@ -21294,13 +21294,13 @@ func (p progressBar) Inverted() bool {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_progress_bar_get_inverted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PulseStep retrieves the pulse step set with
@@ -21311,13 +21311,13 @@ func (p progressBar) PulseStep() float64 {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_progress_bar_get_pulse_step(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShowText gets the value of the ProgressBar:show-text property. See
@@ -21328,13 +21328,13 @@ func (p progressBar) ShowText() bool {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_progress_bar_get_show_text(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Text retrieves the text that is displayed with the progress bar, if any,
@@ -21346,13 +21346,13 @@ func (p progressBar) Text() string {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_progress_bar_get_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Pulse indicates that some progress has been made, but you don’t know how
@@ -21550,13 +21550,13 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 // NewRevealer constructs a class Revealer.
 func NewRevealer() Revealer {
 	var cret C.GtkRevealer
-	var goret1 Revealer
+	var ret1 Revealer
 
 	cret = C.gtk_revealer_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @revealer.
@@ -21566,13 +21566,13 @@ func (r revealer) Child() Widget {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_revealer_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ChildRevealed returns whether the child is fully revealed, in other words
@@ -21583,13 +21583,13 @@ func (r revealer) ChildRevealed() bool {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_revealer_get_child_revealed(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // RevealChild returns whether the child is currently revealed. See
@@ -21604,13 +21604,13 @@ func (r revealer) RevealChild() bool {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_revealer_get_reveal_child(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -21621,13 +21621,13 @@ func (r revealer) TransitionDuration() uint {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_revealer_get_transition_duration(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // TransitionType gets the type of animation that will be used for
@@ -21638,13 +21638,13 @@ func (r revealer) TransitionType() RevealerTransitionType {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.GtkRevealerTransitionType
-	var goret1 RevealerTransitionType
+	var ret1 RevealerTransitionType
 
 	cret = C.gtk_revealer_get_transition_type(arg0)
 
-	goret1 = RevealerTransitionType(cret)
+	ret1 = RevealerTransitionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @revealer.
@@ -21785,13 +21785,13 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkScrollbar
-	var goret1 Scrollbar
+	var ret1 Scrollbar
 
 	cret = C.gtk_scrollbar_new(orientation, adjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
 
-	return goret1
+	return ret1
 }
 
 // Adjustment returns the scrollbar's adjustment.
@@ -21801,13 +21801,13 @@ func (s scrollbar) Adjustment() Adjustment {
 	arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrollbar_get_adjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // SetAdjustment makes the scrollbar use the given adjustment.
@@ -22068,13 +22068,13 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 // NewScrolledWindow constructs a class ScrolledWindow.
 func NewScrolledWindow() ScrolledWindow {
 	var cret C.GtkScrolledWindow
-	var goret1 ScrolledWindow
+	var ret1 ScrolledWindow
 
 	cret = C.gtk_scrolled_window_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScrolledWindow)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScrolledWindow)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @scrolled_window.
@@ -22084,13 +22084,13 @@ func (s scrolledWindow) Child() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_scrolled_window_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // HAdjustment returns the horizontal scrollbar’s adjustment, used to
@@ -22102,13 +22102,13 @@ func (s scrolledWindow) HAdjustment() Adjustment {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrolled_window_get_hadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // HasFrame gets whether the scrolled window draws a frame. See
@@ -22119,13 +22119,13 @@ func (s scrolledWindow) HasFrame() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_has_frame(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HScrollbar returns the horizontal scrollbar of @scrolled_window.
@@ -22135,13 +22135,13 @@ func (s scrolledWindow) HScrollbar() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_scrolled_window_get_hscrollbar(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // KineticScrolling returns the specified kinetic scrolling behavior.
@@ -22151,13 +22151,13 @@ func (s scrolledWindow) KineticScrolling() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_kinetic_scrolling(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // MaxContentHeight returns the maximum content height set.
@@ -22167,13 +22167,13 @@ func (s scrolledWindow) MaxContentHeight() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_max_content_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MaxContentWidth returns the maximum content width set.
@@ -22183,13 +22183,13 @@ func (s scrolledWindow) MaxContentWidth() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_max_content_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinContentHeight gets the minimal content height of @scrolled_window, or
@@ -22200,13 +22200,13 @@ func (s scrolledWindow) MinContentHeight() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_min_content_height(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinContentWidth gets the minimum content width of @scrolled_window, or -1
@@ -22217,13 +22217,13 @@ func (s scrolledWindow) MinContentWidth() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_scrolled_window_get_min_content_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // OverlayScrolling returns whether overlay scrolling is enabled for this
@@ -22234,13 +22234,13 @@ func (s scrolledWindow) OverlayScrolling() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_overlay_scrolling(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Placement gets the placement of the contents with respect to the
@@ -22252,13 +22252,13 @@ func (s scrolledWindow) Placement() CornerType {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkCornerType
-	var goret1 CornerType
+	var ret1 CornerType
 
 	cret = C.gtk_scrolled_window_get_placement(arg0)
 
-	goret1 = CornerType(cret)
+	ret1 = CornerType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Policy retrieves the current policy values for the horizontal and
@@ -22268,9 +22268,9 @@ func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy 
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.GtkPolicyType
+	var arg1 C.GtkPolicyType
 	var ret1 *PolicyType
-	var arg2 *C.GtkPolicyType
+	var arg2 C.GtkPolicyType
 	var ret2 *PolicyType
 
 	C.gtk_scrolled_window_get_policy(arg0, &arg1, &arg2)
@@ -22290,13 +22290,13 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_propagate_natural_height(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PropagateNaturalWidth reports whether the natural width of the child will
@@ -22308,13 +22308,13 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_scrolled_window_get_propagate_natural_width(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VAdjustment returns the vertical scrollbar’s adjustment, used to connect
@@ -22326,13 +22326,13 @@ func (s scrolledWindow) VAdjustment() Adjustment {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_scrolled_window_get_vadjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // VScrollbar returns the vertical scrollbar of @scrolled_window.
@@ -22342,13 +22342,13 @@ func (s scrolledWindow) VScrollbar() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_scrolled_window_get_vscrollbar(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @scrolled_window.
@@ -22679,13 +22679,13 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 // NewSearchBar constructs a class SearchBar.
 func NewSearchBar() SearchBar {
 	var cret C.GtkSearchBar
-	var goret1 SearchBar
+	var ret1 SearchBar
 
 	cret = C.gtk_search_bar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
 
-	return goret1
+	return ret1
 }
 
 // ConnectEntry connects the Entry widget passed as the one to be used in
@@ -22709,13 +22709,13 @@ func (b searchBar) Child() Widget {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_search_bar_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // KeyCaptureWidget gets the widget that @bar is capturing key events from.
@@ -22725,13 +22725,13 @@ func (b searchBar) KeyCaptureWidget() Widget {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_search_bar_get_key_capture_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SearchMode returns whether the search mode is on or off.
@@ -22741,13 +22741,13 @@ func (b searchBar) SearchMode() bool {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_search_bar_get_search_mode(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ShowCloseButton returns whether the close button is shown.
@@ -22757,13 +22757,13 @@ func (b searchBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_search_bar_get_show_close_button(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @bar.
@@ -22908,13 +22908,13 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 // NewSearchEntry constructs a class SearchEntry.
 func NewSearchEntry() SearchEntry {
 	var cret C.GtkSearchEntry
-	var goret1 SearchEntry
+	var ret1 SearchEntry
 
 	cret = C.gtk_search_entry_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchEntry)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchEntry)
 
-	return goret1
+	return ret1
 }
 
 // KeyCaptureWidget gets the widget that @entry is capturing key events
@@ -22925,13 +22925,13 @@ func (e searchEntry) KeyCaptureWidget() Widget {
 	arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_search_entry_get_key_capture_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // SetKeyCaptureWidget sets @widget as the widget that @entry will capture
@@ -23012,13 +23012,13 @@ func NewSeparator(orientation Orientation) Separator {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkSeparator
-	var goret1 Separator
+	var ret1 Separator
 
 	cret = C.gtk_separator_new(orientation)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
 
-	return goret1
+	return ret1
 }
 
 // Settings gtkSettings provide a mechanism to share global settings between
@@ -23301,13 +23301,13 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	arg1 = (C.GtkSizeGroupMode)(mode)
 
 	var cret C.GtkSizeGroup
-	var goret1 SizeGroup
+	var ret1 SizeGroup
 
 	cret = C.gtk_size_group_new(mode)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
 
-	return goret1
+	return ret1
 }
 
 // AddWidget adds a widget to a SizeGroup. In the future, the requisition of
@@ -23336,13 +23336,13 @@ func (s sizeGroup) Mode() SizeGroupMode {
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSizeGroupMode
-	var goret1 SizeGroupMode
+	var ret1 SizeGroupMode
 
 	cret = C.gtk_size_group_get_mode(arg0)
 
-	goret1 = SizeGroupMode(cret)
+	ret1 = SizeGroupMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Widgets returns the list of widgets associated with @size_group.
@@ -23352,13 +23352,13 @@ func (s sizeGroup) Widgets() *glib.SList {
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GSList
-	var goret1 *glib.SList
+	var ret1 *glib.SList
 
 	cret = C.gtk_size_group_get_widgets(arg0)
 
-	goret1 = glib.WrapSList(unsafe.Pointer(cret))
+	ret1 = glib.WrapSList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // RemoveWidget removes a widget from a SizeGroup.
@@ -23548,13 +23548,13 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 	arg3 = C.guint(digits)
 
 	var cret C.GtkSpinButton
-	var goret1 SpinButton
+	var ret1 SpinButton
 
 	cret = C.gtk_spin_button_new(adjustment, climbRate, digits)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
 
-	return goret1
+	return ret1
 }
 
 // NewSpinButtonWithRange constructs a class SpinButton.
@@ -23568,13 +23568,13 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	arg3 = C.double(step)
 
 	var cret C.GtkSpinButton
-	var goret1 SpinButton
+	var ret1 SpinButton
 
 	cret = C.gtk_spin_button_new_with_range(min, max, step)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
 
-	return goret1
+	return ret1
 }
 
 // Configure changes the properties of an existing spin button. The
@@ -23601,13 +23601,13 @@ func (s spinButton) Adjustment() Adjustment {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret1 Adjustment
+	var ret1 Adjustment
 
 	cret = C.gtk_spin_button_get_adjustment(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
 
-	return goret1
+	return ret1
 }
 
 // ClimbRate returns the acceleration rate for repeated changes.
@@ -23617,13 +23617,13 @@ func (s spinButton) ClimbRate() float64 {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_spin_button_get_climb_rate(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // Digits fetches the precision of @spin_button. See
@@ -23634,13 +23634,13 @@ func (s spinButton) Digits() uint {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_spin_button_get_digits(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Increments gets the current step and page the increments used by
@@ -23650,15 +23650,15 @@ func (s spinButton) Increments() (step float64, page float64) {
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 
 	C.gtk_spin_button_get_increments(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
 
 	return ret1, ret2
 }
@@ -23671,13 +23671,13 @@ func (s spinButton) Numeric() bool {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_spin_button_get_numeric(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Range gets the range allowed for @spin_button. See
@@ -23687,15 +23687,15 @@ func (s spinButton) Range() (min float64, max float64) {
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
-	var arg1 *C.double
+	var arg1 C.double
 	var ret1 float64
-	var arg2 *C.double
+	var arg2 C.double
 	var ret2 float64
 
 	C.gtk_spin_button_get_range(arg0, &arg1, &arg2)
 
-	ret1 = *C.double(arg1)
-	ret2 = *C.double(arg2)
+	ret1 = C.double(arg1)
+	ret2 = C.double(arg2)
 
 	return ret1, ret2
 }
@@ -23708,13 +23708,13 @@ func (s spinButton) SnapToTicks() bool {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_spin_button_get_snap_to_ticks(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // UpdatePolicy gets the update behavior of a spin button. See
@@ -23725,13 +23725,13 @@ func (s spinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSpinButtonUpdatePolicy
-	var goret1 SpinButtonUpdatePolicy
+	var ret1 SpinButtonUpdatePolicy
 
 	cret = C.gtk_spin_button_get_update_policy(arg0)
 
-	goret1 = SpinButtonUpdatePolicy(cret)
+	ret1 = SpinButtonUpdatePolicy(cret)
 
-	return goret1
+	return ret1
 }
 
 // Value: get the value in the @spin_button.
@@ -23741,13 +23741,13 @@ func (s spinButton) Value() float64 {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret1 float64
+	var ret1 float64
 
 	cret = C.gtk_spin_button_get_value(arg0)
 
-	goret1 = C.double(cret)
+	ret1 = C.double(cret)
 
-	return goret1
+	return ret1
 }
 
 // ValueAsInt: get the value @spin_button represented as an integer.
@@ -23757,13 +23757,13 @@ func (s spinButton) ValueAsInt() int {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_spin_button_get_value_as_int(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Wrap returns whether the spin button’s value wraps around to the opposite
@@ -23775,13 +23775,13 @@ func (s spinButton) Wrap() bool {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_spin_button_get_wrap(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetAdjustment replaces the Adjustment associated with @spin_button.
@@ -23999,13 +23999,13 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 // NewSpinner constructs a class Spinner.
 func NewSpinner() Spinner {
 	var cret C.GtkSpinner
-	var goret1 Spinner
+	var ret1 Spinner
 
 	cret = C.gtk_spinner_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
 
-	return goret1
+	return ret1
 }
 
 // Spinning returns whether the spinner is spinning.
@@ -24015,13 +24015,13 @@ func (s spinner) Spinning() bool {
 	arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_spinner_get_spinning(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetSpinning sets the activity of the spinner.
@@ -24228,13 +24228,13 @@ func marshalStack(p uintptr) (interface{}, error) {
 // NewStack constructs a class Stack.
 func NewStack() Stack {
 	var cret C.GtkStack
-	var goret1 Stack
+	var ret1 Stack
 
 	cret = C.gtk_stack_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
 
-	return goret1
+	return ret1
 }
 
 // AddChild adds a child to @stack.
@@ -24246,13 +24246,13 @@ func (s stack) AddChild(child Widget) StackPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkStackPage
-	var goret1 StackPage
+	var ret1 StackPage
 
 	cret = C.gtk_stack_add_child(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
 
-	return goret1
+	return ret1
 }
 
 // AddNamed adds a child to @stack. The child is identified by the @name.
@@ -24267,13 +24267,13 @@ func (s stack) AddNamed(child Widget, name string) StackPage {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GtkStackPage
-	var goret1 StackPage
+	var ret1 StackPage
 
 	cret = C.gtk_stack_add_named(arg0, child, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
 
-	return goret1
+	return ret1
 }
 
 // AddTitled adds a child to @stack. The child is identified by the @name.
@@ -24293,13 +24293,13 @@ func (s stack) AddTitled(child Widget, name string, title string) StackPage {
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.GtkStackPage
-	var goret1 StackPage
+	var ret1 StackPage
 
 	cret = C.gtk_stack_add_titled(arg0, child, name, title)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
 
-	return goret1
+	return ret1
 }
 
 // ChildByName finds the child of the Stack with the name given as the
@@ -24313,13 +24313,13 @@ func (s stack) ChildByName(name string) Widget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_stack_get_child_by_name(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Hhomogeneous gets whether @stack is horizontally homogeneous. See
@@ -24330,13 +24330,13 @@ func (s stack) Hhomogeneous() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_get_hhomogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // InterpolateSize returns whether the Stack is set up to interpolate
@@ -24347,13 +24347,13 @@ func (s stack) InterpolateSize() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_get_interpolate_size(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Page returns the StackPage object for @child.
@@ -24365,13 +24365,13 @@ func (s stack) Page(child Widget) StackPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkStackPage
-	var goret1 StackPage
+	var ret1 StackPage
 
 	cret = C.gtk_stack_get_page(arg0, child)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
 
-	return goret1
+	return ret1
 }
 
 // Pages returns a Model that contains the pages of the stack, and can be
@@ -24383,13 +24383,13 @@ func (s stack) Pages() SelectionModel {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSelectionModel
-	var goret1 SelectionModel
+	var ret1 SelectionModel
 
 	cret = C.gtk_stack_get_pages(arg0)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionModel)
 
-	return goret1
+	return ret1
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -24400,13 +24400,13 @@ func (s stack) TransitionDuration() uint {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_stack_get_transition_duration(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // TransitionRunning returns whether the @stack is currently in a transition
@@ -24417,13 +24417,13 @@ func (s stack) TransitionRunning() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_get_transition_running(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // TransitionType gets the type of animation that will be used for
@@ -24434,13 +24434,13 @@ func (s stack) TransitionType() StackTransitionType {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkStackTransitionType
-	var goret1 StackTransitionType
+	var ret1 StackTransitionType
 
 	cret = C.gtk_stack_get_transition_type(arg0)
 
-	goret1 = StackTransitionType(cret)
+	ret1 = StackTransitionType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Vhomogeneous gets whether @stack is vertically homogeneous. See
@@ -24451,13 +24451,13 @@ func (s stack) Vhomogeneous() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_get_vhomogeneous(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // VisibleChild gets the currently visible child of @stack, or nil if there
@@ -24468,13 +24468,13 @@ func (s stack) VisibleChild() Widget {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_stack_get_visible_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // VisibleChildName returns the name of the currently visible child of
@@ -24485,13 +24485,13 @@ func (s stack) VisibleChildName() string {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_stack_get_visible_child_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Remove removes a child widget from @stack.
@@ -24708,13 +24708,13 @@ func (s stackPage) Child() Widget {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_stack_page_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // IconName returns the current value of the StackPage:icon-name property.
@@ -24724,13 +24724,13 @@ func (s stackPage) IconName() string {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_stack_page_get_icon_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Name returns the current value of the StackPage:name property.
@@ -24740,13 +24740,13 @@ func (s stackPage) Name() string {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_stack_page_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // NeedsAttention returns the current value of the StackPage:needs-attention
@@ -24757,13 +24757,13 @@ func (s stackPage) NeedsAttention() bool {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_page_get_needs_attention(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Title returns the current value of the StackPage:title property.
@@ -24773,13 +24773,13 @@ func (s stackPage) Title() string {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_stack_page_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UseUnderline returns the current value of the StackPage:use-underline
@@ -24790,13 +24790,13 @@ func (s stackPage) UseUnderline() bool {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_page_get_use_underline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Visible returns whether @page is visible in its Stack. This is
@@ -24807,13 +24807,13 @@ func (s stackPage) Visible() bool {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_stack_page_get_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetIconName sets the new value of the StackPage:icon-name property. See
@@ -24957,13 +24957,13 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 // NewStackSidebar constructs a class StackSidebar.
 func NewStackSidebar() StackSidebar {
 	var cret C.GtkStackSidebar
-	var goret1 StackSidebar
+	var ret1 StackSidebar
 
 	cret = C.gtk_stack_sidebar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
 
-	return goret1
+	return ret1
 }
 
 // Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
@@ -24973,13 +24973,13 @@ func (s stackSidebar) Stack() Stack {
 	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkStack
-	var goret1 Stack
+	var ret1 Stack
 
 	cret = C.gtk_stack_sidebar_get_stack(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
 
-	return goret1
+	return ret1
 }
 
 // SetStack: set the Stack associated with this StackSidebar.
@@ -25063,13 +25063,13 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 // NewStackSwitcher constructs a class StackSwitcher.
 func NewStackSwitcher() StackSwitcher {
 	var cret C.GtkStackSwitcher
-	var goret1 StackSwitcher
+	var ret1 StackSwitcher
 
 	cret = C.gtk_stack_switcher_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
 
-	return goret1
+	return ret1
 }
 
 // Stack retrieves the stack. See gtk_stack_switcher_set_stack().
@@ -25079,13 +25079,13 @@ func (s stackSwitcher) Stack() Stack {
 	arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkStack
-	var goret1 Stack
+	var ret1 Stack
 
 	cret = C.gtk_stack_switcher_get_stack(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
 
-	return goret1
+	return ret1
 }
 
 // SetStack sets the stack to control.
@@ -25186,13 +25186,13 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 // NewStatusbar constructs a class Statusbar.
 func NewStatusbar() Statusbar {
 	var cret C.GtkStatusbar
-	var goret1 Statusbar
+	var ret1 Statusbar
 
 	cret = C.gtk_statusbar_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
 
-	return goret1
+	return ret1
 }
 
 // ContextID returns a new context identifier, given a description of the
@@ -25206,13 +25206,13 @@ func (s statusbar) ContextID(contextDescription string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_statusbar_get_context_id(arg0, contextDescription)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Pop removes the first message in the Statusbar’s stack with the given
@@ -25242,13 +25242,13 @@ func (s statusbar) Push(contextID uint, text string) uint {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gtk_statusbar_push(arg0, contextID, text)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The
@@ -25353,13 +25353,13 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 // NewSwitch constructs a class Switch.
 func NewSwitch() Switch {
 	var cret C.GtkSwitch
-	var goret1 Switch
+	var ret1 Switch
 
 	cret = C.gtk_switch_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
 
-	return goret1
+	return ret1
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
@@ -25369,13 +25369,13 @@ func (s _switch) Active() bool {
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_switch_get_active(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // State gets the underlying state of the Switch.
@@ -25385,13 +25385,13 @@ func (s _switch) State() bool {
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_switch_get_state(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActive changes the state of @self to the desired one.
@@ -25656,13 +25656,13 @@ func marshalText(p uintptr) (interface{}, error) {
 // NewText constructs a class Text.
 func NewText() Text {
 	var cret C.GtkText
-	var goret1 Text
+	var ret1 Text
 
 	cret = C.gtk_text_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
 
-	return goret1
+	return ret1
 }
 
 // NewTextWithBuffer constructs a class Text.
@@ -25672,13 +25672,13 @@ func NewTextWithBuffer(buffer EntryBuffer) Text {
 	arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	var cret C.GtkText
-	var goret1 Text
+	var ret1 Text
 
 	cret = C.gtk_text_new_with_buffer(buffer)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
 
-	return goret1
+	return ret1
 }
 
 // ActivatesDefault retrieves the value set by
@@ -25689,13 +25689,13 @@ func (s text) ActivatesDefault() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_get_activates_default(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Attributes gets the attribute list that was set on the self using
@@ -25706,13 +25706,13 @@ func (s text) Attributes() *pango.AttrList {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoAttrList
-	var goret1 *pango.AttrList
+	var ret1 *pango.AttrList
 
 	cret = C.gtk_text_get_attributes(arg0)
 
-	goret1 = pango.WrapAttrList(unsafe.Pointer(cret))
+	ret1 = pango.WrapAttrList(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // Buffer: get the EntryBuffer object which holds the text for this self.
@@ -25722,13 +25722,13 @@ func (s text) Buffer() EntryBuffer {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkEntryBuffer
-	var goret1 EntryBuffer
+	var ret1 EntryBuffer
 
 	cret = C.gtk_text_get_buffer(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryBuffer)
 
-	return goret1
+	return ret1
 }
 
 // EnableEmojiCompletion returns whether Emoji completion is enabled for
@@ -25739,13 +25739,13 @@ func (s text) EnableEmojiCompletion() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_get_enable_emoji_completion(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
@@ -25755,13 +25755,13 @@ func (s text) ExtraMenu() gio.MenuModel {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GMenuModel
-	var goret1 gio.MenuModel
+	var ret1 gio.MenuModel
 
 	cret = C.gtk_text_get_extra_menu(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
 
-	return goret1
+	return ret1
 }
 
 // InputHints gets the value of the Text:input-hints property.
@@ -25771,13 +25771,13 @@ func (s text) InputHints() InputHints {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkInputHints
-	var goret1 InputHints
+	var ret1 InputHints
 
 	cret = C.gtk_text_get_input_hints(arg0)
 
-	goret1 = InputHints(cret)
+	ret1 = InputHints(cret)
 
-	return goret1
+	return ret1
 }
 
 // InputPurpose gets the value of the Text:input-purpose property.
@@ -25787,13 +25787,13 @@ func (s text) InputPurpose() InputPurpose {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkInputPurpose
-	var goret1 InputPurpose
+	var ret1 InputPurpose
 
 	cret = C.gtk_text_get_input_purpose(arg0)
 
-	goret1 = InputPurpose(cret)
+	ret1 = InputPurpose(cret)
 
-	return goret1
+	return ret1
 }
 
 // InvisibleChar retrieves the character displayed in place of the real
@@ -25807,13 +25807,13 @@ func (s text) InvisibleChar() uint32 {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gunichar
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.gtk_text_get_invisible_char(arg0)
 
-	goret1 = C.gunichar(cret)
+	ret1 = C.gunichar(cret)
 
-	return goret1
+	return ret1
 }
 
 // MaxLength retrieves the maximum allowed length of the text in @self. See
@@ -25827,13 +25827,13 @@ func (s text) MaxLength() int {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_get_max_length(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
@@ -25843,13 +25843,13 @@ func (s text) OverwriteMode() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_get_overwrite_mode(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PlaceholderText retrieves the text that will be displayed when @self is
@@ -25860,13 +25860,13 @@ func (s text) PlaceholderText() string {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_get_placeholder_text(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PropagateTextWidth returns whether the Text will grow and shrink with the
@@ -25877,13 +25877,13 @@ func (s text) PropagateTextWidth() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_get_propagate_text_width(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Tabs gets the tabstops that were set on the self using
@@ -25894,13 +25894,13 @@ func (s text) Tabs() *pango.TabArray {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoTabArray
-	var goret1 *pango.TabArray
+	var ret1 *pango.TabArray
 
 	cret = C.gtk_text_get_tabs(arg0)
 
-	goret1 = pango.WrapTabArray(unsafe.Pointer(cret))
+	ret1 = pango.WrapTabArray(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // TextLength retrieves the current length of the text in @self.
@@ -25913,13 +25913,13 @@ func (s text) TextLength() uint16 {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint16
-	var goret1 uint16
+	var ret1 uint16
 
 	cret = C.gtk_text_get_text_length(arg0)
 
-	goret1 = C.guint16(cret)
+	ret1 = C.guint16(cret)
 
-	return goret1
+	return ret1
 }
 
 // TruncateMultiline returns whether the Text will truncate multi-line text
@@ -25930,13 +25930,13 @@ func (s text) TruncateMultiline() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_get_truncate_multiline(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Visibility retrieves whether the text in @self is visible. See
@@ -25947,13 +25947,13 @@ func (s text) Visibility() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_get_visibility(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // GrabFocusWithoutSelecting causes @self to have keyboard focus.
@@ -25968,13 +25968,13 @@ func (s text) GrabFocusWithoutSelecting() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_grab_focus_without_selecting(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetActivatesDefault: if @activates is true, pressing Enter in the @self
@@ -26276,13 +26276,13 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 // NewTextTagTable constructs a class TextTagTable.
 func NewTextTagTable() TextTagTable {
 	var cret C.GtkTextTagTable
-	var goret1 TextTagTable
+	var ret1 TextTagTable
 
 	cret = C.gtk_text_tag_table_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
 
-	return goret1
+	return ret1
 }
 
 // Add: add a tag to the table. The tag is assigned the highest priority in
@@ -26298,13 +26298,13 @@ func (t textTagTable) Add(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_tag_table_add(arg0, tag)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Foreach calls @func on each tag in @table, with user data @data. Note
@@ -26325,13 +26325,13 @@ func (t textTagTable) Size() int {
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_text_tag_table_get_size(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Lookup: look up a named tag.
@@ -26344,13 +26344,13 @@ func (t textTagTable) Lookup(name string) TextTag {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkTextTag
-	var goret1 TextTag
+	var ret1 TextTag
 
 	cret = C.gtk_text_tag_table_lookup(arg0, name)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
 
-	return goret1
+	return ret1
 }
 
 // Remove: remove a tag from the table. If a TextBuffer has @table as its
@@ -26667,13 +26667,13 @@ func (s treeSelection) CountSelectedRows() int {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_selection_count_selected_rows(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Mode gets the selection mode for @selection. See
@@ -26684,13 +26684,13 @@ func (s treeSelection) Mode() SelectionMode {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret1 SelectionMode
+	var ret1 SelectionMode
 
 	cret = C.gtk_tree_selection_get_mode(arg0)
 
-	goret1 = SelectionMode(cret)
+	ret1 = SelectionMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // Selected sets @iter to the currently selected node if @selection is set
@@ -26703,20 +26703,20 @@ func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	var arg1 **C.GtkTreeModel
+	var arg1 *C.GtkTreeModel
 	var ret1 *TreeModel
-	var arg2 *C.GtkTreeIter
+	var arg2 C.GtkTreeIter
 	var ret2 *TreeIter
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_tree_selection_get_selected(arg0, &arg1, &arg2)
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
 	ret2 = WrapTreeIter(unsafe.Pointer(arg2))
-	goret3 = C.bool(cret) != C.false
+	ret3 = C.bool(cret) != C.false
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // SelectedRows creates a list of path of all selected rows. Additionally,
@@ -26732,20 +26732,20 @@ func (s treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	var arg1 **C.GtkTreeModel
+	var arg1 *C.GtkTreeModel
 	var ret1 *TreeModel
 	var cret *C.GList
-	var goret2 *glib.List
+	var ret2 *glib.List
 
 	cret = C.gtk_tree_selection_get_selected_rows(arg0, &arg1)
 
 	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	goret2 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret2, func(v *glib.List) {
+	ret2 = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret2, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // TreeView returns the tree view associated with @selection.
@@ -26755,13 +26755,13 @@ func (s treeSelection) TreeView() TreeView {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeView
-	var goret1 TreeView
+	var ret1 TreeView
 
 	cret = C.gtk_tree_selection_get_tree_view(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
 
-	return goret1
+	return ret1
 }
 
 // UserData returns the user data for the selection function.
@@ -26771,13 +26771,13 @@ func (s treeSelection) UserData() interface{} {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret1 interface{}
+	var ret1 interface{}
 
 	cret = C.gtk_tree_selection_get_user_data(arg0)
 
-	goret1 = C.gpointer(cret)
+	ret1 = C.gpointer(cret)
 
-	return goret1
+	return ret1
 }
 
 // IterIsSelected returns true if the row at @iter is currently selected.
@@ -26789,13 +26789,13 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_selection_iter_is_selected(arg0, iter)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // PathIsSelected returns true if the row pointed to by @path is currently
@@ -26808,13 +26808,13 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_selection_path_is_selected(arg0, path)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SelectAll selects all the nodes. @selection must be set to
@@ -27170,13 +27170,13 @@ func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 // NewTreeViewColumn constructs a class TreeViewColumn.
 func NewTreeViewColumn() TreeViewColumn {
 	var cret C.GtkTreeViewColumn
-	var goret1 TreeViewColumn
+	var ret1 TreeViewColumn
 
 	cret = C.gtk_tree_view_column_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
 
-	return goret1
+	return ret1
 }
 
 // NewTreeViewColumnWithArea constructs a class TreeViewColumn.
@@ -27186,13 +27186,13 @@ func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkTreeViewColumn
-	var goret1 TreeViewColumn
+	var ret1 TreeViewColumn
 
 	cret = C.gtk_tree_view_column_new_with_area(area)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
 
-	return goret1
+	return ret1
 }
 
 // AddAttribute adds an attribute mapping to the list in @tree_column. The
@@ -27225,20 +27225,20 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
-	var arg3 *C.int
+	var arg3 C.int
 	var ret3 int
 	var cret C.gboolean
-	var goret3 bool
+	var ret3 bool
 
 	cret = C.gtk_tree_view_column_cell_get_position(arg0, cellRenderer, &arg2, &arg3)
 
-	ret2 = *C.int(arg2)
-	ret3 = *C.int(arg3)
-	goret3 = C.bool(cret) != C.false
+	ret2 = C.int(arg2)
+	ret3 = C.int(arg3)
+	ret3 = C.bool(cret) != C.false
 
-	return ret2, ret3, goret3
+	return ret2, ret3, ret3
 }
 
 // CellGetSize obtains the width and height needed to render the column.
@@ -27248,21 +27248,21 @@ func (t treeViewColumn) CellGetSize() (xOffset int, yOffset int, width int, heig
 
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
-	var arg1 *C.int
+	var arg1 C.int
 	var ret1 int
-	var arg2 *C.int
+	var arg2 C.int
 	var ret2 int
-	var arg3 *C.int
+	var arg3 C.int
 	var ret3 int
-	var arg4 *C.int
+	var arg4 C.int
 	var ret4 int
 
 	C.gtk_tree_view_column_cell_get_size(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = *C.int(arg1)
-	ret2 = *C.int(arg2)
-	ret3 = *C.int(arg3)
-	ret4 = *C.int(arg4)
+	ret1 = C.int(arg1)
+	ret2 = C.int(arg2)
+	ret3 = C.int(arg3)
+	ret4 = C.int(arg4)
 
 	return ret1, ret2, ret3, ret4
 }
@@ -27276,13 +27276,13 @@ func (t treeViewColumn) CellIsVisible() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_cell_is_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // CellSetCellData sets the cell renderer based on the @tree_model and
@@ -27360,13 +27360,13 @@ func (t treeViewColumn) Alignment() float32 {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gtk_tree_view_column_get_alignment(arg0)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // Button returns the button used in the treeview column header
@@ -27376,13 +27376,13 @@ func (t treeViewColumn) Button() Widget {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_tree_view_column_get_button(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Clickable returns true if the user can click on the header for the
@@ -27393,13 +27393,13 @@ func (t treeViewColumn) Clickable() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_get_clickable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Expand returns true if the column expands to fill available space.
@@ -27409,13 +27409,13 @@ func (t treeViewColumn) Expand() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_get_expand(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // FixedWidth gets the fixed width of the column. This may not be the actual
@@ -27427,13 +27427,13 @@ func (t treeViewColumn) FixedWidth() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_fixed_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MaxWidth returns the maximum width in pixels of the @tree_column, or -1
@@ -27444,13 +27444,13 @@ func (t treeViewColumn) MaxWidth() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_max_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // MinWidth returns the minimum width in pixels of the @tree_column, or -1
@@ -27461,13 +27461,13 @@ func (t treeViewColumn) MinWidth() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_min_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Reorderable returns true if the @tree_column can be reordered by the
@@ -27478,13 +27478,13 @@ func (t treeViewColumn) Reorderable() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_get_reorderable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Resizable returns true if the @tree_column can be resized by the end
@@ -27495,13 +27495,13 @@ func (t treeViewColumn) Resizable() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_get_resizable(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Sizing returns the current type of @tree_column.
@@ -27511,13 +27511,13 @@ func (t treeViewColumn) Sizing() TreeViewColumnSizing {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkTreeViewColumnSizing
-	var goret1 TreeViewColumnSizing
+	var ret1 TreeViewColumnSizing
 
 	cret = C.gtk_tree_view_column_get_sizing(arg0)
 
-	goret1 = TreeViewColumnSizing(cret)
+	ret1 = TreeViewColumnSizing(cret)
 
-	return goret1
+	return ret1
 }
 
 // SortColumnID gets the logical @sort_column_id that the model sorts on
@@ -27529,13 +27529,13 @@ func (t treeViewColumn) SortColumnID() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_sort_column_id(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // SortIndicator gets the value set by
@@ -27546,13 +27546,13 @@ func (t treeViewColumn) SortIndicator() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_get_sort_indicator(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SortOrder gets the value set by gtk_tree_view_column_set_sort_order().
@@ -27562,13 +27562,13 @@ func (t treeViewColumn) SortOrder() SortType {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkSortType
-	var goret1 SortType
+	var ret1 SortType
 
 	cret = C.gtk_tree_view_column_get_sort_order(arg0)
 
-	goret1 = SortType(cret)
+	ret1 = SortType(cret)
 
-	return goret1
+	return ret1
 }
 
 // Spacing returns the spacing of @tree_column.
@@ -27578,13 +27578,13 @@ func (t treeViewColumn) Spacing() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_spacing(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Title returns the title of the widget.
@@ -27594,13 +27594,13 @@ func (t treeViewColumn) Title() string {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_tree_view_column_get_title(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // TreeView returns the TreeView wherein @tree_column has been inserted. If
@@ -27611,13 +27611,13 @@ func (t treeViewColumn) TreeView() Widget {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_tree_view_column_get_tree_view(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Visible returns true if @tree_column is visible.
@@ -27627,13 +27627,13 @@ func (t treeViewColumn) Visible() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_tree_view_column_get_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Widget returns the Widget in the button on the column header. If a custom
@@ -27644,13 +27644,13 @@ func (t treeViewColumn) Widget() Widget {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_tree_view_column_get_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Width returns the current size of @tree_column in pixels.
@@ -27660,13 +27660,13 @@ func (t treeViewColumn) Width() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_width(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // XOffset returns the current X offset of @tree_column in pixels.
@@ -27676,13 +27676,13 @@ func (t treeViewColumn) XOffset() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_tree_view_column_get_x_offset(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds the @cell to end of the column. If @expand is false, then
@@ -28050,13 +28050,13 @@ func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	var cret C.GtkViewport
-	var goret1 Viewport
+	var ret1 Viewport
 
 	cret = C.gtk_viewport_new(hadjustment, vadjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
 
-	return goret1
+	return ret1
 }
 
 // Child gets the child widget of @viewport.
@@ -28066,13 +28066,13 @@ func (v viewport) Child() Widget {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_viewport_get_child(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // ScrollToFocus gets whether the viewport is scrolling to keep the focused
@@ -28083,13 +28083,13 @@ func (v viewport) ScrollToFocus() bool {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_viewport_get_scroll_to_focus(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetChild sets the child widget of @viewport.
@@ -28159,11 +28159,11 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 // NewVolumeButton constructs a class VolumeButton.
 func NewVolumeButton() VolumeButton {
 	var cret C.GtkVolumeButton
-	var goret1 VolumeButton
+	var ret1 VolumeButton
 
 	cret = C.gtk_volume_button_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VolumeButton)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VolumeButton)
 
-	return goret1
+	return ret1
 }

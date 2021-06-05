@@ -24,11 +24,11 @@ func DragActionIsUnique(action DragAction) bool {
 	arg1 = (C.GdkDragAction)(action)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gdk_drag_action_is_unique(action)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }

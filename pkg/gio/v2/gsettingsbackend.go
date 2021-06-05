@@ -88,13 +88,13 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.GSettingsBackend
-	var goret1 SettingsBackend
+	var ret1 SettingsBackend
 
 	cret = C.g_keyfile_settings_backend_new(filename, rootPath, rootGroup)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
 
-	return goret1
+	return ret1
 }
 
 // NewMemorySettingsBackend creates a memory-backed Backend.
@@ -104,13 +104,13 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 // backend will start out with the default values again.
 func NewMemorySettingsBackend() SettingsBackend {
 	var cret *C.GSettingsBackend
-	var goret1 SettingsBackend
+	var ret1 SettingsBackend
 
 	cret = C.g_memory_settings_backend_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
 
-	return goret1
+	return ret1
 }
 
 // NewNullSettingsBackend creates a readonly Backend.
@@ -119,13 +119,13 @@ func NewMemorySettingsBackend() SettingsBackend {
 // have their default values.
 func NewNullSettingsBackend() SettingsBackend {
 	var cret *C.GSettingsBackend
-	var goret1 SettingsBackend
+	var ret1 SettingsBackend
 
 	cret = C.g_null_settings_backend_new()
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
 
-	return goret1
+	return ret1
 }
 
 // SettingsBackend: the Backend interface defines a generic interface for

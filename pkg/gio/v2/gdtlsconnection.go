@@ -369,13 +369,13 @@ func (c dtlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TL
 	arg2 = (C.GTlsCertificateFlags)(errors)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_dtls_connection_emit_accept_certificate(arg0, peerCert, errors)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Certificate gets @conn's certificate, as set by
@@ -386,13 +386,13 @@ func (c dtlsConnection) Certificate() TLSCertificate {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GTlsCertificate
-	var goret1 TLSCertificate
+	var ret1 TLSCertificate
 
 	cret = C.g_dtls_connection_get_certificate(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
 
-	return goret1
+	return ret1
 }
 
 // ChannelBindingData: query the TLS backend for TLS channel binding data of
@@ -454,13 +454,13 @@ func (c dtlsConnection) Database() TLSDatabase {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GTlsDatabase
-	var goret1 TLSDatabase
+	var ret1 TLSDatabase
 
 	cret = C.g_dtls_connection_get_database(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSDatabase)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSDatabase)
 
-	return goret1
+	return ret1
 }
 
 // Interaction: get the object that will be used to interact with the user.
@@ -472,13 +472,13 @@ func (c dtlsConnection) Interaction() TLSInteraction {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GTlsInteraction
-	var goret1 TLSInteraction
+	var ret1 TLSInteraction
 
 	cret = C.g_dtls_connection_get_interaction(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSInteraction)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSInteraction)
 
-	return goret1
+	return ret1
 }
 
 // NegotiatedProtocol gets the name of the application-layer protocol
@@ -494,13 +494,13 @@ func (c dtlsConnection) NegotiatedProtocol() string {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_dtls_connection_get_negotiated_protocol(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PeerCertificate gets @conn's peer's certificate after the handshake has
@@ -512,13 +512,13 @@ func (c dtlsConnection) PeerCertificate() TLSCertificate {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GTlsCertificate
-	var goret1 TLSCertificate
+	var ret1 TLSCertificate
 
 	cret = C.g_dtls_connection_get_peer_certificate(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
 
-	return goret1
+	return ret1
 }
 
 // PeerCertificateErrors gets the errors associated with validating @conn's
@@ -530,13 +530,13 @@ func (c dtlsConnection) PeerCertificateErrors() TLSCertificateFlags {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsCertificateFlags
-	var goret1 TLSCertificateFlags
+	var ret1 TLSCertificateFlags
 
 	cret = C.g_dtls_connection_get_peer_certificate_errors(arg0)
 
-	goret1 = TLSCertificateFlags(cret)
+	ret1 = TLSCertificateFlags(cret)
 
-	return goret1
+	return ret1
 }
 
 // RehandshakeMode gets @conn rehandshaking mode. See
@@ -547,13 +547,13 @@ func (c dtlsConnection) RehandshakeMode() TLSRehandshakeMode {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsRehandshakeMode
-	var goret1 TLSRehandshakeMode
+	var ret1 TLSRehandshakeMode
 
 	cret = C.g_dtls_connection_get_rehandshake_mode(arg0)
 
-	goret1 = TLSRehandshakeMode(cret)
+	ret1 = TLSRehandshakeMode(cret)
 
-	return goret1
+	return ret1
 }
 
 // RequireCloseNotify tests whether or not @conn expects a proper TLS close
@@ -565,13 +565,13 @@ func (c dtlsConnection) RequireCloseNotify() bool {
 	arg0 = (*C.GDtlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_dtls_connection_get_require_close_notify(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Handshake attempts a TLS handshake on @conn.

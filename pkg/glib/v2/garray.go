@@ -40,13 +40,13 @@ func ByteArrayFree(array []byte, freeSegment bool) byte {
 	}
 
 	var cret *C.guint8
-	var goret1 byte
+	var ret1 byte
 
 	cret = C.g_byte_array_free(array, freeSegment)
 
-	goret1 = *C.guint8(cret)
+	ret1 = *C.guint8(cret)
 
-	return goret1
+	return ret1
 }
 
 // ByteArrayFreeToBytes transfers the data from the Array into a new immutable
@@ -71,22 +71,22 @@ func ByteArrayFreeToBytes(array []byte) *Bytes {
 	}
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_byte_array_free_to_bytes(array)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewByteArray creates a new Array with a reference count of 1.
 func NewByteArray() []byte {
 	var cret *C.GByteArray
-	var goret1 []byte
+	var ret1 []byte
 
 	cret = C.g_byte_array_new()
 
@@ -99,14 +99,14 @@ func NewByteArray() []byte {
 			}
 		}
 
-		goret1 = make([]byte, length)
+		ret1 = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.guint8(src)
+			ret1[i] = C.guint8(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ByteArrayNewTake: create byte array containing the data. The data will be
@@ -115,7 +115,7 @@ func NewByteArray() []byte {
 func ByteArrayNewTake(data []byte) []byte {
 
 	var cret *C.GByteArray
-	var goret1 []byte
+	var ret1 []byte
 
 	cret = C.g_byte_array_new_take(data, len)
 
@@ -128,14 +128,14 @@ func ByteArrayNewTake(data []byte) []byte {
 			}
 		}
 
-		goret1 = make([]byte, length)
+		ret1 = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.guint8(src)
+			ret1[i] = C.guint8(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // ByteArraySteal frees the data in the array and resets the size to zero, while
@@ -156,17 +156,17 @@ func ByteArraySteal(array []byte) (len uint, guint8 byte) {
 		}
 	}
 
-	var arg2 *C.gsize
+	var arg2 C.gsize
 	var ret2 uint
 	var cret *C.guint8
-	var goret2 byte
+	var ret2 byte
 
 	cret = C.g_byte_array_steal(array, &arg2)
 
-	ret2 = *C.gsize(arg2)
-	goret2 = *C.guint8(cret)
+	ret2 = C.gsize(arg2)
+	ret2 = *C.guint8(cret)
 
-	return ret2, goret2
+	return ret2, ret2
 }
 
 // ByteArrayUnref: atomically decrements the reference count of @array by one.
@@ -215,17 +215,17 @@ func PtrArrayFind(haystack []interface{}, needle interface{}) (index_ uint, ok b
 	}
 	arg2 = C.gpointer(needle)
 
-	var arg3 *C.guint
+	var arg3 C.guint
 	var ret3 uint
 	var cret C.gboolean
-	var goret2 bool
+	var ret2 bool
 
 	cret = C.g_ptr_array_find(haystack, needle, &arg3)
 
-	ret3 = *C.guint(arg3)
-	goret2 = C.bool(cret) != C.false
+	ret3 = C.guint(arg3)
+	ret2 = C.bool(cret) != C.false
 
-	return ret3, goret2
+	return ret3, ret2
 }
 
 // Array contains the public fields of a GArray.
@@ -344,48 +344,48 @@ func marshalBytes(p uintptr) (interface{}, error) {
 func NewBytes(data []byte) *Bytes {
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_bytes_new(data, size)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewBytesStatic constructs a struct Bytes.
 func NewBytesStatic(data []byte) *Bytes {
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_bytes_new_static(data, size)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // NewBytesTake constructs a struct Bytes.
 func NewBytesTake(data []byte) *Bytes {
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_bytes_new_take(data, size)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -410,13 +410,13 @@ func (b *Bytes) Compare(bytes2 Bytes) int {
 	arg1 = (C.gpointer)(unsafe.Pointer(bytes2.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.g_bytes_compare(arg0, bytes2)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Equal compares the two #GBytes values being pointed to and returns true if
@@ -432,13 +432,13 @@ func (b *Bytes) Equal(bytes2 Bytes) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(bytes2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_bytes_equal(arg0, bytes2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Data: get the byte data in the #GBytes. This data should not be modified.
@@ -455,17 +455,17 @@ func (b *Bytes) Data() (size uint, guint8s []byte) {
 
 	var cret C.gpointer
 	var arg1 *C.gsize
-	var goret2 []byte
+	var ret2 []byte
 
 	cret = C.g_bytes_get_data(arg0, &arg1)
 
-	goret2 = make([]byte, arg1)
+	ret2 = make([]byte, arg1)
 	for i := 0; i < uintptr(arg1); i++ {
 		src := (C.guint8)(ptr.Add(unsafe.Pointer(cret), i))
-		goret2[i] = C.guint8(src)
+		ret2[i] = C.guint8(src)
 	}
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // Size: get the size of the byte data in the #GBytes.
@@ -477,13 +477,13 @@ func (b *Bytes) Size() uint {
 	arg0 = (*C.GBytes)(unsafe.Pointer(b.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_bytes_get_size(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // Hash creates an integer hash code for the byte data in the #GBytes.
@@ -496,13 +496,13 @@ func (b *Bytes) Hash() uint {
 	arg0 = (C.gpointer)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_bytes_hash(arg0)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // NewFromBytes creates a #GBytes which is a subsection of another #GBytes. The
@@ -526,16 +526,16 @@ func (b *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	arg2 = C.gsize(length)
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_bytes_new_from_bytes(arg0, offset, length)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Ref: increase the reference count on @bytes.
@@ -545,16 +545,16 @@ func (b *Bytes) Ref() *Bytes {
 	arg0 = (*C.GBytes)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GBytes
-	var goret1 *Bytes
+	var ret1 *Bytes
 
 	cret = C.g_bytes_ref(arg0)
 
-	goret1 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *Bytes) {
+	ret1 = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref releases a reference on @bytes. This may result in the bytes being
@@ -580,7 +580,7 @@ func (b *Bytes) UnrefToArray() []byte {
 	arg0 = (*C.GBytes)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GByteArray
-	var goret1 []byte
+	var ret1 []byte
 
 	cret = C.g_bytes_unref_to_array(arg0)
 
@@ -593,14 +593,14 @@ func (b *Bytes) UnrefToArray() []byte {
 			}
 		}
 
-		goret1 = make([]byte, length)
+		ret1 = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(cret), i))
-			goret1[i] = C.guint8(src)
+			ret1[i] = C.guint8(src)
 		}
 	}
 
-	return goret1
+	return ret1
 }
 
 // UnrefToData unreferences the bytes, and returns a pointer the same byte data
@@ -617,16 +617,16 @@ func (b *Bytes) UnrefToData() (size uint, guint8s []byte) {
 
 	var cret C.gpointer
 	var arg1 *C.gsize
-	var goret2 []byte
+	var ret2 []byte
 
 	cret = C.g_bytes_unref_to_data(arg0, &arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&goret2), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret2, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&ret2, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret2
+	return ret1, ret2
 }
 
 // PtrArray contains the public fields of a pointer array.

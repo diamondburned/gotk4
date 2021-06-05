@@ -119,13 +119,13 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) GLShader {
 	arg1 = (*C.GBytes)(unsafe.Pointer(sourcecode.Native()))
 
 	var cret C.GskGLShader
-	var goret1 GLShader
+	var ret1 GLShader
 
 	cret = C.gsk_gl_shader_new_from_bytes(sourcecode)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLShader)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLShader)
 
-	return goret1
+	return ret1
 }
 
 // NewGLShaderFromResource constructs a class GLShader.
@@ -136,13 +136,13 @@ func NewGLShaderFromResource(resourcePath string) GLShader {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GskGLShader
-	var goret1 GLShader
+	var ret1 GLShader
 
 	cret = C.gsk_gl_shader_new_from_resource(resourcePath)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLShader)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLShader)
 
-	return goret1
+	return ret1
 }
 
 // Compile tries to compile the @shader for the given @renderer, and reports
@@ -184,13 +184,13 @@ func (s glShader) FindUniformByName(name string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gsk_gl_shader_find_uniform_by_name(arg0, name)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // ArgBool gets the value of the uniform @idx in the @args block. The
@@ -205,13 +205,13 @@ func (s glShader) ArgBool(args *glib.Bytes, idx int) bool {
 	arg2 = C.int(idx)
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gsk_gl_shader_get_arg_bool(arg0, args, idx)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // ArgFloat gets the value of the uniform @idx in the @args block. The
@@ -226,13 +226,13 @@ func (s glShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 	arg2 = C.int(idx)
 
 	var cret C.float
-	var goret1 float32
+	var ret1 float32
 
 	cret = C.gsk_gl_shader_get_arg_float(arg0, args, idx)
 
-	goret1 = C.float(cret)
+	ret1 = C.float(cret)
 
-	return goret1
+	return ret1
 }
 
 // ArgInt gets the value of the uniform @idx in the @args block. The uniform
@@ -247,13 +247,13 @@ func (s glShader) ArgInt(args *glib.Bytes, idx int) int32 {
 	arg2 = C.int(idx)
 
 	var cret C.gint32
-	var goret1 int32
+	var ret1 int32
 
 	cret = C.gsk_gl_shader_get_arg_int(arg0, args, idx)
 
-	goret1 = C.gint32(cret)
+	ret1 = C.gint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // ArgUint gets the value of the uniform @idx in the @args block. The
@@ -268,13 +268,13 @@ func (s glShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 	arg2 = C.int(idx)
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.gsk_gl_shader_get_arg_uint(arg0, args, idx)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // ArgVec2 gets the value of the uniform @idx in the @args block. The
@@ -333,13 +333,13 @@ func (s glShader) ArgsSize() uint {
 	arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 
 	var cret C.gsize
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.gsk_gl_shader_get_args_size(arg0)
 
-	goret1 = C.gsize(cret)
+	ret1 = C.gsize(cret)
 
-	return goret1
+	return ret1
 }
 
 // NTextures returns the number of textures that the shader requires.
@@ -353,13 +353,13 @@ func (s glShader) NTextures() int {
 	arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gsk_gl_shader_get_n_textures(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // NUniforms: get the number of declared uniforms for this shader.
@@ -369,13 +369,13 @@ func (s glShader) NUniforms() int {
 	arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gsk_gl_shader_get_n_uniforms(arg0)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // Resource gets the resource path for the GLSL sourcecode being used to
@@ -386,13 +386,13 @@ func (s glShader) Resource() string {
 	arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gsk_gl_shader_get_resource(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Source gets the GLSL sourcecode being used to render this shader.
@@ -402,13 +402,13 @@ func (s glShader) Source() *glib.Bytes {
 	arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 
 	cret = C.gsk_gl_shader_get_source(arg0)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // UniformName: get the name of the declared uniform for this shader at
@@ -421,13 +421,13 @@ func (s glShader) UniformName(idx int) string {
 	arg1 = C.int(idx)
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gsk_gl_shader_get_uniform_name(arg0, idx)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // UniformOffset: get the offset into the data block where data for this
@@ -440,13 +440,13 @@ func (s glShader) UniformOffset(idx int) int {
 	arg1 = C.int(idx)
 
 	var cret C.int
-	var goret1 int
+	var ret1 int
 
 	cret = C.gsk_gl_shader_get_uniform_offset(arg0, idx)
 
-	goret1 = C.int(cret)
+	ret1 = C.int(cret)
 
-	return goret1
+	return ret1
 }
 
 // UniformType: get the type of the declared uniform for this shader at
@@ -459,13 +459,13 @@ func (s glShader) UniformType(idx int) GLUniformType {
 	arg1 = C.int(idx)
 
 	var cret C.GskGLUniformType
-	var goret1 GLUniformType
+	var ret1 GLUniformType
 
 	cret = C.gsk_gl_shader_get_uniform_type(arg0, idx)
 
-	goret1 = GLUniformType(cret)
+	ret1 = GLUniformType(cret)
 
-	return goret1
+	return ret1
 }
 
 // ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
@@ -497,16 +497,16 @@ func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArg
 	arg2 = (*C.GBytes)(unsafe.Pointer(initialValues.Native()))
 
 	var cret *C.GskShaderArgsBuilder
-	var goret1 *ShaderArgsBuilder
+	var ret1 *ShaderArgsBuilder
 
 	cret = C.gsk_shader_args_builder_new(shader, initialValues)
 
-	goret1 = WrapShaderArgsBuilder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ShaderArgsBuilder) {
+	ret1 = WrapShaderArgsBuilder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ShaderArgsBuilder) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Native returns the underlying C source pointer.
@@ -523,16 +523,16 @@ func (b *ShaderArgsBuilder) FreeToArgs() *glib.Bytes {
 	arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 
 	cret = C.gsk_shader_args_builder_free_to_args(arg0)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Bytes) {
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Ref increases the reference count of a ShaderArgsBuilder by one.
@@ -542,16 +542,16 @@ func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
 	arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GskShaderArgsBuilder
-	var goret1 *ShaderArgsBuilder
+	var ret1 *ShaderArgsBuilder
 
 	cret = C.gsk_shader_args_builder_ref(arg0)
 
-	goret1 = WrapShaderArgsBuilder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *ShaderArgsBuilder) {
+	ret1 = WrapShaderArgsBuilder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *ShaderArgsBuilder) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // SetBool sets the value of the uniform @idx. The uniform must be of bool type.
@@ -663,16 +663,16 @@ func (b *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 	arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GBytes
-	var goret1 *glib.Bytes
+	var ret1 *glib.Bytes
 
 	cret = C.gsk_shader_args_builder_to_args(arg0)
 
-	goret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Bytes) {
+	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // Unref decreases the reference count of a ShaderArgBuilder by one. If the

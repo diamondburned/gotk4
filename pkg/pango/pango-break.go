@@ -63,15 +63,15 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(length)
 
-	var arg3 *C.gint
+	var arg3 C.gint
 	var ret3 int
-	var arg4 *C.gint
+	var arg4 C.gint
 	var ret4 int
 
 	C.pango_find_paragraph_boundary(text, length, &arg3, &arg4)
 
-	ret3 = *C.gint(arg3)
-	ret4 = *C.gint(arg4)
+	ret3 = C.gint(arg3)
+	ret4 = C.gint(arg4)
 
 	return ret3, ret4
 }

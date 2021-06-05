@@ -57,11 +57,11 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 // NewHButtonBox constructs a class HButtonBox.
 func NewHButtonBox() HButtonBox {
 	var cret C.GtkHButtonBox
-	var goret1 HButtonBox
+	var ret1 HButtonBox
 
 	cret = C.gtk_hbutton_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HButtonBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HButtonBox)
 
-	return goret1
+	return ret1
 }

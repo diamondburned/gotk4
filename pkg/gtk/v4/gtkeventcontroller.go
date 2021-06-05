@@ -100,13 +100,13 @@ func (c eventController) CurrentEvent() gdk.Event {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkEvent
-	var goret1 gdk.Event
+	var ret1 gdk.Event
 
 	cret = C.gtk_event_controller_get_current_event(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Event)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Event)
 
-	return goret1
+	return ret1
 }
 
 // CurrentEventDevice returns the device of the event that is currently
@@ -117,13 +117,13 @@ func (c eventController) CurrentEventDevice() gdk.Device {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkDevice
-	var goret1 gdk.Device
+	var ret1 gdk.Device
 
 	cret = C.gtk_event_controller_get_current_event_device(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
 
-	return goret1
+	return ret1
 }
 
 // CurrentEventState returns the modifier state of the event that is
@@ -134,13 +134,13 @@ func (c eventController) CurrentEventState() gdk.ModifierType {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GdkModifierType
-	var goret1 gdk.ModifierType
+	var ret1 gdk.ModifierType
 
 	cret = C.gtk_event_controller_get_current_event_state(arg0)
 
-	goret1 = gdk.ModifierType(cret)
+	ret1 = gdk.ModifierType(cret)
 
-	return goret1
+	return ret1
 }
 
 // CurrentEventTime returns the timestamp of the event that is currently
@@ -151,13 +151,13 @@ func (c eventController) CurrentEventTime() uint32 {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint32
-	var goret1 uint32
+	var ret1 uint32
 
 	cret = C.gtk_event_controller_get_current_event_time(arg0)
 
-	goret1 = C.guint32(cret)
+	ret1 = C.guint32(cret)
 
-	return goret1
+	return ret1
 }
 
 // Name gets the name of @controller.
@@ -167,13 +167,13 @@ func (c eventController) Name() string {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_event_controller_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // PropagationLimit gets the propagation limit of the event controller.
@@ -183,13 +183,13 @@ func (c eventController) PropagationLimit() PropagationLimit {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkPropagationLimit
-	var goret1 PropagationLimit
+	var ret1 PropagationLimit
 
 	cret = C.gtk_event_controller_get_propagation_limit(arg0)
 
-	goret1 = PropagationLimit(cret)
+	ret1 = PropagationLimit(cret)
 
-	return goret1
+	return ret1
 }
 
 // PropagationPhase gets the propagation phase at which @controller handles
@@ -200,13 +200,13 @@ func (c eventController) PropagationPhase() PropagationPhase {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkPropagationPhase
-	var goret1 PropagationPhase
+	var ret1 PropagationPhase
 
 	cret = C.gtk_event_controller_get_propagation_phase(arg0)
 
-	goret1 = PropagationPhase(cret)
+	ret1 = PropagationPhase(cret)
 
-	return goret1
+	return ret1
 }
 
 // Widget returns the Widget this controller relates to.
@@ -216,13 +216,13 @@ func (c eventController) Widget() Widget {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret1 Widget
+	var ret1 Widget
 
 	cret = C.gtk_event_controller_get_widget(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
 
-	return goret1
+	return ret1
 }
 
 // Reset resets the @controller to a clean state. Every interaction the

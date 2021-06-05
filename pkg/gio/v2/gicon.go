@@ -43,13 +43,13 @@ func IconDeserialize(value *glib.Variant) Icon {
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret *C.GIcon
-	var goret1 Icon
+	var ret1 Icon
 
 	cret = C.g_icon_deserialize(value)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 
-	return goret1
+	return ret1
 }
 
 // IconHash gets a hash for an icon.
@@ -59,13 +59,13 @@ func IconHash(icon interface{}) uint {
 	arg1 = C.gpointer(icon)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.g_icon_hash(icon)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // IconNewForString: generate a #GIcon instance from @str. This function can
@@ -82,18 +82,18 @@ func IconNewForString(str string) (icon Icon, err error) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GIcon
-	var goret1 Icon
+	var ret1 Icon
 	var goerr error
 
 	cret = C.g_icon_new_for_string(str, &errout)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
 	if errout != nil {
 		goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))
 		C.g_error_free(errout)
 	}
 
-	return goret1, goerr
+	return ret1, goerr
 }
 
 // IconOverrider contains methods that are overridable. This
@@ -205,13 +205,13 @@ func (i icon) Equal(icon2 Icon) bool {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_icon_equal(arg0, icon2)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -226,16 +226,16 @@ func (i icon) Serialize() *glib.Variant {
 	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GVariant
-	var goret1 *glib.Variant
+	var ret1 *glib.Variant
 
 	cret = C.g_icon_serialize(arg0)
 
-	goret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret1, func(v *glib.Variant) {
+	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret1
+	return ret1
 }
 
 // String generates a textual representation of @icon that can be used for
@@ -259,12 +259,12 @@ func (i icon) String() string {
 	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_icon_to_string(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

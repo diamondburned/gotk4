@@ -27,13 +27,13 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hostname_is_ascii_encoded(hostname)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HostnameIsIpAddress tests if @hostname is the string form of an IPv4 or IPv6
@@ -47,13 +47,13 @@ func HostnameIsIpAddress(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hostname_is_ip_address(hostname)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HostnameIsNonASCII tests if @hostname contains Unicode characters. If this
@@ -70,13 +70,13 @@ func HostnameIsNonASCII(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.g_hostname_is_non_ascii(hostname)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // HostnameToASCII converts @hostname to its canonical ASCII form; an ASCII-only
@@ -88,14 +88,14 @@ func HostnameToASCII(hostname string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_hostname_to_ascii(hostname)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }
 
 // HostnameToUnicode converts @hostname to its canonical presentation form; a
@@ -112,12 +112,12 @@ func HostnameToUnicode(hostname string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.g_hostname_to_unicode(hostname)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret1
+	return ret1
 }

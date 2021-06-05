@@ -68,11 +68,11 @@ func NewVScrollbar(adjustment Adjustment) VScrollbar {
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkVScrollbar
-	var goret1 VScrollbar
+	var ret1 VScrollbar
 
 	cret = C.gtk_vscrollbar_new(adjustment)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScrollbar)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScrollbar)
 
-	return goret1
+	return ret1
 }

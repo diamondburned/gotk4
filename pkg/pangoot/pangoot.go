@@ -98,13 +98,13 @@ func NewRuleset(info Info) Ruleset {
 	arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
 
 	var cret C.PangoOTRuleset
-	var goret1 Ruleset
+	var ret1 Ruleset
 
 	cret = C.pango_ot_ruleset_new(info)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
 
-	return goret1
+	return ret1
 }
 
 // NewRulesetFor constructs a class Ruleset.
@@ -118,13 +118,13 @@ func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Rul
 	arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
 	var cret C.PangoOTRuleset
-	var goret1 Ruleset
+	var ret1 Ruleset
 
 	cret = C.pango_ot_ruleset_new_for(info, script, language)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
 
-	return goret1
+	return ret1
 }
 
 // NewRulesetFromDescription constructs a class Ruleset.
@@ -136,13 +136,13 @@ func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
 	arg2 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc.Native()))
 
 	var cret C.PangoOTRuleset
-	var goret1 Ruleset
+	var ret1 Ruleset
 
 	cret = C.pango_ot_ruleset_new_from_description(info, desc)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
 
-	return goret1
+	return ret1
 }
 
 // AddFeature adds a feature to the ruleset.
@@ -166,20 +166,20 @@ func (r ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint u
 
 	arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
 
-	var arg1 *C.guint
+	var arg1 C.guint
 	var ret1 uint
-	var arg2 *C.guint
+	var arg2 C.guint
 	var ret2 uint
 	var cret C.guint
-	var goret3 uint
+	var ret3 uint
 
 	cret = C.pango_ot_ruleset_get_feature_count(arg0, &arg1, &arg2)
 
-	ret1 = *C.guint(arg1)
-	ret2 = *C.guint(arg2)
-	goret3 = C.guint(cret)
+	ret1 = C.guint(arg1)
+	ret2 = C.guint(arg2)
+	ret3 = C.guint(cret)
 
-	return ret1, ret2, goret3
+	return ret1, ret2, ret3
 }
 
 // MaybeAddFeatures: this is a convenience function that for each feature in
@@ -198,13 +198,13 @@ func (r ruleset) MaybeAddFeatures(tableType TableType, features *FeatureMap, nFe
 	arg3 = C.guint(nFeatures)
 
 	var cret C.guint
-	var goret1 uint
+	var ret1 uint
 
 	cret = C.pango_ot_ruleset_maybe_add_features(arg0, tableType, features, nFeatures)
 
-	goret1 = C.guint(cret)
+	ret1 = C.guint(cret)
 
-	return goret1
+	return ret1
 }
 
 // Position performs the OpenType GPOS positioning on @buffer using the

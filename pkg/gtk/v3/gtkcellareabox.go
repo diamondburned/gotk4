@@ -91,13 +91,13 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 // NewCellAreaBox constructs a class CellAreaBox.
 func NewCellAreaBox() CellAreaBox {
 	var cret C.GtkCellAreaBox
-	var goret1 CellAreaBox
+	var ret1 CellAreaBox
 
 	cret = C.gtk_cell_area_box_new()
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
 
-	return goret1
+	return ret1
 }
 
 // Spacing gets the spacing added between cell renderers.
@@ -107,13 +107,13 @@ func (b cellAreaBox) Spacing() int {
 	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret1 int
+	var ret1 int
 
 	cret = C.gtk_cell_area_box_get_spacing(arg0)
 
-	goret1 = C.gint(cret)
+	ret1 = C.gint(cret)
 
-	return goret1
+	return ret1
 }
 
 // PackEnd adds @renderer to @box, packed with reference to the end of @box.

@@ -109,13 +109,13 @@ func NewTextMark(name string, leftGravity bool) TextMark {
 	}
 
 	var cret C.GtkTextMark
-	var goret1 TextMark
+	var ret1 TextMark
 
 	cret = C.gtk_text_mark_new(name, leftGravity)
 
-	goret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextMark)
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextMark)
 
-	return goret1
+	return ret1
 }
 
 // Buffer gets the buffer this mark is located inside, or nil if the mark is
@@ -126,13 +126,13 @@ func (m textMark) Buffer() TextBuffer {
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkTextBuffer
-	var goret1 TextBuffer
+	var ret1 TextBuffer
 
 	cret = C.gtk_text_mark_get_buffer(arg0)
 
-	goret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextBuffer)
+	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextBuffer)
 
-	return goret1
+	return ret1
 }
 
 // Deleted returns true if the mark has been removed from its buffer with
@@ -144,13 +144,13 @@ func (m textMark) Deleted() bool {
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_mark_get_deleted(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // LeftGravity determines whether the mark has left gravity.
@@ -160,13 +160,13 @@ func (m textMark) LeftGravity() bool {
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_mark_get_left_gravity(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // Name returns the mark name; returns NULL for anonymous marks.
@@ -176,13 +176,13 @@ func (m textMark) Name() string {
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret1 string
+	var ret1 string
 
 	cret = C.gtk_text_mark_get_name(arg0)
 
-	goret1 = C.GoString(cret)
+	ret1 = C.GoString(cret)
 
-	return goret1
+	return ret1
 }
 
 // Visible returns true if the mark is visible (i.e. a cursor is displayed
@@ -193,13 +193,13 @@ func (m textMark) Visible() bool {
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret1 bool
+	var ret1 bool
 
 	cret = C.gtk_text_mark_get_visible(arg0)
 
-	goret1 = C.bool(cret) != C.false
+	ret1 = C.bool(cret) != C.false
 
-	return goret1
+	return ret1
 }
 
 // SetVisible sets the visibility of @mark; the insertion point is normally

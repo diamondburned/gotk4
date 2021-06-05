@@ -117,6 +117,11 @@ func (typ *ResolvedType) IsPrimitive() bool {
 		*typ.Builtin != "string"
 }
 
+// IsBuiltin is a convenient function to compare the builtin type.
+func (typ *ResolvedType) IsBuiltin(builtin string) bool {
+	return typ.Builtin != nil && *typ.Builtin == builtin
+}
+
 // GoImplType is a convenient function around ResolvedType.ImplType.
 func GoImplType(resolver TypeResolver, resolved *ResolvedType) string {
 	return resolved.ImplType(resolved.NeedsNamespace(resolver.Namespace()))
@@ -216,7 +221,7 @@ func (typ *ResolvedType) WrapName(needsNamespace bool) string {
 
 // CGoType returns the CGo type.
 func (typ *ResolvedType) CGoType() string {
-	return movePtr(typ.CType, "C."+cleanCType(typ.CType))
+	return cgoTypeFromC(typ.CType)
 }
 
 // TypeResolver describes a generator that can resolve a GIR type.
@@ -281,6 +286,17 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	for _, unsupported := range unsupportedCTypes {
 		if unsupported == typ.CType {
 			return nil
+		}
+	}
+
+	// Try and dig out the CType if we have none.
+	if typ.CType == "" {
+		if result := ng.FindType(typ.Name); result != nil {
+			_, typ.CType = result.Info()
+		}
+		// Last resort.
+		if typ.CType == "" {
+			typ.CType = ctypeFallback("", typ.Name)
 		}
 	}
 

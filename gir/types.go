@@ -256,11 +256,12 @@ type Parameter struct {
 }
 
 type ParameterAttrs struct {
-	Name      string `xml:"name,attr"`
-	AllowNone bool   `xml:"allow-none,attr"`
-	Direction string `xml:"direction,attr"`
-	Closure   *int   `xml:"closure,attr"`
-	Destroy   *int   `xml:"destroy,attr"`
+	Name            string `xml:"name,attr"`
+	AllowNone       bool   `xml:"allow-none,attr"`
+	Direction       string `xml:"direction,attr"`
+	CallerAllocates bool   `xml:"caller-allocates,attr"`
+	Closure         *int   `xml:"closure,attr"`
+	Destroy         *int   `xml:"destroy,attr"`
 	TransferOwnership
 	AnyType
 	Doc *Doc

@@ -44,6 +44,7 @@ type callbackGenerator struct {
 	GoName  string
 	GoTail  string
 	CGoTail string
+	Block   string
 
 	Closure *int
 	Destroy *int
@@ -74,63 +75,94 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 		return false
 	}
 
-	cg.Closure = nil
-	for _, param := range cb.Parameters.Parameters {
-		if param.Closure != nil {
-			cg.Closure = param.Closure
-			break
-		}
-	}
+	cg.GoName = PascalToGo(cb.Name)
+	cg.Callback = cb
+
+	cg.Closure = findClosure(cb.Parameters.Parameters)
 	if cg.Closure == nil {
-		cg.fg.Logln(LogSkip, "callback", cb.Name, "is DestroyNotify")
+		cg.fg.Logln(LogSkip, "callback", cb.Name, "is missing closure arg")
 		return false
 	}
 
-	cg.GoName = PascalToGo(cb.Name)
-	cg.Callback = cb
+	cg.CGoTail = cg.cgoTail()
+	if cg.CGoTail == "" {
+		return false
+	}
 
 	cg.GoTail = cg.fg.fnCall(cb.CallableAttrs)
 	if cg.GoTail == "" {
 		return false
 	}
 
-	cgotail := pen.NewJoints(", ", len(cb.Parameters.Parameters))
+	cg.Block = cg.block()
+	if cg.Block == "" {
+		return false
+	}
 
-	for i, param := range cb.Parameters.Parameters {
+	return true
+}
+
+// findClosure returns the closure number or nil.
+func findClosure(params []gir.Parameter) *int {
+	for _, param := range params {
+		if param.Closure != nil {
+			return param.Closure
+		}
+	}
+	return nil
+}
+
+func (cg *callbackGenerator) cgoTail() string {
+	cgotail := pen.NewJoints(", ", len(cg.Parameters.Parameters))
+
+	for i, param := range cg.Parameters.Parameters {
 		ctype := anyTypeC(param.AnyType)
 		if ctype == "" {
-			cg.fg.Logln(LogSkip, "callback", cb.Name, "anyTypeC parameter is empty")
-			return false // probably var_args
+			cg.fg.Logln(LogSkip, "callback", cg.Name, "anyTypeC parameter is empty")
+			return "" // probably var_args
 		}
 
 		cgotype := anyTypeCGo(param.AnyType)
 		cgotail.Addf("arg%d %s", i, cgotype)
 	}
 
-	cg.CGoTail = "(" + cgotail.Join() + ")"
+	callTail := "(" + cgotail.Join() + ")"
 
-	if !returnIsVoid(cb.ReturnValue) {
-		ctype := anyTypeC(cb.ReturnValue.AnyType)
+	if !returnIsVoid(cg.ReturnValue) {
+		ctype := anyTypeC(cg.ReturnValue.AnyType)
 		if ctype == "" {
-			cg.fg.Logln(LogSkip, "callback", cb.Name, "anyTypeC return is empty")
-			return false
+			cg.fg.Logln(LogSkip, "callback", cg.Name, "anyTypeC return is empty")
+			return ""
 		}
 
-		cg.CGoTail += " " + anyTypeCGo(cb.ReturnValue.AnyType)
+		callTail += " " + anyTypeCGo(cg.ReturnValue.AnyType)
 	}
 
-	return true
+	return callTail
 }
 
-func (cg *callbackGenerator) Block() string {
-	b := pen.NewBlockSections(256, 4096, 128, 4096, 128)
+func (cg *callbackGenerator) block() string {
+	const (
+		secPrefix = iota
+		secInputPre
+		secInputConv
+		secFnCall
+		secOutputPre
+		secOutputConv
+		secReturn
+	)
+
+	// b := pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128)
+
+	b := pen.NewBlockSections() // TODO
 	cap := len(cg.Parameters.Parameters) + 2
 
-	b.Linef(0, "v := box.Get(uintptr(arg%d))", *cg.Closure)
-	b.Linef(0, "if v == nil {")
-	b.Linef(0, "  panic(`callback not found`)")
-	b.Linef(0, "}")
-	b.EmptyLine(0)
+	b.Linef(secPrefix, "v := box.Get(uintptr(arg%d))", *cg.Closure)
+	b.Linef(secPrefix, "if v == nil {")
+	b.Linef(secPrefix, "  panic(`callback not found`)")
+	b.Linef(secPrefix, "}")
+	b.Linef(secPrefix, "fn := v.(%s)", cg.GoName)
+	b.EmptyLine(secPrefix)
 
 	inputAt := func(i int) string { return fmt.Sprintf("arg%d", i) }
 	goArgs := pen.NewJoints(", ", cap)
@@ -145,20 +177,19 @@ func (cg *callbackGenerator) Block() string {
 			goArgs.Add(out)
 
 			inputValues = append(inputValues, CValueProp{
-				ValueProp: NewValuePropParam(inputAt(i), out, param.ParameterAttrs),
+				ValueProp: NewValuePropParam(inputAt(i), out, &i, param.ParameterAttrs),
 			})
 		} else {
 			in := SnakeToGo(false, param.Name)
 			goRets.Add(in)
 
-			// Set the output to *v, which is already declared in the function
-			// parameter.
+			// Set to the pointer. MUST ignore the declares.
 			out := "*" + inputAt(i)
 
 			// No need to have this declare a variable, since we're using the
 			// walrus operator in the function call.
 			outputValues = append(outputValues, GoValueProp{
-				ValueProp: NewValuePropParam(in, out, param.ParameterAttrs),
+				ValueProp: NewValuePropParam(in, out, &i, param.ParameterAttrs),
 			})
 		}
 	}
@@ -178,38 +209,34 @@ func (cg *callbackGenerator) Block() string {
 		})
 	}
 
-	var (
-		paramsConv = cg.fg.CGoConverter(TypeConversionToGo{
-			Values: inputValues,
-			Parent: cg.Name,
-		})
-		// Ignore preamble since we didn't ask to create any decls.
-		returnsConv = cg.fg.GoCConverter(TypeConversionToC{
-			Values: outputValues,
-			Parent: cg.Name,
-		})
+	convI := cg.fg.CGoConverter(cg.Name, inputValues).WriteAll(
+		nil, b.Section(secInputPre), b.Section(secInputConv),
 	)
 
-	if paramsConv == nil || returnsConv == nil {
+	if !convI {
+		cg.fg.Logln(LogSkip, "callback (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
 		return ""
 	}
 
-	cg.fg.addImport("github.com/diamondburned/gotk4/internal/box")
-	paramsConv.Apply(cg.fg)
-	returnsConv.Apply(cg.fg)
+	convO := cg.fg.GoCConverter(cg.Name, outputValues).WriteAll(
+		nil, nil, b.Section(secOutputConv),
+	)
 
-	b.Linef(1, paramsConv.Conversion)
-	b.Linef(3, returnsConv.Conversion)
+	if !convO {
+		cg.fg.Logln(LogSkip, "callback (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
+		return ""
+	}
 
-	b.Linef(2, "fn := v.(%s)", cg.GoName)
+	cg.fg.addImport(importInternal("box"))
+
 	if goRets.Len() == 0 {
-		b.Linef(2, "fn(%s)", goArgs.Join())
+		b.Linef(secFnCall, "fn(%s)", goArgs.Join())
 	} else {
-		b.Linef(2, "%s := fn(%s)", goRets.Join(), goArgs.Join())
+		b.Linef(secFnCall, "%s := fn(%s)", goRets.Join(), goArgs.Join())
 	}
 
 	if fnReturn != "" {
-		b.Linef(4, "return "+fnReturn)
+		b.Linef(secReturn, "return "+fnReturn)
 	}
 
 	return b.String()

@@ -2,19 +2,12 @@ package girgen
 
 import (
 	"fmt"
+	"log"
 
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 // C to Go type conversions.
-
-// TypeConversionToGo describes a conversion of one or more C values to Go.
-type TypeConversionToGo struct {
-	Values []CValueProp
-	// Parent is used for debugging.
-	Parent string
-}
 
 // CTypeProp describes a C variable.
 type CValueProp struct {
@@ -23,87 +16,121 @@ type CValueProp struct {
 	// BoxCast is an optional Go type that the boxed value should be casted to,
 	// but only if the Type is a gpointer. This is only useful to convert from C
 	// to Go.
-	BoxCast string
-
-	// OutputParam makes the conversion treat this value like an output
-	// parameter. The declarations will be written to the output's Preamble.
-	OutputParam bool
+	// BoxCast string
 }
 
 // inner is used only for arrays.
 func (prop *CValueProp) inner(in, out string) *CValueProp {
 	return &CValueProp{
-		ValueProp:   prop.ValueProp.inner(in, out),
-		OutputParam: false,
+		ValueProp: prop.ValueProp.inner(in, out),
 	}
 }
 
-type conversionToGo struct {
+// TypeConversionToGo describes the conversion context, that is all the values
+// that may or may not be converted for the conversion routine to use.
+type TypeConversionToGo struct {
+	values  []CValueProp
+	ignores map[int]struct{}
+	parent  string
+
 	conversionTo
-	pre     *pen.Paper // ONLY USE FOR OutputParam.
-	convert *TypeConversionToGo
 }
 
-func (conv *conversionToGo) valueAt(i int) *CValueProp {
-	if i < len(conv.convert.Values) {
-		return &conv.convert.Values[i]
+// CGoConverter returns a new converter that converts a value from C to Go.
+func (fg *FileGenerator) CGoConverter(parent string, values []CValueProp) *TypeConversionToGo {
+	ignores := make(map[int]struct{}, 10)
+	for _, value := range values {
+		value.loadIgnore(ignores)
 	}
 
-	conv.logFail(LogError, "C->Go callback out-of-bound closure arg", i)
+	return &TypeConversionToGo{
+		values:  values,
+		ignores: ignores,
+		parent:  parent,
+
+		conversionTo: newConversionTo(fg, parent),
+	}
+}
+
+// WriteAll writes all conversionsto the given sections.
+func (conv *TypeConversionToGo) WriteAll(in, out, con *pen.BlockSection) bool {
+	// Get the FileGenerator out of nowhere.
+	fg := conv.logger.(*FileGenerator)
+
+	for i := 0; i < len(conv.values); i++ {
+		converted := conv.Convert(i)
+		if converted == nil {
+			conv.logFail(LogDebug, "C->Go cannot convert type", anyTypeC(conv.values[i].Type))
+			return false
+		}
+
+		converted.Apply(fg)
+		converted.WriteAll(in, out, con)
+	}
+
+	return true
+}
+
+// Convert converts the value at the given index.
+func (conv *TypeConversionToGo) Convert(i int) *TypeConverted {
+	// Bound check.
+	if i >= len(conv.values) {
+		return nil
+	}
+
+	value := &conv.values[i]
+	value.ensurePens()
+
+	// Ignored values are manually obtained in the conversion process, so we
+	// don't convert them here. Zero values are not important.
+	if value.ParameterIndex != nil {
+		_, ignore := conv.ignores[*value.ParameterIndex]
+		if ignore {
+			return &TypeConverted{}
+		}
+	}
+
+	// Reset the state when done. The returns all copy the internal state, so
+	// we're fine.
+	defer conv.reset()
+	defer value.resetPens()
+
+	conv.cgoConverter(value)
+	if conv.failed {
+		return nil
+	}
+
+	if value.InType == "" || value.OutType == "" {
+		log.Panicln("missing CGoType or GoType for value", conv.parent, i)
+	}
+
+	return &TypeConverted{
+		ValueProp:             &value.ValueProp,
+		InDeclare:             value.inDecl.String(),
+		OutDeclare:            value.outDecl.String(),
+		Conversion:            value.p.String(),
+		ConversionSideEffects: conv.sides,
+	}
+}
+
+func (conv *TypeConversionToGo) reset() {
+	conv.conversionTo.reset()
+}
+
+func (conv *TypeConversionToGo) valueAt(at int) *CValueProp {
+	for i, value := range conv.values {
+		if value.ParameterIndex != nil && *value.ParameterIndex == at {
+			value := &conv.values[i]
+			value.ensurePens()
+			return value
+		}
+	}
+
+	conv.logFail(LogError, "C->Go conversion arg not found at", at)
 	return &CValueProp{ValueProp: errorValueProp}
 }
 
-type TypeConvertedToGo struct {
-	// Preamble contains `values[i].In' declarations for OutputParams.
-	Preamble   string
-	Conversion string
-	ConversionSideEffects
-}
-
-// CGoConverter returns Go code that is the conversion from the given C value
-// type to its respective Go value type. An empty string returned is invalid.
-//
-// The given argPrefix is used to get the nth parameter by concatenating the
-// prefix with the index number. This is used for length parameters.
-func (fg *FileGenerator) CGoConverter(conv TypeConversionToGo) *TypeConvertedToGo {
-	state := conversionToGo{
-		conversionTo: newConversionTo(fg, conv.Parent),
-		pre:          pen.NewPaperSize(1024), // 1KB
-		convert:      &conv,
-	}
-
-	ignores := make([]bool, len(conv.Values))
-	returns := make([]string, len(conv.Values))
-
-	for _, value := range conv.Values {
-		value.loadIgnore(&ignores)
-	}
-
-	for i := range conv.Values {
-		// Ignored values are manually obtained in the conversion process, so we
-		// don't convert them here.
-		if ignores[i] {
-			continue
-		}
-
-		returns[i] = conv.Values[i].Out
-
-		state.cgoConverter(&conv.Values[i])
-		state.p.EmptyLine()
-
-		if state.failed {
-			return nil
-		}
-	}
-
-	return &TypeConvertedToGo{
-		Preamble:              state.pre.String(),
-		Conversion:            state.p.String(),
-		ConversionSideEffects: state.sides,
-	}
-}
-
-func (conv *conversionToGo) cgoConverter(value *CValueProp) {
+func (conv *TypeConversionToGo) cgoConverter(value *CValueProp) {
 	switch {
 	case value.Type.Array != nil:
 		conv.cgoArrayConverter(value)
@@ -114,7 +141,7 @@ func (conv *conversionToGo) cgoConverter(value *CValueProp) {
 	}
 }
 
-func (conv *conversionToGo) cgoArrayConverter(value *CValueProp) {
+func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 	if value.Type.Array.Type == nil {
 		if !value.AllowNone {
 			conv.logFail(LogSkip, "nested array", value.Type.Array.CType)
@@ -124,62 +151,56 @@ func (conv *conversionToGo) cgoArrayConverter(value *CValueProp) {
 
 	array := value.Type.Array
 
-	innerResolved := conv.ng.ResolveType(*array.AnyType.Type)
-	if innerResolved == nil {
-		conv.fail()
+	// All generators must declare src.
+	inner := value.inner("src", value.Out+"[i]")
+	conv.cgoConverter(inner)
+
+	if conv.failed {
 		return
 	}
 
-	innerGoType := GoPublicType(conv.ng, innerResolved)
-	innerCGoType := innerResolved.CGoType()
+	if array.FixedSize > 0 {
+		value.OutType = fmt.Sprintf("[%d]%s", array.FixedSize, inner.OutType)
+		value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
-	if value.OutputParam {
-		// Non-fixed arrays are allocated on the C side, so we only need a
-		// pointer.
-		cgoType := anyTypeCGo(value.Type)
-		conv.pre.Linef("var %s %s", value.In, cgoType)
-	}
+		value.InType = anyTypeCGo(value.Type)
+		value.inDecl.Linef("var %s [%d]%s", value.In, array.FixedSize, inner.InType)
+	} else {
+		value.OutType = fmt.Sprintf("[]%s", inner.OutType)
+		value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
-	if value.OutputParam && array.FixedSize == 0 {
-		// Everything that's not FixedSize have this segment in common.
-		conv.pre.Linef("var %s %s", value.In, anyTypeCGo(value.Type))
+		value.InType = anyTypeCGo(value.Type)
+		value.inDecl.Linef("var %s %s", value.In, value.InType)
 	}
 
 	switch {
 	case array.FixedSize > 0:
-		if value.OutputParam {
-			// Fixed size arrays are preallocated on the stack, so we have to
-			// pass in the pointer to the array.
-			conv.pre.Linef("var %s_array [%d]%s", value.In, array.FixedSize, innerCGoType)
-			conv.pre.Linef("%s := &%s_array[0]", value.In)
-		}
-
 		// Detect if the underlying is a compatible Go primitive type that isn't
 		// a string. If it is, then we can directly cast a fixed-size array.
-		if !innerResolved.IsPrimitive() {
-			conv.p.Linef("%s := ([%d]%s)(%s)", value.Out, array.FixedSize, innerGoType, value.In)
+		if inner.Resolved.IsPrimitive() {
+			value.p.Linef("%s = (%s)(%s)", value.Out, value.OutType, value.In)
 			return
 		}
 
-		conv.p.Descend()
+		value.p.Descend()
+
 		// Direct cast is not possible; make a temporary array with the CGo type
-		// so we can loop over it.
-		conv.p.Linef("tmp := ([%d]%s)(%s)", value.Out, array.FixedSize, innerCGoType, value.In)
+		// so we can loop over it easily.
+		value.p.Linef("tmp := *(*%s)(unsafe.Pointer(&%s))", value.OutType, value.In)
+		value.p.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
+		value.p.Linef("  src := tmp[i]")
+		value.p.Linef("  " + inner.p.String())
+		value.p.Linef("}")
 
-		// TODO: nested array support
-		conv.p.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
-		conv.cgoConverter(value.inner("tmp[i]", value.In+"[i]"))
-		conv.p.Linef("}")
-
-		conv.p.Ascend()
+		value.p.Ascend()
 
 	case array.Length != nil:
-		lengthArg := conv.valueAt(*array.Length)
-		if value.OutputParam {
-			conv.pre.Linef("var %s %s", lengthArg.In, anyTypeCGo(lengthArg.Type))
-		}
-
 		conv.sides.addImport("unsafe")
+		conv.sides.addImport(importInternal("ptr"))
+
+		length := conv.valueAt(*array.Length)
+		value.inDecl.Linef("var %s %s", length.In, anyTypeCGo(length.Type))
+		// Length has no outDecl.
 
 		// If we're owning the new data, then we will directly use the backing
 		// array, but we can only do this if the underlying type is a primitive,
@@ -189,77 +210,76 @@ func (conv *conversionToGo) cgoArrayConverter(value *CValueProp) {
 		// TODO: record conversion should handle ownership: if
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
-		if value.isTransferring() && innerResolved.IsPrimitive() {
+		if value.isTransferring() && inner.Resolved.IsPrimitive() {
 			conv.sides.addImport("runtime")
-			conv.sides.addImport("reflect")
 
-			conv.p.Linef("var %s []%s", value.Out, innerGoType)
-			conv.p.Linef(goSliceFromPtr(value.Out, value.In, lengthArg.In))
+			value.p.Linef(goSliceFromPtr(value.Out, value.In, length.In))
 
 			// See: https://golang.org/misc/cgo/gmp/gmp.go?s=3086:3757#L87
-			conv.p.Linef("runtime.SetFinalizer(&%s, func(v *[]%s) {", value.Out, innerGoType)
-			conv.p.Linef("  sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(v))")
-			conv.p.Linef("  C.free(unsafe.Pointer(slideHeader.Data))")
-			conv.p.Linef("})")
+			value.p.Linef("runtime.SetFinalizer(&%s, func(v *%s) {", value.Out, value.OutType)
+			value.p.Linef("  C.free(ptr.Slice(unsafe.Pointer(v)))")
+			value.p.Linef("})")
 
 			return
 		}
 
-		conv.p.Linef("%s := make([]%s, %s)", value.Out, innerGoType, lengthArg.In)
-		conv.p.Linef("for i := 0; i < uintptr(%s); i++ {", lengthArg)
-		conv.p.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))", innerCGoType)
-		conv.cgoConverter(value.inner("src", value.Out+"[i]"))
-		conv.p.Linef("}")
+		value.p.Linef("%s = make(%s, %s)", value.Out, value.OutType, length.In)
+		value.p.Linef("for i := 0; i < uintptr(%s); i++ {", length.In)
+		value.p.Linef("  src := (%s)(ptr.Add(unsafe.Pointer(%s), i))", inner.InType, value.In)
+		value.p.Linef("  " + inner.p.String())
+		value.p.Linef("}")
 
 	case array.Name == "GLib.Array": // treat as Go array
 		conv.sides.addImport("unsafe")
+		conv.sides.addImport(importInternal("ptr"))
 
-		conv.p.Linef("var %s []%s", value.Out, innerGoType)
+		value.p.Descend()
 
-		conv.p.Descend()
+		value.p.Linef("var len uintptr")
+		value.p.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&len))", value.In)
 
-		conv.p.Linef("var len uintptr")
-		conv.p.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&len))", value.In)
+		value.p.Linef("%s = make(%s, len)", value.Out, value.OutType)
+		value.p.Linef("for i := 0; i < len; i++ {", value.In)
+		value.p.Linef("  src := (%s)(ptr.Add(unsafe.Pointer(p), i))", value.In)
+		value.p.Linef("  " + inner.p.String())
+		value.p.Linef("}")
 
-		conv.p.Linef("%s = make([]%s, len)", value.Out, innerGoType)
-		conv.p.Linef("for i := 0; i < len; i++ {", value.In)
-		conv.p.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))", innerCGoType)
-		conv.cgoConverter(value.inner("src", value.Out+"[i]"))
-		conv.p.Linef("}")
-
-		conv.p.Ascend()
+		value.p.Ascend()
 
 	case array.IsZeroTerminated():
 		conv.sides.addImport("unsafe")
+		conv.sides.addImport(importInternal("ptr"))
 
-		conv.p.Linef("var %s []%s", value.Out, innerGoType)
+		value.p.Descend()
 
-		conv.p.Descend()
+		// Get the size of the type so we know how much to increment when
+		// scanning.
+		sizeof := csizeof(inner.Resolved)
 
 		// Scan for the length.
-		conv.p.Linef("var length uint")
-		conv.p.Linef("for p := unsafe.Pointer(%s); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {", value.In)
-		conv.p.Linef("  length++")
-		conv.p.Linef("}")
-
-		conv.p.EmptyLine()
+		value.p.Linef("var length int")
+		value.p.Linef("for p := %s; *p != 0; p = (%s)(ptr.Add(unsafe.Pointer(p), %s)) {",
+			value.In, value.InType, sizeof)
+		value.p.Linef("  length++")
+		value.p.Linef("  if length < 0 { panic(`length overflow`) }")
+		value.p.Linef("}")
+		value.p.EmptyLine()
 
 		// Preallocate the slice.
-		conv.p.Linef("%s = make([]%s, length)", value.Out, innerGoType)
-		conv.p.Linef("for i := 0; i < length; i++ {")
-		conv.p.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s)) + i))", innerCGoType, value.In)
-		conv.cgoConverter(value.inner("src", value.Out+"[i]"))
-		conv.p.Linef("}")
+		value.p.Linef("%s = make(%s, length)", value.Out, value.OutType)
+		value.p.Linef("for i := uintptr(0); i < uintptr(length); i += %s {", sizeof)
+		value.p.Linef("  src := (%s)(ptr.Add(unsafe.Pointer(%s), i))", inner.InType, value.In)
+		value.p.Linef("  " + inner.p.String())
+		value.p.Linef("}")
 
-		conv.p.Ascend()
+		value.p.Ascend()
 
 	default:
 		conv.logFail(LogSkip, "weird array type to Go")
-		return
 	}
 }
 
-func (conv *conversionToGo) cgoTypeConverter(value *CValueProp) {
+func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 	for _, unsupported := range unsupportedCTypes {
 		if unsupported == value.Type.Type.Name {
 			conv.fail()
@@ -267,123 +287,87 @@ func (conv *conversionToGo) cgoTypeConverter(value *CValueProp) {
 		}
 	}
 
-	if value.OutputParam {
-		// Declare the variable, even when it's as the original alias type.
-		// We'll wrap this variable with our own conversions.
-		cgoType := anyTypeCGo(value.Type)
-		conv.pre.Linef("var %s %s", value.In, cgoType)
-	}
-
-	var (
-		result   *gir.TypeFindResult
-		resolved *ResolvedType
-
-		cgoType     string
-		unwrapStack []string
-	)
-
-	girType := value.Type.Type
-	for {
-		result = conv.ng.FindType(girType.Name)
-		resolved = conv.ng.ResolveType(*girType)
-
-		if result == nil || result.Alias == nil {
-			break
-		}
-
-		// Wrap the CGo input value.
-		cgoType = resolved.CGoType()
-		value.In = fmt.Sprintf("(%s)(%s)", cgoType, value.In)
-
-		// Add the Go type to the unwrap stack.
-		needsNsp := resolved.NeedsNamespace(conv.ng.current)
-		unwrapStack = append(unwrapStack, resolved.PublicType(needsNsp))
-
-		// Resolve again with the target alias type.
-		girType = &result.Alias.Type
-	}
-
-	if resolved == nil {
+	value.Resolved = conv.ng.ResolveType(*value.Type.Type)
+	if value.Resolved == nil {
 		conv.fail()
 		return
 	}
 
-	// TODO: find a way to construct the output wrapper. Easiest way is to
-	// output to a tmp variable and convert back, but this would require putting
-	// this inside a block.
+	// Declare the variable, even when it's as the original alias type.
+	// We'll wrap this variable with our own conversions.
+	value.InType = value.Resolved.CGoType()
+	value.inDecl.Linef("var %s %s", value.In, value.InType)
 
-	// Resolve primitive types.
-	if prim, ok := girToBuiltin[girType.Name]; ok {
-		// Edge cases.
-		switch prim {
-		case "string":
-			conv.p.Linef("%s := C.GoString(%s)", value.Out, value.In)
+	needsNamespace := value.Resolved.NeedsNamespace(conv.ng.current)
+	if needsNamespace {
+		conv.sides.addImportAlias(value.Resolved.Import, value.Resolved.Package)
+	}
 
-			// Only free this if C is transferring ownership to us.
-			if value.isTransferring() {
-				conv.sides.addImport("unsafe")
-				conv.p.Linef("defer C.free(unsafe.Pointer(%s))", value.In)
-			}
-		case "bool":
-			conv.sides.NeedsStdBool = true
-			conv.p.Linef("%s := C.bool(%s) != C.false", value.Out, value.In)
-		default:
-			conv.p.Linef("%s := %s(%s)", value.Out, cgoType, value.In)
+	value.OutType = value.Resolved.PublicType(needsNamespace)
+	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
+
+	switch {
+	case value.Resolved.IsBuiltin("string"):
+		value.p.Linef("%s = C.GoString(%s)", value.Out, value.In)
+		// Only free this if C is transferring ownership to us.
+		if value.isTransferring() {
+			conv.sides.addImport("unsafe")
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.In)
 		}
+		return
 
+	case value.Resolved.IsBuiltin("bool"):
+		conv.sides.NeedsStdBool = true
+		value.p.Linef("%s = C.bool(%s) != C.false", value.Out, value.In)
+		return
+
+	case value.Resolved.IsPrimitive():
+		value.p.Linef("%s = %s(%s)", value.Out, value.InType, value.In)
 		return
 	}
 
 	// Resolve special-case GLib types.
-	switch ensureNamespace(conv.ng.current, girType.Name) {
+	switch ensureNamespace(conv.ng.current, value.Type.Type.Name) {
 	case "gpointer":
-		conv.sides.addImport("github.com/diamondburned/gotk4/internal/box")
-		if value.BoxCast != "" && value.BoxCast != "interface{}" {
-			conv.p.Linef("%s := box.Get(uintptr(%s)).(%s)", value.Out, value.In, value.BoxCast)
-		} else {
-			conv.p.Linef("%s := box.Get(uintptr(%s))", value.Out, value.In)
-		}
+		conv.sides.addImport(importInternal("box"))
+
+		value.p.Linef("%s = box.Get(uintptr(%s))", value.Out, value.In)
 		return
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
 		conv.sides.addImport("unsafe")
-		conv.sides.addImport("github.com/diamondburned/gotk4/internal/gextras")
-		conv.p.Line(value.cgoCreateObject("gextras.Objector"))
+		conv.sides.addImport(importInternal("gextras"))
+		conv.sides.addGLibImport()
+
+		value.p.Line(value.cgoSetObject("gextras.Objector"))
 		return
 
 	case "GObject.Type", "GType":
 		conv.sides.addGLibImport()
-		conv.p.Linef("%s := externglib.Type(%s)", value.Out, value.In)
+
+		value.p.Linef("%s = externglib.Type(%s)", value.Out, value.In)
 		return
 
 	case "GObject.Value":
 		conv.sides.addGLibImport()
 		conv.sides.addImport("unsafe")
-		conv.p.Linef("%s := externglib.ValueFromNative(unsafe.Pointer(%s))", value.Out, value.In)
+
+		value.p.Linef("%s = externglib.ValueFromNative(unsafe.Pointer(%s))", value.Out, value.In)
 		// Set this to be freed if we have the ownership now.
 		if value.isTransferring() {
-			conv.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.Out)
-			conv.p.Linef("  C.g_value_unset((*C.GValue)(v.GValue))")
-			conv.p.Linef("})")
+			// https://pkg.go.dev/github.com/gotk3/gotk3/glib?utm_source=godoc#Value
+			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.Out)
+			value.p.Linef("  C.g_value_unset((*C.GValue)(v.GValue))")
+			value.p.Linef("})")
 		}
-		return
-
-	case "GObject.Error":
 		return
 	}
 
 	// Pretend that ignored types don't exist.
-	if conv.ng.mustIgnore(girType.Name, girType.CType) {
+	if conv.ng.mustIgnore(value.Type.Type.Name, value.Type.Type.CType) {
 		conv.fail()
 		return
 	}
-
-	if value.OutputParam && resolved.Ptr > 0 {
-		resolved.Ptr--
-	}
-
-	// goName contains the pointer.
-	goName := GoPublicType(conv.ng, resolved)
 
 	// TODO: function
 	// TODO: union
@@ -393,52 +377,58 @@ func (conv *conversionToGo) cgoTypeConverter(value *CValueProp) {
 	// doable.
 	// TODO: handle unions.
 
+	if value.Resolved.Extern == nil {
+		conv.fail()
+		return
+	}
+
+	result := value.Resolved.Extern.Result
+
 	switch {
 	case result.Enum != nil, result.Bitfield != nil:
 		// Resolve castable number types.
-		conv.p.Linef("%s := %s(%s)", value.Out, goName, value.In)
+		value.p.Linef("%s = %s(%s)", value.Out, value.OutType, value.In)
 
 	case result.Class != nil, result.Interface != nil:
 		conv.sides.addImport("unsafe")
-		conv.sides.addImport("github.com/diamondburned/gotk4/internal/gextras")
-		conv.p.Line(value.cgoCreateObject(goName))
+		conv.sides.addImport(importInternal("gextras"))
+
+		value.p.Line(value.cgoSetObject(value.OutType))
 
 	case result.Record != nil:
 		// We should only use the concrete wrapper for the record, since the
 		// returned type is concretely known here.
-		wrapName := resolved.WrapName(resolved.NeedsNamespace(conv.ng.current))
+		wrapName := value.Resolved.WrapName(needsNamespace)
 		valueIn := value.In
 
-		if resolved.Ptr == 0 {
-			wrapName = "*" + wrapName
-			valueIn = "&" + valueIn
+		value.p.Linef("%s = %s(unsafe.Pointer(%s))", value.Out, wrapName, valueIn)
+
+		if value.isTransferring() {
+			conv.sides.addImport("runtime")
+
+			value.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", value.Out, value.OutType)
+			value.p.Linef("  C.free(unsafe.Pointer(v.Native()))")
+			value.p.Linef("})")
 		}
 
-		conv.p.Linef("%s := %s(unsafe.Pointer(%s))", value.Out, wrapName, valueIn)
+	case result.Alias != nil:
+		// underlying := conv.ng.FindType(result.Alias.Name)
+		// if underlying == nil {
+		// 	conv.fail()
+		// 	return
+		// }
 
-		if !value.isTransferring() {
-			return
-		}
+		// resolved := conv.ng.ResolveType(underlying)
 
-		// If ownership is being transferred to us on the Go side, then
-		// we should free.
-		conv.sides.addImport("runtime")
+		// TODO: find a way to construct the output wrapper. Easiest way is to
+		// output to a tmp variable and convert back, but this would require
+		// putting this inside a block.
 
-		arg := value.Out
-		typ := goName
-
-		if resolved.Ptr == 1 {
-			arg = "&" + arg
-			typ = "*" + typ
-		}
-
-		conv.p.Linef("runtime.SetFinalizer(%s, func(v %s) {", arg, typ)
-		conv.p.Linef("  C.free(unsafe.Pointer(v.Native()))")
-		conv.p.Linef("})")
+		// TODO
+		conv.fail()
 
 	case value.AllowNone:
-		conv.p.Linef("var %s %s // unsupported", value.Out, goName)
-
+		value.outDecl.Linef("var %s %s // unsupported", value.Out, value.OutType)
 	default:
 		conv.fail()
 	}

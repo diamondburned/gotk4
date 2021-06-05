@@ -44,7 +44,7 @@ func (b *Block) String() string {
 
 // maxBlockSections is the arbitrary maximum number of block sections to be
 // made.
-const maxBlockSections = 8
+const maxBlockSections = 10
 
 // BlockSections is a section writer for writing multiple sections of a block at
 // once. It can write 8 sections maximum.

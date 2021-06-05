@@ -76,7 +76,7 @@ func newClassGenerator(ng *NamespaceGenerator) *classGenerator {
 
 func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.fg = cg.ng.FileFromSource(class.SourcePosition)
-	cg.TypeTree = *cg.fg.TypeTree()
+	cg.TypeTree = cg.fg.TypeTree()
 	cg.TypeTree.Level = 2
 
 	if class.Parent == "" {
@@ -90,8 +90,13 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.InterfaceName = PascalToGo(class.Name)
 	cg.StructName = UnexportPascal(cg.InterfaceName)
 
-	resolved := TypeFromResult(cg.ng, gir.TypeFindResult{Class: &class})
-	if !cg.TypeTree.ResolveFromType(resolved) {
+	// resolved := TypeFromResult(cg.ng, gir.TypeFindResult{Class: &class})
+	// if !cg.TypeTree.ResolveFromType(resolved) {
+	// 	cg.fg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
+	// 	return false
+	// }
+
+	if !cg.TypeTree.Resolve(class.Name) {
 		cg.fg.Logln(LogSkip, "class", class.Name, "because unknown parent type", class.Parent)
 		return false
 	}

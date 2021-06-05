@@ -23,34 +23,56 @@ type ValueProp struct {
 	// provided, then callbackDelete will be set along with Closure.
 	Destroy *int
 
+	// ParameterIndex explicitly gives this value an index used for matching
+	// with the given index clues from the GIR files, such as closure, destroy
+	// or length.
+	ParameterIndex *int
+
+	// OutputParameter makes the conversion treat this value like an output
+	// parameter. The declarations will be written to the output's Preamble.
+	OutputParameter bool
+
+	// CallerAllocates determines if the converter should take care of
+	// allocating the type or not.
+	CallerAllocates bool
+
 	// AllowNone, if true, will allow types that cannot be converted to stay.
 	AllowNone bool
+
+	// ConversionExtras are filled up after Convert. This is useful for the
+	// caller to reuse information derived during conversion.
+	ConversionExtras
+
+	p       *pen.PaperString
+	inDecl  *pen.PaperString // ONLY USE FOR OutputParam.
+	outDecl *pen.PaperString
 }
 
-var (
-	// errorValueProp is an invalid GoValueProp returned when valueAt errors out.
-	errorValueProp = ValueProp{
-		In:  "NotAvailable",
-		Out: "NotAvailable",
-		Type: gir.AnyType{
-			Type: &gir.Type{
-				Name:  "none",
-				CType: "void",
-			},
+// errorValueProp is an invalid GoValueProp returned when valueAt errors out.
+var errorValueProp = ValueProp{
+	In:  "NotAvailable",
+	Out: "NotAvailable",
+	Type: gir.AnyType{
+		Type: &gir.Type{
+			Name:  "none",
+			CType: "void",
 		},
-	}
-)
+	},
+}
 
 // NewValuePropParam creates a ValueProp from the given parameter attribute.
-func NewValuePropParam(in, out string, param gir.ParameterAttrs) ValueProp {
+func NewValuePropParam(in, out string, i *int, param gir.ParameterAttrs) ValueProp {
 	return ValueProp{
-		In:        in,
-		Out:       out,
-		Type:      param.AnyType,
-		Owner:     param.TransferOwnership,
-		Closure:   param.Closure,
-		Destroy:   param.Destroy,
-		AllowNone: param.AllowNone,
+		In:              in,
+		Out:             out,
+		Type:            param.AnyType,
+		Owner:           param.TransferOwnership,
+		Closure:         param.Closure,
+		Destroy:         param.Destroy,
+		AllowNone:       param.AllowNone,
+		CallerAllocates: param.CallerAllocates,
+		OutputParameter: param.Direction == "out",
+		ParameterIndex:  i,
 	}
 }
 
@@ -64,7 +86,40 @@ func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
 		AllowNone: ret.Skip || ret.AllowNone,
 		Closure:   ret.Closure,
 		Destroy:   ret.Destroy,
+		// OutputParam: true,
 	}
+}
+
+// IsZero returns true if ValueProp is empty.
+func (value *ValueProp) IsZero() bool {
+	return value.In == "" || value.Out == ""
+}
+
+func (value *ValueProp) loadIgnore(ignores map[int]struct{}) {
+	// These are handled below.
+	if value.Closure != nil {
+		ignores[*value.Closure] = struct{}{}
+	}
+	if value.Destroy != nil {
+		ignores[*value.Destroy] = struct{}{}
+	}
+	if value.Type.Array != nil && value.Type.Array.Length != nil {
+		ignores[*value.Type.Array.Length] = struct{}{}
+	}
+}
+
+func (value *ValueProp) ensurePens() {
+	if value.p == nil || value.inDecl == nil || value.outDecl == nil {
+		value.p = pen.NewPaperStringSize(10 * 1024)  // 10KB
+		value.inDecl = pen.NewPaperStringSize(1024)  // 1KB
+		value.outDecl = pen.NewPaperStringSize(1024) // 1KB
+	}
+}
+
+func (value *ValueProp) resetPens() {
+	value.p = nil
+	value.inDecl = nil
+	value.outDecl = nil
 }
 
 // inner is used only for arrays.
@@ -79,25 +134,15 @@ func (value ValueProp) inner(in, out string) ValueProp {
 		value.Owner.TransferOwnership = "none"
 	}
 
-	return ValueProp{
+	prop := ValueProp{
 		In:    in,
 		Out:   out,
 		Type:  value.Type.Array.AnyType,
 		Owner: value.Owner,
 	}
-}
+	prop.ensurePens()
 
-func (value *ValueProp) loadIgnore(ignores *[]bool) {
-	// These are handled below.
-	if value.Closure != nil {
-		(*ignores)[*value.Closure] = true
-	}
-	if value.Destroy != nil {
-		(*ignores)[*value.Destroy] = true
-	}
-	if value.Type.Array != nil && value.Type.Array.Length != nil {
-		(*ignores)[*value.Type.Array.Length] = true
-	}
+	return prop
 }
 
 // isTransferring is true when the ownership is either full or container. If the
@@ -114,9 +159,9 @@ func (prop ValueProp) isTransferring() bool {
 		prop.Owner.TransferOwnership == "container"
 }
 
-// cgoCreateObject generates a glib.Take or glib.AssumeOwnership into a new
+// cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
 // function.
-func (prop ValueProp) cgoCreateObject(ifaceType string) string {
+func (prop ValueProp) cgoSetObject(ifaceType string) string {
 	var gobjectFunction string
 	if prop.isTransferring() {
 		// Full or container means we implicitly own the object, so we must
@@ -129,9 +174,31 @@ func (prop ValueProp) cgoCreateObject(ifaceType string) string {
 	}
 
 	return fmt.Sprintf(
-		"%s := gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
+		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
 		prop.Out, gobjectFunction, prop.In, ifaceType,
 	)
+}
+
+// TypeConverted is the result of conversion for a single value.
+type TypeConverted struct {
+	*ValueProp
+
+	InDeclare  string
+	OutDeclare string
+	Conversion string
+	ConversionSideEffects
+}
+
+func (conved *TypeConverted) WriteAll(in, out, conv *pen.BlockSection) {
+	if in != nil {
+		in.Linef(conved.InDeclare)
+	}
+	if out != nil {
+		out.Linef(conved.OutDeclare)
+	}
+	if conv != nil {
+		conv.Linef(conved.Conversion)
+	}
 }
 
 // ConversionSideEffects describes the side effects of the conversion, such as
@@ -181,9 +248,17 @@ func (sides ConversionSideEffects) Apply(fg *FileGenerator) {
 	}
 }
 
+// ConversionExtras contains extra information obtained during conversion.
+type ConversionExtras struct {
+	InType  string
+	OutType string
+
+	// Resolved is only present for type conversions, NOT array conversions.
+	Resolved *ResolvedType
+}
+
 type conversionTo struct {
 	ng     *NamespaceGenerator
-	p      *pen.Paper
 	logger lineLogger
 	parent string
 
@@ -195,10 +270,14 @@ type conversionTo struct {
 func newConversionTo(fg *FileGenerator, parent string) conversionTo {
 	return conversionTo{
 		ng:     fg.parent,
-		p:      pen.NewPaperSize(10 * 1024), // 10KB
 		logger: fg,
 		parent: parent,
 	}
+}
+
+func (conv *conversionTo) reset() {
+	conv.sides = ConversionSideEffects{}
+	conv.failed = false
 }
 
 func (conv *conversionTo) fail() { conv.failed = true }
@@ -225,12 +304,10 @@ func (conv *conversionTo) typeHasPtr(typ *ResolvedType) bool {
 // with the given len, then set it into target. typ should be innerType. A
 // temporary variable named sliceHeader is made.
 //
-// Imports needed: reflect, unsafe.
+// Imports needed: github.com/diamondburned/gotk4/internal/ptr.
 func goSliceFromPtr(target, ptr, len string) string {
-	return pen.NewPiece().
-		Linef("sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&%s))", target).
-		Linef("sliceHeader.Data = uintptr(unsafe.Pointer(%s))", ptr).
-		Linef("sliceHeader.Len = %s", len).
-		Linef("sliceHeader.Cap = %s", len).
-		String()
+	return fmt.Sprintf(
+		"ptr.SetSlice(unsafe.Pointer(&%s), unsafe.Pointer(%s), int(%s))",
+		target, ptr, len,
+	)
 }

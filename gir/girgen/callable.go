@@ -48,7 +48,6 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	cg.CallableAttrs = cattrs
 
 	if cg.Block = cg.block(); cg.Block == "" {
-		cg.fg.Logln(LogSkip, "callable (no block)", cFunctionSig(cattrs))
 		cg.reset()
 		return false
 	}
@@ -110,7 +109,17 @@ func (cg *callableGenerator) block() string {
 		AllowNone bool
 	}
 
-	blocks := pen.NewBlockSections(4096, 256, 4096, 512)
+	const (
+		secInputDecl = iota
+		secInputConv
+		secReturnDecl
+		secFnCall
+		secOutputConv
+		secReturn
+	)
+
+	// Arbitrary sizes, whatever.
+	blocks := pen.NewBlockSections(1024, 4096, 1024, 256, 4096, 128)
 
 	var (
 		params  pen.Joints
@@ -121,21 +130,18 @@ func (cg *callableGenerator) block() string {
 	)
 
 	if cg.Parameters != nil {
-		cap := len(cg.Parameters.Parameters) + 2
+		params = pen.NewJoints(", ", len(cg.Parameters.Parameters))
+		returns = pen.NewJoints(", ", len(cg.Parameters.Parameters)+2)
 
-		params = pen.NewJoints(", ", cap)
-		returns = pen.NewJoints(", ", cap)
-
-		inputValues = make([]GoValueProp, 0, cap)
-		outputValues = make([]CValueProp, 0, cap)
+		inputValues = make([]GoValueProp, 0, len(cg.Parameters.Parameters))
+		outputValues = make([]CValueProp, 0, len(cg.Parameters.Parameters)+2)
 
 		if cg.Parameters.InstanceParameter != nil {
-			in := FirstLetter(cg.Parameters.InstanceParameter.Name)
-			params.Add(in)
+			params.Add("arg0")
 
 			inputValues = append(inputValues, GoValueProp{
 				ValueProp: NewValuePropParam(
-					in, "arg0",
+					FirstLetter(cg.Parameters.InstanceParameter.Name), "arg0", nil,
 					cg.Parameters.InstanceParameter.ParameterAttrs,
 				),
 			})
@@ -148,7 +154,7 @@ func (cg *callableGenerator) block() string {
 
 				inputValues = append(inputValues, GoValueProp{
 					ValueProp: NewValuePropParam(
-						in, fmt.Sprintf("arg%d", i+1), // declared
+						in, fmt.Sprintf("arg%d", i+1), &i,
 						param.ParameterAttrs,
 					),
 				})
@@ -160,8 +166,7 @@ func (cg *callableGenerator) block() string {
 				returns.Add(out)
 
 				outputValues = append(outputValues, CValueProp{
-					ValueProp:   NewValuePropParam(in, out, param.ParameterAttrs),
-					OutputParam: true,
+					ValueProp: NewValuePropParam(in, out, &i, param.ParameterAttrs),
 				})
 			}
 		}
@@ -170,62 +175,69 @@ func (cg *callableGenerator) block() string {
 	// If the last return is a bool and the function can throw an error,
 	// then the boolean is probably to indicate that things are OK. We can
 	// skip generating this boolean.
-	if !returnIsVoid(cg.ReturnValue) {
-		if !cg.Throws && anyTypeName(cg.ReturnValue.AnyType, "") != "ok" {
-			out := fmt.Sprintf("ret%d", len(outputValues)+1)
-			returns.Add(out)
+	hasReturn := !returnIsVoid(cg.ReturnValue) &&
+		!(cg.Throws && anyTypeName(cg.ReturnValue.AnyType, "") == "ok")
 
-			outputValues = append(outputValues, CValueProp{
-				ValueProp: NewValuePropReturn("ret", out, *cg.ReturnValue),
-			})
-		}
+	if hasReturn {
+		out := fmt.Sprintf("goret%d", len(outputValues)+1)
+		returns.Add(out)
+
+		outputValues = append(outputValues, CValueProp{
+			ValueProp: NewValuePropReturn("cret", out, *cg.ReturnValue),
+		})
 	}
 
-	if cg.Throws {
-		blocks.Line(0, "var errout *C.GError")
-		params.Add("&errout")
-
-		blocks.Linef(3, "var goerr error")
-		returns.Add("goerr")
-
-		blocks.Line(3, "if errout != nil {")
-		blocks.Line(3, `  goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))`)
-		blocks.Line(3, "  C.g_error_free(errout)")
-		blocks.Line(3, "}")
-		blocks.EmptyLine(3)
-	}
-
-	var (
-		paramsConv = cg.fg.GoCConverter(TypeConversionToC{
-			Values: inputValues,
-			Parent: cg.Name,
-		})
-		returnsConv = cg.fg.CGoConverter(TypeConversionToGo{
-			Values: outputValues,
-			Parent: cg.Name,
-		})
+	convI := cg.fg.GoCConverter(cg.Name, inputValues).WriteAll(
+		// Go inputs are declared in the parameters.
+		nil,
+		// C outputs have to be declared (input means C function input).
+		blocks.Section(secInputDecl),
+		// Conversions follow right after declaring all outputs.
+		blocks.Section(secInputConv),
 	)
 
-	if paramsConv == nil || returnsConv == nil {
+	if !convI {
+		cg.fg.Logln(LogSkip, "callable (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
 		return ""
 	}
 
-	paramsConv.Apply(cg.fg)
-	returnsConv.Apply(cg.fg)
+	convO := cg.fg.CGoConverter(cg.Name, outputValues).WriteAll(
+		blocks.Section(secReturnDecl),
+		// Go outputs should be redeclared.
+		blocks.Section(secReturnDecl),
+		// Conversions follow right after declaring all outputs.
+		blocks.Section(secOutputConv),
+	)
 
-	blocks.Linef(0, paramsConv.Conversion)
-	blocks.Linef(0, returnsConv.Preamble)
-	blocks.Linef(2, returnsConv.Conversion)
+	if !convO {
+		cg.fg.Logln(LogSkip, "callable (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
+		return ""
+	}
 
-	if returnIsVoid(cg.ReturnValue) {
-		blocks.Linef(1, "C.%s(%s)", cg.CIdentifier, params.Join())
+	if cg.Throws {
+		blocks.Line(secInputDecl, "var errout *C.GError")
+		params.Add("&errout")
+
+		blocks.Linef(secReturnDecl, "var goerr error")
+		returns.Add("goerr")
+
+		o := blocks.Section(secOutputConv)
+		o.Line("if errout != nil {")
+		o.Line(`  goerr = fmt.Errorf("%d: %s", errout.code, C.GoString(errout.message))`)
+		o.Line("  C.g_error_free(errout)")
+		o.Line("}")
+		o.EmptyLine()
+	}
+
+	if !hasReturn {
+		blocks.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, params.Join())
 	} else {
-		blocks.Linef(1, "ret := C.%s(%s)", cg.CIdentifier, params.Join())
+		blocks.Linef(secFnCall, "cret = C.%s(%s)", cg.CIdentifier, params.Join())
+		blocks.EmptyLine(secFnCall)
 	}
 
 	if len(outputValues) > 0 {
-		blocks.EmptyLine(1)
-		blocks.Line(3, "return "+returns.Join())
+		blocks.Line(secReturn, "return "+returns.Join())
 	}
 
 	return blocks.String()
@@ -240,11 +252,13 @@ func (cg *callableGenerator) block() string {
 func (fg *FileGenerator) fnCall(attrs gir.CallableAttrs) string {
 	args, ok := fg.fnArgs(attrs)
 	if !ok {
+		fg.Logln(LogDebug, "fnArgs failed for callable", cFunctionSig(attrs))
 		return ""
 	}
 
 	returns, ok := fg.fnReturns(attrs)
 	if !ok {
+		fg.Logln(LogDebug, "fnReturns failed for callable", cFunctionSig(attrs))
 		return ""
 	}
 

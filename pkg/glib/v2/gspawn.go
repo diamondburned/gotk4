@@ -140,8 +140,8 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SpawnChildSetupFunc)
 
+	fn := v.(SpawnChildSetupFunc)
 	fn(userData)
 }
 

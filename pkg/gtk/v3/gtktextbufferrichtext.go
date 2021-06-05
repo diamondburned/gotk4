@@ -30,8 +30,8 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TextBufferDeserializeFunc)
 
+	fn := v.(TextBufferDeserializeFunc)
 	ret := fn(registerBuffer, contentBuffer, iter, data, length, createTags, userData)
 
 	if ret {
@@ -51,8 +51,8 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TextBufferSerializeFunc)
 
+	fn := v.(TextBufferSerializeFunc)
 	ret := fn(registerBuffer, contentBuffer, start, end, length, userData)
 
 	cret = *C.guint8(ret)

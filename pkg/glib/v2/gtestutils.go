@@ -133,8 +133,8 @@ func gotk4_TestDataFunc(arg0 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TestDataFunc)
 
+	fn := v.(TestDataFunc)
 	fn(userData)
 }
 
@@ -156,8 +156,8 @@ func gotk4_TestFixtureFunc(arg0 C.gpointer, arg1 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TestFixtureFunc)
 
+	fn := v.(TestFixtureFunc)
 	fn(fixture, userData)
 }
 
@@ -170,8 +170,8 @@ func gotk4_TestLogFatalFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar,
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TestLogFatalFunc)
 
+	fn := v.(TestLogFatalFunc)
 	ret := fn(logDomain, logLevel, message, userData)
 
 	if ret {

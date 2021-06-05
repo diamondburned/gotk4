@@ -48,8 +48,8 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(VFSFileLookupFunc)
 
+	fn := v.(VFSFileLookupFunc)
 	ret := fn(vfs, identifier, userData)
 
 	cret = (*C.GFile)(unsafe.Pointer(ret.Native()))

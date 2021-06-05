@@ -38,8 +38,8 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(AssistantPageFunc)
 
+	fn := v.(AssistantPageFunc)
 	ret := fn(currentPage, data)
 
 	cret = C.gint(ret)

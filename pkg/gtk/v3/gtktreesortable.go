@@ -39,8 +39,8 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeIterCompareFunc)
 
+	fn := v.(TreeIterCompareFunc)
 	ret := fn(model, a, b, userData)
 
 	cret = C.gint(ret)

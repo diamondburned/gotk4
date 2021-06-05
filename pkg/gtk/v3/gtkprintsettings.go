@@ -29,8 +29,8 @@ func gotk4_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(PrintSettingsFunc)
 
+	fn := v.(PrintSettingsFunc)
 	fn(key, value, userData)
 }
 

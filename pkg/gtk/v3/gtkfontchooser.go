@@ -37,8 +37,8 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FontFilterFunc)
 
+	fn := v.(FontFilterFunc)
 	ret := fn(family, face, data)
 
 	if ret {

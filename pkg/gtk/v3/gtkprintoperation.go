@@ -38,8 +38,8 @@ func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(PageSetupDoneFunc)
 
+	fn := v.(PageSetupDoneFunc)
 	fn(pageSetup, data)
 }
 

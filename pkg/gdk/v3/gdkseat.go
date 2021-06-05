@@ -27,7 +27,7 @@ func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpoint
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SeatGrabPrepareFunc)
 
+	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window, userData)
 }

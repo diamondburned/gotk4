@@ -28,8 +28,8 @@ func gotk4_BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(BindingTransformFunc)
 
+	fn := v.(BindingTransformFunc)
 	ret := fn(binding, fromValue, toValue, userData)
 
 	if ret {

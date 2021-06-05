@@ -26,8 +26,8 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ParseErrorFunc)
 
+	fn := v.(ParseErrorFunc)
 	fn(start, end, error, userData)
 }
 

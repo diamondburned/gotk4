@@ -40,8 +40,8 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeCellDataFunc)
 
+	fn := v.(TreeCellDataFunc)
 	fn(treeColumn, cell, treeModel, iter, data)
 }
 

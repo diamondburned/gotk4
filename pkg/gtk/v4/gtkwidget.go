@@ -49,8 +49,8 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TickCallback)
 
+	fn := v.(TickCallback)
 	ret := fn(widget, frameClock, userData)
 
 	if ret {

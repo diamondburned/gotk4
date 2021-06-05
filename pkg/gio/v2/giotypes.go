@@ -49,8 +49,8 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(AsyncReadyCallback)
 
+	fn := v.(AsyncReadyCallback)
 	fn(sourceObject, res, userData)
 }
 
@@ -64,8 +64,8 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboole
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CancellableSourceFunc)
 
+	fn := v.(CancellableSourceFunc)
 	ret := fn(cancellable, userData)
 
 	if ret {
@@ -89,8 +89,8 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusProxyTypeFunc)
 
+	fn := v.(DBusProxyTypeFunc)
 	ret := fn(manager, objectPath, interfaceName, userData)
 
 	cret := C.GType(ret)
@@ -108,8 +108,8 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DatagramBasedSourceFunc)
 
+	fn := v.(DatagramBasedSourceFunc)
 	ret := fn(datagramBased, condition, userData)
 
 	if ret {
@@ -154,8 +154,8 @@ func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.g
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FileMeasureProgressCallback)
 
+	fn := v.(FileMeasureProgressCallback)
 	fn(reporting, currentSize, numDirs, numFiles, userData)
 }
 
@@ -170,8 +170,8 @@ func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer)
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FileProgressCallback)
 
+	fn := v.(FileProgressCallback)
 	fn(currentNumBytes, totalNumBytes, userData)
 }
 
@@ -188,8 +188,8 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FileReadMoreCallback)
 
+	fn := v.(FileReadMoreCallback)
 	ret := fn(fileContents, fileSize, callbackData)
 
 	if ret {
@@ -211,8 +211,8 @@ func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(IOSchedulerJobFunc)
 
+	fn := v.(IOSchedulerJobFunc)
 	ret := fn(job, cancellable, userData)
 
 	if ret {
@@ -233,8 +233,8 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(PollableSourceFunc)
 
+	fn := v.(PollableSourceFunc)
 	ret := fn(pollableStream, userData)
 
 	if ret {
@@ -254,8 +254,8 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SocketSourceFunc)
 
+	fn := v.(SocketSourceFunc)
 	ret := fn(socket, condition, userData)
 
 	if ret {

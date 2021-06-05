@@ -37,8 +37,8 @@ func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TextCharPredicate)
 
+	fn := v.(TextCharPredicate)
 	ret := fn(ch, userData)
 
 	if ret {

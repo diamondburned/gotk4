@@ -34,8 +34,8 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CellLayoutDataFunc)
 
+	fn := v.(CellLayoutDataFunc)
 	fn(cellLayout, cell, treeModel, iter, data)
 }
 

@@ -42,8 +42,8 @@ func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeViewColumnDropFunc)
 
+	fn := v.(TreeViewColumnDropFunc)
 	ret := fn(treeView, column, prevColumn, nextColumn, data)
 
 	if ret {
@@ -62,8 +62,8 @@ func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeViewMappingFunc)
 
+	fn := v.(TreeViewMappingFunc)
 	fn(treeView, path, userData)
 }
 
@@ -79,8 +79,8 @@ func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeViewRowSeparatorFunc)
 
+	fn := v.(TreeViewRowSeparatorFunc)
 	ret := fn(model, iter, data)
 
 	if ret {
@@ -102,8 +102,8 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.cha
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeViewSearchEqualFunc)
 
+	fn := v.(TreeViewSearchEqualFunc)
 	ret := fn(model, column, key, iter, searchData)
 
 	if ret {

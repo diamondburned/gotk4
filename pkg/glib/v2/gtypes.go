@@ -26,8 +26,8 @@ func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CompareDataFunc)
 
+	fn := v.(CompareDataFunc)
 	ret := fn(a, b, userData)
 
 	cret = C.gint(ret)
@@ -45,8 +45,8 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(Func)
 
+	fn := v.(Func)
 	fn(data, userData)
 }
 
@@ -61,8 +61,8 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(HFunc)
 
+	fn := v.(HFunc)
 	fn(key, value, userData)
 }
 

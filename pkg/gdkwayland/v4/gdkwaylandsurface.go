@@ -26,7 +26,7 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(WaylandToplevelExported)
 
+	fn := v.(WaylandToplevelExported)
 	fn(toplevel, handle, userData)
 }

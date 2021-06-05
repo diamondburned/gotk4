@@ -33,8 +33,8 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TextTagTableForeach)
 
+	fn := v.(TextTagTableForeach)
 	fn(tag, data)
 }
 

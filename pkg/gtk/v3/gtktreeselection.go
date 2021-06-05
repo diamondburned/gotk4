@@ -38,8 +38,8 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeSelectionForeachFunc)
 
+	fn := v.(TreeSelectionForeachFunc)
 	fn(model, path, iter, data)
 }
 
@@ -55,8 +55,8 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeSelectionFunc)
 
+	fn := v.(TreeSelectionFunc)
 	ret := fn(selection, model, path, pathCurrentlySelected, data)
 
 	if ret {

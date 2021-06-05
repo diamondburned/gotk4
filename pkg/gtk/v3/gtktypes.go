@@ -41,8 +41,8 @@ func gotk4_BuilderConnectFunc(arg0 *C.GtkBuilder, arg1 *C.GObject, arg2 *C.gchar
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(BuilderConnectFunc)
 
+	fn := v.(BuilderConnectFunc)
 	fn(builder, object, signalName, handlerName, connectObject, flags, userData)
 }
 

@@ -47,8 +47,8 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SettingsBindGetMapping)
 
+	fn := v.(SettingsBindGetMapping)
 	ret := fn(value, variant, userData)
 
 	if ret {
@@ -68,8 +68,8 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SettingsBindSetMapping)
 
+	fn := v.(SettingsBindSetMapping)
 	ret := fn(value, expectedType, userData)
 
 	cret = (*C.GVariant)(unsafe.Pointer(ret.Native()))
@@ -95,11 +95,11 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SettingsGetMapping)
 
+	fn := v.(SettingsGetMapping)
 	result, ret := fn(value, userData)
 
-	*arg1 = *C.gpointer(result)
+	*arg1 = C.gpointer(result)
 	if ret {
 		cret = C.gboolean(1)
 	}

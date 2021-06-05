@@ -31,8 +31,8 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(KeySnoopFunc)
 
+	fn := v.(KeySnoopFunc)
 	ret := fn(grabWidget, event, funcData)
 
 	cret = C.gint(ret)

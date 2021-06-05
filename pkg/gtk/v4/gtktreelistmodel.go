@@ -40,8 +40,8 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GLi
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeListModelCreateModelFunc)
 
+	fn := v.(TreeListModelCreateModelFunc)
 	ret := fn(item, userData)
 
 	cret = (*C.GListModel)(unsafe.Pointer(ret.Native()))

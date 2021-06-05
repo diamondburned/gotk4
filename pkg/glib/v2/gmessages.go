@@ -78,8 +78,8 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(LogFunc)
 
+	fn := v.(LogFunc)
 	fn(logDomain, logLevel, message, userData)
 }
 
@@ -109,8 +109,8 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(LogWriterFunc)
 
+	fn := v.(LogWriterFunc)
 	ret := fn(logLevel, fields, nFields, userData)
 
 	cret = (C.GLogWriterOutput)(ret)

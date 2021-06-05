@@ -28,7 +28,7 @@ func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(MenuButtonCreatePopupFunc)
 
+	fn := v.(MenuButtonCreatePopupFunc)
 	fn(menuButton, userData)
 }

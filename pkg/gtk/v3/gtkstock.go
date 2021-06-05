@@ -32,8 +32,8 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TranslateFunc)
 
+	fn := v.(TranslateFunc)
 	ret := fn(path, funcData)
 
 	cret = (*C.gchar)(C.CString(ret))

@@ -370,8 +370,8 @@ func gotk4_RegexEvalCallback(arg0 *C.GMatchInfo, arg1 *C.GString, arg2 C.gpointe
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(RegexEvalCallback)
 
+	fn := v.(RegexEvalCallback)
 	ret := fn(matchInfo, result, userData)
 
 	if ret {

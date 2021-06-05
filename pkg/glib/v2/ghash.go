@@ -35,8 +35,8 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(HRFunc)
 
+	fn := v.(HRFunc)
 	ret := fn(key, value, userData)
 
 	if ret {

@@ -47,8 +47,8 @@ func gotk4_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DesktopAppLaunchCallback)
 
+	fn := v.(DesktopAppLaunchCallback)
 	fn(appinfo, pid, userData)
 }
 

@@ -38,8 +38,8 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeModelFilterModifyFunc)
 
+	fn := v.(TreeModelFilterModifyFunc)
 	value := fn(model, iter, column, data)
 
 	*arg2 = (*C.GValue)(value.GValue)
@@ -55,8 +55,8 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeModelFilterVisibleFunc)
 
+	fn := v.(TreeModelFilterVisibleFunc)
 	ret := fn(model, iter, data)
 
 	if ret {

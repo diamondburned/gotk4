@@ -39,8 +39,8 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusInterfaceGetPropertyFunc)
 
+	fn := v.(DBusInterfaceGetPropertyFunc)
 	ret := fn(connection, sender, objectPath, interfaceName, propertyName, error, userData)
 
 	cret = (*C.GVariant)(unsafe.Pointer(ret.Native()))
@@ -58,8 +58,8 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusInterfaceMethodCallFunc)
 
+	fn := v.(DBusInterfaceMethodCallFunc)
 	fn(connection, sender, objectPath, interfaceName, methodName, parameters, invocation, userData)
 }
 
@@ -73,8 +73,8 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusInterfaceSetPropertyFunc)
 
+	fn := v.(DBusInterfaceSetPropertyFunc)
 	ret := fn(connection, sender, objectPath, interfaceName, propertyName, value, error, userData)
 
 	if ret {
@@ -151,8 +151,8 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusMessageFilterFunction)
 
+	fn := v.(DBusMessageFilterFunction)
 	ret := fn(connection, message, incoming, userData)
 
 	cret = (*C.GDBusMessage)(unsafe.Pointer(ret.Native()))
@@ -170,8 +170,8 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusSignalCallback)
 
+	fn := v.(DBusSignalCallback)
 	fn(connection, senderName, objectPath, interfaceName, signalName, parameters, userData)
 }
 
@@ -188,8 +188,8 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusSubtreeDispatchFunc)
 
+	fn := v.(DBusSubtreeDispatchFunc)
 	ret := fn(connection, sender, objectPath, interfaceName, node, outUserData, userData)
 
 	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(ret.Native()))
@@ -217,8 +217,8 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusSubtreeEnumerateFunc)
 
+	fn := v.(DBusSubtreeEnumerateFunc)
 	ret := fn(connection, sender, objectPath, userData)
 
 	cret = C.malloc(len(ret) * (unsafe.Sizeof(int(0)) + 1))
@@ -263,8 +263,8 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DBusSubtreeIntrospectFunc)
 
+	fn := v.(DBusSubtreeIntrospectFunc)
 	ret := fn(connection, sender, objectPath, node, userData)
 
 	cret = (**C.GDBusInterfaceInfo)(unsafe.Pointer(ret.Native()))

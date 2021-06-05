@@ -37,8 +37,8 @@ func gotk4_AttrDataCopyFunc(arg0 C.gpointer) C.gpointer {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(AttrDataCopyFunc)
 
+	fn := v.(AttrDataCopyFunc)
 	ret := fn(userData)
 
 	cret = C.gpointer(ret)
@@ -55,8 +55,8 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(AttrFilterFunc)
 
+	fn := v.(AttrFilterFunc)
 	ret := fn(attribute, userData)
 
 	if ret {

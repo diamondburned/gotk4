@@ -34,8 +34,8 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FontsetForeachFunc)
 
+	fn := v.(FontsetForeachFunc)
 	ret := fn(fontset, font, userData)
 
 	if ret {

@@ -40,8 +40,8 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(TreeModelForeachFunc)
 
+	fn := v.(TreeModelForeachFunc)
 	ret := fn(model, path, iter, data)
 
 	if ret {

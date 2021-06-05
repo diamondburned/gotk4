@@ -28,8 +28,8 @@ func gotk4_ExpressionNotify(arg0 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ExpressionNotify)
 
+	fn := v.(ExpressionNotify)
 	fn(userData)
 }
 

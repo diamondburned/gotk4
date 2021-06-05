@@ -39,8 +39,8 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(EntryCompletionMatchFunc)
 
+	fn := v.(EntryCompletionMatchFunc)
 	ret := fn(completion, key, iter, userData)
 
 	if ret {

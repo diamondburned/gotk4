@@ -36,8 +36,8 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DrawingAreaDrawFunc)
 
+	fn := v.(DrawingAreaDrawFunc)
 	fn(drawingArea, cr, width, height, userData)
 }
 

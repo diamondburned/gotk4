@@ -34,8 +34,8 @@ func gotk4_EventFunc(arg0 *C.GdkEvent, arg1 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(EventFunc)
 
+	fn := v.(EventFunc)
 	fn(event, data)
 }
 
@@ -54,8 +54,8 @@ func gotk4_FilterFunc(arg0 *C.GdkXEvent, arg1 *C.GdkEvent, arg2 C.gpointer) C.Gd
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FilterFunc)
 
+	fn := v.(FilterFunc)
 	ret := fn(xevent, event, data)
 
 	cret = (C.GdkFilterReturn)(ret)

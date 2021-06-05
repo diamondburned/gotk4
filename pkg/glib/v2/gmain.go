@@ -36,8 +36,8 @@ func gotk4_ChildWatchFunc(arg0 C.GPid, arg1 C.gint, arg2 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ChildWatchFunc)
 
+	fn := v.(ChildWatchFunc)
 	fn(pid, status, userData)
 }
 
@@ -55,8 +55,8 @@ func gotk4_SourceFunc(arg0 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(SourceFunc)
 
+	fn := v.(SourceFunc)
 	ret := fn(userData)
 
 	if ret {

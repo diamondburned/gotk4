@@ -161,8 +161,9 @@ func (cg *callbackGenerator) block() string {
 	b.Linef(secPrefix, "if v == nil {")
 	b.Linef(secPrefix, "  panic(`callback not found`)")
 	b.Linef(secPrefix, "}")
-	b.Linef(secPrefix, "fn := v.(%s)", cg.GoName)
 	b.EmptyLine(secPrefix)
+
+	b.Linef(secFnCall, "fn := v.(%s)", cg.GoName)
 
 	inputAt := func(i int) string { return fmt.Sprintf("arg%d", i) }
 	goArgs := pen.NewJoints(", ", cap)

@@ -36,8 +36,8 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CalendarDetailFunc)
 
+	fn := v.(CalendarDetailFunc)
 	ret := fn(calendar, year, month, day, userData)
 
 	cret = (*C.gchar)(C.CString(ret))

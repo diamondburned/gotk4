@@ -39,8 +39,8 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ShortcutFunc)
 
+	fn := v.(ShortcutFunc)
 	ret := fn(widget, args, userData)
 
 	if ret {

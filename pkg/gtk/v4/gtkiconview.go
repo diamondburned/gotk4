@@ -28,7 +28,7 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(IconViewForeachFunc)
 
+	fn := v.(IconViewForeachFunc)
 	fn(iconView, path, data)
 }

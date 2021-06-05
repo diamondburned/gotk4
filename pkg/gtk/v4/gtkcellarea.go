@@ -36,8 +36,8 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CellAllocCallback)
 
+	fn := v.(CellAllocCallback)
 	ret := fn(renderer, cellArea, cellBackground, data)
 
 	if ret {
@@ -57,8 +57,8 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CellCallback)
 
+	fn := v.(CellCallback)
 	ret := fn(renderer, data)
 
 	if ret {

@@ -29,8 +29,8 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FileFilterFunc)
 
+	fn := v.(FileFilterFunc)
 	ret := fn(filterInfo, data)
 
 	if ret {

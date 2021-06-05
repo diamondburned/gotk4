@@ -37,8 +37,8 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(MapListModelMapFunc)
 
+	fn := v.(MapListModelMapFunc)
 	ret := fn(item, userData)
 
 	cret = (*C.GObject)(unsafe.Pointer(ret.Native()))

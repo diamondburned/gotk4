@@ -78,8 +78,9 @@ func (conv *TypeConversionToGo) Convert(i int) *TypeConverted {
 		return nil
 	}
 
-	value := &conv.values[i]
-	value.ensurePens()
+	// Make a shallow copy of the value.
+	value := conv.values[i]
+	value.initState()
 
 	// Ignored values are manually obtained in the conversion process, so we
 	// don't convert them here. Zero values are not important.
@@ -93,9 +94,8 @@ func (conv *TypeConversionToGo) Convert(i int) *TypeConverted {
 	// Reset the state when done. The returns all copy the internal state, so
 	// we're fine.
 	defer conv.reset()
-	defer value.resetPens()
 
-	conv.cgoConverter(value)
+	conv.cgoConverter(&value)
 	if conv.failed {
 		return nil
 	}
@@ -117,12 +117,13 @@ func (conv *TypeConversionToGo) reset() {
 	conv.conversionTo.reset()
 }
 
+// valueAt returns a copy of the value at the given parameter index.
 func (conv *TypeConversionToGo) valueAt(at int) *CValueProp {
 	for i, value := range conv.values {
 		if value.ParameterIndex != nil && *value.ParameterIndex == at {
-			value := &conv.values[i]
-			value.ensurePens()
-			return value
+			value := conv.values[i]
+			value.initState()
+			return &value
 		}
 	}
 
@@ -177,7 +178,7 @@ func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 	case array.FixedSize > 0:
 		// Detect if the underlying is a compatible Go primitive type that isn't
 		// a string. If it is, then we can directly cast a fixed-size array.
-		if inner.Resolved.IsPrimitive() {
+		if inner.resolved.IsPrimitive() {
 			value.p.Linef("%s = (%s)(%s)", value.Out, value.OutType, value.In)
 			return
 		}
@@ -210,7 +211,7 @@ func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 		// TODO: record conversion should handle ownership: if
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
-		if value.isTransferring() && inner.Resolved.IsPrimitive() {
+		if value.isTransferring() && inner.resolved.IsPrimitive() {
 			conv.sides.addImport("runtime")
 
 			value.p.Linef(goSliceFromPtr(value.Out, value.In, length.In))
@@ -254,7 +255,7 @@ func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 
 		// Get the size of the type so we know how much to increment when
 		// scanning.
-		sizeof := csizeof(inner.Resolved)
+		sizeof := csizeof(inner.resolved)
 
 		// Scan for the length.
 		value.p.Linef("var length int")
@@ -287,27 +288,13 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 		}
 	}
 
-	value.Resolved = conv.ng.ResolveType(*value.Type.Type)
-	if value.Resolved == nil {
+	if !value.resolveType(&conv.conversionTo, true) {
 		conv.fail()
 		return
 	}
 
-	// Declare the variable, even when it's as the original alias type.
-	// We'll wrap this variable with our own conversions.
-	value.InType = value.Resolved.CGoType()
-	value.inDecl.Linef("var %s %s", value.In, value.InType)
-
-	needsNamespace := value.Resolved.NeedsNamespace(conv.ng.current)
-	if needsNamespace {
-		conv.sides.addImportAlias(value.Resolved.Import, value.Resolved.Package)
-	}
-
-	value.OutType = value.Resolved.PublicType(needsNamespace)
-	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
-
 	switch {
-	case value.Resolved.IsBuiltin("string"):
+	case value.resolved.IsBuiltin("string"):
 		value.p.Linef("%s = C.GoString(%s)", value.Out, value.In)
 		// Only free this if C is transferring ownership to us.
 		if value.isTransferring() {
@@ -316,12 +303,12 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 		}
 		return
 
-	case value.Resolved.IsBuiltin("bool"):
+	case value.resolved.IsBuiltin("bool"):
 		conv.sides.NeedsStdBool = true
 		value.p.Linef("%s = C.bool(%s) != C.false", value.Out, value.In)
 		return
 
-	case value.Resolved.IsPrimitive():
+	case value.resolved.IsPrimitive():
 		value.p.Linef("%s = %s(%s)", value.Out, value.InType, value.In)
 		return
 	}
@@ -377,12 +364,12 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 	// doable.
 	// TODO: handle unions.
 
-	if value.Resolved.Extern == nil {
+	if value.resolved.Extern == nil {
 		conv.fail()
 		return
 	}
 
-	result := value.Resolved.Extern.Result
+	result := value.resolved.Extern.Result
 
 	switch {
 	case result.Enum != nil, result.Bitfield != nil:
@@ -398,7 +385,7 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 	case result.Record != nil:
 		// We should only use the concrete wrapper for the record, since the
 		// returned type is concretely known here.
-		wrapName := value.Resolved.WrapName(needsNamespace)
+		wrapName := value.resolved.WrapName(value.needsNamespace)
 		valueIn := value.In
 
 		value.p.Linef("%s = %s(unsafe.Pointer(%s))", value.Out, wrapName, valueIn)

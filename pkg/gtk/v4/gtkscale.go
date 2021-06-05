@@ -32,8 +32,8 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ScaleFormatValueFunc)
 
+	fn := v.(ScaleFormatValueFunc)
 	ret := fn(scale, value, userData)
 
 	cret = (*C.char)(C.CString(ret))

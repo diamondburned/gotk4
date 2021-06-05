@@ -25,8 +25,8 @@ func gotk4_DataForeachFunc(arg0 C.GQuark, arg1 C.gpointer, arg2 C.gpointer) {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DataForeachFunc)
 
+	fn := v.(DataForeachFunc)
 	fn(keyID, data, userData)
 }
 
@@ -41,8 +41,8 @@ func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(DuplicateFunc)
 
+	fn := v.(DuplicateFunc)
 	ret := fn(data, userData)
 
 	cret = C.gpointer(ret)

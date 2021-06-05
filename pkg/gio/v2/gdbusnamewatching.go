@@ -31,8 +31,8 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(BusNameAppearedCallback)
 
+	fn := v.(BusNameAppearedCallback)
 	fn(connection, name, nameOwner, userData)
 }
 
@@ -49,8 +49,8 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(BusNameVanishedCallback)
 
+	fn := v.(BusNameVanishedCallback)
 	fn(connection, name, userData)
 }
 

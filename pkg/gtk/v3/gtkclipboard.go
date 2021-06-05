@@ -32,8 +32,8 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ClipboardImageReceivedFunc)
 
+	fn := v.(ClipboardImageReceivedFunc)
 	fn(clipboard, pixbuf, data)
 }
 
@@ -47,8 +47,8 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ClipboardReceivedFunc)
 
+	fn := v.(ClipboardReceivedFunc)
 	fn(clipboard, selectionData, data)
 }
 
@@ -62,8 +62,8 @@ func gotk4_ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ClipboardRichTextReceivedFunc)
 
+	fn := v.(ClipboardRichTextReceivedFunc)
 	fn(clipboard, format, text, length, data)
 }
 
@@ -77,8 +77,8 @@ func gotk4_ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, a
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ClipboardTargetsReceivedFunc)
 
+	fn := v.(ClipboardTargetsReceivedFunc)
 	fn(clipboard, atoms, nAtoms, data)
 }
 
@@ -92,8 +92,8 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ClipboardTextReceivedFunc)
 
+	fn := v.(ClipboardTextReceivedFunc)
 	fn(clipboard, text, data)
 }
 
@@ -107,7 +107,7 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ClipboardURIReceivedFunc)
 
+	fn := v.(ClipboardURIReceivedFunc)
 	fn(clipboard, uris, data)
 }

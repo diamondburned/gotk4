@@ -74,8 +74,7 @@ func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
 		return nil
 	}
 
-	value := &conv.values[i]
-	value.ensurePens()
+	value := conv.values[i]
 
 	// Ignored values are manually obtained in the conversion process, so we
 	// don't convert them here.
@@ -89,9 +88,10 @@ func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
 	// Reset the state when done. The returns all copy the internal state, so
 	// we're fine.
 	defer conv.reset()
-	defer value.resetPens()
 
-	conv.gocConverter(value)
+	value.initState()
+
+	conv.gocConverter(&value)
 	if conv.failed {
 		return nil
 	}
@@ -108,14 +108,18 @@ func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
 func (conv *TypeConversionToC) valueAt(at int) *GoValueProp {
 	for i, value := range conv.values {
 		if value.ParameterIndex != nil && *value.ParameterIndex == at {
-			value := &conv.values[i]
-			value.ensurePens()
-			return value
+			value := conv.values[i]
+			value.initState()
+			return &value
 		}
 	}
 
 	conv.logFail(LogError, "Go->C conversion arg not found at", at)
-	return &GoValueProp{ValueProp: errorValueProp}
+
+	prop := GoValueProp{ValueProp: errorValueProp}
+	prop.initState()
+
+	return &prop
 }
 
 func (conv *TypeConversionToC) gocConverter(value *GoValueProp) {
@@ -168,7 +172,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		// Safe to do if this is a primitive AND we're not setting this inside a
 		// calllback, since the callback will retain Go memory beyond its
 		// lifetime which is bad.
-		if !value.isTransferring() && inner.Resolved.IsPrimitive() {
+		if !value.isTransferring() && inner.resolved.IsPrimitive() {
 			conv.sides.addImport("runtime")
 
 			// We can directly use Go's array as a pointer, as long as we defer
@@ -202,7 +206,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
-		if !value.isTransferring() && inner.Resolved.IsPrimitive() {
+		if !value.isTransferring() && inner.resolved.IsPrimitive() {
 			conv.sides.addImport("unsafe")
 			conv.sides.addImport("runtime")
 
@@ -216,7 +220,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		conv.sides.addImport("unsafe")
 
 		value.p.Linef("%s = (%s)(C.malloc(int(%s) * len(%s)))",
-			value.Out, value.OutType, csizeof(inner.Resolved), value.In)
+			value.Out, value.OutType, csizeof(inner.resolved), value.In)
 
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out)
@@ -242,7 +246,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		// https://developer.gnome.org/glib/stable/glib-Arrays.html#g-array-sized-new
 		value.p.Linef(
 			"%s = C.g_array_sized_new(%t, false, C.guint(%s), C.guint(len(%s)))",
-			value.Out, array.IsZeroTerminated(), csizeof(inner.Resolved), value.In)
+			value.Out, array.IsZeroTerminated(), csizeof(inner.resolved), value.In)
 		value.p.Linef(
 			"%s = C.g_array_set_size(%s, C.guint(len(%s)))",
 			value.Out, value.Out, value.In)
@@ -268,7 +272,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		conv.sides.addImport("unsafe")
 
 		value.p.Linef("%s = C.malloc(len(%s) * (%s+1))",
-			value.Out, value.In, csizeof(inner.Resolved))
+			value.Out, value.In, csizeof(inner.resolved))
 
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out)
@@ -309,25 +313,13 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		}
 	}
 
-	value.Resolved = conv.ng.ResolveType(*value.Type.Type)
-	if value.Resolved == nil {
+	if !value.resolveType(&conv.conversionTo, false) {
 		conv.fail()
 		return
 	}
 
-	needsNamespace := value.Resolved.NeedsNamespace(conv.ng.current)
-	if needsNamespace {
-		conv.sides.addImportAlias(value.Resolved.Import, value.Resolved.Package)
-	}
-
-	value.InType = value.Resolved.PublicType(needsNamespace)
-	value.inDecl.Linef("var %s %s", value.In, value.InType)
-
-	value.OutType = value.Resolved.CGoType()
-	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
-
 	switch {
-	case value.Resolved.IsBuiltin("string"):
+	case value.resolved.IsBuiltin("string"):
 		value.p.Linef("%s = (%s)(C.CString(%s))", value.Out, value.OutType, value.In)
 		// If we're not giving ownership this mallocated string, then we
 		// can free it once done.
@@ -337,11 +329,11 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		}
 		return
 
-	case value.Resolved.IsBuiltin("bool"):
+	case value.resolved.IsBuiltin("bool"):
 		value.p.Linef("if %s { %s = %s(1) }", value.In, value.Out, value.OutType)
 		return
 
-	case value.Resolved.IsPrimitive():
+	case value.resolved.IsPrimitive():
 		value.p.Linef("%s = %s(%s)", value.Out, value.OutType, value.In)
 		return
 	}
@@ -380,12 +372,12 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		return
 	}
 
-	if value.Resolved.Extern == nil {
+	if value.resolved.Extern == nil {
 		conv.fail()
 		return
 	}
 
-	result := value.Resolved.Extern.Result
+	result := value.resolved.Extern.Result
 
 	switch {
 	case result.Enum != nil, result.Bitfield != nil:

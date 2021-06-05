@@ -37,8 +37,8 @@ func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(WindowChildFunc)
 
+	fn := v.(WindowChildFunc)
 	ret := fn(window, userData)
 
 	if ret {

@@ -36,8 +36,8 @@ func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.g
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(RecentSortFunc)
 
+	fn := v.(RecentSortFunc)
 	ret := fn(a, b, userData)
 
 	cret = C.gint(ret)

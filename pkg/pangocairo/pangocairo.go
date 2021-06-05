@@ -35,8 +35,8 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(ShapeRendererFunc)
 
+	fn := v.(ShapeRendererFunc)
 	fn(cr, attr, doPath, data)
 }
 

@@ -29,8 +29,8 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboo
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(RecentFilterFunc)
 
+	fn := v.(RecentFilterFunc)
 	ret := fn(filterInfo, userData)
 
 	if ret {

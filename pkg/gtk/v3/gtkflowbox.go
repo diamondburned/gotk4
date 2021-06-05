@@ -39,8 +39,8 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FlowBoxCreateWidgetFunc)
 
+	fn := v.(FlowBoxCreateWidgetFunc)
 	ret := fn(item, userData)
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(ret.Native()))
@@ -58,8 +58,8 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolea
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FlowBoxFilterFunc)
 
+	fn := v.(FlowBoxFilterFunc)
 	ret := fn(child, userData)
 
 	if ret {
@@ -79,8 +79,8 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FlowBoxForeachFunc)
 
+	fn := v.(FlowBoxForeachFunc)
 	fn(box, child, userData)
 }
 
@@ -94,8 +94,8 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(FlowBoxSortFunc)
 
+	fn := v.(FlowBoxSortFunc)
 	ret := fn(child1, child2, userData)
 
 	cret = C.gint(ret)

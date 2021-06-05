@@ -33,8 +33,8 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 	if v == nil {
 		panic(`callback not found`)
 	}
-	fn := v.(CustomFilterFunc)
 
+	fn := v.(CustomFilterFunc)
 	ret := fn(item, userData)
 
 	if ret {

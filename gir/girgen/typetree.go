@@ -20,13 +20,13 @@ type TypeTree struct {
 }
 
 // TypeTree returns a new type tree for resolving.
-func (ng *NamespaceGenerator) TypeTree() *TypeTree {
-	return &TypeTree{res: ng, Level: -1}
+func (ng *NamespaceGenerator) TypeTree() TypeTree {
+	return TypeTree{res: ng, Level: -1}
 }
 
 // TypeTree returns a new type tree for resolving.
-func (fg *FileGenerator) TypeTree() *TypeTree {
-	return &TypeTree{res: fg, Level: -1}
+func (fg *FileGenerator) TypeTree() TypeTree {
+	return TypeTree{res: fg, Level: -1}
 }
 
 func (tree *TypeTree) reset() {
@@ -62,17 +62,18 @@ func (tree *TypeTree) Resolve(toplevel string) bool {
 func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 	tree.reset()
 	if tree.Level == 0 {
-		return false
+		return true
 	}
 
 	tree.Resolved = toplevel
 
 	// Edge cases for builtin types.
 	if tree.Resolved.Builtin != nil {
-		if toplevel.IsExternGLib("InitiallyUnowned") {
-			return tree.resolveParents(
-				externGLibType("*Object", gir.Type{}, "GObject*"),
-			)
+		switch {
+		case toplevel.IsExternGLib("InitiallyUnowned"):
+			return tree.resolveParents(externGLibType("*Object", gir.Type{}, "GObject*"))
+		case toplevel.IsExternGLib("Object"):
+			return true
 		}
 
 		return true
@@ -80,13 +81,22 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 
 	switch {
 	case tree.Resolved.Extern.Result.Class != nil:
+		// Resolving the parent type is crucial to make the class working, so if
+		// this fails, halt and bail.
 		if !tree.resolveName(tree.Resolved.Extern.Result.Class.Parent) {
+			tryLogln(tree.res, LogUnknown,
+				"can't resolve parent", tree.Resolved.Extern.Result.Class.Parent,
+				"for class", tree.Resolved.Extern.Result.Class.Name,
+			)
 			return false
 		}
 
 		for _, impl := range tree.Resolved.Extern.Result.Class.Implements {
 			if !tree.resolveName(impl.Name) {
-				return false
+				tryLogln(tree.res, LogUnknown,
+					"can't resolve impl", impl.Name,
+					"for class", tree.Resolved.Extern.Result.Class.Name,
+				)
 			}
 		}
 
@@ -100,7 +110,12 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 		}
 
 		for _, prereq := range tree.Resolved.Extern.Result.Interface.Prerequisites {
+			// Like class parents, interface prerequisites are important.
 			if !tree.resolveName(prereq.Name) {
+				tryLogln(tree.res, LogUnknown,
+					"can't resolve prerequisite", prereq.Name,
+					"for interface", tree.Resolved.Extern.Result.Interface.Name,
+				)
 				return false
 			}
 		}
@@ -110,7 +125,7 @@ func (tree *TypeTree) ResolveFromType(toplevel *ResolvedType) bool {
 }
 
 func (tree *TypeTree) parentLevel() int {
-	if tree.Level < 0 {
+	if tree.Level <= 0 {
 		return tree.Level
 	}
 	return tree.Level - 1

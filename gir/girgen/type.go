@@ -66,17 +66,15 @@ func anyTypeIsVoid(any gir.AnyType) bool {
 	return any.Type != nil && any.Type.Name == "none"
 }
 
+// cgoTypeFromC converts a C type to a CGo type.
+func cgoTypeFromC(ctype string) string {
+	return movePtr(ctype, "C."+cleanCType(ctype))
+}
+
 // anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is
 // returned if none is made.
 func anyTypeCGo(any gir.AnyType) string {
-	switch {
-	case any.Array != nil && any.Array.Type != nil:
-		return movePtr(any.Array.CType, "C."+cleanCType(any.Array.CType))
-	case any.Type != nil:
-		return movePtr(any.Type.CType, "C."+cleanCType(any.Type.CType))
-	default:
-		return ""
-	}
+	return cgoTypeFromC(anyTypeC(any))
 }
 
 // anyTypeC returns the C type for a GIR AnyType. An empty string is returned if
@@ -92,6 +90,14 @@ func anyTypeC(any gir.AnyType) string {
 	}
 }
 
+// girCTypes maps some primitive GIR types to C types, because people who write
+// GIR generators are lazy fucks who can't be bothered to fill in the right
+// information.
+var girCTypes = map[string]string{
+	"utf8":     "gchar*",
+	"filename": "gchar*",
+}
+
 // ctypeFallback returns the C type OR the GIR type if it's empty.
 func ctypeFallback(c, gir string) string {
 	if c != "" {
@@ -100,12 +106,12 @@ func ctypeFallback(c, gir string) string {
 
 	// Handle edge cases with a hard-coded type map. Thanks, GIR, for evading
 	// needed information.
-	switch gir {
-	case "utf8", "filename":
-		return "gchar*"
-	default:
-		return ctypePrefixEraser.Replace(gir)
+	ctyp, ok := girCTypes[gir]
+	if ok {
+		return ctyp
 	}
+
+	return ctypePrefixEraser.Replace(gir)
 }
 
 // returnIsVoid returns true if the return type is void.
@@ -115,33 +121,34 @@ func returnIsVoid(ret *gir.ReturnValue) bool {
 
 // girToBuiltin maps the given GIR primitive type to a Go builtin type.
 var girToBuiltin = map[string]string{
-	"none":        "",
-	"gboolean":    "bool",
-	"gfloat":      "float32",
-	"gdouble":     "float64",
-	"long double": "float64",
-	"gint":        "int",
-	"gssize":      "int",
-	"gint8":       "int8",
-	"gint16":      "int16",
-	"gshort":      "int16",
-	"gint32":      "int32",
-	"glong":       "int32",
-	"int32":       "int32",
-	"gint64":      "int64",
-	"guint":       "uint",
-	"gsize":       "uint",
-	"guchar":      "byte",
-	"gchar":       "byte",
-	"guint8":      "byte", // some weird cases
-	"guint16":     "uint16",
-	"gushort":     "uint16",
-	"guint32":     "uint32",
-	"gulong":      "uint32",
-	"gunichar":    "uint32",
-	"guint64":     "uint64",
-	"utf8":        "string",
-	"filename":    "string",
+	"none":     "",
+	"gboolean": "bool",
+	"gfloat":   "float32",
+	"gdouble":  "float64",
+	"gint":     "int",
+	"gssize":   "int",
+	"gint8":    "int8",
+	"gint16":   "int16",
+	"gshort":   "int16",
+	"gint32":   "int32",
+	"glong":    "int32",
+	"int32":    "int32",
+	"gint64":   "int64",
+	"guint":    "uint",
+	"gsize":    "uint",
+	"guchar":   "byte",
+	"gchar":    "byte",
+	"guint8":   "byte", // some weird cases
+	"guint16":  "uint16",
+	"gushort":  "uint16",
+	"guint32":  "uint32",
+	"gulong":   "uint32",
+	"gunichar": "uint32",
+	"guint64":  "uint64",
+	"utf8":     "string",
+	"filename": "string",
+
+	// "long double": "float64",
 }
 
 // girPrimitiveGo returns Go primitive types that can be copied by-value without
@@ -159,8 +166,9 @@ func girPrimitiveGo(typ string) string {
 //
 // See https://gist.github.com/zchee/b9c99695463d8902cd33.
 var cgoPrimitiveTypes = map[string]string{
-	"long double":  "longdouble",
 	"unsigned int": "uint",
+
+	// "long double":  "longdouble",
 }
 
 // TypeHasPointer returns true if the type being resolved has a pointer. This is

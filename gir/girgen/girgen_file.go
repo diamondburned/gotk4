@@ -17,7 +17,7 @@ import (
 // FileGenerator contains values to fully construct a generated file.
 type FileGenerator struct {
 	parent *NamespaceGenerator
-	pen    *pen.Paper // body
+	pen    *pen.PaperString // body
 
 	name       string
 	includes   []string // C include
@@ -42,7 +42,7 @@ type FileGenerator struct {
 func NewFileGenerator(parent *NamespaceGenerator, goFile string) *FileGenerator {
 	fg := FileGenerator{
 		parent: parent,
-		pen:    pen.NewPaperSize(2 * 1024 * 1024), // 2MB
+		pen:    pen.NewPaperStringSize(2 * 1024 * 1024), // 2MB
 
 		name:      goFile,
 		imports:   map[string]string{},

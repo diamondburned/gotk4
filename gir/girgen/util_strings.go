@@ -44,6 +44,7 @@ var (
 		"Rgba",
 		"Ascii",
 		"Iso8601",
+		`[234]d`,
 		`[A-Z]fs`,
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,

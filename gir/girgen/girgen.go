@@ -11,6 +11,10 @@ import (
 	"github.com/fatih/color"
 )
 
+func importInternal(pkg string) string {
+	return "github.com/diamondburned/gotk4/internal/" + pkg
+}
+
 func newGoTemplate(block string) *template.Template {
 	_, file, _, _ := runtime.Caller(1)
 	base := filepath.Base(file)
@@ -166,11 +170,12 @@ func (g *Generator) Logln(level LogLevel, v ...interface{}) {
 }
 
 func tryLogln(iface TypeResolver, level LogLevel, v ...interface{}) {
-	logger, ok := iface.(lineLogger)
-	if !ok {
+	if iface == nil {
+		// Intentionally nil.
 		return
 	}
 
+	logger := iface.(lineLogger)
 	logger.Logln(level, v...)
 }
 

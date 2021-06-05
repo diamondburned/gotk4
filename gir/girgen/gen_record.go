@@ -27,12 +27,7 @@ var recordIgnoreSuffixes = []string{
 var recordTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} struct {
-		{{ range .Field.Fields }}
-		{{ GoDoc .Doc 1 .GoName }}
-		{{ .GoName }} {{ .GoType }}
-		{{ else }}
 		native C.{{ .CType }}
-		{{ end }}
 	}
 
 	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
@@ -42,11 +37,7 @@ var recordTmpl = newGoTemplate(`
 			return nil
 		}
 
-		{{ with .Field.Convert }}
-		{{ . }}
-		{{ else }}
 		return (*{{ .GoName }})(ptr)
-		{{ end }}
 	}
 
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
@@ -63,16 +54,14 @@ var recordTmpl = newGoTemplate(`
 
 	{{ $recv := (FirstLetter $.GoName) }}
 
-	{{ if (not .Field.Fields) }}
 	// Native returns the underlying C source pointer.
 	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
 		return unsafe.Pointer(&{{ FirstLetter .GoName }}.native)
 	}
-	{{ else }}
-	// Native returns a C copy of this struct.
-	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
-		return nil
-	}
+
+	{{ range .Getters }}
+	// {{ .GoName }} gets the field inside the struct.
+	func ({{ $recv }} *{{ $.GoName }}) {{ .GoName }}() {{ .GoType }} {{ .Block }}
 	{{ end }}
 
 	{{ range .Methods }}
@@ -85,12 +74,7 @@ type recordGenerator struct {
 	gir.Record
 	GoName  string
 	Methods []callableGenerator
-
-	// Field is only if canRecordCopy.
-	Field struct {
-		Fields  []recordField
-		Convert string
-	}
+	Getters []recordGetter
 
 	Callable callableGenerator
 
@@ -98,10 +82,10 @@ type recordGenerator struct {
 	ng *NamespaceGenerator
 }
 
-type recordField struct {
-	*gir.Field
+type recordGetter struct {
 	GoName string
 	GoType string
+	Block  string // assume first_letter recv
 }
 
 func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
@@ -136,36 +120,17 @@ func canRecord(logger TypeResolver, rec gir.Record) bool {
 	return true
 }
 
-// canRecordCopy returns true if the record can be fully copied to Go.
-func canRecordCopy(resolver TypeResolver, rec gir.Record) bool {
-	for _, field := range rec.Fields {
-		conditions := false ||
-			(field.Private) ||
-			(field.Bits > 0) ||
-			(field.Type == nil) ||
-			(!field.Writable && !field.Readable)
-
-		if conditions {
-			return false
-		}
-	}
-
-	return true
-}
-
 func (rg *recordGenerator) Use(rec gir.Record) bool {
-	if !canRecord(rg.ng, rec) {
+	rg.fg = rg.ng.FileFromSource(rec.SourcePosition)
+
+	if !canRecord(rg.fg, rec) {
 		return false
 	}
-
-	rg.fg = rg.ng.FileFromSource(rec.SourcePosition)
 
 	rg.Record = rec
 	rg.GoName = PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
-
-	if canRecordCopy(rg.fg.parent, rec) {
-	}
+	rg.Getters = rg.getters()
 
 	return true
 }
@@ -205,25 +170,18 @@ func (rg *recordGenerator) getters() []recordGetter {
 		return getters
 	}
 
-	var ignores ignoreIxs
-
 	methodNames := make(map[string]struct{}, len(rg.Methods))
 	for _, method := range rg.Methods {
 		methodNames[method.Name] = struct{}{}
 	}
 
 	recv := FirstLetter(rg.GoName)
+	fields := make([]CValueProp, len(rg.Fields))
 
 	for i, field := range rg.Fields {
-		ignores.fieldIgnore(field)
-
 		// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 		// either?) so we're not doing it.
-
-		if field.Private || field.Bits > 0 || ignores.ignore(i) {
-			continue
-		}
-		if field.Readable != nil && !*field.Readable {
+		if field.Private || field.Bits > 0 || !field.Readable && !field.Writable {
 			continue
 		}
 
@@ -235,36 +193,36 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		typ, ok := GoAnyType(rg.fg, field.AnyType, true)
-		if !ok {
+		fields[i] = CValueProp{
+			ValueProp: ValueProp{
+				In:   fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
+				Out:  "v",
+				Type: field.AnyType,
+			},
+		}
+	}
+
+	conversion := rg.fg.CGoConverter(rg.Name, fields)
+
+	for i, field := range fields {
+		if field.ValueProp.IsZero() {
 			continue
 		}
 
-		result := rg.fg.CGoConverter(TypeConversionToGo{
-			Parent: rg.Name,
-			Values: []CValueProp{{
-				ValueProp: ValueProp{
-					In:   fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
-					Out:  "v",
-					Type: field.AnyType,
-				},
-			}},
-		})
-		if result == nil {
+		converted := conversion.Convert(i)
+		if converted == nil {
 			continue
 		}
 
-		result.Apply(fg)
+		converted.Apply(rg.fg)
 
 		b := pen.NewBlock()
-		b.Linef(result.Conversion)
+		b.Linef(converted.Conversion)
 
 		getters = append(getters, recordGetter{
-			Field:   field,
-			Name:    cgoField(field.Name),
-			GoName:  goName,
-			GoType:  typ,
-			Convert: convert,
+			GoName: SnakeToGo(true, rg.Fields[i].Name),
+			GoType: converted.OutType,
+			Block:  b.String(),
 		})
 	}
 

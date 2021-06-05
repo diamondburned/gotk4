@@ -84,7 +84,7 @@ func newIfaceGenerator(ng *NamespaceGenerator) *ifaceGenerator {
 
 func (ig *ifaceGenerator) Use(iface gir.Interface) bool {
 	ig.fg = ig.ng.FileFromSource(iface.SourcePosition)
-	ig.TypeTree = *ig.fg.TypeTree()
+	ig.TypeTree = ig.fg.TypeTree()
 	ig.TypeTree.Level = 2
 
 	ig.Interface = iface

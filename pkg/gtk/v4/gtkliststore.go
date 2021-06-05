@@ -429,27 +429,3 @@ func (s listStore) Swap(a *TreeIter, b *TreeIter) {
 
 	C.gtk_list_store_swap(arg0, a, b)
 }
-
-type ListStorePrivate struct {
-	native C.GtkListStorePrivate
-}
-
-// WrapListStorePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapListStorePrivate(ptr unsafe.Pointer) *ListStorePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ListStorePrivate)(ptr)
-}
-
-func marshalListStorePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapListStorePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *ListStorePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
-}

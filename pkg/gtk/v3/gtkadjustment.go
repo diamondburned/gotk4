@@ -449,27 +449,3 @@ func (a adjustment) ValueChanged() {
 
 	C.gtk_adjustment_value_changed(arg0)
 }
-
-type AdjustmentPrivate struct {
-	native C.GtkAdjustmentPrivate
-}
-
-// WrapAdjustmentPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAdjustmentPrivate(ptr unsafe.Pointer) *AdjustmentPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AdjustmentPrivate)(ptr)
-}
-
-func marshalAdjustmentPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAdjustmentPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AdjustmentPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

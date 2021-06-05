@@ -229,27 +229,3 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	return ret1
 }
-
-type DBusObjectManagerServerPrivate struct {
-	native C.GDBusObjectManagerServerPrivate
-}
-
-// WrapDBusObjectManagerServerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusObjectManagerServerPrivate(ptr unsafe.Pointer) *DBusObjectManagerServerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DBusObjectManagerServerPrivate)(ptr)
-}
-
-func marshalDBusObjectManagerServerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusObjectManagerServerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusObjectManagerServerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}

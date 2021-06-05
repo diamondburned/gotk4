@@ -89,27 +89,3 @@ func (c imContextSimple) AddComposeFile(composeFile string) {
 
 	C.gtk_im_context_simple_add_compose_file(arg0, composeFile)
 }
-
-type IMContextSimplePrivate struct {
-	native C.GtkIMContextSimplePrivate
-}
-
-// WrapIMContextSimplePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIMContextSimplePrivate(ptr unsafe.Pointer) *IMContextSimplePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*IMContextSimplePrivate)(ptr)
-}
-
-func marshalIMContextSimplePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIMContextSimplePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *IMContextSimplePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

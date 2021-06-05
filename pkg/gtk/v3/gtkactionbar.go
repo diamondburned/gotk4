@@ -137,27 +137,3 @@ func (a actionBar) SetCenterWidget(centerWidget Widget) {
 
 	C.gtk_action_bar_set_center_widget(arg0, centerWidget)
 }
-
-type ActionBarPrivate struct {
-	native C.GtkActionBarPrivate
-}
-
-// WrapActionBarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionBarPrivate(ptr unsafe.Pointer) *ActionBarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionBarPrivate)(ptr)
-}
-
-func marshalActionBarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionBarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionBarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

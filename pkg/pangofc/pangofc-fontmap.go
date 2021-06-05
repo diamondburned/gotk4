@@ -212,27 +212,3 @@ func (f fontMap) SubstituteChanged() {
 
 	C.pango_fc_font_map_substitute_changed(arg0)
 }
-
-type FontMapPrivate struct {
-	native C.PangoFcFontMapPrivate
-}
-
-// WrapFontMapPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontMapPrivate(ptr unsafe.Pointer) *FontMapPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontMapPrivate)(ptr)
-}
-
-func marshalFontMapPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontMapPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FontMapPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

@@ -189,27 +189,3 @@ func (a unixSocketAddress) PathLen() uint {
 
 	return ret1
 }
-
-type UnixSocketAddressPrivate struct {
-	native C.GUnixSocketAddressPrivate
-}
-
-// WrapUnixSocketAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixSocketAddressPrivate(ptr unsafe.Pointer) *UnixSocketAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixSocketAddressPrivate)(ptr)
-}
-
-func marshalUnixSocketAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixSocketAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixSocketAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
-}

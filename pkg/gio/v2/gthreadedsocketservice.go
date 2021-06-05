@@ -84,27 +84,3 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 
 	return ret1
 }
-
-type ThreadedSocketServicePrivate struct {
-	native C.GThreadedSocketServicePrivate
-}
-
-// WrapThreadedSocketServicePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapThreadedSocketServicePrivate(ptr unsafe.Pointer) *ThreadedSocketServicePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ThreadedSocketServicePrivate)(ptr)
-}
-
-func marshalThreadedSocketServicePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapThreadedSocketServicePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ThreadedSocketServicePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

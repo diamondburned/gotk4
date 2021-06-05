@@ -135,27 +135,3 @@ func (b lockButton) SetPermission(permission gio.Permission) {
 
 	C.gtk_lock_button_set_permission(arg0, permission)
 }
-
-type LockButtonPrivate struct {
-	native C.GtkLockButtonPrivate
-}
-
-// WrapLockButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLockButtonPrivate(ptr unsafe.Pointer) *LockButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*LockButtonPrivate)(ptr)
-}
-
-func marshalLockButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLockButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *LockButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
-}

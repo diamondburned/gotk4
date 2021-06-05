@@ -115,27 +115,3 @@ func (s stackSidebar) SetStack(stack Stack) {
 
 	C.gtk_stack_sidebar_set_stack(arg0, stack)
 }
-
-type StackSidebarPrivate struct {
-	native C.GtkStackSidebarPrivate
-}
-
-// WrapStackSidebarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStackSidebarPrivate(ptr unsafe.Pointer) *StackSidebarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*StackSidebarPrivate)(ptr)
-}
-
-func marshalStackSidebarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStackSidebarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *StackSidebarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

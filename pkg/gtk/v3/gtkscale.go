@@ -421,27 +421,3 @@ func (s scale) SetValuePos(pos PositionType) {
 
 	C.gtk_scale_set_value_pos(arg0, pos)
 }
-
-type ScalePrivate struct {
-	native C.GtkScalePrivate
-}
-
-// WrapScalePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapScalePrivate(ptr unsafe.Pointer) *ScalePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ScalePrivate)(ptr)
-}
-
-func marshalScalePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapScalePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *ScalePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

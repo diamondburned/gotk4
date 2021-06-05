@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalLabelAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLabelAccessible(obj), nil
-}
-
-type LabelAccessiblePrivate struct {
-	native C.GtkLabelAccessiblePrivate
-}
-
-// WrapLabelAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLabelAccessiblePrivate(ptr unsafe.Pointer) *LabelAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*LabelAccessiblePrivate)(ptr)
-}
-
-func marshalLabelAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLabelAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *LabelAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
 }

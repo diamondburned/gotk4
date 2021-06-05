@@ -155,27 +155,3 @@ func (m menuBar) SetPackDirection(packDir PackDirection) {
 
 	C.gtk_menu_bar_set_pack_direction(arg0, packDir)
 }
-
-type MenuBarPrivate struct {
-	native C.GtkMenuBarPrivate
-}
-
-// WrapMenuBarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuBarPrivate(ptr unsafe.Pointer) *MenuBarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuBarPrivate)(ptr)
-}
-
-func marshalMenuBarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuBarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuBarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

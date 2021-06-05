@@ -392,27 +392,3 @@ func (i infoBar) SetShowCloseButton(setting bool) {
 
 	C.gtk_info_bar_set_show_close_button(arg0, setting)
 }
-
-type InfoBarPrivate struct {
-	native C.GtkInfoBarPrivate
-}
-
-// WrapInfoBarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInfoBarPrivate(ptr unsafe.Pointer) *InfoBarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InfoBarPrivate)(ptr)
-}
-
-func marshalInfoBarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInfoBarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InfoBarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

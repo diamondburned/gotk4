@@ -261,27 +261,3 @@ func (f frame) SetShadowType(typ ShadowType) {
 
 	C.gtk_frame_set_shadow_type(arg0, typ)
 }
-
-type FramePrivate struct {
-	native C.GtkFramePrivate
-}
-
-// WrapFramePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFramePrivate(ptr unsafe.Pointer) *FramePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FramePrivate)(ptr)
-}
-
-func marshalFramePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFramePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FramePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

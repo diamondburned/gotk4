@@ -409,27 +409,3 @@ func (m menuShell) SetTakeFocus(takeFocus bool) {
 
 	C.gtk_menu_shell_set_take_focus(arg0, takeFocus)
 }
-
-type MenuShellPrivate struct {
-	native C.GtkMenuShellPrivate
-}
-
-// WrapMenuShellPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuShellPrivate(ptr unsafe.Pointer) *MenuShellPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuShellPrivate)(ptr)
-}
-
-func marshalMenuShellPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuShellPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuShellPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

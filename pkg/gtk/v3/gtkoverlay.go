@@ -185,27 +185,3 @@ func (o overlay) SetOverlayPassThrough(widget Widget, passThrough bool) {
 
 	C.gtk_overlay_set_overlay_pass_through(arg0, widget, passThrough)
 }
-
-type OverlayPrivate struct {
-	native C.GtkOverlayPrivate
-}
-
-// WrapOverlayPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapOverlayPrivate(ptr unsafe.Pointer) *OverlayPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*OverlayPrivate)(ptr)
-}
-
-func marshalOverlayPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOverlayPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (o *OverlayPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
-}

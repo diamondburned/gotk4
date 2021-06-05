@@ -363,27 +363,3 @@ func (p progressBar) SetText(text string) {
 
 	C.gtk_progress_bar_set_text(arg0, text)
 }
-
-type ProgressBarPrivate struct {
-	native C.GtkProgressBarPrivate
-}
-
-// WrapProgressBarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapProgressBarPrivate(ptr unsafe.Pointer) *ProgressBarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ProgressBarPrivate)(ptr)
-}
-
-func marshalProgressBarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapProgressBarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *ProgressBarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}

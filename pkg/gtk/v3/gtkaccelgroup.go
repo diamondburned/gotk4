@@ -531,30 +531,6 @@ func (a *AccelGroupEntry) Key() AccelKey {
 	v = WrapAccelKey(unsafe.Pointer(a.native.key))
 }
 
-type AccelGroupPrivate struct {
-	native C.GtkAccelGroupPrivate
-}
-
-// WrapAccelGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAccelGroupPrivate(ptr unsafe.Pointer) *AccelGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AccelGroupPrivate)(ptr)
-}
-
-func marshalAccelGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAccelGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AccelGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}
-
 type AccelKey struct {
 	native C.GtkAccelKey
 }

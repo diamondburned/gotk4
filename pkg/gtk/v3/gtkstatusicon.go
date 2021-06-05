@@ -772,27 +772,3 @@ func (s statusIcon) SetVisible(visible bool) {
 
 	C.gtk_status_icon_set_visible(arg0, visible)
 }
-
-type StatusIconPrivate struct {
-	native C.GtkStatusIconPrivate
-}
-
-// WrapStatusIconPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStatusIconPrivate(ptr unsafe.Pointer) *StatusIconPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*StatusIconPrivate)(ptr)
-}
-
-func marshalStatusIconPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStatusIconPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *StatusIconPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

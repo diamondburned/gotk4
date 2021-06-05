@@ -205,27 +205,3 @@ func (p cssProvider) String() string {
 
 	return ret1
 }
-
-type CSSProviderPrivate struct {
-	native C.GtkCssProviderPrivate
-}
-
-// WrapCSSProviderPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCSSProviderPrivate(ptr unsafe.Pointer) *CSSProviderPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CSSProviderPrivate)(ptr)
-}
-
-func marshalCSSProviderPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCSSProviderPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CSSProviderPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

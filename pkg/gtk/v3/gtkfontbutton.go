@@ -323,27 +323,3 @@ func (f fontButton) SetUseSize(useSize bool) {
 
 	C.gtk_font_button_set_use_size(arg0, useSize)
 }
-
-type FontButtonPrivate struct {
-	native C.GtkFontButtonPrivate
-}
-
-// WrapFontButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontButtonPrivate(ptr unsafe.Pointer) *FontButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontButtonPrivate)(ptr)
-}
-
-func marshalFontButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FontButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

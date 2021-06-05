@@ -360,27 +360,3 @@ func (f iconFactory) RemoveDefault() {
 
 	C.gtk_icon_factory_remove_default(arg0)
 }
-
-type IconFactoryPrivate struct {
-	native C.GtkIconFactoryPrivate
-}
-
-// WrapIconFactoryPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapIconFactoryPrivate(ptr unsafe.Pointer) *IconFactoryPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*IconFactoryPrivate)(ptr)
-}
-
-func marshalIconFactoryPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapIconFactoryPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *IconFactoryPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

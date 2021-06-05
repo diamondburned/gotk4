@@ -227,27 +227,3 @@ func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertific
 
 	return ret1
 }
-
-type TLSCertificatePrivate struct {
-	native C.GTlsCertificatePrivate
-}
-
-// WrapTLSCertificatePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSCertificatePrivate(ptr unsafe.Pointer) *TLSCertificatePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSCertificatePrivate)(ptr)
-}
-
-func marshalTLSCertificatePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSCertificatePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSCertificatePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

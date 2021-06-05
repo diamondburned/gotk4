@@ -130,27 +130,3 @@ func (s socket) PlugWindow() gdk.Window {
 
 	return ret1
 }
-
-type SocketPrivate struct {
-	native C.GtkSocketPrivate
-}
-
-// WrapSocketPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketPrivate(ptr unsafe.Pointer) *SocketPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketPrivate)(ptr)
-}
-
-func marshalSocketPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

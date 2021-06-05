@@ -3,8 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -470,28 +468,4 @@ func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (tlsInterac
 	ret2 = TLSInteractionResult(cret)
 
 	return goerr, ret2
-}
-
-type TLSInteractionPrivate struct {
-	native C.GTlsInteractionPrivate
-}
-
-// WrapTLSInteractionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSInteractionPrivate(ptr unsafe.Pointer) *TLSInteractionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSInteractionPrivate)(ptr)
-}
-
-func marshalTLSInteractionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSInteractionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSInteractionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }

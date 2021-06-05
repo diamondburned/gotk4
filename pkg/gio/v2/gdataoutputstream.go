@@ -286,27 +286,3 @@ func (s dataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 
 	C.g_data_output_stream_set_byte_order(arg0, order)
 }
-
-type DataOutputStreamPrivate struct {
-	native C.GDataOutputStreamPrivate
-}
-
-// WrapDataOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDataOutputStreamPrivate(ptr unsafe.Pointer) *DataOutputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DataOutputStreamPrivate)(ptr)
-}
-
-func marshalDataOutputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDataOutputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DataOutputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}

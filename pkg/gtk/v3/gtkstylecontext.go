@@ -1384,27 +1384,3 @@ func (c styleContext) String(flags StyleContextPrintFlags) string {
 
 	return ret1
 }
-
-type StyleContextPrivate struct {
-	native C.GtkStyleContextPrivate
-}
-
-// WrapStyleContextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStyleContextPrivate(ptr unsafe.Pointer) *StyleContextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*StyleContextPrivate)(ptr)
-}
-
-func marshalStyleContextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStyleContextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *StyleContextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

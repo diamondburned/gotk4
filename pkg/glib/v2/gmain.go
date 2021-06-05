@@ -1712,27 +1712,3 @@ func (s *Source) Unref() {
 
 	C.g_source_unref(arg0)
 }
-
-type SourcePrivate struct {
-	native C.GSourcePrivate
-}
-
-// WrapSourcePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSourcePrivate(ptr unsafe.Pointer) *SourcePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SourcePrivate)(ptr)
-}
-
-func marshalSourcePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSourcePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SourcePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

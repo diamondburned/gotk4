@@ -1152,30 +1152,6 @@ func (l label) SetYalign(yalign float32) {
 	C.gtk_label_set_yalign(arg0, yalign)
 }
 
-type LabelPrivate struct {
-	native C.GtkLabelPrivate
-}
-
-// WrapLabelPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLabelPrivate(ptr unsafe.Pointer) *LabelPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*LabelPrivate)(ptr)
-}
-
-func marshalLabelPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLabelPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *LabelPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
-}
-
 type LabelSelectionInfo struct {
 	native C.GtkLabelSelectionInfo
 }

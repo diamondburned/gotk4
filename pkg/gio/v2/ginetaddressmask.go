@@ -219,27 +219,3 @@ func (m inetAddressMask) String() string {
 
 	return ret1
 }
-
-type InetAddressMaskPrivate struct {
-	native C.GInetAddressMaskPrivate
-}
-
-// WrapInetAddressMaskPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInetAddressMaskPrivate(ptr unsafe.Pointer) *InetAddressMaskPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InetAddressMaskPrivate)(ptr)
-}
-
-func marshalInetAddressMaskPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInetAddressMaskPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InetAddressMaskPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

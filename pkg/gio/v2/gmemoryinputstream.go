@@ -108,27 +108,3 @@ func (s memoryInputStream) AddBytes(bytes *glib.Bytes) {
 
 	C.g_memory_input_stream_add_bytes(arg0, bytes)
 }
-
-type MemoryInputStreamPrivate struct {
-	native C.GMemoryInputStreamPrivate
-}
-
-// WrapMemoryInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMemoryInputStreamPrivate(ptr unsafe.Pointer) *MemoryInputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MemoryInputStreamPrivate)(ptr)
-}
-
-func marshalMemoryInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMemoryInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MemoryInputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

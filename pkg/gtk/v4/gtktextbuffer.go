@@ -1821,27 +1821,3 @@ func marshalTextBTree(p uintptr) (interface{}, error) {
 func (t *TextBTree) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
-
-type TextBufferPrivate struct {
-	native C.GtkTextBufferPrivate
-}
-
-// WrapTextBufferPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextBufferPrivate(ptr unsafe.Pointer) *TextBufferPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextBufferPrivate)(ptr)
-}
-
-func marshalTextBufferPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextBufferPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextBufferPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

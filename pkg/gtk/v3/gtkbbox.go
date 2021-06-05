@@ -206,27 +206,3 @@ func (w buttonBox) SetLayout(layoutStyle ButtonBoxStyle) {
 
 	C.gtk_button_box_set_layout(arg0, layoutStyle)
 }
-
-type ButtonBoxPrivate struct {
-	native C.GtkButtonBoxPrivate
-}
-
-// WrapButtonBoxPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapButtonBoxPrivate(ptr unsafe.Pointer) *ButtonBoxPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ButtonBoxPrivate)(ptr)
-}
-
-func marshalButtonBoxPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapButtonBoxPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *ButtonBoxPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
-}

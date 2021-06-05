@@ -593,27 +593,3 @@ func (b button) SetUseUnderline(useUnderline bool) {
 
 	C.gtk_button_set_use_underline(arg0, useUnderline)
 }
-
-type ButtonPrivate struct {
-	native C.GtkButtonPrivate
-}
-
-// WrapButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapButtonPrivate(ptr unsafe.Pointer) *ButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ButtonPrivate)(ptr)
-}
-
-func marshalButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *ButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
-}

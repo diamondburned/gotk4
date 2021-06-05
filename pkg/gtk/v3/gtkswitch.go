@@ -161,27 +161,3 @@ func (s _switch) SetState(state bool) {
 
 	C.gtk_switch_set_state(arg0, state)
 }
-
-type SwitchPrivate struct {
-	native C.GtkSwitchPrivate
-}
-
-// WrapSwitchPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSwitchPrivate(ptr unsafe.Pointer) *SwitchPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SwitchPrivate)(ptr)
-}
-
-func marshalSwitchPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSwitchPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SwitchPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

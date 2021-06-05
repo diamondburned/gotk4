@@ -305,27 +305,3 @@ func (p paned) SetWideHandle(wide bool) {
 
 	C.gtk_paned_set_wide_handle(arg0, wide)
 }
-
-type PanedPrivate struct {
-	native C.GtkPanedPrivate
-}
-
-// WrapPanedPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPanedPrivate(ptr unsafe.Pointer) *PanedPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PanedPrivate)(ptr)
-}
-
-func marshalPanedPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPanedPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PanedPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}

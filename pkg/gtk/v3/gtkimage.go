@@ -631,27 +631,3 @@ func (i image) SetPixelSize(pixelSize int) {
 
 	C.gtk_image_set_pixel_size(arg0, pixelSize)
 }
-
-type ImagePrivate struct {
-	native C.GtkImagePrivate
-}
-
-// WrapImagePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapImagePrivate(ptr unsafe.Pointer) *ImagePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ImagePrivate)(ptr)
-}
-
-func marshalImagePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapImagePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *ImagePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

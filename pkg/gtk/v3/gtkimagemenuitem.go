@@ -290,27 +290,3 @@ func (i imageMenuItem) SetUseStock(useStock bool) {
 
 	C.gtk_image_menu_item_set_use_stock(arg0, useStock)
 }
-
-type ImageMenuItemPrivate struct {
-	native C.GtkImageMenuItemPrivate
-}
-
-// WrapImageMenuItemPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapImageMenuItemPrivate(ptr unsafe.Pointer) *ImageMenuItemPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ImageMenuItemPrivate)(ptr)
-}
-
-func marshalImageMenuItemPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapImageMenuItemPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *ImageMenuItemPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

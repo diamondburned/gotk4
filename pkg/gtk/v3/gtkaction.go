@@ -848,27 +848,3 @@ func (a action) UnblockActivate() {
 
 	C.gtk_action_unblock_activate(arg0)
 }
-
-type ActionPrivate struct {
-	native C.GtkActionPrivate
-}
-
-// WrapActionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionPrivate(ptr unsafe.Pointer) *ActionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionPrivate)(ptr)
-}
-
-func marshalActionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

@@ -155,27 +155,3 @@ func (o mountOperation) SetScreen(screen gdk.Screen) {
 
 	C.gtk_mount_operation_set_screen(arg0, screen)
 }
-
-type MountOperationPrivate struct {
-	native C.GtkMountOperationPrivate
-}
-
-// WrapMountOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMountOperationPrivate(ptr unsafe.Pointer) *MountOperationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MountOperationPrivate)(ptr)
-}
-
-func marshalMountOperationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMountOperationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MountOperationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

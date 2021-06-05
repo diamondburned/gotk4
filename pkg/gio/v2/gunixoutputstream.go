@@ -146,27 +146,3 @@ func (s unixOutputStream) SetCloseFd(closeFd bool) {
 
 	C.g_unix_output_stream_set_close_fd(arg0, closeFd)
 }
-
-type UnixOutputStreamPrivate struct {
-	native C.GUnixOutputStreamPrivate
-}
-
-// WrapUnixOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixOutputStreamPrivate(ptr unsafe.Pointer) *UnixOutputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixOutputStreamPrivate)(ptr)
-}
-
-func marshalUnixOutputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixOutputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixOutputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
-}

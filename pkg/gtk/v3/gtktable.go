@@ -472,30 +472,6 @@ func (t *TableChild) Ypadding() uint16 {
 	v = C.guint16(t.native.ypadding)
 }
 
-type TablePrivate struct {
-	native C.GtkTablePrivate
-}
-
-// WrapTablePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTablePrivate(ptr unsafe.Pointer) *TablePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TablePrivate)(ptr)
-}
-
-func marshalTablePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTablePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TablePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 type TableRowCol struct {
 	native C.GtkTableRowCol
 }

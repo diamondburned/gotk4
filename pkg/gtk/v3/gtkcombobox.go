@@ -844,27 +844,3 @@ func (c comboBox) SetWrapWidth(width int) {
 
 	C.gtk_combo_box_set_wrap_width(arg0, width)
 }
-
-type ComboBoxPrivate struct {
-	native C.GtkComboBoxPrivate
-}
-
-// WrapComboBoxPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapComboBoxPrivate(ptr unsafe.Pointer) *ComboBoxPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ComboBoxPrivate)(ptr)
-}
-
-func marshalComboBoxPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapComboBoxPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ComboBoxPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

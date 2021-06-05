@@ -418,30 +418,6 @@ func (g *Gradient) Unref() {
 	C.gtk_gradient_unref(arg0)
 }
 
-type StylePropertiesPrivate struct {
-	native C.GtkStylePropertiesPrivate
-}
-
-// WrapStylePropertiesPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapStylePropertiesPrivate(ptr unsafe.Pointer) *StylePropertiesPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*StylePropertiesPrivate)(ptr)
-}
-
-func marshalStylePropertiesPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapStylePropertiesPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *StylePropertiesPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
 // SymbolicColor: gtkSymbolicColor is a boxed type that represents a symbolic
 // color. It is the result of parsing a [color
 // expression][gtkcssprovider-symbolic-colors]. To obtain the color represented

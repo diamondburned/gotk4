@@ -464,27 +464,3 @@ func (s treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath) {
 
 	C.gtk_tree_selection_unselect_range(arg0, startPath, endPath)
 }
-
-type TreeSelectionPrivate struct {
-	native C.GtkTreeSelectionPrivate
-}
-
-// WrapTreeSelectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeSelectionPrivate(ptr unsafe.Pointer) *TreeSelectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeSelectionPrivate)(ptr)
-}
-
-func marshalTreeSelectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeSelectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeSelectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

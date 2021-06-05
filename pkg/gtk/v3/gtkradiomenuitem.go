@@ -268,27 +268,3 @@ func (r radioMenuItem) SetGroup(group *glib.SList) {
 
 	C.gtk_radio_menu_item_set_group(arg0, group)
 }
-
-type RadioMenuItemPrivate struct {
-	native C.GtkRadioMenuItemPrivate
-}
-
-// WrapRadioMenuItemPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRadioMenuItemPrivate(ptr unsafe.Pointer) *RadioMenuItemPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RadioMenuItemPrivate)(ptr)
-}
-
-func marshalRadioMenuItemPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRadioMenuItemPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RadioMenuItemPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}

@@ -318,27 +318,3 @@ func (t toggleButton) Toggled() {
 
 	C.gtk_toggle_button_toggled(arg0)
 }
-
-type ToggleButtonPrivate struct {
-	native C.GtkToggleButtonPrivate
-}
-
-// WrapToggleButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToggleButtonPrivate(ptr unsafe.Pointer) *ToggleButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToggleButtonPrivate)(ptr)
-}
-
-func marshalToggleButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToggleButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToggleButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

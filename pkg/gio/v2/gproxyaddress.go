@@ -228,27 +228,3 @@ func (p proxyAddress) Username() string {
 
 	return ret1
 }
-
-type ProxyAddressPrivate struct {
-	native C.GProxyAddressPrivate
-}
-
-// WrapProxyAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapProxyAddressPrivate(ptr unsafe.Pointer) *ProxyAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ProxyAddressPrivate)(ptr)
-}
-
-func marshalProxyAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapProxyAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *ProxyAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}

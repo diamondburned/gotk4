@@ -64,27 +64,3 @@ func (p plugAccessible) ID() string {
 
 	return ret1
 }
-
-type PlugAccessiblePrivate struct {
-	native C.GtkPlugAccessiblePrivate
-}
-
-// WrapPlugAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPlugAccessiblePrivate(ptr unsafe.Pointer) *PlugAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PlugAccessiblePrivate)(ptr)
-}
-
-func marshalPlugAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPlugAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PlugAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}

@@ -3,8 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -110,28 +108,4 @@ func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	}
 
 	C.g_tcp_connection_set_graceful_disconnect(arg0, gracefulDisconnect)
-}
-
-type TcpConnectionPrivate struct {
-	native C.GTcpConnectionPrivate
-}
-
-// WrapTcpConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTcpConnectionPrivate(ptr unsafe.Pointer) *TcpConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TcpConnectionPrivate)(ptr)
-}
-
-func marshalTcpConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTcpConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TcpConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }

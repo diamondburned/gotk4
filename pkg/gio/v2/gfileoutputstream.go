@@ -197,27 +197,3 @@ func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo
 
 	return goerr, ret2
 }
-
-type FileOutputStreamPrivate struct {
-	native C.GFileOutputStreamPrivate
-}
-
-// WrapFileOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileOutputStreamPrivate(ptr unsafe.Pointer) *FileOutputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileOutputStreamPrivate)(ptr)
-}
-
-func marshalFileOutputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileOutputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileOutputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

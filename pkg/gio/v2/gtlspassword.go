@@ -232,27 +232,3 @@ func (p tlsPassword) SetWarning(warning string) {
 
 	C.g_tls_password_set_warning(arg0, warning)
 }
-
-type TLSPasswordPrivate struct {
-	native C.GTlsPasswordPrivate
-}
-
-// WrapTLSPasswordPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSPasswordPrivate(ptr unsafe.Pointer) *TLSPasswordPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSPasswordPrivate)(ptr)
-}
-
-func marshalTLSPasswordPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSPasswordPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSPasswordPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

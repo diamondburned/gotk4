@@ -535,27 +535,3 @@ func (c applicationCommandLine) SetExitStatus(exitStatus int) {
 
 	C.g_application_command_line_set_exit_status(arg0, exitStatus)
 }
-
-type ApplicationCommandLinePrivate struct {
-	native C.GApplicationCommandLinePrivate
-}
-
-// WrapApplicationCommandLinePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapApplicationCommandLinePrivate(ptr unsafe.Pointer) *ApplicationCommandLinePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ApplicationCommandLinePrivate)(ptr)
-}
-
-func marshalApplicationCommandLinePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapApplicationCommandLinePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ApplicationCommandLinePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

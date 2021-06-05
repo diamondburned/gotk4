@@ -467,27 +467,3 @@ func (c cancellable) NewSource() *glib.Source {
 
 	return ret1
 }
-
-type CancellablePrivate struct {
-	native C.GCancellablePrivate
-}
-
-// WrapCancellablePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCancellablePrivate(ptr unsafe.Pointer) *CancellablePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CancellablePrivate)(ptr)
-}
-
-func marshalCancellablePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCancellablePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CancellablePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

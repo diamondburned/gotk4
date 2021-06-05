@@ -3,8 +3,6 @@
 package gdk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -277,28 +275,4 @@ func (f frameClock) RequestPhase(phase FrameClockPhase) {
 	arg1 = (C.GdkFrameClockPhase)(phase)
 
 	C.gdk_frame_clock_request_phase(arg0, phase)
-}
-
-type FrameClockPrivate struct {
-	native C.GdkFrameClockPrivate
-}
-
-// WrapFrameClockPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFrameClockPrivate(ptr unsafe.Pointer) *FrameClockPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FrameClockPrivate)(ptr)
-}
-
-func marshalFrameClockPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFrameClockPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FrameClockPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
 }

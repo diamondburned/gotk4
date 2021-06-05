@@ -181,27 +181,3 @@ func (s networkService) SetScheme(scheme string) {
 
 	C.g_network_service_set_scheme(arg0, scheme)
 }
-
-type NetworkServicePrivate struct {
-	native C.GNetworkServicePrivate
-}
-
-// WrapNetworkServicePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNetworkServicePrivate(ptr unsafe.Pointer) *NetworkServicePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NetworkServicePrivate)(ptr)
-}
-
-func marshalNetworkServicePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNetworkServicePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NetworkServicePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}

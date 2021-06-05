@@ -111,27 +111,3 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 
 	return ret1
 }
-
-type UnixCredentialsMessagePrivate struct {
-	native C.GUnixCredentialsMessagePrivate
-}
-
-// WrapUnixCredentialsMessagePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapUnixCredentialsMessagePrivate(ptr unsafe.Pointer) *UnixCredentialsMessagePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*UnixCredentialsMessagePrivate)(ptr)
-}
-
-func marshalUnixCredentialsMessagePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapUnixCredentialsMessagePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *UnixCredentialsMessagePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
-}

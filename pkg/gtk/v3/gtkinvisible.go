@@ -116,27 +116,3 @@ func (i invisible) SetScreen(screen gdk.Screen) {
 
 	C.gtk_invisible_set_screen(arg0, screen)
 }
-
-type InvisiblePrivate struct {
-	native C.GtkInvisiblePrivate
-}
-
-// WrapInvisiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInvisiblePrivate(ptr unsafe.Pointer) *InvisiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InvisiblePrivate)(ptr)
-}
-
-func marshalInvisiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInvisiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InvisiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

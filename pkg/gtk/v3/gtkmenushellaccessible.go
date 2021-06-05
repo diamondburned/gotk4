@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalMenuShellAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMenuShellAccessible(obj), nil
-}
-
-type MenuShellAccessiblePrivate struct {
-	native C.GtkMenuShellAccessiblePrivate
-}
-
-// WrapMenuShellAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuShellAccessiblePrivate(ptr unsafe.Pointer) *MenuShellAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuShellAccessiblePrivate)(ptr)
-}
-
-func marshalMenuShellAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuShellAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuShellAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }

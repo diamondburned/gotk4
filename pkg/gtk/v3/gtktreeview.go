@@ -2517,27 +2517,3 @@ func (t treeView) UnsetRowsDragSource() {
 
 	C.gtk_tree_view_unset_rows_drag_source(arg0)
 }
-
-type TreeViewPrivate struct {
-	native C.GtkTreeViewPrivate
-}
-
-// WrapTreeViewPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeViewPrivate(ptr unsafe.Pointer) *TreeViewPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeViewPrivate)(ptr)
-}
-
-func marshalTreeViewPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeViewPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeViewPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBooleanCellAccessible(obj), nil
-}
-
-type BooleanCellAccessiblePrivate struct {
-	native C.GtkBooleanCellAccessiblePrivate
-}
-
-// WrapBooleanCellAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapBooleanCellAccessiblePrivate(ptr unsafe.Pointer) *BooleanCellAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*BooleanCellAccessiblePrivate)(ptr)
-}
-
-func marshalBooleanCellAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapBooleanCellAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (b *BooleanCellAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
 }

@@ -209,27 +209,3 @@ func (e eventBox) SetVisibleWindow(visibleWindow bool) {
 
 	C.gtk_event_box_set_visible_window(arg0, visibleWindow)
 }
-
-type EventBoxPrivate struct {
-	native C.GtkEventBoxPrivate
-}
-
-// WrapEventBoxPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEventBoxPrivate(ptr unsafe.Pointer) *EventBoxPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*EventBoxPrivate)(ptr)
-}
-
-func marshalEventBoxPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEventBoxPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventBoxPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
-}

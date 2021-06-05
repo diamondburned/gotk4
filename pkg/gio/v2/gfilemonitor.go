@@ -3,8 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -144,28 +142,4 @@ func (m fileMonitor) SetRateLimit(limitMsecs int) {
 	arg1 = C.gint(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(arg0, limitMsecs)
-}
-
-type FileMonitorPrivate struct {
-	native C.GFileMonitorPrivate
-}
-
-// WrapFileMonitorPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileMonitorPrivate(ptr unsafe.Pointer) *FileMonitorPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileMonitorPrivate)(ptr)
-}
-
-func marshalFileMonitorPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileMonitorPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileMonitorPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
 }

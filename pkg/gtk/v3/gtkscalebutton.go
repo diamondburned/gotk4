@@ -259,27 +259,3 @@ func (b scaleButton) SetValue(value float64) {
 
 	C.gtk_scale_button_set_value(arg0, value)
 }
-
-type ScaleButtonPrivate struct {
-	native C.GtkScaleButtonPrivate
-}
-
-// WrapScaleButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapScaleButtonPrivate(ptr unsafe.Pointer) *ScaleButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ScaleButtonPrivate)(ptr)
-}
-
-func marshalScaleButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapScaleButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *ScaleButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

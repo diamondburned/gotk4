@@ -94,27 +94,3 @@ func (r cellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(arg0, numberOfRows)
 }
-
-type CellRendererTextPrivate struct {
-	native C.GtkCellRendererTextPrivate
-}
-
-// WrapCellRendererTextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererTextPrivate(ptr unsafe.Pointer) *CellRendererTextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererTextPrivate)(ptr)
-}
-
-func marshalCellRendererTextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererTextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererTextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

@@ -324,27 +324,3 @@ func (t treeModelSort) ResetDefaultSortFunc() {
 
 	C.gtk_tree_model_sort_reset_default_sort_func(arg0)
 }
-
-type TreeModelSortPrivate struct {
-	native C.GtkTreeModelSortPrivate
-}
-
-// WrapTreeModelSortPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeModelSortPrivate(ptr unsafe.Pointer) *TreeModelSortPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeModelSortPrivate)(ptr)
-}
-
-func marshalTreeModelSortPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeModelSortPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeModelSortPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

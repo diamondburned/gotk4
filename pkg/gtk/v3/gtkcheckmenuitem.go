@@ -249,27 +249,3 @@ func (c checkMenuItem) Toggled() {
 
 	C.gtk_check_menu_item_toggled(arg0)
 }
-
-type CheckMenuItemPrivate struct {
-	native C.GtkCheckMenuItemPrivate
-}
-
-// WrapCheckMenuItemPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCheckMenuItemPrivate(ptr unsafe.Pointer) *CheckMenuItemPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CheckMenuItemPrivate)(ptr)
-}
-
-func marshalCheckMenuItemPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCheckMenuItemPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CheckMenuItemPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

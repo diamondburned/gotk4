@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalComboBoxAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapComboBoxAccessible(obj), nil
-}
-
-type ComboBoxAccessiblePrivate struct {
-	native C.GtkComboBoxAccessiblePrivate
-}
-
-// WrapComboBoxAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapComboBoxAccessiblePrivate(ptr unsafe.Pointer) *ComboBoxAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ComboBoxAccessiblePrivate)(ptr)
-}
-
-func marshalComboBoxAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapComboBoxAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ComboBoxAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }

@@ -1173,27 +1173,3 @@ func (c appLaunchContext) Unsetenv(variable string) {
 
 	C.g_app_launch_context_unsetenv(arg0, variable)
 }
-
-type AppLaunchContextPrivate struct {
-	native C.GAppLaunchContextPrivate
-}
-
-// WrapAppLaunchContextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAppLaunchContextPrivate(ptr unsafe.Pointer) *AppLaunchContextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AppLaunchContextPrivate)(ptr)
-}
-
-func marshalAppLaunchContextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAppLaunchContextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AppLaunchContextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

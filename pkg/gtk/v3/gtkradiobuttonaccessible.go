@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRadioButtonAccessible(obj), nil
-}
-
-type RadioButtonAccessiblePrivate struct {
-	native C.GtkRadioButtonAccessiblePrivate
-}
-
-// WrapRadioButtonAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRadioButtonAccessiblePrivate(ptr unsafe.Pointer) *RadioButtonAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RadioButtonAccessiblePrivate)(ptr)
-}
-
-func marshalRadioButtonAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRadioButtonAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RadioButtonAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }

@@ -388,27 +388,3 @@ func (c colorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 
 	C.gtk_color_selection_set_previous_rgba(arg0, rgba)
 }
-
-type ColorSelectionPrivate struct {
-	native C.GtkColorSelectionPrivate
-}
-
-// WrapColorSelectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapColorSelectionPrivate(ptr unsafe.Pointer) *ColorSelectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ColorSelectionPrivate)(ptr)
-}
-
-func marshalColorSelectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapColorSelectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ColorSelectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

@@ -102,27 +102,3 @@ func (c containerCellAccessible) RemoveChild(child CellAccessible) {
 
 	C.gtk_container_cell_accessible_remove_child(arg0, child)
 }
-
-type ContainerCellAccessiblePrivate struct {
-	native C.GtkContainerCellAccessiblePrivate
-}
-
-// WrapContainerCellAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapContainerCellAccessiblePrivate(ptr unsafe.Pointer) *ContainerCellAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ContainerCellAccessiblePrivate)(ptr)
-}
-
-func marshalContainerCellAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapContainerCellAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ContainerCellAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

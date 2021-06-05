@@ -120,27 +120,3 @@ func (i separatorToolItem) SetDraw(draw bool) {
 
 	C.gtk_separator_tool_item_set_draw(arg0, draw)
 }
-
-type SeparatorToolItemPrivate struct {
-	native C.GtkSeparatorToolItemPrivate
-}
-
-// WrapSeparatorToolItemPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSeparatorToolItemPrivate(ptr unsafe.Pointer) *SeparatorToolItemPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SeparatorToolItemPrivate)(ptr)
-}
-
-func marshalSeparatorToolItemPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSeparatorToolItemPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SeparatorToolItemPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

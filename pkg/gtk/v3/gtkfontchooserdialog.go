@@ -80,27 +80,3 @@ func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 
 	return ret1
 }
-
-type FontChooserDialogPrivate struct {
-	native C.GtkFontChooserDialogPrivate
-}
-
-// WrapFontChooserDialogPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontChooserDialogPrivate(ptr unsafe.Pointer) *FontChooserDialogPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontChooserDialogPrivate)(ptr)
-}
-
-func marshalFontChooserDialogPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontChooserDialogPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FontChooserDialogPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

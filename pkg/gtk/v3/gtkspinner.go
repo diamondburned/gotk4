@@ -97,27 +97,3 @@ func (s spinner) Stop() {
 
 	C.gtk_spinner_stop(arg0)
 }
-
-type SpinnerPrivate struct {
-	native C.GtkSpinnerPrivate
-}
-
-// WrapSpinnerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSpinnerPrivate(ptr unsafe.Pointer) *SpinnerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SpinnerPrivate)(ptr)
-}
-
-func marshalSpinnerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSpinnerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SpinnerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

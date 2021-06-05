@@ -892,27 +892,3 @@ func (a application) Uninhibit(cookie uint) {
 
 	C.gtk_application_uninhibit(arg0, cookie)
 }
-
-type ApplicationPrivate struct {
-	native C.GtkApplicationPrivate
-}
-
-// WrapApplicationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapApplicationPrivate(ptr unsafe.Pointer) *ApplicationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ApplicationPrivate)(ptr)
-}
-
-func marshalApplicationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapApplicationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ApplicationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

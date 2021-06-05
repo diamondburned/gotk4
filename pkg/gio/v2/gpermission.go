@@ -3,8 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -356,28 +354,4 @@ func (p permission) ReleaseFinish(result AsyncResult) error {
 	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return goerr
-}
-
-type PermissionPrivate struct {
-	native C.GPermissionPrivate
-}
-
-// WrapPermissionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPermissionPrivate(ptr unsafe.Pointer) *PermissionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PermissionPrivate)(ptr)
-}
-
-func marshalPermissionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPermissionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PermissionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
 }

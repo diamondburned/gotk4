@@ -491,27 +491,3 @@ func (g grid) SetRowSpacing(spacing uint) {
 
 	C.gtk_grid_set_row_spacing(arg0, spacing)
 }
-
-type GridPrivate struct {
-	native C.GtkGridPrivate
-}
-
-// WrapGridPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapGridPrivate(ptr unsafe.Pointer) *GridPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*GridPrivate)(ptr)
-}
-
-func marshalGridPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapGridPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (g *GridPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&g.native)
-}

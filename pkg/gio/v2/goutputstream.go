@@ -3,8 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -887,28 +885,4 @@ func (s outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, err e
 	goerr = gerror.Take(unsafe.Pointer(errout))
 
 	return ret2, goerr
-}
-
-type OutputStreamPrivate struct {
-	native C.GOutputStreamPrivate
-}
-
-// WrapOutputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapOutputStreamPrivate(ptr unsafe.Pointer) *OutputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*OutputStreamPrivate)(ptr)
-}
-
-func marshalOutputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapOutputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (o *OutputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
 }

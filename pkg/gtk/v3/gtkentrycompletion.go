@@ -631,27 +631,3 @@ func (c entryCompletion) SetTextColumn(column int) {
 
 	C.gtk_entry_completion_set_text_column(arg0, column)
 }
-
-type EntryCompletionPrivate struct {
-	native C.GtkEntryCompletionPrivate
-}
-
-// WrapEntryCompletionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapEntryCompletionPrivate(ptr unsafe.Pointer) *EntryCompletionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*EntryCompletionPrivate)(ptr)
-}
-
-func marshalEntryCompletionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapEntryCompletionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *EntryCompletionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
-}

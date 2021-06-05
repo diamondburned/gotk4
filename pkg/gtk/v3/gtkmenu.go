@@ -720,27 +720,3 @@ func (m menu) SetTitle(title string) {
 
 	C.gtk_menu_set_title(arg0, title)
 }
-
-type MenuPrivate struct {
-	native C.GtkMenuPrivate
-}
-
-// WrapMenuPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuPrivate(ptr unsafe.Pointer) *MenuPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuPrivate)(ptr)
-}
-
-func marshalMenuPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

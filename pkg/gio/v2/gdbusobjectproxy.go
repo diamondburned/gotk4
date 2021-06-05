@@ -100,27 +100,3 @@ func (p dBusObjectProxy) Connection() DBusConnection {
 
 	return ret1
 }
-
-type DBusObjectProxyPrivate struct {
-	native C.GDBusObjectProxyPrivate
-}
-
-// WrapDBusObjectProxyPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDBusObjectProxyPrivate(ptr unsafe.Pointer) *DBusObjectProxyPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DBusObjectProxyPrivate)(ptr)
-}
-
-func marshalDBusObjectProxyPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDBusObjectProxyPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusObjectProxyPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}

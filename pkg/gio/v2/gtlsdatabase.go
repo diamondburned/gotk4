@@ -558,27 +558,3 @@ func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (tlsCertificateFlags 
 
 	return goerr, ret2
 }
-
-type TLSDatabasePrivate struct {
-	native C.GTlsDatabasePrivate
-}
-
-// WrapTLSDatabasePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSDatabasePrivate(ptr unsafe.Pointer) *TLSDatabasePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSDatabasePrivate)(ptr)
-}
-
-func marshalTLSDatabasePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSDatabasePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSDatabasePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

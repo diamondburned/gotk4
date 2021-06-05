@@ -173,27 +173,3 @@ func (f *FixedChild) X() int {
 func (f *FixedChild) Y() int {
 	v = C.gint(f.native.y)
 }
-
-type FixedPrivate struct {
-	native C.GtkFixedPrivate
-}
-
-// WrapFixedPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFixedPrivate(ptr unsafe.Pointer) *FixedPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FixedPrivate)(ptr)
-}
-
-func marshalFixedPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFixedPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FixedPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

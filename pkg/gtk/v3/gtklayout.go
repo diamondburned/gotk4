@@ -271,27 +271,3 @@ func (l layout) SetVAdjustment(adjustment Adjustment) {
 
 	C.gtk_layout_set_vadjustment(arg0, adjustment)
 }
-
-type LayoutPrivate struct {
-	native C.GtkLayoutPrivate
-}
-
-// WrapLayoutPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLayoutPrivate(ptr unsafe.Pointer) *LayoutPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*LayoutPrivate)(ptr)
-}
-
-func marshalLayoutPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLayoutPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *LayoutPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
-}

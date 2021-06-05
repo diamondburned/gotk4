@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalImageCellAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapImageCellAccessible(obj), nil
-}
-
-type ImageCellAccessiblePrivate struct {
-	native C.GtkImageCellAccessiblePrivate
-}
-
-// WrapImageCellAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapImageCellAccessiblePrivate(ptr unsafe.Pointer) *ImageCellAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ImageCellAccessiblePrivate)(ptr)
-}
-
-func marshalImageCellAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapImageCellAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *ImageCellAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }

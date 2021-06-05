@@ -158,27 +158,3 @@ func (a networkAddress) Scheme() string {
 
 	return ret1
 }
-
-type NetworkAddressPrivate struct {
-	native C.GNetworkAddressPrivate
-}
-
-// WrapNetworkAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNetworkAddressPrivate(ptr unsafe.Pointer) *NetworkAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NetworkAddressPrivate)(ptr)
-}
-
-func marshalNetworkAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNetworkAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NetworkAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}

@@ -508,30 +508,6 @@ func (a *ActionEntry) Tooltip() string {
 	v = C.GoString(a.native.tooltip)
 }
 
-type ActionGroupPrivate struct {
-	native C.GtkActionGroupPrivate
-}
-
-// WrapActionGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapActionGroupPrivate(ptr unsafe.Pointer) *ActionGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ActionGroupPrivate)(ptr)
-}
-
-func marshalActionGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapActionGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}
-
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
 // to construct groups of radio actions.
 type RadioActionEntry struct {

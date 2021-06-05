@@ -825,27 +825,3 @@ func (s dataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 
 	C.g_data_input_stream_set_newline_type(arg0, typ)
 }
-
-type DataInputStreamPrivate struct {
-	native C.GDataInputStreamPrivate
-}
-
-// WrapDataInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDataInputStreamPrivate(ptr unsafe.Pointer) *DataInputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DataInputStreamPrivate)(ptr)
-}
-
-func marshalDataInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDataInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DataInputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}

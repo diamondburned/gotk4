@@ -163,27 +163,3 @@ func (a alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft u
 
 	C.gtk_alignment_set_padding(arg0, paddingTop, paddingBottom, paddingLeft, paddingRight)
 }
-
-type AlignmentPrivate struct {
-	native C.GtkAlignmentPrivate
-}
-
-// WrapAlignmentPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAlignmentPrivate(ptr unsafe.Pointer) *AlignmentPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AlignmentPrivate)(ptr)
-}
-
-func marshalAlignmentPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAlignmentPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AlignmentPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

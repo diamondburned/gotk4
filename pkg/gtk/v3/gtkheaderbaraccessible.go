@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalHeaderBarAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapHeaderBarAccessible(obj), nil
-}
-
-type HeaderBarAccessiblePrivate struct {
-	native C.GtkHeaderBarAccessiblePrivate
-}
-
-// WrapHeaderBarAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapHeaderBarAccessiblePrivate(ptr unsafe.Pointer) *HeaderBarAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*HeaderBarAccessiblePrivate)(ptr)
-}
-
-func marshalHeaderBarAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapHeaderBarAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (h *HeaderBarAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
 }

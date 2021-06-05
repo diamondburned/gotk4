@@ -109,27 +109,3 @@ func (a aspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChil
 
 	C.gtk_aspect_frame_set(arg0, xalign, yalign, ratio, obeyChild)
 }
-
-type AspectFramePrivate struct {
-	native C.GtkAspectFramePrivate
-}
-
-// WrapAspectFramePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAspectFramePrivate(ptr unsafe.Pointer) *AspectFramePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AspectFramePrivate)(ptr)
-}
-
-func marshalAspectFramePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAspectFramePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AspectFramePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

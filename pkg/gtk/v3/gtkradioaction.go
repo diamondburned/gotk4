@@ -224,27 +224,3 @@ func (a radioAction) SetGroup(group *glib.SList) {
 
 	C.gtk_radio_action_set_group(arg0, group)
 }
-
-type RadioActionPrivate struct {
-	native C.GtkRadioActionPrivate
-}
-
-// WrapRadioActionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRadioActionPrivate(ptr unsafe.Pointer) *RadioActionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RadioActionPrivate)(ptr)
-}
-
-func marshalRadioActionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRadioActionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RadioActionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}

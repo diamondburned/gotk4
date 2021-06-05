@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -140,28 +138,4 @@ func (m misc) SetPadding(xpad int, ypad int) {
 	arg2 = C.gint(ypad)
 
 	C.gtk_misc_set_padding(arg0, xpad, ypad)
-}
-
-type MiscPrivate struct {
-	native C.GtkMiscPrivate
-}
-
-// WrapMiscPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMiscPrivate(ptr unsafe.Pointer) *MiscPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MiscPrivate)(ptr)
-}
-
-func marshalMiscPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMiscPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MiscPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }

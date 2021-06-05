@@ -1077,27 +1077,3 @@ func (t treeViewColumn) SetWidget(widget Widget) {
 
 	C.gtk_tree_view_column_set_widget(arg0, widget)
 }
-
-type TreeViewColumnPrivate struct {
-	native C.GtkTreeViewColumnPrivate
-}
-
-// WrapTreeViewColumnPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeViewColumnPrivate(ptr unsafe.Pointer) *TreeViewColumnPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeViewColumnPrivate)(ptr)
-}
-
-func marshalTreeViewColumnPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeViewColumnPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeViewColumnPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

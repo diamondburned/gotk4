@@ -515,27 +515,3 @@ func (d dialog) SetResponseSensitive(responseID int, setting bool) {
 
 	C.gtk_dialog_set_response_sensitive(arg0, responseID, setting)
 }
-
-type DialogPrivate struct {
-	native C.GtkDialogPrivate
-}
-
-// WrapDialogPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDialogPrivate(ptr unsafe.Pointer) *DialogPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DialogPrivate)(ptr)
-}
-
-func marshalDialogPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDialogPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DialogPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}

@@ -3,8 +3,6 @@
 package pangoxft
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -61,28 +59,4 @@ func (x renderer) SetDefaultColor(defaultColor *pango.Color) {
 	arg1 = (*C.PangoColor)(unsafe.Pointer(defaultColor.Native()))
 
 	C.pango_xft_renderer_set_default_color(arg0, defaultColor)
-}
-
-type RendererPrivate struct {
-	native C.PangoXftRendererPrivate
-}
-
-// WrapRendererPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRendererPrivate(ptr unsafe.Pointer) *RendererPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RendererPrivate)(ptr)
-}
-
-func marshalRendererPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRendererPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RendererPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }

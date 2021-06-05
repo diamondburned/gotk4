@@ -638,27 +638,3 @@ func (r _range) SetValue(value float64) {
 
 	C.gtk_range_set_value(arg0, value)
 }
-
-type RangePrivate struct {
-	native C.GtkRangePrivate
-}
-
-// WrapRangePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRangePrivate(ptr unsafe.Pointer) *RangePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RangePrivate)(ptr)
-}
-
-func marshalRangePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRangePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RangePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}

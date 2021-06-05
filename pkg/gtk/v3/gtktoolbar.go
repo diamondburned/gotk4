@@ -409,27 +409,3 @@ func (t toolbar) UnsetStyle() {
 
 	C.gtk_toolbar_unset_style(arg0)
 }
-
-type ToolbarPrivate struct {
-	native C.GtkToolbarPrivate
-}
-
-// WrapToolbarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToolbarPrivate(ptr unsafe.Pointer) *ToolbarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToolbarPrivate)(ptr)
-}
-
-func marshalToolbarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToolbarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToolbarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

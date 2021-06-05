@@ -922,27 +922,3 @@ func (o printOperation) SetUseFullPage(fullPage bool) {
 
 	C.gtk_print_operation_set_use_full_page(arg0, fullPage)
 }
-
-type PrintOperationPrivate struct {
-	native C.GtkPrintOperationPrivate
-}
-
-// WrapPrintOperationPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPrintOperationPrivate(ptr unsafe.Pointer) *PrintOperationPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PrintOperationPrivate)(ptr)
-}
-
-func marshalPrintOperationPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPrintOperationPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PrintOperationPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}

@@ -478,27 +478,3 @@ func (p toolPalette) UnsetStyle() {
 
 	C.gtk_tool_palette_unset_style(arg0)
 }
-
-type ToolPalettePrivate struct {
-	native C.GtkToolPalettePrivate
-}
-
-// WrapToolPalettePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToolPalettePrivate(ptr unsafe.Pointer) *ToolPalettePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToolPalettePrivate)(ptr)
-}
-
-func marshalToolPalettePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToolPalettePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToolPalettePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

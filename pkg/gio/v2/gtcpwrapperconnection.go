@@ -96,27 +96,3 @@ func (c tcpWrapperConnection) BaseIOStream() IOStream {
 
 	return ret1
 }
-
-type TcpWrapperConnectionPrivate struct {
-	native C.GTcpWrapperConnectionPrivate
-}
-
-// WrapTcpWrapperConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTcpWrapperConnectionPrivate(ptr unsafe.Pointer) *TcpWrapperConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TcpWrapperConnectionPrivate)(ptr)
-}
-
-func marshalTcpWrapperConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTcpWrapperConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TcpWrapperConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

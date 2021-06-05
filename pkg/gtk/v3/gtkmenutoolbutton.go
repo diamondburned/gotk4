@@ -184,27 +184,3 @@ func (b menuToolButton) SetMenu(menu Widget) {
 
 	C.gtk_menu_tool_button_set_menu(arg0, menu)
 }
-
-type MenuToolButtonPrivate struct {
-	native C.GtkMenuToolButtonPrivate
-}
-
-// WrapMenuToolButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuToolButtonPrivate(ptr unsafe.Pointer) *MenuToolButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuToolButtonPrivate)(ptr)
-}
-
-func marshalMenuToolButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuToolButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuToolButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

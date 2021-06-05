@@ -400,27 +400,3 @@ func (a inetAddress) String() string {
 
 	return ret1
 }
-
-type InetAddressPrivate struct {
-	native C.GInetAddressPrivate
-}
-
-// WrapInetAddressPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInetAddressPrivate(ptr unsafe.Pointer) *InetAddressPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InetAddressPrivate)(ptr)
-}
-
-func marshalInetAddressPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInetAddressPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InetAddressPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
-}

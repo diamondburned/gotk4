@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalNotebookAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNotebookAccessible(obj), nil
-}
-
-type NotebookAccessiblePrivate struct {
-	native C.GtkNotebookAccessiblePrivate
-}
-
-// WrapNotebookAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNotebookAccessiblePrivate(ptr unsafe.Pointer) *NotebookAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NotebookAccessiblePrivate)(ptr)
-}
-
-func marshalNotebookAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNotebookAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NotebookAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
 }

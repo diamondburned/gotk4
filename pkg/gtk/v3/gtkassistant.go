@@ -646,27 +646,3 @@ func (a assistant) UpdateButtonsState() {
 
 	C.gtk_assistant_update_buttons_state(arg0)
 }
-
-type AssistantPrivate struct {
-	native C.GtkAssistantPrivate
-}
-
-// WrapAssistantPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAssistantPrivate(ptr unsafe.Pointer) *AssistantPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AssistantPrivate)(ptr)
-}
-
-func marshalAssistantPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAssistantPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AssistantPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

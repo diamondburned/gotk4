@@ -361,27 +361,3 @@ func (g toolItemGroup) SetLabelWidget(labelWidget Widget) {
 
 	C.gtk_tool_item_group_set_label_widget(arg0, labelWidget)
 }
-
-type ToolItemGroupPrivate struct {
-	native C.GtkToolItemGroupPrivate
-}
-
-// WrapToolItemGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToolItemGroupPrivate(ptr unsafe.Pointer) *ToolItemGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToolItemGroupPrivate)(ptr)
-}
-
-func marshalToolItemGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToolItemGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToolItemGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

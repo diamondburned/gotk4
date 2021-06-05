@@ -1083,27 +1083,3 @@ func (n notebook) SetTabReorderable(child Widget, reorderable bool) {
 
 	C.gtk_notebook_set_tab_reorderable(arg0, child, reorderable)
 }
-
-type NotebookPrivate struct {
-	native C.GtkNotebookPrivate
-}
-
-// WrapNotebookPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNotebookPrivate(ptr unsafe.Pointer) *NotebookPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NotebookPrivate)(ptr)
-}
-
-func marshalNotebookPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNotebookPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NotebookPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}

@@ -420,27 +420,3 @@ func (m menuButton) SetUsePopover(usePopover bool) {
 
 	C.gtk_menu_button_set_use_popover(arg0, usePopover)
 }
-
-type MenuButtonPrivate struct {
-	native C.GtkMenuButtonPrivate
-}
-
-// WrapMenuButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuButtonPrivate(ptr unsafe.Pointer) *MenuButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuButtonPrivate)(ptr)
-}
-
-func marshalMenuButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

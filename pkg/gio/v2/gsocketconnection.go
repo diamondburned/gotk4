@@ -236,27 +236,3 @@ func (c socketConnection) IsConnected() bool {
 
 	return ret1
 }
-
-type SocketConnectionPrivate struct {
-	native C.GSocketConnectionPrivate
-}
-
-// WrapSocketConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketConnectionPrivate(ptr unsafe.Pointer) *SocketConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketConnectionPrivate)(ptr)
-}
-
-func marshalSocketConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

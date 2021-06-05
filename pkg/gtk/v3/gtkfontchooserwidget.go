@@ -85,27 +85,3 @@ func NewFontChooserWidget() FontChooserWidget {
 
 	return ret1
 }
-
-type FontChooserWidgetPrivate struct {
-	native C.GtkFontChooserWidgetPrivate
-}
-
-// WrapFontChooserWidgetPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFontChooserWidgetPrivate(ptr unsafe.Pointer) *FontChooserWidgetPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FontChooserWidgetPrivate)(ptr)
-}
-
-func marshalFontChooserWidgetPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFontChooserWidgetPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FontChooserWidgetPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

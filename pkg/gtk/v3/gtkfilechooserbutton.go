@@ -234,27 +234,3 @@ func (b fileChooserButton) SetWidthChars(nChars int) {
 
 	C.gtk_file_chooser_button_set_width_chars(arg0, nChars)
 }
-
-type FileChooserButtonPrivate struct {
-	native C.GtkFileChooserButtonPrivate
-}
-
-// WrapFileChooserButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileChooserButtonPrivate(ptr unsafe.Pointer) *FileChooserButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileChooserButtonPrivate)(ptr)
-}
-
-func marshalFileChooserButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileChooserButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileChooserButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

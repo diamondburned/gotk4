@@ -451,27 +451,3 @@ func (e themingEngine) StateIsRunning(state StateType) (progress float64, ok boo
 
 	return ret2, ret2
 }
-
-type ThemingEnginePrivate struct {
-	native C.GtkThemingEnginePrivate
-}
-
-// WrapThemingEnginePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapThemingEnginePrivate(ptr unsafe.Pointer) *ThemingEnginePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ThemingEnginePrivate)(ptr)
-}
-
-func marshalThemingEnginePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapThemingEnginePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ThemingEnginePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

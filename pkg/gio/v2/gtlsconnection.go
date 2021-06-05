@@ -705,27 +705,3 @@ func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
 
 	C.g_tls_connection_set_use_system_certdb(arg0, useSystemCertdb)
 }
-
-type TLSConnectionPrivate struct {
-	native C.GTlsConnectionPrivate
-}
-
-// WrapTLSConnectionPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTLSConnectionPrivate(ptr unsafe.Pointer) *TLSConnectionPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TLSConnectionPrivate)(ptr)
-}
-
-func marshalTLSConnectionPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTLSConnectionPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TLSConnectionPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

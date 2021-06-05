@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -477,28 +475,4 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter) {
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(b.Native()))
 
 	C.gtk_tree_store_swap(arg0, a, b)
-}
-
-type TreeStorePrivate struct {
-	native C.GtkTreeStorePrivate
-}
-
-// WrapTreeStorePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeStorePrivate(ptr unsafe.Pointer) *TreeStorePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeStorePrivate)(ptr)
-}
-
-func marshalTreeStorePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeStorePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeStorePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }

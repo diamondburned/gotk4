@@ -173,27 +173,3 @@ func (s socketService) Stop() {
 
 	C.g_socket_service_stop(arg0)
 }
-
-type SocketServicePrivate struct {
-	native C.GSocketServicePrivate
-}
-
-// WrapSocketServicePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketServicePrivate(ptr unsafe.Pointer) *SocketServicePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketServicePrivate)(ptr)
-}
-
-func marshalSocketServicePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketServicePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketServicePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

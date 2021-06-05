@@ -894,27 +894,3 @@ func (c container) UnsetFocusChain() {
 
 	C.gtk_container_unset_focus_chain(arg0)
 }
-
-type ContainerPrivate struct {
-	native C.GtkContainerPrivate
-}
-
-// WrapContainerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapContainerPrivate(ptr unsafe.Pointer) *ContainerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ContainerPrivate)(ptr)
-}
-
-func marshalContainerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapContainerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ContainerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

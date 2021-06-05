@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalRangeAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRangeAccessible(obj), nil
-}
-
-type RangeAccessiblePrivate struct {
-	native C.GtkRangeAccessiblePrivate
-}
-
-// WrapRangeAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRangeAccessiblePrivate(ptr unsafe.Pointer) *RangeAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RangeAccessiblePrivate)(ptr)
-}
-
-func marshalRangeAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRangeAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RangeAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }

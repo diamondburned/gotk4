@@ -222,27 +222,3 @@ func (v viewport) SetVAdjustment(adjustment Adjustment) {
 
 	C.gtk_viewport_set_vadjustment(arg0, adjustment)
 }
-
-type ViewportPrivate struct {
-	native C.GtkViewportPrivate
-}
-
-// WrapViewportPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapViewportPrivate(ptr unsafe.Pointer) *ViewportPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ViewportPrivate)(ptr)
-}
-
-func marshalViewportPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapViewportPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (v *ViewportPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
-}

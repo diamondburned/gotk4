@@ -293,27 +293,3 @@ func (s numerableIcon) SetStyleContext(style StyleContext) {
 
 	C.gtk_numerable_icon_set_style_context(arg0, style)
 }
-
-type NumerableIconPrivate struct {
-	native C.GtkNumerableIconPrivate
-}
-
-// WrapNumerableIconPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapNumerableIconPrivate(ptr unsafe.Pointer) *NumerableIconPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*NumerableIconPrivate)(ptr)
-}
-
-func marshalNumerableIconPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapNumerableIconPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (n *NumerableIconPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
-}

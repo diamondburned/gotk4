@@ -895,27 +895,3 @@ func (i *RecentInfo) Unref() {
 
 	C.gtk_recent_info_unref(arg0)
 }
-
-type RecentManagerPrivate struct {
-	native C.GtkRecentManagerPrivate
-}
-
-// WrapRecentManagerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRecentManagerPrivate(ptr unsafe.Pointer) *RecentManagerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RecentManagerPrivate)(ptr)
-}
-
-func marshalRecentManagerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRecentManagerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RecentManagerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}

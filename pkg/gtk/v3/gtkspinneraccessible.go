@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,28 +43,4 @@ func marshalSpinnerAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSpinnerAccessible(obj), nil
-}
-
-type SpinnerAccessiblePrivate struct {
-	native C.GtkSpinnerAccessiblePrivate
-}
-
-// WrapSpinnerAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSpinnerAccessiblePrivate(ptr unsafe.Pointer) *SpinnerAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SpinnerAccessiblePrivate)(ptr)
-}
-
-func marshalSpinnerAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSpinnerAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SpinnerAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }

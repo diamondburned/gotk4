@@ -752,27 +752,3 @@ func (a aboutDialog) SetWrapLicense(wrapLicense bool) {
 
 	C.gtk_about_dialog_set_wrap_license(arg0, wrapLicense)
 }
-
-type AboutDialogPrivate struct {
-	native C.GtkAboutDialogPrivate
-}
-
-// WrapAboutDialogPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAboutDialogPrivate(ptr unsafe.Pointer) *AboutDialogPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AboutDialogPrivate)(ptr)
-}
-
-func marshalAboutDialogPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAboutDialogPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AboutDialogPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

@@ -322,27 +322,3 @@ func (c comboBoxText) RemoveAll() {
 
 	C.gtk_combo_box_text_remove_all(arg0)
 }
-
-type ComboBoxTextPrivate struct {
-	native C.GtkComboBoxTextPrivate
-}
-
-// WrapComboBoxTextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapComboBoxTextPrivate(ptr unsafe.Pointer) *ComboBoxTextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ComboBoxTextPrivate)(ptr)
-}
-
-func marshalComboBoxTextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapComboBoxTextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *ComboBoxTextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

@@ -135,27 +135,3 @@ func (b toggleToolButton) SetActive(isActive bool) {
 
 	C.gtk_toggle_tool_button_set_active(arg0, isActive)
 }
-
-type ToggleToolButtonPrivate struct {
-	native C.GtkToggleToolButtonPrivate
-}
-
-// WrapToggleToolButtonPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapToggleToolButtonPrivate(ptr unsafe.Pointer) *ToggleToolButtonPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ToggleToolButtonPrivate)(ptr)
-}
-
-func marshalToggleToolButtonPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapToggleToolButtonPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToggleToolButtonPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

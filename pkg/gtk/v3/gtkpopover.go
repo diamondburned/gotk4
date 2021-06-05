@@ -514,27 +514,3 @@ func (p popover) SetTransitionsEnabled(transitionsEnabled bool) {
 
 	C.gtk_popover_set_transitions_enabled(arg0, transitionsEnabled)
 }
-
-type PopoverPrivate struct {
-	native C.GtkPopoverPrivate
-}
-
-// WrapPopoverPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPopoverPrivate(ptr unsafe.Pointer) *PopoverPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PopoverPrivate)(ptr)
-}
-
-func marshalPopoverPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPopoverPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PopoverPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}

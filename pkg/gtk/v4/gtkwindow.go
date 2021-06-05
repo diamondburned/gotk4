@@ -1390,27 +1390,3 @@ func (w window) Unminimize() {
 
 	C.gtk_window_unminimize(arg0)
 }
-
-type WindowGroupPrivate struct {
-	native C.GtkWindowGroupPrivate
-}
-
-// WrapWindowGroupPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapWindowGroupPrivate(ptr unsafe.Pointer) *WindowGroupPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*WindowGroupPrivate)(ptr)
-}
-
-func marshalWindowGroupPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapWindowGroupPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (w *WindowGroupPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
-}

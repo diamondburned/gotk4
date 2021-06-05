@@ -489,27 +489,3 @@ func (e fileEnumerator) SetPending(pending bool) {
 
 	C.g_file_enumerator_set_pending(arg0, pending)
 }
-
-type FileEnumeratorPrivate struct {
-	native C.GFileEnumeratorPrivate
-}
-
-// WrapFileEnumeratorPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileEnumeratorPrivate(ptr unsafe.Pointer) *FileEnumeratorPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileEnumeratorPrivate)(ptr)
-}
-
-func marshalFileEnumeratorPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileEnumeratorPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileEnumeratorPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}

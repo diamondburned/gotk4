@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -193,28 +191,4 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileChooserDialog(obj), nil
-}
-
-type FileChooserDialogPrivate struct {
-	native C.GtkFileChooserDialogPrivate
-}
-
-// WrapFileChooserDialogPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapFileChooserDialogPrivate(ptr unsafe.Pointer) *FileChooserDialogPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*FileChooserDialogPrivate)(ptr)
-}
-
-func marshalFileChooserDialogPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapFileChooserDialogPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileChooserDialogPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
 }

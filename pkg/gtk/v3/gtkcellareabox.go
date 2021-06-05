@@ -179,27 +179,3 @@ func (b cellAreaBox) SetSpacing(spacing int) {
 
 	C.gtk_cell_area_box_set_spacing(arg0, spacing)
 }
-
-type CellAreaBoxPrivate struct {
-	native C.GtkCellAreaBoxPrivate
-}
-
-// WrapCellAreaBoxPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellAreaBoxPrivate(ptr unsafe.Pointer) *CellAreaBoxPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellAreaBoxPrivate)(ptr)
-}
-
-func marshalCellAreaBoxPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellAreaBoxPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellAreaBoxPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

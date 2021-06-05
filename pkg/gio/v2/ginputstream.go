@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -591,28 +590,4 @@ func (s inputStream) SkipFinish(result AsyncResult) (gssize int, err error) {
 	ret2 = C.gssize(cret)
 
 	return goerr, ret2
-}
-
-type InputStreamPrivate struct {
-	native C.GInputStreamPrivate
-}
-
-// WrapInputStreamPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapInputStreamPrivate(ptr unsafe.Pointer) *InputStreamPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*InputStreamPrivate)(ptr)
-}
-
-func marshalInputStreamPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapInputStreamPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (i *InputStreamPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
 }

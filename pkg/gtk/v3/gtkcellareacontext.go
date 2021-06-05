@@ -381,27 +381,3 @@ func (c cellAreaContext) Reset() {
 
 	C.gtk_cell_area_context_reset(arg0)
 }
-
-type CellAreaContextPrivate struct {
-	native C.GtkCellAreaContextPrivate
-}
-
-// WrapCellAreaContextPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellAreaContextPrivate(ptr unsafe.Pointer) *CellAreaContextPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellAreaContextPrivate)(ptr)
-}
-
-func marshalCellAreaContextPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellAreaContextPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellAreaContextPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

@@ -233,27 +233,3 @@ func (a accelLabel) SetAccelWidget(accelWidget Widget) {
 
 	C.gtk_accel_label_set_accel_widget(arg0, accelWidget)
 }
-
-type AccelLabelPrivate struct {
-	native C.GtkAccelLabelPrivate
-}
-
-// WrapAccelLabelPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAccelLabelPrivate(ptr unsafe.Pointer) *AccelLabelPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AccelLabelPrivate)(ptr)
-}
-
-func marshalAccelLabelPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAccelLabelPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AccelLabelPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

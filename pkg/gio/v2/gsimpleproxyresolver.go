@@ -138,27 +138,3 @@ func (r simpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
 
 	C.g_simple_proxy_resolver_set_uri_proxy(arg0, uriScheme, proxy)
 }
-
-type SimpleProxyResolverPrivate struct {
-	native C.GSimpleProxyResolverPrivate
-}
-
-// WrapSimpleProxyResolverPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSimpleProxyResolverPrivate(ptr unsafe.Pointer) *SimpleProxyResolverPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SimpleProxyResolverPrivate)(ptr)
-}
-
-func marshalSimpleProxyResolverPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSimpleProxyResolverPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SimpleProxyResolverPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

@@ -1853,27 +1853,3 @@ func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY 
 
 	return ret4, ret5
 }
-
-type TextViewPrivate struct {
-	native C.GtkTextViewPrivate
-}
-
-// WrapTextViewPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTextViewPrivate(ptr unsafe.Pointer) *TextViewPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TextViewPrivate)(ptr)
-}
-
-func marshalTextViewPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTextViewPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextViewPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

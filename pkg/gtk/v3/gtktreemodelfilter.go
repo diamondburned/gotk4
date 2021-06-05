@@ -454,27 +454,3 @@ func (f treeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 
 	C.gtk_tree_model_filter_set_visible_func(arg0, fn, data, destroy)
 }
-
-type TreeModelFilterPrivate struct {
-	native C.GtkTreeModelFilterPrivate
-}
-
-// WrapTreeModelFilterPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTreeModelFilterPrivate(ptr unsafe.Pointer) *TreeModelFilterPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TreeModelFilterPrivate)(ptr)
-}
-
-func marshalTreeModelFilterPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTreeModelFilterPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TreeModelFilterPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}

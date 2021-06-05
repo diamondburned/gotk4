@@ -71,27 +71,3 @@ func NewCellRendererPixbuf() CellRendererPixbuf {
 
 	return ret1
 }
-
-type CellRendererPixbufPrivate struct {
-	native C.GtkCellRendererPixbufPrivate
-}
-
-// WrapCellRendererPixbufPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellRendererPixbufPrivate(ptr unsafe.Pointer) *CellRendererPixbufPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellRendererPixbufPrivate)(ptr)
-}
-
-func marshalCellRendererPixbufPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellRendererPixbufPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellRendererPixbufPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

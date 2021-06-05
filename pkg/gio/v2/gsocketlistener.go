@@ -509,27 +509,3 @@ func (l socketListener) SetBacklog(listenBacklog int) {
 
 	C.g_socket_listener_set_backlog(arg0, listenBacklog)
 }
-
-type SocketListenerPrivate struct {
-	native C.GSocketListenerPrivate
-}
-
-// WrapSocketListenerPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSocketListenerPrivate(ptr unsafe.Pointer) *SocketListenerPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SocketListenerPrivate)(ptr)
-}
-
-func marshalSocketListenerPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSocketListenerPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SocketListenerPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}

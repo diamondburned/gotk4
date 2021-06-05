@@ -447,27 +447,3 @@ func (m menuItem) ToggleSizeRequest(requisition int) {
 
 	C.gtk_menu_item_toggle_size_request(arg0, requisition)
 }
-
-type MenuItemPrivate struct {
-	native C.GtkMenuItemPrivate
-}
-
-// WrapMenuItemPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapMenuItemPrivate(ptr unsafe.Pointer) *MenuItemPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*MenuItemPrivate)(ptr)
-}
-
-func marshalMenuItemPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapMenuItemPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MenuItemPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
-}

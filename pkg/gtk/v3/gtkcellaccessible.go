@@ -2,38 +2,9 @@
 
 package gtk
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-type CellAccessiblePrivate struct {
-	native C.GtkCellAccessiblePrivate
-}
-
-// WrapCellAccessiblePrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapCellAccessiblePrivate(ptr unsafe.Pointer) *CellAccessiblePrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*CellAccessiblePrivate)(ptr)
-}
-
-func marshalCellAccessiblePrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapCellAccessiblePrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *CellAccessiblePrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
-}

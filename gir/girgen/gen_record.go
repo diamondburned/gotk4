@@ -20,8 +20,9 @@ var recordIgnoreSuffixes = []string{
 	// can do lazy type cast on call.
 	"Interface",
 	"Iface",
-	// No idea why this is here.
+	// No idea why these are here.
 	"Class",
+	"Private",
 }
 
 var recordTmpl = newGoTemplate(`

@@ -436,27 +436,3 @@ func (e expander) SetUseUnderline(useUnderline bool) {
 
 	C.gtk_expander_set_use_underline(arg0, useUnderline)
 }
-
-type ExpanderPrivate struct {
-	native C.GtkExpanderPrivate
-}
-
-// WrapExpanderPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapExpanderPrivate(ptr unsafe.Pointer) *ExpanderPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ExpanderPrivate)(ptr)
-}
-
-func marshalExpanderPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapExpanderPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *ExpanderPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
-}

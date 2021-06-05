@@ -620,27 +620,3 @@ func (r resolver) SetDefault() {
 
 	C.g_resolver_set_default(arg0)
 }
-
-type ResolverPrivate struct {
-	native C.GResolverPrivate
-}
-
-// WrapResolverPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapResolverPrivate(ptr unsafe.Pointer) *ResolverPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*ResolverPrivate)(ptr)
-}
-
-func marshalResolverPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapResolverPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *ResolverPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}

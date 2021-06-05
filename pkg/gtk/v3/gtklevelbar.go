@@ -355,27 +355,3 @@ func (s levelBar) SetValue(value float64) {
 
 	C.gtk_level_bar_set_value(arg0, value)
 }
-
-type LevelBarPrivate struct {
-	native C.GtkLevelBarPrivate
-}
-
-// WrapLevelBarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapLevelBarPrivate(ptr unsafe.Pointer) *LevelBarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*LevelBarPrivate)(ptr)
-}
-
-func marshalLevelBarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapLevelBarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *LevelBarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
-}

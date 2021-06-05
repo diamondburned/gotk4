@@ -374,27 +374,3 @@ func (b headerBar) SetTitle(title string) {
 
 	C.gtk_header_bar_set_title(arg0, title)
 }
-
-type HeaderBarPrivate struct {
-	native C.GtkHeaderBarPrivate
-}
-
-// WrapHeaderBarPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapHeaderBarPrivate(ptr unsafe.Pointer) *HeaderBarPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*HeaderBarPrivate)(ptr)
-}
-
-func marshalHeaderBarPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapHeaderBarPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (h *HeaderBarPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
-}

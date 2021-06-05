@@ -93,27 +93,3 @@ func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget
 
 	return ret1
 }
-
-type RecentChooserWidgetPrivate struct {
-	native C.GtkRecentChooserWidgetPrivate
-}
-
-// WrapRecentChooserWidgetPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapRecentChooserWidgetPrivate(ptr unsafe.Pointer) *RecentChooserWidgetPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*RecentChooserWidgetPrivate)(ptr)
-}
-
-func marshalRecentChooserWidgetPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapRecentChooserWidgetPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RecentChooserWidgetPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
-}

@@ -315,27 +315,3 @@ func (s appChooserWidget) SetShowRecommended(setting bool) {
 
 	C.gtk_app_chooser_widget_set_show_recommended(arg0, setting)
 }
-
-type AppChooserWidgetPrivate struct {
-	native C.GtkAppChooserWidgetPrivate
-}
-
-// WrapAppChooserWidgetPrivate wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapAppChooserWidgetPrivate(ptr unsafe.Pointer) *AppChooserWidgetPrivate {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*AppChooserWidgetPrivate)(ptr)
-}
-
-func marshalAppChooserWidgetPrivate(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapAppChooserWidgetPrivate(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (a *AppChooserWidgetPrivate) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
-}

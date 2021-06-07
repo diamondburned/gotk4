@@ -3,19 +3,15 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <pango/pango.h>
 import "C"
 
@@ -71,47 +67,27 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 //
 // If breaks are disabled, the range will be kept in a single run, as far as
 // possible.
-func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
+func NewAttrAllowBreaks(allowBreaks bool) {
 	var arg1 C.gboolean
 
 	if allowBreaks {
 		arg1 = C.gboolean(1)
 	}
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_allow_breaks_new(allowBreaks)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_allow_breaks_new(arg1)
 }
 
 // NewAttrBackgroundAlpha: create a new background alpha attribute.
-func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
+func NewAttrBackgroundAlpha(alpha uint16) {
 	var arg1 C.guint16
 
 	arg1 = C.guint16(alpha)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_background_alpha_new(alpha)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_background_alpha_new(arg1)
 }
 
 // NewAttrBackground: create a new background color attribute.
-func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrBackground(red uint16, green uint16, blue uint16) {
 	var arg1 C.guint16
 	var arg2 C.guint16
 	var arg3 C.guint16
@@ -120,17 +96,7 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 	arg2 = C.guint16(green)
 	arg3 = C.guint16(blue)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_background_new(red, green, blue)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_background_new(arg1, arg2, arg3)
 }
 
 // NewAttrFallback: create a new font fallback attribute.
@@ -138,109 +104,59 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 // If fallback is disabled, characters will only be used from the closest
 // matching font on the system. No fallback will be done to other fonts on the
 // system that might contain the characters in the text.
-func NewAttrFallback(enableFallback bool) *Attribute {
+func NewAttrFallback(enableFallback bool) {
 	var arg1 C.gboolean
 
 	if enableFallback {
 		arg1 = C.gboolean(1)
 	}
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_fallback_new(enableFallback)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_fallback_new(arg1)
 }
 
 // NewAttrFamily: create a new font family attribute.
-func NewAttrFamily(family string) *Attribute {
+func NewAttrFamily(family string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(family))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_family_new(family)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_family_new(arg1)
 }
 
 // NewAttrFontDesc: create a new font description attribute.
 //
 // This attribute allows setting family, style, weight, variant, stretch, and
 // size simultaneously.
-func NewAttrFontDesc(desc *FontDescription) *Attribute {
+func NewAttrFontDesc(desc *FontDescription) {
 	var arg1 *C.PangoFontDescription
 
 	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_font_desc_new(desc)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_font_desc_new(arg1)
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
-func NewAttrFontFeatures(features string) *Attribute {
+func NewAttrFontFeatures(features string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(features))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_font_features_new(features)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_font_features_new(arg1)
 }
 
 // NewAttrForegroundAlpha: create a new foreground alpha attribute.
-func NewAttrForegroundAlpha(alpha uint16) *Attribute {
+func NewAttrForegroundAlpha(alpha uint16) {
 	var arg1 C.guint16
 
 	arg1 = C.guint16(alpha)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_foreground_alpha_new(alpha)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_foreground_alpha_new(arg1)
 }
 
 // NewAttrForeground: create a new foreground color attribute.
-func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrForeground(red uint16, green uint16, blue uint16) {
 	var arg1 C.guint16
 	var arg2 C.guint16
 	var arg3 C.guint16
@@ -249,124 +165,64 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
 	arg2 = C.guint16(green)
 	arg3 = C.guint16(blue)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_foreground_new(red, green, blue)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_foreground_new(arg1, arg2, arg3)
 }
 
 // NewAttrGravityHint: create a new gravity hint attribute.
-func NewAttrGravityHint(hint GravityHint) *Attribute {
+func NewAttrGravityHint(hint GravityHint) {
 	var arg1 C.PangoGravityHint
 
 	arg1 = (C.PangoGravityHint)(hint)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_gravity_hint_new(hint)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_gravity_hint_new(arg1)
 }
 
 // NewAttrGravity: create a new gravity attribute.
-func NewAttrGravity(gravity Gravity) *Attribute {
+func NewAttrGravity(gravity Gravity) {
 	var arg1 C.PangoGravity
 
 	arg1 = (C.PangoGravity)(gravity)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_gravity_new(gravity)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_gravity_new(arg1)
 }
 
 // NewAttrInsertHyphens: create a new insert-hyphens attribute.
 //
 // Pango will insert hyphens when breaking lines in the middle of a word. This
 // attribute can be used to suppress the hyphen.
-func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
+func NewAttrInsertHyphens(insertHyphens bool) {
 	var arg1 C.gboolean
 
 	if insertHyphens {
 		arg1 = C.gboolean(1)
 	}
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_insert_hyphens_new(insertHyphens)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_insert_hyphens_new(arg1)
 }
 
 // NewAttrLanguage: create a new language tag attribute.
-func NewAttrLanguage(language *Language) *Attribute {
+func NewAttrLanguage(language *Language) {
 	var arg1 *C.PangoLanguage
 
 	arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_language_new(language)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_language_new(arg1)
 }
 
 // NewAttrLetterSpacing: create a new letter-spacing attribute.
-func NewAttrLetterSpacing(letterSpacing int) *Attribute {
+func NewAttrLetterSpacing(letterSpacing int) {
 	var arg1 C.int
 
 	arg1 = C.int(letterSpacing)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_letter_spacing_new(letterSpacing)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_letter_spacing_new(arg1)
 }
 
 // NewAttrOverlineColor: create a new overline color attribute.
 //
 // This attribute modifies the color of overlines. If not set, overlines will
 // use the foreground color.
-func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrOverlineColor(red uint16, green uint16, blue uint16) {
 	var arg1 C.guint16
 	var arg2 C.guint16
 	var arg3 C.guint16
@@ -375,77 +231,37 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	arg2 = C.guint16(green)
 	arg3 = C.guint16(blue)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_overline_color_new(red, green, blue)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_overline_color_new(arg1, arg2, arg3)
 }
 
 // NewAttrOverline: create a new overline-style attribute.
-func NewAttrOverline(overline Overline) *Attribute {
+func NewAttrOverline(overline Overline) {
 	var arg1 C.PangoOverline
 
 	arg1 = (C.PangoOverline)(overline)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_overline_new(overline)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_overline_new(arg1)
 }
 
 // NewAttrRise: create a new baseline displacement attribute.
-func NewAttrRise(rise int) *Attribute {
+func NewAttrRise(rise int) {
 	var arg1 C.int
 
 	arg1 = C.int(rise)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_rise_new(rise)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_rise_new(arg1)
 }
 
 // NewAttrScale: create a new font size scale attribute.
 //
 // The base font for the affected text will have its size multiplied by
 // @scale_factor.
-func NewAttrScale(scaleFactor float64) *Attribute {
+func NewAttrScale(scaleFactor float64) {
 	var arg1 C.double
 
 	arg1 = C.double(scaleFactor)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_scale_new(scaleFactor)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_scale_new(arg1)
 }
 
 // NewAttrShape: create a new shape attribute.
@@ -453,127 +269,66 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a `PangoLayout`.
-func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
+func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg1 *C.PangoRectangle
 	var arg2 *C.PangoRectangle
 
 	arg1 = (*C.PangoRectangle)(unsafe.Pointer(inkRect.Native()))
 	arg2 = (*C.PangoRectangle)(unsafe.Pointer(logicalRect.Native()))
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_shape_new(inkRect, logicalRect)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_shape_new(arg1, arg2)
 }
 
 // AttrShapeNewWithData creates a new shape attribute.
 //
 // Like pango_attr_shape_new(), but a user data pointer is also provided; this
 // pointer can be accessed when later rendering the glyph.
-func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data interface{}, copyFunc AttrDataCopyFunc) *Attribute {
-
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_shape_new_with_data(inkRect, logicalRect, data, copyFunc, destroyFunc)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func AttrShapeNewWithData() {
+	C.pango_attr_shape_new_with_data(arg1, arg2, arg3, arg4, arg5)
 }
 
 // NewAttrShow: create a new attribute that influences how invisible characters
 // are rendered.
-func NewAttrShow(flags ShowFlags) *Attribute {
+func NewAttrShow(flags ShowFlags) {
 	var arg1 C.PangoShowFlags
 
 	arg1 = (C.PangoShowFlags)(flags)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_show_new(flags)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_show_new(arg1)
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
-func NewAttrSize(size int) *Attribute {
+func NewAttrSize(size int) {
 	var arg1 C.int
 
 	arg1 = C.int(size)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_size_new(size)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_size_new(arg1)
 }
 
 // AttrSizeNewAbsolute: create a new font-size attribute in device units.
-func AttrSizeNewAbsolute(size int) *Attribute {
+func AttrSizeNewAbsolute(size int) {
 	var arg1 C.int
 
 	arg1 = C.int(size)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_size_new_absolute(size)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_size_new_absolute(arg1)
 }
 
 // NewAttrStretch: create a new font stretch attribute.
-func NewAttrStretch(stretch Stretch) *Attribute {
+func NewAttrStretch(stretch Stretch) {
 	var arg1 C.PangoStretch
 
 	arg1 = (C.PangoStretch)(stretch)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_stretch_new(stretch)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_stretch_new(arg1)
 }
 
 // NewAttrStrikethroughColor: create a new strikethrough color attribute.
 //
 // This attribute modifies the color of strikethrough lines. If not set,
 // strikethrough lines will use the foreground color.
-func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) {
 	var arg1 C.guint16
 	var arg2 C.guint16
 	var arg3 C.guint16
@@ -582,57 +337,27 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 	arg2 = C.guint16(green)
 	arg3 = C.guint16(blue)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_strikethrough_color_new(red, green, blue)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_strikethrough_color_new(arg1, arg2, arg3)
 }
 
 // NewAttrStrikethrough: create a new strike-through attribute.
-func NewAttrStrikethrough(strikethrough bool) *Attribute {
+func NewAttrStrikethrough(strikethrough bool) {
 	var arg1 C.gboolean
 
 	if strikethrough {
 		arg1 = C.gboolean(1)
 	}
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_strikethrough_new(strikethrough)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_strikethrough_new(arg1)
 }
 
 // NewAttrStyle: create a new font slant style attribute.
-func NewAttrStyle(style Style) *Attribute {
+func NewAttrStyle(style Style) {
 	var arg1 C.PangoStyle
 
 	arg1 = (C.PangoStyle)(style)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_style_new(style)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_style_new(arg1)
 }
 
 // AttrTypeGetName fetches the attribute type name.
@@ -642,46 +367,32 @@ func NewAttrStyle(style Style) *Attribute {
 //
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
-func AttrTypeGetName(typ AttrType) string {
+func AttrTypeGetName(typ AttrType) {
 	var arg1 C.PangoAttrType
 
 	arg1 = (C.PangoAttrType)(typ)
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.pango_attr_type_get_name(typ)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.pango_attr_type_get_name(arg1)
 }
 
 // AttrTypeRegister: allocate a new attribute type ID.
 //
 // The attribute type name can be accessed later by using
 // [type_func@Pango.AttrType.get_name].
-func AttrTypeRegister(name string) AttrType {
+func AttrTypeRegister(name string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.PangoAttrType
-	var ret1 AttrType
-
-	cret = C.pango_attr_type_register(name)
-
-	ret1 = AttrType(cret)
-
-	return ret1
+	C.pango_attr_type_register(arg1)
 }
 
 // NewAttrUnderlineColor: create a new underline color attribute.
 //
 // This attribute modifies the color of underlines. If not set, underlines will
 // use the foreground color.
-func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
+func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) {
 	var arg1 C.guint16
 	var arg2 C.guint16
 	var arg3 C.guint16
@@ -690,74 +401,34 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 	arg2 = C.guint16(green)
 	arg3 = C.guint16(blue)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_underline_color_new(red, green, blue)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_underline_color_new(arg1, arg2, arg3)
 }
 
 // NewAttrUnderline: create a new underline-style attribute.
-func NewAttrUnderline(underline Underline) *Attribute {
+func NewAttrUnderline(underline Underline) {
 	var arg1 C.PangoUnderline
 
 	arg1 = (C.PangoUnderline)(underline)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_underline_new(underline)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_underline_new(arg1)
 }
 
 // NewAttrVariant: create a new font variant attribute (normal or small caps).
-func NewAttrVariant(variant Variant) *Attribute {
+func NewAttrVariant(variant Variant) {
 	var arg1 C.PangoVariant
 
 	arg1 = (C.PangoVariant)(variant)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_variant_new(variant)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_variant_new(arg1)
 }
 
 // NewAttrWeight: create a new font weight attribute.
-func NewAttrWeight(weight Weight) *Attribute {
+func NewAttrWeight(weight Weight) {
 	var arg1 C.PangoWeight
 
 	arg1 = (C.PangoWeight)(weight)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_weight_new(weight)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_weight_new(arg1)
 }
 
 // MarkupParserFinish finishes parsing markup.
@@ -766,32 +437,32 @@ func NewAttrWeight(weight Weight) *Attribute {
 // g_markup_parse_context_parse(), use this function to get the list of
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
-func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, text string, accelChar uint32, err error) {
+func MarkupParserFinish(context *glib.MarkupParseContext) (attrList **AttrList, text string, accelChar uint32, err error) {
 	var arg1 *C.GMarkupParseContext
 
 	arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context.Native()))
 
 	var arg2 *C.PangoAttrList
-	var ret2 **AttrList
+	var attrList **AttrList
 	var arg3 *C.char
-	var ret3 string
+	var text string
 	var arg4 C.gunichar
-	var ret4 uint32
+	var accelChar uint32
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.pango_markup_parser_finish(context, &arg2, &arg3, &arg4, &errout)
+	C.pango_markup_parser_finish(arg1, &arg2, &arg3, &arg4, &errout)
 
-	*ret2 = WrapAttrList(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(*ret2, func(v **AttrList) {
+	attrList = WrapAttrList(unsafe.Pointer(&arg2))
+	runtime.SetFinalizer(attrList, func(v **AttrList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	*ret3 = C.GoString(arg3)
-	defer C.free(unsafe.Pointer(arg3))
-	*ret4 = C.gunichar(arg4)
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	text = C.GoString(&arg3)
+	defer C.free(unsafe.Pointer(&arg3))
+	accelChar = uint32(&arg4)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret2, ret3, ret4, goerr
+	return attrList, text, accelChar, err
 }
 
 // NewMarkupParser: incrementally parses marked-up text to create a plain-text
@@ -816,19 +487,12 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, t
 // This function is designed for applications that read Pango markup from
 // streams. To simply parse a string containing Pango markup, the
 // [func@parse_markup] API is recommended instead.
-func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
+func NewMarkupParser(accelMarker uint32) {
 	var arg1 C.gunichar
 
 	arg1 = C.gunichar(accelMarker)
 
-	var cret *C.GMarkupParseContext
-	var ret1 *glib.MarkupParseContext
-
-	cret = C.pango_markup_parser_new(accelMarker)
-
-	ret1 = glib.WrapMarkupParseContext(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_markup_parser_new(arg1)
 }
 
 // ParseMarkup parses marked-up text to create a plain-text string and an
@@ -849,7 +513,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 //
 // If any error happens, none of the output arguments are touched except for
 // @error.
-func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *AttrList, text string, accelChar uint32, err error) {
+func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList **AttrList, text string, accelChar uint32, err error) {
 	var arg1 *C.char
 	var arg2 C.int
 	var arg3 C.gunichar
@@ -860,26 +524,26 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 	arg3 = C.gunichar(accelMarker)
 
 	var arg4 *C.PangoAttrList
-	var ret4 **AttrList
+	var attrList **AttrList
 	var arg5 *C.char
-	var ret5 string
+	var text string
 	var arg6 C.gunichar
-	var ret6 uint32
+	var accelChar uint32
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.pango_parse_markup(markupText, length, accelMarker, &arg4, &arg5, &arg6, &errout)
+	C.pango_parse_markup(arg1, arg2, arg3, &arg4, &arg5, &arg6, &errout)
 
-	*ret4 = WrapAttrList(unsafe.Pointer(arg4))
-	runtime.SetFinalizer(*ret4, func(v **AttrList) {
+	attrList = WrapAttrList(unsafe.Pointer(&arg4))
+	runtime.SetFinalizer(attrList, func(v **AttrList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	*ret5 = C.GoString(arg5)
-	defer C.free(unsafe.Pointer(arg5))
-	*ret6 = C.gunichar(arg6)
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	text = C.GoString(&arg5)
+	defer C.free(unsafe.Pointer(&arg5))
+	accelChar = uint32(&arg6)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret4, ret5, ret6, goerr
+	return attrList, text, accelChar, err
 }
 
 // AttrColor: the `PangoAttrColor` structure is used to represent attributes
@@ -910,12 +574,16 @@ func (a *AttrColor) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrColor) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Color gets the field inside the struct.
 func (a *AttrColor) Color() Color {
+	var v Color
 	v = WrapColor(unsafe.Pointer(a.native.color))
+	return v
 }
 
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
@@ -946,12 +614,16 @@ func (a *AttrFloat) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrFloat) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Value gets the field inside the struct.
 func (a *AttrFloat) Value() float64 {
-	v = C.double(a.native.value)
+	var v float64
+	v = float64(a.native.value)
+	return v
 }
 
 // AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
@@ -982,12 +654,16 @@ func (a *AttrFontDesc) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrFontDesc) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Desc gets the field inside the struct.
 func (a *AttrFontDesc) Desc() *FontDescription {
+	var v *FontDescription
 	v = WrapFontDescription(unsafe.Pointer(a.native.desc))
+	return v
 }
 
 // AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
@@ -1018,12 +694,16 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrFontFeatures) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Features gets the field inside the struct.
 func (a *AttrFontFeatures) Features() string {
+	var v string
 	v = C.GoString(a.native.features)
+	return v
 }
 
 // AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
@@ -1054,12 +734,16 @@ func (a *AttrInt) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrInt) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Value gets the field inside the struct.
 func (a *AttrInt) Value() int {
-	v = C.int(a.native.value)
+	var v int
+	v = int(a.native.value)
+	return v
 }
 
 // AttrIterator: a `PangoAttrIterator` is used to iterate through a
@@ -1095,26 +779,16 @@ func (a *AttrIterator) Native() unsafe.Pointer {
 }
 
 // Copy: copy a `PangoAttrIterator`.
-func (i *AttrIterator) Copy() *AttrIterator {
+func (i *AttrIterator) Copy(i *AttrIterator) {
 	var arg0 *C.PangoAttrIterator
 
 	arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoAttrIterator
-	var ret1 *AttrIterator
-
-	cret = C.pango_attr_iterator_copy(arg0)
-
-	ret1 = WrapAttrIterator(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *AttrIterator) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_iterator_copy(arg0)
 }
 
 // Destroy: destroy a `PangoAttrIterator` and free all associated memory.
-func (i *AttrIterator) Destroy() {
+func (i *AttrIterator) Destroy(i *AttrIterator) {
 	var arg0 *C.PangoAttrIterator
 
 	arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
@@ -1125,44 +799,27 @@ func (i *AttrIterator) Destroy() {
 // Get: find the current attribute of a particular type at the iterator
 // location. When multiple attributes of the same type overlap, the attribute
 // whose range starts closest to the current location is used.
-func (i *AttrIterator) Get(typ AttrType) *Attribute {
+func (i *AttrIterator) Get(i *AttrIterator, typ AttrType) {
 	var arg0 *C.PangoAttrIterator
 	var arg1 C.PangoAttrType
 
 	arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 	arg1 = (C.PangoAttrType)(typ)
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attr_iterator_get(arg0, typ)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_attr_iterator_get(arg0, arg1)
 }
 
 // Attrs gets a list of all attributes at the current position of the iterator.
-func (i *AttrIterator) Attrs() *glib.SList {
+func (i *AttrIterator) Attrs(i *AttrIterator) {
 	var arg0 *C.PangoAttrIterator
 
 	arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.pango_attr_iterator_get_attrs(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_iterator_get_attrs(arg0)
 }
 
 // Font: get the font and other attributes at the current iterator position.
-func (i *AttrIterator) Font(desc *FontDescription, language **Language, extraAttrs **glib.SList) {
+func (i *AttrIterator) Font(i *AttrIterator, desc *FontDescription, language **Language, extraAttrs **glib.SList) {
 	var arg0 *C.PangoAttrIterator
 	var arg1 *C.PangoFontDescription
 	var arg2 **C.PangoLanguage
@@ -1173,45 +830,47 @@ func (i *AttrIterator) Font(desc *FontDescription, language **Language, extraAtt
 	arg2 = (**C.PangoLanguage)(unsafe.Pointer(language.Native()))
 	arg3 = (**C.GSList)(unsafe.Pointer(extraAttrs.Native()))
 
-	C.pango_attr_iterator_get_font(arg0, desc, language, extraAttrs)
+	C.pango_attr_iterator_get_font(arg0, arg1, arg2, arg3)
 }
 
 // Next: advance the iterator until the next change of style.
-func (i *AttrIterator) Next() bool {
+func (i *AttrIterator) Next(i *AttrIterator) bool {
 	var arg0 *C.PangoAttrIterator
 
 	arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_attr_iterator_next(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Range: get the range of the current segment. Note that the stored return
 // values are signed, not unsigned like the values in `PangoAttribute`. To deal
 // with this API oversight, stored return values that wouldn't fit into a signed
 // integer are clamped to G_MAXINT.
-func (i *AttrIterator) Range() (start int, end int) {
+func (i *AttrIterator) Range(i *AttrIterator) (start int, end int) {
 	var arg0 *C.PangoAttrIterator
 
 	arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.gint
-	var ret1 int
+	var start int
 	var arg2 C.gint
-	var ret2 int
+	var end int
 
 	C.pango_attr_iterator_range(arg0, &arg1, &arg2)
 
-	*ret1 = C.gint(arg1)
-	*ret2 = C.gint(arg2)
+	start = int(&arg1)
+	end = int(&arg2)
 
-	return ret1, ret2
+	return start, end
 }
 
 // AttrLanguage: the `PangoAttrLanguage` structure is used to represent
@@ -1242,12 +901,16 @@ func (a *AttrLanguage) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrLanguage) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Value gets the field inside the struct.
 func (a *AttrLanguage) Value() *Language {
+	var v *Language
 	v = WrapLanguage(unsafe.Pointer(a.native.value))
+	return v
 }
 
 // AttrList: a `PangoAttrList` represents a list of attributes that apply to a
@@ -1281,18 +944,8 @@ func marshalAttrList(p uintptr) (interface{}, error) {
 }
 
 // NewAttrList constructs a struct AttrList.
-func NewAttrList() *AttrList {
-	var cret *C.PangoAttrList
-	var ret1 *AttrList
-
-	cret = C.pango_attr_list_new()
-
-	ret1 = WrapAttrList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewAttrList() {
+	C.pango_attr_list_new()
 }
 
 // Native returns the underlying C source pointer.
@@ -1309,39 +962,29 @@ func (a *AttrList) Native() unsafe.Pointer {
 // attribute list in order (potentially much slower for large lists). However,
 // [method@Pango.AttrList.insert] is not suitable for continually changing a set
 // of attributes since it never removes or combines existing attributes.
-func (l *AttrList) Change(attr *Attribute) {
+func (l *AttrList) Change(l *AttrList, attr *Attribute) {
 	var arg0 *C.PangoAttrList
 	var arg1 *C.PangoAttribute
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr.Native()))
 
-	C.pango_attr_list_change(arg0, attr)
+	C.pango_attr_list_change(arg0, arg1)
 }
 
 // Copy: copy @list and return an identical new list.
-func (l *AttrList) Copy() *AttrList {
+func (l *AttrList) Copy(l *AttrList) {
 	var arg0 *C.PangoAttrList
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoAttrList
-	var ret1 *AttrList
-
-	cret = C.pango_attr_list_copy(arg0)
-
-	ret1 = WrapAttrList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_list_copy(arg0)
 }
 
 // Equal checks whether @list and @other_list contain the same attributes and
 // whether those attributes apply to the same ranges. Beware that this will
 // return wrong values if any list contains duplicates.
-func (l *AttrList) Equal(otherList *AttrList) bool {
+func (l *AttrList) Equal(l *AttrList, otherList *AttrList) bool {
 	var arg0 *C.PangoAttrList
 	var arg1 *C.PangoAttrList
 
@@ -1349,117 +992,79 @@ func (l *AttrList) Equal(otherList *AttrList) bool {
 	arg1 = (*C.PangoAttrList)(unsafe.Pointer(otherList.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_attr_list_equal(arg0, otherList)
+	cret = C.pango_attr_list_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Filter: given a `PangoAttrList` and callback function, removes any elements
 // of @list for which @func returns true and inserts them into a new list.
-func (l *AttrList) Filter(fn AttrFilterFunc) *AttrList {
+func (l *AttrList) Filter(l *AttrList) {
 	var arg0 *C.PangoAttrList
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoAttrList
-	var ret1 *AttrList
-
-	cret = C.pango_attr_list_filter(arg0, fn, data)
-
-	ret1 = WrapAttrList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_list_filter(arg0, arg1, arg2)
 }
 
 // Attributes gets a list of all attributes in @list.
-func (l *AttrList) Attributes() *glib.SList {
+func (l *AttrList) Attributes(l *AttrList) {
 	var arg0 *C.PangoAttrList
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.pango_attr_list_get_attributes(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_list_get_attributes(arg0)
 }
 
 // Iterator: create a iterator initialized to the beginning of the list. @list
 // must not be modified until this iterator is freed.
-func (l *AttrList) Iterator() *AttrIterator {
+func (l *AttrList) Iterator(l *AttrList) {
 	var arg0 *C.PangoAttrList
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoAttrIterator
-	var ret1 *AttrIterator
-
-	cret = C.pango_attr_list_get_iterator(arg0)
-
-	ret1 = WrapAttrIterator(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *AttrIterator) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_list_get_iterator(arg0)
 }
 
 // Insert: insert the given attribute into the `PangoAttrList`.
 //
 // It will be inserted after all other attributes with a matching @start_index.
-func (l *AttrList) Insert(attr *Attribute) {
+func (l *AttrList) Insert(l *AttrList, attr *Attribute) {
 	var arg0 *C.PangoAttrList
 	var arg1 *C.PangoAttribute
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr.Native()))
 
-	C.pango_attr_list_insert(arg0, attr)
+	C.pango_attr_list_insert(arg0, arg1)
 }
 
 // InsertBefore: insert the given attribute into the `PangoAttrList`.
 //
 // It will be inserted before all other attributes with a matching @start_index.
-func (l *AttrList) InsertBefore(attr *Attribute) {
+func (l *AttrList) InsertBefore(l *AttrList, attr *Attribute) {
 	var arg0 *C.PangoAttrList
 	var arg1 *C.PangoAttribute
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr.Native()))
 
-	C.pango_attr_list_insert_before(arg0, attr)
+	C.pango_attr_list_insert_before(arg0, arg1)
 }
 
 // Ref: increase the reference count of the given attribute list by one.
-func (l *AttrList) Ref() *AttrList {
+func (l *AttrList) Ref(l *AttrList) {
 	var arg0 *C.PangoAttrList
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoAttrList
-	var ret1 *AttrList
-
-	cret = C.pango_attr_list_ref(arg0)
-
-	ret1 = WrapAttrList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attr_list_ref(arg0)
 }
 
 // Splice: this function opens up a hole in @list, fills it in with attributes
@@ -1472,7 +1077,7 @@ func (l *AttrList) Ref() *AttrList {
 //
 // This operation proves useful for, for instance, inserting a pre-edit string
 // in the middle of an edit buffer.
-func (l *AttrList) Splice(other *AttrList, pos int, len int) {
+func (l *AttrList) Splice(l *AttrList, other *AttrList, pos int, len int) {
 	var arg0 *C.PangoAttrList
 	var arg1 *C.PangoAttrList
 	var arg2 C.gint
@@ -1483,12 +1088,12 @@ func (l *AttrList) Splice(other *AttrList, pos int, len int) {
 	arg2 = C.gint(pos)
 	arg3 = C.gint(len)
 
-	C.pango_attr_list_splice(arg0, other, pos, len)
+	C.pango_attr_list_splice(arg0, arg1, arg2, arg3)
 }
 
 // Unref: decrease the reference count of the given attribute list by one. If
 // the result is zero, free the attribute list and the attributes it contains.
-func (l *AttrList) Unref() {
+func (l *AttrList) Unref(l *AttrList) {
 	var arg0 *C.PangoAttrList
 
 	arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
@@ -1510,7 +1115,7 @@ func (l *AttrList) Unref() {
 //
 // Attributes start and end positions are updated if they are behind @pos +
 // @remove.
-func (l *AttrList) Update(pos int, remove int, add int) {
+func (l *AttrList) Update(l *AttrList, pos int, remove int, add int) {
 	var arg0 *C.PangoAttrList
 	var arg1 C.int
 	var arg2 C.int
@@ -1521,7 +1126,7 @@ func (l *AttrList) Update(pos int, remove int, add int) {
 	arg2 = C.int(remove)
 	arg3 = C.int(add)
 
-	C.pango_attr_list_update(arg0, pos, remove, add)
+	C.pango_attr_list_update(arg0, arg1, arg2, arg3)
 }
 
 // AttrShape: the `PangoAttrShape` structure is used to represent attributes
@@ -1552,22 +1157,30 @@ func (a *AttrShape) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrShape) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // InkRect gets the field inside the struct.
 func (a *AttrShape) InkRect() Rectangle {
+	var v Rectangle
 	v = WrapRectangle(unsafe.Pointer(a.native.ink_rect))
+	return v
 }
 
 // LogicalRect gets the field inside the struct.
 func (a *AttrShape) LogicalRect() Rectangle {
+	var v Rectangle
 	v = WrapRectangle(unsafe.Pointer(a.native.logical_rect))
+	return v
 }
 
 // Data gets the field inside the struct.
 func (a *AttrShape) Data() interface{} {
-	v = C.gpointer(a.native.data)
+	var v interface{}
+	v = interface{}(a.native.data)
+	return v
 }
 
 // AttrSize: the `PangoAttrSize` structure is used to represent attributes which
@@ -1598,12 +1211,16 @@ func (a *AttrSize) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrSize) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Size gets the field inside the struct.
 func (a *AttrSize) Size() int {
-	v = C.int(a.native.size)
+	var v int
+	v = int(a.native.size)
+	return v
 }
 
 // AttrString: the `PangoAttrString` structure is used to represent attributes
@@ -1634,12 +1251,16 @@ func (a *AttrString) Native() unsafe.Pointer {
 
 // Attr gets the field inside the struct.
 func (a *AttrString) Attr() Attribute {
+	var v Attribute
 	v = WrapAttribute(unsafe.Pointer(a.native.attr))
+	return v
 }
 
 // Value gets the field inside the struct.
 func (a *AttrString) Value() string {
+	var v string
 	v = C.GoString(a.native.value)
+	return v
 }
 
 // Attribute: the `PangoAttribute` structure represents the common portions of
@@ -1676,35 +1297,29 @@ func (a *Attribute) Native() unsafe.Pointer {
 
 // StartIndex gets the field inside the struct.
 func (a *Attribute) StartIndex() uint {
-	v = C.guint(a.native.start_index)
+	var v uint
+	v = uint(a.native.start_index)
+	return v
 }
 
 // EndIndex gets the field inside the struct.
 func (a *Attribute) EndIndex() uint {
-	v = C.guint(a.native.end_index)
+	var v uint
+	v = uint(a.native.end_index)
+	return v
 }
 
 // Copy: make a copy of an attribute.
-func (a *Attribute) Copy() *Attribute {
+func (a *Attribute) Copy(a *Attribute) {
 	var arg0 *C.PangoAttribute
 
 	arg0 = (*C.PangoAttribute)(unsafe.Pointer(a.Native()))
 
-	var cret *C.PangoAttribute
-	var ret1 *Attribute
-
-	cret = C.pango_attribute_copy(arg0)
-
-	ret1 = WrapAttribute(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Attribute) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_attribute_copy(arg0)
 }
 
 // Destroy: destroy a `PangoAttribute` and free all associated memory.
-func (a *Attribute) Destroy() {
+func (a *Attribute) Destroy(a *Attribute) {
 	var arg0 *C.PangoAttribute
 
 	arg0 = (*C.PangoAttribute)(unsafe.Pointer(a.Native()))
@@ -1714,7 +1329,7 @@ func (a *Attribute) Destroy() {
 
 // Equal: compare two attributes for equality. This compares only the actual
 // value of the two attributes and not the ranges that the attributes apply to.
-func (a *Attribute) Equal(attr2 *Attribute) bool {
+func (a *Attribute) Equal(a *Attribute, attr2 *Attribute) bool {
 	var arg0 *C.PangoAttribute
 	var arg1 *C.PangoAttribute
 
@@ -1722,13 +1337,15 @@ func (a *Attribute) Equal(attr2 *Attribute) bool {
 	arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr2.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_attribute_equal(arg0, attr2)
+	cret = C.pango_attribute_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Color: the `PangoColor` structure is used to represent a color in an
@@ -1759,17 +1376,23 @@ func (c *Color) Native() unsafe.Pointer {
 
 // Red gets the field inside the struct.
 func (c *Color) Red() uint16 {
-	v = C.guint16(c.native.red)
+	var v uint16
+	v = uint16(c.native.red)
+	return v
 }
 
 // Green gets the field inside the struct.
 func (c *Color) Green() uint16 {
-	v = C.guint16(c.native.green)
+	var v uint16
+	v = uint16(c.native.green)
+	return v
 }
 
 // Blue gets the field inside the struct.
 func (c *Color) Blue() uint16 {
-	v = C.guint16(c.native.blue)
+	var v uint16
+	v = uint16(c.native.blue)
+	return v
 }
 
 // Copy creates a copy of @src.
@@ -1777,26 +1400,16 @@ func (c *Color) Blue() uint16 {
 // The copy should be freed with pango_color_free(). Primarily used by language
 // bindings, not that useful otherwise (since colors can just be copied by
 // assignment in C).
-func (s *Color) Copy() *Color {
+func (s *Color) Copy(s *Color) {
 	var arg0 *C.PangoColor
 
 	arg0 = (*C.PangoColor)(unsafe.Pointer(s.Native()))
 
-	var cret *C.PangoColor
-	var ret1 *Color
-
-	cret = C.pango_color_copy(arg0)
-
-	ret1 = WrapColor(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Color) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_color_copy(arg0)
 }
 
 // Free frees a color allocated by pango_color_copy().
-func (c *Color) Free() {
+func (c *Color) Free(c *Color) {
 	var arg0 *C.PangoColor
 
 	arg0 = (*C.PangoColor)(unsafe.Pointer(c.Native()))
@@ -1812,7 +1425,7 @@ func (c *Color) Free() {
 // `#rrrrggggbbbb`, where `r`, `g` and `b` are hex digits of the red, green, and
 // blue components of the color, respectively. (White in the four forms is
 // `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.)
-func (c *Color) Parse(spec string) bool {
+func (c *Color) Parse(c *Color, spec string) bool {
 	var arg0 *C.PangoColor
 	var arg1 *C.char
 
@@ -1821,13 +1434,15 @@ func (c *Color) Parse(spec string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_color_parse(arg0, spec)
+	cret = C.pango_color_parse(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ParseWithAlpha: fill in the fields of a color from a string specification.
@@ -1843,7 +1458,7 @@ func (c *Color) Parse(spec string) bool {
 // `#rrrrggggbbbbaaaa`, if @alpha is not nil, and set @alpha to the value
 // specified by the hex digits for `a`. If no alpha component is found in @spec,
 // @alpha is set to 0xffff (for a solid color).
-func (c *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
+func (c *Color) ParseWithAlpha(c *Color, spec string) (alpha uint16, ok bool) {
 	var arg0 *C.PangoColor
 	var arg2 *C.char
 
@@ -1852,34 +1467,28 @@ func (c *Color) ParseWithAlpha(spec string) (alpha uint16, ok bool) {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var arg1 C.guint16
-	var ret1 uint16
+	var alpha uint16
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.pango_color_parse_with_alpha(arg0, &arg1, spec)
+	cret = C.pango_color_parse_with_alpha(arg0, &arg1, arg2)
 
-	*ret1 = C.guint16(arg1)
-	ret2 = C.bool(cret) != C.false
+	alpha = uint16(&arg1)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return alpha, ok
 }
 
 // String returns a textual specification of @color.
 //
 // The string is in the hexadecimal form `#rrrrggggbbbb`, where `r`, `g` and `b`
 // are hex digits representing the red, green, and blue components respectively.
-func (c *Color) String() string {
+func (c *Color) String(c *Color) {
 	var arg0 *C.PangoColor
 
 	arg0 = (*C.PangoColor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.pango_color_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_color_to_string(arg0)
 }

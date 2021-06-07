@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,9 +35,8 @@ func init() {
 // When the initialization is finished, @callback will be called. You can then
 // call g_async_initable_new_finish() to get the new object and check for any
 // errors.
-func AsyncInitableNewvAsync(objectType externglib.Type, nParameters uint, parameters *gobject.Parameter, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-
-	C.g_async_initable_newv_async(objectType, nParameters, parameters, ioPriority, cancellable, callback, userData)
+func AsyncInitableNewvAsync() {
+	C.g_async_initable_newv_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // AsyncInitableOverrider contains methods that are overridable. This
@@ -84,10 +78,10 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
-	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	InitAsync(i AsyncInitable)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
-	InitFinish(res AsyncResult) error
+	InitFinish(i AsyncInitable, res AsyncResult) error
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
@@ -193,7 +187,7 @@ type AsyncInitable interface {
 
 	// NewFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or nil on error.
-	NewFinish(res AsyncResult) (object gextras.Objector, err error)
+	NewFinish(i AsyncInitable, res AsyncResult) error
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -253,17 +247,17 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // a thread, so if you want to support asynchronous initialization via
 // threads, just implement the Initable interface without overriding any
 // interface methods.
-func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (i asyncInitable) InitAsync(i AsyncInitable) {
 	var arg0 *C.GAsyncInitable
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 
-	C.g_async_initable_init_async(arg0, ioPriority, cancellable, callback, userData)
+	C.g_async_initable_init_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // InitFinish finishes asynchronous initialization and returns the result.
 // See g_async_initable_init_async().
-func (i asyncInitable) InitFinish(res AsyncResult) error {
+func (i asyncInitable) InitFinish(i AsyncInitable, res AsyncResult) error {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
 
@@ -271,18 +265,18 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_async_initable_init_finish(arg0, res, &errout)
+	C.g_async_initable_init_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // NewFinish finishes the async construction for the various
 // g_async_initable_new calls, returning the created object or nil on error.
-func (i asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, err error) {
+func (i asyncInitable) NewFinish(i AsyncInitable, res AsyncResult) error {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
 
@@ -290,14 +284,11 @@ func (i asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, err 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GObject
-	var ret2 gextras.Objector
+	var err error
 
-	cret = C.g_async_initable_new_finish(arg0, res, &errout)
+	C.g_async_initable_new_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }

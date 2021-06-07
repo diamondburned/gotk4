@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,14 +42,14 @@ type ThemedIcon interface {
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	AppendName(iconname string)
+	AppendName(i ThemedIcon, iconname string)
 	// Names gets the names of icons from within @icon.
-	Names() []string
+	Names(i ThemedIcon)
 	// PrependName: prepend a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	PrependName(iconname string)
+	PrependName(i ThemedIcon, iconname string)
 }
 
 // themedIcon implements the ThemedIcon interface.
@@ -80,57 +76,35 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 }
 
 // NewThemedIcon constructs a class ThemedIcon.
-func NewThemedIcon(iconname string) ThemedIcon {
+func NewThemedIcon(iconname string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GThemedIcon
-	var ret1 ThemedIcon
-
-	cret = C.g_themed_icon_new(iconname)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
-
-	return ret1
+	C.g_themed_icon_new(arg1)
 }
 
 // NewThemedIconFromNames constructs a class ThemedIcon.
-func NewThemedIconFromNames(iconnames []string) ThemedIcon {
-
-	var cret C.GThemedIcon
-	var ret1 ThemedIcon
-
-	cret = C.g_themed_icon_new_from_names(iconnames, len)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
-
-	return ret1
+func NewThemedIconFromNames() {
+	C.g_themed_icon_new_from_names(arg1, arg2)
 }
 
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
-func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
+func NewThemedIconWithDefaultFallbacks(iconname string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GThemedIcon
-	var ret1 ThemedIcon
-
-	cret = C.g_themed_icon_new_with_default_fallbacks(iconname)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
-
-	return ret1
+	C.g_themed_icon_new_with_default_fallbacks(arg1)
 }
 
 // AppendName: append a name to the list of icons from within @icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (i themedIcon) AppendName(iconname string) {
+func (i themedIcon) AppendName(i ThemedIcon, iconname string) {
 	var arg0 *C.GThemedIcon
 	var arg1 *C.char
 
@@ -138,44 +112,23 @@ func (i themedIcon) AppendName(iconname string) {
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_themed_icon_append_name(arg0, iconname)
+	C.g_themed_icon_append_name(arg0, arg1)
 }
 
 // Names gets the names of icons from within @icon.
-func (i themedIcon) Names() []string {
+func (i themedIcon) Names(i ThemedIcon) {
 	var arg0 *C.GThemedIcon
 
 	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_themed_icon_get_names(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-		}
-	}
-
-	return ret1
+	C.g_themed_icon_get_names(arg0)
 }
 
 // PrependName: prepend a name to the list of icons from within @icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (i themedIcon) PrependName(iconname string) {
+func (i themedIcon) PrependName(i ThemedIcon, iconname string) {
 	var arg0 *C.GThemedIcon
 	var arg1 *C.char
 
@@ -183,5 +136,5 @@ func (i themedIcon) PrependName(iconname string) {
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_themed_icon_prepend_name(arg0, iconname)
+	C.g_themed_icon_prepend_name(arg0, arg1)
 }

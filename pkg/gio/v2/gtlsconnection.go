@@ -3,17 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -45,10 +39,10 @@ type TLSConnection interface {
 
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
-	EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool
+	EmitAcceptCertificate(c TLSConnection, peerCert TLSCertificate, errors TLSCertificateFlags) bool
 	// Certificate gets @conn's certificate, as set by
 	// g_tls_connection_set_certificate().
-	Certificate() TLSCertificate
+	Certificate(c TLSConnection)
 	// ChannelBindingData: query the TLS backend for TLS channel binding data of
 	// @type for @conn.
 	//
@@ -63,14 +57,14 @@ type TLSConnection interface {
 	// though. That could happen if TLS connection does not support @type or the
 	// binding data is not available yet due to additional negotiation or input
 	// required.
-	ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error)
+	ChannelBindingData(c TLSConnection, typ TLSChannelBindingType) (data []byte, err error)
 	// Database gets the certificate database that @conn uses to verify peer
 	// certificates. See g_tls_connection_set_database().
-	Database() TLSDatabase
+	Database(c TLSConnection)
 	// Interaction: get the object that will be used to interact with the user.
 	// It will be used for things like prompting the user for passwords. If nil
 	// is returned, then no user interaction will occur for this connection.
-	Interaction() TLSInteraction
+	Interaction(c TLSConnection)
 	// NegotiatedProtocol gets the name of the application-layer protocol
 	// negotiated during the handshake.
 	//
@@ -78,26 +72,26 @@ type TLSConnection interface {
 	// protocol that matched one of @conn's protocols, or the TLS backend does
 	// not support ALPN, then this will be nil. See
 	// g_tls_connection_set_advertised_protocols().
-	NegotiatedProtocol() string
+	NegotiatedProtocol(c TLSConnection)
 	// PeerCertificate gets @conn's peer's certificate after the handshake has
 	// completed or failed. (It is not set during the emission of
 	// Connection::accept-certificate.)
-	PeerCertificate() TLSCertificate
+	PeerCertificate(c TLSConnection)
 	// PeerCertificateErrors gets the errors associated with validating @conn's
 	// peer's certificate, after the handshake has completed or failed. (It is
 	// not set during the emission of Connection::accept-certificate.)
-	PeerCertificateErrors() TLSCertificateFlags
+	PeerCertificateErrors(c TLSConnection)
 	// RehandshakeMode gets @conn rehandshaking mode. See
 	// g_tls_connection_set_rehandshake_mode() for details.
-	RehandshakeMode() TLSRehandshakeMode
+	RehandshakeMode(c TLSConnection)
 	// RequireCloseNotify tests whether or not @conn expects a proper TLS close
 	// notification when the connection is closed. See
 	// g_tls_connection_set_require_close_notify() for details.
-	RequireCloseNotify() bool
+	RequireCloseNotify(c TLSConnection) bool
 	// UseSystemCertdb gets whether @conn uses the system certificate database
 	// to verify peer certificates. See
 	// g_tls_connection_set_use_system_certdb().
-	UseSystemCertdb() bool
+	UseSystemCertdb(c TLSConnection) bool
 	// Handshake attempts a TLS handshake on @conn.
 	//
 	// On the client side, it is never necessary to call this method; although
@@ -126,13 +120,13 @@ type TLSConnection interface {
 	// initial handshake, so calling this function manually is not recommended.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable Cancellable) error
+	Handshake(c TLSConnection, cancellable Cancellable) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
 	// g_tls_connection_handshake() for more information.
-	HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	HandshakeAsync(c TLSConnection)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_tls_connection_handshake() for more information.
-	HandshakeFinish(result AsyncResult) error
+	HandshakeFinish(c TLSConnection, result AsyncResult) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
 	// advertise that the caller is willing to speak on this connection. The
 	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
@@ -144,7 +138,7 @@ type TLSConnection interface {
 	// See IANA TLS ALPN Protocol IDs
 	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
 	// for a list of registered protocol IDs.
-	SetAdvertisedProtocols(protocols []string)
+	SetAdvertisedProtocols(c TLSConnection, protocols []string)
 	// SetCertificate: this sets the certificate that @conn will present to its
 	// peer during the TLS handshake. For a ServerConnection, it is mandatory to
 	// set this, and that will normally be done at construct time.
@@ -160,7 +154,7 @@ type TLSConnection interface {
 	// without a certificate; in that case, if you don't provide a certificate,
 	// you can tell that the server requested one by the fact that
 	// g_tls_client_connection_get_accepted_cas() will return non-nil.)
-	SetCertificate(certificate TLSCertificate)
+	SetCertificate(c TLSConnection, certificate TLSCertificate)
 	// SetDatabase sets the certificate database that is used to verify peer
 	// certificates. This is set to the default database by default. See
 	// g_tls_backend_get_default_database(). If set to nil, then peer
@@ -168,19 +162,19 @@ type TLSConnection interface {
 	// error (meaning Connection::accept-certificate will always be emitted on
 	// client-side connections, unless that bit is not set in
 	// ClientConnection:validation-flags).
-	SetDatabase(database TLSDatabase)
+	SetDatabase(c TLSConnection, database TLSDatabase)
 	// SetInteraction: set the object that will be used to interact with the
 	// user. It will be used for things like prompting the user for passwords.
 	//
 	// The @interaction argument will normally be a derived subclass of
 	// Interaction. nil can also be provided if no user interaction should occur
 	// for this connection.
-	SetInteraction(interaction TLSInteraction)
+	SetInteraction(c TLSConnection, interaction TLSInteraction)
 	// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
 	// longer supported and will have no effect. With TLS 1.3, rehandshaking has
 	// been removed from the TLS protocol, replaced by separate post-handshake
 	// authentication and rekey operations.
-	SetRehandshakeMode(mode TLSRehandshakeMode)
+	SetRehandshakeMode(c TLSConnection, mode TLSRehandshakeMode)
 	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
 	// close notification before the connection is closed. If this is true (the
 	// default), then @conn will expect to receive a TLS close notification from
@@ -207,7 +201,7 @@ type TLSConnection interface {
 	// close @conn's Connection:base-io-stream rather than closing @conn itself,
 	// but note that this may only be done when no other operations are pending
 	// on @conn or the base I/O stream.
-	SetRequireCloseNotify(requireCloseNotify bool)
+	SetRequireCloseNotify(c TLSConnection, requireCloseNotify bool)
 	// SetUseSystemCertdb sets whether @conn uses the system certificate
 	// database to verify peer certificates. This is true by default. If set to
 	// false, then peer certificate validation will always set the
@@ -215,7 +209,7 @@ type TLSConnection interface {
 	// Connection::accept-certificate will always be emitted on client-side
 	// connections, unless that bit is not set in
 	// ClientConnection:validation-flags).
-	SetUseSystemCertdb(useSystemCertdb bool)
+	SetUseSystemCertdb(c TLSConnection, useSystemCertdb bool)
 }
 
 // tlsConnection implements the TLSConnection interface.
@@ -241,7 +235,7 @@ func marshalTLSConnection(p uintptr) (interface{}, error) {
 
 // EmitAcceptCertificate: used by Connection implementations to emit the
 // Connection::accept-certificate signal.
-func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLSCertificateFlags) bool {
+func (c tlsConnection) EmitAcceptCertificate(c TLSConnection, peerCert TLSCertificate, errors TLSCertificateFlags) bool {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GTlsCertificate
 	var arg2 C.GTlsCertificateFlags
@@ -251,30 +245,25 @@ func (c tlsConnection) EmitAcceptCertificate(peerCert TLSCertificate, errors TLS
 	arg2 = (C.GTlsCertificateFlags)(errors)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_tls_connection_emit_accept_certificate(arg0, peerCert, errors)
+	cret = C.g_tls_connection_emit_accept_certificate(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Certificate gets @conn's certificate, as set by
 // g_tls_connection_set_certificate().
-func (c tlsConnection) Certificate() TLSCertificate {
+func (c tlsConnection) Certificate(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GTlsCertificate
-	var ret1 TLSCertificate
-
-	cret = C.g_tls_connection_get_certificate(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-
-	return ret1
+	C.g_tls_connection_get_certificate(arg0)
 }
 
 // ChannelBindingData: query the TLS backend for TLS channel binding data of
@@ -291,7 +280,7 @@ func (c tlsConnection) Certificate() TLSCertificate {
 // though. That could happen if TLS connection does not support @type or the
 // binding data is not available yet due to additional negotiation or input
 // required.
-func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []byte, err error) {
+func (c tlsConnection) ChannelBindingData(c TLSConnection, typ TLSChannelBindingType) (data []byte, err error) {
 	var arg0 *C.GTlsConnection
 	var arg1 C.GTlsChannelBindingType
 
@@ -299,11 +288,11 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []byt
 	arg1 = (C.GTlsChannelBindingType)(typ)
 
 	var arg2 *C.GByteArray
-	var ret2 []byte
+	var data []byte
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_tls_connection_get_channel_binding_data(arg0, typ, &arg2, &errout)
+	C.g_tls_connection_get_channel_binding_data(arg0, arg1, &arg2, &errout)
 
 	{
 		var length int
@@ -314,50 +303,36 @@ func (c tlsConnection) ChannelBindingData(typ TLSChannelBindingType) (data []byt
 			}
 		}
 
-		ret2 = make([]byte, length)
+		data = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg2), i))
-			ret2[i] = C.guint8(src)
+			data[i] = byte(src)
 		}
 	}
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret2, goerr
+	return data, err
 }
 
 // Database gets the certificate database that @conn uses to verify peer
 // certificates. See g_tls_connection_set_database().
-func (c tlsConnection) Database() TLSDatabase {
+func (c tlsConnection) Database(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GTlsDatabase
-	var ret1 TLSDatabase
-
-	cret = C.g_tls_connection_get_database(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSDatabase)
-
-	return ret1
+	C.g_tls_connection_get_database(arg0)
 }
 
 // Interaction: get the object that will be used to interact with the user.
 // It will be used for things like prompting the user for passwords. If nil
 // is returned, then no user interaction will occur for this connection.
-func (c tlsConnection) Interaction() TLSInteraction {
+func (c tlsConnection) Interaction(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GTlsInteraction
-	var ret1 TLSInteraction
-
-	cret = C.g_tls_connection_get_interaction(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSInteraction)
-
-	return ret1
+	C.g_tls_connection_get_interaction(arg0)
 }
 
 // NegotiatedProtocol gets the name of the application-layer protocol
@@ -367,108 +342,84 @@ func (c tlsConnection) Interaction() TLSInteraction {
 // protocol that matched one of @conn's protocols, or the TLS backend does
 // not support ALPN, then this will be nil. See
 // g_tls_connection_set_advertised_protocols().
-func (c tlsConnection) NegotiatedProtocol() string {
+func (c tlsConnection) NegotiatedProtocol(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_tls_connection_get_negotiated_protocol(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_tls_connection_get_negotiated_protocol(arg0)
 }
 
 // PeerCertificate gets @conn's peer's certificate after the handshake has
 // completed or failed. (It is not set during the emission of
 // Connection::accept-certificate.)
-func (c tlsConnection) PeerCertificate() TLSCertificate {
+func (c tlsConnection) PeerCertificate(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GTlsCertificate
-	var ret1 TLSCertificate
-
-	cret = C.g_tls_connection_get_peer_certificate(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-
-	return ret1
+	C.g_tls_connection_get_peer_certificate(arg0)
 }
 
 // PeerCertificateErrors gets the errors associated with validating @conn's
 // peer's certificate, after the handshake has completed or failed. (It is
 // not set during the emission of Connection::accept-certificate.)
-func (c tlsConnection) PeerCertificateErrors() TLSCertificateFlags {
+func (c tlsConnection) PeerCertificateErrors(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret C.GTlsCertificateFlags
-	var ret1 TLSCertificateFlags
-
-	cret = C.g_tls_connection_get_peer_certificate_errors(arg0)
-
-	ret1 = TLSCertificateFlags(cret)
-
-	return ret1
+	C.g_tls_connection_get_peer_certificate_errors(arg0)
 }
 
 // RehandshakeMode gets @conn rehandshaking mode. See
 // g_tls_connection_set_rehandshake_mode() for details.
-func (c tlsConnection) RehandshakeMode() TLSRehandshakeMode {
+func (c tlsConnection) RehandshakeMode(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	var cret C.GTlsRehandshakeMode
-	var ret1 TLSRehandshakeMode
-
-	cret = C.g_tls_connection_get_rehandshake_mode(arg0)
-
-	ret1 = TLSRehandshakeMode(cret)
-
-	return ret1
+	C.g_tls_connection_get_rehandshake_mode(arg0)
 }
 
 // RequireCloseNotify tests whether or not @conn expects a proper TLS close
 // notification when the connection is closed. See
 // g_tls_connection_set_require_close_notify() for details.
-func (c tlsConnection) RequireCloseNotify() bool {
+func (c tlsConnection) RequireCloseNotify(c TLSConnection) bool {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_tls_connection_get_require_close_notify(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // UseSystemCertdb gets whether @conn uses the system certificate database
 // to verify peer certificates. See
 // g_tls_connection_set_use_system_certdb().
-func (c tlsConnection) UseSystemCertdb() bool {
+func (c tlsConnection) UseSystemCertdb(c TLSConnection) bool {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_tls_connection_get_use_system_certdb(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Handshake attempts a TLS handshake on @conn.
@@ -499,7 +450,7 @@ func (c tlsConnection) UseSystemCertdb() bool {
 // initial handshake, so calling this function manually is not recommended.
 //
 // Connection::accept_certificate may be emitted during the handshake.
-func (c tlsConnection) Handshake(cancellable Cancellable) error {
+func (c tlsConnection) Handshake(c TLSConnection, cancellable Cancellable) error {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GCancellable
 
@@ -507,28 +458,28 @@ func (c tlsConnection) Handshake(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_tls_connection_handshake(arg0, cancellable, &errout)
+	C.g_tls_connection_handshake(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
 // g_tls_connection_handshake() for more information.
-func (c tlsConnection) HandshakeAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (c tlsConnection) HandshakeAsync(c TLSConnection) {
 	var arg0 *C.GTlsConnection
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_tls_connection_handshake_async(arg0, ioPriority, cancellable, callback, userData)
+	C.g_tls_connection_handshake_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_tls_connection_handshake() for more information.
-func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
+func (c tlsConnection) HandshakeFinish(c TLSConnection, result AsyncResult) error {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GAsyncResult
 
@@ -536,13 +487,13 @@ func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_tls_connection_handshake_finish(arg0, result, &errout)
+	C.g_tls_connection_handshake_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -556,7 +507,7 @@ func (c tlsConnection) HandshakeFinish(result AsyncResult) error {
 // See IANA TLS ALPN Protocol IDs
 // (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
 // for a list of registered protocol IDs.
-func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
+func (c tlsConnection) SetAdvertisedProtocols(c TLSConnection, protocols []string) {
 	var arg0 *C.GTlsConnection
 	var arg1 **C.gchar
 
@@ -574,7 +525,7 @@ func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
 		}
 	}
 
-	C.g_tls_connection_set_advertised_protocols(arg0, protocols)
+	C.g_tls_connection_set_advertised_protocols(arg0, arg1)
 }
 
 // SetCertificate: this sets the certificate that @conn will present to its
@@ -592,14 +543,14 @@ func (c tlsConnection) SetAdvertisedProtocols(protocols []string) {
 // without a certificate; in that case, if you don't provide a certificate,
 // you can tell that the server requested one by the fact that
 // g_tls_client_connection_get_accepted_cas() will return non-nil.)
-func (c tlsConnection) SetCertificate(certificate TLSCertificate) {
+func (c tlsConnection) SetCertificate(c TLSConnection, certificate TLSCertificate) {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GTlsCertificate
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
-	C.g_tls_connection_set_certificate(arg0, certificate)
+	C.g_tls_connection_set_certificate(arg0, arg1)
 }
 
 // SetDatabase sets the certificate database that is used to verify peer
@@ -609,14 +560,14 @@ func (c tlsConnection) SetCertificate(certificate TLSCertificate) {
 // error (meaning Connection::accept-certificate will always be emitted on
 // client-side connections, unless that bit is not set in
 // ClientConnection:validation-flags).
-func (c tlsConnection) SetDatabase(database TLSDatabase) {
+func (c tlsConnection) SetDatabase(c TLSConnection, database TLSDatabase) {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GTlsDatabase
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
 
-	C.g_tls_connection_set_database(arg0, database)
+	C.g_tls_connection_set_database(arg0, arg1)
 }
 
 // SetInteraction: set the object that will be used to interact with the
@@ -625,28 +576,28 @@ func (c tlsConnection) SetDatabase(database TLSDatabase) {
 // The @interaction argument will normally be a derived subclass of
 // Interaction. nil can also be provided if no user interaction should occur
 // for this connection.
-func (c tlsConnection) SetInteraction(interaction TLSInteraction) {
+func (c tlsConnection) SetInteraction(c TLSConnection, interaction TLSInteraction) {
 	var arg0 *C.GTlsConnection
 	var arg1 *C.GTlsInteraction
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 
-	C.g_tls_connection_set_interaction(arg0, interaction)
+	C.g_tls_connection_set_interaction(arg0, arg1)
 }
 
 // SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
 // longer supported and will have no effect. With TLS 1.3, rehandshaking has
 // been removed from the TLS protocol, replaced by separate post-handshake
 // authentication and rekey operations.
-func (c tlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
+func (c tlsConnection) SetRehandshakeMode(c TLSConnection, mode TLSRehandshakeMode) {
 	var arg0 *C.GTlsConnection
 	var arg1 C.GTlsRehandshakeMode
 
 	arg0 = (*C.GTlsConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GTlsRehandshakeMode)(mode)
 
-	C.g_tls_connection_set_rehandshake_mode(arg0, mode)
+	C.g_tls_connection_set_rehandshake_mode(arg0, arg1)
 }
 
 // SetRequireCloseNotify sets whether or not @conn expects a proper TLS
@@ -675,7 +626,7 @@ func (c tlsConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 // close @conn's Connection:base-io-stream rather than closing @conn itself,
 // but note that this may only be done when no other operations are pending
 // on @conn or the base I/O stream.
-func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
+func (c tlsConnection) SetRequireCloseNotify(c TLSConnection, requireCloseNotify bool) {
 	var arg0 *C.GTlsConnection
 	var arg1 C.gboolean
 
@@ -684,7 +635,7 @@ func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_tls_connection_set_require_close_notify(arg0, requireCloseNotify)
+	C.g_tls_connection_set_require_close_notify(arg0, arg1)
 }
 
 // SetUseSystemCertdb sets whether @conn uses the system certificate
@@ -694,7 +645,7 @@ func (c tlsConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 // Connection::accept-certificate will always be emitted on client-side
 // connections, unless that bit is not set in
 // ClientConnection:validation-flags).
-func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
+func (c tlsConnection) SetUseSystemCertdb(c TLSConnection, useSystemCertdb bool) {
 	var arg0 *C.GTlsConnection
 	var arg1 C.gboolean
 
@@ -703,5 +654,5 @@ func (c tlsConnection) SetUseSystemCertdb(useSystemCertdb bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_tls_connection_set_use_system_certdb(arg0, useSystemCertdb)
+	C.g_tls_connection_set_use_system_certdb(arg0, arg1)
 }

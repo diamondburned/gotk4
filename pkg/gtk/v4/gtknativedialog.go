@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -48,46 +44,46 @@ type NativeDialog interface {
 	// Note that this does not release any reference to the object (as opposed
 	// to destroying a GtkWindow) because there is no reference from the
 	// windowing system to the NativeDialog.
-	Destroy()
+	Destroy(s NativeDialog)
 	// Modal returns whether the dialog is modal. See
 	// gtk_native_dialog_set_modal().
-	Modal() bool
+	Modal(s NativeDialog) bool
 	// Title gets the title of the NativeDialog.
-	Title() string
+	Title(s NativeDialog)
 	// TransientFor fetches the transient parent for this window. See
 	// gtk_native_dialog_set_transient_for().
-	TransientFor() Window
+	TransientFor(s NativeDialog)
 	// Visible determines whether the dialog is visible.
-	Visible() bool
+	Visible(s NativeDialog) bool
 	// Hide hides the dialog if it is visilbe, aborting any interaction. Once
 	// this is called the NativeDialog::response signal will not be emitted
 	// until after the next call to gtk_native_dialog_show().
 	//
 	// If the dialog is not visible this does nothing.
-	Hide()
+	Hide(s NativeDialog)
 	// SetModal sets a dialog modal or non-modal. Modal dialogs prevent
 	// interaction with other windows in the same application. To keep modal
 	// dialogs on top of main application windows, use
 	// gtk_native_dialog_set_transient_for() to make the dialog transient for
 	// the parent; most [window managers][gtk-X11-arch] will then disallow
 	// lowering the dialog below the parent.
-	SetModal(modal bool)
+	SetModal(s NativeDialog, modal bool)
 	// SetTitle sets the title of the NativeDialog.
-	SetTitle(title string)
+	SetTitle(s NativeDialog, title string)
 	// SetTransientFor: dialog windows should be set transient for the main
 	// application window they were spawned from. This allows [window
 	// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main
 	// window, or center the dialog over the main window.
 	//
 	// Passing nil for @parent unsets the current transient window.
-	SetTransientFor(parent Window)
+	SetTransientFor(s NativeDialog, parent Window)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it. When the user accepts the state of the dialog the dialog will be
 	// automatically hidden and the NativeDialog::response signal will be
 	// emitted.
 	//
 	// Multiple calls while the dialog is visible will be ignored.
-	Show()
+	Show(s NativeDialog)
 }
 
 // nativeDialog implements the NativeDialog interface.
@@ -120,7 +116,7 @@ func marshalNativeDialog(p uintptr) (interface{}, error) {
 // Note that this does not release any reference to the object (as opposed
 // to destroying a GtkWindow) because there is no reference from the
 // windowing system to the NativeDialog.
-func (s nativeDialog) Destroy() {
+func (s nativeDialog) Destroy(s NativeDialog) {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
@@ -130,68 +126,58 @@ func (s nativeDialog) Destroy() {
 
 // Modal returns whether the dialog is modal. See
 // gtk_native_dialog_set_modal().
-func (s nativeDialog) Modal() bool {
+func (s nativeDialog) Modal(s NativeDialog) bool {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_native_dialog_get_modal(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Title gets the title of the NativeDialog.
-func (s nativeDialog) Title() string {
+func (s nativeDialog) Title(s NativeDialog) {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_native_dialog_get_title(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_native_dialog_get_title(arg0)
 }
 
 // TransientFor fetches the transient parent for this window. See
 // gtk_native_dialog_set_transient_for().
-func (s nativeDialog) TransientFor() Window {
+func (s nativeDialog) TransientFor(s NativeDialog) {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWindow
-	var ret1 Window
-
-	cret = C.gtk_native_dialog_get_transient_for(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
-
-	return ret1
+	C.gtk_native_dialog_get_transient_for(arg0)
 }
 
 // Visible determines whether the dialog is visible.
-func (s nativeDialog) Visible() bool {
+func (s nativeDialog) Visible(s NativeDialog) bool {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_native_dialog_get_visible(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Hide hides the dialog if it is visilbe, aborting any interaction. Once
@@ -199,7 +185,7 @@ func (s nativeDialog) Visible() bool {
 // until after the next call to gtk_native_dialog_show().
 //
 // If the dialog is not visible this does nothing.
-func (s nativeDialog) Hide() {
+func (s nativeDialog) Hide(s NativeDialog) {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
@@ -213,7 +199,7 @@ func (s nativeDialog) Hide() {
 // gtk_native_dialog_set_transient_for() to make the dialog transient for
 // the parent; most [window managers][gtk-X11-arch] will then disallow
 // lowering the dialog below the parent.
-func (s nativeDialog) SetModal(modal bool) {
+func (s nativeDialog) SetModal(s NativeDialog, modal bool) {
 	var arg0 *C.GtkNativeDialog
 	var arg1 C.gboolean
 
@@ -222,11 +208,11 @@ func (s nativeDialog) SetModal(modal bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_native_dialog_set_modal(arg0, modal)
+	C.gtk_native_dialog_set_modal(arg0, arg1)
 }
 
 // SetTitle sets the title of the NativeDialog.
-func (s nativeDialog) SetTitle(title string) {
+func (s nativeDialog) SetTitle(s NativeDialog, title string) {
 	var arg0 *C.GtkNativeDialog
 	var arg1 *C.char
 
@@ -234,7 +220,7 @@ func (s nativeDialog) SetTitle(title string) {
 	arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_native_dialog_set_title(arg0, title)
+	C.gtk_native_dialog_set_title(arg0, arg1)
 }
 
 // SetTransientFor: dialog windows should be set transient for the main
@@ -243,14 +229,14 @@ func (s nativeDialog) SetTitle(title string) {
 // window, or center the dialog over the main window.
 //
 // Passing nil for @parent unsets the current transient window.
-func (s nativeDialog) SetTransientFor(parent Window) {
+func (s nativeDialog) SetTransientFor(s NativeDialog, parent Window) {
 	var arg0 *C.GtkNativeDialog
 	var arg1 *C.GtkWindow
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_native_dialog_set_transient_for(arg0, parent)
+	C.gtk_native_dialog_set_transient_for(arg0, arg1)
 }
 
 // Show shows the dialog on the display, allowing the user to interact with
@@ -259,7 +245,7 @@ func (s nativeDialog) SetTransientFor(parent Window) {
 // emitted.
 //
 // Multiple calls while the dialog is visible will be ignored.
-func (s nativeDialog) Show() {
+func (s nativeDialog) Show(s NativeDialog) {
 	var arg0 *C.GtkNativeDialog
 
 	arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))

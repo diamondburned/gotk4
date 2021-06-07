@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,10 +64,10 @@ type MessageDialog interface {
 	// own extra content to that box and it will appear below those labels. See
 	// gtk_dialog_get_content_area() for the corresponding function in the
 	// parent Dialog.
-	MessageArea() Widget
+	MessageArea(m MessageDialog)
 	// SetMarkup sets the text of the message dialog to be @str, which is marked
 	// up with the [Pango text markup language][PangoMarkupFormat].
-	SetMarkup(str string)
+	SetMarkup(m MessageDialog, str string)
 }
 
 // messageDialog implements the MessageDialog interface.
@@ -111,24 +108,17 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 // own extra content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the
 // parent Dialog.
-func (m messageDialog) MessageArea() Widget {
+func (m messageDialog) MessageArea(m MessageDialog) {
 	var arg0 *C.GtkMessageDialog
 
 	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_message_dialog_get_message_area(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_message_dialog_get_message_area(arg0)
 }
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked
 // up with the [Pango text markup language][PangoMarkupFormat].
-func (m messageDialog) SetMarkup(str string) {
+func (m messageDialog) SetMarkup(m MessageDialog, str string) {
 	var arg0 *C.GtkMessageDialog
 	var arg1 *C.char
 
@@ -136,5 +126,5 @@ func (m messageDialog) SetMarkup(str string) {
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_message_dialog_set_markup(arg0, str)
+	C.gtk_message_dialog_set_markup(arg0, arg1)
 }

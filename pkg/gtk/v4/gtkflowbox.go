@@ -3,19 +3,12 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -121,16 +114,16 @@ type FlowBoxChild interface {
 	// functions into the widgets themselves. Another alternative is to call
 	// gtk_flow_box_invalidate_sort() on any model change, but that is more
 	// expensive.
-	Changed()
+	Changed(c FlowBoxChild)
 	// Child gets the child widget of @self.
-	Child() Widget
+	Child(s FlowBoxChild)
 	// Index gets the current index of the @child in its FlowBox container.
-	Index() int
+	Index(c FlowBoxChild)
 	// IsSelected returns whether the @child is currently selected in its
 	// FlowBox container.
-	IsSelected() bool
+	IsSelected(c FlowBoxChild) bool
 	// SetChild sets the child widget of @self.
-	SetChild(child Widget)
+	SetChild(s FlowBoxChild, child Widget)
 }
 
 // flowBoxChild implements the FlowBoxChild interface.
@@ -161,15 +154,8 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 }
 
 // NewFlowBoxChild constructs a class FlowBoxChild.
-func NewFlowBoxChild() FlowBoxChild {
-	var cret C.GtkFlowBoxChild
-	var ret1 FlowBoxChild
-
-	cret = C.gtk_flow_box_child_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
-
-	return ret1
+func NewFlowBoxChild() {
+	C.gtk_flow_box_child_new()
 }
 
 // Changed marks @child as changed, causing any state that depends on this
@@ -187,7 +173,7 @@ func NewFlowBoxChild() FlowBoxChild {
 // functions into the widgets themselves. Another alternative is to call
 // gtk_flow_box_invalidate_sort() on any model change, but that is more
 // expensive.
-func (c flowBoxChild) Changed() {
+func (c flowBoxChild) Changed(c FlowBoxChild) {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
@@ -196,61 +182,49 @@ func (c flowBoxChild) Changed() {
 }
 
 // Child gets the child widget of @self.
-func (s flowBoxChild) Child() Widget {
+func (s flowBoxChild) Child(s FlowBoxChild) {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_flow_box_child_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_flow_box_child_get_child(arg0)
 }
 
 // Index gets the current index of the @child in its FlowBox container.
-func (c flowBoxChild) Index() int {
+func (c flowBoxChild) Index(c FlowBoxChild) {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_flow_box_child_get_index(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_flow_box_child_get_index(arg0)
 }
 
 // IsSelected returns whether the @child is currently selected in its
 // FlowBox container.
-func (c flowBoxChild) IsSelected() bool {
+func (c flowBoxChild) IsSelected(c FlowBoxChild) bool {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_flow_box_child_is_selected(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetChild sets the child widget of @self.
-func (s flowBoxChild) SetChild(child Widget) {
+func (s flowBoxChild) SetChild(s FlowBoxChild, child Widget) {
 	var arg0 *C.GtkFlowBoxChild
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_flow_box_child_set_child(arg0, child)
+	C.gtk_flow_box_child_set_child(arg0, arg1)
 }

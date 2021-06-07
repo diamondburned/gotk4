@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,15 +38,15 @@ type ActionBar interface {
 	Buildable
 
 	// CenterWidget retrieves the center bar widget of the bar.
-	CenterWidget() Widget
+	CenterWidget(a ActionBar)
 	// PackEnd adds @child to @action_bar, packed with reference to the end of
 	// the @action_bar.
-	PackEnd(child Widget)
+	PackEnd(a ActionBar, child Widget)
 	// PackStart adds @child to @action_bar, packed with reference to the start
 	// of the @action_bar.
-	PackStart(child Widget)
+	PackStart(a ActionBar, child Widget)
 	// SetCenterWidget sets the center widget for the ActionBar.
-	SetCenterWidget(centerWidget Widget)
+	SetCenterWidget(a ActionBar, centerWidget Widget)
 }
 
 // actionBar implements the ActionBar interface.
@@ -76,64 +73,50 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 }
 
 // NewActionBar constructs a class ActionBar.
-func NewActionBar() ActionBar {
-	var cret C.GtkActionBar
-	var ret1 ActionBar
-
-	cret = C.gtk_action_bar_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
-
-	return ret1
+func NewActionBar() {
+	C.gtk_action_bar_new()
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
-func (a actionBar) CenterWidget() Widget {
+func (a actionBar) CenterWidget(a ActionBar) {
 	var arg0 *C.GtkActionBar
 
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_action_bar_get_center_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_action_bar_get_center_widget(arg0)
 }
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of
 // the @action_bar.
-func (a actionBar) PackEnd(child Widget) {
+func (a actionBar) PackEnd(a ActionBar, child Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_action_bar_pack_end(arg0, child)
+	C.gtk_action_bar_pack_end(arg0, arg1)
 }
 
 // PackStart adds @child to @action_bar, packed with reference to the start
 // of the @action_bar.
-func (a actionBar) PackStart(child Widget) {
+func (a actionBar) PackStart(a ActionBar, child Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_action_bar_pack_start(arg0, child)
+	C.gtk_action_bar_pack_start(arg0, arg1)
 }
 
 // SetCenterWidget sets the center widget for the ActionBar.
-func (a actionBar) SetCenterWidget(centerWidget Widget) {
+func (a actionBar) SetCenterWidget(a ActionBar, centerWidget Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
 
-	C.gtk_action_bar_set_center_widget(arg0, centerWidget)
+	C.gtk_action_bar_set_center_widget(arg0, arg1)
 }

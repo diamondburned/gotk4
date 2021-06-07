@@ -3,9 +3,6 @@
 package gsk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,13 +44,6 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 }
 
 // NewGLRenderer constructs a class GLRenderer.
-func NewGLRenderer() GLRenderer {
-	var cret C.GskGLRenderer
-	var ret1 GLRenderer
-
-	cret = C.gsk_gl_renderer_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLRenderer)
-
-	return ret1
+func NewGLRenderer() {
+	C.gsk_gl_renderer_new()
 }

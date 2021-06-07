@@ -3,10 +3,7 @@
 package gtk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,7 +54,7 @@ type CustomFilter interface {
 	// needs to be called.
 	//
 	// If a previous function was set, its @user_destroy will be called now.
-	SetFilterFunc(matchFunc CustomFilterFunc)
+	SetFilterFunc(s CustomFilter)
 }
 
 // customFilter implements the CustomFilter interface.
@@ -82,16 +79,8 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 }
 
 // NewCustomFilter constructs a class CustomFilter.
-func NewCustomFilter(matchFunc CustomFilterFunc) CustomFilter {
-
-	var cret C.GtkCustomFilter
-	var ret1 CustomFilter
-
-	cret = C.gtk_custom_filter_new(matchFunc, userData, userDestroy)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
-
-	return ret1
+func NewCustomFilter() {
+	C.gtk_custom_filter_new(arg1, arg2, arg3)
 }
 
 // SetFilterFunc sets (or unsets) the function used for filtering items.
@@ -102,10 +91,10 @@ func NewCustomFilter(matchFunc CustomFilterFunc) CustomFilter {
 // needs to be called.
 //
 // If a previous function was set, its @user_destroy will be called now.
-func (s customFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
+func (s customFilter) SetFilterFunc(s CustomFilter) {
 	var arg0 *C.GtkCustomFilter
 
 	arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_custom_filter_set_filter_func(arg0, matchFunc, userData, userDestroy)
+	C.gtk_custom_filter_set_filter_func(arg0, arg1, arg2, arg3)
 }

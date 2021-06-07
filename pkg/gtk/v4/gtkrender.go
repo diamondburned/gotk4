@@ -2,12 +2,6 @@
 
 package gtk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -30,7 +24,7 @@ func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_activity(context, cr, x, y, width, height)
+	C.gtk_render_activity(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderArrow renders an arrow pointing to @angle.
@@ -53,7 +47,7 @@ func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float
 	arg5 = C.double(y)
 	arg6 = C.double(size)
 
-	C.gtk_render_arrow(context, cr, angle, x, y, size)
+	C.gtk_render_arrow(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderBackground renders the background of an element.
@@ -77,7 +71,7 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_background(context, cr, x, y, width, height)
+	C.gtk_render_background(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderCheck renders a checkmark (as in a CheckButton).
@@ -104,7 +98,7 @@ func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_check(context, cr, x, y, width, height)
+	C.gtk_render_check(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderExpander renders an expander (as used in TreeView and Expander) in the
@@ -129,7 +123,7 @@ func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_expander(context, cr, x, y, width, height)
+	C.gtk_render_expander(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderFocus renders a focus indicator on the rectangle determined by @x, @y,
@@ -153,7 +147,7 @@ func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_focus(context, cr, x, y, width, height)
+	C.gtk_render_focus(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderFrame renders a frame around the rectangle defined by @x, @y, @width,
@@ -178,7 +172,7 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_frame(context, cr, x, y, width, height)
+	C.gtk_render_frame(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderHandle renders a handle (as in Paned and Window’s resize grip), in the
@@ -202,7 +196,7 @@ func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_handle(context, cr, x, y, width, height)
+	C.gtk_render_handle(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderIcon renders the icon in @texture at the specified @x and @y
@@ -224,7 +218,7 @@ func RenderIcon(context StyleContext, cr *cairo.Context, texture gdk.Texture, x 
 	arg4 = C.double(x)
 	arg5 = C.double(y)
 
-	C.gtk_render_icon(context, cr, texture, x, y)
+	C.gtk_render_icon(arg1, arg2, arg3, arg4, arg5)
 }
 
 // RenderLayout renders @layout on the coordinates @x, @y
@@ -241,7 +235,7 @@ func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg4 = C.double(y)
 	arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.gtk_render_layout(context, cr, x, y, layout)
+	C.gtk_render_layout(arg1, arg2, arg3, arg4, arg5)
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
@@ -260,7 +254,7 @@ func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64,
 	arg5 = C.double(x1)
 	arg6 = C.double(y1)
 
-	C.gtk_render_line(context, cr, x0, y0, x1, y1)
+	C.gtk_render_line(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderOption renders an option mark (as in a radio button), the
@@ -285,5 +279,5 @@ func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg5 = C.double(width)
 	arg6 = C.double(height)
 
-	C.gtk_render_option(context, cr, x, y, width, height)
+	C.gtk_render_option(arg1, arg2, arg3, arg4, arg5, arg6)
 }

@@ -3,18 +3,12 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -35,10 +29,10 @@ type AlternativeTrigger interface {
 
 	// First gets the first of the two alternative triggers that may trigger
 	// @self. gtk_alternative_trigger_get_second() will return the other one.
-	First() ShortcutTrigger
+	First(s AlternativeTrigger)
 	// Second gets the second of the two alternative triggers that may trigger
 	// @self. gtk_alternative_trigger_get_first() will return the other one.
-	Second() ShortcutTrigger
+	Second(s AlternativeTrigger)
 }
 
 // alternativeTrigger implements the AlternativeTrigger interface.
@@ -63,55 +57,34 @@ func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 }
 
 // NewAlternativeTrigger constructs a class AlternativeTrigger.
-func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) AlternativeTrigger {
+func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) {
 	var arg1 *C.GtkShortcutTrigger
 	var arg2 *C.GtkShortcutTrigger
 
 	arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(first.Native()))
 	arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(second.Native()))
 
-	var cret C.GtkAlternativeTrigger
-	var ret1 AlternativeTrigger
-
-	cret = C.gtk_alternative_trigger_new(first, second)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AlternativeTrigger)
-
-	return ret1
+	C.gtk_alternative_trigger_new(arg1, arg2)
 }
 
 // First gets the first of the two alternative triggers that may trigger
 // @self. gtk_alternative_trigger_get_second() will return the other one.
-func (s alternativeTrigger) First() ShortcutTrigger {
+func (s alternativeTrigger) First(s AlternativeTrigger) {
 	var arg0 *C.GtkAlternativeTrigger
 
 	arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkShortcutTrigger
-	var ret1 ShortcutTrigger
-
-	cret = C.gtk_alternative_trigger_get_first(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
-
-	return ret1
+	C.gtk_alternative_trigger_get_first(arg0)
 }
 
 // Second gets the second of the two alternative triggers that may trigger
 // @self. gtk_alternative_trigger_get_first() will return the other one.
-func (s alternativeTrigger) Second() ShortcutTrigger {
+func (s alternativeTrigger) Second(s AlternativeTrigger) {
 	var arg0 *C.GtkAlternativeTrigger
 
 	arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkShortcutTrigger
-	var ret1 ShortcutTrigger
-
-	cret = C.gtk_alternative_trigger_get_second(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
-
-	return ret1
+	C.gtk_alternative_trigger_get_second(arg0)
 }
 
 // KeyvalTrigger: a ShortcutTrigger that triggers when a specific keyval and
@@ -120,10 +93,10 @@ type KeyvalTrigger interface {
 	ShortcutTrigger
 
 	// Keyval gets the keyval that must be pressed to succeed triggering @self.
-	Keyval() uint
+	Keyval(s KeyvalTrigger)
 	// Modifiers gets the modifiers that must be present to succeed triggering
 	// @self.
-	Modifiers() gdk.ModifierType
+	Modifiers(s KeyvalTrigger)
 }
 
 // keyvalTrigger implements the KeyvalTrigger interface.
@@ -148,54 +121,33 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 }
 
 // NewKeyvalTrigger constructs a class KeyvalTrigger.
-func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger {
+func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) {
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
 
 	arg1 = C.guint(keyval)
 	arg2 = (C.GdkModifierType)(modifiers)
 
-	var cret C.GtkKeyvalTrigger
-	var ret1 KeyvalTrigger
-
-	cret = C.gtk_keyval_trigger_new(keyval, modifiers)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(KeyvalTrigger)
-
-	return ret1
+	C.gtk_keyval_trigger_new(arg1, arg2)
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
-func (s keyvalTrigger) Keyval() uint {
+func (s keyvalTrigger) Keyval(s KeyvalTrigger) {
 	var arg0 *C.GtkKeyvalTrigger
 
 	arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_keyval_trigger_get_keyval(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_keyval_trigger_get_keyval(arg0)
 }
 
 // Modifiers gets the modifiers that must be present to succeed triggering
 // @self.
-func (s keyvalTrigger) Modifiers() gdk.ModifierType {
+func (s keyvalTrigger) Modifiers(s KeyvalTrigger) {
 	var arg0 *C.GtkKeyvalTrigger
 
 	arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
 
-	var cret C.GdkModifierType
-	var ret1 gdk.ModifierType
-
-	cret = C.gtk_keyval_trigger_get_modifiers(arg0)
-
-	ret1 = gdk.ModifierType(cret)
-
-	return ret1
+	C.gtk_keyval_trigger_get_modifiers(arg0)
 }
 
 // MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
@@ -204,7 +156,7 @@ type MnemonicTrigger interface {
 	ShortcutTrigger
 
 	// Keyval gets the keyval that must be pressed to succeed triggering @self.
-	Keyval() uint
+	Keyval(s MnemonicTrigger)
 }
 
 // mnemonicTrigger implements the MnemonicTrigger interface.
@@ -229,35 +181,21 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 }
 
 // NewMnemonicTrigger constructs a class MnemonicTrigger.
-func NewMnemonicTrigger(keyval uint) MnemonicTrigger {
+func NewMnemonicTrigger(keyval uint) {
 	var arg1 C.guint
 
 	arg1 = C.guint(keyval)
 
-	var cret C.GtkMnemonicTrigger
-	var ret1 MnemonicTrigger
-
-	cret = C.gtk_mnemonic_trigger_new(keyval)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MnemonicTrigger)
-
-	return ret1
+	C.gtk_mnemonic_trigger_new(arg1)
 }
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
-func (s mnemonicTrigger) Keyval() uint {
+func (s mnemonicTrigger) Keyval(s MnemonicTrigger) {
 	var arg0 *C.GtkMnemonicTrigger
 
 	arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_mnemonic_trigger_get_keyval(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_mnemonic_trigger_get_keyval(arg0)
 }
 
 // NeverTrigger: a ShortcutTrigger that never triggers.
@@ -302,13 +240,13 @@ type ShortcutTrigger interface {
 	// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
 	// allow use of this function as a Func. They must each be a
 	// ShortcutTrigger.
-	Compare(trigger2 ShortcutTrigger) int
+	Compare(t ShortcutTrigger, trigger2 ShortcutTrigger)
 	// Equal checks if @trigger1 and @trigger2 trigger under the same
 	// conditions.
 	//
 	// The types of @one and @two are #gconstpointer only to allow use of this
 	// function with Table. They must each be a ShortcutTrigger.
-	Equal(trigger2 ShortcutTrigger) bool
+	Equal(t ShortcutTrigger, trigger2 ShortcutTrigger) bool
 	// Hash generates a hash value for a ShortcutTrigger.
 	//
 	// The output of this function is guaranteed to be the same for a given
@@ -318,13 +256,13 @@ type ShortcutTrigger interface {
 	//
 	// The types of @trigger is #gconstpointer only to allow use of this
 	// function with Table. They must each be a ShortcutTrigger.
-	Hash() uint
+	Hash(t ShortcutTrigger)
 	// Print prints the given trigger into a string for the developer. This is
 	// meant for debugging and logging.
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
-	Print(string *glib.String)
+	Print(s ShortcutTrigger, string *glib.String)
 	// PrintLabel prints the given trigger into a string. This function is
 	// returning a translated string for presentation to end users for example
 	// in menu items or in help texts.
@@ -335,7 +273,7 @@ type ShortcutTrigger interface {
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
-	PrintLabel(display gdk.Display, string *glib.String) bool
+	PrintLabel(s ShortcutTrigger, display gdk.Display, string *glib.String) bool
 	// ToLabel gets textual representation for the given trigger. This function
 	// is returning a translated string for presentation to end users for
 	// example in menu items or in help texts.
@@ -346,12 +284,12 @@ type ShortcutTrigger interface {
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
-	ToLabel(display gdk.Display) string
+	ToLabel(s ShortcutTrigger, display gdk.Display)
 	// String prints the given trigger into a human-readable string. This is a
 	// small wrapper around gtk_shortcut_trigger_print() to help when debugging.
-	String() string
+	String(s ShortcutTrigger)
 	// Trigger checks if the given @event triggers @self.
-	Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
+	Trigger(s ShortcutTrigger, event gdk.Event, enableMnemonics bool)
 }
 
 // shortcutTrigger implements the ShortcutTrigger interface.
@@ -376,40 +314,26 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 }
 
 // NewShortcutTriggerParseString constructs a class ShortcutTrigger.
-func NewShortcutTriggerParseString(string string) ShortcutTrigger {
+func NewShortcutTriggerParseString(string string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkShortcutTrigger
-	var ret1 ShortcutTrigger
-
-	cret = C.gtk_shortcut_trigger_parse_string(string)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
-
-	return ret1
+	C.gtk_shortcut_trigger_parse_string(arg1)
 }
 
 // Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
 // allow use of this function as a Func. They must each be a
 // ShortcutTrigger.
-func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
+func (t shortcutTrigger) Compare(t ShortcutTrigger, trigger2 ShortcutTrigger) {
 	var arg0 C.gpointer
 	var arg1 C.gpointer
 
 	arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 	arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_shortcut_trigger_compare(arg0, trigger2)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_shortcut_trigger_compare(arg0, arg1)
 }
 
 // Equal checks if @trigger1 and @trigger2 trigger under the same
@@ -417,7 +341,7 @@ func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 //
 // The types of @one and @two are #gconstpointer only to allow use of this
 // function with Table. They must each be a ShortcutTrigger.
-func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
+func (t shortcutTrigger) Equal(t ShortcutTrigger, trigger2 ShortcutTrigger) bool {
 	var arg0 C.gpointer
 	var arg1 C.gpointer
 
@@ -425,13 +349,15 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_shortcut_trigger_equal(arg0, trigger2)
+	cret = C.gtk_shortcut_trigger_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Hash generates a hash value for a ShortcutTrigger.
@@ -443,19 +369,12 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 //
 // The types of @trigger is #gconstpointer only to allow use of this
 // function with Table. They must each be a ShortcutTrigger.
-func (t shortcutTrigger) Hash() uint {
+func (t shortcutTrigger) Hash(t ShortcutTrigger) {
 	var arg0 C.gpointer
 
 	arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_shortcut_trigger_hash(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_shortcut_trigger_hash(arg0)
 }
 
 // Print prints the given trigger into a string for the developer. This is
@@ -463,14 +382,14 @@ func (t shortcutTrigger) Hash() uint {
 //
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
-func (s shortcutTrigger) Print(string *glib.String) {
+func (s shortcutTrigger) Print(s ShortcutTrigger, string *glib.String) {
 	var arg0 *C.GtkShortcutTrigger
 	var arg1 *C.GString
 
 	arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
 
-	C.gtk_shortcut_trigger_print(arg0, string)
+	C.gtk_shortcut_trigger_print(arg0, arg1)
 }
 
 // PrintLabel prints the given trigger into a string. This function is
@@ -483,7 +402,7 @@ func (s shortcutTrigger) Print(string *glib.String) {
 //
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
-func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bool {
+func (s shortcutTrigger) PrintLabel(s ShortcutTrigger, display gdk.Display, string *glib.String) bool {
 	var arg0 *C.GtkShortcutTrigger
 	var arg1 *C.GdkDisplay
 	var arg2 *C.GString
@@ -493,13 +412,15 @@ func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bo
 	arg2 = (*C.GString)(unsafe.Pointer(string.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_shortcut_trigger_print_label(arg0, display, string)
+	cret = C.gtk_shortcut_trigger_print_label(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ToLabel gets textual representation for the given trigger. This function
@@ -512,44 +433,28 @@ func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bo
 //
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
-func (s shortcutTrigger) ToLabel(display gdk.Display) string {
+func (s shortcutTrigger) ToLabel(s ShortcutTrigger, display gdk.Display) {
 	var arg0 *C.GtkShortcutTrigger
 	var arg1 *C.GdkDisplay
 
 	arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_shortcut_trigger_to_label(arg0, display)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_shortcut_trigger_to_label(arg0, arg1)
 }
 
 // String prints the given trigger into a human-readable string. This is a
 // small wrapper around gtk_shortcut_trigger_print() to help when debugging.
-func (s shortcutTrigger) String() string {
+func (s shortcutTrigger) String(s ShortcutTrigger) {
 	var arg0 *C.GtkShortcutTrigger
 
 	arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_shortcut_trigger_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_shortcut_trigger_to_string(arg0)
 }
 
 // Trigger checks if the given @event triggers @self.
-func (s shortcutTrigger) Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch {
+func (s shortcutTrigger) Trigger(s ShortcutTrigger, event gdk.Event, enableMnemonics bool) {
 	var arg0 *C.GtkShortcutTrigger
 	var arg1 *C.GdkEvent
 	var arg2 C.gboolean
@@ -560,12 +465,5 @@ func (s shortcutTrigger) Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyM
 		arg2 = C.gboolean(1)
 	}
 
-	var cret C.GdkKeyMatch
-	var ret1 gdk.KeyMatch
-
-	cret = C.gtk_shortcut_trigger_trigger(arg0, event, enableMnemonics)
-
-	ret1 = gdk.KeyMatch(cret)
-
-	return ret1
+	C.gtk_shortcut_trigger_trigger(arg0, arg1, arg2)
 }

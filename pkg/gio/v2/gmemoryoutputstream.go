@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,10 +42,10 @@ type MemoryOutputStream interface {
 	//
 	// Note that the returned pointer may become invalid on the next write or
 	// truncate operation on the stream.
-	Data() interface{}
+	Data(o MemoryOutputStream)
 	// DataSize returns the number of bytes from the start up to including the
 	// last byte written in the stream that has not been truncated away.
-	DataSize() uint
+	DataSize(o MemoryOutputStream)
 	// Size gets the size of the currently allocated data area (available from
 	// g_memory_output_stream_get_data()).
 	//
@@ -65,17 +60,17 @@ type MemoryOutputStream interface {
 	//
 	// In any case, if you want the number of bytes currently written to the
 	// stream, use g_memory_output_stream_get_data_size().
-	Size() uint
+	Size(o MemoryOutputStream)
 	// StealAsBytes returns data from the @ostream as a #GBytes. @ostream must
 	// be closed before calling this function.
-	StealAsBytes() *glib.Bytes
+	StealAsBytes(o MemoryOutputStream)
 	// StealData gets any loaded data from the @ostream. Ownership of the data
 	// is transferred to the caller; when no longer needed it must be freed
 	// using the free function set in @ostream's OutputStream:destroy-function
 	// property.
 	//
 	// @ostream must be closed before calling this function.
-	StealData() interface{}
+	StealData(o MemoryOutputStream)
 }
 
 // memoryOutputStream implements the MemoryOutputStream interface.
@@ -104,64 +99,35 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 }
 
 // NewMemoryOutputStream constructs a class MemoryOutputStream.
-func NewMemoryOutputStream(data interface{}, size uint, reallocFunction ReallocFunc) MemoryOutputStream {
-
-	var cret C.GMemoryOutputStream
-	var ret1 MemoryOutputStream
-
-	cret = C.g_memory_output_stream_new(data, size, reallocFunction, destroyFunction)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryOutputStream)
-
-	return ret1
+func NewMemoryOutputStream() {
+	C.g_memory_output_stream_new(arg1, arg2, arg3, arg4)
 }
 
 // NewMemoryOutputStreamResizable constructs a class MemoryOutputStream.
-func NewMemoryOutputStreamResizable() MemoryOutputStream {
-	var cret C.GMemoryOutputStream
-	var ret1 MemoryOutputStream
-
-	cret = C.g_memory_output_stream_new_resizable()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryOutputStream)
-
-	return ret1
+func NewMemoryOutputStreamResizable() {
+	C.g_memory_output_stream_new_resizable()
 }
 
 // Data gets any loaded data from the @ostream.
 //
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
-func (o memoryOutputStream) Data() interface{} {
+func (o memoryOutputStream) Data(o MemoryOutputStream) {
 	var arg0 *C.GMemoryOutputStream
 
 	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_memory_output_stream_get_data(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_memory_output_stream_get_data(arg0)
 }
 
 // DataSize returns the number of bytes from the start up to including the
 // last byte written in the stream that has not been truncated away.
-func (o memoryOutputStream) DataSize() uint {
+func (o memoryOutputStream) DataSize(o MemoryOutputStream) {
 	var arg0 *C.GMemoryOutputStream
 
 	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_memory_output_stream_get_data_size(arg0)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_memory_output_stream_get_data_size(arg0)
 }
 
 // Size gets the size of the currently allocated data area (available from
@@ -178,39 +144,22 @@ func (o memoryOutputStream) DataSize() uint {
 //
 // In any case, if you want the number of bytes currently written to the
 // stream, use g_memory_output_stream_get_data_size().
-func (o memoryOutputStream) Size() uint {
+func (o memoryOutputStream) Size(o MemoryOutputStream) {
 	var arg0 *C.GMemoryOutputStream
 
 	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_memory_output_stream_get_size(arg0)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_memory_output_stream_get_size(arg0)
 }
 
 // StealAsBytes returns data from the @ostream as a #GBytes. @ostream must
 // be closed before calling this function.
-func (o memoryOutputStream) StealAsBytes() *glib.Bytes {
+func (o memoryOutputStream) StealAsBytes(o MemoryOutputStream) {
 	var arg0 *C.GMemoryOutputStream
 
 	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GBytes
-	var ret1 *glib.Bytes
-
-	cret = C.g_memory_output_stream_steal_as_bytes(arg0)
-
-	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Bytes) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_memory_output_stream_steal_as_bytes(arg0)
 }
 
 // StealData gets any loaded data from the @ostream. Ownership of the data
@@ -219,17 +168,10 @@ func (o memoryOutputStream) StealAsBytes() *glib.Bytes {
 // property.
 //
 // @ostream must be closed before calling this function.
-func (o memoryOutputStream) StealData() interface{} {
+func (o memoryOutputStream) StealData(o MemoryOutputStream) {
 	var arg0 *C.GMemoryOutputStream
 
 	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_memory_output_stream_steal_data(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_memory_output_stream_steal_data(arg0)
 }

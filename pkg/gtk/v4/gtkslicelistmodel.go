@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,24 +30,24 @@ type SliceListModel interface {
 	gio.ListModel
 
 	// Model gets the model that is currently being used or nil if none.
-	Model() gio.ListModel
+	Model(s SliceListModel)
 	// Offset gets the offset set via gtk_slice_list_model_set_offset()
-	Offset() uint
+	Offset(s SliceListModel)
 	// Size gets the size set via gtk_slice_list_model_set_size().
-	Size() uint
+	Size(s SliceListModel)
 	// SetModel sets the model to show a slice of. The model's item type must
 	// conform to @self's item type.
-	SetModel(model gio.ListModel)
+	SetModel(s SliceListModel, model gio.ListModel)
 	// SetOffset sets the offset into the original model for this slice.
 	//
 	// If the offset is too large for the sliced model, @self will end up empty.
-	SetOffset(offset uint)
+	SetOffset(s SliceListModel, offset uint)
 	// SetSize sets the maximum size. @self will never have more items than
 	// @size.
 	//
 	// It can however have fewer items if the offset is too large or the model
 	// sliced from doesn't have enough items.
-	SetSize(size uint)
+	SetSize(s SliceListModel, size uint)
 }
 
 // sliceListModel implements the SliceListModel interface.
@@ -77,7 +74,7 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 }
 
 // NewSliceListModel constructs a class SliceListModel.
-func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListModel {
+func NewSliceListModel(model gio.ListModel, offset uint, size uint) {
 	var arg1 *C.GListModel
 	var arg2 C.guint
 	var arg3 C.guint
@@ -86,87 +83,59 @@ func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListMod
 	arg2 = C.guint(offset)
 	arg3 = C.guint(size)
 
-	var cret C.GtkSliceListModel
-	var ret1 SliceListModel
-
-	cret = C.gtk_slice_list_model_new(model, offset, size)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SliceListModel)
-
-	return ret1
+	C.gtk_slice_list_model_new(arg1, arg2, arg3)
 }
 
 // Model gets the model that is currently being used or nil if none.
-func (s sliceListModel) Model() gio.ListModel {
+func (s sliceListModel) Model(s SliceListModel) {
 	var arg0 *C.GtkSliceListModel
 
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_slice_list_model_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_slice_list_model_get_model(arg0)
 }
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset()
-func (s sliceListModel) Offset() uint {
+func (s sliceListModel) Offset(s SliceListModel) {
 	var arg0 *C.GtkSliceListModel
 
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_slice_list_model_get_offset(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_slice_list_model_get_offset(arg0)
 }
 
 // Size gets the size set via gtk_slice_list_model_set_size().
-func (s sliceListModel) Size() uint {
+func (s sliceListModel) Size(s SliceListModel) {
 	var arg0 *C.GtkSliceListModel
 
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_slice_list_model_get_size(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_slice_list_model_get_size(arg0)
 }
 
 // SetModel sets the model to show a slice of. The model's item type must
 // conform to @self's item type.
-func (s sliceListModel) SetModel(model gio.ListModel) {
+func (s sliceListModel) SetModel(s SliceListModel, model gio.ListModel) {
 	var arg0 *C.GtkSliceListModel
 	var arg1 *C.GListModel
 
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_slice_list_model_set_model(arg0, model)
+	C.gtk_slice_list_model_set_model(arg0, arg1)
 }
 
 // SetOffset sets the offset into the original model for this slice.
 //
 // If the offset is too large for the sliced model, @self will end up empty.
-func (s sliceListModel) SetOffset(offset uint) {
+func (s sliceListModel) SetOffset(s SliceListModel, offset uint) {
 	var arg0 *C.GtkSliceListModel
 	var arg1 C.guint
 
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(offset)
 
-	C.gtk_slice_list_model_set_offset(arg0, offset)
+	C.gtk_slice_list_model_set_offset(arg0, arg1)
 }
 
 // SetSize sets the maximum size. @self will never have more items than
@@ -174,12 +143,12 @@ func (s sliceListModel) SetOffset(offset uint) {
 //
 // It can however have fewer items if the offset is too large or the model
 // sliced from doesn't have enough items.
-func (s sliceListModel) SetSize(size uint) {
+func (s sliceListModel) SetSize(s SliceListModel, size uint) {
 	var arg0 *C.GtkSliceListModel
 	var arg1 C.guint
 
 	arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(size)
 
-	C.gtk_slice_list_model_set_size(arg0, size)
+	C.gtk_slice_list_model_set_size(arg0, arg1)
 }

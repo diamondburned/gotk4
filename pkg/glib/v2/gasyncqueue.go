@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -47,19 +46,12 @@ func (a *AsyncQueue) Native() unsafe.Pointer {
 // a positive value means available entries in the @queue. A return value of 0
 // could mean n entries in the queue and n threads waiting. This can happen due
 // to locking of the queue or due to scheduling.
-func (q *AsyncQueue) Length() int {
+func (q *AsyncQueue) Length(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_async_queue_length(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_async_queue_length(arg0)
 }
 
 // LengthUnlocked returns the length of the queue.
@@ -71,19 +63,12 @@ func (q *AsyncQueue) Length() int {
 // to locking of the queue or due to scheduling.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) LengthUnlocked() int {
+func (q *AsyncQueue) LengthUnlocked(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_async_queue_length_unlocked(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_async_queue_length_unlocked(arg0)
 }
 
 // Lock acquires the @queue's lock. If another thread is already holding the
@@ -93,7 +78,7 @@ func (q *AsyncQueue) LengthUnlocked() int {
 //
 // While holding the lock, you can only call the g_async_queue_*_unlocked()
 // functions on @queue. Otherwise, deadlock may occur.
-func (q *AsyncQueue) Lock() {
+func (q *AsyncQueue) Lock(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
@@ -103,63 +88,49 @@ func (q *AsyncQueue) Lock() {
 
 // Pop pops data from the @queue. If @queue is empty, this function blocks until
 // data becomes available.
-func (q *AsyncQueue) Pop() interface{} {
+func (q *AsyncQueue) Pop(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_pop(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_pop(arg0)
 }
 
 // PopUnlocked pops data from the @queue. If @queue is empty, this function
 // blocks until data becomes available.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) PopUnlocked() interface{} {
+func (q *AsyncQueue) PopUnlocked(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_pop_unlocked(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_pop_unlocked(arg0)
 }
 
 // Push pushes the @data into the @queue. @data must not be nil.
-func (q *AsyncQueue) Push(data interface{}) {
+func (q *AsyncQueue) Push(q *AsyncQueue, data interface{}) {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.gpointer
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = C.gpointer(data)
 
-	C.g_async_queue_push(arg0, data)
+	C.g_async_queue_push(arg0, arg1)
 }
 
 // PushFront pushes the @item into the @queue. @item must not be nil. In
 // contrast to g_async_queue_push(), this function pushes the new item ahead of
 // the items already in the queue, so that it will be the next one to be popped
 // off the queue.
-func (q *AsyncQueue) PushFront(item interface{}) {
+func (q *AsyncQueue) PushFront(q *AsyncQueue, item interface{}) {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.gpointer
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = C.gpointer(item)
 
-	C.g_async_queue_push_front(arg0, item)
+	C.g_async_queue_push_front(arg0, arg1)
 }
 
 // PushFrontUnlocked pushes the @item into the @queue. @item must not be nil. In
@@ -168,14 +139,14 @@ func (q *AsyncQueue) PushFront(item interface{}) {
 // be popped off the queue.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) PushFrontUnlocked(item interface{}) {
+func (q *AsyncQueue) PushFrontUnlocked(q *AsyncQueue, item interface{}) {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.gpointer
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = C.gpointer(item)
 
-	C.g_async_queue_push_front_unlocked(arg0, item)
+	C.g_async_queue_push_front_unlocked(arg0, arg1)
 }
 
 // PushSorted inserts @data into @queue using @func to determine the new
@@ -188,12 +159,12 @@ func (q *AsyncQueue) PushFrontUnlocked(item interface{}) {
 // it is finished.
 //
 // For an example of @func see g_async_queue_sort().
-func (q *AsyncQueue) PushSorted(data interface{}, fn CompareDataFunc) {
+func (q *AsyncQueue) PushSorted(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_async_queue_push_sorted(arg0, data, fn, userData)
+	C.g_async_queue_push_sorted(arg0, arg1, arg2, arg3)
 }
 
 // PushSortedUnlocked inserts @data into @queue using @func to determine the new
@@ -210,46 +181,39 @@ func (q *AsyncQueue) PushSorted(data interface{}, fn CompareDataFunc) {
 // This function must be called while holding the @queue's lock.
 //
 // For an example of @func see g_async_queue_sort().
-func (q *AsyncQueue) PushSortedUnlocked(data interface{}, fn CompareDataFunc) {
+func (q *AsyncQueue) PushSortedUnlocked(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_async_queue_push_sorted_unlocked(arg0, data, fn, userData)
+	C.g_async_queue_push_sorted_unlocked(arg0, arg1, arg2, arg3)
 }
 
 // PushUnlocked pushes the @data into the @queue. @data must not be nil.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) PushUnlocked(data interface{}) {
+func (q *AsyncQueue) PushUnlocked(q *AsyncQueue, data interface{}) {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.gpointer
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = C.gpointer(data)
 
-	C.g_async_queue_push_unlocked(arg0, data)
+	C.g_async_queue_push_unlocked(arg0, arg1)
 }
 
 // Ref increases the reference count of the asynchronous @queue by 1. You do not
 // need to hold the lock to call this function.
-func (q *AsyncQueue) Ref() *AsyncQueue {
+func (q *AsyncQueue) Ref(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret *C.GAsyncQueue
-	var ret1 *AsyncQueue
-
-	cret = C.g_async_queue_ref(arg0)
-
-	ret1 = WrapAsyncQueue(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_async_queue_ref(arg0)
 }
 
 // RefUnlocked increases the reference count of the asynchronous @queue by 1.
-func (q *AsyncQueue) RefUnlocked() {
+func (q *AsyncQueue) RefUnlocked(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
@@ -258,7 +222,7 @@ func (q *AsyncQueue) RefUnlocked() {
 }
 
 // Remove: remove an item from the queue.
-func (q *AsyncQueue) Remove(item interface{}) bool {
+func (q *AsyncQueue) Remove(q *AsyncQueue, item interface{}) bool {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.gpointer
 
@@ -266,19 +230,21 @@ func (q *AsyncQueue) Remove(item interface{}) bool {
 	arg1 = C.gpointer(item)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_async_queue_remove(arg0, item)
+	cret = C.g_async_queue_remove(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RemoveUnlocked: remove an item from the queue.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) RemoveUnlocked(item interface{}) bool {
+func (q *AsyncQueue) RemoveUnlocked(q *AsyncQueue, item interface{}) bool {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.gpointer
 
@@ -286,13 +252,15 @@ func (q *AsyncQueue) RemoveUnlocked(item interface{}) bool {
 	arg1 = C.gpointer(item)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_async_queue_remove_unlocked(arg0, item)
+	cret = C.g_async_queue_remove_unlocked(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Sort sorts @queue using @func.
@@ -315,12 +283,12 @@ func (q *AsyncQueue) RemoveUnlocked(item interface{}) bool {
 //     id2 = GPOINTER_TO_INT (element2);
 //
 //     return (id1 > id2 ? +1 : id1 == id2 ? 0 : -1);
-func (q *AsyncQueue) Sort(fn CompareDataFunc) {
+func (q *AsyncQueue) Sort(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_async_queue_sort(arg0, fn, userData)
+	C.g_async_queue_sort(arg0, arg1, arg2)
 }
 
 // SortUnlocked sorts @queue using @func.
@@ -331,12 +299,12 @@ func (q *AsyncQueue) Sort(fn CompareDataFunc) {
 // in the @queue than the second element.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) SortUnlocked(fn CompareDataFunc) {
+func (q *AsyncQueue) SortUnlocked(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_async_queue_sort_unlocked(arg0, fn, userData)
+	C.g_async_queue_sort_unlocked(arg0, arg1, arg2)
 }
 
 // TimedPop pops data from the @queue. If the queue is empty, blocks until
@@ -346,21 +314,14 @@ func (q *AsyncQueue) SortUnlocked(fn CompareDataFunc) {
 //
 // To easily calculate @end_time, a combination of g_get_real_time() and
 // g_time_val_add() can be used.
-func (q *AsyncQueue) TimedPop(endTime *TimeVal) interface{} {
+func (q *AsyncQueue) TimedPop(q *AsyncQueue, endTime *TimeVal) {
 	var arg0 *C.GAsyncQueue
 	var arg1 *C.GTimeVal
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(endTime.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_timed_pop(arg0, endTime)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_timed_pop(arg0, arg1)
 }
 
 // TimedPopUnlocked pops data from the @queue. If the queue is empty, blocks
@@ -372,42 +333,28 @@ func (q *AsyncQueue) TimedPop(endTime *TimeVal) interface{} {
 // g_time_val_add() can be used.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) TimedPopUnlocked(endTime *TimeVal) interface{} {
+func (q *AsyncQueue) TimedPopUnlocked(q *AsyncQueue, endTime *TimeVal) {
 	var arg0 *C.GAsyncQueue
 	var arg1 *C.GTimeVal
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(endTime.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_timed_pop_unlocked(arg0, endTime)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_timed_pop_unlocked(arg0, arg1)
 }
 
 // TimeoutPop pops data from the @queue. If the queue is empty, blocks for
 // @timeout microseconds, or until data becomes available.
 //
 // If no data is received before the timeout, nil is returned.
-func (q *AsyncQueue) TimeoutPop(timeout uint64) interface{} {
+func (q *AsyncQueue) TimeoutPop(q *AsyncQueue, timeout uint64) {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.guint64
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = C.guint64(timeout)
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_timeout_pop(arg0, timeout)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_timeout_pop(arg0, arg1)
 }
 
 // TimeoutPopUnlocked pops data from the @queue. If the queue is empty, blocks
@@ -416,64 +363,43 @@ func (q *AsyncQueue) TimeoutPop(timeout uint64) interface{} {
 // If no data is received before the timeout, nil is returned.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) TimeoutPopUnlocked(timeout uint64) interface{} {
+func (q *AsyncQueue) TimeoutPopUnlocked(q *AsyncQueue, timeout uint64) {
 	var arg0 *C.GAsyncQueue
 	var arg1 C.guint64
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 	arg1 = C.guint64(timeout)
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_timeout_pop_unlocked(arg0, timeout)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_timeout_pop_unlocked(arg0, arg1)
 }
 
 // TryPop tries to pop data from the @queue. If no data is available, nil is
 // returned.
-func (q *AsyncQueue) TryPop() interface{} {
+func (q *AsyncQueue) TryPop(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_try_pop(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_try_pop(arg0)
 }
 
 // TryPopUnlocked tries to pop data from the @queue. If no data is available,
 // nil is returned.
 //
 // This function must be called while holding the @queue's lock.
-func (q *AsyncQueue) TryPopUnlocked() interface{} {
+func (q *AsyncQueue) TryPopUnlocked(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_async_queue_try_pop_unlocked(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_async_queue_try_pop_unlocked(arg0)
 }
 
 // Unlock releases the queue's lock.
 //
 // Calling this function when you have not acquired the with
 // g_async_queue_lock() leads to undefined behaviour.
-func (q *AsyncQueue) Unlock() {
+func (q *AsyncQueue) Unlock(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
@@ -487,7 +413,7 @@ func (q *AsyncQueue) Unlock() {
 // allocated will be freed. So you are not allowed to use the @queue afterwards,
 // as it might have disappeared. You do not need to hold the lock to call this
 // function.
-func (q *AsyncQueue) Unref() {
+func (q *AsyncQueue) Unref(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))
@@ -499,7 +425,7 @@ func (q *AsyncQueue) Unref() {
 // and releases the lock. This function must be called while holding the
 // @queue's lock. If the reference count went to 0, the @queue will be destroyed
 // and the memory allocated will be freed.
-func (q *AsyncQueue) UnrefAndUnlock() {
+func (q *AsyncQueue) UnrefAndUnlock(q *AsyncQueue) {
 	var arg0 *C.GAsyncQueue
 
 	arg0 = (*C.GAsyncQueue)(unsafe.Pointer(q.Native()))

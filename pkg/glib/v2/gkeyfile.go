@@ -3,18 +3,14 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -48,15 +44,15 @@ type KeyFileFlags int
 
 const (
 	// KeyFileFlagsNone: no flags, default behaviour
-	KeyFileFlagsNone KeyFileFlags = 0b0
+	KeyFileFlagsNone KeyFileFlags = 0
 	// KeyFileFlagsKeepComments: use this flag if you plan to write the
 	// (possibly modified) contents of the key file back to a file; otherwise
 	// all comments will be lost when the key file is written back.
-	KeyFileFlagsKeepComments KeyFileFlags = 0b1
+	KeyFileFlagsKeepComments KeyFileFlags = 1
 	// KeyFileFlagsKeepTranslations: use this flag if you plan to write the
 	// (possibly modified) contents of the key file back to a file; otherwise
 	// only the translations for the current language will be written back.
-	KeyFileFlagsKeepTranslations KeyFileFlags = 0b10
+	KeyFileFlagsKeepTranslations KeyFileFlags = 2
 )
 
 // KeyFile: the GKeyFile struct contains only private data and should not be
@@ -81,18 +77,8 @@ func marshalKeyFile(p uintptr) (interface{}, error) {
 }
 
 // NewKeyFile constructs a struct KeyFile.
-func NewKeyFile() *KeyFile {
-	var cret *C.GKeyFile
-	var ret1 *KeyFile
-
-	cret = C.g_key_file_new()
-
-	ret1 = WrapKeyFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *KeyFile) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewKeyFile() {
+	C.g_key_file_new()
 }
 
 // Native returns the underlying C source pointer.
@@ -103,7 +89,7 @@ func (k *KeyFile) Native() unsafe.Pointer {
 // Free clears all keys and groups from @key_file, and decreases the reference
 // count by 1. If the reference count reaches zero, frees the key file and all
 // its allocated memory.
-func (k *KeyFile) Free() {
+func (k *KeyFile) Free(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
@@ -118,7 +104,7 @@ func (k *KeyFile) Free() {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
 // cannot be interpreted as a boolean then false is returned and @error is set
 // to KEY_FILE_ERROR_INVALID_VALUE.
-func (k *KeyFile) Boolean(groupName string, key string) error {
+func (k *KeyFile) Boolean(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -130,13 +116,13 @@ func (k *KeyFile) Boolean(groupName string, key string) error {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_get_boolean(arg0, groupName, key, &errout)
+	C.g_key_file_get_boolean(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // BooleanList returns the values associated with @key under @group_name as
@@ -146,7 +132,7 @@ func (k *KeyFile) Boolean(groupName string, key string) error {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
 // cannot be interpreted as booleans then nil is returned and @error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
-func (k *KeyFile) BooleanList(groupName string, key string) (length uint, oks []bool, err error) {
+func (k *KeyFile) BooleanList(k *KeyFile, groupName string, key string) (length uint, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -157,21 +143,17 @@ func (k *KeyFile) BooleanList(groupName string, key string) (length uint, oks []
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var arg3 C.gsize
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret *C.gboolean
-	var arg3 *C.gsize
-	var ret3 []bool
+	var err error
 
-	cret = C.g_key_file_get_boolean_list(arg0, groupName, key, &arg3, &errout)
+	C.g_key_file_get_boolean_list(arg0, arg1, arg2, &arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ptr.SetSlice(unsafe.Pointer(&ret3), unsafe.Pointer(cret), int(arg3))
-	runtime.SetFinalizer(&ret3, func(v *[]bool) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	length = uint(&arg3)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, goerr, ret3
+	return length, err
 }
 
 // Comment retrieves a comment above @key from @group_name. If @key is nil then
@@ -181,7 +163,7 @@ func (k *KeyFile) BooleanList(groupName string, key string) (length uint, oks []
 // Note that the returned string does not include the '#' comment markers, but
 // does include any whitespace after them (on each line). It includes the line
 // breaks between lines, but does not include the final line break.
-func (k *KeyFile) Comment(groupName string, key string) (utf8 string, err error) {
+func (k *KeyFile) Comment(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -193,17 +175,13 @@ func (k *KeyFile) Comment(groupName string, key string) (utf8 string, err error)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.gchar
-	var ret2 string
+	var err error
 
-	cret = C.g_key_file_get_comment(arg0, groupName, key, &errout)
+	C.g_key_file_get_comment(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Double returns the value associated with @key under @group_name as a double.
@@ -213,7 +191,7 @@ func (k *KeyFile) Comment(groupName string, key string) (utf8 string, err error)
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
 // cannot be interpreted as a double then 0.0 is returned and @error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
-func (k *KeyFile) Double(groupName string, key string) (gdouble float64, err error) {
+func (k *KeyFile) Double(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -225,16 +203,13 @@ func (k *KeyFile) Double(groupName string, key string) (gdouble float64, err err
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.gdouble
-	var ret2 float64
+	var err error
 
-	cret = C.g_key_file_get_double(arg0, groupName, key, &errout)
+	C.g_key_file_get_double(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.gdouble(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // DoubleList returns the values associated with @key under @group_name as
@@ -244,7 +219,7 @@ func (k *KeyFile) Double(groupName string, key string) (gdouble float64, err err
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
 // cannot be interpreted as doubles then nil is returned and @error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
-func (k *KeyFile) DoubleList(groupName string, key string) (length uint, gdoubles []float64, err error) {
+func (k *KeyFile) DoubleList(k *KeyFile, groupName string, key string) (length uint, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -255,62 +230,40 @@ func (k *KeyFile) DoubleList(groupName string, key string) (length uint, gdouble
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var arg3 C.gsize
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret *C.gdouble
-	var arg3 *C.gsize
-	var ret3 []float64
+	var err error
 
-	cret = C.g_key_file_get_double_list(arg0, groupName, key, &arg3, &errout)
+	C.g_key_file_get_double_list(arg0, arg1, arg2, &arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ptr.SetSlice(unsafe.Pointer(&ret3), unsafe.Pointer(cret), int(arg3))
-	runtime.SetFinalizer(&ret3, func(v *[]float64) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	length = uint(&arg3)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, goerr, ret3
+	return length, err
 }
 
 // Groups returns all groups in the key file loaded with @key_file. The array of
 // returned groups will be nil-terminated, so @length may optionally be nil.
-func (k *KeyFile) Groups() (length uint, utf8s []string) {
+func (k *KeyFile) Groups(k *KeyFile) uint {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
 	var arg1 C.gsize
-	var ret1 uint
-	var cret **C.gchar
-	var ret2 []string
+	var length uint
 
-	cret = C.g_key_file_get_groups(arg0, &arg1)
+	C.g_key_file_get_groups(arg0, &arg1)
 
-	*ret1 = C.gsize(arg1)
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
+	length = uint(&arg1)
 
-		ret2 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret2[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1, ret2
+	return length
 }
 
 // Int64 returns the value associated with @key under @group_name as a signed
 // 64-bit integer. This is similar to g_key_file_get_integer() but can return
 // 64-bit results without truncation.
-func (k *KeyFile) Int64(groupName string, key string) (gint64 int64, err error) {
+func (k *KeyFile) Int64(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -322,16 +275,13 @@ func (k *KeyFile) Int64(groupName string, key string) (gint64 int64, err error) 
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.gint64
-	var ret2 int64
+	var err error
 
-	cret = C.g_key_file_get_int64(arg0, groupName, key, &errout)
+	C.g_key_file_get_int64(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.gint64(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Integer returns the value associated with @key under @group_name as an
@@ -341,7 +291,7 @@ func (k *KeyFile) Int64(groupName string, key string) (gint64 int64, err error) 
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
 // cannot be interpreted as an integer, or is out of range for a #gint, then 0
 // is returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
-func (k *KeyFile) Integer(groupName string, key string) (gint int, err error) {
+func (k *KeyFile) Integer(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -353,16 +303,13 @@ func (k *KeyFile) Integer(groupName string, key string) (gint int, err error) {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.gint
-	var ret2 int
+	var err error
 
-	cret = C.g_key_file_get_integer(arg0, groupName, key, &errout)
+	C.g_key_file_get_integer(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.gint(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // IntegerList returns the values associated with @key under @group_name as
@@ -372,7 +319,7 @@ func (k *KeyFile) Integer(groupName string, key string) (gint int, err error) {
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with @key
 // cannot be interpreted as integers, or are out of range for #gint, then nil is
 // returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
-func (k *KeyFile) IntegerList(groupName string, key string) (length uint, gints []int, err error) {
+func (k *KeyFile) IntegerList(k *KeyFile, groupName string, key string) (length uint, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -383,28 +330,24 @@ func (k *KeyFile) IntegerList(groupName string, key string) (length uint, gints 
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var arg3 C.gsize
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret *C.gint
-	var arg3 *C.gsize
-	var ret3 []int
+	var err error
 
-	cret = C.g_key_file_get_integer_list(arg0, groupName, key, &arg3, &errout)
+	C.g_key_file_get_integer_list(arg0, arg1, arg2, &arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ptr.SetSlice(unsafe.Pointer(&ret3), unsafe.Pointer(cret), int(arg3))
-	runtime.SetFinalizer(&ret3, func(v *[]int) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	length = uint(&arg3)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, goerr, ret3
+	return length, err
 }
 
 // Keys returns all keys for the group name @group_name. The array of returned
 // keys will be nil-terminated, so @length may optionally be nil. In the event
 // that the @group_name cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (k *KeyFile) Keys(groupName string) (length uint, utf8s []string, err error) {
+func (k *KeyFile) Keys(k *KeyFile, groupName string) (length uint, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 
@@ -413,34 +356,16 @@ func (k *KeyFile) Keys(groupName string) (length uint, utf8s []string, err error
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.gsize
-	var ret2 uint
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret **C.gchar
-	var ret3 []string
+	var err error
 
-	cret = C.g_key_file_get_keys(arg0, groupName, &arg2, &errout)
+	C.g_key_file_get_keys(arg0, arg1, &arg2, &errout)
 
-	*ret2 = C.gsize(arg2)
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
+	length = uint(&arg2)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-		ret3 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret3[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret2, goerr, ret3
+	return length, err
 }
 
 // LocaleForKey returns the actual locale which the result of
@@ -451,7 +376,7 @@ func (k *KeyFile) Keys(groupName string) (length uint, utf8s []string, err error
 // g_key_file_get_locale_string_list() with exactly the same @key_file,
 // @group_name, @key and @locale, the result of those functions will have
 // originally been tagged with the locale that is the result of this function.
-func (k *KeyFile) LocaleForKey(groupName string, key string, locale string) string {
+func (k *KeyFile) LocaleForKey(k *KeyFile, groupName string, key string, locale string) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -465,15 +390,7 @@ func (k *KeyFile) LocaleForKey(groupName string, key string, locale string) stri
 	arg3 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(arg3))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_key_file_get_locale_for_key(arg0, groupName, key, locale)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_key_file_get_locale_for_key(arg0, arg1, arg2, arg3)
 }
 
 // LocaleString returns the value associated with @key under @group_name
@@ -488,7 +405,7 @@ func (k *KeyFile) LocaleForKey(groupName string, key string, locale string) stri
 // KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated with @key cannot be
 // interpreted or no suitable translation can be found then the untranslated
 // value is returned.
-func (k *KeyFile) LocaleString(groupName string, key string, locale string) (utf8 string, err error) {
+func (k *KeyFile) LocaleString(k *KeyFile, groupName string, key string, locale string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -503,17 +420,13 @@ func (k *KeyFile) LocaleString(groupName string, key string, locale string) (utf
 	defer C.free(unsafe.Pointer(arg3))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.gchar
-	var ret2 string
+	var err error
 
-	cret = C.g_key_file_get_locale_string(arg0, groupName, key, locale, &errout)
+	C.g_key_file_get_locale_string(arg0, arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // LocaleStringList returns the values associated with @key under @group_name
@@ -529,7 +442,7 @@ func (k *KeyFile) LocaleString(groupName string, key string, locale string) (utf
 // interpreted or no suitable translations can be found then the untranslated
 // values are returned. The returned array is nil-terminated, so @length may
 // optionally be nil.
-func (k *KeyFile) LocaleStringList(groupName string, key string, locale string) (length uint, utf8s []string, err error) {
+func (k *KeyFile) LocaleStringList(k *KeyFile, groupName string, key string, locale string) (length uint, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -543,40 +456,26 @@ func (k *KeyFile) LocaleStringList(groupName string, key string, locale string) 
 	arg3 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(arg3))
 
+	var arg4 C.gsize
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret **C.gchar
-	var arg4 *C.gsize
-	var ret3 []string
+	var err error
 
-	cret = C.g_key_file_get_locale_string_list(arg0, groupName, key, locale, &arg4, &errout)
+	C.g_key_file_get_locale_string_list(arg0, arg1, arg2, arg3, &arg4, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret3 = make([]string, arg4)
-	for i := 0; i < uintptr(arg4); i++ {
-		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		ret3[i] = C.GoString(src)
-		defer C.free(unsafe.Pointer(src))
-	}
+	length = uint(&arg4)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret4, goerr, ret3
+	return length, err
 }
 
 // StartGroup returns the name of the start group of the file.
-func (k *KeyFile) StartGroup() string {
+func (k *KeyFile) StartGroup(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_key_file_get_start_group(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_key_file_get_start_group(arg0)
 }
 
 // String returns the string value associated with @key under @group_name.
@@ -586,7 +485,7 @@ func (k *KeyFile) StartGroup() string {
 // In the event the key cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
 // found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (k *KeyFile) String(groupName string, key string) (utf8 string, err error) {
+func (k *KeyFile) String(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -598,17 +497,13 @@ func (k *KeyFile) String(groupName string, key string) (utf8 string, err error) 
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.gchar
-	var ret2 string
+	var err error
 
-	cret = C.g_key_file_get_string(arg0, groupName, key, &errout)
+	C.g_key_file_get_string(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // StringList returns the values associated with @key under @group_name.
@@ -616,7 +511,7 @@ func (k *KeyFile) String(groupName string, key string) (utf8 string, err error) 
 // In the event the key cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
 // found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (k *KeyFile) StringList(groupName string, key string) (length uint, utf8s []string, err error) {
+func (k *KeyFile) StringList(k *KeyFile, groupName string, key string) (length uint, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -627,29 +522,23 @@ func (k *KeyFile) StringList(groupName string, key string) (length uint, utf8s [
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
+	var arg3 C.gsize
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret **C.gchar
-	var arg3 *C.gsize
-	var ret3 []string
+	var err error
 
-	cret = C.g_key_file_get_string_list(arg0, groupName, key, &arg3, &errout)
+	C.g_key_file_get_string_list(arg0, arg1, arg2, &arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret3 = make([]string, arg3)
-	for i := 0; i < uintptr(arg3); i++ {
-		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		ret3[i] = C.GoString(src)
-		defer C.free(unsafe.Pointer(src))
-	}
+	length = uint(&arg3)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, goerr, ret3
+	return length, err
 }
 
 // Uint64 returns the value associated with @key under @group_name as an
 // unsigned 64-bit integer. This is similar to g_key_file_get_integer() but can
 // return large positive results without truncation.
-func (k *KeyFile) Uint64(groupName string, key string) (guint64 uint64, err error) {
+func (k *KeyFile) Uint64(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -661,16 +550,13 @@ func (k *KeyFile) Uint64(groupName string, key string) (guint64 uint64, err erro
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.guint64
-	var ret2 uint64
+	var err error
 
-	cret = C.g_key_file_get_uint64(arg0, groupName, key, &errout)
+	C.g_key_file_get_uint64(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.guint64(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Value returns the raw value associated with @key under @group_name. Use
@@ -679,7 +565,7 @@ func (k *KeyFile) Uint64(groupName string, key string) (guint64 uint64, err erro
 // In the event the key cannot be found, nil is returned and @error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
 // found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
-func (k *KeyFile) Value(groupName string, key string) (utf8 string, err error) {
+func (k *KeyFile) Value(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -691,21 +577,17 @@ func (k *KeyFile) Value(groupName string, key string) (utf8 string, err error) {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.gchar
-	var ret2 string
+	var err error
 
-	cret = C.g_key_file_get_value(arg0, groupName, key, &errout)
+	C.g_key_file_get_value(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // HasGroup looks whether the key file has the group @group_name.
-func (k *KeyFile) HasGroup(groupName string) bool {
+func (k *KeyFile) HasGroup(k *KeyFile, groupName string) bool {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 
@@ -714,13 +596,15 @@ func (k *KeyFile) HasGroup(groupName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_key_file_has_group(arg0, groupName)
+	cret = C.g_key_file_has_group(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // HasKey looks whether the key file has the key @key in the group @group_name.
@@ -732,7 +616,7 @@ func (k *KeyFile) HasGroup(groupName string) bool {
 //
 // Language bindings should use g_key_file_get_value() to test whether or not a
 // key exists.
-func (k *KeyFile) HasKey(groupName string, key string) error {
+func (k *KeyFile) HasKey(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -744,18 +628,18 @@ func (k *KeyFile) HasKey(groupName string, key string) error {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_has_key(arg0, groupName, key, &errout)
+	C.g_key_file_has_key(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // LoadFromBytes loads a key file from the data in @bytes into an empty File
 // structure. If the object cannot be created then error is set to a FileError.
-func (k *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
+func (k *KeyFile) LoadFromBytes(k *KeyFile, bytes *Bytes, flags KeyFileFlags) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.GBytes
 	var arg2 C.GKeyFileFlags
@@ -765,18 +649,18 @@ func (k *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	arg2 = (C.GKeyFileFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_load_from_bytes(arg0, bytes, flags, &errout)
+	C.g_key_file_load_from_bytes(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // LoadFromData loads a key file from memory into an empty File structure. If
 // the object cannot be created then error is set to a FileError.
-func (k *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) error {
+func (k *KeyFile) LoadFromData(k *KeyFile, data string, length uint, flags KeyFileFlags) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 C.gsize
@@ -789,20 +673,20 @@ func (k *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) err
 	arg3 = (C.GKeyFileFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_load_from_data(arg0, data, length, flags, &errout)
+	C.g_key_file_load_from_data(arg0, arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // LoadFromDataDirs: this function looks for a key file named @file in the paths
 // returned from g_get_user_data_dir() and g_get_system_data_dirs(), loads the
 // file into @key_file and returns the file's full path in @full_path. If the
 // file could not be loaded then an error is set to either a Error or FileError.
-func (k *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullPath string, err error) {
+func (k *KeyFile) LoadFromDataDirs(k *KeyFile, file string, flags KeyFileFlags) (fullPath string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg3 C.GKeyFileFlags
@@ -813,17 +697,17 @@ func (k *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullPath st
 	arg3 = (C.GKeyFileFlags)(flags)
 
 	var arg2 *C.gchar
-	var ret2 string
+	var fullPath string
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_load_from_data_dirs(arg0, file, &arg2, flags, &errout)
+	C.g_key_file_load_from_data_dirs(arg0, arg1, &arg2, arg3, &errout)
 
-	*ret2 = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	fullPath = C.GoString(&arg2)
+	defer C.free(unsafe.Pointer(&arg2))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret2, goerr
+	return fullPath, err
 }
 
 // LoadFromDirs: this function looks for a key file named @file in the paths
@@ -835,7 +719,7 @@ func (k *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (fullPath st
 // returns an error when opening or reading the file, a G_FILE_ERROR is
 // returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
 // returned.
-func (k *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (fullPath string, err error) {
+func (k *KeyFile) LoadFromDirs(k *KeyFile, file string, searchDirs []string, flags KeyFileFlags) (fullPath string, err error) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 **C.gchar
@@ -859,17 +743,17 @@ func (k *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFl
 	arg4 = (C.GKeyFileFlags)(flags)
 
 	var arg3 *C.gchar
-	var ret3 string
+	var fullPath string
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_load_from_dirs(arg0, file, searchDirs, &arg3, flags, &errout)
+	C.g_key_file_load_from_dirs(arg0, arg1, arg2, &arg3, arg4, &errout)
 
-	*ret3 = C.GoString(arg3)
-	defer C.free(unsafe.Pointer(arg3))
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	fullPath = C.GoString(&arg3)
+	defer C.free(unsafe.Pointer(&arg3))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, goerr
+	return fullPath, err
 }
 
 // LoadFromFile loads a key file into an empty File structure.
@@ -880,7 +764,7 @@ func (k *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFl
 //
 // This function will never return a G_KEY_FILE_ERROR_NOT_FOUND error. If the
 // @file is not found, G_FILE_ERROR_NOENT is returned.
-func (k *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
+func (k *KeyFile) LoadFromFile(k *KeyFile, file string, flags KeyFileFlags) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 C.GKeyFileFlags
@@ -891,38 +775,28 @@ func (k *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	arg2 = (C.GKeyFileFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_load_from_file(arg0, file, flags, &errout)
+	C.g_key_file_load_from_file(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // Ref increases the reference count of @key_file.
-func (k *KeyFile) Ref() *KeyFile {
+func (k *KeyFile) Ref(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	var cret *C.GKeyFile
-	var ret1 *KeyFile
-
-	cret = C.g_key_file_ref(arg0)
-
-	ret1 = WrapKeyFile(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *KeyFile) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_key_file_ref(arg0)
 }
 
 // RemoveComment removes a comment above @key from @group_name. If @key is nil
 // then @comment will be removed above @group_name. If both @key and @group_name
 // are nil, then @comment will be removed above the first group in the file.
-func (k *KeyFile) RemoveComment(groupName string, key string) error {
+func (k *KeyFile) RemoveComment(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -934,17 +808,17 @@ func (k *KeyFile) RemoveComment(groupName string, key string) error {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_remove_comment(arg0, groupName, key, &errout)
+	C.g_key_file_remove_comment(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // RemoveGroup removes the specified group, @group_name, from the key file.
-func (k *KeyFile) RemoveGroup(groupName string) error {
+func (k *KeyFile) RemoveGroup(k *KeyFile, groupName string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 
@@ -953,17 +827,17 @@ func (k *KeyFile) RemoveGroup(groupName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_remove_group(arg0, groupName, &errout)
+	C.g_key_file_remove_group(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // RemoveKey removes @key in @group_name from the key file.
-func (k *KeyFile) RemoveKey(groupName string, key string) error {
+func (k *KeyFile) RemoveKey(k *KeyFile, groupName string, key string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -975,13 +849,13 @@ func (k *KeyFile) RemoveKey(groupName string, key string) error {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_remove_key(arg0, groupName, key, &errout)
+	C.g_key_file_remove_key(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SaveToFile writes the contents of @key_file to @filename using
@@ -991,7 +865,7 @@ func (k *KeyFile) RemoveKey(groupName string, key string) error {
 //
 // This function can fail for any of the reasons that g_file_set_contents() may
 // fail.
-func (k *KeyFile) SaveToFile(filename string) error {
+func (k *KeyFile) SaveToFile(k *KeyFile, filename string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 
@@ -1000,18 +874,18 @@ func (k *KeyFile) SaveToFile(filename string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_save_to_file(arg0, filename, &errout)
+	C.g_key_file_save_to_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetBoolean associates a new boolean value with @key under @group_name. If
 // @key cannot be found then it is created.
-func (k *KeyFile) SetBoolean(groupName string, key string, value bool) {
+func (k *KeyFile) SetBoolean(k *KeyFile, groupName string, key string, value bool) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1026,18 +900,18 @@ func (k *KeyFile) SetBoolean(groupName string, key string, value bool) {
 		arg3 = C.gboolean(1)
 	}
 
-	C.g_key_file_set_boolean(arg0, groupName, key, value)
+	C.g_key_file_set_boolean(arg0, arg1, arg2, arg3)
 }
 
 // SetBooleanList associates a list of boolean values with @key under
 // @group_name. If @key cannot be found then it is created. If @group_name is
 // nil, the start_group is used.
-func (k *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
+func (k *KeyFile) SetBooleanList(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	C.g_key_file_set_boolean_list(arg0, groupName, key, list, length)
+	C.g_key_file_set_boolean_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetComment places a comment above @key from @group_name.
@@ -1048,7 +922,7 @@ func (k *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
 //
 // Note that this function prepends a '#' comment marker to each line of
 // @comment.
-func (k *KeyFile) SetComment(groupName string, key string, comment string) error {
+func (k *KeyFile) SetComment(k *KeyFile, groupName string, key string, comment string) error {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1063,18 +937,18 @@ func (k *KeyFile) SetComment(groupName string, key string, comment string) error
 	defer C.free(unsafe.Pointer(arg3))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_key_file_set_comment(arg0, groupName, key, comment, &errout)
+	C.g_key_file_set_comment(arg0, arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetDouble associates a new double value with @key under @group_name. If @key
 // cannot be found then it is created.
-func (k *KeyFile) SetDouble(groupName string, key string, value float64) {
+func (k *KeyFile) SetDouble(k *KeyFile, groupName string, key string, value float64) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1087,22 +961,22 @@ func (k *KeyFile) SetDouble(groupName string, key string, value float64) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gdouble(value)
 
-	C.g_key_file_set_double(arg0, groupName, key, value)
+	C.g_key_file_set_double(arg0, arg1, arg2, arg3)
 }
 
 // SetDoubleList associates a list of double values with @key under @group_name.
 // If @key cannot be found then it is created.
-func (k *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
+func (k *KeyFile) SetDoubleList(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	C.g_key_file_set_double_list(arg0, groupName, key, list, length)
+	C.g_key_file_set_double_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetInt64 associates a new integer value with @key under @group_name. If @key
 // cannot be found then it is created.
-func (k *KeyFile) SetInt64(groupName string, key string, value int64) {
+func (k *KeyFile) SetInt64(k *KeyFile, groupName string, key string, value int64) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1115,12 +989,12 @@ func (k *KeyFile) SetInt64(groupName string, key string, value int64) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gint64(value)
 
-	C.g_key_file_set_int64(arg0, groupName, key, value)
+	C.g_key_file_set_int64(arg0, arg1, arg2, arg3)
 }
 
 // SetInteger associates a new integer value with @key under @group_name. If
 // @key cannot be found then it is created.
-func (k *KeyFile) SetInteger(groupName string, key string, value int) {
+func (k *KeyFile) SetInteger(k *KeyFile, groupName string, key string, value int) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1133,35 +1007,35 @@ func (k *KeyFile) SetInteger(groupName string, key string, value int) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gint(value)
 
-	C.g_key_file_set_integer(arg0, groupName, key, value)
+	C.g_key_file_set_integer(arg0, arg1, arg2, arg3)
 }
 
 // SetIntegerList associates a list of integer values with @key under
 // @group_name. If @key cannot be found then it is created.
-func (k *KeyFile) SetIntegerList(groupName string, key string, list []int) {
+func (k *KeyFile) SetIntegerList(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	C.g_key_file_set_integer_list(arg0, groupName, key, list, length)
+	C.g_key_file_set_integer_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetListSeparator sets the character which is used to separate values in
 // lists. Typically ';' or ',' are used as separators. The default list
 // separator is ';'.
-func (k *KeyFile) SetListSeparator(separator byte) {
+func (k *KeyFile) SetListSeparator(k *KeyFile, separator byte) {
 	var arg0 *C.GKeyFile
 	var arg1 C.gchar
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 	arg1 = C.gchar(separator)
 
-	C.g_key_file_set_list_separator(arg0, separator)
+	C.g_key_file_set_list_separator(arg0, arg1)
 }
 
 // SetLocaleString associates a string value for @key and @locale under
 // @group_name. If the translation for @key cannot be found then it is created.
-func (k *KeyFile) SetLocaleString(groupName string, key string, locale string, string string) {
+func (k *KeyFile) SetLocaleString(k *KeyFile, groupName string, key string, locale string, string string) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1178,25 +1052,25 @@ func (k *KeyFile) SetLocaleString(groupName string, key string, locale string, s
 	arg4 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg4))
 
-	C.g_key_file_set_locale_string(arg0, groupName, key, locale, string)
+	C.g_key_file_set_locale_string(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetLocaleStringList associates a list of string values for @key and @locale
 // under @group_name. If the translation for @key cannot be found then it is
 // created.
-func (k *KeyFile) SetLocaleStringList(groupName string, key string, locale string, list []string) {
+func (k *KeyFile) SetLocaleStringList(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	C.g_key_file_set_locale_string_list(arg0, groupName, key, locale, list, length)
+	C.g_key_file_set_locale_string_list(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // SetString associates a new string value with @key under @group_name. If @key
 // cannot be found then it is created. If @group_name cannot be found then it is
 // created. Unlike g_key_file_set_value(), this function handles characters that
 // need escaping, such as newlines.
-func (k *KeyFile) SetString(groupName string, key string, string string) {
+func (k *KeyFile) SetString(k *KeyFile, groupName string, key string, string string) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1210,23 +1084,23 @@ func (k *KeyFile) SetString(groupName string, key string, string string) {
 	arg3 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_key_file_set_string(arg0, groupName, key, string)
+	C.g_key_file_set_string(arg0, arg1, arg2, arg3)
 }
 
 // SetStringList associates a list of string values for @key under @group_name.
 // If @key cannot be found then it is created. If @group_name cannot be found
 // then it is created.
-func (k *KeyFile) SetStringList(groupName string, key string, list []string) {
+func (k *KeyFile) SetStringList(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
-	C.g_key_file_set_string_list(arg0, groupName, key, list, length)
+	C.g_key_file_set_string_list(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetUint64 associates a new integer value with @key under @group_name. If @key
 // cannot be found then it is created.
-func (k *KeyFile) SetUint64(groupName string, key string, value uint64) {
+func (k *KeyFile) SetUint64(k *KeyFile, groupName string, key string, value uint64) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1239,7 +1113,7 @@ func (k *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.guint64(value)
 
-	C.g_key_file_set_uint64(arg0, groupName, key, value)
+	C.g_key_file_set_uint64(arg0, arg1, arg2, arg3)
 }
 
 // SetValue associates a new value with @key under @group_name.
@@ -1247,7 +1121,7 @@ func (k *KeyFile) SetUint64(groupName string, key string, value uint64) {
 // If @key cannot be found then it is created. If @group_name cannot be found
 // then it is created. To set an UTF-8 string which may contain characters that
 // need escaping (such as newlines or spaces), use g_key_file_set_string().
-func (k *KeyFile) SetValue(groupName string, key string, value string) {
+func (k *KeyFile) SetValue(k *KeyFile, groupName string, key string, value string) {
 	var arg0 *C.GKeyFile
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -1261,38 +1135,34 @@ func (k *KeyFile) SetValue(groupName string, key string, value string) {
 	arg3 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_key_file_set_value(arg0, groupName, key, value)
+	C.g_key_file_set_value(arg0, arg1, arg2, arg3)
 }
 
 // ToData: this function outputs @key_file as a string.
 //
 // Note that this function never reports an error, so it is safe to pass nil as
 // @error.
-func (k *KeyFile) ToData() (length uint, utf8 string, err error) {
+func (k *KeyFile) ToData(k *KeyFile) (length uint, err error) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
 
 	var arg1 C.gsize
-	var ret1 uint
+	var length uint
 	var errout *C.GError
-	var goerr error
-	var cret *C.gchar
-	var ret3 string
+	var err error
 
-	cret = C.g_key_file_to_data(arg0, &arg1, &errout)
+	C.g_key_file_to_data(arg0, &arg1, &errout)
 
-	*ret1 = C.gsize(arg1)
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret3 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	length = uint(&arg1)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret1, goerr, ret3
+	return length, err
 }
 
 // Unref decreases the reference count of @key_file by 1. If the reference count
 // reaches zero, frees the key file and all its allocated memory.
-func (k *KeyFile) Unref() {
+func (k *KeyFile) Unref(k *KeyFile) {
 	var arg0 *C.GKeyFile
 
 	arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))

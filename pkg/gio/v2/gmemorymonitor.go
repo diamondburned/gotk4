@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,21 +30,14 @@ func init() {
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the
 // system.
-func MemoryMonitorDupDefault() MemoryMonitor {
-	var cret *C.GMemoryMonitor
-	var ret1 MemoryMonitor
-
-	cret = C.g_memory_monitor_dup_default()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryMonitor)
-
-	return ret1
+func MemoryMonitorDupDefault() {
+	C.g_memory_monitor_dup_default()
 }
 
 // MemoryMonitorOverrider contains methods that are overridable. This
 // interface is a subset of the interface MemoryMonitor.
 type MemoryMonitorOverrider interface {
-	LowMemoryWarning(level MemoryMonitorWarningLevel)
+	LowMemoryWarning(m MemoryMonitor, level MemoryMonitorWarningLevel)
 }
 
 // MemoryMonitor: Monitor will monitor system memory and suggest to the

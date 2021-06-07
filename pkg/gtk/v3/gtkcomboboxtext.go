@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -81,23 +78,23 @@ type ComboBoxText interface {
 	//
 	// This is the same as calling gtk_combo_box_text_insert() with a position
 	// of -1.
-	Append(id string, text string)
+	Append(c ComboBoxText, id string, text string)
 	// AppendText appends @text to the list of strings stored in @combo_box.
 	//
 	// This is the same as calling gtk_combo_box_text_insert_text() with a
 	// position of -1.
-	AppendText(text string)
+	AppendText(c ComboBoxText, text string)
 	// ActiveText returns the currently active string in @combo_box, or nil if
 	// none is selected. If @combo_box contains an entry, this function will
 	// return its contents (which will not necessarily be an item from the
 	// list).
-	ActiveText() string
+	ActiveText(c ComboBoxText)
 	// Insert inserts @text at @position in the list of strings stored in
 	// @combo_box. If @id is non-nil then it is used as the ID of the row. See
 	// ComboBox:id-column.
 	//
 	// If @position is negative then @text is appended.
-	Insert(position int, id string, text string)
+	Insert(c ComboBoxText, position int, id string, text string)
 	// InsertText inserts @text at @position in the list of strings stored in
 	// @combo_box.
 	//
@@ -105,22 +102,22 @@ type ComboBoxText interface {
 	//
 	// This is the same as calling gtk_combo_box_text_insert() with a nil ID
 	// string.
-	InsertText(position int, text string)
+	InsertText(c ComboBoxText, position int, text string)
 	// Prepend prepends @text to the list of strings stored in @combo_box. If
 	// @id is non-nil then it is used as the ID of the row.
 	//
 	// This is the same as calling gtk_combo_box_text_insert() with a position
 	// of 0.
-	Prepend(id string, text string)
+	Prepend(c ComboBoxText, id string, text string)
 	// PrependText prepends @text to the list of strings stored in @combo_box.
 	//
 	// This is the same as calling gtk_combo_box_text_insert_text() with a
 	// position of 0.
-	PrependText(text string)
+	PrependText(c ComboBoxText, text string)
 	// Remove removes the string at @position from @combo_box.
-	Remove(position int)
+	Remove(c ComboBoxText, position int)
 	// RemoveAll removes all the text entries from the combo box.
-	RemoveAll()
+	RemoveAll(c ComboBoxText)
 }
 
 // comboBoxText implements the ComboBoxText interface.
@@ -151,27 +148,13 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 }
 
 // NewComboBoxText constructs a class ComboBoxText.
-func NewComboBoxText() ComboBoxText {
-	var cret C.GtkComboBoxText
-	var ret1 ComboBoxText
-
-	cret = C.gtk_combo_box_text_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
-
-	return ret1
+func NewComboBoxText() {
+	C.gtk_combo_box_text_new()
 }
 
 // NewComboBoxTextWithEntry constructs a class ComboBoxText.
-func NewComboBoxTextWithEntry() ComboBoxText {
-	var cret C.GtkComboBoxText
-	var ret1 ComboBoxText
-
-	cret = C.gtk_combo_box_text_new_with_entry()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
-
-	return ret1
+func NewComboBoxTextWithEntry() {
+	C.gtk_combo_box_text_new_with_entry()
 }
 
 // Append appends @text to the list of strings stored in @combo_box. If @id
@@ -179,7 +162,7 @@ func NewComboBoxTextWithEntry() ComboBoxText {
 //
 // This is the same as calling gtk_combo_box_text_insert() with a position
 // of -1.
-func (c comboBoxText) Append(id string, text string) {
+func (c comboBoxText) Append(c ComboBoxText, id string, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -190,14 +173,14 @@ func (c comboBoxText) Append(id string, text string) {
 	arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_combo_box_text_append(arg0, id, text)
+	C.gtk_combo_box_text_append(arg0, arg1, arg2)
 }
 
 // AppendText appends @text to the list of strings stored in @combo_box.
 //
 // This is the same as calling gtk_combo_box_text_insert_text() with a
 // position of -1.
-func (c comboBoxText) AppendText(text string) {
+func (c comboBoxText) AppendText(c ComboBoxText, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 *C.gchar
 
@@ -205,27 +188,19 @@ func (c comboBoxText) AppendText(text string) {
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_combo_box_text_append_text(arg0, text)
+	C.gtk_combo_box_text_append_text(arg0, arg1)
 }
 
 // ActiveText returns the currently active string in @combo_box, or nil if
 // none is selected. If @combo_box contains an entry, this function will
 // return its contents (which will not necessarily be an item from the
 // list).
-func (c comboBoxText) ActiveText() string {
+func (c comboBoxText) ActiveText(c ComboBoxText) {
 	var arg0 *C.GtkComboBoxText
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_combo_box_text_get_active_text(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_combo_box_text_get_active_text(arg0)
 }
 
 // Insert inserts @text at @position in the list of strings stored in
@@ -233,7 +208,7 @@ func (c comboBoxText) ActiveText() string {
 // ComboBox:id-column.
 //
 // If @position is negative then @text is appended.
-func (c comboBoxText) Insert(position int, id string, text string) {
+func (c comboBoxText) Insert(c ComboBoxText, position int, id string, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 C.gint
 	var arg2 *C.gchar
@@ -246,7 +221,7 @@ func (c comboBoxText) Insert(position int, id string, text string) {
 	arg3 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.gtk_combo_box_text_insert(arg0, position, id, text)
+	C.gtk_combo_box_text_insert(arg0, arg1, arg2, arg3)
 }
 
 // InsertText inserts @text at @position in the list of strings stored in
@@ -256,7 +231,7 @@ func (c comboBoxText) Insert(position int, id string, text string) {
 //
 // This is the same as calling gtk_combo_box_text_insert() with a nil ID
 // string.
-func (c comboBoxText) InsertText(position int, text string) {
+func (c comboBoxText) InsertText(c ComboBoxText, position int, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 C.gint
 	var arg2 *C.gchar
@@ -266,7 +241,7 @@ func (c comboBoxText) InsertText(position int, text string) {
 	arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_combo_box_text_insert_text(arg0, position, text)
+	C.gtk_combo_box_text_insert_text(arg0, arg1, arg2)
 }
 
 // Prepend prepends @text to the list of strings stored in @combo_box. If
@@ -274,7 +249,7 @@ func (c comboBoxText) InsertText(position int, text string) {
 //
 // This is the same as calling gtk_combo_box_text_insert() with a position
 // of 0.
-func (c comboBoxText) Prepend(id string, text string) {
+func (c comboBoxText) Prepend(c ComboBoxText, id string, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -285,14 +260,14 @@ func (c comboBoxText) Prepend(id string, text string) {
 	arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_combo_box_text_prepend(arg0, id, text)
+	C.gtk_combo_box_text_prepend(arg0, arg1, arg2)
 }
 
 // PrependText prepends @text to the list of strings stored in @combo_box.
 //
 // This is the same as calling gtk_combo_box_text_insert_text() with a
 // position of 0.
-func (c comboBoxText) PrependText(text string) {
+func (c comboBoxText) PrependText(c ComboBoxText, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 *C.gchar
 
@@ -300,22 +275,22 @@ func (c comboBoxText) PrependText(text string) {
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_combo_box_text_prepend_text(arg0, text)
+	C.gtk_combo_box_text_prepend_text(arg0, arg1)
 }
 
 // Remove removes the string at @position from @combo_box.
-func (c comboBoxText) Remove(position int) {
+func (c comboBoxText) Remove(c ComboBoxText, position int) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 C.gint
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	arg1 = C.gint(position)
 
-	C.gtk_combo_box_text_remove(arg0, position)
+	C.gtk_combo_box_text_remove(arg0, arg1)
 }
 
 // RemoveAll removes all the text entries from the combo box.
-func (c comboBoxText) RemoveAll() {
+func (c comboBoxText) RemoveAll(c ComboBoxText) {
 	var arg0 *C.GtkComboBoxText
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))

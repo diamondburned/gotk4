@@ -50,7 +50,7 @@ type WaylandSurface interface {
 	gdk.Surface
 
 	// WlSurface returns the Wayland surface of a Surface.
-	WlSurface() interface{}
+	WlSurface(s WaylandSurface)
 }
 
 // waylandSurface implements the WaylandSurface interface.
@@ -75,19 +75,12 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 }
 
 // WlSurface returns the Wayland surface of a Surface.
-func (s waylandSurface) WlSurface() interface{} {
+func (s waylandSurface) WlSurface(s WaylandSurface) {
 	var arg0 *C.GdkSurface
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var cret *C.wl_surface
-	var ret1 interface{}
-
-	cret = C.gdk_wayland_surface_get_wl_surface(arg0)
-
-	ret1 = *C.wl_surface(cret)
-
-	return ret1
+	C.gdk_wayland_surface_get_wl_surface(arg0)
 }
 
 type WaylandToplevel interface {
@@ -110,9 +103,9 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	ExportHandle(callback WaylandToplevelExported) bool
+	ExportHandle(t WaylandToplevel) bool
 	// SetApplicationID sets the application id on a Toplevel.
-	SetApplicationID(applicationID string)
+	SetApplicationID(t WaylandToplevel, applicationID string)
 	// SetTransientForExported marks @toplevel as transient for the surface to
 	// which the given @parent_handle_str refers. Typically, the handle will
 	// originate from a gdk_wayland_toplevel_export_handle() call in another
@@ -120,7 +113,7 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	SetTransientForExported(parentHandleStr string) bool
+	SetTransientForExported(t WaylandToplevel, parentHandleStr string) bool
 	// UnexportHandle destroys the handle that was obtained with
 	// gdk_wayland_toplevel_export_handle().
 	//
@@ -129,7 +122,7 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	UnexportHandle()
+	UnexportHandle(t WaylandToplevel)
 }
 
 // waylandToplevel implements the WaylandToplevel interface.
@@ -170,23 +163,25 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
-func (t waylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
+func (t waylandToplevel) ExportHandle(t WaylandToplevel) bool {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_wayland_toplevel_export_handle(arg0, callback, userData, destroyFunc)
+	cret = C.gdk_wayland_toplevel_export_handle(arg0, arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetApplicationID sets the application id on a Toplevel.
-func (t waylandToplevel) SetApplicationID(applicationID string) {
+func (t waylandToplevel) SetApplicationID(t WaylandToplevel, applicationID string) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.char
 
@@ -194,7 +189,7 @@ func (t waylandToplevel) SetApplicationID(applicationID string) {
 	arg1 = (*C.char)(C.CString(applicationID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_wayland_toplevel_set_application_id(arg0, applicationID)
+	C.gdk_wayland_toplevel_set_application_id(arg0, arg1)
 }
 
 // SetTransientForExported marks @toplevel as transient for the surface to
@@ -204,7 +199,7 @@ func (t waylandToplevel) SetApplicationID(applicationID string) {
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
-func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
+func (t waylandToplevel) SetTransientForExported(t WaylandToplevel, parentHandleStr string) bool {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.char
 
@@ -213,13 +208,15 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_wayland_toplevel_set_transient_for_exported(arg0, parentHandleStr)
+	cret = C.gdk_wayland_toplevel_set_transient_for_exported(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // UnexportHandle destroys the handle that was obtained with
@@ -230,7 +227,7 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
-func (t waylandToplevel) UnexportHandle() {
+func (t waylandToplevel) UnexportHandle(t WaylandToplevel) {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))

@@ -2,15 +2,8 @@
 
 package glib
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -34,29 +27,23 @@ import "C"
 // The string returned in @charset is not allocated, and should not be freed.
 func GetCharset() (charset string, ok bool) {
 	var arg1 *C.char
-	var ret1 string
+	var charset string
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
 	cret = C.g_get_charset(&arg1)
 
-	*ret1 = C.GoString(arg1)
-	ret2 = C.bool(cret) != C.false
+	charset = C.GoString(&arg1)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return charset, ok
 }
 
 // GetCodeset gets the character set for the current locale.
-func GetCodeset() string {
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_get_codeset()
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+func GetCodeset() {
+	C.g_get_codeset()
 }
 
 // GetConsoleCharset obtains the character set used by the console attached to
@@ -77,16 +64,18 @@ func GetCodeset() string {
 // The string returned in @charset is not allocated, and should not be freed.
 func GetConsoleCharset() (charset string, ok bool) {
 	var arg1 *C.char
-	var ret1 string
+	var charset string
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
 	cret = C.g_get_console_charset(&arg1)
 
-	*ret1 = C.GoString(arg1)
-	ret2 = C.bool(cret) != C.false
+	charset = C.GoString(&arg1)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return charset, ok
 }
 
 // GetLanguageNames computes a list of applicable locale names, which can be
@@ -99,29 +88,8 @@ func GetConsoleCharset() (charset string, ok bool) {
 //
 // This function consults the environment variables `LANGUAGE`, `LC_ALL`,
 // `LC_MESSAGES` and `LANG` to find the list of locales specified by the user.
-func GetLanguageNames() []string {
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_get_language_names()
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-		}
-	}
-
-	return ret1
+func GetLanguageNames() {
+	C.g_get_language_names()
 }
 
 // GetLanguageNamesWithCategory computes a list of applicable locale names with
@@ -134,34 +102,13 @@ func GetLanguageNames() []string {
 //
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
-func GetLanguageNamesWithCategory(categoryName string) []string {
+func GetLanguageNamesWithCategory(categoryName string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(categoryName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_get_language_names_with_category(categoryName)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-		}
-	}
-
-	return ret1
+	C.g_get_language_names_with_category(arg1)
 }
 
 // GetLocaleVariants returns a list of derived variants of @locale, which can be
@@ -179,33 +126,11 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 //
 // If you need the list of variants for the current locale, use
 // g_get_language_names().
-func GetLocaleVariants(locale string) []string {
+func GetLocaleVariants(locale string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_get_locale_variants(locale)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.g_get_locale_variants(arg1)
 }

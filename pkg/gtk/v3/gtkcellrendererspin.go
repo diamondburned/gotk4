@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,13 +59,6 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererSpin constructs a class CellRendererSpin.
-func NewCellRendererSpin() CellRendererSpin {
-	var cret C.GtkCellRendererSpin
-	var ret1 CellRendererSpin
-
-	cret = C.gtk_cell_renderer_spin_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpin)
-
-	return ret1
+func NewCellRendererSpin() {
+	C.gtk_cell_renderer_spin_new()
 }

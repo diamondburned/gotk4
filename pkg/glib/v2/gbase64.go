@@ -2,13 +2,6 @@
 
 package glib
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -17,51 +10,30 @@ import "C"
 // Base64Decode: decode a sequence of Base-64 encoded text into binary data.
 // Note that the returned binary data is not necessarily zero-terminated, so it
 // should not be used as a character string.
-func Base64Decode(text string) (outLen uint, guint8s []byte) {
+func Base64Decode(text string) uint {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.guchar
-	var arg2 *C.gsize
-	var ret2 []byte
+	var arg2 C.gsize
+	var outLen uint
 
-	cret = C.g_base64_decode(text, &arg2)
+	C.g_base64_decode(arg1, &arg2)
 
-	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&ret2, func(v *[]byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	outLen = uint(&arg2)
 
-	return ret2, ret2
+	return outLen
 }
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
-func Base64DecodeInplace(text []byte) byte {
-
-	var cret *C.guchar
-	var ret1 byte
-
-	cret = C.g_base64_decode_inplace(text, outLen)
-
-	ret1 = *C.guchar(cret)
-
-	return ret1
+func Base64DecodeInplace() {
+	C.g_base64_decode_inplace(arg1, arg2)
 }
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
-func Base64Encode(data []byte) string {
-
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_base64_encode(data, len)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+func Base64Encode() {
+	C.g_base64_encode(arg1, arg2)
 }

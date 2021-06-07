@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -25,7 +24,7 @@ type DragSurface interface {
 	Surface
 
 	// Present: present @drag_surface.
-	Present(width int, height int) bool
+	Present(d DragSurface, width int, height int) bool
 }
 
 // dragSurface implements the DragSurface interface.
@@ -50,7 +49,7 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 }
 
 // Present: present @drag_surface.
-func (d dragSurface) Present(width int, height int) bool {
+func (d dragSurface) Present(d DragSurface, width int, height int) bool {
 	var arg0 *C.GdkDragSurface
 	var arg1 C.int
 	var arg2 C.int
@@ -60,11 +59,13 @@ func (d dragSurface) Present(width int, height int) bool {
 	arg2 = C.int(height)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_drag_surface_present(arg0, width, height)
+	cret = C.gdk_drag_surface_present(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

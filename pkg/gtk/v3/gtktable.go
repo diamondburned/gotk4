@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -67,50 +66,50 @@ type Table interface {
 	//
 	// If you want to make the button span the entire bottom row, use
 	// @left_attach == 0 and @right_attach = 2 instead.
-	Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
+	Attach(t Table, child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
 	// AttachDefaults as there are many options associated with
 	// gtk_table_attach(), this convenience function provides the programmer
 	// with a means to add children to a table with identical padding and
 	// expansion options. The values used for the AttachOptions are `GTK_EXPAND
 	// | GTK_FILL`, and the padding is set to 0.
-	AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
+	AttachDefaults(t Table, widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
 	// ColSpacing gets the amount of space between column @col, and column @col
 	// + 1. See gtk_table_set_col_spacing().
-	ColSpacing(column uint) uint
+	ColSpacing(t Table, column uint)
 	// DefaultColSpacing gets the default column spacing for the table. This is
 	// the spacing that will be used for newly added columns. (See
 	// gtk_table_set_col_spacings())
-	DefaultColSpacing() uint
+	DefaultColSpacing(t Table)
 	// DefaultRowSpacing gets the default row spacing for the table. This is the
 	// spacing that will be used for newly added rows. (See
 	// gtk_table_set_row_spacings())
-	DefaultRowSpacing() uint
+	DefaultRowSpacing(t Table)
 	// Homogeneous returns whether the table cells are all constrained to the
 	// same width and height. (See gtk_table_set_homogeneous ())
-	Homogeneous() bool
+	Homogeneous(t Table) bool
 	// RowSpacing gets the amount of space between row @row, and row @row + 1.
 	// See gtk_table_set_row_spacing().
-	RowSpacing(row uint) uint
+	RowSpacing(t Table, row uint)
 	// Size gets the number of rows and columns in the table.
-	Size() (rows uint, columns uint)
+	Size(t Table) (rows uint, columns uint)
 	// Resize: if you need to change a table’s size after it has been created,
 	// this function allows you to do so.
-	Resize(rows uint, columns uint)
+	Resize(t Table, rows uint, columns uint)
 	// SetColSpacing alters the amount of space between a given table column and
 	// the following column.
-	SetColSpacing(column uint, spacing uint)
+	SetColSpacing(t Table, column uint, spacing uint)
 	// SetColSpacings sets the space between every column in @table equal to
 	// @spacing.
-	SetColSpacings(spacing uint)
+	SetColSpacings(t Table, spacing uint)
 	// SetHomogeneous changes the homogenous property of table cells, ie.
 	// whether all cells are an equal size or not.
-	SetHomogeneous(homogeneous bool)
+	SetHomogeneous(t Table, homogeneous bool)
 	// SetRowSpacing changes the space between a given table row and the
 	// subsequent row.
-	SetRowSpacing(row uint, spacing uint)
+	SetRowSpacing(t Table, row uint, spacing uint)
 	// SetRowSpacings sets the space between every row in @table equal to
 	// @spacing.
-	SetRowSpacings(spacing uint)
+	SetRowSpacings(t Table, spacing uint)
 }
 
 // table implements the Table interface.
@@ -137,7 +136,7 @@ func marshalTable(p uintptr) (interface{}, error) {
 }
 
 // NewTable constructs a class Table.
-func NewTable(rows uint, columns uint, homogeneous bool) Table {
+func NewTable(rows uint, columns uint, homogeneous bool) {
 	var arg1 C.guint
 	var arg2 C.guint
 	var arg3 C.gboolean
@@ -148,14 +147,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 		arg3 = C.gboolean(1)
 	}
 
-	var cret C.GtkTable
-	var ret1 Table
-
-	cret = C.gtk_table_new(rows, columns, homogeneous)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Table)
-
-	return ret1
+	C.gtk_table_new(arg1, arg2, arg3)
 }
 
 // Attach adds a widget to a table. The number of “cells” that a widget will
@@ -174,7 +166,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 //
 // If you want to make the button span the entire bottom row, use
 // @left_attach == 0 and @right_attach = 2 instead.
-func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
+func (t table) Attach(t Table, child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
 	var arg0 *C.GtkTable
 	var arg1 *C.GtkWidget
 	var arg2 C.guint
@@ -197,7 +189,7 @@ func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach
 	arg8 = C.guint(xpadding)
 	arg9 = C.guint(ypadding)
 
-	C.gtk_table_attach(arg0, child, leftAttach, rightAttach, topAttach, bottomAttach, xoptions, yoptions, xpadding, ypadding)
+	C.gtk_table_attach(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 // AttachDefaults as there are many options associated with
@@ -205,7 +197,7 @@ func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach
 // with a means to add children to a table with identical padding and
 // expansion options. The values used for the AttachOptions are `GTK_EXPAND
 // | GTK_FILL`, and the padding is set to 0.
-func (t table) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (t table) AttachDefaults(t Table, widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var arg0 *C.GtkTable
 	var arg1 *C.GtkWidget
 	var arg2 C.guint
@@ -220,122 +212,96 @@ func (t table) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, 
 	arg4 = C.guint(topAttach)
 	arg5 = C.guint(bottomAttach)
 
-	C.gtk_table_attach_defaults(arg0, widget, leftAttach, rightAttach, topAttach, bottomAttach)
+	C.gtk_table_attach_defaults(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // ColSpacing gets the amount of space between column @col, and column @col
 // + 1. See gtk_table_set_col_spacing().
-func (t table) ColSpacing(column uint) uint {
+func (t table) ColSpacing(t Table, column uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	arg1 = C.guint(column)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_table_get_col_spacing(arg0, column)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_table_get_col_spacing(arg0, arg1)
 }
 
 // DefaultColSpacing gets the default column spacing for the table. This is
 // the spacing that will be used for newly added columns. (See
 // gtk_table_set_col_spacings())
-func (t table) DefaultColSpacing() uint {
+func (t table) DefaultColSpacing(t Table) {
 	var arg0 *C.GtkTable
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_table_get_default_col_spacing(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_table_get_default_col_spacing(arg0)
 }
 
 // DefaultRowSpacing gets the default row spacing for the table. This is the
 // spacing that will be used for newly added rows. (See
 // gtk_table_set_row_spacings())
-func (t table) DefaultRowSpacing() uint {
+func (t table) DefaultRowSpacing(t Table) {
 	var arg0 *C.GtkTable
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_table_get_default_row_spacing(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_table_get_default_row_spacing(arg0)
 }
 
 // Homogeneous returns whether the table cells are all constrained to the
 // same width and height. (See gtk_table_set_homogeneous ())
-func (t table) Homogeneous() bool {
+func (t table) Homogeneous(t Table) bool {
 	var arg0 *C.GtkTable
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_table_get_homogeneous(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RowSpacing gets the amount of space between row @row, and row @row + 1.
 // See gtk_table_set_row_spacing().
-func (t table) RowSpacing(row uint) uint {
+func (t table) RowSpacing(t Table, row uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	arg1 = C.guint(row)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_table_get_row_spacing(arg0, row)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_table_get_row_spacing(arg0, arg1)
 }
 
 // Size gets the number of rows and columns in the table.
-func (t table) Size() (rows uint, columns uint) {
+func (t table) Size(t Table) (rows uint, columns uint) {
 	var arg0 *C.GtkTable
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var arg1 C.guint
-	var ret1 uint
+	var rows uint
 	var arg2 C.guint
-	var ret2 uint
+	var columns uint
 
 	C.gtk_table_get_size(arg0, &arg1, &arg2)
 
-	*ret1 = C.guint(arg1)
-	*ret2 = C.guint(arg2)
+	rows = uint(&arg1)
+	columns = uint(&arg2)
 
-	return ret1, ret2
+	return rows, columns
 }
 
 // Resize: if you need to change a table’s size after it has been created,
 // this function allows you to do so.
-func (t table) Resize(rows uint, columns uint) {
+func (t table) Resize(t Table, rows uint, columns uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 	var arg2 C.guint
@@ -344,12 +310,12 @@ func (t table) Resize(rows uint, columns uint) {
 	arg1 = C.guint(rows)
 	arg2 = C.guint(columns)
 
-	C.gtk_table_resize(arg0, rows, columns)
+	C.gtk_table_resize(arg0, arg1, arg2)
 }
 
 // SetColSpacing alters the amount of space between a given table column and
 // the following column.
-func (t table) SetColSpacing(column uint, spacing uint) {
+func (t table) SetColSpacing(t Table, column uint, spacing uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 	var arg2 C.guint
@@ -358,24 +324,24 @@ func (t table) SetColSpacing(column uint, spacing uint) {
 	arg1 = C.guint(column)
 	arg2 = C.guint(spacing)
 
-	C.gtk_table_set_col_spacing(arg0, column, spacing)
+	C.gtk_table_set_col_spacing(arg0, arg1, arg2)
 }
 
 // SetColSpacings sets the space between every column in @table equal to
 // @spacing.
-func (t table) SetColSpacings(spacing uint) {
+func (t table) SetColSpacings(t Table, spacing uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	arg1 = C.guint(spacing)
 
-	C.gtk_table_set_col_spacings(arg0, spacing)
+	C.gtk_table_set_col_spacings(arg0, arg1)
 }
 
 // SetHomogeneous changes the homogenous property of table cells, ie.
 // whether all cells are an equal size or not.
-func (t table) SetHomogeneous(homogeneous bool) {
+func (t table) SetHomogeneous(t Table, homogeneous bool) {
 	var arg0 *C.GtkTable
 	var arg1 C.gboolean
 
@@ -384,12 +350,12 @@ func (t table) SetHomogeneous(homogeneous bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_table_set_homogeneous(arg0, homogeneous)
+	C.gtk_table_set_homogeneous(arg0, arg1)
 }
 
 // SetRowSpacing changes the space between a given table row and the
 // subsequent row.
-func (t table) SetRowSpacing(row uint, spacing uint) {
+func (t table) SetRowSpacing(t Table, row uint, spacing uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 	var arg2 C.guint
@@ -398,19 +364,19 @@ func (t table) SetRowSpacing(row uint, spacing uint) {
 	arg1 = C.guint(row)
 	arg2 = C.guint(spacing)
 
-	C.gtk_table_set_row_spacing(arg0, row, spacing)
+	C.gtk_table_set_row_spacing(arg0, arg1, arg2)
 }
 
 // SetRowSpacings sets the space between every row in @table equal to
 // @spacing.
-func (t table) SetRowSpacings(spacing uint) {
+func (t table) SetRowSpacings(t Table, spacing uint) {
 	var arg0 *C.GtkTable
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	arg1 = C.guint(spacing)
 
-	C.gtk_table_set_row_spacings(arg0, spacing)
+	C.gtk_table_set_row_spacings(arg0, arg1)
 }
 
 type TableChild struct {
@@ -439,37 +405,51 @@ func (t *TableChild) Native() unsafe.Pointer {
 
 // Widget gets the field inside the struct.
 func (t *TableChild) Widget() Widget {
+	var v Widget
 	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget.Native()))).(Widget)
+	return v
 }
 
 // LeftAttach gets the field inside the struct.
 func (t *TableChild) LeftAttach() uint16 {
-	v = C.guint16(t.native.left_attach)
+	var v uint16
+	v = uint16(t.native.left_attach)
+	return v
 }
 
 // RightAttach gets the field inside the struct.
 func (t *TableChild) RightAttach() uint16 {
-	v = C.guint16(t.native.right_attach)
+	var v uint16
+	v = uint16(t.native.right_attach)
+	return v
 }
 
 // TopAttach gets the field inside the struct.
 func (t *TableChild) TopAttach() uint16 {
-	v = C.guint16(t.native.top_attach)
+	var v uint16
+	v = uint16(t.native.top_attach)
+	return v
 }
 
 // BottomAttach gets the field inside the struct.
 func (t *TableChild) BottomAttach() uint16 {
-	v = C.guint16(t.native.bottom_attach)
+	var v uint16
+	v = uint16(t.native.bottom_attach)
+	return v
 }
 
 // Xpadding gets the field inside the struct.
 func (t *TableChild) Xpadding() uint16 {
-	v = C.guint16(t.native.xpadding)
+	var v uint16
+	v = uint16(t.native.xpadding)
+	return v
 }
 
 // Ypadding gets the field inside the struct.
 func (t *TableChild) Ypadding() uint16 {
-	v = C.guint16(t.native.ypadding)
+	var v uint16
+	v = uint16(t.native.ypadding)
+	return v
 }
 
 type TableRowCol struct {
@@ -498,15 +478,21 @@ func (t *TableRowCol) Native() unsafe.Pointer {
 
 // Requisition gets the field inside the struct.
 func (t *TableRowCol) Requisition() uint16 {
-	v = C.guint16(t.native.requisition)
+	var v uint16
+	v = uint16(t.native.requisition)
+	return v
 }
 
 // Allocation gets the field inside the struct.
 func (t *TableRowCol) Allocation() uint16 {
-	v = C.guint16(t.native.allocation)
+	var v uint16
+	v = uint16(t.native.allocation)
+	return v
 }
 
 // Spacing gets the field inside the struct.
 func (t *TableRowCol) Spacing() uint16 {
-	v = C.guint16(t.native.spacing)
+	var v uint16
+	v = uint16(t.native.spacing)
+	return v
 }

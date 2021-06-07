@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/diamondburned/gotk4/internal/pen"
@@ -48,6 +49,11 @@ func (fg *FileGenerator) GoCConverter(parent string, values []GoValueProp) *Type
 	}
 }
 
+// ConvertAll converts all values.
+func (conv *TypeConversionToC) ConvertAll() []TypeConverted {
+	return ConvertAllValues(conv, len(conv.values))
+}
+
 // WriteAll writes all conversions to the given sections.
 func (conv *TypeConversionToC) WriteAll(in, out, con *pen.BlockSection) bool {
 	// Get the FileGenerator out of nowhere.
@@ -56,7 +62,7 @@ func (conv *TypeConversionToC) WriteAll(in, out, con *pen.BlockSection) bool {
 	for i := 0; i < len(conv.values); i++ {
 		converted := conv.Convert(i)
 		if converted == nil {
-			conv.logFail(LogDebug, "Go->C cannot convert type", anyTypeC(conv.values[i].Type))
+			conv.logFail(LogDebug, "Go->C cannot convert type", anyTypeC(conv.values[i].AnyType))
 			return false
 		}
 
@@ -75,6 +81,7 @@ func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
 	}
 
 	value := conv.values[i]
+	value.init()
 
 	// Ignored values are manually obtained in the conversion process, so we
 	// don't convert them here.
@@ -89,11 +96,14 @@ func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
 	// we're fine.
 	defer conv.reset()
 
-	value.initState()
-
 	conv.gocConverter(&value)
 	if conv.failed {
+		conv.logFail(LogDebug, "Go->C cannot convert type", anyTypeC(conv.values[i].AnyType))
 		return nil
+	}
+
+	if value.InType == "" || value.OutType == "" {
+		log.Panicln("missing CGoType or GoType for value", conv.parent, i)
 	}
 
 	return &TypeConverted{
@@ -106,10 +116,9 @@ func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
 }
 
 func (conv *TypeConversionToC) valueAt(at int) *GoValueProp {
-	for i, value := range conv.values {
+	for _, value := range conv.values {
 		if value.ParameterIndex != nil && *value.ParameterIndex == at {
-			value := conv.values[i]
-			value.initState()
+			value.init()
 			return &value
 		}
 	}
@@ -117,7 +126,7 @@ func (conv *TypeConversionToC) valueAt(at int) *GoValueProp {
 	conv.logFail(LogError, "Go->C conversion arg not found at", at)
 
 	prop := GoValueProp{ValueProp: errorValueProp}
-	prop.initState()
+	prop.init()
 
 	return &prop
 }
@@ -129,9 +138,9 @@ func (conv *TypeConversionToC) gocConverter(value *GoValueProp) {
 	}
 
 	switch {
-	case value.Type.Type != nil:
+	case value.AnyType.Type != nil:
 		conv.gocTypeConverter(value)
-	case value.Type.Array != nil:
+	case value.AnyType.Array != nil:
 		conv.gocArrayConverter(value)
 	default:
 		conv.fail()
@@ -139,14 +148,14 @@ func (conv *TypeConversionToC) gocConverter(value *GoValueProp) {
 }
 
 func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
-	if value.Type.Array.Type == nil {
+	if value.AnyType.Array.Type == nil {
 		if !value.AllowNone {
-			conv.logFail(LogSkip, "nested array", value.Type.Array.CType)
+			conv.logFail(LogSkip, "nested array", value.AnyType.Array.CType)
 		}
 		return
 	}
 
-	array := value.Type.Array
+	array := value.AnyType.Array
 
 	inner := value.inner(value.In+"[i]", "out[i]")
 	conv.gocConverter(inner)
@@ -164,7 +173,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 	}
 
 	// This is always the same.
-	value.OutType = anyTypeCGo(value.Type)
+	value.OutType = anyTypeCGo(value.AnyType)
 	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
 	switch {
@@ -307,7 +316,7 @@ func csizeof(resolved *ResolvedType) string {
 
 func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 	for _, unsupported := range unsupportedCTypes {
-		if unsupported == value.Type.Type.CType {
+		if unsupported == value.AnyType.Type.CType {
 			conv.fail()
 			return
 		}
@@ -346,7 +355,7 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		return
 	}
 
-	switch ensureNamespace(conv.ng.current, value.Type.Type.Name) {
+	switch ensureNamespace(conv.ng.current, value.AnyType.Type.Name) {
 	case "gpointer":
 		conv.sides.addImport(importInternal("box"))
 
@@ -354,11 +363,15 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		return
 
 	case "GObject.Type", "GType":
+		conv.sides.NeedsGLibObject = true
+
 		// Just a primitive.
 		value.p.Linef("%s := C.GType(%s)", value.Out, value.In)
 		return
 
 	case "GObject.Value":
+		conv.sides.NeedsGLibObject = true
+
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		value.p.Linef("%s = (*C.GValue)(%s.GValue)", value.Out, value.In)
 		return
@@ -375,7 +388,7 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 	}
 
 	// Pretend that ignored types don't exist.
-	if conv.ng.mustIgnore(value.Type.Type.Name, value.Type.Type.CType) {
+	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
 		conv.fail()
 		return
 	}

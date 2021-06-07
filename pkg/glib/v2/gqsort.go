@@ -11,7 +11,6 @@ import "C"
 // comparison routine accepts a user data argument.
 //
 // This is guaranteed to be a stable sort since version 2.32.
-func QsortWithData(pbase interface{}, totalElems int, size uint, compareFunc CompareDataFunc) {
-
-	C.g_qsort_with_data(pbase, totalElems, size, compareFunc, userData)
+func QsortWithData() {
+	C.g_qsort_with_data(arg1, arg2, arg3, arg4, arg5)
 }

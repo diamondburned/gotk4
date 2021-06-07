@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,14 +43,14 @@ type Alignment interface {
 
 	// Padding gets the padding on the different sides of the widget. See
 	// gtk_alignment_set_padding ().
-	Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
+	Padding(a Alignment) (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 	// Set sets the Alignment values.
-	Set(xalign float32, yalign float32, xscale float32, yscale float32)
+	Set(a Alignment, xalign float32, yalign float32, xscale float32, yscale float32)
 	// SetPadding sets the padding on the different sides of the widget. The
 	// padding adds blank space to the sides of the widget. For instance, this
 	// can be used to indent the child widget towards the right by adding
 	// padding on the left.
-	SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
+	SetPadding(a Alignment, paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
 }
 
 // alignment implements the Alignment interface.
@@ -80,7 +77,7 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 }
 
 // NewAlignment constructs a class Alignment.
-func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32) Alignment {
+func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32) {
 	var arg1 C.gfloat
 	var arg2 C.gfloat
 	var arg3 C.gfloat
@@ -91,44 +88,37 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 	arg3 = C.gfloat(xscale)
 	arg4 = C.gfloat(yscale)
 
-	var cret C.GtkAlignment
-	var ret1 Alignment
-
-	cret = C.gtk_alignment_new(xalign, yalign, xscale, yscale)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Alignment)
-
-	return ret1
+	C.gtk_alignment_new(arg1, arg2, arg3, arg4)
 }
 
 // Padding gets the padding on the different sides of the widget. See
 // gtk_alignment_set_padding ().
-func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
+func (a alignment) Padding(a Alignment) (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var arg0 *C.GtkAlignment
 
 	arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 
 	var arg1 C.guint
-	var ret1 uint
+	var paddingTop uint
 	var arg2 C.guint
-	var ret2 uint
+	var paddingBottom uint
 	var arg3 C.guint
-	var ret3 uint
+	var paddingLeft uint
 	var arg4 C.guint
-	var ret4 uint
+	var paddingRight uint
 
 	C.gtk_alignment_get_padding(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	*ret1 = C.guint(arg1)
-	*ret2 = C.guint(arg2)
-	*ret3 = C.guint(arg3)
-	*ret4 = C.guint(arg4)
+	paddingTop = uint(&arg1)
+	paddingBottom = uint(&arg2)
+	paddingLeft = uint(&arg3)
+	paddingRight = uint(&arg4)
 
-	return ret1, ret2, ret3, ret4
+	return paddingTop, paddingBottom, paddingLeft, paddingRight
 }
 
 // Set sets the Alignment values.
-func (a alignment) Set(xalign float32, yalign float32, xscale float32, yscale float32) {
+func (a alignment) Set(a Alignment, xalign float32, yalign float32, xscale float32, yscale float32) {
 	var arg0 *C.GtkAlignment
 	var arg1 C.gfloat
 	var arg2 C.gfloat
@@ -141,14 +131,14 @@ func (a alignment) Set(xalign float32, yalign float32, xscale float32, yscale fl
 	arg3 = C.gfloat(xscale)
 	arg4 = C.gfloat(yscale)
 
-	C.gtk_alignment_set(arg0, xalign, yalign, xscale, yscale)
+	C.gtk_alignment_set(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetPadding sets the padding on the different sides of the widget. The
 // padding adds blank space to the sides of the widget. For instance, this
 // can be used to indent the child widget towards the right by adding
 // padding on the left.
-func (a alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
+func (a alignment) SetPadding(a Alignment, paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
 	var arg0 *C.GtkAlignment
 	var arg1 C.guint
 	var arg2 C.guint
@@ -161,5 +151,5 @@ func (a alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft u
 	arg3 = C.guint(paddingLeft)
 	arg4 = C.guint(paddingRight)
 
-	C.gtk_alignment_set_padding(arg0, paddingTop, paddingBottom, paddingLeft, paddingRight)
+	C.gtk_alignment_set_padding(arg0, arg1, arg2, arg3, arg4)
 }

@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +22,11 @@ func init() {
 // BuilderScopeOverrider contains methods that are overridable. This
 // interface is a subset of the interface BuilderScope.
 type BuilderScopeOverrider interface {
-	TypeFromFunction(builder Builder, functionName string) externglib.Type
+	CreateClosure(s BuilderScope, builder Builder, functionName string, flags BuilderClosureFlags, object gextras.Objector) error
 
-	TypeFromName(builder Builder, typeName string) externglib.Type
+	TypeFromFunction(s BuilderScope, builder Builder, functionName string)
+
+	TypeFromName(s BuilderScope, builder Builder, typeName string)
 }
 
 // BuilderScope is an interface to provide support to Builder, primarily for
@@ -85,6 +83,10 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 type BuilderCScope interface {
 	gextras.Objector
 	BuilderScope
+
+	// LookupCallbackSymbol fetches a symbol previously added to @self with
+	// gtk_builder_cscope_add_callback_symbol().
+	LookupCallbackSymbol(s BuilderCScope, callbackName string)
 }
 
 // builderCScope implements the BuilderCScope interface.
@@ -111,13 +113,19 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 }
 
 // NewBuilderCScope constructs a class BuilderCScope.
-func NewBuilderCScope() BuilderCScope {
-	var cret C.GtkBuilderCScope
-	var ret1 BuilderCScope
+func NewBuilderCScope() {
+	C.gtk_builder_cscope_new()
+}
 
-	cret = C.gtk_builder_cscope_new()
+// LookupCallbackSymbol fetches a symbol previously added to @self with
+// gtk_builder_cscope_add_callback_symbol().
+func (s builderCScope) LookupCallbackSymbol(s BuilderCScope, callbackName string) {
+	var arg0 *C.GtkBuilderCScope
+	var arg1 *C.char
 
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderCScope)
+	arg0 = (*C.GtkBuilderCScope)(unsafe.Pointer(s.Native()))
+	arg1 = (*C.char)(C.CString(callbackName))
+	defer C.free(unsafe.Pointer(arg1))
 
-	return ret1
+	C.gtk_builder_cscope_lookup_callback_symbol(arg0, arg1)
 }

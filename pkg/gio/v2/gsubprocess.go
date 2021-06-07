@@ -2,19 +2,8 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>

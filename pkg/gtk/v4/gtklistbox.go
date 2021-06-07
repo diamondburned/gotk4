@@ -3,19 +3,12 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -138,34 +131,34 @@ type ListBoxRow interface {
 	// the row widgets themselves. Another alternative is to call
 	// gtk_list_box_invalidate_sort() on any model change, but that is more
 	// expensive.
-	Changed()
+	Changed(r ListBoxRow)
 	// Activatable gets the value of the ListBoxRow:activatable property for
 	// this row.
-	Activatable() bool
+	Activatable(r ListBoxRow) bool
 	// Child gets the child widget of @row.
-	Child() Widget
+	Child(r ListBoxRow)
 	// Header returns the current header of the @row. This can be used in a
 	// ListBoxUpdateHeaderFunc to see if there is a header set already, and if
 	// so to update the state of it.
-	Header() Widget
+	Header(r ListBoxRow)
 	// Index gets the current index of the @row in its ListBox container.
-	Index() int
+	Index(r ListBoxRow)
 	// Selectable gets the value of the ListBoxRow:selectable property for this
 	// row.
-	Selectable() bool
+	Selectable(r ListBoxRow) bool
 	// IsSelected returns whether the child is currently selected in its ListBox
 	// container.
-	IsSelected() bool
+	IsSelected(r ListBoxRow) bool
 	// SetActivatable: set the ListBoxRow:activatable property for this row.
-	SetActivatable(activatable bool)
+	SetActivatable(r ListBoxRow, activatable bool)
 	// SetChild sets the child widget of @self.
-	SetChild(child Widget)
+	SetChild(r ListBoxRow, child Widget)
 	// SetHeader sets the current header of the @row. This is only allowed to be
 	// called from a ListBoxUpdateHeaderFunc. It will replace any existing
 	// header in the row, and be shown in front of the row in the listbox.
-	SetHeader(header Widget)
+	SetHeader(r ListBoxRow, header Widget)
 	// SetSelectable: set the ListBoxRow:selectable property for this row.
-	SetSelectable(selectable bool)
+	SetSelectable(r ListBoxRow, selectable bool)
 }
 
 // listBoxRow implements the ListBoxRow interface.
@@ -198,15 +191,8 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 }
 
 // NewListBoxRow constructs a class ListBoxRow.
-func NewListBoxRow() ListBoxRow {
-	var cret C.GtkListBoxRow
-	var ret1 ListBoxRow
-
-	cret = C.gtk_list_box_row_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
-
-	return ret1
+func NewListBoxRow() {
+	C.gtk_list_box_row_new()
 }
 
 // Changed marks @row as changed, causing any state that depends on this to
@@ -224,7 +210,7 @@ func NewListBoxRow() ListBoxRow {
 // the row widgets themselves. Another alternative is to call
 // gtk_list_box_invalidate_sort() on any model change, but that is more
 // expensive.
-func (r listBoxRow) Changed() {
+func (r listBoxRow) Changed(r ListBoxRow) {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
@@ -234,107 +220,92 @@ func (r listBoxRow) Changed() {
 
 // Activatable gets the value of the ListBoxRow:activatable property for
 // this row.
-func (r listBoxRow) Activatable() bool {
+func (r listBoxRow) Activatable(r ListBoxRow) bool {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_box_row_get_activatable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Child gets the child widget of @row.
-func (r listBoxRow) Child() Widget {
+func (r listBoxRow) Child(r ListBoxRow) {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_list_box_row_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_list_box_row_get_child(arg0)
 }
 
 // Header returns the current header of the @row. This can be used in a
 // ListBoxUpdateHeaderFunc to see if there is a header set already, and if
 // so to update the state of it.
-func (r listBoxRow) Header() Widget {
+func (r listBoxRow) Header(r ListBoxRow) {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_list_box_row_get_header(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_list_box_row_get_header(arg0)
 }
 
 // Index gets the current index of the @row in its ListBox container.
-func (r listBoxRow) Index() int {
+func (r listBoxRow) Index(r ListBoxRow) {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_list_box_row_get_index(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_list_box_row_get_index(arg0)
 }
 
 // Selectable gets the value of the ListBoxRow:selectable property for this
 // row.
-func (r listBoxRow) Selectable() bool {
+func (r listBoxRow) Selectable(r ListBoxRow) bool {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_box_row_get_selectable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsSelected returns whether the child is currently selected in its ListBox
 // container.
-func (r listBoxRow) IsSelected() bool {
+func (r listBoxRow) IsSelected(r ListBoxRow) bool {
 	var arg0 *C.GtkListBoxRow
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_box_row_is_selected(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetActivatable: set the ListBoxRow:activatable property for this row.
-func (r listBoxRow) SetActivatable(activatable bool) {
+func (r listBoxRow) SetActivatable(r ListBoxRow, activatable bool) {
 	var arg0 *C.GtkListBoxRow
 	var arg1 C.gboolean
 
@@ -343,35 +314,35 @@ func (r listBoxRow) SetActivatable(activatable bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_box_row_set_activatable(arg0, activatable)
+	C.gtk_list_box_row_set_activatable(arg0, arg1)
 }
 
 // SetChild sets the child widget of @self.
-func (r listBoxRow) SetChild(child Widget) {
+func (r listBoxRow) SetChild(r ListBoxRow, child Widget) {
 	var arg0 *C.GtkListBoxRow
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_list_box_row_set_child(arg0, child)
+	C.gtk_list_box_row_set_child(arg0, arg1)
 }
 
 // SetHeader sets the current header of the @row. This is only allowed to be
 // called from a ListBoxUpdateHeaderFunc. It will replace any existing
 // header in the row, and be shown in front of the row in the listbox.
-func (r listBoxRow) SetHeader(header Widget) {
+func (r listBoxRow) SetHeader(r ListBoxRow, header Widget) {
 	var arg0 *C.GtkListBoxRow
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(header.Native()))
 
-	C.gtk_list_box_row_set_header(arg0, header)
+	C.gtk_list_box_row_set_header(arg0, arg1)
 }
 
 // SetSelectable: set the ListBoxRow:selectable property for this row.
-func (r listBoxRow) SetSelectable(selectable bool) {
+func (r listBoxRow) SetSelectable(r ListBoxRow, selectable bool) {
 	var arg0 *C.GtkListBoxRow
 	var arg1 C.gboolean
 
@@ -380,5 +351,5 @@ func (r listBoxRow) SetSelectable(selectable bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_box_row_set_selectable(arg0, selectable)
+	C.gtk_list_box_row_set_selectable(arg0, arg1)
 }

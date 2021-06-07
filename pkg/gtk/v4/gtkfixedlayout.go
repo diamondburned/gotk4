@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -78,24 +74,17 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 }
 
 // NewFixedLayout constructs a class FixedLayout.
-func NewFixedLayout() FixedLayout {
-	var cret C.GtkFixedLayout
-	var ret1 FixedLayout
-
-	cret = C.gtk_fixed_layout_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FixedLayout)
-
-	return ret1
+func NewFixedLayout() {
+	C.gtk_fixed_layout_new()
 }
 
 type FixedLayoutChild interface {
 	LayoutChild
 
 	// Transform retrieves the transformation of the child of a FixedLayout.
-	Transform() *gsk.Transform
+	Transform(c FixedLayoutChild)
 	// SetTransform sets the transformation of the child of a FixedLayout.
-	SetTransform(transform *gsk.Transform)
+	SetTransform(c FixedLayoutChild, transform *gsk.Transform)
 }
 
 // fixedLayoutChild implements the FixedLayoutChild interface.
@@ -120,28 +109,21 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 }
 
 // Transform retrieves the transformation of the child of a FixedLayout.
-func (c fixedLayoutChild) Transform() *gsk.Transform {
+func (c fixedLayoutChild) Transform(c FixedLayoutChild) {
 	var arg0 *C.GtkFixedLayoutChild
 
 	arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GskTransform
-	var ret1 *gsk.Transform
-
-	cret = C.gtk_fixed_layout_child_get_transform(arg0)
-
-	ret1 = gsk.WrapTransform(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_fixed_layout_child_get_transform(arg0)
 }
 
 // SetTransform sets the transformation of the child of a FixedLayout.
-func (c fixedLayoutChild) SetTransform(transform *gsk.Transform) {
+func (c fixedLayoutChild) SetTransform(c FixedLayoutChild, transform *gsk.Transform) {
 	var arg0 *C.GtkFixedLayoutChild
 	var arg1 *C.GskTransform
 
 	arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
 
-	C.gtk_fixed_layout_child_set_transform(arg0, transform)
+	C.gtk_fixed_layout_child_set_transform(arg0, arg1)
 }

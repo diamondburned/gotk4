@@ -2,17 +2,8 @@
 
 package pango
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <pango/pango.h>
 import "C"
 
@@ -27,13 +18,15 @@ func IsZeroWidth(ch uint32) bool {
 	arg1 = C.gunichar(ch)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_is_zero_width(ch)
+	cret = C.pango_is_zero_width(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Log2VisGetEmbeddingLevels: return the bidirectional embedding levels of the
@@ -46,7 +39,7 @@ func IsZeroWidth(ch uint32) bool {
 //
 // If the input base direction is a weak direction, the direction of the
 // characters in the text will determine the final resolved direction.
-func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) byte {
+func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) {
 	var arg1 *C.gchar
 	var arg2 C.int
 	var arg3 *C.PangoDirection
@@ -56,14 +49,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) byt
 	arg2 = C.int(length)
 	arg3 = (*C.PangoDirection)(pbaseDir)
 
-	var cret *C.guint8
-	var ret1 byte
-
-	cret = C.pango_log2vis_get_embedding_levels(text, length, pbaseDir)
-
-	ret1 = *C.guint8(cret)
-
-	return ret1
+	C.pango_log2vis_get_embedding_levels(arg1, arg2, arg3)
 }
 
 // ParseEnum parses an enum type and stores the result in @value.
@@ -87,20 +73,22 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (value int, possibleV
 	}
 
 	var arg3 C.int
-	var ret3 int
+	var value int
 	var arg5 *C.char
-	var ret5 string
+	var possibleValues string
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.pango_parse_enum(typ, str, &arg3, warn, &arg5)
+	cret = C.pango_parse_enum(arg1, arg2, &arg3, arg4, &arg5)
 
-	*ret3 = C.int(arg3)
-	*ret5 = C.GoString(arg5)
-	defer C.free(unsafe.Pointer(arg5))
-	ret3 = C.bool(cret) != C.false
+	value = int(&arg3)
+	possibleValues = C.GoString(&arg5)
+	defer C.free(unsafe.Pointer(&arg5))
+	if cret {
+		ok = true
+	}
 
-	return ret3, ret5, ret3
+	return value, possibleValues, ok
 }
 
 // ParseStretch parses a font stretch.
@@ -109,7 +97,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (value int, possibleV
 // "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
-func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
+func ParseStretch(str string, warn bool) (stretch *Stretch, ok bool) {
 	var arg1 *C.char
 	var arg3 C.gboolean
 
@@ -120,23 +108,25 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 	}
 
 	var arg2 C.PangoStretch
-	var ret2 *Stretch
+	var stretch *Stretch
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.pango_parse_stretch(str, &arg2, warn)
+	cret = C.pango_parse_stretch(arg1, &arg2, arg3)
 
-	*ret2 = *Stretch(arg2)
-	ret2 = C.bool(cret) != C.false
+	stretch = *Stretch(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return stretch, ok
 }
 
 // ParseStyle parses a font style.
 //
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
-func ParseStyle(str string, warn bool) (style Style, ok bool) {
+func ParseStyle(str string, warn bool) (style *Style, ok bool) {
 	var arg1 *C.char
 	var arg3 C.gboolean
 
@@ -147,23 +137,25 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 	}
 
 	var arg2 C.PangoStyle
-	var ret2 *Style
+	var style *Style
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.pango_parse_style(str, &arg2, warn)
+	cret = C.pango_parse_style(arg1, &arg2, arg3)
 
-	*ret2 = *Style(arg2)
-	ret2 = C.bool(cret) != C.false
+	style = *Style(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return style, ok
 }
 
 // ParseVariant parses a font variant.
 //
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
-func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
+func ParseVariant(str string, warn bool) (variant *Variant, ok bool) {
 	var arg1 *C.char
 	var arg3 C.gboolean
 
@@ -174,23 +166,25 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 	}
 
 	var arg2 C.PangoVariant
-	var ret2 *Variant
+	var variant *Variant
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.pango_parse_variant(str, &arg2, warn)
+	cret = C.pango_parse_variant(arg1, &arg2, arg3)
 
-	*ret2 = *Variant(arg2)
-	ret2 = C.bool(cret) != C.false
+	variant = *Variant(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return variant, ok
 }
 
 // ParseWeight parses a font weight.
 //
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
-func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
+func ParseWeight(str string, warn bool) (weight *Weight, ok bool) {
 	var arg1 *C.char
 	var arg3 C.gboolean
 
@@ -201,16 +195,18 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 	}
 
 	var arg2 C.PangoWeight
-	var ret2 *Weight
+	var weight *Weight
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.pango_parse_weight(str, &arg2, warn)
+	cret = C.pango_parse_weight(arg1, &arg2, arg3)
 
-	*ret2 = *Weight(arg2)
-	ret2 = C.bool(cret) != C.false
+	weight = *Weight(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return weight, ok
 }
 
 // QuantizeLineGeometry quantizes the thickness and position of a line to whole
@@ -229,7 +225,7 @@ func QuantizeLineGeometry(thickness int, position int) {
 	arg1 = *C.int(thickness)
 	arg2 = *C.int(position)
 
-	C.pango_quantize_line_geometry(thickness, position)
+	C.pango_quantize_line_geometry(arg1, arg2)
 }
 
 // ReadLine reads an entire line from a file into a buffer.
@@ -242,21 +238,14 @@ func QuantizeLineGeometry(thickness int, position int) {
 //
 // '\' proceeding a line delimiter combines adjacent lines. A '\' proceeding any
 // other character is ignored and written into the output buffer unmodified.
-func ReadLine(stream interface{}, str *glib.String) int {
+func ReadLine(stream interface{}, str *glib.String) {
 	var arg1 *C.FILE
 	var arg2 *C.GString
 
 	arg1 = *C.FILE(stream)
 	arg2 = (*C.GString)(unsafe.Pointer(str.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.pango_read_line(stream, str)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.pango_read_line(arg1, arg2)
 }
 
 // ScanInt scans an integer.
@@ -268,16 +257,18 @@ func ScanInt(pos string) (out int, ok bool) {
 	arg1 = (**C.char)(C.CString(pos))
 
 	var arg2 C.int
-	var ret2 int
+	var out int
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.pango_scan_int(pos, &arg2)
+	cret = C.pango_scan_int(arg1, &arg2)
 
-	*ret2 = C.int(arg2)
-	ret2 = C.bool(cret) != C.false
+	out = int(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return out, ok
 }
 
 // ScanString scans a string into a #GString buffer.
@@ -293,13 +284,15 @@ func ScanString(pos string, out *glib.String) bool {
 	arg2 = (*C.GString)(unsafe.Pointer(out.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_scan_string(pos, out)
+	cret = C.pango_scan_string(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ScanWord scans a word into a #GString buffer.
@@ -314,13 +307,15 @@ func ScanWord(pos string, out *glib.String) bool {
 	arg2 = (*C.GString)(unsafe.Pointer(out.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_scan_word(pos, out)
+	cret = C.pango_scan_word(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SkipSpace skips 0 or more characters of white space.
@@ -330,64 +325,36 @@ func SkipSpace(pos string) bool {
 	arg1 = (**C.char)(C.CString(pos))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_skip_space(pos)
+	cret = C.pango_skip_space(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
-func SplitFileList(str string) []string {
+func SplitFileList(str string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret **C.char
-	var ret1 []string
-
-	cret = C.pango_split_file_list(str)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.pango_split_file_list(arg1)
 }
 
 // TrimString trims leading and trailing whitespace from a string.
-func TrimString(str string) string {
+func TrimString(str string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.pango_trim_string(str)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_trim_string(arg1)
 }
 
 // Version returns the encoded version of Pango available at run-time.
@@ -395,15 +362,8 @@ func TrimString(str string) string {
 // This is similar to the macro PANGO_VERSION except that the macro returns the
 // encoded version available at compile-time. A version number can be encoded
 // into an integer using PANGO_VERSION_ENCODE().
-func Version() int {
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_version()
-
-	ret1 = C.int(cret)
-
-	return ret1
+func Version() {
+	C.pango_version()
 }
 
 // VersionCheck checks that the Pango library in use is compatible with the
@@ -422,7 +382,7 @@ func Version() int {
 // @required_major.required_minor.@required_micro (same major version.)
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
-func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {
+func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) {
 	var arg1 C.int
 	var arg2 C.int
 	var arg3 C.int
@@ -431,27 +391,13 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 	arg2 = C.int(requiredMinor)
 	arg3 = C.int(requiredMicro)
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.pango_version_check(requiredMajor, requiredMinor, requiredMicro)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.pango_version_check(arg1, arg2, arg3)
 }
 
 // VersionString returns the version of Pango available at run-time.
 //
 // This is similar to the macro PANGO_VERSION_STRING except that the macro
 // returns the version available at compile-time.
-func VersionString() string {
-	var cret *C.char
-	var ret1 string
-
-	cret = C.pango_version_string()
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+func VersionString() {
+	C.pango_version_string()
 }

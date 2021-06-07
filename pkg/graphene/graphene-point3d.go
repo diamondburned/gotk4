@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -23,15 +21,8 @@ func init() {
 }
 
 // Point3DZero retrieves a constant point with all three coordinates set to 0.
-func Point3DZero() *Point3D {
-	var cret *C.graphene_point3d_t
-	var ret1 *Point3D
-
-	cret = C.graphene_point3d_zero()
-
-	ret1 = WrapPoint3D(unsafe.Pointer(cret))
-
-	return ret1
+func Point3DZero() {
+	C.graphene_point3d_zero()
 }
 
 // Point3D: a point with three components: X, Y, and Z.
@@ -55,18 +46,8 @@ func marshalPoint3D(p uintptr) (interface{}, error) {
 }
 
 // NewPoint3DAlloc constructs a struct Point3D.
-func NewPoint3DAlloc() *Point3D {
-	var cret *C.graphene_point3d_t
-	var ret1 *Point3D
-
-	cret = C.graphene_point3d_alloc()
-
-	ret1 = WrapPoint3D(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Point3D) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewPoint3DAlloc() {
+	C.graphene_point3d_alloc()
 }
 
 // Native returns the underlying C source pointer.
@@ -76,21 +57,27 @@ func (p *Point3D) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (p *Point3D) X() float32 {
-	v = C.float(p.native.x)
+	var v float32
+	v = float32(p.native.x)
+	return v
 }
 
 // Y gets the field inside the struct.
 func (p *Point3D) Y() float32 {
-	v = C.float(p.native.y)
+	var v float32
+	v = float32(p.native.y)
+	return v
 }
 
 // Z gets the field inside the struct.
 func (p *Point3D) Z() float32 {
-	v = C.float(p.native.z)
+	var v float32
+	v = float32(p.native.z)
+	return v
 }
 
 // Cross computes the cross product of the two given #graphene_point3d_t.
-func (a *Point3D) Cross(b *Point3D) Point3D {
+func (a *Point3D) Cross(a *Point3D, b *Point3D) *Point3D {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 
@@ -98,17 +85,17 @@ func (a *Point3D) Cross(b *Point3D) Point3D {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 
 	var arg2 C.graphene_point3d_t
-	var ret2 *Point3D
+	var res *Point3D
 
-	C.graphene_point3d_cross(arg0, b, &arg2)
+	C.graphene_point3d_cross(arg0, arg1, &arg2)
 
-	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	res = WrapPoint3D(unsafe.Pointer(&arg2))
 
-	return ret2
+	return res
 }
 
 // Distance computes the distance between the two given #graphene_point3d_t.
-func (a *Point3D) Distance(b *Point3D) (delta Vec3, gfloat float32) {
+func (a *Point3D) Distance(a *Point3D, b *Point3D) *Vec3 {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 
@@ -116,38 +103,28 @@ func (a *Point3D) Distance(b *Point3D) (delta Vec3, gfloat float32) {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 
 	var arg2 C.graphene_vec3_t
-	var ret2 *Vec3
-	var cret C.float
-	var ret2 float32
+	var delta *Vec3
 
-	cret = C.graphene_point3d_distance(arg0, b, &arg2)
+	C.graphene_point3d_distance(arg0, arg1, &arg2)
 
-	*ret2 = WrapVec3(unsafe.Pointer(arg2))
-	ret2 = C.float(cret)
+	delta = WrapVec3(unsafe.Pointer(&arg2))
 
-	return ret2, ret2
+	return delta
 }
 
 // Dot computes the dot product of the two given #graphene_point3d_t.
-func (a *Point3D) Dot(b *Point3D) float32 {
+func (a *Point3D) Dot(a *Point3D, b *Point3D) {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_point3d_dot(arg0, b)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_point3d_dot(arg0, arg1)
 }
 
 // Equal checks whether two given points are equal.
-func (a *Point3D) Equal(b *Point3D) bool {
+func (a *Point3D) Equal(a *Point3D, b *Point3D) bool {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 
@@ -155,17 +132,19 @@ func (a *Point3D) Equal(b *Point3D) bool {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_point3d_equal(arg0, b)
+	cret = C.graphene_point3d_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Free frees the resources allocated via graphene_point3d_alloc().
-func (p *Point3D) Free() {
+func (p *Point3D) Free(p *Point3D) {
 	var arg0 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
@@ -174,7 +153,7 @@ func (p *Point3D) Free() {
 }
 
 // Init initializes a #graphene_point3d_t with the given coordinates.
-func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
+func (p *Point3D) Init(p *Point3D, x float32, y float32, z float32) {
 	var arg0 *C.graphene_point3d_t
 	var arg1 C.float
 	var arg2 C.float
@@ -185,57 +164,36 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	arg2 = C.float(y)
 	arg3 = C.float(z)
 
-	var cret *C.graphene_point3d_t
-	var ret1 *Point3D
-
-	cret = C.graphene_point3d_init(arg0, x, y, z)
-
-	ret1 = WrapPoint3D(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_point3d_init(arg0, arg1, arg2, arg3)
 }
 
 // InitFromPoint initializes a #graphene_point3d_t using the coordinates of
 // another #graphene_point3d_t.
-func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
+func (p *Point3D) InitFromPoint(p *Point3D, src *Point3D) {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(src.Native()))
 
-	var cret *C.graphene_point3d_t
-	var ret1 *Point3D
-
-	cret = C.graphene_point3d_init_from_point(arg0, src)
-
-	ret1 = WrapPoint3D(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_point3d_init_from_point(arg0, arg1)
 }
 
 // InitFromVec3 initializes a #graphene_point3d_t using the components of a
 // #graphene_vec3_t.
-func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
+func (p *Point3D) InitFromVec3(p *Point3D, v *Vec3) {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_vec3_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	var cret *C.graphene_point3d_t
-	var ret1 *Point3D
-
-	cret = C.graphene_point3d_init_from_vec3(arg0, v)
-
-	ret1 = WrapPoint3D(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_point3d_init_from_vec3(arg0, arg1)
 }
 
 // Interpolate: linearly interpolates each component of @a and @b using the
 // provided @factor, and places the result in @res.
-func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
+func (a *Point3D) Interpolate(a *Point3D, b *Point3D, factor float64) *Point3D {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 	var arg2 C.double
@@ -245,35 +203,28 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 	arg2 = C.double(factor)
 
 	var arg3 C.graphene_point3d_t
-	var ret3 *Point3D
+	var res *Point3D
 
-	C.graphene_point3d_interpolate(arg0, b, factor, &arg3)
+	C.graphene_point3d_interpolate(arg0, arg1, arg2, &arg3)
 
-	*ret3 = WrapPoint3D(unsafe.Pointer(arg3))
+	res = WrapPoint3D(unsafe.Pointer(&arg3))
 
-	return ret3
+	return res
 }
 
 // Length computes the length of the vector represented by the coordinates of
 // the given #graphene_point3d_t.
-func (p *Point3D) Length() float32 {
+func (p *Point3D) Length(p *Point3D) {
 	var arg0 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_point3d_length(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_point3d_length(arg0)
 }
 
 // Near checks whether the two points are near each other, within an @epsilon
 // factor.
-func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
+func (a *Point3D) Near(a *Point3D, b *Point3D, epsilon float32) bool {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_point3d_t
 	var arg2 C.float
@@ -283,30 +234,32 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 	arg2 = C.float(epsilon)
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_point3d_near(arg0, b, epsilon)
+	cret = C.graphene_point3d_near(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Normalize computes the normalization of the vector represented by the
 // coordinates of the given #graphene_point3d_t.
-func (p *Point3D) Normalize() Point3D {
+func (p *Point3D) Normalize(p *Point3D) *Point3D {
 	var arg0 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
 	var arg1 C.graphene_point3d_t
-	var ret1 *Point3D
+	var res *Point3D
 
 	C.graphene_point3d_normalize(arg0, &arg1)
 
-	*ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	res = WrapPoint3D(unsafe.Pointer(&arg1))
 
-	return ret1
+	return res
 }
 
 // NormalizeViewport normalizes the coordinates of a #graphene_point3d_t using
@@ -314,7 +267,7 @@ func (p *Point3D) Normalize() Point3D {
 //
 // The coordinates of the resulting #graphene_point3d_t will be in the [ -1, 1 ]
 // range.
-func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32) Point3D {
+func (p *Point3D) NormalizeViewport(p *Point3D, viewport *Rect, zNear float32, zFar float32) *Point3D {
 	var arg0 *C.graphene_point3d_t
 	var arg1 *C.graphene_rect_t
 	var arg2 C.float
@@ -326,18 +279,18 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 	arg3 = C.float(zFar)
 
 	var arg4 C.graphene_point3d_t
-	var ret4 *Point3D
+	var res *Point3D
 
-	C.graphene_point3d_normalize_viewport(arg0, viewport, zNear, zFar, &arg4)
+	C.graphene_point3d_normalize_viewport(arg0, arg1, arg2, arg3, &arg4)
 
-	*ret4 = WrapPoint3D(unsafe.Pointer(arg4))
+	res = WrapPoint3D(unsafe.Pointer(&arg4))
 
-	return ret4
+	return res
 }
 
 // Scale scales the coordinates of the given #graphene_point3d_t by the given
 // @factor.
-func (p *Point3D) Scale(factor float32) Point3D {
+func (p *Point3D) Scale(p *Point3D, factor float32) *Point3D {
 	var arg0 *C.graphene_point3d_t
 	var arg1 C.float
 
@@ -345,28 +298,28 @@ func (p *Point3D) Scale(factor float32) Point3D {
 	arg1 = C.float(factor)
 
 	var arg2 C.graphene_point3d_t
-	var ret2 *Point3D
+	var res *Point3D
 
-	C.graphene_point3d_scale(arg0, factor, &arg2)
+	C.graphene_point3d_scale(arg0, arg1, &arg2)
 
-	*ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	res = WrapPoint3D(unsafe.Pointer(&arg2))
 
-	return ret2
+	return res
 }
 
 // ToVec3 stores the coordinates of a #graphene_point3d_t into a
 // #graphene_vec3_t.
-func (p *Point3D) ToVec3() Vec3 {
+func (p *Point3D) ToVec3(p *Point3D) *Vec3 {
 	var arg0 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
 	var arg1 C.graphene_vec3_t
-	var ret1 *Vec3
+	var v *Vec3
 
 	C.graphene_point3d_to_vec3(arg0, &arg1)
 
-	*ret1 = WrapVec3(unsafe.Pointer(arg1))
+	v = WrapVec3(unsafe.Pointer(&arg1))
 
-	return ret1
+	return v
 }

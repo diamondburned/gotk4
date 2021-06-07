@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -78,9 +73,9 @@ type Window interface {
 	// window manager close button is clicked.
 	//
 	// This function can be used with close buttons in custom titlebars.
-	Close()
+	Close(w Window)
 	// Destroy: drop the internal reference GTK holds on toplevel windows.
-	Destroy()
+	Destroy(w Window)
 	// Fullscreen asks to place @window in the fullscreen state.
 	//
 	// Note that you shouldn’t assume the window is definitely full screen
@@ -91,7 +86,7 @@ type Window interface {
 	// You can track the result of this operation via the Toplevel:state
 	// property, or by listening to notifications of the Window:fullscreened
 	// property.
-	Fullscreen()
+	Fullscreen(w Window)
 	// FullscreenOnMonitor asks to place @window in the fullscreen state on the
 	// given @monitor.
 	//
@@ -102,66 +97,66 @@ type Window interface {
 	// You can track the result of this operation via the Toplevel:state
 	// property, or by listening to notifications of the Window:fullscreened
 	// property.
-	FullscreenOnMonitor(monitor gdk.Monitor)
+	FullscreenOnMonitor(w Window, monitor gdk.Monitor)
 	// Application gets the Application associated with the window (if any).
-	Application() Application
+	Application(w Window)
 	// Child gets the child widget of @window.
-	Child() Widget
+	Child(w Window)
 	// Decorated returns whether the window has been set to have decorations
 	// such as a title bar via gtk_window_set_decorated().
-	Decorated() bool
+	Decorated(w Window) bool
 	// DefaultSize gets the default size of the window. A value of 0 for the
 	// width or height indicates that a default size has not been explicitly set
 	// for that dimension, so the “natural” size of the window will be used.
-	DefaultSize() (width int, height int)
+	DefaultSize(w Window) (width int, height int)
 	// DefaultWidget returns the default widget for @window.
 	//
 	// See gtk_window_set_default_widget() for more details.
-	DefaultWidget() Widget
+	DefaultWidget(w Window)
 	// Deletable returns whether the window has been set to have a close button
 	// via gtk_window_set_deletable().
-	Deletable() bool
+	Deletable(w Window) bool
 	// DestroyWithParent returns whether the window will be destroyed with its
 	// transient parent. See gtk_window_set_destroy_with_parent ().
-	DestroyWithParent() bool
+	DestroyWithParent(w Window) bool
 	// Focus retrieves the current focused widget within the window. Note that
 	// this is the widget that would have the focus if the toplevel window
 	// focused; if the toplevel window is not focused then `gtk_widget_has_focus
 	// (widget)` will not be true for the widget.
-	Focus() Widget
+	Focus(w Window)
 	// FocusVisible gets the value of the Window:focus-visible property.
-	FocusVisible() bool
+	FocusVisible(w Window) bool
 	// Group returns the group for @window or the default group, if @window is
 	// nil or if @window does not have an explicit window group.
-	Group() WindowGroup
+	Group(w Window)
 	// HideOnClose returns whether the window will be hidden when the close
 	// button is clicked.
-	HideOnClose() bool
+	HideOnClose(w Window) bool
 	// IconName returns the name of the themed icon for the window, see
 	// gtk_window_set_icon_name().
-	IconName() string
+	IconName(w Window)
 	// MnemonicsVisible gets the value of the Window:mnemonics-visible property.
-	MnemonicsVisible() bool
+	MnemonicsVisible(w Window) bool
 	// Modal returns whether the window is modal. See gtk_window_set_modal().
-	Modal() bool
+	Modal(w Window) bool
 	// Resizable gets the value set by gtk_window_set_resizable().
-	Resizable() bool
+	Resizable(w Window) bool
 	// Title retrieves the title of the window. See gtk_window_set_title().
-	Title() string
+	Title(w Window)
 	// Titlebar returns the custom titlebar that has been set with
 	// gtk_window_set_titlebar().
-	Titlebar() Widget
+	Titlebar(w Window)
 	// TransientFor fetches the transient parent for this window. See
 	// gtk_window_set_transient_for().
-	TransientFor() Window
+	TransientFor(w Window)
 	// HasGroup returns whether @window has an explicit window group.
-	HasGroup() bool
+	HasGroup(w Window) bool
 	// IsActive returns whether the window is part of the current active
 	// toplevel. (That is, the toplevel window receiving keystrokes.) The return
 	// value is true if the window is active toplevel itself. You might use this
 	// function if you wanted to draw a widget differently in an active window
 	// from a widget in an inactive window.
-	IsActive() bool
+	IsActive(w Window) bool
 	// IsFullscreen retrieves the current fullscreen state of @window.
 	//
 	// Note that since fullscreening is ultimately handled by the window manager
@@ -172,7 +167,7 @@ type Window interface {
 	//
 	// If the window isn't yet mapped, the value returned will whether the
 	// initial requested state is fullscreen.
-	IsFullscreen() bool
+	IsFullscreen(w Window) bool
 	// IsMaximized retrieves the current maximized state of @window.
 	//
 	// Note that since maximization is ultimately handled by the window manager
@@ -183,7 +178,7 @@ type Window interface {
 	//
 	// If the window isn't yet mapped, the value returned will whether the
 	// initial requested state is maximized.
-	IsMaximized() bool
+	IsMaximized(w Window) bool
 	// Maximize asks to maximize @window, so that it fills the screen.
 	//
 	// Note that you shouldn’t assume the window is definitely maximized
@@ -197,7 +192,7 @@ type Window interface {
 	// You can track the result of this operation via the Toplevel:state
 	// property, or by listening to notifications on the Window:maximized
 	// property.
-	Maximize()
+	Maximize(w Window)
 	// Minimize asks to minimize the specified @window.
 	//
 	// Note that you shouldn’t assume the window is definitely minimized
@@ -210,11 +205,11 @@ type Window interface {
 	// case the window will be minimized before it ever appears onscreen.
 	//
 	// You can track result of this operation via the Toplevel:state property.
-	Minimize()
+	Minimize(w Window)
 	// Present presents a window to the user. This function should not be used
 	// as when it is called, it is too late to gather a valid timestamp to allow
 	// focus stealing prevention to work correctly.
-	Present()
+	Present(w Window)
 	// PresentWithTime presents a window to the user. This may mean raising the
 	// window in the stacking order, unminimizing it, moving it to the current
 	// desktop, and/or giving it the keyboard focus, possibly dependent on the
@@ -232,7 +227,7 @@ type Window interface {
 	// timestamp should be gathered when the window was requested to be shown
 	// (when clicking a link for example), rather than once the window is ready
 	// to be shown.
-	PresentWithTime(timestamp uint32)
+	PresentWithTime(w Window, timestamp uint32)
 	// SetApplication sets or unsets the Application associated with the window.
 	//
 	// The application will be kept alive for at least as long as it has any
@@ -245,9 +240,9 @@ type Window interface {
 	//
 	// This is equivalent to calling gtk_application_remove_window() and/or
 	// gtk_application_add_window() on the old/new applications as relevant.
-	SetApplication(application Application)
+	SetApplication(w Window, application Application)
 	// SetChild sets the child widget of @window.
-	SetChild(child Widget)
+	SetChild(w Window, child Widget)
 	// SetDecorated: by default, windows are decorated with a title bar, resize
 	// controls, etc. Some [window managers][gtk-X11-arch] allow GTK to disable
 	// these decorations, creating a borderless window. If you set the decorated
@@ -258,7 +253,7 @@ type Window interface {
 	//
 	// On Windows, this function always works, since there’s no window manager
 	// policy involved.
-	SetDecorated(setting bool)
+	SetDecorated(w Window, setting bool)
 	// SetDefaultSize sets the default size of a window. If the window’s
 	// “natural” size (its size request) is larger than the default, the default
 	// will be ignored.
@@ -282,11 +277,11 @@ type Window interface {
 	// gtk_window_get_default_size(). Using the window allocation directly will
 	// not work in all circumstances and can lead to growing or shrinking
 	// windows.
-	SetDefaultSize(width int, height int)
+	SetDefaultSize(w Window, width int, height int)
 	// SetDefaultWidget: the default widget is the widget that’s activated when
 	// the user presses Enter in a dialog (for example). This function sets or
 	// unsets the default widget for a Window.
-	SetDefaultWidget(defaultWidget Widget)
+	SetDefaultWidget(w Window, defaultWidget Widget)
 	// SetDeletable: by default, windows have a close button in the window
 	// frame. Some [window managers][gtk-X11-arch] allow GTK to disable this
 	// button. If you set the deletable property to false using this function,
@@ -297,47 +292,47 @@ type Window interface {
 	//
 	// On Windows, this function always works, since there’s no window manager
 	// policy involved.
-	SetDeletable(setting bool)
+	SetDeletable(w Window, setting bool)
 	// SetDestroyWithParent: if @setting is true, then destroying the transient
 	// parent of @window will also destroy @window itself. This is useful for
 	// dialogs that shouldn’t persist beyond the lifetime of the main window
 	// they're associated with, for example.
-	SetDestroyWithParent(setting bool)
+	SetDestroyWithParent(w Window, setting bool)
 	// SetDisplay sets the Display where the @window is displayed; if the window
 	// is already mapped, it will be unmapped, and then remapped on the new
 	// display.
-	SetDisplay(display gdk.Display)
+	SetDisplay(w Window, display gdk.Display)
 	// SetFocus: if @focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the window. If @focus is nil, unsets the
 	// focus widget for this window. To set the focus to a particular widget in
 	// the toplevel, it is usually more convenient to use
 	// gtk_widget_grab_focus() instead of this function.
-	SetFocus(focus Widget)
+	SetFocus(w Window, focus Widget)
 	// SetFocusVisible sets the Window:focus-visible property.
-	SetFocusVisible(setting bool)
+	SetFocusVisible(w Window, setting bool)
 	// SetHideOnClose: if @setting is true, then clicking the close button on
 	// the window will not destroy it, but only hide it.
-	SetHideOnClose(setting bool)
+	SetHideOnClose(w Window, setting bool)
 	// SetIconName sets the icon for the window from a named themed icon. See
 	// the docs for IconTheme for more details. On some platforms, the window
 	// icon is not used at all.
 	//
 	// Note that this has nothing to do with the WM_ICON_NAME property which is
 	// mentioned in the ICCCM.
-	SetIconName(name string)
+	SetIconName(w Window, name string)
 	// SetMnemonicsVisible sets the Window:mnemonics-visible property.
-	SetMnemonicsVisible(setting bool)
+	SetMnemonicsVisible(w Window, setting bool)
 	// SetModal sets a window modal or non-modal. Modal windows prevent
 	// interaction with other windows in the same application. To keep modal
 	// dialogs on top of main application windows, use
 	// gtk_window_set_transient_for() to make the dialog transient for the
 	// parent; most [window managers][gtk-X11-arch] will then disallow lowering
 	// the dialog below the parent.
-	SetModal(modal bool)
+	SetModal(w Window, modal bool)
 	// SetResizable sets whether the user can resize a window.
 	//
 	// Windows are user resizable by default.
-	SetResizable(resizable bool)
+	SetResizable(w Window, resizable bool)
 	// SetStartupID: startup notification identifiers are used by desktop
 	// environment to track application startup, to provide user feedback and
 	// other features. This function changes the corresponding property on the
@@ -348,7 +343,7 @@ type Window interface {
 	// a window map event.
 	//
 	// This function is only useful on X11, not with other GTK targets.
-	SetStartupID(startupID string)
+	SetStartupID(w Window, startupID string)
 	// SetTitle sets the title of the Window. The title of a window will be
 	// displayed in its title bar; on the X Window System, the title bar is
 	// rendered by the [window manager][gtk-X11-arch], so exactly how the title
@@ -358,7 +353,7 @@ type Window interface {
 	// current document filename, for example. document filename, for example.
 	//
 	// Passing nil does the same as setting the title to an empty string.
-	SetTitle(title string)
+	SetTitle(w Window, title string)
 	// SetTitlebar sets a custom titlebar for @window.
 	//
 	// A typical widget used here is HeaderBar, as it provides various features
@@ -369,7 +364,7 @@ type Window interface {
 	// manager not to put its own titlebar on the window. Depending on the
 	// system, this function may not work for a window that is already visible,
 	// so you set the titlebar before calling gtk_widget_show().
-	SetTitlebar(titlebar Widget)
+	SetTitlebar(w Window, titlebar Widget)
 	// SetTransientFor: dialog windows should be set transient for the main
 	// application window they were spawned from. This allows [window
 	// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main
@@ -381,7 +376,7 @@ type Window interface {
 	//
 	// On Windows, this function puts the child window on top of the parent,
 	// much as the window manager would have done on X.
-	SetTransientFor(parent Window)
+	SetTransientFor(w Window, parent Window)
 	// Unfullscreen asks to remove the fullscreen state for @window, and return
 	// to its previous state.
 	//
@@ -395,7 +390,7 @@ type Window interface {
 	// You can track the result of this operation via the Toplevel:state
 	// property, or by listening to notifications of the Window:fullscreened
 	// property.
-	Unfullscreen()
+	Unfullscreen(w Window)
 	// Unmaximize asks to unmaximize @window.
 	//
 	// Note that you shouldn’t assume the window is definitely unmaximized
@@ -406,7 +401,7 @@ type Window interface {
 	// You can track the result of this operation via the Toplevel:state
 	// property, or by listening to notifications on the Window:maximized
 	// property.
-	Unmaximize()
+	Unmaximize(w Window)
 	// Unminimize asks to unminimize the specified @window.
 	//
 	// Note that you shouldn’t assume the window is definitely unminimized
@@ -416,7 +411,7 @@ type Window interface {
 	// window manager in which case minimization isn’t possible, etc.
 	//
 	// You can track result of this operation via the Toplevel:state property.
-	Unminimize()
+	Unminimize(w Window)
 }
 
 // window implements the Window interface.
@@ -453,22 +448,15 @@ func marshalWindow(p uintptr) (interface{}, error) {
 }
 
 // NewWindow constructs a class Window.
-func NewWindow() Window {
-	var cret C.GtkWindow
-	var ret1 Window
-
-	cret = C.gtk_window_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
-
-	return ret1
+func NewWindow() {
+	C.gtk_window_new()
 }
 
 // Close requests that the window is closed, similar to what happens when a
 // window manager close button is clicked.
 //
 // This function can be used with close buttons in custom titlebars.
-func (w window) Close() {
+func (w window) Close(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -477,7 +465,7 @@ func (w window) Close() {
 }
 
 // Destroy: drop the internal reference GTK holds on toplevel windows.
-func (w window) Destroy() {
+func (w window) Destroy(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -495,7 +483,7 @@ func (w window) Destroy() {
 // You can track the result of this operation via the Toplevel:state
 // property, or by listening to notifications of the Window:fullscreened
 // property.
-func (w window) Fullscreen() {
+func (w window) Fullscreen(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -513,336 +501,291 @@ func (w window) Fullscreen() {
 // You can track the result of this operation via the Toplevel:state
 // property, or by listening to notifications of the Window:fullscreened
 // property.
-func (w window) FullscreenOnMonitor(monitor gdk.Monitor) {
+func (w window) FullscreenOnMonitor(w Window, monitor gdk.Monitor) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GdkMonitor
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
-	C.gtk_window_fullscreen_on_monitor(arg0, monitor)
+	C.gtk_window_fullscreen_on_monitor(arg0, arg1)
 }
 
 // Application gets the Application associated with the window (if any).
-func (w window) Application() Application {
+func (w window) Application(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkApplication
-	var ret1 Application
-
-	cret = C.gtk_window_get_application(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Application)
-
-	return ret1
+	C.gtk_window_get_application(arg0)
 }
 
 // Child gets the child widget of @window.
-func (w window) Child() Widget {
+func (w window) Child(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_get_child(arg0)
 }
 
 // Decorated returns whether the window has been set to have decorations
 // such as a title bar via gtk_window_set_decorated().
-func (w window) Decorated() bool {
+func (w window) Decorated(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_decorated(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DefaultSize gets the default size of the window. A value of 0 for the
 // width or height indicates that a default size has not been explicitly set
 // for that dimension, so the “natural” size of the window will be used.
-func (w window) DefaultSize() (width int, height int) {
+func (w window) DefaultSize(w Window) (width int, height int) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var arg1 C.int
-	var ret1 int
+	var width int
 	var arg2 C.int
-	var ret2 int
+	var height int
 
 	C.gtk_window_get_default_size(arg0, &arg1, &arg2)
 
-	*ret1 = C.int(arg1)
-	*ret2 = C.int(arg2)
+	width = int(&arg1)
+	height = int(&arg2)
 
-	return ret1, ret2
+	return width, height
 }
 
 // DefaultWidget returns the default widget for @window.
 //
 // See gtk_window_set_default_widget() for more details.
-func (w window) DefaultWidget() Widget {
+func (w window) DefaultWidget(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_get_default_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_get_default_widget(arg0)
 }
 
 // Deletable returns whether the window has been set to have a close button
 // via gtk_window_set_deletable().
-func (w window) Deletable() bool {
+func (w window) Deletable(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_deletable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DestroyWithParent returns whether the window will be destroyed with its
 // transient parent. See gtk_window_set_destroy_with_parent ().
-func (w window) DestroyWithParent() bool {
+func (w window) DestroyWithParent(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_destroy_with_parent(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Focus retrieves the current focused widget within the window. Note that
 // this is the widget that would have the focus if the toplevel window
 // focused; if the toplevel window is not focused then `gtk_widget_has_focus
 // (widget)` will not be true for the widget.
-func (w window) Focus() Widget {
+func (w window) Focus(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_get_focus(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_get_focus(arg0)
 }
 
 // FocusVisible gets the value of the Window:focus-visible property.
-func (w window) FocusVisible() bool {
+func (w window) FocusVisible(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_focus_visible(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Group returns the group for @window or the default group, if @window is
 // nil or if @window does not have an explicit window group.
-func (w window) Group() WindowGroup {
+func (w window) Group(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWindowGroup
-	var ret1 WindowGroup
-
-	cret = C.gtk_window_get_group(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowGroup)
-
-	return ret1
+	C.gtk_window_get_group(arg0)
 }
 
 // HideOnClose returns whether the window will be hidden when the close
 // button is clicked.
-func (w window) HideOnClose() bool {
+func (w window) HideOnClose(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_hide_on_close(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IconName returns the name of the themed icon for the window, see
 // gtk_window_set_icon_name().
-func (w window) IconName() string {
+func (w window) IconName(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_window_get_icon_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_window_get_icon_name(arg0)
 }
 
 // MnemonicsVisible gets the value of the Window:mnemonics-visible property.
-func (w window) MnemonicsVisible() bool {
+func (w window) MnemonicsVisible(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_mnemonics_visible(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Modal returns whether the window is modal. See gtk_window_set_modal().
-func (w window) Modal() bool {
+func (w window) Modal(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_modal(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Resizable gets the value set by gtk_window_set_resizable().
-func (w window) Resizable() bool {
+func (w window) Resizable(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_get_resizable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Title retrieves the title of the window. See gtk_window_set_title().
-func (w window) Title() string {
+func (w window) Title(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_window_get_title(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_window_get_title(arg0)
 }
 
 // Titlebar returns the custom titlebar that has been set with
 // gtk_window_set_titlebar().
-func (w window) Titlebar() Widget {
+func (w window) Titlebar(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_get_titlebar(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_get_titlebar(arg0)
 }
 
 // TransientFor fetches the transient parent for this window. See
 // gtk_window_set_transient_for().
-func (w window) TransientFor() Window {
+func (w window) TransientFor(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWindow
-	var ret1 Window
-
-	cret = C.gtk_window_get_transient_for(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
-
-	return ret1
+	C.gtk_window_get_transient_for(arg0)
 }
 
 // HasGroup returns whether @window has an explicit window group.
-func (w window) HasGroup() bool {
+func (w window) HasGroup(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_has_group(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsActive returns whether the window is part of the current active
@@ -850,19 +793,21 @@ func (w window) HasGroup() bool {
 // value is true if the window is active toplevel itself. You might use this
 // function if you wanted to draw a widget differently in an active window
 // from a widget in an inactive window.
-func (w window) IsActive() bool {
+func (w window) IsActive(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_is_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsFullscreen retrieves the current fullscreen state of @window.
@@ -875,19 +820,21 @@ func (w window) IsActive() bool {
 //
 // If the window isn't yet mapped, the value returned will whether the
 // initial requested state is fullscreen.
-func (w window) IsFullscreen() bool {
+func (w window) IsFullscreen(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_is_fullscreen(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsMaximized retrieves the current maximized state of @window.
@@ -900,19 +847,21 @@ func (w window) IsFullscreen() bool {
 //
 // If the window isn't yet mapped, the value returned will whether the
 // initial requested state is maximized.
-func (w window) IsMaximized() bool {
+func (w window) IsMaximized(w Window) bool {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_is_maximized(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Maximize asks to maximize @window, so that it fills the screen.
@@ -928,7 +877,7 @@ func (w window) IsMaximized() bool {
 // You can track the result of this operation via the Toplevel:state
 // property, or by listening to notifications on the Window:maximized
 // property.
-func (w window) Maximize() {
+func (w window) Maximize(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -948,7 +897,7 @@ func (w window) Maximize() {
 // case the window will be minimized before it ever appears onscreen.
 //
 // You can track result of this operation via the Toplevel:state property.
-func (w window) Minimize() {
+func (w window) Minimize(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -959,7 +908,7 @@ func (w window) Minimize() {
 // Present presents a window to the user. This function should not be used
 // as when it is called, it is too late to gather a valid timestamp to allow
 // focus stealing prevention to work correctly.
-func (w window) Present() {
+func (w window) Present(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -984,14 +933,14 @@ func (w window) Present() {
 // timestamp should be gathered when the window was requested to be shown
 // (when clicking a link for example), rather than once the window is ready
 // to be shown.
-func (w window) PresentWithTime(timestamp uint32) {
+func (w window) PresentWithTime(w Window, timestamp uint32) {
 	var arg0 *C.GtkWindow
 	var arg1 C.guint32
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = C.guint32(timestamp)
 
-	C.gtk_window_present_with_time(arg0, timestamp)
+	C.gtk_window_present_with_time(arg0, arg1)
 }
 
 // SetApplication sets or unsets the Application associated with the window.
@@ -1006,25 +955,25 @@ func (w window) PresentWithTime(timestamp uint32) {
 //
 // This is equivalent to calling gtk_application_remove_window() and/or
 // gtk_application_add_window() on the old/new applications as relevant.
-func (w window) SetApplication(application Application) {
+func (w window) SetApplication(w Window, application Application) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GtkApplication
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
-	C.gtk_window_set_application(arg0, application)
+	C.gtk_window_set_application(arg0, arg1)
 }
 
 // SetChild sets the child widget of @window.
-func (w window) SetChild(child Widget) {
+func (w window) SetChild(w Window, child Widget) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_window_set_child(arg0, child)
+	C.gtk_window_set_child(arg0, arg1)
 }
 
 // SetDecorated: by default, windows are decorated with a title bar, resize
@@ -1037,7 +986,7 @@ func (w window) SetChild(child Widget) {
 //
 // On Windows, this function always works, since there’s no window manager
 // policy involved.
-func (w window) SetDecorated(setting bool) {
+func (w window) SetDecorated(w Window, setting bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1046,7 +995,7 @@ func (w window) SetDecorated(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_decorated(arg0, setting)
+	C.gtk_window_set_decorated(arg0, arg1)
 }
 
 // SetDefaultSize sets the default size of a window. If the window’s
@@ -1072,7 +1021,7 @@ func (w window) SetDecorated(setting bool) {
 // gtk_window_get_default_size(). Using the window allocation directly will
 // not work in all circumstances and can lead to growing or shrinking
 // windows.
-func (w window) SetDefaultSize(width int, height int) {
+func (w window) SetDefaultSize(w Window, width int, height int) {
 	var arg0 *C.GtkWindow
 	var arg1 C.int
 	var arg2 C.int
@@ -1081,20 +1030,20 @@ func (w window) SetDefaultSize(width int, height int) {
 	arg1 = C.int(width)
 	arg2 = C.int(height)
 
-	C.gtk_window_set_default_size(arg0, width, height)
+	C.gtk_window_set_default_size(arg0, arg1, arg2)
 }
 
 // SetDefaultWidget: the default widget is the widget that’s activated when
 // the user presses Enter in a dialog (for example). This function sets or
 // unsets the default widget for a Window.
-func (w window) SetDefaultWidget(defaultWidget Widget) {
+func (w window) SetDefaultWidget(w Window, defaultWidget Widget) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(defaultWidget.Native()))
 
-	C.gtk_window_set_default_widget(arg0, defaultWidget)
+	C.gtk_window_set_default_widget(arg0, arg1)
 }
 
 // SetDeletable: by default, windows have a close button in the window
@@ -1107,7 +1056,7 @@ func (w window) SetDefaultWidget(defaultWidget Widget) {
 //
 // On Windows, this function always works, since there’s no window manager
 // policy involved.
-func (w window) SetDeletable(setting bool) {
+func (w window) SetDeletable(w Window, setting bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1116,14 +1065,14 @@ func (w window) SetDeletable(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_deletable(arg0, setting)
+	C.gtk_window_set_deletable(arg0, arg1)
 }
 
 // SetDestroyWithParent: if @setting is true, then destroying the transient
 // parent of @window will also destroy @window itself. This is useful for
 // dialogs that shouldn’t persist beyond the lifetime of the main window
 // they're associated with, for example.
-func (w window) SetDestroyWithParent(setting bool) {
+func (w window) SetDestroyWithParent(w Window, setting bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1132,20 +1081,20 @@ func (w window) SetDestroyWithParent(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_destroy_with_parent(arg0, setting)
+	C.gtk_window_set_destroy_with_parent(arg0, arg1)
 }
 
 // SetDisplay sets the Display where the @window is displayed; if the window
 // is already mapped, it will be unmapped, and then remapped on the new
 // display.
-func (w window) SetDisplay(display gdk.Display) {
+func (w window) SetDisplay(w Window, display gdk.Display) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GdkDisplay
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	C.gtk_window_set_display(arg0, display)
+	C.gtk_window_set_display(arg0, arg1)
 }
 
 // SetFocus: if @focus is not the current focus widget, and is focusable,
@@ -1153,18 +1102,18 @@ func (w window) SetDisplay(display gdk.Display) {
 // focus widget for this window. To set the focus to a particular widget in
 // the toplevel, it is usually more convenient to use
 // gtk_widget_grab_focus() instead of this function.
-func (w window) SetFocus(focus Widget) {
+func (w window) SetFocus(w Window, focus Widget) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
-	C.gtk_window_set_focus(arg0, focus)
+	C.gtk_window_set_focus(arg0, arg1)
 }
 
 // SetFocusVisible sets the Window:focus-visible property.
-func (w window) SetFocusVisible(setting bool) {
+func (w window) SetFocusVisible(w Window, setting bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1173,12 +1122,12 @@ func (w window) SetFocusVisible(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_focus_visible(arg0, setting)
+	C.gtk_window_set_focus_visible(arg0, arg1)
 }
 
 // SetHideOnClose: if @setting is true, then clicking the close button on
 // the window will not destroy it, but only hide it.
-func (w window) SetHideOnClose(setting bool) {
+func (w window) SetHideOnClose(w Window, setting bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1187,7 +1136,7 @@ func (w window) SetHideOnClose(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_hide_on_close(arg0, setting)
+	C.gtk_window_set_hide_on_close(arg0, arg1)
 }
 
 // SetIconName sets the icon for the window from a named themed icon. See
@@ -1196,7 +1145,7 @@ func (w window) SetHideOnClose(setting bool) {
 //
 // Note that this has nothing to do with the WM_ICON_NAME property which is
 // mentioned in the ICCCM.
-func (w window) SetIconName(name string) {
+func (w window) SetIconName(w Window, name string) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.char
 
@@ -1204,11 +1153,11 @@ func (w window) SetIconName(name string) {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_window_set_icon_name(arg0, name)
+	C.gtk_window_set_icon_name(arg0, arg1)
 }
 
 // SetMnemonicsVisible sets the Window:mnemonics-visible property.
-func (w window) SetMnemonicsVisible(setting bool) {
+func (w window) SetMnemonicsVisible(w Window, setting bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1217,7 +1166,7 @@ func (w window) SetMnemonicsVisible(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_mnemonics_visible(arg0, setting)
+	C.gtk_window_set_mnemonics_visible(arg0, arg1)
 }
 
 // SetModal sets a window modal or non-modal. Modal windows prevent
@@ -1226,7 +1175,7 @@ func (w window) SetMnemonicsVisible(setting bool) {
 // gtk_window_set_transient_for() to make the dialog transient for the
 // parent; most [window managers][gtk-X11-arch] will then disallow lowering
 // the dialog below the parent.
-func (w window) SetModal(modal bool) {
+func (w window) SetModal(w Window, modal bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1235,13 +1184,13 @@ func (w window) SetModal(modal bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_modal(arg0, modal)
+	C.gtk_window_set_modal(arg0, arg1)
 }
 
 // SetResizable sets whether the user can resize a window.
 //
 // Windows are user resizable by default.
-func (w window) SetResizable(resizable bool) {
+func (w window) SetResizable(w Window, resizable bool) {
 	var arg0 *C.GtkWindow
 	var arg1 C.gboolean
 
@@ -1250,7 +1199,7 @@ func (w window) SetResizable(resizable bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_window_set_resizable(arg0, resizable)
+	C.gtk_window_set_resizable(arg0, arg1)
 }
 
 // SetStartupID: startup notification identifiers are used by desktop
@@ -1263,7 +1212,7 @@ func (w window) SetResizable(resizable bool) {
 // a window map event.
 //
 // This function is only useful on X11, not with other GTK targets.
-func (w window) SetStartupID(startupID string) {
+func (w window) SetStartupID(w Window, startupID string) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.char
 
@@ -1271,7 +1220,7 @@ func (w window) SetStartupID(startupID string) {
 	arg1 = (*C.char)(C.CString(startupID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_window_set_startup_id(arg0, startupID)
+	C.gtk_window_set_startup_id(arg0, arg1)
 }
 
 // SetTitle sets the title of the Window. The title of a window will be
@@ -1283,7 +1232,7 @@ func (w window) SetStartupID(startupID string) {
 // current document filename, for example. document filename, for example.
 //
 // Passing nil does the same as setting the title to an empty string.
-func (w window) SetTitle(title string) {
+func (w window) SetTitle(w Window, title string) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.char
 
@@ -1291,7 +1240,7 @@ func (w window) SetTitle(title string) {
 	arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_window_set_title(arg0, title)
+	C.gtk_window_set_title(arg0, arg1)
 }
 
 // SetTitlebar sets a custom titlebar for @window.
@@ -1304,14 +1253,14 @@ func (w window) SetTitle(title string) {
 // manager not to put its own titlebar on the window. Depending on the
 // system, this function may not work for a window that is already visible,
 // so you set the titlebar before calling gtk_widget_show().
-func (w window) SetTitlebar(titlebar Widget) {
+func (w window) SetTitlebar(w Window, titlebar Widget) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(titlebar.Native()))
 
-	C.gtk_window_set_titlebar(arg0, titlebar)
+	C.gtk_window_set_titlebar(arg0, arg1)
 }
 
 // SetTransientFor: dialog windows should be set transient for the main
@@ -1325,14 +1274,14 @@ func (w window) SetTitlebar(titlebar Widget) {
 //
 // On Windows, this function puts the child window on top of the parent,
 // much as the window manager would have done on X.
-func (w window) SetTransientFor(parent Window) {
+func (w window) SetTransientFor(w Window, parent Window) {
 	var arg0 *C.GtkWindow
 	var arg1 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_window_set_transient_for(arg0, parent)
+	C.gtk_window_set_transient_for(arg0, arg1)
 }
 
 // Unfullscreen asks to remove the fullscreen state for @window, and return
@@ -1348,7 +1297,7 @@ func (w window) SetTransientFor(parent Window) {
 // You can track the result of this operation via the Toplevel:state
 // property, or by listening to notifications of the Window:fullscreened
 // property.
-func (w window) Unfullscreen() {
+func (w window) Unfullscreen(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -1366,7 +1315,7 @@ func (w window) Unfullscreen() {
 // You can track the result of this operation via the Toplevel:state
 // property, or by listening to notifications on the Window:maximized
 // property.
-func (w window) Unmaximize() {
+func (w window) Unmaximize(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))
@@ -1383,7 +1332,7 @@ func (w window) Unmaximize() {
 // window manager in which case minimization isn’t possible, etc.
 //
 // You can track result of this operation via the Toplevel:state property.
-func (w window) Unminimize() {
+func (w window) Unminimize(w Window) {
 	var arg0 *C.GtkWindow
 
 	arg0 = (*C.GtkWindow)(unsafe.Pointer(w.Native()))

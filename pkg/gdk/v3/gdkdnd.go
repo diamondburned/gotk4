@@ -2,16 +2,8 @@
 
 package gdk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gdk/gdk.h>
 import "C"
 
@@ -28,7 +20,7 @@ func DragAbort(context DragContext, time_ uint32) {
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	arg2 = C.guint32(time_)
 
-	C.gdk_drag_abort(context, time_)
+	C.gdk_drag_abort(arg1, arg2)
 }
 
 // DragBegin starts a drag and creates a new drag context for it. This function
@@ -36,27 +28,20 @@ func DragAbort(context DragContext, time_ uint32) {
 // gdk_drag_begin_for_device() to begin a drag with a different device.
 //
 // This function is called by the drag source.
-func DragBegin(window Window, targets *glib.List) DragContext {
+func DragBegin(window Window, targets *glib.List) {
 	var arg1 *C.GdkWindow
 	var arg2 *C.GList
 
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	arg2 = (*C.GList)(unsafe.Pointer(targets.Native()))
 
-	var cret *C.GdkDragContext
-	var ret1 DragContext
-
-	cret = C.gdk_drag_begin(window, targets)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DragContext)
-
-	return ret1
+	C.gdk_drag_begin(arg1, arg2)
 }
 
 // DragBeginForDevice starts a drag and creates a new drag context for it.
 //
 // This function is called by the drag source.
-func DragBeginForDevice(window Window, device Device, targets *glib.List) DragContext {
+func DragBeginForDevice(window Window, device Device, targets *glib.List) {
 	var arg1 *C.GdkWindow
 	var arg2 *C.GdkDevice
 	var arg3 *C.GList
@@ -65,20 +50,13 @@ func DragBeginForDevice(window Window, device Device, targets *glib.List) DragCo
 	arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 	arg3 = (*C.GList)(unsafe.Pointer(targets.Native()))
 
-	var cret *C.GdkDragContext
-	var ret1 DragContext
-
-	cret = C.gdk_drag_begin_for_device(window, device, targets)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DragContext)
-
-	return ret1
+	C.gdk_drag_begin_for_device(arg1, arg2, arg3)
 }
 
 // DragBeginFromPoint starts a drag and creates a new drag context for it.
 //
 // This function is called by the drag source.
-func DragBeginFromPoint(window Window, device Device, targets *glib.List, xRoot int, yRoot int) DragContext {
+func DragBeginFromPoint(window Window, device Device, targets *glib.List, xRoot int, yRoot int) {
 	var arg1 *C.GdkWindow
 	var arg2 *C.GdkDevice
 	var arg3 *C.GList
@@ -91,14 +69,7 @@ func DragBeginFromPoint(window Window, device Device, targets *glib.List, xRoot 
 	arg4 = C.gint(xRoot)
 	arg5 = C.gint(yRoot)
 
-	var cret *C.GdkDragContext
-	var ret1 DragContext
-
-	cret = C.gdk_drag_begin_from_point(window, device, targets, xRoot, yRoot)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DragContext)
-
-	return ret1
+	C.gdk_drag_begin_from_point(arg1, arg2, arg3, arg4, arg5)
 }
 
 // DragDrop drops on the current destination.
@@ -114,7 +85,7 @@ func DragDrop(context DragContext, time_ uint32) {
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	arg2 = C.guint32(time_)
 
-	C.gdk_drag_drop(context, time_)
+	C.gdk_drag_drop(arg1, arg2)
 }
 
 // DragDropDone: inform GDK if the drop ended successfully. Passing false for
@@ -135,7 +106,7 @@ func DragDropDone(context DragContext, success bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.gdk_drag_drop_done(context, success)
+	C.gdk_drag_drop_done(arg1, arg2)
 }
 
 // DragDropSucceeded returns whether the dropped data has been successfully
@@ -147,13 +118,15 @@ func DragDropSucceeded(context DragContext) bool {
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_drag_drop_succeeded(context)
+	cret = C.gdk_drag_drop_succeeded(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DragFindWindowForScreen finds the destination window and DND protocol to use
@@ -161,7 +134,7 @@ func DragDropSucceeded(context DragContext) bool {
 //
 // This function is called by the drag source to obtain the @dest_window and
 // @protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (destWindow Window, protocol DragProtocol) {
+func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (destWindow Window, protocol *DragProtocol) {
 	var arg1 *C.GdkDragContext
 	var arg2 *C.GdkWindow
 	var arg3 *C.GdkScreen
@@ -175,32 +148,25 @@ func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Scre
 	arg5 = C.gint(yRoot)
 
 	var arg6 *C.GdkWindow
-	var ret6 Window
+	var destWindow Window
 	var arg7 C.GdkDragProtocol
-	var ret7 *DragProtocol
+	var protocol *DragProtocol
 
-	C.gdk_drag_find_window_for_screen(context, dragWindow, screen, xRoot, yRoot, &arg6, &arg7)
+	C.gdk_drag_find_window_for_screen(arg1, arg2, arg3, arg4, arg5, &arg6, &arg7)
 
-	*ret6 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg6.Native()))).(Window)
-	*ret7 = *DragProtocol(arg7)
+	destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(&arg6.Native()))).(Window)
+	protocol = *DragProtocol(&arg7)
 
-	return ret6, ret7
+	return destWindow, protocol
 }
 
 // DragGetSelection returns the selection atom for the current source window.
-func DragGetSelection(context DragContext) Atom {
+func DragGetSelection(context DragContext) {
 	var arg1 *C.GdkDragContext
 
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
-	var cret C.GdkAtom
-	var ret1 Atom
-
-	cret = C.gdk_drag_get_selection(context)
-
-	ret1 = WrapAtom(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_drag_get_selection(arg1)
 }
 
 // DragMotion updates the drag context when the pointer moves or the set of
@@ -230,13 +196,15 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 	arg8 = C.guint32(time_)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_drag_motion(context, destWindow, protocol, xRoot, yRoot, suggestedAction, possibleActions, time_)
+	cret = C.gdk_drag_motion(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DragStatus selects one of the actions offered by the drag source.
@@ -252,7 +220,7 @@ func DragStatus(context DragContext, action DragAction, time_ uint32) {
 	arg2 = (C.GdkDragAction)(action)
 	arg3 = C.guint32(time_)
 
-	C.gdk_drag_status(context, action, time_)
+	C.gdk_drag_status(arg1, arg2, arg3)
 }
 
 // DropFinish ends the drag operation after a drop.
@@ -269,7 +237,7 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 	}
 	arg3 = C.guint32(time_)
 
-	C.gdk_drop_finish(context, success, time_)
+	C.gdk_drop_finish(arg1, arg2, arg3)
 }
 
 // DropReply accepts or rejects a drop.
@@ -287,5 +255,5 @@ func DropReply(context DragContext, accepted bool, time_ uint32) {
 	}
 	arg3 = C.guint32(time_)
 
-	C.gdk_drop_reply(context, accepted, time_)
+	C.gdk_drop_reply(arg1, arg2, arg3)
 }

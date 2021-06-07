@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -41,25 +37,25 @@ type ListItem interface {
 
 	// Activatable checks if a list item has been set to be activatable via
 	// gtk_list_item_set_activatable().
-	Activatable() bool
+	Activatable(s ListItem) bool
 	// Child gets the child previously set via gtk_list_item_set_child() or nil
 	// if none was set.
-	Child() Widget
+	Child(s ListItem)
 	// Item gets the item that is currently displayed in model that @self is
 	// currently bound to or nil if @self is unbound.
-	Item() gextras.Objector
+	Item(s ListItem)
 	// Position gets the position in the model that @self currently displays. If
 	// @self is unbound, GTK_INVALID_LIST_POSITION is returned.
-	Position() uint
+	Position(s ListItem)
 	// Selectable checks if a list item has been set to be selectable via
 	// gtk_list_item_set_selectable().
 	//
 	// Do not confuse this function with gtk_list_item_get_selected().
-	Selectable() bool
+	Selectable(s ListItem) bool
 	// Selected checks if the item is displayed as selected. The selected state
 	// is maintained by the container and its list model and cannot be set
 	// otherwise.
-	Selected() bool
+	Selected(s ListItem) bool
 	// SetActivatable sets @self to be activatable.
 	//
 	// If an item is activatable, double-clicking on the item, using the Return
@@ -68,12 +64,12 @@ type ListItem interface {
 	// will be emitting the ListView::activate signal.
 	//
 	// By default, list items are activatable
-	SetActivatable(activatable bool)
+	SetActivatable(s ListItem, activatable bool)
 	// SetChild sets the child to be used for this listitem.
 	//
 	// This function is typically called by applications when setting up a
 	// listitem so that the widget can be reused when binding it multiple times.
-	SetChild(child Widget)
+	SetChild(s ListItem, child Widget)
 	// SetSelectable sets @self to be selectable. If an item is selectable,
 	// clicking on the item or using the keyboard will try to select or unselect
 	// the item. If this succeeds is up to the model to determine, as it is
@@ -85,7 +81,7 @@ type ListItem interface {
 	//
 	// By default, list items are selectable. When rebinding them to a new item,
 	// they will also be reset to be selectable by GTK.
-	SetSelectable(selectable bool)
+	SetSelectable(s ListItem, selectable bool)
 }
 
 // listItem implements the ListItem interface.
@@ -111,107 +107,92 @@ func marshalListItem(p uintptr) (interface{}, error) {
 
 // Activatable checks if a list item has been set to be activatable via
 // gtk_list_item_set_activatable().
-func (s listItem) Activatable() bool {
+func (s listItem) Activatable(s ListItem) bool {
 	var arg0 *C.GtkListItem
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_item_get_activatable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Child gets the child previously set via gtk_list_item_set_child() or nil
 // if none was set.
-func (s listItem) Child() Widget {
+func (s listItem) Child(s ListItem) {
 	var arg0 *C.GtkListItem
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_list_item_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_list_item_get_child(arg0)
 }
 
 // Item gets the item that is currently displayed in model that @self is
 // currently bound to or nil if @self is unbound.
-func (s listItem) Item() gextras.Objector {
+func (s listItem) Item(s ListItem) {
 	var arg0 *C.GtkListItem
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var cret C.gpointer
-	var ret1 gextras.Objector
-
-	cret = C.gtk_list_item_get_item(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
-
-	return ret1
+	C.gtk_list_item_get_item(arg0)
 }
 
 // Position gets the position in the model that @self currently displays. If
 // @self is unbound, GTK_INVALID_LIST_POSITION is returned.
-func (s listItem) Position() uint {
+func (s listItem) Position(s ListItem) {
 	var arg0 *C.GtkListItem
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_list_item_get_position(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_list_item_get_position(arg0)
 }
 
 // Selectable checks if a list item has been set to be selectable via
 // gtk_list_item_set_selectable().
 //
 // Do not confuse this function with gtk_list_item_get_selected().
-func (s listItem) Selectable() bool {
+func (s listItem) Selectable(s ListItem) bool {
 	var arg0 *C.GtkListItem
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_item_get_selectable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Selected checks if the item is displayed as selected. The selected state
 // is maintained by the container and its list model and cannot be set
 // otherwise.
-func (s listItem) Selected() bool {
+func (s listItem) Selected(s ListItem) bool {
 	var arg0 *C.GtkListItem
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_item_get_selected(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetActivatable sets @self to be activatable.
@@ -222,7 +203,7 @@ func (s listItem) Selected() bool {
 // will be emitting the ListView::activate signal.
 //
 // By default, list items are activatable
-func (s listItem) SetActivatable(activatable bool) {
+func (s listItem) SetActivatable(s ListItem, activatable bool) {
 	var arg0 *C.GtkListItem
 	var arg1 C.gboolean
 
@@ -231,21 +212,21 @@ func (s listItem) SetActivatable(activatable bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_item_set_activatable(arg0, activatable)
+	C.gtk_list_item_set_activatable(arg0, arg1)
 }
 
 // SetChild sets the child to be used for this listitem.
 //
 // This function is typically called by applications when setting up a
 // listitem so that the widget can be reused when binding it multiple times.
-func (s listItem) SetChild(child Widget) {
+func (s listItem) SetChild(s ListItem, child Widget) {
 	var arg0 *C.GtkListItem
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_list_item_set_child(arg0, child)
+	C.gtk_list_item_set_child(arg0, arg1)
 }
 
 // SetSelectable sets @self to be selectable. If an item is selectable,
@@ -259,7 +240,7 @@ func (s listItem) SetChild(child Widget) {
 //
 // By default, list items are selectable. When rebinding them to a new item,
 // they will also be reset to be selectable by GTK.
-func (s listItem) SetSelectable(selectable bool) {
+func (s listItem) SetSelectable(s ListItem, selectable bool) {
 	var arg0 *C.GtkListItem
 	var arg1 C.gboolean
 
@@ -268,5 +249,5 @@ func (s listItem) SetSelectable(selectable bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_item_set_selectable(arg0, selectable)
+	C.gtk_list_item_set_selectable(arg0, arg1)
 }

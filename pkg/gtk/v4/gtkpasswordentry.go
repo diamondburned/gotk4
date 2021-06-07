@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -60,18 +55,18 @@ type PasswordEntry interface {
 
 	// ExtraMenu gets the menu model set with
 	// gtk_password_entry_set_extra_menu().
-	ExtraMenu() gio.MenuModel
+	ExtraMenu(e PasswordEntry)
 	// ShowPeekIcon returns whether the entry is showing a clickable icon to
 	// reveal the contents of the entry in clear text.
-	ShowPeekIcon() bool
+	ShowPeekIcon(e PasswordEntry) bool
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @entry.
-	SetExtraMenu(model gio.MenuModel)
+	SetExtraMenu(e PasswordEntry, model gio.MenuModel)
 	// SetShowPeekIcon sets whether the entry should have a clickable icon to
 	// show the contents of the entry in clear text.
 	//
 	// Setting this to false also hides the text again.
-	SetShowPeekIcon(showPeekIcon bool)
+	SetShowPeekIcon(e PasswordEntry, showPeekIcon bool)
 }
 
 // passwordEntry implements the PasswordEntry interface.
@@ -104,68 +99,56 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 }
 
 // NewPasswordEntry constructs a class PasswordEntry.
-func NewPasswordEntry() PasswordEntry {
-	var cret C.GtkPasswordEntry
-	var ret1 PasswordEntry
-
-	cret = C.gtk_password_entry_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PasswordEntry)
-
-	return ret1
+func NewPasswordEntry() {
+	C.gtk_password_entry_new()
 }
 
 // ExtraMenu gets the menu model set with
 // gtk_password_entry_set_extra_menu().
-func (e passwordEntry) ExtraMenu() gio.MenuModel {
+func (e passwordEntry) ExtraMenu(e PasswordEntry) {
 	var arg0 *C.GtkPasswordEntry
 
 	arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
-	var cret *C.GMenuModel
-	var ret1 gio.MenuModel
-
-	cret = C.gtk_password_entry_get_extra_menu(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
-
-	return ret1
+	C.gtk_password_entry_get_extra_menu(arg0)
 }
 
 // ShowPeekIcon returns whether the entry is showing a clickable icon to
 // reveal the contents of the entry in clear text.
-func (e passwordEntry) ShowPeekIcon() bool {
+func (e passwordEntry) ShowPeekIcon(e PasswordEntry) bool {
 	var arg0 *C.GtkPasswordEntry
 
 	arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_password_entry_get_show_peek_icon(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetExtraMenu sets a menu model to add when constructing the context menu
 // for @entry.
-func (e passwordEntry) SetExtraMenu(model gio.MenuModel) {
+func (e passwordEntry) SetExtraMenu(e PasswordEntry, model gio.MenuModel) {
 	var arg0 *C.GtkPasswordEntry
 	var arg1 *C.GMenuModel
 
 	arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_password_entry_set_extra_menu(arg0, model)
+	C.gtk_password_entry_set_extra_menu(arg0, arg1)
 }
 
 // SetShowPeekIcon sets whether the entry should have a clickable icon to
 // show the contents of the entry in clear text.
 //
 // Setting this to false also hides the text again.
-func (e passwordEntry) SetShowPeekIcon(showPeekIcon bool) {
+func (e passwordEntry) SetShowPeekIcon(e PasswordEntry, showPeekIcon bool) {
 	var arg0 *C.GtkPasswordEntry
 	var arg1 C.gboolean
 
@@ -174,5 +157,5 @@ func (e passwordEntry) SetShowPeekIcon(showPeekIcon bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_password_entry_set_show_peek_icon(arg0, showPeekIcon)
+	C.gtk_password_entry_set_show_peek_icon(arg0, arg1)
 }

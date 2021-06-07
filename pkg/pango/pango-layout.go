@@ -3,18 +3,15 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -65,29 +62,29 @@ type Layout interface {
 	//
 	// This function should be called if you make changes to the context
 	// subsequent to creating the layout.
-	ContextChanged()
+	ContextChanged(l Layout)
 	// Copy creates a deep copy-by-value of the layout.
 	//
 	// The attribute list, tab array, and text from the original layout are all
 	// copied by value.
-	Copy() Layout
+	Copy(s Layout)
 	// Alignment gets the alignment for the layout: how partial lines are
 	// positioned within the horizontal space available.
-	Alignment() Alignment
+	Alignment(l Layout)
 	// Attributes gets the attribute list for the layout, if any.
-	Attributes() *AttrList
+	Attributes(l Layout)
 	// AutoDir gets whether to calculate the base direction for the layout
 	// according to its contents.
 	//
 	// See [method@Pango.Layout.set_auto_dir].
-	AutoDir() bool
+	AutoDir(l Layout) bool
 	// Baseline gets the Y position of baseline of the first line in @layout.
-	Baseline() int
+	Baseline(l Layout)
 	// CharacterCount returns the number of Unicode characters in the the text
 	// of @layout.
-	CharacterCount() int
+	CharacterCount(l Layout)
 	// Context retrieves the `PangoContext` used for this layout.
-	Context() Context
+	Context(l Layout)
 	// CursorPos: given an index within a layout, determines the positions that
 	// of the strong and weak cursors if the insertion point is at that index.
 	//
@@ -96,17 +93,17 @@ type Layout interface {
 	// directionality equal to the base direction of the layout are inserted.
 	// The weak cursor location is the location where characters of the
 	// directionality opposite to the base direction of the layout are inserted.
-	CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle)
+	CursorPos(l Layout, index_ int) (strongPos *Rectangle, weakPos *Rectangle)
 	// Direction gets the text direction at the given character position in
 	// @layout.
-	Direction(index int) Direction
+	Direction(l Layout, index int)
 	// Ellipsize gets the type of ellipsization being performed for @layout.
 	//
 	// See [method@Pango.Layout.set_ellipsize].
 	//
 	// Use [method@Pango.Layout.is_ellipsized] to query whether any paragraphs
 	// were actually ellipsized.
-	Ellipsize() EllipsizeMode
+	Ellipsize(l Layout)
 	// Extents computes the logical and ink extents of @layout.
 	//
 	// Logical extents are usually what you want for positioning things. Note
@@ -117,54 +114,54 @@ type Layout interface {
 	//
 	// The extents are given in layout coordinates and in Pango units; layout
 	// coordinates begin at the top left corner of the layout.
-	Extents() (inkRect Rectangle, logicalRect Rectangle)
+	Extents(l Layout) (inkRect *Rectangle, logicalRect *Rectangle)
 	// FontDescription gets the font description for the layout, if any.
-	FontDescription() *FontDescription
+	FontDescription(l Layout)
 	// Height gets the height of layout used for ellipsization.
 	//
 	// See [method@Pango.Layout.set_height] for details.
-	Height() int
+	Height(l Layout)
 	// Indent gets the paragraph indent width in Pango units.
 	//
 	// A negative value indicates a hanging indentation.
-	Indent() int
+	Indent(l Layout)
 	// Iter returns an iterator to iterate over the visual extents of the
 	// layout.
-	Iter() *LayoutIter
+	Iter(l Layout)
 	// Justify gets whether each complete line should be stretched to fill the
 	// entire width of the layout.
-	Justify() bool
+	Justify(l Layout) bool
 	// Line retrieves a particular line from a `PangoLayout`.
 	//
 	// Use the faster [method@Pango.Layout.get_line_readonly] if you do not plan
 	// to modify the contents of the line (glyphs, glyph widths, etc.).
-	Line(line int) *LayoutLine
+	Line(l Layout, line int)
 	// LineCount retrieves the count of lines for the @layout.
-	LineCount() int
+	LineCount(l Layout)
 	// LineReadonly retrieves a particular line from a `PangoLayout`.
 	//
 	// This is a faster alternative to [method@Pango.Layout.get_line], but the
 	// user is not expected to modify the contents of the line (glyphs, glyph
 	// widths, etc.).
-	LineReadonly(line int) *LayoutLine
+	LineReadonly(l Layout, line int)
 	// LineSpacing gets the line spacing factor of @layout.
 	//
 	// See [method@Pango.Layout.set_line_spacing].
-	LineSpacing() float32
+	LineSpacing(l Layout)
 	// Lines returns the lines of the @layout as a list.
 	//
 	// Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
 	// plan to modify the contents of the lines (glyphs, glyph widths, etc.).
-	Lines() *glib.SList
+	Lines(l Layout)
 	// LinesReadonly returns the lines of the @layout as a list.
 	//
 	// This is a faster alternative to [method@Pango.Layout.get_lines], but the
 	// user is not expected to modify the contents of the lines (glyphs, glyph
 	// widths, etc.).
-	LinesReadonly() *glib.SList
+	LinesReadonly(l Layout)
 	// LogAttrs retrieves an array of logical attributes for each character in
 	// the @layout.
-	LogAttrs() (attrs []*LogAttr, nAttrs int)
+	LogAttrs(l Layout)
 	// LogAttrsReadonly retrieves an array of logical attributes for each
 	// character in the @layout.
 	//
@@ -176,7 +173,7 @@ type Layout interface {
 	// total number of characters in the layout, since there need to be
 	// attributes corresponding to both the position before the first character
 	// and the position after the last character.
-	LogAttrsReadonly() (nAttrs int, logAttrs []LogAttr)
+	LogAttrsReadonly(l Layout) int
 	// PixelExtents computes the logical and ink extents of @layout in device
 	// units.
 	//
@@ -184,14 +181,14 @@ type Layout interface {
 	// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
 	// such that the rounded rectangles fully contain the unrounded one (that
 	// is, passes them as first argument to `pango_extents_to_pixels()`).
-	PixelExtents() (inkRect Rectangle, logicalRect Rectangle)
+	PixelExtents(l Layout) (inkRect *Rectangle, logicalRect *Rectangle)
 	// PixelSize determines the logical width and height of a `PangoLayout` in
 	// device units.
 	//
 	// [method@Pango.Layout.get_size] returns the width and height scaled by
 	// PANGO_SCALE. This is simply a convenience function around
 	// [method@Pango.Layout.get_pixel_extents].
-	PixelSize() (width int, height int)
+	PixelSize(l Layout) (width int, height int)
 	// Serial returns the current serial number of @layout.
 	//
 	// The serial number is initialized to an small number larger than zero when
@@ -204,48 +201,48 @@ type Layout interface {
 	// is useful for example to decide whether a layout needs redrawing. To
 	// force the serial to be increased, use
 	// [method@Pango.Layout.context_changed].
-	Serial() uint
+	Serial(l Layout)
 	// SingleParagraphMode obtains whether @layout is in single paragraph mode.
 	//
 	// See [method@Pango.Layout.set_single_paragraph_mode].
-	SingleParagraphMode() bool
+	SingleParagraphMode(l Layout) bool
 	// Size determines the logical width and height of a `PangoLayout` in Pango
 	// units.
 	//
 	// This is simply a convenience function around
 	// [method@Pango.Layout.get_extents].
-	Size() (width int, height int)
+	Size(l Layout) (width int, height int)
 	// Spacing gets the amount of spacing between the lines of the layout.
-	Spacing() int
+	Spacing(l Layout)
 	// Tabs gets the current `PangoTabArray` used by this layout.
 	//
 	// If no `PangoTabArray` has been set, then the default tabs are in use and
 	// nil is returned. Default tabs are every 8 spaces.
 	//
 	// The return value should be freed with [method@Pango.TabArray.free].
-	Tabs() *TabArray
+	Tabs(l Layout)
 	// Text gets the text in the layout. The returned text should not be freed
 	// or modified.
-	Text() string
+	Text(l Layout)
 	// UnknownGlyphsCount counts the number of unknown glyphs in @layout.
 	//
 	// This function can be used to determine if there are any fonts available
 	// to render all characters in a certain string, or when used in combination
 	// with PANGO_ATTR_FALLBACK, to check if a certain font supports all the
 	// characters in the string.
-	UnknownGlyphsCount() int
+	UnknownGlyphsCount(l Layout)
 	// Width gets the width to which the lines of the `PangoLayout` should wrap.
-	Width() int
+	Width(l Layout)
 	// Wrap gets the wrap mode for the layout.
 	//
 	// Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
 	// actually wrapped.
-	Wrap() WrapMode
+	Wrap(l Layout)
 	// IndexToLineX converts from byte @index_ within the @layout to line and X
 	// position.
 	//
 	// The X position is measured from the left edge of the line.
-	IndexToLineX(index_ int, trailing bool) (line int, xPos int)
+	IndexToLineX(l Layout, index_ int, trailing bool) (line int, xPos int)
 	// IndexToPos converts from an index within a `PangoLayout` to the onscreen
 	// position corresponding to the grapheme at that index.
 	//
@@ -253,19 +250,19 @@ type Layout interface {
 	// always the leading edge of the grapheme and `pos->x + pos->width` the
 	// trailing edge of the grapheme. If the directionality of the grapheme is
 	// right-to-left, then `pos->width` will be negative.
-	IndexToPos(index_ int) Rectangle
+	IndexToPos(l Layout, index_ int) *Rectangle
 	// IsEllipsized queries whether the layout had to ellipsize any paragraphs.
 	//
 	// This returns true if the ellipsization mode for @layout is not
 	// PANGO_ELLIPSIZE_NONE, a positive width is set on @layout, and there are
 	// paragraphs exceeding that width that have to be ellipsized.
-	IsEllipsized() bool
+	IsEllipsized(l Layout) bool
 	// IsWrapped queries whether the layout had to wrap any paragraphs.
 	//
 	// This returns true if a positive width is set on @layout, ellipsization
 	// mode of @layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs
 	// exceeding the layout width that have to be wrapped.
-	IsWrapped() bool
+	IsWrapped(l Layout) bool
 	// MoveCursorVisually computes a new cursor position from an old position
 	// and a count of positions to move visually.
 	//
@@ -282,13 +279,13 @@ type Layout interface {
 	// to [method@Pango.Layout.move_cursor_visually] may move the cursor over
 	// multiple characters when multiple characters combine to form a single
 	// grapheme.
-	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
+	MoveCursorVisually(l Layout, strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
 	// SetAlignment sets the alignment for the layout: how partial lines are
 	// positioned within the horizontal space available.
-	SetAlignment(alignment Alignment)
+	SetAlignment(l Layout, alignment Alignment)
 	// SetAttributes sets the text attributes for a layout object. References
 	// @attrs, so the caller can unref its reference.
-	SetAttributes(attrs *AttrList)
+	SetAttributes(l Layout, attrs *AttrList)
 	// SetAutoDir sets whether to calculate the base direction for the layout
 	// according to its contents.
 	//
@@ -305,7 +302,7 @@ type Layout interface {
 	// When the auto-computed direction of a paragraph differs from the base
 	// direction of the context, the interpretation of PANGO_ALIGN_LEFT and
 	// PANGO_ALIGN_RIGHT are swapped.
-	SetAutoDir(autoDir bool)
+	SetAutoDir(l Layout, autoDir bool)
 	// SetEllipsize sets the type of ellipsization being performed for @layout.
 	//
 	// Depending on the ellipsization mode @ellipsize text is removed from the
@@ -318,12 +315,12 @@ type Layout interface {
 	// ellipsized separately or the entire layout is ellipsized as a whole
 	// depends on the set height of the layout. See
 	// [method@Pango.Layout.set_height] for details.
-	SetEllipsize(ellipsize EllipsizeMode)
+	SetEllipsize(l Layout, ellipsize EllipsizeMode)
 	// SetFontDescription sets the default font description for the layout.
 	//
 	// If no font description is set on the layout, the font description from
 	// the layout's context is used.
-	SetFontDescription(desc *FontDescription)
+	SetFontDescription(l Layout, desc *FontDescription)
 	// SetHeight sets the height to which the `PangoLayout` should be ellipsized
 	// at.
 	//
@@ -350,7 +347,7 @@ type Layout interface {
 	// ellipsization mode of @layout is not PANGO_ELLIPSIZE_NONE. The behavior
 	// is undefined if a height other than -1 is set and ellipsization mode is
 	// set to PANGO_ELLIPSIZE_NONE, and may change in the future.
-	SetHeight(height int)
+	SetHeight(l Layout, height int)
 	// SetIndent sets the width in Pango units to indent each paragraph.
 	//
 	// A negative value of @indent will produce a hanging indentation. That is,
@@ -359,7 +356,7 @@ type Layout interface {
 	//
 	// The indent setting is ignored if layout alignment is set to
 	// PANGO_ALIGN_CENTER.
-	SetIndent(indent int)
+	SetIndent(l Layout, indent int)
 	// SetJustify sets whether each complete line should be stretched to fill
 	// the entire width of the layout.
 	//
@@ -369,7 +366,7 @@ type Layout interface {
 	//
 	// Note that this setting is not implemented and so is ignored in Pango
 	// older than 1.18.
-	SetJustify(justify bool)
+	SetJustify(l Layout, justify bool)
 	// SetLineSpacing sets a factor for line spacing.
 	//
 	// Typical values are: 0, 1, 1.5, 2. The default values is 0.
@@ -383,7 +380,7 @@ type Layout interface {
 	// [method@Pango.Layout.set_spacing] is ignored.
 	//
 	// If @factor is zero, spacing is applied as before.
-	SetLineSpacing(factor float32)
+	SetLineSpacing(l Layout, factor float32)
 	// SetMarkup sets the layout text and attribute list from marked-up text.
 	//
 	// See Pango Markup (pango_markup.html)). Replaces the current text and
@@ -391,7 +388,7 @@ type Layout interface {
 	//
 	// This is the Same as [method@Pango.Layout.set_markup_with_accel], but the
 	// markup text isn't scanned for accelerators.
-	SetMarkup(markup string, length int)
+	SetMarkup(l Layout, markup string, length int)
 	// SetMarkupWithAccel sets the layout text and attribute list from marked-up
 	// text.
 	//
@@ -404,14 +401,14 @@ type Layout interface {
 	// receive a PANGO_UNDERLINE_LOW attribute, and the first character so
 	// marked will be returned in @accel_char. Two @accel_marker characters
 	// following each other produce a single literal @accel_marker character.
-	SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32
+	SetMarkupWithAccel(l Layout, markup string, length int, accelMarker uint32) uint32
 	// SetSingleParagraphMode sets the single paragraph mode of @layout.
 	//
 	// If @setting is true, do not treat newlines and similar characters as
 	// paragraph separators; instead, keep all text in a single paragraph, and
 	// display a glyph for paragraph separator characters. Used when you want to
 	// allow editing of newlines on a single text line.
-	SetSingleParagraphMode(setting bool)
+	SetSingleParagraphMode(l Layout, setting bool)
 	// SetSpacing sets the amount of spacing in Pango unit between the lines of
 	// the layout.
 	//
@@ -424,13 +421,13 @@ type Layout interface {
 	// by the font) for placing lines. The @spacing set with this function is
 	// only taken into account when the line height factor is set to zero with
 	// [method@Pango.Layout.set_line_spacing].
-	SetSpacing(spacing int)
+	SetSpacing(l Layout, spacing int)
 	// SetTabs sets the tabs to use for @layout, overriding the default tabs.
 	//
 	// By default, tabs are every 8 spaces. If @tabs is nil, the default tabs
 	// are reinstated. @tabs is copied into the layout; you must free your copy
 	// of @tabs yourself.
-	SetTabs(tabs *TabArray)
+	SetTabs(l Layout, tabs *TabArray)
 	// SetText sets the text of the layout.
 	//
 	// This function validates @text and renders invalid UTF-8 with a
@@ -441,18 +438,18 @@ type Layout interface {
 	// want to call [method@Pango.Layout.set_attributes] to clear the attributes
 	// set on the layout from the markup as this function does not clear
 	// attributes.
-	SetText(text string, length int)
+	SetText(l Layout, text string, length int)
 	// SetWidth sets the width to which the lines of the `PangoLayout` should
 	// wrap or ellipsized.
 	//
 	// The default value is -1: no width set.
-	SetWidth(width int)
+	SetWidth(l Layout, width int)
 	// SetWrap sets the wrap mode.
 	//
 	// The wrap mode only has effect if a width is set on the layout with
 	// [method@Pango.Layout.set_width]. To turn off wrapping, set the width to
 	// -1.
-	SetWrap(wrap WrapMode)
+	SetWrap(l Layout, wrap WrapMode)
 	// XYToIndex converts from X and Y position within a layout to the byte
 	// index to the character at that logical position.
 	//
@@ -462,7 +459,7 @@ type Layout interface {
 	// is chosen as described for [method@Pango.LayoutLine.x_to_index]. If
 	// either the X or Y positions were not inside the layout, then the function
 	// returns false; on an exact hit, it returns true.
-	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
+	XYToIndex(l Layout, x int, y int) (index_ int, trailing int, ok bool)
 }
 
 // layout implements the Layout interface.
@@ -487,19 +484,12 @@ func marshalLayout(p uintptr) (interface{}, error) {
 }
 
 // NewLayout constructs a class Layout.
-func NewLayout(context Context) Layout {
+func NewLayout(context Context) {
 	var arg1 *C.PangoContext
 
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
-	var cret C.PangoLayout
-	var ret1 Layout
-
-	cret = C.pango_layout_new(context)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Layout)
-
-	return ret1
+	C.pango_layout_new(arg1)
 }
 
 // ContextChanged forces recomputation of any state in the `PangoLayout`
@@ -507,7 +497,7 @@ func NewLayout(context Context) Layout {
 //
 // This function should be called if you make changes to the context
 // subsequent to creating the layout.
-func (l layout) ContextChanged() {
+func (l layout) ContextChanged(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
@@ -519,120 +509,80 @@ func (l layout) ContextChanged() {
 //
 // The attribute list, tab array, and text from the original layout are all
 // copied by value.
-func (s layout) Copy() Layout {
+func (s layout) Copy(s Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(s.Native()))
 
-	var cret *C.PangoLayout
-	var ret1 Layout
-
-	cret = C.pango_layout_copy(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Layout)
-
-	return ret1
+	C.pango_layout_copy(arg0)
 }
 
 // Alignment gets the alignment for the layout: how partial lines are
 // positioned within the horizontal space available.
-func (l layout) Alignment() Alignment {
+func (l layout) Alignment(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.PangoAlignment
-	var ret1 Alignment
-
-	cret = C.pango_layout_get_alignment(arg0)
-
-	ret1 = Alignment(cret)
-
-	return ret1
+	C.pango_layout_get_alignment(arg0)
 }
 
 // Attributes gets the attribute list for the layout, if any.
-func (l layout) Attributes() *AttrList {
+func (l layout) Attributes(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoAttrList
-	var ret1 *AttrList
-
-	cret = C.pango_layout_get_attributes(arg0)
-
-	ret1 = WrapAttrList(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_get_attributes(arg0)
 }
 
 // AutoDir gets whether to calculate the base direction for the layout
 // according to its contents.
 //
 // See [method@Pango.Layout.set_auto_dir].
-func (l layout) AutoDir() bool {
+func (l layout) AutoDir(l Layout) bool {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_get_auto_dir(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Baseline gets the Y position of baseline of the first line in @layout.
-func (l layout) Baseline() int {
+func (l layout) Baseline(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_baseline(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_baseline(arg0)
 }
 
 // CharacterCount returns the number of Unicode characters in the the text
 // of @layout.
-func (l layout) CharacterCount() int {
+func (l layout) CharacterCount(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.pango_layout_get_character_count(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.pango_layout_get_character_count(arg0)
 }
 
 // Context retrieves the `PangoContext` used for this layout.
-func (l layout) Context() Context {
+func (l layout) Context(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoContext
-	var ret1 Context
-
-	cret = C.pango_layout_get_context(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Context)
-
-	return ret1
+	C.pango_layout_get_context(arg0)
 }
 
 // CursorPos: given an index within a layout, determines the positions that
@@ -643,7 +593,7 @@ func (l layout) Context() Context {
 // directionality equal to the base direction of the layout are inserted.
 // The weak cursor location is the location where characters of the
 // directionality opposite to the base direction of the layout are inserted.
-func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
+func (l layout) CursorPos(l Layout, index_ int) (strongPos *Rectangle, weakPos *Rectangle) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
@@ -651,35 +601,28 @@ func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle) {
 	arg1 = C.int(index_)
 
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var strongPos *Rectangle
 	var arg3 C.PangoRectangle
-	var ret3 *Rectangle
+	var weakPos *Rectangle
 
-	C.pango_layout_get_cursor_pos(arg0, index_, &arg2, &arg3)
+	C.pango_layout_get_cursor_pos(arg0, arg1, &arg2, &arg3)
 
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
-	*ret3 = WrapRectangle(unsafe.Pointer(arg3))
+	strongPos = WrapRectangle(unsafe.Pointer(&arg2))
+	weakPos = WrapRectangle(unsafe.Pointer(&arg3))
 
-	return ret2, ret3
+	return strongPos, weakPos
 }
 
 // Direction gets the text direction at the given character position in
 // @layout.
-func (l layout) Direction(index int) Direction {
+func (l layout) Direction(l Layout, index int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(index)
 
-	var cret C.PangoDirection
-	var ret1 Direction
-
-	cret = C.pango_layout_get_direction(arg0, index)
-
-	ret1 = Direction(cret)
-
-	return ret1
+	C.pango_layout_get_direction(arg0, arg1)
 }
 
 // Ellipsize gets the type of ellipsization being performed for @layout.
@@ -688,19 +631,12 @@ func (l layout) Direction(index int) Direction {
 //
 // Use [method@Pango.Layout.is_ellipsized] to query whether any paragraphs
 // were actually ellipsized.
-func (l layout) Ellipsize() EllipsizeMode {
+func (l layout) Ellipsize(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.PangoEllipsizeMode
-	var ret1 EllipsizeMode
-
-	cret = C.pango_layout_get_ellipsize(arg0)
-
-	ret1 = EllipsizeMode(cret)
-
-	return ret1
+	C.pango_layout_get_ellipsize(arg0)
 }
 
 // Extents computes the logical and ink extents of @layout.
@@ -713,148 +649,105 @@ func (l layout) Ellipsize() EllipsizeMode {
 //
 // The extents are given in layout coordinates and in Pango units; layout
 // coordinates begin at the top left corner of the layout.
-func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle) {
+func (l layout) Extents(l Layout) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_get_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // FontDescription gets the font description for the layout, if any.
-func (l layout) FontDescription() *FontDescription {
+func (l layout) FontDescription(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoFontDescription
-	var ret1 *FontDescription
-
-	cret = C.pango_layout_get_font_description(arg0)
-
-	ret1 = WrapFontDescription(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_get_font_description(arg0)
 }
 
 // Height gets the height of layout used for ellipsization.
 //
 // See [method@Pango.Layout.set_height] for details.
-func (l layout) Height() int {
+func (l layout) Height(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_height(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_height(arg0)
 }
 
 // Indent gets the paragraph indent width in Pango units.
 //
 // A negative value indicates a hanging indentation.
-func (l layout) Indent() int {
+func (l layout) Indent(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_indent(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_indent(arg0)
 }
 
 // Iter returns an iterator to iterate over the visual extents of the
 // layout.
-func (l layout) Iter() *LayoutIter {
+func (l layout) Iter(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoLayoutIter
-	var ret1 *LayoutIter
-
-	cret = C.pango_layout_get_iter(arg0)
-
-	ret1 = WrapLayoutIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *LayoutIter) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_layout_get_iter(arg0)
 }
 
 // Justify gets whether each complete line should be stretched to fill the
 // entire width of the layout.
-func (l layout) Justify() bool {
+func (l layout) Justify(l Layout) bool {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_get_justify(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Line retrieves a particular line from a `PangoLayout`.
 //
 // Use the faster [method@Pango.Layout.get_line_readonly] if you do not plan
 // to modify the contents of the line (glyphs, glyph widths, etc.).
-func (l layout) Line(line int) *LayoutLine {
+func (l layout) Line(l Layout, line int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(line)
 
-	var cret *C.PangoLayoutLine
-	var ret1 *LayoutLine
-
-	cret = C.pango_layout_get_line(arg0, line)
-
-	ret1 = WrapLayoutLine(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_get_line(arg0, arg1)
 }
 
 // LineCount retrieves the count of lines for the @layout.
-func (l layout) LineCount() int {
+func (l layout) LineCount(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_line_count(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_line_count(arg0)
 }
 
 // LineReadonly retrieves a particular line from a `PangoLayout`.
@@ -862,58 +755,37 @@ func (l layout) LineCount() int {
 // This is a faster alternative to [method@Pango.Layout.get_line], but the
 // user is not expected to modify the contents of the line (glyphs, glyph
 // widths, etc.).
-func (l layout) LineReadonly(line int) *LayoutLine {
+func (l layout) LineReadonly(l Layout, line int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(line)
 
-	var cret *C.PangoLayoutLine
-	var ret1 *LayoutLine
-
-	cret = C.pango_layout_get_line_readonly(arg0, line)
-
-	ret1 = WrapLayoutLine(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_get_line_readonly(arg0, arg1)
 }
 
 // LineSpacing gets the line spacing factor of @layout.
 //
 // See [method@Pango.Layout.set_line_spacing].
-func (l layout) LineSpacing() float32 {
+func (l layout) LineSpacing(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.pango_layout_get_line_spacing(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.pango_layout_get_line_spacing(arg0)
 }
 
 // Lines returns the lines of the @layout as a list.
 //
 // Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
 // plan to modify the contents of the lines (glyphs, glyph widths, etc.).
-func (l layout) Lines() *glib.SList {
+func (l layout) Lines(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.pango_layout_get_lines(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_get_lines(arg0)
 }
 
 // LinesReadonly returns the lines of the @layout as a list.
@@ -921,31 +793,24 @@ func (l layout) Lines() *glib.SList {
 // This is a faster alternative to [method@Pango.Layout.get_lines], but the
 // user is not expected to modify the contents of the lines (glyphs, glyph
 // widths, etc.).
-func (l layout) LinesReadonly() *glib.SList {
+func (l layout) LinesReadonly(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.pango_layout_get_lines_readonly(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_get_lines_readonly(arg0)
 }
 
 // LogAttrs retrieves an array of logical attributes for each character in
 // the @layout.
-func (l layout) LogAttrs() (attrs []*LogAttr, nAttrs int) {
+func (l layout) LogAttrs(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	C.pango_layout_get_log_attrs(arg0, &arg1, &arg2)
 
-	return ret1, ret2
+	return attrs, nAttrs
 }
 
 // LogAttrsReadonly retrieves an array of logical attributes for each
@@ -959,24 +824,19 @@ func (l layout) LogAttrs() (attrs []*LogAttr, nAttrs int) {
 // total number of characters in the layout, since there need to be
 // attributes corresponding to both the position before the first character
 // and the position after the last character.
-func (l layout) LogAttrsReadonly() (nAttrs int, logAttrs []LogAttr) {
+func (l layout) LogAttrsReadonly(l Layout) int {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoLogAttr
-	var arg1 *C.gint
-	var ret2 []LogAttr
+	var arg1 C.gint
+	var nAttrs int
 
-	cret = C.pango_layout_get_log_attrs_readonly(arg0, &arg1)
+	C.pango_layout_get_log_attrs_readonly(arg0, &arg1)
 
-	ret2 = make([]LogAttr, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.PangoLogAttr)(ptr.Add(unsafe.Pointer(cret), i))
-		ret2[i] = WrapLogAttr(unsafe.Pointer(src))
-	}
+	nAttrs = int(&arg1)
 
-	return ret1, ret2
+	return nAttrs
 }
 
 // PixelExtents computes the logical and ink extents of @layout in device
@@ -986,22 +846,22 @@ func (l layout) LogAttrsReadonly() (nAttrs int, logAttrs []LogAttr) {
 // two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
 // such that the rounded rectangles fully contain the unrounded one (that
 // is, passes them as first argument to `pango_extents_to_pixels()`).
-func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (l layout) PixelExtents(l Layout) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_get_pixel_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // PixelSize determines the logical width and height of a `PangoLayout` in
@@ -1010,22 +870,22 @@ func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 // [method@Pango.Layout.get_size] returns the width and height scaled by
 // PANGO_SCALE. This is simply a convenience function around
 // [method@Pango.Layout.get_pixel_extents].
-func (l layout) PixelSize() (width int, height int) {
+func (l layout) PixelSize(l Layout) (width int, height int) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.int
-	var ret1 int
+	var width int
 	var arg2 C.int
-	var ret2 int
+	var height int
 
 	C.pango_layout_get_pixel_size(arg0, &arg1, &arg2)
 
-	*ret1 = C.int(arg1)
-	*ret2 = C.int(arg2)
+	width = int(&arg1)
+	height = int(&arg2)
 
-	return ret1, ret2
+	return width, height
 }
 
 // Serial returns the current serial number of @layout.
@@ -1040,37 +900,32 @@ func (l layout) PixelSize() (width int, height int) {
 // is useful for example to decide whether a layout needs redrawing. To
 // force the serial to be increased, use
 // [method@Pango.Layout.context_changed].
-func (l layout) Serial() uint {
+func (l layout) Serial(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.pango_layout_get_serial(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.pango_layout_get_serial(arg0)
 }
 
 // SingleParagraphMode obtains whether @layout is in single paragraph mode.
 //
 // See [method@Pango.Layout.set_single_paragraph_mode].
-func (l layout) SingleParagraphMode() bool {
+func (l layout) SingleParagraphMode(l Layout) bool {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_get_single_paragraph_mode(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Size determines the logical width and height of a `PangoLayout` in Pango
@@ -1078,38 +933,31 @@ func (l layout) SingleParagraphMode() bool {
 //
 // This is simply a convenience function around
 // [method@Pango.Layout.get_extents].
-func (l layout) Size() (width int, height int) {
+func (l layout) Size(l Layout) (width int, height int) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.int
-	var ret1 int
+	var width int
 	var arg2 C.int
-	var ret2 int
+	var height int
 
 	C.pango_layout_get_size(arg0, &arg1, &arg2)
 
-	*ret1 = C.int(arg1)
-	*ret2 = C.int(arg2)
+	width = int(&arg1)
+	height = int(&arg2)
 
-	return ret1, ret2
+	return width, height
 }
 
 // Spacing gets the amount of spacing between the lines of the layout.
-func (l layout) Spacing() int {
+func (l layout) Spacing(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_spacing(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_spacing(arg0)
 }
 
 // Tabs gets the current `PangoTabArray` used by this layout.
@@ -1118,39 +966,22 @@ func (l layout) Spacing() int {
 // nil is returned. Default tabs are every 8 spaces.
 //
 // The return value should be freed with [method@Pango.TabArray.free].
-func (l layout) Tabs() *TabArray {
+func (l layout) Tabs(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoTabArray
-	var ret1 *TabArray
-
-	cret = C.pango_layout_get_tabs(arg0)
-
-	ret1 = WrapTabArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *TabArray) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_layout_get_tabs(arg0)
 }
 
 // Text gets the text in the layout. The returned text should not be freed
 // or modified.
-func (l layout) Text() string {
+func (l layout) Text(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.pango_layout_get_text(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.pango_layout_get_text(arg0)
 }
 
 // UnknownGlyphsCount counts the number of unknown glyphs in @layout.
@@ -1159,61 +990,40 @@ func (l layout) Text() string {
 // to render all characters in a certain string, or when used in combination
 // with PANGO_ATTR_FALLBACK, to check if a certain font supports all the
 // characters in the string.
-func (l layout) UnknownGlyphsCount() int {
+func (l layout) UnknownGlyphsCount(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_unknown_glyphs_count(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_unknown_glyphs_count(arg0)
 }
 
 // Width gets the width to which the lines of the `PangoLayout` should wrap.
-func (l layout) Width() int {
+func (l layout) Width(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_get_width(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_get_width(arg0)
 }
 
 // Wrap gets the wrap mode for the layout.
 //
 // Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
 // actually wrapped.
-func (l layout) Wrap() WrapMode {
+func (l layout) Wrap(l Layout) {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
-	var cret C.PangoWrapMode
-	var ret1 WrapMode
-
-	cret = C.pango_layout_get_wrap(arg0)
-
-	ret1 = WrapMode(cret)
-
-	return ret1
+	C.pango_layout_get_wrap(arg0)
 }
 
 // IndexToLineX converts from byte @index_ within the @layout to line and X
 // position.
 //
 // The X position is measured from the left edge of the line.
-func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
+func (l layout) IndexToLineX(l Layout, index_ int, trailing bool) (line int, xPos int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 	var arg2 C.gboolean
@@ -1225,16 +1035,16 @@ func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 	}
 
 	var arg3 C.int
-	var ret3 int
+	var line int
 	var arg4 C.int
-	var ret4 int
+	var xPos int
 
-	C.pango_layout_index_to_line_x(arg0, index_, trailing, &arg3, &arg4)
+	C.pango_layout_index_to_line_x(arg0, arg1, arg2, &arg3, &arg4)
 
-	*ret3 = C.int(arg3)
-	*ret4 = C.int(arg4)
+	line = int(&arg3)
+	xPos = int(&arg4)
 
-	return ret3, ret4
+	return line, xPos
 }
 
 // IndexToPos converts from an index within a `PangoLayout` to the onscreen
@@ -1244,7 +1054,7 @@ func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int) {
 // always the leading edge of the grapheme and `pos->x + pos->width` the
 // trailing edge of the grapheme. If the directionality of the grapheme is
 // right-to-left, then `pos->width` will be negative.
-func (l layout) IndexToPos(index_ int) Rectangle {
+func (l layout) IndexToPos(l Layout, index_ int) *Rectangle {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
@@ -1252,13 +1062,13 @@ func (l layout) IndexToPos(index_ int) Rectangle {
 	arg1 = C.int(index_)
 
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var pos *Rectangle
 
-	C.pango_layout_index_to_pos(arg0, index_, &arg2)
+	C.pango_layout_index_to_pos(arg0, arg1, &arg2)
 
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	pos = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret2
+	return pos
 }
 
 // IsEllipsized queries whether the layout had to ellipsize any paragraphs.
@@ -1266,19 +1076,21 @@ func (l layout) IndexToPos(index_ int) Rectangle {
 // This returns true if the ellipsization mode for @layout is not
 // PANGO_ELLIPSIZE_NONE, a positive width is set on @layout, and there are
 // paragraphs exceeding that width that have to be ellipsized.
-func (l layout) IsEllipsized() bool {
+func (l layout) IsEllipsized(l Layout) bool {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_is_ellipsized(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsWrapped queries whether the layout had to wrap any paragraphs.
@@ -1286,19 +1098,21 @@ func (l layout) IsEllipsized() bool {
 // This returns true if a positive width is set on @layout, ellipsization
 // mode of @layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs
 // exceeding the layout width that have to be wrapped.
-func (l layout) IsWrapped() bool {
+func (l layout) IsWrapped(l Layout) bool {
 	var arg0 *C.PangoLayout
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_is_wrapped(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // MoveCursorVisually computes a new cursor position from an old position
@@ -1317,7 +1131,7 @@ func (l layout) IsWrapped() bool {
 // to [method@Pango.Layout.move_cursor_visually] may move the cursor over
 // multiple characters when multiple characters combine to form a single
 // grapheme.
-func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int) {
+func (l layout) MoveCursorVisually(l Layout, strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.gboolean
 	var arg2 C.int
@@ -1333,40 +1147,40 @@ func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, d
 	arg4 = C.int(direction)
 
 	var arg5 C.int
-	var ret5 int
+	var newIndex int
 	var arg6 C.int
-	var ret6 int
+	var newTrailing int
 
-	C.pango_layout_move_cursor_visually(arg0, strong, oldIndex, oldTrailing, direction, &arg5, &arg6)
+	C.pango_layout_move_cursor_visually(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
 
-	*ret5 = C.int(arg5)
-	*ret6 = C.int(arg6)
+	newIndex = int(&arg5)
+	newTrailing = int(&arg6)
 
-	return ret5, ret6
+	return newIndex, newTrailing
 }
 
 // SetAlignment sets the alignment for the layout: how partial lines are
 // positioned within the horizontal space available.
-func (l layout) SetAlignment(alignment Alignment) {
+func (l layout) SetAlignment(l Layout, alignment Alignment) {
 	var arg0 *C.PangoLayout
 	var arg1 C.PangoAlignment
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (C.PangoAlignment)(alignment)
 
-	C.pango_layout_set_alignment(arg0, alignment)
+	C.pango_layout_set_alignment(arg0, arg1)
 }
 
 // SetAttributes sets the text attributes for a layout object. References
 // @attrs, so the caller can unref its reference.
-func (l layout) SetAttributes(attrs *AttrList) {
+func (l layout) SetAttributes(l Layout, attrs *AttrList) {
 	var arg0 *C.PangoLayout
 	var arg1 *C.PangoAttrList
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
 
-	C.pango_layout_set_attributes(arg0, attrs)
+	C.pango_layout_set_attributes(arg0, arg1)
 }
 
 // SetAutoDir sets whether to calculate the base direction for the layout
@@ -1385,7 +1199,7 @@ func (l layout) SetAttributes(attrs *AttrList) {
 // When the auto-computed direction of a paragraph differs from the base
 // direction of the context, the interpretation of PANGO_ALIGN_LEFT and
 // PANGO_ALIGN_RIGHT are swapped.
-func (l layout) SetAutoDir(autoDir bool) {
+func (l layout) SetAutoDir(l Layout, autoDir bool) {
 	var arg0 *C.PangoLayout
 	var arg1 C.gboolean
 
@@ -1394,7 +1208,7 @@ func (l layout) SetAutoDir(autoDir bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.pango_layout_set_auto_dir(arg0, autoDir)
+	C.pango_layout_set_auto_dir(arg0, arg1)
 }
 
 // SetEllipsize sets the type of ellipsization being performed for @layout.
@@ -1409,28 +1223,28 @@ func (l layout) SetAutoDir(autoDir bool) {
 // ellipsized separately or the entire layout is ellipsized as a whole
 // depends on the set height of the layout. See
 // [method@Pango.Layout.set_height] for details.
-func (l layout) SetEllipsize(ellipsize EllipsizeMode) {
+func (l layout) SetEllipsize(l Layout, ellipsize EllipsizeMode) {
 	var arg0 *C.PangoLayout
 	var arg1 C.PangoEllipsizeMode
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (C.PangoEllipsizeMode)(ellipsize)
 
-	C.pango_layout_set_ellipsize(arg0, ellipsize)
+	C.pango_layout_set_ellipsize(arg0, arg1)
 }
 
 // SetFontDescription sets the default font description for the layout.
 //
 // If no font description is set on the layout, the font description from
 // the layout's context is used.
-func (l layout) SetFontDescription(desc *FontDescription) {
+func (l layout) SetFontDescription(l Layout, desc *FontDescription) {
 	var arg0 *C.PangoLayout
 	var arg1 *C.PangoFontDescription
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	C.pango_layout_set_font_description(arg0, desc)
+	C.pango_layout_set_font_description(arg0, arg1)
 }
 
 // SetHeight sets the height to which the `PangoLayout` should be ellipsized
@@ -1459,14 +1273,14 @@ func (l layout) SetFontDescription(desc *FontDescription) {
 // ellipsization mode of @layout is not PANGO_ELLIPSIZE_NONE. The behavior
 // is undefined if a height other than -1 is set and ellipsization mode is
 // set to PANGO_ELLIPSIZE_NONE, and may change in the future.
-func (l layout) SetHeight(height int) {
+func (l layout) SetHeight(l Layout, height int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(height)
 
-	C.pango_layout_set_height(arg0, height)
+	C.pango_layout_set_height(arg0, arg1)
 }
 
 // SetIndent sets the width in Pango units to indent each paragraph.
@@ -1477,14 +1291,14 @@ func (l layout) SetHeight(height int) {
 //
 // The indent setting is ignored if layout alignment is set to
 // PANGO_ALIGN_CENTER.
-func (l layout) SetIndent(indent int) {
+func (l layout) SetIndent(l Layout, indent int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(indent)
 
-	C.pango_layout_set_indent(arg0, indent)
+	C.pango_layout_set_indent(arg0, arg1)
 }
 
 // SetJustify sets whether each complete line should be stretched to fill
@@ -1496,7 +1310,7 @@ func (l layout) SetIndent(indent int) {
 //
 // Note that this setting is not implemented and so is ignored in Pango
 // older than 1.18.
-func (l layout) SetJustify(justify bool) {
+func (l layout) SetJustify(l Layout, justify bool) {
 	var arg0 *C.PangoLayout
 	var arg1 C.gboolean
 
@@ -1505,7 +1319,7 @@ func (l layout) SetJustify(justify bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.pango_layout_set_justify(arg0, justify)
+	C.pango_layout_set_justify(arg0, arg1)
 }
 
 // SetLineSpacing sets a factor for line spacing.
@@ -1521,14 +1335,14 @@ func (l layout) SetJustify(justify bool) {
 // [method@Pango.Layout.set_spacing] is ignored.
 //
 // If @factor is zero, spacing is applied as before.
-func (l layout) SetLineSpacing(factor float32) {
+func (l layout) SetLineSpacing(l Layout, factor float32) {
 	var arg0 *C.PangoLayout
 	var arg1 C.float
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.float(factor)
 
-	C.pango_layout_set_line_spacing(arg0, factor)
+	C.pango_layout_set_line_spacing(arg0, arg1)
 }
 
 // SetMarkup sets the layout text and attribute list from marked-up text.
@@ -1538,7 +1352,7 @@ func (l layout) SetLineSpacing(factor float32) {
 //
 // This is the Same as [method@Pango.Layout.set_markup_with_accel], but the
 // markup text isn't scanned for accelerators.
-func (l layout) SetMarkup(markup string, length int) {
+func (l layout) SetMarkup(l Layout, markup string, length int) {
 	var arg0 *C.PangoLayout
 	var arg1 *C.char
 	var arg2 C.int
@@ -1548,7 +1362,7 @@ func (l layout) SetMarkup(markup string, length int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(length)
 
-	C.pango_layout_set_markup(arg0, markup, length)
+	C.pango_layout_set_markup(arg0, arg1, arg2)
 }
 
 // SetMarkupWithAccel sets the layout text and attribute list from marked-up
@@ -1563,7 +1377,7 @@ func (l layout) SetMarkup(markup string, length int) {
 // receive a PANGO_UNDERLINE_LOW attribute, and the first character so
 // marked will be returned in @accel_char. Two @accel_marker characters
 // following each other produce a single literal @accel_marker character.
-func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32 {
+func (l layout) SetMarkupWithAccel(l Layout, markup string, length int, accelMarker uint32) uint32 {
 	var arg0 *C.PangoLayout
 	var arg1 *C.char
 	var arg2 C.int
@@ -1576,13 +1390,13 @@ func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32
 	arg3 = C.gunichar(accelMarker)
 
 	var arg4 C.gunichar
-	var ret4 uint32
+	var accelChar uint32
 
-	C.pango_layout_set_markup_with_accel(arg0, markup, length, accelMarker, &arg4)
+	C.pango_layout_set_markup_with_accel(arg0, arg1, arg2, arg3, &arg4)
 
-	*ret4 = C.gunichar(arg4)
+	accelChar = uint32(&arg4)
 
-	return ret4
+	return accelChar
 }
 
 // SetSingleParagraphMode sets the single paragraph mode of @layout.
@@ -1591,7 +1405,7 @@ func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32
 // paragraph separators; instead, keep all text in a single paragraph, and
 // display a glyph for paragraph separator characters. Used when you want to
 // allow editing of newlines on a single text line.
-func (l layout) SetSingleParagraphMode(setting bool) {
+func (l layout) SetSingleParagraphMode(l Layout, setting bool) {
 	var arg0 *C.PangoLayout
 	var arg1 C.gboolean
 
@@ -1600,7 +1414,7 @@ func (l layout) SetSingleParagraphMode(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.pango_layout_set_single_paragraph_mode(arg0, setting)
+	C.pango_layout_set_single_paragraph_mode(arg0, arg1)
 }
 
 // SetSpacing sets the amount of spacing in Pango unit between the lines of
@@ -1615,14 +1429,14 @@ func (l layout) SetSingleParagraphMode(setting bool) {
 // by the font) for placing lines. The @spacing set with this function is
 // only taken into account when the line height factor is set to zero with
 // [method@Pango.Layout.set_line_spacing].
-func (l layout) SetSpacing(spacing int) {
+func (l layout) SetSpacing(l Layout, spacing int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(spacing)
 
-	C.pango_layout_set_spacing(arg0, spacing)
+	C.pango_layout_set_spacing(arg0, arg1)
 }
 
 // SetTabs sets the tabs to use for @layout, overriding the default tabs.
@@ -1630,14 +1444,14 @@ func (l layout) SetSpacing(spacing int) {
 // By default, tabs are every 8 spaces. If @tabs is nil, the default tabs
 // are reinstated. @tabs is copied into the layout; you must free your copy
 // of @tabs yourself.
-func (l layout) SetTabs(tabs *TabArray) {
+func (l layout) SetTabs(l Layout, tabs *TabArray) {
 	var arg0 *C.PangoLayout
 	var arg1 *C.PangoTabArray
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs.Native()))
 
-	C.pango_layout_set_tabs(arg0, tabs)
+	C.pango_layout_set_tabs(arg0, arg1)
 }
 
 // SetText sets the text of the layout.
@@ -1650,7 +1464,7 @@ func (l layout) SetTabs(tabs *TabArray) {
 // want to call [method@Pango.Layout.set_attributes] to clear the attributes
 // set on the layout from the markup as this function does not clear
 // attributes.
-func (l layout) SetText(text string, length int) {
+func (l layout) SetText(l Layout, text string, length int) {
 	var arg0 *C.PangoLayout
 	var arg1 *C.char
 	var arg2 C.int
@@ -1660,21 +1474,21 @@ func (l layout) SetText(text string, length int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(length)
 
-	C.pango_layout_set_text(arg0, text, length)
+	C.pango_layout_set_text(arg0, arg1, arg2)
 }
 
 // SetWidth sets the width to which the lines of the `PangoLayout` should
 // wrap or ellipsized.
 //
 // The default value is -1: no width set.
-func (l layout) SetWidth(width int) {
+func (l layout) SetWidth(l Layout, width int) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = C.int(width)
 
-	C.pango_layout_set_width(arg0, width)
+	C.pango_layout_set_width(arg0, arg1)
 }
 
 // SetWrap sets the wrap mode.
@@ -1682,14 +1496,14 @@ func (l layout) SetWidth(width int) {
 // The wrap mode only has effect if a width is set on the layout with
 // [method@Pango.Layout.set_width]. To turn off wrapping, set the width to
 // -1.
-func (l layout) SetWrap(wrap WrapMode) {
+func (l layout) SetWrap(l Layout, wrap WrapMode) {
 	var arg0 *C.PangoLayout
 	var arg1 C.PangoWrapMode
 
 	arg0 = (*C.PangoLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (C.PangoWrapMode)(wrap)
 
-	C.pango_layout_set_wrap(arg0, wrap)
+	C.pango_layout_set_wrap(arg0, arg1)
 }
 
 // XYToIndex converts from X and Y position within a layout to the byte
@@ -1701,7 +1515,7 @@ func (l layout) SetWrap(wrap WrapMode) {
 // is chosen as described for [method@Pango.LayoutLine.x_to_index]. If
 // either the X or Y positions were not inside the layout, then the function
 // returns false; on an exact hit, it returns true.
-func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
+func (l layout) XYToIndex(l Layout, x int, y int) (index_ int, trailing int, ok bool) {
 	var arg0 *C.PangoLayout
 	var arg1 C.int
 	var arg2 C.int
@@ -1711,19 +1525,21 @@ func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool) {
 	arg2 = C.int(y)
 
 	var arg3 C.int
-	var ret3 int
+	var index_ int
 	var arg4 C.int
-	var ret4 int
+	var trailing int
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.pango_layout_xy_to_index(arg0, x, y, &arg3, &arg4)
+	cret = C.pango_layout_xy_to_index(arg0, arg1, arg2, &arg3, &arg4)
 
-	*ret3 = C.int(arg3)
-	*ret4 = C.int(arg4)
-	ret3 = C.bool(cret) != C.false
+	index_ = int(&arg3)
+	trailing = int(&arg4)
+	if cret {
+		ok = true
+	}
 
-	return ret3, ret4, ret3
+	return index_, trailing, ok
 }
 
 // LayoutIter: a `PangoLayoutIter` can be used to iterate over the visual
@@ -1757,42 +1573,34 @@ func (l *LayoutIter) Native() unsafe.Pointer {
 }
 
 // AtLastLine determines whether @iter is on the last line of the layout.
-func (i *LayoutIter) AtLastLine() bool {
+func (i *LayoutIter) AtLastLine(i *LayoutIter) bool {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_iter_at_last_line(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Copy copies a `PangoLayoutIter`.
-func (i *LayoutIter) Copy() *LayoutIter {
+func (i *LayoutIter) Copy(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoLayoutIter
-	var ret1 *LayoutIter
-
-	cret = C.pango_layout_iter_copy(arg0)
-
-	ret1 = WrapLayoutIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *LayoutIter) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_layout_iter_copy(arg0)
 }
 
 // Free frees an iterator that's no longer in use.
-func (i *LayoutIter) Free() {
+func (i *LayoutIter) Free(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
@@ -1802,132 +1610,104 @@ func (i *LayoutIter) Free() {
 
 // Baseline gets the Y position of the current line's baseline, in layout
 // coordinates (origin at top left of the entire layout).
-func (i *LayoutIter) Baseline() int {
+func (i *LayoutIter) Baseline(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_iter_get_baseline(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_iter_get_baseline(arg0)
 }
 
 // CharExtents gets the extents of the current character, in layout coordinates
 // (origin is the top left of the entire layout). Only logical extents can
 // sensibly be obtained for characters; ink extents make sense only down to the
 // level of clusters.
-func (i *LayoutIter) CharExtents() Rectangle {
+func (i *LayoutIter) CharExtents(i *LayoutIter) *Rectangle {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_iter_get_char_extents(arg0, &arg1)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg1))
 
-	return ret1
+	return logicalRect
 }
 
 // ClusterExtents gets the extents of the current cluster, in layout coordinates
 // (origin is the top left of the entire layout).
-func (i *LayoutIter) ClusterExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (i *LayoutIter) ClusterExtents(i *LayoutIter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_iter_get_cluster_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // Index gets the current byte index. Note that iterating forward by char moves
 // in visual order, not logical order, so indexes may not be sequential. Also,
 // the index may be equal to the length of the text in the layout, if on the nil
 // run (see [method@Pango.LayoutIter.get_run]).
-func (i *LayoutIter) Index() int {
+func (i *LayoutIter) Index(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_layout_iter_get_index(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_layout_iter_get_index(arg0)
 }
 
 // Layout gets the layout associated with a `PangoLayoutIter`.
-func (i *LayoutIter) Layout() Layout {
+func (i *LayoutIter) Layout(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoLayout
-	var ret1 Layout
-
-	cret = C.pango_layout_iter_get_layout(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
-
-	return ret1
+	C.pango_layout_iter_get_layout(arg0)
 }
 
 // LayoutExtents obtains the extents of the `PangoLayout` being iterated over.
 // @ink_rect or @logical_rect can be nil if you aren't interested in them.
-func (i *LayoutIter) LayoutExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (i *LayoutIter) LayoutExtents(i *LayoutIter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_iter_get_layout_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // Line gets the current line.
 //
 // Use the faster [method@Pango.LayoutIter.get_line_readonly] if you do not plan
 // to modify the contents of the line (glyphs, glyph widths, etc.).
-func (i *LayoutIter) Line() *LayoutLine {
+func (i *LayoutIter) Line(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoLayoutLine
-	var ret1 *LayoutLine
-
-	cret = C.pango_layout_iter_get_line(arg0)
-
-	ret1 = WrapLayoutLine(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_iter_get_line(arg0)
 }
 
 // LineExtents obtains the extents of the current line. @ink_rect or
@@ -1936,22 +1716,22 @@ func (i *LayoutIter) Line() *LayoutLine {
 // `PangoLayout`). Thus the extents returned by this function will be the same
 // width/height but not at the same x/y as the extents returned from
 // [method@Pango.LayoutLine.get_extents].
-func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (i *LayoutIter) LineExtents(i *LayoutIter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_iter_get_line_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // LineReadonly gets the current line for read-only access.
@@ -1959,19 +1739,12 @@ func (i *LayoutIter) LineExtents() (inkRect Rectangle, logicalRect Rectangle) {
 // This is a faster alternative to [method@Pango.LayoutIter.get_line], but the
 // user is not expected to modify the contents of the line (glyphs, glyph
 // widths, etc.).
-func (i *LayoutIter) LineReadonly() *LayoutLine {
+func (i *LayoutIter) LineReadonly(i *LayoutIter) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoLayoutLine
-	var ret1 *LayoutLine
-
-	cret = C.pango_layout_iter_get_line_readonly(arg0)
-
-	ret1 = WrapLayoutLine(unsafe.Pointer(cret))
-
-	return ret1
+	C.pango_layout_iter_get_line_readonly(arg0)
 }
 
 // LineYrange divides the vertical space in the `PangoLayout` being iterated
@@ -1983,110 +1756,149 @@ func (i *LayoutIter) LineReadonly() *LayoutLine {
 //
 // Note: Since 1.44, Pango uses line heights for placing lines, and there may be
 // gaps between the ranges returned by this function.
-func (i *LayoutIter) LineYrange() (y0 int, y1 int) {
+func (i *LayoutIter) LineYrange(i *LayoutIter) (y0 int, y1 int) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.int
-	var ret1 int
+	var y0 int
 	var arg2 C.int
-	var ret2 int
+	var y1 int
 
 	C.pango_layout_iter_get_line_yrange(arg0, &arg1, &arg2)
 
-	*ret1 = C.int(arg1)
-	*ret2 = C.int(arg2)
+	y0 = int(&arg1)
+	y1 = int(&arg2)
 
-	return ret1, ret2
+	return y0, y1
+}
+
+// Run gets the current run. When iterating by run, at the end of each line,
+// there's a position with a nil run, so this function can return nil. The nil
+// run at the end of each line ensures that all lines have at least one run,
+// even lines consisting of only a newline.
+//
+// Use the faster [method@Pango.LayoutIter.get_run_readonly] if you do not plan
+// to modify the contents of the run (glyphs, glyph widths, etc.).
+func (i *LayoutIter) Run(i *LayoutIter) {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
+
+	C.pango_layout_iter_get_run(arg0)
 }
 
 // RunExtents gets the extents of the current run in layout coordinates (origin
 // is the top left of the entire layout).
-func (i *LayoutIter) RunExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (i *LayoutIter) RunExtents(i *LayoutIter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_iter_get_run_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
+}
+
+// RunReadonly gets the current run. When iterating by run, at the end of each
+// line, there's a position with a nil run, so this function can return nil. The
+// nil run at the end of each line ensures that all lines have at least one run,
+// even lines consisting of only a newline.
+//
+// This is a faster alternative to [method@Pango.LayoutIter.get_run], but the
+// user is not expected to modify the contents of the run (glyphs, glyph widths,
+// etc.).
+func (i *LayoutIter) RunReadonly(i *LayoutIter) {
+	var arg0 *C.PangoLayoutIter
+
+	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
+
+	C.pango_layout_iter_get_run_readonly(arg0)
 }
 
 // NextChar moves @iter forward to the next character in visual order. If @iter
 // was already at the end of the layout, returns false.
-func (i *LayoutIter) NextChar() bool {
+func (i *LayoutIter) NextChar(i *LayoutIter) bool {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_iter_next_char(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // NextCluster moves @iter forward to the next cluster in visual order. If @iter
 // was already at the end of the layout, returns false.
-func (i *LayoutIter) NextCluster() bool {
+func (i *LayoutIter) NextCluster(i *LayoutIter) bool {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_iter_next_cluster(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // NextLine moves @iter forward to the start of the next line. If @iter is
 // already on the last line, returns false.
-func (i *LayoutIter) NextLine() bool {
+func (i *LayoutIter) NextLine(i *LayoutIter) bool {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_iter_next_line(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // NextRun moves @iter forward to the next run in visual order. If @iter was
 // already at the end of the layout, returns false.
-func (i *LayoutIter) NextRun() bool {
+func (i *LayoutIter) NextRun(i *LayoutIter) bool {
 	var arg0 *C.PangoLayoutIter
 
 	arg0 = (*C.PangoLayoutIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_layout_iter_next_run(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
@@ -2121,60 +1933,68 @@ func (l *LayoutLine) Native() unsafe.Pointer {
 
 // Layout gets the field inside the struct.
 func (l *LayoutLine) Layout() Layout {
+	var v Layout
 	v = gextras.CastObject(externglib.Take(unsafe.Pointer(l.native.layout.Native()))).(Layout)
+	return v
 }
 
 // StartIndex gets the field inside the struct.
 func (l *LayoutLine) StartIndex() int {
-	v = C.gint(l.native.start_index)
+	var v int
+	v = int(l.native.start_index)
+	return v
 }
 
 // Length gets the field inside the struct.
 func (l *LayoutLine) Length() int {
-	v = C.gint(l.native.length)
+	var v int
+	v = int(l.native.length)
+	return v
 }
 
 // Runs gets the field inside the struct.
 func (l *LayoutLine) Runs() *glib.SList {
+	var v *glib.SList
 	v = glib.WrapSList(unsafe.Pointer(l.native.runs))
+	return v
 }
 
 // Extents computes the logical and ink extents of a layout line. See
 // [method@Pango.Font.get_glyph_extents] for details about the interpretation of
 // the rectangles.
-func (l *LayoutLine) Extents() (inkRect Rectangle, logicalRect Rectangle) {
+func (l *LayoutLine) Extents(l *LayoutLine) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayoutLine
 
 	arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_line_get_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // Height computes the height of the line, i.e. the distance between this and
 // the previous lines baseline.
-func (l *LayoutLine) Height() int {
+func (l *LayoutLine) Height(l *LayoutLine) int {
 	var arg0 *C.PangoLayoutLine
 
 	arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.int
-	var ret1 int
+	var height int
 
 	C.pango_layout_line_get_height(arg0, &arg1)
 
-	*ret1 = C.int(arg1)
+	height = int(&arg1)
 
-	return ret1
+	return height
 }
 
 // PixelExtents computes the logical and ink extents of @layout_line in device
@@ -2184,22 +2004,22 @@ func (l *LayoutLine) Height() int {
 // two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect such
 // that the rounded rectangles fully contain the unrounded one (that is, passes
 // them as first argument to [func@extents_to_pixels]).
-func (l *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
+func (l *LayoutLine) PixelExtents(l *LayoutLine) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var arg0 *C.PangoLayoutLine
 
 	arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
 
 	var arg1 C.PangoRectangle
-	var ret1 *Rectangle
+	var inkRect *Rectangle
 	var arg2 C.PangoRectangle
-	var ret2 *Rectangle
+	var logicalRect *Rectangle
 
 	C.pango_layout_line_get_pixel_extents(arg0, &arg1, &arg2)
 
-	*ret1 = WrapRectangle(unsafe.Pointer(arg1))
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	inkRect = WrapRectangle(unsafe.Pointer(&arg1))
+	logicalRect = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return inkRect, logicalRect
 }
 
 // XRanges gets a list of visual ranges corresponding to a given logical range.
@@ -2207,7 +2027,7 @@ func (l *LayoutLine) PixelExtents() (inkRect Rectangle, logicalRect Rectangle) {
 // are adjacent. The ranges will be sorted from left to right. The ranges are
 // with respect to the left edge of the entire layout, not with respect to the
 // line.
-func (l *LayoutLine) XRanges(startIndex int, endIndex int) (ranges []int, nRanges int) {
+func (l *LayoutLine) XRanges(l *LayoutLine, startIndex int, endIndex int) {
 	var arg0 *C.PangoLayoutLine
 	var arg1 C.int
 	var arg2 C.int
@@ -2216,13 +2036,13 @@ func (l *LayoutLine) XRanges(startIndex int, endIndex int) (ranges []int, nRange
 	arg1 = C.int(startIndex)
 	arg2 = C.int(endIndex)
 
-	C.pango_layout_line_get_x_ranges(arg0, startIndex, endIndex, &arg3, &arg4)
+	C.pango_layout_line_get_x_ranges(arg0, arg1, arg2, &arg3, &arg4)
 
-	return ret3, ret4
+	return ranges, nRanges
 }
 
 // IndexToX converts an index within a line to a X position.
-func (l *LayoutLine) IndexToX(index_ int, trailing bool) int {
+func (l *LayoutLine) IndexToX(l *LayoutLine, index_ int, trailing bool) int {
 	var arg0 *C.PangoLayoutLine
 	var arg1 C.int
 	var arg2 C.gboolean
@@ -2234,37 +2054,27 @@ func (l *LayoutLine) IndexToX(index_ int, trailing bool) int {
 	}
 
 	var arg3 C.int
-	var ret3 int
+	var xPos int
 
-	C.pango_layout_line_index_to_x(arg0, index_, trailing, &arg3)
+	C.pango_layout_line_index_to_x(arg0, arg1, arg2, &arg3)
 
-	*ret3 = C.int(arg3)
+	xPos = int(&arg3)
 
-	return ret3
+	return xPos
 }
 
 // Ref: increase the reference count of a `PangoLayoutLine` by one.
-func (l *LayoutLine) Ref() *LayoutLine {
+func (l *LayoutLine) Ref(l *LayoutLine) {
 	var arg0 *C.PangoLayoutLine
 
 	arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoLayoutLine
-	var ret1 *LayoutLine
-
-	cret = C.pango_layout_line_ref(arg0)
-
-	ret1 = WrapLayoutLine(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *LayoutLine) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_layout_line_ref(arg0)
 }
 
 // Unref: decrease the reference count of a `PangoLayoutLine` by one. If the
 // result is zero, the line and all associated memory will be freed.
-func (l *LayoutLine) Unref() {
+func (l *LayoutLine) Unref(l *LayoutLine) {
 	var arg0 *C.PangoLayoutLine
 
 	arg0 = (*C.PangoLayoutLine)(unsafe.Pointer(l.Native()))
@@ -2282,7 +2092,7 @@ func (l *LayoutLine) Unref() {
 // @index_ pointing to the (logical) last grapheme in the line and @trailing
 // being set to the number of characters in that grapheme. The reverse is true
 // for a left-to-right line.
-func (l *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
+func (l *LayoutLine) XToIndex(l *LayoutLine, xPos int) (index_ int, trailing int, ok bool) {
 	var arg0 *C.PangoLayoutLine
 	var arg1 C.int
 
@@ -2290,17 +2100,19 @@ func (l *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 	arg1 = C.int(xPos)
 
 	var arg2 C.int
-	var ret2 int
+	var index_ int
 	var arg3 C.int
-	var ret3 int
+	var trailing int
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.pango_layout_line_x_to_index(arg0, xPos, &arg2, &arg3)
+	cret = C.pango_layout_line_x_to_index(arg0, arg1, &arg2, &arg3)
 
-	*ret2 = C.int(arg2)
-	*ret3 = C.int(arg3)
-	ret3 = C.bool(cret) != C.false
+	index_ = int(&arg2)
+	trailing = int(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret3, ret3
+	return index_, trailing, ok
 }

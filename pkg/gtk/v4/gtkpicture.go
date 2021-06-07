@@ -3,18 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -77,18 +70,18 @@ type Picture interface {
 
 	// AlternativeText gets the alternative textual description of the picture
 	// or returns nil if the picture cannot be described textually.
-	AlternativeText() string
+	AlternativeText(s Picture)
 	// CanShrink gets the value set via gtk_picture_set_can_shrink().
-	CanShrink() bool
+	CanShrink(s Picture) bool
 	// File gets the #GFile currently displayed if @self is displaying a file.
 	// If @self is not displaying a file, for example when
 	// gtk_picture_set_paintable() was used, then nil is returned.
-	File() gio.File
+	File(s Picture)
 	// KeepAspectRatio gets the value set via
 	// gtk_picture_set_keep_aspect_ratio().
-	KeepAspectRatio() bool
+	KeepAspectRatio(s Picture) bool
 	// Paintable gets the Paintable being displayed by the Picture.
-	Paintable() gdk.Paintable
+	Paintable(s Picture)
 	// SetAlternativeText sets an alternative textual description for the
 	// picture contents. It is equivalent to the "alt" attribute for images on
 	// websites.
@@ -96,7 +89,7 @@ type Picture interface {
 	// This text will be made available to accessibility tools.
 	//
 	// If the picture cannot be described textually, set this property to nil.
-	SetAlternativeText(alternativeText string)
+	SetAlternativeText(s Picture, alternativeText string)
 	// SetCanShrink: if set to true, the @self can be made smaller than its
 	// contents. The contents will then be scaled down when rendering.
 	//
@@ -106,36 +99,36 @@ type Picture interface {
 	// Also of note is that a similar function for growing does not exist
 	// because the grow behavior can be controlled via gtk_widget_set_halign()
 	// and gtk_widget_set_valign().
-	SetCanShrink(canShrink bool)
+	SetCanShrink(s Picture, canShrink bool)
 	// SetFile makes @self load and display @file.
 	//
 	// See gtk_picture_new_for_file() for details.
-	SetFile(file gio.File)
+	SetFile(s Picture, file gio.File)
 	// SetFilename makes @self load and display the given @filename.
 	//
 	// This is a utility function that calls gtk_picture_set_file().
-	SetFilename(filename string)
+	SetFilename(s Picture, filename string)
 	// SetKeepAspectRatio: if set to true, the @self will render its contents
 	// according to their aspect ratio. That means that empty space may show up
 	// at the top/bottom or left/right of @self.
 	//
 	// If set to false or if the contents provide no aspect ratio, the contents
 	// will be stretched over the picture's whole area.
-	SetKeepAspectRatio(keepAspectRatio bool)
+	SetKeepAspectRatio(s Picture, keepAspectRatio bool)
 	// SetPaintable makes @self display the given @paintable. If @paintable is
 	// nil, nothing will be displayed.
 	//
 	// See gtk_picture_new_for_paintable() for details.
-	SetPaintable(paintable gdk.Paintable)
+	SetPaintable(s Picture, paintable gdk.Paintable)
 	// SetPixbuf: see gtk_picture_new_for_pixbuf() for details.
 	//
 	// This is a utility function that calls gtk_picture_set_paintable(),
-	SetPixbuf(pixbuf gdkpixbuf.Pixbuf)
+	SetPixbuf(s Picture, pixbuf gdkpixbuf.Pixbuf)
 	// SetResource makes @self load and display the resource at the given
 	// @resource_path.
 	//
 	// This is a utility function that calls gtk_picture_set_file(),
-	SetResource(resourcePath string)
+	SetResource(s Picture, resourcePath string)
 }
 
 // picture implements the Picture interface.
@@ -166,181 +159,122 @@ func marshalPicture(p uintptr) (interface{}, error) {
 }
 
 // NewPicture constructs a class Picture.
-func NewPicture() Picture {
-	var cret C.GtkPicture
-	var ret1 Picture
-
-	cret = C.gtk_picture_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
-
-	return ret1
+func NewPicture() {
+	C.gtk_picture_new()
 }
 
 // NewPictureForFile constructs a class Picture.
-func NewPictureForFile(file gio.File) Picture {
+func NewPictureForFile(file gio.File) {
 	var arg1 *C.GFile
 
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var cret C.GtkPicture
-	var ret1 Picture
-
-	cret = C.gtk_picture_new_for_file(file)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
-
-	return ret1
+	C.gtk_picture_new_for_file(arg1)
 }
 
 // NewPictureForFilename constructs a class Picture.
-func NewPictureForFilename(filename string) Picture {
+func NewPictureForFilename(filename string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkPicture
-	var ret1 Picture
-
-	cret = C.gtk_picture_new_for_filename(filename)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
-
-	return ret1
+	C.gtk_picture_new_for_filename(arg1)
 }
 
 // NewPictureForPaintable constructs a class Picture.
-func NewPictureForPaintable(paintable gdk.Paintable) Picture {
+func NewPictureForPaintable(paintable gdk.Paintable) {
 	var arg1 *C.GdkPaintable
 
 	arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
-	var cret C.GtkPicture
-	var ret1 Picture
-
-	cret = C.gtk_picture_new_for_paintable(paintable)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
-
-	return ret1
+	C.gtk_picture_new_for_paintable(arg1)
 }
 
 // NewPictureForPixbuf constructs a class Picture.
-func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
+func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var arg1 *C.GdkPixbuf
 
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	var cret C.GtkPicture
-	var ret1 Picture
-
-	cret = C.gtk_picture_new_for_pixbuf(pixbuf)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
-
-	return ret1
+	C.gtk_picture_new_for_pixbuf(arg1)
 }
 
 // NewPictureForResource constructs a class Picture.
-func NewPictureForResource(resourcePath string) Picture {
+func NewPictureForResource(resourcePath string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkPicture
-	var ret1 Picture
-
-	cret = C.gtk_picture_new_for_resource(resourcePath)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Picture)
-
-	return ret1
+	C.gtk_picture_new_for_resource(arg1)
 }
 
 // AlternativeText gets the alternative textual description of the picture
 // or returns nil if the picture cannot be described textually.
-func (s picture) AlternativeText() string {
+func (s picture) AlternativeText(s Picture) {
 	var arg0 *C.GtkPicture
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_picture_get_alternative_text(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_picture_get_alternative_text(arg0)
 }
 
 // CanShrink gets the value set via gtk_picture_set_can_shrink().
-func (s picture) CanShrink() bool {
+func (s picture) CanShrink(s Picture) bool {
 	var arg0 *C.GtkPicture
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_picture_get_can_shrink(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // File gets the #GFile currently displayed if @self is displaying a file.
 // If @self is not displaying a file, for example when
 // gtk_picture_set_paintable() was used, then nil is returned.
-func (s picture) File() gio.File {
+func (s picture) File(s Picture) {
 	var arg0 *C.GtkPicture
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GFile
-	var ret1 gio.File
-
-	cret = C.gtk_picture_get_file(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
-
-	return ret1
+	C.gtk_picture_get_file(arg0)
 }
 
 // KeepAspectRatio gets the value set via
 // gtk_picture_set_keep_aspect_ratio().
-func (s picture) KeepAspectRatio() bool {
+func (s picture) KeepAspectRatio(s Picture) bool {
 	var arg0 *C.GtkPicture
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_picture_get_keep_aspect_ratio(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Paintable gets the Paintable being displayed by the Picture.
-func (s picture) Paintable() gdk.Paintable {
+func (s picture) Paintable(s Picture) {
 	var arg0 *C.GtkPicture
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkPaintable
-	var ret1 gdk.Paintable
-
-	cret = C.gtk_picture_get_paintable(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
-
-	return ret1
+	C.gtk_picture_get_paintable(arg0)
 }
 
 // SetAlternativeText sets an alternative textual description for the
@@ -350,7 +284,7 @@ func (s picture) Paintable() gdk.Paintable {
 // This text will be made available to accessibility tools.
 //
 // If the picture cannot be described textually, set this property to nil.
-func (s picture) SetAlternativeText(alternativeText string) {
+func (s picture) SetAlternativeText(s Picture, alternativeText string) {
 	var arg0 *C.GtkPicture
 	var arg1 *C.char
 
@@ -358,7 +292,7 @@ func (s picture) SetAlternativeText(alternativeText string) {
 	arg1 = (*C.char)(C.CString(alternativeText))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_picture_set_alternative_text(arg0, alternativeText)
+	C.gtk_picture_set_alternative_text(arg0, arg1)
 }
 
 // SetCanShrink: if set to true, the @self can be made smaller than its
@@ -370,7 +304,7 @@ func (s picture) SetAlternativeText(alternativeText string) {
 // Also of note is that a similar function for growing does not exist
 // because the grow behavior can be controlled via gtk_widget_set_halign()
 // and gtk_widget_set_valign().
-func (s picture) SetCanShrink(canShrink bool) {
+func (s picture) SetCanShrink(s Picture, canShrink bool) {
 	var arg0 *C.GtkPicture
 	var arg1 C.gboolean
 
@@ -379,26 +313,26 @@ func (s picture) SetCanShrink(canShrink bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_picture_set_can_shrink(arg0, canShrink)
+	C.gtk_picture_set_can_shrink(arg0, arg1)
 }
 
 // SetFile makes @self load and display @file.
 //
 // See gtk_picture_new_for_file() for details.
-func (s picture) SetFile(file gio.File) {
+func (s picture) SetFile(s Picture, file gio.File) {
 	var arg0 *C.GtkPicture
 	var arg1 *C.GFile
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	C.gtk_picture_set_file(arg0, file)
+	C.gtk_picture_set_file(arg0, arg1)
 }
 
 // SetFilename makes @self load and display the given @filename.
 //
 // This is a utility function that calls gtk_picture_set_file().
-func (s picture) SetFilename(filename string) {
+func (s picture) SetFilename(s Picture, filename string) {
 	var arg0 *C.GtkPicture
 	var arg1 *C.char
 
@@ -406,7 +340,7 @@ func (s picture) SetFilename(filename string) {
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_picture_set_filename(arg0, filename)
+	C.gtk_picture_set_filename(arg0, arg1)
 }
 
 // SetKeepAspectRatio: if set to true, the @self will render its contents
@@ -415,7 +349,7 @@ func (s picture) SetFilename(filename string) {
 //
 // If set to false or if the contents provide no aspect ratio, the contents
 // will be stretched over the picture's whole area.
-func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
+func (s picture) SetKeepAspectRatio(s Picture, keepAspectRatio bool) {
 	var arg0 *C.GtkPicture
 	var arg1 C.gboolean
 
@@ -424,41 +358,41 @@ func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_picture_set_keep_aspect_ratio(arg0, keepAspectRatio)
+	C.gtk_picture_set_keep_aspect_ratio(arg0, arg1)
 }
 
 // SetPaintable makes @self display the given @paintable. If @paintable is
 // nil, nothing will be displayed.
 //
 // See gtk_picture_new_for_paintable() for details.
-func (s picture) SetPaintable(paintable gdk.Paintable) {
+func (s picture) SetPaintable(s Picture, paintable gdk.Paintable) {
 	var arg0 *C.GtkPicture
 	var arg1 *C.GdkPaintable
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
-	C.gtk_picture_set_paintable(arg0, paintable)
+	C.gtk_picture_set_paintable(arg0, arg1)
 }
 
 // SetPixbuf: see gtk_picture_new_for_pixbuf() for details.
 //
 // This is a utility function that calls gtk_picture_set_paintable(),
-func (s picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
+func (s picture) SetPixbuf(s Picture, pixbuf gdkpixbuf.Pixbuf) {
 	var arg0 *C.GtkPicture
 	var arg1 *C.GdkPixbuf
 
 	arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	C.gtk_picture_set_pixbuf(arg0, pixbuf)
+	C.gtk_picture_set_pixbuf(arg0, arg1)
 }
 
 // SetResource makes @self load and display the resource at the given
 // @resource_path.
 //
 // This is a utility function that calls gtk_picture_set_file(),
-func (s picture) SetResource(resourcePath string) {
+func (s picture) SetResource(s Picture, resourcePath string) {
 	var arg0 *C.GtkPicture
 	var arg1 *C.char
 
@@ -466,5 +400,5 @@ func (s picture) SetResource(resourcePath string) {
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_picture_set_resource(arg0, resourcePath)
+	C.gtk_picture_set_resource(arg0, arg1)
 }

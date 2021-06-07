@@ -4,7 +4,6 @@ package glib
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -26,7 +25,7 @@ func BitLock(address int, lockBit int) {
 	arg1 = *C.gint(address)
 	arg2 = C.gint(lockBit)
 
-	C.g_bit_lock(address, lockBit)
+	C.g_bit_lock(arg1, arg2)
 }
 
 // BitTrylock sets the indicated @lock_bit in @address, returning true if
@@ -48,13 +47,15 @@ func BitTrylock(address int, lockBit int) bool {
 	arg2 = C.gint(lockBit)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_bit_trylock(address, lockBit)
+	cret = C.g_bit_trylock(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // BitUnlock clears the indicated @lock_bit in @address. If another thread is
@@ -69,7 +70,7 @@ func BitUnlock(address int, lockBit int) {
 	arg1 = *C.gint(address)
 	arg2 = C.gint(lockBit)
 
-	C.g_bit_unlock(address, lockBit)
+	C.g_bit_unlock(arg1, arg2)
 }
 
 // PointerBitLock: this is equivalent to g_bit_lock, but working on pointers (or
@@ -84,7 +85,7 @@ func PointerBitLock(address interface{}, lockBit int) {
 	arg1 = *C.void(address)
 	arg2 = C.gint(lockBit)
 
-	C.g_pointer_bit_lock(address, lockBit)
+	C.g_pointer_bit_lock(arg1, arg2)
 }
 
 // PointerBitTrylock: this is equivalent to g_bit_trylock, but working on
@@ -100,13 +101,15 @@ func PointerBitTrylock(address interface{}, lockBit int) bool {
 	arg2 = C.gint(lockBit)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_pointer_bit_trylock(address, lockBit)
+	cret = C.g_pointer_bit_trylock(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // PointerBitUnlock: this is equivalent to g_bit_unlock, but working on pointers
@@ -121,5 +124,5 @@ func PointerBitUnlock(address interface{}, lockBit int) {
 	arg1 = *C.void(address)
 	arg2 = C.gint(lockBit)
 
-	C.g_pointer_bit_unlock(address, lockBit)
+	C.g_pointer_bit_unlock(arg1, arg2)
 }

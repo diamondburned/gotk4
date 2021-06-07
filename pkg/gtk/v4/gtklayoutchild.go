@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,10 +28,10 @@ type LayoutChild interface {
 	gextras.Objector
 
 	// ChildWidget retrieves the Widget associated to the given @layout_child.
-	ChildWidget() Widget
+	ChildWidget(l LayoutChild)
 	// LayoutManager retrieves the LayoutManager instance that created the given
 	// @layout_child.
-	LayoutManager() LayoutManager
+	LayoutManager(l LayoutChild)
 }
 
 // layoutChild implements the LayoutChild interface.
@@ -59,34 +56,20 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 }
 
 // ChildWidget retrieves the Widget associated to the given @layout_child.
-func (l layoutChild) ChildWidget() Widget {
+func (l layoutChild) ChildWidget(l LayoutChild) {
 	var arg0 *C.GtkLayoutChild
 
 	arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_layout_child_get_child_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_layout_child_get_child_widget(arg0)
 }
 
 // LayoutManager retrieves the LayoutManager instance that created the given
 // @layout_child.
-func (l layoutChild) LayoutManager() LayoutManager {
+func (l layoutChild) LayoutManager(l LayoutChild) {
 	var arg0 *C.GtkLayoutChild
 
 	arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GtkLayoutManager
-	var ret1 LayoutManager
-
-	cret = C.gtk_layout_child_get_layout_manager(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutManager)
-
-	return ret1
+	C.gtk_layout_child_get_layout_manager(arg0)
 }

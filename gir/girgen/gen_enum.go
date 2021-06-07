@@ -13,7 +13,9 @@ var enumTmpl = newGoTemplate(`
 	const (
 		{{ range .Members -}}
 		{{- $name := ($.FormatMember .Name) -}}
-		{{ with (GoDoc .Doc 1 $name) }} {{- . -}} {{ end }}
+		{{- if .Doc -}}
+		{{ GoDoc .Doc 1 $name }}
+		{{ end -}}
 		{{ $name }} {{ $type }} = {{ .Value }}
 		{{ end -}}
 	)

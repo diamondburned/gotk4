@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,7 +36,7 @@ type CellRendererText interface {
 	// slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
 	// then the fixed height is unset, and the height is determined by the
 	// properties again.
-	SetFixedHeightFromFont(numberOfRows int)
+	SetFixedHeightFromFont(r CellRendererText, numberOfRows int)
 }
 
 // cellRendererText implements the CellRendererText interface.
@@ -64,15 +61,8 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererText constructs a class CellRendererText.
-func NewCellRendererText() CellRendererText {
-	var cret C.GtkCellRendererText
-	var ret1 CellRendererText
-
-	cret = C.gtk_cell_renderer_text_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererText)
-
-	return ret1
+func NewCellRendererText() {
+	C.gtk_cell_renderer_text_new()
 }
 
 // SetFixedHeightFromFont sets the height of a renderer to explicitly be
@@ -83,12 +73,12 @@ func NewCellRendererText() CellRendererText {
 // slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
 // then the fixed height is unset, and the height is determined by the
 // properties again.
-func (r cellRendererText) SetFixedHeightFromFont(numberOfRows int) {
+func (r cellRendererText) SetFixedHeightFromFont(r CellRendererText, numberOfRows int) {
 	var arg0 *C.GtkCellRendererText
 	var arg1 C.int
 
 	arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
 	arg1 = C.int(numberOfRows)
 
-	C.gtk_cell_renderer_text_set_fixed_height_from_font(arg0, numberOfRows)
+	C.gtk_cell_renderer_text_set_fixed_height_from_font(arg0, arg1)
 }

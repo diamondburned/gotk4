@@ -14,17 +14,17 @@ import (
 
 // ValueProp describes the generic properties of a Go or C value for conversion.
 type ValueProp struct {
-	In    string
-	Out   string
-	Type  gir.AnyType
-	Owner gir.TransferOwnership
+	In        string
+	Out       string
+	AnyType   gir.AnyType
+	Ownership gir.TransferOwnership
 
 	// Closure marks the user_data argument. If this is provided, then the
 	// conversion function will set the parameter to the callback ID. The caller
 	// is responsible for skipping conversion of these indices.
 	Closure *int
 
-	// Destroy marks the callback to destroy the user_data argument. If this is
+	// Destroy marks the callback to Destroy the user_data argument. If this is
 	// provided, then callbackDelete will be set along with Closure.
 	Destroy *int
 
@@ -48,107 +48,8 @@ type ValueProp struct {
 	*valuePropState
 }
 
-// errorValueProp is an invalid GoValueProp returned when valueAt errors out.
-var errorValueProp = ValueProp{
-	In:  "NotAvailable",
-	Out: "NotAvailable",
-	Type: gir.AnyType{
-		Type: &gir.Type{
-			Name:  "none",
-			CType: "void",
-		},
-	},
-}
-
-// NewValuePropParam creates a ValueProp from the given parameter attribute.
-func NewValuePropParam(in, out string, i *int, param gir.ParameterAttrs) ValueProp {
-	return ValueProp{
-		In:                in,
-		Out:               out,
-		Type:              param.AnyType,
-		Owner:             param.TransferOwnership,
-		Closure:           param.Closure,
-		Destroy:           param.Destroy,
-		AllowNone:         param.AllowNone,
-		CallerAllocates:   param.CallerAllocates,
-		OutputIsParameter: param.Direction == "out",
-		ParameterIndex:    i,
-	}
-}
-
-// NewValuePropReturn creates a new ValueProp from teh given return attribute.
-func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
-	return ValueProp{
-		In:        in,
-		Out:       out,
-		Type:      ret.AnyType,
-		Owner:     ret.TransferOwnership,
-		AllowNone: ret.Skip || ret.AllowNone,
-		Closure:   ret.Closure,
-		Destroy:   ret.Destroy,
-	}
-}
-
-// newThrowValue creates a new GError value.
-func newThrowValue(in, out string) ValueProp {
-	return ValueProp{
-		In:  in,
-		Out: out,
-		Type: gir.AnyType{
-			Type: &gir.Type{
-				Name:  "GLib.Error",
-				CType: "GError*",
-			},
-		},
-		AllowNone: true,
-	}
-}
-
-// IsZero returns true if ValueProp is empty.
-func (value *ValueProp) IsZero() bool {
-	return value.In == "" || value.Out == ""
-}
-
-func (value *ValueProp) loadIgnore(ignores map[int]struct{}) {
-	// These are handled below.
-	if value.Closure != nil {
-		ignores[*value.Closure] = struct{}{}
-	}
-	if value.Destroy != nil {
-		ignores[*value.Destroy] = struct{}{}
-	}
-	if value.Type.Array != nil && value.Type.Array.Length != nil {
-		ignores[*value.Type.Array.Length] = struct{}{}
-	}
-}
-
-// inner is used only for arrays.
-func (value ValueProp) inner(in, out string) ValueProp {
-	if value.Type.Array == nil {
-		return value
-	}
-
-	// If the array's ownership is ONLY container, then we must not take over
-	// the inner values. Therefore, we only generate the appropriate code.
-	if value.Owner.TransferOwnership == "container" {
-		value.Owner.TransferOwnership = "none"
-	}
-
-	prop := ValueProp{
-		In:    in,
-		Out:   out,
-		Type:  value.Type.Array.AnyType,
-		Owner: value.Owner,
-	}
-	prop.initState()
-
-	return prop
-}
-
 // valuePropState wraps around ValueProp for internal use.
 type valuePropState struct {
-	// ConversionExtras are filled up after Convert. This is useful for the
-	// caller to reuse information derived during conversion.
 	ConversionExtras
 
 	resolved       *ResolvedType // only for type conversions
@@ -165,7 +66,73 @@ type ConversionExtras struct {
 	OutType string
 }
 
-func (value *ValueProp) initState() {
+// errorValueProp is an invalid GoValueProp returned when valueAt errors out.
+var errorValueProp = ValueProp{
+	In:  "NotAvailable",
+	Out: "NotAvailable",
+	AnyType: gir.AnyType{
+		Type: &gir.Type{
+			Name:  "none",
+			CType: "void",
+		},
+	},
+}
+
+// NewValuePropParam creates a ValueProp from the given parameter attribute.
+func NewValuePropParam(in, out string, i *int, param gir.ParameterAttrs) ValueProp {
+	return ValueProp{
+		In:                in,
+		Out:               out,
+		AnyType:           param.AnyType,
+		Ownership:         param.TransferOwnership,
+		Closure:           param.Closure,
+		Destroy:           param.Destroy,
+		AllowNone:         param.AllowNone,
+		CallerAllocates:   param.CallerAllocates,
+		OutputIsParameter: param.Direction == "out",
+		ParameterIndex:    i,
+	}
+}
+
+// NewValuePropReturn creates a new ValueProp from the given return attribute.
+func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
+	return ValueProp{
+		In:        in,
+		Out:       out,
+		AnyType:   ret.AnyType,
+		Ownership: ret.TransferOwnership,
+		AllowNone: ret.Skip || ret.AllowNone,
+		Closure:   ret.Closure,
+		Destroy:   ret.Destroy,
+	}
+}
+
+// NewValuePropField creates a new ValueProp from the given field. The struct is
+// assumed to have a native field.
+func NewValuePropField(recv, out string, field gir.Field) ValueProp {
+	return ValueProp{
+		In:      fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
+		Out:     out,
+		AnyType: field.AnyType,
+	}
+}
+
+// newThrowValue creates a new GError value.
+func newThrowValue(in, out string) ValueProp {
+	return ValueProp{
+		In:  in,
+		Out: out,
+		AnyType: gir.AnyType{
+			Type: &gir.Type{
+				Name:  "GLib.Error",
+				CType: "GError*",
+			},
+		},
+		AllowNone: true,
+	}
+}
+
+func (value *ValueProp) init() {
 	value.valuePropState = &valuePropState{
 		p:       pen.NewPaperStringSize(2048), // 2KB
 		inDecl:  pen.NewPaperStringSize(128),  // 0.1KB
@@ -176,11 +143,16 @@ func (value *ValueProp) initState() {
 // resolveType resolves the value type to the resolved field. If inputC is true,
 // then the input type is set to the CGo type, otherwise the Go type is set.
 func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
-	if value.Type.Type == nil {
+	if value.AnyType.Type == nil {
 		return false
 	}
 
-	value.resolved = conv.ng.ResolveType(*value.Type.Type)
+	if value.resolved != nil {
+		// already resolved
+		return true
+	}
+
+	value.resolved = conv.ng.ResolveType(*value.AnyType.Type)
 	if value.resolved == nil {
 		return false
 	}
@@ -191,8 +163,10 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 	}
 
 	cgoType := value.resolved.CGoType()
+
 	if value.OutputIsParameter {
-		// Output is dereferenced; trim a pointer from the CGo type.
+		// Output is dereferenced; trim a pointer from the CGo type. The Go type
+		// will remain a pointer that points to the C value.
 		cgoType = strings.TrimPrefix(cgoType, "*")
 	}
 
@@ -209,12 +183,58 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 	value.inDecl.Linef("var %s %s", value.In, value.InType)
 	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
-	// Dereference the output value if this is an outptu parameter.
 	if value.OutputIsParameter {
-		value.Out = "*" + value.Out
+		if inputC {
+			// Reference the input if this value is a Go output parameter.
+			value.In = "&" + value.In
+		} else {
+			// Dereference the output if this value is a C output parameter.
+			value.Out = "*" + value.Out
+		}
 	}
 
 	return true
+}
+
+// IsZero returns true if ValueProp is empty.
+func (value *ValueProp) IsZero() bool {
+	return value.In == "" || value.Out == ""
+}
+
+func (value *ValueProp) loadIgnore(ignores map[int]struct{}) {
+	// These are handled below.
+	if value.Closure != nil {
+		ignores[*value.Closure] = struct{}{}
+	}
+	if value.Destroy != nil {
+		ignores[*value.Destroy] = struct{}{}
+	}
+	if value.AnyType.Array != nil && value.AnyType.Array.Length != nil {
+		ignores[*value.AnyType.Array.Length] = struct{}{}
+	}
+}
+
+// inner is used only for arrays.
+func (value ValueProp) inner(in, out string) ValueProp {
+	if value.AnyType.Array == nil {
+		return value
+	}
+
+	// If the array's ownership is ONLY container, then we must not take over
+	// the inner values. Therefore, we only generate the appropriate code.
+	if value.Ownership.TransferOwnership == "container" {
+		value.Ownership.TransferOwnership = "none"
+	}
+
+	prop := ValueProp{
+		In:        in,
+		Out:       out,
+		AnyType:   value.AnyType.Array.AnyType,
+		Ownership: value.Ownership,
+	}
+	prop.init()
+
+	return prop
 }
 
 // isTransferring is true when the ownership is either full or container. If the
@@ -227,8 +247,8 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 // turned into "none" just for that inner type. See TypeConversion.inner().
 func (prop ValueProp) isTransferring() bool {
 	return false ||
-		prop.Owner.TransferOwnership == "full" ||
-		prop.Owner.TransferOwnership == "container"
+		prop.Ownership.TransferOwnership == "full" ||
+		prop.Ownership.TransferOwnership == "container"
 }
 
 // cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
@@ -273,13 +293,52 @@ func (conved *TypeConverted) WriteAll(in, out, conv *pen.BlockSection) {
 	}
 }
 
+// TypeConverter describes a bidirectional type converter between Go and C
+// types.
+type TypeConverter interface {
+	Convert(int) *TypeConverted
+}
+
+var (
+	_ TypeConverter = (*TypeConversionToC)(nil)
+	_ TypeConverter = (*TypeConversionToGo)(nil)
+)
+
+// ConvertAllValues converts all values in the type converter.
+func ConvertAllValues(converter TypeConverter, n int) []TypeConverted {
+	convertedList := make([]TypeConverted, 0, n)
+
+	for i := 0; i < n; i++ {
+		converted := converter.Convert(i)
+		if converted == nil {
+			return nil
+		}
+		if converted.ValueProp == nil {
+			continue
+		}
+
+		convertedList = append(convertedList, *converted)
+	}
+
+	return convertedList
+}
+
+// applySideEffects applies all side effects of the given list of type converted
+// results.
+func applySideEffects(fg *FileGenerator, results []TypeConverted) {
+	for _, result := range results {
+		result.Apply(fg)
+	}
+}
+
 // ConversionSideEffects describes the side effects of the conversion, such as
 // importing new things or modifying the Cgo preamble.
 type ConversionSideEffects struct {
-	Imports        map[string]string
-	Callbacks      []string
-	CallbackDelete bool
-	NeedsStdBool   bool
+	Imports         map[string]string
+	Callbacks       []string
+	CallbackDelete  bool
+	NeedsStdBool    bool
+	NeedsGLibObject bool
 }
 
 func (sides *ConversionSideEffects) addImport(path string) {
@@ -311,6 +370,9 @@ func (sides ConversionSideEffects) Apply(fg *FileGenerator) {
 	}
 	if sides.NeedsStdBool {
 		fg.needsStdbool()
+	}
+	if sides.NeedsGLibObject {
+		fg.needsGLibObject()
 	}
 	for path, alias := range sides.Imports {
 		fg.addImportAlias(path, alias)

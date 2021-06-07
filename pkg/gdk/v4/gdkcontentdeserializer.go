@@ -2,16 +2,6 @@
 
 package gdk
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -21,9 +11,8 @@ import "C"
 // deserialize it, asynchronously. When the operation is finished, @callback
 // will be called. You can then call gdk_content_deserialize_finish() to get the
 // result of the operation.
-func ContentDeserializeAsync(stream gio.InputStream, mimeType string, typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-
-	C.gdk_content_deserialize_async(stream, mimeType, typ, ioPriority, cancellable, callback, userData)
+func ContentDeserializeAsync() {
+	C.gdk_content_deserialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
@@ -35,18 +24,17 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) e
 	arg2 = (*C.GValue)(value.GValue)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gdk_content_deserialize_finish(result, value, &errout)
+	C.gdk_content_deserialize_finish(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // ContentRegisterDeserializer registers a function to create objects of a given
 // @type from a serialized representation with the given mime type.
-func ContentRegisterDeserializer(mimeType string, typ externglib.Type, deserialize ContentDeserializeFunc) {
-
-	C.gdk_content_register_deserializer(mimeType, typ, deserialize, data, notify)
+func ContentRegisterDeserializer() {
+	C.gdk_content_register_deserializer(arg1, arg2, arg3, arg4, arg5)
 }

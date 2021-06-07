@@ -9,19 +9,12 @@ import "C"
 
 // GravityGetForMatrix finds the gravity that best matches the rotation
 // component in a `PangoMatrix`.
-func GravityGetForMatrix(matrix *Matrix) Gravity {
+func GravityGetForMatrix(matrix *Matrix) {
 	var arg1 *C.PangoMatrix
 
 	arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix.Native()))
 
-	var cret C.PangoGravity
-	var ret1 Gravity
-
-	cret = C.pango_gravity_get_for_matrix(matrix)
-
-	ret1 = Gravity(cret)
-
-	return ret1
+	C.pango_gravity_get_for_matrix(arg1)
 }
 
 // GravityGetForScript returns the gravity to use in laying out a `PangoItem`.
@@ -31,7 +24,7 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 // If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of @script. To get the preferred gravity of a script, pass
 // PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
-func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
+func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) {
 	var arg1 C.PangoScript
 	var arg2 C.PangoGravity
 	var arg3 C.PangoGravityHint
@@ -40,14 +33,7 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 	arg2 = (C.PangoGravity)(baseGravity)
 	arg3 = (C.PangoGravityHint)(hint)
 
-	var cret C.PangoGravity
-	var ret1 Gravity
-
-	cret = C.pango_gravity_get_for_script(script, baseGravity, hint)
-
-	ret1 = Gravity(cret)
-
-	return ret1
+	C.pango_gravity_get_for_script(arg1, arg2, arg3)
 }
 
 // GravityGetForScriptAndWidth returns the gravity to use in laying out a single
@@ -64,7 +50,7 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 //
 // If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of @script.
-func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
+func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) {
 	var arg1 C.PangoScript
 	var arg2 C.gboolean
 	var arg3 C.PangoGravity
@@ -77,14 +63,7 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 	arg3 = (C.PangoGravity)(baseGravity)
 	arg4 = (C.PangoGravityHint)(hint)
 
-	var cret C.PangoGravity
-	var ret1 Gravity
-
-	cret = C.pango_gravity_get_for_script_and_width(script, wide, baseGravity, hint)
-
-	ret1 = Gravity(cret)
-
-	return ret1
+	C.pango_gravity_get_for_script_and_width(arg1, arg2, arg3, arg4)
 }
 
 // GravityToRotation converts a Gravity value to its natural rotation in
@@ -93,17 +72,10 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 // Note that [method@Pango.Matrix.rotate] takes angle in degrees, not radians.
 // So, to call [method@Pango.Matrix,rotate] with the output of this function you
 // should multiply it by (180. / G_PI).
-func GravityToRotation(gravity Gravity) float64 {
+func GravityToRotation(gravity Gravity) {
 	var arg1 C.PangoGravity
 
 	arg1 = (C.PangoGravity)(gravity)
 
-	var cret C.double
-	var ret1 float64
-
-	cret = C.pango_gravity_to_rotation(gravity)
-
-	ret1 = C.double(cret)
-
-	return ret1
+	C.pango_gravity_to_rotation(arg1)
 }

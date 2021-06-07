@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,10 +30,10 @@ type NoSelection interface {
 	SelectionModel
 
 	// Model gets the model that @self is wrapping.
-	Model() gio.ListModel
+	Model(s NoSelection)
 	// SetModel sets the model that @self should wrap. If @model is nil, this
 	// model will be empty.
-	SetModel(model gio.ListModel)
+	SetModel(s NoSelection, model gio.ListModel)
 }
 
 // noSelection implements the NoSelection interface.
@@ -65,45 +62,31 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 }
 
 // NewNoSelection constructs a class NoSelection.
-func NewNoSelection(model gio.ListModel) NoSelection {
+func NewNoSelection(model gio.ListModel) {
 	var arg1 *C.GListModel
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkNoSelection
-	var ret1 NoSelection
-
-	cret = C.gtk_no_selection_new(model)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NoSelection)
-
-	return ret1
+	C.gtk_no_selection_new(arg1)
 }
 
 // Model gets the model that @self is wrapping.
-func (s noSelection) Model() gio.ListModel {
+func (s noSelection) Model(s NoSelection) {
 	var arg0 *C.GtkNoSelection
 
 	arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_no_selection_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_no_selection_get_model(arg0)
 }
 
 // SetModel sets the model that @self should wrap. If @model is nil, this
 // model will be empty.
-func (s noSelection) SetModel(model gio.ListModel) {
+func (s noSelection) SetModel(s NoSelection, model gio.ListModel) {
 	var arg0 *C.GtkNoSelection
 	var arg1 *C.GListModel
 
 	arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_no_selection_set_model(arg0, model)
+	C.gtk_no_selection_set_model(arg0, arg1)
 }

@@ -2,65 +2,34 @@
 
 package gobject
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 import "C"
 
-func GTypeGetType() externglib.Type {
-	var cret C.GType
-	var ret1 externglib.Type
-
-	cret = C.g_gtype_get_type()
-
-	ret1 = externglib.Type(cret)
-
-	return ret1
+func GTypeGetType() {
+	C.g_gtype_get_type()
 }
 
 // PointerTypeRegisterStatic creates a new G_TYPE_POINTER derived type id for a
 // new pointer type with name @name.
-func PointerTypeRegisterStatic(name string) externglib.Type {
+func PointerTypeRegisterStatic(name string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GType
-	var ret1 externglib.Type
-
-	cret = C.g_pointer_type_register_static(name)
-
-	ret1 = externglib.Type(cret)
-
-	return ret1
+	C.g_pointer_type_register_static(arg1)
 }
 
 // StrdupValueContents: return a newly allocated string, which describes the
 // contents of a #GValue. The main purpose of this function is to describe
 // #GValue contents for debugging output, the way in which the contents are
 // described may change between different GLib versions.
-func StrdupValueContents(value *externglib.Value) string {
+func StrdupValueContents(value *externglib.Value) {
 	var arg1 *C.GValue
 
 	arg1 = (*C.GValue)(value.GValue)
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_strdup_value_contents(value)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_strdup_value_contents(arg1)
 }

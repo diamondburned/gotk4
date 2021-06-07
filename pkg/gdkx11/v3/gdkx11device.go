@@ -14,17 +14,10 @@ import "C"
 // IDs for the Virtual Core Pointer and Keyboard in > XInput 2), but calling
 // this function on any slave devices (i.e. > those managed via XInput 1.x),
 // will return 0.
-func X11DeviceGetID(device X11DeviceCore) int {
+func X11DeviceGetID(device X11DeviceCore) {
 	var arg1 *C.GdkDevice
 
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gdk_x11_device_get_id(device)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gdk_x11_device_get_id(arg1)
 }

@@ -3,17 +3,13 @@
 package gtk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -77,9 +73,9 @@ type MapListModel interface {
 	gio.ListModel
 
 	// Model gets the model that is currently being mapped or nil if none.
-	Model() gio.ListModel
+	Model(s MapListModel)
 	// HasMap checks if a map function is currently set on @self
-	HasMap() bool
+	HasMap(s MapListModel) bool
 	// SetMapFunc sets the function used to map items. The function will be
 	// called whenever an item needs to be mapped and must return the item to
 	// use for the given input item.
@@ -90,13 +86,13 @@ type MapListModel interface {
 	// GTK makes no effort to ensure that @map_func conforms to the item type of
 	// @self. It assumes that the caller knows what they are doing and the map
 	// function returns items of the appropriate type.
-	SetMapFunc(mapFunc MapListModelMapFunc)
+	SetMapFunc(s MapListModel)
 	// SetModel sets the model to be mapped.
 	//
 	// GTK makes no effort to ensure that @model conforms to the item type
 	// expected by the map function. It assumes that the caller knows what they
 	// are doing and have set up an appropriate map function.
-	SetModel(model gio.ListModel)
+	SetModel(s MapListModel, model gio.ListModel)
 }
 
 // mapListModel implements the MapListModel interface.
@@ -123,48 +119,35 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 }
 
 // NewMapListModel constructs a class MapListModel.
-func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc) MapListModel {
-
-	var cret C.GtkMapListModel
-	var ret1 MapListModel
-
-	cret = C.gtk_map_list_model_new(model, mapFunc, userData, userDestroy)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MapListModel)
-
-	return ret1
+func NewMapListModel() {
+	C.gtk_map_list_model_new(arg1, arg2, arg3, arg4)
 }
 
 // Model gets the model that is currently being mapped or nil if none.
-func (s mapListModel) Model() gio.ListModel {
+func (s mapListModel) Model(s MapListModel) {
 	var arg0 *C.GtkMapListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_map_list_model_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_map_list_model_get_model(arg0)
 }
 
 // HasMap checks if a map function is currently set on @self
-func (s mapListModel) HasMap() bool {
+func (s mapListModel) HasMap(s MapListModel) bool {
 	var arg0 *C.GtkMapListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_map_list_model_has_map(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetMapFunc sets the function used to map items. The function will be
@@ -177,12 +160,12 @@ func (s mapListModel) HasMap() bool {
 // GTK makes no effort to ensure that @map_func conforms to the item type of
 // @self. It assumes that the caller knows what they are doing and the map
 // function returns items of the appropriate type.
-func (s mapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
+func (s mapListModel) SetMapFunc(s MapListModel) {
 	var arg0 *C.GtkMapListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	C.gtk_map_list_model_set_map_func(arg0, mapFunc, userData, userDestroy)
+	C.gtk_map_list_model_set_map_func(arg0, arg1, arg2, arg3)
 }
 
 // SetModel sets the model to be mapped.
@@ -190,12 +173,12 @@ func (s mapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 // GTK makes no effort to ensure that @model conforms to the item type
 // expected by the map function. It assumes that the caller knows what they
 // are doing and have set up an appropriate map function.
-func (s mapListModel) SetModel(model gio.ListModel) {
+func (s mapListModel) SetModel(s MapListModel, model gio.ListModel) {
 	var arg0 *C.GtkMapListModel
 	var arg1 *C.GListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_map_list_model_set_model(arg0, model)
+	C.gtk_map_list_model_set_model(arg0, arg1)
 }

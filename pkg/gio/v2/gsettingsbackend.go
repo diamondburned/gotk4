@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -75,7 +70,7 @@ func init() {
 // The backend reads default values from a keyfile called `defaults` in the
 // directory specified by the SettingsBackend:defaults-dir property, and a list
 // of locked keys from a text file with the name `locks` in the same location.
-func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) SettingsBackend {
+func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -87,14 +82,7 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 	arg3 = (*C.gchar)(C.CString(rootGroup))
 	defer C.free(unsafe.Pointer(arg3))
 
-	var cret *C.GSettingsBackend
-	var ret1 SettingsBackend
-
-	cret = C.g_keyfile_settings_backend_new(filename, rootPath, rootGroup)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
-
-	return ret1
+	C.g_keyfile_settings_backend_new(arg1, arg2, arg3)
 }
 
 // NewMemorySettingsBackend creates a memory-backed Backend.
@@ -102,30 +90,16 @@ func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup strin
 // This backend allows changes to settings, but does not write them to any
 // backing storage, so the next time you run your application, the memory
 // backend will start out with the default values again.
-func NewMemorySettingsBackend() SettingsBackend {
-	var cret *C.GSettingsBackend
-	var ret1 SettingsBackend
-
-	cret = C.g_memory_settings_backend_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
-
-	return ret1
+func NewMemorySettingsBackend() {
+	C.g_memory_settings_backend_new()
 }
 
 // NewNullSettingsBackend creates a readonly Backend.
 //
 // This backend does not allow changes to settings, so all settings will always
 // have their default values.
-func NewNullSettingsBackend() SettingsBackend {
-	var cret *C.GSettingsBackend
-	var ret1 SettingsBackend
-
-	cret = C.g_null_settings_backend_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SettingsBackend)
-
-	return ret1
+func NewNullSettingsBackend() {
+	C.g_null_settings_backend_new()
 }
 
 // SettingsBackend: the Backend interface defines a generic interface for
@@ -175,11 +149,11 @@ type SettingsBackend interface {
 	// In the case that this call is in response to a call to
 	// g_settings_backend_write() then @origin_tag must be set to the same value
 	// that was passed to that call.
-	Changed(key string, originTag interface{})
+	Changed(b SettingsBackend, key string, originTag interface{})
 	// ChangedTree: this call is a convenience wrapper. It gets the list of
 	// changes from @tree, computes the longest common prefix and calls
 	// g_settings_backend_changed().
-	ChangedTree(tree *glib.Tree, originTag interface{})
+	ChangedTree(b SettingsBackend, tree *glib.Tree, originTag interface{})
 	// KeysChanged signals that a list of keys have possibly changed. Backend
 	// implementations should call this if keys have possibly changed their
 	// values.
@@ -200,7 +174,7 @@ type SettingsBackend interface {
 	// For efficiency reasons, the implementation should strive for @path to be
 	// as long as possible (ie: the longest common prefix of all of the keys
 	// that were changed) but this is not strictly required.
-	KeysChanged(path string, items []string, originTag interface{})
+	KeysChanged(b SettingsBackend, path string, items []string, originTag interface{})
 	// PathChanged signals that all keys below a given path may have possibly
 	// changed. Backend implementations should call this if an entire path of
 	// keys have possibly changed their values.
@@ -221,19 +195,19 @@ type SettingsBackend interface {
 	// that were changed) but this is not strictly required. As an example, if
 	// this function is called with the path of "/" then every single key in the
 	// application will be notified of a possible change.
-	PathChanged(path string, originTag interface{})
+	PathChanged(b SettingsBackend, path string, originTag interface{})
 	// PathWritableChanged signals that the writability of all keys below a
 	// given path may have changed.
 	//
 	// Since GSettings performs no locking operations for itself, this call will
 	// always be made in response to external events.
-	PathWritableChanged(path string)
+	PathWritableChanged(b SettingsBackend, path string)
 	// WritableChanged signals that the writability of a single key has possibly
 	// changed.
 	//
 	// Since GSettings performs no locking operations for itself, this call will
 	// always be made in response to external events.
-	WritableChanged(key string)
+	WritableChanged(b SettingsBackend, key string)
 }
 
 // settingsBackend implements the SettingsBackend interface.
@@ -278,7 +252,7 @@ func marshalSettingsBackend(p uintptr) (interface{}, error) {
 // In the case that this call is in response to a call to
 // g_settings_backend_write() then @origin_tag must be set to the same value
 // that was passed to that call.
-func (b settingsBackend) Changed(key string, originTag interface{}) {
+func (b settingsBackend) Changed(b SettingsBackend, key string, originTag interface{}) {
 	var arg0 *C.GSettingsBackend
 	var arg1 *C.gchar
 	var arg2 C.gpointer
@@ -288,13 +262,13 @@ func (b settingsBackend) Changed(key string, originTag interface{}) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gpointer(originTag)
 
-	C.g_settings_backend_changed(arg0, key, originTag)
+	C.g_settings_backend_changed(arg0, arg1, arg2)
 }
 
 // ChangedTree: this call is a convenience wrapper. It gets the list of
 // changes from @tree, computes the longest common prefix and calls
 // g_settings_backend_changed().
-func (b settingsBackend) ChangedTree(tree *glib.Tree, originTag interface{}) {
+func (b settingsBackend) ChangedTree(b SettingsBackend, tree *glib.Tree, originTag interface{}) {
 	var arg0 *C.GSettingsBackend
 	var arg1 *C.GTree
 	var arg2 C.gpointer
@@ -303,7 +277,7 @@ func (b settingsBackend) ChangedTree(tree *glib.Tree, originTag interface{}) {
 	arg1 = (*C.GTree)(unsafe.Pointer(tree.Native()))
 	arg2 = C.gpointer(originTag)
 
-	C.g_settings_backend_changed_tree(arg0, tree, originTag)
+	C.g_settings_backend_changed_tree(arg0, arg1, arg2)
 }
 
 // KeysChanged signals that a list of keys have possibly changed. Backend
@@ -326,7 +300,7 @@ func (b settingsBackend) ChangedTree(tree *glib.Tree, originTag interface{}) {
 // For efficiency reasons, the implementation should strive for @path to be
 // as long as possible (ie: the longest common prefix of all of the keys
 // that were changed) but this is not strictly required.
-func (b settingsBackend) KeysChanged(path string, items []string, originTag interface{}) {
+func (b settingsBackend) KeysChanged(b SettingsBackend, path string, items []string, originTag interface{}) {
 	var arg0 *C.GSettingsBackend
 	var arg1 *C.gchar
 	var arg2 **C.gchar
@@ -349,7 +323,7 @@ func (b settingsBackend) KeysChanged(path string, items []string, originTag inte
 	}
 	arg3 = C.gpointer(originTag)
 
-	C.g_settings_backend_keys_changed(arg0, path, items, originTag)
+	C.g_settings_backend_keys_changed(arg0, arg1, arg2, arg3)
 }
 
 // PathChanged signals that all keys below a given path may have possibly
@@ -372,7 +346,7 @@ func (b settingsBackend) KeysChanged(path string, items []string, originTag inte
 // that were changed) but this is not strictly required. As an example, if
 // this function is called with the path of "/" then every single key in the
 // application will be notified of a possible change.
-func (b settingsBackend) PathChanged(path string, originTag interface{}) {
+func (b settingsBackend) PathChanged(b SettingsBackend, path string, originTag interface{}) {
 	var arg0 *C.GSettingsBackend
 	var arg1 *C.gchar
 	var arg2 C.gpointer
@@ -382,7 +356,7 @@ func (b settingsBackend) PathChanged(path string, originTag interface{}) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gpointer(originTag)
 
-	C.g_settings_backend_path_changed(arg0, path, originTag)
+	C.g_settings_backend_path_changed(arg0, arg1, arg2)
 }
 
 // PathWritableChanged signals that the writability of all keys below a
@@ -390,7 +364,7 @@ func (b settingsBackend) PathChanged(path string, originTag interface{}) {
 //
 // Since GSettings performs no locking operations for itself, this call will
 // always be made in response to external events.
-func (b settingsBackend) PathWritableChanged(path string) {
+func (b settingsBackend) PathWritableChanged(b SettingsBackend, path string) {
 	var arg0 *C.GSettingsBackend
 	var arg1 *C.gchar
 
@@ -398,7 +372,7 @@ func (b settingsBackend) PathWritableChanged(path string) {
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_settings_backend_path_writable_changed(arg0, path)
+	C.g_settings_backend_path_writable_changed(arg0, arg1)
 }
 
 // WritableChanged signals that the writability of a single key has possibly
@@ -406,7 +380,7 @@ func (b settingsBackend) PathWritableChanged(path string) {
 //
 // Since GSettings performs no locking operations for itself, this call will
 // always be made in response to external events.
-func (b settingsBackend) WritableChanged(key string) {
+func (b settingsBackend) WritableChanged(b SettingsBackend, key string) {
 	var arg0 *C.GSettingsBackend
 	var arg1 *C.gchar
 
@@ -414,5 +388,5 @@ func (b settingsBackend) WritableChanged(key string) {
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_settings_backend_writable_changed(arg0, key)
+	C.g_settings_backend_writable_changed(arg0, arg1)
 }

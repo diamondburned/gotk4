@@ -3,17 +3,11 @@
 package gdk
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -43,13 +37,13 @@ type DrawingContext interface {
 	// The returned context is guaranteed to be valid as long as the
 	// DrawingContext is valid, that is between a call to
 	// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame().
-	CairoContext() *cairo.Context
+	CairoContext(c DrawingContext)
 	// Clip retrieves a copy of the clip region used when creating the @context.
-	Clip() *cairo.Region
+	Clip(c DrawingContext)
 	// Window retrieves the window that created the drawing @context.
-	Window() Window
+	Window(c DrawingContext)
 	// IsValid checks whether the given DrawingContext is valid.
-	IsValid() bool
+	IsValid(c DrawingContext) bool
 }
 
 // drawingContext implements the DrawingContext interface.
@@ -79,68 +73,46 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 // The returned context is guaranteed to be valid as long as the
 // DrawingContext is valid, that is between a call to
 // gdk_window_begin_draw_frame() and gdk_window_end_draw_frame().
-func (c drawingContext) CairoContext() *cairo.Context {
+func (c drawingContext) CairoContext(c DrawingContext) {
 	var arg0 *C.GdkDrawingContext
 
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.cairo_t
-	var ret1 *cairo.Context
-
-	cret = C.gdk_drawing_context_get_cairo_context(arg0)
-
-	ret1 = cairo.WrapContext(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_drawing_context_get_cairo_context(arg0)
 }
 
 // Clip retrieves a copy of the clip region used when creating the @context.
-func (c drawingContext) Clip() *cairo.Region {
+func (c drawingContext) Clip(c DrawingContext) {
 	var arg0 *C.GdkDrawingContext
 
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.cairo_region_t
-	var ret1 *cairo.Region
-
-	cret = C.gdk_drawing_context_get_clip(arg0)
-
-	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_drawing_context_get_clip(arg0)
 }
 
 // Window retrieves the window that created the drawing @context.
-func (c drawingContext) Window() Window {
+func (c drawingContext) Window(c DrawingContext) {
 	var arg0 *C.GdkDrawingContext
 
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkWindow
-	var ret1 Window
-
-	cret = C.gdk_drawing_context_get_window(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
-
-	return ret1
+	C.gdk_drawing_context_get_window(arg0)
 }
 
 // IsValid checks whether the given DrawingContext is valid.
-func (c drawingContext) IsValid() bool {
+func (c drawingContext) IsValid(c DrawingContext) bool {
 	var arg0 *C.GdkDrawingContext
 
 	arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gdk_drawing_context_is_valid(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

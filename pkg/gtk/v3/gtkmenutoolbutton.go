@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,19 +47,19 @@ type MenuToolButton interface {
 	Buildable
 
 	// Menu gets the Menu associated with MenuToolButton.
-	Menu() Widget
+	Menu(b MenuToolButton)
 	// SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip
 	// for the arrow button which pops up the menu. See
 	// gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
 	// MenuToolButton.
-	SetArrowTooltipMarkup(markup string)
+	SetArrowTooltipMarkup(b MenuToolButton, markup string)
 	// SetArrowTooltipText sets the tooltip text to be used as tooltip for the
 	// arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text()
 	// for setting a tooltip on the whole MenuToolButton.
-	SetArrowTooltipText(text string)
+	SetArrowTooltipText(b MenuToolButton, text string)
 	// SetMenu sets the Menu that is popped up when the user clicks on the
 	// arrow. If @menu is NULL, the arrow button becomes insensitive.
-	SetMenu(menu Widget)
+	SetMenu(b MenuToolButton, menu Widget)
 }
 
 // menuToolButton implements the MenuToolButton interface.
@@ -93,7 +90,7 @@ func marshalMenuToolButton(p uintptr) (interface{}, error) {
 }
 
 // NewMenuToolButton constructs a class MenuToolButton.
-func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
+func NewMenuToolButton(iconWidget Widget, label string) {
 	var arg1 *C.GtkWidget
 	var arg2 *C.gchar
 
@@ -101,54 +98,33 @@ func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkMenuToolButton
-	var ret1 MenuToolButton
-
-	cret = C.gtk_menu_tool_button_new(iconWidget, label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuToolButton)
-
-	return ret1
+	C.gtk_menu_tool_button_new(arg1, arg2)
 }
 
 // NewMenuToolButtonFromStock constructs a class MenuToolButton.
-func NewMenuToolButtonFromStock(stockID string) MenuToolButton {
+func NewMenuToolButtonFromStock(stockID string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkMenuToolButton
-	var ret1 MenuToolButton
-
-	cret = C.gtk_menu_tool_button_new_from_stock(stockID)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuToolButton)
-
-	return ret1
+	C.gtk_menu_tool_button_new_from_stock(arg1)
 }
 
 // Menu gets the Menu associated with MenuToolButton.
-func (b menuToolButton) Menu() Widget {
+func (b menuToolButton) Menu(b MenuToolButton) {
 	var arg0 *C.GtkMenuToolButton
 
 	arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_menu_tool_button_get_menu(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_menu_tool_button_get_menu(arg0)
 }
 
 // SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip
 // for the arrow button which pops up the menu. See
 // gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
 // MenuToolButton.
-func (b menuToolButton) SetArrowTooltipMarkup(markup string) {
+func (b menuToolButton) SetArrowTooltipMarkup(b MenuToolButton, markup string) {
 	var arg0 *C.GtkMenuToolButton
 	var arg1 *C.gchar
 
@@ -156,13 +132,13 @@ func (b menuToolButton) SetArrowTooltipMarkup(markup string) {
 	arg1 = (*C.gchar)(C.CString(markup))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_menu_tool_button_set_arrow_tooltip_markup(arg0, markup)
+	C.gtk_menu_tool_button_set_arrow_tooltip_markup(arg0, arg1)
 }
 
 // SetArrowTooltipText sets the tooltip text to be used as tooltip for the
 // arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text()
 // for setting a tooltip on the whole MenuToolButton.
-func (b menuToolButton) SetArrowTooltipText(text string) {
+func (b menuToolButton) SetArrowTooltipText(b MenuToolButton, text string) {
 	var arg0 *C.GtkMenuToolButton
 	var arg1 *C.gchar
 
@@ -170,17 +146,17 @@ func (b menuToolButton) SetArrowTooltipText(text string) {
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_menu_tool_button_set_arrow_tooltip_text(arg0, text)
+	C.gtk_menu_tool_button_set_arrow_tooltip_text(arg0, arg1)
 }
 
 // SetMenu sets the Menu that is popped up when the user clicks on the
 // arrow. If @menu is NULL, the arrow button becomes insensitive.
-func (b menuToolButton) SetMenu(menu Widget) {
+func (b menuToolButton) SetMenu(b MenuToolButton, menu Widget) {
 	var arg0 *C.GtkMenuToolButton
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
 
-	C.gtk_menu_tool_button_set_menu(arg0, menu)
+	C.gtk_menu_tool_button_set_menu(arg0, arg1)
 }

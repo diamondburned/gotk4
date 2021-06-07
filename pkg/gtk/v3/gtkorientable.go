@@ -31,9 +31,9 @@ type Orientable interface {
 	gextras.Objector
 
 	// Orientation retrieves the orientation of the @orientable.
-	Orientation() Orientation
+	Orientation(o Orientable)
 	// SetOrientation sets the orientation of the @orientable.
-	SetOrientation(orientation Orientation)
+	SetOrientation(o Orientable, orientation Orientation)
 }
 
 // orientable implements the Orientable interface.
@@ -58,28 +58,21 @@ func marshalOrientable(p uintptr) (interface{}, error) {
 }
 
 // Orientation retrieves the orientation of the @orientable.
-func (o orientable) Orientation() Orientation {
+func (o orientable) Orientation(o Orientable) {
 	var arg0 *C.GtkOrientable
 
 	arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
 
-	var cret C.GtkOrientation
-	var ret1 Orientation
-
-	cret = C.gtk_orientable_get_orientation(arg0)
-
-	ret1 = Orientation(cret)
-
-	return ret1
+	C.gtk_orientable_get_orientation(arg0)
 }
 
 // SetOrientation sets the orientation of the @orientable.
-func (o orientable) SetOrientation(orientation Orientation) {
+func (o orientable) SetOrientation(o Orientable, orientation Orientation) {
 	var arg0 *C.GtkOrientable
 	var arg1 C.GtkOrientation
 
 	arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
 	arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_orientable_set_orientation(arg0, orientation)
+	C.gtk_orientable_set_orientation(arg0, arg1)
 }

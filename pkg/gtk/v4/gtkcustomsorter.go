@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,7 +31,7 @@ type CustomSorter interface {
 	// to be called.
 	//
 	// If a previous function was set, its @user_destroy will be called now.
-	SetSortFunc(sortFunc glib.CompareDataFunc)
+	SetSortFunc(s CustomSorter)
 }
 
 // customSorter implements the CustomSorter interface.
@@ -60,16 +56,8 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 }
 
 // NewCustomSorter constructs a class CustomSorter.
-func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter {
-
-	var cret C.GtkCustomSorter
-	var ret1 CustomSorter
-
-	cret = C.gtk_custom_sorter_new(sortFunc, userData, userDestroy)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomSorter)
-
-	return ret1
+func NewCustomSorter() {
+	C.gtk_custom_sorter_new(arg1, arg2, arg3)
 }
 
 // SetSortFunc sets (or unsets) the function used for sorting items.
@@ -80,10 +68,10 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter {
 // to be called.
 //
 // If a previous function was set, its @user_destroy will be called now.
-func (s customSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
+func (s customSorter) SetSortFunc(s CustomSorter) {
 	var arg0 *C.GtkCustomSorter
 
 	arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_custom_sorter_set_sort_func(arg0, sortFunc, userData, userDestroy)
+	C.gtk_custom_sorter_set_sort_func(arg0, arg1, arg2, arg3)
 }

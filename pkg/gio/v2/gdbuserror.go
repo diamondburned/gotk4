@@ -4,14 +4,10 @@ package gio
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -37,21 +33,13 @@ import "C"
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DBusErrorEncodeGerror(error error) string {
+func DBusErrorEncodeGerror(error error) {
 	var arg1 *C.GError
 
 	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
 	defer C.g_error_free(arg1)
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_dbus_error_encode_gerror(error)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_dbus_error_encode_gerror(arg1)
 }
 
 // DBusErrorGetRemoteError gets the D-Bus error name used for @error, if any.
@@ -60,21 +48,13 @@ func DBusErrorEncodeGerror(error error) string {
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on @error.
-func DBusErrorGetRemoteError(error error) string {
+func DBusErrorGetRemoteError(error error) {
 	var arg1 *C.GError
 
 	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
 	defer C.g_error_free(arg1)
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_dbus_error_get_remote_error(error)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_dbus_error_get_remote_error(arg1)
 }
 
 // DBusErrorIsRemoteError checks if @error represents an error received via
@@ -87,13 +67,15 @@ func DBusErrorIsRemoteError(error error) bool {
 	defer C.g_error_free(arg1)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_error_is_remote_error(error)
+	cret = C.g_dbus_error_is_remote_error(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DBusErrorNewForDBusError creates a #GError based on the contents of
@@ -121,7 +103,7 @@ func DBusErrorIsRemoteError(error error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) error {
+func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -130,21 +112,13 @@ func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) err
 	arg2 = (*C.gchar)(C.CString(dbusErrorMessage))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret *C.GError
-	var ret1 error
-
-	cret = C.g_dbus_error_new_for_dbus_error(dbusErrorName, dbusErrorMessage)
-
-	ret1 = gerror.Take(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_dbus_error_new_for_dbus_error(arg1, arg2)
 }
 
 // DBusErrorRegisterErrorDomain: helper function for associating a #GError error
 // domain with D-Bus error names.
-func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry) {
-
-	C.g_dbus_error_register_error_domain(errorDomainQuarkName, quarkVolatile, entries, numEntries)
+func DBusErrorRegisterErrorDomain() {
+	C.g_dbus_error_register_error_domain(arg1, arg2, arg3, arg4)
 }
 
 // DBusErrorStripRemoteError looks for extra information in the error message
@@ -160,13 +134,15 @@ func DBusErrorStripRemoteError(error error) bool {
 	defer C.g_error_free(arg1)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_error_strip_remote_error(error)
+	cret = C.g_dbus_error_strip_remote_error(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
@@ -196,10 +172,14 @@ func (d *DBusErrorEntry) Native() unsafe.Pointer {
 
 // ErrorCode gets the field inside the struct.
 func (d *DBusErrorEntry) ErrorCode() int {
-	v = C.gint(d.native.error_code)
+	var v int
+	v = int(d.native.error_code)
+	return v
 }
 
 // DBusErrorName gets the field inside the struct.
 func (d *DBusErrorEntry) DBusErrorName() string {
+	var v string
 	v = C.GoString(d.native.dbus_error_name)
+	return v
 }

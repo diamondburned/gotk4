@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -75,27 +70,27 @@ type BufferedInputStream interface {
 	//
 	// For the asynchronous, non-blocking, version of this function, see
 	// g_buffered_input_stream_fill_async().
-	Fill(count int, cancellable Cancellable) (gssize int, err error)
+	Fill(s BufferedInputStream, count int, cancellable Cancellable) error
 	// FillAsync reads data into @stream's buffer asynchronously, up to @count
 	// size. @io_priority can be used to prioritize reads. For the synchronous
 	// version of this function, see g_buffered_input_stream_fill().
 	//
 	// If @count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
-	FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	FillAsync(s BufferedInputStream)
 	// FillFinish finishes an asynchronous read.
-	FillFinish(result AsyncResult) (gssize int, err error)
+	FillFinish(s BufferedInputStream, result AsyncResult) error
 	// Available gets the size of the available data within the stream.
-	Available() uint
+	Available(s BufferedInputStream)
 	// BufferSize gets the size of the input buffer.
-	BufferSize() uint
+	BufferSize(s BufferedInputStream)
 	// Peek peeks in the buffer, copying data of size @count into @buffer,
 	// offset @offset bytes.
-	Peek(buffer []byte, offset uint) uint
+	Peek(s BufferedInputStream)
 	// PeekBuffer returns the buffer with the currently available bytes. The
 	// returned buffer must not be modified and will become invalid when reading
 	// from the stream or filling the buffer.
-	PeekBuffer() (count uint, guint8s []byte)
+	PeekBuffer(s BufferedInputStream) uint
 	// ReadByte tries to read a single byte from the stream or the buffer. Will
 	// block during this read.
 	//
@@ -109,11 +104,11 @@ type BufferedInputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	ReadByte(cancellable Cancellable) (gint int, err error)
+	ReadByte(s BufferedInputStream, cancellable Cancellable) error
 	// SetBufferSize sets the size of the internal buffer of @stream to @size,
 	// or to the size of the contents of the buffer. The buffer can never be
 	// resized smaller than its current contents.
-	SetBufferSize(size uint)
+	SetBufferSize(s BufferedInputStream, size uint)
 }
 
 // bufferedInputStream implements the BufferedInputStream interface.
@@ -140,37 +135,23 @@ func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 }
 
 // NewBufferedInputStream constructs a class BufferedInputStream.
-func NewBufferedInputStream(baseStream InputStream) BufferedInputStream {
+func NewBufferedInputStream(baseStream InputStream) {
 	var arg1 *C.GInputStream
 
 	arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
 
-	var cret C.GBufferedInputStream
-	var ret1 BufferedInputStream
-
-	cret = C.g_buffered_input_stream_new(baseStream)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedInputStream)
-
-	return ret1
+	C.g_buffered_input_stream_new(arg1)
 }
 
 // NewBufferedInputStreamSized constructs a class BufferedInputStream.
-func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInputStream {
+func NewBufferedInputStreamSized(baseStream InputStream, size uint) {
 	var arg1 *C.GInputStream
 	var arg2 C.gsize
 
 	arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
 	arg2 = C.gsize(size)
 
-	var cret C.GBufferedInputStream
-	var ret1 BufferedInputStream
-
-	cret = C.g_buffered_input_stream_new_sized(baseStream, size)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedInputStream)
-
-	return ret1
+	C.g_buffered_input_stream_new_sized(arg1, arg2)
 }
 
 // Fill tries to read @count bytes from the stream into the buffer. Will
@@ -197,7 +178,7 @@ func NewBufferedInputStreamSized(baseStream InputStream, size uint) BufferedInpu
 //
 // For the asynchronous, non-blocking, version of this function, see
 // g_buffered_input_stream_fill_async().
-func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (gssize int, err error) {
+func (s bufferedInputStream) Fill(s BufferedInputStream, count int, cancellable Cancellable) error {
 	var arg0 *C.GBufferedInputStream
 	var arg1 C.gssize
 	var arg2 *C.GCancellable
@@ -207,16 +188,13 @@ func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (gssize in
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.gssize
-	var ret2 int
+	var err error
 
-	cret = C.g_buffered_input_stream_fill(arg0, count, cancellable, &errout)
+	C.g_buffered_input_stream_fill(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.gssize(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // FillAsync reads data into @stream's buffer asynchronously, up to @count
@@ -225,16 +203,16 @@ func (s bufferedInputStream) Fill(count int, cancellable Cancellable) (gssize in
 //
 // If @count is -1 then the attempted read size is equal to the number of
 // bytes that are required to fill the buffer.
-func (s bufferedInputStream) FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s bufferedInputStream) FillAsync(s BufferedInputStream) {
 	var arg0 *C.GBufferedInputStream
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_buffered_input_stream_fill_async(arg0, count, ioPriority, cancellable, callback, userData)
+	C.g_buffered_input_stream_fill_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // FillFinish finishes an asynchronous read.
-func (s bufferedInputStream) FillFinish(result AsyncResult) (gssize int, err error) {
+func (s bufferedInputStream) FillFinish(s BufferedInputStream, result AsyncResult) error {
 	var arg0 *C.GBufferedInputStream
 	var arg1 *C.GAsyncResult
 
@@ -242,88 +220,59 @@ func (s bufferedInputStream) FillFinish(result AsyncResult) (gssize int, err err
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.gssize
-	var ret2 int
+	var err error
 
-	cret = C.g_buffered_input_stream_fill_finish(arg0, result, &errout)
+	C.g_buffered_input_stream_fill_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.gssize(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Available gets the size of the available data within the stream.
-func (s bufferedInputStream) Available() uint {
+func (s bufferedInputStream) Available(s BufferedInputStream) {
 	var arg0 *C.GBufferedInputStream
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_buffered_input_stream_get_available(arg0)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_buffered_input_stream_get_available(arg0)
 }
 
 // BufferSize gets the size of the input buffer.
-func (s bufferedInputStream) BufferSize() uint {
+func (s bufferedInputStream) BufferSize(s BufferedInputStream) {
 	var arg0 *C.GBufferedInputStream
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_buffered_input_stream_get_buffer_size(arg0)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_buffered_input_stream_get_buffer_size(arg0)
 }
 
 // Peek peeks in the buffer, copying data of size @count into @buffer,
 // offset @offset bytes.
-func (s bufferedInputStream) Peek(buffer []byte, offset uint) uint {
+func (s bufferedInputStream) Peek(s BufferedInputStream) {
 	var arg0 *C.GBufferedInputStream
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_buffered_input_stream_peek(arg0, buffer, offset, count)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_buffered_input_stream_peek(arg0, arg1, arg2, arg3)
 }
 
 // PeekBuffer returns the buffer with the currently available bytes. The
 // returned buffer must not be modified and will become invalid when reading
 // from the stream or filling the buffer.
-func (s bufferedInputStream) PeekBuffer() (count uint, guint8s []byte) {
+func (s bufferedInputStream) PeekBuffer(s BufferedInputStream) uint {
 	var arg0 *C.GBufferedInputStream
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.void
-	var arg1 *C.gsize
-	var ret2 []byte
+	var arg1 C.gsize
+	var count uint
 
-	cret = C.g_buffered_input_stream_peek_buffer(arg0, &arg1)
+	C.g_buffered_input_stream_peek_buffer(arg0, &arg1)
 
-	ret2 = make([]byte, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.guint8)(ptr.Add(unsafe.Pointer(cret), i))
-		ret2[i] = C.guint8(src)
-	}
+	count = uint(&arg1)
 
-	return ret1, ret2
+	return count
 }
 
 // ReadByte tries to read a single byte from the stream or the buffer. Will
@@ -339,7 +288,7 @@ func (s bufferedInputStream) PeekBuffer() (count uint, guint8s []byte) {
 // partial result will be returned, without an error.
 //
 // On error -1 is returned and @error is set accordingly.
-func (s bufferedInputStream) ReadByte(cancellable Cancellable) (gint int, err error) {
+func (s bufferedInputStream) ReadByte(s BufferedInputStream, cancellable Cancellable) error {
 	var arg0 *C.GBufferedInputStream
 	var arg1 *C.GCancellable
 
@@ -347,27 +296,24 @@ func (s bufferedInputStream) ReadByte(cancellable Cancellable) (gint int, err er
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.int
-	var ret2 int
+	var err error
 
-	cret = C.g_buffered_input_stream_read_byte(arg0, cancellable, &errout)
+	C.g_buffered_input_stream_read_byte(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.int(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // SetBufferSize sets the size of the internal buffer of @stream to @size,
 // or to the size of the contents of the buffer. The buffer can never be
 // resized smaller than its current contents.
-func (s bufferedInputStream) SetBufferSize(size uint) {
+func (s bufferedInputStream) SetBufferSize(s BufferedInputStream, size uint) {
 	var arg0 *C.GBufferedInputStream
 	var arg1 C.gsize
 
 	arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = C.gsize(size)
 
-	C.g_buffered_input_stream_set_buffer_size(arg0, size)
+	C.g_buffered_input_stream_set_buffer_size(arg0, arg1)
 }

@@ -3,19 +3,14 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <glib-object.h>
 import "C"
 
@@ -25,42 +20,42 @@ type ParamFlags int
 
 const (
 	// ParamFlagsReadable: the parameter is readable
-	ParamFlagsReadable ParamFlags = 0b1
+	ParamFlagsReadable ParamFlags = 1
 	// ParamFlagsWritable: the parameter is writable
-	ParamFlagsWritable ParamFlags = 0b10
+	ParamFlagsWritable ParamFlags = 2
 	// ParamFlagsReadwrite alias for G_PARAM_READABLE | G_PARAM_WRITABLE
-	ParamFlagsReadwrite ParamFlags = 0b11
+	ParamFlagsReadwrite ParamFlags = 3
 	// ParamFlagsConstruct: the parameter will be set upon object construction
-	ParamFlagsConstruct ParamFlags = 0b100
+	ParamFlagsConstruct ParamFlags = 4
 	// ParamFlagsConstructOnly: the parameter can only be set upon object
 	// construction
-	ParamFlagsConstructOnly ParamFlags = 0b1000
+	ParamFlagsConstructOnly ParamFlags = 8
 	// ParamFlagsLaxValidation: upon parameter conversion (see
 	// g_param_value_convert()) strict validation is not required
-	ParamFlagsLaxValidation ParamFlags = 0b10000
+	ParamFlagsLaxValidation ParamFlags = 16
 	// ParamFlagsStaticName: the string used as name when constructing the
 	// parameter is guaranteed to remain valid and unmodified for the lifetime
 	// of the parameter. Since 2.8
-	ParamFlagsStaticName ParamFlags = 0b100000
+	ParamFlagsStaticName ParamFlags = 32
 	// ParamFlagsPrivate: internal
-	ParamFlagsPrivate ParamFlags = 0b100000
+	ParamFlagsPrivate ParamFlags = 32
 	// ParamFlagsStaticNick: the string used as nick when constructing the
 	// parameter is guaranteed to remain valid and unmmodified for the lifetime
 	// of the parameter. Since 2.8
-	ParamFlagsStaticNick ParamFlags = 0b1000000
+	ParamFlagsStaticNick ParamFlags = 64
 	// ParamFlagsStaticBlurb: the string used as blurb when constructing the
 	// parameter is guaranteed to remain valid and unmodified for the lifetime
 	// of the parameter. Since 2.8
-	ParamFlagsStaticBlurb ParamFlags = 0b10000000
+	ParamFlagsStaticBlurb ParamFlags = 128
 	// ParamFlagsExplicitNotify calls to g_object_set_property() for this
 	// property will not automatically result in a "notify" signal being
 	// emitted: the implementation must call g_object_notify() themselves in
 	// case the property actually changes. Since: 2.42.
-	ParamFlagsExplicitNotify ParamFlags = 0b1000000000000000000000000000000
+	ParamFlagsExplicitNotify ParamFlags = 1073741824
 	// ParamFlagsDeprecated: the parameter is deprecated and will be removed in
 	// a future version. A warning will be generated if it is used while running
 	// with G_ENABLE_DIAGNOSTIC=1. Since 2.26
-	ParamFlagsDeprecated ParamFlags = 0b10000000000000000000000000000000
+	ParamFlagsDeprecated ParamFlags = 2147483648
 )
 
 // NewParamSpecPool creates a new SpecPool.
@@ -69,21 +64,14 @@ const (
 // specify the owner as a colon-separated prefix of the property name, like
 // "GtkContainer:border-width". This feature is deprecated, so you should always
 // set @type_prefixing to false.
-func NewParamSpecPool(typePrefixing bool) *ParamSpecPool {
+func NewParamSpecPool(typePrefixing bool) {
 	var arg1 C.gboolean
 
 	if typePrefixing {
 		arg1 = C.gboolean(1)
 	}
 
-	var cret *C.GParamSpecPool
-	var ret1 *ParamSpecPool
-
-	cret = C.g_param_spec_pool_new(typePrefixing)
-
-	ret1 = WrapParamSpecPool(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_param_spec_pool_new(arg1)
 }
 
 // ParamValueConvert transforms @src_value into @dest_value if possible, and
@@ -107,13 +95,15 @@ func ParamValueConvert(pspec ParamSpec, srcValue *externglib.Value, destValue *e
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_param_value_convert(pspec, srcValue, destValue, strictValidation)
+	cret = C.g_param_value_convert(arg1, arg2, arg3, arg4)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ParamValueDefaults checks whether @value contains the default value as
@@ -126,13 +116,15 @@ func ParamValueDefaults(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_param_value_defaults(pspec, value)
+	cret = C.g_param_value_defaults(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ParamValueSetDefault sets @value to its default value as specified in @pspec.
@@ -143,7 +135,7 @@ func ParamValueSetDefault(pspec ParamSpec, value *externglib.Value) {
 	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	arg2 = (*C.GValue)(value.GValue)
 
-	C.g_param_value_set_default(pspec, value)
+	C.g_param_value_set_default(arg1, arg2)
 }
 
 // ParamValueValidate ensures that the contents of @value comply with the
@@ -159,19 +151,21 @@ func ParamValueValidate(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_param_value_validate(pspec, value)
+	cret = C.g_param_value_validate(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ParamValuesCmp compares @value1 with @value2 according to @pspec, and return
 // -1, 0 or +1, if @value1 is found to be less than, equal to or greater than
 // @value2, respectively.
-func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externglib.Value) int {
+func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externglib.Value) {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 	var arg3 *C.GValue
@@ -180,14 +174,7 @@ func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externgli
 	arg2 = (*C.GValue)(value1.GValue)
 	arg3 = (*C.GValue)(value2.GValue)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_param_values_cmp(pspec, value1, value2)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_param_values_cmp(arg1, arg2, arg3)
 }
 
 // ParamSpecPool: a SpecPool maintains a collection of Specs which can be
@@ -219,7 +206,7 @@ func (p *ParamSpecPool) Native() unsafe.Pointer {
 }
 
 // Insert inserts a Spec in the pool.
-func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
+func (p *ParamSpecPool) Insert(p *ParamSpecPool, pspec ParamSpec, ownerType externglib.Type) {
 	var arg0 *C.GParamSpecPool
 	var arg1 *C.GParamSpec
 	var arg2 C.GType
@@ -228,55 +215,40 @@ func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
 	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	arg2 := C.GType(ownerType)
 
-	C.g_param_spec_pool_insert(arg0, pspec, ownerType)
+	C.g_param_spec_pool_insert(arg0, arg1, arg2)
 }
 
 // List gets an array of all Specs owned by @owner_type in the pool.
-func (p *ParamSpecPool) List(ownerType externglib.Type) (nPspecsP uint, paramSpecs []ParamSpec) {
+func (p *ParamSpecPool) List(p *ParamSpecPool, ownerType externglib.Type) uint {
 	var arg0 *C.GParamSpecPool
 	var arg1 C.GType
 
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	arg1 := C.GType(ownerType)
 
-	var cret **C.GParamSpec
-	var arg2 *C.guint
-	var ret2 []ParamSpec
+	var arg2 C.guint
+	var nPspecsP uint
 
-	cret = C.g_param_spec_pool_list(arg0, ownerType, &arg2)
+	C.g_param_spec_pool_list(arg0, arg1, &arg2)
 
-	ret2 = make([]ParamSpec, arg2)
-	for i := 0; i < uintptr(arg2); i++ {
-		src := (*C.GParamSpec)(ptr.Add(unsafe.Pointer(cret), i))
-		ret2[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(ParamSpec)
-	}
+	nPspecsP = uint(&arg2)
 
-	return ret2, ret2
+	return nPspecsP
 }
 
 // ListOwned gets an #GList of all Specs owned by @owner_type in the pool.
-func (p *ParamSpecPool) ListOwned(ownerType externglib.Type) *glib.List {
+func (p *ParamSpecPool) ListOwned(p *ParamSpecPool, ownerType externglib.Type) {
 	var arg0 *C.GParamSpecPool
 	var arg1 C.GType
 
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	arg1 := C.GType(ownerType)
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_param_spec_pool_list_owned(arg0, ownerType)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_param_spec_pool_list_owned(arg0, arg1)
 }
 
 // Lookup looks up a Spec in the pool.
-func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walkAncestors bool) ParamSpec {
+func (p *ParamSpecPool) Lookup(p *ParamSpecPool, paramName string, ownerType externglib.Type, walkAncestors bool) {
 	var arg0 *C.GParamSpecPool
 	var arg1 *C.gchar
 	var arg2 C.GType
@@ -290,25 +262,18 @@ func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walk
 		arg3 = C.gboolean(1)
 	}
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_pool_lookup(arg0, paramName, ownerType, walkAncestors)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_pool_lookup(arg0, arg1, arg2, arg3)
 }
 
 // Remove removes a Spec from the pool.
-func (p *ParamSpecPool) Remove(pspec ParamSpec) {
+func (p *ParamSpecPool) Remove(p *ParamSpecPool, pspec ParamSpec) {
 	var arg0 *C.GParamSpecPool
 	var arg1 *C.GParamSpec
 
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	C.g_param_spec_pool_remove(arg0, pspec)
+	C.g_param_spec_pool_remove(arg0, arg1)
 }
 
 // Parameter: the GParameter struct is an auxiliary structure used to hand
@@ -339,10 +304,14 @@ func (p *Parameter) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (p *Parameter) Name() string {
+	var v string
 	v = C.GoString(p.native.name)
+	return v
 }
 
 // Value gets the field inside the struct.
 func (p *Parameter) Value() *externglib.Value {
+	var v *externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(p.native.value))
+	return v
 }

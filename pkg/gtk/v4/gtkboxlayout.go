@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -39,11 +35,11 @@ type BoxLayout interface {
 
 	// BaselinePosition gets the value set by
 	// gtk_box_layout_set_baseline_position().
-	BaselinePosition() BaselinePosition
+	BaselinePosition(b BoxLayout)
 	// Homogeneous returns whether the layout is set to be homogeneous.
-	Homogeneous() bool
+	Homogeneous(b BoxLayout) bool
 	// Spacing returns the space that @box_layout puts between children.
-	Spacing() uint
+	Spacing(b BoxLayout)
 	// SetBaselinePosition sets the baseline position of a box layout.
 	//
 	// The baseline position affects only horizontal boxes with at least one
@@ -51,12 +47,12 @@ type BoxLayout interface {
 	// requested, and the baseline is not allocated by the parent then the given
 	// @position is used to allocate the baseline within the extra space
 	// available.
-	SetBaselinePosition(position BaselinePosition)
+	SetBaselinePosition(b BoxLayout, position BaselinePosition)
 	// SetHomogeneous sets whether the box layout will allocate the same size to
 	// all children.
-	SetHomogeneous(homogeneous bool)
+	SetHomogeneous(b BoxLayout, homogeneous bool)
 	// SetSpacing sets how much spacing to put between children.
-	SetSpacing(spacing uint)
+	SetSpacing(b BoxLayout, spacing uint)
 }
 
 // boxLayout implements the BoxLayout interface.
@@ -83,68 +79,49 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 }
 
 // NewBoxLayout constructs a class BoxLayout.
-func NewBoxLayout(orientation Orientation) BoxLayout {
+func NewBoxLayout(orientation Orientation) {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	var cret C.GtkBoxLayout
-	var ret1 BoxLayout
-
-	cret = C.gtk_box_layout_new(orientation)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoxLayout)
-
-	return ret1
+	C.gtk_box_layout_new(arg1)
 }
 
 // BaselinePosition gets the value set by
 // gtk_box_layout_set_baseline_position().
-func (b boxLayout) BaselinePosition() BaselinePosition {
+func (b boxLayout) BaselinePosition(b BoxLayout) {
 	var arg0 *C.GtkBoxLayout
 
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var cret C.GtkBaselinePosition
-	var ret1 BaselinePosition
-
-	cret = C.gtk_box_layout_get_baseline_position(arg0)
-
-	ret1 = BaselinePosition(cret)
-
-	return ret1
+	C.gtk_box_layout_get_baseline_position(arg0)
 }
 
 // Homogeneous returns whether the layout is set to be homogeneous.
-func (b boxLayout) Homogeneous() bool {
+func (b boxLayout) Homogeneous(b BoxLayout) bool {
 	var arg0 *C.GtkBoxLayout
 
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_box_layout_get_homogeneous(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Spacing returns the space that @box_layout puts between children.
-func (b boxLayout) Spacing() uint {
+func (b boxLayout) Spacing(b BoxLayout) {
 	var arg0 *C.GtkBoxLayout
 
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_box_layout_get_spacing(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_box_layout_get_spacing(arg0)
 }
 
 // SetBaselinePosition sets the baseline position of a box layout.
@@ -154,19 +131,19 @@ func (b boxLayout) Spacing() uint {
 // requested, and the baseline is not allocated by the parent then the given
 // @position is used to allocate the baseline within the extra space
 // available.
-func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
+func (b boxLayout) SetBaselinePosition(b BoxLayout, position BaselinePosition) {
 	var arg0 *C.GtkBoxLayout
 	var arg1 C.GtkBaselinePosition
 
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	arg1 = (C.GtkBaselinePosition)(position)
 
-	C.gtk_box_layout_set_baseline_position(arg0, position)
+	C.gtk_box_layout_set_baseline_position(arg0, arg1)
 }
 
 // SetHomogeneous sets whether the box layout will allocate the same size to
 // all children.
-func (b boxLayout) SetHomogeneous(homogeneous bool) {
+func (b boxLayout) SetHomogeneous(b BoxLayout, homogeneous bool) {
 	var arg0 *C.GtkBoxLayout
 	var arg1 C.gboolean
 
@@ -175,16 +152,16 @@ func (b boxLayout) SetHomogeneous(homogeneous bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_box_layout_set_homogeneous(arg0, homogeneous)
+	C.gtk_box_layout_set_homogeneous(arg0, arg1)
 }
 
 // SetSpacing sets how much spacing to put between children.
-func (b boxLayout) SetSpacing(spacing uint) {
+func (b boxLayout) SetSpacing(b BoxLayout, spacing uint) {
 	var arg0 *C.GtkBoxLayout
 	var arg1 C.guint
 
 	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	arg1 = C.guint(spacing)
 
-	C.gtk_box_layout_set_spacing(arg0, spacing)
+	C.gtk_box_layout_set_spacing(arg0, arg1)
 }

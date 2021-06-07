@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -972,46 +971,46 @@ const (
 	LicenseUnknown License = 0
 	// LicenseCustom: a license text is going to be specified by the developer
 	LicenseCustom License = 1
-	// LicenseGpl20: the GNU General Public License, version 2.0 or later
-	LicenseGpl20 License = 2
-	// LicenseGpl30: the GNU General Public License, version 3.0 or later
-	LicenseGpl30 License = 3
-	// LicenseLgpl21: the GNU Lesser General Public License, version 2.1 or
+	// LicenseGPL20: the GNU General Public License, version 2.0 or later
+	LicenseGPL20 License = 2
+	// LicenseGPL30: the GNU General Public License, version 3.0 or later
+	LicenseGPL30 License = 3
+	// LicenseLGPL21: the GNU Lesser General Public License, version 2.1 or
 	// later
-	LicenseLgpl21 License = 4
-	// LicenseLgpl30: the GNU Lesser General Public License, version 3.0 or
+	LicenseLGPL21 License = 4
+	// LicenseLGPL30: the GNU Lesser General Public License, version 3.0 or
 	// later
-	LicenseLgpl30 License = 5
-	// LicenseBsd: the BSD standard license
-	LicenseBsd License = 6
-	// LicenseMitX11: the MIT/X11 standard license
-	LicenseMitX11 License = 7
+	LicenseLGPL30 License = 5
+	// LicenseBSD: the BSD standard license
+	LicenseBSD License = 6
+	// LicenseMITX11: the MIT/X11 standard license
+	LicenseMITX11 License = 7
 	// LicenseArtistic: the Artistic License, version 2.0
 	LicenseArtistic License = 8
-	// LicenseGpl20Only: the GNU General Public License, version 2.0 only. Since
+	// LicenseGPL20Only: the GNU General Public License, version 2.0 only. Since
 	// 3.12.
-	LicenseGpl20Only License = 9
-	// LicenseGpl30Only: the GNU General Public License, version 3.0 only. Since
+	LicenseGPL20Only License = 9
+	// LicenseGPL30Only: the GNU General Public License, version 3.0 only. Since
 	// 3.12.
-	LicenseGpl30Only License = 10
-	// LicenseLgpl21Only: the GNU Lesser General Public License, version 2.1
+	LicenseGPL30Only License = 10
+	// LicenseLGPL21Only: the GNU Lesser General Public License, version 2.1
 	// only. Since 3.12.
-	LicenseLgpl21Only License = 11
-	// LicenseLgpl30Only: the GNU Lesser General Public License, version 3.0
+	LicenseLGPL21Only License = 11
+	// LicenseLGPL30Only: the GNU Lesser General Public License, version 3.0
 	// only. Since 3.12.
-	LicenseLgpl30Only License = 12
-	// LicenseAgpl30: the GNU Affero General Public License, version 3.0 or
+	LicenseLGPL30Only License = 12
+	// LicenseAGPL30: the GNU Affero General Public License, version 3.0 or
 	// later. Since: 3.22.
-	LicenseAgpl30 License = 13
-	// LicenseAgpl30Only: the GNU Affero General Public License, version 3.0
+	LicenseAGPL30 License = 13
+	// LicenseAGPL30Only: the GNU Affero General Public License, version 3.0
 	// only. Since: 3.22.27.
-	LicenseAgpl30Only License = 14
-	// LicenseBsd3: the 3-clause BSD licence. Since: 3.24.20.
-	LicenseBsd3 License = 15
+	LicenseAGPL30Only License = 14
+	// LicenseBSD3: the 3-clause BSD licence. Since: 3.24.20.
+	LicenseBSD3 License = 15
 	// LicenseApache20: the Apache License, version 2.0. Since: 3.24.20.
 	LicenseApache20 License = 16
-	// LicenseMpl20: the Mozilla Public License, version 2.0. Since: 3.24.20.
-	LicenseMpl20 License = 17
+	// LicenseMPL20: the Mozilla Public License, version 2.0. Since: 3.24.20.
+	LicenseMPL20 License = 17
 )
 
 func marshalLicense(p uintptr) (interface{}, error) {
@@ -1090,8 +1089,7 @@ type NotebookTab int
 
 const (
 	NotebookTabFirst NotebookTab = 0
-
-	NotebookTabLast NotebookTab = 1
+	NotebookTabLast  NotebookTab = 1
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
@@ -1368,8 +1366,8 @@ const (
 	PrintErrorGeneral PrintError = 0
 	// PrintErrorInternalError: an internal error occurred.
 	PrintErrorInternalError PrintError = 1
-	// PrintErrorNomem: a memory allocation failed.
-	PrintErrorNomem PrintError = 2
+	// PrintErrorNOMEM: a memory allocation failed.
+	PrintErrorNOMEM PrintError = 2
 	// PrintErrorInvalidFile: an error occurred while loading a page setup or
 	// paper size from a key file.
 	PrintErrorInvalidFile PrintError = 3
@@ -2452,15 +2450,15 @@ type AccelFlags int
 
 const (
 	// AccelFlagsVisible: accelerator is visible
-	AccelFlagsVisible AccelFlags = 0b1
+	AccelFlagsVisible AccelFlags = 1
 	// AccelFlagsLocked: accelerator not removable
-	AccelFlagsLocked AccelFlags = 0b10
+	AccelFlagsLocked AccelFlags = 2
 	// AccelFlagsMask: mask
-	AccelFlagsMask AccelFlags = 0b111
+	AccelFlagsMask AccelFlags = 7
 )
 
 func marshalAccelFlags(p uintptr) (interface{}, error) {
-	return AccelFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AccelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ApplicationInhibitFlags types of user actions that may be blocked by
@@ -2470,19 +2468,19 @@ type ApplicationInhibitFlags int
 const (
 	// ApplicationInhibitFlagsLogout: inhibit ending the user session by logging
 	// out or by shutting down the computer
-	ApplicationInhibitFlagsLogout ApplicationInhibitFlags = 0b1
+	ApplicationInhibitFlagsLogout ApplicationInhibitFlags = 1
 	// ApplicationInhibitFlagsSwitch: inhibit user switching
-	ApplicationInhibitFlagsSwitch ApplicationInhibitFlags = 0b10
+	ApplicationInhibitFlagsSwitch ApplicationInhibitFlags = 2
 	// ApplicationInhibitFlagsSuspend: inhibit suspending the session or
 	// computer
-	ApplicationInhibitFlagsSuspend ApplicationInhibitFlags = 0b100
+	ApplicationInhibitFlagsSuspend ApplicationInhibitFlags = 4
 	// ApplicationInhibitFlagsIdle: inhibit the session being marked as idle
 	// (and possibly locked)
-	ApplicationInhibitFlagsIdle ApplicationInhibitFlags = 0b1000
+	ApplicationInhibitFlagsIdle ApplicationInhibitFlags = 8
 )
 
 func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
-	return ApplicationInhibitFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // AttachOptions denotes the expansion properties that a widget will have when
@@ -2492,15 +2490,15 @@ type AttachOptions int
 const (
 	// AttachOptionsExpand: the widget should expand to take up any extra space
 	// in its container that has been allocated.
-	AttachOptionsExpand AttachOptions = 0b1
+	AttachOptionsExpand AttachOptions = 1
 	// AttachOptionsShrink: the widget should shrink as and when possible.
-	AttachOptionsShrink AttachOptions = 0b10
+	AttachOptionsShrink AttachOptions = 2
 	// AttachOptionsFill: the widget should fill the space allocated to it.
-	AttachOptionsFill AttachOptions = 0b100
+	AttachOptionsFill AttachOptions = 4
 )
 
 func marshalAttachOptions(p uintptr) (interface{}, error) {
-	return AttachOptions(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return AttachOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // CalendarDisplayOptions: these options can be used to influence the display
@@ -2510,24 +2508,24 @@ type CalendarDisplayOptions int
 const (
 	// CalendarDisplayOptionsShowHeading specifies that the month and year
 	// should be displayed.
-	CalendarDisplayOptionsShowHeading CalendarDisplayOptions = 0b1
+	CalendarDisplayOptionsShowHeading CalendarDisplayOptions = 1
 	// CalendarDisplayOptionsShowDayNames specifies that three letter day
 	// descriptions should be present.
-	CalendarDisplayOptionsShowDayNames CalendarDisplayOptions = 0b10
+	CalendarDisplayOptionsShowDayNames CalendarDisplayOptions = 2
 	// CalendarDisplayOptionsNoMonthChange prevents the user from switching
 	// months with the calendar.
-	CalendarDisplayOptionsNoMonthChange CalendarDisplayOptions = 0b100
+	CalendarDisplayOptionsNoMonthChange CalendarDisplayOptions = 4
 	// CalendarDisplayOptionsShowWeekNumbers displays each week numbers of the
 	// current year, down the left side of the calendar.
-	CalendarDisplayOptionsShowWeekNumbers CalendarDisplayOptions = 0b1000
+	CalendarDisplayOptionsShowWeekNumbers CalendarDisplayOptions = 8
 	// CalendarDisplayOptionsShowDetails: just show an indicator, not the full
 	// details text when details are provided. See
 	// gtk_calendar_set_detail_func().
-	CalendarDisplayOptionsShowDetails CalendarDisplayOptions = 0b100000
+	CalendarDisplayOptionsShowDetails CalendarDisplayOptions = 32
 )
 
 func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
-	return CalendarDisplayOptions(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CalendarDisplayOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // CellRendererState tells how a cell is to be rendered.
@@ -2536,77 +2534,56 @@ type CellRendererState int
 const (
 	// CellRendererStateSelected: the cell is currently selected, and probably
 	// has a selection colored background to render to.
-	CellRendererStateSelected CellRendererState = 0b1
+	CellRendererStateSelected CellRendererState = 1
 	// CellRendererStatePrelit: the mouse is hovering over the cell.
-	CellRendererStatePrelit CellRendererState = 0b10
+	CellRendererStatePrelit CellRendererState = 2
 	// CellRendererStateInsensitive: the cell is drawn in an insensitive manner
-	CellRendererStateInsensitive CellRendererState = 0b100
+	CellRendererStateInsensitive CellRendererState = 4
 	// CellRendererStateSorted: the cell is in a sorted row
-	CellRendererStateSorted CellRendererState = 0b1000
+	CellRendererStateSorted CellRendererState = 8
 	// CellRendererStateFocused: the cell is in the focus row.
-	CellRendererStateFocused CellRendererState = 0b10000
+	CellRendererStateFocused CellRendererState = 16
 	// CellRendererStateExpandable: the cell is in a row that can be expanded.
 	// Since 3.4
-	CellRendererStateExpandable CellRendererState = 0b100000
+	CellRendererStateExpandable CellRendererState = 32
 	// CellRendererStateExpanded: the cell is in a row that is expanded. Since
 	// 3.4
-	CellRendererStateExpanded CellRendererState = 0b1000000
+	CellRendererStateExpanded CellRendererState = 64
 )
 
 func marshalCellRendererState(p uintptr) (interface{}, error) {
-	return CellRendererState(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 type DebugFlag int
 
 const (
-	DebugFlagMisc DebugFlag = 0b1
-
-	DebugFlagPlugsocket DebugFlag = 0b10
-
-	DebugFlagText DebugFlag = 0b100
-
-	DebugFlagTree DebugFlag = 0b1000
-
-	DebugFlagUpdates DebugFlag = 0b10000
-
-	DebugFlagKeybindings DebugFlag = 0b100000
-
-	DebugFlagMultihead DebugFlag = 0b1000000
-
-	DebugFlagModules DebugFlag = 0b10000000
-
-	DebugFlagGeometry DebugFlag = 0b100000000
-
-	DebugFlagIcontheme DebugFlag = 0b1000000000
-
-	DebugFlagPrinting DebugFlag = 0b10000000000
-
-	DebugFlagBuilder DebugFlag = 0b100000000000
-
-	DebugFlagSizeRequest DebugFlag = 0b1000000000000
-
-	DebugFlagNoCSSCache DebugFlag = 0b10000000000000
-
-	DebugFlagBaselines DebugFlag = 0b100000000000000
-
-	DebugFlagPixelCache DebugFlag = 0b1000000000000000
-
-	DebugFlagNoPixelCache DebugFlag = 0b10000000000000000
-
-	DebugFlagInteractive DebugFlag = 0b100000000000000000
-
-	DebugFlagTouchscreen DebugFlag = 0b1000000000000000000
-
-	DebugFlagActions DebugFlag = 0b10000000000000000000
-
-	DebugFlagResize DebugFlag = 0b100000000000000000000
-
-	DebugFlagLayout DebugFlag = 0b1000000000000000000000
+	DebugFlagMisc         DebugFlag = 1
+	DebugFlagPlugsocket   DebugFlag = 2
+	DebugFlagText         DebugFlag = 4
+	DebugFlagTree         DebugFlag = 8
+	DebugFlagUpdates      DebugFlag = 16
+	DebugFlagKeybindings  DebugFlag = 32
+	DebugFlagMultihead    DebugFlag = 64
+	DebugFlagModules      DebugFlag = 128
+	DebugFlagGeometry     DebugFlag = 256
+	DebugFlagIcontheme    DebugFlag = 512
+	DebugFlagPrinting     DebugFlag = 1024
+	DebugFlagBuilder      DebugFlag = 2048
+	DebugFlagSizeRequest  DebugFlag = 4096
+	DebugFlagNoCSSCache   DebugFlag = 8192
+	DebugFlagBaselines    DebugFlag = 16384
+	DebugFlagPixelCache   DebugFlag = 32768
+	DebugFlagNoPixelCache DebugFlag = 65536
+	DebugFlagInteractive  DebugFlag = 131072
+	DebugFlagTouchscreen  DebugFlag = 262144
+	DebugFlagActions      DebugFlag = 524288
+	DebugFlagResize       DebugFlag = 1048576
+	DebugFlagLayout       DebugFlag = 2097152
 )
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
-	return DebugFlag(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DebugFlag(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DestDefaults: the DestDefaults enumeration specifies the various types of
@@ -2618,11 +2595,11 @@ const (
 	// widget will check if the drag matches this widget’s list of possible
 	// targets and actions. GTK+ will then call gdk_drag_status() as
 	// appropriate.
-	DestDefaultsMotion DestDefaults = 0b1
+	DestDefaultsMotion DestDefaults = 1
 	// DestDefaultsHighlight: if set for a widget, GTK+ will draw a highlight on
 	// this widget as long as a drag is over this widget and the widget drag
 	// format and action are acceptable.
-	DestDefaultsHighlight DestDefaults = 0b10
+	DestDefaultsHighlight DestDefaults = 2
 	// DestDefaultsDrop: if set for a widget, when a drop occurs, GTK+ will will
 	// check if the drag matches this widget’s list of possible targets and
 	// actions. If so, GTK+ will call gtk_drag_get_data() on behalf of the
@@ -2630,14 +2607,14 @@ const (
 	// gtk_drag_finish(). If the action was a move, then if the drag was
 	// successful, then true will be passed for the @delete parameter to
 	// gtk_drag_finish().
-	DestDefaultsDrop DestDefaults = 0b100
+	DestDefaultsDrop DestDefaults = 4
 	// DestDefaultsAll: if set, specifies that all default actions should be
 	// taken.
-	DestDefaultsAll DestDefaults = 0b111
+	DestDefaultsAll DestDefaults = 7
 )
 
 func marshalDestDefaults(p uintptr) (interface{}, error) {
-	return DestDefaults(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DestDefaults(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DialogFlags flags used to influence dialog construction.
@@ -2646,17 +2623,17 @@ type DialogFlags int
 const (
 	// DialogFlagsModal: make the constructed dialog modal, see
 	// gtk_window_set_modal()
-	DialogFlagsModal DialogFlags = 0b1
+	DialogFlagsModal DialogFlags = 1
 	// DialogFlagsDestroyWithParent: destroy the dialog when its parent is
 	// destroyed, see gtk_window_set_destroy_with_parent()
-	DialogFlagsDestroyWithParent DialogFlags = 0b10
+	DialogFlagsDestroyWithParent DialogFlags = 2
 	// DialogFlagsUseHeaderBar: create dialog with actions in header bar instead
 	// of action area. Since 3.12.
-	DialogFlagsUseHeaderBar DialogFlags = 0b100
+	DialogFlagsUseHeaderBar DialogFlags = 4
 )
 
 func marshalDialogFlags(p uintptr) (interface{}, error) {
-	return DialogFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // EventControllerScrollFlags describes the behavior of a EventControllerScroll.
@@ -2664,23 +2641,23 @@ type EventControllerScrollFlags int
 
 const (
 	// EventControllerScrollFlagsNone: don't emit scroll.
-	EventControllerScrollFlagsNone EventControllerScrollFlags = 0b0
+	EventControllerScrollFlagsNone EventControllerScrollFlags = 0
 	// EventControllerScrollFlagsVertical: emit scroll with vertical deltas.
-	EventControllerScrollFlagsVertical EventControllerScrollFlags = 0b1
+	EventControllerScrollFlagsVertical EventControllerScrollFlags = 1
 	// EventControllerScrollFlagsHorizontal: emit scroll with horizontal deltas.
-	EventControllerScrollFlagsHorizontal EventControllerScrollFlags = 0b10
+	EventControllerScrollFlagsHorizontal EventControllerScrollFlags = 2
 	// EventControllerScrollFlagsDiscrete: only emit deltas that are multiples
 	// of 1.
-	EventControllerScrollFlagsDiscrete EventControllerScrollFlags = 0b100
+	EventControllerScrollFlagsDiscrete EventControllerScrollFlags = 4
 	// EventControllerScrollFlagsKinetic: emit EventControllerScroll::decelerate
 	// after continuous scroll finishes.
-	EventControllerScrollFlagsKinetic EventControllerScrollFlags = 0b1000
+	EventControllerScrollFlagsKinetic EventControllerScrollFlags = 8
 	// EventControllerScrollFlagsBothAxes: emit scroll on both axes.
-	EventControllerScrollFlagsBothAxes EventControllerScrollFlags = 0b11
+	EventControllerScrollFlagsBothAxes EventControllerScrollFlags = 3
 )
 
 func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
-	return EventControllerScrollFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // FileFilterFlags: these flags indicate what parts of a FileFilterInfo struct
@@ -2689,18 +2666,18 @@ type FileFilterFlags int
 
 const (
 	// FileFilterFlagsFilename: the filename of the file being tested
-	FileFilterFlagsFilename FileFilterFlags = 0b1
+	FileFilterFlagsFilename FileFilterFlags = 1
 	// FileFilterFlagsURI: the URI for the file being tested
-	FileFilterFlagsURI FileFilterFlags = 0b10
+	FileFilterFlagsURI FileFilterFlags = 2
 	// FileFilterFlagsDisplayName: the string that will be used to display the
 	// file in the file chooser
-	FileFilterFlagsDisplayName FileFilterFlags = 0b100
+	FileFilterFlagsDisplayName FileFilterFlags = 4
 	// FileFilterFlagsMIMEType: the mime type of the file
-	FileFilterFlagsMIMEType FileFilterFlags = 0b1000
+	FileFilterFlagsMIMEType FileFilterFlags = 8
 )
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
-	return FileFilterFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FileFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // FontChooserLevel: this enumeration specifies the granularity of font
@@ -2712,19 +2689,18 @@ type FontChooserLevel int
 
 const (
 	// FontChooserLevelFamily: allow selecting a font family
-	FontChooserLevelFamily FontChooserLevel = 0b0
+	FontChooserLevelFamily FontChooserLevel = 0
 	// FontChooserLevelStyle: allow selecting a specific font face
-	FontChooserLevelStyle FontChooserLevel = 0b1
+	FontChooserLevelStyle FontChooserLevel = 1
 	// FontChooserLevelSize: allow selecting a specific font size
-	FontChooserLevelSize FontChooserLevel = 0b10
-
-	FontChooserLevelVariations FontChooserLevel = 0b100
+	FontChooserLevelSize       FontChooserLevel = 2
+	FontChooserLevelVariations FontChooserLevel = 4
 	// FontChooserLevelFeatures: allow selecting specific OpenType font features
-	FontChooserLevelFeatures FontChooserLevel = 0b1000
+	FontChooserLevelFeatures FontChooserLevel = 8
 )
 
 func marshalFontChooserLevel(p uintptr) (interface{}, error) {
-	return FontChooserLevel(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FontChooserLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon()
@@ -2733,39 +2709,39 @@ type IconLookupFlags int
 const (
 	// IconLookupFlagsNoSvg: never get SVG icons, even if gdk-pixbuf supports
 	// them. Cannot be used together with GTK_ICON_LOOKUP_FORCE_SVG.
-	IconLookupFlagsNoSvg IconLookupFlags = 0b1
+	IconLookupFlagsNoSvg IconLookupFlags = 1
 	// IconLookupFlagsForceSvg: get SVG icons, even if gdk-pixbuf doesn’t
 	// support them. Cannot be used together with GTK_ICON_LOOKUP_NO_SVG.
-	IconLookupFlagsForceSvg IconLookupFlags = 0b10
+	IconLookupFlagsForceSvg IconLookupFlags = 2
 	// IconLookupFlagsUseBuiltin: when passed to gtk_icon_theme_lookup_icon()
 	// includes builtin icons as well as files. For a builtin icon,
 	// gtk_icon_info_get_filename() is nil and you need to call
 	// gtk_icon_info_get_builtin_pixbuf().
-	IconLookupFlagsUseBuiltin IconLookupFlags = 0b100
+	IconLookupFlagsUseBuiltin IconLookupFlags = 4
 	// IconLookupFlagsGenericFallback: try to shorten icon name at '-'
 	// characters before looking at inherited themes. This flag is only
 	// supported in functions that take a single icon name. For more general
 	// fallback, see gtk_icon_theme_choose_icon(). Since 2.12.
-	IconLookupFlagsGenericFallback IconLookupFlags = 0b1000
+	IconLookupFlagsGenericFallback IconLookupFlags = 8
 	// IconLookupFlagsForceSize always get the icon scaled to the requested
 	// size. Since 2.14.
-	IconLookupFlagsForceSize IconLookupFlags = 0b10000
+	IconLookupFlagsForceSize IconLookupFlags = 16
 	// IconLookupFlagsForceRegular: try to always load regular icons, even when
 	// symbolic icon names are given. Since 3.14.
-	IconLookupFlagsForceRegular IconLookupFlags = 0b100000
+	IconLookupFlagsForceRegular IconLookupFlags = 32
 	// IconLookupFlagsForceSymbolic: try to always load symbolic icons, even
 	// when regular icon names are given. Since 3.14.
-	IconLookupFlagsForceSymbolic IconLookupFlags = 0b1000000
+	IconLookupFlagsForceSymbolic IconLookupFlags = 64
 	// IconLookupFlagsDirLTR: try to load a variant of the icon for
 	// left-to-right text direction. Since 3.14.
-	IconLookupFlagsDirLTR IconLookupFlags = 0b10000000
+	IconLookupFlagsDirLTR IconLookupFlags = 128
 	// IconLookupFlagsDirRTL: try to load a variant of the icon for
 	// right-to-left text direction. Since 3.14.
-	IconLookupFlagsDirRTL IconLookupFlags = 0b100000000
+	IconLookupFlagsDirRTL IconLookupFlags = 256
 )
 
 func marshalIconLookupFlags(p uintptr) (interface{}, error) {
-	return IconLookupFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // InputHints describes hints that might be taken into account by input methods
@@ -2781,36 +2757,36 @@ type InputHints int
 
 const (
 	// InputHintsNone: no special behaviour suggested
-	InputHintsNone InputHints = 0b0
+	InputHintsNone InputHints = 0
 	// InputHintsSpellcheck: suggest checking for typos
-	InputHintsSpellcheck InputHints = 0b1
+	InputHintsSpellcheck InputHints = 1
 	// InputHintsNoSpellcheck: suggest not checking for typos
-	InputHintsNoSpellcheck InputHints = 0b10
+	InputHintsNoSpellcheck InputHints = 2
 	// InputHintsWordCompletion: suggest word completion
-	InputHintsWordCompletion InputHints = 0b100
+	InputHintsWordCompletion InputHints = 4
 	// InputHintsLowercase: suggest to convert all text to lowercase
-	InputHintsLowercase InputHints = 0b1000
+	InputHintsLowercase InputHints = 8
 	// InputHintsUppercaseChars: suggest to capitalize all text
-	InputHintsUppercaseChars InputHints = 0b10000
+	InputHintsUppercaseChars InputHints = 16
 	// InputHintsUppercaseWords: suggest to capitalize the first character of
 	// each word
-	InputHintsUppercaseWords InputHints = 0b100000
+	InputHintsUppercaseWords InputHints = 32
 	// InputHintsUppercaseSentences: suggest to capitalize the first word of
 	// each sentence
-	InputHintsUppercaseSentences InputHints = 0b1000000
+	InputHintsUppercaseSentences InputHints = 64
 	// InputHintsInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
-	InputHintsInhibitOsk InputHints = 0b10000000
+	InputHintsInhibitOsk InputHints = 128
 	// InputHintsVerticalWriting: the text is vertical. Since 3.18
-	InputHintsVerticalWriting InputHints = 0b100000000
+	InputHintsVerticalWriting InputHints = 256
 	// InputHintsEmoji: suggest offering Emoji support. Since 3.22.20
-	InputHintsEmoji InputHints = 0b1000000000
+	InputHintsEmoji InputHints = 512
 	// InputHintsNoEmoji: suggest not offering Emoji support. Since 3.22.20
-	InputHintsNoEmoji InputHints = 0b10000000000
+	InputHintsNoEmoji InputHints = 1024
 )
 
 func marshalInputHints(p uintptr) (interface{}, error) {
-	return InputHints(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return InputHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // JunctionSides describes how a rendered element connects to adjacent elements.
@@ -2818,29 +2794,29 @@ type JunctionSides int
 
 const (
 	// JunctionSidesNone: no junctions.
-	JunctionSidesNone JunctionSides = 0b0
+	JunctionSidesNone JunctionSides = 0
 	// JunctionSidesCornerTopleft: element connects on the top-left corner.
-	JunctionSidesCornerTopleft JunctionSides = 0b1
+	JunctionSidesCornerTopleft JunctionSides = 1
 	// JunctionSidesCornerTopright: element connects on the top-right corner.
-	JunctionSidesCornerTopright JunctionSides = 0b10
+	JunctionSidesCornerTopright JunctionSides = 2
 	// JunctionSidesCornerBottomleft: element connects on the bottom-left
 	// corner.
-	JunctionSidesCornerBottomleft JunctionSides = 0b100
+	JunctionSidesCornerBottomleft JunctionSides = 4
 	// JunctionSidesCornerBottomright: element connects on the bottom-right
 	// corner.
-	JunctionSidesCornerBottomright JunctionSides = 0b1000
+	JunctionSidesCornerBottomright JunctionSides = 8
 	// JunctionSidesTop: element connects on the top side.
-	JunctionSidesTop JunctionSides = 0b11
+	JunctionSidesTop JunctionSides = 3
 	// JunctionSidesBottom: element connects on the bottom side.
-	JunctionSidesBottom JunctionSides = 0b1100
+	JunctionSidesBottom JunctionSides = 12
 	// JunctionSidesLeft: element connects on the left side.
-	JunctionSidesLeft JunctionSides = 0b101
+	JunctionSidesLeft JunctionSides = 5
 	// JunctionSidesRight: element connects on the right side.
-	JunctionSidesRight JunctionSides = 0b1010
+	JunctionSidesRight JunctionSides = 10
 )
 
 func marshalJunctionSides(p uintptr) (interface{}, error) {
-	return JunctionSides(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return JunctionSides(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // PlacesOpenFlags: these flags serve two purposes. First, the application can
@@ -2866,21 +2842,21 @@ const (
 	// if no other flags are specified. It indicates that the calling
 	// application should open the selected location in the normal way, for
 	// example, in the folder view beside the sidebar.
-	PlacesOpenFlagsNormal PlacesOpenFlags = 0b1
+	PlacesOpenFlagsNormal PlacesOpenFlags = 1
 	// PlacesOpenFlagsNewTab: when passed to
 	// gtk_places_sidebar_set_open_flags(), this indicates that the application
 	// can open folders selected from the sidebar in new tabs. This value will
 	// be passed to the PlacesSidebar::open-location signal when the user
 	// selects that a location be opened in a new tab instead of in the standard
 	// fashion.
-	PlacesOpenFlagsNewTab PlacesOpenFlags = 0b10
+	PlacesOpenFlagsNewTab PlacesOpenFlags = 2
 	// PlacesOpenFlagsNewWindow: similar to @GTK_PLACES_OPEN_NEW_TAB, but
 	// indicates that the application can open folders in new windows.
-	PlacesOpenFlagsNewWindow PlacesOpenFlags = 0b100
+	PlacesOpenFlagsNewWindow PlacesOpenFlags = 4
 )
 
 func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
-	return PlacesOpenFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return PlacesOpenFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // RCFlags: deprecated
@@ -2888,17 +2864,17 @@ type RCFlags int
 
 const (
 	// RCFlagsFg: deprecated
-	RCFlagsFg RCFlags = 0b1
+	RCFlagsFg RCFlags = 1
 	// RCFlagsBg: deprecated
-	RCFlagsBg RCFlags = 0b10
+	RCFlagsBg RCFlags = 2
 	// RCFlagsText: deprecated
-	RCFlagsText RCFlags = 0b100
+	RCFlagsText RCFlags = 4
 	// RCFlagsBase: deprecated
-	RCFlagsBase RCFlags = 0b1000
+	RCFlagsBase RCFlags = 8
 )
 
 func marshalRCFlags(p uintptr) (interface{}, error) {
-	return RCFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RCFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // RecentFilterFlags: these flags indicate what parts of a RecentFilterInfo
@@ -2907,24 +2883,24 @@ type RecentFilterFlags int
 
 const (
 	// RecentFilterFlagsURI: the URI of the file being tested
-	RecentFilterFlagsURI RecentFilterFlags = 0b1
+	RecentFilterFlagsURI RecentFilterFlags = 1
 	// RecentFilterFlagsDisplayName: the string that will be used to display the
 	// file in the recent chooser
-	RecentFilterFlagsDisplayName RecentFilterFlags = 0b10
+	RecentFilterFlagsDisplayName RecentFilterFlags = 2
 	// RecentFilterFlagsMIMEType: the mime type of the file
-	RecentFilterFlagsMIMEType RecentFilterFlags = 0b100
+	RecentFilterFlagsMIMEType RecentFilterFlags = 4
 	// RecentFilterFlagsApplication: the list of applications that have
 	// registered the file
-	RecentFilterFlagsApplication RecentFilterFlags = 0b1000
+	RecentFilterFlagsApplication RecentFilterFlags = 8
 	// RecentFilterFlagsGroup: the groups to which the file belongs to
-	RecentFilterFlagsGroup RecentFilterFlags = 0b10000
+	RecentFilterFlagsGroup RecentFilterFlags = 16
 	// RecentFilterFlagsAge: the number of days elapsed since the file has been
 	// registered
-	RecentFilterFlagsAge RecentFilterFlags = 0b100000
+	RecentFilterFlagsAge RecentFilterFlags = 32
 )
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
-	return RecentFilterFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // RegionFlags describes a region within a widget.
@@ -2932,21 +2908,21 @@ type RegionFlags int
 
 const (
 	// RegionFlagsEven: region has an even number within a set.
-	RegionFlagsEven RegionFlags = 0b1
+	RegionFlagsEven RegionFlags = 1
 	// RegionFlagsOdd: region has an odd number within a set.
-	RegionFlagsOdd RegionFlags = 0b10
+	RegionFlagsOdd RegionFlags = 2
 	// RegionFlagsFirst: region is the first one within a set.
-	RegionFlagsFirst RegionFlags = 0b100
+	RegionFlagsFirst RegionFlags = 4
 	// RegionFlagsLast: region is the last one within a set.
-	RegionFlagsLast RegionFlags = 0b1000
+	RegionFlagsLast RegionFlags = 8
 	// RegionFlagsOnly: region is the only one within a set.
-	RegionFlagsOnly RegionFlags = 0b10000
+	RegionFlagsOnly RegionFlags = 16
 	// RegionFlagsSorted: region is part of a sorted area.
-	RegionFlagsSorted RegionFlags = 0b100000
+	RegionFlagsSorted RegionFlags = 32
 )
 
 func marshalRegionFlags(p uintptr) (interface{}, error) {
-	return RegionFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return RegionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // StateFlags describes a widget state. Widget states are used to match the
@@ -2956,39 +2932,39 @@ type StateFlags int
 
 const (
 	// StateFlagsNormal: state during normal operation.
-	StateFlagsNormal StateFlags = 0b0
+	StateFlagsNormal StateFlags = 0
 	// StateFlagsActive: widget is active.
-	StateFlagsActive StateFlags = 0b1
+	StateFlagsActive StateFlags = 1
 	// StateFlagsPrelight: widget has a mouse pointer over it.
-	StateFlagsPrelight StateFlags = 0b10
+	StateFlagsPrelight StateFlags = 2
 	// StateFlagsSelected: widget is selected.
-	StateFlagsSelected StateFlags = 0b100
+	StateFlagsSelected StateFlags = 4
 	// StateFlagsInsensitive: widget is insensitive.
-	StateFlagsInsensitive StateFlags = 0b1000
+	StateFlagsInsensitive StateFlags = 8
 	// StateFlagsInconsistent: widget is inconsistent.
-	StateFlagsInconsistent StateFlags = 0b10000
+	StateFlagsInconsistent StateFlags = 16
 	// StateFlagsFocused: widget has the keyboard focus.
-	StateFlagsFocused StateFlags = 0b100000
+	StateFlagsFocused StateFlags = 32
 	// StateFlagsBackdrop: widget is in a background toplevel window.
-	StateFlagsBackdrop StateFlags = 0b1000000
+	StateFlagsBackdrop StateFlags = 64
 	// StateFlagsDirLTR: widget is in left-to-right text direction. Since 3.8
-	StateFlagsDirLTR StateFlags = 0b10000000
+	StateFlagsDirLTR StateFlags = 128
 	// StateFlagsDirRTL: widget is in right-to-left text direction. Since 3.8
-	StateFlagsDirRTL StateFlags = 0b100000000
+	StateFlagsDirRTL StateFlags = 256
 	// StateFlagsLink: widget is a link. Since 3.12
-	StateFlagsLink StateFlags = 0b1000000000
+	StateFlagsLink StateFlags = 512
 	// StateFlagsVisited: the location the widget points to has already been
 	// visited. Since 3.12
-	StateFlagsVisited StateFlags = 0b10000000000
+	StateFlagsVisited StateFlags = 1024
 	// StateFlagsChecked: widget is checked. Since 3.14
-	StateFlagsChecked StateFlags = 0b100000000000
+	StateFlagsChecked StateFlags = 2048
 	// StateFlagsDropActive: widget is highlighted as a drop target for DND.
 	// Since 3.20
-	StateFlagsDropActive StateFlags = 0b1000000000000
+	StateFlagsDropActive StateFlags = 4096
 )
 
 func marshalStateFlags(p uintptr) (interface{}, error) {
-	return StateFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // StyleContextPrintFlags flags that modify the behavior of
@@ -2996,17 +2972,17 @@ func marshalStateFlags(p uintptr) (interface{}, error) {
 type StyleContextPrintFlags int
 
 const (
-	StyleContextPrintFlagsNone StyleContextPrintFlags = 0b0
+	StyleContextPrintFlagsNone StyleContextPrintFlags = 0
 	// StyleContextPrintFlagsRecurse: print the entire tree of CSS nodes
 	// starting at the style context's node
-	StyleContextPrintFlagsRecurse StyleContextPrintFlags = 0b1
+	StyleContextPrintFlagsRecurse StyleContextPrintFlags = 1
 	// StyleContextPrintFlagsShowStyle: show the values of the CSS properties
 	// for each node
-	StyleContextPrintFlagsShowStyle StyleContextPrintFlags = 0b10
+	StyleContextPrintFlagsShowStyle StyleContextPrintFlags = 2
 )
 
 func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
-	return StyleContextPrintFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TargetFlags: the TargetFlags enumeration is used to specify constraints on a
@@ -3016,20 +2992,20 @@ type TargetFlags int
 const (
 	// TargetFlagsSameApp: if this is set, the target will only be selected for
 	// drags within a single application.
-	TargetFlagsSameApp TargetFlags = 0b1
+	TargetFlagsSameApp TargetFlags = 1
 	// TargetFlagsSameWidget: if this is set, the target will only be selected
 	// for drags within a single widget.
-	TargetFlagsSameWidget TargetFlags = 0b10
+	TargetFlagsSameWidget TargetFlags = 2
 	// TargetFlagsOtherApp: if this is set, the target will not be selected for
 	// drags within a single application.
-	TargetFlagsOtherApp TargetFlags = 0b100
+	TargetFlagsOtherApp TargetFlags = 4
 	// TargetFlagsOtherWidget: if this is set, the target will not be selected
 	// for drags withing a single widget.
-	TargetFlagsOtherWidget TargetFlags = 0b1000
+	TargetFlagsOtherWidget TargetFlags = 8
 )
 
 func marshalTargetFlags(p uintptr) (interface{}, error) {
-	return TargetFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TargetFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TextSearchFlags flags affecting how a search is done.
@@ -3042,17 +3018,17 @@ type TextSearchFlags int
 const (
 	// TextSearchFlagsVisibleOnly: search only visible data. A search match may
 	// have invisible text interspersed.
-	TextSearchFlagsVisibleOnly TextSearchFlags = 0b1
+	TextSearchFlagsVisibleOnly TextSearchFlags = 1
 	// TextSearchFlagsTextOnly: search only text. A match may have pixbufs or
 	// child widgets mixed inside the matched range.
-	TextSearchFlagsTextOnly TextSearchFlags = 0b10
+	TextSearchFlagsTextOnly TextSearchFlags = 2
 	// TextSearchFlagsCaseInsensitive: the text will be matched regardless of
 	// what case it is in.
-	TextSearchFlagsCaseInsensitive TextSearchFlags = 0b100
+	TextSearchFlagsCaseInsensitive TextSearchFlags = 4
 )
 
 func marshalTextSearchFlags(p uintptr) (interface{}, error) {
-	return TextSearchFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ToolPaletteDragTargets flags used to specify the supported drag targets.
@@ -3060,13 +3036,13 @@ type ToolPaletteDragTargets int
 
 const (
 	// ToolPaletteDragTargetsItems: support drag of items.
-	ToolPaletteDragTargetsItems ToolPaletteDragTargets = 0b1
+	ToolPaletteDragTargetsItems ToolPaletteDragTargets = 1
 	// ToolPaletteDragTargetsGroups: support drag of groups.
-	ToolPaletteDragTargetsGroups ToolPaletteDragTargets = 0b10
+	ToolPaletteDragTargetsGroups ToolPaletteDragTargets = 2
 )
 
 func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
-	return ToolPaletteDragTargets(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ToolPaletteDragTargets(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // TreeModelFlags: these flags indicate various properties of a TreeModel.
@@ -3079,13 +3055,13 @@ type TreeModelFlags int
 const (
 	// TreeModelFlagsItersPersist iterators survive all signals emitted by the
 	// tree
-	TreeModelFlagsItersPersist TreeModelFlags = 0b1
+	TreeModelFlagsItersPersist TreeModelFlags = 1
 	// TreeModelFlagsListOnly: the model is a list only, and never has children
-	TreeModelFlagsListOnly TreeModelFlags = 0b10
+	TreeModelFlagsListOnly TreeModelFlags = 2
 )
 
 func marshalTreeModelFlags(p uintptr) (interface{}, error) {
-	return TreeModelFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return TreeModelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // UIManagerItemType: these enumeration values are used by
@@ -3095,32 +3071,62 @@ type UIManagerItemType int
 const (
 	// UIManagerItemTypeAuto: pick the type of the UI element according to
 	// context.
-	UIManagerItemTypeAuto UIManagerItemType = 0b0
+	UIManagerItemTypeAuto UIManagerItemType = 0
 	// UIManagerItemTypeMenubar: create a menubar.
-	UIManagerItemTypeMenubar UIManagerItemType = 0b1
+	UIManagerItemTypeMenubar UIManagerItemType = 1
 	// UIManagerItemTypeMenu: create a menu.
-	UIManagerItemTypeMenu UIManagerItemType = 0b10
+	UIManagerItemTypeMenu UIManagerItemType = 2
 	// UIManagerItemTypeToolbar: create a toolbar.
-	UIManagerItemTypeToolbar UIManagerItemType = 0b100
+	UIManagerItemTypeToolbar UIManagerItemType = 4
 	// UIManagerItemTypePlaceholder: insert a placeholder.
-	UIManagerItemTypePlaceholder UIManagerItemType = 0b1000
+	UIManagerItemTypePlaceholder UIManagerItemType = 8
 	// UIManagerItemTypePopup: create a popup menu.
-	UIManagerItemTypePopup UIManagerItemType = 0b10000
+	UIManagerItemTypePopup UIManagerItemType = 16
 	// UIManagerItemTypeMenuitem: create a menuitem.
-	UIManagerItemTypeMenuitem UIManagerItemType = 0b100000
+	UIManagerItemTypeMenuitem UIManagerItemType = 32
 	// UIManagerItemTypeToolitem: create a toolitem.
-	UIManagerItemTypeToolitem UIManagerItemType = 0b1000000
+	UIManagerItemTypeToolitem UIManagerItemType = 64
 	// UIManagerItemTypeSeparator: create a separator.
-	UIManagerItemTypeSeparator UIManagerItemType = 0b10000000
+	UIManagerItemTypeSeparator UIManagerItemType = 128
 	// UIManagerItemTypeAccelerator: install an accelerator.
-	UIManagerItemTypeAccelerator UIManagerItemType = 0b100000000
+	UIManagerItemTypeAccelerator UIManagerItemType = 256
 	// UIManagerItemTypePopupWithAccels: same as GTK_UI_MANAGER_POPUP, but the
 	// actions’ accelerators are shown.
-	UIManagerItemTypePopupWithAccels UIManagerItemType = 0b1000000000
+	UIManagerItemTypePopupWithAccels UIManagerItemType = 512
 )
 
 func marshalUIManagerItemType(p uintptr) (interface{}, error) {
-	return UIManagerItemType(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return UIManagerItemType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+func BuilderErrorQuark() {
+	C.gtk_builder_error_quark()
+}
+
+func CSSProviderErrorQuark() {
+	C.gtk_css_provider_error_quark()
+}
+
+// FileChooserErrorQuark registers an error quark for FileChooser if necessary.
+func FileChooserErrorQuark() {
+	C.gtk_file_chooser_error_quark()
+}
+
+func IconThemeErrorQuark() {
+	C.gtk_icon_theme_error_quark()
+}
+
+// PrintErrorQuark registers an error quark for PrintOperation if necessary.
+func PrintErrorQuark() {
+	C.gtk_print_error_quark()
+}
+
+func RecentChooserErrorQuark() {
+	C.gtk_recent_chooser_error_quark()
+}
+
+func RecentManagerErrorQuark() {
+	C.gtk_recent_manager_error_quark()
 }
 
 // AppChooser is an interface that can be implemented by widgets which allow the
@@ -3143,12 +3149,12 @@ type AppChooser interface {
 	Widget
 
 	// AppInfo returns the currently selected application.
-	AppInfo() gio.AppInfo
+	AppInfo(s AppChooser)
 	// ContentType returns the current value of the AppChooser:content-type
 	// property.
-	ContentType() string
+	ContentType(s AppChooser)
 	// Refresh reloads the list of applications.
-	Refresh()
+	Refresh(s AppChooser)
 }
 
 // appChooser implements the AppChooser interface.
@@ -3173,41 +3179,26 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 }
 
 // AppInfo returns the currently selected application.
-func (s appChooser) AppInfo() gio.AppInfo {
+func (s appChooser) AppInfo(s AppChooser) {
 	var arg0 *C.GtkAppChooser
 
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GAppInfo
-	var ret1 gio.AppInfo
-
-	cret = C.gtk_app_chooser_get_app_info(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
-
-	return ret1
+	C.gtk_app_chooser_get_app_info(arg0)
 }
 
 // ContentType returns the current value of the AppChooser:content-type
 // property.
-func (s appChooser) ContentType() string {
+func (s appChooser) ContentType(s AppChooser) {
 	var arg0 *C.GtkAppChooser
 
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_app_chooser_get_content_type(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_app_chooser_get_content_type(arg0)
 }
 
 // Refresh reloads the list of applications.
-func (s appChooser) Refresh() {
+func (s appChooser) Refresh(s AppChooser) {
 	var arg0 *C.GtkAppChooser
 
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
@@ -3294,34 +3285,34 @@ type FileChooser interface {
 	// signal handler using gtk_file_chooser_get_choice().
 	//
 	// Compare gtk_file_chooser_set_extra_widget().
-	AddChoice(id string, label string, options []string, optionLabels []string)
+	AddChoice(c FileChooser, id string, label string, options []string, optionLabels []string)
 	// AddFilter adds @filter to the list of filters that the user can select
 	// between. When a filter is selected, only files that are passed by that
 	// filter are displayed.
 	//
 	// Note that the @chooser takes ownership of the filter, so you have to ref
 	// and sink it if you want to keep a reference.
-	AddFilter(filter FileFilter)
+	AddFilter(c FileChooser, filter FileFilter)
 	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
 	// in a file chooser. Note that shortcut folders do not get saved, as they
 	// are provided by the application. For example, you can use this to add a
 	// “/usr/share/mydrawprogram/Clipart” folder to the volume list.
-	AddShortcutFolder(folder string) error
+	AddShortcutFolder(c FileChooser, folder string) error
 	// AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
 	// folders in a file chooser. Note that shortcut folders do not get saved,
 	// as they are provided by the application. For example, you can use this to
 	// add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume
 	// list.
-	AddShortcutFolderURI(uri string) error
+	AddShortcutFolderURI(c FileChooser, uri string) error
 	// Action gets the type of operation that the file chooser is performing;
 	// see gtk_file_chooser_set_action().
-	Action() FileChooserAction
+	Action(c FileChooser)
 	// Choice gets the currently selected option in the 'choice' with the given
 	// ID.
-	Choice(id string) string
+	Choice(c FileChooser, id string)
 	// CreateFolders gets whether file choser will offer to create new folders.
 	// See gtk_file_chooser_set_create_folders().
-	CreateFolders() bool
+	CreateFolders(c FileChooser) bool
 	// CurrentFolder gets the current folder of @chooser as a local filename.
 	// See gtk_file_chooser_set_current_folder().
 	//
@@ -3332,10 +3323,10 @@ type FileChooser interface {
 	// "/home/username/Documents/selected-folder/". To get the
 	// currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
 	// the usual way to get the selection.
-	CurrentFolder() string
+	CurrentFolder(c FileChooser)
 	// CurrentFolderFile gets the current folder of @chooser as #GFile. See
 	// gtk_file_chooser_get_current_folder_uri().
-	CurrentFolderFile() gio.File
+	CurrentFolderFile(c FileChooser)
 	// CurrentFolderURI gets the current folder of @chooser as an URI. See
 	// gtk_file_chooser_set_current_folder_uri().
 	//
@@ -3346,7 +3337,7 @@ type FileChooser interface {
 	// "file:///home/username/Documents/selected-folder/". To get the
 	// currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
 	// the usual way to get the selection.
-	CurrentFolderURI() string
+	CurrentFolderURI(c FileChooser)
 	// CurrentName gets the current name in the file selector, as entered by the
 	// user in the text entry for “Name”.
 	//
@@ -3355,124 +3346,124 @@ type FileChooser interface {
 	// application that adds a custom extra widget to the file chooser for “file
 	// format” may want to change the extension of the typed filename based on
 	// the chosen format, say, from “.jpg” to “.png”.
-	CurrentName() string
+	CurrentName(c FileChooser)
 	// DoOverwriteConfirmation queries whether a file chooser is set to confirm
 	// for overwriting when the user types a file name that already exists.
-	DoOverwriteConfirmation() bool
+	DoOverwriteConfirmation(c FileChooser) bool
 	// ExtraWidget gets the current extra widget; see
 	// gtk_file_chooser_set_extra_widget().
-	ExtraWidget() Widget
+	ExtraWidget(c FileChooser)
 	// File gets the #GFile for the currently selected file in the file
 	// selector. If multiple files are selected, one of the files will be
 	// returned at random.
 	//
 	// If the file chooser is in folder mode, this function returns the selected
 	// folder.
-	File() gio.File
+	File(c FileChooser)
 	// Filename gets the filename for the currently selected file in the file
 	// selector. The filename is returned as an absolute path. If multiple files
 	// are selected, one of the filenames will be returned at random.
 	//
 	// If the file chooser is in folder mode, this function returns the selected
 	// folder.
-	Filename() string
+	Filename(c FileChooser)
 	// Filenames lists all the selected files and subfolders in the current
 	// folder of @chooser. The returned names are full absolute paths. If files
 	// in the current folder cannot be represented as local filenames they will
 	// be ignored. (See gtk_file_chooser_get_uris())
-	Filenames() *glib.SList
+	Filenames(c FileChooser)
 	// Files lists all the selected files and subfolders in the current folder
 	// of @chooser as #GFile. An internal function, see
 	// gtk_file_chooser_get_uris().
-	Files() *glib.SList
+	Files(c FileChooser)
 	// Filter gets the current filter; see gtk_file_chooser_set_filter().
-	Filter() FileFilter
+	Filter(c FileChooser)
 	// LocalOnly gets whether only local files can be selected in the file
 	// selector. See gtk_file_chooser_set_local_only()
-	LocalOnly() bool
+	LocalOnly(c FileChooser) bool
 	// PreviewFile gets the #GFile that should be previewed in a custom preview
 	// Internal function, see gtk_file_chooser_get_preview_uri().
-	PreviewFile() gio.File
+	PreviewFile(c FileChooser)
 	// PreviewFilename gets the filename that should be previewed in a custom
 	// preview widget. See gtk_file_chooser_set_preview_widget().
-	PreviewFilename() string
+	PreviewFilename(c FileChooser)
 	// PreviewURI gets the URI that should be previewed in a custom preview
 	// widget. See gtk_file_chooser_set_preview_widget().
-	PreviewURI() string
+	PreviewURI(c FileChooser)
 	// PreviewWidget gets the current preview widget; see
 	// gtk_file_chooser_set_preview_widget().
-	PreviewWidget() Widget
+	PreviewWidget(c FileChooser)
 	// PreviewWidgetActive gets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename. See gtk_file_chooser_set_preview_widget_active().
-	PreviewWidgetActive() bool
+	PreviewWidgetActive(c FileChooser) bool
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// selector. See gtk_file_chooser_set_select_multiple().
-	SelectMultiple() bool
+	SelectMultiple(c FileChooser) bool
 	// ShowHidden gets whether hidden files and folders are displayed in the
 	// file selector. See gtk_file_chooser_set_show_hidden().
-	ShowHidden() bool
+	ShowHidden(c FileChooser) bool
 	// URI gets the URI for the currently selected file in the file selector. If
 	// multiple files are selected, one of the filenames will be returned at
 	// random.
 	//
 	// If the file chooser is in folder mode, this function returns the selected
 	// folder.
-	URI() string
+	URI(c FileChooser)
 	// Uris lists all the selected files and subfolders in the current folder of
 	// @chooser. The returned names are full absolute URIs.
-	Uris() *glib.SList
+	Uris(c FileChooser)
 	// UsePreviewLabel gets whether a stock label should be drawn with the name
 	// of the previewed file. See gtk_file_chooser_set_use_preview_label().
-	UsePreviewLabel() bool
+	UsePreviewLabel(c FileChooser) bool
 	// ListFilters lists the current set of user-selectable filters; see
 	// gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
-	ListFilters() *glib.SList
+	ListFilters(c FileChooser)
 	// ListShortcutFolderUris queries the list of shortcut folders in the file
 	// chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
-	ListShortcutFolderUris() *glib.SList
+	ListShortcutFolderUris(c FileChooser)
 	// ListShortcutFolders queries the list of shortcut folders in the file
 	// chooser, as set by gtk_file_chooser_add_shortcut_folder().
-	ListShortcutFolders() *glib.SList
+	ListShortcutFolders(c FileChooser)
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
-	RemoveChoice(id string)
+	RemoveChoice(c FileChooser, id string)
 	// RemoveFilter removes @filter from the list of filters that the user can
 	// select between.
-	RemoveFilter(filter FileFilter)
+	RemoveFilter(c FileChooser, filter FileFilter)
 	// RemoveShortcutFolder removes a folder from a file chooser’s list of
 	// shortcut folders.
-	RemoveShortcutFolder(folder string) error
+	RemoveShortcutFolder(c FileChooser, folder string) error
 	// RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
 	// of shortcut folders.
-	RemoveShortcutFolderURI(uri string) error
+	RemoveShortcutFolderURI(c FileChooser, uri string) error
 	// SelectAll selects all the files in the current folder of a file chooser.
-	SelectAll()
+	SelectAll(c FileChooser)
 	// SelectFile selects the file referred to by @file. An internal function.
 	// See _gtk_file_chooser_select_uri().
-	SelectFile(file gio.File) error
+	SelectFile(c FileChooser, file gio.File) error
 	// SelectFilename selects a filename. If the file name isn’t in the current
 	// folder of @chooser, then the current folder of @chooser will be changed
 	// to the folder containing @filename.
-	SelectFilename(filename string) bool
+	SelectFilename(c FileChooser, filename string) bool
 	// SelectURI selects the file to by @uri. If the URI doesn’t refer to a file
 	// in the current folder of @chooser, then the current folder of @chooser
 	// will be changed to the folder containing @filename.
-	SelectURI(uri string) bool
+	SelectURI(c FileChooser, uri string) bool
 	// SetAction sets the type of operation that the chooser is performing; the
 	// user interface is adapted to suit the selected action. For example, an
 	// option to create a new folder might be shown if the action is
 	// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 	// GTK_FILE_CHOOSER_ACTION_OPEN.
-	SetAction(action FileChooserAction)
+	SetAction(c FileChooser, action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
 	// gtk_file_chooser_add_choice(). For a boolean choice, the possible options
 	// are "true" and "false".
-	SetChoice(id string, option string)
+	SetChoice(c FileChooser, id string, option string)
 	// SetCreateFolders sets whether file choser will offer to create new
 	// folders. This is only relevant if the action is not set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN.
-	SetCreateFolders(createFolders bool)
+	SetCreateFolders(c FileChooser, createFolders bool)
 	// SetCurrentFolder sets the current folder for @chooser from a local
 	// filename. The user will be shown the full contents of the current folder,
 	// plus user interface elements for navigating to other folders.
@@ -3480,10 +3471,10 @@ type FileChooser interface {
 	// In general, you should not use this function. See the [section on setting
 	// up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
 	// rationale behind this.
-	SetCurrentFolder(filename string) bool
+	SetCurrentFolder(c FileChooser, filename string) bool
 	// SetCurrentFolderFile sets the current folder for @chooser from a #GFile.
 	// Internal function, see gtk_file_chooser_set_current_folder_uri().
-	SetCurrentFolderFile(file gio.File) error
+	SetCurrentFolderFile(c FileChooser, file gio.File) error
 	// SetCurrentFolderURI sets the current folder for @chooser from an URI. The
 	// user will be shown the full contents of the current folder, plus user
 	// interface elements for navigating to other folders.
@@ -3491,7 +3482,7 @@ type FileChooser interface {
 	// In general, you should not use this function. See the [section on setting
 	// up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
 	// rationale behind this.
-	SetCurrentFolderURI(uri string) bool
+	SetCurrentFolderURI(c FileChooser, uri string) bool
 	// SetCurrentName sets the current name in the file selector, as if entered
 	// by the user. Note that the name passed in here is a UTF-8 string rather
 	// than a filename. This function is meant for such uses as a suggested name
@@ -3502,7 +3493,7 @@ type FileChooser interface {
 	// gtk_file_chooser_set_filename() or gtk_file_chooser_set_uri() instead.
 	// Please see the documentation for those functions for an example of using
 	// gtk_file_chooser_set_current_name() as well.
-	SetCurrentName(name string)
+	SetCurrentName(c FileChooser, name string)
 	// SetDoOverwriteConfirmation sets whether a file chooser in
 	// GTK_FILE_CHOOSER_ACTION_SAVE mode will present a confirmation dialog if
 	// the user types a file name that already exists. This is false by default.
@@ -3514,10 +3505,10 @@ type FileChooser interface {
 	// true. You can override the way confirmation is done by actually handling
 	// the FileChooser::confirm-overwrite signal; please refer to its
 	// documentation for the details.
-	SetDoOverwriteConfirmation(doOverwriteConfirmation bool)
+	SetDoOverwriteConfirmation(c FileChooser, doOverwriteConfirmation bool)
 	// SetExtraWidget sets an application-supplied widget to provide extra
 	// options to the user.
-	SetExtraWidget(extraWidget Widget)
+	SetExtraWidget(c FileChooser, extraWidget Widget)
 	// SetFile sets @file as the current filename for the file chooser, by
 	// changing to the file’s parent folder and actually selecting the file in
 	// list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE mode, the file’s
@@ -3550,7 +3541,7 @@ type FileChooser interface {
 	//        // the user edited an existing document
 	//        gtk_file_chooser_set_file (chooser, existing_file);
 	//      }
-	SetFile(file gio.File) error
+	SetFile(c FileChooser, file gio.File) error
 	// SetFilename sets @filename as the current filename for the file chooser,
 	// by changing to the file’s parent folder and actually selecting the file
 	// in list; all other files will be unselected. If the @chooser is in
@@ -3583,13 +3574,13 @@ type FileChooser interface {
 	// suggestions as to where to save his new file. In the second case, the
 	// file’s existing location is already known, so the file chooser will use
 	// it.
-	SetFilename(filename string) bool
+	SetFilename(c FileChooser, filename string) bool
 	// SetFilter sets the current filter; only the files that pass the filter
 	// will be displayed. If the user-selectable list of filters is non-empty,
 	// then the filter should be one of the filters in that list. Setting the
 	// current filter when the list of filters is empty is useful if you want to
 	// restrict the displayed set of files without letting the user change it.
-	SetFilter(filter FileFilter)
+	SetFilter(c FileChooser, filter FileFilter)
 	// SetLocalOnly sets whether only local files can be selected in the file
 	// selector. If @local_only is true (the default), then the selected file or
 	// files are guaranteed to be accessible through the operating systems
@@ -3600,7 +3591,7 @@ type FileChooser interface {
 	//
 	// On some systems non-native files may still be available using the native
 	// filesystem via a userspace filesystem (FUSE).
-	SetLocalOnly(localOnly bool)
+	SetLocalOnly(c FileChooser, localOnly bool)
 	// SetPreviewWidget sets an application-supplied widget to use to display a
 	// custom preview of the currently selected file. To implement a preview,
 	// after setting the preview widget, you connect to the
@@ -3614,21 +3605,21 @@ type FileChooser interface {
 	// When there is no application-supplied preview widget, or the
 	// application-supplied preview widget is not active, the file chooser will
 	// display no preview at all.
-	SetPreviewWidget(previewWidget Widget)
+	SetPreviewWidget(c FileChooser, previewWidget Widget)
 	// SetPreviewWidgetActive sets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename. When @active is set to false, the file chooser may display an
 	// internally generated preview of the current file or it may display no
 	// preview at all. See gtk_file_chooser_set_preview_widget() for more
 	// details.
-	SetPreviewWidgetActive(active bool)
+	SetPreviewWidgetActive(c FileChooser, active bool)
 	// SetSelectMultiple sets whether multiple files can be selected in the file
 	// selector. This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-	SetSelectMultiple(selectMultiple bool)
+	SetSelectMultiple(c FileChooser, selectMultiple bool)
 	// SetShowHidden sets whether hidden files and folders are displayed in the
 	// file selector.
-	SetShowHidden(showHidden bool)
+	SetShowHidden(c FileChooser, showHidden bool)
 	// SetURI sets the file referred to by @uri as the current file for the file
 	// chooser, by changing to the URI’s parent folder and actually selecting
 	// the URI in the list. If the @chooser is GTK_FILE_CHOOSER_ACTION_SAVE
@@ -3661,7 +3652,7 @@ type FileChooser interface {
 	// suggestions as to where to save his new file. In the second case, the
 	// file’s existing location is already known, so the file chooser will use
 	// it.
-	SetURI(uri string) bool
+	SetURI(c FileChooser, uri string) bool
 	// SetUsePreviewLabel sets whether the file chooser should display a stock
 	// label with the name of the file that is being previewed; the default is
 	// true. Applications that want to draw the whole preview area themselves
@@ -3669,22 +3660,22 @@ type FileChooser interface {
 	// widget.
 	//
 	// See also: gtk_file_chooser_set_preview_widget()
-	SetUsePreviewLabel(useLabel bool)
+	SetUsePreviewLabel(c FileChooser, useLabel bool)
 	// UnselectAll unselects all the files in the current folder of a file
 	// chooser.
-	UnselectAll()
+	UnselectAll(c FileChooser)
 	// UnselectFile unselects the file referred to by @file. If the file is not
 	// in the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
-	UnselectFile(file gio.File)
+	UnselectFile(c FileChooser, file gio.File)
 	// UnselectFilename unselects a currently selected filename. If the filename
 	// is not in the current directory, does not exist, or is otherwise not
 	// currently selected, does nothing.
-	UnselectFilename(filename string)
+	UnselectFilename(c FileChooser, filename string)
 	// UnselectURI unselects the file referred to by @uri. If the file is not in
 	// the current directory, does not exist, or is otherwise not currently
 	// selected, does nothing.
-	UnselectURI(uri string)
+	UnselectURI(c FileChooser, uri string)
 }
 
 // fileChooser implements the FileChooser interface.
@@ -3715,7 +3706,7 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 // signal handler using gtk_file_chooser_get_choice().
 //
 // Compare gtk_file_chooser_set_extra_widget().
-func (c fileChooser) AddChoice(id string, label string, options []string, optionLabels []string) {
+func (c fileChooser) AddChoice(c FileChooser, id string, label string, options []string, optionLabels []string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 	var arg2 *C.char
@@ -3752,7 +3743,7 @@ func (c fileChooser) AddChoice(id string, label string, options []string, option
 		}
 	}
 
-	C.gtk_file_chooser_add_choice(arg0, id, label, options, optionLabels)
+	C.gtk_file_chooser_add_choice(arg0, arg1, arg2, arg3, arg4)
 }
 
 // AddFilter adds @filter to the list of filters that the user can select
@@ -3761,21 +3752,21 @@ func (c fileChooser) AddChoice(id string, label string, options []string, option
 //
 // Note that the @chooser takes ownership of the filter, so you have to ref
 // and sink it if you want to keep a reference.
-func (c fileChooser) AddFilter(filter FileFilter) {
+func (c fileChooser) AddFilter(c FileChooser, filter FileFilter) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_file_chooser_add_filter(arg0, filter)
+	C.gtk_file_chooser_add_filter(arg0, arg1)
 }
 
 // AddShortcutFolder adds a folder to be displayed with the shortcut folders
 // in a file chooser. Note that shortcut folders do not get saved, as they
 // are provided by the application. For example, you can use this to add a
 // “/usr/share/mydrawprogram/Clipart” folder to the volume list.
-func (c fileChooser) AddShortcutFolder(folder string) error {
+func (c fileChooser) AddShortcutFolder(c FileChooser, folder string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -3784,13 +3775,13 @@ func (c fileChooser) AddShortcutFolder(folder string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_add_shortcut_folder(arg0, folder, &errout)
+	C.gtk_file_chooser_add_shortcut_folder(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
@@ -3798,7 +3789,7 @@ func (c fileChooser) AddShortcutFolder(folder string) error {
 // as they are provided by the application. For example, you can use this to
 // add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume
 // list.
-func (c fileChooser) AddShortcutFolderURI(uri string) error {
+func (c fileChooser) AddShortcutFolderURI(c FileChooser, uri string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -3807,35 +3798,28 @@ func (c fileChooser) AddShortcutFolderURI(uri string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_add_shortcut_folder_uri(arg0, uri, &errout)
+	C.gtk_file_chooser_add_shortcut_folder_uri(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // Action gets the type of operation that the file chooser is performing;
 // see gtk_file_chooser_set_action().
-func (c fileChooser) Action() FileChooserAction {
+func (c fileChooser) Action(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret C.GtkFileChooserAction
-	var ret1 FileChooserAction
-
-	cret = C.gtk_file_chooser_get_action(arg0)
-
-	ret1 = FileChooserAction(cret)
-
-	return ret1
+	C.gtk_file_chooser_get_action(arg0)
 }
 
 // Choice gets the currently selected option in the 'choice' with the given
 // ID.
-func (c fileChooser) Choice(id string) string {
+func (c fileChooser) Choice(c FileChooser, id string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -3843,31 +3827,26 @@ func (c fileChooser) Choice(id string) string {
 	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_choice(arg0, id)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_file_chooser_get_choice(arg0, arg1)
 }
 
 // CreateFolders gets whether file choser will offer to create new folders.
 // See gtk_file_chooser_set_create_folders().
-func (c fileChooser) CreateFolders() bool {
+func (c fileChooser) CreateFolders(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_create_folders(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // CurrentFolder gets the current folder of @chooser as a local filename.
@@ -3880,37 +3859,22 @@ func (c fileChooser) CreateFolders() bool {
 // "/home/username/Documents/selected-folder/". To get the
 // currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
 // the usual way to get the selection.
-func (c fileChooser) CurrentFolder() string {
+func (c fileChooser) CurrentFolder(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_current_folder(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_current_folder(arg0)
 }
 
 // CurrentFolderFile gets the current folder of @chooser as #GFile. See
 // gtk_file_chooser_get_current_folder_uri().
-func (c fileChooser) CurrentFolderFile() gio.File {
+func (c fileChooser) CurrentFolderFile(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GFile
-	var ret1 gio.File
-
-	cret = C.gtk_file_chooser_get_current_folder_file(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
-
-	return ret1
+	C.gtk_file_chooser_get_current_folder_file(arg0)
 }
 
 // CurrentFolderURI gets the current folder of @chooser as an URI. See
@@ -3923,20 +3887,12 @@ func (c fileChooser) CurrentFolderFile() gio.File {
 // "file:///home/username/Documents/selected-folder/". To get the
 // currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
 // the usual way to get the selection.
-func (c fileChooser) CurrentFolderURI() string {
+func (c fileChooser) CurrentFolderURI(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_current_folder_uri(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_current_folder_uri(arg0)
 }
 
 // CurrentName gets the current name in the file selector, as entered by the
@@ -3947,54 +3903,41 @@ func (c fileChooser) CurrentFolderURI() string {
 // application that adds a custom extra widget to the file chooser for “file
 // format” may want to change the extension of the typed filename based on
 // the chosen format, say, from “.jpg” to “.png”.
-func (c fileChooser) CurrentName() string {
+func (c fileChooser) CurrentName(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_current_name(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_current_name(arg0)
 }
 
 // DoOverwriteConfirmation queries whether a file chooser is set to confirm
 // for overwriting when the user types a file name that already exists.
-func (c fileChooser) DoOverwriteConfirmation() bool {
+func (c fileChooser) DoOverwriteConfirmation(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_do_overwrite_confirmation(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ExtraWidget gets the current extra widget; see
 // gtk_file_chooser_set_extra_widget().
-func (c fileChooser) ExtraWidget() Widget {
+func (c fileChooser) ExtraWidget(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_file_chooser_get_extra_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_file_chooser_get_extra_widget(arg0)
 }
 
 // File gets the #GFile for the currently selected file in the file
@@ -4003,19 +3946,12 @@ func (c fileChooser) ExtraWidget() Widget {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
-func (c fileChooser) File() gio.File {
+func (c fileChooser) File(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GFile
-	var ret1 gio.File
-
-	cret = C.gtk_file_chooser_get_file(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
-
-	return ret1
+	C.gtk_file_chooser_get_file(arg0)
 }
 
 // Filename gets the filename for the currently selected file in the file
@@ -4024,218 +3960,161 @@ func (c fileChooser) File() gio.File {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
-func (c fileChooser) Filename() string {
+func (c fileChooser) Filename(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_filename(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_filename(arg0)
 }
 
 // Filenames lists all the selected files and subfolders in the current
 // folder of @chooser. The returned names are full absolute paths. If files
 // in the current folder cannot be represented as local filenames they will
 // be ignored. (See gtk_file_chooser_get_uris())
-func (c fileChooser) Filenames() *glib.SList {
+func (c fileChooser) Filenames(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_file_chooser_get_filenames(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_file_chooser_get_filenames(arg0)
 }
 
 // Files lists all the selected files and subfolders in the current folder
 // of @chooser as #GFile. An internal function, see
 // gtk_file_chooser_get_uris().
-func (c fileChooser) Files() *glib.SList {
+func (c fileChooser) Files(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_file_chooser_get_files(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_file_chooser_get_files(arg0)
 }
 
 // Filter gets the current filter; see gtk_file_chooser_set_filter().
-func (c fileChooser) Filter() FileFilter {
+func (c fileChooser) Filter(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkFileFilter
-	var ret1 FileFilter
-
-	cret = C.gtk_file_chooser_get_filter(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileFilter)
-
-	return ret1
+	C.gtk_file_chooser_get_filter(arg0)
 }
 
 // LocalOnly gets whether only local files can be selected in the file
 // selector. See gtk_file_chooser_set_local_only()
-func (c fileChooser) LocalOnly() bool {
+func (c fileChooser) LocalOnly(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_local_only(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // PreviewFile gets the #GFile that should be previewed in a custom preview
 // Internal function, see gtk_file_chooser_get_preview_uri().
-func (c fileChooser) PreviewFile() gio.File {
+func (c fileChooser) PreviewFile(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GFile
-	var ret1 gio.File
-
-	cret = C.gtk_file_chooser_get_preview_file(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
-
-	return ret1
+	C.gtk_file_chooser_get_preview_file(arg0)
 }
 
 // PreviewFilename gets the filename that should be previewed in a custom
 // preview widget. See gtk_file_chooser_set_preview_widget().
-func (c fileChooser) PreviewFilename() string {
+func (c fileChooser) PreviewFilename(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_preview_filename(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_preview_filename(arg0)
 }
 
 // PreviewURI gets the URI that should be previewed in a custom preview
 // widget. See gtk_file_chooser_set_preview_widget().
-func (c fileChooser) PreviewURI() string {
+func (c fileChooser) PreviewURI(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_preview_uri(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_preview_uri(arg0)
 }
 
 // PreviewWidget gets the current preview widget; see
 // gtk_file_chooser_set_preview_widget().
-func (c fileChooser) PreviewWidget() Widget {
+func (c fileChooser) PreviewWidget(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_file_chooser_get_preview_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_file_chooser_get_preview_widget(arg0)
 }
 
 // PreviewWidgetActive gets whether the preview widget set by
 // gtk_file_chooser_set_preview_widget() should be shown for the current
 // filename. See gtk_file_chooser_set_preview_widget_active().
-func (c fileChooser) PreviewWidgetActive() bool {
+func (c fileChooser) PreviewWidgetActive(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_preview_widget_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file
 // selector. See gtk_file_chooser_set_select_multiple().
-func (c fileChooser) SelectMultiple() bool {
+func (c fileChooser) SelectMultiple(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_select_multiple(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ShowHidden gets whether hidden files and folders are displayed in the
 // file selector. See gtk_file_chooser_set_show_hidden().
-func (c fileChooser) ShowHidden() bool {
+func (c fileChooser) ShowHidden(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_show_hidden(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // URI gets the URI for the currently selected file in the file selector. If
@@ -4244,122 +4123,76 @@ func (c fileChooser) ShowHidden() bool {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
-func (c fileChooser) URI() string {
+func (c fileChooser) URI(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_file_chooser_get_uri(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_chooser_get_uri(arg0)
 }
 
 // Uris lists all the selected files and subfolders in the current folder of
 // @chooser. The returned names are full absolute URIs.
-func (c fileChooser) Uris() *glib.SList {
+func (c fileChooser) Uris(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_file_chooser_get_uris(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_file_chooser_get_uris(arg0)
 }
 
 // UsePreviewLabel gets whether a stock label should be drawn with the name
 // of the previewed file. See gtk_file_chooser_set_use_preview_label().
-func (c fileChooser) UsePreviewLabel() bool {
+func (c fileChooser) UsePreviewLabel(c FileChooser) bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_file_chooser_get_use_preview_label(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ListFilters lists the current set of user-selectable filters; see
 // gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
-func (c fileChooser) ListFilters() *glib.SList {
+func (c fileChooser) ListFilters(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_file_chooser_list_filters(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_file_chooser_list_filters(arg0)
 }
 
 // ListShortcutFolderUris queries the list of shortcut folders in the file
 // chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
-func (c fileChooser) ListShortcutFolderUris() *glib.SList {
+func (c fileChooser) ListShortcutFolderUris(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_file_chooser_list_shortcut_folder_uris(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_file_chooser_list_shortcut_folder_uris(arg0)
 }
 
 // ListShortcutFolders queries the list of shortcut folders in the file
 // chooser, as set by gtk_file_chooser_add_shortcut_folder().
-func (c fileChooser) ListShortcutFolders() *glib.SList {
+func (c fileChooser) ListShortcutFolders(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_file_chooser_list_shortcut_folders(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_file_chooser_list_shortcut_folders(arg0)
 }
 
 // RemoveChoice removes a 'choice' that has been added with
 // gtk_file_chooser_add_choice().
-func (c fileChooser) RemoveChoice(id string) {
+func (c fileChooser) RemoveChoice(c FileChooser, id string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4367,24 +4200,24 @@ func (c fileChooser) RemoveChoice(id string) {
 	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_chooser_remove_choice(arg0, id)
+	C.gtk_file_chooser_remove_choice(arg0, arg1)
 }
 
 // RemoveFilter removes @filter from the list of filters that the user can
 // select between.
-func (c fileChooser) RemoveFilter(filter FileFilter) {
+func (c fileChooser) RemoveFilter(c FileChooser, filter FileFilter) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_file_chooser_remove_filter(arg0, filter)
+	C.gtk_file_chooser_remove_filter(arg0, arg1)
 }
 
 // RemoveShortcutFolder removes a folder from a file chooser’s list of
 // shortcut folders.
-func (c fileChooser) RemoveShortcutFolder(folder string) error {
+func (c fileChooser) RemoveShortcutFolder(c FileChooser, folder string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4393,18 +4226,18 @@ func (c fileChooser) RemoveShortcutFolder(folder string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_remove_shortcut_folder(arg0, folder, &errout)
+	C.gtk_file_chooser_remove_shortcut_folder(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
 // of shortcut folders.
-func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
+func (c fileChooser) RemoveShortcutFolderURI(c FileChooser, uri string) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4413,17 +4246,17 @@ func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_remove_shortcut_folder_uri(arg0, uri, &errout)
+	C.gtk_file_chooser_remove_shortcut_folder_uri(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SelectAll selects all the files in the current folder of a file chooser.
-func (c fileChooser) SelectAll() {
+func (c fileChooser) SelectAll(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
@@ -4433,7 +4266,7 @@ func (c fileChooser) SelectAll() {
 
 // SelectFile selects the file referred to by @file. An internal function.
 // See _gtk_file_chooser_select_uri().
-func (c fileChooser) SelectFile(file gio.File) error {
+func (c fileChooser) SelectFile(c FileChooser, file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
 
@@ -4441,19 +4274,19 @@ func (c fileChooser) SelectFile(file gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_select_file(arg0, file, &errout)
+	C.gtk_file_chooser_select_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SelectFilename selects a filename. If the file name isn’t in the current
 // folder of @chooser, then the current folder of @chooser will be changed
 // to the folder containing @filename.
-func (c fileChooser) SelectFilename(filename string) bool {
+func (c fileChooser) SelectFilename(c FileChooser, filename string) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4462,19 +4295,21 @@ func (c fileChooser) SelectFilename(filename string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_chooser_select_filename(arg0, filename)
+	cret = C.gtk_file_chooser_select_filename(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SelectURI selects the file to by @uri. If the URI doesn’t refer to a file
 // in the current folder of @chooser, then the current folder of @chooser
 // will be changed to the folder containing @filename.
-func (c fileChooser) SelectURI(uri string) bool {
+func (c fileChooser) SelectURI(c FileChooser, uri string) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4483,13 +4318,15 @@ func (c fileChooser) SelectURI(uri string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_chooser_select_uri(arg0, uri)
+	cret = C.gtk_file_chooser_select_uri(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetAction sets the type of operation that the chooser is performing; the
@@ -4497,20 +4334,20 @@ func (c fileChooser) SelectURI(uri string) bool {
 // option to create a new folder might be shown if the action is
 // GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 // GTK_FILE_CHOOSER_ACTION_OPEN.
-func (c fileChooser) SetAction(action FileChooserAction) {
+func (c fileChooser) SetAction(c FileChooser, action FileChooserAction) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.GtkFileChooserAction
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GtkFileChooserAction)(action)
 
-	C.gtk_file_chooser_set_action(arg0, action)
+	C.gtk_file_chooser_set_action(arg0, arg1)
 }
 
 // SetChoice selects an option in a 'choice' that has been added with
 // gtk_file_chooser_add_choice(). For a boolean choice, the possible options
 // are "true" and "false".
-func (c fileChooser) SetChoice(id string, option string) {
+func (c fileChooser) SetChoice(c FileChooser, id string, option string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 	var arg2 *C.char
@@ -4521,13 +4358,13 @@ func (c fileChooser) SetChoice(id string, option string) {
 	arg2 = (*C.char)(C.CString(option))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_file_chooser_set_choice(arg0, id, option)
+	C.gtk_file_chooser_set_choice(arg0, arg1, arg2)
 }
 
 // SetCreateFolders sets whether file choser will offer to create new
 // folders. This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
-func (c fileChooser) SetCreateFolders(createFolders bool) {
+func (c fileChooser) SetCreateFolders(c FileChooser, createFolders bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4536,7 +4373,7 @@ func (c fileChooser) SetCreateFolders(createFolders bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_create_folders(arg0, createFolders)
+	C.gtk_file_chooser_set_create_folders(arg0, arg1)
 }
 
 // SetCurrentFolder sets the current folder for @chooser from a local
@@ -4546,7 +4383,7 @@ func (c fileChooser) SetCreateFolders(createFolders bool) {
 // In general, you should not use this function. See the [section on setting
 // up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
 // rationale behind this.
-func (c fileChooser) SetCurrentFolder(filename string) bool {
+func (c fileChooser) SetCurrentFolder(c FileChooser, filename string) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.gchar
 
@@ -4555,18 +4392,20 @@ func (c fileChooser) SetCurrentFolder(filename string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_chooser_set_current_folder(arg0, filename)
+	cret = C.gtk_file_chooser_set_current_folder(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetCurrentFolderFile sets the current folder for @chooser from a #GFile.
 // Internal function, see gtk_file_chooser_set_current_folder_uri().
-func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
+func (c fileChooser) SetCurrentFolderFile(c FileChooser, file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
 
@@ -4574,13 +4413,13 @@ func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_set_current_folder_file(arg0, file, &errout)
+	C.gtk_file_chooser_set_current_folder_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetCurrentFolderURI sets the current folder for @chooser from an URI. The
@@ -4590,7 +4429,7 @@ func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
 // In general, you should not use this function. See the [section on setting
 // up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
 // rationale behind this.
-func (c fileChooser) SetCurrentFolderURI(uri string) bool {
+func (c fileChooser) SetCurrentFolderURI(c FileChooser, uri string) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.gchar
 
@@ -4599,13 +4438,15 @@ func (c fileChooser) SetCurrentFolderURI(uri string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_chooser_set_current_folder_uri(arg0, uri)
+	cret = C.gtk_file_chooser_set_current_folder_uri(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetCurrentName sets the current name in the file selector, as if entered
@@ -4618,7 +4459,7 @@ func (c fileChooser) SetCurrentFolderURI(uri string) bool {
 // gtk_file_chooser_set_filename() or gtk_file_chooser_set_uri() instead.
 // Please see the documentation for those functions for an example of using
 // gtk_file_chooser_set_current_name() as well.
-func (c fileChooser) SetCurrentName(name string) {
+func (c fileChooser) SetCurrentName(c FileChooser, name string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.gchar
 
@@ -4626,7 +4467,7 @@ func (c fileChooser) SetCurrentName(name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_chooser_set_current_name(arg0, name)
+	C.gtk_file_chooser_set_current_name(arg0, arg1)
 }
 
 // SetDoOverwriteConfirmation sets whether a file chooser in
@@ -4640,7 +4481,7 @@ func (c fileChooser) SetCurrentName(name string) {
 // true. You can override the way confirmation is done by actually handling
 // the FileChooser::confirm-overwrite signal; please refer to its
 // documentation for the details.
-func (c fileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
+func (c fileChooser) SetDoOverwriteConfirmation(c FileChooser, doOverwriteConfirmation bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4649,19 +4490,19 @@ func (c fileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_do_overwrite_confirmation(arg0, doOverwriteConfirmation)
+	C.gtk_file_chooser_set_do_overwrite_confirmation(arg0, arg1)
 }
 
 // SetExtraWidget sets an application-supplied widget to provide extra
 // options to the user.
-func (c fileChooser) SetExtraWidget(extraWidget Widget) {
+func (c fileChooser) SetExtraWidget(c FileChooser, extraWidget Widget) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(extraWidget.Native()))
 
-	C.gtk_file_chooser_set_extra_widget(arg0, extraWidget)
+	C.gtk_file_chooser_set_extra_widget(arg0, arg1)
 }
 
 // SetFile sets @file as the current filename for the file chooser, by
@@ -4696,7 +4537,7 @@ func (c fileChooser) SetExtraWidget(extraWidget Widget) {
 //        // the user edited an existing document
 //        gtk_file_chooser_set_file (chooser, existing_file);
 //      }
-func (c fileChooser) SetFile(file gio.File) error {
+func (c fileChooser) SetFile(c FileChooser, file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
 
@@ -4704,13 +4545,13 @@ func (c fileChooser) SetFile(file gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_file_chooser_set_file(arg0, file, &errout)
+	C.gtk_file_chooser_set_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetFilename sets @filename as the current filename for the file chooser,
@@ -4745,7 +4586,7 @@ func (c fileChooser) SetFile(file gio.File) error {
 // suggestions as to where to save his new file. In the second case, the
 // file’s existing location is already known, so the file chooser will use
 // it.
-func (c fileChooser) SetFilename(filename string) bool {
+func (c fileChooser) SetFilename(c FileChooser, filename string) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4754,13 +4595,15 @@ func (c fileChooser) SetFilename(filename string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_chooser_set_filename(arg0, filename)
+	cret = C.gtk_file_chooser_set_filename(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetFilter sets the current filter; only the files that pass the filter
@@ -4768,14 +4611,14 @@ func (c fileChooser) SetFilename(filename string) bool {
 // then the filter should be one of the filters in that list. Setting the
 // current filter when the list of filters is empty is useful if you want to
 // restrict the displayed set of files without letting the user change it.
-func (c fileChooser) SetFilter(filter FileFilter) {
+func (c fileChooser) SetFilter(c FileChooser, filter FileFilter) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_file_chooser_set_filter(arg0, filter)
+	C.gtk_file_chooser_set_filter(arg0, arg1)
 }
 
 // SetLocalOnly sets whether only local files can be selected in the file
@@ -4788,7 +4631,7 @@ func (c fileChooser) SetFilter(filter FileFilter) {
 //
 // On some systems non-native files may still be available using the native
 // filesystem via a userspace filesystem (FUSE).
-func (c fileChooser) SetLocalOnly(localOnly bool) {
+func (c fileChooser) SetLocalOnly(c FileChooser, localOnly bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4797,7 +4640,7 @@ func (c fileChooser) SetLocalOnly(localOnly bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_local_only(arg0, localOnly)
+	C.gtk_file_chooser_set_local_only(arg0, arg1)
 }
 
 // SetPreviewWidget sets an application-supplied widget to use to display a
@@ -4813,14 +4656,14 @@ func (c fileChooser) SetLocalOnly(localOnly bool) {
 // When there is no application-supplied preview widget, or the
 // application-supplied preview widget is not active, the file chooser will
 // display no preview at all.
-func (c fileChooser) SetPreviewWidget(previewWidget Widget) {
+func (c fileChooser) SetPreviewWidget(c FileChooser, previewWidget Widget) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(previewWidget.Native()))
 
-	C.gtk_file_chooser_set_preview_widget(arg0, previewWidget)
+	C.gtk_file_chooser_set_preview_widget(arg0, arg1)
 }
 
 // SetPreviewWidgetActive sets whether the preview widget set by
@@ -4829,7 +4672,7 @@ func (c fileChooser) SetPreviewWidget(previewWidget Widget) {
 // internally generated preview of the current file or it may display no
 // preview at all. See gtk_file_chooser_set_preview_widget() for more
 // details.
-func (c fileChooser) SetPreviewWidgetActive(active bool) {
+func (c fileChooser) SetPreviewWidgetActive(c FileChooser, active bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4838,13 +4681,13 @@ func (c fileChooser) SetPreviewWidgetActive(active bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_preview_widget_active(arg0, active)
+	C.gtk_file_chooser_set_preview_widget_active(arg0, arg1)
 }
 
 // SetSelectMultiple sets whether multiple files can be selected in the file
 // selector. This is only relevant if the action is set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
+func (c fileChooser) SetSelectMultiple(c FileChooser, selectMultiple bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4853,12 +4696,12 @@ func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_select_multiple(arg0, selectMultiple)
+	C.gtk_file_chooser_set_select_multiple(arg0, arg1)
 }
 
 // SetShowHidden sets whether hidden files and folders are displayed in the
 // file selector.
-func (c fileChooser) SetShowHidden(showHidden bool) {
+func (c fileChooser) SetShowHidden(c FileChooser, showHidden bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4867,7 +4710,7 @@ func (c fileChooser) SetShowHidden(showHidden bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_show_hidden(arg0, showHidden)
+	C.gtk_file_chooser_set_show_hidden(arg0, arg1)
 }
 
 // SetURI sets the file referred to by @uri as the current file for the file
@@ -4902,7 +4745,7 @@ func (c fileChooser) SetShowHidden(showHidden bool) {
 // suggestions as to where to save his new file. In the second case, the
 // file’s existing location is already known, so the file chooser will use
 // it.
-func (c fileChooser) SetURI(uri string) bool {
+func (c fileChooser) SetURI(c FileChooser, uri string) bool {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4911,13 +4754,15 @@ func (c fileChooser) SetURI(uri string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_chooser_set_uri(arg0, uri)
+	cret = C.gtk_file_chooser_set_uri(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetUsePreviewLabel sets whether the file chooser should display a stock
@@ -4927,7 +4772,7 @@ func (c fileChooser) SetURI(uri string) bool {
 // widget.
 //
 // See also: gtk_file_chooser_set_preview_widget()
-func (c fileChooser) SetUsePreviewLabel(useLabel bool) {
+func (c fileChooser) SetUsePreviewLabel(c FileChooser, useLabel bool) {
 	var arg0 *C.GtkFileChooser
 	var arg1 C.gboolean
 
@@ -4936,12 +4781,12 @@ func (c fileChooser) SetUsePreviewLabel(useLabel bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_file_chooser_set_use_preview_label(arg0, useLabel)
+	C.gtk_file_chooser_set_use_preview_label(arg0, arg1)
 }
 
 // UnselectAll unselects all the files in the current folder of a file
 // chooser.
-func (c fileChooser) UnselectAll() {
+func (c fileChooser) UnselectAll(c FileChooser) {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
@@ -4952,20 +4797,20 @@ func (c fileChooser) UnselectAll() {
 // UnselectFile unselects the file referred to by @file. If the file is not
 // in the current directory, does not exist, or is otherwise not currently
 // selected, does nothing.
-func (c fileChooser) UnselectFile(file gio.File) {
+func (c fileChooser) UnselectFile(c FileChooser, file gio.File) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	C.gtk_file_chooser_unselect_file(arg0, file)
+	C.gtk_file_chooser_unselect_file(arg0, arg1)
 }
 
 // UnselectFilename unselects a currently selected filename. If the filename
 // is not in the current directory, does not exist, or is otherwise not
 // currently selected, does nothing.
-func (c fileChooser) UnselectFilename(filename string) {
+func (c fileChooser) UnselectFilename(c FileChooser, filename string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4973,13 +4818,13 @@ func (c fileChooser) UnselectFilename(filename string) {
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_chooser_unselect_filename(arg0, filename)
+	C.gtk_file_chooser_unselect_filename(arg0, arg1)
 }
 
 // UnselectURI unselects the file referred to by @uri. If the file is not in
 // the current directory, does not exist, or is otherwise not currently
 // selected, does nothing.
-func (c fileChooser) UnselectURI(uri string) {
+func (c fileChooser) UnselectURI(c FileChooser, uri string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
@@ -4987,7 +4832,7 @@ func (c fileChooser) UnselectURI(uri string) {
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_chooser_unselect_uri(arg0, uri)
+	C.gtk_file_chooser_unselect_uri(arg0, arg1)
 }
 
 // Clipboard: the Clipboard object represents a clipboard of data shared between
@@ -5047,20 +4892,20 @@ type Clipboard interface {
 	// called between the time you call gtk_clipboard_set_with_owner() or
 	// gtk_clipboard_set_with_data(), and when the @clear_func you supplied is
 	// called. Otherwise, the clipboard may be owned by someone else.
-	Clear()
+	Clear(c Clipboard)
 	// Display gets the Display associated with @clipboard
-	Display() gdk.Display
+	Display(c Clipboard)
 	// Owner: if the clipboard contents callbacks were set with
 	// gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
 	// gtk_clipboard_clear() has not subsequently called, returns the owner set
 	// by gtk_clipboard_set_with_owner().
-	Owner() gextras.Objector
+	Owner(c Clipboard)
 	// Selection gets the selection that this clipboard is for.
-	Selection() gdk.Atom
+	Selection(c Clipboard)
 	// RequestContents requests the contents of clipboard as the given target.
 	// When the results of the result are later received the supplied callback
 	// will be called.
-	RequestContents(target gdk.Atom, callback ClipboardReceivedFunc)
+	RequestContents(c Clipboard)
 	// RequestImage requests the contents of the clipboard as image. When the
 	// image is later received, it will be converted to a Pixbuf, and @callback
 	// will be called.
@@ -5069,7 +4914,7 @@ type Clipboard interface {
 	// the request succeeded, or nil if it failed. This could happen for various
 	// reasons, in particular if the clipboard was empty or if the contents of
 	// the clipboard could not be converted into an image.
-	RequestImage(callback ClipboardImageReceivedFunc)
+	RequestImage(c Clipboard)
 	// RequestRichText requests the contents of the clipboard as rich text. When
 	// the rich text is later received, @callback will be called.
 	//
@@ -5078,14 +4923,14 @@ type Clipboard interface {
 	// contain @text’s length. This function can fail for various reasons, in
 	// particular if the clipboard was empty or if the contents of the clipboard
 	// could not be converted into rich text form.
-	RequestRichText(buffer TextBuffer, callback ClipboardRichTextReceivedFunc)
+	RequestRichText(c Clipboard)
 	// RequestTargets requests the contents of the clipboard as list of
 	// supported targets. When the list is later received, @callback will be
 	// called.
 	//
 	// The @targets parameter to @callback will contain the resulting targets if
 	// the request succeeded, or nil if it failed.
-	RequestTargets(callback ClipboardTargetsReceivedFunc)
+	RequestTargets(c Clipboard)
 	// RequestText requests the contents of the clipboard as text. When the text
 	// is later received, it will be converted to UTF-8 if necessary, and
 	// @callback will be called.
@@ -5094,7 +4939,7 @@ type Clipboard interface {
 	// request succeeded, or nil if it failed. This could happen for various
 	// reasons, in particular if the clipboard was empty or if the contents of
 	// the clipboard could not be converted into text form.
-	RequestText(callback ClipboardTextReceivedFunc)
+	RequestText(c Clipboard)
 	// RequestUris requests the contents of the clipboard as URIs. When the URIs
 	// are later received @callback will be called.
 	//
@@ -5102,58 +4947,58 @@ type Clipboard interface {
 	// if the request succeeded, or nil if it failed. This could happen for
 	// various reasons, in particular if the clipboard was empty or if the
 	// contents of the clipboard could not be converted into URI form.
-	RequestUris(callback ClipboardURIReceivedFunc)
+	RequestUris(c Clipboard)
 	// SetCanStore hints that the clipboard data should be stored somewhere when
 	// the application exits or when gtk_clipboard_store () is called.
 	//
 	// This value is reset when the clipboard owner changes. Where the clipboard
 	// data is stored is platform dependent, see gdk_display_store_clipboard ()
 	// for more information.
-	SetCanStore(targets []TargetEntry)
+	SetCanStore(c Clipboard)
 	// SetImage sets the contents of the clipboard to the given Pixbuf. GTK+
 	// will take responsibility for responding for requests for the image, and
 	// for converting the image into the requested format.
-	SetImage(pixbuf gdkpixbuf.Pixbuf)
+	SetImage(c Clipboard, pixbuf gdkpixbuf.Pixbuf)
 	// SetText sets the contents of the clipboard to the given UTF-8 string.
 	// GTK+ will make a copy of the text and take responsibility for responding
 	// for requests for the text, and for converting the text into the requested
 	// format.
-	SetText(text string, len int)
+	SetText(c Clipboard, text string, len int)
 	// SetWithData: virtually sets the contents of the specified clipboard by
 	// providing a list of supported formats for the clipboard data and a
 	// function to call to get the actual data when it is requested.
-	SetWithData(targets []TargetEntry, getFunc ClipboardGetFunc, clearFunc ClipboardClearFunc) bool
+	SetWithData(c Clipboard) bool
 	// Store stores the current clipboard data somewhere so that it will stay
 	// around after the application has quit.
-	Store()
+	Store(c Clipboard)
 	// WaitForContents requests the contents of the clipboard using the given
 	// target. This function waits for the data to be received using the main
 	// loop, so events, timeouts, etc, may be dispatched during the wait.
-	WaitForContents(target gdk.Atom) *SelectionData
+	WaitForContents(c Clipboard, target gdk.Atom)
 	// WaitForImage requests the contents of the clipboard as image and converts
 	// the result to a Pixbuf. This function waits for the data to be received
 	// using the main loop, so events, timeouts, etc, may be dispatched during
 	// the wait.
-	WaitForImage() gdkpixbuf.Pixbuf
+	WaitForImage(c Clipboard)
 	// WaitForRichText requests the contents of the clipboard as rich text. This
 	// function waits for the data to be received using the main loop, so
 	// events, timeouts, etc, may be dispatched during the wait.
-	WaitForRichText(buffer TextBuffer) (format gdk.Atom, length uint, guint8s []byte)
+	WaitForRichText(c Clipboard, buffer TextBuffer) (format *gdk.Atom, length uint)
 	// WaitForTargets returns a list of targets that are present on the
 	// clipboard, or nil if there aren’t any targets available. The returned
 	// list must be freed with g_free(). This function waits for the data to be
 	// received using the main loop, so events, timeouts, etc, may be dispatched
 	// during the wait.
-	WaitForTargets() (targets []*gdk.Atom, nTargets int, ok bool)
+	WaitForTargets(c Clipboard) bool
 	// WaitForText requests the contents of the clipboard as text and converts
 	// the result to UTF-8 if necessary. This function waits for the data to be
 	// received using the main loop, so events, timeouts, etc, may be dispatched
 	// during the wait.
-	WaitForText() string
+	WaitForText(c Clipboard)
 	// WaitForUris requests the contents of the clipboard as URIs. This function
 	// waits for the data to be received using the main loop, so events,
 	// timeouts, etc, may be dispatched during the wait.
-	WaitForUris() []string
+	WaitForUris(c Clipboard)
 	// WaitIsImageAvailable: test to see if there is an image available to be
 	// pasted This is done by requesting the TARGETS atom and checking if it
 	// contains any of the supported image targets. This function waits for the
@@ -5163,7 +5008,7 @@ type Clipboard interface {
 	// This function is a little faster than calling
 	// gtk_clipboard_wait_for_image() since it doesn’t need to retrieve the
 	// actual image data.
-	WaitIsImageAvailable() bool
+	WaitIsImageAvailable(c Clipboard) bool
 	// WaitIsRichTextAvailable: test to see if there is rich text available to
 	// be pasted This is done by requesting the TARGETS atom and checking if it
 	// contains any of the supported rich text targets. This function waits for
@@ -5173,14 +5018,14 @@ type Clipboard interface {
 	// This function is a little faster than calling
 	// gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
 	// actual text.
-	WaitIsRichTextAvailable(buffer TextBuffer) bool
+	WaitIsRichTextAvailable(c Clipboard, buffer TextBuffer) bool
 	// WaitIsTargetAvailable checks if a clipboard supports pasting data of a
 	// given type. This function can be used to determine if a “Paste” menu item
 	// should be insensitive or not.
 	//
 	// If you want to see if there’s text available on the clipboard, use
 	// gtk_clipboard_wait_is_text_available () instead.
-	WaitIsTargetAvailable(target gdk.Atom) bool
+	WaitIsTargetAvailable(c Clipboard, target gdk.Atom) bool
 	// WaitIsTextAvailable: test to see if there is text available to be pasted
 	// This is done by requesting the TARGETS atom and checking if it contains
 	// any of the supported text targets. This function waits for the data to be
@@ -5190,7 +5035,7 @@ type Clipboard interface {
 	// This function is a little faster than calling
 	// gtk_clipboard_wait_for_text() since it doesn’t need to retrieve the
 	// actual text.
-	WaitIsTextAvailable() bool
+	WaitIsTextAvailable(c Clipboard) bool
 	// WaitIsUrisAvailable: test to see if there is a list of URIs available to
 	// be pasted This is done by requesting the TARGETS atom and checking if it
 	// contains the URI targets. This function waits for the data to be received
@@ -5200,7 +5045,7 @@ type Clipboard interface {
 	// This function is a little faster than calling
 	// gtk_clipboard_wait_for_uris() since it doesn’t need to retrieve the
 	// actual URI data.
-	WaitIsUrisAvailable() bool
+	WaitIsUrisAvailable(c Clipboard) bool
 }
 
 // clipboard implements the Clipboard interface.
@@ -5228,7 +5073,7 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 // called between the time you call gtk_clipboard_set_with_owner() or
 // gtk_clipboard_set_with_data(), and when the @clear_func you supplied is
 // called. Otherwise, the clipboard may be owned by someone else.
-func (c clipboard) Clear() {
+func (c clipboard) Clear(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5237,65 +5082,44 @@ func (c clipboard) Clear() {
 }
 
 // Display gets the Display associated with @clipboard
-func (c clipboard) Display() gdk.Display {
+func (c clipboard) Display(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkDisplay
-	var ret1 gdk.Display
-
-	cret = C.gtk_clipboard_get_display(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
-
-	return ret1
+	C.gtk_clipboard_get_display(arg0)
 }
 
 // Owner: if the clipboard contents callbacks were set with
 // gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
 // gtk_clipboard_clear() has not subsequently called, returns the owner set
 // by gtk_clipboard_set_with_owner().
-func (c clipboard) Owner() gextras.Objector {
+func (c clipboard) Owner(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GObject
-	var ret1 gextras.Objector
-
-	cret = C.gtk_clipboard_get_owner(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
-
-	return ret1
+	C.gtk_clipboard_get_owner(arg0)
 }
 
 // Selection gets the selection that this clipboard is for.
-func (c clipboard) Selection() gdk.Atom {
+func (c clipboard) Selection(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var cret C.GdkAtom
-	var ret1 gdk.Atom
-
-	cret = C.gtk_clipboard_get_selection(arg0)
-
-	ret1 = gdk.WrapAtom(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_clipboard_get_selection(arg0)
 }
 
 // RequestContents requests the contents of clipboard as the given target.
 // When the results of the result are later received the supplied callback
 // will be called.
-func (c clipboard) RequestContents(target gdk.Atom, callback ClipboardReceivedFunc) {
+func (c clipboard) RequestContents(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_request_contents(arg0, target, callback, userData)
+	C.gtk_clipboard_request_contents(arg0, arg1, arg2, arg3)
 }
 
 // RequestImage requests the contents of the clipboard as image. When the
@@ -5306,12 +5130,12 @@ func (c clipboard) RequestContents(target gdk.Atom, callback ClipboardReceivedFu
 // the request succeeded, or nil if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of
 // the clipboard could not be converted into an image.
-func (c clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
+func (c clipboard) RequestImage(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_request_image(arg0, callback, userData)
+	C.gtk_clipboard_request_image(arg0, arg1, arg2)
 }
 
 // RequestRichText requests the contents of the clipboard as rich text. When
@@ -5322,12 +5146,12 @@ func (c clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 // contain @text’s length. This function can fail for various reasons, in
 // particular if the clipboard was empty or if the contents of the clipboard
 // could not be converted into rich text form.
-func (c clipboard) RequestRichText(buffer TextBuffer, callback ClipboardRichTextReceivedFunc) {
+func (c clipboard) RequestRichText(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_request_rich_text(arg0, buffer, callback, userData)
+	C.gtk_clipboard_request_rich_text(arg0, arg1, arg2, arg3)
 }
 
 // RequestTargets requests the contents of the clipboard as list of
@@ -5336,12 +5160,12 @@ func (c clipboard) RequestRichText(buffer TextBuffer, callback ClipboardRichText
 //
 // The @targets parameter to @callback will contain the resulting targets if
 // the request succeeded, or nil if it failed.
-func (c clipboard) RequestTargets(callback ClipboardTargetsReceivedFunc) {
+func (c clipboard) RequestTargets(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_request_targets(arg0, callback, userData)
+	C.gtk_clipboard_request_targets(arg0, arg1, arg2)
 }
 
 // RequestText requests the contents of the clipboard as text. When the text
@@ -5352,12 +5176,12 @@ func (c clipboard) RequestTargets(callback ClipboardTargetsReceivedFunc) {
 // request succeeded, or nil if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of
 // the clipboard could not be converted into text form.
-func (c clipboard) RequestText(callback ClipboardTextReceivedFunc) {
+func (c clipboard) RequestText(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_request_text(arg0, callback, userData)
+	C.gtk_clipboard_request_text(arg0, arg1, arg2)
 }
 
 // RequestUris requests the contents of the clipboard as URIs. When the URIs
@@ -5367,12 +5191,12 @@ func (c clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 // if the request succeeded, or nil if it failed. This could happen for
 // various reasons, in particular if the clipboard was empty or if the
 // contents of the clipboard could not be converted into URI form.
-func (c clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
+func (c clipboard) RequestUris(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_request_uris(arg0, callback, userData)
+	C.gtk_clipboard_request_uris(arg0, arg1, arg2)
 }
 
 // SetCanStore hints that the clipboard data should be stored somewhere when
@@ -5381,32 +5205,32 @@ func (c clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
 // This value is reset when the clipboard owner changes. Where the clipboard
 // data is stored is platform dependent, see gdk_display_store_clipboard ()
 // for more information.
-func (c clipboard) SetCanStore(targets []TargetEntry) {
+func (c clipboard) SetCanStore(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	C.gtk_clipboard_set_can_store(arg0, targets, nTargets)
+	C.gtk_clipboard_set_can_store(arg0, arg1, arg2)
 }
 
 // SetImage sets the contents of the clipboard to the given Pixbuf. GTK+
 // will take responsibility for responding for requests for the image, and
 // for converting the image into the requested format.
-func (c clipboard) SetImage(pixbuf gdkpixbuf.Pixbuf) {
+func (c clipboard) SetImage(c Clipboard, pixbuf gdkpixbuf.Pixbuf) {
 	var arg0 *C.GtkClipboard
 	var arg1 *C.GdkPixbuf
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	C.gtk_clipboard_set_image(arg0, pixbuf)
+	C.gtk_clipboard_set_image(arg0, arg1)
 }
 
 // SetText sets the contents of the clipboard to the given UTF-8 string.
 // GTK+ will make a copy of the text and take responsibility for responding
 // for requests for the text, and for converting the text into the requested
 // format.
-func (c clipboard) SetText(text string, len int) {
+func (c clipboard) SetText(c Clipboard, text string, len int) {
 	var arg0 *C.GtkClipboard
 	var arg1 *C.gchar
 	var arg2 C.gint
@@ -5416,30 +5240,32 @@ func (c clipboard) SetText(text string, len int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(len)
 
-	C.gtk_clipboard_set_text(arg0, text, len)
+	C.gtk_clipboard_set_text(arg0, arg1, arg2)
 }
 
 // SetWithData: virtually sets the contents of the specified clipboard by
 // providing a list of supported formats for the clipboard data and a
 // function to call to get the actual data when it is requested.
-func (c clipboard) SetWithData(targets []TargetEntry, getFunc ClipboardGetFunc, clearFunc ClipboardClearFunc) bool {
+func (c clipboard) SetWithData(c Clipboard) bool {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_clipboard_set_with_data(arg0, targets, nTargets, getFunc, clearFunc, userData)
+	cret = C.gtk_clipboard_set_with_data(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Store stores the current clipboard data somewhere so that it will stay
 // around after the application has quit.
-func (c clipboard) Store() {
+func (c clipboard) Store(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5450,67 +5276,49 @@ func (c clipboard) Store() {
 // WaitForContents requests the contents of the clipboard using the given
 // target. This function waits for the data to be received using the main
 // loop, so events, timeouts, etc, may be dispatched during the wait.
-func (c clipboard) WaitForContents(target gdk.Atom) *SelectionData {
+func (c clipboard) WaitForContents(c Clipboard, target gdk.Atom) {
 	var arg0 *C.GtkClipboard
 	var arg1 C.GdkAtom
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
-	var cret *C.GtkSelectionData
-	var ret1 *SelectionData
-
-	cret = C.gtk_clipboard_wait_for_contents(arg0, target)
-
-	ret1 = WrapSelectionData(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SelectionData) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_clipboard_wait_for_contents(arg0, arg1)
 }
 
 // WaitForImage requests the contents of the clipboard as image and converts
 // the result to a Pixbuf. This function waits for the data to be received
 // using the main loop, so events, timeouts, etc, may be dispatched during
 // the wait.
-func (c clipboard) WaitForImage() gdkpixbuf.Pixbuf {
+func (c clipboard) WaitForImage(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
-
-	cret = C.gtk_clipboard_wait_for_image(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return ret1
+	C.gtk_clipboard_wait_for_image(arg0)
 }
 
 // WaitForRichText requests the contents of the clipboard as rich text. This
 // function waits for the data to be received using the main loop, so
 // events, timeouts, etc, may be dispatched during the wait.
-func (c clipboard) WaitForRichText(buffer TextBuffer) (format gdk.Atom, length uint, guint8s []byte) {
+func (c clipboard) WaitForRichText(c Clipboard, buffer TextBuffer) (format *gdk.Atom, length uint) {
 	var arg0 *C.GtkClipboard
 	var arg1 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
-	var cret *C.guint8
-	var arg2 *C.GdkAtom
-	var ret3 []byte
+	var arg2 C.GdkAtom
+	var format *gdk.Atom
+	var arg3 C.gsize
+	var length uint
 
-	cret = C.gtk_clipboard_wait_for_rich_text(arg0, buffer, &arg2, &arg3)
+	C.gtk_clipboard_wait_for_rich_text(arg0, arg1, &arg2, &arg3)
 
-	ptr.SetSlice(unsafe.Pointer(&ret3), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&ret3, func(v *[]byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	format = gdk.WrapAtom(unsafe.Pointer(&arg2))
+	length = uint(&arg3)
 
-	return ret2, ret3, ret3
+	return format, length
 }
 
 // WaitForTargets returns a list of targets that are present on the
@@ -5518,72 +5326,44 @@ func (c clipboard) WaitForRichText(buffer TextBuffer) (format gdk.Atom, length u
 // list must be freed with g_free(). This function waits for the data to be
 // received using the main loop, so events, timeouts, etc, may be dispatched
 // during the wait.
-func (c clipboard) WaitForTargets() (targets []*gdk.Atom, nTargets int, ok bool) {
+func (c clipboard) WaitForTargets(c Clipboard) bool {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
 	cret = C.gtk_clipboard_wait_for_targets(arg0, &arg1, &arg2)
 
-	ret3 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2, ret3
+	return targets, nTargets, ok
 }
 
 // WaitForText requests the contents of the clipboard as text and converts
 // the result to UTF-8 if necessary. This function waits for the data to be
 // received using the main loop, so events, timeouts, etc, may be dispatched
 // during the wait.
-func (c clipboard) WaitForText() string {
+func (c clipboard) WaitForText(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_clipboard_wait_for_text(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_clipboard_wait_for_text(arg0)
 }
 
 // WaitForUris requests the contents of the clipboard as URIs. This function
 // waits for the data to be received using the main loop, so events,
 // timeouts, etc, may be dispatched during the wait.
-func (c clipboard) WaitForUris() []string {
+func (c clipboard) WaitForUris(c Clipboard) {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.gtk_clipboard_wait_for_uris(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.gtk_clipboard_wait_for_uris(arg0)
 }
 
 // WaitIsImageAvailable: test to see if there is an image available to be
@@ -5595,19 +5375,21 @@ func (c clipboard) WaitForUris() []string {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_image() since it doesn’t need to retrieve the
 // actual image data.
-func (c clipboard) WaitIsImageAvailable() bool {
+func (c clipboard) WaitIsImageAvailable(c Clipboard) bool {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_clipboard_wait_is_image_available(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // WaitIsRichTextAvailable: test to see if there is rich text available to
@@ -5619,7 +5401,7 @@ func (c clipboard) WaitIsImageAvailable() bool {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
 // actual text.
-func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
+func (c clipboard) WaitIsRichTextAvailable(c Clipboard, buffer TextBuffer) bool {
 	var arg0 *C.GtkClipboard
 	var arg1 *C.GtkTextBuffer
 
@@ -5627,13 +5409,15 @@ func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 	arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_clipboard_wait_is_rich_text_available(arg0, buffer)
+	cret = C.gtk_clipboard_wait_is_rich_text_available(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // WaitIsTargetAvailable checks if a clipboard supports pasting data of a
@@ -5642,7 +5426,7 @@ func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 //
 // If you want to see if there’s text available on the clipboard, use
 // gtk_clipboard_wait_is_text_available () instead.
-func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
+func (c clipboard) WaitIsTargetAvailable(c Clipboard, target gdk.Atom) bool {
 	var arg0 *C.GtkClipboard
 	var arg1 C.GdkAtom
 
@@ -5650,13 +5434,15 @@ func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
 	arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_clipboard_wait_is_target_available(arg0, target)
+	cret = C.gtk_clipboard_wait_is_target_available(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // WaitIsTextAvailable: test to see if there is text available to be pasted
@@ -5668,19 +5454,21 @@ func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_text() since it doesn’t need to retrieve the
 // actual text.
-func (c clipboard) WaitIsTextAvailable() bool {
+func (c clipboard) WaitIsTextAvailable(c Clipboard) bool {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_clipboard_wait_is_text_available(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // WaitIsUrisAvailable: test to see if there is a list of URIs available to
@@ -5692,19 +5480,21 @@ func (c clipboard) WaitIsTextAvailable() bool {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_uris() since it doesn’t need to retrieve the
 // actual URI data.
-func (c clipboard) WaitIsUrisAvailable() bool {
+func (c clipboard) WaitIsUrisAvailable(c Clipboard) bool {
 	var arg0 *C.GtkClipboard
 
 	arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_clipboard_wait_is_uris_available(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -5753,36 +5543,36 @@ type FileFilter interface {
 	// information about what sorts of information that the filter function
 	// needs; this allows GTK+ to avoid retrieving expensive information when it
 	// isn’t needed by the filter.
-	AddCustom(needed FileFilterFlags, fn FileFilterFunc)
+	AddCustom(f FileFilter)
 	// AddMIMEType adds a rule allowing a given mime type to @filter.
-	AddMIMEType(mimeType string)
+	AddMIMEType(f FileFilter, mimeType string)
 	// AddPattern adds a rule allowing a shell style glob to a filter.
-	AddPattern(pattern string)
+	AddPattern(f FileFilter, pattern string)
 	// AddPixbufFormats adds a rule allowing image files in the formats
 	// supported by GdkPixbuf.
-	AddPixbufFormats()
+	AddPixbufFormats(f FileFilter)
 	// Filter tests whether a file should be displayed according to @filter. The
 	// FileFilterInfo @filter_info should include the fields returned from
 	// gtk_file_filter_get_needed().
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of FileChooser.
-	Filter(filterInfo *FileFilterInfo) bool
+	Filter(f FileFilter, filterInfo *FileFilterInfo) bool
 	// Name gets the human-readable name for the filter. See
 	// gtk_file_filter_set_name().
-	Name() string
+	Name(f FileFilter)
 	// Needed gets the fields that need to be filled in for the FileFilterInfo
 	// passed to gtk_file_filter_filter()
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of FileChooser.
-	Needed() FileFilterFlags
+	Needed(f FileFilter)
 	// SetName sets the human-readable name of the filter; this is the string
 	// that will be displayed in the file selector user interface if there is a
 	// selectable list of filters.
-	SetName(name string)
+	SetName(f FileFilter, name string)
 	// ToGVariant: serialize a file filter to an a{sv} variant.
-	ToGVariant() *glib.Variant
+	ToGVariant(f FileFilter)
 }
 
 // fileFilter implements the FileFilter interface.
@@ -5809,31 +5599,17 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 }
 
 // NewFileFilter constructs a class FileFilter.
-func NewFileFilter() FileFilter {
-	var cret C.GtkFileFilter
-	var ret1 FileFilter
-
-	cret = C.gtk_file_filter_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileFilter)
-
-	return ret1
+func NewFileFilter() {
+	C.gtk_file_filter_new()
 }
 
 // NewFileFilterFromGVariant constructs a class FileFilter.
-func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
+func NewFileFilterFromGVariant(variant *glib.Variant) {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	var cret C.GtkFileFilter
-	var ret1 FileFilter
-
-	cret = C.gtk_file_filter_new_from_gvariant(variant)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
-
-	return ret1
+	C.gtk_file_filter_new_from_gvariant(arg1)
 }
 
 // AddCustom adds rule to a filter that allows files based on a custom
@@ -5841,16 +5617,16 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 // information about what sorts of information that the filter function
 // needs; this allows GTK+ to avoid retrieving expensive information when it
 // isn’t needed by the filter.
-func (f fileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
+func (f fileFilter) AddCustom(f FileFilter) {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
-	C.gtk_file_filter_add_custom(arg0, needed, fn, data, notify)
+	C.gtk_file_filter_add_custom(arg0, arg1, arg2, arg3, arg4)
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
-func (f fileFilter) AddMIMEType(mimeType string) {
+func (f fileFilter) AddMIMEType(f FileFilter, mimeType string) {
 	var arg0 *C.GtkFileFilter
 	var arg1 *C.gchar
 
@@ -5858,11 +5634,11 @@ func (f fileFilter) AddMIMEType(mimeType string) {
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_filter_add_mime_type(arg0, mimeType)
+	C.gtk_file_filter_add_mime_type(arg0, arg1)
 }
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
-func (f fileFilter) AddPattern(pattern string) {
+func (f fileFilter) AddPattern(f FileFilter, pattern string) {
 	var arg0 *C.GtkFileFilter
 	var arg1 *C.gchar
 
@@ -5870,12 +5646,12 @@ func (f fileFilter) AddPattern(pattern string) {
 	arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_filter_add_pattern(arg0, pattern)
+	C.gtk_file_filter_add_pattern(arg0, arg1)
 }
 
 // AddPixbufFormats adds a rule allowing image files in the formats
 // supported by GdkPixbuf.
-func (f fileFilter) AddPixbufFormats() {
+func (f fileFilter) AddPixbufFormats(f FileFilter) {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
@@ -5889,7 +5665,7 @@ func (f fileFilter) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
-func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
+func (f fileFilter) Filter(f FileFilter, filterInfo *FileFilterInfo) bool {
 	var arg0 *C.GtkFileFilter
 	var arg1 *C.GtkFileFilterInfo
 
@@ -5897,30 +5673,25 @@ func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_file_filter_filter(arg0, filterInfo)
+	cret = C.gtk_file_filter_filter(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Name gets the human-readable name for the filter. See
 // gtk_file_filter_set_name().
-func (f fileFilter) Name() string {
+func (f fileFilter) Name(f FileFilter) {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_file_filter_get_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_file_filter_get_name(arg0)
 }
 
 // Needed gets the fields that need to be filled in for the FileFilterInfo
@@ -5928,25 +5699,18 @@ func (f fileFilter) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
-func (f fileFilter) Needed() FileFilterFlags {
+func (f fileFilter) Needed(f FileFilter) {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
-	var cret C.GtkFileFilterFlags
-	var ret1 FileFilterFlags
-
-	cret = C.gtk_file_filter_get_needed(arg0)
-
-	ret1 = FileFilterFlags(cret)
-
-	return ret1
+	C.gtk_file_filter_get_needed(arg0)
 }
 
 // SetName sets the human-readable name of the filter; this is the string
 // that will be displayed in the file selector user interface if there is a
 // selectable list of filters.
-func (f fileFilter) SetName(name string) {
+func (f fileFilter) SetName(f FileFilter, name string) {
 	var arg0 *C.GtkFileFilter
 	var arg1 *C.gchar
 
@@ -5954,23 +5718,16 @@ func (f fileFilter) SetName(name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_file_filter_set_name(arg0, name)
+	C.gtk_file_filter_set_name(arg0, arg1)
 }
 
 // ToGVariant: serialize a file filter to an a{sv} variant.
-func (f fileFilter) ToGVariant() *glib.Variant {
+func (f fileFilter) ToGVariant(f FileFilter) {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.gtk_file_filter_to_gvariant(arg0)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_file_filter_to_gvariant(arg0)
 }
 
 // ModelButton: gtkModelButton is a button class that can use a #GAction as its
@@ -6077,15 +5834,8 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 }
 
 // NewModelButton constructs a class ModelButton.
-func NewModelButton() ModelButton {
-	var cret C.GtkModelButton
-	var ret1 ModelButton
-
-	cret = C.gtk_model_button_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ModelButton)
-
-	return ret1
+func NewModelButton() {
+	C.gtk_model_button_new()
 }
 
 // PageSetup: a GtkPageSetup object stores the page size, orientation and
@@ -6133,67 +5883,67 @@ type PageSetup interface {
 	gextras.Objector
 
 	// Copy copies a PageSetup.
-	Copy() PageSetup
+	Copy(o PageSetup)
 	// BottomMargin gets the bottom margin in units of @unit.
-	BottomMargin(unit Unit) float64
+	BottomMargin(s PageSetup, unit Unit)
 	// LeftMargin gets the left margin in units of @unit.
-	LeftMargin(unit Unit) float64
+	LeftMargin(s PageSetup, unit Unit)
 	// Orientation gets the page orientation of the PageSetup.
-	Orientation() PageOrientation
+	Orientation(s PageSetup)
 	// PageHeight returns the page height in units of @unit.
 	//
 	// Note that this function takes orientation and margins into consideration.
 	// See gtk_page_setup_get_paper_height().
-	PageHeight(unit Unit) float64
+	PageHeight(s PageSetup, unit Unit)
 	// PageWidth returns the page width in units of @unit.
 	//
 	// Note that this function takes orientation and margins into consideration.
 	// See gtk_page_setup_get_paper_width().
-	PageWidth(unit Unit) float64
+	PageWidth(s PageSetup, unit Unit)
 	// PaperHeight returns the paper height in units of @unit.
 	//
 	// Note that this function takes orientation, but not margins into
 	// consideration. See gtk_page_setup_get_page_height().
-	PaperHeight(unit Unit) float64
+	PaperHeight(s PageSetup, unit Unit)
 	// PaperSize gets the paper size of the PageSetup.
-	PaperSize() *PaperSize
+	PaperSize(s PageSetup)
 	// PaperWidth returns the paper width in units of @unit.
 	//
 	// Note that this function takes orientation, but not margins into
 	// consideration. See gtk_page_setup_get_page_width().
-	PaperWidth(unit Unit) float64
+	PaperWidth(s PageSetup, unit Unit)
 	// RightMargin gets the right margin in units of @unit.
-	RightMargin(unit Unit) float64
+	RightMargin(s PageSetup, unit Unit)
 	// TopMargin gets the top margin in units of @unit.
-	TopMargin(unit Unit) float64
+	TopMargin(s PageSetup, unit Unit)
 	// LoadFile reads the page setup from the file @file_name. See
 	// gtk_page_setup_to_file().
-	LoadFile(fileName string) error
+	LoadFile(s PageSetup, fileName string) error
 	// LoadKeyFile reads the page setup from the group @group_name in the key
 	// file @key_file.
-	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
+	LoadKeyFile(s PageSetup, keyFile *glib.KeyFile, groupName string) error
 	// SetBottomMargin sets the bottom margin of the PageSetup.
-	SetBottomMargin(margin float64, unit Unit)
+	SetBottomMargin(s PageSetup, margin float64, unit Unit)
 	// SetLeftMargin sets the left margin of the PageSetup.
-	SetLeftMargin(margin float64, unit Unit)
+	SetLeftMargin(s PageSetup, margin float64, unit Unit)
 	// SetOrientation sets the page orientation of the PageSetup.
-	SetOrientation(orientation PageOrientation)
+	SetOrientation(s PageSetup, orientation PageOrientation)
 	// SetPaperSize sets the paper size of the PageSetup without changing the
 	// margins. See gtk_page_setup_set_paper_size_and_default_margins().
-	SetPaperSize(size *PaperSize)
+	SetPaperSize(s PageSetup, size *PaperSize)
 	// SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
 	// modifies the margins according to the new paper size.
-	SetPaperSizeAndDefaultMargins(size *PaperSize)
+	SetPaperSizeAndDefaultMargins(s PageSetup, size *PaperSize)
 	// SetRightMargin sets the right margin of the PageSetup.
-	SetRightMargin(margin float64, unit Unit)
+	SetRightMargin(s PageSetup, margin float64, unit Unit)
 	// SetTopMargin sets the top margin of the PageSetup.
-	SetTopMargin(margin float64, unit Unit)
+	SetTopMargin(s PageSetup, margin float64, unit Unit)
 	// ToFile: this function saves the information from @setup to @file_name.
-	ToFile(fileName string) error
+	ToFile(s PageSetup, fileName string) error
 	// ToGVariant: serialize page setup to an a{sv} variant.
-	ToGVariant() *glib.Variant
+	ToGVariant(s PageSetup)
 	// ToKeyFile: this function adds the page setup from @setup to @key_file.
-	ToKeyFile(keyFile *glib.KeyFile, groupName string)
+	ToKeyFile(s PageSetup, keyFile *glib.KeyFile, groupName string)
 }
 
 // pageSetup implements the PageSetup interface.
@@ -6218,55 +5968,38 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 }
 
 // NewPageSetup constructs a class PageSetup.
-func NewPageSetup() PageSetup {
-	var cret C.GtkPageSetup
-	var ret1 PageSetup
-
-	cret = C.gtk_page_setup_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return ret1
+func NewPageSetup() {
+	C.gtk_page_setup_new()
 }
 
 // NewPageSetupFromFile constructs a class PageSetup.
-func NewPageSetupFromFile(fileName string) (pageSetup PageSetup, err error) {
+func NewPageSetupFromFile(fileName string) error {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GtkPageSetup
-	var ret2 PageSetup
+	var err error
 
-	cret = C.gtk_page_setup_new_from_file(fileName, &errout)
+	C.gtk_page_setup_new_from_file(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // NewPageSetupFromGVariant constructs a class PageSetup.
-func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
+func NewPageSetupFromGVariant(variant *glib.Variant) {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	var cret C.GtkPageSetup
-	var ret1 PageSetup
-
-	cret = C.gtk_page_setup_new_from_gvariant(variant)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return ret1
+	C.gtk_page_setup_new_from_gvariant(arg1)
 }
 
 // NewPageSetupFromKeyFile constructs a class PageSetup.
-func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup PageSetup, err error) {
+func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
 
@@ -6275,225 +6008,145 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GtkPageSetup
-	var ret2 PageSetup
+	var err error
 
-	cret = C.gtk_page_setup_new_from_key_file(keyFile, groupName, &errout)
+	C.gtk_page_setup_new_from_key_file(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Copy copies a PageSetup.
-func (o pageSetup) Copy() PageSetup {
+func (o pageSetup) Copy(o PageSetup) {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GtkPageSetup
-	var ret1 PageSetup
-
-	cret = C.gtk_page_setup_copy(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return ret1
+	C.gtk_page_setup_copy(arg0)
 }
 
 // BottomMargin gets the bottom margin in units of @unit.
-func (s pageSetup) BottomMargin(unit Unit) float64 {
+func (s pageSetup) BottomMargin(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_bottom_margin(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_bottom_margin(arg0, arg1)
 }
 
 // LeftMargin gets the left margin in units of @unit.
-func (s pageSetup) LeftMargin(unit Unit) float64 {
+func (s pageSetup) LeftMargin(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_left_margin(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_left_margin(arg0, arg1)
 }
 
 // Orientation gets the page orientation of the PageSetup.
-func (s pageSetup) Orientation() PageOrientation {
+func (s pageSetup) Orientation(s PageSetup) {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPageOrientation
-	var ret1 PageOrientation
-
-	cret = C.gtk_page_setup_get_orientation(arg0)
-
-	ret1 = PageOrientation(cret)
-
-	return ret1
+	C.gtk_page_setup_get_orientation(arg0)
 }
 
 // PageHeight returns the page height in units of @unit.
 //
 // Note that this function takes orientation and margins into consideration.
 // See gtk_page_setup_get_paper_height().
-func (s pageSetup) PageHeight(unit Unit) float64 {
+func (s pageSetup) PageHeight(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_page_height(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_page_height(arg0, arg1)
 }
 
 // PageWidth returns the page width in units of @unit.
 //
 // Note that this function takes orientation and margins into consideration.
 // See gtk_page_setup_get_paper_width().
-func (s pageSetup) PageWidth(unit Unit) float64 {
+func (s pageSetup) PageWidth(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_page_width(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_page_width(arg0, arg1)
 }
 
 // PaperHeight returns the paper height in units of @unit.
 //
 // Note that this function takes orientation, but not margins into
 // consideration. See gtk_page_setup_get_page_height().
-func (s pageSetup) PaperHeight(unit Unit) float64 {
+func (s pageSetup) PaperHeight(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_paper_height(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_paper_height(arg0, arg1)
 }
 
 // PaperSize gets the paper size of the PageSetup.
-func (s pageSetup) PaperSize() *PaperSize {
+func (s pageSetup) PaperSize(s PageSetup) {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkPaperSize
-	var ret1 *PaperSize
-
-	cret = C.gtk_page_setup_get_paper_size(arg0)
-
-	ret1 = WrapPaperSize(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_page_setup_get_paper_size(arg0)
 }
 
 // PaperWidth returns the paper width in units of @unit.
 //
 // Note that this function takes orientation, but not margins into
 // consideration. See gtk_page_setup_get_page_width().
-func (s pageSetup) PaperWidth(unit Unit) float64 {
+func (s pageSetup) PaperWidth(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_paper_width(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_paper_width(arg0, arg1)
 }
 
 // RightMargin gets the right margin in units of @unit.
-func (s pageSetup) RightMargin(unit Unit) float64 {
+func (s pageSetup) RightMargin(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_right_margin(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_right_margin(arg0, arg1)
 }
 
 // TopMargin gets the top margin in units of @unit.
-func (s pageSetup) TopMargin(unit Unit) float64 {
+func (s pageSetup) TopMargin(s PageSetup, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_page_setup_get_top_margin(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_page_setup_get_top_margin(arg0, arg1)
 }
 
 // LoadFile reads the page setup from the file @file_name. See
 // gtk_page_setup_to_file().
-func (s pageSetup) LoadFile(fileName string) error {
+func (s pageSetup) LoadFile(s PageSetup, fileName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
 
@@ -6502,18 +6155,18 @@ func (s pageSetup) LoadFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_page_setup_load_file(arg0, fileName, &errout)
+	C.gtk_page_setup_load_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // LoadKeyFile reads the page setup from the group @group_name in the key
 // file @key_file.
-func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
+func (s pageSetup) LoadKeyFile(s PageSetup, keyFile *glib.KeyFile, groupName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
@@ -6524,17 +6177,17 @@ func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_page_setup_load_key_file(arg0, keyFile, groupName, &errout)
+	C.gtk_page_setup_load_key_file(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetBottomMargin sets the bottom margin of the PageSetup.
-func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
+func (s pageSetup) SetBottomMargin(s PageSetup, margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.gdouble
 	var arg2 C.GtkUnit
@@ -6543,11 +6196,11 @@ func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
 	arg1 = C.gdouble(margin)
 	arg2 = (C.GtkUnit)(unit)
 
-	C.gtk_page_setup_set_bottom_margin(arg0, margin, unit)
+	C.gtk_page_setup_set_bottom_margin(arg0, arg1, arg2)
 }
 
 // SetLeftMargin sets the left margin of the PageSetup.
-func (s pageSetup) SetLeftMargin(margin float64, unit Unit) {
+func (s pageSetup) SetLeftMargin(s PageSetup, margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.gdouble
 	var arg2 C.GtkUnit
@@ -6556,46 +6209,46 @@ func (s pageSetup) SetLeftMargin(margin float64, unit Unit) {
 	arg1 = C.gdouble(margin)
 	arg2 = (C.GtkUnit)(unit)
 
-	C.gtk_page_setup_set_left_margin(arg0, margin, unit)
+	C.gtk_page_setup_set_left_margin(arg0, arg1, arg2)
 }
 
 // SetOrientation sets the page orientation of the PageSetup.
-func (s pageSetup) SetOrientation(orientation PageOrientation) {
+func (s pageSetup) SetOrientation(s PageSetup, orientation PageOrientation) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkPageOrientation
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPageOrientation)(orientation)
 
-	C.gtk_page_setup_set_orientation(arg0, orientation)
+	C.gtk_page_setup_set_orientation(arg0, arg1)
 }
 
 // SetPaperSize sets the paper size of the PageSetup without changing the
 // margins. See gtk_page_setup_set_paper_size_and_default_margins().
-func (s pageSetup) SetPaperSize(size *PaperSize) {
+func (s pageSetup) SetPaperSize(s PageSetup, size *PaperSize) {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GtkPaperSize
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size.Native()))
 
-	C.gtk_page_setup_set_paper_size(arg0, size)
+	C.gtk_page_setup_set_paper_size(arg0, arg1)
 }
 
 // SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
 // modifies the margins according to the new paper size.
-func (s pageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
+func (s pageSetup) SetPaperSizeAndDefaultMargins(s PageSetup, size *PaperSize) {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GtkPaperSize
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size.Native()))
 
-	C.gtk_page_setup_set_paper_size_and_default_margins(arg0, size)
+	C.gtk_page_setup_set_paper_size_and_default_margins(arg0, arg1)
 }
 
 // SetRightMargin sets the right margin of the PageSetup.
-func (s pageSetup) SetRightMargin(margin float64, unit Unit) {
+func (s pageSetup) SetRightMargin(s PageSetup, margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.gdouble
 	var arg2 C.GtkUnit
@@ -6604,11 +6257,11 @@ func (s pageSetup) SetRightMargin(margin float64, unit Unit) {
 	arg1 = C.gdouble(margin)
 	arg2 = (C.GtkUnit)(unit)
 
-	C.gtk_page_setup_set_right_margin(arg0, margin, unit)
+	C.gtk_page_setup_set_right_margin(arg0, arg1, arg2)
 }
 
 // SetTopMargin sets the top margin of the PageSetup.
-func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
+func (s pageSetup) SetTopMargin(s PageSetup, margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.gdouble
 	var arg2 C.GtkUnit
@@ -6617,11 +6270,11 @@ func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
 	arg1 = C.gdouble(margin)
 	arg2 = (C.GtkUnit)(unit)
 
-	C.gtk_page_setup_set_top_margin(arg0, margin, unit)
+	C.gtk_page_setup_set_top_margin(arg0, arg1, arg2)
 }
 
 // ToFile: this function saves the information from @setup to @file_name.
-func (s pageSetup) ToFile(fileName string) error {
+func (s pageSetup) ToFile(s PageSetup, fileName string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
 
@@ -6630,33 +6283,26 @@ func (s pageSetup) ToFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_page_setup_to_file(arg0, fileName, &errout)
+	C.gtk_page_setup_to_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // ToGVariant: serialize page setup to an a{sv} variant.
-func (s pageSetup) ToGVariant() *glib.Variant {
+func (s pageSetup) ToGVariant(s PageSetup) {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.gtk_page_setup_to_gvariant(arg0)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_page_setup_to_gvariant(arg0)
 }
 
 // ToKeyFile: this function adds the page setup from @setup to @key_file.
-func (s pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
+func (s pageSetup) ToKeyFile(s PageSetup, keyFile *glib.KeyFile, groupName string) {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
@@ -6666,7 +6312,7 @@ func (s pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_page_setup_to_key_file(arg0, keyFile, groupName)
+	C.gtk_page_setup_to_key_file(arg0, arg1, arg2)
 }
 
 // PrintContext: a GtkPrintContext encapsulates context information that is
@@ -6739,38 +6385,38 @@ type PrintContext interface {
 
 	// CreatePangoContext creates a new Context that can be used with the
 	// PrintContext.
-	CreatePangoContext() pango.Context
+	CreatePangoContext(c PrintContext)
 	// CreatePangoLayout creates a new Layout that is suitable for use with the
 	// PrintContext.
-	CreatePangoLayout() pango.Layout
+	CreatePangoLayout(c PrintContext)
 	// CairoContext obtains the cairo context that is associated with the
 	// PrintContext.
-	CairoContext() *cairo.Context
+	CairoContext(c PrintContext)
 	// DPIX obtains the horizontal resolution of the PrintContext, in dots per
 	// inch.
-	DPIX() float64
+	DPIX(c PrintContext)
 	// DPIY obtains the vertical resolution of the PrintContext, in dots per
 	// inch.
-	DPIY() float64
+	DPIY(c PrintContext)
 	// HardMargins obtains the hardware printer margins of the PrintContext, in
 	// units.
-	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
+	HardMargins(c PrintContext) (top float64, bottom float64, left float64, right float64, ok bool)
 	// Height obtains the height of the PrintContext, in pixels.
-	Height() float64
+	Height(c PrintContext)
 	// PageSetup obtains the PageSetup that determines the page dimensions of
 	// the PrintContext.
-	PageSetup() PageSetup
+	PageSetup(c PrintContext)
 	// PangoFontmap returns a FontMap that is suitable for use with the
 	// PrintContext.
-	PangoFontmap() pango.FontMap
+	PangoFontmap(c PrintContext)
 	// Width obtains the width of the PrintContext, in pixels.
-	Width() float64
+	Width(c PrintContext)
 	// SetCairoContext sets a new cairo context on a print context.
 	//
 	// This function is intended to be used when implementing an internal print
 	// preview, it is not needed for printing, since GTK+ itself creates a
 	// suitable cairo context in that case.
-	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
+	SetCairoContext(c PrintContext, cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
 // printContext implements the PrintContext interface.
@@ -6796,182 +6442,121 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 
 // CreatePangoContext creates a new Context that can be used with the
 // PrintContext.
-func (c printContext) CreatePangoContext() pango.Context {
+func (c printContext) CreatePangoContext(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoContext
-	var ret1 pango.Context
-
-	cret = C.gtk_print_context_create_pango_context(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
-
-	return ret1
+	C.gtk_print_context_create_pango_context(arg0)
 }
 
 // CreatePangoLayout creates a new Layout that is suitable for use with the
 // PrintContext.
-func (c printContext) CreatePangoLayout() pango.Layout {
+func (c printContext) CreatePangoLayout(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoLayout
-	var ret1 pango.Layout
-
-	cret = C.gtk_print_context_create_pango_layout(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
-
-	return ret1
+	C.gtk_print_context_create_pango_layout(arg0)
 }
 
 // CairoContext obtains the cairo context that is associated with the
 // PrintContext.
-func (c printContext) CairoContext() *cairo.Context {
+func (c printContext) CairoContext(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.cairo_t
-	var ret1 *cairo.Context
-
-	cret = C.gtk_print_context_get_cairo_context(arg0)
-
-	ret1 = cairo.WrapContext(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_print_context_get_cairo_context(arg0)
 }
 
 // DPIX obtains the horizontal resolution of the PrintContext, in dots per
 // inch.
-func (c printContext) DPIX() float64 {
+func (c printContext) DPIX(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_context_get_dpi_x(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_context_get_dpi_x(arg0)
 }
 
 // DPIY obtains the vertical resolution of the PrintContext, in dots per
 // inch.
-func (c printContext) DPIY() float64 {
+func (c printContext) DPIY(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_context_get_dpi_y(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_context_get_dpi_y(arg0)
 }
 
 // HardMargins obtains the hardware printer margins of the PrintContext, in
 // units.
-func (c printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
+func (c printContext) HardMargins(c PrintContext) (top float64, bottom float64, left float64, right float64, ok bool) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var arg1 C.gdouble
-	var ret1 float64
+	var top float64
 	var arg2 C.gdouble
-	var ret2 float64
+	var bottom float64
 	var arg3 C.gdouble
-	var ret3 float64
+	var left float64
 	var arg4 C.gdouble
-	var ret4 float64
+	var right float64
 	var cret C.gboolean
-	var ret5 bool
+	var ok bool
 
 	cret = C.gtk_print_context_get_hard_margins(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	*ret1 = C.gdouble(arg1)
-	*ret2 = C.gdouble(arg2)
-	*ret3 = C.gdouble(arg3)
-	*ret4 = C.gdouble(arg4)
-	ret5 = C.bool(cret) != C.false
+	top = float64(&arg1)
+	bottom = float64(&arg2)
+	left = float64(&arg3)
+	right = float64(&arg4)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2, ret3, ret4, ret5
+	return top, bottom, left, right, ok
 }
 
 // Height obtains the height of the PrintContext, in pixels.
-func (c printContext) Height() float64 {
+func (c printContext) Height(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_context_get_height(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_context_get_height(arg0)
 }
 
 // PageSetup obtains the PageSetup that determines the page dimensions of
 // the PrintContext.
-func (c printContext) PageSetup() PageSetup {
+func (c printContext) PageSetup(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkPageSetup
-	var ret1 PageSetup
-
-	cret = C.gtk_print_context_get_page_setup(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return ret1
+	C.gtk_print_context_get_page_setup(arg0)
 }
 
 // PangoFontmap returns a FontMap that is suitable for use with the
 // PrintContext.
-func (c printContext) PangoFontmap() pango.FontMap {
+func (c printContext) PangoFontmap(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoFontMap
-	var ret1 pango.FontMap
-
-	cret = C.gtk_print_context_get_pango_fontmap(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
-
-	return ret1
+	C.gtk_print_context_get_pango_fontmap(arg0)
 }
 
 // Width obtains the width of the PrintContext, in pixels.
-func (c printContext) Width() float64 {
+func (c printContext) Width(c PrintContext) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_context_get_width(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_context_get_width(arg0)
 }
 
 // SetCairoContext sets a new cairo context on a print context.
@@ -6979,7 +6564,7 @@ func (c printContext) Width() float64 {
 // This function is intended to be used when implementing an internal print
 // preview, it is not needed for printing, since GTK+ itself creates a
 // suitable cairo context in that case.
-func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
+func (c printContext) SetCairoContext(c PrintContext, cr *cairo.Context, dpiX float64, dpiY float64) {
 	var arg0 *C.GtkPrintContext
 	var arg1 *C.cairo_t
 	var arg2 C.double
@@ -6990,7 +6575,7 @@ func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY floa
 	arg2 = C.double(dpiX)
 	arg3 = C.double(dpiY)
 
-	C.gtk_print_context_set_cairo_context(arg0, cr, dpiX, dpiY)
+	C.gtk_print_context_set_cairo_context(arg0, arg1, arg2, arg3)
 }
 
 // PrintSettings: a GtkPrintSettings object represents the settings of a print
@@ -7009,179 +6594,179 @@ type PrintSettings interface {
 	gextras.Objector
 
 	// Copy copies a PrintSettings object.
-	Copy() PrintSettings
+	Copy(o PrintSettings)
 	// Foreach calls @func for each key-value pair of @settings.
-	Foreach(fn PrintSettingsFunc)
+	Foreach(s PrintSettings)
 	// Get looks up the string value associated with @key.
-	Get(key string) string
+	Get(s PrintSettings, key string)
 	// Bool returns the boolean represented by the value that is associated with
 	// @key.
 	//
 	// The string “true” represents true, any other string false.
-	Bool(key string) bool
+	Bool(s PrintSettings, key string) bool
 	// Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
-	Collate() bool
+	Collate(s PrintSettings) bool
 	// DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
-	DefaultSource() string
+	DefaultSource(s PrintSettings)
 	// Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
-	Dither() string
+	Dither(s PrintSettings)
 	// Double returns the double value associated with @key, or 0.
-	Double(key string) float64
+	Double(s PrintSettings, key string)
 	// DoubleWithDefault returns the floating point number represented by the
 	// value that is associated with @key, or @default_val if the value does not
 	// represent a floating point number.
 	//
 	// Floating point numbers are parsed with g_ascii_strtod().
-	DoubleWithDefault(key string, def float64) float64
+	DoubleWithDefault(s PrintSettings, key string, def float64)
 	// Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
-	Duplex() PrintDuplex
+	Duplex(s PrintSettings)
 	// Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
-	Finishings() string
+	Finishings(s PrintSettings)
 	// Int returns the integer value of @key, or 0.
-	Int(key string) int
+	Int(s PrintSettings, key string)
 	// IntWithDefault returns the value of @key, interpreted as an integer, or
 	// the default value.
-	IntWithDefault(key string, def int) int
+	IntWithDefault(s PrintSettings, key string, def int)
 	// Length returns the value associated with @key, interpreted as a length.
 	// The returned value is converted to @units.
-	Length(key string, unit Unit) float64
+	Length(s PrintSettings, key string, unit Unit)
 	// MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 	//
 	// The set of media types is defined in PWG 5101.1-2002 PWG.
-	MediaType() string
+	MediaType(s PrintSettings)
 	// NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
-	NCopies() int
+	NCopies(s PrintSettings)
 	// NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
-	NumberUp() int
+	NumberUp(s PrintSettings)
 	// NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
-	NumberUpLayout() NumberUpLayout
+	NumberUpLayout(s PrintSettings)
 	// Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
 	// to a PageOrientation.
-	Orientation() PageOrientation
+	Orientation(s PrintSettings)
 	// OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
-	OutputBin() string
+	OutputBin(s PrintSettings)
 	// PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	PageRanges() (numRanges int, pageRanges []PageRange)
+	PageRanges(s PrintSettings) int
 	// PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
-	PageSet() PageSet
+	PageSet(s PrintSettings)
 	// PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
 	// to @unit.
-	PaperHeight(unit Unit) float64
+	PaperHeight(s PrintSettings, unit Unit)
 	// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
 	// a PaperSize.
-	PaperSize() *PaperSize
+	PaperSize(s PrintSettings)
 	// PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 	// @unit.
-	PaperWidth(unit Unit) float64
+	PaperWidth(s PrintSettings, unit Unit)
 	// PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
-	PrintPages() PrintPages
+	PrintPages(s PrintSettings)
 	// Printer: convenience function to obtain the value of
 	// GTK_PRINT_SETTINGS_PRINTER.
-	Printer() string
+	Printer(s PrintSettings)
 	// PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
-	PrinterLpi() float64
+	PrinterLpi(s PrintSettings)
 	// Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
-	Quality() PrintQuality
+	Quality(s PrintSettings)
 	// Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
-	Resolution() int
+	Resolution(s PrintSettings)
 	// ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
-	ResolutionX() int
+	ResolutionX(s PrintSettings)
 	// ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
-	ResolutionY() int
+	ResolutionY(s PrintSettings)
 	// Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
-	Reverse() bool
+	Reverse(s PrintSettings) bool
 	// Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
-	Scale() float64
+	Scale(s PrintSettings)
 	// UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
-	UseColor() bool
+	UseColor(s PrintSettings) bool
 	// HasKey returns true, if a value is associated with @key.
-	HasKey(key string) bool
+	HasKey(s PrintSettings, key string) bool
 	// LoadFile reads the print settings from @file_name. If the file could not
 	// be loaded then error is set to either a Error or FileError. See
 	// gtk_print_settings_to_file().
-	LoadFile(fileName string) error
+	LoadFile(s PrintSettings, fileName string) error
 	// LoadKeyFile reads the print settings from the group @group_name in
 	// @key_file. If the file could not be loaded then error is set to either a
 	// Error or FileError.
-	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
+	LoadKeyFile(s PrintSettings, keyFile *glib.KeyFile, groupName string) error
 	// Set associates @value with @key.
-	Set(key string, value string)
+	Set(s PrintSettings, key string, value string)
 	// SetBool sets @key to a boolean value.
-	SetBool(key string, value bool)
+	SetBool(s PrintSettings, key string, value bool)
 	// SetCollate sets the value of GTK_PRINT_SETTINGS_COLLATE.
-	SetCollate(collate bool)
+	SetCollate(s PrintSettings, collate bool)
 	// SetDefaultSource sets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
-	SetDefaultSource(defaultSource string)
+	SetDefaultSource(s PrintSettings, defaultSource string)
 	// SetDither sets the value of GTK_PRINT_SETTINGS_DITHER.
-	SetDither(dither string)
+	SetDither(s PrintSettings, dither string)
 	// SetDouble sets @key to a double value.
-	SetDouble(key string, value float64)
+	SetDouble(s PrintSettings, key string, value float64)
 	// SetDuplex sets the value of GTK_PRINT_SETTINGS_DUPLEX.
-	SetDuplex(duplex PrintDuplex)
+	SetDuplex(s PrintSettings, duplex PrintDuplex)
 	// SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
-	SetFinishings(finishings string)
+	SetFinishings(s PrintSettings, finishings string)
 	// SetInt sets @key to an integer value.
-	SetInt(key string, value int)
+	SetInt(s PrintSettings, key string, value int)
 	// SetLength associates a length in units of @unit with @key.
-	SetLength(key string, value float64, unit Unit)
+	SetLength(s PrintSettings, key string, value float64, unit Unit)
 	// SetMediaType sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 	//
 	// The set of media types is defined in PWG 5101.1-2002 PWG.
-	SetMediaType(mediaType string)
+	SetMediaType(s PrintSettings, mediaType string)
 	// SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
-	SetNCopies(numCopies int)
+	SetNCopies(s PrintSettings, numCopies int)
 	// SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
-	SetNumberUp(numberUp int)
+	SetNumberUp(s PrintSettings, numberUp int)
 	// SetNumberUpLayout sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
-	SetNumberUpLayout(numberUpLayout NumberUpLayout)
+	SetNumberUpLayout(s PrintSettings, numberUpLayout NumberUpLayout)
 	// SetOrientation sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
-	SetOrientation(orientation PageOrientation)
+	SetOrientation(s PrintSettings, orientation PageOrientation)
 	// SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
-	SetOutputBin(outputBin string)
+	SetOutputBin(s PrintSettings, outputBin string)
 	// SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	SetPageRanges(pageRanges []PageRange)
+	SetPageRanges(s PrintSettings)
 	// SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
-	SetPageSet(pageSet PageSet)
+	SetPageSet(s PrintSettings, pageSet PageSet)
 	// SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
-	SetPaperHeight(height float64, unit Unit)
+	SetPaperHeight(s PrintSettings, height float64, unit Unit)
 	// SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
 	// GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
-	SetPaperSize(paperSize *PaperSize)
+	SetPaperSize(s PrintSettings, paperSize *PaperSize)
 	// SetPaperWidth sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
-	SetPaperWidth(width float64, unit Unit)
+	SetPaperWidth(s PrintSettings, width float64, unit Unit)
 	// SetPrintPages sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
-	SetPrintPages(pages PrintPages)
+	SetPrintPages(s PrintSettings, pages PrintPages)
 	// SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
 	// @printer.
-	SetPrinter(printer string)
+	SetPrinter(s PrintSettings, printer string)
 	// SetPrinterLpi sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
-	SetPrinterLpi(lpi float64)
+	SetPrinterLpi(s PrintSettings, lpi float64)
 	// SetQuality sets the value of GTK_PRINT_SETTINGS_QUALITY.
-	SetQuality(quality PrintQuality)
+	SetQuality(s PrintSettings, quality PrintQuality)
 	// SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-	SetResolution(resolution int)
+	SetResolution(s PrintSettings, resolution int)
 	// SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-	SetResolutionXY(resolutionX int, resolutionY int)
+	SetResolutionXY(s PrintSettings, resolutionX int, resolutionY int)
 	// SetReverse sets the value of GTK_PRINT_SETTINGS_REVERSE.
-	SetReverse(reverse bool)
+	SetReverse(s PrintSettings, reverse bool)
 	// SetScale sets the value of GTK_PRINT_SETTINGS_SCALE.
-	SetScale(scale float64)
+	SetScale(s PrintSettings, scale float64)
 	// SetUseColor sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
-	SetUseColor(useColor bool)
+	SetUseColor(s PrintSettings, useColor bool)
 	// ToFile: this function saves the print settings from @settings to
 	// @file_name. If the file could not be loaded then error is set to either a
 	// Error or FileError.
-	ToFile(fileName string) error
+	ToFile(s PrintSettings, fileName string) error
 	// ToGVariant: serialize print settings to an a{sv} variant.
-	ToGVariant() *glib.Variant
+	ToGVariant(s PrintSettings)
 	// ToKeyFile: this function adds the print settings from @settings to
 	// @key_file.
-	ToKeyFile(keyFile *glib.KeyFile, groupName string)
+	ToKeyFile(s PrintSettings, keyFile *glib.KeyFile, groupName string)
 	// Unset removes any value associated with @key. This has the same effect as
 	// setting the value to nil.
-	Unset(key string)
+	Unset(s PrintSettings, key string)
 }
 
 // printSettings implements the PrintSettings interface.
@@ -7206,55 +6791,38 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 }
 
 // NewPrintSettings constructs a class PrintSettings.
-func NewPrintSettings() PrintSettings {
-	var cret C.GtkPrintSettings
-	var ret1 PrintSettings
-
-	cret = C.gtk_print_settings_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-
-	return ret1
+func NewPrintSettings() {
+	C.gtk_print_settings_new()
 }
 
 // NewPrintSettingsFromFile constructs a class PrintSettings.
-func NewPrintSettingsFromFile(fileName string) (printSettings PrintSettings, err error) {
+func NewPrintSettingsFromFile(fileName string) error {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GtkPrintSettings
-	var ret2 PrintSettings
+	var err error
 
-	cret = C.gtk_print_settings_new_from_file(fileName, &errout)
+	C.gtk_print_settings_new_from_file(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // NewPrintSettingsFromGVariant constructs a class PrintSettings.
-func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
+func NewPrintSettingsFromGVariant(variant *glib.Variant) {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	var cret C.GtkPrintSettings
-	var ret1 PrintSettings
-
-	cret = C.gtk_print_settings_new_from_gvariant(variant)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-
-	return ret1
+	C.gtk_print_settings_new_from_gvariant(arg1)
 }
 
 // NewPrintSettingsFromKeyFile constructs a class PrintSettings.
-func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (printSettings PrintSettings, err error) {
+func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
 
@@ -7263,45 +6831,35 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (print
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GtkPrintSettings
-	var ret2 PrintSettings
+	var err error
 
-	cret = C.gtk_print_settings_new_from_key_file(keyFile, groupName, &errout)
+	C.gtk_print_settings_new_from_key_file(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Copy copies a PrintSettings object.
-func (o printSettings) Copy() PrintSettings {
+func (o printSettings) Copy(o PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GtkPrintSettings
-	var ret1 PrintSettings
-
-	cret = C.gtk_print_settings_copy(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-
-	return ret1
+	C.gtk_print_settings_copy(arg0)
 }
 
 // Foreach calls @func for each key-value pair of @settings.
-func (s printSettings) Foreach(fn PrintSettingsFunc) {
+func (s printSettings) Foreach(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	C.gtk_print_settings_foreach(arg0, fn, userData)
+	C.gtk_print_settings_foreach(arg0, arg1, arg2)
 }
 
 // Get looks up the string value associated with @key.
-func (s printSettings) Get(key string) string {
+func (s printSettings) Get(s PrintSettings, key string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -7309,21 +6867,14 @@ func (s printSettings) Get(key string) string {
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get(arg0, key)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get(arg0, arg1)
 }
 
 // Bool returns the boolean represented by the value that is associated with
 // @key.
 //
 // The string “true” represents true, any other string false.
-func (s printSettings) Bool(key string) bool {
+func (s printSettings) Bool(s PrintSettings, key string) bool {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -7332,65 +6883,55 @@ func (s printSettings) Bool(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_print_settings_get_bool(arg0, key)
+	cret = C.gtk_print_settings_get_bool(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
-func (s printSettings) Collate() bool {
+func (s printSettings) Collate(s PrintSettings) bool {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_print_settings_get_collate(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
-func (s printSettings) DefaultSource() string {
+func (s printSettings) DefaultSource(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get_default_source(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get_default_source(arg0)
 }
 
 // Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
-func (s printSettings) Dither() string {
+func (s printSettings) Dither(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get_dither(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get_dither(arg0)
 }
 
 // Double returns the double value associated with @key, or 0.
-func (s printSettings) Double(key string) float64 {
+func (s printSettings) Double(s PrintSettings, key string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -7398,14 +6939,7 @@ func (s printSettings) Double(key string) float64 {
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_double(arg0, key)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_double(arg0, arg1)
 }
 
 // DoubleWithDefault returns the floating point number represented by the
@@ -7413,7 +6947,7 @@ func (s printSettings) Double(key string) float64 {
 // represent a floating point number.
 //
 // Floating point numbers are parsed with g_ascii_strtod().
-func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
+func (s printSettings) DoubleWithDefault(s PrintSettings, key string, def float64) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.gdouble
@@ -7423,50 +6957,29 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gdouble(def)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_double_with_default(arg0, key, def)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_double_with_default(arg0, arg1, arg2)
 }
 
 // Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
-func (s printSettings) Duplex() PrintDuplex {
+func (s printSettings) Duplex(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPrintDuplex
-	var ret1 PrintDuplex
-
-	cret = C.gtk_print_settings_get_duplex(arg0)
-
-	ret1 = PrintDuplex(cret)
-
-	return ret1
+	C.gtk_print_settings_get_duplex(arg0)
 }
 
 // Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
-func (s printSettings) Finishings() string {
+func (s printSettings) Finishings(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get_finishings(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get_finishings(arg0)
 }
 
 // Int returns the integer value of @key, or 0.
-func (s printSettings) Int(key string) int {
+func (s printSettings) Int(s PrintSettings, key string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -7474,19 +6987,12 @@ func (s printSettings) Int(key string) int {
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_int(arg0, key)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_int(arg0, arg1)
 }
 
 // IntWithDefault returns the value of @key, interpreted as an integer, or
 // the default value.
-func (s printSettings) IntWithDefault(key string, def int) int {
+func (s printSettings) IntWithDefault(s PrintSettings, key string, def int) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.gint
@@ -7496,19 +7002,12 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(def)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_int_with_default(arg0, key, def)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_int_with_default(arg0, arg1, arg2)
 }
 
 // Length returns the value associated with @key, interpreted as a length.
 // The returned value is converted to @units.
-func (s printSettings) Length(key string, unit Unit) float64 {
+func (s printSettings) Length(s PrintSettings, key string, unit Unit) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.GtkUnit
@@ -7518,376 +7017,236 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_length(arg0, key, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_length(arg0, arg1, arg2)
 }
 
 // MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 //
 // The set of media types is defined in PWG 5101.1-2002 PWG.
-func (s printSettings) MediaType() string {
+func (s printSettings) MediaType(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get_media_type(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get_media_type(arg0)
 }
 
 // NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
-func (s printSettings) NCopies() int {
+func (s printSettings) NCopies(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_n_copies(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_n_copies(arg0)
 }
 
 // NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
-func (s printSettings) NumberUp() int {
+func (s printSettings) NumberUp(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_number_up(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_number_up(arg0)
 }
 
 // NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
-func (s printSettings) NumberUpLayout() NumberUpLayout {
+func (s printSettings) NumberUpLayout(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkNumberUpLayout
-	var ret1 NumberUpLayout
-
-	cret = C.gtk_print_settings_get_number_up_layout(arg0)
-
-	ret1 = NumberUpLayout(cret)
-
-	return ret1
+	C.gtk_print_settings_get_number_up_layout(arg0)
 }
 
 // Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
 // to a PageOrientation.
-func (s printSettings) Orientation() PageOrientation {
+func (s printSettings) Orientation(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPageOrientation
-	var ret1 PageOrientation
-
-	cret = C.gtk_print_settings_get_orientation(arg0)
-
-	ret1 = PageOrientation(cret)
-
-	return ret1
+	C.gtk_print_settings_get_orientation(arg0)
 }
 
 // OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
-func (s printSettings) OutputBin() string {
+func (s printSettings) OutputBin(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get_output_bin(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get_output_bin(arg0)
 }
 
 // PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-func (s printSettings) PageRanges() (numRanges int, pageRanges []PageRange) {
+func (s printSettings) PageRanges(s PrintSettings) int {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkPageRange
-	var arg1 *C.gint
-	var ret2 []PageRange
+	var arg1 C.gint
+	var numRanges int
 
-	cret = C.gtk_print_settings_get_page_ranges(arg0, &arg1)
+	C.gtk_print_settings_get_page_ranges(arg0, &arg1)
 
-	ret2 = make([]PageRange, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.GtkPageRange)(ptr.Add(unsafe.Pointer(cret), i))
-		ret2[i] = WrapPageRange(unsafe.Pointer(src))
-		runtime.SetFinalizer(ret2[i], func(v PageRange) {
-			C.free(unsafe.Pointer(v.Native()))
-		})
-	}
+	numRanges = int(&arg1)
 
-	return ret1, ret2
+	return numRanges
 }
 
 // PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
-func (s printSettings) PageSet() PageSet {
+func (s printSettings) PageSet(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPageSet
-	var ret1 PageSet
-
-	cret = C.gtk_print_settings_get_page_set(arg0)
-
-	ret1 = PageSet(cret)
-
-	return ret1
+	C.gtk_print_settings_get_page_set(arg0)
 }
 
 // PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
 // to @unit.
-func (s printSettings) PaperHeight(unit Unit) float64 {
+func (s printSettings) PaperHeight(s PrintSettings, unit Unit) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_paper_height(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_paper_height(arg0, arg1)
 }
 
 // PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
 // a PaperSize.
-func (s printSettings) PaperSize() *PaperSize {
+func (s printSettings) PaperSize(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkPaperSize
-	var ret1 *PaperSize
-
-	cret = C.gtk_print_settings_get_paper_size(arg0)
-
-	ret1 = WrapPaperSize(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_print_settings_get_paper_size(arg0)
 }
 
 // PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 // @unit.
-func (s printSettings) PaperWidth(unit Unit) float64 {
+func (s printSettings) PaperWidth(s PrintSettings, unit Unit) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkUnit
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkUnit)(unit)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_paper_width(arg0, unit)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_paper_width(arg0, arg1)
 }
 
 // PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
-func (s printSettings) PrintPages() PrintPages {
+func (s printSettings) PrintPages(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPrintPages
-	var ret1 PrintPages
-
-	cret = C.gtk_print_settings_get_print_pages(arg0)
-
-	ret1 = PrintPages(cret)
-
-	return ret1
+	C.gtk_print_settings_get_print_pages(arg0)
 }
 
 // Printer: convenience function to obtain the value of
 // GTK_PRINT_SETTINGS_PRINTER.
-func (s printSettings) Printer() string {
+func (s printSettings) Printer(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_print_settings_get_printer(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_print_settings_get_printer(arg0)
 }
 
 // PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
-func (s printSettings) PrinterLpi() float64 {
+func (s printSettings) PrinterLpi(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_printer_lpi(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_printer_lpi(arg0)
 }
 
 // Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
-func (s printSettings) Quality() PrintQuality {
+func (s printSettings) Quality(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPrintQuality
-	var ret1 PrintQuality
-
-	cret = C.gtk_print_settings_get_quality(arg0)
-
-	ret1 = PrintQuality(cret)
-
-	return ret1
+	C.gtk_print_settings_get_quality(arg0)
 }
 
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
-func (s printSettings) Resolution() int {
+func (s printSettings) Resolution(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_resolution(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_resolution(arg0)
 }
 
 // ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
-func (s printSettings) ResolutionX() int {
+func (s printSettings) ResolutionX(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_resolution_x(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_resolution_x(arg0)
 }
 
 // ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (s printSettings) ResolutionY() int {
+func (s printSettings) ResolutionY(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_print_settings_get_resolution_y(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_print_settings_get_resolution_y(arg0)
 }
 
 // Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
-func (s printSettings) Reverse() bool {
+func (s printSettings) Reverse(s PrintSettings) bool {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_print_settings_get_reverse(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
-func (s printSettings) Scale() float64 {
+func (s printSettings) Scale(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_print_settings_get_scale(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_print_settings_get_scale(arg0)
 }
 
 // UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
-func (s printSettings) UseColor() bool {
+func (s printSettings) UseColor(s PrintSettings) bool {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_print_settings_get_use_color(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // HasKey returns true, if a value is associated with @key.
-func (s printSettings) HasKey(key string) bool {
+func (s printSettings) HasKey(s PrintSettings, key string) bool {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -7896,19 +7255,21 @@ func (s printSettings) HasKey(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_print_settings_has_key(arg0, key)
+	cret = C.gtk_print_settings_has_key(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // LoadFile reads the print settings from @file_name. If the file could not
 // be loaded then error is set to either a Error or FileError. See
 // gtk_print_settings_to_file().
-func (s printSettings) LoadFile(fileName string) error {
+func (s printSettings) LoadFile(s PrintSettings, fileName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -7917,19 +7278,19 @@ func (s printSettings) LoadFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_print_settings_load_file(arg0, fileName, &errout)
+	C.gtk_print_settings_load_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // LoadKeyFile reads the print settings from the group @group_name in
 // @key_file. If the file could not be loaded then error is set to either a
 // Error or FileError.
-func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
+func (s printSettings) LoadKeyFile(s PrintSettings, keyFile *glib.KeyFile, groupName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
@@ -7940,17 +7301,17 @@ func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) erro
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_print_settings_load_key_file(arg0, keyFile, groupName, &errout)
+	C.gtk_print_settings_load_key_file(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // Set associates @value with @key.
-func (s printSettings) Set(key string, value string) {
+func (s printSettings) Set(s PrintSettings, key string, value string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -7961,11 +7322,11 @@ func (s printSettings) Set(key string, value string) {
 	arg2 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_print_settings_set(arg0, key, value)
+	C.gtk_print_settings_set(arg0, arg1, arg2)
 }
 
 // SetBool sets @key to a boolean value.
-func (s printSettings) SetBool(key string, value bool) {
+func (s printSettings) SetBool(s PrintSettings, key string, value bool) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.gboolean
@@ -7977,11 +7338,11 @@ func (s printSettings) SetBool(key string, value bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.gtk_print_settings_set_bool(arg0, key, value)
+	C.gtk_print_settings_set_bool(arg0, arg1, arg2)
 }
 
 // SetCollate sets the value of GTK_PRINT_SETTINGS_COLLATE.
-func (s printSettings) SetCollate(collate bool) {
+func (s printSettings) SetCollate(s PrintSettings, collate bool) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gboolean
 
@@ -7990,11 +7351,11 @@ func (s printSettings) SetCollate(collate bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_settings_set_collate(arg0, collate)
+	C.gtk_print_settings_set_collate(arg0, arg1)
 }
 
 // SetDefaultSource sets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
-func (s printSettings) SetDefaultSource(defaultSource string) {
+func (s printSettings) SetDefaultSource(s PrintSettings, defaultSource string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8002,11 +7363,11 @@ func (s printSettings) SetDefaultSource(defaultSource string) {
 	arg1 = (*C.gchar)(C.CString(defaultSource))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_set_default_source(arg0, defaultSource)
+	C.gtk_print_settings_set_default_source(arg0, arg1)
 }
 
 // SetDither sets the value of GTK_PRINT_SETTINGS_DITHER.
-func (s printSettings) SetDither(dither string) {
+func (s printSettings) SetDither(s PrintSettings, dither string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8014,11 +7375,11 @@ func (s printSettings) SetDither(dither string) {
 	arg1 = (*C.gchar)(C.CString(dither))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_set_dither(arg0, dither)
+	C.gtk_print_settings_set_dither(arg0, arg1)
 }
 
 // SetDouble sets @key to a double value.
-func (s printSettings) SetDouble(key string, value float64) {
+func (s printSettings) SetDouble(s PrintSettings, key string, value float64) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.gdouble
@@ -8028,22 +7389,22 @@ func (s printSettings) SetDouble(key string, value float64) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gdouble(value)
 
-	C.gtk_print_settings_set_double(arg0, key, value)
+	C.gtk_print_settings_set_double(arg0, arg1, arg2)
 }
 
 // SetDuplex sets the value of GTK_PRINT_SETTINGS_DUPLEX.
-func (s printSettings) SetDuplex(duplex PrintDuplex) {
+func (s printSettings) SetDuplex(s PrintSettings, duplex PrintDuplex) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkPrintDuplex
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPrintDuplex)(duplex)
 
-	C.gtk_print_settings_set_duplex(arg0, duplex)
+	C.gtk_print_settings_set_duplex(arg0, arg1)
 }
 
 // SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
-func (s printSettings) SetFinishings(finishings string) {
+func (s printSettings) SetFinishings(s PrintSettings, finishings string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8051,11 +7412,11 @@ func (s printSettings) SetFinishings(finishings string) {
 	arg1 = (*C.gchar)(C.CString(finishings))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_set_finishings(arg0, finishings)
+	C.gtk_print_settings_set_finishings(arg0, arg1)
 }
 
 // SetInt sets @key to an integer value.
-func (s printSettings) SetInt(key string, value int) {
+func (s printSettings) SetInt(s PrintSettings, key string, value int) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.gint
@@ -8065,11 +7426,11 @@ func (s printSettings) SetInt(key string, value int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(value)
 
-	C.gtk_print_settings_set_int(arg0, key, value)
+	C.gtk_print_settings_set_int(arg0, arg1, arg2)
 }
 
 // SetLength associates a length in units of @unit with @key.
-func (s printSettings) SetLength(key string, value float64, unit Unit) {
+func (s printSettings) SetLength(s PrintSettings, key string, value float64, unit Unit) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 	var arg2 C.gdouble
@@ -8081,13 +7442,13 @@ func (s printSettings) SetLength(key string, value float64, unit Unit) {
 	arg2 = C.gdouble(value)
 	arg3 = (C.GtkUnit)(unit)
 
-	C.gtk_print_settings_set_length(arg0, key, value, unit)
+	C.gtk_print_settings_set_length(arg0, arg1, arg2, arg3)
 }
 
 // SetMediaType sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 //
 // The set of media types is defined in PWG 5101.1-2002 PWG.
-func (s printSettings) SetMediaType(mediaType string) {
+func (s printSettings) SetMediaType(s PrintSettings, mediaType string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8095,55 +7456,55 @@ func (s printSettings) SetMediaType(mediaType string) {
 	arg1 = (*C.gchar)(C.CString(mediaType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_set_media_type(arg0, mediaType)
+	C.gtk_print_settings_set_media_type(arg0, arg1)
 }
 
 // SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
-func (s printSettings) SetNCopies(numCopies int) {
+func (s printSettings) SetNCopies(s PrintSettings, numCopies int) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gint
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = C.gint(numCopies)
 
-	C.gtk_print_settings_set_n_copies(arg0, numCopies)
+	C.gtk_print_settings_set_n_copies(arg0, arg1)
 }
 
 // SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
-func (s printSettings) SetNumberUp(numberUp int) {
+func (s printSettings) SetNumberUp(s PrintSettings, numberUp int) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gint
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = C.gint(numberUp)
 
-	C.gtk_print_settings_set_number_up(arg0, numberUp)
+	C.gtk_print_settings_set_number_up(arg0, arg1)
 }
 
 // SetNumberUpLayout sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
-func (s printSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout) {
+func (s printSettings) SetNumberUpLayout(s PrintSettings, numberUpLayout NumberUpLayout) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkNumberUpLayout
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkNumberUpLayout)(numberUpLayout)
 
-	C.gtk_print_settings_set_number_up_layout(arg0, numberUpLayout)
+	C.gtk_print_settings_set_number_up_layout(arg0, arg1)
 }
 
 // SetOrientation sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
-func (s printSettings) SetOrientation(orientation PageOrientation) {
+func (s printSettings) SetOrientation(s PrintSettings, orientation PageOrientation) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkPageOrientation
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPageOrientation)(orientation)
 
-	C.gtk_print_settings_set_orientation(arg0, orientation)
+	C.gtk_print_settings_set_orientation(arg0, arg1)
 }
 
 // SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
-func (s printSettings) SetOutputBin(outputBin string) {
+func (s printSettings) SetOutputBin(s PrintSettings, outputBin string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8151,31 +7512,31 @@ func (s printSettings) SetOutputBin(outputBin string) {
 	arg1 = (*C.gchar)(C.CString(outputBin))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_set_output_bin(arg0, outputBin)
+	C.gtk_print_settings_set_output_bin(arg0, arg1)
 }
 
 // SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-func (s printSettings) SetPageRanges(pageRanges []PageRange) {
+func (s printSettings) SetPageRanges(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	C.gtk_print_settings_set_page_ranges(arg0, pageRanges, numRanges)
+	C.gtk_print_settings_set_page_ranges(arg0, arg1, arg2)
 }
 
 // SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
-func (s printSettings) SetPageSet(pageSet PageSet) {
+func (s printSettings) SetPageSet(s PrintSettings, pageSet PageSet) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkPageSet
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPageSet)(pageSet)
 
-	C.gtk_print_settings_set_page_set(arg0, pageSet)
+	C.gtk_print_settings_set_page_set(arg0, arg1)
 }
 
 // SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
-func (s printSettings) SetPaperHeight(height float64, unit Unit) {
+func (s printSettings) SetPaperHeight(s PrintSettings, height float64, unit Unit) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gdouble
 	var arg2 C.GtkUnit
@@ -8184,23 +7545,23 @@ func (s printSettings) SetPaperHeight(height float64, unit Unit) {
 	arg1 = C.gdouble(height)
 	arg2 = (C.GtkUnit)(unit)
 
-	C.gtk_print_settings_set_paper_height(arg0, height, unit)
+	C.gtk_print_settings_set_paper_height(arg0, arg1, arg2)
 }
 
 // SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
 // GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
-func (s printSettings) SetPaperSize(paperSize *PaperSize) {
+func (s printSettings) SetPaperSize(s PrintSettings, paperSize *PaperSize) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.GtkPaperSize
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize.Native()))
 
-	C.gtk_print_settings_set_paper_size(arg0, paperSize)
+	C.gtk_print_settings_set_paper_size(arg0, arg1)
 }
 
 // SetPaperWidth sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
-func (s printSettings) SetPaperWidth(width float64, unit Unit) {
+func (s printSettings) SetPaperWidth(s PrintSettings, width float64, unit Unit) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gdouble
 	var arg2 C.GtkUnit
@@ -8209,23 +7570,23 @@ func (s printSettings) SetPaperWidth(width float64, unit Unit) {
 	arg1 = C.gdouble(width)
 	arg2 = (C.GtkUnit)(unit)
 
-	C.gtk_print_settings_set_paper_width(arg0, width, unit)
+	C.gtk_print_settings_set_paper_width(arg0, arg1, arg2)
 }
 
 // SetPrintPages sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
-func (s printSettings) SetPrintPages(pages PrintPages) {
+func (s printSettings) SetPrintPages(s PrintSettings, pages PrintPages) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkPrintPages
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPrintPages)(pages)
 
-	C.gtk_print_settings_set_print_pages(arg0, pages)
+	C.gtk_print_settings_set_print_pages(arg0, arg1)
 }
 
 // SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
 // @printer.
-func (s printSettings) SetPrinter(printer string) {
+func (s printSettings) SetPrinter(s PrintSettings, printer string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8233,46 +7594,46 @@ func (s printSettings) SetPrinter(printer string) {
 	arg1 = (*C.gchar)(C.CString(printer))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_set_printer(arg0, printer)
+	C.gtk_print_settings_set_printer(arg0, arg1)
 }
 
 // SetPrinterLpi sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
-func (s printSettings) SetPrinterLpi(lpi float64) {
+func (s printSettings) SetPrinterLpi(s PrintSettings, lpi float64) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gdouble
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = C.gdouble(lpi)
 
-	C.gtk_print_settings_set_printer_lpi(arg0, lpi)
+	C.gtk_print_settings_set_printer_lpi(arg0, arg1)
 }
 
 // SetQuality sets the value of GTK_PRINT_SETTINGS_QUALITY.
-func (s printSettings) SetQuality(quality PrintQuality) {
+func (s printSettings) SetQuality(s PrintSettings, quality PrintQuality) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.GtkPrintQuality
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPrintQuality)(quality)
 
-	C.gtk_print_settings_set_quality(arg0, quality)
+	C.gtk_print_settings_set_quality(arg0, arg1)
 }
 
 // SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (s printSettings) SetResolution(resolution int) {
+func (s printSettings) SetResolution(s PrintSettings, resolution int) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gint
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = C.gint(resolution)
 
-	C.gtk_print_settings_set_resolution(arg0, resolution)
+	C.gtk_print_settings_set_resolution(arg0, arg1)
 }
 
 // SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
-func (s printSettings) SetResolutionXY(resolutionX int, resolutionY int) {
+func (s printSettings) SetResolutionXY(s PrintSettings, resolutionX int, resolutionY int) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gint
 	var arg2 C.gint
@@ -8281,11 +7642,11 @@ func (s printSettings) SetResolutionXY(resolutionX int, resolutionY int) {
 	arg1 = C.gint(resolutionX)
 	arg2 = C.gint(resolutionY)
 
-	C.gtk_print_settings_set_resolution_xy(arg0, resolutionX, resolutionY)
+	C.gtk_print_settings_set_resolution_xy(arg0, arg1, arg2)
 }
 
 // SetReverse sets the value of GTK_PRINT_SETTINGS_REVERSE.
-func (s printSettings) SetReverse(reverse bool) {
+func (s printSettings) SetReverse(s PrintSettings, reverse bool) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gboolean
 
@@ -8294,22 +7655,22 @@ func (s printSettings) SetReverse(reverse bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_settings_set_reverse(arg0, reverse)
+	C.gtk_print_settings_set_reverse(arg0, arg1)
 }
 
 // SetScale sets the value of GTK_PRINT_SETTINGS_SCALE.
-func (s printSettings) SetScale(scale float64) {
+func (s printSettings) SetScale(s PrintSettings, scale float64) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gdouble
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	arg1 = C.gdouble(scale)
 
-	C.gtk_print_settings_set_scale(arg0, scale)
+	C.gtk_print_settings_set_scale(arg0, arg1)
 }
 
 // SetUseColor sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
-func (s printSettings) SetUseColor(useColor bool) {
+func (s printSettings) SetUseColor(s PrintSettings, useColor bool) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 C.gboolean
 
@@ -8318,13 +7679,13 @@ func (s printSettings) SetUseColor(useColor bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_settings_set_use_color(arg0, useColor)
+	C.gtk_print_settings_set_use_color(arg0, arg1)
 }
 
 // ToFile: this function saves the print settings from @settings to
 // @file_name. If the file could not be loaded then error is set to either a
 // Error or FileError.
-func (s printSettings) ToFile(fileName string) error {
+func (s printSettings) ToFile(s PrintSettings, fileName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8333,34 +7694,27 @@ func (s printSettings) ToFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_print_settings_to_file(arg0, fileName, &errout)
+	C.gtk_print_settings_to_file(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // ToGVariant: serialize print settings to an a{sv} variant.
-func (s printSettings) ToGVariant() *glib.Variant {
+func (s printSettings) ToGVariant(s PrintSettings) {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.gtk_print_settings_to_gvariant(arg0)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_print_settings_to_gvariant(arg0)
 }
 
 // ToKeyFile: this function adds the print settings from @settings to
 // @key_file.
-func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
+func (s printSettings) ToKeyFile(s PrintSettings, keyFile *glib.KeyFile, groupName string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.GKeyFile
 	var arg2 *C.gchar
@@ -8370,12 +7724,12 @@ func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_print_settings_to_key_file(arg0, keyFile, groupName)
+	C.gtk_print_settings_to_key_file(arg0, arg1, arg2)
 }
 
 // Unset removes any value associated with @key. This has the same effect as
 // setting the value to nil.
-func (s printSettings) Unset(key string) {
+func (s printSettings) Unset(s PrintSettings, key string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.gchar
 
@@ -8383,7 +7737,7 @@ func (s printSettings) Unset(key string) {
 	arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_print_settings_unset(arg0, key)
+	C.gtk_print_settings_unset(arg0, arg1)
 }
 
 // RecentFilter: a RecentFilter can be used to restrict the files being shown in
@@ -8438,28 +7792,28 @@ type RecentFilter interface {
 
 	// AddAge adds a rule that allows resources based on their age - that is,
 	// the number of days elapsed since they were last modified.
-	AddAge(days int)
+	AddAge(f RecentFilter, days int)
 	// AddApplication adds a rule that allows resources based on the name of the
 	// application that has registered them.
-	AddApplication(application string)
+	AddApplication(f RecentFilter, application string)
 	// AddCustom adds a rule to a filter that allows resources based on a custom
 	// callback function. The bitfield @needed which is passed in provides
 	// information about what sorts of information that the filter function
 	// needs; this allows GTK+ to avoid retrieving expensive information when it
 	// isn’t needed by the filter.
-	AddCustom(needed RecentFilterFlags, fn RecentFilterFunc)
+	AddCustom(f RecentFilter)
 	// AddGroup adds a rule that allows resources based on the name of the group
 	// to which they belong
-	AddGroup(group string)
+	AddGroup(f RecentFilter, group string)
 	// AddMIMEType adds a rule that allows resources based on their registered
 	// MIME type.
-	AddMIMEType(mimeType string)
+	AddMIMEType(f RecentFilter, mimeType string)
 	// AddPattern adds a rule that allows resources based on a pattern matching
 	// their display name.
-	AddPattern(pattern string)
+	AddPattern(f RecentFilter, pattern string)
 	// AddPixbufFormats adds a rule allowing image files in the formats
 	// supported by GdkPixbuf.
-	AddPixbufFormats()
+	AddPixbufFormats(f RecentFilter)
 	// Filter tests whether a file should be displayed according to @filter. The
 	// RecentFilterInfo @filter_info should include the fields returned from
 	// gtk_recent_filter_get_needed(), and must set the
@@ -8468,20 +7822,20 @@ type RecentFilter interface {
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of RecentChooser.
-	Filter(filterInfo *RecentFilterInfo) bool
+	Filter(f RecentFilter, filterInfo *RecentFilterInfo) bool
 	// Name gets the human-readable name for the filter. See
 	// gtk_recent_filter_set_name().
-	Name() string
+	Name(f RecentFilter)
 	// Needed gets the fields that need to be filled in for the RecentFilterInfo
 	// passed to gtk_recent_filter_filter()
 	//
 	// This function will not typically be used by applications; it is intended
 	// principally for use in the implementation of RecentChooser.
-	Needed() RecentFilterFlags
+	Needed(f RecentFilter)
 	// SetName sets the human-readable name of the filter; this is the string
 	// that will be displayed in the recently used resources selector user
 	// interface if there is a selectable list of filters.
-	SetName(name string)
+	SetName(f RecentFilter, name string)
 }
 
 // recentFilter implements the RecentFilter interface.
@@ -8508,32 +7862,25 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 }
 
 // NewRecentFilter constructs a class RecentFilter.
-func NewRecentFilter() RecentFilter {
-	var cret C.GtkRecentFilter
-	var ret1 RecentFilter
-
-	cret = C.gtk_recent_filter_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentFilter)
-
-	return ret1
+func NewRecentFilter() {
+	C.gtk_recent_filter_new()
 }
 
 // AddAge adds a rule that allows resources based on their age - that is,
 // the number of days elapsed since they were last modified.
-func (f recentFilter) AddAge(days int) {
+func (f recentFilter) AddAge(f RecentFilter, days int) {
 	var arg0 *C.GtkRecentFilter
 	var arg1 C.gint
 
 	arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	arg1 = C.gint(days)
 
-	C.gtk_recent_filter_add_age(arg0, days)
+	C.gtk_recent_filter_add_age(arg0, arg1)
 }
 
 // AddApplication adds a rule that allows resources based on the name of the
 // application that has registered them.
-func (f recentFilter) AddApplication(application string) {
+func (f recentFilter) AddApplication(f RecentFilter, application string) {
 	var arg0 *C.GtkRecentFilter
 	var arg1 *C.gchar
 
@@ -8541,7 +7888,7 @@ func (f recentFilter) AddApplication(application string) {
 	arg1 = (*C.gchar)(C.CString(application))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_recent_filter_add_application(arg0, application)
+	C.gtk_recent_filter_add_application(arg0, arg1)
 }
 
 // AddCustom adds a rule to a filter that allows resources based on a custom
@@ -8549,17 +7896,17 @@ func (f recentFilter) AddApplication(application string) {
 // information about what sorts of information that the filter function
 // needs; this allows GTK+ to avoid retrieving expensive information when it
 // isn’t needed by the filter.
-func (f recentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterFunc) {
+func (f recentFilter) AddCustom(f RecentFilter) {
 	var arg0 *C.GtkRecentFilter
 
 	arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 
-	C.gtk_recent_filter_add_custom(arg0, needed, fn, data, dataDestroy)
+	C.gtk_recent_filter_add_custom(arg0, arg1, arg2, arg3, arg4)
 }
 
 // AddGroup adds a rule that allows resources based on the name of the group
 // to which they belong
-func (f recentFilter) AddGroup(group string) {
+func (f recentFilter) AddGroup(f RecentFilter, group string) {
 	var arg0 *C.GtkRecentFilter
 	var arg1 *C.gchar
 
@@ -8567,12 +7914,12 @@ func (f recentFilter) AddGroup(group string) {
 	arg1 = (*C.gchar)(C.CString(group))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_recent_filter_add_group(arg0, group)
+	C.gtk_recent_filter_add_group(arg0, arg1)
 }
 
 // AddMIMEType adds a rule that allows resources based on their registered
 // MIME type.
-func (f recentFilter) AddMIMEType(mimeType string) {
+func (f recentFilter) AddMIMEType(f RecentFilter, mimeType string) {
 	var arg0 *C.GtkRecentFilter
 	var arg1 *C.gchar
 
@@ -8580,12 +7927,12 @@ func (f recentFilter) AddMIMEType(mimeType string) {
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_recent_filter_add_mime_type(arg0, mimeType)
+	C.gtk_recent_filter_add_mime_type(arg0, arg1)
 }
 
 // AddPattern adds a rule that allows resources based on a pattern matching
 // their display name.
-func (f recentFilter) AddPattern(pattern string) {
+func (f recentFilter) AddPattern(f RecentFilter, pattern string) {
 	var arg0 *C.GtkRecentFilter
 	var arg1 *C.gchar
 
@@ -8593,12 +7940,12 @@ func (f recentFilter) AddPattern(pattern string) {
 	arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_recent_filter_add_pattern(arg0, pattern)
+	C.gtk_recent_filter_add_pattern(arg0, arg1)
 }
 
 // AddPixbufFormats adds a rule allowing image files in the formats
 // supported by GdkPixbuf.
-func (f recentFilter) AddPixbufFormats() {
+func (f recentFilter) AddPixbufFormats(f RecentFilter) {
 	var arg0 *C.GtkRecentFilter
 
 	arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
@@ -8614,7 +7961,7 @@ func (f recentFilter) AddPixbufFormats() {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
-func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
+func (f recentFilter) Filter(f RecentFilter, filterInfo *RecentFilterInfo) bool {
 	var arg0 *C.GtkRecentFilter
 	var arg1 *C.GtkRecentFilterInfo
 
@@ -8622,30 +7969,25 @@ func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	arg1 = (*C.GtkRecentFilterInfo)(unsafe.Pointer(filterInfo.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_recent_filter_filter(arg0, filterInfo)
+	cret = C.gtk_recent_filter_filter(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Name gets the human-readable name for the filter. See
 // gtk_recent_filter_set_name().
-func (f recentFilter) Name() string {
+func (f recentFilter) Name(f RecentFilter) {
 	var arg0 *C.GtkRecentFilter
 
 	arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_recent_filter_get_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_recent_filter_get_name(arg0)
 }
 
 // Needed gets the fields that need to be filled in for the RecentFilterInfo
@@ -8653,25 +7995,18 @@ func (f recentFilter) Name() string {
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
-func (f recentFilter) Needed() RecentFilterFlags {
+func (f recentFilter) Needed(f RecentFilter) {
 	var arg0 *C.GtkRecentFilter
 
 	arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 
-	var cret C.GtkRecentFilterFlags
-	var ret1 RecentFilterFlags
-
-	cret = C.gtk_recent_filter_get_needed(arg0)
-
-	ret1 = RecentFilterFlags(cret)
-
-	return ret1
+	C.gtk_recent_filter_get_needed(arg0)
 }
 
 // SetName sets the human-readable name of the filter; this is the string
 // that will be displayed in the recently used resources selector user
 // interface if there is a selectable list of filters.
-func (f recentFilter) SetName(name string) {
+func (f recentFilter) SetName(f RecentFilter, name string) {
 	var arg0 *C.GtkRecentFilter
 	var arg1 *C.gchar
 
@@ -8679,7 +8014,7 @@ func (f recentFilter) SetName(name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_recent_filter_set_name(arg0, name)
+	C.gtk_recent_filter_set_name(arg0, arg1)
 }
 
 // Tooltip: basic tooltips can be realized simply by using
@@ -8725,29 +8060,29 @@ type Tooltip interface {
 	// goes away. By default a box with a Image and Label is embedded in the
 	// tooltip, which can be configured using gtk_tooltip_set_markup() and
 	// gtk_tooltip_set_icon().
-	SetCustom(customWidget Widget)
+	SetCustom(t Tooltip, customWidget Widget)
 	// SetIcon sets the icon of the tooltip (which is in front of the text) to
 	// be @pixbuf. If @pixbuf is nil, the image will be hidden.
-	SetIcon(pixbuf gdkpixbuf.Pixbuf)
+	SetIcon(t Tooltip, pixbuf gdkpixbuf.Pixbuf)
 	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 	// text) to be the icon indicated by @gicon with the size indicated by
 	// @size. If @gicon is nil, the image will be hidden.
-	SetIconFromGIcon(gicon gio.Icon, size int)
+	SetIconFromGIcon(t Tooltip, gicon gio.Icon, size int)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by @icon_name with the size indicated
 	// by @size. If @icon_name is nil, the image will be hidden.
-	SetIconFromIconName(iconName string, size int)
+	SetIconFromIconName(t Tooltip, iconName string, size int)
 	// SetIconFromStock sets the icon of the tooltip (which is in front of the
 	// text) to be the stock item indicated by @stock_id with the size indicated
 	// by @size. If @stock_id is nil, the image will be hidden.
-	SetIconFromStock(stockID string, size int)
+	SetIconFromStock(t Tooltip, stockID string, size int)
 	// SetMarkup sets the text of the tooltip to be @markup, which is marked up
 	// with the [Pango text markup language][PangoMarkupFormat]. If @markup is
 	// nil, the label will be hidden.
-	SetMarkup(markup string)
+	SetMarkup(t Tooltip, markup string)
 	// SetText sets the text of the tooltip to be @text. If @text is nil, the
 	// label will be hidden. See also gtk_tooltip_set_markup().
-	SetText(text string)
+	SetText(t Tooltip, text string)
 	// SetTipArea sets the area of the widget, where the contents of this
 	// tooltip apply, to be @rect (in widget coordinates). This is especially
 	// useful for properly setting tooltips on TreeView rows and cells,
@@ -8756,7 +8091,7 @@ type Tooltip interface {
 	// For setting tooltips on TreeView, please refer to the convenience
 	// functions for this: gtk_tree_view_set_tooltip_row() and
 	// gtk_tree_view_set_tooltip_cell().
-	SetTipArea(rect *gdk.Rectangle)
+	SetTipArea(t Tooltip, rect *gdk.Rectangle)
 }
 
 // tooltip implements the Tooltip interface.
@@ -8785,32 +8120,32 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 // goes away. By default a box with a Image and Label is embedded in the
 // tooltip, which can be configured using gtk_tooltip_set_markup() and
 // gtk_tooltip_set_icon().
-func (t tooltip) SetCustom(customWidget Widget) {
+func (t tooltip) SetCustom(t Tooltip, customWidget Widget) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
 
-	C.gtk_tooltip_set_custom(arg0, customWidget)
+	C.gtk_tooltip_set_custom(arg0, arg1)
 }
 
 // SetIcon sets the icon of the tooltip (which is in front of the text) to
 // be @pixbuf. If @pixbuf is nil, the image will be hidden.
-func (t tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuf) {
+func (t tooltip) SetIcon(t Tooltip, pixbuf gdkpixbuf.Pixbuf) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.GdkPixbuf
 
 	arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	C.gtk_tooltip_set_icon(arg0, pixbuf)
+	C.gtk_tooltip_set_icon(arg0, arg1)
 }
 
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 // text) to be the icon indicated by @gicon with the size indicated by
 // @size. If @gicon is nil, the image will be hidden.
-func (t tooltip) SetIconFromGIcon(gicon gio.Icon, size int) {
+func (t tooltip) SetIconFromGIcon(t Tooltip, gicon gio.Icon, size int) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.GIcon
 	var arg2 C.GtkIconSize
@@ -8819,13 +8154,13 @@ func (t tooltip) SetIconFromGIcon(gicon gio.Icon, size int) {
 	arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
 	arg2 = C.GtkIconSize(size)
 
-	C.gtk_tooltip_set_icon_from_gicon(arg0, gicon, size)
+	C.gtk_tooltip_set_icon_from_gicon(arg0, arg1, arg2)
 }
 
 // SetIconFromIconName sets the icon of the tooltip (which is in front of
 // the text) to be the icon indicated by @icon_name with the size indicated
 // by @size. If @icon_name is nil, the image will be hidden.
-func (t tooltip) SetIconFromIconName(iconName string, size int) {
+func (t tooltip) SetIconFromIconName(t Tooltip, iconName string, size int) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.gchar
 	var arg2 C.GtkIconSize
@@ -8835,13 +8170,13 @@ func (t tooltip) SetIconFromIconName(iconName string, size int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.GtkIconSize(size)
 
-	C.gtk_tooltip_set_icon_from_icon_name(arg0, iconName, size)
+	C.gtk_tooltip_set_icon_from_icon_name(arg0, arg1, arg2)
 }
 
 // SetIconFromStock sets the icon of the tooltip (which is in front of the
 // text) to be the stock item indicated by @stock_id with the size indicated
 // by @size. If @stock_id is nil, the image will be hidden.
-func (t tooltip) SetIconFromStock(stockID string, size int) {
+func (t tooltip) SetIconFromStock(t Tooltip, stockID string, size int) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.gchar
 	var arg2 C.GtkIconSize
@@ -8851,13 +8186,13 @@ func (t tooltip) SetIconFromStock(stockID string, size int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.GtkIconSize(size)
 
-	C.gtk_tooltip_set_icon_from_stock(arg0, stockID, size)
+	C.gtk_tooltip_set_icon_from_stock(arg0, arg1, arg2)
 }
 
 // SetMarkup sets the text of the tooltip to be @markup, which is marked up
 // with the [Pango text markup language][PangoMarkupFormat]. If @markup is
 // nil, the label will be hidden.
-func (t tooltip) SetMarkup(markup string) {
+func (t tooltip) SetMarkup(t Tooltip, markup string) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.gchar
 
@@ -8865,12 +8200,12 @@ func (t tooltip) SetMarkup(markup string) {
 	arg1 = (*C.gchar)(C.CString(markup))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_tooltip_set_markup(arg0, markup)
+	C.gtk_tooltip_set_markup(arg0, arg1)
 }
 
 // SetText sets the text of the tooltip to be @text. If @text is nil, the
 // label will be hidden. See also gtk_tooltip_set_markup().
-func (t tooltip) SetText(text string) {
+func (t tooltip) SetText(t Tooltip, text string) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.gchar
 
@@ -8878,7 +8213,7 @@ func (t tooltip) SetText(text string) {
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_tooltip_set_text(arg0, text)
+	C.gtk_tooltip_set_text(arg0, arg1)
 }
 
 // SetTipArea sets the area of the widget, where the contents of this
@@ -8889,12 +8224,12 @@ func (t tooltip) SetText(text string) {
 // For setting tooltips on TreeView, please refer to the convenience
 // functions for this: gtk_tree_view_set_tooltip_row() and
 // gtk_tree_view_set_tooltip_cell().
-func (t tooltip) SetTipArea(rect *gdk.Rectangle) {
+func (t tooltip) SetTipArea(t Tooltip, rect *gdk.Rectangle) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.GdkRectangle
 
 	arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
 
-	C.gtk_tooltip_set_tip_area(arg0, rect)
+	C.gtk_tooltip_set_tip_area(arg0, arg1)
 }

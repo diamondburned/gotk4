@@ -3,16 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -81,7 +76,7 @@ type IOStream interface {
 	gextras.Objector
 
 	// ClearPending clears the pending flag on @stream.
-	ClearPending()
+	ClearPending(s IOStream)
 	// Close closes the stream, releasing resources related to it. This will
 	// also close the individual input and output streams, if they are not
 	// already closed.
@@ -115,7 +110,7 @@ type IOStream interface {
 	//
 	// The default implementation of this method just calls close on the
 	// individual input/output streams.
-	Close(cancellable Cancellable) error
+	Close(s IOStream, cancellable Cancellable) error
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_io_stream_close_finish() to get the result of
@@ -126,29 +121,29 @@ type IOStream interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	CloseAsync(s IOStream)
 	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResult) error
+	CloseFinish(s IOStream, result AsyncResult) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
-	InputStream() InputStream
+	InputStream(s IOStream)
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
-	OutputStream() OutputStream
+	OutputStream(s IOStream)
 	// HasPending checks if a stream has pending actions.
-	HasPending() bool
+	HasPending(s IOStream) bool
 	// IsClosed checks if a stream is closed.
-	IsClosed() bool
+	IsClosed(s IOStream) bool
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
-	SetPending() error
+	SetPending(s IOStream) error
 	// SpliceAsync: asynchronously splice the output stream of @stream1 to the
 	// input stream of @stream2, and splice the output stream of @stream2 to the
 	// input stream of @stream1.
 	//
 	// When the operation is finished @callback will be called. You can then
 	// call g_io_stream_splice_finish() to get the result of the operation.
-	SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	SpliceAsync(s IOStream)
 }
 
 // ioStream implements the IOStream interface.
@@ -173,7 +168,7 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 }
 
 // ClearPending clears the pending flag on @stream.
-func (s ioStream) ClearPending() {
+func (s ioStream) ClearPending(s IOStream) {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
@@ -214,7 +209,7 @@ func (s ioStream) ClearPending() {
 //
 // The default implementation of this method just calls close on the
 // individual input/output streams.
-func (s ioStream) Close(cancellable Cancellable) error {
+func (s ioStream) Close(s IOStream, cancellable Cancellable) error {
 	var arg0 *C.GIOStream
 	var arg1 *C.GCancellable
 
@@ -222,13 +217,13 @@ func (s ioStream) Close(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_io_stream_close(arg0, cancellable, &errout)
+	C.g_io_stream_close(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -241,16 +236,16 @@ func (s ioStream) Close(cancellable Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (s ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s ioStream) CloseAsync(s IOStream) {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	C.g_io_stream_close_async(arg0, ioPriority, cancellable, callback, userData)
+	C.g_io_stream_close_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // CloseFinish closes a stream.
-func (s ioStream) CloseFinish(result AsyncResult) error {
+func (s ioStream) CloseFinish(s IOStream, result AsyncResult) error {
 	var arg0 *C.GIOStream
 	var arg1 *C.GAsyncResult
 
@@ -258,96 +253,86 @@ func (s ioStream) CloseFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_io_stream_close_finish(arg0, result, &errout)
+	C.g_io_stream_close_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // InputStream gets the input stream for this object. This is used for
 // reading.
-func (s ioStream) InputStream() InputStream {
+func (s ioStream) InputStream(s IOStream) {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GInputStream
-	var ret1 InputStream
-
-	cret = C.g_io_stream_get_input_stream(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
-
-	return ret1
+	C.g_io_stream_get_input_stream(arg0)
 }
 
 // OutputStream gets the output stream for this object. This is used for
 // writing.
-func (s ioStream) OutputStream() OutputStream {
+func (s ioStream) OutputStream(s IOStream) {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GOutputStream
-	var ret1 OutputStream
-
-	cret = C.g_io_stream_get_output_stream(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
-
-	return ret1
+	C.g_io_stream_get_output_stream(arg0)
 }
 
 // HasPending checks if a stream has pending actions.
-func (s ioStream) HasPending() bool {
+func (s ioStream) HasPending(s IOStream) bool {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_io_stream_has_pending(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsClosed checks if a stream is closed.
-func (s ioStream) IsClosed() bool {
+func (s ioStream) IsClosed(s IOStream) bool {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_io_stream_is_closed(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (s ioStream) SetPending() error {
+func (s ioStream) SetPending(s IOStream) error {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
 	C.g_io_stream_set_pending(arg0, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SpliceAsync: asynchronously splice the output stream of @stream1 to the
@@ -356,10 +341,10 @@ func (s ioStream) SetPending() error {
 //
 // When the operation is finished @callback will be called. You can then
 // call g_io_stream_splice_finish() to get the result of the operation.
-func (s ioStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s ioStream) SpliceAsync(s IOStream) {
 	var arg0 *C.GIOStream
 
 	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	C.g_io_stream_splice_async(arg0, stream2, flags, ioPriority, cancellable, callback, userData)
+	C.g_io_stream_splice_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }

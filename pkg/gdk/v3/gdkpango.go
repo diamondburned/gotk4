@@ -2,15 +2,6 @@
 
 package gdk
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/pango"
-)
-
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -29,15 +20,8 @@ import "C"
 // will not be updated. Using gtk_widget_get_pango_context() is more convenient
 // if you want to keep a context around and track changes to the screen’s font
 // rendering settings.
-func PangoContextGet() pango.Context {
-	var cret *C.PangoContext
-	var ret1 pango.Context
-
-	cret = C.gdk_pango_context_get()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
-
-	return ret1
+func PangoContextGet() {
+	C.gdk_pango_context_get()
 }
 
 // PangoContextGetForDisplay creates a Context for @display.
@@ -53,19 +37,12 @@ func PangoContextGet() pango.Context {
 // be updated. Using gtk_widget_get_pango_context() is more convenient if you
 // want to keep a context around and track changes to the font rendering
 // settings.
-func PangoContextGetForDisplay(display Display) pango.Context {
+func PangoContextGetForDisplay(display Display) {
 	var arg1 *C.GdkDisplay
 
 	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	var cret *C.PangoContext
-	var ret1 pango.Context
-
-	cret = C.gdk_pango_context_get_for_display(display)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
-
-	return ret1
+	C.gdk_pango_context_get_for_display(arg1)
 }
 
 // PangoContextGetForScreen creates a Context for @screen.
@@ -81,19 +58,12 @@ func PangoContextGetForDisplay(display Display) pango.Context {
 // updated. Using gtk_widget_get_pango_context() is more convenient if you want
 // to keep a context around and track changes to the screen’s font rendering
 // settings.
-func PangoContextGetForScreen(screen Screen) pango.Context {
+func PangoContextGetForScreen(screen Screen) {
 	var arg1 *C.GdkScreen
 
 	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
-	var cret *C.PangoContext
-	var ret1 pango.Context
-
-	cret = C.gdk_pango_context_get_for_screen(screen)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
-
-	return ret1
+	C.gdk_pango_context_get_for_screen(arg1)
 }
 
 // PangoLayoutGetClipRegion obtains a clip region which contains the areas where
@@ -105,7 +75,7 @@ func PangoContextGetForScreen(screen Screen) pango.Context {
 // ranges, not ink extents. So the drawn layout may in fact touch areas out of
 // the clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
-func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region {
+func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) {
 	var arg1 *C.PangoLayout
 	var arg2 C.gint
 	var arg3 C.gint
@@ -118,15 +88,5 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	arg4 = *C.gint(indexRanges)
 	arg5 = C.gint(nRanges)
 
-	var cret *C.cairo_region_t
-	var ret1 *cairo.Region
-
-	cret = C.gdk_pango_layout_get_clip_region(layout, xOrigin, yOrigin, indexRanges, nRanges)
-
-	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_pango_layout_get_clip_region(arg1, arg2, arg3, arg4, arg5)
 }

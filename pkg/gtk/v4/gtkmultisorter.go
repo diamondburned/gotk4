@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,12 +29,12 @@ type MultiSorter interface {
 
 	// Append: add @sorter to @self to use for sorting at the end. @self will
 	// consult all existing sorters before it will sort with the given @sorter.
-	Append(sorter Sorter)
+	Append(s MultiSorter, sorter Sorter)
 	// Remove removes the sorter at the given @position from the list of sorter
 	// used by @self.
 	//
 	// If @position is larger than the number of sorters, nothing happens.
-	Remove(position uint)
+	Remove(s MultiSorter, position uint)
 }
 
 // multiSorter implements the MultiSorter interface.
@@ -66,39 +63,32 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSorter constructs a class MultiSorter.
-func NewMultiSorter() MultiSorter {
-	var cret C.GtkMultiSorter
-	var ret1 MultiSorter
-
-	cret = C.gtk_multi_sorter_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
-
-	return ret1
+func NewMultiSorter() {
+	C.gtk_multi_sorter_new()
 }
 
 // Append: add @sorter to @self to use for sorting at the end. @self will
 // consult all existing sorters before it will sort with the given @sorter.
-func (s multiSorter) Append(sorter Sorter) {
+func (s multiSorter) Append(s MultiSorter, sorter Sorter) {
 	var arg0 *C.GtkMultiSorter
 	var arg1 *C.GtkSorter
 
 	arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
-	C.gtk_multi_sorter_append(arg0, sorter)
+	C.gtk_multi_sorter_append(arg0, arg1)
 }
 
 // Remove removes the sorter at the given @position from the list of sorter
 // used by @self.
 //
 // If @position is larger than the number of sorters, nothing happens.
-func (s multiSorter) Remove(position uint) {
+func (s multiSorter) Remove(s MultiSorter, position uint) {
 	var arg0 *C.GtkMultiSorter
 	var arg1 C.guint
 
 	arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_multi_sorter_remove(arg0, position)
+	C.gtk_multi_sorter_remove(arg0, arg1)
 }

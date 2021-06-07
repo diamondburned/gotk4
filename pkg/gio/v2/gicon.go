@@ -3,19 +3,11 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -38,35 +30,21 @@ func init() {
 
 // IconDeserialize deserializes a #GIcon previously serialized using
 // g_icon_serialize().
-func IconDeserialize(value *glib.Variant) Icon {
+func IconDeserialize(value *glib.Variant) {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
-	var cret *C.GIcon
-	var ret1 Icon
-
-	cret = C.g_icon_deserialize(value)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
-
-	return ret1
+	C.g_icon_deserialize(arg1)
 }
 
 // IconHash gets a hash for an icon.
-func IconHash(icon interface{}) uint {
+func IconHash(icon interface{}) {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(icon)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_icon_hash(icon)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_icon_hash(arg1)
 }
 
 // IconNewForString: generate a #GIcon instance from @str. This function can
@@ -75,39 +53,36 @@ func IconHash(icon interface{}) uint {
 // If your application or library provides one or more #GIcon implementations
 // you need to ensure that each #GType is registered with the type system prior
 // to calling g_icon_new_for_string().
-func IconNewForString(str string) (icon Icon, err error) {
+func IconNewForString(str string) error {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GIcon
-	var ret2 Icon
+	var err error
 
-	cret = C.g_icon_new_for_string(str, &errout)
+	C.g_icon_new_for_string(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // IconOverrider contains methods that are overridable. This
 // interface is a subset of the interface Icon.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Icon) bool
+	Equal(i Icon, icon2 Icon) bool
 	// Hash gets a hash for an icon.
-	Hash() uint
+	Hash(i Icon)
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
 	// be retrieved back by calling g_icon_deserialize() on the returned value.
 	// As serialization will avoid using raw icon data when possible, it only
 	// makes sense to transfer the #GVariant between processes on the same
 	// machine, (as opposed to over the network), and within the same file
 	// system namespace.
-	Serialize() *glib.Variant
+	Serialize(i Icon)
 	// ToTokens generates a textual representation of @icon that can be used for
 	// serialization such as when passing @icon to a different process or saving
 	// it to persistent storage. Use g_icon_new_for_string() to get @icon back
@@ -123,7 +98,7 @@ type IconOverrider interface {
 	//
 	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
 	// is simply the name (such as `network-server`).
-	ToTokens(tokens []interface{}, outVersion int) bool
+	ToTokens(i Icon, tokens []interface{}, outVersion int) bool
 }
 
 // Icon is a very minimal interface for icons. It provides functions for
@@ -170,7 +145,7 @@ type Icon interface {
 	//
 	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
 	// is simply the name (such as `network-server`).
-	String() string
+	String(i Icon)
 }
 
 // icon implements the Icon interface.
@@ -195,7 +170,7 @@ func marshalIcon(p uintptr) (interface{}, error) {
 }
 
 // Equal checks if two icons are equal.
-func (i icon) Equal(icon2 Icon) bool {
+func (i icon) Equal(i Icon, icon2 Icon) bool {
 	var arg0 *C.GIcon
 	var arg1 *C.GIcon
 
@@ -203,13 +178,15 @@ func (i icon) Equal(icon2 Icon) bool {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_icon_equal(arg0, icon2)
+	cret = C.g_icon_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -218,22 +195,12 @@ func (i icon) Equal(icon2 Icon) bool {
 // makes sense to transfer the #GVariant between processes on the same
 // machine, (as opposed to over the network), and within the same file
 // system namespace.
-func (i icon) Serialize() *glib.Variant {
+func (i icon) Serialize(i Icon) {
 	var arg0 *C.GIcon
 
 	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.g_icon_serialize(arg0)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_icon_serialize(arg0)
 }
 
 // String generates a textual representation of @icon that can be used for
@@ -251,18 +218,10 @@ func (i icon) Serialize() *glib.Variant {
 //
 // - If @icon is a Icon with exactly one name and no fallbacks, the encoding
 // is simply the name (such as `network-server`).
-func (i icon) String() string {
+func (i icon) String(i Icon) {
 	var arg0 *C.GIcon
 
 	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_icon_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_icon_to_string(arg0)
 }

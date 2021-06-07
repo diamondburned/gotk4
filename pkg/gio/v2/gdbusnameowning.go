@@ -77,5 +77,5 @@ func BusUnownName(ownerID uint) {
 
 	arg1 = C.guint(ownerID)
 
-	C.g_bus_unown_name(ownerID)
+	C.g_bus_unown_name(arg1)
 }

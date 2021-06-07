@@ -3,16 +3,12 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -35,12 +31,12 @@ type FilterListModel interface {
 	gio.ListModel
 
 	// Filter gets the Filter currently set on @self.
-	Filter() Filter
+	Filter(s FilterListModel)
 	// Incremental returns whether incremental filtering was enabled via
 	// gtk_filter_list_model_set_incremental().
-	Incremental() bool
+	Incremental(s FilterListModel) bool
 	// Model gets the model currently filtered or nil if none.
-	Model() gio.ListModel
+	Model(s FilterListModel)
 	// Pending returns the number of items that have not been filtered yet.
 	//
 	// You can use this value to check if @self is busy filtering by comparing
@@ -54,9 +50,9 @@ type FilterListModel interface {
 	//
 	// If no filter operation is ongoing - in particular when
 	// FilterListModel:incremental is false - this function returns 0.
-	Pending() uint
+	Pending(s FilterListModel)
 	// SetFilter sets the filter used to filter items.
-	SetFilter(filter Filter)
+	SetFilter(s FilterListModel, filter Filter)
 	// SetIncremental: when incremental filtering is enabled, the
 	// GtkFilterListModel will not run filters immediately, but will instead
 	// queue an idle handler that incrementally filters the items and adds them
@@ -71,13 +67,13 @@ type FilterListModel interface {
 	//
 	// See gtk_filter_list_model_get_pending() for progress information about an
 	// ongoing incremental filtering operation.
-	SetIncremental(incremental bool)
+	SetIncremental(s FilterListModel, incremental bool)
 	// SetModel sets the model to be filtered.
 	//
 	// Note that GTK makes no effort to ensure that @model conforms to the item
 	// type of @self. It assumes that the caller knows what they are doing and
 	// have set up an appropriate filter to ensure that item types match.
-	SetModel(model gio.ListModel)
+	SetModel(s FilterListModel, model gio.ListModel)
 }
 
 // filterListModel implements the FilterListModel interface.
@@ -104,70 +100,51 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 }
 
 // NewFilterListModel constructs a class FilterListModel.
-func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
+func NewFilterListModel(model gio.ListModel, filter Filter) {
 	var arg1 *C.GListModel
 	var arg2 *C.GtkFilter
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 	arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
-	var cret C.GtkFilterListModel
-	var ret1 FilterListModel
-
-	cret = C.gtk_filter_list_model_new(model, filter)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilterListModel)
-
-	return ret1
+	C.gtk_filter_list_model_new(arg1, arg2)
 }
 
 // Filter gets the Filter currently set on @self.
-func (s filterListModel) Filter() Filter {
+func (s filterListModel) Filter(s FilterListModel) {
 	var arg0 *C.GtkFilterListModel
 
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkFilter
-	var ret1 Filter
-
-	cret = C.gtk_filter_list_model_get_filter(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Filter)
-
-	return ret1
+	C.gtk_filter_list_model_get_filter(arg0)
 }
 
 // Incremental returns whether incremental filtering was enabled via
 // gtk_filter_list_model_set_incremental().
-func (s filterListModel) Incremental() bool {
+func (s filterListModel) Incremental(s FilterListModel) bool {
 	var arg0 *C.GtkFilterListModel
 
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_filter_list_model_get_incremental(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Model gets the model currently filtered or nil if none.
-func (s filterListModel) Model() gio.ListModel {
+func (s filterListModel) Model(s FilterListModel) {
 	var arg0 *C.GtkFilterListModel
 
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_filter_list_model_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_filter_list_model_get_model(arg0)
 }
 
 // Pending returns the number of items that have not been filtered yet.
@@ -183,30 +160,23 @@ func (s filterListModel) Model() gio.ListModel {
 //
 // If no filter operation is ongoing - in particular when
 // FilterListModel:incremental is false - this function returns 0.
-func (s filterListModel) Pending() uint {
+func (s filterListModel) Pending(s FilterListModel) {
 	var arg0 *C.GtkFilterListModel
 
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_filter_list_model_get_pending(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_filter_list_model_get_pending(arg0)
 }
 
 // SetFilter sets the filter used to filter items.
-func (s filterListModel) SetFilter(filter Filter) {
+func (s filterListModel) SetFilter(s FilterListModel, filter Filter) {
 	var arg0 *C.GtkFilterListModel
 	var arg1 *C.GtkFilter
 
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_filter_list_model_set_filter(arg0, filter)
+	C.gtk_filter_list_model_set_filter(arg0, arg1)
 }
 
 // SetIncremental: when incremental filtering is enabled, the
@@ -223,7 +193,7 @@ func (s filterListModel) SetFilter(filter Filter) {
 //
 // See gtk_filter_list_model_get_pending() for progress information about an
 // ongoing incremental filtering operation.
-func (s filterListModel) SetIncremental(incremental bool) {
+func (s filterListModel) SetIncremental(s FilterListModel, incremental bool) {
 	var arg0 *C.GtkFilterListModel
 	var arg1 C.gboolean
 
@@ -232,7 +202,7 @@ func (s filterListModel) SetIncremental(incremental bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_filter_list_model_set_incremental(arg0, incremental)
+	C.gtk_filter_list_model_set_incremental(arg0, arg1)
 }
 
 // SetModel sets the model to be filtered.
@@ -240,12 +210,12 @@ func (s filterListModel) SetIncremental(incremental bool) {
 // Note that GTK makes no effort to ensure that @model conforms to the item
 // type of @self. It assumes that the caller knows what they are doing and
 // have set up an appropriate filter to ensure that item types match.
-func (s filterListModel) SetModel(model gio.ListModel) {
+func (s filterListModel) SetModel(s FilterListModel, model gio.ListModel) {
 	var arg0 *C.GtkFilterListModel
 	var arg1 *C.GListModel
 
 	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_filter_list_model_set_model(arg0, model)
+	C.gtk_filter_list_model_set_model(arg0, arg1)
 }

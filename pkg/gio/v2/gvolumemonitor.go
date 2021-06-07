@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -50,22 +45,22 @@ type VolumeMonitor interface {
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	ConnectedDrives() *glib.List
+	ConnectedDrives(v VolumeMonitor)
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) Mount
+	MountForUUID(v VolumeMonitor, uuid string)
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Mounts() *glib.List
+	Mounts(v VolumeMonitor)
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) Volume
+	VolumeForUUID(v VolumeMonitor, uuid string)
 	// Volumes gets a list of the volumes on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	Volumes() *glib.List
+	Volumes(v VolumeMonitor)
 }
 
 // volumeMonitor implements the VolumeMonitor interface.
@@ -93,26 +88,16 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 //
 // The returned list should be freed with g_list_free(), after its elements
 // have been unreffed with g_object_unref().
-func (v volumeMonitor) ConnectedDrives() *glib.List {
+func (v volumeMonitor) ConnectedDrives(v VolumeMonitor) {
 	var arg0 *C.GVolumeMonitor
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_volume_monitor_get_connected_drives(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_volume_monitor_get_connected_drives(arg0)
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-func (v volumeMonitor) MountForUUID(uuid string) Mount {
+func (v volumeMonitor) MountForUUID(v VolumeMonitor, uuid string) {
 	var arg0 *C.GVolumeMonitor
 	var arg1 *C.char
 
@@ -120,41 +105,24 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GMount
-	var ret1 Mount
-
-	cret = C.g_volume_monitor_get_mount_for_uuid(arg0, uuid)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
-
-	return ret1
+	C.g_volume_monitor_get_mount_for_uuid(arg0, arg1)
 }
 
 // Mounts gets a list of the mounts on the system.
 //
 // The returned list should be freed with g_list_free(), after its elements
 // have been unreffed with g_object_unref().
-func (v volumeMonitor) Mounts() *glib.List {
+func (v volumeMonitor) Mounts(v VolumeMonitor) {
 	var arg0 *C.GVolumeMonitor
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_volume_monitor_get_mounts(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_volume_monitor_get_mounts(arg0)
 }
 
 // VolumeForUUID finds a #GVolume object by its UUID (see
 // g_volume_get_uuid())
-func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
+func (v volumeMonitor) VolumeForUUID(v VolumeMonitor, uuid string) {
 	var arg0 *C.GVolumeMonitor
 	var arg1 *C.char
 
@@ -162,34 +130,17 @@ func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 	arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GVolume
-	var ret1 Volume
-
-	cret = C.g_volume_monitor_get_volume_for_uuid(arg0, uuid)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Volume)
-
-	return ret1
+	C.g_volume_monitor_get_volume_for_uuid(arg0, arg1)
 }
 
 // Volumes gets a list of the volumes on the system.
 //
 // The returned list should be freed with g_list_free(), after its elements
 // have been unreffed with g_object_unref().
-func (v volumeMonitor) Volumes() *glib.List {
+func (v volumeMonitor) Volumes(v VolumeMonitor) {
 	var arg0 *C.GVolumeMonitor
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_volume_monitor_get_volumes(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_volume_monitor_get_volumes(arg0)
 }

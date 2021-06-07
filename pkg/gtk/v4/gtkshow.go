@@ -2,13 +2,6 @@
 
 package gtk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -26,7 +19,7 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.guint32(timestamp)
 
-	C.gtk_show_uri(parent, uri, timestamp)
+	C.gtk_show_uri(arg1, arg2, arg3)
 }
 
 // ShowURIFull: this function launches the default application for showing a
@@ -37,9 +30,8 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-
-	C.gtk_show_uri_full(parent, uri, timestamp, cancellable, callback, userData)
+func ShowURIFull() {
+	C.gtk_show_uri_full(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
@@ -52,11 +44,11 @@ func ShowURIFullFinish(parent Window, result gio.AsyncResult) error {
 	arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_show_uri_full_finish(parent, result, &errout)
+	C.gtk_show_uri_full_finish(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }

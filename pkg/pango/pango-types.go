@@ -40,44 +40,30 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 	arg1 = (*C.PangoRectangle)(unsafe.Pointer(inclusive.Native()))
 	arg2 = (*C.PangoRectangle)(unsafe.Pointer(nearest.Native()))
 
-	C.pango_extents_to_pixels(inclusive, nearest)
+	C.pango_extents_to_pixels(arg1, arg2)
 }
 
 // UnitsFromDouble converts a floating-point number to Pango units.
 //
 // The conversion is done by multiplying @d by PANGO_SCALE and rounding the
 // result to nearest integer.
-func UnitsFromDouble(d float64) int {
+func UnitsFromDouble(d float64) {
 	var arg1 C.double
 
 	arg1 = C.double(d)
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.pango_units_from_double(d)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.pango_units_from_double(arg1)
 }
 
 // UnitsToDouble converts a number in Pango units to floating-point.
 //
 // The conversion is done by dividing @i by PANGO_SCALE.
-func UnitsToDouble(i int) float64 {
+func UnitsToDouble(i int) {
 	var arg1 C.int
 
 	arg1 = C.int(i)
 
-	var cret C.double
-	var ret1 float64
-
-	cret = C.pango_units_to_double(i)
-
-	ret1 = C.double(cret)
-
-	return ret1
+	C.pango_units_to_double(arg1)
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.
@@ -111,20 +97,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *Rectangle) X() int {
-	v = C.int(r.native.x)
+	var v int
+	v = int(r.native.x)
+	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() int {
-	v = C.int(r.native.y)
+	var v int
+	v = int(r.native.y)
+	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() int {
-	v = C.int(r.native.width)
+	var v int
+	v = int(r.native.width)
+	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() int {
-	v = C.int(r.native.height)
+	var v int
+	v = int(r.native.height)
+	return v
 }

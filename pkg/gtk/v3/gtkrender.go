@@ -2,16 +2,6 @@
 
 package gtk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
@@ -36,7 +26,7 @@ func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_activity(context, cr, x, y, width, height)
+	C.gtk_render_activity(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderArrow renders an arrow pointing to @angle.
@@ -59,7 +49,7 @@ func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float
 	arg5 = C.gdouble(y)
 	arg6 = C.gdouble(size)
 
-	C.gtk_render_arrow(context, cr, angle, x, y, size)
+	C.gtk_render_arrow(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderBackground renders the background of an element.
@@ -83,13 +73,13 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_background(context, cr, x, y, width, height)
+	C.gtk_render_background(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderBackgroundGetClip returns the area that will be affected (i.e. drawn
 // to) when calling gtk_render_background() for the given @context and
 // rectangle.
-func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width float64, height float64) gdk.Rectangle {
+func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width float64, height float64) *gdk.Rectangle {
 	var arg1 *C.GtkStyleContext
 	var arg2 C.gdouble
 	var arg3 C.gdouble
@@ -103,13 +93,13 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 	arg5 = C.gdouble(height)
 
 	var arg6 C.GdkRectangle
-	var ret6 *gdk.Rectangle
+	var outClip *gdk.Rectangle
 
-	C.gtk_render_background_get_clip(context, x, y, width, height, &arg6)
+	C.gtk_render_background_get_clip(arg1, arg2, arg3, arg4, arg5, &arg6)
 
-	*ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
+	outClip = gdk.WrapRectangle(unsafe.Pointer(&arg6))
 
-	return ret6
+	return outClip
 }
 
 // RenderCheck renders a checkmark (as in a CheckButton).
@@ -136,7 +126,7 @@ func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_check(context, cr, x, y, width, height)
+	C.gtk_render_check(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderExpander renders an expander (as used in TreeView and Expander) in the
@@ -161,7 +151,7 @@ func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_expander(context, cr, x, y, width, height)
+	C.gtk_render_expander(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderExtension renders a extension (as in a Notebook tab) in the rectangle
@@ -188,7 +178,7 @@ func RenderExtension(context StyleContext, cr *cairo.Context, x float64, y float
 	arg6 = C.gdouble(height)
 	arg7 = (C.GtkPositionType)(gapSide)
 
-	C.gtk_render_extension(context, cr, x, y, width, height, gapSide)
+	C.gtk_render_extension(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // RenderFocus renders a focus indicator on the rectangle determined by @x, @y,
@@ -212,7 +202,7 @@ func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_focus(context, cr, x, y, width, height)
+	C.gtk_render_focus(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderFrame renders a frame around the rectangle defined by @x, @y, @width,
@@ -237,7 +227,7 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_frame(context, cr, x, y, width, height)
+	C.gtk_render_frame(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderFrameGap renders a frame around the rectangle defined by (@x, @y,
@@ -269,7 +259,7 @@ func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg8 = C.gdouble(xy0Gap)
 	arg9 = C.gdouble(xy1Gap)
 
-	C.gtk_render_frame_gap(context, cr, x, y, width, height, gapSide, xy0Gap, xy1Gap)
+	C.gtk_render_frame_gap(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 // RenderHandle renders a handle (as in HandleBox, Paned and Window’s resize
@@ -293,7 +283,7 @@ func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_handle(context, cr, x, y, width, height)
+	C.gtk_render_handle(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderIcon renders the icon in @pixbuf at the specified @x and @y
@@ -318,12 +308,12 @@ func RenderIcon(context StyleContext, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf
 	arg4 = C.gdouble(x)
 	arg5 = C.gdouble(y)
 
-	C.gtk_render_icon(context, cr, pixbuf, x, y)
+	C.gtk_render_icon(arg1, arg2, arg3, arg4, arg5)
 }
 
 // RenderIconPixbuf renders the icon specified by @source at the given @size,
 // returning the result in a pixbuf.
-func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpixbuf.Pixbuf {
+func RenderIconPixbuf(context StyleContext, source *IconSource, size int) {
 	var arg1 *C.GtkStyleContext
 	var arg2 *C.GtkIconSource
 	var arg3 C.GtkIconSize
@@ -332,14 +322,7 @@ func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpix
 	arg2 = (*C.GtkIconSource)(unsafe.Pointer(source.Native()))
 	arg3 = C.GtkIconSize(size)
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
-
-	cret = C.gtk_render_icon_pixbuf(context, source, size)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return ret1
+	C.gtk_render_icon_pixbuf(arg1, arg2, arg3)
 }
 
 // RenderIconSurface renders the icon in @surface at the specified @x and @y
@@ -357,7 +340,7 @@ func RenderIconSurface(context StyleContext, cr *cairo.Context, surface *cairo.S
 	arg4 = C.gdouble(x)
 	arg5 = C.gdouble(y)
 
-	C.gtk_render_icon_surface(context, cr, surface, x, y)
+	C.gtk_render_icon_surface(arg1, arg2, arg3, arg4, arg5)
 }
 
 // RenderLayout renders @layout on the coordinates @x, @y
@@ -374,7 +357,7 @@ func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg4 = C.gdouble(y)
 	arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.gtk_render_layout(context, cr, x, y, layout)
+	C.gtk_render_layout(arg1, arg2, arg3, arg4, arg5)
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
@@ -393,7 +376,7 @@ func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64,
 	arg5 = C.gdouble(x1)
 	arg6 = C.gdouble(y1)
 
-	C.gtk_render_line(context, cr, x0, y0, x1, y1)
+	C.gtk_render_line(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderOption renders an option mark (as in a RadioButton), the
@@ -418,7 +401,7 @@ func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 
-	C.gtk_render_option(context, cr, x, y, width, height)
+	C.gtk_render_option(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // RenderSlider renders a slider (as in Scale) in the rectangle defined by @x,
@@ -445,5 +428,5 @@ func RenderSlider(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg6 = C.gdouble(height)
 	arg7 = (C.GtkOrientation)(orientation)
 
-	C.gtk_render_slider(context, cr, x, y, width, height, orientation)
+	C.gtk_render_slider(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }

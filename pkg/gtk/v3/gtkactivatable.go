@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,9 +27,9 @@ type ActivatableOverrider interface {
 	// completely, this is called internally when the Activatable:related-action
 	// property is set or unset and by the implementing class when
 	// Activatable:use-action-appearance changes.
-	SyncActionProperties(action Action)
+	SyncActionProperties(a Activatable, action Action)
 
-	Update(action Action, propertyName string)
+	Update(a Activatable, action Action, propertyName string)
 }
 
 // Activatable: activatable widgets can be connected to a Action and reflects
@@ -286,19 +282,19 @@ type Activatable interface {
 	// > Be careful to call this before setting the local > copy of the Action
 	// property, since this function uses > gtk_activatable_get_related_action()
 	// to retrieve the > previous action.
-	DoSetRelatedAction(action Action)
+	DoSetRelatedAction(a Activatable, action Action)
 	// RelatedAction gets the related Action for @activatable.
-	RelatedAction() Action
+	RelatedAction(a Activatable)
 	// UseActionAppearance gets whether this activatable should reset its layout
 	// and appearance when setting the related action or when the action changes
 	// appearance.
-	UseActionAppearance() bool
+	UseActionAppearance(a Activatable) bool
 	// SetRelatedAction sets the related action on the @activatable object.
 	//
 	// > Activatable implementors need to handle the Activatable:related-action
 	// > property and call gtk_activatable_do_set_related_action() when it
 	// changes.
-	SetRelatedAction(action Action)
+	SetRelatedAction(a Activatable, action Action)
 	// SetUseActionAppearance sets whether this activatable should reset its
 	// layout and appearance when setting the related action or when the action
 	// changes appearance
@@ -307,7 +303,7 @@ type Activatable interface {
 	// Activatable:use-action-appearance property and call >
 	// gtk_activatable_sync_action_properties() to update @activatable > if
 	// needed.
-	SetUseActionAppearance(useAppearance bool)
+	SetUseActionAppearance(a Activatable, useAppearance bool)
 }
 
 // activatable implements the Activatable interface.
@@ -346,48 +342,43 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 // > Be careful to call this before setting the local > copy of the Action
 // property, since this function uses > gtk_activatable_get_related_action()
 // to retrieve the > previous action.
-func (a activatable) DoSetRelatedAction(action Action) {
+func (a activatable) DoSetRelatedAction(a Activatable, action Action) {
 	var arg0 *C.GtkActivatable
 	var arg1 *C.GtkAction
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
-	C.gtk_activatable_do_set_related_action(arg0, action)
+	C.gtk_activatable_do_set_related_action(arg0, arg1)
 }
 
 // RelatedAction gets the related Action for @activatable.
-func (a activatable) RelatedAction() Action {
+func (a activatable) RelatedAction(a Activatable) {
 	var arg0 *C.GtkActivatable
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GtkAction
-	var ret1 Action
-
-	cret = C.gtk_activatable_get_related_action(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
-
-	return ret1
+	C.gtk_activatable_get_related_action(arg0)
 }
 
 // UseActionAppearance gets whether this activatable should reset its layout
 // and appearance when setting the related action or when the action changes
 // appearance.
-func (a activatable) UseActionAppearance() bool {
+func (a activatable) UseActionAppearance(a Activatable) bool {
 	var arg0 *C.GtkActivatable
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_activatable_get_use_action_appearance(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetRelatedAction sets the related action on the @activatable object.
@@ -395,14 +386,14 @@ func (a activatable) UseActionAppearance() bool {
 // > Activatable implementors need to handle the Activatable:related-action
 // > property and call gtk_activatable_do_set_related_action() when it
 // changes.
-func (a activatable) SetRelatedAction(action Action) {
+func (a activatable) SetRelatedAction(a Activatable, action Action) {
 	var arg0 *C.GtkActivatable
 	var arg1 *C.GtkAction
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
-	C.gtk_activatable_set_related_action(arg0, action)
+	C.gtk_activatable_set_related_action(arg0, arg1)
 }
 
 // SetUseActionAppearance sets whether this activatable should reset its
@@ -413,7 +404,7 @@ func (a activatable) SetRelatedAction(action Action) {
 // Activatable:use-action-appearance property and call >
 // gtk_activatable_sync_action_properties() to update @activatable > if
 // needed.
-func (a activatable) SetUseActionAppearance(useAppearance bool) {
+func (a activatable) SetUseActionAppearance(a Activatable, useAppearance bool) {
 	var arg0 *C.GtkActivatable
 	var arg1 C.gboolean
 
@@ -422,19 +413,19 @@ func (a activatable) SetUseActionAppearance(useAppearance bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_activatable_set_use_action_appearance(arg0, useAppearance)
+	C.gtk_activatable_set_use_action_appearance(arg0, arg1)
 }
 
 // SyncActionProperties: this is called to update the activatable
 // completely, this is called internally when the Activatable:related-action
 // property is set or unset and by the implementing class when
 // Activatable:use-action-appearance changes.
-func (a activatable) SyncActionProperties(action Action) {
+func (a activatable) SyncActionProperties(a Activatable, action Action) {
 	var arg0 *C.GtkActivatable
 	var arg1 *C.GtkAction
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
-	C.gtk_activatable_sync_action_properties(arg0, action)
+	C.gtk_activatable_sync_action_properties(arg0, arg1)
 }

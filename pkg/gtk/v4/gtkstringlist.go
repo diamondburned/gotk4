@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -57,16 +53,16 @@ type StringList interface {
 	//
 	// The @string will be copied. See gtk_string_list_take() for a way to avoid
 	// that.
-	Append(string string)
+	Append(s StringList, string string)
 	// String gets the string that is at @position in @self. If @self does not
 	// contain @position items, nil is returned.
 	//
 	// This function returns the const char *. To get the object wrapping it,
 	// use g_list_model_get_item().
-	String(position uint) string
+	String(s StringList, position uint)
 	// Remove removes the string at @position from @self. @position must be
 	// smaller than the current length of the list.
-	Remove(position uint)
+	Remove(s StringList, position uint)
 	// Splice changes @self by removing @n_removals strings and adding
 	// @additions to it.
 	//
@@ -79,14 +75,14 @@ type StringList interface {
 	// The parameters @position and @n_removals must be correct (ie: @position +
 	// @n_removals must be less than or equal to the length of the list at the
 	// time this function is called).
-	Splice(position uint, nRemovals uint, additions []string)
+	Splice(s StringList, position uint, nRemovals uint, additions []string)
 	// Take adds @string to self at the end, and takes ownership of it.
 	//
 	// This variant of gtk_string_list_append() is convenient for formatting
 	// strings:
 	//
 	//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
-	Take(string string)
+	Take(s StringList, string string)
 }
 
 // stringList implements the StringList interface.
@@ -115,7 +111,7 @@ func marshalStringList(p uintptr) (interface{}, error) {
 }
 
 // NewStringList constructs a class StringList.
-func NewStringList(strings []string) StringList {
+func NewStringList(strings []string) {
 	var arg1 **C.char
 
 	arg1 = C.malloc(len(strings) * (unsafe.Sizeof(int(0)) + 1))
@@ -131,21 +127,14 @@ func NewStringList(strings []string) StringList {
 		}
 	}
 
-	var cret C.GtkStringList
-	var ret1 StringList
-
-	cret = C.gtk_string_list_new(strings)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringList)
-
-	return ret1
+	C.gtk_string_list_new(arg1)
 }
 
 // Append appends @string to @self.
 //
 // The @string will be copied. See gtk_string_list_take() for a way to avoid
 // that.
-func (s stringList) Append(string string) {
+func (s stringList) Append(s StringList, string string) {
 	var arg0 *C.GtkStringList
 	var arg1 *C.char
 
@@ -153,7 +142,7 @@ func (s stringList) Append(string string) {
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_string_list_append(arg0, string)
+	C.gtk_string_list_append(arg0, arg1)
 }
 
 // String gets the string that is at @position in @self. If @self does not
@@ -161,33 +150,26 @@ func (s stringList) Append(string string) {
 //
 // This function returns the const char *. To get the object wrapping it,
 // use g_list_model_get_item().
-func (s stringList) String(position uint) string {
+func (s stringList) String(s StringList, position uint) {
 	var arg0 *C.GtkStringList
 	var arg1 C.guint
 
 	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_string_list_get_string(arg0, position)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_string_list_get_string(arg0, arg1)
 }
 
 // Remove removes the string at @position from @self. @position must be
 // smaller than the current length of the list.
-func (s stringList) Remove(position uint) {
+func (s stringList) Remove(s StringList, position uint) {
 	var arg0 *C.GtkStringList
 	var arg1 C.guint
 
 	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_string_list_remove(arg0, position)
+	C.gtk_string_list_remove(arg0, arg1)
 }
 
 // Splice changes @self by removing @n_removals strings and adding
@@ -202,7 +184,7 @@ func (s stringList) Remove(position uint) {
 // The parameters @position and @n_removals must be correct (ie: @position +
 // @n_removals must be less than or equal to the length of the list at the
 // time this function is called).
-func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
+func (s stringList) Splice(s StringList, position uint, nRemovals uint, additions []string) {
 	var arg0 *C.GtkStringList
 	var arg1 C.guint
 	var arg2 C.guint
@@ -224,7 +206,7 @@ func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
 		}
 	}
 
-	C.gtk_string_list_splice(arg0, position, nRemovals, additions)
+	C.gtk_string_list_splice(arg0, arg1, arg2, arg3)
 }
 
 // Take adds @string to self at the end, and takes ownership of it.
@@ -233,21 +215,21 @@ func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
 // strings:
 //
 //    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
-func (s stringList) Take(string string) {
+func (s stringList) Take(s StringList, string string) {
 	var arg0 *C.GtkStringList
 	var arg1 *C.char
 
 	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.char)(C.CString(string))
 
-	C.gtk_string_list_take(arg0, string)
+	C.gtk_string_list_take(arg0, arg1)
 }
 
 type StringObject interface {
 	gextras.Objector
 
 	// String returns the string contained in a StringObject.
-	String() string
+	String(s StringObject)
 }
 
 // stringObject implements the StringObject interface.
@@ -272,34 +254,20 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 }
 
 // NewStringObject constructs a class StringObject.
-func NewStringObject(string string) StringObject {
+func NewStringObject(string string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkStringObject
-	var ret1 StringObject
-
-	cret = C.gtk_string_object_new(string)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringObject)
-
-	return ret1
+	C.gtk_string_object_new(arg1)
 }
 
 // String returns the string contained in a StringObject.
-func (s stringObject) String() string {
+func (s stringObject) String(s StringObject) {
 	var arg0 *C.GtkStringObject
 
 	arg0 = (*C.GtkStringObject)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_string_object_get_string(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_string_object_get_string(arg0)
 }

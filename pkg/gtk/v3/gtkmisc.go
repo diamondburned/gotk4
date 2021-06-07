@@ -41,14 +41,14 @@ type Misc interface {
 
 	// Alignment gets the X and Y alignment of the widget within its allocation.
 	// See gtk_misc_set_alignment().
-	Alignment() (xalign float32, yalign float32)
+	Alignment(m Misc) (xalign float32, yalign float32)
 	// Padding gets the padding in the X and Y directions of the widget. See
 	// gtk_misc_set_padding().
-	Padding() (xpad int, ypad int)
+	Padding(m Misc) (xpad int, ypad int)
 	// SetAlignment sets the alignment of the widget.
-	SetAlignment(xalign float32, yalign float32)
+	SetAlignment(m Misc, xalign float32, yalign float32)
 	// SetPadding sets the amount of space to add around the widget.
-	SetPadding(xpad int, ypad int)
+	SetPadding(m Misc, xpad int, ypad int)
 }
 
 // misc implements the Misc interface.
@@ -76,46 +76,46 @@ func marshalMisc(p uintptr) (interface{}, error) {
 
 // Alignment gets the X and Y alignment of the widget within its allocation.
 // See gtk_misc_set_alignment().
-func (m misc) Alignment() (xalign float32, yalign float32) {
+func (m misc) Alignment(m Misc) (xalign float32, yalign float32) {
 	var arg0 *C.GtkMisc
 
 	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
 	var arg1 C.gfloat
-	var ret1 float32
+	var xalign float32
 	var arg2 C.gfloat
-	var ret2 float32
+	var yalign float32
 
 	C.gtk_misc_get_alignment(arg0, &arg1, &arg2)
 
-	*ret1 = C.gfloat(arg1)
-	*ret2 = C.gfloat(arg2)
+	xalign = float32(&arg1)
+	yalign = float32(&arg2)
 
-	return ret1, ret2
+	return xalign, yalign
 }
 
 // Padding gets the padding in the X and Y directions of the widget. See
 // gtk_misc_set_padding().
-func (m misc) Padding() (xpad int, ypad int) {
+func (m misc) Padding(m Misc) (xpad int, ypad int) {
 	var arg0 *C.GtkMisc
 
 	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
 	var arg1 C.gint
-	var ret1 int
+	var xpad int
 	var arg2 C.gint
-	var ret2 int
+	var ypad int
 
 	C.gtk_misc_get_padding(arg0, &arg1, &arg2)
 
-	*ret1 = C.gint(arg1)
-	*ret2 = C.gint(arg2)
+	xpad = int(&arg1)
+	ypad = int(&arg2)
 
-	return ret1, ret2
+	return xpad, ypad
 }
 
 // SetAlignment sets the alignment of the widget.
-func (m misc) SetAlignment(xalign float32, yalign float32) {
+func (m misc) SetAlignment(m Misc, xalign float32, yalign float32) {
 	var arg0 *C.GtkMisc
 	var arg1 C.gfloat
 	var arg2 C.gfloat
@@ -124,11 +124,11 @@ func (m misc) SetAlignment(xalign float32, yalign float32) {
 	arg1 = C.gfloat(xalign)
 	arg2 = C.gfloat(yalign)
 
-	C.gtk_misc_set_alignment(arg0, xalign, yalign)
+	C.gtk_misc_set_alignment(arg0, arg1, arg2)
 }
 
 // SetPadding sets the amount of space to add around the widget.
-func (m misc) SetPadding(xpad int, ypad int) {
+func (m misc) SetPadding(m Misc, xpad int, ypad int) {
 	var arg0 *C.GtkMisc
 	var arg1 C.gint
 	var arg2 C.gint
@@ -137,5 +137,5 @@ func (m misc) SetPadding(xpad int, ypad int) {
 	arg1 = C.gint(xpad)
 	arg2 = C.gint(ypad)
 
-	C.gtk_misc_set_padding(arg0, xpad, ypad)
+	C.gtk_misc_set_padding(arg0, arg1, arg2)
 }

@@ -21,19 +21,19 @@ func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32)
 	arg3 = C.float(v)
 
 	var arg4 C.float
-	var ret4 float32
+	var r float32
 	var arg5 C.float
-	var ret5 float32
+	var g float32
 	var arg6 C.float
-	var ret6 float32
+	var b float32
 
-	C.gtk_hsv_to_rgb(h, s, v, &arg4, &arg5, &arg6)
+	C.gtk_hsv_to_rgb(arg1, arg2, arg3, &arg4, &arg5, &arg6)
 
-	*ret4 = C.float(arg4)
-	*ret5 = C.float(arg5)
-	*ret6 = C.float(arg6)
+	r = float32(&arg4)
+	g = float32(&arg5)
+	b = float32(&arg6)
 
-	return ret4, ret5, ret6
+	return r, g, b
 }
 
 // RGBToHSV converts a color from RGB space to HSV.
@@ -50,17 +50,17 @@ func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32)
 	arg3 = C.float(b)
 
 	var arg4 C.float
-	var ret4 float32
+	var h float32
 	var arg5 C.float
-	var ret5 float32
+	var s float32
 	var arg6 C.float
-	var ret6 float32
+	var v float32
 
-	C.gtk_rgb_to_hsv(r, g, b, &arg4, &arg5, &arg6)
+	C.gtk_rgb_to_hsv(arg1, arg2, arg3, &arg4, &arg5, &arg6)
 
-	*ret4 = C.float(arg4)
-	*ret5 = C.float(arg5)
-	*ret6 = C.float(arg6)
+	h = float32(&arg4)
+	s = float32(&arg5)
+	v = float32(&arg6)
 
-	return ret4, ret5, ret6
+	return h, s, v
 }

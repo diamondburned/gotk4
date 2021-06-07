@@ -3,11 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -190,12 +185,12 @@ type ConstraintLayout interface {
 	//
 	// The @layout acquires the ownership of @constraint after calling this
 	// function.
-	AddConstraint(constraint Constraint)
+	AddConstraint(l ConstraintLayout, constraint Constraint)
 	// AddGuide adds a guide to @layout. A guide can be used as the source or
 	// target of constraints, like a widget, but it is not visible.
 	//
 	// The @layout acquires the ownership of @guide after calling this function.
-	AddGuide(guide ConstraintGuide)
+	AddGuide(l ConstraintLayout, guide ConstraintGuide)
 	// ObserveConstraints returns a Model to track the constraints that are part
 	// of @layout.
 	//
@@ -205,7 +200,7 @@ type ConstraintLayout interface {
 	//
 	// Applications should try hard to avoid calling this function because of
 	// the slowdowns.
-	ObserveConstraints() gio.ListModel
+	ObserveConstraints(l ConstraintLayout)
 	// ObserveGuides returns a Model to track the guides that are part of
 	// @layout.
 	//
@@ -215,15 +210,15 @@ type ConstraintLayout interface {
 	//
 	// Applications should try hard to avoid calling this function because of
 	// the slowdowns.
-	ObserveGuides() gio.ListModel
+	ObserveGuides(l ConstraintLayout)
 	// RemoveAllConstraints removes all constraints from the layout manager.
-	RemoveAllConstraints()
+	RemoveAllConstraints(l ConstraintLayout)
 	// RemoveConstraint removes @constraint from the layout manager, so that it
 	// no longer influences the layout.
-	RemoveConstraint(constraint Constraint)
+	RemoveConstraint(l ConstraintLayout, constraint Constraint)
 	// RemoveGuide removes @guide from the layout manager, so that it no longer
 	// influences the layout.
-	RemoveGuide(guide ConstraintGuide)
+	RemoveGuide(l ConstraintLayout, guide ConstraintGuide)
 }
 
 // constraintLayout implements the ConstraintLayout interface.
@@ -250,15 +245,8 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 }
 
 // NewConstraintLayout constructs a class ConstraintLayout.
-func NewConstraintLayout() ConstraintLayout {
-	var cret C.GtkConstraintLayout
-	var ret1 ConstraintLayout
-
-	cret = C.gtk_constraint_layout_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConstraintLayout)
-
-	return ret1
+func NewConstraintLayout() {
+	C.gtk_constraint_layout_new()
 }
 
 // AddConstraint adds a Constraint to the layout manager.
@@ -274,28 +262,28 @@ func NewConstraintLayout() ConstraintLayout {
 //
 // The @layout acquires the ownership of @constraint after calling this
 // function.
-func (l constraintLayout) AddConstraint(constraint Constraint) {
+func (l constraintLayout) AddConstraint(l ConstraintLayout, constraint Constraint) {
 	var arg0 *C.GtkConstraintLayout
 	var arg1 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
-	C.gtk_constraint_layout_add_constraint(arg0, constraint)
+	C.gtk_constraint_layout_add_constraint(arg0, arg1)
 }
 
 // AddGuide adds a guide to @layout. A guide can be used as the source or
 // target of constraints, like a widget, but it is not visible.
 //
 // The @layout acquires the ownership of @guide after calling this function.
-func (l constraintLayout) AddGuide(guide ConstraintGuide) {
+func (l constraintLayout) AddGuide(l ConstraintLayout, guide ConstraintGuide) {
 	var arg0 *C.GtkConstraintLayout
 	var arg1 *C.GtkConstraintGuide
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
-	C.gtk_constraint_layout_add_guide(arg0, guide)
+	C.gtk_constraint_layout_add_guide(arg0, arg1)
 }
 
 // ObserveConstraints returns a Model to track the constraints that are part
@@ -307,19 +295,12 @@ func (l constraintLayout) AddGuide(guide ConstraintGuide) {
 //
 // Applications should try hard to avoid calling this function because of
 // the slowdowns.
-func (l constraintLayout) ObserveConstraints() gio.ListModel {
+func (l constraintLayout) ObserveConstraints(l ConstraintLayout) {
 	var arg0 *C.GtkConstraintLayout
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_constraint_layout_observe_constraints(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_constraint_layout_observe_constraints(arg0)
 }
 
 // ObserveGuides returns a Model to track the guides that are part of
@@ -331,23 +312,16 @@ func (l constraintLayout) ObserveConstraints() gio.ListModel {
 //
 // Applications should try hard to avoid calling this function because of
 // the slowdowns.
-func (l constraintLayout) ObserveGuides() gio.ListModel {
+func (l constraintLayout) ObserveGuides(l ConstraintLayout) {
 	var arg0 *C.GtkConstraintLayout
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_constraint_layout_observe_guides(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_constraint_layout_observe_guides(arg0)
 }
 
 // RemoveAllConstraints removes all constraints from the layout manager.
-func (l constraintLayout) RemoveAllConstraints() {
+func (l constraintLayout) RemoveAllConstraints(l ConstraintLayout) {
 	var arg0 *C.GtkConstraintLayout
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
@@ -357,26 +331,26 @@ func (l constraintLayout) RemoveAllConstraints() {
 
 // RemoveConstraint removes @constraint from the layout manager, so that it
 // no longer influences the layout.
-func (l constraintLayout) RemoveConstraint(constraint Constraint) {
+func (l constraintLayout) RemoveConstraint(l ConstraintLayout, constraint Constraint) {
 	var arg0 *C.GtkConstraintLayout
 	var arg1 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
-	C.gtk_constraint_layout_remove_constraint(arg0, constraint)
+	C.gtk_constraint_layout_remove_constraint(arg0, arg1)
 }
 
 // RemoveGuide removes @guide from the layout manager, so that it no longer
 // influences the layout.
-func (l constraintLayout) RemoveGuide(guide ConstraintGuide) {
+func (l constraintLayout) RemoveGuide(l ConstraintLayout, guide ConstraintGuide) {
 	var arg0 *C.GtkConstraintLayout
 	var arg1 *C.GtkConstraintGuide
 
 	arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
-	C.gtk_constraint_layout_remove_guide(arg0, guide)
+	C.gtk_constraint_layout_remove_guide(arg0, arg1)
 }
 
 // ConstraintLayoutChild: a LayoutChild in a ConstraintLayout.

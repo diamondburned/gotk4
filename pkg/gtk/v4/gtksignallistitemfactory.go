@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -86,13 +83,6 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 }
 
 // NewSignalListItemFactory constructs a class SignalListItemFactory.
-func NewSignalListItemFactory() SignalListItemFactory {
-	var cret C.GtkSignalListItemFactory
-	var ret1 SignalListItemFactory
-
-	cret = C.gtk_signal_list_item_factory_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalListItemFactory)
-
-	return ret1
+func NewSignalListItemFactory() {
+	C.gtk_signal_list_item_factory_new()
 }

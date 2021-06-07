@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,7 +36,7 @@ type TcpWrapperConnection interface {
 	TcpConnection
 
 	// BaseIOStream gets @conn's base OStream
-	BaseIOStream() IOStream
+	BaseIOStream(c TcpWrapperConnection)
 }
 
 // tcpWrapperConnection implements the TcpWrapperConnection interface.
@@ -64,35 +61,21 @@ func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 }
 
 // NewTcpWrapperConnection constructs a class TcpWrapperConnection.
-func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) TcpWrapperConnection {
+func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) {
 	var arg1 *C.GIOStream
 	var arg2 *C.GSocket
 
 	arg1 = (*C.GIOStream)(unsafe.Pointer(baseIOStream.Native()))
 	arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
-	var cret C.GTcpWrapperConnection
-	var ret1 TcpWrapperConnection
-
-	cret = C.g_tcp_wrapper_connection_new(baseIOStream, socket)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TcpWrapperConnection)
-
-	return ret1
+	C.g_tcp_wrapper_connection_new(arg1, arg2)
 }
 
 // BaseIOStream gets @conn's base OStream
-func (c tcpWrapperConnection) BaseIOStream() IOStream {
+func (c tcpWrapperConnection) BaseIOStream(c TcpWrapperConnection) {
 	var arg0 *C.GTcpWrapperConnection
 
 	arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GIOStream
-	var ret1 IOStream
-
-	cret = C.g_tcp_wrapper_connection_get_base_io_stream(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IOStream)
-
-	return ret1
+	C.g_tcp_wrapper_connection_get_base_io_stream(arg0)
 }

@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,15 +35,15 @@ type InetSocketAddress interface {
 	SocketConnectable
 
 	// Address gets @address's Address.
-	Address() InetAddress
+	Address(a InetSocketAddress)
 	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 	// IPv6 address.
-	Flowinfo() uint32
+	Flowinfo(a InetSocketAddress)
 	// Port gets @address's port.
-	Port() uint16
+	Port(a InetSocketAddress)
 	// ScopeID gets the `sin6_scope_id` field from @address, which must be an
 	// IPv6 address.
-	ScopeID() uint32
+	ScopeID(a InetSocketAddress)
 }
 
 // inetSocketAddress implements the InetSocketAddress interface.
@@ -73,25 +70,18 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 }
 
 // NewInetSocketAddress constructs a class InetSocketAddress.
-func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
+func NewInetSocketAddress(address InetAddress, port uint16) {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint16
 
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	arg2 = C.guint16(port)
 
-	var cret C.GInetSocketAddress
-	var ret1 InetSocketAddress
-
-	cret = C.g_inet_socket_address_new(address, port)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
-
-	return ret1
+	C.g_inet_socket_address_new(arg1, arg2)
 }
 
 // NewInetSocketAddressFromString constructs a class InetSocketAddress.
-func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
+func NewInetSocketAddressFromString(address string, port uint) {
 	var arg1 *C.char
 	var arg2 C.guint
 
@@ -99,78 +89,43 @@ func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.guint(port)
 
-	var cret C.GInetSocketAddress
-	var ret1 InetSocketAddress
-
-	cret = C.g_inet_socket_address_new_from_string(address, port)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
-
-	return ret1
+	C.g_inet_socket_address_new_from_string(arg1, arg2)
 }
 
 // Address gets @address's Address.
-func (a inetSocketAddress) Address() InetAddress {
+func (a inetSocketAddress) Address(a InetSocketAddress) {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GInetAddress
-	var ret1 InetAddress
-
-	cret = C.g_inet_socket_address_get_address(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InetAddress)
-
-	return ret1
+	C.g_inet_socket_address_get_address(arg0)
 }
 
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 // IPv6 address.
-func (a inetSocketAddress) Flowinfo() uint32 {
+func (a inetSocketAddress) Flowinfo(a InetSocketAddress) {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint32
-	var ret1 uint32
-
-	cret = C.g_inet_socket_address_get_flowinfo(arg0)
-
-	ret1 = C.guint32(cret)
-
-	return ret1
+	C.g_inet_socket_address_get_flowinfo(arg0)
 }
 
 // Port gets @address's port.
-func (a inetSocketAddress) Port() uint16 {
+func (a inetSocketAddress) Port(a InetSocketAddress) {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint16
-	var ret1 uint16
-
-	cret = C.g_inet_socket_address_get_port(arg0)
-
-	ret1 = C.guint16(cret)
-
-	return ret1
+	C.g_inet_socket_address_get_port(arg0)
 }
 
 // ScopeID gets the `sin6_scope_id` field from @address, which must be an
 // IPv6 address.
-func (a inetSocketAddress) ScopeID() uint32 {
+func (a inetSocketAddress) ScopeID(a InetSocketAddress) {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint32
-	var ret1 uint32
-
-	cret = C.g_inet_socket_address_get_scope_id(arg0)
-
-	ret1 = C.guint32(cret)
-
-	return ret1
+	C.g_inet_socket_address_get_scope_id(arg0)
 }

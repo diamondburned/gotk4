@@ -3,17 +3,11 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -27,37 +21,23 @@ func init() {
 }
 
 // IconSizeFromName looks up the icon size associated with @name.
-func IconSizeFromName(name string) int {
+func IconSizeFromName(name string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkIconSize
-	var ret1 int
-
-	cret = C.gtk_icon_size_from_name(name)
-
-	ret1 = C.GtkIconSize(cret)
-
-	return ret1
+	C.gtk_icon_size_from_name(arg1)
 }
 
 // IconSizeGetName gets the canonical name of the given icon size. The returned
 // string is statically allocated and should not be freed.
-func IconSizeGetName(size int) string {
+func IconSizeGetName(size int) {
 	var arg1 C.GtkIconSize
 
 	arg1 = C.GtkIconSize(size)
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_icon_size_get_name(size)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_icon_size_get_name(arg1)
 }
 
 // IconSizeLookup obtains the pixel size of a semantic icon size @size:
@@ -73,19 +53,21 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 	arg1 = C.GtkIconSize(size)
 
 	var arg2 C.gint
-	var ret2 int
+	var width int
 	var arg3 C.gint
-	var ret3 int
+	var height int
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.gtk_icon_size_lookup(size, &arg2, &arg3)
+	cret = C.gtk_icon_size_lookup(arg1, &arg2, &arg3)
 
-	*ret2 = C.gint(arg2)
-	*ret3 = C.gint(arg3)
-	ret3 = C.bool(cret) != C.false
+	width = int(&arg2)
+	height = int(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret3, ret3
+	return width, height, ok
 }
 
 // IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
@@ -104,24 +86,26 @@ func IconSizeLookupForSettings(settings Settings, size int) (width int, height i
 	arg2 = C.GtkIconSize(size)
 
 	var arg3 C.gint
-	var ret3 int
+	var width int
 	var arg4 C.gint
-	var ret4 int
+	var height int
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.gtk_icon_size_lookup_for_settings(settings, size, &arg3, &arg4)
+	cret = C.gtk_icon_size_lookup_for_settings(arg1, arg2, &arg3, &arg4)
 
-	*ret3 = C.gint(arg3)
-	*ret4 = C.gint(arg4)
-	ret3 = C.bool(cret) != C.false
+	width = int(&arg3)
+	height = int(&arg4)
+	if cret {
+		ok = true
+	}
 
-	return ret3, ret4, ret3
+	return width, height, ok
 }
 
 // IconSizeRegister registers a new icon size, along the same lines as
 // K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
-func IconSizeRegister(name string, width int, height int) int {
+func IconSizeRegister(name string, width int, height int) {
 	var arg1 *C.gchar
 	var arg2 C.gint
 	var arg3 C.gint
@@ -131,14 +115,7 @@ func IconSizeRegister(name string, width int, height int) int {
 	arg2 = C.gint(width)
 	arg3 = C.gint(height)
 
-	var cret C.GtkIconSize
-	var ret1 int
-
-	cret = C.gtk_icon_size_register(name, width, height)
-
-	ret1 = C.GtkIconSize(cret)
-
-	return ret1
+	C.gtk_icon_size_register(arg1, arg2, arg3)
 }
 
 // IconSizeRegisterAlias registers @alias as another name for @target. So
@@ -152,7 +129,7 @@ func IconSizeRegisterAlias(alias string, target int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.GtkIconSize(target)
 
-	C.gtk_icon_size_register_alias(alias, target)
+	C.gtk_icon_size_register_alias(arg1, arg2)
 }
 
 // IconFactory: an icon factory manages a collection of IconSet; a IconSet
@@ -236,24 +213,24 @@ type IconFactory interface {
 	// same name (such as "myapp-whatever-icon") to override your application’s
 	// default icons. If an icon already existed in @factory for @stock_id, it
 	// is unreferenced and replaced with the new @icon_set.
-	Add(stockID string, iconSet *IconSet)
+	Add(f IconFactory, stockID string, iconSet *IconSet)
 	// AddDefault adds an icon factory to the list of icon factories searched by
 	// gtk_style_lookup_icon_set(). This means that, for example,
 	// gtk_image_new_from_stock() will be able to find icons in @factory. There
 	// will normally be an icon factory added for each library or application
 	// that comes with icons. The default icon factories can be overridden by
 	// themes.
-	AddDefault()
+	AddDefault(f IconFactory)
 	// Lookup looks up @stock_id in the icon factory, returning an icon set if
 	// found, otherwise nil. For display to the user, you should use
 	// gtk_style_lookup_icon_set() on the Style for the widget that will display
 	// the icon, instead of using this function directly, so that themes are
 	// taken into account.
-	Lookup(stockID string) *IconSet
+	Lookup(f IconFactory, stockID string)
 	// RemoveDefault removes an icon factory from the list of default icon
 	// factories. Not normally used; you might use it for a library that can be
 	// unloaded or shut down.
-	RemoveDefault()
+	RemoveDefault(f IconFactory)
 }
 
 // iconFactory implements the IconFactory interface.
@@ -280,15 +257,8 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 }
 
 // NewIconFactory constructs a class IconFactory.
-func NewIconFactory() IconFactory {
-	var cret C.GtkIconFactory
-	var ret1 IconFactory
-
-	cret = C.gtk_icon_factory_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconFactory)
-
-	return ret1
+func NewIconFactory() {
+	C.gtk_icon_factory_new()
 }
 
 // Add adds the given @icon_set to the icon factory, under the name
@@ -300,7 +270,7 @@ func NewIconFactory() IconFactory {
 // same name (such as "myapp-whatever-icon") to override your application’s
 // default icons. If an icon already existed in @factory for @stock_id, it
 // is unreferenced and replaced with the new @icon_set.
-func (f iconFactory) Add(stockID string, iconSet *IconSet) {
+func (f iconFactory) Add(f IconFactory, stockID string, iconSet *IconSet) {
 	var arg0 *C.GtkIconFactory
 	var arg1 *C.gchar
 	var arg2 *C.GtkIconSet
@@ -310,7 +280,7 @@ func (f iconFactory) Add(stockID string, iconSet *IconSet) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet.Native()))
 
-	C.gtk_icon_factory_add(arg0, stockID, iconSet)
+	C.gtk_icon_factory_add(arg0, arg1, arg2)
 }
 
 // AddDefault adds an icon factory to the list of icon factories searched by
@@ -319,7 +289,7 @@ func (f iconFactory) Add(stockID string, iconSet *IconSet) {
 // will normally be an icon factory added for each library or application
 // that comes with icons. The default icon factories can be overridden by
 // themes.
-func (f iconFactory) AddDefault() {
+func (f iconFactory) AddDefault(f IconFactory) {
 	var arg0 *C.GtkIconFactory
 
 	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
@@ -332,7 +302,7 @@ func (f iconFactory) AddDefault() {
 // gtk_style_lookup_icon_set() on the Style for the widget that will display
 // the icon, instead of using this function directly, so that themes are
 // taken into account.
-func (f iconFactory) Lookup(stockID string) *IconSet {
+func (f iconFactory) Lookup(f IconFactory, stockID string) {
 	var arg0 *C.GtkIconFactory
 	var arg1 *C.gchar
 
@@ -340,20 +310,13 @@ func (f iconFactory) Lookup(stockID string) *IconSet {
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkIconSet
-	var ret1 *IconSet
-
-	cret = C.gtk_icon_factory_lookup(arg0, stockID)
-
-	ret1 = WrapIconSet(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_icon_factory_lookup(arg0, arg1)
 }
 
 // RemoveDefault removes an icon factory from the list of default icon
 // factories. Not normally used; you might use it for a library that can be
 // unloaded or shut down.
-func (f iconFactory) RemoveDefault() {
+func (f iconFactory) RemoveDefault(f IconFactory) {
 	var arg0 *C.GtkIconFactory
 
 	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))

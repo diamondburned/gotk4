@@ -26,7 +26,7 @@ type Renderer interface {
 	pango.Renderer
 
 	// SetDefaultColor sets the default foreground color for a Renderer.
-	SetDefaultColor(defaultColor *pango.Color)
+	SetDefaultColor(x Renderer, defaultColor *pango.Color)
 }
 
 // renderer implements the Renderer interface.
@@ -51,12 +51,12 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 }
 
 // SetDefaultColor sets the default foreground color for a Renderer.
-func (x renderer) SetDefaultColor(defaultColor *pango.Color) {
+func (x renderer) SetDefaultColor(x Renderer, defaultColor *pango.Color) {
 	var arg0 *C.PangoXftRenderer
 	var arg1 *C.PangoColor
 
 	arg0 = (*C.PangoXftRenderer)(unsafe.Pointer(x.Native()))
 	arg1 = (*C.PangoColor)(unsafe.Pointer(defaultColor.Native()))
 
-	C.pango_xft_renderer_set_default_color(arg0, defaultColor)
+	C.pango_xft_renderer_set_default_color(arg0, arg1)
 }

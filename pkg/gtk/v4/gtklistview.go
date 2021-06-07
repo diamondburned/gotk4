@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -125,30 +121,30 @@ type ListView interface {
 
 	// EnableRubberband returns whether rows can be selected by dragging with
 	// the mouse.
-	EnableRubberband() bool
+	EnableRubberband(s ListView) bool
 	// Factory gets the factory that's currently used to populate list items.
-	Factory() ListItemFactory
+	Factory(s ListView)
 	// Model gets the model that's currently used to read the items displayed.
-	Model() SelectionModel
+	Model(s ListView)
 	// ShowSeparators returns whether the list box should show separators
 	// between rows.
-	ShowSeparators() bool
+	ShowSeparators(s ListView) bool
 	// SingleClickActivate returns whether rows will be activated on single
 	// click and selected on hover.
-	SingleClickActivate() bool
+	SingleClickActivate(s ListView) bool
 	// SetEnableRubberband sets whether selections can be changed by dragging
 	// with the mouse.
-	SetEnableRubberband(enableRubberband bool)
+	SetEnableRubberband(s ListView, enableRubberband bool)
 	// SetFactory sets the ListItemFactory to use for populating list items.
-	SetFactory(factory ListItemFactory)
+	SetFactory(s ListView, factory ListItemFactory)
 	// SetModel sets the SelectionModel to use.
-	SetModel(model SelectionModel)
+	SetModel(s ListView, model SelectionModel)
 	// SetShowSeparators sets whether the list box should show separators
 	// between rows.
-	SetShowSeparators(showSeparators bool)
+	SetShowSeparators(s ListView, showSeparators bool)
 	// SetSingleClickActivate sets whether rows should be activated on single
 	// click and selected on hover.
-	SetSingleClickActivate(singleClickActivate bool)
+	SetSingleClickActivate(s ListView, singleClickActivate bool)
 }
 
 // listView implements the ListView interface.
@@ -183,109 +179,94 @@ func marshalListView(p uintptr) (interface{}, error) {
 }
 
 // NewListView constructs a class ListView.
-func NewListView(model SelectionModel, factory ListItemFactory) ListView {
+func NewListView(model SelectionModel, factory ListItemFactory) {
 	var arg1 *C.GtkSelectionModel
 	var arg2 *C.GtkListItemFactory
 
 	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 	arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
-	var cret C.GtkListView
-	var ret1 ListView
-
-	cret = C.gtk_list_view_new(model, factory)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListView)
-
-	return ret1
+	C.gtk_list_view_new(arg1, arg2)
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with
 // the mouse.
-func (s listView) EnableRubberband() bool {
+func (s listView) EnableRubberband(s ListView) bool {
 	var arg0 *C.GtkListView
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_view_get_enable_rubberband(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Factory gets the factory that's currently used to populate list items.
-func (s listView) Factory() ListItemFactory {
+func (s listView) Factory(s ListView) {
 	var arg0 *C.GtkListView
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkListItemFactory
-	var ret1 ListItemFactory
-
-	cret = C.gtk_list_view_get_factory(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
-
-	return ret1
+	C.gtk_list_view_get_factory(arg0)
 }
 
 // Model gets the model that's currently used to read the items displayed.
-func (s listView) Model() SelectionModel {
+func (s listView) Model(s ListView) {
 	var arg0 *C.GtkListView
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkSelectionModel
-	var ret1 SelectionModel
-
-	cret = C.gtk_list_view_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
-
-	return ret1
+	C.gtk_list_view_get_model(arg0)
 }
 
 // ShowSeparators returns whether the list box should show separators
 // between rows.
-func (s listView) ShowSeparators() bool {
+func (s listView) ShowSeparators(s ListView) bool {
 	var arg0 *C.GtkListView
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_view_get_show_separators(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SingleClickActivate returns whether rows will be activated on single
 // click and selected on hover.
-func (s listView) SingleClickActivate() bool {
+func (s listView) SingleClickActivate(s ListView) bool {
 	var arg0 *C.GtkListView
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_list_view_get_single_click_activate(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetEnableRubberband sets whether selections can be changed by dragging
 // with the mouse.
-func (s listView) SetEnableRubberband(enableRubberband bool) {
+func (s listView) SetEnableRubberband(s ListView, enableRubberband bool) {
 	var arg0 *C.GtkListView
 	var arg1 C.gboolean
 
@@ -294,34 +275,34 @@ func (s listView) SetEnableRubberband(enableRubberband bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_view_set_enable_rubberband(arg0, enableRubberband)
+	C.gtk_list_view_set_enable_rubberband(arg0, arg1)
 }
 
 // SetFactory sets the ListItemFactory to use for populating list items.
-func (s listView) SetFactory(factory ListItemFactory) {
+func (s listView) SetFactory(s ListView, factory ListItemFactory) {
 	var arg0 *C.GtkListView
 	var arg1 *C.GtkListItemFactory
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
-	C.gtk_list_view_set_factory(arg0, factory)
+	C.gtk_list_view_set_factory(arg0, arg1)
 }
 
 // SetModel sets the SelectionModel to use.
-func (s listView) SetModel(model SelectionModel) {
+func (s listView) SetModel(s ListView, model SelectionModel) {
 	var arg0 *C.GtkListView
 	var arg1 *C.GtkSelectionModel
 
 	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_list_view_set_model(arg0, model)
+	C.gtk_list_view_set_model(arg0, arg1)
 }
 
 // SetShowSeparators sets whether the list box should show separators
 // between rows.
-func (s listView) SetShowSeparators(showSeparators bool) {
+func (s listView) SetShowSeparators(s ListView, showSeparators bool) {
 	var arg0 *C.GtkListView
 	var arg1 C.gboolean
 
@@ -330,12 +311,12 @@ func (s listView) SetShowSeparators(showSeparators bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_view_set_show_separators(arg0, showSeparators)
+	C.gtk_list_view_set_show_separators(arg0, arg1)
 }
 
 // SetSingleClickActivate sets whether rows should be activated on single
 // click and selected on hover.
-func (s listView) SetSingleClickActivate(singleClickActivate bool) {
+func (s listView) SetSingleClickActivate(s ListView, singleClickActivate bool) {
 	var arg0 *C.GtkListView
 	var arg1 C.gboolean
 
@@ -344,5 +325,5 @@ func (s listView) SetSingleClickActivate(singleClickActivate bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_view_set_single_click_activate(arg0, singleClickActivate)
+	C.gtk_list_view_set_single_click_activate(arg0, arg1)
 }

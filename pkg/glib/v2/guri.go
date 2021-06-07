@@ -3,10 +3,8 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,38 +57,38 @@ type URIFlags int
 
 const (
 	// URIFlagsNone: no flags set.
-	URIFlagsNone URIFlags = 0b0
+	URIFlagsNone URIFlags = 0
 	// URIFlagsParseRelaxed: parse the URI more relaxedly than the RFC 3986
 	// (https://tools.ietf.org/html/rfc3986) grammar specifies, fixing up or
 	// ignoring common mistakes in URIs coming from external sources. This is
 	// also needed for some obscure URI schemes where `;` separates the host
 	// from the path. Don’t use this flag unless you need to.
-	URIFlagsParseRelaxed URIFlags = 0b1
+	URIFlagsParseRelaxed URIFlags = 1
 	// URIFlagsHasPassword: the userinfo field may contain a password, which
 	// will be separated from the username by `:`.
-	URIFlagsHasPassword URIFlags = 0b10
+	URIFlagsHasPassword URIFlags = 2
 	// URIFlagsHasAuthParams: the userinfo may contain additional
 	// authentication-related parameters, which will be separated from the
 	// username and/or password by `;`.
-	URIFlagsHasAuthParams URIFlags = 0b100
+	URIFlagsHasAuthParams URIFlags = 4
 	// URIFlagsEncoded: when parsing a URI, this indicates that `%`-encoded
 	// characters in the userinfo, path, query, and fragment fields should not
 	// be decoded. (And likewise the host field if G_URI_FLAGS_NON_DNS is also
 	// set.) When building a URI, it indicates that you have already `%`-encoded
 	// the components, and so #GUri should not do any encoding itself.
-	URIFlagsEncoded URIFlags = 0b1000
+	URIFlagsEncoded URIFlags = 8
 	// URIFlagsNonDns: the host component should not be assumed to be a DNS
 	// hostname or IP address (for example, for `smb` URIs with NetBIOS
 	// hostnames).
-	URIFlagsNonDns URIFlags = 0b10000
+	URIFlagsNonDns URIFlags = 16
 	// URIFlagsEncodedQuery: same as G_URI_FLAGS_ENCODED, for the query field
 	// only.
-	URIFlagsEncodedQuery URIFlags = 0b100000
+	URIFlagsEncodedQuery URIFlags = 32
 	// URIFlagsEncodedPath: same as G_URI_FLAGS_ENCODED, for the path only.
-	URIFlagsEncodedPath URIFlags = 0b1000000
+	URIFlagsEncodedPath URIFlags = 64
 	// URIFlagsEncodedFragment: same as G_URI_FLAGS_ENCODED, for the fragment
 	// only.
-	URIFlagsEncodedFragment URIFlags = 0b10000000
+	URIFlagsEncodedFragment URIFlags = 128
 )
 
 // URIHideFlags flags describing what parts of the URI to hide in
@@ -101,17 +99,17 @@ type URIHideFlags int
 
 const (
 	// URIHideFlagsNone: no flags set.
-	URIHideFlagsNone URIHideFlags = 0b0
+	URIHideFlagsNone URIHideFlags = 0
 	// URIHideFlagsUserinfo: hide the userinfo.
-	URIHideFlagsUserinfo URIHideFlags = 0b1
+	URIHideFlagsUserinfo URIHideFlags = 1
 	// URIHideFlagsPassword: hide the password.
-	URIHideFlagsPassword URIHideFlags = 0b10
+	URIHideFlagsPassword URIHideFlags = 2
 	// URIHideFlagsAuthParams: hide the auth_params.
-	URIHideFlagsAuthParams URIHideFlags = 0b100
+	URIHideFlagsAuthParams URIHideFlags = 4
 	// URIHideFlagsQuery: hide the query.
-	URIHideFlagsQuery URIHideFlags = 0b1000
+	URIHideFlagsQuery URIHideFlags = 8
 	// URIHideFlagsFragment: hide the fragment.
-	URIHideFlagsFragment URIHideFlags = 0b10000
+	URIHideFlagsFragment URIHideFlags = 16
 )
 
 // URIParamsFlags flags modifying the way parameters are handled by
@@ -120,21 +118,21 @@ type URIParamsFlags int
 
 const (
 	// URIParamsFlagsNone: no flags set.
-	URIParamsFlagsNone URIParamsFlags = 0b0
+	URIParamsFlagsNone URIParamsFlags = 0
 	// URIParamsFlagsCaseInsensitive: parameter names are case insensitive.
-	URIParamsFlagsCaseInsensitive URIParamsFlags = 0b1
+	URIParamsFlagsCaseInsensitive URIParamsFlags = 1
 	// URIParamsFlagsWwwForm: replace `+` with space character. Only useful for
 	// URLs on the web, using the `https` or `http` schemas.
-	URIParamsFlagsWwwForm URIParamsFlags = 0b10
+	URIParamsFlagsWwwForm URIParamsFlags = 2
 	// URIParamsFlagsParseRelaxed: see G_URI_FLAGS_PARSE_RELAXED.
-	URIParamsFlagsParseRelaxed URIParamsFlags = 0b100
+	URIParamsFlagsParseRelaxed URIParamsFlags = 4
 )
 
 // URIBuild creates a new #GUri from the given components according to @flags.
 //
 // See also g_uri_build_with_user(), which allows specifying the components of
 // the "userinfo" separately.
-func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *URI {
+func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) {
 	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -159,17 +157,7 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 	arg8 = (*C.gchar)(C.CString(fragment))
 	defer C.free(unsafe.Pointer(arg8))
 
-	var cret *C.GUri
-	var ret1 *URI
-
-	cret = C.g_uri_build(flags, scheme, userinfo, host, port, path, query, fragment)
-
-	ret1 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_uri_build(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // URIBuildWithUser creates a new #GUri from the given components according to
@@ -180,7 +168,7 @@ func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 // In contrast to g_uri_build(), this allows specifying the components of the
 // ‘userinfo’ field separately. Note that @user must be non-nil if either
 // @password or @auth_params is non-nil.
-func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI {
+func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) {
 	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -211,17 +199,7 @@ func URIBuildWithUser(flags URIFlags, scheme string, user string, password strin
 	arg10 = (*C.gchar)(C.CString(fragment))
 	defer C.free(unsafe.Pointer(arg10))
 
-	var cret *C.GUri
-	var ret1 *URI
-
-	cret = C.g_uri_build_with_user(flags, scheme, user, password, authParams, host, port, path, query, fragment)
-
-	ret1 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_uri_build_with_user(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // URIEscapeString escapes a string for use in a URI.
@@ -231,7 +209,7 @@ func URIBuildWithUser(flags URIFlags, scheme string, user string, password strin
 // specify characters in @reserved_chars_allowed they are not escaped. This is
 // useful for the "reserved" characters in the URI specification, since those
 // are allowed unescaped in some portions of a URI.
-func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bool) string {
+func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bool) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 C.gboolean
@@ -244,15 +222,7 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bo
 		arg3 = C.gboolean(1)
 	}
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_escape_string(unescaped, reservedCharsAllowed, allowUTF8)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_escape_string(arg1, arg2, arg3)
 }
 
 // URIIsValid parses @uri_string according to @flags, to determine whether it is
@@ -272,13 +242,13 @@ func URIIsValid(uriString string, flags URIFlags) error {
 	arg2 = (C.GUriFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_uri_is_valid(uriString, flags, &errout)
+	C.g_uri_is_valid(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // URIJoin joins the given components together according to @flags to create an
@@ -295,7 +265,7 @@ func URIIsValid(uriString string, flags URIFlags) error {
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in @flags.
-func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string {
+func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) {
 	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -320,15 +290,7 @@ func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 	arg8 = (*C.gchar)(C.CString(fragment))
 	defer C.free(unsafe.Pointer(arg8))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_join(flags, scheme, userinfo, host, port, path, query, fragment)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_join(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // URIJoinWithUser joins the given components together according to @flags to
@@ -340,7 +302,7 @@ func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in @flags.
-func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string {
+func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) {
 	var arg1 C.GUriFlags
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -371,21 +333,13 @@ func URIJoinWithUser(flags URIFlags, scheme string, user string, password string
 	arg10 = (*C.gchar)(C.CString(fragment))
 	defer C.free(unsafe.Pointer(arg10))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_join_with_user(flags, scheme, user, password, authParams, host, port, path, query, fragment)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_join_with_user(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // URIParse parses @uri_string according to @flags. If the result is not a valid
 // [absolute URI][relative-absolute-uris], it will be discarded, and an error
 // returned.
-func URIParse(uriString string, flags URIFlags) (uri *URI, err error) {
+func URIParse(uriString string, flags URIFlags) error {
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
 
@@ -394,19 +348,13 @@ func URIParse(uriString string, flags URIFlags) (uri *URI, err error) {
 	arg2 = (C.GUriFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GUri
-	var ret2 *URI
+	var err error
 
-	cret = C.g_uri_parse(uriString, flags, &errout)
+	C.g_uri_parse(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // URIParseParams: many URI schemes include one or more attribute/value pairs as
@@ -433,7 +381,7 @@ func URIParse(uriString string, flags URIFlags) (uri *URI, err error) {
 //
 // If @params cannot be parsed (for example, it contains two @separators
 // characters in a row), then @error is set and nil is returned.
-func URIParseParams(params string, length int, separators string, flags URIParamsFlags) (hashTable *HashTable, err error) {
+func URIParseParams(params string, length int, separators string, flags URIParamsFlags) error {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 	var arg3 *C.gchar
@@ -447,19 +395,13 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 	arg4 = (C.GUriParamsFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GHashTable
-	var ret2 *HashTable
+	var err error
 
-	cret = C.g_uri_parse_params(params, length, separators, flags, &errout)
+	C.g_uri_parse_params(arg1, arg2, arg3, arg4, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = WrapHashTable(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *HashTable) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // URIParseScheme gets the scheme portion of a URI string. RFC 3986
@@ -468,21 +410,13 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
 // Common schemes include `file`, `https`, `svn+ssh`, etc.
-func URIParseScheme(uri string) string {
+func URIParseScheme(uri string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_parse_scheme(uri)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_parse_scheme(arg1)
 }
 
 // URIPeekScheme gets the scheme portion of a URI string. RFC 3986
@@ -494,20 +428,13 @@ func URIParseScheme(uri string) string {
 //
 // Unlike g_uri_parse_scheme(), the returned scheme is normalized to
 // all-lowercase and does not need to be freed.
-func URIPeekScheme(uri string) string {
+func URIPeekScheme(uri string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_peek_scheme(uri)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_peek_scheme(arg1)
 }
 
 // URIResolveRelative parses @uri_ref according to @flags and, if it is a
@@ -517,7 +444,7 @@ func URIPeekScheme(uri string) string {
 //
 // (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
 // is invalid or not absolute.)
-func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) (utf8 string, err error) {
+func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) error {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 C.GUriFlags
@@ -529,17 +456,13 @@ func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) (ut
 	arg3 = (C.GUriFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.gchar
-	var ret2 string
+	var err error
 
-	cret = C.g_uri_resolve_relative(baseURIString, uriRef, flags, &errout)
+	C.g_uri_resolve_relative(arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // URISplit parses @uri_ref (which can be an [absolute or relative
@@ -566,40 +489,40 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	arg2 = (C.GUriFlags)(flags)
 
 	var arg3 *C.gchar
-	var ret3 string
+	var scheme string
 	var arg4 *C.gchar
-	var ret4 string
+	var userinfo string
 	var arg5 *C.gchar
-	var ret5 string
+	var host string
 	var arg6 C.gint
-	var ret6 int
+	var port int
 	var arg7 *C.gchar
-	var ret7 string
+	var path string
 	var arg8 *C.gchar
-	var ret8 string
+	var query string
 	var arg9 *C.gchar
-	var ret9 string
+	var fragment string
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_uri_split(uriRef, flags, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &errout)
+	C.g_uri_split(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &errout)
 
-	*ret3 = C.GoString(arg3)
-	defer C.free(unsafe.Pointer(arg3))
-	*ret4 = C.GoString(arg4)
-	defer C.free(unsafe.Pointer(arg4))
-	*ret5 = C.GoString(arg5)
-	defer C.free(unsafe.Pointer(arg5))
-	*ret6 = C.gint(arg6)
-	*ret7 = C.GoString(arg7)
-	defer C.free(unsafe.Pointer(arg7))
-	*ret8 = C.GoString(arg8)
-	defer C.free(unsafe.Pointer(arg8))
-	*ret9 = C.GoString(arg9)
-	defer C.free(unsafe.Pointer(arg9))
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	scheme = C.GoString(&arg3)
+	defer C.free(unsafe.Pointer(&arg3))
+	userinfo = C.GoString(&arg4)
+	defer C.free(unsafe.Pointer(&arg4))
+	host = C.GoString(&arg5)
+	defer C.free(unsafe.Pointer(&arg5))
+	port = int(&arg6)
+	path = C.GoString(&arg7)
+	defer C.free(unsafe.Pointer(&arg7))
+	query = C.GoString(&arg8)
+	defer C.free(unsafe.Pointer(&arg8))
+	fragment = C.GoString(&arg9)
+	defer C.free(unsafe.Pointer(&arg9))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, ret4, ret5, ret6, ret7, ret8, ret9, goerr
+	return scheme, userinfo, host, port, path, query, fragment, err
 }
 
 // URISplitNetwork parses @uri_string (which must be an [absolute
@@ -617,24 +540,24 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 	arg2 = (C.GUriFlags)(flags)
 
 	var arg3 *C.gchar
-	var ret3 string
+	var scheme string
 	var arg4 *C.gchar
-	var ret4 string
+	var host string
 	var arg5 C.gint
-	var ret5 int
+	var port int
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_uri_split_network(uriString, flags, &arg3, &arg4, &arg5, &errout)
+	C.g_uri_split_network(arg1, arg2, &arg3, &arg4, &arg5, &errout)
 
-	*ret3 = C.GoString(arg3)
-	defer C.free(unsafe.Pointer(arg3))
-	*ret4 = C.GoString(arg4)
-	defer C.free(unsafe.Pointer(arg4))
-	*ret5 = C.gint(arg5)
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	scheme = C.GoString(&arg3)
+	defer C.free(unsafe.Pointer(&arg3))
+	host = C.GoString(&arg4)
+	defer C.free(unsafe.Pointer(&arg4))
+	port = int(&arg5)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, ret4, ret5, goerr
+	return scheme, host, port, err
 }
 
 // URISplitWithUser parses @uri_ref (which can be an [absolute or relative
@@ -656,48 +579,48 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	arg2 = (C.GUriFlags)(flags)
 
 	var arg3 *C.gchar
-	var ret3 string
+	var scheme string
 	var arg4 *C.gchar
-	var ret4 string
+	var user string
 	var arg5 *C.gchar
-	var ret5 string
+	var password string
 	var arg6 *C.gchar
-	var ret6 string
+	var authParams string
 	var arg7 *C.gchar
-	var ret7 string
+	var host string
 	var arg8 C.gint
-	var ret8 int
+	var port int
 	var arg9 *C.gchar
-	var ret9 string
+	var path string
 	var arg10 *C.gchar
-	var ret10 string
+	var query string
 	var arg11 *C.gchar
-	var ret11 string
+	var fragment string
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_uri_split_with_user(uriRef, flags, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &errout)
+	C.g_uri_split_with_user(arg1, arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &errout)
 
-	*ret3 = C.GoString(arg3)
-	defer C.free(unsafe.Pointer(arg3))
-	*ret4 = C.GoString(arg4)
-	defer C.free(unsafe.Pointer(arg4))
-	*ret5 = C.GoString(arg5)
-	defer C.free(unsafe.Pointer(arg5))
-	*ret6 = C.GoString(arg6)
-	defer C.free(unsafe.Pointer(arg6))
-	*ret7 = C.GoString(arg7)
-	defer C.free(unsafe.Pointer(arg7))
-	*ret8 = C.gint(arg8)
-	*ret9 = C.GoString(arg9)
-	defer C.free(unsafe.Pointer(arg9))
-	*ret10 = C.GoString(arg10)
-	defer C.free(unsafe.Pointer(arg10))
-	*ret11 = C.GoString(arg11)
-	defer C.free(unsafe.Pointer(arg11))
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	scheme = C.GoString(&arg3)
+	defer C.free(unsafe.Pointer(&arg3))
+	user = C.GoString(&arg4)
+	defer C.free(unsafe.Pointer(&arg4))
+	password = C.GoString(&arg5)
+	defer C.free(unsafe.Pointer(&arg5))
+	authParams = C.GoString(&arg6)
+	defer C.free(unsafe.Pointer(&arg6))
+	host = C.GoString(&arg7)
+	defer C.free(unsafe.Pointer(&arg7))
+	port = int(&arg8)
+	path = C.GoString(&arg9)
+	defer C.free(unsafe.Pointer(&arg9))
+	query = C.GoString(&arg10)
+	defer C.free(unsafe.Pointer(&arg10))
+	fragment = C.GoString(&arg11)
+	defer C.free(unsafe.Pointer(&arg11))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret3, ret4, ret5, ret6, ret7, ret8, ret9, ret10, ret11, goerr
+	return scheme, user, password, authParams, host, port, path, query, fragment, err
 }
 
 // URIUnescapeBytes unescapes a segment of an escaped string as binary data.
@@ -709,7 +632,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 // character in @escaped_string, then that is an error and nil will be returned.
 // This is useful if you want to avoid for instance having a slash being
 // expanded in an escaped path element, which might confuse pathname handling.
-func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) (bytes *Bytes, err error) {
+func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) error {
 	var arg1 *C.char
 	var arg2 C.gssize
 	var arg3 *C.char
@@ -721,19 +644,13 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 	defer C.free(unsafe.Pointer(arg3))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GBytes
-	var ret2 *Bytes
+	var err error
 
-	cret = C.g_uri_unescape_bytes(escapedString, length, illegalCharacters, &errout)
+	C.g_uri_unescape_bytes(arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *Bytes) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // URIUnescapeSegment unescapes a segment of an escaped string.
@@ -746,7 +663,7 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 //
 // Note: `NUL` byte is not accepted in the output, in contrast to
 // g_uri_unescape_bytes().
-func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) string {
+func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) {
 	var arg1 *C.char
 	var arg2 *C.char
 	var arg3 *C.char
@@ -758,15 +675,7 @@ func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 	arg3 = (*C.char)(C.CString(illegalCharacters))
 	defer C.free(unsafe.Pointer(arg3))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_unescape_segment(escapedString, escapedStringEnd, illegalCharacters)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_unescape_segment(arg1, arg2, arg3)
 }
 
 // URIUnescapeString unescapes a whole escaped string.
@@ -776,7 +685,7 @@ func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 // will be returned. This is useful if you want to avoid for instance having a
 // slash being expanded in an escaped path element, which might confuse pathname
 // handling.
-func URIUnescapeString(escapedString string, illegalCharacters string) string {
+func URIUnescapeString(escapedString string, illegalCharacters string) {
 	var arg1 *C.char
 	var arg2 *C.char
 
@@ -785,15 +694,7 @@ func URIUnescapeString(escapedString string, illegalCharacters string) string {
 	arg2 = (*C.char)(C.CString(illegalCharacters))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_unescape_string(escapedString, illegalCharacters)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_unescape_string(arg1, arg2)
 }
 
 // URI: the #GUri type and related functions can be used to parse URIs into
@@ -932,52 +833,31 @@ func (u *URI) Native() unsafe.Pointer {
 //
 // Depending on the URI scheme, g_uri_parse_params() may be useful for further
 // parsing this information.
-func (u *URI) AuthParams() string {
+func (u *URI) AuthParams(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_auth_params(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_auth_params(arg0)
 }
 
 // Flags gets @uri's flags set upon construction.
-func (u *URI) Flags() URIFlags {
+func (u *URI) Flags(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret C.GUriFlags
-	var ret1 URIFlags
-
-	cret = C.g_uri_get_flags(arg0)
-
-	ret1 = URIFlags(cret)
-
-	return ret1
+	C.g_uri_get_flags(arg0)
 }
 
 // Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
-func (u *URI) Fragment() string {
+func (u *URI) Fragment(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_fragment(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_fragment(arg0)
 }
 
 // Host gets @uri's host. This will never have `%`-encoded characters, unless it
@@ -989,70 +869,42 @@ func (u *URI) Fragment() string {
 // of the URI. Note that in this case there may also be a scope ID attached to
 // the address. Eg, `fe80::1234%“em1` (or `fe80::1234%“25em1` if the string is
 // still encoded).
-func (u *URI) Host() string {
+func (u *URI) Host(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_host(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_host(arg0)
 }
 
 // Password gets @uri's password, which may contain `%`-encoding, depending on
 // the flags with which @uri was created. (If @uri was not created with
 // G_URI_FLAGS_HAS_PASSWORD then this will be nil.)
-func (u *URI) Password() string {
+func (u *URI) Password(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_password(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_password(arg0)
 }
 
 // Path gets @uri's path, which may contain `%`-encoding, depending on the flags
 // with which @uri was created.
-func (u *URI) Path() string {
+func (u *URI) Path(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_path(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_path(arg0)
 }
 
 // Port gets @uri's port.
-func (u *URI) Port() int {
+func (u *URI) Port(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_uri_get_port(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_uri_get_port(arg0)
 }
 
 // Query gets @uri's query, which may contain `%`-encoding, depending on the
@@ -1060,79 +912,51 @@ func (u *URI) Port() int {
 //
 // For queries consisting of a series of `name=value` parameters, ParamsIter or
 // g_uri_parse_params() may be useful.
-func (u *URI) Query() string {
+func (u *URI) Query(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_query(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_query(arg0)
 }
 
 // Scheme gets @uri's scheme. Note that this will always be all-lowercase,
 // regardless of the string or strings that @uri was created from.
-func (u *URI) Scheme() string {
+func (u *URI) Scheme(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_scheme(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_scheme(arg0)
 }
 
 // User gets the ‘username’ component of @uri's userinfo, which may contain
 // `%`-encoding, depending on the flags with which @uri was created. If @uri was
 // not created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS,
 // this is the same as g_uri_get_userinfo().
-func (u *URI) User() string {
+func (u *URI) User(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_user(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_user(arg0)
 }
 
 // Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
-func (u *URI) Userinfo() string {
+func (u *URI) Userinfo(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uri_get_userinfo(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_uri_get_userinfo(arg0)
 }
 
 // ParseRelative parses @uri_ref according to @flags and, if it is a [relative
 // URI][relative-absolute-uris], resolves it relative to @base_uri. If the
 // result is not a valid absolute URI, it will be discarded, and an error
 // returned.
-func (b *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, err error) {
+func (b *URI) ParseRelative(b *URI, uriRef string, flags URIFlags) error {
 	var arg0 *C.GUri
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
@@ -1143,38 +967,22 @@ func (b *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, err error)
 	arg2 = (C.GUriFlags)(flags)
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GUri
-	var ret2 *URI
+	var err error
 
-	cret = C.g_uri_parse_relative(arg0, uriRef, flags, &errout)
+	C.g_uri_parse_relative(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Ref increments the reference count of @uri by one.
-func (u *URI) Ref() *URI {
+func (u *URI) Ref(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.GUri
-	var ret1 *URI
-
-	cret = C.g_uri_ref(arg0)
-
-	ret1 = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_uri_ref(arg0)
 }
 
 // String returns a string representing @uri.
@@ -1188,47 +996,31 @@ func (u *URI) Ref() *URI {
 // If @uri might contain sensitive details, such as authentication parameters,
 // or private data in its query string, and the returned string is going to be
 // logged, then consider using g_uri_to_string_partial() to redact parts.
-func (u *URI) String() string {
+func (u *URI) String(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_to_string(arg0)
 }
 
 // ToStringPartial returns a string representing @uri, subject to the options in
 // @flags. See g_uri_to_string() and HideFlags for more details.
-func (u *URI) ToStringPartial(flags URIHideFlags) string {
+func (u *URI) ToStringPartial(u *URI, flags URIHideFlags) {
 	var arg0 *C.GUri
 	var arg1 C.GUriHideFlags
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 	arg1 = (C.GUriHideFlags)(flags)
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_uri_to_string_partial(arg0, flags)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_uri_to_string_partial(arg0, arg1)
 }
 
 // Unref: atomically decrements the reference count of @uri by one.
 //
 // When the reference count reaches zero, the resources allocated by @uri are
 // freed
-func (u *URI) Unref() {
+func (u *URI) Unref(u *URI) {
 	var arg0 *C.GUri
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
@@ -1301,7 +1093,7 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 //      }
 //    if (error)
 //      // handle parsing error
-func (i *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
+func (i *URIParamsIter) Init(i *URIParamsIter, params string, length int, separators string, flags URIParamsFlags) {
 	var arg0 *C.GUriParamsIter
 	var arg1 *C.gchar
 	var arg2 C.gssize
@@ -1316,7 +1108,7 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (C.GUriParamsFlags)(flags)
 
-	C.g_uri_params_iter_init(arg0, params, length, separators, flags)
+	C.g_uri_params_iter_init(arg0, arg1, arg2, arg3, arg4)
 }
 
 // Next advances @iter and retrieves the next attribute/value. false is returned
@@ -1327,25 +1119,25 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 //
 // Note that the same @attribute may be returned multiple times, since URIs
 // allow repeated attributes.
-func (i *URIParamsIter) Next() (attribute string, value string, err error) {
+func (i *URIParamsIter) Next(i *URIParamsIter) (attribute string, value string, err error) {
 	var arg0 *C.GUriParamsIter
 
 	arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 *C.gchar
-	var ret1 string
+	var attribute string
 	var arg2 *C.gchar
-	var ret2 string
+	var value string
 	var errout *C.GError
-	var goerr error
+	var err error
 
 	C.g_uri_params_iter_next(arg0, &arg1, &arg2, &errout)
 
-	*ret1 = C.GoString(arg1)
-	defer C.free(unsafe.Pointer(arg1))
-	*ret2 = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	attribute = C.GoString(&arg1)
+	defer C.free(unsafe.Pointer(&arg1))
+	value = C.GoString(&arg2)
+	defer C.free(unsafe.Pointer(&arg2))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret1, ret2, goerr
+	return attribute, value, err
 }

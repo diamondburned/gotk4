@@ -3,15 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -40,13 +36,13 @@ type FilterOutputStream interface {
 	OutputStream
 
 	// BaseStream gets the base stream for the filter stream.
-	BaseStream() OutputStream
+	BaseStream(s FilterOutputStream)
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
-	CloseBaseStream() bool
+	CloseBaseStream(s FilterOutputStream) bool
 	// SetCloseBaseStream sets whether the base stream will be closed when
 	// @stream is closed.
-	SetCloseBaseStream(closeBase bool)
+	SetCloseBaseStream(s FilterOutputStream, closeBase bool)
 }
 
 // filterOutputStream implements the FilterOutputStream interface.
@@ -71,41 +67,36 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 }
 
 // BaseStream gets the base stream for the filter stream.
-func (s filterOutputStream) BaseStream() OutputStream {
+func (s filterOutputStream) BaseStream(s FilterOutputStream) {
 	var arg0 *C.GFilterOutputStream
 
 	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GOutputStream
-	var ret1 OutputStream
-
-	cret = C.g_filter_output_stream_get_base_stream(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
-
-	return ret1
+	C.g_filter_output_stream_get_base_stream(arg0)
 }
 
 // CloseBaseStream returns whether the base stream will be closed when
 // @stream is closed.
-func (s filterOutputStream) CloseBaseStream() bool {
+func (s filterOutputStream) CloseBaseStream(s FilterOutputStream) bool {
 	var arg0 *C.GFilterOutputStream
 
 	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_filter_output_stream_get_close_base_stream(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetCloseBaseStream sets whether the base stream will be closed when
 // @stream is closed.
-func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
+func (s filterOutputStream) SetCloseBaseStream(s FilterOutputStream, closeBase bool) {
 	var arg0 *C.GFilterOutputStream
 	var arg1 C.gboolean
 
@@ -114,5 +105,5 @@ func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_filter_output_stream_set_close_base_stream(arg0, closeBase)
+	C.g_filter_output_stream_set_close_base_stream(arg0, arg1)
 }

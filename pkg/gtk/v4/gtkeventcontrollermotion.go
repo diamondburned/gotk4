@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -29,10 +25,10 @@ type EventControllerMotion interface {
 
 	// ContainsPointer returns the value of the
 	// GtkEventControllerMotion:contains-pointer property.
-	ContainsPointer() bool
+	ContainsPointer(s EventControllerMotion) bool
 	// IsPointer returns the value of the GtkEventControllerMotion:is-pointer
 	// property.
-	IsPointer() bool
+	IsPointer(s EventControllerMotion) bool
 }
 
 // eventControllerMotion implements the EventControllerMotion interface.
@@ -57,47 +53,44 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerMotion constructs a class EventControllerMotion.
-func NewEventControllerMotion() EventControllerMotion {
-	var cret C.GtkEventControllerMotion
-	var ret1 EventControllerMotion
-
-	cret = C.gtk_event_controller_motion_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
-
-	return ret1
+func NewEventControllerMotion() {
+	C.gtk_event_controller_motion_new()
 }
 
 // ContainsPointer returns the value of the
 // GtkEventControllerMotion:contains-pointer property.
-func (s eventControllerMotion) ContainsPointer() bool {
+func (s eventControllerMotion) ContainsPointer(s EventControllerMotion) bool {
 	var arg0 *C.GtkEventControllerMotion
 
 	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_event_controller_motion_contains_pointer(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsPointer returns the value of the GtkEventControllerMotion:is-pointer
 // property.
-func (s eventControllerMotion) IsPointer() bool {
+func (s eventControllerMotion) IsPointer(s EventControllerMotion) bool {
 	var arg0 *C.GtkEventControllerMotion
 
 	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_event_controller_motion_is_pointer(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

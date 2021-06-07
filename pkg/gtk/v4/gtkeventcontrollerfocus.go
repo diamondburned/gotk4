@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -29,10 +25,10 @@ type EventControllerFocus interface {
 
 	// ContainsFocus returns the value of the
 	// GtkEventControllerFocus:contains-focus property.
-	ContainsFocus() bool
+	ContainsFocus(s EventControllerFocus) bool
 	// IsFocus returns the value of the GtkEventControllerFocus:is-focus
 	// property.
-	IsFocus() bool
+	IsFocus(s EventControllerFocus) bool
 }
 
 // eventControllerFocus implements the EventControllerFocus interface.
@@ -57,47 +53,44 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerFocus constructs a class EventControllerFocus.
-func NewEventControllerFocus() EventControllerFocus {
-	var cret C.GtkEventControllerFocus
-	var ret1 EventControllerFocus
-
-	cret = C.gtk_event_controller_focus_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerFocus)
-
-	return ret1
+func NewEventControllerFocus() {
+	C.gtk_event_controller_focus_new()
 }
 
 // ContainsFocus returns the value of the
 // GtkEventControllerFocus:contains-focus property.
-func (s eventControllerFocus) ContainsFocus() bool {
+func (s eventControllerFocus) ContainsFocus(s EventControllerFocus) bool {
 	var arg0 *C.GtkEventControllerFocus
 
 	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_event_controller_focus_contains_focus(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsFocus returns the value of the GtkEventControllerFocus:is-focus
 // property.
-func (s eventControllerFocus) IsFocus() bool {
+func (s eventControllerFocus) IsFocus(s EventControllerFocus) bool {
 	var arg0 *C.GtkEventControllerFocus
 
 	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_event_controller_focus_is_focus(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -46,9 +43,9 @@ type WidgetPaintable interface {
 	gdk.Paintable
 
 	// Widget returns the widget that is observed or nil if none.
-	Widget() Widget
+	Widget(s WidgetPaintable)
 	// SetWidget sets the widget that should be observed.
-	SetWidget(widget Widget)
+	SetWidget(s WidgetPaintable, widget Widget)
 }
 
 // widgetPaintable implements the WidgetPaintable interface.
@@ -75,44 +72,30 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPaintable constructs a class WidgetPaintable.
-func NewWidgetPaintable(widget Widget) WidgetPaintable {
+func NewWidgetPaintable(widget Widget) {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.GtkWidgetPaintable
-	var ret1 WidgetPaintable
-
-	cret = C.gtk_widget_paintable_new(widget)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WidgetPaintable)
-
-	return ret1
+	C.gtk_widget_paintable_new(arg1)
 }
 
 // Widget returns the widget that is observed or nil if none.
-func (s widgetPaintable) Widget() Widget {
+func (s widgetPaintable) Widget(s WidgetPaintable) {
 	var arg0 *C.GtkWidgetPaintable
 
 	arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_widget_paintable_get_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_widget_paintable_get_widget(arg0)
 }
 
 // SetWidget sets the widget that should be observed.
-func (s widgetPaintable) SetWidget(widget Widget) {
+func (s widgetPaintable) SetWidget(s WidgetPaintable, widget Widget) {
 	var arg0 *C.GtkWidgetPaintable
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_paintable_set_widget(arg0, widget)
+	C.gtk_widget_paintable_set_widget(arg0, arg1)
 }

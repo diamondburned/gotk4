@@ -4,14 +4,10 @@ package gdk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -43,15 +39,21 @@ func (t *TimeCoord) Native() unsafe.Pointer {
 
 // Time gets the field inside the struct.
 func (t *TimeCoord) Time() uint32 {
-	v = C.guint32(t.native.time)
+	var v uint32
+	v = uint32(t.native.time)
+	return v
 }
 
 // Flags gets the field inside the struct.
 func (t *TimeCoord) Flags() AxisFlags {
+	var v AxisFlags
 	v = AxisFlags(t.native.flags)
+	return v
 }
 
 // Axes gets the field inside the struct.
 func (t *TimeCoord) Axes() [12]float64 {
+	var v [12]float64
 	v = ([12]float64)(t.native.axes)
+	return v
 }

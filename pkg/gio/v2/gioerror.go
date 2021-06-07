@@ -24,17 +24,10 @@ import "C"
 //
 // As errno is global and may be modified by intermediate function calls, you
 // should save its value as soon as the call which sets it
-func IOErrorFromErrno(errNo int) IOErrorEnum {
+func IOErrorFromErrno(errNo int) {
 	var arg1 C.gint
 
 	arg1 = C.gint(errNo)
 
-	var cret C.GIOErrorEnum
-	var ret1 IOErrorEnum
-
-	cret = C.g_io_error_from_errno(errNo)
-
-	ret1 = IOErrorEnum(cret)
-
-	return ret1
+	C.g_io_error_from_errno(arg1)
 }

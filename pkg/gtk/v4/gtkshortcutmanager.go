@@ -21,9 +21,9 @@ func init() {
 // ShortcutManagerOverrider contains methods that are overridable. This
 // interface is a subset of the interface ShortcutManager.
 type ShortcutManagerOverrider interface {
-	AddController(controller ShortcutController)
+	AddController(s ShortcutManager, controller ShortcutController)
 
-	RemoveController(controller ShortcutController)
+	RemoveController(s ShortcutManager, controller ShortcutController)
 }
 
 // ShortcutManager: the GtkShortcutManager interface is used to implement

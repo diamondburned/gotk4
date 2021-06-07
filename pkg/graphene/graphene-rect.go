@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -25,31 +23,14 @@ func init() {
 // RectAlloc allocates a new #graphene_rect_t.
 //
 // The contents of the returned rectangle are undefined.
-func RectAlloc() *Rect {
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_alloc()
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Rect) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func RectAlloc() {
+	C.graphene_rect_alloc()
 }
 
 // RectZero returns a degenerate rectangle with origin fixed at (0, 0) and a
 // size of 0, 0.
-func RectZero() *Rect {
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_zero()
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+func RectZero() {
+	C.graphene_rect_zero()
 }
 
 // Rect: the location and size of a rectangle region.
@@ -90,17 +71,21 @@ func (r *Rect) Native() unsafe.Pointer {
 
 // Origin gets the field inside the struct.
 func (r *Rect) Origin() Point {
+	var v Point
 	v = WrapPoint(unsafe.Pointer(r.native.origin))
+	return v
 }
 
 // Size gets the field inside the struct.
 func (r *Rect) Size() Size {
+	var v Size
 	v = WrapSize(unsafe.Pointer(r.native.size))
+	return v
 }
 
 // ContainsPoint checks whether a #graphene_rect_t contains the given
 // coordinates.
-func (r *Rect) ContainsPoint(p *Point) bool {
+func (r *Rect) ContainsPoint(r *Rect, p *Point) bool {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_point_t
 
@@ -108,18 +93,20 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_rect_contains_point(arg0, p)
+	cret = C.graphene_rect_contains_point(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ContainsRect checks whether a #graphene_rect_t fully contains the given
 // rectangle.
-func (a *Rect) ContainsRect(b *Rect) bool {
+func (a *Rect) ContainsRect(a *Rect, b *Rect) bool {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_rect_t
 
@@ -127,17 +114,19 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_rect_contains_rect(arg0, b)
+	cret = C.graphene_rect_contains_rect(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Equal checks whether the two given rectangle are equal.
-func (a *Rect) Equal(b *Rect) bool {
+func (a *Rect) Equal(a *Rect, b *Rect) bool {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_rect_t
 
@@ -145,17 +134,19 @@ func (a *Rect) Equal(b *Rect) bool {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_rect_equal(arg0, b)
+	cret = C.graphene_rect_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Expand expands a #graphene_rect_t to contain the given #graphene_point_t.
-func (r *Rect) Expand(p *Point) Rect {
+func (r *Rect) Expand(r *Rect, p *Point) *Rect {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_point_t
 
@@ -163,17 +154,17 @@ func (r *Rect) Expand(p *Point) Rect {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
 	var arg2 C.graphene_rect_t
-	var ret2 *Rect
+	var res *Rect
 
-	C.graphene_rect_expand(arg0, p, &arg2)
+	C.graphene_rect_expand(arg0, arg1, &arg2)
 
-	*ret2 = WrapRect(unsafe.Pointer(arg2))
+	res = WrapRect(unsafe.Pointer(&arg2))
 
-	return ret2
+	return res
 }
 
 // Free frees the resources allocated by graphene_rect_alloc().
-func (r *Rect) Free() {
+func (r *Rect) Free(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
@@ -182,129 +173,115 @@ func (r *Rect) Free() {
 }
 
 // Area: compute the area of given normalized rectangle.
-func (r *Rect) Area() float32 {
+func (r *Rect) Area(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_rect_get_area(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_rect_get_area(arg0)
 }
 
 // BottomLeft retrieves the coordinates of the bottom-left corner of the given
 // rectangle.
-func (r *Rect) BottomLeft() Point {
+func (r *Rect) BottomLeft(r *Rect) *Point {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_point_t
-	var ret1 *Point
+	var p *Point
 
 	C.graphene_rect_get_bottom_left(arg0, &arg1)
 
-	*ret1 = WrapPoint(unsafe.Pointer(arg1))
+	p = WrapPoint(unsafe.Pointer(&arg1))
 
-	return ret1
+	return p
 }
 
 // BottomRight retrieves the coordinates of the bottom-right corner of the given
 // rectangle.
-func (r *Rect) BottomRight() Point {
+func (r *Rect) BottomRight(r *Rect) *Point {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_point_t
-	var ret1 *Point
+	var p *Point
 
 	C.graphene_rect_get_bottom_right(arg0, &arg1)
 
-	*ret1 = WrapPoint(unsafe.Pointer(arg1))
+	p = WrapPoint(unsafe.Pointer(&arg1))
 
-	return ret1
+	return p
 }
 
 // Center retrieves the coordinates of the center of the given rectangle.
-func (r *Rect) Center() Point {
+func (r *Rect) Center(r *Rect) *Point {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_point_t
-	var ret1 *Point
+	var p *Point
 
 	C.graphene_rect_get_center(arg0, &arg1)
 
-	*ret1 = WrapPoint(unsafe.Pointer(arg1))
+	p = WrapPoint(unsafe.Pointer(&arg1))
 
-	return ret1
+	return p
 }
 
 // Height retrieves the normalized height of the given rectangle.
-func (r *Rect) Height() float32 {
+func (r *Rect) Height(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_rect_get_height(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_rect_get_height(arg0)
 }
 
 // TopLeft retrieves the coordinates of the top-left corner of the given
 // rectangle.
-func (r *Rect) TopLeft() Point {
+func (r *Rect) TopLeft(r *Rect) *Point {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_point_t
-	var ret1 *Point
+	var p *Point
 
 	C.graphene_rect_get_top_left(arg0, &arg1)
 
-	*ret1 = WrapPoint(unsafe.Pointer(arg1))
+	p = WrapPoint(unsafe.Pointer(&arg1))
 
-	return ret1
+	return p
 }
 
 // TopRight retrieves the coordinates of the top-right corner of the given
 // rectangle.
-func (r *Rect) TopRight() Point {
+func (r *Rect) TopRight(r *Rect) *Point {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_point_t
-	var ret1 *Point
+	var p *Point
 
 	C.graphene_rect_get_top_right(arg0, &arg1)
 
-	*ret1 = WrapPoint(unsafe.Pointer(arg1))
+	p = WrapPoint(unsafe.Pointer(&arg1))
 
-	return ret1
+	return p
 }
 
 // Vertices computes the four vertices of a #graphene_rect_t.
-func (r *Rect) Vertices() [4]Vec2 {
+func (r *Rect) Vertices(r *Rect) [4]Vec2 {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 [4]C.graphene_vec2_t
-	var ret1 [4]Vec2
+	var vertices [4]Vec2
 
 	C.graphene_rect_get_vertices(arg0, &arg1)
 
@@ -312,66 +289,45 @@ func (r *Rect) Vertices() [4]Vec2 {
 		tmp := *(*[4]Vec2)(unsafe.Pointer(&arg1))
 		for i := 0; i < 4; i++ {
 			src := tmp[i]
-			ret1[i] = WrapVec2(unsafe.Pointer(src))
+			vertices[i] = WrapVec2(unsafe.Pointer(src))
 		}
 	}
 
-	return ret1
+	return vertices
 }
 
 // Width retrieves the normalized width of the given rectangle.
-func (r *Rect) Width() float32 {
+func (r *Rect) Width(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_rect_get_width(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_rect_get_width(arg0)
 }
 
 // X retrieves the normalized X coordinate of the origin of the given rectangle.
-func (r *Rect) X() float32 {
+func (r *Rect) X(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_rect_get_x(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_rect_get_x(arg0)
 }
 
 // Y retrieves the normalized Y coordinate of the origin of the given rectangle.
-func (r *Rect) Y() float32 {
+func (r *Rect) Y(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.graphene_rect_get_y(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.graphene_rect_get_y(arg0)
 }
 
 // Init initializes the given #graphene_rect_t with the given values.
 //
 // This function will implicitly normalize the #graphene_rect_t before
 // returning.
-func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
+func (r *Rect) Init(r *Rect, x float32, y float32, width float32, height float32) {
 	var arg0 *C.graphene_rect_t
 	var arg1 C.float
 	var arg2 C.float
@@ -384,35 +340,21 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	arg3 = C.float(width)
 	arg4 = C.float(height)
 
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_init(arg0, x, y, width, height)
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_rect_init(arg0, arg1, arg2, arg3, arg4)
 }
 
 // InitFromRect initializes @r using the given @src rectangle.
 //
 // This function will implicitly normalize the #graphene_rect_t before
 // returning.
-func (r *Rect) InitFromRect(src *Rect) *Rect {
+func (r *Rect) InitFromRect(r *Rect, src *Rect) {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(src.Native()))
 
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_init_from_rect(arg0, src)
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_rect_init_from_rect(arg0, arg1)
 }
 
 // Inset changes the given rectangle to be smaller, or larger depending on the
@@ -428,7 +370,7 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
-func (r *Rect) Inset(dX float32, dY float32) *Rect {
+func (r *Rect) Inset(r *Rect, dX float32, dY float32) {
 	var arg0 *C.graphene_rect_t
 	var arg1 C.float
 	var arg2 C.float
@@ -437,14 +379,7 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	arg1 = C.float(dX)
 	arg2 = C.float(dY)
 
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_inset(arg0, dX, dY)
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_rect_inset(arg0, arg1, arg2)
 }
 
 // InsetR changes the given rectangle to be smaller, or larger depending on the
@@ -460,7 +395,7 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
-func (r *Rect) InsetR(dX float32, dY float32) Rect {
+func (r *Rect) InsetR(r *Rect, dX float32, dY float32) *Rect {
 	var arg0 *C.graphene_rect_t
 	var arg1 C.float
 	var arg2 C.float
@@ -470,18 +405,18 @@ func (r *Rect) InsetR(dX float32, dY float32) Rect {
 	arg2 = C.float(dY)
 
 	var arg3 C.graphene_rect_t
-	var ret3 *Rect
+	var res *Rect
 
-	C.graphene_rect_inset_r(arg0, dX, dY, &arg3)
+	C.graphene_rect_inset_r(arg0, arg1, arg2, &arg3)
 
-	*ret3 = WrapRect(unsafe.Pointer(arg3))
+	res = WrapRect(unsafe.Pointer(&arg3))
 
-	return ret3
+	return res
 }
 
 // Interpolate: linearly interpolates the origin and size of the two given
 // rectangles.
-func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
+func (a *Rect) Interpolate(a *Rect, b *Rect, factor float64) *Rect {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_rect_t
 	var arg2 C.double
@@ -491,13 +426,13 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 	arg2 = C.double(factor)
 
 	var arg3 C.graphene_rect_t
-	var ret3 *Rect
+	var res *Rect
 
-	C.graphene_rect_interpolate(arg0, b, factor, &arg3)
+	C.graphene_rect_interpolate(arg0, arg1, arg2, &arg3)
 
-	*ret3 = WrapRect(unsafe.Pointer(arg3))
+	res = WrapRect(unsafe.Pointer(&arg3))
 
-	return ret3
+	return res
 }
 
 // Intersection computes the intersection of the two given rectangles.
@@ -508,7 +443,7 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 //
 // If the two rectangles do not intersect, @res will contain a degenerate
 // rectangle with origin in (0, 0) and a size of 0.
-func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
+func (a *Rect) Intersection(a *Rect, b *Rect) (res *Rect, ok bool) {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_rect_t
 
@@ -516,60 +451,55 @@ func (a *Rect) Intersection(b *Rect) (res Rect, ok bool) {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
 	var arg2 C.graphene_rect_t
-	var ret2 *Rect
+	var res *Rect
 	var cret C._Bool
-	var ret2 bool
+	var ok bool
 
-	cret = C.graphene_rect_intersection(arg0, b, &arg2)
+	cret = C.graphene_rect_intersection(arg0, arg1, &arg2)
 
-	*ret2 = WrapRect(unsafe.Pointer(arg2))
-	ret2 = C.bool(cret) != C.false
+	res = WrapRect(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return res, ok
 }
 
 // Normalize normalizes the passed rectangle.
 //
 // This function ensures that the size of the rectangle is made of positive
 // values, and that the origin is the top-left corner of the rectangle.
-func (r *Rect) Normalize() *Rect {
+func (r *Rect) Normalize(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_normalize(arg0)
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_rect_normalize(arg0)
 }
 
 // NormalizeR normalizes the passed rectangle.
 //
 // This function ensures that the size of the rectangle is made of positive
 // values, and that the origin is in the top-left corner of the rectangle.
-func (r *Rect) NormalizeR() Rect {
+func (r *Rect) NormalizeR(r *Rect) *Rect {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_rect_t
-	var ret1 *Rect
+	var res *Rect
 
 	C.graphene_rect_normalize_r(arg0, &arg1)
 
-	*ret1 = WrapRect(unsafe.Pointer(arg1))
+	res = WrapRect(unsafe.Pointer(&arg1))
 
-	return ret1
+	return res
 }
 
 // Offset offsets the origin by @d_x and @d_y.
 //
 // The size of the rectangle is unchanged.
-func (r *Rect) Offset(dX float32, dY float32) *Rect {
+func (r *Rect) Offset(r *Rect, dX float32, dY float32) {
 	var arg0 *C.graphene_rect_t
 	var arg1 C.float
 	var arg2 C.float
@@ -578,20 +508,13 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	arg1 = C.float(dX)
 	arg2 = C.float(dY)
 
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_offset(arg0, dX, dY)
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_rect_offset(arg0, arg1, arg2)
 }
 
 // OffsetR offsets the origin of the given rectangle by @d_x and @d_y.
 //
 // The size of the rectangle is left unchanged.
-func (r *Rect) OffsetR(dX float32, dY float32) Rect {
+func (r *Rect) OffsetR(r *Rect, dX float32, dY float32) *Rect {
 	var arg0 *C.graphene_rect_t
 	var arg1 C.float
 	var arg2 C.float
@@ -601,13 +524,13 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 	arg2 = C.float(dY)
 
 	var arg3 C.graphene_rect_t
-	var ret3 *Rect
+	var res *Rect
 
-	C.graphene_rect_offset_r(arg0, dX, dY, &arg3)
+	C.graphene_rect_offset_r(arg0, arg1, arg2, &arg3)
 
-	*ret3 = WrapRect(unsafe.Pointer(arg3))
+	res = WrapRect(unsafe.Pointer(&arg3))
 
-	return ret3
+	return res
 }
 
 // Round rounds the origin and size of the given rectangle to their nearest
@@ -618,19 +541,19 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 //
 // This function is the equivalent of calling `floor` on the coordinates of the
 // origin, and `ceil` on the size.
-func (r *Rect) Round() Rect {
+func (r *Rect) Round(r *Rect) *Rect {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_rect_t
-	var ret1 *Rect
+	var res *Rect
 
 	C.graphene_rect_round(arg0, &arg1)
 
-	*ret1 = WrapRect(unsafe.Pointer(arg1))
+	res = WrapRect(unsafe.Pointer(&arg1))
 
-	return ret1
+	return res
 }
 
 // RoundExtents rounds the origin of the given rectangle to its nearest integer
@@ -650,42 +573,35 @@ func (r *Rect) Round() Rect {
 // between the original size and and the rounded size, then the move of the
 // origin would not be compensated by a move in the anti-origin, leaving the
 // corners of the original rectangle outside the rounded one.
-func (r *Rect) RoundExtents() Rect {
+func (r *Rect) RoundExtents(r *Rect) *Rect {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
 	var arg1 C.graphene_rect_t
-	var ret1 *Rect
+	var res *Rect
 
 	C.graphene_rect_round_extents(arg0, &arg1)
 
-	*ret1 = WrapRect(unsafe.Pointer(arg1))
+	res = WrapRect(unsafe.Pointer(&arg1))
 
-	return ret1
+	return res
 }
 
 // RoundToPixel rounds the origin and the size of the given rectangle to their
 // nearest integer values; the rounding is guaranteed to be large enough to
 // contain the original rectangle.
-func (r *Rect) RoundToPixel() *Rect {
+func (r *Rect) RoundToPixel(r *Rect) {
 	var arg0 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret *C.graphene_rect_t
-	var ret1 *Rect
-
-	cret = C.graphene_rect_round_to_pixel(arg0)
-
-	ret1 = WrapRect(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_rect_round_to_pixel(arg0)
 }
 
 // Scale scales the size and origin of a rectangle horizontaly by @s_h, and
 // vertically by @s_v. The result @res is normalized.
-func (r *Rect) Scale(sH float32, sV float32) Rect {
+func (r *Rect) Scale(r *Rect, sH float32, sV float32) *Rect {
 	var arg0 *C.graphene_rect_t
 	var arg1 C.float
 	var arg2 C.float
@@ -695,13 +611,13 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 	arg2 = C.float(sV)
 
 	var arg3 C.graphene_rect_t
-	var ret3 *Rect
+	var res *Rect
 
-	C.graphene_rect_scale(arg0, sH, sV, &arg3)
+	C.graphene_rect_scale(arg0, arg1, arg2, &arg3)
 
-	*ret3 = WrapRect(unsafe.Pointer(arg3))
+	res = WrapRect(unsafe.Pointer(&arg3))
 
-	return ret3
+	return res
 }
 
 // Union computes the union of the two given rectangles.
@@ -709,7 +625,7 @@ func (r *Rect) Scale(sH float32, sV float32) Rect {
 // ! (rectangle-union.png)
 //
 // The union in the image above is the blue outline.
-func (a *Rect) Union(b *Rect) Rect {
+func (a *Rect) Union(a *Rect, b *Rect) *Rect {
 	var arg0 *C.graphene_rect_t
 	var arg1 *C.graphene_rect_t
 
@@ -717,11 +633,11 @@ func (a *Rect) Union(b *Rect) Rect {
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(b.Native()))
 
 	var arg2 C.graphene_rect_t
-	var ret2 *Rect
+	var res *Rect
 
-	C.graphene_rect_union(arg0, b, &arg2)
+	C.graphene_rect_union(arg0, arg1, &arg2)
 
-	*ret2 = WrapRect(unsafe.Pointer(arg2))
+	res = WrapRect(unsafe.Pointer(&arg2))
 
-	return ret2
+	return res
 }

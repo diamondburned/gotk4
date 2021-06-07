@@ -172,8 +172,8 @@ const (
 	BidiTypeRle BidiType = 5
 	// BidiTypeRlo: right-to-Left Override
 	BidiTypeRlo BidiType = 6
-	// BidiTypePdf: pop Directional Format
-	BidiTypePdf BidiType = 7
+	// BidiTypePDF: pop Directional Format
+	BidiTypePDF BidiType = 7
 	// BidiTypeEn: european Number
 	BidiTypeEn BidiType = 8
 	// BidiTypeES: european Number Separator
@@ -820,25 +820,25 @@ type FontMask int
 
 const (
 	// FontMaskFamily: the font family is specified.
-	FontMaskFamily FontMask = 0b1
+	FontMaskFamily FontMask = 1
 	// FontMaskStyle: the font style is specified.
-	FontMaskStyle FontMask = 0b10
+	FontMaskStyle FontMask = 2
 	// FontMaskVariant: the font variant is specified.
-	FontMaskVariant FontMask = 0b100
+	FontMaskVariant FontMask = 4
 	// FontMaskWeight: the font weight is specified.
-	FontMaskWeight FontMask = 0b1000
+	FontMaskWeight FontMask = 8
 	// FontMaskStretch: the font stretch is specified.
-	FontMaskStretch FontMask = 0b10000
+	FontMaskStretch FontMask = 16
 	// FontMaskSize: the font size is specified.
-	FontMaskSize FontMask = 0b100000
+	FontMaskSize FontMask = 32
 	// FontMaskGravity: the font gravity is specified (Since: 1.16.)
-	FontMaskGravity FontMask = 0b1000000
+	FontMaskGravity FontMask = 64
 	// FontMaskVariations: openType font variations are specified (Since: 1.42)
-	FontMaskVariations FontMask = 0b10000000
+	FontMaskVariations FontMask = 128
 )
 
 func marshalFontMask(p uintptr) (interface{}, error) {
-	return FontMask(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return FontMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ShapeFlags flags influencing the shaping process.
@@ -848,15 +848,15 @@ type ShapeFlags int
 
 const (
 	// ShapeFlagsNone: default value.
-	ShapeFlagsNone ShapeFlags = 0b0
+	ShapeFlagsNone ShapeFlags = 0
 	// ShapeFlagsRoundPositions: round glyph positions and widths to whole
 	// device units. This option should be set if the target renderer can't do
 	// subpixel positioning of glyphs.
-	ShapeFlagsRoundPositions ShapeFlags = 0b1
+	ShapeFlagsRoundPositions ShapeFlags = 1
 )
 
 func marshalShapeFlags(p uintptr) (interface{}, error) {
-	return ShapeFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShapeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // ShowFlags: these flags affect how Pango treats characters that are normally
@@ -865,17 +865,17 @@ type ShowFlags int
 
 const (
 	// ShowFlagsNone: no special treatment for invisible characters
-	ShowFlagsNone ShowFlags = 0b0
+	ShowFlagsNone ShowFlags = 0
 	// ShowFlagsSpaces: render spaces, tabs and newlines visibly
-	ShowFlagsSpaces ShowFlags = 0b1
+	ShowFlagsSpaces ShowFlags = 1
 	// ShowFlagsLineBreaks: render line breaks visibly
-	ShowFlagsLineBreaks ShowFlags = 0b10
+	ShowFlagsLineBreaks ShowFlags = 2
 	// ShowFlagsIgnorables: render default-ignorable Unicode characters visibly
-	ShowFlagsIgnorables ShowFlags = 0b100
+	ShowFlagsIgnorables ShowFlags = 4
 )
 
 func marshalShowFlags(p uintptr) (interface{}, error) {
-	return ShowFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return ShowFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // Coverage: a Coverage structure is a map from Unicode characters to
@@ -889,23 +889,23 @@ type Coverage interface {
 	gextras.Objector
 
 	// Copy: copy an existing `PangoCoverage`.
-	Copy() Coverage
+	Copy(c Coverage)
 	// Get: determine whether a particular index is covered by @coverage.
-	Get(index_ int) CoverageLevel
+	Get(c Coverage, index_ int)
 	// Max: set the coverage for each index in @coverage to be the max (better)
 	// value of the current coverage for the index and the coverage for the
 	// corresponding index in @other.
-	Max(other Coverage)
+	Max(c Coverage, other Coverage)
 	// Ref: increase the reference count on the `PangoCoverage` by one.
-	Ref() Coverage
+	Ref(c Coverage)
 	// Set: modify a particular index within @coverage
-	Set(index_ int, level CoverageLevel)
+	Set(c Coverage, index_ int, level CoverageLevel)
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
-	ToBytes() (bytes []byte, nBytes int)
+	ToBytes(c Coverage)
 	// Unref: decrease the reference count on the `PangoCoverage` by one.
 	//
 	// If the result is zero, free the coverage and all associated memory.
-	Unref()
+	Unref(c Coverage)
 }
 
 // coverage implements the Coverage interface.
@@ -930,82 +930,54 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 }
 
 // NewCoverage constructs a class Coverage.
-func NewCoverage() Coverage {
-	var cret C.PangoCoverage
-	var ret1 Coverage
-
-	cret = C.pango_coverage_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
-
-	return ret1
+func NewCoverage() {
+	C.pango_coverage_new()
 }
 
 // Copy: copy an existing `PangoCoverage`.
-func (c coverage) Copy() Coverage {
+func (c coverage) Copy(c Coverage) {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoCoverage
-	var ret1 Coverage
-
-	cret = C.pango_coverage_copy(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
-
-	return ret1
+	C.pango_coverage_copy(arg0)
 }
 
 // Get: determine whether a particular index is covered by @coverage.
-func (c coverage) Get(index_ int) CoverageLevel {
+func (c coverage) Get(c Coverage, index_ int) {
 	var arg0 *C.PangoCoverage
 	var arg1 C.int
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(index_)
 
-	var cret C.PangoCoverageLevel
-	var ret1 CoverageLevel
-
-	cret = C.pango_coverage_get(arg0, index_)
-
-	ret1 = CoverageLevel(cret)
-
-	return ret1
+	C.pango_coverage_get(arg0, arg1)
 }
 
 // Max: set the coverage for each index in @coverage to be the max (better)
 // value of the current coverage for the index and the coverage for the
 // corresponding index in @other.
-func (c coverage) Max(other Coverage) {
+func (c coverage) Max(c Coverage, other Coverage) {
 	var arg0 *C.PangoCoverage
 	var arg1 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
 
-	C.pango_coverage_max(arg0, other)
+	C.pango_coverage_max(arg0, arg1)
 }
 
 // Ref: increase the reference count on the `PangoCoverage` by one.
-func (c coverage) Ref() Coverage {
+func (c coverage) Ref(c Coverage) {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoCoverage
-	var ret1 Coverage
-
-	cret = C.pango_coverage_ref(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
-
-	return ret1
+	C.pango_coverage_ref(arg0)
 }
 
 // Set: modify a particular index within @coverage
-func (c coverage) Set(index_ int, level CoverageLevel) {
+func (c coverage) Set(c Coverage, index_ int, level CoverageLevel) {
 	var arg0 *C.PangoCoverage
 	var arg1 C.int
 	var arg2 C.PangoCoverageLevel
@@ -1014,24 +986,24 @@ func (c coverage) Set(index_ int, level CoverageLevel) {
 	arg1 = C.int(index_)
 	arg2 = (C.PangoCoverageLevel)(level)
 
-	C.pango_coverage_set(arg0, index_, level)
+	C.pango_coverage_set(arg0, arg1, arg2)
 }
 
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
-func (c coverage) ToBytes() (bytes []byte, nBytes int) {
+func (c coverage) ToBytes(c Coverage) {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
 	C.pango_coverage_to_bytes(arg0, &arg1, &arg2)
 
-	return ret1, ret2
+	return bytes, nBytes
 }
 
 // Unref: decrease the reference count on the `PangoCoverage` by one.
 //
 // If the result is zero, free the coverage and all associated memory.
-func (c coverage) Unref() {
+func (c coverage) Unref(c Coverage) {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))

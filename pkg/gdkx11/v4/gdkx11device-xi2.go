@@ -22,10 +22,8 @@ func init() {
 type X11DeviceType int
 
 const (
-	X11DeviceTypeLogical X11DeviceType = 0
-
+	X11DeviceTypeLogical  X11DeviceType = 0
 	X11DeviceTypePhysical X11DeviceType = 1
-
 	X11DeviceTypeFloating X11DeviceType = 2
 )
 

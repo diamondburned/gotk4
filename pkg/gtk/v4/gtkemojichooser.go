@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,13 +81,6 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 }
 
 // NewEmojiChooser constructs a class EmojiChooser.
-func NewEmojiChooser() EmojiChooser {
-	var cret C.GtkEmojiChooser
-	var ret1 EmojiChooser
-
-	cret = C.gtk_emoji_chooser_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EmojiChooser)
-
-	return ret1
+func NewEmojiChooser() {
+	C.gtk_emoji_chooser_new()
 }

@@ -2,14 +2,6 @@
 
 package gdk
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -44,5 +36,5 @@ func SetAllowedBackends(backends string) {
 	arg1 = (*C.char)(C.CString(backends))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_set_allowed_backends(backends)
+	C.gdk_set_allowed_backends(arg1)
 }

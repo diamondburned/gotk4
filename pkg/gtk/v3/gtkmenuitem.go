@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -51,30 +47,30 @@ type MenuItem interface {
 	Buildable
 
 	// Activate emits the MenuItem::activate signal on the given item
-	Activate()
+	Activate(m MenuItem)
 	// Deselect emits the MenuItem::deselect signal on the given item.
-	Deselect()
+	Deselect(m MenuItem)
 	// AccelPath: retrieve the accelerator path that was previously set on
 	// @menu_item.
 	//
 	// See gtk_menu_item_set_accel_path() for details.
-	AccelPath() string
+	AccelPath(m MenuItem)
 	// Label sets @text on the @menu_item label
-	Label() string
+	Label(m MenuItem)
 	// ReserveIndicator returns whether the @menu_item reserves space for the
 	// submenu indicator, regardless if it has a submenu or not.
-	ReserveIndicator() bool
+	ReserveIndicator(m MenuItem) bool
 	// RightJustified gets whether the menu item appears justified at the right
 	// side of the menu bar.
-	RightJustified() bool
+	RightJustified(m MenuItem) bool
 	// Submenu gets the submenu underneath this menu item, if any. See
 	// gtk_menu_item_set_submenu().
-	Submenu() Widget
+	Submenu(m MenuItem)
 	// UseUnderline checks if an underline in the text indicates the next
 	// character should be used for the mnemonic accelerator key.
-	UseUnderline() bool
+	UseUnderline(m MenuItem) bool
 	// Select emits the MenuItem::select signal on the given item.
-	Select()
+	Select(m MenuItem)
 	// SetAccelPath: set the accelerator path on @menu_item, through which
 	// runtime changes of the menu item’s accelerator caused by the user can be
 	// identified and saved to persistent storage (see gtk_accel_map_save() on
@@ -93,32 +89,32 @@ type MenuItem interface {
 	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
 	// you pass a static string, you can save some memory by interning it first
 	// with g_intern_static_string().
-	SetAccelPath(accelPath string)
+	SetAccelPath(m MenuItem, accelPath string)
 	// SetLabel sets @text on the @menu_item label
-	SetLabel(label string)
+	SetLabel(m MenuItem, label string)
 	// SetReserveIndicator sets whether the @menu_item should reserve space for
 	// the submenu indicator, regardless if it actually has a submenu or not.
 	//
 	// There should be little need for applications to call this functions.
-	SetReserveIndicator(reserve bool)
+	SetReserveIndicator(m MenuItem, reserve bool)
 	// SetRightJustified sets whether the menu item appears justified at the
 	// right side of a menu bar. This was traditionally done for “Help” menu
 	// items, but is now considered a bad idea. (If the widget layout is
 	// reversed for a right-to-left language like Hebrew or Arabic,
 	// right-justified-menu-items appear at the left.)
-	SetRightJustified(rightJustified bool)
+	SetRightJustified(m MenuItem, rightJustified bool)
 	// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
 	// nil submenu is passed.
-	SetSubmenu(submenu Menu)
+	SetSubmenu(m MenuItem, submenu Menu)
 	// SetUseUnderline: if true, an underline in the text indicates the next
 	// character should be used for the mnemonic accelerator key.
-	SetUseUnderline(setting bool)
+	SetUseUnderline(m MenuItem, setting bool)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
-	ToggleSizeAllocate(allocation int)
+	ToggleSizeAllocate(m MenuItem, allocation int)
 	// ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the
 	// given item.
-	ToggleSizeRequest(requisition int)
+	ToggleSizeRequest(m MenuItem, requisition int)
 }
 
 // menuItem implements the MenuItem interface.
@@ -149,53 +145,32 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 }
 
 // NewMenuItem constructs a class MenuItem.
-func NewMenuItem() MenuItem {
-	var cret C.GtkMenuItem
-	var ret1 MenuItem
-
-	cret = C.gtk_menu_item_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
-
-	return ret1
+func NewMenuItem() {
+	C.gtk_menu_item_new()
 }
 
 // NewMenuItemWithLabel constructs a class MenuItem.
-func NewMenuItemWithLabel(label string) MenuItem {
+func NewMenuItemWithLabel(label string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkMenuItem
-	var ret1 MenuItem
-
-	cret = C.gtk_menu_item_new_with_label(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
-
-	return ret1
+	C.gtk_menu_item_new_with_label(arg1)
 }
 
 // NewMenuItemWithMnemonic constructs a class MenuItem.
-func NewMenuItemWithMnemonic(label string) MenuItem {
+func NewMenuItemWithMnemonic(label string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkMenuItem
-	var ret1 MenuItem
-
-	cret = C.gtk_menu_item_new_with_mnemonic(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
-
-	return ret1
+	C.gtk_menu_item_new_with_mnemonic(arg1)
 }
 
 // Activate emits the MenuItem::activate signal on the given item
-func (m menuItem) Activate() {
+func (m menuItem) Activate(m MenuItem) {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
@@ -204,7 +179,7 @@ func (m menuItem) Activate() {
 }
 
 // Deselect emits the MenuItem::deselect signal on the given item.
-func (m menuItem) Deselect() {
+func (m menuItem) Deselect(m MenuItem) {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
@@ -216,107 +191,92 @@ func (m menuItem) Deselect() {
 // @menu_item.
 //
 // See gtk_menu_item_set_accel_path() for details.
-func (m menuItem) AccelPath() string {
+func (m menuItem) AccelPath(m MenuItem) {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_menu_item_get_accel_path(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_menu_item_get_accel_path(arg0)
 }
 
 // Label sets @text on the @menu_item label
-func (m menuItem) Label() string {
+func (m menuItem) Label(m MenuItem) {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_menu_item_get_label(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_menu_item_get_label(arg0)
 }
 
 // ReserveIndicator returns whether the @menu_item reserves space for the
 // submenu indicator, regardless if it has a submenu or not.
-func (m menuItem) ReserveIndicator() bool {
+func (m menuItem) ReserveIndicator(m MenuItem) bool {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_menu_item_get_reserve_indicator(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RightJustified gets whether the menu item appears justified at the right
 // side of the menu bar.
-func (m menuItem) RightJustified() bool {
+func (m menuItem) RightJustified(m MenuItem) bool {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_menu_item_get_right_justified(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Submenu gets the submenu underneath this menu item, if any. See
 // gtk_menu_item_set_submenu().
-func (m menuItem) Submenu() Widget {
+func (m menuItem) Submenu(m MenuItem) {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_menu_item_get_submenu(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_menu_item_get_submenu(arg0)
 }
 
 // UseUnderline checks if an underline in the text indicates the next
 // character should be used for the mnemonic accelerator key.
-func (m menuItem) UseUnderline() bool {
+func (m menuItem) UseUnderline(m MenuItem) bool {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_menu_item_get_use_underline(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Select emits the MenuItem::select signal on the given item.
-func (m menuItem) Select() {
+func (m menuItem) Select(m MenuItem) {
 	var arg0 *C.GtkMenuItem
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
@@ -342,7 +302,7 @@ func (m menuItem) Select() {
 // Note that @accel_path string will be stored in a #GQuark. Therefore, if
 // you pass a static string, you can save some memory by interning it first
 // with g_intern_static_string().
-func (m menuItem) SetAccelPath(accelPath string) {
+func (m menuItem) SetAccelPath(m MenuItem, accelPath string) {
 	var arg0 *C.GtkMenuItem
 	var arg1 *C.gchar
 
@@ -350,11 +310,11 @@ func (m menuItem) SetAccelPath(accelPath string) {
 	arg1 = (*C.gchar)(C.CString(accelPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_menu_item_set_accel_path(arg0, accelPath)
+	C.gtk_menu_item_set_accel_path(arg0, arg1)
 }
 
 // SetLabel sets @text on the @menu_item label
-func (m menuItem) SetLabel(label string) {
+func (m menuItem) SetLabel(m MenuItem, label string) {
 	var arg0 *C.GtkMenuItem
 	var arg1 *C.gchar
 
@@ -362,14 +322,14 @@ func (m menuItem) SetLabel(label string) {
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_menu_item_set_label(arg0, label)
+	C.gtk_menu_item_set_label(arg0, arg1)
 }
 
 // SetReserveIndicator sets whether the @menu_item should reserve space for
 // the submenu indicator, regardless if it actually has a submenu or not.
 //
 // There should be little need for applications to call this functions.
-func (m menuItem) SetReserveIndicator(reserve bool) {
+func (m menuItem) SetReserveIndicator(m MenuItem, reserve bool) {
 	var arg0 *C.GtkMenuItem
 	var arg1 C.gboolean
 
@@ -378,7 +338,7 @@ func (m menuItem) SetReserveIndicator(reserve bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_menu_item_set_reserve_indicator(arg0, reserve)
+	C.gtk_menu_item_set_reserve_indicator(arg0, arg1)
 }
 
 // SetRightJustified sets whether the menu item appears justified at the
@@ -386,7 +346,7 @@ func (m menuItem) SetReserveIndicator(reserve bool) {
 // items, but is now considered a bad idea. (If the widget layout is
 // reversed for a right-to-left language like Hebrew or Arabic,
 // right-justified-menu-items appear at the left.)
-func (m menuItem) SetRightJustified(rightJustified bool) {
+func (m menuItem) SetRightJustified(m MenuItem, rightJustified bool) {
 	var arg0 *C.GtkMenuItem
 	var arg1 C.gboolean
 
@@ -395,24 +355,24 @@ func (m menuItem) SetRightJustified(rightJustified bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_menu_item_set_right_justified(arg0, rightJustified)
+	C.gtk_menu_item_set_right_justified(arg0, arg1)
 }
 
 // SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
 // nil submenu is passed.
-func (m menuItem) SetSubmenu(submenu Menu) {
+func (m menuItem) SetSubmenu(m MenuItem, submenu Menu) {
 	var arg0 *C.GtkMenuItem
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(submenu.Native()))
 
-	C.gtk_menu_item_set_submenu(arg0, submenu)
+	C.gtk_menu_item_set_submenu(arg0, arg1)
 }
 
 // SetUseUnderline: if true, an underline in the text indicates the next
 // character should be used for the mnemonic accelerator key.
-func (m menuItem) SetUseUnderline(setting bool) {
+func (m menuItem) SetUseUnderline(m MenuItem, setting bool) {
 	var arg0 *C.GtkMenuItem
 	var arg1 C.gboolean
 
@@ -421,29 +381,29 @@ func (m menuItem) SetUseUnderline(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_menu_item_set_use_underline(arg0, setting)
+	C.gtk_menu_item_set_use_underline(arg0, arg1)
 }
 
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 // given item.
-func (m menuItem) ToggleSizeAllocate(allocation int) {
+func (m menuItem) ToggleSizeAllocate(m MenuItem, allocation int) {
 	var arg0 *C.GtkMenuItem
 	var arg1 C.gint
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	arg1 = C.gint(allocation)
 
-	C.gtk_menu_item_toggle_size_allocate(arg0, allocation)
+	C.gtk_menu_item_toggle_size_allocate(arg0, arg1)
 }
 
 // ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the
 // given item.
-func (m menuItem) ToggleSizeRequest(requisition int) {
+func (m menuItem) ToggleSizeRequest(m MenuItem, requisition int) {
 	var arg0 *C.GtkMenuItem
 	var arg1 *C.gint
 
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	arg1 = *C.gint(requisition)
 
-	C.gtk_menu_item_toggle_size_request(arg0, requisition)
+	C.gtk_menu_item_toggle_size_request(arg0, arg1)
 }

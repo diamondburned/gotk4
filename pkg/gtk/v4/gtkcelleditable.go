@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,9 +22,9 @@ func init() {
 // interface is a subset of the interface CellEditable.
 type CellEditableOverrider interface {
 	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
+	EditingDone(c CellEditable)
 	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
+	RemoveWidget(c CellEditable)
 	// StartEditing begins editing on a @cell_editable.
 	//
 	// The CellRenderer for the cell creates and returns a CellEditable from
@@ -38,7 +37,7 @@ type CellEditableOverrider interface {
 	// Note that the @cell_editable is created on-demand for the current edit;
 	// its lifetime is temporary and does not persist across other edits and/or
 	// cells.
-	StartEditing(event gdk.Event)
+	StartEditing(c CellEditable, event gdk.Event)
 }
 
 // CellEditable: the CellEditable interface must be implemented for widgets to
@@ -72,7 +71,7 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 }
 
 // EditingDone emits the CellEditable::editing-done signal.
-func (c cellEditable) EditingDone() {
+func (c cellEditable) EditingDone(c CellEditable) {
 	var arg0 *C.GtkCellEditable
 
 	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
@@ -81,7 +80,7 @@ func (c cellEditable) EditingDone() {
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
-func (c cellEditable) RemoveWidget() {
+func (c cellEditable) RemoveWidget(c CellEditable) {
 	var arg0 *C.GtkCellEditable
 
 	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
@@ -101,12 +100,12 @@ func (c cellEditable) RemoveWidget() {
 // Note that the @cell_editable is created on-demand for the current edit;
 // its lifetime is temporary and does not persist across other edits and/or
 // cells.
-func (c cellEditable) StartEditing(event gdk.Event) {
+func (c cellEditable) StartEditing(c CellEditable, event gdk.Event) {
 	var arg0 *C.GtkCellEditable
 	var arg1 *C.GdkEvent
 
 	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
-	C.gtk_cell_editable_start_editing(arg0, event)
+	C.gtk_cell_editable_start_editing(arg0, arg1)
 }

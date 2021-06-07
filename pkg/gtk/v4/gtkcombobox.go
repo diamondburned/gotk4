@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -78,7 +73,7 @@ type ComboBox interface {
 	// is not an immediate child of the root of the tree, this function returns
 	// `gtk_tree_path_get_indices (path)[0]`, where `path` is the TreePath of
 	// the active item.
-	Active() int
+	Active(c ComboBox)
 	// ActiveID returns the ID of the active row of @combo_box. This value is
 	// taken from the active row and the column specified by the
 	// ComboBox:id-column property of @combo_box (see
@@ -90,76 +85,78 @@ type ComboBox interface {
 	//
 	// If the ComboBox:id-column property of @combo_box is not set, or if no row
 	// is active, or if the active row has a nil ID value, then nil is returned.
-	ActiveID() string
+	ActiveID(c ComboBox)
 	// ActiveIter sets @iter to point to the currently active item, if any item
 	// is active. Otherwise, @iter is left unchanged.
-	ActiveIter() (iter TreeIter, ok bool)
+	ActiveIter(c ComboBox) (iter *TreeIter, ok bool)
 	// ButtonSensitivity returns whether the combo box sets the dropdown button
 	// sensitive or not when there are no items in the model.
-	ButtonSensitivity() SensitivityType
+	ButtonSensitivity(c ComboBox)
 	// Child gets the child widget of @combo_box.
-	Child() Widget
+	Child(c ComboBox)
 	// EntryTextColumn returns the column which @combo_box is using to get the
 	// strings from to display in the internal entry.
-	EntryTextColumn() int
+	EntryTextColumn(c ComboBox)
 	// HasEntry returns whether the combo box has an entry.
-	HasEntry() bool
+	HasEntry(c ComboBox) bool
 	// IDColumn returns the column which @combo_box is using to get string IDs
 	// for values from.
-	IDColumn() int
+	IDColumn(c ComboBox)
 	// Model returns the TreeModel which is acting as data source for
 	// @combo_box.
-	Model() TreeModel
+	Model(c ComboBox)
 	// PopupFixedWidth gets whether the popup uses a fixed width matching the
 	// allocated width of the combo box.
-	PopupFixedWidth() bool
+	PopupFixedWidth(c ComboBox) bool
+	// RowSeparatorFunc returns the current row separator function.
+	RowSeparatorFunc(c ComboBox)
 	// Popdown hides the menu or dropdown list of @combo_box.
 	//
 	// This function is mostly intended for use by accessibility technologies;
 	// applications should have little use for it.
-	Popdown()
+	Popdown(c ComboBox)
 	// Popup pops up the menu or dropdown list of @combo_box.
 	//
 	// This function is mostly intended for use by accessibility technologies;
 	// applications should have little use for it.
 	//
 	// Before calling this, @combo_box must be mapped, or nothing will happen.
-	Popup()
+	Popup(c ComboBox)
 	// PopupForDevice pops up the menu of @combo_box. Note that currently this
 	// does not do anything with the device, as it was previously only used for
 	// list-mode combo boxes, and those were removed in GTK 4. However, it is
 	// retained in case similar functionality is added back later.
-	PopupForDevice(device gdk.Device)
+	PopupForDevice(c ComboBox, device gdk.Device)
 	// SetActive sets the active item of @combo_box to be the item at @index.
-	SetActive(index_ int)
+	SetActive(c ComboBox, index_ int)
 	// SetActiveID changes the active row of @combo_box to the one that has an
 	// ID equal to @active_id, or unsets the active row if @active_id is nil.
 	// Rows having a nil ID string cannot be made active by this function.
 	//
 	// If the ComboBox:id-column property of @combo_box is unset or if no row
 	// has the given ID then the function does nothing and returns false.
-	SetActiveID(activeID string) bool
+	SetActiveID(c ComboBox, activeID string) bool
 	// SetActiveIter sets the current active item to be the one referenced by
 	// @iter, or unsets the active item if @iter is nil.
-	SetActiveIter(iter *TreeIter)
+	SetActiveIter(c ComboBox, iter *TreeIter)
 	// SetButtonSensitivity sets whether the dropdown button of the combo box
 	// should be always sensitive (GTK_SENSITIVITY_ON), never sensitive
 	// (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
 	// (GTK_SENSITIVITY_AUTO).
-	SetButtonSensitivity(sensitivity SensitivityType)
+	SetButtonSensitivity(c ComboBox, sensitivity SensitivityType)
 	// SetChild sets the child widget of @combo_box.
-	SetChild(child Widget)
+	SetChild(c ComboBox, child Widget)
 	// SetEntryTextColumn sets the model column which @combo_box should use to
 	// get strings from to be @text_column. The column @text_column in the model
 	// of @combo_box must be of type G_TYPE_STRING.
 	//
 	// This is only relevant if @combo_box has been created with
 	// ComboBox:has-entry as true.
-	SetEntryTextColumn(textColumn int)
+	SetEntryTextColumn(c ComboBox, textColumn int)
 	// SetIDColumn sets the model column which @combo_box should use to get
 	// string IDs for values from. The column @id_column in the model of
 	// @combo_box must be of type G_TYPE_STRING.
-	SetIDColumn(idColumn int)
+	SetIDColumn(c ComboBox, idColumn int)
 	// SetModel sets the model used by @combo_box to be @model. Will unset a
 	// previously set model (if applicable). If model is nil, then it will unset
 	// the model.
@@ -167,15 +164,15 @@ type ComboBox interface {
 	// Note that this function does not clear the cell renderers, you have to
 	// call gtk_cell_layout_clear() yourself if you need to set up different
 	// cell renderers for the new model.
-	SetModel(model TreeModel)
+	SetModel(c ComboBox, model TreeModel)
 	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 	// width matching the allocated width of the combo box.
-	SetPopupFixedWidth(fixed bool)
+	SetPopupFixedWidth(c ComboBox, fixed bool)
 	// SetRowSeparatorFunc sets the row separator function, which is used to
 	// determine whether a row should be drawn as a separator. If the row
 	// separator function is nil, no separators are drawn. This is the default
 	// value.
-	SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc)
+	SetRowSeparatorFunc(c ComboBox)
 }
 
 // comboBox implements the ComboBox interface.
@@ -210,59 +207,31 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 }
 
 // NewComboBox constructs a class ComboBox.
-func NewComboBox() ComboBox {
-	var cret C.GtkComboBox
-	var ret1 ComboBox
-
-	cret = C.gtk_combo_box_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBox)
-
-	return ret1
+func NewComboBox() {
+	C.gtk_combo_box_new()
 }
 
 // NewComboBoxWithEntry constructs a class ComboBox.
-func NewComboBoxWithEntry() ComboBox {
-	var cret C.GtkComboBox
-	var ret1 ComboBox
-
-	cret = C.gtk_combo_box_new_with_entry()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBox)
-
-	return ret1
+func NewComboBoxWithEntry() {
+	C.gtk_combo_box_new_with_entry()
 }
 
 // NewComboBoxWithModel constructs a class ComboBox.
-func NewComboBoxWithModel(model TreeModel) ComboBox {
+func NewComboBoxWithModel(model TreeModel) {
 	var arg1 *C.GtkTreeModel
 
 	arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkComboBox
-	var ret1 ComboBox
-
-	cret = C.gtk_combo_box_new_with_model(model)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBox)
-
-	return ret1
+	C.gtk_combo_box_new_with_model(arg1)
 }
 
 // NewComboBoxWithModelAndEntry constructs a class ComboBox.
-func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
+func NewComboBoxWithModelAndEntry(model TreeModel) {
 	var arg1 *C.GtkTreeModel
 
 	arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkComboBox
-	var ret1 ComboBox
-
-	cret = C.gtk_combo_box_new_with_model_and_entry(model)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBox)
-
-	return ret1
+	C.gtk_combo_box_new_with_model_and_entry(arg1)
 }
 
 // Active returns the index of the currently active item, or -1 if there’s
@@ -270,19 +239,12 @@ func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
 // is not an immediate child of the root of the tree, this function returns
 // `gtk_tree_path_get_indices (path)[0]`, where `path` is the TreePath of
 // the active item.
-func (c comboBox) Active() int {
+func (c comboBox) Active(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_combo_box_get_active(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_combo_box_get_active(arg0)
 }
 
 // ActiveID returns the ID of the active row of @combo_box. This value is
@@ -296,163 +258,136 @@ func (c comboBox) Active() int {
 //
 // If the ComboBox:id-column property of @combo_box is not set, or if no row
 // is active, or if the active row has a nil ID value, then nil is returned.
-func (c comboBox) ActiveID() string {
+func (c comboBox) ActiveID(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_combo_box_get_active_id(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_combo_box_get_active_id(arg0)
 }
 
 // ActiveIter sets @iter to point to the currently active item, if any item
 // is active. Otherwise, @iter is left unchanged.
-func (c comboBox) ActiveIter() (iter TreeIter, ok bool) {
+func (c comboBox) ActiveIter(c ComboBox) (iter *TreeIter, ok bool) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
 	cret = C.gtk_combo_box_get_active_iter(arg0, &arg1)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-	ret2 = C.bool(cret) != C.false
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return iter, ok
 }
 
 // ButtonSensitivity returns whether the combo box sets the dropdown button
 // sensitive or not when there are no items in the model.
-func (c comboBox) ButtonSensitivity() SensitivityType {
+func (c comboBox) ButtonSensitivity(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret C.GtkSensitivityType
-	var ret1 SensitivityType
-
-	cret = C.gtk_combo_box_get_button_sensitivity(arg0)
-
-	ret1 = SensitivityType(cret)
-
-	return ret1
+	C.gtk_combo_box_get_button_sensitivity(arg0)
 }
 
 // Child gets the child widget of @combo_box.
-func (c comboBox) Child() Widget {
+func (c comboBox) Child(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_combo_box_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_combo_box_get_child(arg0)
 }
 
 // EntryTextColumn returns the column which @combo_box is using to get the
 // strings from to display in the internal entry.
-func (c comboBox) EntryTextColumn() int {
+func (c comboBox) EntryTextColumn(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_combo_box_get_entry_text_column(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_combo_box_get_entry_text_column(arg0)
 }
 
 // HasEntry returns whether the combo box has an entry.
-func (c comboBox) HasEntry() bool {
+func (c comboBox) HasEntry(c ComboBox) bool {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_combo_box_get_has_entry(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IDColumn returns the column which @combo_box is using to get string IDs
 // for values from.
-func (c comboBox) IDColumn() int {
+func (c comboBox) IDColumn(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_combo_box_get_id_column(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_combo_box_get_id_column(arg0)
 }
 
 // Model returns the TreeModel which is acting as data source for
 // @combo_box.
-func (c comboBox) Model() TreeModel {
+func (c comboBox) Model(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkTreeModel
-	var ret1 TreeModel
-
-	cret = C.gtk_combo_box_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
-
-	return ret1
+	C.gtk_combo_box_get_model(arg0)
 }
 
 // PopupFixedWidth gets whether the popup uses a fixed width matching the
 // allocated width of the combo box.
-func (c comboBox) PopupFixedWidth() bool {
+func (c comboBox) PopupFixedWidth(c ComboBox) bool {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_combo_box_get_popup_fixed_width(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
+}
+
+// RowSeparatorFunc returns the current row separator function.
+func (c comboBox) RowSeparatorFunc(c ComboBox) {
+	var arg0 *C.GtkComboBox
+
+	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
+
+	C.gtk_combo_box_get_row_separator_func(arg0)
 }
 
 // Popdown hides the menu or dropdown list of @combo_box.
 //
 // This function is mostly intended for use by accessibility technologies;
 // applications should have little use for it.
-func (c comboBox) Popdown() {
+func (c comboBox) Popdown(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
@@ -466,7 +401,7 @@ func (c comboBox) Popdown() {
 // applications should have little use for it.
 //
 // Before calling this, @combo_box must be mapped, or nothing will happen.
-func (c comboBox) Popup() {
+func (c comboBox) Popup(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
@@ -478,25 +413,25 @@ func (c comboBox) Popup() {
 // does not do anything with the device, as it was previously only used for
 // list-mode combo boxes, and those were removed in GTK 4. However, it is
 // retained in case similar functionality is added back later.
-func (c comboBox) PopupForDevice(device gdk.Device) {
+func (c comboBox) PopupForDevice(c ComboBox, device gdk.Device) {
 	var arg0 *C.GtkComboBox
 	var arg1 *C.GdkDevice
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	C.gtk_combo_box_popup_for_device(arg0, device)
+	C.gtk_combo_box_popup_for_device(arg0, arg1)
 }
 
 // SetActive sets the active item of @combo_box to be the item at @index.
-func (c comboBox) SetActive(index_ int) {
+func (c comboBox) SetActive(c ComboBox, index_ int) {
 	var arg0 *C.GtkComboBox
 	var arg1 C.int
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(index_)
 
-	C.gtk_combo_box_set_active(arg0, index_)
+	C.gtk_combo_box_set_active(arg0, arg1)
 }
 
 // SetActiveID changes the active row of @combo_box to the one that has an
@@ -505,7 +440,7 @@ func (c comboBox) SetActive(index_ int) {
 //
 // If the ComboBox:id-column property of @combo_box is unset or if no row
 // has the given ID then the function does nothing and returns false.
-func (c comboBox) SetActiveID(activeID string) bool {
+func (c comboBox) SetActiveID(c ComboBox, activeID string) bool {
 	var arg0 *C.GtkComboBox
 	var arg1 *C.char
 
@@ -514,50 +449,52 @@ func (c comboBox) SetActiveID(activeID string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_combo_box_set_active_id(arg0, activeID)
+	cret = C.gtk_combo_box_set_active_id(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetActiveIter sets the current active item to be the one referenced by
 // @iter, or unsets the active item if @iter is nil.
-func (c comboBox) SetActiveIter(iter *TreeIter) {
+func (c comboBox) SetActiveIter(c ComboBox, iter *TreeIter) {
 	var arg0 *C.GtkComboBox
 	var arg1 *C.GtkTreeIter
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
-	C.gtk_combo_box_set_active_iter(arg0, iter)
+	C.gtk_combo_box_set_active_iter(arg0, arg1)
 }
 
 // SetButtonSensitivity sets whether the dropdown button of the combo box
 // should be always sensitive (GTK_SENSITIVITY_ON), never sensitive
 // (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
 // (GTK_SENSITIVITY_AUTO).
-func (c comboBox) SetButtonSensitivity(sensitivity SensitivityType) {
+func (c comboBox) SetButtonSensitivity(c ComboBox, sensitivity SensitivityType) {
 	var arg0 *C.GtkComboBox
 	var arg1 C.GtkSensitivityType
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GtkSensitivityType)(sensitivity)
 
-	C.gtk_combo_box_set_button_sensitivity(arg0, sensitivity)
+	C.gtk_combo_box_set_button_sensitivity(arg0, arg1)
 }
 
 // SetChild sets the child widget of @combo_box.
-func (c comboBox) SetChild(child Widget) {
+func (c comboBox) SetChild(c ComboBox, child Widget) {
 	var arg0 *C.GtkComboBox
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_combo_box_set_child(arg0, child)
+	C.gtk_combo_box_set_child(arg0, arg1)
 }
 
 // SetEntryTextColumn sets the model column which @combo_box should use to
@@ -566,27 +503,27 @@ func (c comboBox) SetChild(child Widget) {
 //
 // This is only relevant if @combo_box has been created with
 // ComboBox:has-entry as true.
-func (c comboBox) SetEntryTextColumn(textColumn int) {
+func (c comboBox) SetEntryTextColumn(c ComboBox, textColumn int) {
 	var arg0 *C.GtkComboBox
 	var arg1 C.int
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(textColumn)
 
-	C.gtk_combo_box_set_entry_text_column(arg0, textColumn)
+	C.gtk_combo_box_set_entry_text_column(arg0, arg1)
 }
 
 // SetIDColumn sets the model column which @combo_box should use to get
 // string IDs for values from. The column @id_column in the model of
 // @combo_box must be of type G_TYPE_STRING.
-func (c comboBox) SetIDColumn(idColumn int) {
+func (c comboBox) SetIDColumn(c ComboBox, idColumn int) {
 	var arg0 *C.GtkComboBox
 	var arg1 C.int
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(idColumn)
 
-	C.gtk_combo_box_set_id_column(arg0, idColumn)
+	C.gtk_combo_box_set_id_column(arg0, arg1)
 }
 
 // SetModel sets the model used by @combo_box to be @model. Will unset a
@@ -596,19 +533,19 @@ func (c comboBox) SetIDColumn(idColumn int) {
 // Note that this function does not clear the cell renderers, you have to
 // call gtk_cell_layout_clear() yourself if you need to set up different
 // cell renderers for the new model.
-func (c comboBox) SetModel(model TreeModel) {
+func (c comboBox) SetModel(c ComboBox, model TreeModel) {
 	var arg0 *C.GtkComboBox
 	var arg1 *C.GtkTreeModel
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_combo_box_set_model(arg0, model)
+	C.gtk_combo_box_set_model(arg0, arg1)
 }
 
 // SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 // width matching the allocated width of the combo box.
-func (c comboBox) SetPopupFixedWidth(fixed bool) {
+func (c comboBox) SetPopupFixedWidth(c ComboBox, fixed bool) {
 	var arg0 *C.GtkComboBox
 	var arg1 C.gboolean
 
@@ -617,17 +554,17 @@ func (c comboBox) SetPopupFixedWidth(fixed bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_combo_box_set_popup_fixed_width(arg0, fixed)
+	C.gtk_combo_box_set_popup_fixed_width(arg0, arg1)
 }
 
 // SetRowSeparatorFunc sets the row separator function, which is used to
 // determine whether a row should be drawn as a separator. If the row
 // separator function is nil, no separators are drawn. This is the default
 // value.
-func (c comboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
+func (c comboBox) SetRowSeparatorFunc(c ComboBox) {
 	var arg0 *C.GtkComboBox
 
 	arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	C.gtk_combo_box_set_row_separator_func(arg0, fn, data, destroy)
+	C.gtk_combo_box_set_row_separator_func(arg0, arg1, arg2, arg3)
 }

@@ -3,15 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -60,14 +56,14 @@ type SocketService interface {
 	// IsActive: check whether the service is active or not. An active service
 	// will accept new clients that connect, while a non-active service will let
 	// connecting clients queue up until the service is started.
-	IsActive() bool
+	IsActive(s SocketService) bool
 	// Start restarts the service, i.e. start accepting connections from the
 	// added sockets when the mainloop runs. This only needs to be called after
 	// the service has been stopped from g_socket_service_stop().
 	//
 	// This call is thread-safe, so it may be called from a thread handling an
 	// incoming client request.
-	Start()
+	Start(s SocketService)
 	// Stop stops the service, i.e. stops accepting connections from the added
 	// sockets when the mainloop runs.
 	//
@@ -83,7 +79,7 @@ type SocketService interface {
 	// This must be called before calling g_socket_listener_close() as the
 	// socket service will start accepting connections immediately when a new
 	// socket is added.
-	Stop()
+	Stop(s SocketService)
 }
 
 // socketService implements the SocketService interface.
@@ -108,33 +104,28 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 }
 
 // NewSocketService constructs a class SocketService.
-func NewSocketService() SocketService {
-	var cret C.GSocketService
-	var ret1 SocketService
-
-	cret = C.g_socket_service_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketService)
-
-	return ret1
+func NewSocketService() {
+	C.g_socket_service_new()
 }
 
 // IsActive: check whether the service is active or not. An active service
 // will accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
-func (s socketService) IsActive() bool {
+func (s socketService) IsActive(s SocketService) bool {
 	var arg0 *C.GSocketService
 
 	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_socket_service_is_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Start restarts the service, i.e. start accepting connections from the
@@ -143,7 +134,7 @@ func (s socketService) IsActive() bool {
 //
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
-func (s socketService) Start() {
+func (s socketService) Start(s SocketService) {
 	var arg0 *C.GSocketService
 
 	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
@@ -166,7 +157,7 @@ func (s socketService) Start() {
 // This must be called before calling g_socket_listener_close() as the
 // socket service will start accepting connections immediately when a new
 // socket is added.
-func (s socketService) Stop() {
+func (s socketService) Stop(s SocketService) {
 	var arg0 *C.GSocketService
 
 	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))

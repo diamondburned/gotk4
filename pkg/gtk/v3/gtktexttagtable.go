@@ -3,16 +3,12 @@
 package gtk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -64,20 +60,20 @@ type TextTagTable interface {
 	//
 	// @tag must not be in a tag table already, and may not have the same name
 	// as an already-added tag.
-	Add(tag TextTag) bool
+	Add(t TextTagTable, tag TextTag) bool
 	// Foreach calls @func on each tag in @table, with user data @data. Note
 	// that the table may not be modified while iterating over it (you can’t
 	// add/remove tags).
-	Foreach(fn TextTagTableForeach)
+	Foreach(t TextTagTable)
 	// Size returns the size of the table (number of tags)
-	Size() int
+	Size(t TextTagTable)
 	// Lookup: look up a named tag.
-	Lookup(name string) TextTag
+	Lookup(t TextTagTable, name string)
 	// Remove: remove a tag from the table. If a TextBuffer has @table as its
 	// tag table, the tag is removed from the buffer. The table’s reference to
 	// the tag is removed, so the tag will end up destroyed if you don’t have a
 	// reference to it.
-	Remove(tag TextTag)
+	Remove(t TextTagTable, tag TextTag)
 }
 
 // textTagTable implements the TextTagTable interface.
@@ -104,15 +100,8 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 }
 
 // NewTextTagTable constructs a class TextTagTable.
-func NewTextTagTable() TextTagTable {
-	var cret C.GtkTextTagTable
-	var ret1 TextTagTable
-
-	cret = C.gtk_text_tag_table_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
-
-	return ret1
+func NewTextTagTable() {
+	C.gtk_text_tag_table_new()
 }
 
 // Add: add a tag to the table. The tag is assigned the highest priority in
@@ -120,7 +109,7 @@ func NewTextTagTable() TextTagTable {
 //
 // @tag must not be in a tag table already, and may not have the same name
 // as an already-added tag.
-func (t textTagTable) Add(tag TextTag) bool {
+func (t textTagTable) Add(t TextTagTable, tag TextTag) bool {
 	var arg0 *C.GtkTextTagTable
 	var arg1 *C.GtkTextTag
 
@@ -128,44 +117,39 @@ func (t textTagTable) Add(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_tag_table_add(arg0, tag)
+	cret = C.gtk_text_tag_table_add(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Foreach calls @func on each tag in @table, with user data @data. Note
 // that the table may not be modified while iterating over it (you can’t
 // add/remove tags).
-func (t textTagTable) Foreach(fn TextTagTableForeach) {
+func (t textTagTable) Foreach(t TextTagTable) {
 	var arg0 *C.GtkTextTagTable
 
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	C.gtk_text_tag_table_foreach(arg0, fn, data)
+	C.gtk_text_tag_table_foreach(arg0, arg1, arg2)
 }
 
 // Size returns the size of the table (number of tags)
-func (t textTagTable) Size() int {
+func (t textTagTable) Size(t TextTagTable) {
 	var arg0 *C.GtkTextTagTable
 
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_text_tag_table_get_size(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_text_tag_table_get_size(arg0)
 }
 
 // Lookup: look up a named tag.
-func (t textTagTable) Lookup(name string) TextTag {
+func (t textTagTable) Lookup(t TextTagTable, name string) {
 	var arg0 *C.GtkTextTagTable
 	var arg1 *C.gchar
 
@@ -173,26 +157,19 @@ func (t textTagTable) Lookup(name string) TextTag {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkTextTag
-	var ret1 TextTag
-
-	cret = C.gtk_text_tag_table_lookup(arg0, name)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
-
-	return ret1
+	C.gtk_text_tag_table_lookup(arg0, arg1)
 }
 
 // Remove: remove a tag from the table. If a TextBuffer has @table as its
 // tag table, the tag is removed from the buffer. The table’s reference to
 // the tag is removed, so the tag will end up destroyed if you don’t have a
 // reference to it.
-func (t textTagTable) Remove(tag TextTag) {
+func (t textTagTable) Remove(t TextTagTable, tag TextTag) {
 	var arg0 *C.GtkTextTagTable
 	var arg1 *C.GtkTextTag
 
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
-	C.gtk_text_tag_table_remove(arg0, tag)
+	C.gtk_text_tag_table_remove(arg0, arg1)
 }

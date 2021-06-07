@@ -3,11 +3,8 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,19 +56,12 @@ func (c *CSSSection) Native() unsafe.Pointer {
 // GtkCssProvider::parsing-error signal. The end position and line may be
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
-func (s *CSSSection) EndLine() uint {
+func (s *CSSSection) EndLine(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_css_section_get_end_line(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_css_section_get_end_line(arg0)
 }
 
 // EndPosition returns the offset in bytes from the start of the current line
@@ -80,37 +70,23 @@ func (s *CSSSection) EndLine() uint {
 // will for example happen in the GtkCssProvider::parsing-error signal. The end
 // position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
-func (s *CSSSection) EndPosition() uint {
+func (s *CSSSection) EndPosition(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_css_section_get_end_position(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_css_section_get_end_position(arg0)
 }
 
 // File gets the file that @section was parsed from. If no such file exists, for
 // example because the CSS was loaded via @gtk_css_provider_load_from_data(),
 // then nil is returned.
-func (s *CSSSection) File() gio.File {
+func (s *CSSSection) File(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GFile
-	var ret1 gio.File
-
-	cret = C.gtk_css_section_get_file(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
-
-	return ret1
+	C.gtk_css_section_get_file(arg0)
 }
 
 // Parent gets the parent section for the given @section. The parent section is
@@ -119,93 +95,55 @@ func (s *CSSSection) File() gio.File {
 // original CSS document that was loaded by gtk_css_provider_load_from_file() or
 // a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
 // from a different file.
-func (s *CSSSection) Parent() *CSSSection {
+func (s *CSSSection) Parent(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkCssSection
-	var ret1 *CSSSection
-
-	cret = C.gtk_css_section_get_parent(arg0)
-
-	ret1 = WrapCSSSection(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_css_section_get_parent(arg0)
 }
 
 // SectionType gets the type of information that @section describes.
-func (s *CSSSection) SectionType() CSSSectionType {
+func (s *CSSSection) SectionType(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkCssSectionType
-	var ret1 CSSSectionType
-
-	cret = C.gtk_css_section_get_section_type(arg0)
-
-	ret1 = CSSSectionType(cret)
-
-	return ret1
+	C.gtk_css_section_get_section_type(arg0)
 }
 
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
-func (s *CSSSection) StartLine() uint {
+func (s *CSSSection) StartLine(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_css_section_get_start_line(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_css_section_get_start_line(arg0)
 }
 
 // StartPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_start_line().
-func (s *CSSSection) StartPosition() uint {
+func (s *CSSSection) StartPosition(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_css_section_get_start_position(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_css_section_get_start_position(arg0)
 }
 
 // Ref increments the reference count on @section.
-func (s *CSSSection) Ref() *CSSSection {
+func (s *CSSSection) Ref(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkCssSection
-	var ret1 *CSSSection
-
-	cret = C.gtk_css_section_ref(arg0)
-
-	ret1 = WrapCSSSection(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *CSSSection) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_css_section_ref(arg0)
 }
 
 // Unref decrements the reference count on @section, freeing the structure if
 // the reference count reaches 0.
-func (s *CSSSection) Unref() {
+func (s *CSSSection) Unref(s *CSSSection) {
 	var arg0 *C.GtkCssSection
 
 	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))

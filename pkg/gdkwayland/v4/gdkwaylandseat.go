@@ -23,7 +23,7 @@ type WaylandSeat interface {
 	gdk.Seat
 
 	// WlSeat returns the Wayland `wl_seat` of a Seat.
-	WlSeat() interface{}
+	WlSeat(s WaylandSeat)
 }
 
 // waylandSeat implements the WaylandSeat interface.
@@ -48,17 +48,10 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 }
 
 // WlSeat returns the Wayland `wl_seat` of a Seat.
-func (s waylandSeat) WlSeat() interface{} {
+func (s waylandSeat) WlSeat(s WaylandSeat) {
 	var arg0 *C.GdkSeat
 
 	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret *C.wl_seat
-	var ret1 interface{}
-
-	cret = C.gdk_wayland_seat_get_wl_seat(arg0)
-
-	ret1 = *C.wl_seat(cret)
-
-	return ret1
+	C.gdk_wayland_seat_get_wl_seat(arg0)
 }

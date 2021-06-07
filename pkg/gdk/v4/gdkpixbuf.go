@@ -2,14 +2,6 @@
 
 package gdk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -21,7 +13,7 @@ import "C"
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
-func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
+func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) {
 	var arg1 *C.cairo_surface_t
 	var arg2 C.int
 	var arg3 C.int
@@ -34,30 +26,16 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	arg4 = C.int(width)
 	arg5 = C.int(height)
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
-
-	cret = C.gdk_pixbuf_get_from_surface(surface, srcX, srcY, width, height)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return ret1
+	C.gdk_pixbuf_get_from_surface(arg1, arg2, arg3, arg4, arg5)
 }
 
 // PixbufGetFromTexture creates a new pixbuf from @texture. This should
 // generally not be used in newly written code as later stages will almost
 // certainly convert the pixbuf back into a texture to draw it on screen.
-func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
+func PixbufGetFromTexture(texture Texture) {
 	var arg1 *C.GdkTexture
 
 	arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
-
-	cret = C.gdk_pixbuf_get_from_texture(texture)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return ret1
+	C.gdk_pixbuf_get_from_texture(arg1)
 }

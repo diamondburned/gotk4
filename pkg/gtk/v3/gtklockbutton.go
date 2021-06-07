@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,9 +57,9 @@ type LockButton interface {
 	Buildable
 
 	// Permission obtains the #GPermission object that controls @button.
-	Permission() gio.Permission
+	Permission(b LockButton)
 	// SetPermission sets the #GPermission object that controls @button.
-	SetPermission(permission gio.Permission)
+	SetPermission(b LockButton, permission gio.Permission)
 }
 
 // lockButton implements the LockButton interface.
@@ -94,44 +90,30 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 }
 
 // NewLockButton constructs a class LockButton.
-func NewLockButton(permission gio.Permission) LockButton {
+func NewLockButton(permission gio.Permission) {
 	var arg1 *C.GPermission
 
 	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
-	var cret C.GtkLockButton
-	var ret1 LockButton
-
-	cret = C.gtk_lock_button_new(permission)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
-
-	return ret1
+	C.gtk_lock_button_new(arg1)
 }
 
 // Permission obtains the #GPermission object that controls @button.
-func (b lockButton) Permission() gio.Permission {
+func (b lockButton) Permission(b LockButton) {
 	var arg0 *C.GtkLockButton
 
 	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GPermission
-	var ret1 gio.Permission
-
-	cret = C.gtk_lock_button_get_permission(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
-
-	return ret1
+	C.gtk_lock_button_get_permission(arg0)
 }
 
 // SetPermission sets the #GPermission object that controls @button.
-func (b lockButton) SetPermission(permission gio.Permission) {
+func (b lockButton) SetPermission(b LockButton, permission gio.Permission) {
 	var arg0 *C.GtkLockButton
 	var arg1 *C.GPermission
 
 	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
-	C.gtk_lock_button_set_permission(arg0, permission)
+	C.gtk_lock_button_set_permission(arg0, arg1)
 }

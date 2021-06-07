@@ -2,11 +2,11 @@
 
 package gtk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
+
+func CSSParserWarningQuark() {
+	C.gtk_css_parser_warning_quark()
+}

@@ -39,10 +39,14 @@ func (s *SList) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (s *SList) Data() interface{} {
-	v = C.gpointer(s.native.data)
+	var v interface{}
+	v = interface{}(s.native.data)
+	return v
 }
 
 // Next gets the field inside the struct.
 func (s *SList) Next() *SList {
+	var v *SList
 	v = WrapSList(unsafe.Pointer(s.native.next))
+	return v
 }

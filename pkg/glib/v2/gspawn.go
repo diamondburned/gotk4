@@ -3,11 +3,7 @@
 package glib
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -41,8 +37,8 @@ const (
 	SpawnErrorNametoolong SpawnError = 7
 	// SpawnErrorNoent: execv() returned `ENOENT`
 	SpawnErrorNoent SpawnError = 8
-	// SpawnErrorNomem: execv() returned `ENOMEM`
-	SpawnErrorNomem SpawnError = 9
+	// SpawnErrorNOMEM: execv() returned `ENOMEM`
+	SpawnErrorNOMEM SpawnError = 9
 	// SpawnErrorNotdir: execv() returned `ENOTDIR`
 	SpawnErrorNotdir SpawnError = 10
 	// SpawnErrorLoop: execv() returned `ELOOP`
@@ -72,39 +68,39 @@ type SpawnFlags int
 
 const (
 	// SpawnFlagsDefault: no flags, default behaviour
-	SpawnFlagsDefault SpawnFlags = 0b0
+	SpawnFlagsDefault SpawnFlags = 0
 	// SpawnFlagsLeaveDescriptorsOpen: the parent's open file descriptors will
 	// be inherited by the child; otherwise all descriptors except stdin, stdout
 	// and stderr will be closed before calling exec() in the child.
-	SpawnFlagsLeaveDescriptorsOpen SpawnFlags = 0b1
+	SpawnFlagsLeaveDescriptorsOpen SpawnFlags = 1
 	// SpawnFlagsDoNotReapChild: the child will not be automatically reaped; you
 	// must use g_child_watch_add() yourself (or call waitpid() or handle
 	// `SIGCHLD` yourself), or the child will become a zombie.
-	SpawnFlagsDoNotReapChild SpawnFlags = 0b10
+	SpawnFlagsDoNotReapChild SpawnFlags = 2
 	// SpawnFlagsSearchPath: `argv[0]` need not be an absolute path, it will be
 	// looked for in the user's `PATH`.
-	SpawnFlagsSearchPath SpawnFlags = 0b100
+	SpawnFlagsSearchPath SpawnFlags = 4
 	// SpawnFlagsStdoutToDevNull: the child's standard output will be discarded,
 	// instead of going to the same location as the parent's standard output.
-	SpawnFlagsStdoutToDevNull SpawnFlags = 0b1000
+	SpawnFlagsStdoutToDevNull SpawnFlags = 8
 	// SpawnFlagsStderrToDevNull: the child's standard error will be discarded.
-	SpawnFlagsStderrToDevNull SpawnFlags = 0b10000
+	SpawnFlagsStderrToDevNull SpawnFlags = 16
 	// SpawnFlagsChildInheritsStdin: the child will inherit the parent's
 	// standard input (by default, the child's standard input is attached to
 	// `/dev/null`).
-	SpawnFlagsChildInheritsStdin SpawnFlags = 0b100000
+	SpawnFlagsChildInheritsStdin SpawnFlags = 32
 	// SpawnFlagsFileAndArgvZero: the first element of `argv` is the file to
 	// execute, while the remaining elements are the actual argument vector to
 	// pass to the file. Normally g_spawn_async_with_pipes() uses `argv[0]` as
 	// the file to execute, and passes all of `argv` to the child.
-	SpawnFlagsFileAndArgvZero SpawnFlags = 0b1000000
+	SpawnFlagsFileAndArgvZero SpawnFlags = 64
 	// SpawnFlagsSearchPathFromEnvp: if `argv[0]` is not an absolute path, it
 	// will be looked for in the `PATH` from the passed child environment.
 	// Since: 2.34
-	SpawnFlagsSearchPathFromEnvp SpawnFlags = 0b10000000
+	SpawnFlagsSearchPathFromEnvp SpawnFlags = 128
 	// SpawnFlagsCloexecPipes: create all pipes with the `O_CLOEXEC` flag set.
 	// Since: 2.40
-	SpawnFlagsCloexecPipes SpawnFlags = 0b100000000
+	SpawnFlagsCloexecPipes SpawnFlags = 256
 )
 
 // SpawnChildSetupFunc specifies the type of the setup function passed to
@@ -187,13 +183,13 @@ func SpawnCheckExitStatus(exitStatus int) error {
 	arg1 = C.gint(exitStatus)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_spawn_check_exit_status(exitStatus, &errout)
+	C.g_spawn_check_exit_status(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -212,13 +208,13 @@ func SpawnCommandLineAsync(commandLine string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_spawn_command_line_async(commandLine, &errout)
+	C.g_spawn_command_line_async(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
@@ -248,15 +244,15 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 **C.gchar
-	var ret2 []byte
+	var standardOutput []byte
 	var arg3 **C.gchar
-	var ret3 []byte
+	var standardError []byte
 	var arg4 C.gint
-	var ret4 int
+	var exitStatus int
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_spawn_command_line_sync(commandLine, &arg2, &arg3, &arg4, &errout)
+	C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4, &errout)
 
 	{
 		var length int
@@ -267,10 +263,10 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			}
 		}
 
-		ret2 = make([]byte, length)
+		standardOutput = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg2), i))
-			ret2[i] = C.guint8(src)
+			standardOutput[i] = byte(src)
 		}
 	}
 	{
@@ -282,14 +278,14 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			}
 		}
 
-		ret3 = make([]byte, length)
+		standardError = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg3), i))
-			ret3[i] = C.guint8(src)
+			standardError[i] = byte(src)
 		}
 	}
-	*ret4 = C.gint(arg4)
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	exitStatus = int(&arg4)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret2, ret3, ret4, goerr
+	return standardOutput, standardError, exitStatus, err
 }

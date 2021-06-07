@@ -16,5 +16,5 @@ func SynthesizeWindowState(window Window, unsetFlags WindowState, setFlags Windo
 	arg2 = (C.GdkWindowState)(unsetFlags)
 	arg3 = (C.GdkWindowState)(setFlags)
 
-	C.gdk_synthesize_window_state(window, unsetFlags, setFlags)
+	C.gdk_synthesize_window_state(arg1, arg2, arg3)
 }

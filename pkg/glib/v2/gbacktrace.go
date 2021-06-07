@@ -2,10 +2,6 @@
 
 package glib
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -59,7 +55,7 @@ func OnErrorQuery(prgName string) {
 	arg1 = (*C.gchar)(C.CString(prgName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_on_error_query(prgName)
+	C.g_on_error_query(arg1)
 }
 
 // OnErrorStackTrace invokes gdb, which attaches to the current process and
@@ -80,5 +76,5 @@ func OnErrorStackTrace(prgName string) {
 	arg1 = (*C.gchar)(C.CString(prgName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_on_error_stack_trace(prgName)
+	C.g_on_error_stack_trace(arg1)
 }

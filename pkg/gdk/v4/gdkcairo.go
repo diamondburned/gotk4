@@ -2,13 +2,6 @@
 
 package gdk
 
-import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -51,7 +44,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 	arg8 = C.int(width)
 	arg9 = C.int(height)
 
-	C.gdk_cairo_draw_from_gl(cr, surface, source, sourceType, bufferScale, x, y, width, height)
+	C.gdk_cairo_draw_from_gl(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
@@ -62,7 +55,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
 
-	C.gdk_cairo_rectangle(cr, rectangle)
+	C.gdk_cairo_rectangle(arg1, arg2)
 }
 
 // CairoRegion adds the given region to the current path of @cr.
@@ -73,7 +66,7 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
-	C.gdk_cairo_region(cr, region)
+	C.gdk_cairo_region(arg1, arg2)
 }
 
 // CairoRegionCreateFromSurface creates region that describes covers the area
@@ -81,22 +74,12 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
-func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
+func CairoRegionCreateFromSurface(surface *cairo.Surface) {
 	var arg1 *C.cairo_surface_t
 
 	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
-	var cret *C.cairo_region_t
-	var ret1 *cairo.Region
-
-	cret = C.gdk_cairo_region_create_from_surface(surface)
-
-	ret1 = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_cairo_region_create_from_surface(arg1)
 }
 
 // CairoSetSourcePixbuf sets the given pixbuf as the source pattern for @cr.
@@ -114,7 +97,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 	arg3 = C.double(pixbufX)
 	arg4 = C.double(pixbufY)
 
-	C.gdk_cairo_set_source_pixbuf(cr, pixbuf, pixbufX, pixbufY)
+	C.gdk_cairo_set_source_pixbuf(arg1, arg2, arg3, arg4)
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
@@ -125,5 +108,5 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
-	C.gdk_cairo_set_source_rgba(cr, rgba)
+	C.gdk_cairo_set_source_rgba(arg1, arg2)
 }

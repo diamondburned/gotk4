@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -49,7 +48,7 @@ type Filter interface {
 	//
 	// This function is intended for implementors of Filter subclasses and
 	// should not be called from other functions.
-	Changed(change FilterChange)
+	Changed(s Filter, change FilterChange)
 	// Strictness gets the known strictness of @filters. If the strictness is
 	// not known, GTK_FILTER_MATCH_SOME is returned.
 	//
@@ -57,9 +56,9 @@ type Filter interface {
 	//
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
-	Strictness() FilterMatch
+	Strictness(s Filter)
 	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
+	Match(s Filter, item gextras.Objector) bool
 }
 
 // filter implements the Filter interface.
@@ -92,14 +91,14 @@ func marshalFilter(p uintptr) (interface{}, error) {
 //
 // This function is intended for implementors of Filter subclasses and
 // should not be called from other functions.
-func (s filter) Changed(change FilterChange) {
+func (s filter) Changed(s Filter, change FilterChange) {
 	var arg0 *C.GtkFilter
 	var arg1 C.GtkFilterChange
 
 	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkFilterChange)(change)
 
-	C.gtk_filter_changed(arg0, change)
+	C.gtk_filter_changed(arg0, arg1)
 }
 
 // Strictness gets the known strictness of @filters. If the strictness is
@@ -109,23 +108,16 @@ func (s filter) Changed(change FilterChange) {
 //
 // This function is meant purely for optimization purposes, filters can
 // choose to omit implementing it, but FilterListModel uses it.
-func (s filter) Strictness() FilterMatch {
+func (s filter) Strictness(s Filter) {
 	var arg0 *C.GtkFilter
 
 	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkFilterMatch
-	var ret1 FilterMatch
-
-	cret = C.gtk_filter_get_strictness(arg0)
-
-	ret1 = FilterMatch(cret)
-
-	return ret1
+	C.gtk_filter_get_strictness(arg0)
 }
 
 // Match checks if the given @item is matched by the filter or not.
-func (s filter) Match(item gextras.Objector) bool {
+func (s filter) Match(s Filter, item gextras.Objector) bool {
 	var arg0 *C.GtkFilter
 	var arg1 C.gpointer
 
@@ -133,11 +125,13 @@ func (s filter) Match(item gextras.Objector) bool {
 	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_filter_match(arg0, item)
+	cret = C.gtk_filter_match(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

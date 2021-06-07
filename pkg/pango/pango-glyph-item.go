@@ -3,17 +3,14 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <pango/pango.h>
 import "C"
 
@@ -56,12 +53,16 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 
 // Item gets the field inside the struct.
 func (g *GlyphItem) Item() *Item {
+	var v *Item
 	v = WrapItem(unsafe.Pointer(g.native.item))
+	return v
 }
 
 // Glyphs gets the field inside the struct.
 func (g *GlyphItem) Glyphs() *GlyphString {
+	var v *GlyphString
 	v = WrapGlyphString(unsafe.Pointer(g.native.glyphs))
+	return v
 }
 
 // ApplyAttrs splits a shaped item (`PangoGlyphItem`) into multiple items based
@@ -81,7 +82,7 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //
 // This function takes ownership of @glyph_item; it will be reused as one of the
 // elements in the list.
-func (g *GlyphItem) ApplyAttrs(text string, list *AttrList) *glib.SList {
+func (g *GlyphItem) ApplyAttrs(g *GlyphItem, text string, list *AttrList) {
 	var arg0 *C.PangoGlyphItem
 	var arg1 *C.char
 	var arg2 *C.PangoAttrList
@@ -91,40 +92,20 @@ func (g *GlyphItem) ApplyAttrs(text string, list *AttrList) *glib.SList {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.PangoAttrList)(unsafe.Pointer(list.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.pango_glyph_item_apply_attrs(arg0, text, list)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_glyph_item_apply_attrs(arg0, arg1, arg2)
 }
 
 // Copy: make a deep copy of an existing `PangoGlyphItem` structure.
-func (o *GlyphItem) Copy() *GlyphItem {
+func (o *GlyphItem) Copy(o *GlyphItem) {
 	var arg0 *C.PangoGlyphItem
 
 	arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
 
-	var cret *C.PangoGlyphItem
-	var ret1 *GlyphItem
-
-	cret = C.pango_glyph_item_copy(arg0)
-
-	ret1 = WrapGlyphItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_glyph_item_copy(arg0)
 }
 
 // Free frees a `PangoGlyphItem` and resources to which it points.
-func (g *GlyphItem) Free() {
+func (g *GlyphItem) Free(g *GlyphItem) {
 	var arg0 *C.PangoGlyphItem
 
 	arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g.Native()))
@@ -142,7 +123,7 @@ func (g *GlyphItem) Free() {
 //
 // This function is similar in function to pango_item_split() (and uses it
 // internally.)
-func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
+func (o *GlyphItem) Split(o *GlyphItem, text string, splitIndex int) {
 	var arg0 *C.PangoGlyphItem
 	var arg1 *C.char
 	var arg2 C.int
@@ -152,17 +133,7 @@ func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(splitIndex)
 
-	var cret *C.PangoGlyphItem
-	var ret1 *GlyphItem
-
-	cret = C.pango_glyph_item_split(arg0, text, splitIndex)
-
-	ret1 = WrapGlyphItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_glyph_item_split(arg0, arg1, arg2)
 }
 
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
@@ -223,65 +194,71 @@ func (g *GlyphItemIter) Native() unsafe.Pointer {
 
 // GlyphItem gets the field inside the struct.
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
+	var v *GlyphItem
 	v = WrapGlyphItem(unsafe.Pointer(g.native.glyph_item))
+	return v
 }
 
 // Text gets the field inside the struct.
 func (g *GlyphItemIter) Text() string {
+	var v string
 	v = C.GoString(g.native.text)
+	return v
 }
 
 // StartGlyph gets the field inside the struct.
 func (g *GlyphItemIter) StartGlyph() int {
-	v = C.int(g.native.start_glyph)
+	var v int
+	v = int(g.native.start_glyph)
+	return v
 }
 
 // StartIndex gets the field inside the struct.
 func (g *GlyphItemIter) StartIndex() int {
-	v = C.int(g.native.start_index)
+	var v int
+	v = int(g.native.start_index)
+	return v
 }
 
 // StartChar gets the field inside the struct.
 func (g *GlyphItemIter) StartChar() int {
-	v = C.int(g.native.start_char)
+	var v int
+	v = int(g.native.start_char)
+	return v
 }
 
 // EndGlyph gets the field inside the struct.
 func (g *GlyphItemIter) EndGlyph() int {
-	v = C.int(g.native.end_glyph)
+	var v int
+	v = int(g.native.end_glyph)
+	return v
 }
 
 // EndIndex gets the field inside the struct.
 func (g *GlyphItemIter) EndIndex() int {
-	v = C.int(g.native.end_index)
+	var v int
+	v = int(g.native.end_index)
+	return v
 }
 
 // EndChar gets the field inside the struct.
 func (g *GlyphItemIter) EndChar() int {
-	v = C.int(g.native.end_char)
+	var v int
+	v = int(g.native.end_char)
+	return v
 }
 
 // Copy: make a shallow copy of an existing `PangoGlyphItemIter` structure.
-func (o *GlyphItemIter) Copy() *GlyphItemIter {
+func (o *GlyphItemIter) Copy(o *GlyphItemIter) {
 	var arg0 *C.PangoGlyphItemIter
 
 	arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(o.Native()))
 
-	var cret *C.PangoGlyphItemIter
-	var ret1 *GlyphItemIter
-
-	cret = C.pango_glyph_item_iter_copy(arg0)
-
-	ret1 = WrapGlyphItemIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *GlyphItemIter) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_glyph_item_iter_copy(arg0)
 }
 
 // Free frees a `PangoGlyphItem`Iter.
-func (i *GlyphItemIter) Free() {
+func (i *GlyphItemIter) Free(i *GlyphItemIter) {
 	var arg0 *C.PangoGlyphItemIter
 
 	arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
@@ -293,7 +270,7 @@ func (i *GlyphItemIter) Free() {
 // cluster in a glyph item.
 //
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
+func (i *GlyphItemIter) InitEnd(i *GlyphItemIter, glyphItem *GlyphItem, text string) bool {
 	var arg0 *C.PangoGlyphItemIter
 	var arg1 *C.PangoGlyphItem
 	var arg2 *C.char
@@ -304,20 +281,22 @@ func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_glyph_item_iter_init_end(arg0, glyphItem, text)
+	cret = C.pango_glyph_item_iter_init_end(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // InitStart initializes a `PangoGlyphItemIter` structure to point to the first
 // cluster in a glyph item.
 //
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
+func (i *GlyphItemIter) InitStart(i *GlyphItemIter, glyphItem *GlyphItem, text string) bool {
 	var arg0 *C.PangoGlyphItemIter
 	var arg1 *C.PangoGlyphItem
 	var arg2 *C.char
@@ -328,46 +307,52 @@ func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_glyph_item_iter_init_start(arg0, glyphItem, text)
+	cret = C.pango_glyph_item_iter_init_start(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // NextCluster advances the iterator to the next cluster in the glyph item.
 //
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) NextCluster() bool {
+func (i *GlyphItemIter) NextCluster(i *GlyphItemIter) bool {
 	var arg0 *C.PangoGlyphItemIter
 
 	arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_glyph_item_iter_next_cluster(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // PrevCluster moves the iterator to the preceding cluster in the glyph item.
 // See `PangoGlyphItemIter` for details of cluster orders.
-func (i *GlyphItemIter) PrevCluster() bool {
+func (i *GlyphItemIter) PrevCluster(i *GlyphItemIter) bool {
 	var arg0 *C.PangoGlyphItemIter
 
 	arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_glyph_item_iter_prev_cluster(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

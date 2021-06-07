@@ -14,66 +14,38 @@ import "C"
 
 // RandomDouble returns a random #gdouble equally distributed over the range
 // [0..1).
-func RandomDouble() float64 {
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.g_random_double()
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+func RandomDouble() {
+	C.g_random_double()
 }
 
 // RandomDoubleRange returns a random #gdouble equally distributed over the
 // range [@begin..@end).
-func RandomDoubleRange(begin float64, end float64) float64 {
+func RandomDoubleRange(begin float64, end float64) {
 	var arg1 C.gdouble
 	var arg2 C.gdouble
 
 	arg1 = C.gdouble(begin)
 	arg2 = C.gdouble(end)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.g_random_double_range(begin, end)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.g_random_double_range(arg1, arg2)
 }
 
 // RandomInt: return a random #guint32 equally distributed over the range
 // [0..2^32-1].
-func RandomInt() uint32 {
-	var cret C.guint32
-	var ret1 uint32
-
-	cret = C.g_random_int()
-
-	ret1 = C.guint32(cret)
-
-	return ret1
+func RandomInt() {
+	C.g_random_int()
 }
 
 // RandomIntRange returns a random #gint32 equally distributed over the range
 // [@begin..@end-1].
-func RandomIntRange(begin int32, end int32) int32 {
+func RandomIntRange(begin int32, end int32) {
 	var arg1 C.gint32
 	var arg2 C.gint32
 
 	arg1 = C.gint32(begin)
 	arg2 = C.gint32(end)
 
-	var cret C.gint32
-	var ret1 int32
-
-	cret = C.g_random_int_range(begin, end)
-
-	ret1 = C.gint32(cret)
-
-	return ret1
+	C.g_random_int_range(arg1, arg2)
 }
 
 // RandomSetSeed sets the seed for the global random number generator, which is
@@ -83,7 +55,7 @@ func RandomSetSeed(seed uint32) {
 
 	arg1 = C.guint32(seed)
 
-	C.g_random_set_seed(seed)
+	C.g_random_set_seed(arg1)
 }
 
 // Rand: the GRand struct is an opaque data structure. It should only be
@@ -115,41 +87,27 @@ func (r *Rand) Native() unsafe.Pointer {
 // Copy copies a #GRand into a new one with the same exact state as before. This
 // way you can take a snapshot of the random number generator for replaying
 // later.
-func (r *Rand) Copy() *Rand {
+func (r *Rand) Copy(r *Rand) {
 	var arg0 *C.GRand
 
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GRand
-	var ret1 *Rand
-
-	cret = C.g_rand_copy(arg0)
-
-	ret1 = WrapRand(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_rand_copy(arg0)
 }
 
 // Double returns the next random #gdouble from @rand_ equally distributed over
 // the range [0..1).
-func (r *Rand) Double() float64 {
+func (r *Rand) Double(r *Rand) {
 	var arg0 *C.GRand
 
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.g_rand_double(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.g_rand_double(arg0)
 }
 
 // DoubleRange returns the next random #gdouble from @rand_ equally distributed
 // over the range [@begin..@end).
-func (r *Rand) DoubleRange(begin float64, end float64) float64 {
+func (r *Rand) DoubleRange(r *Rand, begin float64, end float64) {
 	var arg0 *C.GRand
 	var arg1 C.gdouble
 	var arg2 C.gdouble
@@ -158,18 +116,11 @@ func (r *Rand) DoubleRange(begin float64, end float64) float64 {
 	arg1 = C.gdouble(begin)
 	arg2 = C.gdouble(end)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.g_rand_double_range(arg0, begin, end)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.g_rand_double_range(arg0, arg1, arg2)
 }
 
 // Free frees the memory allocated for the #GRand.
-func (r *Rand) Free() {
+func (r *Rand) Free(r *Rand) {
 	var arg0 *C.GRand
 
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
@@ -179,24 +130,17 @@ func (r *Rand) Free() {
 
 // Int returns the next random #guint32 from @rand_ equally distributed over the
 // range [0..2^32-1].
-func (r *Rand) Int() uint32 {
+func (r *Rand) Int(r *Rand) {
 	var arg0 *C.GRand
 
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 
-	var cret C.guint32
-	var ret1 uint32
-
-	cret = C.g_rand_int(arg0)
-
-	ret1 = C.guint32(cret)
-
-	return ret1
+	C.g_rand_int(arg0)
 }
 
 // IntRange returns the next random #gint32 from @rand_ equally distributed over
 // the range [@begin..@end-1].
-func (r *Rand) IntRange(begin int32, end int32) int32 {
+func (r *Rand) IntRange(r *Rand, begin int32, end int32) {
 	var arg0 *C.GRand
 	var arg1 C.gint32
 	var arg2 C.gint32
@@ -205,32 +149,25 @@ func (r *Rand) IntRange(begin int32, end int32) int32 {
 	arg1 = C.gint32(begin)
 	arg2 = C.gint32(end)
 
-	var cret C.gint32
-	var ret1 int32
-
-	cret = C.g_rand_int_range(arg0, begin, end)
-
-	ret1 = C.gint32(cret)
-
-	return ret1
+	C.g_rand_int_range(arg0, arg1, arg2)
 }
 
 // SetSeed sets the seed for the random number generator #GRand to @seed.
-func (r *Rand) SetSeed(seed uint32) {
+func (r *Rand) SetSeed(r *Rand, seed uint32) {
 	var arg0 *C.GRand
 	var arg1 C.guint32
 
 	arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
 	arg1 = C.guint32(seed)
 
-	C.g_rand_set_seed(arg0, seed)
+	C.g_rand_set_seed(arg0, arg1)
 }
 
 // SetSeedArray initializes the random number generator by an array of longs.
 // Array can be of arbitrary size, though only the first 624 values are taken.
 // This function is useful if you have many low entropy seeds, or if you require
 // more then 32 bits of actual entropy for your application.
-func (r *Rand) SetSeedArray(seed uint32, seedLength uint) {
+func (r *Rand) SetSeedArray(r *Rand, seed uint32, seedLength uint) {
 	var arg0 *C.GRand
 	var arg1 *C.guint32
 	var arg2 C.guint
@@ -239,5 +176,5 @@ func (r *Rand) SetSeedArray(seed uint32, seedLength uint) {
 	arg1 = *C.guint32(seed)
 	arg2 = C.guint(seedLength)
 
-	C.g_rand_set_seed_array(arg0, seed, seedLength)
+	C.g_rand_set_seed_array(arg0, arg1, arg2)
 }

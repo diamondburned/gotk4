@@ -3,16 +3,12 @@
 package gtk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -70,25 +66,25 @@ type Calendar interface {
 	Buildable
 
 	// ClearMarks: remove all visual markers.
-	ClearMarks()
+	ClearMarks(c Calendar)
 	// Date obtains the selected date from a Calendar.
-	Date() (year uint, month uint, day uint)
+	Date(c Calendar) (year uint, month uint, day uint)
 	// DayIsMarked returns if the @day of the @calendar is already marked.
-	DayIsMarked(day uint) bool
+	DayIsMarked(c Calendar, day uint) bool
 	// DetailHeightRows queries the height of detail cells, in rows. See
 	// Calendar:detail-width-chars.
-	DetailHeightRows() int
+	DetailHeightRows(c Calendar)
 	// DetailWidthChars queries the width of detail cells, in characters. See
 	// Calendar:detail-width-chars.
-	DetailWidthChars() int
+	DetailWidthChars(c Calendar)
 	// DisplayOptions returns the current display options of @calendar.
-	DisplayOptions() CalendarDisplayOptions
+	DisplayOptions(c Calendar)
 	// MarkDay places a visual marker on a particular day.
-	MarkDay(day uint)
+	MarkDay(c Calendar, day uint)
 	// SelectDay selects a day from the current month.
-	SelectDay(day uint)
+	SelectDay(c Calendar, day uint)
 	// SelectMonth shifts the calendar to a different month.
-	SelectMonth(month uint, year uint)
+	SelectMonth(c Calendar, month uint, year uint)
 	// SetDetailFunc installs a function which provides Pango markup with detail
 	// information for each day. Examples for such details are holidays or
 	// appointments. That information is shown below each day when
@@ -98,18 +94,18 @@ type Calendar interface {
 	//
 	// The size of the details area can be restricted by setting the
 	// Calendar:detail-width-chars and Calendar:detail-height-rows properties.
-	SetDetailFunc(fn CalendarDetailFunc)
+	SetDetailFunc(c Calendar)
 	// SetDetailHeightRows updates the height of detail cells. See
 	// Calendar:detail-height-rows.
-	SetDetailHeightRows(rows int)
+	SetDetailHeightRows(c Calendar, rows int)
 	// SetDetailWidthChars updates the width of detail cells. See
 	// Calendar:detail-width-chars.
-	SetDetailWidthChars(chars int)
+	SetDetailWidthChars(c Calendar, chars int)
 	// SetDisplayOptions sets display options (whether to display the heading
 	// and the month headings).
-	SetDisplayOptions(flags CalendarDisplayOptions)
+	SetDisplayOptions(c Calendar, flags CalendarDisplayOptions)
 	// UnmarkDay removes the visual marker from a particular day.
-	UnmarkDay(day uint)
+	UnmarkDay(c Calendar, day uint)
 }
 
 // calendar implements the Calendar interface.
@@ -136,19 +132,12 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 }
 
 // NewCalendar constructs a class Calendar.
-func NewCalendar() Calendar {
-	var cret C.GtkCalendar
-	var ret1 Calendar
-
-	cret = C.gtk_calendar_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
-
-	return ret1
+func NewCalendar() {
+	C.gtk_calendar_new()
 }
 
 // ClearMarks: remove all visual markers.
-func (c calendar) ClearMarks() {
+func (c calendar) ClearMarks(c Calendar) {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
@@ -157,29 +146,29 @@ func (c calendar) ClearMarks() {
 }
 
 // Date obtains the selected date from a Calendar.
-func (c calendar) Date() (year uint, month uint, day uint) {
+func (c calendar) Date(c Calendar) (year uint, month uint, day uint) {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
 	var arg1 C.guint
-	var ret1 uint
+	var year uint
 	var arg2 C.guint
-	var ret2 uint
+	var month uint
 	var arg3 C.guint
-	var ret3 uint
+	var day uint
 
 	C.gtk_calendar_get_date(arg0, &arg1, &arg2, &arg3)
 
-	*ret1 = C.guint(arg1)
-	*ret2 = C.guint(arg2)
-	*ret3 = C.guint(arg3)
+	year = uint(&arg1)
+	month = uint(&arg2)
+	day = uint(&arg3)
 
-	return ret1, ret2, ret3
+	return year, month, day
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
-func (c calendar) DayIsMarked(day uint) bool {
+func (c calendar) DayIsMarked(c Calendar, day uint) bool {
 	var arg0 *C.GtkCalendar
 	var arg1 C.guint
 
@@ -187,89 +176,70 @@ func (c calendar) DayIsMarked(day uint) bool {
 	arg1 = C.guint(day)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_calendar_get_day_is_marked(arg0, day)
+	cret = C.gtk_calendar_get_day_is_marked(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DetailHeightRows queries the height of detail cells, in rows. See
 // Calendar:detail-width-chars.
-func (c calendar) DetailHeightRows() int {
+func (c calendar) DetailHeightRows(c Calendar) {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_calendar_get_detail_height_rows(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_calendar_get_detail_height_rows(arg0)
 }
 
 // DetailWidthChars queries the width of detail cells, in characters. See
 // Calendar:detail-width-chars.
-func (c calendar) DetailWidthChars() int {
+func (c calendar) DetailWidthChars(c Calendar) {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_calendar_get_detail_width_chars(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_calendar_get_detail_width_chars(arg0)
 }
 
 // DisplayOptions returns the current display options of @calendar.
-func (c calendar) DisplayOptions() CalendarDisplayOptions {
+func (c calendar) DisplayOptions(c Calendar) {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var cret C.GtkCalendarDisplayOptions
-	var ret1 CalendarDisplayOptions
-
-	cret = C.gtk_calendar_get_display_options(arg0)
-
-	ret1 = CalendarDisplayOptions(cret)
-
-	return ret1
+	C.gtk_calendar_get_display_options(arg0)
 }
 
 // MarkDay places a visual marker on a particular day.
-func (c calendar) MarkDay(day uint) {
+func (c calendar) MarkDay(c Calendar, day uint) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.guint
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 	arg1 = C.guint(day)
 
-	C.gtk_calendar_mark_day(arg0, day)
+	C.gtk_calendar_mark_day(arg0, arg1)
 }
 
 // SelectDay selects a day from the current month.
-func (c calendar) SelectDay(day uint) {
+func (c calendar) SelectDay(c Calendar, day uint) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.guint
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 	arg1 = C.guint(day)
 
-	C.gtk_calendar_select_day(arg0, day)
+	C.gtk_calendar_select_day(arg0, arg1)
 }
 
 // SelectMonth shifts the calendar to a different month.
-func (c calendar) SelectMonth(month uint, year uint) {
+func (c calendar) SelectMonth(c Calendar, month uint, year uint) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.guint
 	var arg2 C.guint
@@ -278,7 +248,7 @@ func (c calendar) SelectMonth(month uint, year uint) {
 	arg1 = C.guint(month)
 	arg2 = C.guint(year)
 
-	C.gtk_calendar_select_month(arg0, month, year)
+	C.gtk_calendar_select_month(arg0, arg1, arg2)
 }
 
 // SetDetailFunc installs a function which provides Pango markup with detail
@@ -290,57 +260,57 @@ func (c calendar) SelectMonth(month uint, year uint) {
 //
 // The size of the details area can be restricted by setting the
 // Calendar:detail-width-chars and Calendar:detail-height-rows properties.
-func (c calendar) SetDetailFunc(fn CalendarDetailFunc) {
+func (c calendar) SetDetailFunc(c Calendar) {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	C.gtk_calendar_set_detail_func(arg0, fn, data, destroy)
+	C.gtk_calendar_set_detail_func(arg0, arg1, arg2, arg3)
 }
 
 // SetDetailHeightRows updates the height of detail cells. See
 // Calendar:detail-height-rows.
-func (c calendar) SetDetailHeightRows(rows int) {
+func (c calendar) SetDetailHeightRows(c Calendar, rows int) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.gint
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 	arg1 = C.gint(rows)
 
-	C.gtk_calendar_set_detail_height_rows(arg0, rows)
+	C.gtk_calendar_set_detail_height_rows(arg0, arg1)
 }
 
 // SetDetailWidthChars updates the width of detail cells. See
 // Calendar:detail-width-chars.
-func (c calendar) SetDetailWidthChars(chars int) {
+func (c calendar) SetDetailWidthChars(c Calendar, chars int) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.gint
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 	arg1 = C.gint(chars)
 
-	C.gtk_calendar_set_detail_width_chars(arg0, chars)
+	C.gtk_calendar_set_detail_width_chars(arg0, arg1)
 }
 
 // SetDisplayOptions sets display options (whether to display the heading
 // and the month headings).
-func (c calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
+func (c calendar) SetDisplayOptions(c Calendar, flags CalendarDisplayOptions) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.GtkCalendarDisplayOptions
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GtkCalendarDisplayOptions)(flags)
 
-	C.gtk_calendar_set_display_options(arg0, flags)
+	C.gtk_calendar_set_display_options(arg0, arg1)
 }
 
 // UnmarkDay removes the visual marker from a particular day.
-func (c calendar) UnmarkDay(day uint) {
+func (c calendar) UnmarkDay(c Calendar, day uint) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.guint
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 	arg1 = C.guint(day)
 
-	C.gtk_calendar_unmark_day(arg0, day)
+	C.gtk_calendar_unmark_day(arg0, arg1)
 }

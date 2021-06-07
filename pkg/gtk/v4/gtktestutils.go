@@ -2,13 +2,6 @@
 
 package gtk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/ptr"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -16,21 +9,15 @@ import "C"
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
-func TestListAllTypes() (nTypes uint, gTypes []externglib.Type) {
+func TestListAllTypes() uint {
+	var arg1 C.guint
+	var nTypes uint
 
-	var cret *C.GType
-	var arg1 *C.guint
-	var ret2 []externglib.Type
+	C.gtk_test_list_all_types(&arg1)
 
-	cret = C.gtk_test_list_all_types(&arg1)
+	nTypes = uint(&arg1)
 
-	ret2 = make([]externglib.Type, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		ret2[i] = externglib.Type(src)
-	}
-
-	return ret1, ret2
+	return nTypes
 }
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
@@ -52,5 +39,5 @@ func TestWidgetWaitForDraw(widget Widget) {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_test_widget_wait_for_draw(widget)
+	C.gtk_test_widget_wait_for_draw(arg1)
 }

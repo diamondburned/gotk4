@@ -6,13 +6,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -42,40 +40,26 @@ const (
 type TestLogType int
 
 const (
-	TestLogTypeNone TestLogType = 0
-
-	TestLogTypeError TestLogType = 1
-
+	TestLogTypeNone        TestLogType = 0
+	TestLogTypeError       TestLogType = 1
 	TestLogTypeStartBinary TestLogType = 2
-
-	TestLogTypeListCase TestLogType = 3
-
-	TestLogTypeSkipCase TestLogType = 4
-
-	TestLogTypeStartCase TestLogType = 5
-
-	TestLogTypeStopCase TestLogType = 6
-
-	TestLogTypeMinResult TestLogType = 7
-
-	TestLogTypeMaxResult TestLogType = 8
-
-	TestLogTypeMessage TestLogType = 9
-
-	TestLogTypeStartSuite TestLogType = 10
-
-	TestLogTypeStopSuite TestLogType = 11
+	TestLogTypeListCase    TestLogType = 3
+	TestLogTypeSkipCase    TestLogType = 4
+	TestLogTypeStartCase   TestLogType = 5
+	TestLogTypeStopCase    TestLogType = 6
+	TestLogTypeMinResult   TestLogType = 7
+	TestLogTypeMaxResult   TestLogType = 8
+	TestLogTypeMessage     TestLogType = 9
+	TestLogTypeStartSuite  TestLogType = 10
+	TestLogTypeStopSuite   TestLogType = 11
 )
 
 type TestResult int
 
 const (
-	TestResultSuccess TestResult = 0
-
-	TestResultSkipped TestResult = 1
-
-	TestResultFailure TestResult = 2
-
+	TestResultSuccess    TestResult = 0
+	TestResultSkipped    TestResult = 1
+	TestResultFailure    TestResult = 2
 	TestResultIncomplete TestResult = 3
 )
 
@@ -90,17 +74,17 @@ const (
 	// TestSubprocessFlagsStdin: if this flag is given, the child process will
 	// inherit the parent's stdin. Otherwise, the child's stdin is redirected to
 	// `/dev/null`.
-	TestSubprocessFlagsStdin TestSubprocessFlags = 0b1
+	TestSubprocessFlagsStdin TestSubprocessFlags = 1
 	// TestSubprocessFlagsStdout: if this flag is given, the child process will
 	// inherit the parent's stdout. Otherwise, the child's stdout will not be
 	// visible, but it will be captured to allow later tests with
 	// g_test_trap_assert_stdout().
-	TestSubprocessFlagsStdout TestSubprocessFlags = 0b10
+	TestSubprocessFlagsStdout TestSubprocessFlags = 2
 	// TestSubprocessFlagsStderr: if this flag is given, the child process will
 	// inherit the parent's stderr. Otherwise, the child's stderr will not be
 	// visible, but it will be captured to allow later tests with
 	// g_test_trap_assert_stderr().
-	TestSubprocessFlagsStderr TestSubprocessFlags = 0b100
+	TestSubprocessFlagsStderr TestSubprocessFlags = 4
 )
 
 // TestTrapFlags: test traps are guards around forked tests. These flags
@@ -112,16 +96,16 @@ const (
 	// `/dev/null` so it cannot be observed on the console during test runs. The
 	// actual output is still captured though to allow later tests with
 	// g_test_trap_assert_stdout().
-	TestTrapFlagsSilenceStdout TestTrapFlags = 0b10000000
+	TestTrapFlagsSilenceStdout TestTrapFlags = 128
 	// TestTrapFlagsSilenceStderr: redirect stderr of the test child to
 	// `/dev/null` so it cannot be observed on the console during test runs. The
 	// actual output is still captured though to allow later tests with
 	// g_test_trap_assert_stderr().
-	TestTrapFlagsSilenceStderr TestTrapFlags = 0b100000000
+	TestTrapFlagsSilenceStderr TestTrapFlags = 256
 	// TestTrapFlagsInheritStdin: if this flag is given, stdin of the child
 	// process is shared with stdin of its parent process. It is redirected to
 	// `/dev/null` otherwise.
-	TestTrapFlagsInheritStdin TestTrapFlags = 0b1000000000
+	TestTrapFlagsInheritStdin TestTrapFlags = 512
 )
 
 // TestDataFunc: the type used for test case functions that take an extra
@@ -199,7 +183,7 @@ func AssertionMessage(domain string, file string, line int, fn string, message s
 	arg5 = (*C.char)(C.CString(message))
 	defer C.free(unsafe.Pointer(arg5))
 
-	C.g_assertion_message(domain, file, line, fn, message)
+	C.g_assertion_message(arg1, arg2, arg3, arg4, arg5)
 }
 
 func AssertionMessageCmpstr(domain string, file string, line int, fn string, expr string, arg1 string, cmp string, arg2 string) {
@@ -228,7 +212,7 @@ func AssertionMessageCmpstr(domain string, file string, line int, fn string, exp
 	arg8 = (*C.char)(C.CString(arg2))
 	defer C.free(unsafe.Pointer(arg8))
 
-	C.g_assertion_message_cmpstr(domain, file, line, fn, expr, arg1, cmp, arg2)
+	C.g_assertion_message_cmpstr(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // AssertionMessageExpr: internal function used to print messages from the
@@ -250,12 +234,12 @@ func AssertionMessageExpr(domain string, file string, line int, fn string, expr 
 	arg5 = (*C.char)(C.CString(expr))
 	defer C.free(unsafe.Pointer(arg5))
 
-	C.g_assertion_message_expr(domain, file, line, fn, expr)
+	C.g_assertion_message_expr(arg1, arg2, arg3, arg4, arg5)
 }
 
 // Strcmp0 compares @str1 and @str2 like strcmp(). Handles nil gracefully by
 // sorting it before non-nil strings. Comparing two nil pointers returns 0.
-func Strcmp0(str1 string, str2 string) int {
+func Strcmp0(str1 string, str2 string) {
 	var arg1 *C.char
 	var arg2 *C.char
 
@@ -264,21 +248,13 @@ func Strcmp0(str1 string, str2 string) int {
 	arg2 = (*C.char)(C.CString(str2))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_strcmp0(str1, str2)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_strcmp0(arg1, arg2)
 }
 
 // TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
 // but freeing @test_data after the test run is complete.
-func TestAddDataFuncFull(testpath string, testData interface{}, testFunc TestDataFunc) {
-
-	C.g_test_add_data_func_full(testpath, testData, testFunc, dataFreeFunc)
+func TestAddDataFuncFull() {
+	C.g_test_add_data_func_full(arg1, arg2, arg3, arg4)
 }
 
 func TestAssertExpectedMessagesInternal(domain string, file string, line int, fn string) {
@@ -295,7 +271,7 @@ func TestAssertExpectedMessagesInternal(domain string, file string, line int, fn
 	arg4 = (*C.char)(C.CString(fn))
 	defer C.free(unsafe.Pointer(arg4))
 
-	C.g_test_assert_expected_messages_internal(domain, file, line, fn)
+	C.g_test_assert_expected_messages_internal(arg1, arg2, arg3, arg4)
 }
 
 // TestBug: this function adds a message to test reports that associates a bug
@@ -309,7 +285,7 @@ func TestBug(bugURISnippet string) {
 	arg1 = (*C.char)(C.CString(bugURISnippet))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_bug(bugURISnippet)
+	C.g_test_bug(arg1)
 }
 
 // TestBugBase: specify the base URI for bug reports.
@@ -329,24 +305,17 @@ func TestBugBase(uriPattern string) {
 	arg1 = (*C.char)(C.CString(uriPattern))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_bug_base(uriPattern)
+	C.g_test_bug_base(arg1)
 }
 
 // TestCreateSuite: create a new test suite with the name @suite_name.
-func TestCreateSuite(suiteName string) *TestSuite {
+func TestCreateSuite(suiteName string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(suiteName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GTestSuite
-	var ret1 *TestSuite
-
-	cret = C.g_test_create_suite(suiteName)
-
-	ret1 = WrapTestSuite(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_test_create_suite(arg1)
 }
 
 // TestExpectMessage indicates that a message with the given @log_domain and
@@ -391,7 +360,7 @@ func TestExpectMessage(logDomain string, logLevel LogLevelFlags, pattern string)
 	arg3 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_test_expect_message(logDomain, logLevel, pattern)
+	C.g_test_expect_message(arg1, arg2, arg3)
 }
 
 // TestFail indicates that a test failed. This function can be called multiple
@@ -421,13 +390,15 @@ func TestFail() {
 // inside a test function.
 func TestFailed() bool {
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_test_failed()
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // TestGetDir gets the pathname of the directory containing test files of the
@@ -435,31 +406,17 @@ func TestFailed() bool {
 //
 // This is approximately the same as calling g_test_build_filename("."), but you
 // don't need to free the return value.
-func TestGetDir(fileType TestFileType) string {
+func TestGetDir(fileType TestFileType) {
 	var arg1 C.GTestFileType
 
 	arg1 = (C.GTestFileType)(fileType)
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_test_get_dir(fileType)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_test_get_dir(arg1)
 }
 
 // TestGetRoot: get the toplevel test suite for the test path API.
-func TestGetRoot() *TestSuite {
-	var cret *C.GTestSuite
-	var ret1 *TestSuite
-
-	cret = C.g_test_get_root()
-
-	ret1 = WrapTestSuite(unsafe.Pointer(cret))
-
-	return ret1
+func TestGetRoot() {
+	C.g_test_get_root()
 }
 
 // TestIncomplete indicates that a test failed because of some incomplete
@@ -476,7 +433,7 @@ func TestIncomplete(msg string) {
 	arg1 = (*C.gchar)(C.CString(msg))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_incomplete(msg)
+	C.g_test_incomplete(arg1)
 }
 
 // TestLogSetFatalHandler installs a non-error fatal log handler which can be
@@ -498,24 +455,16 @@ func TestIncomplete(msg string) {
 // behaviour for specific log messages, programs must install a custom log
 // writer function using g_log_set_writer_func().See [Using Structured
 // Logging][using-structured-logging].
-func TestLogSetFatalHandler(logFunc TestLogFatalFunc) {
-
-	C.g_test_log_set_fatal_handler(logFunc, userData)
+func TestLogSetFatalHandler() {
+	C.g_test_log_set_fatal_handler(arg1, arg2)
 }
 
-func TestLogTypeName(logType TestLogType) string {
+func TestLogTypeName(logType TestLogType) {
 	var arg1 C.GTestLogType
 
 	arg1 = (C.GTestLogType)(logType)
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_test_log_type_name(logType)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_test_log_type_name(arg1)
 }
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
@@ -526,40 +475,26 @@ func TestQueueFree(gfreePointer interface{}) {
 
 	arg1 = C.gpointer(gfreePointer)
 
-	C.g_test_queue_free(gfreePointer)
+	C.g_test_queue_free(arg1)
 }
 
 // TestRandDouble: get a reproducible random floating point number, see
 // g_test_rand_int() for details on test case random numbers.
-func TestRandDouble() float64 {
-	var cret C.double
-	var ret1 float64
-
-	cret = C.g_test_rand_double()
-
-	ret1 = C.double(cret)
-
-	return ret1
+func TestRandDouble() {
+	C.g_test_rand_double()
 }
 
 // TestRandDoubleRange: get a reproducible random floating pointer number out of
 // a specified range, see g_test_rand_int() for details on test case random
 // numbers.
-func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64 {
+func TestRandDoubleRange(rangeStart float64, rangeEnd float64) {
 	var arg1 C.double
 	var arg2 C.double
 
 	arg1 = C.double(rangeStart)
 	arg2 = C.double(rangeEnd)
 
-	var cret C.double
-	var ret1 float64
-
-	cret = C.g_test_rand_double_range(rangeStart, rangeEnd)
-
-	ret1 = C.double(cret)
-
-	return ret1
+	C.g_test_rand_double_range(arg1, arg2)
 }
 
 // TestRandInt: get a reproducible random integer number.
@@ -571,34 +506,20 @@ func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64 {
 // For individual test cases however, the random number generator is reseeded,
 // to avoid dependencies between tests and to make --seed effective for all test
 // cases.
-func TestRandInt() int32 {
-	var cret C.gint32
-	var ret1 int32
-
-	cret = C.g_test_rand_int()
-
-	ret1 = C.gint32(cret)
-
-	return ret1
+func TestRandInt() {
+	C.g_test_rand_int()
 }
 
 // TestRandIntRange: get a reproducible random integer number out of a specified
 // range, see g_test_rand_int() for details on test case random numbers.
-func TestRandIntRange(begin int32, end int32) int32 {
+func TestRandIntRange(begin int32, end int32) {
 	var arg1 C.gint32
 	var arg2 C.gint32
 
 	arg1 = C.gint32(begin)
 	arg2 = C.gint32(end)
 
-	var cret C.gint32
-	var ret1 int32
-
-	cret = C.g_test_rand_int_range(begin, end)
-
-	ret1 = C.gint32(cret)
-
-	return ret1
+	C.g_test_rand_int_range(arg1, arg2)
 }
 
 // TestRun runs all tests under the toplevel suite which can be retrieved with
@@ -630,15 +551,8 @@ func TestRandIntRange(begin int32, end int32) int32 {
 // If all tests are skipped or marked as incomplete (expected failures), this
 // function will return 0 if producing TAP output, or 77 (treated as "skip test"
 // by Automake) otherwise.
-func TestRun() int {
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_test_run()
-
-	ret1 = C.int(cret)
-
-	return ret1
+func TestRun() {
+	C.g_test_run()
 }
 
 // TestRunSuite: execute the tests within @suite and all nested Suites. The test
@@ -647,19 +561,12 @@ func TestRun() int {
 // documentation for more information on the order that tests are run in.
 //
 // g_test_run_suite() or g_test_run() may only be called once in a program.
-func TestRunSuite(suite *TestSuite) int {
+func TestRunSuite(suite *TestSuite) {
 	var arg1 *C.GTestSuite
 
 	arg1 = (*C.GTestSuite)(unsafe.Pointer(suite.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_test_run_suite(suite)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_test_run_suite(arg1)
 }
 
 // TestSetNonfatalAssertions changes the behaviour of the various `g_assert_*()`
@@ -690,20 +597,22 @@ func TestSkip(msg string) {
 	arg1 = (*C.gchar)(C.CString(msg))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_skip(msg)
+	C.g_test_skip(arg1)
 }
 
 // TestSubprocess returns true (after g_test_init() has been called) if the test
 // program is running under g_test_trap_subprocess().
 func TestSubprocess() bool {
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_test_subprocess()
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // TestSummary: set the summary for a test, which describes what the test
@@ -729,32 +638,18 @@ func TestSummary(summary string) {
 	arg1 = (*C.char)(C.CString(summary))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_summary(summary)
+	C.g_test_summary(arg1)
 }
 
 // TestTimerElapsed: get the time since the last start of the timer with
 // g_test_timer_start().
-func TestTimerElapsed() float64 {
-	var cret C.double
-	var ret1 float64
-
-	cret = C.g_test_timer_elapsed()
-
-	ret1 = C.double(cret)
-
-	return ret1
+func TestTimerElapsed() {
+	C.g_test_timer_elapsed()
 }
 
 // TestTimerLast: report the last result of g_test_timer_elapsed().
-func TestTimerLast() float64 {
-	var cret C.double
-	var ret1 float64
-
-	cret = C.g_test_timer_last()
-
-	ret1 = C.double(cret)
-
-	return ret1
+func TestTimerLast() {
+	C.g_test_timer_last()
 }
 
 // TestTimerStart: start a timing test. Call g_test_timer_elapsed() when the
@@ -782,7 +677,7 @@ func TestTrapAssertions(domain string, file string, line int, fn string, asserti
 	arg6 = (*C.char)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(arg6))
 
-	C.g_test_trap_assertions(domain, file, line, fn, assertionFlags, pattern)
+	C.g_test_trap_assertions(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // TestTrapFork: fork the current test program to execute a test case that might
@@ -819,39 +714,45 @@ func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
 	arg2 = (C.GTestTrapFlags)(testTrapFlags)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_test_trap_fork(usecTimeout, testTrapFlags)
+	cret = C.g_test_trap_fork(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // TestTrapHasPassed: check the result of the last g_test_trap_subprocess()
 // call.
 func TestTrapHasPassed() bool {
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_test_trap_has_passed()
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // TestTrapReachedTimeout: check the result of the last g_test_trap_subprocess()
 // call.
 func TestTrapReachedTimeout() bool {
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_test_trap_reached_timeout()
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // TestTrapSubprocess respawns the test program to run only @test_path in a
@@ -919,7 +820,7 @@ func TestTrapSubprocess(testPath string, usecTimeout uint64, testFlags TestSubpr
 	arg2 = C.guint64(usecTimeout)
 	arg3 = (C.GTestSubprocessFlags)(testFlags)
 
-	C.g_test_trap_subprocess(testPath, usecTimeout, testFlags)
+	C.g_test_trap_subprocess(arg1, arg2, arg3)
 }
 
 // TestCase: an opaque structure representing a test case.
@@ -973,32 +874,56 @@ func (t *TestConfig) Native() unsafe.Pointer {
 
 // TestInitialized gets the field inside the struct.
 func (t *TestConfig) TestInitialized() bool {
-	v = C.bool(t.native.test_initialized) != C.false
+	var v bool
+	if t.native.test_initialized {
+		v = true
+	}
+	return v
 }
 
 // TestQuick gets the field inside the struct.
 func (t *TestConfig) TestQuick() bool {
-	v = C.bool(t.native.test_quick) != C.false
+	var v bool
+	if t.native.test_quick {
+		v = true
+	}
+	return v
 }
 
 // TestPerf gets the field inside the struct.
 func (t *TestConfig) TestPerf() bool {
-	v = C.bool(t.native.test_perf) != C.false
+	var v bool
+	if t.native.test_perf {
+		v = true
+	}
+	return v
 }
 
 // TestVerbose gets the field inside the struct.
 func (t *TestConfig) TestVerbose() bool {
-	v = C.bool(t.native.test_verbose) != C.false
+	var v bool
+	if t.native.test_verbose {
+		v = true
+	}
+	return v
 }
 
 // TestQuiet gets the field inside the struct.
 func (t *TestConfig) TestQuiet() bool {
-	v = C.bool(t.native.test_quiet) != C.false
+	var v bool
+	if t.native.test_quiet {
+		v = true
+	}
+	return v
 }
 
 // TestUndefined gets the field inside the struct.
 func (t *TestConfig) TestUndefined() bool {
-	v = C.bool(t.native.test_undefined) != C.false
+	var v bool
+	if t.native.test_undefined {
+		v = true
+	}
+	return v
 }
 
 type TestLogBuffer struct {
@@ -1027,7 +952,7 @@ func (t *TestLogBuffer) Native() unsafe.Pointer {
 
 // Free: internal function for gtester to free test log messages, no ABI
 // guarantees provided.
-func (t *TestLogBuffer) Free() {
+func (t *TestLogBuffer) Free(t *TestLogBuffer) {
 	var arg0 *C.GTestLogBuffer
 
 	arg0 = (*C.GTestLogBuffer)(unsafe.Pointer(t.Native()))
@@ -1037,24 +962,17 @@ func (t *TestLogBuffer) Free() {
 
 // Pop: internal function for gtester to retrieve test log messages, no ABI
 // guarantees provided.
-func (t *TestLogBuffer) Pop() *TestLogMsg {
+func (t *TestLogBuffer) Pop(t *TestLogBuffer) {
 	var arg0 *C.GTestLogBuffer
 
 	arg0 = (*C.GTestLogBuffer)(unsafe.Pointer(t.Native()))
 
-	var cret *C.GTestLogMsg
-	var ret1 *TestLogMsg
-
-	cret = C.g_test_log_buffer_pop(arg0)
-
-	ret1 = WrapTestLogMsg(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_test_log_buffer_pop(arg0)
 }
 
 // Push: internal function for gtester to decode test log messages, no ABI
 // guarantees provided.
-func (t *TestLogBuffer) Push(nBytes uint, bytes byte) {
+func (t *TestLogBuffer) Push(t *TestLogBuffer, nBytes uint, bytes byte) {
 	var arg0 *C.GTestLogBuffer
 	var arg1 C.guint
 	var arg2 *C.guint8
@@ -1063,7 +981,7 @@ func (t *TestLogBuffer) Push(nBytes uint, bytes byte) {
 	arg1 = C.guint(nBytes)
 	arg2 = *C.guint8(bytes)
 
-	C.g_test_log_buffer_push(arg0, nBytes, bytes)
+	C.g_test_log_buffer_push(arg0, arg1, arg2)
 }
 
 type TestLogMsg struct {
@@ -1092,27 +1010,35 @@ func (t *TestLogMsg) Native() unsafe.Pointer {
 
 // LogType gets the field inside the struct.
 func (t *TestLogMsg) LogType() TestLogType {
+	var v TestLogType
 	v = TestLogType(t.native.log_type)
+	return v
 }
 
 // NStrings gets the field inside the struct.
 func (t *TestLogMsg) NStrings() uint {
-	v = C.guint(t.native.n_strings)
+	var v uint
+	v = uint(t.native.n_strings)
+	return v
 }
 
 // Strings gets the field inside the struct.
 func (t *TestLogMsg) Strings() string {
+	var v string
 	v = C.GoString(t.native.strings)
+	return v
 }
 
 // NNums gets the field inside the struct.
 func (t *TestLogMsg) NNums() uint {
-	v = C.guint(t.native.n_nums)
+	var v uint
+	v = uint(t.native.n_nums)
+	return v
 }
 
 // Free: internal function for gtester to free test log messages, no ABI
 // guarantees provided.
-func (t *TestLogMsg) Free() {
+func (t *TestLogMsg) Free(t *TestLogMsg) {
 	var arg0 *C.GTestLogMsg
 
 	arg0 = (*C.GTestLogMsg)(unsafe.Pointer(t.Native()))
@@ -1146,23 +1072,23 @@ func (t *TestSuite) Native() unsafe.Pointer {
 }
 
 // Add adds @test_case to @suite.
-func (s *TestSuite) Add(testCase *TestCase) {
+func (s *TestSuite) Add(s *TestSuite, testCase *TestCase) {
 	var arg0 *C.GTestSuite
 	var arg1 *C.GTestCase
 
 	arg0 = (*C.GTestSuite)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GTestCase)(unsafe.Pointer(testCase.Native()))
 
-	C.g_test_suite_add(arg0, testCase)
+	C.g_test_suite_add(arg0, arg1)
 }
 
 // AddSuite adds @nestedsuite to @suite.
-func (s *TestSuite) AddSuite(nestedsuite *TestSuite) {
+func (s *TestSuite) AddSuite(s *TestSuite, nestedsuite *TestSuite) {
 	var arg0 *C.GTestSuite
 	var arg1 *C.GTestSuite
 
 	arg0 = (*C.GTestSuite)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GTestSuite)(unsafe.Pointer(nestedsuite.Native()))
 
-	C.g_test_suite_add_suite(arg0, nestedsuite)
+	C.g_test_suite_add_suite(arg0, arg1)
 }

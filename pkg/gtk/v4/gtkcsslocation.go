@@ -49,25 +49,35 @@ func (c *CSSLocation) Native() unsafe.Pointer {
 
 // Bytes gets the field inside the struct.
 func (c *CSSLocation) Bytes() uint {
-	v = C.gsize(c.native.bytes)
+	var v uint
+	v = uint(c.native.bytes)
+	return v
 }
 
 // Chars gets the field inside the struct.
 func (c *CSSLocation) Chars() uint {
-	v = C.gsize(c.native.chars)
+	var v uint
+	v = uint(c.native.chars)
+	return v
 }
 
 // Lines gets the field inside the struct.
 func (c *CSSLocation) Lines() uint {
-	v = C.gsize(c.native.lines)
+	var v uint
+	v = uint(c.native.lines)
+	return v
 }
 
 // LineBytes gets the field inside the struct.
 func (c *CSSLocation) LineBytes() uint {
-	v = C.gsize(c.native.line_bytes)
+	var v uint
+	v = uint(c.native.line_bytes)
+	return v
 }
 
 // LineChars gets the field inside the struct.
 func (c *CSSLocation) LineChars() uint {
-	v = C.gsize(c.native.line_chars)
+	var v uint
+	v = uint(c.native.line_chars)
+	return v
 }

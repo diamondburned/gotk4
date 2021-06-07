@@ -4,6 +4,5 @@ package gdk
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gdk/gdk.h>
 import "C"

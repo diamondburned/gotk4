@@ -3,17 +3,12 @@
 package gio
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -62,21 +57,21 @@ type VFS interface {
 	gextras.Objector
 
 	// FileForPath gets a #GFile for @path.
-	FileForPath(path string) File
+	FileForPath(v VFS, path string)
 	// FileForURI gets a #GFile for @uri.
 	//
 	// This operation never fails, but the returned object might not support any
 	// I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
-	FileForURI(uri string) File
+	FileForURI(v VFS, uri string)
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
-	SupportedURISchemes() []string
+	SupportedURISchemes(v VFS)
 	// IsActive checks if the VFS is active.
-	IsActive() bool
+	IsActive(v VFS) bool
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the @parse_name cannot be parsed by the
 	// #GVfs module.
-	ParseName(parseName string) File
+	ParseName(v VFS, parseName string)
 	// RegisterURIScheme registers @uri_func and @parse_name_func as the #GFile
 	// URI and parse name lookup functions for URIs with a scheme matching
 	// @scheme. Note that @scheme is registered only within the running
@@ -98,10 +93,10 @@ type VFS interface {
 	//
 	// It's an error to call this function twice with the same scheme. To
 	// unregister a custom URI scheme, use g_vfs_unregister_uri_scheme().
-	RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNameFunc VFSFileLookupFunc) bool
+	RegisterURIScheme(v VFS) bool
 	// UnregisterURIScheme unregisters the URI handler for @scheme previously
 	// registered with g_vfs_register_uri_scheme().
-	UnregisterURIScheme(scheme string) bool
+	UnregisterURIScheme(v VFS, scheme string) bool
 }
 
 // vfS implements the VFS interface.
@@ -126,7 +121,7 @@ func marshalVFS(p uintptr) (interface{}, error) {
 }
 
 // FileForPath gets a #GFile for @path.
-func (v vfS) FileForPath(path string) File {
+func (v vfS) FileForPath(v VFS, path string) {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -134,14 +129,7 @@ func (v vfS) FileForPath(path string) File {
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GFile
-	var ret1 File
-
-	cret = C.g_vfs_get_file_for_path(arg0, path)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-
-	return ret1
+	C.g_vfs_get_file_for_path(arg0, arg1)
 }
 
 // FileForURI gets a #GFile for @uri.
@@ -149,7 +137,7 @@ func (v vfS) FileForPath(path string) File {
 // This operation never fails, but the returned object might not support any
 // I/O operation if the URI is malformed or if the URI scheme is not
 // supported.
-func (v vfS) FileForURI(uri string) File {
+func (v vfS) FileForURI(v VFS, uri string) {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -157,66 +145,40 @@ func (v vfS) FileForURI(uri string) File {
 	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GFile
-	var ret1 File
-
-	cret = C.g_vfs_get_file_for_uri(arg0, uri)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-
-	return ret1
+	C.g_vfs_get_file_for_uri(arg0, arg1)
 }
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
-func (v vfS) SupportedURISchemes() []string {
+func (v vfS) SupportedURISchemes(v VFS) {
 	var arg0 *C.GVfs
 
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_vfs_get_supported_uri_schemes(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-		}
-	}
-
-	return ret1
+	C.g_vfs_get_supported_uri_schemes(arg0)
 }
 
 // IsActive checks if the VFS is active.
-func (v vfS) IsActive() bool {
+func (v vfS) IsActive(v VFS) bool {
 	var arg0 *C.GVfs
 
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_vfs_is_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ParseName: this operation never fails, but the returned object might not
 // support any I/O operations if the @parse_name cannot be parsed by the
 // #GVfs module.
-func (v vfS) ParseName(parseName string) File {
+func (v vfS) ParseName(v VFS, parseName string) {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -224,14 +186,7 @@ func (v vfS) ParseName(parseName string) File {
 	arg1 = (*C.char)(C.CString(parseName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GFile
-	var ret1 File
-
-	cret = C.g_vfs_parse_name(arg0, parseName)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
-
-	return ret1
+	C.g_vfs_parse_name(arg0, arg1)
 }
 
 // RegisterURIScheme registers @uri_func and @parse_name_func as the #GFile
@@ -255,24 +210,26 @@ func (v vfS) ParseName(parseName string) File {
 //
 // It's an error to call this function twice with the same scheme. To
 // unregister a custom URI scheme, use g_vfs_unregister_uri_scheme().
-func (v vfS) RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNameFunc VFSFileLookupFunc) bool {
+func (v vfS) RegisterURIScheme(v VFS) bool {
 	var arg0 *C.GVfs
 
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_vfs_register_uri_scheme(arg0, scheme, uriFunc, uriData, uriDestroy, parseNameFunc, parseNameData, parseNameDestroy)
+	cret = C.g_vfs_register_uri_scheme(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // UnregisterURIScheme unregisters the URI handler for @scheme previously
 // registered with g_vfs_register_uri_scheme().
-func (v vfS) UnregisterURIScheme(scheme string) bool {
+func (v vfS) UnregisterURIScheme(v VFS, scheme string) bool {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
@@ -281,11 +238,13 @@ func (v vfS) UnregisterURIScheme(scheme string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_vfs_unregister_uri_scheme(arg0, scheme)
+	cret = C.g_vfs_unregister_uri_scheme(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

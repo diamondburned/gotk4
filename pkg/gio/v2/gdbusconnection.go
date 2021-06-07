@@ -3,19 +3,15 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -280,9 +276,8 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 //
 // This is an asynchronous failable function. See g_bus_get_sync() for the
 // synchronous version.
-func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallback) {
-
-	C.g_bus_get(busType, cancellable, callback, userData)
+func BusGet() {
+	C.g_bus_get(arg1, arg2, arg3, arg4)
 }
 
 // BusGetFinish finishes an operation started with g_bus_get().
@@ -294,22 +289,19 @@ func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallbac
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
+func BusGetFinish(res AsyncResult) error {
 	var arg1 *C.GAsyncResult
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GDBusConnection
-	var ret2 DBusConnection
+	var err error
 
-	cret = C.g_bus_get_finish(res, &errout)
+	C.g_bus_get_finish(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // BusGetSync: synchronously connects to the message bus specified by @bus_type.
@@ -327,7 +319,7 @@ func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
+func BusGetSync(busType BusType, cancellable Cancellable) error {
 	var arg1 C.GBusType
 	var arg2 *C.GCancellable
 
@@ -335,16 +327,13 @@ func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusCo
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GDBusConnection
-	var ret2 DBusConnection
+	var err error
 
-	cret = C.g_bus_get_sync(busType, cancellable, &errout)
+	C.g_bus_get_sync(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

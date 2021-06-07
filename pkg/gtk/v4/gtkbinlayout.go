@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -52,13 +49,6 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 }
 
 // NewBinLayout constructs a class BinLayout.
-func NewBinLayout() BinLayout {
-	var cret C.GtkBinLayout
-	var ret1 BinLayout
-
-	cret = C.gtk_bin_layout_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BinLayout)
-
-	return ret1
+func NewBinLayout() {
+	C.gtk_bin_layout_new()
 }

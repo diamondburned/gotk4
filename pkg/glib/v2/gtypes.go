@@ -99,24 +99,28 @@ func (t *TimeVal) Native() unsafe.Pointer {
 
 // TvSec gets the field inside the struct.
 func (t *TimeVal) TvSec() int32 {
-	v = C.glong(t.native.tv_sec)
+	var v int32
+	v = int32(t.native.tv_sec)
+	return v
 }
 
 // TvUsec gets the field inside the struct.
 func (t *TimeVal) TvUsec() int32 {
-	v = C.glong(t.native.tv_usec)
+	var v int32
+	v = int32(t.native.tv_usec)
+	return v
 }
 
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
-func (t *TimeVal) Add(microseconds int32) {
+func (t *TimeVal) Add(t *TimeVal, microseconds int32) {
 	var arg0 *C.GTimeVal
 	var arg1 C.glong
 
 	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 	arg1 = C.glong(microseconds)
 
-	C.g_time_val_add(arg0, microseconds)
+	C.g_time_val_add(arg0, arg1)
 }
 
 // ToISO8601 converts @time_ into an RFC 3339 encoded string, relative to the
@@ -150,18 +154,10 @@ func (t *TimeVal) Add(microseconds int32) {
 //
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
-func (t *TimeVal) ToISO8601() string {
+func (t *TimeVal) ToISO8601(t *TimeVal) {
 	var arg0 *C.GTimeVal
 
 	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_time_val_to_iso8601(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_time_val_to_iso8601(arg0)
 }

@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,7 +52,7 @@ type FileIOStream interface {
 	// Etag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
-	Etag() string
+	Etag(s FileIOStream)
 	// QueryInfo queries a file io stream for the given @attributes. This
 	// function blocks while querying the stream. For the asynchronous version
 	// of this function, see g_file_io_stream_query_info_async(). While the
@@ -73,17 +69,17 @@ type FileIOStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error)
+	QueryInfo(s FileIOStream, attributes string, cancellable Cancellable) error
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_io_stream_query_info_finish().
 	//
 	// For the synchronous version of this function, see
 	// g_file_io_stream_query_info().
-	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	QueryInfoAsync(s FileIOStream)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error)
+	QueryInfoFinish(s FileIOStream, result AsyncResult) error
 }
 
 // fileIOStream implements the FileIOStream interface.
@@ -112,20 +108,12 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 // Etag gets the entity tag for the file when it has been written. This must
 // be called after the stream has been written and closed, as the etag can
 // change while writing.
-func (s fileIOStream) Etag() string {
+func (s fileIOStream) Etag(s FileIOStream) {
 	var arg0 *C.GFileIOStream
 
 	arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_file_io_stream_get_etag(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_file_io_stream_get_etag(arg0)
 }
 
 // QueryInfo queries a file io stream for the given @attributes. This
@@ -144,7 +132,7 @@ func (s fileIOStream) Etag() string {
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 // be returned.
-func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error) {
+func (s fileIOStream) QueryInfo(s FileIOStream, attributes string, cancellable Cancellable) error {
 	var arg0 *C.GFileIOStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
@@ -155,16 +143,13 @@ func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (fil
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GFileInfo
-	var ret2 FileInfo
+	var err error
 
-	cret = C.g_file_io_stream_query_info(arg0, attributes, cancellable, &errout)
+	C.g_file_io_stream_query_info(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // QueryInfoAsync: asynchronously queries the @stream for a Info. When
@@ -173,17 +158,17 @@ func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (fil
 //
 // For the synchronous version of this function, see
 // g_file_io_stream_query_info().
-func (s fileIOStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (s fileIOStream) QueryInfoAsync(s FileIOStream) {
 	var arg0 *C.GFileIOStream
 
 	arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
 
-	C.g_file_io_stream_query_info_async(arg0, attributes, ioPriority, cancellable, callback, userData)
+	C.g_file_io_stream_query_info_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_io_stream_query_info_async().
-func (s fileIOStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error) {
+func (s fileIOStream) QueryInfoFinish(s FileIOStream, result AsyncResult) error {
 	var arg0 *C.GFileIOStream
 	var arg1 *C.GAsyncResult
 
@@ -191,14 +176,11 @@ func (s fileIOStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, er
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GFileInfo
-	var ret2 FileInfo
+	var err error
 
-	cret = C.g_file_io_stream_query_info_finish(arg0, result, &errout)
+	C.g_file_io_stream_query_info_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }

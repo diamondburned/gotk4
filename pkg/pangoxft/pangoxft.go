@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: pangoxft pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <pango/pangoxft.h>
 import "C"
@@ -22,26 +21,48 @@ func init() {
 	})
 }
 
+// SetDefaultSubstitute sets a function that will be called to do final
+// configuration substitution on a Pattern before it is used to load the font.
+// This function can be used to do things like set hinting and antialiasing
+// options.
+func SetDefaultSubstitute() {
+	C.pango_xft_set_default_substitute(arg1, arg2, arg3, arg4, arg5)
+}
+
 // Font is an implementation of FcFont using the Xft library for rendering. It
 // is used in conjunction with XftFontMap.
 type Font interface {
 	pangofc.Font
 
+	// Display returns the X display of the `XftFont` of a font.
+	Display(f Font)
 	// Glyph gets the glyph index for a given Unicode character for @font. If
 	// you only want to determine whether the font has the glyph, use
 	// pango_xft_font_has_char().
 	//
 	// Use pango_fc_font_get_glyph() instead.
-	Glyph(wc uint32) uint
+	Glyph(f Font, wc uint32)
+	// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
+	// unknown character.
+	//
+	// Use PANGO_GET_UNKNOWN_GLYPH() instead.
+	UnknownGlyph(f Font, wc uint32)
 	// HasChar determines whether @font has a glyph for the codepoint @wc.
 	//
 	// Use pango_fc_font_has_char() instead.
-	HasChar(wc uint32) bool
+	HasChar(f Font, wc uint32) bool
+	// LockFace gets the FreeType `FT_Face` associated with a font.
+	//
+	// This face will be kept around until you call
+	// pango_xft_font_unlock_face().
+	//
+	// Use pango_fc_font_lock_face() instead.
+	LockFace(f Font)
 	// UnlockFace releases a font previously obtained with
 	// pango_xft_font_lock_face().
 	//
 	// Use pango_fc_font_unlock_face() instead.
-	UnlockFace()
+	UnlockFace(f Font)
 }
 
 // font implements the Font interface.
@@ -65,32 +86,48 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return WrapFont(obj), nil
 }
 
+// Display returns the X display of the `XftFont` of a font.
+func (f font) Display(f Font) {
+	var arg0 *C.PangoFont
+
+	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+
+	C.pango_xft_font_get_display(arg0)
+}
+
 // Glyph gets the glyph index for a given Unicode character for @font. If
 // you only want to determine whether the font has the glyph, use
 // pango_xft_font_has_char().
 //
 // Use pango_fc_font_get_glyph() instead.
-func (f font) Glyph(wc uint32) uint {
+func (f font) Glyph(f Font, wc uint32) {
 	var arg0 *C.PangoFont
 	var arg1 C.gunichar
 
 	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 	arg1 = C.gunichar(wc)
 
-	var cret C.guint
-	var ret1 uint
+	C.pango_xft_font_get_glyph(arg0, arg1)
+}
 
-	cret = C.pango_xft_font_get_glyph(arg0, wc)
+// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
+// unknown character.
+//
+// Use PANGO_GET_UNKNOWN_GLYPH() instead.
+func (f font) UnknownGlyph(f Font, wc uint32) {
+	var arg0 *C.PangoFont
+	var arg1 C.gunichar
 
-	ret1 = C.guint(cret)
+	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	arg1 = C.gunichar(wc)
 
-	return ret1
+	C.pango_xft_font_get_unknown_glyph(arg0, arg1)
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
 //
 // Use pango_fc_font_has_char() instead.
-func (f font) HasChar(wc uint32) bool {
+func (f font) HasChar(f Font, wc uint32) bool {
 	var arg0 *C.PangoFont
 	var arg1 C.gunichar
 
@@ -98,20 +135,36 @@ func (f font) HasChar(wc uint32) bool {
 	arg1 = C.gunichar(wc)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_xft_font_has_char(arg0, wc)
+	cret = C.pango_xft_font_has_char(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
+}
+
+// LockFace gets the FreeType `FT_Face` associated with a font.
+//
+// This face will be kept around until you call
+// pango_xft_font_unlock_face().
+//
+// Use pango_fc_font_lock_face() instead.
+func (f font) LockFace(f Font) {
+	var arg0 *C.PangoFont
+
+	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+
+	C.pango_xft_font_lock_face(arg0)
 }
 
 // UnlockFace releases a font previously obtained with
 // pango_xft_font_lock_face().
 //
 // Use pango_fc_font_unlock_face() instead.
-func (f font) UnlockFace() {
+func (f font) UnlockFace(f Font) {
 	var arg0 *C.PangoFont
 
 	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))

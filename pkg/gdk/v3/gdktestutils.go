@@ -4,7 +4,6 @@ package gdk
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gdk/gdk.h>
 import "C"
 
@@ -18,7 +17,7 @@ func TestRenderSync(window Window) {
 
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gdk_test_render_sync(window)
+	C.gdk_test_render_sync(arg1)
 }
 
 // TestSimulateButton: this function is intended to be used in GTK+ test
@@ -48,13 +47,15 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 	arg6 = (C.GdkEventType)(buttonPressrelease)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_test_simulate_button(window, x, y, button, modifiers, buttonPressrelease)
+	cret = C.gdk_test_simulate_button(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // TestSimulateKey: this function is intended to be used in GTK+ test programs.
@@ -87,11 +88,13 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 	arg6 = (C.GdkEventType)(keyPressrelease)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_test_simulate_key(window, x, y, keyval, modifiers, keyPressrelease)
+	cret = C.gdk_test_simulate_key(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -36,7 +35,7 @@ type TcpConnection interface {
 
 	// GracefulDisconnect checks if graceful disconnects are used. See
 	// g_tcp_connection_set_graceful_disconnect().
-	GracefulDisconnect() bool
+	GracefulDisconnect(c TcpConnection) bool
 	// SetGracefulDisconnect: this enables graceful disconnects on close. A
 	// graceful disconnect means that we signal the receiving end that the
 	// connection is terminated and wait for it to close the connection before
@@ -47,7 +46,7 @@ type TcpConnection interface {
 	// However, it also means we have to wait for all the data to reach the
 	// other side and for it to acknowledge this by closing the socket, which
 	// may take a while. For this reason it is disabled by default.
-	SetGracefulDisconnect(gracefulDisconnect bool)
+	SetGracefulDisconnect(c TcpConnection, gracefulDisconnect bool)
 }
 
 // tcpConnection implements the TcpConnection interface.
@@ -73,19 +72,21 @@ func marshalTcpConnection(p uintptr) (interface{}, error) {
 
 // GracefulDisconnect checks if graceful disconnects are used. See
 // g_tcp_connection_set_graceful_disconnect().
-func (c tcpConnection) GracefulDisconnect() bool {
+func (c tcpConnection) GracefulDisconnect(c TcpConnection) bool {
 	var arg0 *C.GTcpConnection
 
 	arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_tcp_connection_get_graceful_disconnect(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetGracefulDisconnect: this enables graceful disconnects on close. A
@@ -98,7 +99,7 @@ func (c tcpConnection) GracefulDisconnect() bool {
 // However, it also means we have to wait for all the data to reach the
 // other side and for it to acknowledge this by closing the socket, which
 // may take a while. For this reason it is disabled by default.
-func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
+func (c tcpConnection) SetGracefulDisconnect(c TcpConnection, gracefulDisconnect bool) {
 	var arg0 *C.GTcpConnection
 	var arg1 C.gboolean
 
@@ -107,5 +108,5 @@ func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_tcp_connection_set_graceful_disconnect(arg0, gracefulDisconnect)
+	C.g_tcp_connection_set_graceful_disconnect(arg0, arg1)
 }

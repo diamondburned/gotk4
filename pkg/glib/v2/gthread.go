@@ -3,17 +3,14 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -48,15 +45,8 @@ const (
 // GetNumProcessors: determine the approximate number of threads that the system
 // will schedule simultaneously for this process. This is intended to be used as
 // a parameter to g_thread_pool_new() for CPU bound tasks and similar cases.
-func GetNumProcessors() uint {
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_get_num_processors()
-
-	ret1 = C.guint(cret)
-
-	return ret1
+func GetNumProcessors() {
+	C.g_get_num_processors()
 }
 
 // OnceInitEnter: function to be called when starting a critical initialization
@@ -84,13 +74,15 @@ func OnceInitEnter(location interface{}) bool {
 	arg1 = *C.void(location)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_once_init_enter(location)
+	cret = C.g_once_init_enter(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // OnceInitLeave: counterpart to g_once_init_enter(). Expects a location of a
@@ -105,7 +97,7 @@ func OnceInitLeave(location interface{}, result uint) {
 	arg1 = *C.void(location)
 	arg2 = C.gsize(result)
 
-	C.g_once_init_leave(location, result)
+	C.g_once_init_leave(arg1, arg2)
 }
 
 // ThreadExit terminates the current thread.
@@ -125,7 +117,7 @@ func ThreadExit(retval interface{}) {
 
 	arg1 = C.gpointer(retval)
 
-	C.g_thread_exit(retval)
+	C.g_thread_exit(arg1)
 }
 
 // ThreadSelf: this function returns the #GThread corresponding to the current
@@ -136,15 +128,8 @@ func ThreadExit(retval interface{}) {
 // by GLib (i.e. those created by other threading APIs). This may be useful for
 // thread identification purposes (i.e. comparisons) but you must not use GLib
 // functions (such as g_thread_join()) on these threads.
-func ThreadSelf() *Thread {
-	var cret *C.GThread
-	var ret1 *Thread
-
-	cret = C.g_thread_self()
-
-	ret1 = WrapThread(unsafe.Pointer(cret))
-
-	return ret1
+func ThreadSelf() {
+	C.g_thread_self()
 }
 
 // ThreadYield causes the calling thread to voluntarily relinquish the CPU, so
@@ -245,7 +230,7 @@ func (c *Cond) Native() unsafe.Pointer {
 // threads are waiting for @cond, this function has no effect. It is good
 // practice to lock the same mutex as the waiting threads while calling this
 // function, though not required.
-func (c *Cond) Broadcast() {
+func (c *Cond) Broadcast(c *Cond) {
 	var arg0 *C.GCond
 
 	arg0 = (*C.GCond)(unsafe.Pointer(c.Native()))
@@ -260,7 +245,7 @@ func (c *Cond) Broadcast() {
 //
 // Calling g_cond_clear() for a #GCond on which threads are blocking leads to
 // undefined behaviour.
-func (c *Cond) Clear() {
+func (c *Cond) Clear(c *Cond) {
 	var arg0 *C.GCond
 
 	arg0 = (*C.GCond)(unsafe.Pointer(c.Native()))
@@ -279,7 +264,7 @@ func (c *Cond) Clear() {
 //
 // Calling g_cond_init() on an already-initialised #GCond leads to undefined
 // behaviour.
-func (c *Cond) Init() {
+func (c *Cond) Init(c *Cond) {
 	var arg0 *C.GCond
 
 	arg0 = (*C.GCond)(unsafe.Pointer(c.Native()))
@@ -291,7 +276,7 @@ func (c *Cond) Init() {
 // If no threads are waiting for @cond, this function has no effect. It is good
 // practice to hold the same lock as the waiting thread while calling this
 // function, though not required.
-func (c *Cond) Signal() {
+func (c *Cond) Signal(c *Cond) {
 	var arg0 *C.GCond
 
 	arg0 = (*C.GCond)(unsafe.Pointer(c.Native()))
@@ -327,12 +312,16 @@ func (o *Once) Native() unsafe.Pointer {
 
 // Status gets the field inside the struct.
 func (o *Once) Status() OnceStatus {
+	var v OnceStatus
 	v = OnceStatus(o.native.status)
+	return v
 }
 
 // Retval gets the field inside the struct.
 func (o *Once) Retval() interface{} {
-	v = C.gpointer(o.native.retval)
+	var v interface{}
+	v = interface{}(o.native.retval)
+	return v
 }
 
 // RWLock: the GRWLock struct is an opaque data structure to represent a
@@ -429,7 +418,7 @@ func (r *RWLock) Native() unsafe.Pointer {
 // behaviour.
 //
 // Sine: 2.32
-func (r *RWLock) Clear() {
+func (r *RWLock) Clear(r *RWLock) {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
@@ -458,7 +447,7 @@ func (r *RWLock) Clear() {
 //
 // Calling g_rw_lock_init() on an already initialized WLock leads to undefined
 // behaviour.
-func (r *RWLock) Init() {
+func (r *RWLock) Init(r *RWLock) {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
@@ -475,7 +464,7 @@ func (r *RWLock) Init() {
 // It is implementation-defined how many threads are allowed to hold read locks
 // on the same lock simultaneously. If the limit is hit, or if a deadlock is
 // detected, a critical warning will be emitted.
-func (r *RWLock) ReaderLock() {
+func (r *RWLock) ReaderLock(r *RWLock) {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
@@ -485,26 +474,28 @@ func (r *RWLock) ReaderLock() {
 
 // ReaderTrylock tries to obtain a read lock on @rw_lock and returns true if the
 // read lock was successfully obtained. Otherwise it returns false.
-func (r *RWLock) ReaderTrylock() bool {
+func (r *RWLock) ReaderTrylock(r *RWLock) bool {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_rw_lock_reader_trylock(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ReaderUnlock: release a read lock on @rw_lock.
 //
 // Calling g_rw_lock_reader_unlock() on a lock that is not held by the current
 // thread leads to undefined behaviour.
-func (r *RWLock) ReaderUnlock() {
+func (r *RWLock) ReaderUnlock(r *RWLock) {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
@@ -515,7 +506,7 @@ func (r *RWLock) ReaderUnlock() {
 // WriterLock: obtain a write lock on @rw_lock. If any thread already holds a
 // read or write lock on @rw_lock, the current thread will block until all other
 // threads have dropped their locks on @rw_lock.
-func (r *RWLock) WriterLock() {
+func (r *RWLock) WriterLock(r *RWLock) {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
@@ -526,26 +517,28 @@ func (r *RWLock) WriterLock() {
 // WriterTrylock tries to obtain a write lock on @rw_lock. If any other thread
 // holds a read or write lock on @rw_lock, it immediately returns false.
 // Otherwise it locks @rw_lock and returns true.
-func (r *RWLock) WriterTrylock() bool {
+func (r *RWLock) WriterTrylock(r *RWLock) bool {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_rw_lock_writer_trylock(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // WriterUnlock: release a write lock on @rw_lock.
 //
 // Calling g_rw_lock_writer_unlock() on a lock that is not held by the current
 // thread leads to undefined behaviour.
-func (r *RWLock) WriterUnlock() {
+func (r *RWLock) WriterUnlock(r *RWLock) {
 	var arg0 *C.GRWLock
 
 	arg0 = (*C.GRWLock)(unsafe.Pointer(r.Native()))
@@ -598,7 +591,7 @@ func (r *RecMutex) Native() unsafe.Pointer {
 // behaviour.
 //
 // Sine: 2.32
-func (r *RecMutex) Clear() {
+func (r *RecMutex) Clear(r *RecMutex) {
 	var arg0 *C.GRecMutex
 
 	arg0 = (*C.GRecMutex)(unsafe.Pointer(r.Native()))
@@ -629,7 +622,7 @@ func (r *RecMutex) Clear() {
 //
 // To undo the effect of g_rec_mutex_init() when a recursive mutex is no longer
 // needed, use g_rec_mutex_clear().
-func (r *RecMutex) Init() {
+func (r *RecMutex) Init(r *RecMutex) {
 	var arg0 *C.GRecMutex
 
 	arg0 = (*C.GRecMutex)(unsafe.Pointer(r.Native()))
@@ -642,7 +635,7 @@ func (r *RecMutex) Init() {
 // If @rec_mutex is already locked by the current thread, the 'lock count' of
 // @rec_mutex is increased. The mutex will only become available again when it
 // is unlocked as many times as it has been locked.
-func (r *RecMutex) Lock() {
+func (r *RecMutex) Lock(r *RecMutex) {
 	var arg0 *C.GRecMutex
 
 	arg0 = (*C.GRecMutex)(unsafe.Pointer(r.Native()))
@@ -653,19 +646,21 @@ func (r *RecMutex) Lock() {
 // Trylock tries to lock @rec_mutex. If @rec_mutex is already locked by another
 // thread, it immediately returns false. Otherwise it locks @rec_mutex and
 // returns true.
-func (r *RecMutex) Trylock() bool {
+func (r *RecMutex) Trylock(r *RecMutex) bool {
 	var arg0 *C.GRecMutex
 
 	arg0 = (*C.GRecMutex)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_rec_mutex_trylock(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Unlock unlocks @rec_mutex. If another thread is blocked in a
@@ -674,7 +669,7 @@ func (r *RecMutex) Trylock() bool {
 //
 // Calling g_rec_mutex_unlock() on a recursive mutex that is not locked by the
 // current thread leads to undefined behaviour.
-func (r *RecMutex) Unlock() {
+func (r *RecMutex) Unlock(r *RecMutex) {
 	var arg0 *C.GRecMutex
 
 	arg0 = (*C.GRecMutex)(unsafe.Pointer(r.Native()))
@@ -712,38 +707,20 @@ func marshalThread(p uintptr) (interface{}, error) {
 }
 
 // NewThread constructs a struct Thread.
-func NewThread(name string, fn ThreadFunc) *Thread {
-
-	var cret *C.GThread
-	var ret1 *Thread
-
-	cret = C.g_thread_new(name, fn, data)
-
-	ret1 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Thread) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewThread() {
+	C.g_thread_new(arg1, arg2, arg3)
 }
 
 // NewThreadTry constructs a struct Thread.
-func NewThreadTry(name string, fn ThreadFunc) (thread *Thread, err error) {
-
+func NewThreadTry() error {
 	var errout *C.GError
-	var goerr error
-	var cret *C.GThread
-	var ret2 *Thread
+	var err error
 
-	cret = C.g_thread_try_new(name, fn, data, &errout)
+	C.g_thread_try_new(arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *Thread) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Native returns the underlying C source pointer.
@@ -766,38 +743,21 @@ func (t *Thread) Native() unsafe.Pointer {
 // usually cause the #GThread struct and associated resources to be freed. Use
 // g_thread_ref() to obtain an extra reference if you want to keep the GThread
 // alive beyond the g_thread_join() call.
-func (t *Thread) Join() interface{} {
+func (t *Thread) Join(t *Thread) {
 	var arg0 *C.GThread
 
 	arg0 = (*C.GThread)(unsafe.Pointer(t.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_thread_join(arg0)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_thread_join(arg0)
 }
 
 // Ref: increase the reference count on @thread.
-func (t *Thread) Ref() *Thread {
+func (t *Thread) Ref(t *Thread) {
 	var arg0 *C.GThread
 
 	arg0 = (*C.GThread)(unsafe.Pointer(t.Native()))
 
-	var cret *C.GThread
-	var ret1 *Thread
-
-	cret = C.g_thread_ref(arg0)
-
-	ret1 = WrapThread(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Thread) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_thread_ref(arg0)
 }
 
 // Unref: decrease the reference count on @thread, possibly freeing all
@@ -805,7 +765,7 @@ func (t *Thread) Ref() *Thread {
 //
 // Note that each thread holds a reference to its #GThread while it is running,
 // so it is safe to drop your own reference to it if you don't need it anymore.
-func (t *Thread) Unref() {
+func (t *Thread) Unref(t *Thread) {
 	var arg0 *C.GThread
 
 	arg0 = (*C.GThread)(unsafe.Pointer(t.Native()))

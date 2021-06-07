@@ -3,17 +3,14 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -46,54 +43,44 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 // replaced. The stock items are copied, so GTK+ does not hold any pointer into
 // @items and @items can be freed. Use gtk_stock_add_static() if @items is
 // persistent and GTK+ need not copy the array.
-func StockAdd(items []StockItem) {
-
-	C.gtk_stock_add(items, nItems)
+func StockAdd() {
+	C.gtk_stock_add(arg1, arg2)
 }
 
 // StockAddStatic: same as gtk_stock_add(), but doesn’t copy @items, so @items
 // must persist until application exit.
-func StockAddStatic(items []StockItem) {
-
-	C.gtk_stock_add_static(items, nItems)
+func StockAddStatic() {
+	C.gtk_stock_add_static(arg1, arg2)
 }
 
 // StockListIds retrieves a list of all known stock IDs added to a IconFactory
 // or registered with gtk_stock_add(). The list must be freed with
 // g_slist_free(), and each string in the list must be freed with g_free().
-func StockListIds() *glib.SList {
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_stock_list_ids()
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func StockListIds() {
+	C.gtk_stock_list_ids()
 }
 
 // StockLookup fills @item with the registered values for @stock_id, returning
 // true if @stock_id was known.
-func StockLookup(stockID string) (item StockItem, ok bool) {
+func StockLookup(stockID string) (item *StockItem, ok bool) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.GtkStockItem
-	var ret2 *StockItem
+	var item *StockItem
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_stock_lookup(stockID, &arg2)
+	cret = C.gtk_stock_lookup(arg1, &arg2)
 
-	*ret2 = WrapStockItem(unsafe.Pointer(arg2))
-	ret2 = C.bool(cret) != C.false
+	item = WrapStockItem(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return item, ok
 }
 
 // StockSetTranslateFunc sets a function to be used for translating the @label
@@ -126,9 +113,8 @@ func StockLookup(stockID string) (item StockItem, ok bool) {
 //    gtk_stock_add (items, G_N_ELEMENTS (items));
 //    gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
 //    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
-func StockSetTranslateFunc(domain string, fn TranslateFunc) {
-
-	C.gtk_stock_set_translate_func(domain, fn, data, notify)
+func StockSetTranslateFunc() {
+	C.gtk_stock_set_translate_func(arg1, arg2, arg3, arg4)
 }
 
 type StockItem struct {
@@ -157,50 +143,53 @@ func (s *StockItem) Native() unsafe.Pointer {
 
 // StockID gets the field inside the struct.
 func (s *StockItem) StockID() string {
+	var v string
 	v = C.GoString(s.native.stock_id)
+	return v
 }
 
 // Label gets the field inside the struct.
 func (s *StockItem) Label() string {
+	var v string
 	v = C.GoString(s.native.label)
+	return v
 }
 
 // Modifier gets the field inside the struct.
 func (s *StockItem) Modifier() gdk.ModifierType {
+	var v gdk.ModifierType
 	v = gdk.ModifierType(s.native.modifier)
+	return v
 }
 
 // Keyval gets the field inside the struct.
 func (s *StockItem) Keyval() uint {
-	v = C.guint(s.native.keyval)
+	var v uint
+	v = uint(s.native.keyval)
+	return v
 }
 
 // TranslationDomain gets the field inside the struct.
 func (s *StockItem) TranslationDomain() string {
+	var v string
 	v = C.GoString(s.native.translation_domain)
+	return v
 }
 
 // Copy copies a stock item, mostly useful for language bindings and not in
 // applications.
-func (i *StockItem) Copy() *StockItem {
+func (i *StockItem) Copy(i *StockItem) {
 	var arg0 *C.GtkStockItem
 
 	arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GtkStockItem
-	var ret1 *StockItem
-
-	cret = C.gtk_stock_item_copy(arg0)
-
-	ret1 = WrapStockItem(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_stock_item_copy(arg0)
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by
 // gtk_stock_item_copy(). Also frees the fields inside the stock item, if they
 // are not nil.
-func (i *StockItem) Free() {
+func (i *StockItem) Free(i *StockItem) {
 	var arg0 *C.GtkStockItem
 
 	arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))

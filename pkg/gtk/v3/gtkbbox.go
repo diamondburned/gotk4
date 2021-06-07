@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,16 +27,16 @@ type ButtonBox interface {
 
 	// ChildNonHomogeneous returns whether the child is exempted from homogenous
 	// sizing.
-	ChildNonHomogeneous(child Widget) bool
+	ChildNonHomogeneous(w ButtonBox, child Widget) bool
 	// ChildSecondary returns whether @child should appear in a secondary group
 	// of children.
-	ChildSecondary(child Widget) bool
+	ChildSecondary(w ButtonBox, child Widget) bool
 	// Layout retrieves the method being used to arrange the buttons in a button
 	// box.
-	Layout() ButtonBoxStyle
+	Layout(w ButtonBox)
 	// SetChildNonHomogeneous sets whether the child is exempted from homogeous
 	// sizing.
-	SetChildNonHomogeneous(child Widget, nonHomogeneous bool)
+	SetChildNonHomogeneous(w ButtonBox, child Widget, nonHomogeneous bool)
 	// SetChildSecondary sets whether @child should appear in a secondary group
 	// of children. A typical use of a secondary child is the help button in a
 	// dialog.
@@ -53,9 +49,9 @@ type ButtonBox interface {
 	// GTK_BUTTONBOX_START or GTK_BUTTONBOX_END, then the secondary children are
 	// aligned at the other end of the button box from the main children. For
 	// the other styles, they appear immediately next to the main children.
-	SetChildSecondary(child Widget, isSecondary bool)
+	SetChildSecondary(w ButtonBox, child Widget, isSecondary bool)
 	// SetLayout changes the way buttons are arranged in their container.
-	SetLayout(layoutStyle ButtonBoxStyle)
+	SetLayout(w ButtonBox, layoutStyle ButtonBoxStyle)
 }
 
 // buttonBox implements the ButtonBox interface.
@@ -84,24 +80,17 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 }
 
 // NewButtonBox constructs a class ButtonBox.
-func NewButtonBox(orientation Orientation) ButtonBox {
+func NewButtonBox(orientation Orientation) {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	var cret C.GtkButtonBox
-	var ret1 ButtonBox
-
-	cret = C.gtk_button_box_new(orientation)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ButtonBox)
-
-	return ret1
+	C.gtk_button_box_new(arg1)
 }
 
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
 // sizing.
-func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
+func (w buttonBox) ChildNonHomogeneous(w ButtonBox, child Widget) bool {
 	var arg0 *C.GtkButtonBox
 	var arg1 *C.GtkWidget
 
@@ -109,18 +98,20 @@ func (w buttonBox) ChildNonHomogeneous(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_button_box_get_child_non_homogeneous(arg0, child)
+	cret = C.gtk_button_box_get_child_non_homogeneous(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ChildSecondary returns whether @child should appear in a secondary group
 // of children.
-func (w buttonBox) ChildSecondary(child Widget) bool {
+func (w buttonBox) ChildSecondary(w ButtonBox, child Widget) bool {
 	var arg0 *C.GtkButtonBox
 	var arg1 *C.GtkWidget
 
@@ -128,35 +119,30 @@ func (w buttonBox) ChildSecondary(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_button_box_get_child_secondary(arg0, child)
+	cret = C.gtk_button_box_get_child_secondary(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Layout retrieves the method being used to arrange the buttons in a button
 // box.
-func (w buttonBox) Layout() ButtonBoxStyle {
+func (w buttonBox) Layout(w ButtonBox) {
 	var arg0 *C.GtkButtonBox
 
 	arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 
-	var cret C.GtkButtonBoxStyle
-	var ret1 ButtonBoxStyle
-
-	cret = C.gtk_button_box_get_layout(arg0)
-
-	ret1 = ButtonBoxStyle(cret)
-
-	return ret1
+	C.gtk_button_box_get_layout(arg0)
 }
 
 // SetChildNonHomogeneous sets whether the child is exempted from homogeous
 // sizing.
-func (w buttonBox) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
+func (w buttonBox) SetChildNonHomogeneous(w ButtonBox, child Widget, nonHomogeneous bool) {
 	var arg0 *C.GtkButtonBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -167,7 +153,7 @@ func (w buttonBox) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.gtk_button_box_set_child_non_homogeneous(arg0, child, nonHomogeneous)
+	C.gtk_button_box_set_child_non_homogeneous(arg0, arg1, arg2)
 }
 
 // SetChildSecondary sets whether @child should appear in a secondary group
@@ -182,7 +168,7 @@ func (w buttonBox) SetChildNonHomogeneous(child Widget, nonHomogeneous bool) {
 // GTK_BUTTONBOX_START or GTK_BUTTONBOX_END, then the secondary children are
 // aligned at the other end of the button box from the main children. For
 // the other styles, they appear immediately next to the main children.
-func (w buttonBox) SetChildSecondary(child Widget, isSecondary bool) {
+func (w buttonBox) SetChildSecondary(w ButtonBox, child Widget, isSecondary bool) {
 	var arg0 *C.GtkButtonBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -193,16 +179,16 @@ func (w buttonBox) SetChildSecondary(child Widget, isSecondary bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.gtk_button_box_set_child_secondary(arg0, child, isSecondary)
+	C.gtk_button_box_set_child_secondary(arg0, arg1, arg2)
 }
 
 // SetLayout changes the way buttons are arranged in their container.
-func (w buttonBox) SetLayout(layoutStyle ButtonBoxStyle) {
+func (w buttonBox) SetLayout(w ButtonBox, layoutStyle ButtonBoxStyle) {
 	var arg0 *C.GtkButtonBox
 	var arg1 C.GtkButtonBoxStyle
 
 	arg0 = (*C.GtkButtonBox)(unsafe.Pointer(w.Native()))
 	arg1 = (C.GtkButtonBoxStyle)(layoutStyle)
 
-	C.gtk_button_box_set_layout(arg0, layoutStyle)
+	C.gtk_button_box_set_layout(arg0, arg1)
 }

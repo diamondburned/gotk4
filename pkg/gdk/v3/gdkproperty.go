@@ -2,17 +2,13 @@
 
 package gdk
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
 
 // AtomIntern finds or creates an atom corresponding to a given string.
-func AtomIntern(atomName string, onlyIfExists bool) Atom {
+func AtomIntern(atomName string, onlyIfExists bool) {
 	var arg1 *C.gchar
 	var arg2 C.gboolean
 
@@ -22,14 +18,7 @@ func AtomIntern(atomName string, onlyIfExists bool) Atom {
 		arg2 = C.gboolean(1)
 	}
 
-	var cret C.GdkAtom
-	var ret1 Atom
-
-	cret = C.gdk_atom_intern(atomName, onlyIfExists)
-
-	ret1 = WrapAtom(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_atom_intern(arg1, arg2)
 }
 
 // AtomInternStaticString finds or creates an atom corresponding to a given
@@ -42,20 +31,13 @@ func AtomIntern(atomName string, onlyIfExists bool) Atom {
 // statically allocated memory in dynamically loaded modules, if you expect to
 // ever unload the module again (e.g. do not use this function in GTK+ theme
 // engines).
-func AtomInternStaticString(atomName string) Atom {
+func AtomInternStaticString(atomName string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(atomName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkAtom
-	var ret1 Atom
-
-	cret = C.gdk_atom_intern_static_string(atomName)
-
-	ret1 = WrapAtom(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_atom_intern_static_string(arg1)
 }
 
 // PropertyChange changes the contents of a property on a window.
@@ -76,7 +58,7 @@ func PropertyChange(window Window, property Atom, typ Atom, format int, mode Pro
 	arg6 = *C.guchar(data)
 	arg7 = C.gint(nelements)
 
-	C.gdk_property_change(window, property, typ, format, mode, data, nelements)
+	C.gdk_property_change(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // PropertyDelete deletes a property from a window.
@@ -87,26 +69,18 @@ func PropertyDelete(window Window, property Atom) {
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
 
-	C.gdk_property_delete(window, property)
+	C.gdk_property_delete(arg1, arg2)
 }
 
 // UTF8ToStringTarget converts an UTF-8 string into the best possible
 // representation as a STRING. The representation of characters not in STRING is
 // not specified; it may be as pseudo-escape sequences \x{ABCD}, or it may be in
 // some other form of approximation.
-func UTF8ToStringTarget(str string) string {
+func UTF8ToStringTarget(str string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gdk_utf8_to_string_target(str)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_utf8_to_string_target(arg1)
 }

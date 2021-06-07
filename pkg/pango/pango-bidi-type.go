@@ -2,13 +2,8 @@
 
 package pango
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <pango/pango.h>
 import "C"
 
@@ -18,24 +13,17 @@ import "C"
 //
 // A simplified version of this function is available as
 // [func@unichar_direction].
-func BidiTypeForUnichar(ch uint32) BidiType {
+func BidiTypeForUnichar(ch uint32) {
 	var arg1 C.gunichar
 
 	arg1 = C.gunichar(ch)
 
-	var cret C.PangoBidiType
-	var ret1 BidiType
-
-	cret = C.pango_bidi_type_for_unichar(ch)
-
-	ret1 = BidiType(cret)
-
-	return ret1
+	C.pango_bidi_type_for_unichar(arg1)
 }
 
 // FindBaseDir searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
-func FindBaseDir(text string, length int) Direction {
+func FindBaseDir(text string, length int) {
 	var arg1 *C.gchar
 	var arg2 C.gint
 
@@ -43,14 +31,7 @@ func FindBaseDir(text string, length int) Direction {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(length)
 
-	var cret C.PangoDirection
-	var ret1 Direction
-
-	cret = C.pango_find_base_dir(text, length)
-
-	ret1 = Direction(cret)
-
-	return ret1
+	C.pango_find_base_dir(arg1, arg2)
 }
 
 // GetMirrorChar returns the mirrored character of a Unicode character.
@@ -67,13 +48,15 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 	arg2 = *C.gunichar(mirroredCh)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_get_mirror_char(ch, mirroredCh)
+	cret = C.pango_get_mirror_char(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // UnicharDirection determines the inherent direction of a character.
@@ -85,17 +68,10 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 // right-to-left letters, and everything else. If full Unicode bidirectional
 // type of a character is needed, [type_func@Pango.BidiType.for_unichar] can be
 // used instead.
-func UnicharDirection(ch uint32) Direction {
+func UnicharDirection(ch uint32) {
 	var arg1 C.gunichar
 
 	arg1 = C.gunichar(ch)
 
-	var cret C.PangoDirection
-	var ret1 Direction
-
-	cret = C.pango_unichar_direction(ch)
-
-	ret1 = Direction(cret)
-
-	return ret1
+	C.pango_unichar_direction(arg1)
 }

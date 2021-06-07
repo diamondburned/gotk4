@@ -3,15 +3,11 @@
 package gdk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -32,19 +28,19 @@ type Toplevel interface {
 
 	// BeginMove begins an interactive move operation (for a toplevel surface).
 	// You might use this function to implement draggable titlebars.
-	BeginMove(device Device, button int, x float64, y float64, timestamp uint32)
+	BeginMove(t Toplevel, device Device, button int, x float64, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation (for a toplevel
 	// surface). You might use this function to implement a “window resize
 	// grip.”
-	BeginResize(edge SurfaceEdge, device Device, button int, x float64, y float64, timestamp uint32)
+	BeginResize(t Toplevel, edge SurfaceEdge, device Device, button int, x float64, y float64, timestamp uint32)
 	// Focus sets keyboard focus to @surface.
 	//
 	// In most cases, gtk_window_present_with_time() should be used on a Window,
 	// rather than calling this function.
-	Focus(timestamp uint32)
+	Focus(t Toplevel, timestamp uint32)
 	// State gets the bitwise OR of the currently active surface state flags,
 	// from the ToplevelState enumeration.
-	State() ToplevelState
+	State(t Toplevel)
 	// InhibitSystemShortcuts requests that the @toplevel inhibit the system
 	// shortcuts, asking the desktop environment/windowing system to let all
 	// keyboard events reach the surface, as long as it is focused, instead of
@@ -65,15 +61,15 @@ type Toplevel interface {
 	//
 	// The caller can be notified whenever the request is granted or revoked by
 	// listening to the GdkToplevel::shortcuts-inhibited property.
-	InhibitSystemShortcuts(event Event)
+	InhibitSystemShortcuts(t Toplevel, event Event)
 	// Lower asks to lower the @toplevel below other windows.
 	//
 	// The windowing system may choose to ignore the request.
-	Lower() bool
+	Lower(t Toplevel) bool
 	// Minimize asks to minimize the @toplevel.
 	//
 	// The windowing system may choose to ignore the request.
-	Minimize() bool
+	Minimize(t Toplevel) bool
 	// Present: present @toplevel after having processed the ToplevelLayout
 	// rules. If the toplevel was previously not showing, it will be showed,
 	// otherwise it will change layout according to @layout.
@@ -84,18 +80,18 @@ type Toplevel interface {
 	//
 	// Presenting is asynchronous and the specified layout parameters are not
 	// guaranteed to be respected.
-	Present(layout *ToplevelLayout)
+	Present(t Toplevel, layout *ToplevelLayout)
 	// RestoreSystemShortcuts: restore default system keyboard shortcuts which
 	// were previously requested to be inhibited by
 	// gdk_toplevel_inhibit_system_shortcuts().
-	RestoreSystemShortcuts()
+	RestoreSystemShortcuts(t Toplevel)
 	// SetDecorated: setting @decorated to false hints the desktop environment
 	// that the surface has its own, client-side decorations and does not need
 	// to have window decorations added.
-	SetDecorated(decorated bool)
+	SetDecorated(t Toplevel, decorated bool)
 	// SetDeletable: setting @deletable to true hints the desktop environment
 	// that it should offer the user a way to close the surface.
-	SetDeletable(deletable bool)
+	SetDeletable(t Toplevel, deletable bool)
 	// SetIconList sets a list of icons for the surface.
 	//
 	// One of these will be used to represent the surface in iconic form. The
@@ -104,37 +100,37 @@ type Toplevel interface {
 	// setting several size icons can give better image quality.
 	//
 	// Note that some platforms don't support surface icons.
-	SetIconList(surfaces *glib.List)
+	SetIconList(t Toplevel, surfaces *glib.List)
 	// SetModal: the application can use this hint to tell the window manager
 	// that a certain surface has modal behaviour. The window manager can use
 	// this information to handle modal surfaces in a special way.
 	//
 	// You should only use this on surfaces for which you have previously called
 	// gdk_toplevel_set_transient_for().
-	SetModal(modal bool)
+	SetModal(t Toplevel, modal bool)
 	// SetStartupID: when using GTK, typically you should use
 	// gtk_window_set_startup_id() instead of this low-level function.
-	SetStartupID(startupID string)
+	SetStartupID(t Toplevel, startupID string)
 	// SetTitle sets the title of a toplevel surface, to be displayed in the
 	// titlebar, in lists of windows, etc.
-	SetTitle(title string)
+	SetTitle(t Toplevel, title string)
 	// SetTransientFor indicates to the window manager that @surface is a
 	// transient dialog associated with the application surface @parent. This
 	// allows the window manager to do things like center @surface on @parent
 	// and keep @surface above @parent.
 	//
 	// See gtk_window_set_transient_for() if you’re using Window or Dialog.
-	SetTransientFor(parent Surface)
+	SetTransientFor(t Toplevel, parent Surface)
 	// ShowWindowMenu asks the windowing system to show the window menu.
 	//
 	// The window menu is the menu shown when right-clicking the titlebar on
 	// traditional windows managed by the window manager. This is useful for
 	// windows using client-side decorations, activating it with a right-click
 	// on the window decorations.
-	ShowWindowMenu(event Event) bool
+	ShowWindowMenu(t Toplevel, event Event) bool
 	// SupportsEdgeConstraints returns whether the desktop environment supports
 	// tiled window states.
-	SupportsEdgeConstraints() bool
+	SupportsEdgeConstraints(t Toplevel) bool
 }
 
 // toplevel implements the Toplevel interface.
@@ -160,7 +156,7 @@ func marshalToplevel(p uintptr) (interface{}, error) {
 
 // BeginMove begins an interactive move operation (for a toplevel surface).
 // You might use this function to implement draggable titlebars.
-func (t toplevel) BeginMove(device Device, button int, x float64, y float64, timestamp uint32) {
+func (t toplevel) BeginMove(t Toplevel, device Device, button int, x float64, y float64, timestamp uint32) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.GdkDevice
 	var arg2 C.int
@@ -175,13 +171,13 @@ func (t toplevel) BeginMove(device Device, button int, x float64, y float64, tim
 	arg4 = C.double(y)
 	arg5 = C.guint32(timestamp)
 
-	C.gdk_toplevel_begin_move(arg0, device, button, x, y, timestamp)
+	C.gdk_toplevel_begin_move(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // BeginResize begins an interactive resize operation (for a toplevel
 // surface). You might use this function to implement a “window resize
 // grip.”
-func (t toplevel) BeginResize(edge SurfaceEdge, device Device, button int, x float64, y float64, timestamp uint32) {
+func (t toplevel) BeginResize(t Toplevel, edge SurfaceEdge, device Device, button int, x float64, y float64, timestamp uint32) {
 	var arg0 *C.GdkToplevel
 	var arg1 C.GdkSurfaceEdge
 	var arg2 *C.GdkDevice
@@ -198,38 +194,31 @@ func (t toplevel) BeginResize(edge SurfaceEdge, device Device, button int, x flo
 	arg5 = C.double(y)
 	arg6 = C.guint32(timestamp)
 
-	C.gdk_toplevel_begin_resize(arg0, edge, device, button, x, y, timestamp)
+	C.gdk_toplevel_begin_resize(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // Focus sets keyboard focus to @surface.
 //
 // In most cases, gtk_window_present_with_time() should be used on a Window,
 // rather than calling this function.
-func (t toplevel) Focus(timestamp uint32) {
+func (t toplevel) Focus(t Toplevel, timestamp uint32) {
 	var arg0 *C.GdkToplevel
 	var arg1 C.guint32
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	arg1 = C.guint32(timestamp)
 
-	C.gdk_toplevel_focus(arg0, timestamp)
+	C.gdk_toplevel_focus(arg0, arg1)
 }
 
 // State gets the bitwise OR of the currently active surface state flags,
 // from the ToplevelState enumeration.
-func (t toplevel) State() ToplevelState {
+func (t toplevel) State(t Toplevel) {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
-	var cret C.GdkToplevelState
-	var ret1 ToplevelState
-
-	cret = C.gdk_toplevel_get_state(arg0)
-
-	ret1 = ToplevelState(cret)
-
-	return ret1
+	C.gdk_toplevel_get_state(arg0)
 }
 
 // InhibitSystemShortcuts requests that the @toplevel inhibit the system
@@ -252,50 +241,54 @@ func (t toplevel) State() ToplevelState {
 //
 // The caller can be notified whenever the request is granted or revoked by
 // listening to the GdkToplevel::shortcuts-inhibited property.
-func (t toplevel) InhibitSystemShortcuts(event Event) {
+func (t toplevel) InhibitSystemShortcuts(t Toplevel, event Event) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.GdkEvent
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
-	C.gdk_toplevel_inhibit_system_shortcuts(arg0, event)
+	C.gdk_toplevel_inhibit_system_shortcuts(arg0, arg1)
 }
 
 // Lower asks to lower the @toplevel below other windows.
 //
 // The windowing system may choose to ignore the request.
-func (t toplevel) Lower() bool {
+func (t toplevel) Lower(t Toplevel) bool {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gdk_toplevel_lower(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Minimize asks to minimize the @toplevel.
 //
 // The windowing system may choose to ignore the request.
-func (t toplevel) Minimize() bool {
+func (t toplevel) Minimize(t Toplevel) bool {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gdk_toplevel_minimize(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Present: present @toplevel after having processed the ToplevelLayout
@@ -308,20 +301,20 @@ func (t toplevel) Minimize() bool {
 //
 // Presenting is asynchronous and the specified layout parameters are not
 // guaranteed to be respected.
-func (t toplevel) Present(layout *ToplevelLayout) {
+func (t toplevel) Present(t Toplevel, layout *ToplevelLayout) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.GdkToplevelLayout
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout.Native()))
 
-	C.gdk_toplevel_present(arg0, layout)
+	C.gdk_toplevel_present(arg0, arg1)
 }
 
 // RestoreSystemShortcuts: restore default system keyboard shortcuts which
 // were previously requested to be inhibited by
 // gdk_toplevel_inhibit_system_shortcuts().
-func (t toplevel) RestoreSystemShortcuts() {
+func (t toplevel) RestoreSystemShortcuts(t Toplevel) {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
@@ -332,7 +325,7 @@ func (t toplevel) RestoreSystemShortcuts() {
 // SetDecorated: setting @decorated to false hints the desktop environment
 // that the surface has its own, client-side decorations and does not need
 // to have window decorations added.
-func (t toplevel) SetDecorated(decorated bool) {
+func (t toplevel) SetDecorated(t Toplevel, decorated bool) {
 	var arg0 *C.GdkToplevel
 	var arg1 C.gboolean
 
@@ -341,12 +334,12 @@ func (t toplevel) SetDecorated(decorated bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_toplevel_set_decorated(arg0, decorated)
+	C.gdk_toplevel_set_decorated(arg0, arg1)
 }
 
 // SetDeletable: setting @deletable to true hints the desktop environment
 // that it should offer the user a way to close the surface.
-func (t toplevel) SetDeletable(deletable bool) {
+func (t toplevel) SetDeletable(t Toplevel, deletable bool) {
 	var arg0 *C.GdkToplevel
 	var arg1 C.gboolean
 
@@ -355,7 +348,7 @@ func (t toplevel) SetDeletable(deletable bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_toplevel_set_deletable(arg0, deletable)
+	C.gdk_toplevel_set_deletable(arg0, arg1)
 }
 
 // SetIconList sets a list of icons for the surface.
@@ -366,14 +359,14 @@ func (t toplevel) SetDeletable(deletable bool) {
 // setting several size icons can give better image quality.
 //
 // Note that some platforms don't support surface icons.
-func (t toplevel) SetIconList(surfaces *glib.List) {
+func (t toplevel) SetIconList(t Toplevel, surfaces *glib.List) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.GList
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GList)(unsafe.Pointer(surfaces.Native()))
 
-	C.gdk_toplevel_set_icon_list(arg0, surfaces)
+	C.gdk_toplevel_set_icon_list(arg0, arg1)
 }
 
 // SetModal: the application can use this hint to tell the window manager
@@ -382,7 +375,7 @@ func (t toplevel) SetIconList(surfaces *glib.List) {
 //
 // You should only use this on surfaces for which you have previously called
 // gdk_toplevel_set_transient_for().
-func (t toplevel) SetModal(modal bool) {
+func (t toplevel) SetModal(t Toplevel, modal bool) {
 	var arg0 *C.GdkToplevel
 	var arg1 C.gboolean
 
@@ -391,12 +384,12 @@ func (t toplevel) SetModal(modal bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_toplevel_set_modal(arg0, modal)
+	C.gdk_toplevel_set_modal(arg0, arg1)
 }
 
 // SetStartupID: when using GTK, typically you should use
 // gtk_window_set_startup_id() instead of this low-level function.
-func (t toplevel) SetStartupID(startupID string) {
+func (t toplevel) SetStartupID(t Toplevel, startupID string) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.char
 
@@ -404,12 +397,12 @@ func (t toplevel) SetStartupID(startupID string) {
 	arg1 = (*C.char)(C.CString(startupID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_toplevel_set_startup_id(arg0, startupID)
+	C.gdk_toplevel_set_startup_id(arg0, arg1)
 }
 
 // SetTitle sets the title of a toplevel surface, to be displayed in the
 // titlebar, in lists of windows, etc.
-func (t toplevel) SetTitle(title string) {
+func (t toplevel) SetTitle(t Toplevel, title string) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.char
 
@@ -417,7 +410,7 @@ func (t toplevel) SetTitle(title string) {
 	arg1 = (*C.char)(C.CString(title))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_toplevel_set_title(arg0, title)
+	C.gdk_toplevel_set_title(arg0, arg1)
 }
 
 // SetTransientFor indicates to the window manager that @surface is a
@@ -426,14 +419,14 @@ func (t toplevel) SetTitle(title string) {
 // and keep @surface above @parent.
 //
 // See gtk_window_set_transient_for() if you’re using Window or Dialog.
-func (t toplevel) SetTransientFor(parent Surface) {
+func (t toplevel) SetTransientFor(t Toplevel, parent Surface) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.GdkSurface
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
 
-	C.gdk_toplevel_set_transient_for(arg0, parent)
+	C.gdk_toplevel_set_transient_for(arg0, arg1)
 }
 
 // ShowWindowMenu asks the windowing system to show the window menu.
@@ -442,7 +435,7 @@ func (t toplevel) SetTransientFor(parent Surface) {
 // traditional windows managed by the window manager. This is useful for
 // windows using client-side decorations, activating it with a right-click
 // on the window decorations.
-func (t toplevel) ShowWindowMenu(event Event) bool {
+func (t toplevel) ShowWindowMenu(t Toplevel, event Event) bool {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.GdkEvent
 
@@ -450,28 +443,32 @@ func (t toplevel) ShowWindowMenu(event Event) bool {
 	arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_toplevel_show_window_menu(arg0, event)
+	cret = C.gdk_toplevel_show_window_menu(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SupportsEdgeConstraints returns whether the desktop environment supports
 // tiled window states.
-func (t toplevel) SupportsEdgeConstraints() bool {
+func (t toplevel) SupportsEdgeConstraints(t Toplevel) bool {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gdk_toplevel_supports_edge_constraints(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

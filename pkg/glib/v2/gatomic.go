@@ -4,7 +4,6 @@ package glib
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -17,21 +16,14 @@ import "C"
 //
 // Before version 2.30, this function did not return a value (but
 // g_atomic_int_exchange_and_add() did, and had the same meaning).
-func AtomicIntAdd(atomic int, val int) int {
+func AtomicIntAdd(atomic int, val int) {
 	var arg1 *C.gint
 	var arg2 C.gint
 
 	arg1 = *C.gint(atomic)
 	arg2 = C.gint(val)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_atomic_int_add(atomic, val)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_atomic_int_add(arg1, arg2)
 }
 
 // AtomicIntAnd performs an atomic bitwise 'and' of the value of @atomic and
@@ -41,21 +33,14 @@ func AtomicIntAdd(atomic int, val int) int {
 //
 // Think of this operation as an atomic version of `{ tmp = *atomic; *atomic &=
 // val; return tmp; }`.
-func AtomicIntAnd(atomic uint, val uint) uint {
+func AtomicIntAnd(atomic uint, val uint) {
 	var arg1 *C.guint
 	var arg2 C.guint
 
 	arg1 = *C.guint(atomic)
 	arg2 = C.guint(val)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_atomic_int_and(atomic, val)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_atomic_int_and(arg1, arg2)
 }
 
 // AtomicIntCompareAndExchange compares @atomic to @oldval and, if equal, sets
@@ -77,13 +62,15 @@ func AtomicIntCompareAndExchange(atomic int, oldval int, newval int) bool {
 	arg3 = C.gint(newval)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_atomic_int_compare_and_exchange(atomic, oldval, newval)
+	cret = C.g_atomic_int_compare_and_exchange(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // AtomicIntDecAndTest decrements the value of @atomic by 1.
@@ -98,52 +85,40 @@ func AtomicIntDecAndTest(atomic int) bool {
 	arg1 = *C.gint(atomic)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_atomic_int_dec_and_test(atomic)
+	cret = C.g_atomic_int_dec_and_test(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // AtomicIntExchangeAndAdd: this function existed before g_atomic_int_add()
 // returned the prior value of the integer (which it now does). It is retained
 // only for compatibility reasons. Don't use this function in new code.
-func AtomicIntExchangeAndAdd(atomic int, val int) int {
+func AtomicIntExchangeAndAdd(atomic int, val int) {
 	var arg1 *C.gint
 	var arg2 C.gint
 
 	arg1 = *C.gint(atomic)
 	arg2 = C.gint(val)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_atomic_int_exchange_and_add(atomic, val)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_atomic_int_exchange_and_add(arg1, arg2)
 }
 
 // AtomicIntGet gets the current value of @atomic.
 //
 // This call acts as a full compiler and hardware memory barrier (before the
 // get).
-func AtomicIntGet(atomic int) int {
+func AtomicIntGet(atomic int) {
 	var arg1 *C.gint
 
 	arg1 = *C.gint(atomic)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_atomic_int_get(atomic)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_atomic_int_get(arg1)
 }
 
 // AtomicIntInc increments the value of @atomic by 1.
@@ -156,7 +131,7 @@ func AtomicIntInc(atomic int) {
 
 	arg1 = *C.gint(atomic)
 
-	C.g_atomic_int_inc(atomic)
+	C.g_atomic_int_inc(arg1)
 }
 
 // AtomicIntOr performs an atomic bitwise 'or' of the value of @atomic and @val,
@@ -166,21 +141,14 @@ func AtomicIntInc(atomic int) {
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntOr(atomic uint, val uint) uint {
+func AtomicIntOr(atomic uint, val uint) {
 	var arg1 *C.guint
 	var arg2 C.guint
 
 	arg1 = *C.guint(atomic)
 	arg2 = C.guint(val)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_atomic_int_or(atomic, val)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_atomic_int_or(arg1, arg2)
 }
 
 // AtomicIntSet sets the value of @atomic to @newval.
@@ -194,7 +162,7 @@ func AtomicIntSet(atomic int, newval int) {
 	arg1 = *C.gint(atomic)
 	arg2 = C.gint(newval)
 
-	C.g_atomic_int_set(atomic, newval)
+	C.g_atomic_int_set(arg1, arg2)
 }
 
 // AtomicIntXor performs an atomic bitwise 'xor' of the value of @atomic and
@@ -204,21 +172,14 @@ func AtomicIntSet(atomic int, newval int) {
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntXor(atomic uint, val uint) uint {
+func AtomicIntXor(atomic uint, val uint) {
 	var arg1 *C.guint
 	var arg2 C.guint
 
 	arg1 = *C.guint(atomic)
 	arg2 = C.guint(val)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_atomic_int_xor(atomic, val)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_atomic_int_xor(arg1, arg2)
 }
 
 // AtomicPointerAdd: atomically adds @val to the value of @atomic.
@@ -227,21 +188,14 @@ func AtomicIntXor(atomic uint, val uint) uint {
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerAdd(atomic interface{}, val int) int {
+func AtomicPointerAdd(atomic interface{}, val int) {
 	var arg1 *C.void
 	var arg2 C.gssize
 
 	arg1 = *C.void(atomic)
 	arg2 = C.gssize(val)
 
-	var cret C.gssize
-	var ret1 int
-
-	cret = C.g_atomic_pointer_add(atomic, val)
-
-	ret1 = C.gssize(cret)
-
-	return ret1
+	C.g_atomic_pointer_add(arg1, arg2)
 }
 
 // AtomicPointerAnd performs an atomic bitwise 'and' of the value of @atomic and
@@ -251,21 +205,14 @@ func AtomicPointerAdd(atomic interface{}, val int) int {
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerAnd(atomic interface{}, val uint) uint {
+func AtomicPointerAnd(atomic interface{}, val uint) {
 	var arg1 *C.void
 	var arg2 C.gsize
 
 	arg1 = *C.void(atomic)
 	arg2 = C.gsize(val)
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_atomic_pointer_and(atomic, val)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_atomic_pointer_and(arg1, arg2)
 }
 
 // AtomicPointerCompareAndExchange compares @atomic to @oldval and, if equal,
@@ -288,32 +235,27 @@ func AtomicPointerCompareAndExchange(atomic interface{}, oldval interface{}, new
 	arg3 = C.gpointer(newval)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_atomic_pointer_compare_and_exchange(atomic, oldval, newval)
+	cret = C.g_atomic_pointer_compare_and_exchange(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // AtomicPointerGet gets the current value of @atomic.
 //
 // This call acts as a full compiler and hardware memory barrier (before the
 // get).
-func AtomicPointerGet(atomic interface{}) interface{} {
+func AtomicPointerGet(atomic interface{}) {
 	var arg1 *C.void
 
 	arg1 = *C.void(atomic)
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_atomic_pointer_get(atomic)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_atomic_pointer_get(arg1)
 }
 
 // AtomicPointerOr performs an atomic bitwise 'or' of the value of @atomic and
@@ -323,21 +265,14 @@ func AtomicPointerGet(atomic interface{}) interface{} {
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerOr(atomic interface{}, val uint) uint {
+func AtomicPointerOr(atomic interface{}, val uint) {
 	var arg1 *C.void
 	var arg2 C.gsize
 
 	arg1 = *C.void(atomic)
 	arg2 = C.gsize(val)
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_atomic_pointer_or(atomic, val)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_atomic_pointer_or(arg1, arg2)
 }
 
 // AtomicPointerSet sets the value of @atomic to @newval.
@@ -351,7 +286,7 @@ func AtomicPointerSet(atomic interface{}, newval interface{}) {
 	arg1 = *C.void(atomic)
 	arg2 = C.gpointer(newval)
 
-	C.g_atomic_pointer_set(atomic, newval)
+	C.g_atomic_pointer_set(arg1, arg2)
 }
 
 // AtomicPointerXor performs an atomic bitwise 'xor' of the value of @atomic and
@@ -361,19 +296,12 @@ func AtomicPointerSet(atomic interface{}, newval interface{}) {
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerXor(atomic interface{}, val uint) uint {
+func AtomicPointerXor(atomic interface{}, val uint) {
 	var arg1 *C.void
 	var arg2 C.gsize
 
 	arg1 = *C.void(atomic)
 	arg2 = C.gsize(val)
 
-	var cret C.gsize
-	var ret1 uint
-
-	cret = C.g_atomic_pointer_xor(atomic, val)
-
-	ret1 = C.gsize(cret)
-
-	return ret1
+	C.g_atomic_pointer_xor(arg1, arg2)
 }

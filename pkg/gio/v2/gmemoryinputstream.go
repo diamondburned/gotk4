@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,7 +38,7 @@ type MemoryInputStream interface {
 	Seekable
 
 	// AddBytes appends @bytes to data that can be read from the input stream.
-	AddBytes(bytes *glib.Bytes)
+	AddBytes(s MemoryInputStream, bytes *glib.Bytes)
 }
 
 // memoryInputStream implements the MemoryInputStream interface.
@@ -71,40 +67,26 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 }
 
 // NewMemoryInputStream constructs a class MemoryInputStream.
-func NewMemoryInputStream() MemoryInputStream {
-	var cret C.GMemoryInputStream
-	var ret1 MemoryInputStream
-
-	cret = C.g_memory_input_stream_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
-
-	return ret1
+func NewMemoryInputStream() {
+	C.g_memory_input_stream_new()
 }
 
 // NewMemoryInputStreamFromBytes constructs a class MemoryInputStream.
-func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream {
+func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
-	var cret C.GMemoryInputStream
-	var ret1 MemoryInputStream
-
-	cret = C.g_memory_input_stream_new_from_bytes(bytes)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
-
-	return ret1
+	C.g_memory_input_stream_new_from_bytes(arg1)
 }
 
 // AddBytes appends @bytes to data that can be read from the input stream.
-func (s memoryInputStream) AddBytes(bytes *glib.Bytes) {
+func (s memoryInputStream) AddBytes(s MemoryInputStream, bytes *glib.Bytes) {
 	var arg0 *C.GMemoryInputStream
 	var arg1 *C.GBytes
 
 	arg0 = (*C.GMemoryInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
-	C.g_memory_input_stream_add_bytes(arg0, bytes)
+	C.g_memory_input_stream_add_bytes(arg0, arg1)
 }

@@ -4,8 +4,6 @@ package gobject
 
 import (
 	"unsafe"
-
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
@@ -13,6 +11,19 @@ import (
 // #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
+
+// NewSignalTypeCclosure creates a new closure which invokes the function found
+// at the offset @struct_offset in the class structure of the interface or
+// classed type identified by @itype.
+func NewSignalTypeCclosure(itype externglib.Type, structOffset uint) {
+	var arg1 C.GType
+	var arg2 C.guint
+
+	arg1 := C.GType(itype)
+	arg2 = C.guint(structOffset)
+
+	C.g_signal_type_cclosure_new(arg1, arg2)
+}
 
 // CClosure: a Closure is a specialization of #GClosure for C function
 // callbacks.
@@ -42,7 +53,9 @@ func (c *CClosure) Native() unsafe.Pointer {
 
 // Callback gets the field inside the struct.
 func (c *CClosure) Callback() interface{} {
-	v = C.gpointer(c.native.callback)
+	var v interface{}
+	v = interface{}(c.native.callback)
+	return v
 }
 
 type ClosureNotifyData struct {
@@ -71,5 +84,7 @@ func (c *ClosureNotifyData) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (c *ClosureNotifyData) Data() interface{} {
-	v = C.gpointer(c.native.data)
+	var v interface{}
+	v = interface{}(c.native.data)
+	return v
 }

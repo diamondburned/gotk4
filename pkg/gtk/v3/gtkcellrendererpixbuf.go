@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,13 +58,6 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererPixbuf constructs a class CellRendererPixbuf.
-func NewCellRendererPixbuf() CellRendererPixbuf {
-	var cret C.GtkCellRendererPixbuf
-	var ret1 CellRendererPixbuf
-
-	cret = C.gtk_cell_renderer_pixbuf_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererPixbuf)
-
-	return ret1
+func NewCellRendererPixbuf() {
+	C.gtk_cell_renderer_pixbuf_new()
 }

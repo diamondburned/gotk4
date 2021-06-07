@@ -40,10 +40,14 @@ func (s *SettingsValue) Native() unsafe.Pointer {
 
 // Origin gets the field inside the struct.
 func (s *SettingsValue) Origin() string {
+	var v string
 	v = C.GoString(s.native.origin)
+	return v
 }
 
 // Value gets the field inside the struct.
 func (s *SettingsValue) Value() *externglib.Value {
+	var v *externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
+	return v
 }

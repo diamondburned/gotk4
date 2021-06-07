@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -51,19 +47,19 @@ type LinkButton interface {
 	Buildable
 
 	// URI retrieves the URI set using gtk_link_button_set_uri().
-	URI() string
+	URI(l LinkButton)
 	// Visited retrieves the “visited” state of the URI where the LinkButton
 	// points. The button becomes visited when it is clicked. If the URI is
 	// changed on the button, the “visited” state is unset again.
 	//
 	// The state may also be changed using gtk_link_button_set_visited().
-	Visited() bool
+	Visited(l LinkButton) bool
 	// SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 	// this unsets the “visited” state of the button.
-	SetURI(uri string)
+	SetURI(l LinkButton, uri string)
 	// SetVisited sets the “visited” state of the URI where the LinkButton
 	// points. See gtk_link_button_get_visited() for more details.
-	SetVisited(visited bool)
+	SetVisited(l LinkButton, visited bool)
 }
 
 // linkButton implements the LinkButton interface.
@@ -94,24 +90,17 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 }
 
 // NewLinkButton constructs a class LinkButton.
-func NewLinkButton(uri string) LinkButton {
+func NewLinkButton(uri string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkLinkButton
-	var ret1 LinkButton
-
-	cret = C.gtk_link_button_new(uri)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
-
-	return ret1
+	C.gtk_link_button_new(arg1)
 }
 
 // NewLinkButtonWithLabel constructs a class LinkButton.
-func NewLinkButtonWithLabel(uri string, label string) LinkButton {
+func NewLinkButtonWithLabel(uri string, label string) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -120,30 +109,16 @@ func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkLinkButton
-	var ret1 LinkButton
-
-	cret = C.gtk_link_button_new_with_label(uri, label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
-
-	return ret1
+	C.gtk_link_button_new_with_label(arg1, arg2)
 }
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
-func (l linkButton) URI() string {
+func (l linkButton) URI(l LinkButton) {
 	var arg0 *C.GtkLinkButton
 
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gtk_link_button_get_uri(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_link_button_get_uri(arg0)
 }
 
 // Visited retrieves the “visited” state of the URI where the LinkButton
@@ -151,24 +126,26 @@ func (l linkButton) URI() string {
 // changed on the button, the “visited” state is unset again.
 //
 // The state may also be changed using gtk_link_button_set_visited().
-func (l linkButton) Visited() bool {
+func (l linkButton) Visited(l LinkButton) bool {
 	var arg0 *C.GtkLinkButton
 
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_link_button_get_visited(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 // this unsets the “visited” state of the button.
-func (l linkButton) SetURI(uri string) {
+func (l linkButton) SetURI(l LinkButton, uri string) {
 	var arg0 *C.GtkLinkButton
 	var arg1 *C.gchar
 
@@ -176,12 +153,12 @@ func (l linkButton) SetURI(uri string) {
 	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_link_button_set_uri(arg0, uri)
+	C.gtk_link_button_set_uri(arg0, arg1)
 }
 
 // SetVisited sets the “visited” state of the URI where the LinkButton
 // points. See gtk_link_button_get_visited() for more details.
-func (l linkButton) SetVisited(visited bool) {
+func (l linkButton) SetVisited(l LinkButton, visited bool) {
 	var arg0 *C.GtkLinkButton
 	var arg1 C.gboolean
 
@@ -190,5 +167,5 @@ func (l linkButton) SetVisited(visited bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_link_button_set_visited(arg0, visited)
+	C.gtk_link_button_set_visited(arg0, arg1)
 }

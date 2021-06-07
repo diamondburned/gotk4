@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -31,23 +29,25 @@ func init() {
 // digits of the red, green, and blue components of the color, respectively.
 // (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
 // “\#ffffffffffff”).
-func ColorParse(spec string) (color Color, ok bool) {
+func ColorParse(spec string) (color *Color, ok bool) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(spec))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.GdkColor
-	var ret2 *Color
+	var color *Color
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gdk_color_parse(spec, &arg2)
+	cret = C.gdk_color_parse(arg1, &arg2)
 
-	*ret2 = WrapColor(unsafe.Pointer(arg2))
-	ret2 = C.bool(cret) != C.false
+	color = WrapColor(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return color, ok
 }
 
 // Color: a Color is used to describe a color, similar to the XColor struct used
@@ -78,47 +78,45 @@ func (c *Color) Native() unsafe.Pointer {
 
 // Pixel gets the field inside the struct.
 func (c *Color) Pixel() uint32 {
-	v = C.guint32(c.native.pixel)
+	var v uint32
+	v = uint32(c.native.pixel)
+	return v
 }
 
 // Red gets the field inside the struct.
 func (c *Color) Red() uint16 {
-	v = C.guint16(c.native.red)
+	var v uint16
+	v = uint16(c.native.red)
+	return v
 }
 
 // Green gets the field inside the struct.
 func (c *Color) Green() uint16 {
-	v = C.guint16(c.native.green)
+	var v uint16
+	v = uint16(c.native.green)
+	return v
 }
 
 // Blue gets the field inside the struct.
 func (c *Color) Blue() uint16 {
-	v = C.guint16(c.native.blue)
+	var v uint16
+	v = uint16(c.native.blue)
+	return v
 }
 
 // Copy makes a copy of a Color.
 //
 // The result must be freed using gdk_color_free().
-func (c *Color) Copy() *Color {
+func (c *Color) Copy(c *Color) {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkColor
-	var ret1 *Color
-
-	cret = C.gdk_color_copy(arg0)
-
-	ret1 = WrapColor(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Color) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_color_copy(arg0)
 }
 
 // Equal compares two colors.
-func (c *Color) Equal(colorb *Color) bool {
+func (c *Color) Equal(c *Color, colorb *Color) bool {
 	var arg0 *C.GdkColor
 	var arg1 *C.GdkColor
 
@@ -126,17 +124,19 @@ func (c *Color) Equal(colorb *Color) bool {
 	arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_color_equal(arg0, colorb)
+	cret = C.gdk_color_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Free frees a Color created with gdk_color_copy().
-func (c *Color) Free() {
+func (c *Color) Free(c *Color) {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
@@ -145,19 +145,12 @@ func (c *Color) Free() {
 }
 
 // Hash: a hash function suitable for using for a hash table that stores Colors.
-func (c *Color) Hash() uint {
+func (c *Color) Hash(c *Color) {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gdk_color_hash(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gdk_color_hash(arg0)
 }
 
 // String returns a textual specification of @color in the hexadecimal form
@@ -165,18 +158,10 @@ func (c *Color) Hash() uint {
 // green and blue components respectively.
 //
 // The returned string can be parsed by gdk_color_parse().
-func (c *Color) String() string {
+func (c *Color) String(c *Color) {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gdk_color_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_color_to_string(arg0)
 }

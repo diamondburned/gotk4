@@ -24,20 +24,89 @@ type IOCondition int
 
 const (
 	// IOConditionIn: there is data to read.
-	IOConditionIn IOCondition = 0b1
+	IOConditionIn IOCondition = 1
 	// IOConditionOut: data can be written (without blocking).
-	IOConditionOut IOCondition = 0b100
+	IOConditionOut IOCondition = 4
 	// IOConditionPri: there is urgent data to read.
-	IOConditionPri IOCondition = 0b10
+	IOConditionPri IOCondition = 2
 	// IOConditionErr: error condition.
-	IOConditionErr IOCondition = 0b1000
+	IOConditionErr IOCondition = 8
 	// IOConditionHup: hung up (the connection has been broken, usually for
 	// pipes and sockets).
-	IOConditionHup IOCondition = 0b10000
+	IOConditionHup IOCondition = 16
 	// IOConditionNval: invalid request. The file descriptor is not open.
-	IOConditionNval IOCondition = 0b100000
+	IOConditionNval IOCondition = 32
 )
 
 func marshalIOCondition(p uintptr) (interface{}, error) {
-	return IOCondition(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+	return IOCondition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+func BookmarkFileErrorQuark() {
+	C.g_bookmark_file_error_quark()
+}
+
+func ConvertErrorQuark() {
+	C.g_convert_error_quark()
+}
+
+func FileErrorQuark() {
+	C.g_file_error_quark()
+}
+
+func IOChannelErrorQuark() {
+	C.g_io_channel_error_quark()
+}
+
+func KeyFileErrorQuark() {
+	C.g_key_file_error_quark()
+}
+
+func MarkupErrorQuark() {
+	C.g_markup_error_quark()
+}
+
+func NumberParserErrorQuark() {
+	C.g_number_parser_error_quark()
+}
+
+func OptionErrorQuark() {
+	C.g_option_error_quark()
+}
+
+func RegexErrorQuark() {
+	C.g_regex_error_quark()
+}
+
+func ShellErrorQuark() {
+	C.g_shell_error_quark()
+}
+
+func SpawnErrorQuark() {
+	C.g_spawn_error_quark()
+}
+
+func SpawnExitErrorQuark() {
+	C.g_spawn_exit_error_quark()
+}
+
+func ThreadErrorQuark() {
+	C.g_thread_error_quark()
+}
+
+func UnixErrorQuark() {
+	C.g_unix_error_quark()
+}
+
+func URIErrorQuark() {
+	C.g_uri_error_quark()
+}
+
+func VariantParseErrorQuark() {
+	C.g_variant_parse_error_quark()
+}
+
+// VariantParserGetErrorQuark: same as g_variant_error_quark().
+func VariantParserGetErrorQuark() {
+	C.g_variant_parser_get_error_quark()
 }

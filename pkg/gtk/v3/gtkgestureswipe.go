@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -40,7 +36,7 @@ type GestureSwipe interface {
 	// Velocity: if the gesture is recognized, this function returns true and
 	// fill in @velocity_x and @velocity_y with the recorded velocity, as per
 	// the last event(s) processed.
-	Velocity() (velocityX float64, velocityY float64, ok bool)
+	Velocity(g GestureSwipe) (velocityX float64, velocityY float64, ok bool)
 }
 
 // gestureSwipe implements the GestureSwipe interface.
@@ -65,41 +61,36 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 }
 
 // NewGestureSwipe constructs a class GestureSwipe.
-func NewGestureSwipe(widget Widget) GestureSwipe {
+func NewGestureSwipe(widget Widget) {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.GtkGestureSwipe
-	var ret1 GestureSwipe
-
-	cret = C.gtk_gesture_swipe_new(widget)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureSwipe)
-
-	return ret1
+	C.gtk_gesture_swipe_new(arg1)
 }
 
 // Velocity: if the gesture is recognized, this function returns true and
 // fill in @velocity_x and @velocity_y with the recorded velocity, as per
 // the last event(s) processed.
-func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
+func (g gestureSwipe) Velocity(g GestureSwipe) (velocityX float64, velocityY float64, ok bool) {
 	var arg0 *C.GtkGestureSwipe
 
 	arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
 
 	var arg1 C.gdouble
-	var ret1 float64
+	var velocityX float64
 	var arg2 C.gdouble
-	var ret2 float64
+	var velocityY float64
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
 	cret = C.gtk_gesture_swipe_get_velocity(arg0, &arg1, &arg2)
 
-	*ret1 = C.gdouble(arg1)
-	*ret2 = C.gdouble(arg2)
-	ret3 = C.bool(cret) != C.false
+	velocityX = float64(&arg1)
+	velocityY = float64(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2, ret3
+	return velocityX, velocityY, ok
 }

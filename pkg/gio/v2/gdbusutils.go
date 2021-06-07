@@ -2,17 +2,8 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -31,16 +22,8 @@ import "C"
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DBusGenerateGuid() string {
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_dbus_generate_guid()
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+func DBusGenerateGuid() {
+	C.g_dbus_generate_guid()
 }
 
 // DBusGValueToGVariant converts a #GValue to a #GVariant of the type indicated
@@ -64,24 +47,14 @@ func DBusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) {
 	var arg1 *C.GValue
 	var arg2 *C.GVariantType
 
 	arg1 = (*C.GValue)(gvalue.GValue)
 	arg2 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.g_dbus_gvalue_to_gvariant(gvalue, typ)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_dbus_gvalue_to_gvariant(arg1, arg2)
 }
 
 // DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
@@ -95,19 +68,19 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
+func DBusGVariantToGValue(value *glib.Variant) *externglib.Value {
 	var arg1 *C.GVariant
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var arg2 C.GValue
-	var ret2 *externglib.Value
+	var outGValue *externglib.Value
 
-	C.g_dbus_gvariant_to_gvalue(value, &arg2)
+	C.g_dbus_gvariant_to_gvalue(arg1, &arg2)
 
-	*ret2 = externglib.ValueFromNative(unsafe.Pointer(arg2))
+	outGValue = externglib.ValueFromNative(unsafe.Pointer(&arg2))
 
-	return ret2
+	return outGValue
 }
 
 // DBusIsGuid checks if @string is a D-Bus GUID.
@@ -121,13 +94,15 @@ func DBusIsGuid(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_is_guid(string)
+	cret = C.g_dbus_is_guid(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DBusIsInterfaceName checks if @string is a valid D-Bus interface name.
@@ -138,13 +113,15 @@ func DBusIsInterfaceName(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_is_interface_name(string)
+	cret = C.g_dbus_is_interface_name(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DBusIsMemberName checks if @string is a valid D-Bus member (e.g. signal or
@@ -156,13 +133,15 @@ func DBusIsMemberName(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_is_member_name(string)
+	cret = C.g_dbus_is_member_name(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DBusIsName checks if @string is a valid D-Bus bus name (either unique or
@@ -174,13 +153,15 @@ func DBusIsName(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_is_name(string)
+	cret = C.g_dbus_is_name(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DBusIsUniqueName checks if @string is a valid D-Bus unique bus name.
@@ -191,11 +172,13 @@ func DBusIsUniqueName(string string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_dbus_is_unique_name(string)
+	cret = C.g_dbus_is_unique_name(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

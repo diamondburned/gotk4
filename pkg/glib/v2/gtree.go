@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -45,7 +44,7 @@ func (t *Tree) Native() unsafe.Pointer {
 // should either free them first or create the #GTree using g_tree_new_full().
 // In the latter case the destroy functions you supplied will be called on all
 // keys and values before destroying the #GTree.
-func (t *Tree) Destroy() {
+func (t *Tree) Destroy(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
@@ -61,12 +60,12 @@ func (t *Tree) Destroy() {
 // items). To remove all items matching a predicate, you need to add each item
 // to a list in your Func as you walk over the tree, then walk the list and
 // remove each item.
-func (t *Tree) Foreach(fn TraverseFunc) {
+func (t *Tree) Foreach(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	C.g_tree_foreach(arg0, fn, userData)
+	C.g_tree_foreach(arg0, arg1, arg2)
 }
 
 // Height gets the height of a #GTree.
@@ -74,19 +73,12 @@ func (t *Tree) Foreach(fn TraverseFunc) {
 // If the #GTree contains no nodes, the height is 0. If the #GTree contains only
 // one root node the height is 1. If the root node has children the height is 2,
 // etc.
-func (t *Tree) Height() int {
+func (t *Tree) Height(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_tree_height(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_tree_height(arg0)
 }
 
 // Insert inserts a key/value pair into a #GTree.
@@ -101,7 +93,7 @@ func (t *Tree) Height() int {
 // that the distance from the root to every leaf is as small as possible. The
 // cost of maintaining a balanced tree while inserting new key/value result in a
 // O(n log(n)) operation where most of the other operations are O(log(n)).
-func (t *Tree) Insert(key interface{}, value interface{}) {
+func (t *Tree) Insert(t *Tree, key interface{}, value interface{}) {
 	var arg0 *C.GTree
 	var arg1 C.gpointer
 	var arg2 C.gpointer
@@ -110,33 +102,26 @@ func (t *Tree) Insert(key interface{}, value interface{}) {
 	arg1 = C.gpointer(key)
 	arg2 = C.gpointer(value)
 
-	C.g_tree_insert(arg0, key, value)
+	C.g_tree_insert(arg0, arg1, arg2)
 }
 
 // Lookup gets the value corresponding to the given key. Since a #GTree is
 // automatically balanced as key/value pairs are added, key lookup is O(log n)
 // (where n is the number of key/value pairs in the tree).
-func (t *Tree) Lookup(key interface{}) interface{} {
+func (t *Tree) Lookup(t *Tree, key interface{}) {
 	var arg0 *C.GTree
 	var arg1 C.gpointer
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	arg1 = C.gpointer(key)
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_tree_lookup(arg0, key)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_tree_lookup(arg0, arg1)
 }
 
 // LookupExtended looks up a key in the #GTree, returning the original key and
 // the associated value. This is useful if you need to free the memory allocated
 // for the original key, for example before calling g_tree_remove().
-func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
+func (t *Tree) LookupExtended(t *Tree, lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
 	var arg0 *C.GTree
 	var arg1 C.gpointer
 
@@ -144,53 +129,41 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 	arg1 = C.gpointer(lookupKey)
 
 	var arg2 C.gpointer
-	var ret2 interface{}
+	var origKey interface{}
 	var arg3 C.gpointer
-	var ret3 interface{}
+	var value interface{}
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.g_tree_lookup_extended(arg0, lookupKey, &arg2, &arg3)
+	cret = C.g_tree_lookup_extended(arg0, arg1, &arg2, &arg3)
 
-	*ret2 = C.gpointer(arg2)
-	*ret3 = C.gpointer(arg3)
-	ret3 = C.bool(cret) != C.false
+	origKey = interface{}(&arg2)
+	value = interface{}(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret3, ret3
+	return origKey, value, ok
 }
 
 // Nnodes gets the number of nodes in a #GTree.
-func (t *Tree) Nnodes() int {
+func (t *Tree) Nnodes(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_tree_nnodes(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_tree_nnodes(arg0)
 }
 
 // Ref increments the reference count of @tree by one.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) Ref() *Tree {
+func (t *Tree) Ref(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	var cret *C.GTree
-	var ret1 *Tree
-
-	cret = C.g_tree_ref(arg0)
-
-	ret1 = WrapTree(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_tree_ref(arg0)
 }
 
 // Remove removes a key/value pair from a #GTree.
@@ -202,7 +175,7 @@ func (t *Tree) Ref() *Tree {
 //
 // The cost of maintaining a balanced tree while removing a key/value result in
 // a O(n log(n)) operation where most of the other operations are O(log(n)).
-func (t *Tree) Remove(key interface{}) bool {
+func (t *Tree) Remove(t *Tree, key interface{}) bool {
 	var arg0 *C.GTree
 	var arg1 C.gpointer
 
@@ -210,13 +183,15 @@ func (t *Tree) Remove(key interface{}) bool {
 	arg1 = C.gpointer(key)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_tree_remove(arg0, key)
+	cret = C.g_tree_remove(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Replace inserts a new key and value into a #GTree similar to g_tree_insert().
@@ -228,7 +203,7 @@ func (t *Tree) Remove(key interface{}) bool {
 //
 // The tree is automatically 'balanced' as new key/value pairs are added, so
 // that the distance from the root to every leaf is as small as possible.
-func (t *Tree) Replace(key interface{}, value interface{}) {
+func (t *Tree) Replace(t *Tree, key interface{}, value interface{}) {
 	var arg0 *C.GTree
 	var arg1 C.gpointer
 	var arg2 C.gpointer
@@ -237,7 +212,7 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 	arg1 = C.gpointer(key)
 	arg2 = C.gpointer(value)
 
-	C.g_tree_replace(arg0, key, value)
+	C.g_tree_replace(arg0, arg1, arg2)
 }
 
 // Search searches a #GTree using @search_func.
@@ -248,26 +223,19 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 // g_tree_search(). If @search_func returns -1, searching will proceed among the
 // key/value pairs that have a smaller key; if @search_func returns 1, searching
 // will proceed among the key/value pairs that have a larger key.
-func (t *Tree) Search(searchFunc CompareFunc) interface{} {
+func (t *Tree) Search(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_tree_search(arg0, searchFunc, userData)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_tree_search(arg0, arg1, arg2)
 }
 
 // Steal removes a key and its associated value from a #GTree without calling
 // the key and value destroy functions.
 //
 // If the key does not exist in the #GTree, the function does nothing.
-func (t *Tree) Steal(key interface{}) bool {
+func (t *Tree) Steal(t *Tree, key interface{}) bool {
 	var arg0 *C.GTree
 	var arg1 C.gpointer
 
@@ -275,22 +243,24 @@ func (t *Tree) Steal(key interface{}) bool {
 	arg1 = C.gpointer(key)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_tree_steal(arg0, key)
+	cret = C.g_tree_steal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Traverse calls the given function for each node in the #GTree.
-func (t *Tree) Traverse(traverseFunc TraverseFunc, traverseType TraverseType) {
+func (t *Tree) Traverse(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	C.g_tree_traverse(arg0, traverseFunc, traverseType, userData)
+	C.g_tree_traverse(arg0, arg1, arg2, arg3)
 }
 
 // Unref decrements the reference count of @tree by one. If the reference count
@@ -298,7 +268,7 @@ func (t *Tree) Traverse(traverseFunc TraverseFunc, traverseType TraverseType) {
 // specified) and all memory allocated by @tree will be released.
 //
 // It is safe to call this function from any thread.
-func (t *Tree) Unref() {
+func (t *Tree) Unref(t *Tree) {
 	var arg0 *C.GTree
 
 	arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))

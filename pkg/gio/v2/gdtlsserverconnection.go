@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,7 +29,7 @@ func init() {
 }
 
 // NewDTLSServerConnection creates a new ServerConnection wrapping @base_socket.
-func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificate) (dtlsServerConnection DTLSServerConnection, err error) {
+func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificate) error {
 	var arg1 *C.GDatagramBased
 	var arg2 *C.GTlsCertificate
 
@@ -41,16 +37,13 @@ func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificat
 	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GDatagramBased
-	var ret2 DTLSServerConnection
+	var err error
 
-	cret = C.g_dtls_server_connection_new(baseSocket, certificate, &errout)
+	C.g_dtls_server_connection_new(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSServerConnection)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // DTLSServerConnection is the server-side subclass of Connection, representing

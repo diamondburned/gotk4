@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +44,7 @@ type Arrow interface {
 	Buildable
 
 	// Set sets the direction and style of the Arrow, @arrow.
-	Set(arrowType ArrowType, shadowType ShadowType)
+	Set(a Arrow, arrowType ArrowType, shadowType ShadowType)
 }
 
 // arrow implements the Arrow interface.
@@ -74,25 +71,18 @@ func marshalArrow(p uintptr) (interface{}, error) {
 }
 
 // NewArrow constructs a class Arrow.
-func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
+func NewArrow(arrowType ArrowType, shadowType ShadowType) {
 	var arg1 C.GtkArrowType
 	var arg2 C.GtkShadowType
 
 	arg1 = (C.GtkArrowType)(arrowType)
 	arg2 = (C.GtkShadowType)(shadowType)
 
-	var cret C.GtkArrow
-	var ret1 Arrow
-
-	cret = C.gtk_arrow_new(arrowType, shadowType)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Arrow)
-
-	return ret1
+	C.gtk_arrow_new(arg1, arg2)
 }
 
 // Set sets the direction and style of the Arrow, @arrow.
-func (a arrow) Set(arrowType ArrowType, shadowType ShadowType) {
+func (a arrow) Set(a Arrow, arrowType ArrowType, shadowType ShadowType) {
 	var arg0 *C.GtkArrow
 	var arg1 C.GtkArrowType
 	var arg2 C.GtkShadowType
@@ -101,5 +91,5 @@ func (a arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	arg1 = (C.GtkArrowType)(arrowType)
 	arg2 = (C.GtkShadowType)(shadowType)
 
-	C.gtk_arrow_set(arg0, arrowType, shadowType)
+	C.gtk_arrow_set(arg0, arg1, arg2)
 }

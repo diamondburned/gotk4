@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,20 +28,20 @@ type EventController interface {
 
 	// PropagationPhase gets the propagation phase at which @controller handles
 	// events.
-	PropagationPhase() PropagationPhase
+	PropagationPhase(c EventController)
 	// Widget returns the Widget this controller relates to.
-	Widget() Widget
+	Widget(c EventController)
 	// Reset resets the @controller to a clean state. Every interaction the
 	// controller did through EventController::handle-event will be dropped at
 	// this point.
-	Reset()
+	Reset(c EventController)
 	// SetPropagationPhase sets the propagation phase at which a controller
 	// handles events.
 	//
 	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
 	// performed, but other additional gesture maintenance will. In that phase,
 	// the events can be managed by calling gtk_event_controller_handle_event().
-	SetPropagationPhase(phase PropagationPhase)
+	SetPropagationPhase(c EventController, phase PropagationPhase)
 }
 
 // eventController implements the EventController interface.
@@ -71,41 +67,27 @@ func marshalEventController(p uintptr) (interface{}, error) {
 
 // PropagationPhase gets the propagation phase at which @controller handles
 // events.
-func (c eventController) PropagationPhase() PropagationPhase {
+func (c eventController) PropagationPhase(c EventController) {
 	var arg0 *C.GtkEventController
 
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	var cret C.GtkPropagationPhase
-	var ret1 PropagationPhase
-
-	cret = C.gtk_event_controller_get_propagation_phase(arg0)
-
-	ret1 = PropagationPhase(cret)
-
-	return ret1
+	C.gtk_event_controller_get_propagation_phase(arg0)
 }
 
 // Widget returns the Widget this controller relates to.
-func (c eventController) Widget() Widget {
+func (c eventController) Widget(c EventController) {
 	var arg0 *C.GtkEventController
 
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_event_controller_get_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_event_controller_get_widget(arg0)
 }
 
 // Reset resets the @controller to a clean state. Every interaction the
 // controller did through EventController::handle-event will be dropped at
 // this point.
-func (c eventController) Reset() {
+func (c eventController) Reset(c EventController) {
 	var arg0 *C.GtkEventController
 
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
@@ -119,12 +101,12 @@ func (c eventController) Reset() {
 // If @phase is GTK_PHASE_NONE, no automatic event handling will be
 // performed, but other additional gesture maintenance will. In that phase,
 // the events can be managed by calling gtk_event_controller_handle_event().
-func (c eventController) SetPropagationPhase(phase PropagationPhase) {
+func (c eventController) SetPropagationPhase(c EventController, phase PropagationPhase) {
 	var arg0 *C.GtkEventController
 	var arg1 C.GtkPropagationPhase
 
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GtkPropagationPhase)(phase)
 
-	C.gtk_event_controller_set_propagation_phase(arg0, phase)
+	C.gtk_event_controller_set_propagation_phase(arg0, arg1)
 }

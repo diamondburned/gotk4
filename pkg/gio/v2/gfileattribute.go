@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -58,17 +57,23 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (f *FileAttributeInfo) Name() string {
+	var v string
 	v = C.GoString(f.native.name)
+	return v
 }
 
 // Type gets the field inside the struct.
 func (f *FileAttributeInfo) Type() FileAttributeType {
+	var v FileAttributeType
 	v = FileAttributeType(f.native._type)
+	return v
 }
 
 // Flags gets the field inside the struct.
 func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
+	var v FileAttributeInfoFlags
 	v = FileAttributeInfoFlags(f.native.flags)
+	return v
 }
 
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
@@ -93,18 +98,8 @@ func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
-func NewFileAttributeInfoList() *FileAttributeInfoList {
-	var cret *C.GFileAttributeInfoList
-	var ret1 *FileAttributeInfoList
-
-	cret = C.g_file_attribute_info_list_new()
-
-	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewFileAttributeInfoList() {
+	C.g_file_attribute_info_list_new()
 }
 
 // Native returns the underlying C source pointer.
@@ -114,17 +109,21 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 
 // Infos gets the field inside the struct.
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
+	var v *FileAttributeInfo
 	v = WrapFileAttributeInfo(unsafe.Pointer(f.native.infos))
+	return v
 }
 
 // NInfos gets the field inside the struct.
 func (f *FileAttributeInfoList) NInfos() int {
-	v = C.int(f.native.n_infos)
+	var v int
+	v = int(f.native.n_infos)
+	return v
 }
 
 // Add adds a new attribute with @name to the @list, setting its @type and
 // @flags.
-func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
+func (l *FileAttributeInfoList) Add(l *FileAttributeInfoList, name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
 	var arg0 *C.GFileAttributeInfoList
 	var arg1 *C.char
 	var arg2 C.GFileAttributeType
@@ -136,30 +135,20 @@ func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags Fi
 	arg2 = (C.GFileAttributeType)(typ)
 	arg3 = (C.GFileAttributeInfoFlags)(flags)
 
-	C.g_file_attribute_info_list_add(arg0, name, typ, flags)
+	C.g_file_attribute_info_list_add(arg0, arg1, arg2, arg3)
 }
 
 // Dup makes a duplicate of a file attribute info list.
-func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
+func (l *FileAttributeInfoList) Dup(l *FileAttributeInfoList) {
 	var arg0 *C.GFileAttributeInfoList
 
 	arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GFileAttributeInfoList
-	var ret1 *FileAttributeInfoList
-
-	cret = C.g_file_attribute_info_list_dup(arg0)
-
-	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_file_attribute_info_list_dup(arg0)
 }
 
 // Lookup gets the file attribute with the name @name from @list.
-func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
+func (l *FileAttributeInfoList) Lookup(l *FileAttributeInfoList, name string) {
 	var arg0 *C.GFileAttributeInfoList
 	var arg1 *C.char
 
@@ -167,38 +156,21 @@ func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GFileAttributeInfo
-	var ret1 *FileAttributeInfo
-
-	cret = C.g_file_attribute_info_list_lookup(arg0, name)
-
-	ret1 = WrapFileAttributeInfo(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_file_attribute_info_list_lookup(arg0, arg1)
 }
 
 // Ref references a file attribute info list.
-func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
+func (l *FileAttributeInfoList) Ref(l *FileAttributeInfoList) {
 	var arg0 *C.GFileAttributeInfoList
 
 	arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GFileAttributeInfoList
-	var ret1 *FileAttributeInfoList
-
-	cret = C.g_file_attribute_info_list_ref(arg0)
-
-	ret1 = WrapFileAttributeInfoList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *FileAttributeInfoList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_file_attribute_info_list_ref(arg0)
 }
 
 // Unref removes a reference from the given @list. If the reference count falls
 // to zero, the @list is deleted.
-func (l *FileAttributeInfoList) Unref() {
+func (l *FileAttributeInfoList) Unref(l *FileAttributeInfoList) {
 	var arg0 *C.GFileAttributeInfoList
 
 	arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))

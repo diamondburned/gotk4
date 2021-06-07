@@ -2,10 +2,6 @@
 
 package gobject
 
-import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
@@ -25,5 +21,5 @@ func SourceSetDummyCallback(source *glib.Source) {
 
 	arg1 = (*C.GSource)(unsafe.Pointer(source.Native()))
 
-	C.g_source_set_dummy_callback(source)
+	C.g_source_set_dummy_callback(arg1)
 }

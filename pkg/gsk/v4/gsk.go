@@ -3,7 +3,6 @@
 package gsk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -276,4 +275,8 @@ const (
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {
 	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+func SerializationErrorQuark() {
+	C.gsk_serialization_error_quark()
 }

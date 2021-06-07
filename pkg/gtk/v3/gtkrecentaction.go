@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -38,12 +34,12 @@ type RecentAction interface {
 
 	// ShowNumbers returns the value set by
 	// gtk_recent_chooser_menu_set_show_numbers().
-	ShowNumbers() bool
+	ShowNumbers(a RecentAction) bool
 	// SetShowNumbers sets whether a number should be added to the items shown
 	// by the widgets representing @action. The numbers are shown to provide a
 	// unique character for a mnemonic to be used inside the menu item's label.
 	// Only the first ten items get a number to avoid clashes.
-	SetShowNumbers(showNumbers bool)
+	SetShowNumbers(a RecentAction, showNumbers bool)
 }
 
 // recentAction implements the RecentAction interface.
@@ -72,7 +68,7 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 }
 
 // NewRecentAction constructs a class RecentAction.
-func NewRecentAction(name string, label string, tooltip string, stockID string) RecentAction {
+func NewRecentAction(name string, label string, tooltip string, stockID string) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -87,18 +83,11 @@ func NewRecentAction(name string, label string, tooltip string, stockID string) 
 	arg4 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg4))
 
-	var cret C.GtkRecentAction
-	var ret1 RecentAction
-
-	cret = C.gtk_recent_action_new(name, label, tooltip, stockID)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
-
-	return ret1
+	C.gtk_recent_action_new(arg1, arg2, arg3, arg4)
 }
 
 // NewRecentActionForManager constructs a class RecentAction.
-func NewRecentActionForManager(name string, label string, tooltip string, stockID string, manager RecentManager) RecentAction {
+func NewRecentActionForManager(name string, label string, tooltip string, stockID string, manager RecentManager) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -115,38 +104,33 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
-	var cret C.GtkRecentAction
-	var ret1 RecentAction
-
-	cret = C.gtk_recent_action_new_for_manager(name, label, tooltip, stockID, manager)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
-
-	return ret1
+	C.gtk_recent_action_new_for_manager(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
-func (a recentAction) ShowNumbers() bool {
+func (a recentAction) ShowNumbers(a RecentAction) bool {
 	var arg0 *C.GtkRecentAction
 
 	arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_recent_action_get_show_numbers(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetShowNumbers sets whether a number should be added to the items shown
 // by the widgets representing @action. The numbers are shown to provide a
 // unique character for a mnemonic to be used inside the menu item's label.
 // Only the first ten items get a number to avoid clashes.
-func (a recentAction) SetShowNumbers(showNumbers bool) {
+func (a recentAction) SetShowNumbers(a RecentAction, showNumbers bool) {
 	var arg0 *C.GtkRecentAction
 	var arg1 C.gboolean
 
@@ -155,5 +139,5 @@ func (a recentAction) SetShowNumbers(showNumbers bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_recent_action_set_show_numbers(arg0, showNumbers)
+	C.gtk_recent_action_set_show_numbers(arg0, arg1)
 }

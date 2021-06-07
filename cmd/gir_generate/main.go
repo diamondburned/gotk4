@@ -70,7 +70,7 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, modulePath)
-	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.LstdFlags|log.Lmsgprefix), true)
+	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.Lmsgprefix), true)
 	gen.AddFilters(filters)
 
 	// Do a clean-up of the target directory.

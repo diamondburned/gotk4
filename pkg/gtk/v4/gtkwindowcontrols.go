@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -72,11 +68,11 @@ type WindowControls interface {
 
 	// DecorationLayout gets the decoration layout set with
 	// gtk_window_controls_set_decoration_layout().
-	DecorationLayout() string
+	DecorationLayout(s WindowControls)
 	// Empty gets whether the widget has any window buttons.
-	Empty() bool
+	Empty(s WindowControls) bool
 	// Side gets the side set with gtk_window_controls_set_side().
-	Side() PackType
+	Side(s WindowControls)
 	// SetDecorationLayout sets the decoration layout for the title buttons,
 	// overriding the Settings:gtk-decoration-layout setting.
 	//
@@ -90,12 +86,12 @@ type WindowControls interface {
 	//
 	// If WindowControls:side value is @GTK_PACK_START, @self will display the
 	// part before the colon, otherwise after that.
-	SetDecorationLayout(layout string)
+	SetDecorationLayout(s WindowControls, layout string)
 	// SetSide sets the side for @self, determining which part of decoration
 	// layout it uses.
 	//
 	// See gtk_window_controls_set_decoration_layout()
-	SetSide(side PackType)
+	SetSide(s WindowControls, side PackType)
 }
 
 // windowControls implements the WindowControls interface.
@@ -126,68 +122,49 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 }
 
 // NewWindowControls constructs a class WindowControls.
-func NewWindowControls(side PackType) WindowControls {
+func NewWindowControls(side PackType) {
 	var arg1 C.GtkPackType
 
 	arg1 = (C.GtkPackType)(side)
 
-	var cret C.GtkWindowControls
-	var ret1 WindowControls
-
-	cret = C.gtk_window_controls_new(side)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowControls)
-
-	return ret1
+	C.gtk_window_controls_new(arg1)
 }
 
 // DecorationLayout gets the decoration layout set with
 // gtk_window_controls_set_decoration_layout().
-func (s windowControls) DecorationLayout() string {
+func (s windowControls) DecorationLayout(s WindowControls) {
 	var arg0 *C.GtkWindowControls
 
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_window_controls_get_decoration_layout(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_window_controls_get_decoration_layout(arg0)
 }
 
 // Empty gets whether the widget has any window buttons.
-func (s windowControls) Empty() bool {
+func (s windowControls) Empty(s WindowControls) bool {
 	var arg0 *C.GtkWindowControls
 
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_window_controls_get_empty(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Side gets the side set with gtk_window_controls_set_side().
-func (s windowControls) Side() PackType {
+func (s windowControls) Side(s WindowControls) {
 	var arg0 *C.GtkWindowControls
 
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPackType
-	var ret1 PackType
-
-	cret = C.gtk_window_controls_get_side(arg0)
-
-	ret1 = PackType(cret)
-
-	return ret1
+	C.gtk_window_controls_get_side(arg0)
 }
 
 // SetDecorationLayout sets the decoration layout for the title buttons,
@@ -203,7 +180,7 @@ func (s windowControls) Side() PackType {
 //
 // If WindowControls:side value is @GTK_PACK_START, @self will display the
 // part before the colon, otherwise after that.
-func (s windowControls) SetDecorationLayout(layout string) {
+func (s windowControls) SetDecorationLayout(s WindowControls, layout string) {
 	var arg0 *C.GtkWindowControls
 	var arg1 *C.char
 
@@ -211,19 +188,19 @@ func (s windowControls) SetDecorationLayout(layout string) {
 	arg1 = (*C.char)(C.CString(layout))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_window_controls_set_decoration_layout(arg0, layout)
+	C.gtk_window_controls_set_decoration_layout(arg0, arg1)
 }
 
 // SetSide sets the side for @self, determining which part of decoration
 // layout it uses.
 //
 // See gtk_window_controls_set_decoration_layout()
-func (s windowControls) SetSide(side PackType) {
+func (s windowControls) SetSide(s WindowControls, side PackType) {
 	var arg0 *C.GtkWindowControls
 	var arg1 C.GtkPackType
 
 	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkPackType)(side)
 
-	C.gtk_window_controls_set_side(arg0, side)
+	C.gtk_window_controls_set_side(arg0, arg1)
 }

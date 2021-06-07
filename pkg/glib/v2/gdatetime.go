@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -27,21 +25,14 @@ type TimeSpan int64
 
 // DateTimeCompare: a comparison function for Times that is suitable as a Func.
 // Both Times must be non-nil.
-func DateTimeCompare(dt1 interface{}, dt2 interface{}) int {
+func DateTimeCompare(dt1 interface{}, dt2 interface{}) {
 	var arg1 C.gpointer
 	var arg2 C.gpointer
 
 	arg1 = C.gpointer(dt1)
 	arg2 = C.gpointer(dt2)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_compare(dt1, dt2)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_compare(arg1, arg2)
 }
 
 // DateTimeEqual checks to see if @dt1 and @dt2 are equal.
@@ -56,29 +47,24 @@ func DateTimeEqual(dt1 interface{}, dt2 interface{}) bool {
 	arg2 = C.gpointer(dt2)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_date_time_equal(dt1, dt2)
+	cret = C.g_date_time_equal(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DateTimeHash hashes @datetime into a #guint, suitable for use within Table.
-func DateTimeHash(datetime interface{}) uint {
+func DateTimeHash(datetime interface{}) {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(datetime)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_date_time_hash(datetime)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_date_time_hash(arg1)
 }
 
 // DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
@@ -103,7 +89,7 @@ func marshalDateTime(p uintptr) (interface{}, error) {
 }
 
 // NewDateTime constructs a struct DateTime.
-func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) {
 	var arg1 *C.GTimeZone
 	var arg2 C.gint
 	var arg3 C.gint
@@ -120,21 +106,11 @@ func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute in
 	arg6 = C.gint(minute)
 	arg7 = C.gdouble(seconds)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new(tz, year, month, day, hour, minute, seconds)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // NewDateTimeFromISO8601 constructs a struct DateTime.
-func NewDateTimeFromISO8601(text string, defaultTz *TimeZone) *DateTime {
+func NewDateTimeFromISO8601(text string, defaultTz *TimeZone) {
 	var arg1 *C.gchar
 	var arg2 *C.GTimeZone
 
@@ -142,97 +118,47 @@ func NewDateTimeFromISO8601(text string, defaultTz *TimeZone) *DateTime {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GTimeZone)(unsafe.Pointer(defaultTz.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_from_iso8601(text, defaultTz)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_from_iso8601(arg1, arg2)
 }
 
 // NewDateTimeFromTimevalLocal constructs a struct DateTime.
-func NewDateTimeFromTimevalLocal(tv *TimeVal) *DateTime {
+func NewDateTimeFromTimevalLocal(tv *TimeVal) {
 	var arg1 *C.GTimeVal
 
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(tv.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_from_timeval_local(tv)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_from_timeval_local(arg1)
 }
 
 // NewDateTimeFromTimevalUtc constructs a struct DateTime.
-func NewDateTimeFromTimevalUtc(tv *TimeVal) *DateTime {
+func NewDateTimeFromTimevalUtc(tv *TimeVal) {
 	var arg1 *C.GTimeVal
 
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(tv.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_from_timeval_utc(tv)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_from_timeval_utc(arg1)
 }
 
 // NewDateTimeFromUnixLocal constructs a struct DateTime.
-func NewDateTimeFromUnixLocal(t int64) *DateTime {
+func NewDateTimeFromUnixLocal(t int64) {
 	var arg1 C.gint64
 
 	arg1 = C.gint64(t)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_from_unix_local(t)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_from_unix_local(arg1)
 }
 
 // NewDateTimeFromUnixUtc constructs a struct DateTime.
-func NewDateTimeFromUnixUtc(t int64) *DateTime {
+func NewDateTimeFromUnixUtc(t int64) {
 	var arg1 C.gint64
 
 	arg1 = C.gint64(t)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_from_unix_utc(t)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_from_unix_utc(arg1)
 }
 
 // NewDateTimeLocal constructs a struct DateTime.
-func NewDateTimeLocal(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTimeLocal(year int, month int, day int, hour int, minute int, seconds float64) {
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gint
@@ -247,70 +173,30 @@ func NewDateTimeLocal(year int, month int, day int, hour int, minute int, second
 	arg5 = C.gint(minute)
 	arg6 = C.gdouble(seconds)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_local(year, month, day, hour, minute, seconds)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_local(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // NewDateTimeNow constructs a struct DateTime.
-func NewDateTimeNow(tz *TimeZone) *DateTime {
+func NewDateTimeNow(tz *TimeZone) {
 	var arg1 *C.GTimeZone
 
 	arg1 = (*C.GTimeZone)(unsafe.Pointer(tz.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_now(tz)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_now(arg1)
 }
 
 // NewDateTimeNowLocal constructs a struct DateTime.
-func NewDateTimeNowLocal() *DateTime {
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_now_local()
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewDateTimeNowLocal() {
+	C.g_date_time_new_now_local()
 }
 
 // NewDateTimeNowUtc constructs a struct DateTime.
-func NewDateTimeNowUtc() *DateTime {
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_now_utc()
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewDateTimeNowUtc() {
+	C.g_date_time_new_now_utc()
 }
 
 // NewDateTimeUtc constructs a struct DateTime.
-func NewDateTimeUtc(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTimeUtc(year int, month int, day int, hour int, minute int, seconds float64) {
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gint
@@ -325,17 +211,7 @@ func NewDateTimeUtc(year int, month int, day int, hour int, minute int, seconds 
 	arg5 = C.gint(minute)
 	arg6 = C.gdouble(seconds)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_new_utc(year, month, day, hour, minute, seconds)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_new_utc(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // Native returns the underlying C source pointer.
@@ -345,29 +221,19 @@ func (d *DateTime) Native() unsafe.Pointer {
 
 // AddDays creates a copy of @datetime and adds the specified number of days to
 // the copy. Add negative values to subtract days.
-func (d *DateTime) AddDays(days int) *DateTime {
+func (d *DateTime) AddDays(d *DateTime, days int) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gint(days)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_days(arg0, days)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_days(arg0, arg1)
 }
 
 // AddFull creates a new Time adding the specified values to the current date
 // and time in @datetime. Add negative values to subtract.
-func (d *DateTime) AddFull(years int, months int, days int, hours int, minutes int, seconds float64) *DateTime {
+func (d *DateTime) AddFull(d *DateTime, years int, months int, days int, hours int, minutes int, seconds float64) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 	var arg2 C.gint
@@ -384,61 +250,31 @@ func (d *DateTime) AddFull(years int, months int, days int, hours int, minutes i
 	arg5 = C.gint(minutes)
 	arg6 = C.gdouble(seconds)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_full(arg0, years, months, days, hours, minutes, seconds)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_full(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // AddHours creates a copy of @datetime and adds the specified number of hours.
 // Add negative values to subtract hours.
-func (d *DateTime) AddHours(hours int) *DateTime {
+func (d *DateTime) AddHours(d *DateTime, hours int) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gint(hours)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_hours(arg0, hours)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_hours(arg0, arg1)
 }
 
 // AddMinutes creates a copy of @datetime adding the specified number of
 // minutes. Add negative values to subtract minutes.
-func (d *DateTime) AddMinutes(minutes int) *DateTime {
+func (d *DateTime) AddMinutes(d *DateTime, minutes int) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gint(minutes)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_minutes(arg0, minutes)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_minutes(arg0, arg1)
 }
 
 // AddMonths creates a copy of @datetime and adds the specified number of months
@@ -448,68 +284,38 @@ func (d *DateTime) AddMinutes(minutes int) *DateTime {
 // in the updated calendar month. For example, if adding 1 month to 31st January
 // 2018, the result would be 28th February 2018. In 2020 (a leap year), the
 // result would be 29th February.
-func (d *DateTime) AddMonths(months int) *DateTime {
+func (d *DateTime) AddMonths(d *DateTime, months int) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gint(months)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_months(arg0, months)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_months(arg0, arg1)
 }
 
 // AddSeconds creates a copy of @datetime and adds the specified number of
 // seconds. Add negative values to subtract seconds.
-func (d *DateTime) AddSeconds(seconds float64) *DateTime {
+func (d *DateTime) AddSeconds(d *DateTime, seconds float64) {
 	var arg0 *C.GDateTime
 	var arg1 C.gdouble
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gdouble(seconds)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_seconds(arg0, seconds)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_seconds(arg0, arg1)
 }
 
 // AddWeeks creates a copy of @datetime and adds the specified number of weeks
 // to the copy. Add negative values to subtract weeks.
-func (d *DateTime) AddWeeks(weeks int) *DateTime {
+func (d *DateTime) AddWeeks(d *DateTime, weeks int) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gint(weeks)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_add_weeks(arg0, weeks)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_add_weeks(arg0, arg1)
 }
 
 // AddYears creates a copy of @datetime and adds the specified number of years
@@ -517,24 +323,27 @@ func (d *DateTime) AddWeeks(weeks int) *DateTime {
 //
 // As with g_date_time_add_months(), if the resulting date would be 29th
 // February on a non-leap year, the day will be clamped to 28th February.
-func (d *DateTime) AddYears(years int) *DateTime {
+func (d *DateTime) AddYears(d *DateTime, years int) {
 	var arg0 *C.GDateTime
 	var arg1 C.gint
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = C.gint(years)
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
+	C.g_date_time_add_years(arg0, arg1)
+}
 
-	cret = C.g_date_time_add_years(arg0, years)
+// Difference calculates the difference in time between @end and @begin. The
+// Span that is returned is effectively @end - @begin (ie: positive if the first
+// parameter is larger).
+func (e *DateTime) Difference(e *DateTime, begin *DateTime) {
+	var arg0 *C.GDateTime
+	var arg1 *C.GDateTime
 
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	arg0 = (*C.GDateTime)(unsafe.Pointer(e.Native()))
+	arg1 = (*C.GDateTime)(unsafe.Pointer(begin.Native()))
 
-	return ret1
+	C.g_date_time_difference(arg0, arg1)
 }
 
 // Format creates a newly allocated string representing the requested @format.
@@ -617,7 +426,7 @@ func (d *DateTime) AddYears(years int) *DateTime {
 // For other languages there is no difference. \OB is a GNU and BSD strftime()
 // extension expected to be added to the future POSIX specification, \Ob and \Oh
 // are GNU strftime() extensions. Since: 2.56
-func (d *DateTime) Format(format string) string {
+func (d *DateTime) Format(d *DateTime, format string) {
 	var arg0 *C.GDateTime
 	var arg1 *C.gchar
 
@@ -625,15 +434,7 @@ func (d *DateTime) Format(format string) string {
 	arg1 = (*C.gchar)(C.CString(format))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_date_time_format(arg0, format)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_date_time_format(arg0, arg1)
 }
 
 // FormatISO8601: format @datetime in ISO 8601 format
@@ -641,185 +442,107 @@ func (d *DateTime) Format(format string) string {
 // zone, and return that as a UTF-8 encoded string.
 //
 // Since GLib 2.66, this will output to sub-second precision if needed.
-func (d *DateTime) FormatISO8601() string {
+func (d *DateTime) FormatISO8601(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_date_time_format_iso8601(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_date_time_format_iso8601(arg0)
 }
 
 // DayOfMonth retrieves the day of the month represented by @datetime in the
 // gregorian calendar.
-func (d *DateTime) DayOfMonth() int {
+func (d *DateTime) DayOfMonth(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_day_of_month(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_day_of_month(arg0)
 }
 
 // DayOfWeek retrieves the ISO 8601 day of the week on which @datetime falls (1
 // is Monday, 2 is Tuesday... 7 is Sunday).
-func (d *DateTime) DayOfWeek() int {
+func (d *DateTime) DayOfWeek(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_day_of_week(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_day_of_week(arg0)
 }
 
 // DayOfYear retrieves the day of the year represented by @datetime in the
 // Gregorian calendar.
-func (d *DateTime) DayOfYear() int {
+func (d *DateTime) DayOfYear(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_day_of_year(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_day_of_year(arg0)
 }
 
 // Hour retrieves the hour of the day represented by @datetime
-func (d *DateTime) Hour() int {
+func (d *DateTime) Hour(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_hour(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_hour(arg0)
 }
 
 // Microsecond retrieves the microsecond of the date represented by @datetime
-func (d *DateTime) Microsecond() int {
+func (d *DateTime) Microsecond(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_microsecond(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_microsecond(arg0)
 }
 
 // Minute retrieves the minute of the hour represented by @datetime
-func (d *DateTime) Minute() int {
+func (d *DateTime) Minute(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_minute(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_minute(arg0)
 }
 
 // Month retrieves the month of the year represented by @datetime in the
 // Gregorian calendar.
-func (d *DateTime) Month() int {
+func (d *DateTime) Month(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_month(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_month(arg0)
 }
 
 // Second retrieves the second of the minute represented by @datetime
-func (d *DateTime) Second() int {
+func (d *DateTime) Second(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_second(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_second(arg0)
 }
 
 // Seconds retrieves the number of seconds since the start of the last minute,
 // including the fractional part.
-func (d *DateTime) Seconds() float64 {
+func (d *DateTime) Seconds(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.g_date_time_get_seconds(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.g_date_time_get_seconds(arg0)
 }
 
 // Timezone: get the time zone for this @datetime.
-func (d *DateTime) Timezone() *TimeZone {
+func (d *DateTime) Timezone(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GTimeZone
-	var ret1 *TimeZone
-
-	cret = C.g_date_time_get_timezone(arg0)
-
-	ret1 = WrapTimeZone(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_date_time_get_timezone(arg0)
 }
 
 // TimezoneAbbreviation determines the time zone abbreviation to be used at the
@@ -827,19 +550,28 @@ func (d *DateTime) Timezone() *TimeZone {
 //
 // For example, in Toronto this is currently "EST" during the winter months and
 // "EDT" during the summer months when daylight savings time is in effect.
-func (d *DateTime) TimezoneAbbreviation() string {
+func (d *DateTime) TimezoneAbbreviation(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret *C.gchar
-	var ret1 string
+	C.g_date_time_get_timezone_abbreviation(arg0)
+}
 
-	cret = C.g_date_time_get_timezone_abbreviation(arg0)
+// UtcOffset determines the offset to UTC in effect at the time and in the time
+// zone of @datetime.
+//
+// The offset is the number of microseconds that you add to UTC time to arrive
+// at local time for the time zone (ie: negative numbers for time zones west of
+// GMT, positive numbers for east).
+//
+// If @datetime represents UTC time, then the offset is always zero.
+func (d *DateTime) UtcOffset(d *DateTime) {
+	var arg0 *C.GDateTime
 
-	ret1 = C.GoString(cret)
+	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	return ret1
+	C.g_date_time_get_utc_offset(arg0)
 }
 
 // WeekNumberingYear returns the ISO 8601 week-numbering year in which the week
@@ -872,19 +604,12 @@ func (d *DateTime) TimezoneAbbreviation() string {
 //
 // Note that January 1 0001 in the proleptic Gregorian calendar is a Monday, so
 // this function never returns 0.
-func (d *DateTime) WeekNumberingYear() int {
+func (d *DateTime) WeekNumberingYear(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_week_numbering_year(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_week_numbering_year(arg0)
 }
 
 // WeekOfYear returns the ISO 8601 week number for the week containing
@@ -902,93 +627,71 @@ func (d *DateTime) WeekNumberingYear() int {
 // days of a calendar year may be considered as being part of the first ISO 8601
 // week of the next year if 4 or more days of that week are contained within the
 // new year.
-func (d *DateTime) WeekOfYear() int {
+func (d *DateTime) WeekOfYear(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_week_of_year(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_week_of_year(arg0)
 }
 
 // Year retrieves the year represented by @datetime in the Gregorian calendar.
-func (d *DateTime) Year() int {
+func (d *DateTime) Year(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_date_time_get_year(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_date_time_get_year(arg0)
 }
 
 // Ymd retrieves the Gregorian day, month, and year of a given Time.
-func (d *DateTime) Ymd() (year int, month int, day int) {
+func (d *DateTime) Ymd(d *DateTime) (year int, month int, day int) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
 	var arg1 C.gint
-	var ret1 int
+	var year int
 	var arg2 C.gint
-	var ret2 int
+	var month int
 	var arg3 C.gint
-	var ret3 int
+	var day int
 
 	C.g_date_time_get_ymd(arg0, &arg1, &arg2, &arg3)
 
-	*ret1 = C.gint(arg1)
-	*ret2 = C.gint(arg2)
-	*ret3 = C.gint(arg3)
+	year = int(&arg1)
+	month = int(&arg2)
+	day = int(&arg3)
 
-	return ret1, ret2, ret3
+	return year, month, day
 }
 
 // IsDaylightSavings determines if daylight savings time is in effect at the
 // time and in the time zone of @datetime.
-func (d *DateTime) IsDaylightSavings() bool {
+func (d *DateTime) IsDaylightSavings(d *DateTime) bool {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_date_time_is_daylight_savings(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Ref: atomically increments the reference count of @datetime by one.
-func (d *DateTime) Ref() *DateTime {
+func (d *DateTime) Ref(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_ref(arg0)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_ref(arg0)
 }
 
 // ToLocal creates a new Time corresponding to the same instant in time as
@@ -996,22 +699,12 @@ func (d *DateTime) Ref() *DateTime {
 //
 // This call is equivalent to calling g_date_time_to_timezone() with the time
 // zone returned by g_time_zone_new_local().
-func (d *DateTime) ToLocal() *DateTime {
+func (d *DateTime) ToLocal(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_to_local(arg0)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_to_local(arg0)
 }
 
 // ToTimeval stores the instant in time that @datetime represents into @tv.
@@ -1026,7 +719,7 @@ func (d *DateTime) ToLocal() *DateTime {
 // indicate that the time is out of range.
 //
 // On systems where 'long' is 64bit, this function never fails.
-func (d *DateTime) ToTimeval(tv *TimeVal) bool {
+func (d *DateTime) ToTimeval(d *DateTime, tv *TimeVal) bool {
 	var arg0 *C.GDateTime
 	var arg1 *C.GTimeVal
 
@@ -1034,13 +727,15 @@ func (d *DateTime) ToTimeval(tv *TimeVal) bool {
 	arg1 = (*C.GTimeVal)(unsafe.Pointer(tv.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_date_time_to_timeval(arg0, tv)
+	cret = C.g_date_time_to_timeval(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ToTimezone: create a new Time corresponding to the same instant in time as
@@ -1049,24 +744,14 @@ func (d *DateTime) ToTimeval(tv *TimeVal) bool {
 // This call can fail in the case that the time goes out of bounds. For example,
 // converting 0001-01-01 00:00:00 UTC to a time zone west of Greenwich will fail
 // (due to the year 0 being out of range).
-func (d *DateTime) ToTimezone(tz *TimeZone) *DateTime {
+func (d *DateTime) ToTimezone(d *DateTime, tz *TimeZone) {
 	var arg0 *C.GDateTime
 	var arg1 *C.GTimeZone
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GTimeZone)(unsafe.Pointer(tz.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_to_timezone(arg0, tz)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_to_timezone(arg0, arg1)
 }
 
 // ToUnix gives the Unix time corresponding to @datetime, rounding down to the
@@ -1074,19 +759,12 @@ func (d *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 //
 // Unix time is the number of seconds that have elapsed since 1970-01-01
 // 00:00:00 UTC, regardless of the time zone associated with @datetime.
-func (d *DateTime) ToUnix() int64 {
+func (d *DateTime) ToUnix(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint64
-	var ret1 int64
-
-	cret = C.g_date_time_to_unix(arg0)
-
-	ret1 = C.gint64(cret)
-
-	return ret1
+	C.g_date_time_to_unix(arg0)
 }
 
 // ToUtc creates a new Time corresponding to the same instant in time as
@@ -1094,29 +772,19 @@ func (d *DateTime) ToUnix() int64 {
 //
 // This call is equivalent to calling g_date_time_to_timezone() with the time
 // zone returned by g_time_zone_new_utc().
-func (d *DateTime) ToUtc() *DateTime {
+func (d *DateTime) ToUtc(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GDateTime
-	var ret1 *DateTime
-
-	cret = C.g_date_time_to_utc(arg0)
-
-	ret1 = WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_date_time_to_utc(arg0)
 }
 
 // Unref: atomically decrements the reference count of @datetime by one.
 //
 // When the reference count reaches zero, the resources allocated by @datetime
 // are freed
-func (d *DateTime) Unref() {
+func (d *DateTime) Unref(d *DateTime) {
 	var arg0 *C.GDateTime
 
 	arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))

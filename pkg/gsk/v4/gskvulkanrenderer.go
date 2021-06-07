@@ -3,9 +3,6 @@
 package gsk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,13 +44,6 @@ func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 }
 
 // NewVulkanRenderer constructs a class VulkanRenderer.
-func NewVulkanRenderer() VulkanRenderer {
-	var cret C.GskVulkanRenderer
-	var ret1 VulkanRenderer
-
-	cret = C.gsk_vulkan_renderer_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(VulkanRenderer)
-
-	return ret1
+func NewVulkanRenderer() {
+	C.gsk_vulkan_renderer_new()
 }

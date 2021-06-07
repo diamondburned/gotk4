@@ -2,33 +2,15 @@
 
 package glib
 
-import (
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
 import "C"
 
-func StrvGetType() externglib.Type {
-	var cret C.GType
-	var ret1 externglib.Type
-
-	cret = C.g_strv_get_type()
-
-	ret1 = externglib.Type(cret)
-
-	return ret1
+func StrvGetType() {
+	C.g_strv_get_type()
 }
 
-func VariantGetGType() externglib.Type {
-	var cret C.GType
-	var ret1 externglib.Type
-
-	cret = C.g_variant_get_gtype()
-
-	ret1 = externglib.Type(cret)
-
-	return ret1
+func VariantGetGType() {
+	C.g_variant_get_gtype()
 }

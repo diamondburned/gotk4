@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,7 +67,7 @@ type Credentials interface {
 	// It is a programming error (which will cause a warning to be logged) to
 	// use this method if there is no #GCredentials support for the OS or if
 	// @native_type isn't supported by the OS.
-	Native(nativeType CredentialsType) interface{}
+	Native(c Credentials, nativeType CredentialsType)
 	// UnixPid tries to get the UNIX process identifier from @credentials. This
 	// method is only available on UNIX platforms.
 	//
@@ -79,26 +75,26 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// process ID (for example this is the case for
 	// G_CREDENTIALS_TYPE_APPLE_XUCRED).
-	UnixPid() (gint int, err error)
+	UnixPid(c Credentials) error
 	// UnixUser tries to get the UNIX user identifier from @credentials. This
 	// method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// user.
-	UnixUser() (guint uint, err error)
+	UnixUser(c Credentials) error
 	// IsSameUser checks if @credentials and @other_credentials is the same
 	// user.
 	//
 	// This operation can fail if #GCredentials is not supported on the the OS.
-	IsSameUser(otherCredentials Credentials) error
+	IsSameUser(c Credentials, otherCredentials Credentials) error
 	// SetNative copies the native credentials of type @native_type from @native
 	// into @credentials.
 	//
 	// It is a programming error (which will cause a warning to be logged) to
 	// use this method if there is no #GCredentials support for the OS or if
 	// @native_type isn't supported by the OS.
-	SetNative(nativeType CredentialsType, native interface{})
+	SetNative(c Credentials, nativeType CredentialsType, native interface{})
 	// SetUnixUser tries to set the UNIX user identifier on @credentials. This
 	// method is only available on UNIX platforms.
 	//
@@ -106,11 +102,11 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// user. It can also fail if the OS does not allow the use of "spoofed"
 	// credentials.
-	SetUnixUser(uid uint) error
+	SetUnixUser(c Credentials, uid uint) error
 	// String creates a human-readable textual representation of @credentials
 	// that can be used in logging and debug messages. The format of the
 	// returned string may change in future GLib release.
-	String() string
+	String(c Credentials)
 }
 
 // credentials implements the Credentials interface.
@@ -135,15 +131,8 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 }
 
 // NewCredentials constructs a class Credentials.
-func NewCredentials() Credentials {
-	var cret C.GCredentials
-	var ret1 Credentials
-
-	cret = C.g_credentials_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
-
-	return ret1
+func NewCredentials() {
+	C.g_credentials_new()
 }
 
 // Native gets a pointer to native credentials of type @native_type from
@@ -152,21 +141,14 @@ func NewCredentials() Credentials {
 // It is a programming error (which will cause a warning to be logged) to
 // use this method if there is no #GCredentials support for the OS or if
 // @native_type isn't supported by the OS.
-func (c credentials) Native(nativeType CredentialsType) interface{} {
+func (c credentials) Native(c Credentials, nativeType CredentialsType) {
 	var arg0 *C.GCredentials
 	var arg1 C.GCredentialsType
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GCredentialsType)(nativeType)
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_credentials_get_native(arg0, nativeType)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_credentials_get_native(arg0, arg1)
 }
 
 // UnixPid tries to get the UNIX process identifier from @credentials. This
@@ -176,22 +158,19 @@ func (c credentials) Native(nativeType CredentialsType) interface{} {
 // the native credentials type does not contain information about the UNIX
 // process ID (for example this is the case for
 // G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (c credentials) UnixPid() (gint int, err error) {
+func (c credentials) UnixPid(c Credentials) error {
 	var arg0 *C.GCredentials
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.pid_t
-	var ret2 int
+	var err error
 
-	cret = C.g_credentials_get_unix_pid(arg0, &errout)
+	C.g_credentials_get_unix_pid(arg0, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.pid_t(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // UnixUser tries to get the UNIX user identifier from @credentials. This
@@ -200,29 +179,26 @@ func (c credentials) UnixPid() (gint int, err error) {
 // This operation can fail if #GCredentials is not supported on the OS or if
 // the native credentials type does not contain information about the UNIX
 // user.
-func (c credentials) UnixUser() (guint uint, err error) {
+func (c credentials) UnixUser(c Credentials) error {
 	var arg0 *C.GCredentials
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.uid_t
-	var ret2 uint
+	var err error
 
-	cret = C.g_credentials_get_unix_user(arg0, &errout)
+	C.g_credentials_get_unix_user(arg0, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.uid_t(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // IsSameUser checks if @credentials and @other_credentials is the same
 // user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
-func (c credentials) IsSameUser(otherCredentials Credentials) error {
+func (c credentials) IsSameUser(c Credentials, otherCredentials Credentials) error {
 	var arg0 *C.GCredentials
 	var arg1 *C.GCredentials
 
@@ -230,13 +206,13 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_credentials_is_same_user(arg0, otherCredentials, &errout)
+	C.g_credentials_is_same_user(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SetNative copies the native credentials of type @native_type from @native
@@ -245,7 +221,7 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 // It is a programming error (which will cause a warning to be logged) to
 // use this method if there is no #GCredentials support for the OS or if
 // @native_type isn't supported by the OS.
-func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
+func (c credentials) SetNative(c Credentials, nativeType CredentialsType, native interface{}) {
 	var arg0 *C.GCredentials
 	var arg1 C.GCredentialsType
 	var arg2 C.gpointer
@@ -254,7 +230,7 @@ func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
 	arg1 = (C.GCredentialsType)(nativeType)
 	arg2 = C.gpointer(native)
 
-	C.g_credentials_set_native(arg0, nativeType, native)
+	C.g_credentials_set_native(arg0, arg1, arg2)
 }
 
 // SetUnixUser tries to set the UNIX user identifier on @credentials. This
@@ -264,7 +240,7 @@ func (c credentials) SetNative(nativeType CredentialsType, native interface{}) {
 // the native credentials type does not contain information about the UNIX
 // user. It can also fail if the OS does not allow the use of "spoofed"
 // credentials.
-func (c credentials) SetUnixUser(uid uint) error {
+func (c credentials) SetUnixUser(c Credentials, uid uint) error {
 	var arg0 *C.GCredentials
 	var arg1 C.uid_t
 
@@ -272,30 +248,22 @@ func (c credentials) SetUnixUser(uid uint) error {
 	arg1 = C.uid_t(uid)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_credentials_set_unix_user(arg0, uid, &errout)
+	C.g_credentials_set_unix_user(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // String creates a human-readable textual representation of @credentials
 // that can be used in logging and debug messages. The format of the
 // returned string may change in future GLib release.
-func (c credentials) String() string {
+func (c credentials) String(c Credentials) {
 	var arg0 *C.GCredentials
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_credentials_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_credentials_to_string(arg0)
 }

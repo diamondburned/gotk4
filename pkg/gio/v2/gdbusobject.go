@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,15 +33,15 @@ func init() {
 type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name @interface_name associated
 	// with @object, if any.
-	Interface(interfaceName string) DBusInterface
+	Interface(o DBusObject, interfaceName string)
 	// Interfaces gets the D-Bus interfaces associated with @object.
-	Interfaces() *glib.List
+	Interfaces(o DBusObject)
 	// ObjectPath gets the object path for @object.
-	ObjectPath() string
+	ObjectPath(o DBusObject)
 
-	InterfaceAdded(interface_ DBusInterface)
+	InterfaceAdded(o DBusObject, interface_ DBusInterface)
 
-	InterfaceRemoved(interface_ DBusInterface)
+	InterfaceRemoved(o DBusObject, interface_ DBusInterface)
 }
 
 // DBusObject: the BusObject type is the base type for D-Bus objects on both the
@@ -80,7 +75,7 @@ func marshalDBusObject(p uintptr) (interface{}, error) {
 
 // Interface gets the D-Bus interface with name @interface_name associated
 // with @object, if any.
-func (o dBusObject) Interface(interfaceName string) DBusInterface {
+func (o dBusObject) Interface(o DBusObject, interfaceName string) {
 	var arg0 *C.GDBusObject
 	var arg1 *C.gchar
 
@@ -88,47 +83,23 @@ func (o dBusObject) Interface(interfaceName string) DBusInterface {
 	arg1 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GDBusInterface
-	var ret1 DBusInterface
-
-	cret = C.g_dbus_object_get_interface(arg0, interfaceName)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
-
-	return ret1
+	C.g_dbus_object_get_interface(arg0, arg1)
 }
 
 // Interfaces gets the D-Bus interfaces associated with @object.
-func (o dBusObject) Interfaces() *glib.List {
+func (o dBusObject) Interfaces(o DBusObject) {
 	var arg0 *C.GDBusObject
 
 	arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_dbus_object_get_interfaces(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_dbus_object_get_interfaces(arg0)
 }
 
 // ObjectPath gets the object path for @object.
-func (o dBusObject) ObjectPath() string {
+func (o dBusObject) ObjectPath(o DBusObject) {
 	var arg0 *C.GDBusObject
 
 	arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_dbus_object_get_object_path(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_dbus_object_get_object_path(arg0)
 }

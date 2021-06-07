@@ -23,17 +23,17 @@ func RGBToHSV(r float64, g float64, b float64) (h float64, s float64, v float64)
 	arg3 = C.gdouble(b)
 
 	var arg4 C.gdouble
-	var ret4 float64
+	var h float64
 	var arg5 C.gdouble
-	var ret5 float64
+	var s float64
 	var arg6 C.gdouble
-	var ret6 float64
+	var v float64
 
-	C.gtk_rgb_to_hsv(r, g, b, &arg4, &arg5, &arg6)
+	C.gtk_rgb_to_hsv(arg1, arg2, arg3, &arg4, &arg5, &arg6)
 
-	*ret4 = C.gdouble(arg4)
-	*ret5 = C.gdouble(arg5)
-	*ret6 = C.gdouble(arg6)
+	h = float64(&arg4)
+	s = float64(&arg5)
+	v = float64(&arg6)
 
-	return ret4, ret5, ret6
+	return h, s, v
 }

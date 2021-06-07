@@ -2,13 +2,6 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -26,20 +19,10 @@ import "C"
 
 // SrvTargetListSort sorts @targets in place according to the algorithm in RFC
 // 2782.
-func SrvTargetListSort(targets *glib.List) *glib.List {
+func SrvTargetListSort(targets *glib.List) {
 	var arg1 *C.GList
 
 	arg1 = (*C.GList)(unsafe.Pointer(targets.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_srv_target_list_sort(targets)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_srv_target_list_sort(arg1)
 }

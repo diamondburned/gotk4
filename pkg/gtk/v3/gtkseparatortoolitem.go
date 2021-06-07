@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -45,11 +41,11 @@ type SeparatorToolItem interface {
 
 	// Draw returns whether @item is drawn as a line, or just blank. See
 	// gtk_separator_tool_item_set_draw().
-	Draw() bool
+	Draw(i SeparatorToolItem) bool
 	// SetDraw: whether @item is drawn as a vertical line, or just blank.
 	// Setting this to false along with gtk_tool_item_set_expand() is useful to
 	// create an item that forces following items to the end of the toolbar.
-	SetDraw(draw bool)
+	SetDraw(i SeparatorToolItem, draw bool)
 }
 
 // separatorToolItem implements the SeparatorToolItem interface.
@@ -78,38 +74,33 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorToolItem constructs a class SeparatorToolItem.
-func NewSeparatorToolItem() SeparatorToolItem {
-	var cret C.GtkSeparatorToolItem
-	var ret1 SeparatorToolItem
-
-	cret = C.gtk_separator_tool_item_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorToolItem)
-
-	return ret1
+func NewSeparatorToolItem() {
+	C.gtk_separator_tool_item_new()
 }
 
 // Draw returns whether @item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
-func (i separatorToolItem) Draw() bool {
+func (i separatorToolItem) Draw(i SeparatorToolItem) bool {
 	var arg0 *C.GtkSeparatorToolItem
 
 	arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_separator_tool_item_get_draw(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetDraw: whether @item is drawn as a vertical line, or just blank.
 // Setting this to false along with gtk_tool_item_set_expand() is useful to
 // create an item that forces following items to the end of the toolbar.
-func (i separatorToolItem) SetDraw(draw bool) {
+func (i separatorToolItem) SetDraw(i SeparatorToolItem, draw bool) {
 	var arg0 *C.GtkSeparatorToolItem
 	var arg1 C.gboolean
 
@@ -118,5 +109,5 @@ func (i separatorToolItem) SetDraw(draw bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_separator_tool_item_set_draw(arg0, draw)
+	C.gtk_separator_tool_item_set_draw(arg0, arg1)
 }

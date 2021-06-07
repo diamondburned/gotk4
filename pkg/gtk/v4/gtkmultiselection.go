@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -30,10 +27,10 @@ type MultiSelection interface {
 	SelectionModel
 
 	// Model returns the underlying model of @self.
-	Model() gio.ListModel
+	Model(s MultiSelection)
 	// SetModel sets the model that @self should wrap. If @model is nil, @self
 	// will be empty.
-	SetModel(model gio.ListModel)
+	SetModel(s MultiSelection, model gio.ListModel)
 }
 
 // multiSelection implements the MultiSelection interface.
@@ -62,45 +59,31 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSelection constructs a class MultiSelection.
-func NewMultiSelection(model gio.ListModel) MultiSelection {
+func NewMultiSelection(model gio.ListModel) {
 	var arg1 *C.GListModel
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkMultiSelection
-	var ret1 MultiSelection
-
-	cret = C.gtk_multi_selection_new(model)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
-
-	return ret1
+	C.gtk_multi_selection_new(arg1)
 }
 
 // Model returns the underlying model of @self.
-func (s multiSelection) Model() gio.ListModel {
+func (s multiSelection) Model(s MultiSelection) {
 	var arg0 *C.GtkMultiSelection
 
 	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
-	var ret1 gio.ListModel
-
-	cret = C.gtk_multi_selection_get_model(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
-
-	return ret1
+	C.gtk_multi_selection_get_model(arg0)
 }
 
 // SetModel sets the model that @self should wrap. If @model is nil, @self
 // will be empty.
-func (s multiSelection) SetModel(model gio.ListModel) {
+func (s multiSelection) SetModel(s MultiSelection, model gio.ListModel) {
 	var arg0 *C.GtkMultiSelection
 	var arg1 *C.GListModel
 
 	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_multi_selection_set_model(arg0, model)
+	C.gtk_multi_selection_set_model(arg0, arg1)
 }

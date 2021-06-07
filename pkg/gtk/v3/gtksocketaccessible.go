@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,7 +23,7 @@ func init() {
 type SocketAccessible interface {
 	ContainerAccessible
 
-	Embed(path string)
+	Embed(s SocketAccessible, path string)
 }
 
 // socketAccessible implements the SocketAccessible interface.
@@ -49,7 +47,7 @@ func marshalSocketAccessible(p uintptr) (interface{}, error) {
 	return WrapSocketAccessible(obj), nil
 }
 
-func (s socketAccessible) Embed(path string) {
+func (s socketAccessible) Embed(s SocketAccessible, path string) {
 	var arg0 *C.GtkSocketAccessible
 	var arg1 *C.gchar
 
@@ -57,5 +55,5 @@ func (s socketAccessible) Embed(path string) {
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_socket_accessible_embed(arg0, path)
+	C.gtk_socket_accessible_embed(arg0, arg1)
 }

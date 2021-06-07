@@ -3,10 +3,6 @@
 package gdk
 
 import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,7 +31,7 @@ type ContentProvider interface {
 	gextras.Objector
 
 	// ContentChanged emits the ContentProvider::content-changed signal.
-	ContentChanged()
+	ContentChanged(p ContentProvider)
 	// Value gets the contents of @provider stored in @value.
 	//
 	// The @value will have been initialized to the #GType the value should be
@@ -43,16 +39,16 @@ type ContentProvider interface {
 	// returned by gdk_content_provider_ref_formats(). However, if the given
 	// #GType is not supported, this operation can fail and
 	// IO_ERROR_NOT_SUPPORTED will be reported.
-	Value(value *externglib.Value) error
+	Value(p ContentProvider, value *externglib.Value) error
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
-	RefFormats() *ContentFormats
+	RefFormats(p ContentProvider)
 	// RefStorableFormats gets the formats that the provider suggests other
 	// applications to store the data in. An example of such an application
 	// would be a clipboard manager.
 	//
 	// This can be assumed to be a subset of gdk_content_provider_ref_formats().
-	RefStorableFormats() *ContentFormats
+	RefStorableFormats(p ContentProvider)
 	// WriteMIMETypeAsync: asynchronously writes the contents of @provider to
 	// @stream in the given @mime_type. When the operation is finished @callback
 	// will be called. You can then call
@@ -64,10 +60,10 @@ type ContentProvider interface {
 	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
 	//
 	// The given @stream will not be closed.
-	WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
+	WriteMIMETypeAsync(p ContentProvider)
 	// WriteMIMETypeFinish finishes an asynchronous write operation started with
 	// gdk_content_provider_write_mime_type_async().
-	WriteMIMETypeFinish(result gio.AsyncResult) error
+	WriteMIMETypeFinish(p ContentProvider, result gio.AsyncResult) error
 }
 
 // contentProvider implements the ContentProvider interface.
@@ -92,7 +88,7 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 }
 
 // NewContentProviderForBytes constructs a class ContentProvider.
-func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) ContentProvider {
+func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) {
 	var arg1 *C.char
 	var arg2 *C.GBytes
 
@@ -100,47 +96,25 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) ContentProvi
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
-	var cret C.GdkContentProvider
-	var ret1 ContentProvider
-
-	cret = C.gdk_content_provider_new_for_bytes(mimeType, bytes)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
-
-	return ret1
+	C.gdk_content_provider_new_for_bytes(arg1, arg2)
 }
 
 // NewContentProviderForValue constructs a class ContentProvider.
-func NewContentProviderForValue(value *externglib.Value) ContentProvider {
+func NewContentProviderForValue(value *externglib.Value) {
 	var arg1 *C.GValue
 
 	arg1 = (*C.GValue)(value.GValue)
 
-	var cret C.GdkContentProvider
-	var ret1 ContentProvider
-
-	cret = C.gdk_content_provider_new_for_value(value)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
-
-	return ret1
+	C.gdk_content_provider_new_for_value(arg1)
 }
 
 // NewContentProviderUnion constructs a class ContentProvider.
-func NewContentProviderUnion(providers []ContentProvider) ContentProvider {
-
-	var cret C.GdkContentProvider
-	var ret1 ContentProvider
-
-	cret = C.gdk_content_provider_new_union(providers, nProviders)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
-
-	return ret1
+func NewContentProviderUnion() {
+	C.gdk_content_provider_new_union(arg1, arg2)
 }
 
 // ContentChanged emits the ContentProvider::content-changed signal.
-func (p contentProvider) ContentChanged() {
+func (p contentProvider) ContentChanged(p ContentProvider) {
 	var arg0 *C.GdkContentProvider
 
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
@@ -155,7 +129,7 @@ func (p contentProvider) ContentChanged() {
 // returned by gdk_content_provider_ref_formats(). However, if the given
 // #GType is not supported, this operation can fail and
 // IO_ERROR_NOT_SUPPORTED will be reported.
-func (p contentProvider) Value(value *externglib.Value) error {
+func (p contentProvider) Value(p ContentProvider, value *externglib.Value) error {
 	var arg0 *C.GdkContentProvider
 	var arg1 *C.GValue
 
@@ -163,33 +137,23 @@ func (p contentProvider) Value(value *externglib.Value) error {
 	arg1 = (*C.GValue)(value.GValue)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gdk_content_provider_get_value(arg0, value, &errout)
+	C.gdk_content_provider_get_value(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // RefFormats gets the formats that the provider can provide its current
 // contents in.
-func (p contentProvider) RefFormats() *ContentFormats {
+func (p contentProvider) RefFormats(p ContentProvider) {
 	var arg0 *C.GdkContentProvider
 
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GdkContentFormats
-	var ret1 *ContentFormats
-
-	cret = C.gdk_content_provider_ref_formats(arg0)
-
-	ret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_content_provider_ref_formats(arg0)
 }
 
 // RefStorableFormats gets the formats that the provider suggests other
@@ -197,22 +161,12 @@ func (p contentProvider) RefFormats() *ContentFormats {
 // would be a clipboard manager.
 //
 // This can be assumed to be a subset of gdk_content_provider_ref_formats().
-func (p contentProvider) RefStorableFormats() *ContentFormats {
+func (p contentProvider) RefStorableFormats(p ContentProvider) {
 	var arg0 *C.GdkContentProvider
 
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GdkContentFormats
-	var ret1 *ContentFormats
-
-	cret = C.gdk_content_provider_ref_storable_formats(arg0)
-
-	ret1 = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_content_provider_ref_storable_formats(arg0)
 }
 
 // WriteMIMETypeAsync: asynchronously writes the contents of @provider to
@@ -226,17 +180,17 @@ func (p contentProvider) RefStorableFormats() *ContentFormats {
 // supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given @stream will not be closed.
-func (p contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (p contentProvider) WriteMIMETypeAsync(p ContentProvider) {
 	var arg0 *C.GdkContentProvider
 
 	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	C.gdk_content_provider_write_mime_type_async(arg0, mimeType, stream, ioPriority, cancellable, callback, userData)
+	C.gdk_content_provider_write_mime_type_async(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // WriteMIMETypeFinish finishes an asynchronous write operation started with
 // gdk_content_provider_write_mime_type_async().
-func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
+func (p contentProvider) WriteMIMETypeFinish(p ContentProvider, result gio.AsyncResult) error {
 	var arg0 *C.GdkContentProvider
 	var arg1 *C.GAsyncResult
 
@@ -244,11 +198,11 @@ func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gdk_content_provider_write_mime_type_finish(arg0, result, &errout)
+	C.gdk_content_provider_write_mime_type_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }

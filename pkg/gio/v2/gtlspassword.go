@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,23 +34,23 @@ type TLSPassword interface {
 
 	// Description: get a description string about what the password will be
 	// used for.
-	Description() string
+	Description(p TLSPassword)
 	// Flags: get flags about the password.
-	Flags() TLSPasswordFlags
+	Flags(p TLSPassword)
 	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
 	// value is not nul-terminated, so you can only pass nil for @length in
 	// contexts where you know the password will have a certain fixed length.)
-	Value(length uint) byte
+	Value(p TLSPassword, length uint)
 	// Warning: get a user readable translated warning. Usually this warning is
 	// a representation of the password flags returned from
 	// g_tls_password_get_flags().
-	Warning() string
+	Warning(p TLSPassword)
 	// SetDescription: set a description string about what the password will be
 	// used for.
-	SetDescription(description string)
+	SetDescription(p TLSPassword, description string)
 	// SetFlags: set flags about the password.
-	SetFlags(flags TLSPasswordFlags)
+	SetFlags(p TLSPassword, flags TLSPasswordFlags)
 	// SetValue: set the value for this password. The @value will be copied by
 	// the password object.
 	//
@@ -61,11 +58,11 @@ type TLSPassword interface {
 	// @length if using a nul-terminated password, and @length will be
 	// calculated automatically. (Note that the terminating nul is not
 	// considered part of the password in this case.)
-	SetValue(value []byte)
+	SetValue(p TLSPassword)
 	// SetWarning: set a user readable translated warning. Usually this warning
 	// is a representation of the password flags returned from
 	// g_tls_password_get_flags().
-	SetWarning(warning string)
+	SetWarning(p TLSPassword, warning string)
 }
 
 // tlsPassword implements the TLSPassword interface.
@@ -90,7 +87,7 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 }
 
 // NewTLSPassword constructs a class TLSPassword.
-func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
+func NewTLSPassword(flags TLSPasswordFlags, description string) {
 	var arg1 C.GTlsPasswordFlags
 	var arg2 *C.gchar
 
@@ -98,91 +95,56 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) TLSPassword {
 	arg2 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GTlsPassword
-	var ret1 TLSPassword
-
-	cret = C.g_tls_password_new(flags, description)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSPassword)
-
-	return ret1
+	C.g_tls_password_new(arg1, arg2)
 }
 
 // Description: get a description string about what the password will be
 // used for.
-func (p tlsPassword) Description() string {
+func (p tlsPassword) Description(p TLSPassword) {
 	var arg0 *C.GTlsPassword
 
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_tls_password_get_description(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_tls_password_get_description(arg0)
 }
 
 // Flags: get flags about the password.
-func (p tlsPassword) Flags() TLSPasswordFlags {
+func (p tlsPassword) Flags(p TLSPassword) {
 	var arg0 *C.GTlsPassword
 
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
-	var cret C.GTlsPasswordFlags
-	var ret1 TLSPasswordFlags
-
-	cret = C.g_tls_password_get_flags(arg0)
-
-	ret1 = TLSPasswordFlags(cret)
-
-	return ret1
+	C.g_tls_password_get_flags(arg0)
 }
 
 // Value: get the password value. If @length is not nil then it will be
 // filled in with the length of the password value. (Note that the password
 // value is not nul-terminated, so you can only pass nil for @length in
 // contexts where you know the password will have a certain fixed length.)
-func (p tlsPassword) Value(length uint) byte {
+func (p tlsPassword) Value(p TLSPassword, length uint) {
 	var arg0 *C.GTlsPassword
 	var arg1 *C.gsize
 
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 	arg1 = *C.gsize(length)
 
-	var cret *C.guchar
-	var ret1 byte
-
-	cret = C.g_tls_password_get_value(arg0, length)
-
-	ret1 = *C.guchar(cret)
-
-	return ret1
+	C.g_tls_password_get_value(arg0, arg1)
 }
 
 // Warning: get a user readable translated warning. Usually this warning is
 // a representation of the password flags returned from
 // g_tls_password_get_flags().
-func (p tlsPassword) Warning() string {
+func (p tlsPassword) Warning(p TLSPassword) {
 	var arg0 *C.GTlsPassword
 
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_tls_password_get_warning(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_tls_password_get_warning(arg0)
 }
 
 // SetDescription: set a description string about what the password will be
 // used for.
-func (p tlsPassword) SetDescription(description string) {
+func (p tlsPassword) SetDescription(p TLSPassword, description string) {
 	var arg0 *C.GTlsPassword
 	var arg1 *C.gchar
 
@@ -190,18 +152,18 @@ func (p tlsPassword) SetDescription(description string) {
 	arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_tls_password_set_description(arg0, description)
+	C.g_tls_password_set_description(arg0, arg1)
 }
 
 // SetFlags: set flags about the password.
-func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
+func (p tlsPassword) SetFlags(p TLSPassword, flags TLSPasswordFlags) {
 	var arg0 *C.GTlsPassword
 	var arg1 C.GTlsPasswordFlags
 
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 	arg1 = (C.GTlsPasswordFlags)(flags)
 
-	C.g_tls_password_set_flags(arg0, flags)
+	C.g_tls_password_set_flags(arg0, arg1)
 }
 
 // SetValue: set the value for this password. The @value will be copied by
@@ -211,18 +173,18 @@ func (p tlsPassword) SetFlags(flags TLSPasswordFlags) {
 // @length if using a nul-terminated password, and @length will be
 // calculated automatically. (Note that the terminating nul is not
 // considered part of the password in this case.)
-func (p tlsPassword) SetValue(value []byte) {
+func (p tlsPassword) SetValue(p TLSPassword) {
 	var arg0 *C.GTlsPassword
 
 	arg0 = (*C.GTlsPassword)(unsafe.Pointer(p.Native()))
 
-	C.g_tls_password_set_value(arg0, value, length)
+	C.g_tls_password_set_value(arg0, arg1, arg2)
 }
 
 // SetWarning: set a user readable translated warning. Usually this warning
 // is a representation of the password flags returned from
 // g_tls_password_get_flags().
-func (p tlsPassword) SetWarning(warning string) {
+func (p tlsPassword) SetWarning(p TLSPassword, warning string) {
 	var arg0 *C.GTlsPassword
 	var arg1 *C.gchar
 
@@ -230,5 +192,5 @@ func (p tlsPassword) SetWarning(warning string) {
 	arg1 = (*C.gchar)(C.CString(warning))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_tls_password_set_warning(arg0, warning)
+	C.g_tls_password_set_warning(arg0, arg1)
 }

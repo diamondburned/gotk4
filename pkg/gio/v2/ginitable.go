@@ -3,8 +3,6 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,7 +69,7 @@ type InitableOverrider interface {
 	// pattern, a caller would expect to be able to call g_initable_init() on
 	// the result of g_object_new(), regardless of whether it is in fact a new
 	// instance.
-	Init(cancellable Cancellable) error
+	Init(i Initable, cancellable Cancellable) error
 }
 
 // Initable is implemented by objects that can fail during initialization. If an
@@ -160,7 +158,7 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // pattern, a caller would expect to be able to call g_initable_init() on
 // the result of g_object_new(), regardless of whether it is in fact a new
 // instance.
-func (i initable) Init(cancellable Cancellable) error {
+func (i initable) Init(i Initable, cancellable Cancellable) error {
 	var arg0 *C.GInitable
 	var arg1 *C.GCancellable
 
@@ -168,11 +166,11 @@ func (i initable) Init(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_initable_init(arg0, cancellable, &errout)
+	C.g_initable_init(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }

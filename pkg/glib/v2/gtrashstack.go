@@ -16,51 +16,30 @@ import "C"
 //
 // Note that execution of this function is of O(N) complexity where N denotes
 // the number of items on the stack.
-func TrashStackHeight(stackP **TrashStack) uint {
+func TrashStackHeight(stackP **TrashStack) {
 	var arg1 **C.GTrashStack
 
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_trash_stack_height(stackP)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_trash_stack_height(arg1)
 }
 
 // TrashStackPeek returns the element at the top of a Stack which may be nil.
-func TrashStackPeek(stackP **TrashStack) interface{} {
+func TrashStackPeek(stackP **TrashStack) {
 	var arg1 **C.GTrashStack
 
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_trash_stack_peek(stackP)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_trash_stack_peek(arg1)
 }
 
 // TrashStackPop pops a piece of memory off a Stack.
-func TrashStackPop(stackP **TrashStack) interface{} {
+func TrashStackPop(stackP **TrashStack) {
 	var arg1 **C.GTrashStack
 
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_trash_stack_pop(stackP)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_trash_stack_pop(arg1)
 }
 
 // TrashStackPush pushes a piece of memory onto a Stack.
@@ -71,7 +50,7 @@ func TrashStackPush(stackP **TrashStack, dataP interface{}) {
 	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
 	arg2 = C.gpointer(dataP)
 
-	C.g_trash_stack_push(stackP, dataP)
+	C.g_trash_stack_push(arg1, arg2)
 }
 
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
@@ -102,5 +81,7 @@ func (t *TrashStack) Native() unsafe.Pointer {
 
 // Next gets the field inside the struct.
 func (t *TrashStack) Next() *TrashStack {
+	var v *TrashStack
 	v = WrapTrashStack(unsafe.Pointer(t.native.next))
+	return v
 }

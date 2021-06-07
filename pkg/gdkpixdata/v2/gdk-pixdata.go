@@ -3,14 +3,7 @@
 package gdkpixdata
 
 import (
-	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -30,30 +23,30 @@ type PixdataDumpType int
 const (
 	// PixdataDumpTypePixdataStream: generate pixbuf data stream (a single
 	// string containing a serialized Pixdata structure in network byte order).
-	PixdataDumpTypePixdataStream PixdataDumpType = 0b0
+	PixdataDumpTypePixdataStream PixdataDumpType = 0
 	// PixdataDumpTypePixdataStruct: generate Pixdata structure (needs the
 	// Pixdata structure definition from gdk-pixdata.h).
-	PixdataDumpTypePixdataStruct PixdataDumpType = 0b1
+	PixdataDumpTypePixdataStruct PixdataDumpType = 1
 	// PixdataDumpTypeMacros: generate <function>*_ROWSTRIDE</function>,
 	// <function>*_WIDTH</function>, <function>*_HEIGHT</function>,
 	// <function>*_BYTES_PER_PIXEL</function> and
 	// <function>*_RLE_PIXEL_DATA</function> or
 	// <function>*_PIXEL_DATA</function> macro definitions for the image.
-	PixdataDumpTypeMacros PixdataDumpType = 0b10
+	PixdataDumpTypeMacros PixdataDumpType = 2
 	// PixdataDumpTypeGTypes: generate GLib data types instead of standard C
 	// data types.
-	PixdataDumpTypeGTypes PixdataDumpType = 0b0
+	PixdataDumpTypeGTypes PixdataDumpType = 0
 	// PixdataDumpTypeCtypes: generate standard C data types instead of GLib
 	// data types.
-	PixdataDumpTypeCtypes PixdataDumpType = 0b100000000
+	PixdataDumpTypeCtypes PixdataDumpType = 256
 	// PixdataDumpTypeStatic: generate static symbols.
-	PixdataDumpTypeStatic PixdataDumpType = 0b1000000000
+	PixdataDumpTypeStatic PixdataDumpType = 512
 	// PixdataDumpTypeConst: generate const symbols.
-	PixdataDumpTypeConst PixdataDumpType = 0b10000000000
+	PixdataDumpTypeConst PixdataDumpType = 1024
 	// PixdataDumpTypeRleDecoder: provide a
 	// <function>*_RUN_LENGTH_DECODE(image_buf, rle_data, size, bpp)</function>
 	// macro definition to decode run-length encoded image data.
-	PixdataDumpTypeRleDecoder PixdataDumpType = 0b10000000000000000
+	PixdataDumpTypeRleDecoder PixdataDumpType = 65536
 )
 
 // PixdataType: an enumeration containing three sets of flags for a Pixdata
@@ -63,32 +56,32 @@ type PixdataType int
 
 const (
 	// PixdataTypeColorTypeRGB: each pixel has red, green and blue samples.
-	PixdataTypeColorTypeRGB PixdataType = 0b1
+	PixdataTypeColorTypeRGB PixdataType = 1
 	// PixdataTypeColorTypeRGBA: each pixel has red, green and blue samples and
 	// an alpha value.
-	PixdataTypeColorTypeRGBA PixdataType = 0b10
+	PixdataTypeColorTypeRGBA PixdataType = 2
 	// PixdataTypeColorTypeMask: mask for the colortype flags of the enum.
-	PixdataTypeColorTypeMask PixdataType = 0b11111111
+	PixdataTypeColorTypeMask PixdataType = 255
 	// PixdataTypeSampleWidth8: each sample has 8 bits.
-	PixdataTypeSampleWidth8 PixdataType = 0b10000000000000000
+	PixdataTypeSampleWidth8 PixdataType = 65536
 	// PixdataTypeSampleWidthMask: mask for the sample width flags of the enum.
-	PixdataTypeSampleWidthMask PixdataType = 0b11110000000000000000
+	PixdataTypeSampleWidthMask PixdataType = 983040
 	// PixdataTypeEncodingRaw: the pixel data is in raw form.
-	PixdataTypeEncodingRaw PixdataType = 0b1000000000000000000000000
+	PixdataTypeEncodingRaw PixdataType = 16777216
 	// PixdataTypeEncodingRle: the pixel data is run-length encoded. Runs may be
 	// up to 127 bytes long; their length is stored in a single byte preceding
 	// the pixel data for the run. If a run is constant, its length byte has the
 	// high bit set and the pixel data consists of a single pixel which must be
 	// repeated.
-	PixdataTypeEncodingRle PixdataType = 0b10000000000000000000000000
+	PixdataTypeEncodingRle PixdataType = 33554432
 	// PixdataTypeEncodingMask: mask for the encoding flags of the enum.
-	PixdataTypeEncodingMask PixdataType = 0b1111000000000000000000000000
+	PixdataTypeEncodingMask PixdataType = 251658240
 )
 
 // PixbufFromPixdata converts a Pixdata to a Pixbuf. If @copy_pixels is true or
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixbuf, err error) {
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) error {
 	var arg1 *C.GdkPixdata
 	var arg2 C.gboolean
 
@@ -98,16 +91,13 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixb
 	}
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GdkPixbuf
-	var ret2 gdkpixbuf.Pixbuf
+	var err error
 
-	cret = C.gdk_pixbuf_from_pixdata(pixdata, copyPixels, &errout)
+	C.gdk_pixbuf_from_pixdata(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
@@ -138,38 +128,50 @@ func (p *Pixdata) Native() unsafe.Pointer {
 
 // Magic gets the field inside the struct.
 func (p *Pixdata) Magic() uint32 {
-	v = C.guint32(p.native.magic)
+	var v uint32
+	v = uint32(p.native.magic)
+	return v
 }
 
 // Length gets the field inside the struct.
 func (p *Pixdata) Length() int32 {
-	v = C.gint32(p.native.length)
+	var v int32
+	v = int32(p.native.length)
+	return v
 }
 
 // PixdataType gets the field inside the struct.
 func (p *Pixdata) PixdataType() uint32 {
-	v = C.guint32(p.native.pixdata_type)
+	var v uint32
+	v = uint32(p.native.pixdata_type)
+	return v
 }
 
 // Rowstride gets the field inside the struct.
 func (p *Pixdata) Rowstride() uint32 {
-	v = C.guint32(p.native.rowstride)
+	var v uint32
+	v = uint32(p.native.rowstride)
+	return v
 }
 
 // Width gets the field inside the struct.
 func (p *Pixdata) Width() uint32 {
-	v = C.guint32(p.native.width)
+	var v uint32
+	v = uint32(p.native.width)
+	return v
 }
 
 // Height gets the field inside the struct.
 func (p *Pixdata) Height() uint32 {
-	v = C.guint32(p.native.height)
+	var v uint32
+	v = uint32(p.native.height)
+	return v
 }
 
 // FromPixbuf converts a Pixbuf to a Pixdata. If @use_rle is true, the pixel
 // data is run-length encoded into newly-allocated memory and a pointer to that
 // memory is returned.
-func (p *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
+func (p *Pixdata) FromPixbuf(p *Pixdata, pixbuf gdkpixbuf.Pixbuf, useRle bool) {
 	var arg0 *C.GdkPixdata
 	var arg1 *C.GdkPixbuf
 	var arg2 C.gboolean
@@ -180,36 +182,25 @@ func (p *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
 		arg2 = C.gboolean(1)
 	}
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.gdk_pixdata_from_pixbuf(arg0, pixbuf, useRle)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.gdk_pixdata_from_pixbuf(arg0, arg1, arg2)
 }
 
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
 // consists of a straightforward writeout of the Pixdata fields in network byte
 // order, plus the @pixel_data bytes the structure points to.
-func (p *Pixdata) Serialize() (streamLengthP uint, guint8s []byte) {
+func (p *Pixdata) Serialize(p *Pixdata) uint {
 	var arg0 *C.GdkPixdata
 
 	arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
 
-	var cret *C.guint8
-	var arg1 *C.guint
-	var ret2 []byte
+	var arg1 C.guint
+	var streamLengthP uint
 
-	cret = C.gdk_pixdata_serialize(arg0, &arg1)
+	C.gdk_pixdata_serialize(arg0, &arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&ret2, func(v *[]byte) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	streamLengthP = uint(&arg1)
 
-	return ret1, ret2
+	return streamLengthP
 }
 
 // ToCsource generates C source code suitable for compiling images directly into
@@ -218,7 +209,7 @@ func (p *Pixdata) Serialize() (streamLengthP uint, guint8s []byte) {
 // gdk-pixbuf ships with a program called
 // [gdk-pixbuf-csource][gdk-pixbuf-csource], which offers a command line
 // interface to this function.
-func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String {
+func (p *Pixdata) ToCsource(p *Pixdata, name string, dumpType PixdataDumpType) {
 	var arg0 *C.GdkPixdata
 	var arg1 *C.gchar
 	var arg2 C.GdkPixdataDumpType
@@ -228,15 +219,5 @@ func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GdkPixdataDumpType)(dumpType)
 
-	var cret *C.GString
-	var ret1 *glib.String
-
-	cret = C.gdk_pixdata_to_csource(arg0, name, dumpType)
-
-	ret1 = glib.WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.String) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_pixdata_to_csource(arg0, arg1, arg2)
 }

@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,12 +43,12 @@ type BuilderListItemFactory interface {
 
 	// Bytes gets the data used as the Builder UI template for constructing
 	// listitems.
-	Bytes() *glib.Bytes
+	Bytes(s BuilderListItemFactory)
 	// Resource: if the data references a resource, gets the path of that
 	// resource.
-	Resource() string
+	Resource(s BuilderListItemFactory)
 	// Scope gets the scope used when constructing listitems.
-	Scope() BuilderScope
+	Scope(s BuilderListItemFactory)
 }
 
 // builderListItemFactory implements the BuilderListItemFactory interface.
@@ -77,25 +73,18 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 }
 
 // NewBuilderListItemFactoryFromBytes constructs a class BuilderListItemFactory.
-func NewBuilderListItemFactoryFromBytes(scope BuilderScope, bytes *glib.Bytes) BuilderListItemFactory {
+func NewBuilderListItemFactoryFromBytes(scope BuilderScope, bytes *glib.Bytes) {
 	var arg1 *C.GtkBuilderScope
 	var arg2 *C.GBytes
 
 	arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
 	arg2 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
-	var cret C.GtkBuilderListItemFactory
-	var ret1 BuilderListItemFactory
-
-	cret = C.gtk_builder_list_item_factory_new_from_bytes(scope, bytes)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
-
-	return ret1
+	C.gtk_builder_list_item_factory_new_from_bytes(arg1, arg2)
 }
 
 // NewBuilderListItemFactoryFromResource constructs a class BuilderListItemFactory.
-func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
+func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) {
 	var arg1 *C.GtkBuilderScope
 	var arg2 *C.char
 
@@ -103,62 +92,34 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 	arg2 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkBuilderListItemFactory
-	var ret1 BuilderListItemFactory
-
-	cret = C.gtk_builder_list_item_factory_new_from_resource(scope, resourcePath)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
-
-	return ret1
+	C.gtk_builder_list_item_factory_new_from_resource(arg1, arg2)
 }
 
 // Bytes gets the data used as the Builder UI template for constructing
 // listitems.
-func (s builderListItemFactory) Bytes() *glib.Bytes {
+func (s builderListItemFactory) Bytes(s BuilderListItemFactory) {
 	var arg0 *C.GtkBuilderListItemFactory
 
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GBytes
-	var ret1 *glib.Bytes
-
-	cret = C.gtk_builder_list_item_factory_get_bytes(arg0)
-
-	ret1 = glib.WrapBytes(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_builder_list_item_factory_get_bytes(arg0)
 }
 
 // Resource: if the data references a resource, gets the path of that
 // resource.
-func (s builderListItemFactory) Resource() string {
+func (s builderListItemFactory) Resource(s BuilderListItemFactory) {
 	var arg0 *C.GtkBuilderListItemFactory
 
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_builder_list_item_factory_get_resource(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_builder_list_item_factory_get_resource(arg0)
 }
 
 // Scope gets the scope used when constructing listitems.
-func (s builderListItemFactory) Scope() BuilderScope {
+func (s builderListItemFactory) Scope(s BuilderListItemFactory) {
 	var arg0 *C.GtkBuilderListItemFactory
 
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkBuilderScope
-	var ret1 BuilderScope
-
-	cret = C.gtk_builder_list_item_factory_get_scope(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
-
-	return ret1
+	C.gtk_builder_list_item_factory_get_scope(arg0)
 }

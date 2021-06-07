@@ -2,13 +2,8 @@
 
 package glib
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -27,13 +22,15 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_hostname_is_ascii_encoded(hostname)
+	cret = C.g_hostname_is_ascii_encoded(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // HostnameIsIpAddress tests if @hostname is the string form of an IPv4 or IPv6
@@ -47,13 +44,15 @@ func HostnameIsIpAddress(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_hostname_is_ip_address(hostname)
+	cret = C.g_hostname_is_ip_address(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // HostnameIsNonASCII tests if @hostname contains Unicode characters. If this
@@ -70,32 +69,26 @@ func HostnameIsNonASCII(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_hostname_is_non_ascii(hostname)
+	cret = C.g_hostname_is_non_ascii(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // HostnameToASCII converts @hostname to its canonical ASCII form; an ASCII-only
 // string containing no uppercase letters and not ending with a trailing dot.
-func HostnameToASCII(hostname string) string {
+func HostnameToASCII(hostname string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_hostname_to_ascii(hostname)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_hostname_to_ascii(arg1)
 }
 
 // HostnameToUnicode converts @hostname to its canonical presentation form; a
@@ -105,19 +98,11 @@ func HostnameToASCII(hostname string) string {
 //
 // Of course if @hostname is not an internationalized hostname, then the
 // canonical presentation form will be entirely ASCII.
-func HostnameToUnicode(hostname string) string {
+func HostnameToUnicode(hostname string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_hostname_to_unicode(hostname)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_hostname_to_unicode(arg1)
 }

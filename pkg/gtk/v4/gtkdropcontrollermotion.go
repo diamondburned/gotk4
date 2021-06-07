@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -36,12 +31,12 @@ type DropControllerMotion interface {
 
 	// ContainsPointer returns the value of the
 	// GtkDropControllerMotion:contains-pointer property.
-	ContainsPointer() bool
+	ContainsPointer(s DropControllerMotion) bool
 	// Drop returns the value of the GtkDropControllerMotion:drop property.
-	Drop() gdk.Drop
+	Drop(s DropControllerMotion)
 	// IsPointer returns the value of the GtkDropControllerMotion:is-pointer
 	// property.
-	IsPointer() bool
+	IsPointer(s DropControllerMotion) bool
 }
 
 // dropControllerMotion implements the DropControllerMotion interface.
@@ -66,63 +61,53 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 }
 
 // NewDropControllerMotion constructs a class DropControllerMotion.
-func NewDropControllerMotion() DropControllerMotion {
-	var cret C.GtkDropControllerMotion
-	var ret1 DropControllerMotion
-
-	cret = C.gtk_drop_controller_motion_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropControllerMotion)
-
-	return ret1
+func NewDropControllerMotion() {
+	C.gtk_drop_controller_motion_new()
 }
 
 // ContainsPointer returns the value of the
 // GtkDropControllerMotion:contains-pointer property.
-func (s dropControllerMotion) ContainsPointer() bool {
+func (s dropControllerMotion) ContainsPointer(s DropControllerMotion) bool {
 	var arg0 *C.GtkDropControllerMotion
 
 	arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_drop_controller_motion_contains_pointer(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Drop returns the value of the GtkDropControllerMotion:drop property.
-func (s dropControllerMotion) Drop() gdk.Drop {
+func (s dropControllerMotion) Drop(s DropControllerMotion) {
 	var arg0 *C.GtkDropControllerMotion
 
 	arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDrop
-	var ret1 gdk.Drop
-
-	cret = C.gtk_drop_controller_motion_get_drop(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drop)
-
-	return ret1
+	C.gtk_drop_controller_motion_get_drop(arg0)
 }
 
 // IsPointer returns the value of the GtkDropControllerMotion:is-pointer
 // property.
-func (s dropControllerMotion) IsPointer() bool {
+func (s dropControllerMotion) IsPointer(s DropControllerMotion) bool {
 	var arg0 *C.GtkDropControllerMotion
 
 	arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_drop_controller_motion_is_pointer(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

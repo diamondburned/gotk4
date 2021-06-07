@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,9 +54,9 @@ type EventControllerScroll interface {
 	EventController
 
 	// Flags gets the flags conditioning the scroll controller behavior.
-	Flags() EventControllerScrollFlags
+	Flags(s EventControllerScroll)
 	// SetFlags sets the flags conditioning scroll controller behavior.
-	SetFlags(flags EventControllerScrollFlags)
+	SetFlags(s EventControllerScroll, flags EventControllerScrollFlags)
 }
 
 // eventControllerScroll implements the EventControllerScroll interface.
@@ -84,44 +81,30 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerScroll constructs a class EventControllerScroll.
-func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll {
+func NewEventControllerScroll(flags EventControllerScrollFlags) {
 	var arg1 C.GtkEventControllerScrollFlags
 
 	arg1 = (C.GtkEventControllerScrollFlags)(flags)
 
-	var cret C.GtkEventControllerScroll
-	var ret1 EventControllerScroll
-
-	cret = C.gtk_event_controller_scroll_new(flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerScroll)
-
-	return ret1
+	C.gtk_event_controller_scroll_new(arg1)
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.
-func (s eventControllerScroll) Flags() EventControllerScrollFlags {
+func (s eventControllerScroll) Flags(s EventControllerScroll) {
 	var arg0 *C.GtkEventControllerScroll
 
 	arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkEventControllerScrollFlags
-	var ret1 EventControllerScrollFlags
-
-	cret = C.gtk_event_controller_scroll_get_flags(arg0)
-
-	ret1 = EventControllerScrollFlags(cret)
-
-	return ret1
+	C.gtk_event_controller_scroll_get_flags(arg0)
 }
 
 // SetFlags sets the flags conditioning scroll controller behavior.
-func (s eventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
+func (s eventControllerScroll) SetFlags(s EventControllerScroll, flags EventControllerScrollFlags) {
 	var arg0 *C.GtkEventControllerScroll
 	var arg1 C.GtkEventControllerScrollFlags
 
 	arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkEventControllerScrollFlags)(flags)
 
-	C.gtk_event_controller_scroll_set_flags(arg0, flags)
+	C.gtk_event_controller_scroll_set_flags(arg0, arg1)
 }

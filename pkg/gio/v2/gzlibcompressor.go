@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +34,7 @@ type ZlibCompressor interface {
 	Converter
 
 	// FileInfo returns the Compressor:file-info property.
-	FileInfo() FileInfo
+	FileInfo(c ZlibCompressor)
 	// SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
 	// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be
 	// used to set the file name and modification time in the GZIP header of the
@@ -46,7 +43,7 @@ type ZlibCompressor interface {
 	// Note: it is an error to call this function while a compression is in
 	// progress; it may only be called immediately after creation of
 	// @compressor, or after resetting it with g_converter_reset().
-	SetFileInfo(fileInfo FileInfo)
+	SetFileInfo(c ZlibCompressor, fileInfo FileInfo)
 }
 
 // zlibCompressor implements the ZlibCompressor interface.
@@ -73,37 +70,23 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 }
 
 // NewZlibCompressor constructs a class ZlibCompressor.
-func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
+func NewZlibCompressor(format ZlibCompressorFormat, level int) {
 	var arg1 C.GZlibCompressorFormat
 	var arg2 C.int
 
 	arg1 = (C.GZlibCompressorFormat)(format)
 	arg2 = C.int(level)
 
-	var cret C.GZlibCompressor
-	var ret1 ZlibCompressor
-
-	cret = C.g_zlib_compressor_new(format, level)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibCompressor)
-
-	return ret1
+	C.g_zlib_compressor_new(arg1, arg2)
 }
 
 // FileInfo returns the Compressor:file-info property.
-func (c zlibCompressor) FileInfo() FileInfo {
+func (c zlibCompressor) FileInfo(c ZlibCompressor) {
 	var arg0 *C.GZlibCompressor
 
 	arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GFileInfo
-	var ret1 FileInfo
-
-	cret = C.g_zlib_compressor_get_file_info(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
-
-	return ret1
+	C.g_zlib_compressor_get_file_info(arg0)
 }
 
 // SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
@@ -114,12 +97,12 @@ func (c zlibCompressor) FileInfo() FileInfo {
 // Note: it is an error to call this function while a compression is in
 // progress; it may only be called immediately after creation of
 // @compressor, or after resetting it with g_converter_reset().
-func (c zlibCompressor) SetFileInfo(fileInfo FileInfo) {
+func (c zlibCompressor) SetFileInfo(c ZlibCompressor, fileInfo FileInfo) {
 	var arg0 *C.GZlibCompressor
 	var arg1 *C.GFileInfo
 
 	arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
 
-	C.g_zlib_compressor_set_file_info(arg0, fileInfo)
+	C.g_zlib_compressor_set_file_info(arg0, arg1)
 }

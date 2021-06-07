@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -56,15 +53,8 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 }
 
 // NewAnyFilter constructs a class AnyFilter.
-func NewAnyFilter() AnyFilter {
-	var cret C.GtkAnyFilter
-	var ret1 AnyFilter
-
-	cret = C.gtk_any_filter_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
-
-	return ret1
+func NewAnyFilter() {
+	C.gtk_any_filter_new()
 }
 
 type EveryFilter interface {
@@ -99,15 +89,8 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 }
 
 // NewEveryFilter constructs a class EveryFilter.
-func NewEveryFilter() EveryFilter {
-	var cret C.GtkEveryFilter
-	var ret1 EveryFilter
-
-	cret = C.gtk_every_filter_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
-
-	return ret1
+func NewEveryFilter() {
+	C.gtk_every_filter_new()
 }
 
 // MultiFilter: gtkMultiFilter is the base type that implements support for
@@ -124,11 +107,11 @@ type MultiFilter interface {
 	Buildable
 
 	// Append adds a @filter to @self to use for matching.
-	Append(filter Filter)
+	Append(s MultiFilter, filter Filter)
 	// Remove removes the filter at the given @position from the list of filters
 	// used by @self. If @position is larger than the number of filters, nothing
 	// happens and the function returns.
-	Remove(position uint)
+	Remove(s MultiFilter, position uint)
 }
 
 // multiFilter implements the MultiFilter interface.
@@ -157,25 +140,25 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 }
 
 // Append adds a @filter to @self to use for matching.
-func (s multiFilter) Append(filter Filter) {
+func (s multiFilter) Append(s MultiFilter, filter Filter) {
 	var arg0 *C.GtkMultiFilter
 	var arg1 *C.GtkFilter
 
 	arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_multi_filter_append(arg0, filter)
+	C.gtk_multi_filter_append(arg0, arg1)
 }
 
 // Remove removes the filter at the given @position from the list of filters
 // used by @self. If @position is larger than the number of filters, nothing
 // happens and the function returns.
-func (s multiFilter) Remove(position uint) {
+func (s multiFilter) Remove(s MultiFilter, position uint) {
 	var arg0 *C.GtkMultiFilter
 	var arg1 C.guint
 
 	arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_multi_filter_remove(arg0, position)
+	C.gtk_multi_filter_remove(arg0, arg1)
 }

@@ -6,13 +6,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -68,25 +65,35 @@ func (f *FileFilterInfo) Native() unsafe.Pointer {
 
 // Contains gets the field inside the struct.
 func (f *FileFilterInfo) Contains() FileFilterFlags {
+	var v FileFilterFlags
 	v = FileFilterFlags(f.native.contains)
+	return v
 }
 
 // Filename gets the field inside the struct.
 func (f *FileFilterInfo) Filename() string {
+	var v string
 	v = C.GoString(f.native.filename)
+	return v
 }
 
 // URI gets the field inside the struct.
 func (f *FileFilterInfo) URI() string {
+	var v string
 	v = C.GoString(f.native.uri)
+	return v
 }
 
 // DisplayName gets the field inside the struct.
 func (f *FileFilterInfo) DisplayName() string {
+	var v string
 	v = C.GoString(f.native.display_name)
+	return v
 }
 
 // MIMEType gets the field inside the struct.
 func (f *FileFilterInfo) MIMEType() string {
+	var v string
 	v = C.GoString(f.native.mime_type)
+	return v
 }

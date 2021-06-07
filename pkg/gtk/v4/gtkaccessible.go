@@ -25,7 +25,7 @@ func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.
 	arg1 = (C.GtkAccessibleProperty)(property)
 	arg2 = (*C.GValue)(value.GValue)
 
-	C.gtk_accessible_property_init_value(property, value)
+	C.gtk_accessible_property_init_value(arg1, arg2)
 }
 
 func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.Value) {
@@ -35,7 +35,7 @@ func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.
 	arg1 = (C.GtkAccessibleRelation)(relation)
 	arg2 = (*C.GValue)(value.GValue)
 
-	C.gtk_accessible_relation_init_value(relation, value)
+	C.gtk_accessible_relation_init_value(arg1, arg2)
 }
 
 func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
@@ -45,7 +45,7 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	arg1 = (C.GtkAccessibleState)(state)
 	arg2 = (*C.GValue)(value.GValue)
 
-	C.gtk_accessible_state_init_value(state, value)
+	C.gtk_accessible_state_init_value(arg1, arg2)
 }
 
 // Accessible: gtkAccessible provides an interface for describing a UI element,
@@ -66,13 +66,13 @@ type Accessible interface {
 	gextras.Objector
 
 	// AccessibleRole retrieves the AccessibleRole for the given Accessible.
-	AccessibleRole() AccessibleRole
+	AccessibleRole(s Accessible)
 	// ResetProperty resets the accessible @property to its default value.
-	ResetProperty(property AccessibleProperty)
+	ResetProperty(s Accessible, property AccessibleProperty)
 	// ResetRelation resets the accessible @relation to its default value.
-	ResetRelation(relation AccessibleRelation)
+	ResetRelation(s Accessible, relation AccessibleRelation)
 	// ResetState resets the accessible @state to its default value.
-	ResetState(state AccessibleState)
+	ResetState(s Accessible, state AccessibleState)
 }
 
 // accessible implements the Accessible interface.
@@ -97,50 +97,43 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 }
 
 // AccessibleRole retrieves the AccessibleRole for the given Accessible.
-func (s accessible) AccessibleRole() AccessibleRole {
+func (s accessible) AccessibleRole(s Accessible) {
 	var arg0 *C.GtkAccessible
 
 	arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkAccessibleRole
-	var ret1 AccessibleRole
-
-	cret = C.gtk_accessible_get_accessible_role(arg0)
-
-	ret1 = AccessibleRole(cret)
-
-	return ret1
+	C.gtk_accessible_get_accessible_role(arg0)
 }
 
 // ResetProperty resets the accessible @property to its default value.
-func (s accessible) ResetProperty(property AccessibleProperty) {
+func (s accessible) ResetProperty(s Accessible, property AccessibleProperty) {
 	var arg0 *C.GtkAccessible
 	var arg1 C.GtkAccessibleProperty
 
 	arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkAccessibleProperty)(property)
 
-	C.gtk_accessible_reset_property(arg0, property)
+	C.gtk_accessible_reset_property(arg0, arg1)
 }
 
 // ResetRelation resets the accessible @relation to its default value.
-func (s accessible) ResetRelation(relation AccessibleRelation) {
+func (s accessible) ResetRelation(s Accessible, relation AccessibleRelation) {
 	var arg0 *C.GtkAccessible
 	var arg1 C.GtkAccessibleRelation
 
 	arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkAccessibleRelation)(relation)
 
-	C.gtk_accessible_reset_relation(arg0, relation)
+	C.gtk_accessible_reset_relation(arg0, arg1)
 }
 
 // ResetState resets the accessible @state to its default value.
-func (s accessible) ResetState(state AccessibleState) {
+func (s accessible) ResetState(s Accessible, state AccessibleState) {
 	var arg0 *C.GtkAccessible
 	var arg1 C.GtkAccessibleState
 
 	arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkAccessibleState)(state)
 
-	C.gtk_accessible_reset_state(arg0, state)
+	C.gtk_accessible_reset_state(arg0, arg1)
 }

@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -46,18 +44,8 @@ func marshalQuad(p uintptr) (interface{}, error) {
 }
 
 // NewQuadAlloc constructs a struct Quad.
-func NewQuadAlloc() *Quad {
-	var cret *C.graphene_quad_t
-	var ret1 *Quad
-
-	cret = C.graphene_quad_alloc()
-
-	ret1 = WrapQuad(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Quad) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewQuadAlloc() {
+	C.graphene_quad_alloc()
 }
 
 // Native returns the underlying C source pointer.
@@ -66,24 +54,24 @@ func (q *Quad) Native() unsafe.Pointer {
 }
 
 // Bounds computes the bounding rectangle of @q and places it into @r.
-func (q *Quad) Bounds() Rect {
+func (q *Quad) Bounds(q *Quad) *Rect {
 	var arg0 *C.graphene_quad_t
 
 	arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 
 	var arg1 C.graphene_rect_t
-	var ret1 *Rect
+	var r *Rect
 
 	C.graphene_quad_bounds(arg0, &arg1)
 
-	*ret1 = WrapRect(unsafe.Pointer(arg1))
+	r = WrapRect(unsafe.Pointer(&arg1))
 
-	return ret1
+	return r
 }
 
 // Contains checks if the given #graphene_quad_t contains the given
 // #graphene_point_t.
-func (q *Quad) Contains(p *Point) bool {
+func (q *Quad) Contains(q *Quad, p *Point) bool {
 	var arg0 *C.graphene_quad_t
 	var arg1 *C.graphene_point_t
 
@@ -91,17 +79,19 @@ func (q *Quad) Contains(p *Point) bool {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_quad_contains(arg0, p)
+	cret = C.graphene_quad_contains(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Free frees the resources allocated by graphene_quad_alloc()
-func (q *Quad) Free() {
+func (q *Quad) Free(q *Quad) {
 	var arg0 *C.graphene_quad_t
 
 	arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
@@ -110,25 +100,18 @@ func (q *Quad) Free() {
 }
 
 // Point retrieves the point of a #graphene_quad_t at the given index.
-func (q *Quad) Point(index_ uint) *Point {
+func (q *Quad) Point(q *Quad, index_ uint) {
 	var arg0 *C.graphene_quad_t
 	var arg1 C.uint
 
 	arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 	arg1 = C.uint(index_)
 
-	var cret *C.graphene_point_t
-	var ret1 *Point
-
-	cret = C.graphene_quad_get_point(arg0, index_)
-
-	ret1 = WrapPoint(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_quad_get_point(arg0, arg1)
 }
 
 // Init initializes a #graphene_quad_t with the given points.
-func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
+func (q *Quad) Init(q *Quad, p1 *Point, p2 *Point, p3 *Point, p4 *Point) {
 	var arg0 *C.graphene_quad_t
 	var arg1 *C.graphene_point_t
 	var arg2 *C.graphene_point_t
@@ -141,18 +124,11 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 	arg3 = (*C.graphene_point_t)(unsafe.Pointer(p3.Native()))
 	arg4 = (*C.graphene_point_t)(unsafe.Pointer(p4.Native()))
 
-	var cret *C.graphene_quad_t
-	var ret1 *Quad
-
-	cret = C.graphene_quad_init(arg0, p1, p2, p3, p4)
-
-	ret1 = WrapQuad(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_quad_init(arg0, arg1, arg2, arg3, arg4)
 }
 
 // InitFromPoints initializes a #graphene_quad_t using an array of points.
-func (q *Quad) InitFromPoints(points [4]Point) *Quad {
+func (q *Quad) InitFromPoints(q *Quad, points [4]Point) {
 	var arg0 *C.graphene_quad_t
 	var arg1 *C.graphene_point_t
 
@@ -164,31 +140,17 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 		}
 	}
 
-	var cret *C.graphene_quad_t
-	var ret1 *Quad
-
-	cret = C.graphene_quad_init_from_points(arg0, points)
-
-	ret1 = WrapQuad(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_quad_init_from_points(arg0, arg1)
 }
 
 // InitFromRect initializes a #graphene_quad_t using the four corners of the
 // given #graphene_rect_t.
-func (q *Quad) InitFromRect(r *Rect) *Quad {
+func (q *Quad) InitFromRect(q *Quad, r *Rect) {
 	var arg0 *C.graphene_quad_t
 	var arg1 *C.graphene_rect_t
 
 	arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var cret *C.graphene_quad_t
-	var ret1 *Quad
-
-	cret = C.graphene_quad_init_from_rect(arg0, r)
-
-	ret1 = WrapQuad(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_quad_init_from_rect(arg0, arg1)
 }

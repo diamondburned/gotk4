@@ -11,15 +11,8 @@ import "C"
 //
 // This function is intended for GTK modules that want to adjust their debug
 // output based on GTK debug flags.
-func GetDebugFlags() DebugFlags {
-	var cret C.GtkDebugFlags
-	var ret1 DebugFlags
-
-	cret = C.gtk_get_debug_flags()
-
-	ret1 = DebugFlags(cret)
-
-	return ret1
+func GetDebugFlags() {
+	C.gtk_get_debug_flags()
 }
 
 // SetDebugFlags sets the GTK debug flags.
@@ -28,5 +21,5 @@ func SetDebugFlags(flags DebugFlags) {
 
 	arg1 = (C.GtkDebugFlags)(flags)
 
-	C.gtk_set_debug_flags(flags)
+	C.gtk_set_debug_flags(arg1)
 }

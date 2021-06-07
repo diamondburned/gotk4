@@ -2,32 +2,27 @@
 
 package gdkx11
 
-import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/pkg/cairo"
-)
-
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdkx.h>
 import "C"
 
+// X11GetDefaultRootXwindow gets the root window of the default screen (see
+// gdk_x11_get_default_screen()).
+func X11GetDefaultRootXwindow() {
+	C.gdk_x11_get_default_root_xwindow()
+}
+
+// X11GetDefaultXdisplay gets the default GTK+ display.
+func X11GetDefaultXdisplay() {
+	C.gdk_x11_get_default_xdisplay()
+}
+
 // X11GetParentRelativePattern: used with gdk_window_set_background_pattern() to
 // inherit background from parent window. Useful for imitating transparency when
 // compositing is not available. Otherwise behaves like a transparent pattern.
-func X11GetParentRelativePattern() *cairo.Pattern {
-	var cret *C.cairo_pattern_t
-	var ret1 *cairo.Pattern
-
-	cret = C.gdk_x11_get_parent_relative_pattern()
-
-	ret1 = cairo.WrapPattern(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *cairo.Pattern) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func X11GetParentRelativePattern() {
+	C.gdk_x11_get_parent_relative_pattern()
 }
 
 // X11GrabServer: call gdk_x11_display_grab() on the default display. To ungrab

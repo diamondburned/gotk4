@@ -1,7 +1,6 @@
 package girgen
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -195,11 +194,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 		}
 
 		fields[i] = CValueProp{
-			ValueProp: ValueProp{
-				In:   fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
-				Out:  "v",
-				Type: field.AnyType,
-			},
+			ValueProp: NewValuePropField(recv, "v", field),
 		}
 	}
 
@@ -218,7 +213,9 @@ func (rg *recordGenerator) getters() []recordGetter {
 		converted.Apply(rg.fg)
 
 		b := pen.NewBlock()
+		b.Linef(converted.OutDeclare)
 		b.Linef(converted.Conversion)
+		b.Linef("return v")
 
 		getters = append(getters, recordGetter{
 			GoName: SnakeToGo(true, rg.Fields[i].Name),

@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -43,18 +42,8 @@ func marshalBorder(p uintptr) (interface{}, error) {
 }
 
 // NewBorder constructs a struct Border.
-func NewBorder() *Border {
-	var cret *C.GtkBorder
-	var ret1 *Border
-
-	cret = C.gtk_border_new()
-
-	ret1 = WrapBorder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Border) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewBorder() {
+	C.gtk_border_new()
 }
 
 // Native returns the underlying C source pointer.
@@ -64,45 +53,43 @@ func (b *Border) Native() unsafe.Pointer {
 
 // Left gets the field inside the struct.
 func (b *Border) Left() int16 {
-	v = C.gint16(b.native.left)
+	var v int16
+	v = int16(b.native.left)
+	return v
 }
 
 // Right gets the field inside the struct.
 func (b *Border) Right() int16 {
-	v = C.gint16(b.native.right)
+	var v int16
+	v = int16(b.native.right)
+	return v
 }
 
 // Top gets the field inside the struct.
 func (b *Border) Top() int16 {
-	v = C.gint16(b.native.top)
+	var v int16
+	v = int16(b.native.top)
+	return v
 }
 
 // Bottom gets the field inside the struct.
 func (b *Border) Bottom() int16 {
-	v = C.gint16(b.native.bottom)
+	var v int16
+	v = int16(b.native.bottom)
+	return v
 }
 
 // Copy copies a Border-struct.
-func (b *Border) Copy() *Border {
+func (b *Border) Copy(b *Border) {
 	var arg0 *C.GtkBorder
 
 	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkBorder
-	var ret1 *Border
-
-	cret = C.gtk_border_copy(arg0)
-
-	ret1 = WrapBorder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Border) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_border_copy(arg0)
 }
 
 // Free frees a Border-struct.
-func (b *Border) Free() {
+func (b *Border) Free(b *Border) {
 	var arg0 *C.GtkBorder
 
 	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))

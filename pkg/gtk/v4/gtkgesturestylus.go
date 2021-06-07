@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -33,7 +28,7 @@ type GestureStylus interface {
 	// This function must be called from the handler of one of the
 	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
 	// GestureStylus::proximity signals.
-	Axis(axis gdk.AxisUse) (value float64, ok bool)
+	Axis(g GestureStylus, axis gdk.AxisUse) (value float64, ok bool)
 	// Backlog: by default, GTK will limit rate of input events. On stylus input
 	// where accuracy of strokes is paramount, this function returns the
 	// accumulated coordinate/timing state before the emission of the current
@@ -45,12 +40,12 @@ type GestureStylus interface {
 	// state in motion history.
 	//
 	// The @backlog is provided in chronological order.
-	Backlog() (backlog []*gdk.TimeCoord, nElems uint, ok bool)
+	Backlog(g GestureStylus) bool
 	// DeviceTool returns the DeviceTool currently driving input through this
 	// gesture. This function must be called from either the
 	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
 	// GestureStylus::proximity signal handlers.
-	DeviceTool() gdk.DeviceTool
+	DeviceTool(g GestureStylus)
 }
 
 // gestureStylus implements the GestureStylus interface.
@@ -75,15 +70,8 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 }
 
 // NewGestureStylus constructs a class GestureStylus.
-func NewGestureStylus() GestureStylus {
-	var cret C.GtkGestureStylus
-	var ret1 GestureStylus
-
-	cret = C.gtk_gesture_stylus_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureStylus)
-
-	return ret1
+func NewGestureStylus() {
+	C.gtk_gesture_stylus_new()
 }
 
 // Axis returns the current value for the requested @axis.
@@ -91,7 +79,7 @@ func NewGestureStylus() GestureStylus {
 // This function must be called from the handler of one of the
 // GestureStylus::down, GestureStylus::motion, GestureStylus::up or
 // GestureStylus::proximity signals.
-func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
+func (g gestureStylus) Axis(g GestureStylus, axis gdk.AxisUse) (value float64, ok bool) {
 	var arg0 *C.GtkGestureStylus
 	var arg1 C.GdkAxisUse
 
@@ -99,16 +87,18 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 	arg1 = (C.GdkAxisUse)(axis)
 
 	var arg2 C.double
-	var ret2 float64
+	var value float64
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_gesture_stylus_get_axis(arg0, axis, &arg2)
+	cret = C.gtk_gesture_stylus_get_axis(arg0, arg1, &arg2)
 
-	*ret2 = C.double(arg2)
-	ret2 = C.bool(cret) != C.false
+	value = float64(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return value, ok
 }
 
 // Backlog: by default, GTK will limit rate of input events. On stylus input
@@ -122,36 +112,31 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 // state in motion history.
 //
 // The @backlog is provided in chronological order.
-func (g gestureStylus) Backlog() (backlog []*gdk.TimeCoord, nElems uint, ok bool) {
+func (g gestureStylus) Backlog(g GestureStylus) bool {
 	var arg0 *C.GtkGestureStylus
 
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
 	cret = C.gtk_gesture_stylus_get_backlog(arg0, &arg1, &arg2)
 
-	ret3 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2, ret3
+	return backlog, nElems, ok
 }
 
 // DeviceTool returns the DeviceTool currently driving input through this
 // gesture. This function must be called from either the
 // GestureStylus::down, GestureStylus::motion, GestureStylus::up or
 // GestureStylus::proximity signal handlers.
-func (g gestureStylus) DeviceTool() gdk.DeviceTool {
+func (g gestureStylus) DeviceTool(g GestureStylus) {
 	var arg0 *C.GtkGestureStylus
 
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 
-	var cret *C.GdkDeviceTool
-	var ret1 gdk.DeviceTool
-
-	cret = C.gtk_gesture_stylus_get_device_tool(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.DeviceTool)
-
-	return ret1
+	C.gtk_gesture_stylus_get_device_tool(arg0)
 }

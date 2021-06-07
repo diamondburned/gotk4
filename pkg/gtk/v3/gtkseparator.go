@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,17 +62,10 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 }
 
 // NewSeparator constructs a class Separator.
-func NewSeparator(orientation Orientation) Separator {
+func NewSeparator(orientation Orientation) {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	var cret C.GtkSeparator
-	var ret1 Separator
-
-	cret = C.gtk_separator_new(orientation)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
-
-	return ret1
+	C.gtk_separator_new(arg1)
 }

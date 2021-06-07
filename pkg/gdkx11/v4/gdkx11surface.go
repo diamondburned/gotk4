@@ -3,9 +3,6 @@
 package gdkx11
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,39 +20,34 @@ func init() {
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(surface X11Surface) uint32 {
+func X11GetServerTime(surface X11Surface) {
 	var arg1 *C.GdkSurface
 
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var cret C.guint32
-	var ret1 uint32
-
-	cret = C.gdk_x11_get_server_time(surface)
-
-	ret1 = C.guint32(cret)
-
-	return ret1
+	C.gdk_x11_get_server_time(arg1)
 }
 
 type X11Surface interface {
 	gdk.Surface
 
 	// Desktop gets the number of the workspace @surface is on.
-	Desktop() uint32
+	Desktop(s X11Surface)
 	// Group returns the group this surface belongs to.
-	Group() gdk.Surface
+	Group(s X11Surface)
+	// Xid returns the X resource (surface) belonging to a Surface.
+	Xid(s X11Surface)
 	// MoveToCurrentDesktop moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
 	// anything if the surface is already on all workspaces.
-	MoveToCurrentDesktop()
+	MoveToCurrentDesktop(s X11Surface)
 	// MoveToDesktop moves the surface to the given workspace when running unde
 	// a window manager that supports multiple workspaces, as described in the
 	// Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
-	MoveToDesktop(desktop uint32)
+	MoveToDesktop(s X11Surface, desktop uint32)
 	// SetFrameSyncEnabled: this function can be used to disable frame
 	// synchronization for a surface. Normally frame synchronziation will be
 	// enabled or disabled based on whether the system has a compositor that
@@ -63,16 +55,16 @@ type X11Surface interface {
 	// managed by the window manager, then frame synchronziation may need to be
 	// disabled. This is the case for a surface embedded via the XEMBED
 	// protocol.
-	SetFrameSyncEnabled(frameSyncEnabled bool)
+	SetFrameSyncEnabled(s X11Surface, frameSyncEnabled bool)
 	// SetGroup sets the group leader of @surface to be @leader. See the ICCCM
 	// for details.
-	SetGroup(leader gdk.Surface)
+	SetGroup(s X11Surface, leader gdk.Surface)
 	// SetSkipPagerHint sets a hint on @surface that pagers should not display
 	// it. See the EWMH for details.
-	SetSkipPagerHint(skipsPager bool)
+	SetSkipPagerHint(s X11Surface, skipsPager bool)
 	// SetSkipTaskbarHint sets a hint on @surface that taskbars should not
 	// display it. See the EWMH for details.
-	SetSkipTaskbarHint(skipsTaskbar bool)
+	SetSkipTaskbarHint(s X11Surface, skipsTaskbar bool)
 	// SetThemeVariant: GTK applications can request a dark theme variant. In
 	// order to make other applications - namely window managers using GTK for
 	// themeing - aware of this choice, GTK uses this function to export the
@@ -82,10 +74,10 @@ type X11Surface interface {
 	// Note that this property is automatically updated by GTK, so this function
 	// should only be used by applications which do not use GTK to create
 	// toplevel surfaces.
-	SetThemeVariant(variant string)
+	SetThemeVariant(s X11Surface, variant string)
 	// SetUrgencyHint sets a hint on @surface that it needs user attention. See
 	// the ICCCM for details.
-	SetUrgencyHint(urgent bool)
+	SetUrgencyHint(s X11Surface, urgent bool)
 	// SetUserTime: the application can use this call to update the
 	// _NET_WM_USER_TIME property on a toplevel surface. This property stores an
 	// Xserver time which represents the time of the last user input event
@@ -98,11 +90,11 @@ type X11Surface interface {
 	// Note that this property is automatically updated by GDK, so this function
 	// should only be used by applications which handle input events bypassing
 	// GDK.
-	SetUserTime(timestamp uint32)
+	SetUserTime(s X11Surface, timestamp uint32)
 	// SetUTF8Property: this function modifies or removes an arbitrary X11
 	// window property of type UTF8_STRING. If the given @surface is not a
 	// toplevel surface, it is ignored.
-	SetUTF8Property(name string, value string)
+	SetUTF8Property(s X11Surface, name string, value string)
 }
 
 // x11Surface implements the X11Surface interface.
@@ -127,35 +119,30 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 }
 
 // Desktop gets the number of the workspace @surface is on.
-func (s x11Surface) Desktop() uint32 {
+func (s x11Surface) Desktop(s X11Surface) {
 	var arg0 *C.GdkSurface
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint32
-	var ret1 uint32
-
-	cret = C.gdk_x11_surface_get_desktop(arg0)
-
-	ret1 = C.guint32(cret)
-
-	return ret1
+	C.gdk_x11_surface_get_desktop(arg0)
 }
 
 // Group returns the group this surface belongs to.
-func (s x11Surface) Group() gdk.Surface {
+func (s x11Surface) Group(s X11Surface) {
 	var arg0 *C.GdkSurface
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkSurface
-	var ret1 gdk.Surface
+	C.gdk_x11_surface_get_group(arg0)
+}
 
-	cret = C.gdk_x11_surface_get_group(arg0)
+// Xid returns the X resource (surface) belonging to a Surface.
+func (s x11Surface) Xid(s X11Surface) {
+	var arg0 *C.GdkSurface
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	return ret1
+	C.gdk_x11_surface_get_xid(arg0)
 }
 
 // MoveToCurrentDesktop moves the surface to the correct workspace when
@@ -163,7 +150,7 @@ func (s x11Surface) Group() gdk.Surface {
 // described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
 // anything if the surface is already on all workspaces.
-func (s x11Surface) MoveToCurrentDesktop() {
+func (s x11Surface) MoveToCurrentDesktop(s X11Surface) {
 	var arg0 *C.GdkSurface
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
@@ -175,14 +162,14 @@ func (s x11Surface) MoveToCurrentDesktop() {
 // a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification.
-func (s x11Surface) MoveToDesktop(desktop uint32) {
+func (s x11Surface) MoveToDesktop(s X11Surface, desktop uint32) {
 	var arg0 *C.GdkSurface
 	var arg1 C.guint32
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint32(desktop)
 
-	C.gdk_x11_surface_move_to_desktop(arg0, desktop)
+	C.gdk_x11_surface_move_to_desktop(arg0, arg1)
 }
 
 // SetFrameSyncEnabled: this function can be used to disable frame
@@ -192,7 +179,7 @@ func (s x11Surface) MoveToDesktop(desktop uint32) {
 // managed by the window manager, then frame synchronziation may need to be
 // disabled. This is the case for a surface embedded via the XEMBED
 // protocol.
-func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
+func (s x11Surface) SetFrameSyncEnabled(s X11Surface, frameSyncEnabled bool) {
 	var arg0 *C.GdkSurface
 	var arg1 C.gboolean
 
@@ -201,24 +188,24 @@ func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_x11_surface_set_frame_sync_enabled(arg0, frameSyncEnabled)
+	C.gdk_x11_surface_set_frame_sync_enabled(arg0, arg1)
 }
 
 // SetGroup sets the group leader of @surface to be @leader. See the ICCCM
 // for details.
-func (s x11Surface) SetGroup(leader gdk.Surface) {
+func (s x11Surface) SetGroup(s X11Surface, leader gdk.Surface) {
 	var arg0 *C.GdkSurface
 	var arg1 *C.GdkSurface
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
 
-	C.gdk_x11_surface_set_group(arg0, leader)
+	C.gdk_x11_surface_set_group(arg0, arg1)
 }
 
 // SetSkipPagerHint sets a hint on @surface that pagers should not display
 // it. See the EWMH for details.
-func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
+func (s x11Surface) SetSkipPagerHint(s X11Surface, skipsPager bool) {
 	var arg0 *C.GdkSurface
 	var arg1 C.gboolean
 
@@ -227,12 +214,12 @@ func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_x11_surface_set_skip_pager_hint(arg0, skipsPager)
+	C.gdk_x11_surface_set_skip_pager_hint(arg0, arg1)
 }
 
 // SetSkipTaskbarHint sets a hint on @surface that taskbars should not
 // display it. See the EWMH for details.
-func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
+func (s x11Surface) SetSkipTaskbarHint(s X11Surface, skipsTaskbar bool) {
 	var arg0 *C.GdkSurface
 	var arg1 C.gboolean
 
@@ -241,7 +228,7 @@ func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_x11_surface_set_skip_taskbar_hint(arg0, skipsTaskbar)
+	C.gdk_x11_surface_set_skip_taskbar_hint(arg0, arg1)
 }
 
 // SetThemeVariant: GTK applications can request a dark theme variant. In
@@ -253,7 +240,7 @@ func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 // Note that this property is automatically updated by GTK, so this function
 // should only be used by applications which do not use GTK to create
 // toplevel surfaces.
-func (s x11Surface) SetThemeVariant(variant string) {
+func (s x11Surface) SetThemeVariant(s X11Surface, variant string) {
 	var arg0 *C.GdkSurface
 	var arg1 *C.char
 
@@ -261,12 +248,12 @@ func (s x11Surface) SetThemeVariant(variant string) {
 	arg1 = (*C.char)(C.CString(variant))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_x11_surface_set_theme_variant(arg0, variant)
+	C.gdk_x11_surface_set_theme_variant(arg0, arg1)
 }
 
 // SetUrgencyHint sets a hint on @surface that it needs user attention. See
 // the ICCCM for details.
-func (s x11Surface) SetUrgencyHint(urgent bool) {
+func (s x11Surface) SetUrgencyHint(s X11Surface, urgent bool) {
 	var arg0 *C.GdkSurface
 	var arg1 C.gboolean
 
@@ -275,7 +262,7 @@ func (s x11Surface) SetUrgencyHint(urgent bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gdk_x11_surface_set_urgency_hint(arg0, urgent)
+	C.gdk_x11_surface_set_urgency_hint(arg0, arg1)
 }
 
 // SetUserTime: the application can use this call to update the
@@ -290,20 +277,20 @@ func (s x11Surface) SetUrgencyHint(urgent bool) {
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing
 // GDK.
-func (s x11Surface) SetUserTime(timestamp uint32) {
+func (s x11Surface) SetUserTime(s X11Surface, timestamp uint32) {
 	var arg0 *C.GdkSurface
 	var arg1 C.guint32
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint32(timestamp)
 
-	C.gdk_x11_surface_set_user_time(arg0, timestamp)
+	C.gdk_x11_surface_set_user_time(arg0, arg1)
 }
 
 // SetUTF8Property: this function modifies or removes an arbitrary X11
 // window property of type UTF8_STRING. If the given @surface is not a
 // toplevel surface, it is ignored.
-func (s x11Surface) SetUTF8Property(name string, value string) {
+func (s x11Surface) SetUTF8Property(s X11Surface, name string, value string) {
 	var arg0 *C.GdkSurface
 	var arg1 *C.char
 	var arg2 *C.char
@@ -314,5 +301,5 @@ func (s x11Surface) SetUTF8Property(name string, value string) {
 	arg2 = (*C.char)(C.CString(value))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gdk_x11_surface_set_utf8_property(arg0, name, value)
+	C.gdk_x11_surface_set_utf8_property(arg0, arg1, arg2)
 }

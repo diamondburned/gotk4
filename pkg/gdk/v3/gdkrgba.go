@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -50,47 +48,45 @@ func (r *RGBA) Native() unsafe.Pointer {
 
 // Red gets the field inside the struct.
 func (r *RGBA) Red() float64 {
-	v = C.gdouble(r.native.red)
+	var v float64
+	v = float64(r.native.red)
+	return v
 }
 
 // Green gets the field inside the struct.
 func (r *RGBA) Green() float64 {
-	v = C.gdouble(r.native.green)
+	var v float64
+	v = float64(r.native.green)
+	return v
 }
 
 // Blue gets the field inside the struct.
 func (r *RGBA) Blue() float64 {
-	v = C.gdouble(r.native.blue)
+	var v float64
+	v = float64(r.native.blue)
+	return v
 }
 
 // Alpha gets the field inside the struct.
 func (r *RGBA) Alpha() float64 {
-	v = C.gdouble(r.native.alpha)
+	var v float64
+	v = float64(r.native.alpha)
+	return v
 }
 
 // Copy makes a copy of a RGBA.
 //
 // The result must be freed through gdk_rgba_free().
-func (r *RGBA) Copy() *RGBA {
+func (r *RGBA) Copy(r *RGBA) {
 	var arg0 *C.GdkRGBA
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GdkRGBA
-	var ret1 *RGBA
-
-	cret = C.gdk_rgba_copy(arg0)
-
-	ret1 = WrapRGBA(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *RGBA) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gdk_rgba_copy(arg0)
 }
 
 // Equal compares two RGBA colors.
-func (p *RGBA) Equal(p2 RGBA) bool {
+func (p *RGBA) Equal(p RGBA, p2 RGBA) bool {
 	var arg0 C.gpointer
 	var arg1 C.gpointer
 
@@ -98,17 +94,19 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_rgba_equal(arg0, p2)
+	cret = C.gdk_rgba_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Free frees a RGBA created with gdk_rgba_copy()
-func (r *RGBA) Free() {
+func (r *RGBA) Free(r *RGBA) {
 	var arg0 *C.GdkRGBA
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
@@ -117,19 +115,12 @@ func (r *RGBA) Free() {
 }
 
 // Hash: a hash function suitable for using for a hash table that stores RGBAs.
-func (p *RGBA) Hash() uint {
+func (p *RGBA) Hash(p RGBA) {
 	var arg0 C.gpointer
 
 	arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gdk_rgba_hash(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gdk_rgba_hash(arg0)
 }
 
 // Parse parses a textual representation of a color, filling in the @red,
@@ -145,7 +136,7 @@ func (p *RGBA) Hash() uint {
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
-func (r *RGBA) Parse(spec string) bool {
+func (r *RGBA) Parse(r *RGBA, spec string) bool {
 	var arg0 *C.GdkRGBA
 	var arg1 *C.gchar
 
@@ -154,13 +145,15 @@ func (r *RGBA) Parse(spec string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_rgba_parse(arg0, spec)
+	cret = C.gdk_rgba_parse(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // String returns a textual specification of @rgba in the form `rgb(r,g,b)` or
@@ -175,18 +168,10 @@ func (r *RGBA) Parse(spec string) bool {
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
-func (r *RGBA) String() string {
+func (r *RGBA) String(r *RGBA) {
 	var arg0 *C.GdkRGBA
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gdk_rgba_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_rgba_to_string(arg0)
 }

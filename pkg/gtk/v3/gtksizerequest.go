@@ -20,7 +20,7 @@ import "C"
 // The remaining space will be added to the @minimum_size member of the
 // GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
-func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
+func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) {
 	var arg1 C.gint
 	var arg2 C.guint
 	var arg3 *C.GtkRequestedSize
@@ -29,14 +29,7 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	arg2 = C.guint(nRequestedSizes)
 	arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_distribute_natural_allocation(extraSpace, nRequestedSizes, sizes)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_distribute_natural_allocation(arg1, arg2, arg3)
 }
 
 // RequestedSize represents a request of a screen object in a given orientation.
@@ -68,15 +61,21 @@ func (r *RequestedSize) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (r *RequestedSize) Data() interface{} {
-	v = C.gpointer(r.native.data)
+	var v interface{}
+	v = interface{}(r.native.data)
+	return v
 }
 
 // MinimumSize gets the field inside the struct.
 func (r *RequestedSize) MinimumSize() int {
-	v = C.gint(r.native.minimum_size)
+	var v int
+	v = int(r.native.minimum_size)
+	return v
 }
 
 // NaturalSize gets the field inside the struct.
 func (r *RequestedSize) NaturalSize() int {
-	v = C.gint(r.native.natural_size)
+	var v int
+	v = int(r.native.natural_size)
+	return v
 }

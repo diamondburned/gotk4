@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,13 +52,6 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 }
 
 // NewVButtonBox constructs a class VButtonBox.
-func NewVButtonBox() VButtonBox {
-	var cret C.GtkVButtonBox
-	var ret1 VButtonBox
-
-	cret = C.gtk_vbutton_box_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VButtonBox)
-
-	return ret1
+func NewVButtonBox() {
+	C.gtk_vbutton_box_new()
 }

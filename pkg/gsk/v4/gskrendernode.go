@@ -57,12 +57,16 @@ func (c *ColorStop) Native() unsafe.Pointer {
 
 // Offset gets the field inside the struct.
 func (c *ColorStop) Offset() float32 {
-	v = C.float(c.native.offset)
+	var v float32
+	v = float32(c.native.offset)
+	return v
 }
 
 // Color gets the field inside the struct.
 func (c *ColorStop) Color() gdk.RGBA {
+	var v gdk.RGBA
 	v = gdk.WrapRGBA(unsafe.Pointer(c.native.color))
+	return v
 }
 
 // ParseLocation: a location in a parse buffer.
@@ -92,27 +96,37 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 
 // Bytes gets the field inside the struct.
 func (p *ParseLocation) Bytes() uint {
-	v = C.gsize(p.native.bytes)
+	var v uint
+	v = uint(p.native.bytes)
+	return v
 }
 
 // Chars gets the field inside the struct.
 func (p *ParseLocation) Chars() uint {
-	v = C.gsize(p.native.chars)
+	var v uint
+	v = uint(p.native.chars)
+	return v
 }
 
 // Lines gets the field inside the struct.
 func (p *ParseLocation) Lines() uint {
-	v = C.gsize(p.native.lines)
+	var v uint
+	v = uint(p.native.lines)
+	return v
 }
 
 // LineBytes gets the field inside the struct.
 func (p *ParseLocation) LineBytes() uint {
-	v = C.gsize(p.native.line_bytes)
+	var v uint
+	v = uint(p.native.line_bytes)
+	return v
 }
 
 // LineChars gets the field inside the struct.
 func (p *ParseLocation) LineChars() uint {
-	v = C.gsize(p.native.line_chars)
+	var v uint
+	v = uint(p.native.line_chars)
+	return v
 }
 
 // Shadow: the shadow parameters in a shadow node.
@@ -142,20 +156,28 @@ func (s *Shadow) Native() unsafe.Pointer {
 
 // Color gets the field inside the struct.
 func (s *Shadow) Color() gdk.RGBA {
+	var v gdk.RGBA
 	v = gdk.WrapRGBA(unsafe.Pointer(s.native.color))
+	return v
 }
 
 // Dx gets the field inside the struct.
 func (s *Shadow) Dx() float32 {
-	v = C.float(s.native.dx)
+	var v float32
+	v = float32(s.native.dx)
+	return v
 }
 
 // Dy gets the field inside the struct.
 func (s *Shadow) Dy() float32 {
-	v = C.float(s.native.dy)
+	var v float32
+	v = float32(s.native.dy)
+	return v
 }
 
 // Radius gets the field inside the struct.
 func (s *Shadow) Radius() float32 {
-	v = C.float(s.native.radius)
+	var v float32
+	v = float32(s.native.radius)
+	return v
 }

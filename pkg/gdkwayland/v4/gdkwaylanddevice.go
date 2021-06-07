@@ -29,13 +29,13 @@ type WaylandDevice interface {
 	//
 	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
 	// GDK_SOURCE_TABLET_PAD.
-	NodePath() string
+	NodePath(d WaylandDevice)
 	// WlKeyboard returns the Wayland wl_keyboard of a Device.
-	WlKeyboard() interface{}
+	WlKeyboard(d WaylandDevice)
 	// WlPointer returns the Wayland wl_pointer of a Device.
-	WlPointer() interface{}
+	WlPointer(d WaylandDevice)
 	// WlSeat returns the Wayland wl_seat of a Device.
-	WlSeat() interface{}
+	WlSeat(d WaylandDevice)
 }
 
 // waylandDevice implements the WaylandDevice interface.
@@ -66,65 +66,37 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 //
 // This is most notably implemented for devices of type GDK_SOURCE_PEN,
 // GDK_SOURCE_TABLET_PAD.
-func (d waylandDevice) NodePath() string {
+func (d waylandDevice) NodePath(d WaylandDevice) {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gdk_wayland_device_get_node_path(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gdk_wayland_device_get_node_path(arg0)
 }
 
 // WlKeyboard returns the Wayland wl_keyboard of a Device.
-func (d waylandDevice) WlKeyboard() interface{} {
+func (d waylandDevice) WlKeyboard(d WaylandDevice) {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_keyboard
-	var ret1 interface{}
-
-	cret = C.gdk_wayland_device_get_wl_keyboard(arg0)
-
-	ret1 = *C.wl_keyboard(cret)
-
-	return ret1
+	C.gdk_wayland_device_get_wl_keyboard(arg0)
 }
 
 // WlPointer returns the Wayland wl_pointer of a Device.
-func (d waylandDevice) WlPointer() interface{} {
+func (d waylandDevice) WlPointer(d WaylandDevice) {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_pointer
-	var ret1 interface{}
-
-	cret = C.gdk_wayland_device_get_wl_pointer(arg0)
-
-	ret1 = *C.wl_pointer(cret)
-
-	return ret1
+	C.gdk_wayland_device_get_wl_pointer(arg0)
 }
 
 // WlSeat returns the Wayland wl_seat of a Device.
-func (d waylandDevice) WlSeat() interface{} {
+func (d waylandDevice) WlSeat(d WaylandDevice) {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_seat
-	var ret1 interface{}
-
-	cret = C.gdk_wayland_device_get_wl_seat(arg0)
-
-	ret1 = *C.wl_seat(cret)
-
-	return ret1
+	C.gdk_wayland_device_get_wl_seat(arg0)
 }

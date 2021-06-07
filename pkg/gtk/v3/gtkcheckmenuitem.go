@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -47,17 +43,17 @@ type CheckMenuItem interface {
 
 	// Active returns whether the check menu item is active. See
 	// gtk_check_menu_item_set_active ().
-	Active() bool
+	Active(c CheckMenuItem) bool
 	// DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
-	DrawAsRadio() bool
+	DrawAsRadio(c CheckMenuItem) bool
 	// Inconsistent retrieves the value set by
 	// gtk_check_menu_item_set_inconsistent().
-	Inconsistent() bool
+	Inconsistent(c CheckMenuItem) bool
 	// SetActive sets the active state of the menu item’s check box.
-	SetActive(isActive bool)
+	SetActive(c CheckMenuItem, isActive bool)
 	// SetDrawAsRadio sets whether @check_menu_item is drawn like a
 	// RadioMenuItem
-	SetDrawAsRadio(drawAsRadio bool)
+	SetDrawAsRadio(c CheckMenuItem, drawAsRadio bool)
 	// SetInconsistent: if the user has selected a range of elements (such as
 	// some text or spreadsheet cells) that are affected by a boolean setting,
 	// and the current values in that range are inconsistent, you may want to
@@ -66,9 +62,9 @@ type CheckMenuItem interface {
 	// again if the user explicitly selects a setting. This has to be done
 	// manually, gtk_check_menu_item_set_inconsistent() only affects visual
 	// appearance, it doesn’t affect the semantics of the widget.
-	SetInconsistent(setting bool)
+	SetInconsistent(c CheckMenuItem, setting bool)
 	// Toggled emits the CheckMenuItem::toggled signal.
-	Toggled()
+	Toggled(c CheckMenuItem)
 }
 
 // checkMenuItem implements the CheckMenuItem interface.
@@ -99,103 +95,88 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 }
 
 // NewCheckMenuItem constructs a class CheckMenuItem.
-func NewCheckMenuItem() CheckMenuItem {
-	var cret C.GtkCheckMenuItem
-	var ret1 CheckMenuItem
-
-	cret = C.gtk_check_menu_item_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
-
-	return ret1
+func NewCheckMenuItem() {
+	C.gtk_check_menu_item_new()
 }
 
 // NewCheckMenuItemWithLabel constructs a class CheckMenuItem.
-func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
+func NewCheckMenuItemWithLabel(label string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkCheckMenuItem
-	var ret1 CheckMenuItem
-
-	cret = C.gtk_check_menu_item_new_with_label(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
-
-	return ret1
+	C.gtk_check_menu_item_new_with_label(arg1)
 }
 
 // NewCheckMenuItemWithMnemonic constructs a class CheckMenuItem.
-func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
+func NewCheckMenuItemWithMnemonic(label string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkCheckMenuItem
-	var ret1 CheckMenuItem
-
-	cret = C.gtk_check_menu_item_new_with_mnemonic(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
-
-	return ret1
+	C.gtk_check_menu_item_new_with_mnemonic(arg1)
 }
 
 // Active returns whether the check menu item is active. See
 // gtk_check_menu_item_set_active ().
-func (c checkMenuItem) Active() bool {
+func (c checkMenuItem) Active(c CheckMenuItem) bool {
 	var arg0 *C.GtkCheckMenuItem
 
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_check_menu_item_get_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
-func (c checkMenuItem) DrawAsRadio() bool {
+func (c checkMenuItem) DrawAsRadio(c CheckMenuItem) bool {
 	var arg0 *C.GtkCheckMenuItem
 
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_check_menu_item_get_draw_as_radio(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
-func (c checkMenuItem) Inconsistent() bool {
+func (c checkMenuItem) Inconsistent(c CheckMenuItem) bool {
 	var arg0 *C.GtkCheckMenuItem
 
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_check_menu_item_get_inconsistent(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetActive sets the active state of the menu item’s check box.
-func (c checkMenuItem) SetActive(isActive bool) {
+func (c checkMenuItem) SetActive(c CheckMenuItem, isActive bool) {
 	var arg0 *C.GtkCheckMenuItem
 	var arg1 C.gboolean
 
@@ -204,12 +185,12 @@ func (c checkMenuItem) SetActive(isActive bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_check_menu_item_set_active(arg0, isActive)
+	C.gtk_check_menu_item_set_active(arg0, arg1)
 }
 
 // SetDrawAsRadio sets whether @check_menu_item is drawn like a
 // RadioMenuItem
-func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
+func (c checkMenuItem) SetDrawAsRadio(c CheckMenuItem, drawAsRadio bool) {
 	var arg0 *C.GtkCheckMenuItem
 	var arg1 C.gboolean
 
@@ -218,7 +199,7 @@ func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_check_menu_item_set_draw_as_radio(arg0, drawAsRadio)
+	C.gtk_check_menu_item_set_draw_as_radio(arg0, arg1)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as
@@ -229,7 +210,7 @@ func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 // again if the user explicitly selects a setting. This has to be done
 // manually, gtk_check_menu_item_set_inconsistent() only affects visual
 // appearance, it doesn’t affect the semantics of the widget.
-func (c checkMenuItem) SetInconsistent(setting bool) {
+func (c checkMenuItem) SetInconsistent(c CheckMenuItem, setting bool) {
 	var arg0 *C.GtkCheckMenuItem
 	var arg1 C.gboolean
 
@@ -238,11 +219,11 @@ func (c checkMenuItem) SetInconsistent(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_check_menu_item_set_inconsistent(arg0, setting)
+	C.gtk_check_menu_item_set_inconsistent(arg0, arg1)
 }
 
 // Toggled emits the CheckMenuItem::toggled signal.
-func (c checkMenuItem) Toggled() {
+func (c checkMenuItem) Toggled(c CheckMenuItem) {
 	var arg0 *C.GtkCheckMenuItem
 
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))

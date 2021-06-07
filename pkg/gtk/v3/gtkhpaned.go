@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,13 +57,6 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 }
 
 // NewHPaned constructs a class HPaned.
-func NewHPaned() HPaned {
-	var cret C.GtkHPaned
-	var ret1 HPaned
-
-	cret = C.gtk_hpaned_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HPaned)
-
-	return ret1
+func NewHPaned() {
+	C.gtk_hpaned_new()
 }

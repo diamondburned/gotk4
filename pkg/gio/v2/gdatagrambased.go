@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,7 +68,7 @@ type DatagramBasedOverrider interface {
 	// these flags, the output is guaranteed to be masked by @condition.
 	//
 	// This call never blocks.
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	ConditionCheck(d DatagramBased, condition glib.IOCondition)
 	// ConditionWait waits for up to @timeout microseconds for condition to
 	// become true on @datagram_based. If the condition is met, true is
 	// returned.
@@ -80,7 +76,7 @@ type DatagramBasedOverrider interface {
 	// If @cancellable is cancelled before the condition is met, or if @timeout
 	// is reached before the condition is met, then false is returned and @error
 	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error
+	ConditionWait(d DatagramBased, condition glib.IOCondition, timeout int64, cancellable Cancellable) error
 	// CreateSource creates a #GSource that can be attached to a Context to
 	// monitor for the availability of the specified @condition on the Based.
 	// The #GSource keeps a reference to the @datagram_based.
@@ -95,7 +91,7 @@ type DatagramBasedOverrider interface {
 	// likely 0 unless cancellation happened at the same time as a condition
 	// change). You can check for this in the callback using
 	// g_cancellable_is_cancelled().
-	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
+	CreateSource(d DatagramBased, condition glib.IOCondition, cancellable Cancellable)
 }
 
 // DatagramBased: a Based is a networking interface for representing
@@ -207,21 +203,14 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 // these flags, the output is guaranteed to be masked by @condition.
 //
 // This call never blocks.
-func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+func (d datagramBased) ConditionCheck(d DatagramBased, condition glib.IOCondition) {
 	var arg0 *C.GDatagramBased
 	var arg1 C.GIOCondition
 
 	arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	arg1 = (C.GIOCondition)(condition)
 
-	var cret C.GIOCondition
-	var ret1 glib.IOCondition
-
-	cret = C.g_datagram_based_condition_check(arg0, condition)
-
-	ret1 = glib.IOCondition(cret)
-
-	return ret1
+	C.g_datagram_based_condition_check(arg0, arg1)
 }
 
 // ConditionWait waits for up to @timeout microseconds for condition to
@@ -231,7 +220,7 @@ func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOConditi
 // If @cancellable is cancelled before the condition is met, or if @timeout
 // is reached before the condition is met, then false is returned and @error
 // is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
+func (d datagramBased) ConditionWait(d DatagramBased, condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
 	var arg0 *C.GDatagramBased
 	var arg1 C.GIOCondition
 	var arg2 C.gint64
@@ -243,13 +232,13 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_datagram_based_condition_wait(arg0, condition, timeout, cancellable, &errout)
+	C.g_datagram_based_condition_wait(arg0, arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // CreateSource creates a #GSource that can be attached to a Context to
@@ -266,7 +255,7 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 // likely 0 unless cancellation happened at the same time as a condition
 // change). You can check for this in the callback using
 // g_cancellable_is_cancelled().
-func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
+func (d datagramBased) CreateSource(d DatagramBased, condition glib.IOCondition, cancellable Cancellable) {
 	var arg0 *C.GDatagramBased
 	var arg1 C.GIOCondition
 	var arg2 *C.GCancellable
@@ -275,15 +264,5 @@ func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Canc
 	arg1 = (C.GIOCondition)(condition)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GSource
-	var ret1 *glib.Source
-
-	cret = C.g_datagram_based_create_source(arg0, condition, cancellable)
-
-	ret1 = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Source) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_datagram_based_create_source(arg0, arg1, arg2)
 }

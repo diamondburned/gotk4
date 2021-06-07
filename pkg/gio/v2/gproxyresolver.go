@@ -3,17 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -35,15 +29,8 @@ func init() {
 }
 
 // ProxyResolverGetDefault gets the default Resolver for the system.
-func ProxyResolverGetDefault() ProxyResolver {
-	var cret *C.GProxyResolver
-	var ret1 ProxyResolver
-
-	cret = C.g_proxy_resolver_get_default()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProxyResolver)
-
-	return ret1
+func ProxyResolverGetDefault() {
+	C.g_proxy_resolver_get_default()
 }
 
 // ProxyResolverOverrider contains methods that are overridable. This
@@ -52,7 +39,7 @@ type ProxyResolverOverrider interface {
 	// IsSupported checks if @resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns true for this method.)
-	IsSupported() bool
+	IsSupported(r ProxyResolver) bool
 	// Lookup looks into the system proxy configuration to determine what proxy,
 	// if any, to use to connect to @uri. The returned proxy URIs are of the
 	// form `<protocol>://[user[:password]@]host:port` or `direct://`, where
@@ -65,14 +52,14 @@ type ProxyResolverOverrider interface {
 	//
 	// `direct://` is used when no proxy is needed. Direct connection should not
 	// be attempted unless it is part of the returned array of proxies.
-	Lookup(uri string, cancellable Cancellable) (utf8s []string, err error)
+	Lookup(r ProxyResolver, uri string, cancellable Cancellable) error
 	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 	// for more details.
-	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
+	LookupAsync(r ProxyResolver)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
 	// g_proxy_resolver_lookup() for more details.
-	LookupFinish(result AsyncResult) (utf8s []string, err error)
+	LookupFinish(r ProxyResolver, result AsyncResult) error
 }
 
 // ProxyResolver provides synchronous and asynchronous network proxy resolution.
@@ -111,19 +98,21 @@ func marshalProxyResolver(p uintptr) (interface{}, error) {
 // IsSupported checks if @resolver can be used on this system. (This is used
 // internally; g_proxy_resolver_get_default() will only return a proxy
 // resolver that returns true for this method.)
-func (r proxyResolver) IsSupported() bool {
+func (r proxyResolver) IsSupported(r ProxyResolver) bool {
 	var arg0 *C.GProxyResolver
 
 	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_proxy_resolver_is_supported(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Lookup looks into the system proxy configuration to determine what proxy,
@@ -138,7 +127,7 @@ func (r proxyResolver) IsSupported() bool {
 //
 // `direct://` is used when no proxy is needed. Direct connection should not
 // be attempted unless it is part of the returned array of proxies.
-func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []string, err error) {
+func (r proxyResolver) Lookup(r ProxyResolver, uri string, cancellable Cancellable) error {
 	var arg0 *C.GProxyResolver
 	var arg1 *C.gchar
 	var arg2 *C.GCancellable
@@ -149,47 +138,29 @@ func (r proxyResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret **C.gchar
-	var ret2 []string
+	var err error
 
-	cret = C.g_proxy_resolver_lookup(arg0, uri, cancellable, &errout)
+	C.g_proxy_resolver_lookup(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
+	err = gerror.Take(unsafe.Pointer(errout))
 
-		ret2 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret2[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return goerr, ret2
+	return err
 }
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 // for more details.
-func (r proxyResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
+func (r proxyResolver) LookupAsync(r ProxyResolver) {
 	var arg0 *C.GProxyResolver
 
 	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 
-	C.g_proxy_resolver_lookup_async(arg0, uri, cancellable, callback, userData)
+	C.g_proxy_resolver_lookup_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // LookupFinish: call this function to obtain the array of proxy URIs when
 // g_proxy_resolver_lookup_async() is complete. See
 // g_proxy_resolver_lookup() for more details.
-func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err error) {
+func (r proxyResolver) LookupFinish(r ProxyResolver, result AsyncResult) error {
 	var arg0 *C.GProxyResolver
 	var arg1 *C.GAsyncResult
 
@@ -197,29 +168,11 @@ func (r proxyResolver) LookupFinish(result AsyncResult) (utf8s []string, err err
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret **C.gchar
-	var ret2 []string
+	var err error
 
-	cret = C.g_proxy_resolver_lookup_finish(arg0, result, &errout)
+	C.g_proxy_resolver_lookup_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
+	err = gerror.Take(unsafe.Pointer(errout))
 
-		ret2 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret2[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return goerr, ret2
+	return err
 }

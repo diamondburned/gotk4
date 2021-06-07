@@ -3,14 +3,11 @@
 package gdkwayland
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
 // #cgo pkg-config: gtk4-wayland gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gdk/wayland/gdkwayland.h>
 import "C"
 

@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -55,68 +54,70 @@ func (m *Matrix) Native() unsafe.Pointer {
 
 // XX gets the field inside the struct.
 func (m *Matrix) XX() float64 {
-	v = C.double(m.native.xx)
+	var v float64
+	v = float64(m.native.xx)
+	return v
 }
 
 // XY gets the field inside the struct.
 func (m *Matrix) XY() float64 {
-	v = C.double(m.native.xy)
+	var v float64
+	v = float64(m.native.xy)
+	return v
 }
 
 // YX gets the field inside the struct.
 func (m *Matrix) YX() float64 {
-	v = C.double(m.native.yx)
+	var v float64
+	v = float64(m.native.yx)
+	return v
 }
 
 // YY gets the field inside the struct.
 func (m *Matrix) YY() float64 {
-	v = C.double(m.native.yy)
+	var v float64
+	v = float64(m.native.yy)
+	return v
 }
 
 // X0 gets the field inside the struct.
 func (m *Matrix) X0() float64 {
-	v = C.double(m.native.x0)
+	var v float64
+	v = float64(m.native.x0)
+	return v
 }
 
 // Y0 gets the field inside the struct.
 func (m *Matrix) Y0() float64 {
-	v = C.double(m.native.y0)
+	var v float64
+	v = float64(m.native.y0)
+	return v
 }
 
 // Concat changes the transformation represented by @matrix to be the
 // transformation given by first applying transformation given by @new_matrix
 // then applying the original transformation.
-func (m *Matrix) Concat(newMatrix *Matrix) {
+func (m *Matrix) Concat(m *Matrix, newMatrix *Matrix) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix.Native()))
 
-	C.pango_matrix_concat(arg0, newMatrix)
+	C.pango_matrix_concat(arg0, arg1)
 }
 
 // Copy copies a `PangoMatrix`.
-func (m *Matrix) Copy() *Matrix {
+func (m *Matrix) Copy(m *Matrix) {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	var cret *C.PangoMatrix
-	var ret1 *Matrix
-
-	cret = C.pango_matrix_copy(arg0)
-
-	ret1 = WrapMatrix(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Matrix) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_matrix_copy(arg0)
 }
 
 // Free: free a `PangoMatrix`.
-func (m *Matrix) Free() {
+func (m *Matrix) Free(m *Matrix) {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
@@ -130,19 +131,12 @@ func (m *Matrix) Free() {
 // That is, the scale factor in the direction perpendicular to the vector that
 // the X coordinate is mapped to. If the scale in the X coordinate is needed as
 // well, use [method@Pango.Matrix.get_font_scale_factors].
-func (m *Matrix) FontScaleFactor() float64 {
+func (m *Matrix) FontScaleFactor(m *Matrix) {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	var cret C.double
-	var ret1 float64
-
-	cret = C.pango_matrix_get_font_scale_factor(arg0)
-
-	ret1 = C.double(cret)
-
-	return ret1
+	C.pango_matrix_get_font_scale_factor(arg0)
 }
 
 // FontScaleFactors calculates the scale factor of a matrix on the width and
@@ -153,41 +147,41 @@ func (m *Matrix) FontScaleFactor() float64 {
 // that the X coordinate is mapped to.
 //
 // Note that output numbers will always be non-negative.
-func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
+func (m *Matrix) FontScaleFactors(m *Matrix) (xscale float64, yscale float64) {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
 	var arg1 C.double
-	var ret1 float64
+	var xscale float64
 	var arg2 C.double
-	var ret2 float64
+	var yscale float64
 
 	C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
 
-	*ret1 = C.double(arg1)
-	*ret2 = C.double(arg2)
+	xscale = float64(&arg1)
+	yscale = float64(&arg2)
 
-	return ret1, ret2
+	return xscale, yscale
 }
 
 // Rotate changes the transformation represented by @matrix to be the
 // transformation given by first rotating by @degrees degrees counter-clockwise
 // then applying the original transformation.
-func (m *Matrix) Rotate(degrees float64) {
+func (m *Matrix) Rotate(m *Matrix, degrees float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 C.double
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	arg1 = C.double(degrees)
 
-	C.pango_matrix_rotate(arg0, degrees)
+	C.pango_matrix_rotate(arg0, arg1)
 }
 
 // Scale changes the transformation represented by @matrix to be the
 // transformation given by first scaling by @sx in the X direction and @sy in
 // the Y direction then applying the original transformation.
-func (m *Matrix) Scale(scaleX float64, scaleY float64) {
+func (m *Matrix) Scale(m *Matrix, scaleX float64, scaleY float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 C.double
 	var arg2 C.double
@@ -196,7 +190,7 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	arg1 = C.double(scaleX)
 	arg2 = C.double(scaleY)
 
-	C.pango_matrix_scale(arg0, scaleX, scaleY)
+	C.pango_matrix_scale(arg0, arg1, arg2)
 }
 
 // TransformDistance transforms the distance vector (@dx,@dy) by @matrix.
@@ -211,7 +205,7 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 // transforms to the same vector. If (@x1,@y1) transforms to (@x2,@y2) then
 // (@x1+@dx1,@y1+@dy1) will transform to (@x1+@dx2,@y1+@dy2) for all values of
 // @x1 and @x2.
-func (m *Matrix) TransformDistance(dx float64, dy float64) {
+func (m *Matrix) TransformDistance(m *Matrix, dx float64, dy float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.double
 	var arg2 *C.double
@@ -220,7 +214,7 @@ func (m *Matrix) TransformDistance(dx float64, dy float64) {
 	arg1 = *C.double(dx)
 	arg2 = *C.double(dy)
 
-	C.pango_matrix_transform_distance(arg0, dx, dy)
+	C.pango_matrix_transform_distance(arg0, arg1, arg2)
 }
 
 // TransformPixelRectangle: first transforms the @rect using @matrix, then
@@ -233,18 +227,18 @@ func (m *Matrix) TransformDistance(dx float64, dy float64) {
 // For better accuracy, you should use [method@Pango.Matrix.transform_rectangle]
 // on original rectangle in Pango units and convert to pixels afterward using
 // [func@extents_to_pixels]'s first argument.
-func (m *Matrix) TransformPixelRectangle(rect *Rectangle) {
+func (m *Matrix) TransformPixelRectangle(m *Matrix, rect *Rectangle) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.PangoRectangle
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.PangoRectangle)(unsafe.Pointer(rect.Native()))
 
-	C.pango_matrix_transform_pixel_rectangle(arg0, rect)
+	C.pango_matrix_transform_pixel_rectangle(arg0, arg1)
 }
 
 // TransformPoint transforms the point (@x, @y) by @matrix.
-func (m *Matrix) TransformPoint(x float64, y float64) {
+func (m *Matrix) TransformPoint(m *Matrix, x float64, y float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.double
 	var arg2 *C.double
@@ -253,7 +247,7 @@ func (m *Matrix) TransformPoint(x float64, y float64) {
 	arg1 = *C.double(x)
 	arg2 = *C.double(y)
 
-	C.pango_matrix_transform_point(arg0, x, y)
+	C.pango_matrix_transform_point(arg0, arg1, arg2)
 }
 
 // TransformRectangle: first transforms @rect using @matrix, then calculates the
@@ -273,20 +267,20 @@ func (m *Matrix) TransformPoint(x float64, y float64) {
 // may want to convert to pixels first and then transform, for example when the
 // transformed coordinates may overflow in Pango units (large matrix translation
 // for example).
-func (m *Matrix) TransformRectangle(rect *Rectangle) {
+func (m *Matrix) TransformRectangle(m *Matrix, rect *Rectangle) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.PangoRectangle
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.PangoRectangle)(unsafe.Pointer(rect.Native()))
 
-	C.pango_matrix_transform_rectangle(arg0, rect)
+	C.pango_matrix_transform_rectangle(arg0, arg1)
 }
 
 // Translate changes the transformation represented by @matrix to be the
 // transformation given by first translating by (@tx, @ty) then applying the
 // original transformation.
-func (m *Matrix) Translate(tx float64, ty float64) {
+func (m *Matrix) Translate(m *Matrix, tx float64, ty float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 C.double
 	var arg2 C.double
@@ -295,5 +289,5 @@ func (m *Matrix) Translate(tx float64, ty float64) {
 	arg1 = C.double(tx)
 	arg2 = C.double(ty)
 
-	C.pango_matrix_translate(arg0, tx, ty)
+	C.pango_matrix_translate(arg0, arg1, arg2)
 }

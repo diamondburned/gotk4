@@ -2,16 +2,6 @@
 
 package gdk
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -19,18 +9,16 @@ import "C"
 
 // ContentRegisterSerializer registers a function to convert objects of the
 // given @type to a serialized representation with the given mime type.
-func ContentRegisterSerializer(typ externglib.Type, mimeType string, serialize ContentSerializeFunc) {
-
-	C.gdk_content_register_serializer(typ, mimeType, serialize, data, notify)
+func ContentRegisterSerializer() {
+	C.gdk_content_register_serializer(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
 // stream, asynchronously. When the operation is finished, @callback will be
 // called. You can then call gdk_content_serialize_finish() to get the result of
 // the operation.
-func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-
-	C.gdk_content_serialize_async(stream, mimeType, value, ioPriority, cancellable, callback, userData)
+func ContentSerializeAsync() {
+	C.gdk_content_serialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
@@ -40,11 +28,11 @@ func ContentSerializeFinish(result gio.AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gdk_content_serialize_finish(result, &errout)
+	C.gdk_content_serialize_finish(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }

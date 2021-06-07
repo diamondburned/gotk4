@@ -2,17 +2,8 @@
 
 package gsk
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/graphene"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gsk/gsk.h>
 import "C"
 
@@ -22,24 +13,26 @@ import "C"
 //
 // If @string does not describe a valid transform, false is returned and nil is
 // put in @out_transform.
-func TransformParse(string string) (outTransform *Transform, ok bool) {
+func TransformParse(string string) (outTransform **Transform, ok bool) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 *C.GskTransform
-	var ret2 **Transform
+	var outTransform **Transform
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gsk_transform_parse(string, &arg2)
+	cret = C.gsk_transform_parse(arg1, &arg2)
 
-	*ret2 = WrapTransform(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(*ret2, func(v **Transform) {
+	outTransform = WrapTransform(unsafe.Pointer(&arg2))
+	runtime.SetFinalizer(outTransform, func(v **Transform) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	ret2 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return outTransform, ok
 }

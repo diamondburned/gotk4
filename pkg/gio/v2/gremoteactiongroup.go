@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,7 +40,7 @@ type RemoteActionGroupOverrider interface {
 	//
 	// @platform_data must be non-nil and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
+	ActivateActionFull(r RemoteActionGroup, actionName string, parameter *glib.Variant, platformData *glib.Variant)
 	// ChangeActionStateFull changes the state of a remote action.
 	//
 	// This is the same as g_action_group_change_action_state() except that it
@@ -53,7 +50,7 @@ type RemoteActionGroupOverrider interface {
 	//
 	// @platform_data must be non-nil and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+	ChangeActionStateFull(r RemoteActionGroup, actionName string, value *glib.Variant, platformData *glib.Variant)
 }
 
 // RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
@@ -108,7 +105,7 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //
 // @platform_data must be non-nil and must have the type
 // G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
+func (r remoteActionGroup) ActivateActionFull(r RemoteActionGroup, actionName string, parameter *glib.Variant, platformData *glib.Variant) {
 	var arg0 *C.GRemoteActionGroup
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
@@ -120,7 +117,7 @@ func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib
 	arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
 	arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
 
-	C.g_remote_action_group_activate_action_full(arg0, actionName, parameter, platformData)
+	C.g_remote_action_group_activate_action_full(arg0, arg1, arg2, arg3)
 }
 
 // ChangeActionStateFull changes the state of a remote action.
@@ -132,7 +129,7 @@ func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib
 //
 // @platform_data must be non-nil and must have the type
 // G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
-func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
+func (r remoteActionGroup) ChangeActionStateFull(r RemoteActionGroup, actionName string, value *glib.Variant, platformData *glib.Variant) {
 	var arg0 *C.GRemoteActionGroup
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
@@ -144,5 +141,5 @@ func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.
 	arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 	arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
 
-	C.g_remote_action_group_change_action_state_full(arg0, actionName, value, platformData)
+	C.g_remote_action_group_change_action_state_full(arg0, arg1, arg2, arg3)
 }

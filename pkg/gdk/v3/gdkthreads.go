@@ -2,11 +2,6 @@
 
 package gdk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
-)
-
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -50,16 +45,8 @@ import "C"
 //         g_source_remove (self->idle_id);
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
-func ThreadsAddIdleFull(priority int, function glib.SourceFunc) uint {
-
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gdk_threads_add_idle_full(priority, function, data, notify)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+func ThreadsAddIdleFull() {
+	C.gdk_threads_add_idle_full(arg1, arg2, arg3, arg4)
 }
 
 // ThreadsAddTimeoutFull sets a function to be called at regular intervals
@@ -103,32 +90,16 @@ func ThreadsAddIdleFull(priority int, function glib.SourceFunc) uint {
 //
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
-func ThreadsAddTimeoutFull(priority int, interval uint, function glib.SourceFunc) uint {
-
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gdk_threads_add_timeout_full(priority, interval, function, data, notify)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+func ThreadsAddTimeoutFull() {
+	C.gdk_threads_add_timeout_full(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ThreadsAddTimeoutSecondsFull: a variant of gdk_threads_add_timeout_full()
 // with second-granularity. See g_timeout_add_seconds_full() for a discussion of
 // why it is a good idea to use this function if you don’t need finer
 // granularity.
-func ThreadsAddTimeoutSecondsFull(priority int, interval uint, function glib.SourceFunc) uint {
-
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gdk_threads_add_timeout_seconds_full(priority, interval, function, data, notify)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+func ThreadsAddTimeoutSecondsFull() {
+	C.gdk_threads_add_timeout_seconds_full(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ThreadsEnter: this function marks the beginning of a critical section in

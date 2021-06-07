@@ -57,7 +57,7 @@ func DatalistClear(datalist **Data) {
 
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
-	C.g_datalist_clear(datalist)
+	C.g_datalist_clear(arg1)
 }
 
 // DatalistForeach calls the given function for each data element of the
@@ -69,14 +69,13 @@ func DatalistClear(datalist **Data) {
 // @func can make changes to @datalist, but the iteration will not reflect
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
-func DatalistForeach(datalist **Data, fn DataForeachFunc) {
-
-	C.g_datalist_foreach(datalist, fn, userData)
+func DatalistForeach() {
+	C.g_datalist_foreach(arg1, arg2, arg3)
 }
 
 // DatalistGetData gets a data element, using its string identifier. This is
 // slower than g_datalist_id_get_data() because it compares strings.
-func DatalistGetData(datalist **Data, key string) interface{} {
+func DatalistGetData(datalist **Data, key string) {
 	var arg1 **C.GData
 	var arg2 *C.gchar
 
@@ -84,31 +83,17 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_datalist_get_data(datalist, key)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_datalist_get_data(arg1, arg2)
 }
 
 // DatalistGetFlags gets flags values packed in together with the datalist. See
 // g_datalist_set_flags().
-func DatalistGetFlags(datalist **Data) uint {
+func DatalistGetFlags(datalist **Data) {
 	var arg1 **C.GData
 
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_datalist_get_flags(datalist)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_datalist_get_flags(arg1)
 }
 
 // DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
@@ -124,16 +109,8 @@ func DatalistGetFlags(datalist **Data) uint {
 //
 // This function can be useful to avoid races when multiple threads are using
 // the same datalist and the same key.
-func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) interface{} {
-
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_datalist_id_dup_data(datalist, keyID, dupFunc, userData)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+func DatalistIDDupData() {
+	C.g_datalist_id_dup_data(arg1, arg2, arg3, arg4)
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call
@@ -143,7 +120,7 @@ func DatalistInit(datalist **Data) {
 
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
-	C.g_datalist_init(datalist)
+	C.g_datalist_init(arg1)
 }
 
 // DatalistSetFlags turns on flag values for a data list. This function is used
@@ -158,7 +135,7 @@ func DatalistSetFlags(datalist **Data, flags uint) {
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 	arg2 = C.guint(flags)
 
-	C.g_datalist_set_flags(datalist, flags)
+	C.g_datalist_set_flags(arg1, arg2)
 }
 
 // DatalistUnsetFlags turns off flag values for a data list. See
@@ -170,7 +147,7 @@ func DatalistUnsetFlags(datalist **Data, flags uint) {
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 	arg2 = C.guint(flags)
 
-	C.g_datalist_unset_flags(datalist, flags)
+	C.g_datalist_unset_flags(arg1, arg2)
 }
 
 // DatasetDestroy destroys the dataset, freeing all memory allocated, and
@@ -180,7 +157,7 @@ func DatasetDestroy(datasetLocation interface{}) {
 
 	arg1 = C.gpointer(datasetLocation)
 
-	C.g_dataset_destroy(datasetLocation)
+	C.g_dataset_destroy(arg1)
 }
 
 // DatasetForeach calls the given function for each data element which is
@@ -191,9 +168,8 @@ func DatasetDestroy(datasetLocation interface{}) {
 // @func can make changes to the dataset, but the iteration will not reflect
 // changes made during the g_dataset_foreach() call, other than skipping over
 // elements that are removed.
-func DatasetForeach(datasetLocation interface{}, fn DataForeachFunc) {
-
-	C.g_dataset_foreach(datasetLocation, fn, userData)
+func DatasetForeach() {
+	C.g_dataset_foreach(arg1, arg2, arg3)
 }
 
 // Data: the #GData struct is an opaque data structure to represent a [Keyed

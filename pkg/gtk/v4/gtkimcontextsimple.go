@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,7 +39,7 @@ type IMContextSimple interface {
 	IMContext
 
 	// AddComposeFile adds an additional table from the X11 compose file.
-	AddComposeFile(composeFile string)
+	AddComposeFile(c IMContextSimple, composeFile string)
 }
 
 // imContextSimple implements the IMContextSimple interface.
@@ -67,19 +64,12 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 }
 
 // NewIMContextSimple constructs a class IMContextSimple.
-func NewIMContextSimple() IMContextSimple {
-	var cret C.GtkIMContextSimple
-	var ret1 IMContextSimple
-
-	cret = C.gtk_im_context_simple_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMContextSimple)
-
-	return ret1
+func NewIMContextSimple() {
+	C.gtk_im_context_simple_new()
 }
 
 // AddComposeFile adds an additional table from the X11 compose file.
-func (c imContextSimple) AddComposeFile(composeFile string) {
+func (c imContextSimple) AddComposeFile(c IMContextSimple, composeFile string) {
 	var arg0 *C.GtkIMContextSimple
 	var arg1 *C.char
 
@@ -87,5 +77,5 @@ func (c imContextSimple) AddComposeFile(composeFile string) {
 	arg1 = (*C.char)(C.CString(composeFile))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_im_context_simple_add_compose_file(arg0, composeFile)
+	C.gtk_im_context_simple_add_compose_file(arg0, arg1)
 }

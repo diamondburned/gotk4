@@ -32,7 +32,7 @@ func init() {
 // interface is a subset of the interface FileDescriptorBased.
 type FileDescriptorBasedOverrider interface {
 	// Fd gets the underlying file descriptor.
-	Fd() int
+	Fd(f FileDescriptorBased)
 }
 
 // FileDescriptorBased is implemented by streams (implementations of Stream or
@@ -68,17 +68,10 @@ func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
 }
 
 // Fd gets the underlying file descriptor.
-func (f fileDescriptorBased) Fd() int {
+func (f fileDescriptorBased) Fd(f FileDescriptorBased) {
 	var arg0 *C.GFileDescriptorBased
 
 	arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_file_descriptor_based_get_fd(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_file_descriptor_based_get_fd(arg0)
 }

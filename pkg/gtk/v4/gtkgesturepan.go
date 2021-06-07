@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,9 +35,9 @@ type GesturePan interface {
 
 	// Orientation returns the orientation of the pan gestures that this
 	// @gesture expects.
-	Orientation() Orientation
+	Orientation(g GesturePan)
 	// SetOrientation sets the orientation to be expected on pan gestures.
-	SetOrientation(orientation Orientation)
+	SetOrientation(g GesturePan, orientation Orientation)
 }
 
 // gesturePan implements the GesturePan interface.
@@ -65,45 +62,31 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 }
 
 // NewGesturePan constructs a class GesturePan.
-func NewGesturePan(orientation Orientation) GesturePan {
+func NewGesturePan(orientation Orientation) {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	var cret C.GtkGesturePan
-	var ret1 GesturePan
-
-	cret = C.gtk_gesture_pan_new(orientation)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
-
-	return ret1
+	C.gtk_gesture_pan_new(arg1)
 }
 
 // Orientation returns the orientation of the pan gestures that this
 // @gesture expects.
-func (g gesturePan) Orientation() Orientation {
+func (g gesturePan) Orientation(g GesturePan) {
 	var arg0 *C.GtkGesturePan
 
 	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
-	var cret C.GtkOrientation
-	var ret1 Orientation
-
-	cret = C.gtk_gesture_pan_get_orientation(arg0)
-
-	ret1 = Orientation(cret)
-
-	return ret1
+	C.gtk_gesture_pan_get_orientation(arg0)
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.
-func (g gesturePan) SetOrientation(orientation Orientation) {
+func (g gesturePan) SetOrientation(g GesturePan, orientation Orientation) {
 	var arg0 *C.GtkGesturePan
 	var arg1 C.GtkOrientation
 
 	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 	arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_gesture_pan_set_orientation(arg0, orientation)
+	C.gtk_gesture_pan_set_orientation(arg0, arg1)
 }

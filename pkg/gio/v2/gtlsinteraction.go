@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,7 +64,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	AskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
+	AskPassword(i TLSInteraction, password TLSPassword, cancellable Cancellable) error
 	// AskPasswordAsync: run asynchronous interaction to ask the user for a
 	// password. In general, g_tls_interaction_invoke_ask_password() should be
 	// used instead of this function.
@@ -82,7 +81,7 @@ type TLSInteraction interface {
 	// not support immediate cancellation.
 	//
 	// Certain implementations may not support immediate cancellation.
-	AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback)
+	AskPasswordAsync(i TLSInteraction)
 	// AskPasswordFinish: complete an ask password user interaction request.
 	// This should be once the g_tls_interaction_ask_password_async() completion
 	// callback is called.
@@ -93,7 +92,7 @@ type TLSInteraction interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	AskPasswordFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error)
+	AskPasswordFinish(i TLSInteraction, result AsyncResult) error
 	// InvokeAskPassword: invoke the interaction to ask the user for a password.
 	// It invokes this interaction in the main loop, specifically the Context
 	// returned by g_main_context_get_thread_default() when the interaction is
@@ -114,7 +113,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	InvokeAskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
+	InvokeAskPassword(i TLSInteraction, password TLSPassword, cancellable Cancellable) error
 	// InvokeRequestCertificate: invoke the interaction to ask the user to
 	// choose a certificate to use with the connection. It invokes this
 	// interaction in the main loop, specifically the Context returned by
@@ -135,7 +134,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
+	InvokeRequestCertificate(i TLSInteraction, connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) error
 	// RequestCertificate: run synchronous interaction to ask the user to choose
 	// a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
@@ -154,7 +153,7 @@ type TLSInteraction interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error)
+	RequestCertificate(i TLSInteraction, connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) error
 	// RequestCertificateAsync: run asynchronous interaction to ask the user for
 	// a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
@@ -165,7 +164,7 @@ type TLSInteraction interface {
 	// will be called when the operation completes. Alternatively the user may
 	// abort this certificate request, which will usually abort the TLS
 	// connection.
-	RequestCertificateAsync(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable, callback AsyncReadyCallback)
+	RequestCertificateAsync(i TLSInteraction)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
@@ -178,7 +177,7 @@ type TLSInteraction interface {
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
-	RequestCertificateFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error)
+	RequestCertificateFinish(i TLSInteraction, result AsyncResult) error
 }
 
 // tlsInteraction implements the TLSInteraction interface.
@@ -216,7 +215,7 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
+func (i tlsInteraction) AskPassword(i TLSInteraction, password TLSPassword, cancellable Cancellable) error {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsPassword
 	var arg2 *C.GCancellable
@@ -226,16 +225,13 @@ func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellabl
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsInteractionResult
-	var ret2 TLSInteractionResult
+	var err error
 
-	cret = C.g_tls_interaction_ask_password(arg0, password, cancellable, &errout)
+	C.g_tls_interaction_ask_password(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = TLSInteractionResult(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // AskPasswordAsync: run asynchronous interaction to ask the user for a
@@ -254,12 +250,12 @@ func (i tlsInteraction) AskPassword(password TLSPassword, cancellable Cancellabl
 // not support immediate cancellation.
 //
 // Certain implementations may not support immediate cancellation.
-func (i tlsInteraction) AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback) {
+func (i tlsInteraction) AskPasswordAsync(i TLSInteraction) {
 	var arg0 *C.GTlsInteraction
 
 	arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 
-	C.g_tls_interaction_ask_password_async(arg0, password, cancellable, callback, userData)
+	C.g_tls_interaction_ask_password_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // AskPasswordFinish: complete an ask password user interaction request.
@@ -272,7 +268,7 @@ func (i tlsInteraction) AskPasswordAsync(password TLSPassword, cancellable Cance
 // If the interaction is cancelled by the cancellation object, or by the
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code.
-func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error) {
+func (i tlsInteraction) AskPasswordFinish(i TLSInteraction, result AsyncResult) error {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GAsyncResult
 
@@ -280,16 +276,13 @@ func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (tlsInteractionRes
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsInteractionResult
-	var ret2 TLSInteractionResult
+	var err error
 
-	cret = C.g_tls_interaction_ask_password_finish(arg0, result, &errout)
+	C.g_tls_interaction_ask_password_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = TLSInteractionResult(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // InvokeAskPassword: invoke the interaction to ask the user for a password.
@@ -312,7 +305,7 @@ func (i tlsInteraction) AskPasswordFinish(result AsyncResult) (tlsInteractionRes
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
+func (i tlsInteraction) InvokeAskPassword(i TLSInteraction, password TLSPassword, cancellable Cancellable) error {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsPassword
 	var arg2 *C.GCancellable
@@ -322,16 +315,13 @@ func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Canc
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsInteractionResult
-	var ret2 TLSInteractionResult
+	var err error
 
-	cret = C.g_tls_interaction_invoke_ask_password(arg0, password, cancellable, &errout)
+	C.g_tls_interaction_invoke_ask_password(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = TLSInteractionResult(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // InvokeRequestCertificate: invoke the interaction to ask the user to
@@ -354,7 +344,7 @@ func (i tlsInteraction) InvokeAskPassword(password TLSPassword, cancellable Canc
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
+func (i tlsInteraction) InvokeRequestCertificate(i TLSInteraction, connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) error {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsConnection
 	var arg2 C.GTlsCertificateRequestFlags
@@ -366,16 +356,13 @@ func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsInteractionResult
-	var ret2 TLSInteractionResult
+	var err error
 
-	cret = C.g_tls_interaction_invoke_request_certificate(arg0, connection, flags, cancellable, &errout)
+	C.g_tls_interaction_invoke_request_certificate(arg0, arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = TLSInteractionResult(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // RequestCertificate: run synchronous interaction to ask the user to choose
@@ -396,7 +383,7 @@ func (i tlsInteraction) InvokeRequestCertificate(connection TLSConnection, flags
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 // not support immediate cancellation.
-func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) (tlsInteractionResult TLSInteractionResult, err error) {
+func (i tlsInteraction) RequestCertificate(i TLSInteraction, connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable) error {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GTlsConnection
 	var arg2 C.GTlsCertificateRequestFlags
@@ -408,16 +395,13 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsInteractionResult
-	var ret2 TLSInteractionResult
+	var err error
 
-	cret = C.g_tls_interaction_request_certificate(arg0, connection, flags, cancellable, &errout)
+	C.g_tls_interaction_request_certificate(arg0, arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = TLSInteractionResult(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // RequestCertificateAsync: run asynchronous interaction to ask the user for
@@ -430,12 +414,12 @@ func (i tlsInteraction) RequestCertificate(connection TLSConnection, flags TLSCe
 // will be called when the operation completes. Alternatively the user may
 // abort this certificate request, which will usually abort the TLS
 // connection.
-func (i tlsInteraction) RequestCertificateAsync(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable, callback AsyncReadyCallback) {
+func (i tlsInteraction) RequestCertificateAsync(i TLSInteraction) {
 	var arg0 *C.GTlsInteraction
 
 	arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
 
-	C.g_tls_interaction_request_certificate_async(arg0, connection, flags, cancellable, callback, userData)
+	C.g_tls_interaction_request_certificate_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // RequestCertificateFinish: complete a request certificate user interaction
@@ -450,7 +434,7 @@ func (i tlsInteraction) RequestCertificateAsync(connection TLSConnection, flags 
 // If the interaction is cancelled by the cancellation object, or by the
 // user then G_TLS_INTERACTION_FAILED will be returned with an error that
 // contains a G_IO_ERROR_CANCELLED error code.
-func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (tlsInteractionResult TLSInteractionResult, err error) {
+func (i tlsInteraction) RequestCertificateFinish(i TLSInteraction, result AsyncResult) error {
 	var arg0 *C.GTlsInteraction
 	var arg1 *C.GAsyncResult
 
@@ -458,14 +442,11 @@ func (i tlsInteraction) RequestCertificateFinish(result AsyncResult) (tlsInterac
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsInteractionResult
-	var ret2 TLSInteractionResult
+	var err error
 
-	cret = C.g_tls_interaction_request_certificate_finish(arg0, result, &errout)
+	C.g_tls_interaction_request_certificate_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = TLSInteractionResult(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }

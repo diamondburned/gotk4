@@ -3,13 +3,11 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -25,11 +23,11 @@ func init() {
 // ColorChooserOverrider contains methods that are overridable. This
 // interface is a subset of the interface ColorChooser.
 type ColorChooserOverrider interface {
-	ColorActivated(color *gdk.RGBA)
+	ColorActivated(c ColorChooser, color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
-	RGBA() gdk.RGBA
+	RGBA(c ColorChooser) *gdk.RGBA
 	// SetRGBA sets the color.
-	SetRGBA(color *gdk.RGBA)
+	SetRGBA(c ColorChooser, color *gdk.RGBA)
 }
 
 // ColorChooser is an interface that is implemented by widgets for choosing
@@ -43,10 +41,10 @@ type ColorChooser interface {
 	ColorChooserOverrider
 
 	// UseAlpha returns whether the color chooser shows the alpha channel.
-	UseAlpha() bool
+	UseAlpha(c ColorChooser) bool
 	// SetUseAlpha sets whether or not the color chooser should use the alpha
 	// channel.
-	SetUseAlpha(useAlpha bool)
+	SetUseAlpha(c ColorChooser, useAlpha bool)
 }
 
 // colorChooser implements the ColorChooser interface.
@@ -71,51 +69,53 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 }
 
 // RGBA gets the currently-selected color.
-func (c colorChooser) RGBA() gdk.RGBA {
+func (c colorChooser) RGBA(c ColorChooser) *gdk.RGBA {
 	var arg0 *C.GtkColorChooser
 
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
 	var arg1 C.GdkRGBA
-	var ret1 *gdk.RGBA
+	var color *gdk.RGBA
 
 	C.gtk_color_chooser_get_rgba(arg0, &arg1)
 
-	*ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
+	color = gdk.WrapRGBA(unsafe.Pointer(&arg1))
 
-	return ret1
+	return color
 }
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
-func (c colorChooser) UseAlpha() bool {
+func (c colorChooser) UseAlpha(c ColorChooser) bool {
 	var arg0 *C.GtkColorChooser
 
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_color_chooser_get_use_alpha(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetRGBA sets the color.
-func (c colorChooser) SetRGBA(color *gdk.RGBA) {
+func (c colorChooser) SetRGBA(c ColorChooser, color *gdk.RGBA) {
 	var arg0 *C.GtkColorChooser
 	var arg1 *C.GdkRGBA
 
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
 
-	C.gtk_color_chooser_set_rgba(arg0, color)
+	C.gtk_color_chooser_set_rgba(arg0, arg1)
 }
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha
 // channel.
-func (c colorChooser) SetUseAlpha(useAlpha bool) {
+func (c colorChooser) SetUseAlpha(c ColorChooser, useAlpha bool) {
 	var arg0 *C.GtkColorChooser
 	var arg1 C.gboolean
 
@@ -124,5 +124,5 @@ func (c colorChooser) SetUseAlpha(useAlpha bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_color_chooser_set_use_alpha(arg0, useAlpha)
+	C.gtk_color_chooser_set_use_alpha(arg0, arg1)
 }

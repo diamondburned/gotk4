@@ -3,12 +3,7 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -112,10 +107,10 @@ type Application interface {
 	// with gtk_application_remove_window().
 	//
 	// GTK+ will keep the @application running as long as it has any windows.
-	AddWindow(window Window)
+	AddWindow(a Application, window Window)
 	// AccelsForAction gets the accelerators that are currently associated with
 	// the given action.
-	AccelsForAction(detailedActionName string) []string
+	AccelsForAction(a Application, detailedActionName string)
 	// ActionsForAccel returns the list of actions (possibly empty) that @accel
 	// maps to. Each item in the list is a detailed action name in the usual
 	// form.
@@ -131,25 +126,25 @@ type Application interface {
 	//
 	// It is a programmer error to pass an invalid accelerator string. If you
 	// are unsure, check it with gtk_accelerator_parse() first.
-	ActionsForAccel(accel string) []string
+	ActionsForAccel(a Application, accel string)
 	// ActiveWindow gets the “active” window for the application.
 	//
 	// The active window is the one that was most recently focused (within the
 	// application). This window may not have the focus at the moment if another
 	// application has it — this is just the most recently-focused window within
 	// this application.
-	ActiveWindow() Window
+	ActiveWindow(a Application)
 	// MenuByID gets a menu from automatically loaded resources. See [Automatic
 	// resources][automatic-resources] for more information.
-	MenuByID(id string) gio.Menu
+	MenuByID(a Application, id string)
 	// Menubar returns the menu model that has been set with
 	// gtk_application_set_menubar().
-	Menubar() gio.MenuModel
+	Menubar(a Application)
 	// WindowByID returns the ApplicationWindow with the given ID.
 	//
 	// The ID of a ApplicationWindow can be retrieved with
 	// gtk_application_window_get_id().
-	WindowByID(id uint) Window
+	WindowByID(a Application, id uint)
 	// Windows gets a list of the Windows associated with @application.
 	//
 	// The list is sorted by most recently focused window, such that the first
@@ -158,7 +153,7 @@ type Application interface {
 	//
 	// The list that is returned should not be modified in any way. It will only
 	// remain valid until the next focus change or window creation or deletion.
-	Windows() *glib.List
+	Windows(a Application)
 	// Inhibit: inform the session manager that certain types of actions should
 	// be inhibited. This is not guaranteed to work on all platforms and for all
 	// types of actions.
@@ -180,17 +175,17 @@ type Application interface {
 	//
 	// If @window is given, the session manager may point the user to this
 	// window to find out more about why the action is inhibited.
-	Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint
+	Inhibit(a Application, window Window, flags ApplicationInhibitFlags, reason string)
 	// ListActionDescriptions lists the detailed action names which have
 	// associated accelerators. See gtk_application_set_accels_for_action().
-	ListActionDescriptions() []string
+	ListActionDescriptions(a Application)
 	// RemoveWindow: remove a window from @application.
 	//
 	// If @window belongs to @application then this call is equivalent to
 	// setting the Window:application property of @window to nil.
 	//
 	// The application may stop running as a result of a call to this function.
-	RemoveWindow(window Window)
+	RemoveWindow(a Application, window Window)
 	// SetAccelsForAction sets zero or more keyboard accelerators that will
 	// trigger the given action. The first item in @accels will be the primary
 	// accelerator, which may be displayed in the UI.
@@ -200,7 +195,7 @@ type Application interface {
 	//
 	// For the @detailed_action_name, see g_action_parse_detailed_name() and
 	// g_action_print_detailed_name().
-	SetAccelsForAction(detailedActionName string, accels []string)
+	SetAccelsForAction(a Application, detailedActionName string, accels []string)
 	// SetMenubar sets or unsets the menubar for windows of @application.
 	//
 	// This is a menubar in the traditional sense.
@@ -219,11 +214,11 @@ type Application interface {
 	//
 	// Use the base Map interface to add actions, to respond to the user
 	// selecting these menu items.
-	SetMenubar(menubar gio.MenuModel)
+	SetMenubar(a Application, menubar gio.MenuModel)
 	// Uninhibit removes an inhibitor that has been established with
 	// gtk_application_inhibit(). Inhibitors are also cleared when the
 	// application exits.
-	Uninhibit(cookie uint)
+	Uninhibit(a Application, cookie uint)
 }
 
 // application implements the Application interface.
@@ -252,7 +247,7 @@ func marshalApplication(p uintptr) (interface{}, error) {
 }
 
 // NewApplication constructs a class Application.
-func NewApplication(applicationID string, flags gio.ApplicationFlags) Application {
+func NewApplication(applicationID string, flags gio.ApplicationFlags) {
 	var arg1 *C.char
 	var arg2 C.GApplicationFlags
 
@@ -260,14 +255,7 @@ func NewApplication(applicationID string, flags gio.ApplicationFlags) Applicatio
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GApplicationFlags)(flags)
 
-	var cret C.GtkApplication
-	var ret1 Application
-
-	cret = C.gtk_application_new(applicationID, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
-
-	return ret1
+	C.gtk_application_new(arg1, arg2)
 }
 
 // AddWindow adds a window to @application.
@@ -284,19 +272,19 @@ func NewApplication(applicationID string, flags gio.ApplicationFlags) Applicatio
 // with gtk_application_remove_window().
 //
 // GTK+ will keep the @application running as long as it has any windows.
-func (a application) AddWindow(window Window) {
+func (a application) AddWindow(a Application, window Window) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.GtkWindow
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_application_add_window(arg0, window)
+	C.gtk_application_add_window(arg0, arg1)
 }
 
 // AccelsForAction gets the accelerators that are currently associated with
 // the given action.
-func (a application) AccelsForAction(detailedActionName string) []string {
+func (a application) AccelsForAction(a Application, detailedActionName string) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.char
 
@@ -304,29 +292,7 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 	arg1 = (*C.char)(C.CString(detailedActionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret **C.char
-	var ret1 []string
-
-	cret = C.gtk_application_get_accels_for_action(arg0, detailedActionName)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.gtk_application_get_accels_for_action(arg0, arg1)
 }
 
 // ActionsForAccel returns the list of actions (possibly empty) that @accel
@@ -344,7 +310,7 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 //
 // It is a programmer error to pass an invalid accelerator string. If you
 // are unsure, check it with gtk_accelerator_parse() first.
-func (a application) ActionsForAccel(accel string) []string {
+func (a application) ActionsForAccel(a Application, accel string) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.char
 
@@ -352,29 +318,7 @@ func (a application) ActionsForAccel(accel string) []string {
 	arg1 = (*C.char)(C.CString(accel))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret **C.char
-	var ret1 []string
-
-	cret = C.gtk_application_get_actions_for_accel(arg0, accel)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.gtk_application_get_actions_for_accel(arg0, arg1)
 }
 
 // ActiveWindow gets the “active” window for the application.
@@ -383,24 +327,17 @@ func (a application) ActionsForAccel(accel string) []string {
 // application). This window may not have the focus at the moment if another
 // application has it — this is just the most recently-focused window within
 // this application.
-func (a application) ActiveWindow() Window {
+func (a application) ActiveWindow(a Application) {
 	var arg0 *C.GtkApplication
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GtkWindow
-	var ret1 Window
-
-	cret = C.gtk_application_get_active_window(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
-
-	return ret1
+	C.gtk_application_get_active_window(arg0)
 }
 
 // MenuByID gets a menu from automatically loaded resources. See [Automatic
 // resources][automatic-resources] for more information.
-func (a application) MenuByID(id string) gio.Menu {
+func (a application) MenuByID(a Application, id string) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.char
 
@@ -408,52 +345,31 @@ func (a application) MenuByID(id string) gio.Menu {
 	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GMenu
-	var ret1 gio.Menu
-
-	cret = C.gtk_application_get_menu_by_id(arg0, id)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Menu)
-
-	return ret1
+	C.gtk_application_get_menu_by_id(arg0, arg1)
 }
 
 // Menubar returns the menu model that has been set with
 // gtk_application_set_menubar().
-func (a application) Menubar() gio.MenuModel {
+func (a application) Menubar(a Application) {
 	var arg0 *C.GtkApplication
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GMenuModel
-	var ret1 gio.MenuModel
-
-	cret = C.gtk_application_get_menubar(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
-
-	return ret1
+	C.gtk_application_get_menubar(arg0)
 }
 
 // WindowByID returns the ApplicationWindow with the given ID.
 //
 // The ID of a ApplicationWindow can be retrieved with
 // gtk_application_window_get_id().
-func (a application) WindowByID(id uint) Window {
+func (a application) WindowByID(a Application, id uint) {
 	var arg0 *C.GtkApplication
 	var arg1 C.guint
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	arg1 = C.guint(id)
 
-	var cret *C.GtkWindow
-	var ret1 Window
-
-	cret = C.gtk_application_get_window_by_id(arg0, id)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
-
-	return ret1
+	C.gtk_application_get_window_by_id(arg0, arg1)
 }
 
 // Windows gets a list of the Windows associated with @application.
@@ -464,19 +380,12 @@ func (a application) WindowByID(id uint) Window {
 //
 // The list that is returned should not be modified in any way. It will only
 // remain valid until the next focus change or window creation or deletion.
-func (a application) Windows() *glib.List {
+func (a application) Windows(a Application) {
 	var arg0 *C.GtkApplication
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.gtk_application_get_windows(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_application_get_windows(arg0)
 }
 
 // Inhibit: inform the session manager that certain types of actions should
@@ -500,7 +409,7 @@ func (a application) Windows() *glib.List {
 //
 // If @window is given, the session manager may point the user to this
 // window to find out more about why the action is inhibited.
-func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint {
+func (a application) Inhibit(a Application, window Window, flags ApplicationInhibitFlags, reason string) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.GtkWindow
 	var arg2 C.GtkApplicationInhibitFlags
@@ -512,46 +421,17 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 	arg3 = (*C.char)(C.CString(reason))
 	defer C.free(unsafe.Pointer(arg3))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_application_inhibit(arg0, window, flags, reason)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_application_inhibit(arg0, arg1, arg2, arg3)
 }
 
 // ListActionDescriptions lists the detailed action names which have
 // associated accelerators. See gtk_application_set_accels_for_action().
-func (a application) ListActionDescriptions() []string {
+func (a application) ListActionDescriptions(a Application) {
 	var arg0 *C.GtkApplication
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret **C.char
-	var ret1 []string
-
-	cret = C.gtk_application_list_action_descriptions(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.gtk_application_list_action_descriptions(arg0)
 }
 
 // RemoveWindow: remove a window from @application.
@@ -560,14 +440,14 @@ func (a application) ListActionDescriptions() []string {
 // setting the Window:application property of @window to nil.
 //
 // The application may stop running as a result of a call to this function.
-func (a application) RemoveWindow(window Window) {
+func (a application) RemoveWindow(a Application, window Window) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.GtkWindow
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_application_remove_window(arg0, window)
+	C.gtk_application_remove_window(arg0, arg1)
 }
 
 // SetAccelsForAction sets zero or more keyboard accelerators that will
@@ -579,7 +459,7 @@ func (a application) RemoveWindow(window Window) {
 //
 // For the @detailed_action_name, see g_action_parse_detailed_name() and
 // g_action_print_detailed_name().
-func (a application) SetAccelsForAction(detailedActionName string, accels []string) {
+func (a application) SetAccelsForAction(a Application, detailedActionName string, accels []string) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.char
 	var arg2 **C.char
@@ -600,7 +480,7 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 		}
 	}
 
-	C.gtk_application_set_accels_for_action(arg0, detailedActionName, accels)
+	C.gtk_application_set_accels_for_action(arg0, arg1, arg2)
 }
 
 // SetMenubar sets or unsets the menubar for windows of @application.
@@ -621,25 +501,25 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 //
 // Use the base Map interface to add actions, to respond to the user
 // selecting these menu items.
-func (a application) SetMenubar(menubar gio.MenuModel) {
+func (a application) SetMenubar(a Application, menubar gio.MenuModel) {
 	var arg0 *C.GtkApplication
 	var arg1 *C.GMenuModel
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
 
-	C.gtk_application_set_menubar(arg0, menubar)
+	C.gtk_application_set_menubar(arg0, arg1)
 }
 
 // Uninhibit removes an inhibitor that has been established with
 // gtk_application_inhibit(). Inhibitors are also cleared when the
 // application exits.
-func (a application) Uninhibit(cookie uint) {
+func (a application) Uninhibit(a Application, cookie uint) {
 	var arg0 *C.GtkApplication
 	var arg1 C.guint
 
 	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	arg1 = C.guint(cookie)
 
-	C.gtk_application_uninhibit(arg0, cookie)
+	C.gtk_application_uninhibit(arg0, arg1)
 }

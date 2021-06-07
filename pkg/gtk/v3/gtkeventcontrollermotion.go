@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,17 +50,10 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerMotion constructs a class EventControllerMotion.
-func NewEventControllerMotion(widget Widget) EventControllerMotion {
+func NewEventControllerMotion(widget Widget) {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.GtkEventControllerMotion
-	var ret1 EventControllerMotion
-
-	cret = C.gtk_event_controller_motion_new(widget)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
-
-	return ret1
+	C.gtk_event_controller_motion_new(arg1)
 }

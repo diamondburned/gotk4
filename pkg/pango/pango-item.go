@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -51,47 +50,65 @@ func (a *Analysis) Native() unsafe.Pointer {
 
 // ShapeEngine gets the field inside the struct.
 func (a *Analysis) ShapeEngine() interface{} {
-	v = C.gpointer(a.native.shape_engine)
+	var v interface{}
+	v = interface{}(a.native.shape_engine)
+	return v
 }
 
 // LangEngine gets the field inside the struct.
 func (a *Analysis) LangEngine() interface{} {
-	v = C.gpointer(a.native.lang_engine)
+	var v interface{}
+	v = interface{}(a.native.lang_engine)
+	return v
 }
 
 // Font gets the field inside the struct.
 func (a *Analysis) Font() Font {
+	var v Font
 	v = gextras.CastObject(externglib.Take(unsafe.Pointer(a.native.font.Native()))).(Font)
+	return v
 }
 
 // Level gets the field inside the struct.
 func (a *Analysis) Level() byte {
-	v = C.guint8(a.native.level)
+	var v byte
+	v = byte(a.native.level)
+	return v
 }
 
 // Gravity gets the field inside the struct.
 func (a *Analysis) Gravity() byte {
-	v = C.guint8(a.native.gravity)
+	var v byte
+	v = byte(a.native.gravity)
+	return v
 }
 
 // Flags gets the field inside the struct.
 func (a *Analysis) Flags() byte {
-	v = C.guint8(a.native.flags)
+	var v byte
+	v = byte(a.native.flags)
+	return v
 }
 
 // Script gets the field inside the struct.
 func (a *Analysis) Script() byte {
-	v = C.guint8(a.native.script)
+	var v byte
+	v = byte(a.native.script)
+	return v
 }
 
 // Language gets the field inside the struct.
 func (a *Analysis) Language() *Language {
+	var v *Language
 	v = WrapLanguage(unsafe.Pointer(a.native.language))
+	return v
 }
 
 // ExtraAttrs gets the field inside the struct.
 func (a *Analysis) ExtraAttrs() *glib.SList {
+	var v *glib.SList
 	v = glib.WrapSList(unsafe.Pointer(a.native.extra_attrs))
+	return v
 }
 
 // Item: the `PangoItem` structure stores information about a segment of text.
@@ -118,18 +135,8 @@ func marshalItem(p uintptr) (interface{}, error) {
 }
 
 // NewItem constructs a struct Item.
-func NewItem() *Item {
-	var cret *C.PangoItem
-	var ret1 *Item
-
-	cret = C.pango_item_new()
-
-	ret1 = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewItem() {
+	C.pango_item_new()
 }
 
 // Native returns the underlying C source pointer.
@@ -139,22 +146,30 @@ func (i *Item) Native() unsafe.Pointer {
 
 // Offset gets the field inside the struct.
 func (i *Item) Offset() int {
-	v = C.gint(i.native.offset)
+	var v int
+	v = int(i.native.offset)
+	return v
 }
 
 // Length gets the field inside the struct.
 func (i *Item) Length() int {
-	v = C.gint(i.native.length)
+	var v int
+	v = int(i.native.length)
+	return v
 }
 
 // NumChars gets the field inside the struct.
 func (i *Item) NumChars() int {
-	v = C.gint(i.native.num_chars)
+	var v int
+	v = int(i.native.num_chars)
+	return v
 }
 
 // Analysis gets the field inside the struct.
 func (i *Item) Analysis() Analysis {
+	var v Analysis
 	v = WrapAnalysis(unsafe.Pointer(i.native.analysis))
+	return v
 }
 
 // ApplyAttrs: add attributes to a `PangoItem`.
@@ -167,37 +182,27 @@ func (i *Item) Analysis() Analysis {
 // The @iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
-func (i *Item) ApplyAttrs(iter *AttrIterator) {
+func (i *Item) ApplyAttrs(i *Item, iter *AttrIterator) {
 	var arg0 *C.PangoItem
 	var arg1 *C.PangoAttrIterator
 
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter.Native()))
 
-	C.pango_item_apply_attrs(arg0, iter)
+	C.pango_item_apply_attrs(arg0, arg1)
 }
 
 // Copy: copy an existing `PangoItem` structure.
-func (i *Item) Copy() *Item {
+func (i *Item) Copy(i *Item) {
 	var arg0 *C.PangoItem
 
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoItem
-	var ret1 *Item
-
-	cret = C.pango_item_copy(arg0)
-
-	ret1 = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_item_copy(arg0)
 }
 
 // Free: free a `PangoItem` and all associated memory.
-func (i *Item) Free() {
+func (i *Item) Free(i *Item) {
 	var arg0 *C.PangoItem
 
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
@@ -215,7 +220,7 @@ func (i *Item) Free() {
 // the first item in chars, and must be provided because the text used to
 // generate the item isn't available, so `pango_item_split()` can't count the
 // char length of the split items itself.
-func (o *Item) Split(splitIndex int, splitOffset int) *Item {
+func (o *Item) Split(o *Item, splitIndex int, splitOffset int) {
 	var arg0 *C.PangoItem
 	var arg1 C.int
 	var arg2 C.int
@@ -224,15 +229,5 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	arg1 = C.int(splitIndex)
 	arg2 = C.int(splitOffset)
 
-	var cret *C.PangoItem
-	var ret1 *Item
-
-	cret = C.pango_item_split(arg0, splitIndex, splitOffset)
-
-	ret1 = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_item_split(arg0, arg1, arg2)
 }

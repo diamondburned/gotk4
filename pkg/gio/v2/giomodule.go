@@ -3,12 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -32,7 +29,7 @@ import "C"
 //
 // If @type has already been registered as an extension for this extension
 // point, the existing OExtension object is returned.
-func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, extensionName string, priority int) *IOExtension {
+func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, extensionName string, priority int) {
 	var arg1 *C.char
 	var arg2 C.GType
 	var arg3 *C.char
@@ -45,48 +42,27 @@ func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, e
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = C.gint(priority)
 
-	var cret *C.GIOExtension
-	var ret1 *IOExtension
-
-	cret = C.g_io_extension_point_implement(extensionPointName, typ, extensionName, priority)
-
-	ret1 = WrapIOExtension(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_io_extension_point_implement(arg1, arg2, arg3, arg4)
 }
 
 // IOExtensionPointLookup looks up an existing extension point.
-func IOExtensionPointLookup(name string) *IOExtensionPoint {
+func IOExtensionPointLookup(name string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GIOExtensionPoint
-	var ret1 *IOExtensionPoint
-
-	cret = C.g_io_extension_point_lookup(name)
-
-	ret1 = WrapIOExtensionPoint(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_io_extension_point_lookup(arg1)
 }
 
 // IOExtensionPointRegister registers an extension point.
-func IOExtensionPointRegister(name string) *IOExtensionPoint {
+func IOExtensionPointRegister(name string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GIOExtensionPoint
-	var ret1 *IOExtensionPoint
-
-	cret = C.g_io_extension_point_register(name)
-
-	ret1 = WrapIOExtensionPoint(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_io_extension_point_register(arg1)
 }
 
 // IOModulesLoadAllInDirectory loads all the modules in the specified directory.
@@ -94,23 +70,13 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint {
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectory(dirname string) *glib.List {
+func IOModulesLoadAllInDirectory(dirname string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_io_modules_load_all_in_directory(dirname)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_io_modules_load_all_in_directory(arg1)
 }
 
 // IOModulesLoadAllInDirectoryWithScope loads all the modules in the specified
@@ -119,7 +85,7 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) *glib.List {
+func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) {
 	var arg1 *C.gchar
 	var arg2 *C.GIOModuleScope
 
@@ -127,17 +93,7 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_io_modules_load_all_in_directory_with_scope(dirname, scope)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_io_modules_load_all_in_directory_with_scope(arg1, arg2)
 }
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
@@ -156,7 +112,7 @@ func IOModulesScanAllInDirectory(dirname string) {
 	arg1 = (*C.char)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_io_modules_scan_all_in_directory(dirname)
+	C.g_io_modules_scan_all_in_directory(arg1)
 }
 
 // IOModulesScanAllInDirectoryWithScope scans all the modules in the specified
@@ -178,7 +134,7 @@ func IOModulesScanAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
-	C.g_io_modules_scan_all_in_directory_with_scope(dirname, scope)
+	C.g_io_modules_scan_all_in_directory_with_scope(arg1, arg2)
 }
 
 // IOModuleScope represents a scope for loading IO modules. A scope can be used
@@ -213,7 +169,7 @@ func (i *IOModuleScope) Native() unsafe.Pointer {
 // Block: block modules with the given @basename from being loaded when this
 // scope is used with g_io_modules_scan_all_in_directory_with_scope() or
 // g_io_modules_load_all_in_directory_with_scope().
-func (s *IOModuleScope) Block(basename string) {
+func (s *IOModuleScope) Block(s *IOModuleScope, basename string) {
 	var arg0 *C.GIOModuleScope
 	var arg1 *C.gchar
 
@@ -221,11 +177,11 @@ func (s *IOModuleScope) Block(basename string) {
 	arg1 = (*C.gchar)(C.CString(basename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_io_module_scope_block(arg0, basename)
+	C.g_io_module_scope_block(arg0, arg1)
 }
 
 // Free: free a module scope.
-func (s *IOModuleScope) Free() {
+func (s *IOModuleScope) Free(s *IOModuleScope) {
 	var arg0 *C.GIOModuleScope
 
 	arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))

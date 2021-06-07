@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,12 +33,12 @@ type TreeListRowSorter interface {
 	Sorter
 
 	// Sorter returns the sorter used by @self.
-	Sorter() Sorter
+	Sorter(s TreeListRowSorter)
 	// SetSorter sets the sorter to use for items with the same parent.
 	//
 	// This sorter will be passed the TreeListRow:item of the tree list rows
 	// passed to @self.
-	SetSorter(sorter Sorter)
+	SetSorter(s TreeListRowSorter, sorter Sorter)
 }
 
 // treeListRowSorter implements the TreeListRowSorter interface.
@@ -66,47 +63,33 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 }
 
 // NewTreeListRowSorter constructs a class TreeListRowSorter.
-func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
+func NewTreeListRowSorter(sorter Sorter) {
 	var arg1 *C.GtkSorter
 
 	arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
-	var cret C.GtkTreeListRowSorter
-	var ret1 TreeListRowSorter
-
-	cret = C.gtk_tree_list_row_sorter_new(sorter)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRowSorter)
-
-	return ret1
+	C.gtk_tree_list_row_sorter_new(arg1)
 }
 
 // Sorter returns the sorter used by @self.
-func (s treeListRowSorter) Sorter() Sorter {
+func (s treeListRowSorter) Sorter(s TreeListRowSorter) {
 	var arg0 *C.GtkTreeListRowSorter
 
 	arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkSorter
-	var ret1 Sorter
-
-	cret = C.gtk_tree_list_row_sorter_get_sorter(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
-
-	return ret1
+	C.gtk_tree_list_row_sorter_get_sorter(arg0)
 }
 
 // SetSorter sets the sorter to use for items with the same parent.
 //
 // This sorter will be passed the TreeListRow:item of the tree list rows
 // passed to @self.
-func (s treeListRowSorter) SetSorter(sorter Sorter) {
+func (s treeListRowSorter) SetSorter(s TreeListRowSorter, sorter Sorter) {
 	var arg0 *C.GtkTreeListRowSorter
 	var arg1 *C.GtkSorter
 
 	arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
-	C.gtk_tree_list_row_sorter_set_sorter(arg0, sorter)
+	C.gtk_tree_list_row_sorter_set_sorter(arg0, arg1)
 }

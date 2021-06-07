@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,10 +39,10 @@ type RadioToolButton interface {
 	Buildable
 
 	// Group returns the radio button group @button belongs to.
-	Group() *glib.SList
+	Group(b RadioToolButton)
 	// SetGroup adds @button to @group, removing it from the group it belonged
 	// to before.
-	SetGroup(group *glib.SList)
+	SetGroup(b RadioToolButton, group *glib.SList)
 }
 
 // radioToolButton implements the RadioToolButton interface.
@@ -77,23 +73,16 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 }
 
 // NewRadioToolButton constructs a class RadioToolButton.
-func NewRadioToolButton(group *glib.SList) RadioToolButton {
+func NewRadioToolButton(group *glib.SList) {
 	var arg1 *C.GSList
 
 	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
 
-	var cret C.GtkRadioToolButton
-	var ret1 RadioToolButton
-
-	cret = C.gtk_radio_tool_button_new(group)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioToolButton)
-
-	return ret1
+	C.gtk_radio_tool_button_new(arg1)
 }
 
 // NewRadioToolButtonFromStock constructs a class RadioToolButton.
-func NewRadioToolButtonFromStock(group *glib.SList, stockID string) RadioToolButton {
+func NewRadioToolButtonFromStock(group *glib.SList, stockID string) {
 	var arg1 *C.GSList
 	var arg2 *C.gchar
 
@@ -101,34 +90,20 @@ func NewRadioToolButtonFromStock(group *glib.SList, stockID string) RadioToolBut
 	arg2 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkRadioToolButton
-	var ret1 RadioToolButton
-
-	cret = C.gtk_radio_tool_button_new_from_stock(group, stockID)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioToolButton)
-
-	return ret1
+	C.gtk_radio_tool_button_new_from_stock(arg1, arg2)
 }
 
 // NewRadioToolButtonFromWidget constructs a class RadioToolButton.
-func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
+func NewRadioToolButtonFromWidget(group RadioToolButton) {
 	var arg1 *C.GtkRadioToolButton
 
 	arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
 
-	var cret C.GtkRadioToolButton
-	var ret1 RadioToolButton
-
-	cret = C.gtk_radio_tool_button_new_from_widget(group)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioToolButton)
-
-	return ret1
+	C.gtk_radio_tool_button_new_from_widget(arg1)
 }
 
 // NewRadioToolButtonWithStockFromWidget constructs a class RadioToolButton.
-func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockID string) RadioToolButton {
+func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockID string) {
 	var arg1 *C.GtkRadioToolButton
 	var arg2 *C.gchar
 
@@ -136,40 +111,26 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockID string
 	arg2 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GtkRadioToolButton
-	var ret1 RadioToolButton
-
-	cret = C.gtk_radio_tool_button_new_with_stock_from_widget(group, stockID)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioToolButton)
-
-	return ret1
+	C.gtk_radio_tool_button_new_with_stock_from_widget(arg1, arg2)
 }
 
 // Group returns the radio button group @button belongs to.
-func (b radioToolButton) Group() *glib.SList {
+func (b radioToolButton) Group(b RadioToolButton) {
 	var arg0 *C.GtkRadioToolButton
 
 	arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_radio_tool_button_get_group(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_radio_tool_button_get_group(arg0)
 }
 
 // SetGroup adds @button to @group, removing it from the group it belonged
 // to before.
-func (b radioToolButton) SetGroup(group *glib.SList) {
+func (b radioToolButton) SetGroup(b RadioToolButton, group *glib.SList) {
 	var arg0 *C.GtkRadioToolButton
 	var arg1 *C.GSList
 
 	arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
 
-	C.gtk_radio_tool_button_set_group(arg0, group)
+	C.gtk_radio_tool_button_set_group(arg0, arg1)
 }

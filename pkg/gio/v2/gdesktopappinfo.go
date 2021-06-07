@@ -3,12 +3,7 @@
 package gio
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -16,7 +11,6 @@ import (
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -64,7 +58,7 @@ type DesktopAppInfoLookupOverrider interface {
 	// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
 	// is no reason for applications to use it directly. Applications should use
 	// g_app_info_get_default_for_uri_scheme().
-	DefaultForURIScheme(uriScheme string) AppInfo
+	DefaultForURIScheme(l DesktopAppInfoLookup, uriScheme string)
 }
 
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
@@ -103,7 +97,7 @@ func marshalDesktopAppInfoLookup(p uintptr) (interface{}, error) {
 // g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
 // is no reason for applications to use it directly. Applications should use
 // g_app_info_get_default_for_uri_scheme().
-func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
+func (l desktopAppInfoLookup) DefaultForURIScheme(l DesktopAppInfoLookup, uriScheme string) {
 	var arg0 *C.GDesktopAppInfoLookup
 	var arg1 *C.char
 
@@ -111,14 +105,7 @@ func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
 	arg1 = (*C.char)(C.CString(uriScheme))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GAppInfo
-	var ret1 AppInfo
-
-	cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(arg0, uriScheme)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
-
-	return ret1
+	C.g_desktop_app_info_lookup_get_default_for_uri_scheme(arg0, arg1)
 }
 
 // DesktopAppInfo is an implementation of Info based on desktop files.
@@ -135,33 +122,33 @@ type DesktopAppInfo interface {
 	//
 	// This corresponds to the "Name" key within the keyfile group for the
 	// action.
-	ActionName(actionName string) string
+	ActionName(i DesktopAppInfo, actionName string)
 	// Boolean looks up a boolean value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	Boolean(key string) bool
+	Boolean(i DesktopAppInfo, key string) bool
 	// Categories gets the categories from the desktop file.
-	Categories() string
+	Categories(i DesktopAppInfo)
 	// Filename: when @info was created from a known filename, return it. In
 	// some situations such as the AppInfo returned from
 	// g_desktop_app_info_new_from_keyfile(), this function will return nil.
-	Filename() string
+	Filename(i DesktopAppInfo)
 	// GenericName gets the generic name from the destkop file.
-	GenericName() string
+	GenericName(i DesktopAppInfo)
 	// IsHidden: a desktop file is hidden if the Hidden key in it is set to
 	// True.
-	IsHidden() bool
+	IsHidden(i DesktopAppInfo) bool
 	// Keywords gets the keywords from the desktop file.
-	Keywords() []string
+	Keywords(i DesktopAppInfo)
 	// LocaleString looks up a localized string value in the keyfile backing
 	// @info translated to the current locale.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	LocaleString(key string) string
+	LocaleString(i DesktopAppInfo, key string)
 	// Nodisplay gets the value of the NoDisplay key, which helps determine if
 	// the application info should be shown in menus. See
 	// KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
-	Nodisplay() bool
+	Nodisplay(i DesktopAppInfo) bool
 	// ShowIn checks if the application info should be shown in menus that list
 	// available applications for a specific name of the desktop, based on the
 	// `OnlyShowIn` and `NotShowIn` keys.
@@ -173,22 +160,22 @@ type DesktopAppInfo interface {
 	//
 	// Note that g_app_info_should_show() for @info will include this check
 	// (with nil for @desktop_env) as well as additional checks.
-	ShowIn(desktopEnv string) bool
+	ShowIn(i DesktopAppInfo, desktopEnv string) bool
 	// StartupWmClass retrieves the StartupWMClass field from @info. This
 	// represents the WM_CLASS property of the main window of the application,
 	// if launched through @info.
-	StartupWmClass() string
+	StartupWmClass(i DesktopAppInfo)
 	// String looks up a string value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	String(key string) string
+	String(i DesktopAppInfo, key string)
 	// StringList looks up a string list value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	StringList(key string) (length uint, utf8s []string)
+	StringList(i DesktopAppInfo, key string) uint
 	// HasKey returns whether @key exists in the "Desktop Entry" group of the
 	// keyfile backing @info.
-	HasKey(key string) bool
+	HasKey(i DesktopAppInfo, key string) bool
 	// LaunchAction activates the named application action.
 	//
 	// You may only call this function on action names that were returned from
@@ -204,7 +191,7 @@ type DesktopAppInfo interface {
 	//
 	// As with g_app_info_launch() there is no way to detect failures that occur
 	// while using this function.
-	LaunchAction(actionName string, launchContext AppLaunchContext)
+	LaunchAction(i DesktopAppInfo, actionName string, launchContext AppLaunchContext)
 	// LaunchUrisAsManager: this function performs the equivalent of
 	// g_app_info_launch_uris(), but is intended primarily for operating system
 	// components that launch applications. Ordinary applications should use
@@ -221,13 +208,13 @@ type DesktopAppInfo interface {
 	// If application launching occurs via some other mechanism (eg: D-Bus
 	// activation) then @spawn_flags, @user_setup, @user_setup_data,
 	// @pid_callback and @pid_callback_data are ignored.
-	LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) error
+	LaunchUrisAsManager(a DesktopAppInfo) error
 	// ListActions returns the list of "additional application actions"
 	// supported on the desktop file, as per the desktop file specification.
 	//
 	// As per the specification, this is the list of actions that are explicitly
 	// listed in the "Actions" key of the [Desktop Entry] group.
-	ListActions() []string
+	ListActions(i DesktopAppInfo)
 }
 
 // desktopAppInfo implements the DesktopAppInfo interface.
@@ -254,53 +241,32 @@ func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 }
 
 // NewDesktopAppInfo constructs a class DesktopAppInfo.
-func NewDesktopAppInfo(desktopID string) DesktopAppInfo {
+func NewDesktopAppInfo(desktopID string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(desktopID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GDesktopAppInfo
-	var ret1 DesktopAppInfo
-
-	cret = C.g_desktop_app_info_new(desktopID)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
-
-	return ret1
+	C.g_desktop_app_info_new(arg1)
 }
 
 // NewDesktopAppInfoFromFilename constructs a class DesktopAppInfo.
-func NewDesktopAppInfoFromFilename(filename string) DesktopAppInfo {
+func NewDesktopAppInfoFromFilename(filename string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GDesktopAppInfo
-	var ret1 DesktopAppInfo
-
-	cret = C.g_desktop_app_info_new_from_filename(filename)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
-
-	return ret1
+	C.g_desktop_app_info_new_from_filename(arg1)
 }
 
 // NewDesktopAppInfoFromKeyfile constructs a class DesktopAppInfo.
-func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
+func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) {
 	var arg1 *C.GKeyFile
 
 	arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 
-	var cret C.GDesktopAppInfo
-	var ret1 DesktopAppInfo
-
-	cret = C.g_desktop_app_info_new_from_keyfile(keyFile)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DesktopAppInfo)
-
-	return ret1
+	C.g_desktop_app_info_new_from_keyfile(arg1)
 }
 
 // ActionName gets the user-visible display name of the "additional
@@ -308,7 +274,7 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
 //
 // This corresponds to the "Name" key within the keyfile group for the
 // action.
-func (i desktopAppInfo) ActionName(actionName string) string {
+func (i desktopAppInfo) ActionName(i DesktopAppInfo, actionName string) {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.gchar
 
@@ -316,21 +282,13 @@ func (i desktopAppInfo) ActionName(actionName string) string {
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_action_name(arg0, actionName)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_desktop_app_info_get_action_name(arg0, arg1)
 }
 
 // Boolean looks up a boolean value in the keyfile backing @info.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i desktopAppInfo) Boolean(key string) bool {
+func (i desktopAppInfo) Boolean(i DesktopAppInfo, key string) bool {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.char
 
@@ -339,117 +297,79 @@ func (i desktopAppInfo) Boolean(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_desktop_app_info_get_boolean(arg0, key)
+	cret = C.g_desktop_app_info_get_boolean(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Categories gets the categories from the desktop file.
-func (i desktopAppInfo) Categories() string {
+func (i desktopAppInfo) Categories(i DesktopAppInfo) {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_categories(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_desktop_app_info_get_categories(arg0)
 }
 
 // Filename: when @info was created from a known filename, return it. In
 // some situations such as the AppInfo returned from
 // g_desktop_app_info_new_from_keyfile(), this function will return nil.
-func (i desktopAppInfo) Filename() string {
+func (i desktopAppInfo) Filename(i DesktopAppInfo) {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_filename(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_desktop_app_info_get_filename(arg0)
 }
 
 // GenericName gets the generic name from the destkop file.
-func (i desktopAppInfo) GenericName() string {
+func (i desktopAppInfo) GenericName(i DesktopAppInfo) {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_generic_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_desktop_app_info_get_generic_name(arg0)
 }
 
 // IsHidden: a desktop file is hidden if the Hidden key in it is set to
 // True.
-func (i desktopAppInfo) IsHidden() bool {
+func (i desktopAppInfo) IsHidden(i DesktopAppInfo) bool {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_desktop_app_info_get_is_hidden(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Keywords gets the keywords from the desktop file.
-func (i desktopAppInfo) Keywords() []string {
+func (i desktopAppInfo) Keywords(i DesktopAppInfo) {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
-	var cret **C.char
-	var ret1 []string
-
-	cret = C.g_desktop_app_info_get_keywords(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-		}
-	}
-
-	return ret1
+	C.g_desktop_app_info_get_keywords(arg0)
 }
 
 // LocaleString looks up a localized string value in the keyfile backing
 // @info translated to the current locale.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i desktopAppInfo) LocaleString(key string) string {
+func (i desktopAppInfo) LocaleString(i DesktopAppInfo, key string) {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.char
 
@@ -457,33 +377,27 @@ func (i desktopAppInfo) LocaleString(key string) string {
 	arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_locale_string(arg0, key)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_desktop_app_info_get_locale_string(arg0, arg1)
 }
 
 // Nodisplay gets the value of the NoDisplay key, which helps determine if
 // the application info should be shown in menus. See
 // KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
-func (i desktopAppInfo) Nodisplay() bool {
+func (i desktopAppInfo) Nodisplay(i DesktopAppInfo) bool {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_desktop_app_info_get_nodisplay(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ShowIn checks if the application info should be shown in menus that list
@@ -497,7 +411,7 @@ func (i desktopAppInfo) Nodisplay() bool {
 //
 // Note that g_app_info_should_show() for @info will include this check
 // (with nil for @desktop_env) as well as additional checks.
-func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
+func (i desktopAppInfo) ShowIn(i DesktopAppInfo, desktopEnv string) bool {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.gchar
 
@@ -506,37 +420,32 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_desktop_app_info_get_show_in(arg0, desktopEnv)
+	cret = C.g_desktop_app_info_get_show_in(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // StartupWmClass retrieves the StartupWMClass field from @info. This
 // represents the WM_CLASS property of the main window of the application,
 // if launched through @info.
-func (i desktopAppInfo) StartupWmClass() string {
+func (i desktopAppInfo) StartupWmClass(i DesktopAppInfo) {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_startup_wm_class(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_desktop_app_info_get_startup_wm_class(arg0)
 }
 
 // String looks up a string value in the keyfile backing @info.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i desktopAppInfo) String(key string) string {
+func (i desktopAppInfo) String(i DesktopAppInfo, key string) {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.char
 
@@ -544,21 +453,13 @@ func (i desktopAppInfo) String(key string) string {
 	arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.g_desktop_app_info_get_string(arg0, key)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_desktop_app_info_get_string(arg0, arg1)
 }
 
 // StringList looks up a string list value in the keyfile backing @info.
 //
 // The @key is looked up in the "Desktop Entry" group.
-func (i desktopAppInfo) StringList(key string) (length uint, utf8s []string) {
+func (i desktopAppInfo) StringList(i DesktopAppInfo, key string) uint {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.char
 
@@ -566,25 +467,19 @@ func (i desktopAppInfo) StringList(key string) (length uint, utf8s []string) {
 	arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret **C.gchar
-	var arg2 *C.gsize
-	var ret2 []string
+	var arg2 C.gsize
+	var length uint
 
-	cret = C.g_desktop_app_info_get_string_list(arg0, key, &arg2)
+	C.g_desktop_app_info_get_string_list(arg0, arg1, &arg2)
 
-	ret2 = make([]string, arg2)
-	for i := 0; i < uintptr(arg2); i++ {
-		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-		ret2[i] = C.GoString(src)
-		defer C.free(unsafe.Pointer(src))
-	}
+	length = uint(&arg2)
 
-	return ret2, ret2
+	return length
 }
 
 // HasKey returns whether @key exists in the "Desktop Entry" group of the
 // keyfile backing @info.
-func (i desktopAppInfo) HasKey(key string) bool {
+func (i desktopAppInfo) HasKey(i DesktopAppInfo, key string) bool {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.char
 
@@ -593,13 +488,15 @@ func (i desktopAppInfo) HasKey(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_desktop_app_info_has_key(arg0, key)
+	cret = C.g_desktop_app_info_has_key(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // LaunchAction activates the named application action.
@@ -617,7 +514,7 @@ func (i desktopAppInfo) HasKey(key string) bool {
 //
 // As with g_app_info_launch() there is no way to detect failures that occur
 // while using this function.
-func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchContext) {
+func (i desktopAppInfo) LaunchAction(i DesktopAppInfo, actionName string, launchContext AppLaunchContext) {
 	var arg0 *C.GDesktopAppInfo
 	var arg1 *C.gchar
 	var arg2 *C.GAppLaunchContext
@@ -627,7 +524,7 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
 
-	C.g_desktop_app_info_launch_action(arg0, actionName, launchContext)
+	C.g_desktop_app_info_launch_action(arg0, arg1, arg2)
 }
 
 // LaunchUrisAsManager: this function performs the equivalent of
@@ -646,19 +543,19 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 // If application launching occurs via some other mechanism (eg: D-Bus
 // activation) then @spawn_flags, @user_setup, @user_setup_data,
 // @pid_callback and @pid_callback_data are ignored.
-func (a desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, userSetup glib.SpawnChildSetupFunc, pidCallback DesktopAppLaunchCallback) error {
+func (a desktopAppInfo) LaunchUrisAsManager(a DesktopAppInfo) error {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(a.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_desktop_app_info_launch_uris_as_manager(arg0, uris, launchContext, spawnFlags, userSetup, userSetupData, pidCallback, pidCallbackData, &errout)
+	C.g_desktop_app_info_launch_uris_as_manager(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // ListActions returns the list of "additional application actions"
@@ -666,31 +563,10 @@ func (a desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLa
 //
 // As per the specification, this is the list of actions that are explicitly
 // listed in the "Actions" key of the [Desktop Entry] group.
-func (i desktopAppInfo) ListActions() []string {
+func (i desktopAppInfo) ListActions(i DesktopAppInfo) {
 	var arg0 *C.GDesktopAppInfo
 
 	arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(i.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_desktop_app_info_list_actions(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-		}
-	}
-
-	return ret1
+	C.g_desktop_app_info_list_actions(arg0)
 }

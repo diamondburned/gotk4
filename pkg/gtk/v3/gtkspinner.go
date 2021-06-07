@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,9 +37,9 @@ type Spinner interface {
 	Buildable
 
 	// Start starts the animation of the spinner.
-	Start()
+	Start(s Spinner)
 	// Stop stops the animation of the spinner.
-	Stop()
+	Stop(s Spinner)
 }
 
 // spinner implements the Spinner interface.
@@ -69,19 +66,12 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 }
 
 // NewSpinner constructs a class Spinner.
-func NewSpinner() Spinner {
-	var cret C.GtkSpinner
-	var ret1 Spinner
-
-	cret = C.gtk_spinner_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
-
-	return ret1
+func NewSpinner() {
+	C.gtk_spinner_new()
 }
 
 // Start starts the animation of the spinner.
-func (s spinner) Start() {
+func (s spinner) Start(s Spinner) {
 	var arg0 *C.GtkSpinner
 
 	arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
@@ -90,7 +80,7 @@ func (s spinner) Start() {
 }
 
 // Stop stops the animation of the spinner.
-func (s spinner) Stop() {
+func (s spinner) Stop(s Spinner) {
 	var arg0 *C.GtkSpinner
 
 	arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))

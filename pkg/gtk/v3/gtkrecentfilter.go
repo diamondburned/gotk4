@@ -6,13 +6,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -68,26 +66,35 @@ func (r *RecentFilterInfo) Native() unsafe.Pointer {
 
 // Contains gets the field inside the struct.
 func (r *RecentFilterInfo) Contains() RecentFilterFlags {
+	var v RecentFilterFlags
 	v = RecentFilterFlags(r.native.contains)
+	return v
 }
 
 // URI gets the field inside the struct.
 func (r *RecentFilterInfo) URI() string {
+	var v string
 	v = C.GoString(r.native.uri)
+	return v
 }
 
 // DisplayName gets the field inside the struct.
 func (r *RecentFilterInfo) DisplayName() string {
+	var v string
 	v = C.GoString(r.native.display_name)
+	return v
 }
 
 // MIMEType gets the field inside the struct.
 func (r *RecentFilterInfo) MIMEType() string {
+	var v string
 	v = C.GoString(r.native.mime_type)
+	return v
 }
 
 // Applications gets the field inside the struct.
 func (r *RecentFilterInfo) Applications() []string {
+	var v []string
 	{
 		var length int
 		for p := r.native.applications; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -103,10 +110,12 @@ func (r *RecentFilterInfo) Applications() []string {
 			v[i] = C.GoString(src)
 		}
 	}
+	return v
 }
 
 // Groups gets the field inside the struct.
 func (r *RecentFilterInfo) Groups() []string {
+	var v []string
 	{
 		var length int
 		for p := r.native.groups; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -122,9 +131,12 @@ func (r *RecentFilterInfo) Groups() []string {
 			v[i] = C.GoString(src)
 		}
 	}
+	return v
 }
 
 // Age gets the field inside the struct.
 func (r *RecentFilterInfo) Age() int {
-	v = C.gint(r.native.age)
+	var v int
+	v = int(r.native.age)
+	return v
 }

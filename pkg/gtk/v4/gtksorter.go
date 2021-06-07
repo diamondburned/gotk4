@@ -49,7 +49,7 @@ type Sorter interface {
 	//
 	// This function is intended for implementors of Sorter subclasses and
 	// should not be called from other functions.
-	Changed(change SorterChange)
+	Changed(s Sorter, change SorterChange)
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	//
@@ -59,12 +59,12 @@ type Sorter interface {
 	//
 	// The sorter may signal it conforms to additional constraints via the
 	// return value of gtk_sorter_get_order().
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
+	Compare(s Sorter, item1 gextras.Objector, item2 gextras.Objector)
 	// Order gets the order that @self conforms to. See SorterOrder for details
 	// of the possible return values.
 	//
 	// This function is intended to allow optimizations.
-	Order() SorterOrder
+	Order(s Sorter)
 }
 
 // sorter implements the Sorter interface.
@@ -98,14 +98,14 @@ func marshalSorter(p uintptr) (interface{}, error) {
 //
 // This function is intended for implementors of Sorter subclasses and
 // should not be called from other functions.
-func (s sorter) Changed(change SorterChange) {
+func (s sorter) Changed(s Sorter, change SorterChange) {
 	var arg0 *C.GtkSorter
 	var arg1 C.GtkSorterChange
 
 	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkSorterChange)(change)
 
-	C.gtk_sorter_changed(arg0, change)
+	C.gtk_sorter_changed(arg0, arg1)
 }
 
 // Compare compares two given items according to the sort order implemented
@@ -117,7 +117,7 @@ func (s sorter) Changed(change SorterChange) {
 //
 // The sorter may signal it conforms to additional constraints via the
 // return value of gtk_sorter_get_order().
-func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+func (s sorter) Compare(s Sorter, item1 gextras.Objector, item2 gextras.Objector) {
 	var arg0 *C.GtkSorter
 	var arg1 C.gpointer
 	var arg2 C.gpointer
@@ -126,31 +126,17 @@ func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	arg1 = (*C.GObject)(unsafe.Pointer(item1.Native()))
 	arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
 
-	var cret C.GtkOrdering
-	var ret1 Ordering
-
-	cret = C.gtk_sorter_compare(arg0, item1, item2)
-
-	ret1 = Ordering(cret)
-
-	return ret1
+	C.gtk_sorter_compare(arg0, arg1, arg2)
 }
 
 // Order gets the order that @self conforms to. See SorterOrder for details
 // of the possible return values.
 //
 // This function is intended to allow optimizations.
-func (s sorter) Order() SorterOrder {
+func (s sorter) Order(s Sorter) {
 	var arg0 *C.GtkSorter
 
 	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkSorterOrder
-	var ret1 SorterOrder
-
-	cret = C.gtk_sorter_get_order(arg0)
-
-	ret1 = SorterOrder(cret)
-
-	return ret1
+	C.gtk_sorter_get_order(arg0)
 }

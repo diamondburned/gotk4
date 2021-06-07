@@ -5,17 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -60,7 +54,7 @@ func PaintArrow(style Style, cr *cairo.Context, stateType StateType, shadowType 
 	arg11 = C.gint(width)
 	arg12 = C.gint(height)
 
-	C.gtk_paint_arrow(style, cr, stateType, shadowType, widget, detail, arrowType, fill, x, y, width, height)
+	C.gtk_paint_arrow(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
 }
 
 // PaintBox draws a box on @cr with the given parameters.
@@ -88,7 +82,7 @@ func PaintBox(style Style, cr *cairo.Context, stateType StateType, shadowType Sh
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_box(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_box(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintBoxGap draws a box in @cr using the given style and state and shadow
@@ -123,7 +117,7 @@ func PaintBoxGap(style Style, cr *cairo.Context, stateType StateType, shadowType
 	arg12 = C.gint(gapX)
 	arg13 = C.gint(gapWidth)
 
-	C.gtk_paint_box_gap(style, cr, stateType, shadowType, widget, detail, x, y, width, height, gapSide, gapX, gapWidth)
+	C.gtk_paint_box_gap(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)
 }
 
 // PaintCheck draws a check button indicator in the given rectangle on @cr with
@@ -152,7 +146,7 @@ func PaintCheck(style Style, cr *cairo.Context, stateType StateType, shadowType 
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_check(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_check(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintDiamond draws a diamond in the given rectangle on @window using the
@@ -181,7 +175,7 @@ func PaintDiamond(style Style, cr *cairo.Context, stateType StateType, shadowTyp
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_diamond(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_diamond(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintExpander draws an expander as used in TreeView. @x and @y specify the
@@ -212,7 +206,7 @@ func PaintExpander(style Style, cr *cairo.Context, stateType StateType, widget W
 	arg7 = C.gint(y)
 	arg8 = (C.GtkExpanderStyle)(expanderStyle)
 
-	C.gtk_paint_expander(style, cr, stateType, widget, detail, x, y, expanderStyle)
+	C.gtk_paint_expander(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // PaintExtension draws an extension, i.e. a notebook tab.
@@ -242,7 +236,7 @@ func PaintExtension(style Style, cr *cairo.Context, stateType StateType, shadowT
 	arg10 = C.gint(height)
 	arg11 = (C.GtkPositionType)(gapSide)
 
-	C.gtk_paint_extension(style, cr, stateType, shadowType, widget, detail, x, y, width, height, gapSide)
+	C.gtk_paint_extension(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
 }
 
 // PaintFlatBox draws a flat box on @cr with the given parameters.
@@ -270,7 +264,7 @@ func PaintFlatBox(style Style, cr *cairo.Context, stateType StateType, shadowTyp
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_flat_box(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_flat_box(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintFocus draws a focus indicator around the given rectangle on @cr using
@@ -297,7 +291,7 @@ func PaintFocus(style Style, cr *cairo.Context, stateType StateType, widget Widg
 	arg8 = C.gint(width)
 	arg9 = C.gint(height)
 
-	C.gtk_paint_focus(style, cr, stateType, widget, detail, x, y, width, height)
+	C.gtk_paint_focus(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 // PaintHandle draws a handle as used in HandleBox and Paned.
@@ -327,7 +321,7 @@ func PaintHandle(style Style, cr *cairo.Context, stateType StateType, shadowType
 	arg10 = C.gint(height)
 	arg11 = (C.GtkOrientation)(orientation)
 
-	C.gtk_paint_handle(style, cr, stateType, shadowType, widget, detail, x, y, width, height, orientation)
+	C.gtk_paint_handle(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
 }
 
 // PaintHline draws a horizontal line from (@x1, @y) to (@x2, @y) in @cr using
@@ -352,7 +346,7 @@ func PaintHline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 	arg7 = C.gint(x2)
 	arg8 = C.gint(y)
 
-	C.gtk_paint_hline(style, cr, stateType, widget, detail, x1, x2, y)
+	C.gtk_paint_hline(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // PaintLayout draws a layout on @cr using the given parameters.
@@ -380,7 +374,7 @@ func PaintLayout(style Style, cr *cairo.Context, stateType StateType, useText bo
 	arg8 = C.gint(y)
 	arg9 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.gtk_paint_layout(style, cr, stateType, useText, widget, detail, x, y, layout)
+	C.gtk_paint_layout(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 // PaintOption draws a radio button indicator in the given rectangle on @cr with
@@ -409,7 +403,7 @@ func PaintOption(style Style, cr *cairo.Context, stateType StateType, shadowType
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_option(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_option(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintResizeGrip draws a resize grip in the given rectangle on @cr using the
@@ -438,7 +432,7 @@ func PaintResizeGrip(style Style, cr *cairo.Context, stateType StateType, widget
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_resize_grip(style, cr, stateType, widget, detail, edge, x, y, width, height)
+	C.gtk_paint_resize_grip(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintShadow draws a shadow around the given rectangle in @cr using the given
@@ -467,7 +461,7 @@ func PaintShadow(style Style, cr *cairo.Context, stateType StateType, shadowType
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_shadow(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_shadow(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintShadowGap draws a shadow around the given rectangle in @cr using the
@@ -502,7 +496,7 @@ func PaintShadowGap(style Style, cr *cairo.Context, stateType StateType, shadowT
 	arg12 = C.gint(gapX)
 	arg13 = C.gint(gapWidth)
 
-	C.gtk_paint_shadow_gap(style, cr, stateType, shadowType, widget, detail, x, y, width, height, gapSide, gapX, gapWidth)
+	C.gtk_paint_shadow_gap(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)
 }
 
 // PaintSlider draws a slider in the given rectangle on @cr using the given
@@ -533,7 +527,7 @@ func PaintSlider(style Style, cr *cairo.Context, stateType StateType, shadowType
 	arg10 = C.gint(height)
 	arg11 = (C.GtkOrientation)(orientation)
 
-	C.gtk_paint_slider(style, cr, stateType, shadowType, widget, detail, x, y, width, height, orientation)
+	C.gtk_paint_slider(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
 }
 
 // PaintSpinner draws a spinner on @window using the given parameters.
@@ -561,7 +555,7 @@ func PaintSpinner(style Style, cr *cairo.Context, stateType StateType, widget Wi
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_spinner(style, cr, stateType, widget, detail, step, x, y, width, height)
+	C.gtk_paint_spinner(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintTab draws an option menu tab (i.e. the up and down pointing arrows) in
@@ -590,7 +584,7 @@ func PaintTab(style Style, cr *cairo.Context, stateType StateType, shadowType Sh
 	arg9 = C.gint(width)
 	arg10 = C.gint(height)
 
-	C.gtk_paint_tab(style, cr, stateType, shadowType, widget, detail, x, y, width, height)
+	C.gtk_paint_tab(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 }
 
 // PaintVline draws a vertical line from (@x, @y1_) to (@x, @y2_) in @cr using
@@ -615,7 +609,7 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 	arg7 = C.gint(y2)
 	arg8 = C.gint(x)
 
-	C.gtk_paint_vline(style, cr, stateType, widget, detail, y1, y2, x)
+	C.gtk_paint_vline(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // Style: a Style object encapsulates the information that provides the look and
@@ -635,7 +629,7 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 type Style interface {
 	gextras.Objector
 
-	ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
+	ApplyDefaultBackground(s Style, cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
 	// Attach attaches a style to a window; this process allocates the colors
 	// and creates the GC’s for the style - it specializes it to a particular
 	// visual. The process may involve the creation of a new style if the style
@@ -643,32 +637,32 @@ type Style interface {
 	//
 	// Since this function may return a new object, you have to use it in the
 	// following way: `style = gtk_style_attach (style, window)`
-	Attach(window gdk.Window) Style
+	Attach(s Style, window gdk.Window)
 	// Copy creates a copy of the passed in Style object.
-	Copy() Style
+	Copy(s Style)
 	// Detach detaches a style from a window. If the style is not attached to
 	// any windows anymore, it is unrealized. See gtk_style_attach().
-	Detach()
+	Detach(s Style)
 	// StyleProperty queries the value of a style property corresponding to a
 	// widget class is in the given style.
-	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
+	StyleProperty(s Style, widgetType externglib.Type, propertyName string) *externglib.Value
 	// HasContext returns whether @style has an associated StyleContext.
-	HasContext() bool
+	HasContext(s Style) bool
 	// LookupColor looks up @color_name in the style’s logical color mappings,
 	// filling in @color and returning true if found, otherwise returning false.
 	// Do not cache the found mapping, because it depends on the Style and might
 	// change when a theme switch occurs.
-	LookupColor(colorName string) (color gdk.Color, ok bool)
+	LookupColor(s Style, colorName string) (color *gdk.Color, ok bool)
 	// LookupIconSet looks up @stock_id in the icon factories associated with
 	// @style and the default icon factory, returning an icon set if found,
 	// otherwise nil.
-	LookupIconSet(stockID string) *IconSet
+	LookupIconSet(s Style, stockID string)
 	// RenderIcon renders the icon specified by @source at the given @size
 	// according to the given parameters and returns the result in a pixbuf.
-	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
+	RenderIcon(s Style, source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string)
 	// SetBackground sets the background of @window to the background color or
 	// pixmap specified by @style for the given state.
-	SetBackground(window gdk.Window, stateType StateType)
+	SetBackground(s Style, window gdk.Window, stateType StateType)
 }
 
 // style implements the Style interface.
@@ -693,18 +687,11 @@ func marshalStyle(p uintptr) (interface{}, error) {
 }
 
 // NewStyle constructs a class Style.
-func NewStyle() Style {
-	var cret C.GtkStyle
-	var ret1 Style
-
-	cret = C.gtk_style_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
-
-	return ret1
+func NewStyle() {
+	C.gtk_style_new()
 }
 
-func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
+func (s style) ApplyDefaultBackground(s Style, cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.cairo_t
 	var arg2 *C.GdkWindow
@@ -723,7 +710,7 @@ func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stat
 	arg6 = C.gint(width)
 	arg7 = C.gint(height)
 
-	C.gtk_style_apply_default_background(arg0, cr, window, stateType, x, y, width, height)
+	C.gtk_style_apply_default_background(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // Attach attaches a style to a window; this process allocates the colors
@@ -733,42 +720,28 @@ func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stat
 //
 // Since this function may return a new object, you have to use it in the
 // following way: `style = gtk_style_attach (style, window)`
-func (s style) Attach(window gdk.Window) Style {
+func (s style) Attach(s Style, window gdk.Window) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.GdkWindow
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	var cret *C.GtkStyle
-	var ret1 Style
-
-	cret = C.gtk_style_attach(arg0, window)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Style)
-
-	return ret1
+	C.gtk_style_attach(arg0, arg1)
 }
 
 // Copy creates a copy of the passed in Style object.
-func (s style) Copy() Style {
+func (s style) Copy(s Style) {
 	var arg0 *C.GtkStyle
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkStyle
-	var ret1 Style
-
-	cret = C.gtk_style_copy(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
-
-	return ret1
+	C.gtk_style_copy(arg0)
 }
 
 // Detach detaches a style from a window. If the style is not attached to
 // any windows anymore, it is unrealized. See gtk_style_attach().
-func (s style) Detach() {
+func (s style) Detach(s Style) {
 	var arg0 *C.GtkStyle
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
@@ -778,7 +751,7 @@ func (s style) Detach() {
 
 // StyleProperty queries the value of a style property corresponding to a
 // widget class is in the given style.
-func (s style) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
+func (s style) StyleProperty(s Style, widgetType externglib.Type, propertyName string) *externglib.Value {
 	var arg0 *C.GtkStyle
 	var arg1 C.GType
 	var arg2 *C.gchar
@@ -789,36 +762,38 @@ func (s style) StyleProperty(widgetType externglib.Type, propertyName string) ex
 	defer C.free(unsafe.Pointer(arg2))
 
 	var arg3 C.GValue
-	var ret3 *externglib.Value
+	var value *externglib.Value
 
-	C.gtk_style_get_style_property(arg0, widgetType, propertyName, &arg3)
+	C.gtk_style_get_style_property(arg0, arg1, arg2, &arg3)
 
-	*ret3 = externglib.ValueFromNative(unsafe.Pointer(arg3))
+	value = externglib.ValueFromNative(unsafe.Pointer(&arg3))
 
-	return ret3
+	return value
 }
 
 // HasContext returns whether @style has an associated StyleContext.
-func (s style) HasContext() bool {
+func (s style) HasContext(s Style) bool {
 	var arg0 *C.GtkStyle
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_style_has_context(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // LookupColor looks up @color_name in the style’s logical color mappings,
 // filling in @color and returning true if found, otherwise returning false.
 // Do not cache the found mapping, because it depends on the Style and might
 // change when a theme switch occurs.
-func (s style) LookupColor(colorName string) (color gdk.Color, ok bool) {
+func (s style) LookupColor(s Style, colorName string) (color *gdk.Color, ok bool) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.gchar
 
@@ -827,22 +802,24 @@ func (s style) LookupColor(colorName string) (color gdk.Color, ok bool) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.GdkColor
-	var ret2 *gdk.Color
+	var color *gdk.Color
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_style_lookup_color(arg0, colorName, &arg2)
+	cret = C.gtk_style_lookup_color(arg0, arg1, &arg2)
 
-	*ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
-	ret2 = C.bool(cret) != C.false
+	color = gdk.WrapColor(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return color, ok
 }
 
 // LookupIconSet looks up @stock_id in the icon factories associated with
 // @style and the default icon factory, returning an icon set if found,
 // otherwise nil.
-func (s style) LookupIconSet(stockID string) *IconSet {
+func (s style) LookupIconSet(s Style, stockID string) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.gchar
 
@@ -850,19 +827,12 @@ func (s style) LookupIconSet(stockID string) *IconSet {
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkIconSet
-	var ret1 *IconSet
-
-	cret = C.gtk_style_lookup_icon_set(arg0, stockID)
-
-	ret1 = WrapIconSet(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_style_lookup_icon_set(arg0, arg1)
 }
 
 // RenderIcon renders the icon specified by @source at the given @size
 // according to the given parameters and returns the result in a pixbuf.
-func (s style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
+func (s style) RenderIcon(s Style, source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.GtkIconSource
 	var arg2 C.GtkTextDirection
@@ -880,19 +850,12 @@ func (s style) RenderIcon(source *IconSource, direction TextDirection, state Sta
 	arg6 = (*C.gchar)(C.CString(detail))
 	defer C.free(unsafe.Pointer(arg6))
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
-
-	cret = C.gtk_style_render_icon(arg0, source, direction, state, size, widget, detail)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return ret1
+	C.gtk_style_render_icon(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // SetBackground sets the background of @window to the background color or
 // pixmap specified by @style for the given state.
-func (s style) SetBackground(window gdk.Window, stateType StateType) {
+func (s style) SetBackground(s Style, window gdk.Window, stateType StateType) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.GdkWindow
 	var arg2 C.GtkStateType
@@ -901,7 +864,7 @@ func (s style) SetBackground(window gdk.Window, stateType StateType) {
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	arg2 = (C.GtkStateType)(stateType)
 
-	C.gtk_style_set_background(arg0, window, stateType)
+	C.gtk_style_set_background(arg0, arg1, arg2)
 }
 
 type ThemeEngine struct {

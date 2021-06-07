@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -44,19 +43,19 @@ type FileMonitor interface {
 	gextras.Objector
 
 	// Cancel cancels a file monitor.
-	Cancel() bool
+	Cancel(m FileMonitor) bool
 	// EmitEvent emits the Monitor::changed signal if a change has taken place.
 	// Should be called from file monitor implementations only.
 	//
 	// Implementations are responsible to call this method from the
 	// [thread-default main context][g-main-context-push-thread-default] of the
 	// thread that the monitor was created in.
-	EmitEvent(child File, otherFile File, eventType FileMonitorEvent)
+	EmitEvent(m FileMonitor, child File, otherFile File, eventType FileMonitorEvent)
 	// IsCancelled returns whether the monitor is canceled.
-	IsCancelled() bool
+	IsCancelled(m FileMonitor) bool
 	// SetRateLimit sets the rate limit to which the @monitor will report
 	// consecutive change events to the same file.
-	SetRateLimit(limitMsecs int)
+	SetRateLimit(m FileMonitor, limitMsecs int)
 }
 
 // fileMonitor implements the FileMonitor interface.
@@ -81,19 +80,21 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 }
 
 // Cancel cancels a file monitor.
-func (m fileMonitor) Cancel() bool {
+func (m fileMonitor) Cancel(m FileMonitor) bool {
 	var arg0 *C.GFileMonitor
 
 	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_file_monitor_cancel(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // EmitEvent emits the Monitor::changed signal if a change has taken place.
@@ -102,7 +103,7 @@ func (m fileMonitor) Cancel() bool {
 // Implementations are responsible to call this method from the
 // [thread-default main context][g-main-context-push-thread-default] of the
 // thread that the monitor was created in.
-func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
+func (m fileMonitor) EmitEvent(m FileMonitor, child File, otherFile File, eventType FileMonitorEvent) {
 	var arg0 *C.GFileMonitor
 	var arg1 *C.GFile
 	var arg2 *C.GFile
@@ -113,33 +114,35 @@ func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitor
 	arg2 = (*C.GFile)(unsafe.Pointer(otherFile.Native()))
 	arg3 = (C.GFileMonitorEvent)(eventType)
 
-	C.g_file_monitor_emit_event(arg0, child, otherFile, eventType)
+	C.g_file_monitor_emit_event(arg0, arg1, arg2, arg3)
 }
 
 // IsCancelled returns whether the monitor is canceled.
-func (m fileMonitor) IsCancelled() bool {
+func (m fileMonitor) IsCancelled(m FileMonitor) bool {
 	var arg0 *C.GFileMonitor
 
 	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_file_monitor_is_cancelled(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetRateLimit sets the rate limit to which the @monitor will report
 // consecutive change events to the same file.
-func (m fileMonitor) SetRateLimit(limitMsecs int) {
+func (m fileMonitor) SetRateLimit(m FileMonitor, limitMsecs int) {
 	var arg0 *C.GFileMonitor
 	var arg1 C.gint
 
 	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 	arg1 = C.gint(limitMsecs)
 
-	C.g_file_monitor_set_rate_limit(arg0, limitMsecs)
+	C.g_file_monitor_set_rate_limit(arg0, arg1)
 }

@@ -3,10 +3,7 @@
 package gtk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -122,10 +119,10 @@ type DrawingArea interface {
 
 	// ContentHeight retrieves the value previously set via
 	// gtk_drawing_area_set_content_height().
-	ContentHeight() int
+	ContentHeight(s DrawingArea)
 	// ContentWidth retrieves the value previously set via
 	// gtk_drawing_area_set_content_width().
-	ContentWidth() int
+	ContentWidth(s DrawingArea)
 	// SetContentHeight sets the desired height of the contents of the drawing
 	// area. Note that because widgets may be allocated larger sizes than they
 	// requested, it is possible that the actual height passed to your draw
@@ -133,7 +130,7 @@ type DrawingArea interface {
 	// gtk_widget_set_valign() to avoid that.
 	//
 	// If the height is set to 0 (the default), the drawing area may disappear.
-	SetContentHeight(height int)
+	SetContentHeight(s DrawingArea, height int)
 	// SetContentWidth sets the desired width of the contents of the drawing
 	// area. Note that because widgets may be allocated larger sizes than they
 	// requested, it is possible that the actual width passed to your draw
@@ -141,7 +138,7 @@ type DrawingArea interface {
 	// gtk_widget_set_halign() to avoid that.
 	//
 	// If the width is set to 0 (the default), the drawing area may disappear.
-	SetContentWidth(width int)
+	SetContentWidth(s DrawingArea, width int)
 	// SetDrawFunc: setting a draw function is the main thing you want to do
 	// when using a drawing area. It is called whenever GTK needs to draw the
 	// contents of the drawing area to the screen.
@@ -154,7 +151,7 @@ type DrawingArea interface {
 	//
 	// If what you are drawing does change, call gtk_widget_queue_draw() on the
 	// drawing area. This will cause a redraw and will call @draw_func again.
-	SetDrawFunc(drawFunc DrawingAreaDrawFunc)
+	SetDrawFunc(s DrawingArea)
 }
 
 // drawingArea implements the DrawingArea interface.
@@ -185,49 +182,28 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 }
 
 // NewDrawingArea constructs a class DrawingArea.
-func NewDrawingArea() DrawingArea {
-	var cret C.GtkDrawingArea
-	var ret1 DrawingArea
-
-	cret = C.gtk_drawing_area_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingArea)
-
-	return ret1
+func NewDrawingArea() {
+	C.gtk_drawing_area_new()
 }
 
 // ContentHeight retrieves the value previously set via
 // gtk_drawing_area_set_content_height().
-func (s drawingArea) ContentHeight() int {
+func (s drawingArea) ContentHeight(s DrawingArea) {
 	var arg0 *C.GtkDrawingArea
 
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_drawing_area_get_content_height(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_drawing_area_get_content_height(arg0)
 }
 
 // ContentWidth retrieves the value previously set via
 // gtk_drawing_area_set_content_width().
-func (s drawingArea) ContentWidth() int {
+func (s drawingArea) ContentWidth(s DrawingArea) {
 	var arg0 *C.GtkDrawingArea
 
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_drawing_area_get_content_width(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_drawing_area_get_content_width(arg0)
 }
 
 // SetContentHeight sets the desired height of the contents of the drawing
@@ -237,14 +213,14 @@ func (s drawingArea) ContentWidth() int {
 // gtk_widget_set_valign() to avoid that.
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
-func (s drawingArea) SetContentHeight(height int) {
+func (s drawingArea) SetContentHeight(s DrawingArea, height int) {
 	var arg0 *C.GtkDrawingArea
 	var arg1 C.int
 
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 	arg1 = C.int(height)
 
-	C.gtk_drawing_area_set_content_height(arg0, height)
+	C.gtk_drawing_area_set_content_height(arg0, arg1)
 }
 
 // SetContentWidth sets the desired width of the contents of the drawing
@@ -254,14 +230,14 @@ func (s drawingArea) SetContentHeight(height int) {
 // gtk_widget_set_halign() to avoid that.
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
-func (s drawingArea) SetContentWidth(width int) {
+func (s drawingArea) SetContentWidth(s DrawingArea, width int) {
 	var arg0 *C.GtkDrawingArea
 	var arg1 C.int
 
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 	arg1 = C.int(width)
 
-	C.gtk_drawing_area_set_content_width(arg0, width)
+	C.gtk_drawing_area_set_content_width(arg0, arg1)
 }
 
 // SetDrawFunc: setting a draw function is the main thing you want to do
@@ -276,10 +252,10 @@ func (s drawingArea) SetContentWidth(width int) {
 //
 // If what you are drawing does change, call gtk_widget_queue_draw() on the
 // drawing area. This will cause a redraw and will call @draw_func again.
-func (s drawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
+func (s drawingArea) SetDrawFunc(s DrawingArea) {
 	var arg0 *C.GtkDrawingArea
 
 	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drawing_area_set_draw_func(arg0, drawFunc, userData, destroy)
+	C.gtk_drawing_area_set_draw_func(arg0, arg1, arg2, arg3)
 }

@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -46,9 +41,12 @@ type Plug interface {
 	Buildable
 
 	// Embedded determines whether the plug is embedded in a socket.
-	Embedded() bool
+	Embedded(p Plug) bool
+	// ID gets the window ID of a Plug widget, which can then be used to embed
+	// this window inside another window, for instance with gtk_socket_add_id().
+	ID(p Plug)
 	// SocketWindow retrieves the socket the plug is embedded in.
-	SocketWindow() gdk.Window
+	SocketWindow(p Plug)
 }
 
 // plug implements the Plug interface.
@@ -75,33 +73,38 @@ func marshalPlug(p uintptr) (interface{}, error) {
 }
 
 // Embedded determines whether the plug is embedded in a socket.
-func (p plug) Embedded() bool {
+func (p plug) Embedded(p Plug) bool {
 	var arg0 *C.GtkPlug
 
 	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_plug_get_embedded(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
-// SocketWindow retrieves the socket the plug is embedded in.
-func (p plug) SocketWindow() gdk.Window {
+// ID gets the window ID of a Plug widget, which can then be used to embed
+// this window inside another window, for instance with gtk_socket_add_id().
+func (p plug) ID(p Plug) {
 	var arg0 *C.GtkPlug
 
 	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GdkWindow
-	var ret1 gdk.Window
+	C.gtk_plug_get_id(arg0)
+}
 
-	cret = C.gtk_plug_get_socket_window(arg0)
+// SocketWindow retrieves the socket the plug is embedded in.
+func (p plug) SocketWindow(p Plug) {
+	var arg0 *C.GtkPlug
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
-	return ret1
+	C.gtk_plug_get_socket_window(arg0)
 }

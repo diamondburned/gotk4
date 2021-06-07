@@ -8,17 +8,10 @@ package gdkx11
 import "C"
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
-func X11DeviceGetID(device X11DeviceXI2) int {
+func X11DeviceGetID(device X11DeviceXI2) {
 	var arg1 *C.GdkDevice
 
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gdk_x11_device_get_id(device)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gdk_x11_device_get_id(arg1)
 }

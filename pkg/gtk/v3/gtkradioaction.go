@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,7 +29,7 @@ type RadioAction interface {
 
 	// CurrentValue obtains the value property of the currently active member of
 	// the group to which @action belongs.
-	CurrentValue() int
+	CurrentValue(a RadioAction)
 	// Group returns the list representing the radio group for this object. Note
 	// that the returned list is only valid until the next change to the group.
 	//
@@ -49,7 +45,7 @@ type RadioAction interface {
 	//          gtk_radio_action_set_group (action, group);
 	//          group = gtk_radio_action_get_group (action);
 	//       }
-	Group() *glib.SList
+	Group(a RadioAction)
 	// JoinGroup joins a radio action object to the group of another radio
 	// action object.
 	//
@@ -68,12 +64,12 @@ type RadioAction interface {
 	//          gtk_radio_action_join_group (action, last_action);
 	//          last_action = action;
 	//       }
-	JoinGroup(groupSource RadioAction)
+	JoinGroup(a RadioAction, groupSource RadioAction)
 	// SetCurrentValue sets the currently active group member to the member with
 	// value property @current_value.
-	SetCurrentValue(currentValue int)
+	SetCurrentValue(a RadioAction, currentValue int)
 	// SetGroup sets the radio group for the radio action object.
-	SetGroup(group *glib.SList)
+	SetGroup(a RadioAction, group *glib.SList)
 }
 
 // radioAction implements the RadioAction interface.
@@ -100,7 +96,7 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 }
 
 // NewRadioAction constructs a class RadioAction.
-func NewRadioAction(name string, label string, tooltip string, stockID string, value int) RadioAction {
+func NewRadioAction(name string, label string, tooltip string, stockID string, value int) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -117,31 +113,17 @@ func NewRadioAction(name string, label string, tooltip string, stockID string, v
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = C.gint(value)
 
-	var cret C.GtkRadioAction
-	var ret1 RadioAction
-
-	cret = C.gtk_radio_action_new(name, label, tooltip, stockID, value)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RadioAction)
-
-	return ret1
+	C.gtk_radio_action_new(arg1, arg2, arg3, arg4, arg5)
 }
 
 // CurrentValue obtains the value property of the currently active member of
 // the group to which @action belongs.
-func (a radioAction) CurrentValue() int {
+func (a radioAction) CurrentValue(a RadioAction) {
 	var arg0 *C.GtkRadioAction
 
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gtk_radio_action_get_current_value(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gtk_radio_action_get_current_value(arg0)
 }
 
 // Group returns the list representing the radio group for this object. Note
@@ -159,19 +141,12 @@ func (a radioAction) CurrentValue() int {
 //          gtk_radio_action_set_group (action, group);
 //          group = gtk_radio_action_get_group (action);
 //       }
-func (a radioAction) Group() *glib.SList {
+func (a radioAction) Group(a RadioAction) {
 	var arg0 *C.GtkRadioAction
 
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GSList
-	var ret1 *glib.SList
-
-	cret = C.gtk_radio_action_get_group(arg0)
-
-	ret1 = glib.WrapSList(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_radio_action_get_group(arg0)
 }
 
 // JoinGroup joins a radio action object to the group of another radio
@@ -192,35 +167,35 @@ func (a radioAction) Group() *glib.SList {
 //          gtk_radio_action_join_group (action, last_action);
 //          last_action = action;
 //       }
-func (a radioAction) JoinGroup(groupSource RadioAction) {
+func (a radioAction) JoinGroup(a RadioAction, groupSource RadioAction) {
 	var arg0 *C.GtkRadioAction
 	var arg1 *C.GtkRadioAction
 
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
 
-	C.gtk_radio_action_join_group(arg0, groupSource)
+	C.gtk_radio_action_join_group(arg0, arg1)
 }
 
 // SetCurrentValue sets the currently active group member to the member with
 // value property @current_value.
-func (a radioAction) SetCurrentValue(currentValue int) {
+func (a radioAction) SetCurrentValue(a RadioAction, currentValue int) {
 	var arg0 *C.GtkRadioAction
 	var arg1 C.gint
 
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 	arg1 = C.gint(currentValue)
 
-	C.gtk_radio_action_set_current_value(arg0, currentValue)
+	C.gtk_radio_action_set_current_value(arg0, arg1)
 }
 
 // SetGroup sets the radio group for the radio action object.
-func (a radioAction) SetGroup(group *glib.SList) {
+func (a radioAction) SetGroup(a RadioAction, group *glib.SList) {
 	var arg0 *C.GtkRadioAction
 	var arg1 *C.GSList
 
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
 
-	C.gtk_radio_action_set_group(arg0, group)
+	C.gtk_radio_action_set_group(arg0, arg1)
 }

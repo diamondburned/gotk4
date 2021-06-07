@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -143,35 +140,35 @@ type Dialog interface {
 	// to the end of the dialog’s action area. If you want to add a
 	// non-activatable widget, simply pack it into the @action_area field of the
 	// Dialog struct.
-	AddActionWidget(child Widget, responseID int)
+	AddActionWidget(d Dialog, child Widget, responseID int)
 	// AddButton adds a button with the given text and sets things up so that
 	// clicking the button will emit the Dialog::response signal with the given
 	// @response_id. The button is appended to the end of the dialog’s action
 	// area. The button widget is returned, but usually you don’t need it.
-	AddButton(buttonText string, responseID int) Widget
+	AddButton(d Dialog, buttonText string, responseID int)
 	// ContentArea returns the content area of @dialog.
-	ContentArea() Box
+	ContentArea(d Dialog)
 	// HeaderBar returns the header bar of @dialog. Note that the headerbar is
 	// only used by the dialog if the Dialog:use-header-bar property is true.
-	HeaderBar() HeaderBar
+	HeaderBar(d Dialog)
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
-	ResponseForWidget(widget Widget) int
+	ResponseForWidget(d Dialog, widget Widget)
 	// WidgetForResponse gets the widget button that uses the given response ID
 	// in the action area of a dialog.
-	WidgetForResponse(responseID int) Widget
+	WidgetForResponse(d Dialog, responseID int)
 	// Response emits the Dialog::response signal with the given response ID.
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
-	Response(responseID int)
+	Response(d Dialog, responseID int)
 	// SetDefaultResponse sets the last widget in the dialog’s action area with
 	// the given @response_id as the default widget for the dialog. Pressing
 	// “Enter” normally activates the default widget.
-	SetDefaultResponse(responseID int)
+	SetDefaultResponse(d Dialog, responseID int)
 	// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
 	// for each widget in the dialog’s action area with the given @response_id.
 	// A convenient way to sensitize/desensitize dialog buttons.
-	SetResponseSensitive(responseID int, setting bool)
+	SetResponseSensitive(d Dialog, responseID int, setting bool)
 }
 
 // dialog implements the Dialog interface.
@@ -208,15 +205,8 @@ func marshalDialog(p uintptr) (interface{}, error) {
 }
 
 // NewDialog constructs a class Dialog.
-func NewDialog() Dialog {
-	var cret C.GtkDialog
-	var ret1 Dialog
-
-	cret = C.gtk_dialog_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Dialog)
-
-	return ret1
+func NewDialog() {
+	C.gtk_dialog_new()
 }
 
 // AddActionWidget adds an activatable widget to the action area of a
@@ -225,7 +215,7 @@ func NewDialog() Dialog {
 // to the end of the dialog’s action area. If you want to add a
 // non-activatable widget, simply pack it into the @action_area field of the
 // Dialog struct.
-func (d dialog) AddActionWidget(child Widget, responseID int) {
+func (d dialog) AddActionWidget(d Dialog, child Widget, responseID int) {
 	var arg0 *C.GtkDialog
 	var arg1 *C.GtkWidget
 	var arg2 C.int
@@ -234,14 +224,14 @@ func (d dialog) AddActionWidget(child Widget, responseID int) {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 	arg2 = C.int(responseID)
 
-	C.gtk_dialog_add_action_widget(arg0, child, responseID)
+	C.gtk_dialog_add_action_widget(arg0, arg1, arg2)
 }
 
 // AddButton adds a button with the given text and sets things up so that
 // clicking the button will emit the Dialog::response signal with the given
 // @response_id. The button is appended to the end of the dialog’s action
 // area. The button widget is returned, but usually you don’t need it.
-func (d dialog) AddButton(buttonText string, responseID int) Widget {
+func (d dialog) AddButton(d Dialog, buttonText string, responseID int) {
 	var arg0 *C.GtkDialog
 	var arg1 *C.char
 	var arg2 C.int
@@ -251,117 +241,82 @@ func (d dialog) AddButton(buttonText string, responseID int) Widget {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(responseID)
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_dialog_add_button(arg0, buttonText, responseID)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_dialog_add_button(arg0, arg1, arg2)
 }
 
 // ContentArea returns the content area of @dialog.
-func (d dialog) ContentArea() Box {
+func (d dialog) ContentArea(d Dialog) {
 	var arg0 *C.GtkDialog
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Box
-
-	cret = C.gtk_dialog_get_content_area(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
-
-	return ret1
+	C.gtk_dialog_get_content_area(arg0)
 }
 
 // HeaderBar returns the header bar of @dialog. Note that the headerbar is
 // only used by the dialog if the Dialog:use-header-bar property is true.
-func (d dialog) HeaderBar() HeaderBar {
+func (d dialog) HeaderBar(d Dialog) {
 	var arg0 *C.GtkDialog
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 HeaderBar
-
-	cret = C.gtk_dialog_get_header_bar(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
-
-	return ret1
+	C.gtk_dialog_get_header_bar(arg0)
 }
 
 // ResponseForWidget gets the response id of a widget in the action area of
 // a dialog.
-func (d dialog) ResponseForWidget(widget Widget) int {
+func (d dialog) ResponseForWidget(d Dialog, widget Widget) {
 	var arg0 *C.GtkDialog
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_dialog_get_response_for_widget(arg0, widget)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_dialog_get_response_for_widget(arg0, arg1)
 }
 
 // WidgetForResponse gets the widget button that uses the given response ID
 // in the action area of a dialog.
-func (d dialog) WidgetForResponse(responseID int) Widget {
+func (d dialog) WidgetForResponse(d Dialog, responseID int) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	arg1 = C.int(responseID)
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_dialog_get_widget_for_response(arg0, responseID)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_dialog_get_widget_for_response(arg0, arg1)
 }
 
 // Response emits the Dialog::response signal with the given response ID.
 //
 // Used to indicate that the user has responded to the dialog in some way.
-func (d dialog) Response(responseID int) {
+func (d dialog) Response(d Dialog, responseID int) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	arg1 = C.int(responseID)
 
-	C.gtk_dialog_response(arg0, responseID)
+	C.gtk_dialog_response(arg0, arg1)
 }
 
 // SetDefaultResponse sets the last widget in the dialog’s action area with
 // the given @response_id as the default widget for the dialog. Pressing
 // “Enter” normally activates the default widget.
-func (d dialog) SetDefaultResponse(responseID int) {
+func (d dialog) SetDefaultResponse(d Dialog, responseID int) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	arg1 = C.int(responseID)
 
-	C.gtk_dialog_set_default_response(arg0, responseID)
+	C.gtk_dialog_set_default_response(arg0, arg1)
 }
 
 // SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
 // for each widget in the dialog’s action area with the given @response_id.
 // A convenient way to sensitize/desensitize dialog buttons.
-func (d dialog) SetResponseSensitive(responseID int, setting bool) {
+func (d dialog) SetResponseSensitive(d Dialog, responseID int, setting bool) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 	var arg2 C.gboolean
@@ -372,5 +327,5 @@ func (d dialog) SetResponseSensitive(responseID int, setting bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.gtk_dialog_set_response_sensitive(arg0, responseID, setting)
+	C.gtk_dialog_set_response_sensitive(arg0, arg1, arg2)
 }

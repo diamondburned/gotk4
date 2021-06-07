@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,13 +52,6 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 }
 
 // NewHButtonBox constructs a class HButtonBox.
-func NewHButtonBox() HButtonBox {
-	var cret C.GtkHButtonBox
-	var ret1 HButtonBox
-
-	cret = C.gtk_hbutton_box_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HButtonBox)
-
-	return ret1
+func NewHButtonBox() {
+	C.gtk_hbutton_box_new()
 }

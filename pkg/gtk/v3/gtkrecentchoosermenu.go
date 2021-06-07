@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -50,12 +46,12 @@ type RecentChooserMenu interface {
 
 	// ShowNumbers returns the value set by
 	// gtk_recent_chooser_menu_set_show_numbers().
-	ShowNumbers() bool
+	ShowNumbers(m RecentChooserMenu) bool
 	// SetShowNumbers sets whether a number should be added to the items of
 	// @menu. The numbers are shown to provide a unique character for a mnemonic
 	// to be used inside ten menu item’s label. Only the first the items get a
 	// number to avoid clashes.
-	SetShowNumbers(showNumbers bool)
+	SetShowNumbers(m RecentChooserMenu, showNumbers bool)
 }
 
 // recentChooserMenu implements the RecentChooserMenu interface.
@@ -86,55 +82,43 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 }
 
 // NewRecentChooserMenu constructs a class RecentChooserMenu.
-func NewRecentChooserMenu() RecentChooserMenu {
-	var cret C.GtkRecentChooserMenu
-	var ret1 RecentChooserMenu
-
-	cret = C.gtk_recent_chooser_menu_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
-
-	return ret1
+func NewRecentChooserMenu() {
+	C.gtk_recent_chooser_menu_new()
 }
 
 // NewRecentChooserMenuForManager constructs a class RecentChooserMenu.
-func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
+func NewRecentChooserMenuForManager(manager RecentManager) {
 	var arg1 *C.GtkRecentManager
 
 	arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
-	var cret C.GtkRecentChooserMenu
-	var ret1 RecentChooserMenu
-
-	cret = C.gtk_recent_chooser_menu_new_for_manager(manager)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
-
-	return ret1
+	C.gtk_recent_chooser_menu_new_for_manager(arg1)
 }
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
-func (m recentChooserMenu) ShowNumbers() bool {
+func (m recentChooserMenu) ShowNumbers(m RecentChooserMenu) bool {
 	var arg0 *C.GtkRecentChooserMenu
 
 	arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_recent_chooser_menu_get_show_numbers(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetShowNumbers sets whether a number should be added to the items of
 // @menu. The numbers are shown to provide a unique character for a mnemonic
 // to be used inside ten menu item’s label. Only the first the items get a
 // number to avoid clashes.
-func (m recentChooserMenu) SetShowNumbers(showNumbers bool) {
+func (m recentChooserMenu) SetShowNumbers(m RecentChooserMenu, showNumbers bool) {
 	var arg0 *C.GtkRecentChooserMenu
 	var arg1 C.gboolean
 
@@ -143,5 +127,5 @@ func (m recentChooserMenu) SetShowNumbers(showNumbers bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_recent_chooser_menu_set_show_numbers(arg0, showNumbers)
+	C.gtk_recent_chooser_menu_set_show_numbers(arg0, arg1)
 }

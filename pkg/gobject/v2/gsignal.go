@@ -3,18 +3,14 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <glib-object.h>
 import "C"
 
@@ -37,10 +33,10 @@ type ConnectFlags int
 const (
 	// ConnectFlagsAfter: whether the handler should be called before or after
 	// the default handler of the signal.
-	ConnectFlagsAfter ConnectFlags = 0b1
+	ConnectFlagsAfter ConnectFlags = 1
 	// ConnectFlagsSwapped: whether the instance and data should be swapped when
 	// calling the handler; see g_signal_connect_swapped() for an example.
-	ConnectFlagsSwapped ConnectFlags = 0b10
+	ConnectFlagsSwapped ConnectFlags = 2
 )
 
 // SignalFlags: the signal flags are used to specify a signal's behaviour, the
@@ -51,35 +47,35 @@ type SignalFlags int
 const (
 	// SignalFlagsRunFirst: invoke the object method handler in the first
 	// emission stage.
-	SignalFlagsRunFirst SignalFlags = 0b1
+	SignalFlagsRunFirst SignalFlags = 1
 	// SignalFlagsRunLast: invoke the object method handler in the third
 	// emission stage.
-	SignalFlagsRunLast SignalFlags = 0b10
+	SignalFlagsRunLast SignalFlags = 2
 	// SignalFlagsRunCleanup: invoke the object method handler in the last
 	// emission stage.
-	SignalFlagsRunCleanup SignalFlags = 0b100
+	SignalFlagsRunCleanup SignalFlags = 4
 	// SignalFlagsNoRecurse signals being emitted for an object while currently
 	// being in emission for this very object will not be emitted recursively,
 	// but instead cause the first emission to be restarted.
-	SignalFlagsNoRecurse SignalFlags = 0b1000
+	SignalFlagsNoRecurse SignalFlags = 8
 	// SignalFlagsDetailed: this signal supports "::detail" appendices to the
 	// signal name upon handler connections and emissions.
-	SignalFlagsDetailed SignalFlags = 0b10000
+	SignalFlagsDetailed SignalFlags = 16
 	// SignalFlagsAction: action signals are signals that may freely be emitted
 	// on alive objects from user code via g_signal_emit() and friends, without
 	// the need of being embedded into extra code that performs pre or post
 	// emission adjustments on the object. They can also be thought of as object
 	// methods which can be called generically by third-party code.
-	SignalFlagsAction SignalFlags = 0b100000
+	SignalFlagsAction SignalFlags = 32
 	// SignalFlagsNoHooks: no emissions hooks are supported for this signal.
-	SignalFlagsNoHooks SignalFlags = 0b1000000
+	SignalFlagsNoHooks SignalFlags = 64
 	// SignalFlagsMustCollect varargs signal emission will always collect the
 	// arguments, even if there are no signal handlers connected. Since 2.30.
-	SignalFlagsMustCollect SignalFlags = 0b10000000
+	SignalFlagsMustCollect SignalFlags = 128
 	// SignalFlagsDeprecated: the signal is deprecated and will be removed in a
 	// future version. A warning will be generated if it is connected while
 	// running with G_ENABLE_DIAGNOSTIC=1. Since 2.32.
-	SignalFlagsDeprecated SignalFlags = 0b100000000
+	SignalFlagsDeprecated SignalFlags = 256
 )
 
 // SignalMatchType: the match types specify what
@@ -89,17 +85,17 @@ type SignalMatchType int
 
 const (
 	// SignalMatchTypeID: the signal id must be equal.
-	SignalMatchTypeID SignalMatchType = 0b1
+	SignalMatchTypeID SignalMatchType = 1
 	// SignalMatchTypeDetail: the signal detail must be equal.
-	SignalMatchTypeDetail SignalMatchType = 0b10
+	SignalMatchTypeDetail SignalMatchType = 2
 	// SignalMatchTypeClosure: the closure must be the same.
-	SignalMatchTypeClosure SignalMatchType = 0b100
+	SignalMatchTypeClosure SignalMatchType = 4
 	// SignalMatchTypeFunc: the C closure callback must be the same.
-	SignalMatchTypeFunc SignalMatchType = 0b1000
+	SignalMatchTypeFunc SignalMatchType = 8
 	// SignalMatchTypeData: the closure data must be the same.
-	SignalMatchTypeData SignalMatchType = 0b10000
+	SignalMatchTypeData SignalMatchType = 16
 	// SignalMatchTypeUnblocked: only unblocked signals may be matched.
-	SignalMatchTypeUnblocked SignalMatchType = 0b100000
+	SignalMatchTypeUnblocked SignalMatchType = 32
 )
 
 // ClearSignalHandler disconnects a handler from @instance so it will not be
@@ -118,7 +114,7 @@ func ClearSignalHandler(handlerIDPtr uint32, instance gextras.Objector) {
 	arg1 = *C.gulong(handlerIDPtr)
 	arg2 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 
-	C.g_clear_signal_handler(handlerIDPtr, instance)
+	C.g_clear_signal_handler(arg1, arg2)
 }
 
 // SignalAccumulatorFirstWins: a predefined Accumulator for signals intended to
@@ -143,13 +139,15 @@ func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu *externg
 	arg4 = C.gpointer(dummy)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_signal_accumulator_first_wins(ihint, returnAccu, handlerReturn, dummy)
+	cret = C.g_signal_accumulator_first_wins(arg1, arg2, arg3, arg4)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SignalAccumulatorTrueHandled: a predefined Accumulator for signals that
@@ -170,45 +168,32 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu *exter
 	arg4 = C.gpointer(dummy)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_signal_accumulator_true_handled(ihint, returnAccu, handlerReturn, dummy)
+	cret = C.g_signal_accumulator_true_handled(arg1, arg2, arg3, arg4)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SignalAddEmissionHook adds an emission hook for a signal, which will get
 // called for any emission of that signal, independent of the instance. This is
 // possible only for signals which don't have SIGNAL_NO_HOOKS flag set.
-func SignalAddEmissionHook(signalID uint, detail glib.Quark, hookFunc SignalEmissionHook) uint32 {
-
-	var cret C.gulong
-	var ret1 uint32
-
-	cret = C.g_signal_add_emission_hook(signalID, detail, hookFunc, hookData, dataDestroy)
-
-	ret1 = C.gulong(cret)
-
-	return ret1
+func SignalAddEmissionHook() {
+	C.g_signal_add_emission_hook(arg1, arg2, arg3, arg4, arg5)
 }
 
 // SignalGetInvocationHint returns the invocation hint of the innermost signal
 // emission of instance.
-func SignalGetInvocationHint(instance gextras.Objector) *SignalInvocationHint {
+func SignalGetInvocationHint(instance gextras.Objector) {
 	var arg1 C.gpointer
 
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 
-	var cret *C.GSignalInvocationHint
-	var ret1 *SignalInvocationHint
-
-	cret = C.g_signal_get_invocation_hint(instance)
-
-	ret1 = WrapSignalInvocationHint(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_signal_get_invocation_hint(arg1)
 }
 
 // SignalHandlerBlock blocks a handler of an instance so it will not be called
@@ -226,7 +211,7 @@ func SignalHandlerBlock(instance gextras.Objector, handlerID uint32) {
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 	arg2 = C.gulong(handlerID)
 
-	C.g_signal_handler_block(instance, handlerID)
+	C.g_signal_handler_block(arg1, arg2)
 }
 
 // SignalHandlerDisconnect disconnects a handler from an instance so it will not
@@ -242,7 +227,7 @@ func SignalHandlerDisconnect(instance gextras.Objector, handlerID uint32) {
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 	arg2 = C.gulong(handlerID)
 
-	C.g_signal_handler_disconnect(instance, handlerID)
+	C.g_signal_handler_disconnect(arg1, arg2)
 }
 
 // SignalHandlerIsConnected returns whether @handler_id is the ID of a handler
@@ -255,13 +240,15 @@ func SignalHandlerIsConnected(instance gextras.Objector, handlerID uint32) bool 
 	arg2 = C.gulong(handlerID)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_signal_handler_is_connected(instance, handlerID)
+	cret = C.g_signal_handler_is_connected(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SignalHandlerUnblock undoes the effect of a previous g_signal_handler_block()
@@ -283,7 +270,7 @@ func SignalHandlerUnblock(instance gextras.Objector, handlerID uint32) {
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 	arg2 = C.gulong(handlerID)
 
-	C.g_signal_handler_unblock(instance, handlerID)
+	C.g_signal_handler_unblock(arg1, arg2)
 }
 
 // SignalHandlersDestroy: destroy all signal handlers of a type instance. This
@@ -294,7 +281,7 @@ func SignalHandlersDestroy(instance gextras.Objector) {
 
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 
-	C.g_signal_handlers_destroy(instance)
+	C.g_signal_handlers_destroy(arg1)
 }
 
 // SignalIsValidName: validate a signal name. This can be useful for
@@ -311,35 +298,33 @@ func SignalIsValidName(name string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_signal_is_valid_name(name)
+	cret = C.g_signal_is_valid_name(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SignalListIds lists the signals by id that a certain instance or interface
 // type created. Further information about the signals can be acquired through
 // g_signal_query().
-func SignalListIds(itype externglib.Type) (nIds uint, guints []uint) {
+func SignalListIds(itype externglib.Type) uint {
 	var arg1 C.GType
 
 	arg1 := C.GType(itype)
 
-	var cret *C.guint
-	var arg2 *C.guint
-	var ret2 []uint
+	var arg2 C.guint
+	var nIds uint
 
-	cret = C.g_signal_list_ids(itype, &arg2)
+	C.g_signal_list_ids(arg1, &arg2)
 
-	ptr.SetSlice(unsafe.Pointer(&ret2), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&ret2, func(v *[]uint) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
+	nIds = uint(&arg2)
 
-	return ret2, ret2
+	return nIds
 }
 
 // SignalLookup: given the name of the signal and the type of object it connects
@@ -353,7 +338,7 @@ func SignalListIds(itype externglib.Type) (nIds uint, guints []uint) {
 // always installed during class initialization.
 //
 // See g_signal_new() for details on allowed signal names.
-func SignalLookup(name string, itype externglib.Type) uint {
+func SignalLookup(name string, itype externglib.Type) {
 	var arg1 *C.gchar
 	var arg2 C.GType
 
@@ -361,32 +346,18 @@ func SignalLookup(name string, itype externglib.Type) uint {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 := C.GType(itype)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.g_signal_lookup(name, itype)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.g_signal_lookup(arg1, arg2)
 }
 
 // SignalName: given the signal's identifier, finds its name.
 //
 // Two different signals may have the same name, if they have differing types.
-func SignalName(signalID uint) string {
+func SignalName(signalID uint) {
 	var arg1 C.guint
 
 	arg1 = C.guint(signalID)
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_signal_name(signalID)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_signal_name(arg1)
 }
 
 // SignalQuery queries the signal system for in-depth information about a
@@ -394,19 +365,19 @@ func SignalName(signalID uint) string {
 // signal-specific information. If an invalid signal id is passed in, the
 // @signal_id member of the Query is 0. All members filled into the Query
 // structure should be considered constant and have to be left untouched.
-func SignalQuery(signalID uint) SignalQuery {
+func SignalQuery(signalID uint) *SignalQuery {
 	var arg1 C.guint
 
 	arg1 = C.guint(signalID)
 
 	var arg2 C.GSignalQuery
-	var ret2 *SignalQuery
+	var query *SignalQuery
 
-	C.g_signal_query(signalID, &arg2)
+	C.g_signal_query(arg1, &arg2)
 
-	*ret2 = WrapSignalQuery(unsafe.Pointer(arg2))
+	query = WrapSignalQuery(unsafe.Pointer(&arg2))
 
-	return ret2
+	return query
 }
 
 // SignalRemoveEmissionHook deletes an emission hook.
@@ -417,7 +388,7 @@ func SignalRemoveEmissionHook(signalID uint, hookID uint32) {
 	arg1 = C.guint(signalID)
 	arg2 = C.gulong(hookID)
 
-	C.g_signal_remove_emission_hook(signalID, hookID)
+	C.g_signal_remove_emission_hook(arg1, arg2)
 }
 
 // SignalStopEmissionByName stops a signal's current emission.
@@ -432,7 +403,7 @@ func SignalStopEmissionByName(instance gextras.Objector, detailedSignal string) 
 	arg2 = (*C.gchar)(C.CString(detailedSignal))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_signal_stop_emission_by_name(instance, detailedSignal)
+	C.g_signal_stop_emission_by_name(arg1, arg2)
 }
 
 // SignalInvocationHint: the InvocationHint structure is used to pass on
@@ -463,12 +434,16 @@ func (s *SignalInvocationHint) Native() unsafe.Pointer {
 
 // SignalID gets the field inside the struct.
 func (s *SignalInvocationHint) SignalID() uint {
-	v = C.guint(s.native.signal_id)
+	var v uint
+	v = uint(s.native.signal_id)
+	return v
 }
 
 // RunType gets the field inside the struct.
 func (s *SignalInvocationHint) RunType() SignalFlags {
+	var v SignalFlags
 	v = SignalFlags(s.native.run_type)
+	return v
 }
 
 // SignalQuery: a structure holding in-depth information for a specific signal.
@@ -499,30 +474,42 @@ func (s *SignalQuery) Native() unsafe.Pointer {
 
 // SignalID gets the field inside the struct.
 func (s *SignalQuery) SignalID() uint {
-	v = C.guint(s.native.signal_id)
+	var v uint
+	v = uint(s.native.signal_id)
+	return v
 }
 
 // SignalName gets the field inside the struct.
 func (s *SignalQuery) SignalName() string {
+	var v string
 	v = C.GoString(s.native.signal_name)
+	return v
 }
 
 // Itype gets the field inside the struct.
 func (s *SignalQuery) Itype() externglib.Type {
+	var v externglib.Type
 	v = externglib.Type(s.native.itype)
+	return v
 }
 
 // SignalFlags gets the field inside the struct.
 func (s *SignalQuery) SignalFlags() SignalFlags {
+	var v SignalFlags
 	v = SignalFlags(s.native.signal_flags)
+	return v
 }
 
 // ReturnType gets the field inside the struct.
 func (s *SignalQuery) ReturnType() externglib.Type {
+	var v externglib.Type
 	v = externglib.Type(s.native.return_type)
+	return v
 }
 
 // NParams gets the field inside the struct.
 func (s *SignalQuery) NParams() uint {
-	v = C.guint(s.native.n_params)
+	var v uint
+	v = uint(s.native.n_params)
+	return v
 }

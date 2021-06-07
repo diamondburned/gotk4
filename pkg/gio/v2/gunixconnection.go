@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,7 +56,7 @@ type UnixConnection interface {
 	//
 	// Other ways to exchange credentials with a foreign peer includes the
 	// CredentialsMessage type and g_socket_get_credentials() function.
-	ReceiveCredentials(cancellable Cancellable) (credentials Credentials, err error)
+	ReceiveCredentials(c UnixConnection, cancellable Cancellable) error
 	// ReceiveCredentialsAsync: asynchronously receive credentials.
 	//
 	// For more details, see g_unix_connection_receive_credentials() which is
@@ -69,17 +65,17 @@ type UnixConnection interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_unix_connection_receive_credentials_finish() to get the result of
 	// the operation.
-	ReceiveCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	ReceiveCredentialsAsync(c UnixConnection)
 	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
 	// operation started with g_unix_connection_receive_credentials_async().
-	ReceiveCredentialsFinish(result AsyncResult) (credentials Credentials, err error)
+	ReceiveCredentialsFinish(c UnixConnection, result AsyncResult) error
 	// ReceiveFd receives a file descriptor from the sending end of the
 	// connection. The sending end has to call g_unix_connection_send_fd() for
 	// this to work.
 	//
 	// As well as reading the fd this also reads a single byte from the stream,
 	// as this is required for fd passing to work on some implementations.
-	ReceiveFd(cancellable Cancellable) (gint int, err error)
+	ReceiveFd(c UnixConnection, cancellable Cancellable) error
 	// SendCredentials passes the credentials of the current user the receiving
 	// side of the connection. The receiving end has to call
 	// g_unix_connection_receive_credentials() (or similar) to accept the
@@ -97,7 +93,7 @@ type UnixConnection interface {
 	//
 	// Other ways to exchange credentials with a foreign peer includes the
 	// CredentialsMessage type and g_socket_get_credentials() function.
-	SendCredentials(cancellable Cancellable) error
+	SendCredentials(c UnixConnection, cancellable Cancellable) error
 	// SendCredentialsAsync: asynchronously send credentials.
 	//
 	// For more details, see g_unix_connection_send_credentials() which is the
@@ -106,17 +102,17 @@ type UnixConnection interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_unix_connection_send_credentials_finish() to get the result of the
 	// operation.
-	SendCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	SendCredentialsAsync(c UnixConnection)
 	// SendCredentialsFinish finishes an asynchronous send credentials operation
 	// started with g_unix_connection_send_credentials_async().
-	SendCredentialsFinish(result AsyncResult) error
+	SendCredentialsFinish(c UnixConnection, result AsyncResult) error
 	// SendFd passes a file descriptor to the receiving side of the connection.
 	// The receiving end has to call g_unix_connection_receive_fd() to accept
 	// the file descriptor.
 	//
 	// As well as sending the fd this also writes a single byte to the stream,
 	// as this is required for fd passing to work on some implementations.
-	SendFd(fd int, cancellable Cancellable) error
+	SendFd(c UnixConnection, fd int, cancellable Cancellable) error
 }
 
 // unixConnection implements the UnixConnection interface.
@@ -156,7 +152,7 @@ func marshalUnixConnection(p uintptr) (interface{}, error) {
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (credentials Credentials, err error) {
+func (c unixConnection) ReceiveCredentials(c UnixConnection, cancellable Cancellable) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GCancellable
 
@@ -164,16 +160,13 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (credentials
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GCredentials
-	var ret2 Credentials
+	var err error
 
-	cret = C.g_unix_connection_receive_credentials(arg0, cancellable, &errout)
+	C.g_unix_connection_receive_credentials(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // ReceiveCredentialsAsync: asynchronously receive credentials.
@@ -184,17 +177,17 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (credentials
 // When the operation is finished, @callback will be called. You can then
 // call g_unix_connection_receive_credentials_finish() to get the result of
 // the operation.
-func (c unixConnection) ReceiveCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (c unixConnection) ReceiveCredentialsAsync(c UnixConnection) {
 	var arg0 *C.GUnixConnection
 
 	arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_unix_connection_receive_credentials_async(arg0, cancellable, callback, userData)
+	C.g_unix_connection_receive_credentials_async(arg0, arg1, arg2, arg3)
 }
 
 // ReceiveCredentialsFinish finishes an asynchronous receive credentials
 // operation started with g_unix_connection_receive_credentials_async().
-func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (credentials Credentials, err error) {
+func (c unixConnection) ReceiveCredentialsFinish(c UnixConnection, result AsyncResult) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GAsyncResult
 
@@ -202,16 +195,13 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (credential
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GCredentials
-	var ret2 Credentials
+	var err error
 
-	cret = C.g_unix_connection_receive_credentials_finish(arg0, result, &errout)
+	C.g_unix_connection_receive_credentials_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // ReceiveFd receives a file descriptor from the sending end of the
@@ -220,7 +210,7 @@ func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (credential
 //
 // As well as reading the fd this also reads a single byte from the stream,
 // as this is required for fd passing to work on some implementations.
-func (c unixConnection) ReceiveFd(cancellable Cancellable) (gint int, err error) {
+func (c unixConnection) ReceiveFd(c UnixConnection, cancellable Cancellable) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GCancellable
 
@@ -228,16 +218,13 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (gint int, err error)
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.gint
-	var ret2 int
+	var err error
 
-	cret = C.g_unix_connection_receive_fd(arg0, cancellable, &errout)
+	C.g_unix_connection_receive_fd(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = C.gint(cret)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // SendCredentials passes the credentials of the current user the receiving
@@ -257,7 +244,7 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (gint int, err error)
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (c unixConnection) SendCredentials(cancellable Cancellable) error {
+func (c unixConnection) SendCredentials(c UnixConnection, cancellable Cancellable) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GCancellable
 
@@ -265,13 +252,13 @@ func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_unix_connection_send_credentials(arg0, cancellable, &errout)
+	C.g_unix_connection_send_credentials(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SendCredentialsAsync: asynchronously send credentials.
@@ -282,17 +269,17 @@ func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 // When the operation is finished, @callback will be called. You can then
 // call g_unix_connection_send_credentials_finish() to get the result of the
 // operation.
-func (c unixConnection) SendCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (c unixConnection) SendCredentialsAsync(c UnixConnection) {
 	var arg0 *C.GUnixConnection
 
 	arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_unix_connection_send_credentials_async(arg0, cancellable, callback, userData)
+	C.g_unix_connection_send_credentials_async(arg0, arg1, arg2, arg3)
 }
 
 // SendCredentialsFinish finishes an asynchronous send credentials operation
 // started with g_unix_connection_send_credentials_async().
-func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
+func (c unixConnection) SendCredentialsFinish(c UnixConnection, result AsyncResult) error {
 	var arg0 *C.GUnixConnection
 	var arg1 *C.GAsyncResult
 
@@ -300,13 +287,13 @@ func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_unix_connection_send_credentials_finish(arg0, result, &errout)
+	C.g_unix_connection_send_credentials_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // SendFd passes a file descriptor to the receiving side of the connection.
@@ -315,7 +302,7 @@ func (c unixConnection) SendCredentialsFinish(result AsyncResult) error {
 //
 // As well as sending the fd this also writes a single byte to the stream,
 // as this is required for fd passing to work on some implementations.
-func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
+func (c unixConnection) SendFd(c UnixConnection, fd int, cancellable Cancellable) error {
 	var arg0 *C.GUnixConnection
 	var arg1 C.gint
 	var arg2 *C.GCancellable
@@ -325,11 +312,11 @@ func (c unixConnection) SendFd(fd int, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_unix_connection_send_fd(arg0, fd, cancellable, &errout)
+	C.g_unix_connection_send_fd(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }

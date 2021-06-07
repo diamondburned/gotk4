@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,17 +41,17 @@ type NetworkService interface {
 
 	// Domain gets the domain that @srv serves. This might be either UTF-8 or
 	// ASCII-encoded, depending on what @srv was created with.
-	Domain() string
+	Domain(s NetworkService)
 	// Protocol gets @srv's protocol name (eg, "tcp").
-	Protocol() string
+	Protocol(s NetworkService)
 	// Scheme gets the URI scheme used to resolve proxies. By default, the
 	// service name is used as scheme.
-	Scheme() string
+	Scheme(s NetworkService)
 	// Service gets @srv's service name (eg, "ldap").
-	Service() string
+	Service(s NetworkService)
 	// SetScheme set's the URI scheme used to resolve proxies. By default, the
 	// service name is used as scheme.
-	SetScheme(scheme string)
+	SetScheme(s NetworkService, scheme string)
 }
 
 // networkService implements the NetworkService interface.
@@ -81,7 +78,7 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 }
 
 // NewNetworkService constructs a class NetworkService.
-func NewNetworkService(service string, protocol string, domain string) NetworkService {
+func NewNetworkService(service string, protocol string, domain string) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -93,85 +90,50 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	arg3 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(arg3))
 
-	var cret C.GNetworkService
-	var ret1 NetworkService
-
-	cret = C.g_network_service_new(service, protocol, domain)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkService)
-
-	return ret1
+	C.g_network_service_new(arg1, arg2, arg3)
 }
 
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
-func (s networkService) Domain() string {
+func (s networkService) Domain(s NetworkService) {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_network_service_get_domain(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_network_service_get_domain(arg0)
 }
 
 // Protocol gets @srv's protocol name (eg, "tcp").
-func (s networkService) Protocol() string {
+func (s networkService) Protocol(s NetworkService) {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_network_service_get_protocol(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_network_service_get_protocol(arg0)
 }
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
-func (s networkService) Scheme() string {
+func (s networkService) Scheme(s NetworkService) {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_network_service_get_scheme(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_network_service_get_scheme(arg0)
 }
 
 // Service gets @srv's service name (eg, "ldap").
-func (s networkService) Service() string {
+func (s networkService) Service(s NetworkService) {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_network_service_get_service(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_network_service_get_service(arg0)
 }
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
-func (s networkService) SetScheme(scheme string) {
+func (s networkService) SetScheme(s NetworkService, scheme string) {
 	var arg0 *C.GNetworkService
 	var arg1 *C.gchar
 
@@ -179,5 +141,5 @@ func (s networkService) SetScheme(scheme string) {
 	arg1 = (*C.gchar)(C.CString(scheme))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_network_service_set_scheme(arg0, scheme)
+	C.g_network_service_set_scheme(arg0, arg1)
 }

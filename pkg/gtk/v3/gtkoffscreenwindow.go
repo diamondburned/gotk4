@@ -3,11 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,11 +43,11 @@ type OffscreenWindow interface {
 	// Pixbuf retrieves a snapshot of the contained widget in the form of a
 	// Pixbuf. This is a new pixbuf with a reference count of 1, and the
 	// application should unreference it once it is no longer needed.
-	Pixbuf() gdkpixbuf.Pixbuf
+	Pixbuf(o OffscreenWindow)
 	// Surface retrieves a snapshot of the contained widget in the form of a
 	// #cairo_surface_t. If you need to keep this around over window resizes
 	// then you should add a reference to it.
-	Surface() *cairo.Surface
+	Surface(o OffscreenWindow)
 }
 
 // offscreenWindow implements the OffscreenWindow interface.
@@ -79,49 +74,28 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 }
 
 // NewOffscreenWindow constructs a class OffscreenWindow.
-func NewOffscreenWindow() OffscreenWindow {
-	var cret C.GtkOffscreenWindow
-	var ret1 OffscreenWindow
-
-	cret = C.gtk_offscreen_window_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OffscreenWindow)
-
-	return ret1
+func NewOffscreenWindow() {
+	C.gtk_offscreen_window_new()
 }
 
 // Pixbuf retrieves a snapshot of the contained widget in the form of a
 // Pixbuf. This is a new pixbuf with a reference count of 1, and the
 // application should unreference it once it is no longer needed.
-func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
+func (o offscreenWindow) Pixbuf(o OffscreenWindow) {
 	var arg0 *C.GtkOffscreenWindow
 
 	arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GdkPixbuf
-	var ret1 gdkpixbuf.Pixbuf
-
-	cret = C.gtk_offscreen_window_get_pixbuf(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return ret1
+	C.gtk_offscreen_window_get_pixbuf(arg0)
 }
 
 // Surface retrieves a snapshot of the contained widget in the form of a
 // #cairo_surface_t. If you need to keep this around over window resizes
 // then you should add a reference to it.
-func (o offscreenWindow) Surface() *cairo.Surface {
+func (o offscreenWindow) Surface(o OffscreenWindow) {
 	var arg0 *C.GtkOffscreenWindow
 
 	arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
 
-	var cret *C.cairo_surface_t
-	var ret1 *cairo.Surface
-
-	cret = C.gtk_offscreen_window_get_surface(arg0)
-
-	ret1 = cairo.WrapSurface(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_offscreen_window_get_surface(arg0)
 }

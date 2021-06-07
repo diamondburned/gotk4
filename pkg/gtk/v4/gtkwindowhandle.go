@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,9 +38,9 @@ type WindowHandle interface {
 	ConstraintTarget
 
 	// Child gets the child widget of @self.
-	Child() Widget
+	Child(s WindowHandle)
 	// SetChild sets the child widget of @self.
-	SetChild(child Widget)
+	SetChild(s WindowHandle, child Widget)
 }
 
 // windowHandle implements the WindowHandle interface.
@@ -74,40 +71,26 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 }
 
 // NewWindowHandle constructs a class WindowHandle.
-func NewWindowHandle() WindowHandle {
-	var cret C.GtkWindowHandle
-	var ret1 WindowHandle
-
-	cret = C.gtk_window_handle_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowHandle)
-
-	return ret1
+func NewWindowHandle() {
+	C.gtk_window_handle_new()
 }
 
 // Child gets the child widget of @self.
-func (s windowHandle) Child() Widget {
+func (s windowHandle) Child(s WindowHandle) {
 	var arg0 *C.GtkWindowHandle
 
 	arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_handle_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_handle_get_child(arg0)
 }
 
 // SetChild sets the child widget of @self.
-func (s windowHandle) SetChild(child Widget) {
+func (s windowHandle) SetChild(s WindowHandle, child Widget) {
 	var arg0 *C.GtkWindowHandle
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_window_handle_set_child(arg0, child)
+	C.gtk_window_handle_set_child(arg0, arg1)
 }

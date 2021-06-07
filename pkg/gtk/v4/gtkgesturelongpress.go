@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,11 +29,11 @@ type GestureLongPress interface {
 
 	// DelayFactor returns the delay factor as set by
 	// gtk_gesture_long_press_set_delay_factor().
-	DelayFactor() float64
+	DelayFactor(g GestureLongPress)
 	// SetDelayFactor applies the given delay factor. The default long press
 	// time will be multiplied by this value. Valid values are in the range
 	// [0.5..2.0].
-	SetDelayFactor(delayFactor float64)
+	SetDelayFactor(g GestureLongPress, delayFactor float64)
 }
 
 // gestureLongPress implements the GestureLongPress interface.
@@ -61,43 +58,29 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 }
 
 // NewGestureLongPress constructs a class GestureLongPress.
-func NewGestureLongPress() GestureLongPress {
-	var cret C.GtkGestureLongPress
-	var ret1 GestureLongPress
-
-	cret = C.gtk_gesture_long_press_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureLongPress)
-
-	return ret1
+func NewGestureLongPress() {
+	C.gtk_gesture_long_press_new()
 }
 
 // DelayFactor returns the delay factor as set by
 // gtk_gesture_long_press_set_delay_factor().
-func (g gestureLongPress) DelayFactor() float64 {
+func (g gestureLongPress) DelayFactor(g GestureLongPress) {
 	var arg0 *C.GtkGestureLongPress
 
 	arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
 
-	var cret C.double
-	var ret1 float64
-
-	cret = C.gtk_gesture_long_press_get_delay_factor(arg0)
-
-	ret1 = C.double(cret)
-
-	return ret1
+	C.gtk_gesture_long_press_get_delay_factor(arg0)
 }
 
 // SetDelayFactor applies the given delay factor. The default long press
 // time will be multiplied by this value. Valid values are in the range
 // [0.5..2.0].
-func (g gestureLongPress) SetDelayFactor(delayFactor float64) {
+func (g gestureLongPress) SetDelayFactor(g GestureLongPress, delayFactor float64) {
 	var arg0 *C.GtkGestureLongPress
 	var arg1 C.double
 
 	arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
 	arg1 = C.double(delayFactor)
 
-	C.gtk_gesture_long_press_set_delay_factor(arg0, delayFactor)
+	C.gtk_gesture_long_press_set_delay_factor(arg0, arg1)
 }

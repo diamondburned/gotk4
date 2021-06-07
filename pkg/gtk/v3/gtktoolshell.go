@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,33 +26,33 @@ type ToolShellOverrider interface {
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_ellipsize_mode() instead.
-	EllipsizeMode() pango.EllipsizeMode
+	EllipsizeMode(s ToolShell)
 
-	IconSize() IconSize
+	IconSize(s ToolShell)
 	// Orientation retrieves the current orientation for the tool shell. Tool
 	// items must not call this function directly, but rely on
 	// gtk_tool_item_get_orientation() instead.
-	Orientation() Orientation
+	Orientation(s ToolShell)
 	// ReliefStyle returns the relief style of buttons on @shell. Tool items
 	// must not call this function directly, but rely on
 	// gtk_tool_item_get_relief_style() instead.
-	ReliefStyle() ReliefStyle
+	ReliefStyle(s ToolShell)
 	// Style retrieves whether the tool shell has text, icons, or both. Tool
 	// items must not call this function directly, but rely on
 	// gtk_tool_item_get_toolbar_style() instead.
-	Style() ToolbarStyle
+	Style(s ToolShell)
 	// TextAlignment retrieves the current text alignment for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_alignment() instead.
-	TextAlignment() float32
+	TextAlignment(s ToolShell)
 	// TextOrientation retrieves the current text orientation for the tool
 	// shell. Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_orientation() instead.
-	TextOrientation() Orientation
+	TextOrientation(s ToolShell)
 	// TextSizeGroup retrieves the current text size group for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_text_size_group() instead.
-	TextSizeGroup() SizeGroup
+	TextSizeGroup(s ToolShell)
 	// RebuildMenu: calling this function signals the tool shell that the
 	// overflow menu item for tool items have changed. If there is an overflow
 	// menu and if it is visible when this function it called, the menu will be
@@ -64,7 +60,7 @@ type ToolShellOverrider interface {
 	//
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_rebuild_menu() instead.
-	RebuildMenu()
+	RebuildMenu(s ToolShell)
 }
 
 // ToolShell: the ToolShell interface allows container widgets to provide
@@ -98,145 +94,89 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 // EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_ellipsize_mode() instead.
-func (s toolShell) EllipsizeMode() pango.EllipsizeMode {
+func (s toolShell) EllipsizeMode(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.PangoEllipsizeMode
-	var ret1 pango.EllipsizeMode
-
-	cret = C.gtk_tool_shell_get_ellipsize_mode(arg0)
-
-	ret1 = pango.EllipsizeMode(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_ellipsize_mode(arg0)
 }
 
 // IconSize retrieves the icon size for the tool shell. Tool items must not
 // call this function directly, but rely on gtk_tool_item_get_icon_size()
 // instead.
-func (s toolShell) IconSize() int {
+func (s toolShell) IconSize(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkIconSize
-	var ret1 int
-
-	cret = C.gtk_tool_shell_get_icon_size(arg0)
-
-	ret1 = C.GtkIconSize(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_icon_size(arg0)
 }
 
 // Orientation retrieves the current orientation for the tool shell. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_orientation() instead.
-func (s toolShell) Orientation() Orientation {
+func (s toolShell) Orientation(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkOrientation
-	var ret1 Orientation
-
-	cret = C.gtk_tool_shell_get_orientation(arg0)
-
-	ret1 = Orientation(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_orientation(arg0)
 }
 
 // ReliefStyle returns the relief style of buttons on @shell. Tool items
 // must not call this function directly, but rely on
 // gtk_tool_item_get_relief_style() instead.
-func (s toolShell) ReliefStyle() ReliefStyle {
+func (s toolShell) ReliefStyle(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkReliefStyle
-	var ret1 ReliefStyle
-
-	cret = C.gtk_tool_shell_get_relief_style(arg0)
-
-	ret1 = ReliefStyle(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_relief_style(arg0)
 }
 
 // Style retrieves whether the tool shell has text, icons, or both. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_toolbar_style() instead.
-func (s toolShell) Style() ToolbarStyle {
+func (s toolShell) Style(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkToolbarStyle
-	var ret1 ToolbarStyle
-
-	cret = C.gtk_tool_shell_get_style(arg0)
-
-	ret1 = ToolbarStyle(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_style(arg0)
 }
 
 // TextAlignment retrieves the current text alignment for the tool shell.
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_alignment() instead.
-func (s toolShell) TextAlignment() float32 {
+func (s toolShell) TextAlignment(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.gfloat
-	var ret1 float32
-
-	cret = C.gtk_tool_shell_get_text_alignment(arg0)
-
-	ret1 = C.gfloat(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_text_alignment(arg0)
 }
 
 // TextOrientation retrieves the current text orientation for the tool
 // shell. Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_orientation() instead.
-func (s toolShell) TextOrientation() Orientation {
+func (s toolShell) TextOrientation(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkOrientation
-	var ret1 Orientation
-
-	cret = C.gtk_tool_shell_get_text_orientation(arg0)
-
-	ret1 = Orientation(cret)
-
-	return ret1
+	C.gtk_tool_shell_get_text_orientation(arg0)
 }
 
 // TextSizeGroup retrieves the current text size group for the tool shell.
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_size_group() instead.
-func (s toolShell) TextSizeGroup() SizeGroup {
+func (s toolShell) TextSizeGroup(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkSizeGroup
-	var ret1 SizeGroup
-
-	cret = C.gtk_tool_shell_get_text_size_group(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
-
-	return ret1
+	C.gtk_tool_shell_get_text_size_group(arg0)
 }
 
 // RebuildMenu: calling this function signals the tool shell that the
@@ -246,7 +186,7 @@ func (s toolShell) TextSizeGroup() SizeGroup {
 //
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_rebuild_menu() instead.
-func (s toolShell) RebuildMenu() {
+func (s toolShell) RebuildMenu(s ToolShell) {
 	var arg0 *C.GtkToolShell
 
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))

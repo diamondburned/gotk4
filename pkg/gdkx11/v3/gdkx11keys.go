@@ -9,7 +9,6 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdkx.h>
 import "C"
@@ -26,13 +25,13 @@ type X11Keymap interface {
 	// GroupForState extracts the group from the state field sent in an X Key
 	// event. This is only needed for code processing raw X events, since
 	// EventKey directly includes an is_modifier field.
-	GroupForState(state uint) int
+	GroupForState(k X11Keymap, state uint)
 	// KeyIsModifier determines whether a particular key code represents a key
 	// that is a modifier. That is, it’s a key that normally just affects the
 	// keyboard state and the behavior of other keys rather than producing a
 	// direct effect itself. This is only needed for code processing raw X
 	// events, since EventKey directly includes an is_modifier field.
-	KeyIsModifier(keycode uint) bool
+	KeyIsModifier(k X11Keymap, keycode uint) bool
 }
 
 // x11Keymap implements the X11Keymap interface.
@@ -59,21 +58,14 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 // GroupForState extracts the group from the state field sent in an X Key
 // event. This is only needed for code processing raw X events, since
 // EventKey directly includes an is_modifier field.
-func (k x11Keymap) GroupForState(state uint) int {
+func (k x11Keymap) GroupForState(k X11Keymap, state uint) {
 	var arg0 *C.GdkKeymap
 	var arg1 C.guint
 
 	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	arg1 = C.guint(state)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.gdk_x11_keymap_get_group_for_state(arg0, state)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.gdk_x11_keymap_get_group_for_state(arg0, arg1)
 }
 
 // KeyIsModifier determines whether a particular key code represents a key
@@ -81,7 +73,7 @@ func (k x11Keymap) GroupForState(state uint) int {
 // keyboard state and the behavior of other keys rather than producing a
 // direct effect itself. This is only needed for code processing raw X
 // events, since EventKey directly includes an is_modifier field.
-func (k x11Keymap) KeyIsModifier(keycode uint) bool {
+func (k x11Keymap) KeyIsModifier(k X11Keymap, keycode uint) bool {
 	var arg0 *C.GdkKeymap
 	var arg1 C.guint
 
@@ -89,11 +81,13 @@ func (k x11Keymap) KeyIsModifier(keycode uint) bool {
 	arg1 = C.guint(keycode)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_x11_keymap_key_is_modifier(arg0, keycode)
+	cret = C.gdk_x11_keymap_key_is_modifier(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

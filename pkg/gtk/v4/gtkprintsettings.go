@@ -3,19 +3,13 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -60,10 +54,14 @@ func (p *PageRange) Native() unsafe.Pointer {
 
 // Start gets the field inside the struct.
 func (p *PageRange) Start() int {
-	v = C.int(p.native.start)
+	var v int
+	v = int(p.native.start)
+	return v
 }
 
 // End gets the field inside the struct.
 func (p *PageRange) End() int {
-	v = C.int(p.native.end)
+	var v int
+	v = int(p.native.end)
+	return v
 }

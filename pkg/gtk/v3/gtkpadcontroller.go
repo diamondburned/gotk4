@@ -5,9 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,11 +73,11 @@ type PadController interface {
 	// The given @label should be considered user-visible, so
 	// internationalization rules apply. Some windowing systems may be able to
 	// use those for user feedback.
-	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
+	SetAction(c PadController, typ PadActionType, index int, mode int, label string, actionName string)
 	// SetActionEntries: this is a convenience function to add a group of action
 	// entries on @controller. See PadActionEntry and
 	// gtk_pad_controller_set_action().
-	SetActionEntries(entries []PadActionEntry)
+	SetActionEntries(c PadController)
 }
 
 // padController implements the PadController interface.
@@ -105,7 +102,7 @@ func marshalPadController(p uintptr) (interface{}, error) {
 }
 
 // NewPadController constructs a class PadController.
-func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadController {
+func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) {
 	var arg1 *C.GtkWindow
 	var arg2 *C.GActionGroup
 	var arg3 *C.GdkDevice
@@ -114,14 +111,7 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 	arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 	arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
-	var cret C.GtkPadController
-	var ret1 PadController
-
-	cret = C.gtk_pad_controller_new(window, group, pad)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
-
-	return ret1
+	C.gtk_pad_controller_new(arg1, arg2, arg3)
 }
 
 // SetAction adds an individual action to @controller. This action will only
@@ -132,7 +122,7 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 // The given @label should be considered user-visible, so
 // internationalization rules apply. Some windowing systems may be able to
 // use those for user feedback.
-func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
+func (c padController) SetAction(c PadController, typ PadActionType, index int, mode int, label string, actionName string) {
 	var arg0 *C.GtkPadController
 	var arg1 C.GtkPadActionType
 	var arg2 C.gint
@@ -149,18 +139,18 @@ func (c padController) SetAction(typ PadActionType, index int, mode int, label s
 	arg5 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg5))
 
-	C.gtk_pad_controller_set_action(arg0, typ, index, mode, label, actionName)
+	C.gtk_pad_controller_set_action(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // SetActionEntries: this is a convenience function to add a group of action
 // entries on @controller. See PadActionEntry and
 // gtk_pad_controller_set_action().
-func (c padController) SetActionEntries(entries []PadActionEntry) {
+func (c padController) SetActionEntries(c PadController) {
 	var arg0 *C.GtkPadController
 
 	arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
 
-	C.gtk_pad_controller_set_action_entries(arg0, entries, nEntries)
+	C.gtk_pad_controller_set_action_entries(arg0, arg1, arg2)
 }
 
 // PadActionEntry: struct defining a pad action entry.
@@ -190,25 +180,35 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 
 // Type gets the field inside the struct.
 func (p *PadActionEntry) Type() PadActionType {
+	var v PadActionType
 	v = PadActionType(p.native._type)
+	return v
 }
 
 // Index gets the field inside the struct.
 func (p *PadActionEntry) Index() int {
-	v = C.gint(p.native.index)
+	var v int
+	v = int(p.native.index)
+	return v
 }
 
 // Mode gets the field inside the struct.
 func (p *PadActionEntry) Mode() int {
-	v = C.gint(p.native.mode)
+	var v int
+	v = int(p.native.mode)
+	return v
 }
 
 // Label gets the field inside the struct.
 func (p *PadActionEntry) Label() string {
+	var v string
 	v = C.GoString(p.native.label)
+	return v
 }
 
 // ActionName gets the field inside the struct.
 func (p *PadActionEntry) ActionName() string {
+	var v string
 	v = C.GoString(p.native.action_name)
+	return v
 }

@@ -67,5 +67,5 @@ func BusUnwatchName(watcherID uint) {
 
 	arg1 = C.guint(watcherID)
 
-	C.g_bus_unwatch_name(watcherID)
+	C.g_bus_unwatch_name(arg1)
 }

@@ -5,7 +5,6 @@ package glib
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,13 +24,13 @@ func init() {
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() error {
 	var errout *C.GError
-	var goerr error
+	var err error
 
 	C.g_clear_error(&errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // PropagateError: if @dest is nil, free @src; otherwise, moves @src into
@@ -48,13 +47,13 @@ func PropagateError(src error) error {
 	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
 
 	var arg1 *C.GError
-	var ret1 error
+	var dest error
 
-	C.g_propagate_error(&arg1, src)
+	C.g_propagate_error(&arg1, arg2)
 
-	*ret1 = gerror.Take(unsafe.Pointer(arg1))
+	dest = gerror.Take(unsafe.Pointer(&arg1))
 
-	return ret1
+	return dest
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -85,33 +84,30 @@ func (e *Error) Native() unsafe.Pointer {
 
 // Code gets the field inside the struct.
 func (e *Error) Code() int {
-	v = C.gint(e.native.code)
+	var v int
+	v = int(e.native.code)
+	return v
 }
 
 // Message gets the field inside the struct.
 func (e *Error) Message() string {
+	var v string
 	v = C.GoString(e.native.message)
+	return v
 }
 
 // Copy makes a copy of @error.
-func (e *Error) Copy() error {
+func (e *Error) Copy(e error) {
 	var arg0 *C.GError
 
 	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
 	defer C.g_error_free(arg0)
 
-	var cret *C.GError
-	var ret1 error
-
-	cret = C.g_error_copy(arg0)
-
-	ret1 = gerror.Take(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_error_copy(arg0)
 }
 
 // Free frees a #GError and associated resources.
-func (e *Error) Free() {
+func (e *Error) Free(e error) {
 	var arg0 *C.GError
 
 	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))

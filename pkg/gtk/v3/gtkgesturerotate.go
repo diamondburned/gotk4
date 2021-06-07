@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,7 +29,7 @@ type GestureRotate interface {
 	// AngleDelta: if @gesture is active, this function returns the angle
 	// difference in radians since the gesture was first recognized. If @gesture
 	// is not active, 0 is returned.
-	AngleDelta() float64
+	AngleDelta(g GestureRotate)
 }
 
 // gestureRotate implements the GestureRotate interface.
@@ -57,35 +54,21 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 }
 
 // NewGestureRotate constructs a class GestureRotate.
-func NewGestureRotate(widget Widget) GestureRotate {
+func NewGestureRotate(widget Widget) {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.GtkGestureRotate
-	var ret1 GestureRotate
-
-	cret = C.gtk_gesture_rotate_new(widget)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureRotate)
-
-	return ret1
+	C.gtk_gesture_rotate_new(arg1)
 }
 
 // AngleDelta: if @gesture is active, this function returns the angle
 // difference in radians since the gesture was first recognized. If @gesture
 // is not active, 0 is returned.
-func (g gestureRotate) AngleDelta() float64 {
+func (g gestureRotate) AngleDelta(g GestureRotate) {
 	var arg0 *C.GtkGestureRotate
 
 	arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_gesture_rotate_get_angle_delta(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_gesture_rotate_get_angle_delta(arg0)
 }

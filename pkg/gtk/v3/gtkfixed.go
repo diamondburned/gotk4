@@ -65,9 +65,9 @@ type Fixed interface {
 	Buildable
 
 	// Move moves a child of a Fixed container to the given position.
-	Move(widget Widget, x int, y int)
+	Move(f Fixed, widget Widget, x int, y int)
 	// Put adds a widget to a Fixed container at the given position.
-	Put(widget Widget, x int, y int)
+	Put(f Fixed, widget Widget, x int, y int)
 }
 
 // fixed implements the Fixed interface.
@@ -94,19 +94,12 @@ func marshalFixed(p uintptr) (interface{}, error) {
 }
 
 // NewFixed constructs a class Fixed.
-func NewFixed() Fixed {
-	var cret C.GtkFixed
-	var ret1 Fixed
-
-	cret = C.gtk_fixed_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
-
-	return ret1
+func NewFixed() {
+	C.gtk_fixed_new()
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (f fixed) Move(widget Widget, x int, y int) {
+func (f fixed) Move(f Fixed, widget Widget, x int, y int) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -117,11 +110,11 @@ func (f fixed) Move(widget Widget, x int, y int) {
 	arg2 = C.gint(x)
 	arg3 = C.gint(y)
 
-	C.gtk_fixed_move(arg0, widget, x, y)
+	C.gtk_fixed_move(arg0, arg1, arg2, arg3)
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (f fixed) Put(widget Widget, x int, y int) {
+func (f fixed) Put(f Fixed, widget Widget, x int, y int) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -132,7 +125,7 @@ func (f fixed) Put(widget Widget, x int, y int) {
 	arg2 = C.gint(x)
 	arg3 = C.gint(y)
 
-	C.gtk_fixed_put(arg0, widget, x, y)
+	C.gtk_fixed_put(arg0, arg1, arg2, arg3)
 }
 
 type FixedChild struct {
@@ -161,15 +154,21 @@ func (f *FixedChild) Native() unsafe.Pointer {
 
 // Widget gets the field inside the struct.
 func (f *FixedChild) Widget() Widget {
+	var v Widget
 	v = gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget.Native()))).(Widget)
+	return v
 }
 
 // X gets the field inside the struct.
 func (f *FixedChild) X() int {
-	v = C.gint(f.native.x)
+	var v int
+	v = int(f.native.x)
+	return v
 }
 
 // Y gets the field inside the struct.
 func (f *FixedChild) Y() int {
-	v = C.gint(f.native.y)
+	var v int
+	v = int(f.native.y)
+	return v
 }

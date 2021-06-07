@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,13 +58,6 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererCombo constructs a class CellRendererCombo.
-func NewCellRendererCombo() CellRendererCombo {
-	var cret C.GtkCellRendererCombo
-	var ret1 CellRendererCombo
-
-	cret = C.gtk_cell_renderer_combo_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererCombo)
-
-	return ret1
+func NewCellRendererCombo() {
+	C.gtk_cell_renderer_combo_new()
 }

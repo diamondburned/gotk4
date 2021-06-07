@@ -2,13 +2,8 @@
 
 package gtk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/pango"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -30,15 +25,8 @@ func DisableSetlocale() {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
-func GetDefaultLanguage() *pango.Language {
-	var cret *C.PangoLanguage
-	var ret1 *pango.Language
-
-	cret = C.gtk_get_default_language()
-
-	ret1 = pango.WrapLanguage(unsafe.Pointer(cret))
-
-	return ret1
+func GetDefaultLanguage() {
+	C.gtk_get_default_language()
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the
@@ -59,15 +47,8 @@ func GetDefaultLanguage() *pango.Language {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
-func GetLocaleDirection() TextDirection {
-	var cret C.GtkTextDirection
-	var ret1 TextDirection
-
-	cret = C.gtk_get_locale_direction()
-
-	ret1 = TextDirection(cret)
-
-	return ret1
+func GetLocaleDirection() {
+	C.gtk_get_locale_direction()
 }
 
 // Init: call this function before using any other GTK functions in your GUI
@@ -98,24 +79,28 @@ func Init() {
 // with the user - for example a curses or command line interface.
 func InitCheck() bool {
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_init_check()
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool {
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_is_initialized()
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

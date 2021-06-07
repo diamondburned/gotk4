@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -43,13 +42,15 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 	defer C.free(unsafe.Pointer(arg4))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_pattern_match(pspec, stringLength, string, stringReversed)
+	cret = C.g_pattern_match(arg1, arg2, arg3, arg4)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // PatternMatchSimple matches a string against a pattern given as a string. If
@@ -66,13 +67,15 @@ func PatternMatchSimple(pattern string, string string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_pattern_match_simple(pattern, string)
+	cret = C.g_pattern_match_simple(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // PatternMatchString matches a string against a compiled pattern. If the string
@@ -87,13 +90,15 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_pattern_match_string(pspec, string)
+	cret = C.g_pattern_match_string(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // PatternSpec: a GPatternSpec struct is the 'compiled' form of a pattern. This
@@ -124,7 +129,7 @@ func (p *PatternSpec) Native() unsafe.Pointer {
 
 // Equal compares two compiled pattern specs and returns whether they will match
 // the same set of strings.
-func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
+func (p *PatternSpec) Equal(p *PatternSpec, pspec2 *PatternSpec) bool {
 	var arg0 *C.GPatternSpec
 	var arg1 *C.GPatternSpec
 
@@ -132,17 +137,19 @@ func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 	arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_pattern_spec_equal(arg0, pspec2)
+	cret = C.g_pattern_spec_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Free frees the memory allocated for the Spec.
-func (p *PatternSpec) Free() {
+func (p *PatternSpec) Free(p *PatternSpec) {
 	var arg0 *C.GPatternSpec
 
 	arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))

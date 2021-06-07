@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -51,14 +47,14 @@ type EditableLabel interface {
 	Editable
 
 	// Editing returns whether the label is currently in “editing mode”.
-	Editing() bool
+	Editing(s EditableLabel) bool
 	// StartEditing switches the label into “editing mode”.
-	StartEditing()
+	StartEditing(s EditableLabel)
 	// StopEditing switches the label out of “editing mode”. If @commit is true,
 	// the resulting text is kept as the Editable:text property value, otherwise
 	// the resulting text is discarded and the label will keep its previous
 	// Editable:text property value.
-	StopEditing(commit bool)
+	StopEditing(s EditableLabel, commit bool)
 }
 
 // editableLabel implements the EditableLabel interface.
@@ -91,40 +87,35 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 }
 
 // NewEditableLabel constructs a class EditableLabel.
-func NewEditableLabel(str string) EditableLabel {
+func NewEditableLabel(str string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkEditableLabel
-	var ret1 EditableLabel
-
-	cret = C.gtk_editable_label_new(str)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EditableLabel)
-
-	return ret1
+	C.gtk_editable_label_new(arg1)
 }
 
 // Editing returns whether the label is currently in “editing mode”.
-func (s editableLabel) Editing() bool {
+func (s editableLabel) Editing(s EditableLabel) bool {
 	var arg0 *C.GtkEditableLabel
 
 	arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_editable_label_get_editing(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // StartEditing switches the label into “editing mode”.
-func (s editableLabel) StartEditing() {
+func (s editableLabel) StartEditing(s EditableLabel) {
 	var arg0 *C.GtkEditableLabel
 
 	arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
@@ -136,7 +127,7 @@ func (s editableLabel) StartEditing() {
 // the resulting text is kept as the Editable:text property value, otherwise
 // the resulting text is discarded and the label will keep its previous
 // Editable:text property value.
-func (s editableLabel) StopEditing(commit bool) {
+func (s editableLabel) StopEditing(s EditableLabel, commit bool) {
 	var arg0 *C.GtkEditableLabel
 	var arg1 C.gboolean
 
@@ -145,5 +136,5 @@ func (s editableLabel) StopEditing(commit bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_editable_label_stop_editing(arg0, commit)
+	C.gtk_editable_label_stop_editing(arg0, arg1)
 }

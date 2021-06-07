@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,19 +54,19 @@ type SocketAddressEnumerator interface {
 	// *@error. However, if the first call to g_socket_address_enumerator_next()
 	// succeeds, then any further internal errors (other than @cancellable being
 	// triggered) will be ignored.
-	Next(cancellable Cancellable) (socketAddress SocketAddress, err error)
+	Next(e SocketAddressEnumerator, cancellable Cancellable) error
 	// NextAsync: asynchronously retrieves the next Address from @enumerator and
 	// then calls @callback, which must call
 	// g_socket_address_enumerator_next_finish() to get the result.
 	//
 	// It is an error to call this multiple times before the previous callback
 	// has finished.
-	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
+	NextAsync(e SocketAddressEnumerator)
 	// NextFinish retrieves the result of a completed call to
 	// g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
 	// handling.
-	NextFinish(result AsyncResult) (socketAddress SocketAddress, err error)
+	NextFinish(e SocketAddressEnumerator, result AsyncResult) error
 }
 
 // socketAddressEnumerator implements the SocketAddressEnumerator interface.
@@ -105,7 +101,7 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 // *@error. However, if the first call to g_socket_address_enumerator_next()
 // succeeds, then any further internal errors (other than @cancellable being
 // triggered) will be ignored.
-func (e socketAddressEnumerator) Next(cancellable Cancellable) (socketAddress SocketAddress, err error) {
+func (e socketAddressEnumerator) Next(e SocketAddressEnumerator, cancellable Cancellable) error {
 	var arg0 *C.GSocketAddressEnumerator
 	var arg1 *C.GCancellable
 
@@ -113,16 +109,13 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (socketAddress So
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GSocketAddress
-	var ret2 SocketAddress
+	var err error
 
-	cret = C.g_socket_address_enumerator_next(arg0, cancellable, &errout)
+	C.g_socket_address_enumerator_next(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // NextAsync: asynchronously retrieves the next Address from @enumerator and
@@ -131,19 +124,19 @@ func (e socketAddressEnumerator) Next(cancellable Cancellable) (socketAddress So
 //
 // It is an error to call this multiple times before the previous callback
 // has finished.
-func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
+func (e socketAddressEnumerator) NextAsync(e SocketAddressEnumerator) {
 	var arg0 *C.GSocketAddressEnumerator
 
 	arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
 
-	C.g_socket_address_enumerator_next_async(arg0, cancellable, callback, userData)
+	C.g_socket_address_enumerator_next_async(arg0, arg1, arg2, arg3)
 }
 
 // NextFinish retrieves the result of a completed call to
 // g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error
 // handling.
-func (e socketAddressEnumerator) NextFinish(result AsyncResult) (socketAddress SocketAddress, err error) {
+func (e socketAddressEnumerator) NextFinish(e SocketAddressEnumerator, result AsyncResult) error {
 	var arg0 *C.GSocketAddressEnumerator
 	var arg1 *C.GAsyncResult
 
@@ -151,14 +144,11 @@ func (e socketAddressEnumerator) NextFinish(result AsyncResult) (socketAddress S
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GSocketAddress
-	var ret2 SocketAddress
+	var err error
 
-	cret = C.g_socket_address_enumerator_next_finish(arg0, result, &errout)
+	C.g_socket_address_enumerator_next_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }

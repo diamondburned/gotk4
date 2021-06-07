@@ -23,7 +23,7 @@ type WaylandMonitor interface {
 	gdk.Monitor
 
 	// WlOutput returns the Wayland wl_output of a Monitor.
-	WlOutput() interface{}
+	WlOutput(m WaylandMonitor)
 }
 
 // waylandMonitor implements the WaylandMonitor interface.
@@ -48,17 +48,10 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 }
 
 // WlOutput returns the Wayland wl_output of a Monitor.
-func (m waylandMonitor) WlOutput() interface{} {
+func (m waylandMonitor) WlOutput(m WaylandMonitor) {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret *C.wl_output
-	var ret1 interface{}
-
-	cret = C.gdk_wayland_monitor_get_wl_output(arg0)
-
-	ret1 = *C.wl_output(cret)
-
-	return ret1
+	C.gdk_wayland_monitor_get_wl_output(arg0)
 }

@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -46,18 +44,8 @@ func marshalFrustum(p uintptr) (interface{}, error) {
 }
 
 // NewFrustumAlloc constructs a struct Frustum.
-func NewFrustumAlloc() *Frustum {
-	var cret *C.graphene_frustum_t
-	var ret1 *Frustum
-
-	cret = C.graphene_frustum_alloc()
-
-	ret1 = WrapFrustum(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Frustum) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+func NewFrustumAlloc() {
+	C.graphene_frustum_alloc()
 }
 
 // Native returns the underlying C source pointer.
@@ -67,7 +55,7 @@ func (f *Frustum) Native() unsafe.Pointer {
 
 // ContainsPoint checks whether a point is inside the volume defined by the
 // given #graphene_frustum_t.
-func (f *Frustum) ContainsPoint(point *Point3D) bool {
+func (f *Frustum) ContainsPoint(f *Frustum, point *Point3D) bool {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_point3d_t
 
@@ -75,17 +63,19 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_frustum_contains_point(arg0, point)
+	cret = C.graphene_frustum_contains_point(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Equal checks whether the two given #graphene_frustum_t are equal.
-func (a *Frustum) Equal(b *Frustum) bool {
+func (a *Frustum) Equal(a *Frustum, b *Frustum) bool {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_frustum_t
 
@@ -93,17 +83,19 @@ func (a *Frustum) Equal(b *Frustum) bool {
 	arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_frustum_equal(arg0, b)
+	cret = C.graphene_frustum_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Free frees the resources allocated by graphene_frustum_alloc().
-func (f *Frustum) Free() {
+func (f *Frustum) Free(f *Frustum) {
 	var arg0 *C.graphene_frustum_t
 
 	arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
@@ -112,13 +104,13 @@ func (f *Frustum) Free() {
 }
 
 // Planes retrieves the planes that define the given #graphene_frustum_t.
-func (f *Frustum) Planes() [6]Plane {
+func (f *Frustum) Planes(f *Frustum) [6]Plane {
 	var arg0 *C.graphene_frustum_t
 
 	arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 
 	var arg1 [6]C.graphene_plane_t
-	var ret1 [6]Plane
+	var planes [6]Plane
 
 	C.graphene_frustum_get_planes(arg0, &arg1)
 
@@ -126,16 +118,16 @@ func (f *Frustum) Planes() [6]Plane {
 		tmp := *(*[6]Plane)(unsafe.Pointer(&arg1))
 		for i := 0; i < 6; i++ {
 			src := tmp[i]
-			ret1[i] = WrapPlane(unsafe.Pointer(src))
+			planes[i] = WrapPlane(unsafe.Pointer(src))
 		}
 	}
 
-	return ret1
+	return planes
 }
 
 // Init initializes the given #graphene_frustum_t using the provided clipping
 // planes.
-func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) *Frustum {
+func (f *Frustum) Init(f *Frustum, p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_plane_t
 	var arg2 *C.graphene_plane_t
@@ -152,56 +144,35 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 	arg5 = (*C.graphene_plane_t)(unsafe.Pointer(p4.Native()))
 	arg6 = (*C.graphene_plane_t)(unsafe.Pointer(p5.Native()))
 
-	var cret *C.graphene_frustum_t
-	var ret1 *Frustum
-
-	cret = C.graphene_frustum_init(arg0, p0, p1, p2, p3, p4, p5)
-
-	ret1 = WrapFrustum(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_frustum_init(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // InitFromFrustum initializes the given #graphene_frustum_t using the clipping
 // planes of another #graphene_frustum_t.
-func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
+func (f *Frustum) InitFromFrustum(f *Frustum, src *Frustum) {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_frustum_t
 
 	arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(src.Native()))
 
-	var cret *C.graphene_frustum_t
-	var ret1 *Frustum
-
-	cret = C.graphene_frustum_init_from_frustum(arg0, src)
-
-	ret1 = WrapFrustum(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_frustum_init_from_frustum(arg0, arg1)
 }
 
 // InitFromMatrix initializes a #graphene_frustum_t using the given @matrix.
-func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
+func (f *Frustum) InitFromMatrix(f *Frustum, matrix *Matrix) {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_matrix_t
 
 	arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
 
-	var cret *C.graphene_frustum_t
-	var ret1 *Frustum
-
-	cret = C.graphene_frustum_init_from_matrix(arg0, matrix)
-
-	ret1 = WrapFrustum(unsafe.Pointer(cret))
-
-	return ret1
+	C.graphene_frustum_init_from_matrix(arg0, arg1)
 }
 
 // IntersectsBox checks whether the given @box intersects a plane of a
 // #graphene_frustum_t.
-func (f *Frustum) IntersectsBox(box *Box) bool {
+func (f *Frustum) IntersectsBox(f *Frustum, box *Box) bool {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_box_t
 
@@ -209,18 +180,20 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(box.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_frustum_intersects_box(arg0, box)
+	cret = C.graphene_frustum_intersects_box(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IntersectsSphere checks whether the given @sphere intersects a plane of a
 // #graphene_frustum_t.
-func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
+func (f *Frustum) IntersectsSphere(f *Frustum, sphere *Sphere) bool {
 	var arg0 *C.graphene_frustum_t
 	var arg1 *C.graphene_sphere_t
 
@@ -228,11 +201,13 @@ func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(sphere.Native()))
 
 	var cret C._Bool
-	var ret1 bool
+	var ok bool
 
-	cret = C.graphene_frustum_intersects_sphere(arg0, sphere)
+	cret = C.graphene_frustum_intersects_sphere(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

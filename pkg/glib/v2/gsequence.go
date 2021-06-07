@@ -8,44 +8,29 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
 // SequenceGet returns the data that @iter points to.
-func SequenceGet(iter *SequenceIter) interface{} {
+func SequenceGet(iter *SequenceIter) {
 	var arg1 *C.GSequenceIter
 
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(iter.Native()))
 
-	var cret C.gpointer
-	var ret1 interface{}
-
-	cret = C.g_sequence_get(iter)
-
-	ret1 = C.gpointer(cret)
-
-	return ret1
+	C.g_sequence_get(arg1)
 }
 
 // SequenceInsertBefore inserts a new item just before the item pointed to by
 // @iter.
-func SequenceInsertBefore(iter *SequenceIter, data interface{}) *SequenceIter {
+func SequenceInsertBefore(iter *SequenceIter, data interface{}) {
 	var arg1 *C.GSequenceIter
 	var arg2 C.gpointer
 
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(iter.Native()))
 	arg2 = C.gpointer(data)
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_insert_before(iter, data)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_insert_before(arg1, arg2)
 }
 
 // SequenceMove moves the item pointed to by @src to the position indicated by
@@ -59,7 +44,7 @@ func SequenceMove(src *SequenceIter, dest *SequenceIter) {
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(src.Native()))
 	arg2 = (*C.GSequenceIter)(unsafe.Pointer(dest.Native()))
 
-	C.g_sequence_move(src, dest)
+	C.g_sequence_move(arg1, arg2)
 }
 
 // SequenceMoveRange inserts the (@begin, @end) range at the destination pointed
@@ -79,7 +64,7 @@ func SequenceMoveRange(dest *SequenceIter, begin *SequenceIter, end *SequenceIte
 	arg2 = (*C.GSequenceIter)(unsafe.Pointer(begin.Native()))
 	arg3 = (*C.GSequenceIter)(unsafe.Pointer(end.Native()))
 
-	C.g_sequence_move_range(dest, begin, end)
+	C.g_sequence_move_range(arg1, arg2, arg3)
 }
 
 // SequenceRangeGetMidpoint finds an iterator somewhere in the range (@begin,
@@ -88,21 +73,14 @@ func SequenceMoveRange(dest *SequenceIter, begin *SequenceIter, end *SequenceIte
 //
 // The @begin and @end iterators must both point to the same sequence and @begin
 // must come before or be equal to @end in the sequence.
-func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) *SequenceIter {
+func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) {
 	var arg1 *C.GSequenceIter
 	var arg2 *C.GSequenceIter
 
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(begin.Native()))
 	arg2 = (*C.GSequenceIter)(unsafe.Pointer(end.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_range_get_midpoint(begin, end)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_range_get_midpoint(arg1, arg2)
 }
 
 // SequenceRemove removes the item pointed to by @iter. It is an error to pass
@@ -115,7 +93,7 @@ func SequenceRemove(iter *SequenceIter) {
 
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(iter.Native()))
 
-	C.g_sequence_remove(iter)
+	C.g_sequence_remove(arg1)
 }
 
 // SequenceRemoveRange removes all items in the (@begin, @end) range.
@@ -129,7 +107,7 @@ func SequenceRemoveRange(begin *SequenceIter, end *SequenceIter) {
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(begin.Native()))
 	arg2 = (*C.GSequenceIter)(unsafe.Pointer(end.Native()))
 
-	C.g_sequence_remove_range(begin, end)
+	C.g_sequence_remove_range(arg1, arg2)
 }
 
 // SequenceSet changes the data for the item pointed to by @iter to be @data. If
@@ -142,7 +120,7 @@ func SequenceSet(iter *SequenceIter, data interface{}) {
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(iter.Native()))
 	arg2 = C.gpointer(data)
 
-	C.g_sequence_set(iter, data)
+	C.g_sequence_set(arg1, arg2)
 }
 
 // SequenceSwap swaps the items pointed to by @a and @b. It is allowed for @a
@@ -154,7 +132,7 @@ func SequenceSwap(a *SequenceIter, b *SequenceIter) {
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(a.Native()))
 	arg2 = (*C.GSequenceIter)(unsafe.Pointer(b.Native()))
 
-	C.g_sequence_swap(a, b)
+	C.g_sequence_swap(arg1, arg2)
 }
 
 // Sequence: the #GSequence struct is an opaque data type representing a
@@ -184,36 +162,29 @@ func (s *Sequence) Native() unsafe.Pointer {
 }
 
 // Append adds a new item to the end of @seq.
-func (s *Sequence) Append(data interface{}) *SequenceIter {
+func (s *Sequence) Append(s *Sequence, data interface{}) {
 	var arg0 *C.GSequence
 	var arg1 C.gpointer
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 	arg1 = C.gpointer(data)
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_append(arg0, data)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_append(arg0, arg1)
 }
 
 // Foreach calls @func for each item in the sequence passing @user_data to the
 // function. @func must not modify the sequence itself.
-func (s *Sequence) Foreach(fn Func) {
+func (s *Sequence) Foreach(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	C.g_sequence_foreach(arg0, fn, userData)
+	C.g_sequence_foreach(arg0, arg1, arg2)
 }
 
 // Free frees the memory allocated for @seq. If @seq has a data destroy function
 // associated with it, that function is called on all items in @seq.
-func (s *Sequence) Free() {
+func (s *Sequence) Free(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
@@ -222,72 +193,44 @@ func (s *Sequence) Free() {
 }
 
 // BeginIter returns the begin iterator for @seq.
-func (s *Sequence) BeginIter() *SequenceIter {
+func (s *Sequence) BeginIter(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_get_begin_iter(arg0)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_get_begin_iter(arg0)
 }
 
 // EndIter returns the end iterator for @seg
-func (s *Sequence) EndIter() *SequenceIter {
+func (s *Sequence) EndIter(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_get_end_iter(arg0)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_get_end_iter(arg0)
 }
 
 // IterAtPos returns the iterator at position @pos. If @pos is negative or
 // larger than the number of items in @seq, the end iterator is returned.
-func (s *Sequence) IterAtPos(pos int) *SequenceIter {
+func (s *Sequence) IterAtPos(s *Sequence, pos int) {
 	var arg0 *C.GSequence
 	var arg1 C.gint
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 	arg1 = C.gint(pos)
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_get_iter_at_pos(arg0, pos)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_get_iter_at_pos(arg0, arg1)
 }
 
 // Length returns the length of @seq. Note that this method is O(h) where `h' is
 // the height of the tree. It is thus more efficient to use
 // g_sequence_is_empty() when comparing the length to zero.
-func (s *Sequence) Length() int {
+func (s *Sequence) Length(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_sequence_get_length(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_sequence_get_length(arg0)
 }
 
 // InsertSorted inserts @data into @seq using @cmp_func to determine the new
@@ -302,19 +245,12 @@ func (s *Sequence) Length() int {
 // Note that when adding a large amount of data to a #GSequence, it is more
 // efficient to do unsorted insertions and then call g_sequence_sort() or
 // g_sequence_sort_iter().
-func (s *Sequence) InsertSorted(data interface{}, cmpFunc CompareDataFunc) *SequenceIter {
+func (s *Sequence) InsertSorted(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_insert_sorted(arg0, data, cmpFunc, cmpData)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_insert_sorted(arg0, arg1, arg2, arg3)
 }
 
 // InsertSortedIter: like g_sequence_insert_sorted(), but uses a IterCompareFunc
@@ -328,19 +264,12 @@ func (s *Sequence) InsertSorted(data interface{}, cmpFunc CompareDataFunc) *Sequ
 // Note that when adding a large amount of data to a #GSequence, it is more
 // efficient to do unsorted insertions and then call g_sequence_sort() or
 // g_sequence_sort_iter().
-func (s *Sequence) InsertSortedIter(data interface{}, iterCmp SequenceIterCompareFunc) *SequenceIter {
+func (s *Sequence) InsertSortedIter(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_insert_sorted_iter(arg0, data, iterCmp, cmpData)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_insert_sorted_iter(arg0, arg1, arg2, arg3)
 }
 
 // IsEmpty returns true if the sequence contains zero items.
@@ -348,19 +277,21 @@ func (s *Sequence) InsertSortedIter(data interface{}, iterCmp SequenceIterCompar
 // This function is functionally identical to checking the result of
 // g_sequence_get_length() being equal to zero. However this function is
 // implemented in O(1) running time.
-func (s *Sequence) IsEmpty() bool {
+func (s *Sequence) IsEmpty(s *Sequence) bool {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_sequence_is_empty(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Lookup returns an iterator pointing to the position of the first item found
@@ -375,19 +306,12 @@ func (s *Sequence) IsEmpty() bool {
 // first.
 //
 // This function will fail if the data contained in the sequence is unsorted.
-func (s *Sequence) Lookup(data interface{}, cmpFunc CompareDataFunc) *SequenceIter {
+func (s *Sequence) Lookup(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_lookup(arg0, data, cmpFunc, cmpData)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_lookup(arg0, arg1, arg2, arg3)
 }
 
 // LookupIter: like g_sequence_lookup(), but uses a IterCompareFunc instead of a
@@ -399,37 +323,23 @@ func (s *Sequence) Lookup(data interface{}, cmpFunc CompareDataFunc) *SequenceIt
 // the first.
 //
 // This function will fail if the data contained in the sequence is unsorted.
-func (s *Sequence) LookupIter(data interface{}, iterCmp SequenceIterCompareFunc) *SequenceIter {
+func (s *Sequence) LookupIter(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_lookup_iter(arg0, data, iterCmp, cmpData)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_lookup_iter(arg0, arg1, arg2, arg3)
 }
 
 // Prepend adds a new item to the front of @seq
-func (s *Sequence) Prepend(data interface{}) *SequenceIter {
+func (s *Sequence) Prepend(s *Sequence, data interface{}) {
 	var arg0 *C.GSequence
 	var arg1 C.gpointer
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 	arg1 = C.gpointer(data)
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_prepend(arg0, data)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_prepend(arg0, arg1)
 }
 
 // Search returns an iterator pointing to the position where @data would be
@@ -444,19 +354,12 @@ func (s *Sequence) Prepend(data interface{}) *SequenceIter {
 // using g_sequence_lookup().
 //
 // This function will fail if the data contained in the sequence is unsorted.
-func (s *Sequence) Search(data interface{}, cmpFunc CompareDataFunc) *SequenceIter {
+func (s *Sequence) Search(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_search(arg0, data, cmpFunc, cmpData)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_search(arg0, arg1, arg2, arg3)
 }
 
 // SearchIter: like g_sequence_search(), but uses a IterCompareFunc instead of a
@@ -471,19 +374,12 @@ func (s *Sequence) Search(data interface{}, cmpFunc CompareDataFunc) *SequenceIt
 // using g_sequence_lookup_iter().
 //
 // This function will fail if the data contained in the sequence is unsorted.
-func (s *Sequence) SearchIter(data interface{}, iterCmp SequenceIterCompareFunc) *SequenceIter {
+func (s *Sequence) SearchIter(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_search_iter(arg0, data, iterCmp, cmpData)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_search_iter(arg0, arg1, arg2, arg3)
 }
 
 // Sort sorts @seq using @cmp_func.
@@ -491,12 +387,12 @@ func (s *Sequence) SearchIter(data interface{}, iterCmp SequenceIterCompareFunc)
 // @cmp_func is passed two items of @seq and should return 0 if they are equal,
 // a negative value if the first comes before the second, and a positive value
 // if the second comes before the first.
-func (s *Sequence) Sort(cmpFunc CompareDataFunc) {
+func (s *Sequence) Sort(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	C.g_sequence_sort(arg0, cmpFunc, cmpData)
+	C.g_sequence_sort(arg0, arg1, arg2)
 }
 
 // SortIter: like g_sequence_sort(), but uses a IterCompareFunc instead of a
@@ -506,12 +402,12 @@ func (s *Sequence) Sort(cmpFunc CompareDataFunc) {
 // if the iterators are equal, a negative value if the first iterator comes
 // before the second, and a positive value if the second iterator comes before
 // the first.
-func (s *Sequence) SortIter(cmpFunc SequenceIterCompareFunc) {
+func (s *Sequence) SortIter(s *Sequence) {
 	var arg0 *C.GSequence
 
 	arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	C.g_sequence_sort_iter(arg0, cmpFunc, cmpData)
+	C.g_sequence_sort_iter(arg0, arg1, arg2)
 }
 
 // SequenceIter: the Iter struct is an opaque data type representing an iterator
@@ -544,138 +440,100 @@ func (s *SequenceIter) Native() unsafe.Pointer {
 // and a positive number if @a comes after @b.
 //
 // The @a and @b iterators must point into the same sequence.
-func (a *SequenceIter) Compare(b *SequenceIter) int {
+func (a *SequenceIter) Compare(a *SequenceIter, b *SequenceIter) {
 	var arg0 *C.GSequenceIter
 	var arg1 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GSequenceIter)(unsafe.Pointer(b.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_sequence_iter_compare(arg0, b)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_sequence_iter_compare(arg0, arg1)
 }
 
 // Position returns the position of @iter
-func (i *SequenceIter) Position() int {
+func (i *SequenceIter) Position(i *SequenceIter) {
 	var arg0 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_sequence_iter_get_position(arg0)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_sequence_iter_get_position(arg0)
 }
 
 // Sequence returns the #GSequence that @iter points into.
-func (i *SequenceIter) Sequence() *Sequence {
+func (i *SequenceIter) Sequence(i *SequenceIter) {
 	var arg0 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GSequence
-	var ret1 *Sequence
-
-	cret = C.g_sequence_iter_get_sequence(arg0)
-
-	ret1 = WrapSequence(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_iter_get_sequence(arg0)
 }
 
 // IsBegin returns whether @iter is the begin iterator
-func (i *SequenceIter) IsBegin() bool {
+func (i *SequenceIter) IsBegin(i *SequenceIter) bool {
 	var arg0 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_sequence_iter_is_begin(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IsEnd returns whether @iter is the end iterator
-func (i *SequenceIter) IsEnd() bool {
+func (i *SequenceIter) IsEnd(i *SequenceIter) bool {
 	var arg0 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_sequence_iter_is_end(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Move returns the Iter which is @delta positions away from @iter. If @iter is
 // closer than -@delta positions to the beginning of the sequence, the begin
 // iterator is returned. If @iter is closer than @delta positions to the end of
 // the sequence, the end iterator is returned.
-func (i *SequenceIter) Move(delta int) *SequenceIter {
+func (i *SequenceIter) Move(i *SequenceIter, delta int) {
 	var arg0 *C.GSequenceIter
 	var arg1 C.gint
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 	arg1 = C.gint(delta)
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_iter_move(arg0, delta)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_iter_move(arg0, arg1)
 }
 
 // Next returns an iterator pointing to the next position after @iter. If @iter
 // is the end iterator, the end iterator is returned.
-func (i *SequenceIter) Next() *SequenceIter {
+func (i *SequenceIter) Next(i *SequenceIter) {
 	var arg0 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_iter_next(arg0)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_iter_next(arg0)
 }
 
 // Prev returns an iterator pointing to the previous position before @iter. If
 // @iter is the begin iterator, the begin iterator is returned.
-func (i *SequenceIter) Prev() *SequenceIter {
+func (i *SequenceIter) Prev(i *SequenceIter) {
 	var arg0 *C.GSequenceIter
 
 	arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GSequenceIter
-	var ret1 *SequenceIter
-
-	cret = C.g_sequence_iter_prev(arg0)
-
-	ret1 = WrapSequenceIter(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_sequence_iter_prev(arg0)
 }

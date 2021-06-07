@@ -3,12 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +31,7 @@ func init() {
 // NewDTLSClientConnection creates a new ClientConnection wrapping @base_socket
 // which is assumed to communicate with the server identified by
 // @server_identity.
-func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) (dtlsClientConnection DTLSClientConnection, err error) {
+func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) error {
 	var arg1 *C.GDatagramBased
 	var arg2 *C.GSocketConnectable
 
@@ -45,16 +39,13 @@ func NewDTLSClientConnection(baseSocket DatagramBased, serverIdentity SocketConn
 	arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GDatagramBased
-	var ret2 DTLSClientConnection
+	var err error
 
-	cret = C.g_dtls_client_connection_new(baseSocket, serverIdentity, &errout)
+	C.g_dtls_client_connection_new(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DTLSClientConnection)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
@@ -69,20 +60,20 @@ type DTLSClientConnection interface {
 	//
 	// Each item in the list is a Array which contains the complete subject DN
 	// of the certificate authority.
-	AcceptedCAS() *glib.List
+	AcceptedCAS(c DTLSClientConnection)
 	// ServerIdentity gets @conn's expected server identity
-	ServerIdentity() SocketConnectable
+	ServerIdentity(c DTLSClientConnection)
 	// ValidationFlags gets @conn's validation flags
-	ValidationFlags() TLSCertificateFlags
+	ValidationFlags(c DTLSClientConnection)
 	// SetServerIdentity sets @conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let @conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-	SetServerIdentity(identity SocketConnectable)
+	SetServerIdentity(c DTLSClientConnection, identity SocketConnectable)
 	// SetValidationFlags sets @conn's validation flags, to override the default
 	// set of checks performed when validating a server certificate. By default,
 	// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
-	SetValidationFlags(flags TLSCertificateFlags)
+	SetValidationFlags(c DTLSClientConnection, flags TLSCertificateFlags)
 }
 
 // dtlsClientConnection implements the DTLSClientConnection interface.
@@ -115,79 +106,55 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //
 // Each item in the list is a Array which contains the complete subject DN
 // of the certificate authority.
-func (c dtlsClientConnection) AcceptedCAS() *glib.List {
+func (c dtlsClientConnection) AcceptedCAS(c DTLSClientConnection) {
 	var arg0 *C.GDtlsClientConnection
 
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_dtls_client_connection_get_accepted_cas(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_dtls_client_connection_get_accepted_cas(arg0)
 }
 
 // ServerIdentity gets @conn's expected server identity
-func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
+func (c dtlsClientConnection) ServerIdentity(c DTLSClientConnection) {
 	var arg0 *C.GDtlsClientConnection
 
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSocketConnectable
-	var ret1 SocketConnectable
-
-	cret = C.g_dtls_client_connection_get_server_identity(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
-
-	return ret1
+	C.g_dtls_client_connection_get_server_identity(arg0)
 }
 
 // ValidationFlags gets @conn's validation flags
-func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
+func (c dtlsClientConnection) ValidationFlags(c DTLSClientConnection) {
 	var arg0 *C.GDtlsClientConnection
 
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var cret C.GTlsCertificateFlags
-	var ret1 TLSCertificateFlags
-
-	cret = C.g_dtls_client_connection_get_validation_flags(arg0)
-
-	ret1 = TLSCertificateFlags(cret)
-
-	return ret1
+	C.g_dtls_client_connection_get_validation_flags(arg0)
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used
 // both to tell servers on virtual hosts which certificate to present, and
 // also to let @conn know what name to look for in the certificate when
 // performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-func (c dtlsClientConnection) SetServerIdentity(identity SocketConnectable) {
+func (c dtlsClientConnection) SetServerIdentity(c DTLSClientConnection, identity SocketConnectable) {
 	var arg0 *C.GDtlsClientConnection
 	var arg1 *C.GSocketConnectable
 
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
-	C.g_dtls_client_connection_set_server_identity(arg0, identity)
+	C.g_dtls_client_connection_set_server_identity(arg0, arg1)
 }
 
 // SetValidationFlags sets @conn's validation flags, to override the default
 // set of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
-func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
+func (c dtlsClientConnection) SetValidationFlags(c DTLSClientConnection, flags TLSCertificateFlags) {
 	var arg0 *C.GDtlsClientConnection
 	var arg1 C.GTlsCertificateFlags
 
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (C.GTlsCertificateFlags)(flags)
 
-	C.g_dtls_client_connection_set_validation_flags(arg0, flags)
+	C.g_dtls_client_connection_set_validation_flags(arg0, arg1)
 }

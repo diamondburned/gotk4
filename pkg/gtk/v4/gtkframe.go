@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,28 +61,28 @@ type Frame interface {
 	ConstraintTarget
 
 	// Child gets the child widget of @frame.
-	Child() Widget
+	Child(f Frame)
 	// Label: if the frame’s label widget is a Label, returns the text in the
 	// label widget. (The frame will have a Label for the label widget if a
 	// non-nil argument was passed to gtk_frame_new().)
-	Label() string
+	Label(f Frame)
 	// LabelAlign retrieves the X alignment of the frame’s label. See
 	// gtk_frame_set_label_align().
-	LabelAlign() float32
+	LabelAlign(f Frame)
 	// LabelWidget retrieves the label widget for the frame. See
 	// gtk_frame_set_label_widget().
-	LabelWidget() Widget
+	LabelWidget(f Frame)
 	// SetChild sets the child widget of @frame.
-	SetChild(child Widget)
+	SetChild(f Frame, child Widget)
 	// SetLabel removes the current Frame:label-widget. If @label is not nil,
 	// creates a new Label with that text and adds it as the Frame:label-widget.
-	SetLabel(label string)
+	SetLabel(f Frame, label string)
 	// SetLabelAlign sets the X alignment of the frame widget’s label. The
 	// default value for a newly created frame is 0.0.
-	SetLabelAlign(xalign float32)
+	SetLabelAlign(f Frame, xalign float32)
 	// SetLabelWidget sets the Frame:label-widget for the frame. This is the
 	// widget that will appear embedded in the top edge of the frame as a title.
-	SetLabelWidget(labelWidget Widget)
+	SetLabelWidget(f Frame, labelWidget Widget)
 }
 
 // frame implements the Frame interface.
@@ -116,104 +113,69 @@ func marshalFrame(p uintptr) (interface{}, error) {
 }
 
 // NewFrame constructs a class Frame.
-func NewFrame(label string) Frame {
+func NewFrame(label string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkFrame
-	var ret1 Frame
-
-	cret = C.gtk_frame_new(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Frame)
-
-	return ret1
+	C.gtk_frame_new(arg1)
 }
 
 // Child gets the child widget of @frame.
-func (f frame) Child() Widget {
+func (f frame) Child(f Frame) {
 	var arg0 *C.GtkFrame
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_frame_get_child(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_frame_get_child(arg0)
 }
 
 // Label: if the frame’s label widget is a Label, returns the text in the
 // label widget. (The frame will have a Label for the label widget if a
 // non-nil argument was passed to gtk_frame_new().)
-func (f frame) Label() string {
+func (f frame) Label(f Frame) {
 	var arg0 *C.GtkFrame
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_frame_get_label(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_frame_get_label(arg0)
 }
 
 // LabelAlign retrieves the X alignment of the frame’s label. See
 // gtk_frame_set_label_align().
-func (f frame) LabelAlign() float32 {
+func (f frame) LabelAlign(f Frame) {
 	var arg0 *C.GtkFrame
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var cret C.float
-	var ret1 float32
-
-	cret = C.gtk_frame_get_label_align(arg0)
-
-	ret1 = C.float(cret)
-
-	return ret1
+	C.gtk_frame_get_label_align(arg0)
 }
 
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_frame_set_label_widget().
-func (f frame) LabelWidget() Widget {
+func (f frame) LabelWidget(f Frame) {
 	var arg0 *C.GtkFrame
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_frame_get_label_widget(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_frame_get_label_widget(arg0)
 }
 
 // SetChild sets the child widget of @frame.
-func (f frame) SetChild(child Widget) {
+func (f frame) SetChild(f Frame, child Widget) {
 	var arg0 *C.GtkFrame
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_frame_set_child(arg0, child)
+	C.gtk_frame_set_child(arg0, arg1)
 }
 
 // SetLabel removes the current Frame:label-widget. If @label is not nil,
 // creates a new Label with that text and adds it as the Frame:label-widget.
-func (f frame) SetLabel(label string) {
+func (f frame) SetLabel(f Frame, label string) {
 	var arg0 *C.GtkFrame
 	var arg1 *C.char
 
@@ -221,29 +183,29 @@ func (f frame) SetLabel(label string) {
 	arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_frame_set_label(arg0, label)
+	C.gtk_frame_set_label(arg0, arg1)
 }
 
 // SetLabelAlign sets the X alignment of the frame widget’s label. The
 // default value for a newly created frame is 0.0.
-func (f frame) SetLabelAlign(xalign float32) {
+func (f frame) SetLabelAlign(f Frame, xalign float32) {
 	var arg0 *C.GtkFrame
 	var arg1 C.float
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	arg1 = C.float(xalign)
 
-	C.gtk_frame_set_label_align(arg0, xalign)
+	C.gtk_frame_set_label_align(arg0, arg1)
 }
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the
 // widget that will appear embedded in the top edge of the frame as a title.
-func (f frame) SetLabelWidget(labelWidget Widget) {
+func (f frame) SetLabelWidget(f Frame, labelWidget Widget) {
 	var arg0 *C.GtkFrame
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
 
-	C.gtk_frame_set_label_widget(arg0, labelWidget)
+	C.gtk_frame_set_label_widget(arg0, arg1)
 }

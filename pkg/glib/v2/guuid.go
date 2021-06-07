@@ -2,13 +2,8 @@
 
 package glib
 
-import (
-	"unsafe"
-)
-
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -27,27 +22,21 @@ func UUIDStringIsValid(str string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_uuid_string_is_valid(str)
+	cret = C.g_uuid_string_is_valid(arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // UUIDStringRandom generates a random UUID (RFC 4122 version 4) as a string. It
 // has the same randomness guarantees as #GRand, so must not be used for
 // cryptographic purposes such as key generation, nonces, salts or one-time
 // pads.
-func UUIDStringRandom() string {
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_uuid_string_random()
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+func UUIDStringRandom() {
+	C.g_uuid_string_random()
 }

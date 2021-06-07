@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -68,39 +64,39 @@ type LevelBar interface {
 	// the last one on the bar) a style class named `level-`@name will be
 	// applied when rendering the level bar fill. If another offset marker named
 	// @name exists, its value will be replaced by @value.
-	AddOffsetValue(name string, value float64)
+	AddOffsetValue(s LevelBar, name string, value float64)
 	// Inverted: return the value of the LevelBar:inverted property.
-	Inverted() bool
+	Inverted(s LevelBar) bool
 	// MaxValue returns the value of the LevelBar:max-value property.
-	MaxValue() float64
+	MaxValue(s LevelBar)
 	// MinValue returns the value of the LevelBar:min-value property.
-	MinValue() float64
+	MinValue(s LevelBar)
 	// Mode returns the value of the LevelBar:mode property.
-	Mode() LevelBarMode
+	Mode(s LevelBar)
 	// OffsetValue fetches the value specified for the offset marker @name in
 	// @self, returning true in case an offset named @name was found.
-	OffsetValue(name string) (value float64, ok bool)
+	OffsetValue(s LevelBar, name string) (value float64, ok bool)
 	// Value returns the value of the LevelBar:value property.
-	Value() float64
+	Value(s LevelBar)
 	// RemoveOffsetValue removes an offset marker previously added with
 	// gtk_level_bar_add_offset_value().
-	RemoveOffsetValue(name string)
+	RemoveOffsetValue(s LevelBar, name string)
 	// SetInverted sets the value of the LevelBar:inverted property.
-	SetInverted(inverted bool)
+	SetInverted(s LevelBar, inverted bool)
 	// SetMaxValue sets the value of the LevelBar:max-value property.
 	//
 	// You probably want to update preexisting level offsets after calling this
 	// function.
-	SetMaxValue(value float64)
+	SetMaxValue(s LevelBar, value float64)
 	// SetMinValue sets the value of the LevelBar:min-value property.
 	//
 	// You probably want to update preexisting level offsets after calling this
 	// function.
-	SetMinValue(value float64)
+	SetMinValue(s LevelBar, value float64)
 	// SetMode sets the value of the LevelBar:mode property.
-	SetMode(mode LevelBarMode)
+	SetMode(s LevelBar, mode LevelBarMode)
 	// SetValue sets the value of the LevelBar:value property.
-	SetValue(value float64)
+	SetValue(s LevelBar, value float64)
 }
 
 // levelBar implements the LevelBar interface.
@@ -129,33 +125,19 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 }
 
 // NewLevelBar constructs a class LevelBar.
-func NewLevelBar() LevelBar {
-	var cret C.GtkLevelBar
-	var ret1 LevelBar
-
-	cret = C.gtk_level_bar_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
-
-	return ret1
+func NewLevelBar() {
+	C.gtk_level_bar_new()
 }
 
 // NewLevelBarForInterval constructs a class LevelBar.
-func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
+func NewLevelBarForInterval(minValue float64, maxValue float64) {
 	var arg1 C.gdouble
 	var arg2 C.gdouble
 
 	arg1 = C.gdouble(minValue)
 	arg2 = C.gdouble(maxValue)
 
-	var cret C.GtkLevelBar
-	var ret1 LevelBar
-
-	cret = C.gtk_level_bar_new_for_interval(minValue, maxValue)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
-
-	return ret1
+	C.gtk_level_bar_new_for_interval(arg1, arg2)
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position
@@ -164,7 +146,7 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 // the last one on the bar) a style class named `level-`@name will be
 // applied when rendering the level bar fill. If another offset marker named
 // @name exists, its value will be replaced by @value.
-func (s levelBar) AddOffsetValue(name string, value float64) {
+func (s levelBar) AddOffsetValue(s LevelBar, name string, value float64) {
 	var arg0 *C.GtkLevelBar
 	var arg1 *C.gchar
 	var arg2 C.gdouble
@@ -174,76 +156,57 @@ func (s levelBar) AddOffsetValue(name string, value float64) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gdouble(value)
 
-	C.gtk_level_bar_add_offset_value(arg0, name, value)
+	C.gtk_level_bar_add_offset_value(arg0, arg1, arg2)
 }
 
 // Inverted: return the value of the LevelBar:inverted property.
-func (s levelBar) Inverted() bool {
+func (s levelBar) Inverted(s LevelBar) bool {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_level_bar_get_inverted(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // MaxValue returns the value of the LevelBar:max-value property.
-func (s levelBar) MaxValue() float64 {
+func (s levelBar) MaxValue(s LevelBar) {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_level_bar_get_max_value(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_level_bar_get_max_value(arg0)
 }
 
 // MinValue returns the value of the LevelBar:min-value property.
-func (s levelBar) MinValue() float64 {
+func (s levelBar) MinValue(s LevelBar) {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_level_bar_get_min_value(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_level_bar_get_min_value(arg0)
 }
 
 // Mode returns the value of the LevelBar:mode property.
-func (s levelBar) Mode() LevelBarMode {
+func (s levelBar) Mode(s LevelBar) {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkLevelBarMode
-	var ret1 LevelBarMode
-
-	cret = C.gtk_level_bar_get_mode(arg0)
-
-	ret1 = LevelBarMode(cret)
-
-	return ret1
+	C.gtk_level_bar_get_mode(arg0)
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in
 // @self, returning true in case an offset named @name was found.
-func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
+func (s levelBar) OffsetValue(s LevelBar, name string) (value float64, ok bool) {
 	var arg0 *C.GtkLevelBar
 	var arg1 *C.gchar
 
@@ -252,37 +215,32 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.gdouble
-	var ret2 float64
+	var value float64
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_level_bar_get_offset_value(arg0, name, &arg2)
+	cret = C.gtk_level_bar_get_offset_value(arg0, arg1, &arg2)
 
-	*ret2 = C.gdouble(arg2)
-	ret2 = C.bool(cret) != C.false
+	value = float64(&arg2)
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return value, ok
 }
 
 // Value returns the value of the LevelBar:value property.
-func (s levelBar) Value() float64 {
+func (s levelBar) Value(s LevelBar) {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.gtk_level_bar_get_value(arg0)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.gtk_level_bar_get_value(arg0)
 }
 
 // RemoveOffsetValue removes an offset marker previously added with
 // gtk_level_bar_add_offset_value().
-func (s levelBar) RemoveOffsetValue(name string) {
+func (s levelBar) RemoveOffsetValue(s LevelBar, name string) {
 	var arg0 *C.GtkLevelBar
 	var arg1 *C.gchar
 
@@ -290,11 +248,11 @@ func (s levelBar) RemoveOffsetValue(name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_level_bar_remove_offset_value(arg0, name)
+	C.gtk_level_bar_remove_offset_value(arg0, arg1)
 }
 
 // SetInverted sets the value of the LevelBar:inverted property.
-func (s levelBar) SetInverted(inverted bool) {
+func (s levelBar) SetInverted(s LevelBar, inverted bool) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.gboolean
 
@@ -303,55 +261,55 @@ func (s levelBar) SetInverted(inverted bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_level_bar_set_inverted(arg0, inverted)
+	C.gtk_level_bar_set_inverted(arg0, arg1)
 }
 
 // SetMaxValue sets the value of the LevelBar:max-value property.
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
-func (s levelBar) SetMaxValue(value float64) {
+func (s levelBar) SetMaxValue(s LevelBar, value float64) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.gdouble
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	arg1 = C.gdouble(value)
 
-	C.gtk_level_bar_set_max_value(arg0, value)
+	C.gtk_level_bar_set_max_value(arg0, arg1)
 }
 
 // SetMinValue sets the value of the LevelBar:min-value property.
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
-func (s levelBar) SetMinValue(value float64) {
+func (s levelBar) SetMinValue(s LevelBar, value float64) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.gdouble
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	arg1 = C.gdouble(value)
 
-	C.gtk_level_bar_set_min_value(arg0, value)
+	C.gtk_level_bar_set_min_value(arg0, arg1)
 }
 
 // SetMode sets the value of the LevelBar:mode property.
-func (s levelBar) SetMode(mode LevelBarMode) {
+func (s levelBar) SetMode(s LevelBar, mode LevelBarMode) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.GtkLevelBarMode
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	arg1 = (C.GtkLevelBarMode)(mode)
 
-	C.gtk_level_bar_set_mode(arg0, mode)
+	C.gtk_level_bar_set_mode(arg0, arg1)
 }
 
 // SetValue sets the value of the LevelBar:value property.
-func (s levelBar) SetValue(value float64) {
+func (s levelBar) SetValue(s LevelBar, value float64) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.gdouble
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 	arg1 = C.gdouble(value)
 
-	C.gtk_level_bar_set_value(arg0, value)
+	C.gtk_level_bar_set_value(arg0, arg1)
 }

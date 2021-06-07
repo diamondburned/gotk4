@@ -3,10 +3,7 @@
 package gtk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -14,7 +11,6 @@ import (
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -103,16 +99,8 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 }
 
 // NewCallbackAction constructs a class CallbackAction.
-func NewCallbackAction(callback ShortcutFunc) CallbackAction {
-
-	var cret C.GtkCallbackAction
-	var ret1 CallbackAction
-
-	cret = C.gtk_callback_action_new(callback, data, destroy)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CallbackAction)
-
-	return ret1
+func NewCallbackAction() {
+	C.gtk_callback_action_new(arg1, arg2, arg3)
 }
 
 // MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
@@ -146,7 +134,7 @@ type NamedAction interface {
 	ShortcutAction
 
 	// ActionName returns the name of the action that will be activated.
-	ActionName() string
+	ActionName(s NamedAction)
 }
 
 // namedAction implements the NamedAction interface.
@@ -171,36 +159,22 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 }
 
 // NewNamedAction constructs a class NamedAction.
-func NewNamedAction(name string) NamedAction {
+func NewNamedAction(name string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkNamedAction
-	var ret1 NamedAction
-
-	cret = C.gtk_named_action_new(name)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NamedAction)
-
-	return ret1
+	C.gtk_named_action_new(arg1)
 }
 
 // ActionName returns the name of the action that will be activated.
-func (s namedAction) ActionName() string {
+func (s namedAction) ActionName(s NamedAction) {
 	var arg0 *C.GtkNamedAction
 
 	arg0 = (*C.GtkNamedAction)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_named_action_get_action_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_named_action_get_action_name(arg0)
 }
 
 // NothingAction: a ShortcutAction that does nothing.
@@ -264,16 +238,16 @@ type ShortcutAction interface {
 	// Activation of an action can fail for various reasons. If the action is
 	// not supported by the @widget, if the @args don't match the action or if
 	// the activation otherwise had no effect, false will be returned.
-	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
+	Activate(s ShortcutAction, flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
 	// Print prints the given action into a string for the developer. This is
 	// meant for debugging and logging.
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
-	Print(string *glib.String)
+	Print(s ShortcutAction, string *glib.String)
 	// String prints the given action into a human-readable string. This is a
 	// small wrapper around gtk_shortcut_action_print() to help when debugging.
-	String() string
+	String(s ShortcutAction)
 }
 
 // shortcutAction implements the ShortcutAction interface.
@@ -298,20 +272,13 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 }
 
 // NewShortcutActionParseString constructs a class ShortcutAction.
-func NewShortcutActionParseString(string string) ShortcutAction {
+func NewShortcutActionParseString(string string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkShortcutAction
-	var ret1 ShortcutAction
-
-	cret = C.gtk_shortcut_action_parse_string(string)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutAction)
-
-	return ret1
+	C.gtk_shortcut_action_parse_string(arg1)
 }
 
 // Activate activates the action on the @widget with the given @args.
@@ -321,7 +288,7 @@ func NewShortcutActionParseString(string string) ShortcutAction {
 // Activation of an action can fail for various reasons. If the action is
 // not supported by the @widget, if the @args don't match the action or if
 // the activation otherwise had no effect, false will be returned.
-func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
+func (s shortcutAction) Activate(s ShortcutAction, flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
 	var arg0 *C.GtkShortcutAction
 	var arg1 C.GtkShortcutActionFlags
 	var arg2 *C.GtkWidget
@@ -333,13 +300,15 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 	arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_shortcut_action_activate(arg0, flags, widget, args)
+	cret = C.gtk_shortcut_action_activate(arg0, arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Print prints the given action into a string for the developer. This is
@@ -347,32 +316,24 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 //
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
-func (s shortcutAction) Print(string *glib.String) {
+func (s shortcutAction) Print(s ShortcutAction, string *glib.String) {
 	var arg0 *C.GtkShortcutAction
 	var arg1 *C.GString
 
 	arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
 
-	C.gtk_shortcut_action_print(arg0, string)
+	C.gtk_shortcut_action_print(arg0, arg1)
 }
 
 // String prints the given action into a human-readable string. This is a
 // small wrapper around gtk_shortcut_action_print() to help when debugging.
-func (s shortcutAction) String() string {
+func (s shortcutAction) String(s ShortcutAction) {
 	var arg0 *C.GtkShortcutAction
 
 	arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_shortcut_action_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_shortcut_action_to_string(arg0)
 }
 
 // SignalAction: a ShortcutAction that emits a signal.
@@ -383,7 +344,7 @@ type SignalAction interface {
 	ShortcutAction
 
 	// SignalName returns the name of the signal that will be emitted.
-	SignalName() string
+	SignalName(s SignalAction)
 }
 
 // signalAction implements the SignalAction interface.
@@ -408,34 +369,20 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 }
 
 // NewSignalAction constructs a class SignalAction.
-func NewSignalAction(signalName string) SignalAction {
+func NewSignalAction(signalName string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(signalName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkSignalAction
-	var ret1 SignalAction
-
-	cret = C.gtk_signal_action_new(signalName)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalAction)
-
-	return ret1
+	C.gtk_signal_action_new(arg1)
 }
 
 // SignalName returns the name of the signal that will be emitted.
-func (s signalAction) SignalName() string {
+func (s signalAction) SignalName(s SignalAction) {
 	var arg0 *C.GtkSignalAction
 
 	arg0 = (*C.GtkSignalAction)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_signal_action_get_signal_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.gtk_signal_action_get_signal_name(arg0)
 }

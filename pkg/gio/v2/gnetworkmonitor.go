@@ -3,16 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -34,15 +29,8 @@ func init() {
 }
 
 // NetworkMonitorGetDefault gets the default Monitor for the system.
-func NetworkMonitorGetDefault() NetworkMonitor {
-	var cret *C.GNetworkMonitor
-	var ret1 NetworkMonitor
-
-	cret = C.g_network_monitor_get_default()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NetworkMonitor)
-
-	return ret1
+func NetworkMonitorGetDefault() {
+	C.g_network_monitor_get_default()
 }
 
 // NetworkMonitorOverrider contains methods that are overridable. This
@@ -63,7 +51,7 @@ type NetworkMonitorOverrider interface {
 	// may still block for a brief period of time (eg, trying to do multicast
 	// DNS on the local network), so if you do not want to block, you should use
 	// g_network_monitor_can_reach_async().
-	CanReach(connectable SocketConnectable, cancellable Cancellable) error
+	CanReach(m NetworkMonitor, connectable SocketConnectable, cancellable Cancellable) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by @connectable can be reached, without actually trying
 	// to connect to it.
@@ -73,12 +61,12 @@ type NetworkMonitorOverrider interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_network_monitor_can_reach_finish() to get the result of the
 	// operation.
-	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
+	CanReachAsync(m NetworkMonitor)
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
-	CanReachFinish(result AsyncResult) error
+	CanReachFinish(m NetworkMonitor, result AsyncResult) error
 
-	NetworkChanged(networkAvailable bool)
+	NetworkChanged(m NetworkMonitor, networkAvailable bool)
 }
 
 // NetworkMonitor provides an easy-to-use cross-platform API for monitoring
@@ -109,15 +97,15 @@ type NetworkMonitor interface {
 	// reachable but others are not. In this case, applications can attempt to
 	// connect to remote servers, but should gracefully fall back to their
 	// "offline" behavior if the connection attempt fails.
-	Connectivity() NetworkConnectivity
+	Connectivity(m NetworkMonitor)
 	// NetworkAvailable checks if the network is available. "Available" here
 	// means that the system has a default route available for at least one of
 	// IPv4 or IPv6. It does not necessarily imply that the public Internet is
 	// reachable. See Monitor:network-available for more details.
-	NetworkAvailable() bool
+	NetworkAvailable(m NetworkMonitor) bool
 	// NetworkMetered checks if the network is metered. See
 	// Monitor:network-metered for more details.
-	NetworkMetered() bool
+	NetworkMetered(m NetworkMonitor) bool
 }
 
 // networkMonitor implements the NetworkMonitor interface.
@@ -156,7 +144,7 @@ func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 // may still block for a brief period of time (eg, trying to do multicast
 // DNS on the local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
-func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
+func (m networkMonitor) CanReach(m NetworkMonitor, connectable SocketConnectable, cancellable Cancellable) error {
 	var arg0 *C.GNetworkMonitor
 	var arg1 *C.GSocketConnectable
 	var arg2 *C.GCancellable
@@ -166,13 +154,13 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_network_monitor_can_reach(arg0, connectable, cancellable, &errout)
+	C.g_network_monitor_can_reach(arg0, arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // CanReachAsync: asynchronously attempts to determine whether or not the
@@ -184,17 +172,17 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 // When the operation is finished, @callback will be called. You can then
 // call g_network_monitor_can_reach_finish() to get the result of the
 // operation.
-func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
+func (m networkMonitor) CanReachAsync(m NetworkMonitor) {
 	var arg0 *C.GNetworkMonitor
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.g_network_monitor_can_reach_async(arg0, connectable, cancellable, callback, userData)
+	C.g_network_monitor_can_reach_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // CanReachFinish finishes an async network connectivity test. See
 // g_network_monitor_can_reach_async().
-func (m networkMonitor) CanReachFinish(result AsyncResult) error {
+func (m networkMonitor) CanReachFinish(m NetworkMonitor, result AsyncResult) error {
 	var arg0 *C.GNetworkMonitor
 	var arg1 *C.GAsyncResult
 
@@ -202,13 +190,13 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_network_monitor_can_reach_finish(arg0, result, &errout)
+	C.g_network_monitor_can_reach_finish(arg0, arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // Connectivity gets a more detailed networking state than
@@ -230,53 +218,50 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 // reachable but others are not. In this case, applications can attempt to
 // connect to remote servers, but should gracefully fall back to their
 // "offline" behavior if the connection attempt fails.
-func (m networkMonitor) Connectivity() NetworkConnectivity {
+func (m networkMonitor) Connectivity(m NetworkMonitor) {
 	var arg0 *C.GNetworkMonitor
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.GNetworkConnectivity
-	var ret1 NetworkConnectivity
-
-	cret = C.g_network_monitor_get_connectivity(arg0)
-
-	ret1 = NetworkConnectivity(cret)
-
-	return ret1
+	C.g_network_monitor_get_connectivity(arg0)
 }
 
 // NetworkAvailable checks if the network is available. "Available" here
 // means that the system has a default route available for at least one of
 // IPv4 or IPv6. It does not necessarily imply that the public Internet is
 // reachable. See Monitor:network-available for more details.
-func (m networkMonitor) NetworkAvailable() bool {
+func (m networkMonitor) NetworkAvailable(m NetworkMonitor) bool {
 	var arg0 *C.GNetworkMonitor
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_network_monitor_get_network_available(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // NetworkMetered checks if the network is metered. See
 // Monitor:network-metered for more details.
-func (m networkMonitor) NetworkMetered() bool {
+func (m networkMonitor) NetworkMetered(m NetworkMonitor) bool {
 	var arg0 *C.GNetworkMonitor
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_network_monitor_get_network_metered(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

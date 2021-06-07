@@ -16,16 +16,28 @@ type callableGenerator struct {
 
 	Converts []string
 
-	ng *NamespaceGenerator
-	fg *FileGenerator
+	pen *pen.BlockSections
+	ng  *NamespaceGenerator
+	fg  *FileGenerator
 }
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
-	return callableGenerator{ng: ng}
+	// Arbitrary sizes, whatever.
+	pen := pen.NewBlockSections(1024, 4096, 1024, 256, 4096, 128)
+
+	return callableGenerator{
+		ng:  ng,
+		pen: pen,
+	}
 }
 
 func (cg *callableGenerator) reset() {
-	*cg = callableGenerator{ng: cg.ng}
+	cg.pen.Reset()
+
+	*cg = callableGenerator{
+		ng:  cg.ng,
+		pen: cg.pen,
+	}
 }
 
 func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
@@ -37,17 +49,10 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 
 	cg.fg = cg.ng.FileFromSource(cattrs.SourcePosition)
 
-	call := cg.fg.fnCall(cattrs)
-	if call == "" {
-		cg.reset()
-		return false
-	}
-
 	cg.Name = SnakeToGo(true, cattrs.Name)
-	cg.Tail = call
 	cg.CallableAttrs = cattrs
 
-	if cg.Block = cg.block(); cg.Block == "" {
+	if !cg.renderBlock() {
 		cg.reset()
 		return false
 	}
@@ -98,17 +103,7 @@ func (cg *callableGenerator) Recv() string {
 	return "v"
 }
 
-// Block renders the function block. It returns an empty string if a conversion
-// cannot be generated.
-func (cg *callableGenerator) block() string {
-	type retVar struct {
-		Name      string
-		Type      gir.AnyType
-		Owner     gir.TransferOwnership
-		Return    bool
-		AllowNone bool
-	}
-
+func (cg *callableGenerator) renderBlock() bool {
 	const (
 		secInputDecl = iota
 		secInputConv
@@ -117,9 +112,6 @@ func (cg *callableGenerator) block() string {
 		secOutputConv
 		secReturn
 	)
-
-	// Arbitrary sizes, whatever.
-	blocks := pen.NewBlockSections(1024, 4096, 1024, 256, 4096, 128)
 
 	var (
 		params  pen.Joints
@@ -149,12 +141,12 @@ func (cg *callableGenerator) block() string {
 
 		for i, param := range cg.Parameters.Parameters {
 			if param.Direction != "out" {
-				in := SnakeToGo(false, param.Name)
-				params.Add(in)
+				out := fmt.Sprintf("arg%d", i+1)
+				params.Add(out)
 
 				inputValues = append(inputValues, GoValueProp{
 					ValueProp: NewValuePropParam(
-						in, fmt.Sprintf("arg%d", i+1), &i,
+						SnakeToGo(false, param.Name), out, &i,
 						param.ParameterAttrs,
 					),
 				})
@@ -162,7 +154,7 @@ func (cg *callableGenerator) block() string {
 				in := fmt.Sprintf("arg%d", i+1)
 				params.Add("&" + in)
 
-				out := fmt.Sprintf("ret%d", i+1)
+				out := SnakeToGo(false, param.Name)
 				returns.Add(out)
 
 				outputValues = append(outputValues, CValueProp{
@@ -174,66 +166,89 @@ func (cg *callableGenerator) block() string {
 
 	if cg.Throws {
 		params.Add("&errout")
-		returns.Add("goerr")
+		returns.Add("err")
+
 		outputValues = append(outputValues, CValueProp{
-			ValueProp: newThrowValue("errout", "goerr"),
+			ValueProp: newThrowValue("errout", "err"),
 		})
 	}
 
+	var hasReturn bool
 	// If the last return is a bool and the function can throw an error,
 	// then the boolean is probably to indicate that things are OK. We can
 	// skip generating this boolean.
-	hasReturn := !returnIsVoid(cg.ReturnValue) &&
-		!(cg.Throws && anyTypeName(cg.ReturnValue.AnyType, "") == "ok")
+	if !returnIsVoid(cg.ReturnValue) {
+		returnName := anyTypeName(cg.ReturnValue.AnyType, "ret")
 
-	if hasReturn {
-		out := fmt.Sprintf("ret%d", len(outputValues)+1)
-		returns.Add(out)
+		if !cg.Throws && returnName == "ok" {
+			hasReturn = true
 
-		outputValues = append(outputValues, CValueProp{
-			ValueProp: NewValuePropReturn("cret", out, *cg.ReturnValue),
-		})
+			returns.Add(returnName)
+			outputValues = append(outputValues, CValueProp{
+				ValueProp: NewValuePropReturn("cret", returnName, *cg.ReturnValue),
+			})
+		}
 	}
 
-	convI := cg.fg.GoCConverter(cg.Name, inputValues).WriteAll(
-		// Go inputs are declared in the parameters.
-		nil,
-		// C outputs have to be declared (input means C function input).
-		blocks.Section(secInputDecl),
-		// Conversions follow right after declaring all outputs.
-		blocks.Section(secInputConv),
-	)
-
-	if !convI {
+	convertedInputs := cg.fg.GoCConverter(cg.Name, inputValues).ConvertAll()
+	if convertedInputs == nil {
 		cg.fg.Logln(LogSkip, "callable (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
-		return ""
+		return false
 	}
 
-	convO := cg.fg.CGoConverter(cg.Name, outputValues).WriteAll(
-		blocks.Section(secReturnDecl),
-		// Go outputs should be redeclared.
-		blocks.Section(secReturnDecl),
-		// Conversions follow right after declaring all outputs.
-		blocks.Section(secOutputConv),
-	)
-
-	if !convO {
+	convertedOutputs := cg.fg.CGoConverter(cg.Name, outputValues).ConvertAll()
+	if convertedOutputs == nil {
 		cg.fg.Logln(LogSkip, "callable (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
-		return ""
+		return false
+	}
+
+	goArgs := pen.NewJoints(", ", len(convertedInputs))
+	for _, converted := range convertedInputs {
+		goArgs.Addf("%s %s", converted.In, converted.InType)
+
+		// Go inputs are declared in the parameters, so no InDeclare.
+		// C outputs have to be declared (input means C function input).
+		cg.pen.Line(secInputDecl, converted.OutDeclare)
+		// Conversions follow right after declaring all outputs.
+		cg.pen.Line(secInputConv, converted.Conversion)
+	}
+
+	goRets := pen.NewJoints(", ", len(convertedOutputs))
+	for _, converted := range convertedOutputs {
+		goRets.Addf("%s %s", converted.Out, converted.OutType)
+
+		cg.pen.Line(secReturnDecl, converted.InDeclare)
+		// Go outputs should be redeclared.
+		cg.pen.Line(secReturnDecl, converted.OutDeclare)
+		// Conversions follow right after declaring all outputs.
+		cg.pen.Line(secOutputConv, converted.Conversion)
 	}
 
 	if !hasReturn {
-		blocks.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, params.Join())
+		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, params.Join())
 	} else {
-		blocks.Linef(secFnCall, "cret = C.%s(%s)", cg.CIdentifier, params.Join())
-		blocks.EmptyLine(secFnCall)
+		cg.pen.Linef(secFnCall, "cret = C.%s(%s)", cg.CIdentifier, params.Join())
+		cg.pen.EmptyLine(secFnCall)
 	}
 
 	if len(outputValues) > 0 {
-		blocks.Line(secReturn, "return "+returns.Join())
+		cg.pen.Line(secReturn, "return "+returns.Join())
 	}
 
-	return blocks.String()
+	cg.Block = cg.pen.String()
+	cg.pen.Reset()
+
+	cg.Tail = "(" + goArgs.Join() + ")"
+	switch goRets.Len() {
+	case 0:
+	// ok
+	case 1:
+		cg.Tail += " " + strings.SplitN(goRets.Join(), " ", 2)[1] // type only
+	default:
+		cg.Tail += " (" + goRets.Join() + ")"
+	}
+
+	return true
 }
 
 // fnCall generates the tail of the function, that is, everything underlined

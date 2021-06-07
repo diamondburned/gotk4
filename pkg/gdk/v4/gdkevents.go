@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -33,16 +32,18 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
 	var arg3 C.double
-	var ret3 float64
+	var angle float64
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gdk_events_get_angle(event1, event2, &arg3)
+	cret = C.gdk_events_get_angle(arg1, arg2, &arg3)
 
-	*ret3 = C.double(arg3)
-	ret2 = C.bool(cret) != C.false
+	angle = float64(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret3, ret2
+	return angle, ok
 }
 
 // EventsGetCenter: if both events contain X/Y information, the center of both
@@ -55,19 +56,21 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
 	var arg3 C.double
-	var ret3 float64
+	var x float64
 	var arg4 C.double
-	var ret4 float64
+	var y float64
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.gdk_events_get_center(event1, event2, &arg3, &arg4)
+	cret = C.gdk_events_get_center(arg1, arg2, &arg3, &arg4)
 
-	*ret3 = C.double(arg3)
-	*ret4 = C.double(arg4)
-	ret3 = C.bool(cret) != C.false
+	x = float64(&arg3)
+	y = float64(&arg4)
+	if cret {
+		ok = true
+	}
 
-	return ret3, ret4, ret3
+	return x, y, ok
 }
 
 // EventsGetDistance: if both events have X/Y information, the distance between
@@ -81,16 +84,18 @@ func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
 	var arg3 C.double
-	var ret3 float64
+	var distance float64
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gdk_events_get_distance(event1, event2, &arg3)
+	cret = C.gdk_events_get_distance(arg1, arg2, &arg3)
 
-	*ret3 = C.double(arg3)
-	ret2 = C.bool(cret) != C.false
+	distance = float64(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret3, ret2
+	return distance, ok
 }
 
 // EventSequence: gdkEventSequence is an opaque type representing a sequence of

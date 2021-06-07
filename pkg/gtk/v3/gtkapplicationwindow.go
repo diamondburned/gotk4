@@ -3,16 +3,12 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -126,21 +122,21 @@ type ApplicationWindow interface {
 
 	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
 	// call to gtk_application_window_set_help_overlay().
-	HelpOverlay() ShortcutsWindow
+	HelpOverlay(w ApplicationWindow)
 	// ID returns the unique ID of the window. If the window has not yet been
 	// added to a Application, returns `0`.
-	ID() uint
+	ID(w ApplicationWindow)
 	// ShowMenubar returns whether the window will display a menubar for the app
 	// menu and menubar as needed.
-	ShowMenubar() bool
+	ShowMenubar(w ApplicationWindow) bool
 	// SetHelpOverlay associates a shortcuts window with the application window,
 	// and sets up an action with the name win.show-help-overlay to present it.
 	//
 	// @window takes resposibility for destroying @help_overlay.
-	SetHelpOverlay(helpOverlay ShortcutsWindow)
+	SetHelpOverlay(w ApplicationWindow, helpOverlay ShortcutsWindow)
 	// SetShowMenubar sets whether the window will display a menubar for the app
 	// menu and menubar as needed.
-	SetShowMenubar(showMenubar bool)
+	SetShowMenubar(w ApplicationWindow, showMenubar bool)
 }
 
 // applicationWindow implements the ApplicationWindow interface.
@@ -171,89 +167,70 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 }
 
 // NewApplicationWindow constructs a class ApplicationWindow.
-func NewApplicationWindow(application Application) ApplicationWindow {
+func NewApplicationWindow(application Application) {
 	var arg1 *C.GtkApplication
 
 	arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
-	var cret C.GtkApplicationWindow
-	var ret1 ApplicationWindow
-
-	cret = C.gtk_application_window_new(application)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ApplicationWindow)
-
-	return ret1
+	C.gtk_application_window_new(arg1)
 }
 
 // HelpOverlay gets the ShortcutsWindow that has been set up with a prior
 // call to gtk_application_window_set_help_overlay().
-func (w applicationWindow) HelpOverlay() ShortcutsWindow {
+func (w applicationWindow) HelpOverlay(w ApplicationWindow) {
 	var arg0 *C.GtkApplicationWindow
 
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkShortcutsWindow
-	var ret1 ShortcutsWindow
-
-	cret = C.gtk_application_window_get_help_overlay(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutsWindow)
-
-	return ret1
+	C.gtk_application_window_get_help_overlay(arg0)
 }
 
 // ID returns the unique ID of the window. If the window has not yet been
 // added to a Application, returns `0`.
-func (w applicationWindow) ID() uint {
+func (w applicationWindow) ID(w ApplicationWindow) {
 	var arg0 *C.GtkApplicationWindow
 
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_application_window_get_id(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_application_window_get_id(arg0)
 }
 
 // ShowMenubar returns whether the window will display a menubar for the app
 // menu and menubar as needed.
-func (w applicationWindow) ShowMenubar() bool {
+func (w applicationWindow) ShowMenubar(w ApplicationWindow) bool {
 	var arg0 *C.GtkApplicationWindow
 
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_application_window_get_show_menubar(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetHelpOverlay associates a shortcuts window with the application window,
 // and sets up an action with the name win.show-help-overlay to present it.
 //
 // @window takes resposibility for destroying @help_overlay.
-func (w applicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindow) {
+func (w applicationWindow) SetHelpOverlay(w ApplicationWindow, helpOverlay ShortcutsWindow) {
 	var arg0 *C.GtkApplicationWindow
 	var arg1 *C.GtkShortcutsWindow
 
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
 
-	C.gtk_application_window_set_help_overlay(arg0, helpOverlay)
+	C.gtk_application_window_set_help_overlay(arg0, arg1)
 }
 
 // SetShowMenubar sets whether the window will display a menubar for the app
 // menu and menubar as needed.
-func (w applicationWindow) SetShowMenubar(showMenubar bool) {
+func (w applicationWindow) SetShowMenubar(w ApplicationWindow, showMenubar bool) {
 	var arg0 *C.GtkApplicationWindow
 	var arg1 C.gboolean
 
@@ -262,5 +239,5 @@ func (w applicationWindow) SetShowMenubar(showMenubar bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_application_window_set_show_menubar(arg0, showMenubar)
+	C.gtk_application_window_set_show_menubar(arg0, arg1)
 }

@@ -3,18 +3,13 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -49,15 +44,8 @@ func init() {
 // different directories, depending on which directories were given in
 // `XDG_DATA_DIRS` and `GSETTINGS_SCHEMA_DIR`. For this reason, all lookups
 // performed against the default source should probably be done recursively.
-func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
-	var cret *C.GSettingsSchemaSource
-	var ret1 *SettingsSchemaSource
-
-	cret = C.g_settings_schema_source_get_default()
-
-	ret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
-
-	return ret1
+func SettingsSchemaSourceGetDefault() {
+	C.g_settings_schema_source_get_default()
 }
 
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
@@ -114,26 +102,19 @@ func (s *SettingsSchema) Native() unsafe.Pointer {
 }
 
 // ID: get the ID of @schema.
-func (s *SettingsSchema) ID() string {
+func (s *SettingsSchema) ID(s *SettingsSchema) {
 	var arg0 *C.GSettingsSchema
 
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_settings_schema_get_id(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_settings_schema_get_id(arg0)
 }
 
 // Key gets the key named @name from @schema.
 //
 // It is a programmer error to request a key that does not exist. See
 // g_settings_schema_list_keys().
-func (s *SettingsSchema) Key(name string) *SettingsSchemaKey {
+func (s *SettingsSchema) Key(s *SettingsSchema, name string) {
 	var arg0 *C.GSettingsSchema
 	var arg1 *C.gchar
 
@@ -141,17 +122,7 @@ func (s *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GSettingsSchemaKey
-	var ret1 *SettingsSchemaKey
-
-	cret = C.g_settings_schema_get_key(arg0, name)
-
-	ret1 = WrapSettingsSchemaKey(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SettingsSchemaKey) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_get_key(arg0, arg1)
 }
 
 // Path gets the path associated with @schema, or nil.
@@ -163,23 +134,16 @@ func (s *SettingsSchema) Key(name string) *SettingsSchemaKey {
 // Relocatable schemas can be referenced by other schemas and can therefore
 // describe multiple sets of keys at different locations. For relocatable
 // schemas, this function will return nil.
-func (s *SettingsSchema) Path() string {
+func (s *SettingsSchema) Path(s *SettingsSchema) {
 	var arg0 *C.GSettingsSchema
 
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_settings_schema_get_path(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_settings_schema_get_path(arg0)
 }
 
 // HasKey checks if @schema has a key named @name.
-func (s *SettingsSchema) HasKey(name string) bool {
+func (s *SettingsSchema) HasKey(s *SettingsSchema, name string) bool {
 	var arg0 *C.GSettingsSchema
 	var arg1 *C.gchar
 
@@ -188,46 +152,26 @@ func (s *SettingsSchema) HasKey(name string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_settings_schema_has_key(arg0, name)
+	cret = C.g_settings_schema_has_key(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // ListChildren gets the list of children in @schema.
 //
 // You should free the return value with g_strfreev() when you are done with it.
-func (s *SettingsSchema) ListChildren() []string {
+func (s *SettingsSchema) ListChildren(s *SettingsSchema) {
 	var arg0 *C.GSettingsSchema
 
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_settings_schema_list_children(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.g_settings_schema_list_children(arg0)
 }
 
 // ListKeys introspects the list of keys on @schema.
@@ -235,57 +179,25 @@ func (s *SettingsSchema) ListChildren() []string {
 // You should probably not be calling this function from "normal" code (since
 // you should already know what keys are in your schema). This function is
 // intended for introspection reasons.
-func (s *SettingsSchema) ListKeys() []string {
+func (s *SettingsSchema) ListKeys(s *SettingsSchema) {
 	var arg0 *C.GSettingsSchema
 
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
-	var cret **C.gchar
-	var ret1 []string
-
-	cret = C.g_settings_schema_list_keys(arg0)
-
-	{
-		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
-		ret1 = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			ret1[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
-		}
-	}
-
-	return ret1
+	C.g_settings_schema_list_keys(arg0)
 }
 
 // Ref: increase the reference count of @schema, returning a new reference.
-func (s *SettingsSchema) Ref() *SettingsSchema {
+func (s *SettingsSchema) Ref(s *SettingsSchema) {
 	var arg0 *C.GSettingsSchema
 
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSettingsSchema
-	var ret1 *SettingsSchema
-
-	cret = C.g_settings_schema_ref(arg0)
-
-	ret1 = WrapSettingsSchema(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SettingsSchema) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_ref(arg0)
 }
 
 // Unref: decrease the reference count of @schema, possibly freeing it.
-func (s *SettingsSchema) Unref() {
+func (s *SettingsSchema) Unref(s *SettingsSchema) {
 	var arg0 *C.GSettingsSchema
 
 	arg0 = (*C.GSettingsSchema)(unsafe.Pointer(s.Native()))
@@ -323,22 +235,12 @@ func (s *SettingsSchemaKey) Native() unsafe.Pointer {
 //
 // Note that this is the default value according to the schema. System
 // administrator defaults and lockdown are not visible via this API.
-func (k *SettingsSchemaKey) DefaultValue() *glib.Variant {
+func (k *SettingsSchemaKey) DefaultValue(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.g_settings_schema_key_get_default_value(arg0)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_key_get_default_value(arg0)
 }
 
 // Description gets the description for @key.
@@ -353,35 +255,21 @@ func (k *SettingsSchemaKey) DefaultValue() *glib.Variant {
 // This function is slow. The summary and description information for the
 // schemas is not stored in the compiled schema database so this function has to
 // parse all of the source XML files in the schema directory.
-func (k *SettingsSchemaKey) Description() string {
+func (k *SettingsSchemaKey) Description(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_settings_schema_key_get_description(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_settings_schema_key_get_description(arg0)
 }
 
 // Name gets the name of @key.
-func (k *SettingsSchemaKey) Name() string {
+func (k *SettingsSchemaKey) Name(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_settings_schema_key_get_name(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_settings_schema_key_get_name(arg0)
 }
 
 // Range queries the range of a key.
@@ -418,22 +306,12 @@ func (k *SettingsSchemaKey) Name() string {
 //
 // You should free the returned value with g_variant_unref() when it is no
 // longer needed.
-func (k *SettingsSchemaKey) Range() *glib.Variant {
+func (k *SettingsSchemaKey) Range(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.GVariant
-	var ret1 *glib.Variant
-
-	cret = C.g_settings_schema_key_get_range(arg0)
-
-	ret1 = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_key_get_range(arg0)
 }
 
 // Summary gets the summary for @key.
@@ -447,35 +325,21 @@ func (k *SettingsSchemaKey) Range() *glib.Variant {
 // This function is slow. The summary and description information for the
 // schemas is not stored in the compiled schema database so this function has to
 // parse all of the source XML files in the schema directory.
-func (k *SettingsSchemaKey) Summary() string {
+func (k *SettingsSchemaKey) Summary(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_settings_schema_key_get_summary(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_settings_schema_key_get_summary(arg0)
 }
 
 // ValueType gets the Type of @key.
-func (k *SettingsSchemaKey) ValueType() *glib.VariantType {
+func (k *SettingsSchemaKey) ValueType(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.GVariantType
-	var ret1 *glib.VariantType
-
-	cret = C.g_settings_schema_key_get_value_type(arg0)
-
-	ret1 = glib.WrapVariantType(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_settings_schema_key_get_value_type(arg0)
 }
 
 // RangeCheck checks if the given @value is of the correct type and within the
@@ -483,7 +347,7 @@ func (k *SettingsSchemaKey) ValueType() *glib.VariantType {
 //
 // It is a programmer error if @value is not of the correct type -- you must
 // check for this first.
-func (k *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
+func (k *SettingsSchemaKey) RangeCheck(k *SettingsSchemaKey, value *glib.Variant) bool {
 	var arg0 *C.GSettingsSchemaKey
 	var arg1 *C.GVariant
 
@@ -491,36 +355,28 @@ func (k *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_settings_schema_key_range_check(arg0, value)
+	cret = C.g_settings_schema_key_range_check(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Ref: increase the reference count of @key, returning a new reference.
-func (k *SettingsSchemaKey) Ref() *SettingsSchemaKey {
+func (k *SettingsSchemaKey) Ref(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
 
-	var cret *C.GSettingsSchemaKey
-	var ret1 *SettingsSchemaKey
-
-	cret = C.g_settings_schema_key_ref(arg0)
-
-	ret1 = WrapSettingsSchemaKey(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SettingsSchemaKey) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_key_ref(arg0)
 }
 
 // Unref: decrease the reference count of @key, possibly freeing it.
-func (k *SettingsSchemaKey) Unref() {
+func (k *SettingsSchemaKey) Unref(k *SettingsSchemaKey) {
 	var arg0 *C.GSettingsSchemaKey
 
 	arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(k.Native()))
@@ -550,7 +406,7 @@ func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 }
 
 // NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.
-func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) (settingsSchemaSource *SettingsSchemaSource, err error) {
+func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) error {
 	var arg1 *C.gchar
 	var arg2 *C.GSettingsSchemaSource
 	var arg3 C.gboolean
@@ -563,19 +419,13 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	}
 
 	var errout *C.GError
-	var goerr error
-	var cret *C.GSettingsSchemaSource
-	var ret2 *SettingsSchemaSource
+	var err error
 
-	cret = C.g_settings_schema_source_new_from_directory(directory, parent, trusted, &errout)
+	C.g_settings_schema_source_new_from_directory(arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret2, func(v *SettingsSchemaSource) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Native returns the underlying C source pointer.
@@ -594,7 +444,7 @@ func (s *SettingsSchemaSource) Native() unsafe.Pointer {
 //
 // Do not call this function from normal programs. This is designed for use by
 // database editors, commandline tools, etc.
-func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
+func (s *SettingsSchemaSource) ListSchemas(s *SettingsSchemaSource, recursive bool) (nonRelocatable []string, relocatable []string) {
 	var arg0 *C.GSettingsSchemaSource
 	var arg1 C.gboolean
 
@@ -604,11 +454,11 @@ func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []str
 	}
 
 	var arg2 ***C.gchar
-	var ret2 []string
+	var nonRelocatable []string
 	var arg3 ***C.gchar
-	var ret3 []string
+	var relocatable []string
 
-	C.g_settings_schema_source_list_schemas(arg0, recursive, &arg2, &arg3)
+	C.g_settings_schema_source_list_schemas(arg0, arg1, &arg2, &arg3)
 
 	{
 		var length int
@@ -619,10 +469,10 @@ func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []str
 			}
 		}
 
-		ret2 = make([]string, length)
+		nonRelocatable = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (**C.gchar)(ptr.Add(unsafe.Pointer(arg2), i))
-			ret2[i] = C.GoString(src)
+			nonRelocatable[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -635,15 +485,15 @@ func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []str
 			}
 		}
 
-		ret3 = make([]string, length)
+		relocatable = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (**C.gchar)(ptr.Add(unsafe.Pointer(arg3), i))
-			ret3[i] = C.GoString(src)
+			relocatable[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
 
-	return ret2, ret3
+	return nonRelocatable, relocatable
 }
 
 // Lookup looks up a schema with the identifier @schema_id in @source.
@@ -656,7 +506,7 @@ func (s *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []str
 // parent sources will also be checked.
 //
 // If the schema isn't found, nil is returned.
-func (s *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *SettingsSchema {
+func (s *SettingsSchemaSource) Lookup(s *SettingsSchemaSource, schemaID string, recursive bool) {
 	var arg0 *C.GSettingsSchemaSource
 	var arg1 *C.gchar
 	var arg2 C.gboolean
@@ -668,40 +518,20 @@ func (s *SettingsSchemaSource) Lookup(schemaID string, recursive bool) *Settings
 		arg2 = C.gboolean(1)
 	}
 
-	var cret *C.GSettingsSchema
-	var ret1 *SettingsSchema
-
-	cret = C.g_settings_schema_source_lookup(arg0, schemaID, recursive)
-
-	ret1 = WrapSettingsSchema(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SettingsSchema) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_source_lookup(arg0, arg1, arg2)
 }
 
 // Ref: increase the reference count of @source, returning a new reference.
-func (s *SettingsSchemaSource) Ref() *SettingsSchemaSource {
+func (s *SettingsSchemaSource) Ref(s *SettingsSchemaSource) {
 	var arg0 *C.GSettingsSchemaSource
 
 	arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GSettingsSchemaSource
-	var ret1 *SettingsSchemaSource
-
-	cret = C.g_settings_schema_source_ref(arg0)
-
-	ret1 = WrapSettingsSchemaSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *SettingsSchemaSource) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_settings_schema_source_ref(arg0)
 }
 
 // Unref: decrease the reference count of @source, possibly freeing it.
-func (s *SettingsSchemaSource) Unref() {
+func (s *SettingsSchemaSource) Unref(s *SettingsSchemaSource) {
 	var arg0 *C.GSettingsSchemaSource
 
 	arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(s.Native()))

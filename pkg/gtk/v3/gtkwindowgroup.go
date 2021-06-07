@@ -3,12 +3,6 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,17 +38,17 @@ type WindowGroup interface {
 	gextras.Objector
 
 	// AddWindow adds a window to a WindowGroup.
-	AddWindow(window Window)
+	AddWindow(w WindowGroup, window Window)
 	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
 	// none.
-	CurrentDeviceGrab(device gdk.Device) Widget
+	CurrentDeviceGrab(w WindowGroup, device gdk.Device)
 	// CurrentGrab gets the current grab widget of the given group, see
 	// gtk_grab_add().
-	CurrentGrab() Widget
+	CurrentGrab(w WindowGroup)
 	// ListWindows returns a list of the Windows that belong to @window_group.
-	ListWindows() *glib.List
+	ListWindows(w WindowGroup)
 	// RemoveWindow removes a window from a WindowGroup.
-	RemoveWindow(window Window)
+	RemoveWindow(w WindowGroup, window Window)
 }
 
 // windowGroup implements the WindowGroup interface.
@@ -79,90 +73,59 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 }
 
 // NewWindowGroup constructs a class WindowGroup.
-func NewWindowGroup() WindowGroup {
-	var cret C.GtkWindowGroup
-	var ret1 WindowGroup
-
-	cret = C.gtk_window_group_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
-
-	return ret1
+func NewWindowGroup() {
+	C.gtk_window_group_new()
 }
 
 // AddWindow adds a window to a WindowGroup.
-func (w windowGroup) AddWindow(window Window) {
+func (w windowGroup) AddWindow(w WindowGroup, window Window) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GtkWindow
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_window_group_add_window(arg0, window)
+	C.gtk_window_group_add_window(arg0, arg1)
 }
 
 // CurrentDeviceGrab returns the current grab widget for @device, or nil if
 // none.
-func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
+func (w windowGroup) CurrentDeviceGrab(w WindowGroup, device gdk.Device) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GdkDevice
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_group_get_current_device_grab(arg0, device)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_group_get_current_device_grab(arg0, arg1)
 }
 
 // CurrentGrab gets the current grab widget of the given group, see
 // gtk_grab_add().
-func (w windowGroup) CurrentGrab() Widget {
+func (w windowGroup) CurrentGrab(w WindowGroup) {
 	var arg0 *C.GtkWindowGroup
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_window_group_get_current_grab(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_window_group_get_current_grab(arg0)
 }
 
 // ListWindows returns a list of the Windows that belong to @window_group.
-func (w windowGroup) ListWindows() *glib.List {
+func (w windowGroup) ListWindows(w WindowGroup) {
 	var arg0 *C.GtkWindowGroup
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.gtk_window_group_list_windows(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.gtk_window_group_list_windows(arg0)
 }
 
 // RemoveWindow removes a window from a WindowGroup.
-func (w windowGroup) RemoveWindow(window Window) {
+func (w windowGroup) RemoveWindow(w WindowGroup, window Window) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GtkWindow
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_window_group_remove_window(arg0, window)
+	C.gtk_window_group_remove_window(arg0, arg1)
 }

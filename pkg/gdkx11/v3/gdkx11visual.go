@@ -21,6 +21,9 @@ func init() {
 
 type X11Visual interface {
 	gdk.Visual
+
+	// Xvisual returns the X visual belonging to a Visual.
+	Xvisual(v X11Visual)
 }
 
 // x11Visual implements the X11Visual interface.
@@ -42,4 +45,13 @@ func marshalX11Visual(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11Visual(obj), nil
+}
+
+// Xvisual returns the X visual belonging to a Visual.
+func (v x11Visual) Xvisual(v X11Visual) {
+	var arg0 *C.GdkVisual
+
+	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+
+	C.gdk_x11_visual_get_xvisual(arg0)
 }

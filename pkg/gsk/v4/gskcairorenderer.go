@@ -3,9 +3,6 @@
 package gsk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,13 +44,6 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 }
 
 // NewCairoRenderer constructs a class CairoRenderer.
-func NewCairoRenderer() CairoRenderer {
-	var cret C.GskCairoRenderer
-	var ret1 CairoRenderer
-
-	cret = C.gsk_cairo_renderer_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoRenderer)
-
-	return ret1
+func NewCairoRenderer() {
+	C.gsk_cairo_renderer_new()
 }

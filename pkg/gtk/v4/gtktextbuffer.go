@@ -5,14 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -35,19 +32,19 @@ type TextBuffer interface {
 	//
 	// Emits the TextBuffer::mark-set signal as notification of the mark's
 	// initial placement.
-	AddMark(mark TextMark, where *TextIter)
+	AddMark(b TextBuffer, mark TextMark, where *TextIter)
 	// AddSelectionClipboard adds @clipboard to the list of clipboards in which
 	// the selection contents of @buffer are available. In most cases,
 	// @clipboard will be the Clipboard returned by
 	// gtk_widget_get_primary_clipboard() for a view of @buffer.
-	AddSelectionClipboard(clipboard gdk.Clipboard)
+	AddSelectionClipboard(b TextBuffer, clipboard gdk.Clipboard)
 	// ApplyTag emits the “apply-tag” signal on @buffer. The default handler for
 	// the signal applies @tag to the given range. @start and @end do not have
 	// to be in order.
-	ApplyTag(tag TextTag, start *TextIter, end *TextIter)
+	ApplyTag(b TextBuffer, tag TextTag, start *TextIter, end *TextIter)
 	// ApplyTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag
 	// table to get a TextTag, then calls gtk_text_buffer_apply_tag().
-	ApplyTagByName(name string, start *TextIter, end *TextIter)
+	ApplyTagByName(b TextBuffer, name string, start *TextIter, end *TextIter)
 	// Backspace performs the appropriate action as if the user hit the delete
 	// key with the cursor at the position specified by @iter. In the normal
 	// case a single character will be deleted, but when combining accents are
@@ -58,7 +55,7 @@ type TextBuffer interface {
 	// Because the buffer is modified, all outstanding iterators become invalid
 	// after calling this function; however, the @iter will be re-initialized to
 	// point to the location where text was deleted.
-	Backspace(iter *TextIter, interactive bool, defaultEditable bool) bool
+	Backspace(b TextBuffer, iter *TextIter, interactive bool, defaultEditable bool) bool
 	// BeginIrreversibleAction denotes the beginning of an action that may not
 	// be undone. This will cause any previous operations in the undo/redo queue
 	// to be cleared.
@@ -69,7 +66,7 @@ type TextBuffer interface {
 	//
 	// You may nest calls to gtk_text_buffer_begin_irreversible_action() and
 	// gtk_text_buffer_end_irreversible_action() pairs.
-	BeginIrreversibleAction()
+	BeginIrreversibleAction(b TextBuffer)
 	// BeginUserAction: called to indicate that the buffer operations between
 	// here and a call to gtk_text_buffer_end_user_action() are part of a single
 	// user-visible operation. The operations between
@@ -86,15 +83,15 @@ type TextBuffer interface {
 	// action around the buffer operations they perform, so there's no need to
 	// add extra calls if you user action consists solely of a single call to
 	// one of those functions.
-	BeginUserAction()
+	BeginUserAction(b TextBuffer)
 	// CopyClipboard copies the currently-selected text to a clipboard.
-	CopyClipboard(clipboard gdk.Clipboard)
+	CopyClipboard(b TextBuffer, clipboard gdk.Clipboard)
 	// CreateChildAnchor: this is a convenience function which simply creates a
 	// child anchor with gtk_text_child_anchor_new() and inserts it into the
 	// buffer with gtk_text_buffer_insert_child_anchor(). The new anchor is
 	// owned by the buffer; no reference count is returned to the caller of
 	// gtk_text_buffer_create_child_anchor().
-	CreateChildAnchor(iter *TextIter) TextChildAnchor
+	CreateChildAnchor(b TextBuffer, iter *TextIter)
 	// CreateMark creates a mark at position @where. If @mark_name is nil, the
 	// mark is anonymous; otherwise, the mark can be retrieved by name using
 	// gtk_text_buffer_get_mark(). If a mark has left gravity, and text is
@@ -111,10 +108,10 @@ type TextBuffer interface {
 	//
 	// Emits the TextBuffer::mark-set signal as notification of the mark's
 	// initial placement.
-	CreateMark(markName string, where *TextIter, leftGravity bool) TextMark
+	CreateMark(b TextBuffer, markName string, where *TextIter, leftGravity bool)
 	// CutClipboard copies the currently-selected text to a clipboard, then
 	// deletes said text if it’s editable.
-	CutClipboard(clipboard gdk.Clipboard, defaultEditable bool)
+	CutClipboard(b TextBuffer, clipboard gdk.Clipboard, defaultEditable bool)
 	// Delete deletes text between @start and @end. The order of @start and @end
 	// is not actually relevant; gtk_text_buffer_delete() will reorder them.
 	// This function actually emits the “delete-range” signal, and the default
@@ -122,12 +119,12 @@ type TextBuffer interface {
 	// all outstanding iterators become invalid after calling this function;
 	// however, the @start and @end will be re-initialized to point to the
 	// location where text was deleted.
-	Delete(start *TextIter, end *TextIter)
+	Delete(b TextBuffer, start *TextIter, end *TextIter)
 	// DeleteInteractive deletes all editable text in the given range. Calls
 	// gtk_text_buffer_delete() for each editable sub-range of [@start,@end).
 	// @start and @end are revalidated to point to the location of the last
 	// deleted range, or left untouched if no text was deleted.
-	DeleteInteractive(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool
+	DeleteInteractive(b TextBuffer, startIter *TextIter, endIter *TextIter, defaultEditable bool) bool
 	// DeleteMark deletes @mark, so that it’s no longer located anywhere in the
 	// buffer. Removes the reference the buffer holds to the mark, so if you
 	// haven’t called g_object_ref() on the mark, it will be freed. Even if the
@@ -136,15 +133,15 @@ type TextBuffer interface {
 	// gtk_text_mark_get_deleted() to find out if a mark has been removed from
 	// its buffer. The TextBuffer::mark-deleted signal will be emitted as
 	// notification after the mark is deleted.
-	DeleteMark(mark TextMark)
+	DeleteMark(b TextBuffer, mark TextMark)
 	// DeleteMarkByName deletes the mark named @name; the mark must exist. See
 	// gtk_text_buffer_delete_mark() for details.
-	DeleteMarkByName(name string)
+	DeleteMarkByName(b TextBuffer, name string)
 	// DeleteSelection deletes the range between the “insert” and
 	// “selection_bound” marks, that is, the currently-selected text. If
 	// @interactive is true, the editability of the selection will be considered
 	// (users can’t delete uneditable text).
-	DeleteSelection(interactive bool, defaultEditable bool) bool
+	DeleteSelection(b TextBuffer, interactive bool, defaultEditable bool) bool
 	// EndIrreversibleAction denotes the end of an action that may not be
 	// undone. This will cause any previous operations in the undo/redo queue to
 	// be cleared.
@@ -154,50 +151,50 @@ type TextBuffer interface {
 	//
 	// You may nest calls to gtk_text_buffer_begin_irreversible_action() and
 	// gtk_text_buffer_end_irreversible_action() pairs.
-	EndIrreversibleAction()
+	EndIrreversibleAction(b TextBuffer)
 	// EndUserAction: should be paired with a call to
 	// gtk_text_buffer_begin_user_action(). See that function for a full
 	// explanation.
-	EndUserAction()
+	EndUserAction(b TextBuffer)
 	// Bounds retrieves the first and last iterators in the buffer, i.e. the
 	// entire buffer lies within the range [@start,@end).
-	Bounds() (start TextIter, end TextIter)
+	Bounds(b TextBuffer) (start *TextIter, end *TextIter)
 	// CanRedo gets whether there is a redoable action in the history.
-	CanRedo() bool
+	CanRedo(b TextBuffer) bool
 	// CanUndo gets whether there is an undoable action in the history.
-	CanUndo() bool
+	CanUndo(b TextBuffer) bool
 	// CharCount gets the number of characters in the buffer; note that
 	// characters and bytes are not the same, you can’t e.g. expect the contents
 	// of the buffer in string form to be this many bytes long. The character
 	// count is cached, so this function is very fast.
-	CharCount() int
+	CharCount(b TextBuffer)
 	// EnableUndo gets whether the buffer is saving modifications to the buffer
 	// to allow for undo and redo actions.
 	//
 	// See gtk_text_buffer_begin_irreversible_action() and
 	// gtk_text_buffer_end_irreversible_action() to create changes to the buffer
 	// that cannot be undone.
-	EnableUndo() bool
+	EnableUndo(b TextBuffer) bool
 	// EndIter initializes @iter with the “end iterator,” one past the last
 	// valid character in the text buffer. If dereferenced with
 	// gtk_text_iter_get_char(), the end iterator has a character value of 0.
 	// The entire buffer lies in the range from the first position in the buffer
 	// (call gtk_text_buffer_get_start_iter() to get character position 0) to
 	// the end iterator.
-	EndIter() TextIter
+	EndIter(b TextBuffer) *TextIter
 	// HasSelection indicates whether the buffer has some text currently
 	// selected.
-	HasSelection() bool
+	HasSelection(b TextBuffer) bool
 	// GetInsert returns the mark that represents the cursor (insertion point).
 	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
 	// “insert”, but very slightly more efficient, and involves less typing.
-	GetInsert() TextMark
+	GetInsert(b TextBuffer)
 	// IterAtChildAnchor obtains the location of @anchor within @buffer.
-	IterAtChildAnchor(anchor TextChildAnchor) TextIter
+	IterAtChildAnchor(b TextBuffer, anchor TextChildAnchor) *TextIter
 	// IterAtLine initializes @iter to the start of the given line. If
 	// @line_number is greater than the number of lines in the @buffer, the end
 	// iterator is returned.
-	IterAtLine(lineNumber int) (iter TextIter, ok bool)
+	IterAtLine(b TextBuffer, lineNumber int) (iter *TextIter, ok bool)
 	// IterAtLineIndex obtains an iterator pointing to @byte_index within the
 	// given line. @byte_index must be the start of a UTF-8 character. Note
 	// bytes, not characters; UTF-8 may encode one character as multiple bytes.
@@ -205,7 +202,7 @@ type TextBuffer interface {
 	// If @line_number is greater than the number of lines in the @buffer, the
 	// end iterator is returned. And if @byte_index is off the end of the line,
 	// the iterator at the end of the line is returned.
-	IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIter, ok bool)
+	IterAtLineIndex(b TextBuffer, lineNumber int, byteIndex int) (iter *TextIter, ok bool)
 	// IterAtLineOffset obtains an iterator pointing to @char_offset within the
 	// given line. Note characters, not bytes; UTF-8 may encode one character as
 	// multiple bytes.
@@ -215,29 +212,29 @@ type TextBuffer interface {
 	// If @line_number is greater than the number of lines in the @buffer, the
 	// end iterator is returned. And if @char_offset is off the end of the line,
 	// the iterator at the end of the line is returned.
-	IterAtLineOffset(lineNumber int, charOffset int) (iter TextIter, ok bool)
+	IterAtLineOffset(b TextBuffer, lineNumber int, charOffset int) (iter *TextIter, ok bool)
 	// IterAtMark initializes @iter with the current position of @mark.
-	IterAtMark(mark TextMark) TextIter
+	IterAtMark(b TextBuffer, mark TextMark) *TextIter
 	// IterAtOffset initializes @iter to a position @char_offset chars from the
 	// start of the entire buffer. If @char_offset is -1 or greater than the
 	// number of characters in the buffer, @iter is initialized to the end
 	// iterator, the iterator one past the last valid character in the buffer.
-	IterAtOffset(charOffset int) TextIter
+	IterAtOffset(b TextBuffer, charOffset int) *TextIter
 	// LineCount obtains the number of lines in the buffer. This value is
 	// cached, so the function is very fast.
-	LineCount() int
+	LineCount(b TextBuffer)
 	// Mark returns the mark named @name in buffer @buffer, or nil if no such
 	// mark exists in the buffer.
-	Mark(name string) TextMark
+	Mark(b TextBuffer, name string)
 	// MaxUndoLevels gets the maximum number of undo levels to perform. If 0,
 	// unlimited undo actions may be performed. Note that this may have a memory
 	// usage impact as it requires storing an additional copy of the inserted or
 	// removed text within the text buffer.
-	MaxUndoLevels() uint
+	MaxUndoLevels(b TextBuffer)
 	// Modified indicates whether the buffer has been modified since the last
 	// call to gtk_text_buffer_set_modified() set the modification flag to
 	// false. Used for example to enable a “save” function in a text editor.
-	Modified() bool
+	Modified(b TextBuffer) bool
 	// SelectionBound returns the mark that represents the selection bound.
 	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
 	// “selection_bound”, but very slightly more efficient, and involves less
@@ -249,17 +246,17 @@ type TextBuffer interface {
 	// gtk_text_buffer_get_selection_bounds() is another convenient function for
 	// handling the selection, if you just want to know whether there’s a
 	// selection and what its bounds are.
-	SelectionBound() TextMark
+	SelectionBound(b TextBuffer)
 	// SelectionBounds returns true if some text is selected; places the bounds
 	// of the selection in @start and @end (if the selection has length 0, then
 	// @start and @end are filled in with the same value). @start and @end will
 	// be in ascending order. If @start and @end are NULL, then they are not
 	// filled in, but the return value still indicates whether text is selected.
-	SelectionBounds() (start TextIter, end TextIter, ok bool)
+	SelectionBounds(b TextBuffer) (start *TextIter, end *TextIter, ok bool)
 	// SelectionContent: get a content provider for this buffer. It can be used
 	// to make the content of @buffer available in a Clipboard, see
 	// gdk_clipboard_set_content().
-	SelectionContent() gdk.ContentProvider
+	SelectionContent(b TextBuffer)
 	// Slice returns the text in the range [@start,@end). Excludes undisplayed
 	// text (text marked with tags that set the invisibility attribute) if
 	// @include_hidden_chars is false. The returned string includes a 0xFFFC
@@ -269,30 +266,30 @@ type TextBuffer interface {
 	// gtk_text_buffer_get_text(). Note that 0xFFFC can occur in normal text as
 	// well, so it is not a reliable indicator that a paintable or widget is in
 	// the buffer.
-	Slice(start *TextIter, end *TextIter, includeHiddenChars bool) string
+	Slice(b TextBuffer, start *TextIter, end *TextIter, includeHiddenChars bool)
 	// StartIter: initialized @iter with the first position in the text buffer.
 	// This is the same as using gtk_text_buffer_get_iter_at_offset() to get the
 	// iter at character offset 0.
-	StartIter() TextIter
+	StartIter(b TextBuffer) *TextIter
 	// TagTable: get the TextTagTable associated with this buffer.
-	TagTable() TextTagTable
+	TagTable(b TextBuffer)
 	// Text returns the text in the range [@start,@end). Excludes undisplayed
 	// text (text marked with tags that set the invisibility attribute) if
 	// @include_hidden_chars is false. Does not include characters representing
 	// embedded images, so byte and character indexes into the returned string
 	// do not correspond to byte and character indexes into the buffer. Contrast
 	// with gtk_text_buffer_get_slice().
-	Text(start *TextIter, end *TextIter, includeHiddenChars bool) string
+	Text(b TextBuffer, start *TextIter, end *TextIter, includeHiddenChars bool)
 	// Insert inserts @len bytes of @text at position @iter. If @len is -1,
 	// @text must be nul-terminated and will be inserted in its entirety. Emits
 	// the “insert-text” signal; insertion actually occurs in the default
 	// handler for the signal. @iter is invalidated when insertion occurs
 	// (because the buffer contents change), but the default signal handler
 	// revalidates it to point to the end of the inserted text.
-	Insert(iter *TextIter, text string, len int)
+	Insert(b TextBuffer, iter *TextIter, text string, len int)
 	// InsertAtCursor: simply calls gtk_text_buffer_insert(), using the current
 	// cursor position as the insertion point.
-	InsertAtCursor(text string, len int)
+	InsertAtCursor(b TextBuffer, text string, len int)
 	// InsertChildAnchor inserts a child widget anchor into the text buffer at
 	// @iter. The anchor will be counted as one character in character counts,
 	// and when obtaining the buffer contents as a string, will be represented
@@ -303,7 +300,7 @@ type TextBuffer interface {
 	// gtk_text_buffer_create_child_anchor() as a more convenient alternative to
 	// this function. The buffer will add a reference to the anchor, so you can
 	// unref it after insertion.
-	InsertChildAnchor(iter *TextIter, anchor TextChildAnchor)
+	InsertChildAnchor(b TextBuffer, iter *TextIter, anchor TextChildAnchor)
 	// InsertInteractive: like gtk_text_buffer_insert(), but the insertion will
 	// not occur if @iter is at a non-editable location in the buffer. Usually
 	// you want to prevent insertions at ineditable locations if the insertion
@@ -312,20 +309,20 @@ type TextBuffer interface {
 	// @default_editable indicates the editability of text that doesn't have a
 	// tag affecting editability applied to it. Typically the result of
 	// gtk_text_view_get_editable() is appropriate here.
-	InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool
+	InsertInteractive(b TextBuffer, iter *TextIter, text string, len int, defaultEditable bool) bool
 	// InsertInteractiveAtCursor calls gtk_text_buffer_insert_interactive() at
 	// the cursor position.
 	//
 	// @default_editable indicates the editability of text that doesn't have a
 	// tag affecting editability applied to it. Typically the result of
 	// gtk_text_view_get_editable() is appropriate here.
-	InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool
+	InsertInteractiveAtCursor(b TextBuffer, text string, len int, defaultEditable bool) bool
 	// InsertMarkup inserts the text in @markup at position @iter. @markup will
 	// be inserted in its entirety and must be nul-terminated and valid UTF-8.
 	// Emits the TextBuffer::insert-text signal, possibly multiple times;
 	// insertion actually occurs in the default handler for the signal. @iter
 	// will point to the end of the inserted text on return.
-	InsertMarkup(iter *TextIter, markup string, len int)
+	InsertMarkup(b TextBuffer, iter *TextIter, markup string, len int)
 	// InsertPaintable inserts an image into the text buffer at @iter. The image
 	// will be counted as one character in character counts, and when obtaining
 	// the buffer contents as a string, will be represented by the Unicode
@@ -333,7 +330,7 @@ type TextBuffer interface {
 	// obtaining portions of the buffer as a string include this character for
 	// paintable, but the “text” variants do not. e.g. see
 	// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
-	InsertPaintable(iter *TextIter, paintable gdk.Paintable)
+	InsertPaintable(b TextBuffer, iter *TextIter, paintable gdk.Paintable)
 	// InsertRange copies text, tags, and paintables between @start and @end
 	// (the order of @start and @end doesn’t matter) and inserts the copy at
 	// @iter. Used instead of simply getting/inserting text because it preserves
@@ -342,19 +339,19 @@ type TextBuffer interface {
 	//
 	// Implemented via emissions of the insert_text and apply_tag signals, so
 	// expect those.
-	InsertRange(iter *TextIter, start *TextIter, end *TextIter)
+	InsertRange(b TextBuffer, iter *TextIter, start *TextIter, end *TextIter)
 	// InsertRangeInteractive: same as gtk_text_buffer_insert_range(), but does
 	// nothing if the insertion point isn’t editable. The @default_editable
 	// parameter indicates whether the text is editable at @iter if no tags
 	// enclosing @iter affect editability. Typically the result of
 	// gtk_text_view_get_editable() is appropriate here.
-	InsertRangeInteractive(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
+	InsertRangeInteractive(b TextBuffer, iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
 	// MoveMark moves @mark to the new location @where. Emits the
 	// TextBuffer::mark-set signal as notification of the move.
-	MoveMark(mark TextMark, where *TextIter)
+	MoveMark(b TextBuffer, mark TextMark, where *TextIter)
 	// MoveMarkByName moves the mark named @name (which must exist) to location
 	// @where. See gtk_text_buffer_move_mark() for details.
-	MoveMarkByName(name string, where *TextIter)
+	MoveMarkByName(b TextBuffer, name string, where *TextIter)
 	// PasteClipboard pastes the contents of a clipboard. If @override_location
 	// is nil, the pasted text will be inserted at the cursor position, or the
 	// buffer selection will be replaced if the selection is non-empty.
@@ -362,39 +359,39 @@ type TextBuffer interface {
 	// Note: pasting is asynchronous, that is, we’ll ask for the paste data and
 	// return, and at some point later after the main loop runs, the paste data
 	// will be inserted.
-	PasteClipboard(clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool)
+	PasteClipboard(b TextBuffer, clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool)
 	// PlaceCursor: this function moves the “insert” and “selection_bound” marks
 	// simultaneously. If you move them to the same place in two steps with
 	// gtk_text_buffer_move_mark(), you will temporarily select a region in
 	// between their old and new locations, which can be pretty inefficient
 	// since the temporarily-selected region will force stuff to be
 	// recalculated. This function moves them as a unit, which can be optimized.
-	PlaceCursor(where *TextIter)
+	PlaceCursor(b TextBuffer, where *TextIter)
 	// Redo redoes the next redoable action on the buffer, if there is one.
-	Redo()
+	Redo(b TextBuffer)
 	// RemoveAllTags removes all tags in the range between @start and @end. Be
 	// careful with this function; it could remove tags added in code unrelated
 	// to the code you’re currently writing. That is, using this function is
 	// probably a bad idea if you have two or more unrelated code sections that
 	// add tags.
-	RemoveAllTags(start *TextIter, end *TextIter)
+	RemoveAllTags(b TextBuffer, start *TextIter, end *TextIter)
 	// RemoveSelectionClipboard removes a Clipboard added with
 	// gtk_text_buffer_add_selection_clipboard().
-	RemoveSelectionClipboard(clipboard gdk.Clipboard)
+	RemoveSelectionClipboard(b TextBuffer, clipboard gdk.Clipboard)
 	// RemoveTag emits the “remove-tag” signal. The default handler for the
 	// signal removes all occurrences of @tag from the given range. @start and
 	// @end don’t have to be in order.
-	RemoveTag(tag TextTag, start *TextIter, end *TextIter)
+	RemoveTag(b TextBuffer, tag TextTag, start *TextIter, end *TextIter)
 	// RemoveTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag
 	// table to get a TextTag, then calls gtk_text_buffer_remove_tag().
-	RemoveTagByName(name string, start *TextIter, end *TextIter)
+	RemoveTagByName(b TextBuffer, name string, start *TextIter, end *TextIter)
 	// SelectRange: this function moves the “insert” and “selection_bound” marks
 	// simultaneously. If you move them in two steps with
 	// gtk_text_buffer_move_mark(), you will temporarily select a region in
 	// between their old and new locations, which can be pretty inefficient
 	// since the temporarily-selected region will force stuff to be
 	// recalculated. This function moves them as a unit, which can be optimized.
-	SelectRange(ins *TextIter, bound *TextIter)
+	SelectRange(b TextBuffer, ins *TextIter, bound *TextIter)
 	// SetEnableUndo sets whether or not to enable undoable actions in the text
 	// buffer. If enabled, the user will be able to undo the last number of
 	// actions up to gtk_text_buffer_get_max_undo_levels().
@@ -402,24 +399,24 @@ type TextBuffer interface {
 	// See gtk_text_buffer_begin_irreversible_action() and
 	// gtk_text_buffer_end_irreversible_action() to create changes to the buffer
 	// that cannot be undone.
-	SetEnableUndo(enableUndo bool)
+	SetEnableUndo(b TextBuffer, enableUndo bool)
 	// SetMaxUndoLevels sets the maximum number of undo levels to perform. If 0,
 	// unlimited undo actions may be performed. Note that this may have a memory
 	// usage impact as it requires storing an additional copy of the inserted or
 	// removed text within the text buffer.
-	SetMaxUndoLevels(maxUndoLevels uint)
+	SetMaxUndoLevels(b TextBuffer, maxUndoLevels uint)
 	// SetModified: used to keep track of whether the buffer has been modified
 	// since the last time it was saved. Whenever the buffer is saved to disk,
 	// call gtk_text_buffer_set_modified (@buffer, FALSE). When the buffer is
 	// modified, it will automatically toggled on the modified bit again. When
 	// the modified bit flips, the buffer emits the TextBuffer::modified-changed
 	// signal.
-	SetModified(setting bool)
+	SetModified(b TextBuffer, setting bool)
 	// SetText deletes current contents of @buffer, and inserts @text instead.
 	// If @len is -1, @text must be nul-terminated. @text must be valid UTF-8.
-	SetText(text string, len int)
+	SetText(b TextBuffer, text string, len int)
 	// Undo undoes the last undoable action on the buffer, if there is one.
-	Undo()
+	Undo(b TextBuffer)
 }
 
 // textBuffer implements the TextBuffer interface.
@@ -444,19 +441,12 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 }
 
 // NewTextBuffer constructs a class TextBuffer.
-func NewTextBuffer(table TextTagTable) TextBuffer {
+func NewTextBuffer(table TextTagTable) {
 	var arg1 *C.GtkTextTagTable
 
 	arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 
-	var cret C.GtkTextBuffer
-	var ret1 TextBuffer
-
-	cret = C.gtk_text_buffer_new(table)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextBuffer)
-
-	return ret1
+	C.gtk_text_buffer_new(arg1)
 }
 
 // AddMark adds the mark at position @where. The mark must not be added to
@@ -465,7 +455,7 @@ func NewTextBuffer(table TextTagTable) TextBuffer {
 //
 // Emits the TextBuffer::mark-set signal as notification of the mark's
 // initial placement.
-func (b textBuffer) AddMark(mark TextMark, where *TextIter) {
+func (b textBuffer) AddMark(b TextBuffer, mark TextMark, where *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextMark
 	var arg2 *C.GtkTextIter
@@ -474,27 +464,27 @@ func (b textBuffer) AddMark(mark TextMark, where *TextIter) {
 	arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
 
-	C.gtk_text_buffer_add_mark(arg0, mark, where)
+	C.gtk_text_buffer_add_mark(arg0, arg1, arg2)
 }
 
 // AddSelectionClipboard adds @clipboard to the list of clipboards in which
 // the selection contents of @buffer are available. In most cases,
 // @clipboard will be the Clipboard returned by
 // gtk_widget_get_primary_clipboard() for a view of @buffer.
-func (b textBuffer) AddSelectionClipboard(clipboard gdk.Clipboard) {
+func (b textBuffer) AddSelectionClipboard(b TextBuffer, clipboard gdk.Clipboard) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GdkClipboard
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
-	C.gtk_text_buffer_add_selection_clipboard(arg0, clipboard)
+	C.gtk_text_buffer_add_selection_clipboard(arg0, arg1)
 }
 
 // ApplyTag emits the “apply-tag” signal on @buffer. The default handler for
 // the signal applies @tag to the given range. @start and @end do not have
 // to be in order.
-func (b textBuffer) ApplyTag(tag TextTag, start *TextIter, end *TextIter) {
+func (b textBuffer) ApplyTag(b TextBuffer, tag TextTag, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextTag
 	var arg2 *C.GtkTextIter
@@ -505,12 +495,12 @@ func (b textBuffer) ApplyTag(tag TextTag, start *TextIter, end *TextIter) {
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_apply_tag(arg0, tag, start, end)
+	C.gtk_text_buffer_apply_tag(arg0, arg1, arg2, arg3)
 }
 
 // ApplyTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag
 // table to get a TextTag, then calls gtk_text_buffer_apply_tag().
-func (b textBuffer) ApplyTagByName(name string, start *TextIter, end *TextIter) {
+func (b textBuffer) ApplyTagByName(b TextBuffer, name string, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 *C.GtkTextIter
@@ -522,7 +512,7 @@ func (b textBuffer) ApplyTagByName(name string, start *TextIter, end *TextIter) 
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_apply_tag_by_name(arg0, name, start, end)
+	C.gtk_text_buffer_apply_tag_by_name(arg0, arg1, arg2, arg3)
 }
 
 // Backspace performs the appropriate action as if the user hit the delete
@@ -535,7 +525,7 @@ func (b textBuffer) ApplyTagByName(name string, start *TextIter, end *TextIter) 
 // Because the buffer is modified, all outstanding iterators become invalid
 // after calling this function; however, the @iter will be re-initialized to
 // point to the location where text was deleted.
-func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable bool) bool {
+func (b textBuffer) Backspace(b TextBuffer, iter *TextIter, interactive bool, defaultEditable bool) bool {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 C.gboolean
@@ -551,13 +541,15 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_backspace(arg0, iter, interactive, defaultEditable)
+	cret = C.gtk_text_buffer_backspace(arg0, arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // BeginIrreversibleAction denotes the beginning of an action that may not
@@ -570,7 +562,7 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 //
 // You may nest calls to gtk_text_buffer_begin_irreversible_action() and
 // gtk_text_buffer_end_irreversible_action() pairs.
-func (b textBuffer) BeginIrreversibleAction() {
+func (b textBuffer) BeginIrreversibleAction(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
@@ -594,7 +586,7 @@ func (b textBuffer) BeginIrreversibleAction() {
 // action around the buffer operations they perform, so there's no need to
 // add extra calls if you user action consists solely of a single call to
 // one of those functions.
-func (b textBuffer) BeginUserAction() {
+func (b textBuffer) BeginUserAction(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
@@ -603,14 +595,14 @@ func (b textBuffer) BeginUserAction() {
 }
 
 // CopyClipboard copies the currently-selected text to a clipboard.
-func (b textBuffer) CopyClipboard(clipboard gdk.Clipboard) {
+func (b textBuffer) CopyClipboard(b TextBuffer, clipboard gdk.Clipboard) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GdkClipboard
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
-	C.gtk_text_buffer_copy_clipboard(arg0, clipboard)
+	C.gtk_text_buffer_copy_clipboard(arg0, arg1)
 }
 
 // CreateChildAnchor: this is a convenience function which simply creates a
@@ -618,21 +610,14 @@ func (b textBuffer) CopyClipboard(clipboard gdk.Clipboard) {
 // buffer with gtk_text_buffer_insert_child_anchor(). The new anchor is
 // owned by the buffer; no reference count is returned to the caller of
 // gtk_text_buffer_create_child_anchor().
-func (b textBuffer) CreateChildAnchor(iter *TextIter) TextChildAnchor {
+func (b textBuffer) CreateChildAnchor(b TextBuffer, iter *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 
-	var cret *C.GtkTextChildAnchor
-	var ret1 TextChildAnchor
-
-	cret = C.gtk_text_buffer_create_child_anchor(arg0, iter)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
-
-	return ret1
+	C.gtk_text_buffer_create_child_anchor(arg0, arg1)
 }
 
 // CreateMark creates a mark at position @where. If @mark_name is nil, the
@@ -651,7 +636,7 @@ func (b textBuffer) CreateChildAnchor(iter *TextIter) TextChildAnchor {
 //
 // Emits the TextBuffer::mark-set signal as notification of the mark's
 // initial placement.
-func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity bool) TextMark {
+func (b textBuffer) CreateMark(b TextBuffer, markName string, where *TextIter, leftGravity bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 *C.GtkTextIter
@@ -665,19 +650,12 @@ func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity boo
 		arg3 = C.gboolean(1)
 	}
 
-	var cret *C.GtkTextMark
-	var ret1 TextMark
-
-	cret = C.gtk_text_buffer_create_mark(arg0, markName, where, leftGravity)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
-
-	return ret1
+	C.gtk_text_buffer_create_mark(arg0, arg1, arg2, arg3)
 }
 
 // CutClipboard copies the currently-selected text to a clipboard, then
 // deletes said text if it’s editable.
-func (b textBuffer) CutClipboard(clipboard gdk.Clipboard, defaultEditable bool) {
+func (b textBuffer) CutClipboard(b TextBuffer, clipboard gdk.Clipboard, defaultEditable bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GdkClipboard
 	var arg2 C.gboolean
@@ -688,7 +666,7 @@ func (b textBuffer) CutClipboard(clipboard gdk.Clipboard, defaultEditable bool) 
 		arg2 = C.gboolean(1)
 	}
 
-	C.gtk_text_buffer_cut_clipboard(arg0, clipboard, defaultEditable)
+	C.gtk_text_buffer_cut_clipboard(arg0, arg1, arg2)
 }
 
 // Delete deletes text between @start and @end. The order of @start and @end
@@ -698,7 +676,7 @@ func (b textBuffer) CutClipboard(clipboard gdk.Clipboard, defaultEditable bool) 
 // all outstanding iterators become invalid after calling this function;
 // however, the @start and @end will be re-initialized to point to the
 // location where text was deleted.
-func (b textBuffer) Delete(start *TextIter, end *TextIter) {
+func (b textBuffer) Delete(b TextBuffer, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -707,14 +685,14 @@ func (b textBuffer) Delete(start *TextIter, end *TextIter) {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_delete(arg0, start, end)
+	C.gtk_text_buffer_delete(arg0, arg1, arg2)
 }
 
 // DeleteInteractive deletes all editable text in the given range. Calls
 // gtk_text_buffer_delete() for each editable sub-range of [@start,@end).
 // @start and @end are revalidated to point to the location of the last
 // deleted range, or left untouched if no text was deleted.
-func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool {
+func (b textBuffer) DeleteInteractive(b TextBuffer, startIter *TextIter, endIter *TextIter, defaultEditable bool) bool {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -728,13 +706,15 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_delete_interactive(arg0, startIter, endIter, defaultEditable)
+	cret = C.gtk_text_buffer_delete_interactive(arg0, arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // DeleteMark deletes @mark, so that it’s no longer located anywhere in the
@@ -745,19 +725,19 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 // gtk_text_mark_get_deleted() to find out if a mark has been removed from
 // its buffer. The TextBuffer::mark-deleted signal will be emitted as
 // notification after the mark is deleted.
-func (b textBuffer) DeleteMark(mark TextMark) {
+func (b textBuffer) DeleteMark(b TextBuffer, mark TextMark) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextMark
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
-	C.gtk_text_buffer_delete_mark(arg0, mark)
+	C.gtk_text_buffer_delete_mark(arg0, arg1)
 }
 
 // DeleteMarkByName deletes the mark named @name; the mark must exist. See
 // gtk_text_buffer_delete_mark() for details.
-func (b textBuffer) DeleteMarkByName(name string) {
+func (b textBuffer) DeleteMarkByName(b TextBuffer, name string) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 
@@ -765,14 +745,14 @@ func (b textBuffer) DeleteMarkByName(name string) {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_text_buffer_delete_mark_by_name(arg0, name)
+	C.gtk_text_buffer_delete_mark_by_name(arg0, arg1)
 }
 
 // DeleteSelection deletes the range between the “insert” and
 // “selection_bound” marks, that is, the currently-selected text. If
 // @interactive is true, the editability of the selection will be considered
 // (users can’t delete uneditable text).
-func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool {
+func (b textBuffer) DeleteSelection(b TextBuffer, interactive bool, defaultEditable bool) bool {
 	var arg0 *C.GtkTextBuffer
 	var arg1 C.gboolean
 	var arg2 C.gboolean
@@ -786,13 +766,15 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_delete_selection(arg0, interactive, defaultEditable)
+	cret = C.gtk_text_buffer_delete_selection(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // EndIrreversibleAction denotes the end of an action that may not be
@@ -804,7 +786,7 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 //
 // You may nest calls to gtk_text_buffer_begin_irreversible_action() and
 // gtk_text_buffer_end_irreversible_action() pairs.
-func (b textBuffer) EndIrreversibleAction() {
+func (b textBuffer) EndIrreversibleAction(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
@@ -815,7 +797,7 @@ func (b textBuffer) EndIrreversibleAction() {
 // EndUserAction: should be paired with a call to
 // gtk_text_buffer_begin_user_action(). See that function for a full
 // explanation.
-func (b textBuffer) EndUserAction() {
+func (b textBuffer) EndUserAction(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
@@ -825,73 +807,70 @@ func (b textBuffer) EndUserAction() {
 
 // Bounds retrieves the first and last iterators in the buffer, i.e. the
 // entire buffer lies within the range [@start,@end).
-func (b textBuffer) Bounds() (start TextIter, end TextIter) {
+func (b textBuffer) Bounds(b TextBuffer) (start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var start *TextIter
 	var arg2 C.GtkTextIter
-	var ret2 *TextIter
+	var end *TextIter
 
 	C.gtk_text_buffer_get_bounds(arg0, &arg1, &arg2)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	*ret2 = WrapTextIter(unsafe.Pointer(arg2))
+	start = WrapTextIter(unsafe.Pointer(&arg1))
+	end = WrapTextIter(unsafe.Pointer(&arg2))
 
-	return ret1, ret2
+	return start, end
 }
 
 // CanRedo gets whether there is a redoable action in the history.
-func (b textBuffer) CanRedo() bool {
+func (b textBuffer) CanRedo(b TextBuffer) bool {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_text_buffer_get_can_redo(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // CanUndo gets whether there is an undoable action in the history.
-func (b textBuffer) CanUndo() bool {
+func (b textBuffer) CanUndo(b TextBuffer) bool {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_text_buffer_get_can_undo(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // CharCount gets the number of characters in the buffer; note that
 // characters and bytes are not the same, you can’t e.g. expect the contents
 // of the buffer in string form to be this many bytes long. The character
 // count is cached, so this function is very fast.
-func (b textBuffer) CharCount() int {
+func (b textBuffer) CharCount(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_text_buffer_get_char_count(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_text_buffer_get_char_count(arg0)
 }
 
 // EnableUndo gets whether the buffer is saving modifications to the buffer
@@ -900,19 +879,21 @@ func (b textBuffer) CharCount() int {
 // See gtk_text_buffer_begin_irreversible_action() and
 // gtk_text_buffer_end_irreversible_action() to create changes to the buffer
 // that cannot be undone.
-func (b textBuffer) EnableUndo() bool {
+func (b textBuffer) EnableUndo(b TextBuffer) bool {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_text_buffer_get_enable_undo(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // EndIter initializes @iter with the “end iterator,” one past the last
@@ -921,58 +902,53 @@ func (b textBuffer) EnableUndo() bool {
 // The entire buffer lies in the range from the first position in the buffer
 // (call gtk_text_buffer_get_start_iter() to get character position 0) to
 // the end iterator.
-func (b textBuffer) EndIter() TextIter {
+func (b textBuffer) EndIter(b TextBuffer) *TextIter {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 
 	C.gtk_text_buffer_get_end_iter(arg0, &arg1)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // HasSelection indicates whether the buffer has some text currently
 // selected.
-func (b textBuffer) HasSelection() bool {
+func (b textBuffer) HasSelection(b TextBuffer) bool {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_text_buffer_get_has_selection(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // GetInsert returns the mark that represents the cursor (insertion point).
 // Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
 // “insert”, but very slightly more efficient, and involves less typing.
-func (b textBuffer) GetInsert() TextMark {
+func (b textBuffer) GetInsert(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkTextMark
-	var ret1 TextMark
-
-	cret = C.gtk_text_buffer_get_insert(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
-
-	return ret1
+	C.gtk_text_buffer_get_insert(arg0)
 }
 
 // IterAtChildAnchor obtains the location of @anchor within @buffer.
-func (b textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
+func (b textBuffer) IterAtChildAnchor(b TextBuffer, anchor TextChildAnchor) *TextIter {
 	var arg0 *C.GtkTextBuffer
 	var arg2 *C.GtkTextChildAnchor
 
@@ -980,19 +956,19 @@ func (b textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter {
 	arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 
-	C.gtk_text_buffer_get_iter_at_child_anchor(arg0, &arg1, anchor)
+	C.gtk_text_buffer_get_iter_at_child_anchor(arg0, &arg1, arg2)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // IterAtLine initializes @iter to the start of the given line. If
 // @line_number is greater than the number of lines in the @buffer, the end
 // iterator is returned.
-func (b textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
+func (b textBuffer) IterAtLine(b TextBuffer, lineNumber int) (iter *TextIter, ok bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg2 C.int
 
@@ -1000,16 +976,18 @@ func (b textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
 	arg2 = C.int(lineNumber)
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_get_iter_at_line(arg0, &arg1, lineNumber)
+	cret = C.gtk_text_buffer_get_iter_at_line(arg0, &arg1, arg2)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = C.bool(cret) != C.false
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return iter, ok
 }
 
 // IterAtLineIndex obtains an iterator pointing to @byte_index within the
@@ -1019,7 +997,7 @@ func (b textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool) {
 // If @line_number is greater than the number of lines in the @buffer, the
 // end iterator is returned. And if @byte_index is off the end of the line,
 // the iterator at the end of the line is returned.
-func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIter, ok bool) {
+func (b textBuffer) IterAtLineIndex(b TextBuffer, lineNumber int, byteIndex int) (iter *TextIter, ok bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg2 C.int
 	var arg3 C.int
@@ -1029,16 +1007,18 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIte
 	arg3 = C.int(byteIndex)
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_get_iter_at_line_index(arg0, &arg1, lineNumber, byteIndex)
+	cret = C.gtk_text_buffer_get_iter_at_line_index(arg0, &arg1, arg2, arg3)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = C.bool(cret) != C.false
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return iter, ok
 }
 
 // IterAtLineOffset obtains an iterator pointing to @char_offset within the
@@ -1050,7 +1030,7 @@ func (b textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIte
 // If @line_number is greater than the number of lines in the @buffer, the
 // end iterator is returned. And if @char_offset is off the end of the line,
 // the iterator at the end of the line is returned.
-func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter TextIter, ok bool) {
+func (b textBuffer) IterAtLineOffset(b TextBuffer, lineNumber int, charOffset int) (iter *TextIter, ok bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg2 C.int
 	var arg3 C.int
@@ -1060,20 +1040,22 @@ func (b textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter TextI
 	arg3 = C.int(charOffset)
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_get_iter_at_line_offset(arg0, &arg1, lineNumber, charOffset)
+	cret = C.gtk_text_buffer_get_iter_at_line_offset(arg0, &arg1, arg2, arg3)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	ret2 = C.bool(cret) != C.false
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return iter, ok
 }
 
 // IterAtMark initializes @iter with the current position of @mark.
-func (b textBuffer) IterAtMark(mark TextMark) TextIter {
+func (b textBuffer) IterAtMark(b TextBuffer, mark TextMark) *TextIter {
 	var arg0 *C.GtkTextBuffer
 	var arg2 *C.GtkTextMark
 
@@ -1081,20 +1063,20 @@ func (b textBuffer) IterAtMark(mark TextMark) TextIter {
 	arg2 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 
-	C.gtk_text_buffer_get_iter_at_mark(arg0, &arg1, mark)
+	C.gtk_text_buffer_get_iter_at_mark(arg0, &arg1, arg2)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // IterAtOffset initializes @iter to a position @char_offset chars from the
 // start of the entire buffer. If @char_offset is -1 or greater than the
 // number of characters in the buffer, @iter is initialized to the end
 // iterator, the iterator one past the last valid character in the buffer.
-func (b textBuffer) IterAtOffset(charOffset int) TextIter {
+func (b textBuffer) IterAtOffset(b TextBuffer, charOffset int) *TextIter {
 	var arg0 *C.GtkTextBuffer
 	var arg2 C.int
 
@@ -1102,35 +1084,28 @@ func (b textBuffer) IterAtOffset(charOffset int) TextIter {
 	arg2 = C.int(charOffset)
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 
-	C.gtk_text_buffer_get_iter_at_offset(arg0, &arg1, charOffset)
+	C.gtk_text_buffer_get_iter_at_offset(arg0, &arg1, arg2)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // LineCount obtains the number of lines in the buffer. This value is
 // cached, so the function is very fast.
-func (b textBuffer) LineCount() int {
+func (b textBuffer) LineCount(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_text_buffer_get_line_count(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_text_buffer_get_line_count(arg0)
 }
 
 // Mark returns the mark named @name in buffer @buffer, or nil if no such
 // mark exists in the buffer.
-func (b textBuffer) Mark(name string) TextMark {
+func (b textBuffer) Mark(b TextBuffer, name string) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 
@@ -1138,51 +1113,39 @@ func (b textBuffer) Mark(name string) TextMark {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkTextMark
-	var ret1 TextMark
-
-	cret = C.gtk_text_buffer_get_mark(arg0, name)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
-
-	return ret1
+	C.gtk_text_buffer_get_mark(arg0, arg1)
 }
 
 // MaxUndoLevels gets the maximum number of undo levels to perform. If 0,
 // unlimited undo actions may be performed. Note that this may have a memory
 // usage impact as it requires storing an additional copy of the inserted or
 // removed text within the text buffer.
-func (b textBuffer) MaxUndoLevels() uint {
+func (b textBuffer) MaxUndoLevels(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_text_buffer_get_max_undo_levels(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_text_buffer_get_max_undo_levels(arg0)
 }
 
 // Modified indicates whether the buffer has been modified since the last
 // call to gtk_text_buffer_set_modified() set the modification flag to
 // false. Used for example to enable a “save” function in a text editor.
-func (b textBuffer) Modified() bool {
+func (b textBuffer) Modified(b TextBuffer) bool {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_text_buffer_get_modified(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SelectionBound returns the mark that represents the selection bound.
@@ -1196,19 +1159,12 @@ func (b textBuffer) Modified() bool {
 // gtk_text_buffer_get_selection_bounds() is another convenient function for
 // handling the selection, if you just want to know whether there’s a
 // selection and what its bounds are.
-func (b textBuffer) SelectionBound() TextMark {
+func (b textBuffer) SelectionBound(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkTextMark
-	var ret1 TextMark
-
-	cret = C.gtk_text_buffer_get_selection_bound(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextMark)
-
-	return ret1
+	C.gtk_text_buffer_get_selection_bound(arg0)
 }
 
 // SelectionBounds returns true if some text is selected; places the bounds
@@ -1216,43 +1172,38 @@ func (b textBuffer) SelectionBound() TextMark {
 // @start and @end are filled in with the same value). @start and @end will
 // be in ascending order. If @start and @end are NULL, then they are not
 // filled in, but the return value still indicates whether text is selected.
-func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
+func (b textBuffer) SelectionBounds(b TextBuffer) (start *TextIter, end *TextIter, ok bool) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var start *TextIter
 	var arg2 C.GtkTextIter
-	var ret2 *TextIter
+	var end *TextIter
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
 	cret = C.gtk_text_buffer_get_selection_bounds(arg0, &arg1, &arg2)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
-	*ret2 = WrapTextIter(unsafe.Pointer(arg2))
-	ret3 = C.bool(cret) != C.false
+	start = WrapTextIter(unsafe.Pointer(&arg1))
+	end = WrapTextIter(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2, ret3
+	return start, end, ok
 }
 
 // SelectionContent: get a content provider for this buffer. It can be used
 // to make the content of @buffer available in a Clipboard, see
 // gdk_clipboard_set_content().
-func (b textBuffer) SelectionContent() gdk.ContentProvider {
+func (b textBuffer) SelectionContent(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GdkContentProvider
-	var ret1 gdk.ContentProvider
-
-	cret = C.gtk_text_buffer_get_selection_content(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
-
-	return ret1
+	C.gtk_text_buffer_get_selection_content(arg0)
 }
 
 // Slice returns the text in the range [@start,@end). Excludes undisplayed
@@ -1264,7 +1215,7 @@ func (b textBuffer) SelectionContent() gdk.ContentProvider {
 // gtk_text_buffer_get_text(). Note that 0xFFFC can occur in normal text as
 // well, so it is not a reliable indicator that a paintable or widget is in
 // the buffer.
-func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars bool) string {
+func (b textBuffer) Slice(b TextBuffer, start *TextIter, end *TextIter, includeHiddenChars bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -1277,49 +1228,34 @@ func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars boo
 		arg3 = C.gboolean(1)
 	}
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_text_buffer_get_slice(arg0, start, end, includeHiddenChars)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_text_buffer_get_slice(arg0, arg1, arg2, arg3)
 }
 
 // StartIter: initialized @iter with the first position in the text buffer.
 // This is the same as using gtk_text_buffer_get_iter_at_offset() to get the
 // iter at character offset 0.
-func (b textBuffer) StartIter() TextIter {
+func (b textBuffer) StartIter(b TextBuffer) *TextIter {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
 	var arg1 C.GtkTextIter
-	var ret1 *TextIter
+	var iter *TextIter
 
 	C.gtk_text_buffer_get_start_iter(arg0, &arg1)
 
-	*ret1 = WrapTextIter(unsafe.Pointer(arg1))
+	iter = WrapTextIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // TagTable: get the TextTagTable associated with this buffer.
-func (b textBuffer) TagTable() TextTagTable {
+func (b textBuffer) TagTable(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkTextTagTable
-	var ret1 TextTagTable
-
-	cret = C.gtk_text_buffer_get_tag_table(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTagTable)
-
-	return ret1
+	C.gtk_text_buffer_get_tag_table(arg0)
 }
 
 // Text returns the text in the range [@start,@end). Excludes undisplayed
@@ -1328,7 +1264,7 @@ func (b textBuffer) TagTable() TextTagTable {
 // embedded images, so byte and character indexes into the returned string
 // do not correspond to byte and character indexes into the buffer. Contrast
 // with gtk_text_buffer_get_slice().
-func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool) string {
+func (b textBuffer) Text(b TextBuffer, start *TextIter, end *TextIter, includeHiddenChars bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -1341,15 +1277,7 @@ func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool
 		arg3 = C.gboolean(1)
 	}
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_text_buffer_get_text(arg0, start, end, includeHiddenChars)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_text_buffer_get_text(arg0, arg1, arg2, arg3)
 }
 
 // Insert inserts @len bytes of @text at position @iter. If @len is -1,
@@ -1358,7 +1286,7 @@ func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool
 // handler for the signal. @iter is invalidated when insertion occurs
 // (because the buffer contents change), but the default signal handler
 // revalidates it to point to the end of the inserted text.
-func (b textBuffer) Insert(iter *TextIter, text string, len int) {
+func (b textBuffer) Insert(b TextBuffer, iter *TextIter, text string, len int) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.char
@@ -1370,12 +1298,12 @@ func (b textBuffer) Insert(iter *TextIter, text string, len int) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(len)
 
-	C.gtk_text_buffer_insert(arg0, iter, text, len)
+	C.gtk_text_buffer_insert(arg0, arg1, arg2, arg3)
 }
 
 // InsertAtCursor: simply calls gtk_text_buffer_insert(), using the current
 // cursor position as the insertion point.
-func (b textBuffer) InsertAtCursor(text string, len int) {
+func (b textBuffer) InsertAtCursor(b TextBuffer, text string, len int) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 C.int
@@ -1385,7 +1313,7 @@ func (b textBuffer) InsertAtCursor(text string, len int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(len)
 
-	C.gtk_text_buffer_insert_at_cursor(arg0, text, len)
+	C.gtk_text_buffer_insert_at_cursor(arg0, arg1, arg2)
 }
 
 // InsertChildAnchor inserts a child widget anchor into the text buffer at
@@ -1398,7 +1326,7 @@ func (b textBuffer) InsertAtCursor(text string, len int) {
 // gtk_text_buffer_create_child_anchor() as a more convenient alternative to
 // this function. The buffer will add a reference to the anchor, so you can
 // unref it after insertion.
-func (b textBuffer) InsertChildAnchor(iter *TextIter, anchor TextChildAnchor) {
+func (b textBuffer) InsertChildAnchor(b TextBuffer, iter *TextIter, anchor TextChildAnchor) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextChildAnchor
@@ -1407,7 +1335,7 @@ func (b textBuffer) InsertChildAnchor(iter *TextIter, anchor TextChildAnchor) {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
 
-	C.gtk_text_buffer_insert_child_anchor(arg0, iter, anchor)
+	C.gtk_text_buffer_insert_child_anchor(arg0, arg1, arg2)
 }
 
 // InsertInteractive: like gtk_text_buffer_insert(), but the insertion will
@@ -1418,7 +1346,7 @@ func (b textBuffer) InsertChildAnchor(iter *TextIter, anchor TextChildAnchor) {
 // @default_editable indicates the editability of text that doesn't have a
 // tag affecting editability applied to it. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
-func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool {
+func (b textBuffer) InsertInteractive(b TextBuffer, iter *TextIter, text string, len int, defaultEditable bool) bool {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.char
@@ -1435,13 +1363,15 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_insert_interactive(arg0, iter, text, len, defaultEditable)
+	cret = C.gtk_text_buffer_insert_interactive(arg0, arg1, arg2, arg3, arg4)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // InsertInteractiveAtCursor calls gtk_text_buffer_insert_interactive() at
@@ -1450,7 +1380,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 // @default_editable indicates the editability of text that doesn't have a
 // tag affecting editability applied to it. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
-func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool {
+func (b textBuffer) InsertInteractiveAtCursor(b TextBuffer, text string, len int, defaultEditable bool) bool {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 C.int
@@ -1465,13 +1395,15 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_insert_interactive_at_cursor(arg0, text, len, defaultEditable)
+	cret = C.gtk_text_buffer_insert_interactive_at_cursor(arg0, arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // InsertMarkup inserts the text in @markup at position @iter. @markup will
@@ -1479,7 +1411,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 // Emits the TextBuffer::insert-text signal, possibly multiple times;
 // insertion actually occurs in the default handler for the signal. @iter
 // will point to the end of the inserted text on return.
-func (b textBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
+func (b textBuffer) InsertMarkup(b TextBuffer, iter *TextIter, markup string, len int) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.char
@@ -1491,7 +1423,7 @@ func (b textBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.int(len)
 
-	C.gtk_text_buffer_insert_markup(arg0, iter, markup, len)
+	C.gtk_text_buffer_insert_markup(arg0, arg1, arg2, arg3)
 }
 
 // InsertPaintable inserts an image into the text buffer at @iter. The image
@@ -1501,7 +1433,7 @@ func (b textBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 // obtaining portions of the buffer as a string include this character for
 // paintable, but the “text” variants do not. e.g. see
 // gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
-func (b textBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintable) {
+func (b textBuffer) InsertPaintable(b TextBuffer, iter *TextIter, paintable gdk.Paintable) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GdkPaintable
@@ -1510,7 +1442,7 @@ func (b textBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintable) {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
 	arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
-	C.gtk_text_buffer_insert_paintable(arg0, iter, paintable)
+	C.gtk_text_buffer_insert_paintable(arg0, arg1, arg2)
 }
 
 // InsertRange copies text, tags, and paintables between @start and @end
@@ -1521,7 +1453,7 @@ func (b textBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintable) {
 //
 // Implemented via emissions of the insert_text and apply_tag signals, so
 // expect those.
-func (b textBuffer) InsertRange(iter *TextIter, start *TextIter, end *TextIter) {
+func (b textBuffer) InsertRange(b TextBuffer, iter *TextIter, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -1532,7 +1464,7 @@ func (b textBuffer) InsertRange(iter *TextIter, start *TextIter, end *TextIter) 
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_insert_range(arg0, iter, start, end)
+	C.gtk_text_buffer_insert_range(arg0, arg1, arg2, arg3)
 }
 
 // InsertRangeInteractive: same as gtk_text_buffer_insert_range(), but does
@@ -1540,7 +1472,7 @@ func (b textBuffer) InsertRange(iter *TextIter, start *TextIter, end *TextIter) 
 // parameter indicates whether the text is editable at @iter if no tags
 // enclosing @iter affect editability. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
-func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool {
+func (b textBuffer) InsertRangeInteractive(b TextBuffer, iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -1556,18 +1488,20 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 	}
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_text_buffer_insert_range_interactive(arg0, iter, start, end, defaultEditable)
+	cret = C.gtk_text_buffer_insert_range_interactive(arg0, arg1, arg2, arg3, arg4)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // MoveMark moves @mark to the new location @where. Emits the
 // TextBuffer::mark-set signal as notification of the move.
-func (b textBuffer) MoveMark(mark TextMark, where *TextIter) {
+func (b textBuffer) MoveMark(b TextBuffer, mark TextMark, where *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextMark
 	var arg2 *C.GtkTextIter
@@ -1576,12 +1510,12 @@ func (b textBuffer) MoveMark(mark TextMark, where *TextIter) {
 	arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
 
-	C.gtk_text_buffer_move_mark(arg0, mark, where)
+	C.gtk_text_buffer_move_mark(arg0, arg1, arg2)
 }
 
 // MoveMarkByName moves the mark named @name (which must exist) to location
 // @where. See gtk_text_buffer_move_mark() for details.
-func (b textBuffer) MoveMarkByName(name string, where *TextIter) {
+func (b textBuffer) MoveMarkByName(b TextBuffer, name string, where *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 *C.GtkTextIter
@@ -1591,7 +1525,7 @@ func (b textBuffer) MoveMarkByName(name string, where *TextIter) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
 
-	C.gtk_text_buffer_move_mark_by_name(arg0, name, where)
+	C.gtk_text_buffer_move_mark_by_name(arg0, arg1, arg2)
 }
 
 // PasteClipboard pastes the contents of a clipboard. If @override_location
@@ -1601,7 +1535,7 @@ func (b textBuffer) MoveMarkByName(name string, where *TextIter) {
 // Note: pasting is asynchronous, that is, we’ll ask for the paste data and
 // return, and at some point later after the main loop runs, the paste data
 // will be inserted.
-func (b textBuffer) PasteClipboard(clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool) {
+func (b textBuffer) PasteClipboard(b TextBuffer, clipboard gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GdkClipboard
 	var arg2 *C.GtkTextIter
@@ -1614,7 +1548,7 @@ func (b textBuffer) PasteClipboard(clipboard gdk.Clipboard, overrideLocation *Te
 		arg3 = C.gboolean(1)
 	}
 
-	C.gtk_text_buffer_paste_clipboard(arg0, clipboard, overrideLocation, defaultEditable)
+	C.gtk_text_buffer_paste_clipboard(arg0, arg1, arg2, arg3)
 }
 
 // PlaceCursor: this function moves the “insert” and “selection_bound” marks
@@ -1623,18 +1557,18 @@ func (b textBuffer) PasteClipboard(clipboard gdk.Clipboard, overrideLocation *Te
 // between their old and new locations, which can be pretty inefficient
 // since the temporarily-selected region will force stuff to be
 // recalculated. This function moves them as a unit, which can be optimized.
-func (b textBuffer) PlaceCursor(where *TextIter) {
+func (b textBuffer) PlaceCursor(b TextBuffer, where *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
 
-	C.gtk_text_buffer_place_cursor(arg0, where)
+	C.gtk_text_buffer_place_cursor(arg0, arg1)
 }
 
 // Redo redoes the next redoable action on the buffer, if there is one.
-func (b textBuffer) Redo() {
+func (b textBuffer) Redo(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
@@ -1647,7 +1581,7 @@ func (b textBuffer) Redo() {
 // to the code you’re currently writing. That is, using this function is
 // probably a bad idea if you have two or more unrelated code sections that
 // add tags.
-func (b textBuffer) RemoveAllTags(start *TextIter, end *TextIter) {
+func (b textBuffer) RemoveAllTags(b TextBuffer, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -1656,25 +1590,25 @@ func (b textBuffer) RemoveAllTags(start *TextIter, end *TextIter) {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_remove_all_tags(arg0, start, end)
+	C.gtk_text_buffer_remove_all_tags(arg0, arg1, arg2)
 }
 
 // RemoveSelectionClipboard removes a Clipboard added with
 // gtk_text_buffer_add_selection_clipboard().
-func (b textBuffer) RemoveSelectionClipboard(clipboard gdk.Clipboard) {
+func (b textBuffer) RemoveSelectionClipboard(b TextBuffer, clipboard gdk.Clipboard) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GdkClipboard
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
 
-	C.gtk_text_buffer_remove_selection_clipboard(arg0, clipboard)
+	C.gtk_text_buffer_remove_selection_clipboard(arg0, arg1)
 }
 
 // RemoveTag emits the “remove-tag” signal. The default handler for the
 // signal removes all occurrences of @tag from the given range. @start and
 // @end don’t have to be in order.
-func (b textBuffer) RemoveTag(tag TextTag, start *TextIter, end *TextIter) {
+func (b textBuffer) RemoveTag(b TextBuffer, tag TextTag, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextTag
 	var arg2 *C.GtkTextIter
@@ -1685,12 +1619,12 @@ func (b textBuffer) RemoveTag(tag TextTag, start *TextIter, end *TextIter) {
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_remove_tag(arg0, tag, start, end)
+	C.gtk_text_buffer_remove_tag(arg0, arg1, arg2, arg3)
 }
 
 // RemoveTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag
 // table to get a TextTag, then calls gtk_text_buffer_remove_tag().
-func (b textBuffer) RemoveTagByName(name string, start *TextIter, end *TextIter) {
+func (b textBuffer) RemoveTagByName(b TextBuffer, name string, start *TextIter, end *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 *C.GtkTextIter
@@ -1702,7 +1636,7 @@ func (b textBuffer) RemoveTagByName(name string, start *TextIter, end *TextIter)
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(start.Native()))
 	arg3 = (*C.GtkTextIter)(unsafe.Pointer(end.Native()))
 
-	C.gtk_text_buffer_remove_tag_by_name(arg0, name, start, end)
+	C.gtk_text_buffer_remove_tag_by_name(arg0, arg1, arg2, arg3)
 }
 
 // SelectRange: this function moves the “insert” and “selection_bound” marks
@@ -1711,7 +1645,7 @@ func (b textBuffer) RemoveTagByName(name string, start *TextIter, end *TextIter)
 // between their old and new locations, which can be pretty inefficient
 // since the temporarily-selected region will force stuff to be
 // recalculated. This function moves them as a unit, which can be optimized.
-func (b textBuffer) SelectRange(ins *TextIter, bound *TextIter) {
+func (b textBuffer) SelectRange(b TextBuffer, ins *TextIter, bound *TextIter) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.GtkTextIter
 	var arg2 *C.GtkTextIter
@@ -1720,7 +1654,7 @@ func (b textBuffer) SelectRange(ins *TextIter, bound *TextIter) {
 	arg1 = (*C.GtkTextIter)(unsafe.Pointer(ins.Native()))
 	arg2 = (*C.GtkTextIter)(unsafe.Pointer(bound.Native()))
 
-	C.gtk_text_buffer_select_range(arg0, ins, bound)
+	C.gtk_text_buffer_select_range(arg0, arg1, arg2)
 }
 
 // SetEnableUndo sets whether or not to enable undoable actions in the text
@@ -1730,7 +1664,7 @@ func (b textBuffer) SelectRange(ins *TextIter, bound *TextIter) {
 // See gtk_text_buffer_begin_irreversible_action() and
 // gtk_text_buffer_end_irreversible_action() to create changes to the buffer
 // that cannot be undone.
-func (b textBuffer) SetEnableUndo(enableUndo bool) {
+func (b textBuffer) SetEnableUndo(b TextBuffer, enableUndo bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 C.gboolean
 
@@ -1739,21 +1673,21 @@ func (b textBuffer) SetEnableUndo(enableUndo bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_text_buffer_set_enable_undo(arg0, enableUndo)
+	C.gtk_text_buffer_set_enable_undo(arg0, arg1)
 }
 
 // SetMaxUndoLevels sets the maximum number of undo levels to perform. If 0,
 // unlimited undo actions may be performed. Note that this may have a memory
 // usage impact as it requires storing an additional copy of the inserted or
 // removed text within the text buffer.
-func (b textBuffer) SetMaxUndoLevels(maxUndoLevels uint) {
+func (b textBuffer) SetMaxUndoLevels(b TextBuffer, maxUndoLevels uint) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
 	arg1 = C.guint(maxUndoLevels)
 
-	C.gtk_text_buffer_set_max_undo_levels(arg0, maxUndoLevels)
+	C.gtk_text_buffer_set_max_undo_levels(arg0, arg1)
 }
 
 // SetModified: used to keep track of whether the buffer has been modified
@@ -1762,7 +1696,7 @@ func (b textBuffer) SetMaxUndoLevels(maxUndoLevels uint) {
 // modified, it will automatically toggled on the modified bit again. When
 // the modified bit flips, the buffer emits the TextBuffer::modified-changed
 // signal.
-func (b textBuffer) SetModified(setting bool) {
+func (b textBuffer) SetModified(b TextBuffer, setting bool) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 C.gboolean
 
@@ -1771,12 +1705,12 @@ func (b textBuffer) SetModified(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_text_buffer_set_modified(arg0, setting)
+	C.gtk_text_buffer_set_modified(arg0, arg1)
 }
 
 // SetText deletes current contents of @buffer, and inserts @text instead.
 // If @len is -1, @text must be nul-terminated. @text must be valid UTF-8.
-func (b textBuffer) SetText(text string, len int) {
+func (b textBuffer) SetText(b TextBuffer, text string, len int) {
 	var arg0 *C.GtkTextBuffer
 	var arg1 *C.char
 	var arg2 C.int
@@ -1786,11 +1720,11 @@ func (b textBuffer) SetText(text string, len int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(len)
 
-	C.gtk_text_buffer_set_text(arg0, text, len)
+	C.gtk_text_buffer_set_text(arg0, arg1, arg2)
 }
 
 // Undo undoes the last undoable action on the buffer, if there is one.
-func (b textBuffer) Undo() {
+func (b textBuffer) Undo(b TextBuffer) {
 	var arg0 *C.GtkTextBuffer
 
 	arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))

@@ -34,7 +34,7 @@ func init() {
 // descriptor, but the situation is much more complicated on Windows. If you
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
-func Poll(fds *PollFD, nfds uint, timeout int) int {
+func Poll(fds *PollFD, nfds uint, timeout int) {
 	var arg1 *C.GPollFD
 	var arg2 C.guint
 	var arg3 C.gint
@@ -43,14 +43,7 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	arg2 = C.guint(nfds)
 	arg3 = C.gint(timeout)
 
-	var cret C.gint
-	var ret1 int
-
-	cret = C.g_poll(fds, nfds, timeout)
-
-	ret1 = C.gint(cret)
-
-	return ret1
+	C.g_poll(arg1, arg2, arg3)
 }
 
 // PollFD represents a file descriptor, which events to poll for, and which
@@ -81,15 +74,21 @@ func (p *PollFD) Native() unsafe.Pointer {
 
 // Fd gets the field inside the struct.
 func (p *PollFD) Fd() int {
-	v = C.gint(p.native.fd)
+	var v int
+	v = int(p.native.fd)
+	return v
 }
 
 // Events gets the field inside the struct.
 func (p *PollFD) Events() uint16 {
-	v = C.gushort(p.native.events)
+	var v uint16
+	v = uint16(p.native.events)
+	return v
 }
 
 // Revents gets the field inside the struct.
 func (p *PollFD) Revents() uint16 {
-	v = C.gushort(p.native.revents)
+	var v uint16
+	v = uint16(p.native.revents)
+	return v
 }

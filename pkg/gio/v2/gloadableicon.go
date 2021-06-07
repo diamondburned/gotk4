@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,14 +33,14 @@ func init() {
 type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
-	Load(size int, cancellable Cancellable) (typ string, inputStream InputStream, err error)
+	Load(i LoadableIcon, size int, cancellable Cancellable) (typ string, err error)
 	// LoadAsync loads an icon asynchronously. To finish this function, see
 	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
 	// this function, see g_loadable_icon_load().
-	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
+	LoadAsync(i LoadableIcon)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
-	LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error)
+	LoadFinish(i LoadableIcon, res AsyncResult) (typ string, err error)
 }
 
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
@@ -77,7 +73,7 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 
 // Load loads a loadable icon. For the asynchronous version of this
 // function, see g_loadable_icon_load_async().
-func (i loadableIcon) Load(size int, cancellable Cancellable) (typ string, inputStream InputStream, err error) {
+func (i loadableIcon) Load(i LoadableIcon, size int, cancellable Cancellable) (typ string, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 C.int
 	var arg3 *C.GCancellable
@@ -87,36 +83,33 @@ func (i loadableIcon) Load(size int, cancellable Cancellable) (typ string, input
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var arg2 *C.char
-	var ret2 string
+	var typ string
 	var errout *C.GError
-	var goerr error
-	var cret *C.GInputStream
-	var ret3 InputStream
+	var err error
 
-	cret = C.g_loadable_icon_load(arg0, size, &arg2, cancellable, &errout)
+	C.g_loadable_icon_load(arg0, arg1, &arg2, arg3, &errout)
 
-	*ret2 = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	typ = C.GoString(&arg2)
+	defer C.free(unsafe.Pointer(&arg2))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret2, goerr, ret3
+	return typ, err
 }
 
 // LoadAsync loads an icon asynchronously. To finish this function, see
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of
 // this function, see g_loadable_icon_load().
-func (i loadableIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
+func (i loadableIcon) LoadAsync(i LoadableIcon) {
 	var arg0 *C.GLoadableIcon
 
 	arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 
-	C.g_loadable_icon_load_async(arg0, size, cancellable, callback, userData)
+	C.g_loadable_icon_load_async(arg0, arg1, arg2, arg3, arg4)
 }
 
 // LoadFinish finishes an asynchronous icon load started in
 // g_loadable_icon_load_async().
-func (i loadableIcon) LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error) {
+func (i loadableIcon) LoadFinish(i LoadableIcon, res AsyncResult) (typ string, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 *C.GAsyncResult
 
@@ -124,18 +117,15 @@ func (i loadableIcon) LoadFinish(res AsyncResult) (typ string, inputStream Input
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var arg2 *C.char
-	var ret2 string
+	var typ string
 	var errout *C.GError
-	var goerr error
-	var cret *C.GInputStream
-	var ret3 InputStream
+	var err error
 
-	cret = C.g_loadable_icon_load_finish(arg0, res, &arg2, &errout)
+	C.g_loadable_icon_load_finish(arg0, arg1, &arg2, &errout)
 
-	*ret2 = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret3 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	typ = C.GoString(&arg2)
+	defer C.free(unsafe.Pointer(&arg2))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return ret2, goerr, ret3
+	return typ, err
 }

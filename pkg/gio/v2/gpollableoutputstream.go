@@ -3,16 +3,11 @@
 package gio
 
 import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -43,7 +38,7 @@ type PollableOutputStreamOverrider interface {
 	//
 	// For any given stream, the value returned by this method is constant; a
 	// stream cannot switch from pollable to non-pollable or vice versa.
-	CanPoll() bool
+	CanPoll(s PollableOutputStream) bool
 	// CreateSource creates a #GSource that triggers when @stream can be
 	// written, or @cancellable is triggered or an error occurs. The callback on
 	// the source is of the SourceFunc type.
@@ -52,7 +47,7 @@ type PollableOutputStreamOverrider interface {
 	// stream may not actually be writable even after the source triggers, so
 	// you should use g_pollable_output_stream_write_nonblocking() rather than
 	// g_output_stream_write() from the callback.
-	CreateSource(cancellable Cancellable) *glib.Source
+	CreateSource(s PollableOutputStream, cancellable Cancellable)
 	// IsWritable checks if @stream can be written.
 	//
 	// Note that some stream types may not be able to implement this 100%
@@ -60,7 +55,7 @@ type PollableOutputStreamOverrider interface {
 	// this returns true would still block. To guarantee non-blocking behavior,
 	// you should always use g_pollable_output_stream_write_nonblocking(), which
 	// will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-	IsWritable() bool
+	IsWritable(s PollableOutputStream) bool
 	// WriteNonblocking attempts to write up to @count bytes from @buffer to
 	// @stream, as with g_output_stream_write(). If @stream is not currently
 	// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
@@ -76,7 +71,7 @@ type PollableOutputStreamOverrider interface {
 	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
 	// transports like D/TLS require that you re-send the same @buffer and
 	// @count in the next write call.
-	WriteNonblocking(buffer []byte) (gssize int, err error)
+	WriteNonblocking(s PollableOutputStream) error
 }
 
 // PollableOutputStream is implemented by Streams that can be polled for
@@ -115,19 +110,21 @@ func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 //
 // For any given stream, the value returned by this method is constant; a
 // stream cannot switch from pollable to non-pollable or vice versa.
-func (s pollableOutputStream) CanPoll() bool {
+func (s pollableOutputStream) CanPoll(s PollableOutputStream) bool {
 	var arg0 *C.GPollableOutputStream
 
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_pollable_output_stream_can_poll(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // CreateSource creates a #GSource that triggers when @stream can be
@@ -138,24 +135,14 @@ func (s pollableOutputStream) CanPoll() bool {
 // stream may not actually be writable even after the source triggers, so
 // you should use g_pollable_output_stream_write_nonblocking() rather than
 // g_output_stream_write() from the callback.
-func (s pollableOutputStream) CreateSource(cancellable Cancellable) *glib.Source {
+func (s pollableOutputStream) CreateSource(s PollableOutputStream, cancellable Cancellable) {
 	var arg0 *C.GPollableOutputStream
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GSource
-	var ret1 *glib.Source
-
-	cret = C.g_pollable_output_stream_create_source(arg0, cancellable)
-
-	ret1 = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.Source) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_pollable_output_stream_create_source(arg0, arg1)
 }
 
 // IsWritable checks if @stream can be written.
@@ -165,17 +152,19 @@ func (s pollableOutputStream) CreateSource(cancellable Cancellable) *glib.Source
 // this returns true would still block. To guarantee non-blocking behavior,
 // you should always use g_pollable_output_stream_write_nonblocking(), which
 // will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
-func (s pollableOutputStream) IsWritable() bool {
+func (s pollableOutputStream) IsWritable(s PollableOutputStream) bool {
 	var arg0 *C.GPollableOutputStream
 
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_pollable_output_stream_is_writable(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

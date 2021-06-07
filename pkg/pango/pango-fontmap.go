@@ -3,9 +3,6 @@
 package pango
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,7 +32,7 @@ type FontMap interface {
 	// This function is only useful when implementing a new backend for Pango,
 	// something applications won't do. Backends should call this function if
 	// they have attached extra data to the context and such data is changed.
-	Changed()
+	Changed(f FontMap)
 	// CreateContext creates a `PangoContext` connected to @fontmap.
 	//
 	// This is equivalent to [ctor@Pango.Context.new] followed by
@@ -45,9 +42,9 @@ type FontMap interface {
 	// have it's own way of create a `PangoContext`. For instance, the GTK
 	// toolkit has, among others, gtk_widget_get_pango_context(). Use those
 	// instead.
-	CreateContext() Context
+	CreateContext(f FontMap)
 	// Family gets a font family by name.
-	Family(name string) FontFamily
+	Family(f FontMap, name string)
 	// Serial returns the current serial number of @fontmap.
 	//
 	// The serial number is initialized to an small number larger than zero when
@@ -60,15 +57,15 @@ type FontMap interface {
 	//
 	// This can be used to automatically detect changes to a `PangoFontMap`,
 	// like in `PangoContext`.
-	Serial() uint
+	Serial(f FontMap)
 	// ListFamilies: list all families for a fontmap.
-	ListFamilies() (families []FontFamily, nFamilies int)
+	ListFamilies(f FontMap)
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// @desc.
-	LoadFont(context Context, desc *FontDescription) Font
+	LoadFont(f FontMap, context Context, desc *FontDescription)
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching @desc.
-	LoadFontset(context Context, desc *FontDescription, language *Language) Fontset
+	LoadFontset(f FontMap, context Context, desc *FontDescription, language *Language)
 }
 
 // fontMap implements the FontMap interface.
@@ -98,7 +95,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // This function is only useful when implementing a new backend for Pango,
 // something applications won't do. Backends should call this function if
 // they have attached extra data to the context and such data is changed.
-func (f fontMap) Changed() {
+func (f fontMap) Changed(f FontMap) {
 	var arg0 *C.PangoFontMap
 
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
@@ -115,23 +112,16 @@ func (f fontMap) Changed() {
 // have it's own way of create a `PangoContext`. For instance, the GTK
 // toolkit has, among others, gtk_widget_get_pango_context(). Use those
 // instead.
-func (f fontMap) CreateContext() Context {
+func (f fontMap) CreateContext(f FontMap) {
 	var arg0 *C.PangoFontMap
 
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
-	var cret *C.PangoContext
-	var ret1 Context
-
-	cret = C.pango_font_map_create_context(arg0)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Context)
-
-	return ret1
+	C.pango_font_map_create_context(arg0)
 }
 
 // Family gets a font family by name.
-func (f fontMap) Family(name string) FontFamily {
+func (f fontMap) Family(f FontMap, name string) {
 	var arg0 *C.PangoFontMap
 	var arg1 *C.char
 
@@ -139,14 +129,7 @@ func (f fontMap) Family(name string) FontFamily {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.PangoFontFamily
-	var ret1 FontFamily
-
-	cret = C.pango_font_map_get_family(arg0, name)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontFamily)
-
-	return ret1
+	C.pango_font_map_get_family(arg0, arg1)
 }
 
 // Serial returns the current serial number of @fontmap.
@@ -161,35 +144,28 @@ func (f fontMap) Family(name string) FontFamily {
 //
 // This can be used to automatically detect changes to a `PangoFontMap`,
 // like in `PangoContext`.
-func (f fontMap) Serial() uint {
+func (f fontMap) Serial(f FontMap) {
 	var arg0 *C.PangoFontMap
 
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.pango_font_map_get_serial(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.pango_font_map_get_serial(arg0)
 }
 
 // ListFamilies: list all families for a fontmap.
-func (f fontMap) ListFamilies() (families []FontFamily, nFamilies int) {
+func (f fontMap) ListFamilies(f FontMap) {
 	var arg0 *C.PangoFontMap
 
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
 	C.pango_font_map_list_families(arg0, &arg1, &arg2)
 
-	return ret1, ret2
+	return families, nFamilies
 }
 
 // LoadFont: load the font in the fontmap that is the closest match for
 // @desc.
-func (f fontMap) LoadFont(context Context, desc *FontDescription) Font {
+func (f fontMap) LoadFont(f FontMap, context Context, desc *FontDescription) {
 	var arg0 *C.PangoFontMap
 	var arg1 *C.PangoContext
 	var arg2 *C.PangoFontDescription
@@ -198,19 +174,12 @@ func (f fontMap) LoadFont(context Context, desc *FontDescription) Font {
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	var cret *C.PangoFont
-	var ret1 Font
-
-	cret = C.pango_font_map_load_font(arg0, context, desc)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
-
-	return ret1
+	C.pango_font_map_load_font(arg0, arg1, arg2)
 }
 
 // LoadFontset: load a set of fonts in the fontmap that can be used to
 // render a font matching @desc.
-func (f fontMap) LoadFontset(context Context, desc *FontDescription, language *Language) Fontset {
+func (f fontMap) LoadFontset(f FontMap, context Context, desc *FontDescription, language *Language) {
 	var arg0 *C.PangoFontMap
 	var arg1 *C.PangoContext
 	var arg2 *C.PangoFontDescription
@@ -221,12 +190,5 @@ func (f fontMap) LoadFontset(context Context, desc *FontDescription, language *L
 	arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 	arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	var cret *C.PangoFontset
-	var ret1 Fontset
-
-	cret = C.pango_font_map_load_fontset(arg0, context, desc, language)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Fontset)
-
-	return ret1
+	C.pango_font_map_load_fontset(arg0, arg1, arg2, arg3)
 }

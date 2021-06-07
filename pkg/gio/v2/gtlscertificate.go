@@ -3,16 +3,11 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -41,13 +36,13 @@ type TLSCertificate interface {
 	gextras.Objector
 
 	// Issuer gets the Certificate representing @cert's issuer, if known
-	Issuer() TLSCertificate
+	Issuer(c TLSCertificate)
 	// IsSame: check if two Certificate objects represent the same certificate.
 	// The raw DER byte data of the two certificates are checked for equality.
 	// This has the effect that two certificates may compare equal even if their
 	// Certificate:issuer, Certificate:private-key, or
 	// Certificate:private-key-pem properties differ.
-	IsSame(certTwo TLSCertificate) bool
+	IsSame(c TLSCertificate, certTwo TLSCertificate) bool
 	// Verify: this verifies @cert and returns a set of CertificateFlags
 	// indicating any problems found with it. This can be used to verify a
 	// certificate outside the context of making a connection, or to check a
@@ -65,7 +60,7 @@ type TLSCertificate interface {
 	//
 	// (All other CertificateFlags values will always be set or unset as
 	// appropriate.)
-	Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags
+	Verify(c TLSCertificate, identity SocketConnectable, trustedCa TLSCertificate)
 }
 
 // tlsCertificate implements the TLSCertificate interface.
@@ -90,27 +85,24 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 }
 
 // NewTLSCertificateFromFile constructs a class TLSCertificate.
-func NewTLSCertificateFromFile(file string) (tlsCertificate TLSCertificate, err error) {
+func NewTLSCertificateFromFile(file string) error {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsCertificate
-	var ret2 TLSCertificate
+	var err error
 
-	cret = C.g_tls_certificate_new_from_file(file, &errout)
+	C.g_tls_certificate_new_from_file(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // NewTLSCertificateFromFiles constructs a class TLSCertificate.
-func NewTLSCertificateFromFiles(certFile string, keyFile string) (tlsCertificate TLSCertificate, err error) {
+func NewTLSCertificateFromFiles(certFile string, keyFile string) error {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -120,20 +112,17 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (tlsCertificate
 	defer C.free(unsafe.Pointer(arg2))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsCertificate
-	var ret2 TLSCertificate
+	var err error
 
-	cret = C.g_tls_certificate_new_from_files(certFile, keyFile, &errout)
+	C.g_tls_certificate_new_from_files(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // NewTLSCertificateFromPem constructs a class TLSCertificate.
-func NewTLSCertificateFromPem(data string, length int) (tlsCertificate TLSCertificate, err error) {
+func NewTLSCertificateFromPem(data string, length int) error {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 
@@ -142,32 +131,22 @@ func NewTLSCertificateFromPem(data string, length int) (tlsCertificate TLSCertif
 	arg2 = C.gssize(length)
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GTlsCertificate
-	var ret2 TLSCertificate
+	var err error
 
-	cret = C.g_tls_certificate_new_from_pem(data, length, &errout)
+	C.g_tls_certificate_new_from_pem(arg1, arg2, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // Issuer gets the Certificate representing @cert's issuer, if known
-func (c tlsCertificate) Issuer() TLSCertificate {
+func (c tlsCertificate) Issuer(c TLSCertificate) {
 	var arg0 *C.GTlsCertificate
 
 	arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GTlsCertificate
-	var ret1 TLSCertificate
-
-	cret = C.g_tls_certificate_get_issuer(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-
-	return ret1
+	C.g_tls_certificate_get_issuer(arg0)
 }
 
 // IsSame: check if two Certificate objects represent the same certificate.
@@ -175,7 +154,7 @@ func (c tlsCertificate) Issuer() TLSCertificate {
 // This has the effect that two certificates may compare equal even if their
 // Certificate:issuer, Certificate:private-key, or
 // Certificate:private-key-pem properties differ.
-func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
+func (c tlsCertificate) IsSame(c TLSCertificate, certTwo TLSCertificate) bool {
 	var arg0 *C.GTlsCertificate
 	var arg1 *C.GTlsCertificate
 
@@ -183,13 +162,15 @@ func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 	arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.g_tls_certificate_is_same(arg0, certTwo)
+	cret = C.g_tls_certificate_is_same(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Verify: this verifies @cert and returns a set of CertificateFlags
@@ -209,7 +190,7 @@ func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
 //
 // (All other CertificateFlags values will always be set or unset as
 // appropriate.)
-func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertificate) TLSCertificateFlags {
+func (c tlsCertificate) Verify(c TLSCertificate, identity SocketConnectable, trustedCa TLSCertificate) {
 	var arg0 *C.GTlsCertificate
 	var arg1 *C.GSocketConnectable
 	var arg2 *C.GTlsCertificate
@@ -218,12 +199,5 @@ func (c tlsCertificate) Verify(identity SocketConnectable, trustedCa TLSCertific
 	arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(trustedCa.Native()))
 
-	var cret C.GTlsCertificateFlags
-	var ret1 TLSCertificateFlags
-
-	cret = C.g_tls_certificate_verify(arg0, identity, trustedCa)
-
-	ret1 = TLSCertificateFlags(cret)
-
-	return ret1
+	C.g_tls_certificate_verify(arg0, arg1, arg2)
 }

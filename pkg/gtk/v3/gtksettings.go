@@ -5,14 +5,11 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -40,13 +37,15 @@ func RCPropertyParseBorder(pspec gobject.ParamSpec, gstring *glib.String, proper
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_rc_property_parse_border(pspec, gstring, propertyValue)
+	cret = C.gtk_rc_property_parse_border(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RCPropertyParseColor: a RcPropertyParser for use with
@@ -65,13 +64,15 @@ func RCPropertyParseColor(pspec gobject.ParamSpec, gstring *glib.String, propert
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_rc_property_parse_color(pspec, gstring, propertyValue)
+	cret = C.gtk_rc_property_parse_color(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RCPropertyParseEnum: a RcPropertyParser for use with
@@ -92,13 +93,15 @@ func RCPropertyParseEnum(pspec gobject.ParamSpec, gstring *glib.String, property
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_rc_property_parse_enum(pspec, gstring, propertyValue)
+	cret = C.gtk_rc_property_parse_enum(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RCPropertyParseFlags: a RcPropertyParser for use with
@@ -117,13 +120,15 @@ func RCPropertyParseFlags(pspec gobject.ParamSpec, gstring *glib.String, propert
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_rc_property_parse_flags(pspec, gstring, propertyValue)
+	cret = C.gtk_rc_property_parse_flags(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RCPropertyParseRequisition: a RcPropertyParser for use with
@@ -140,13 +145,15 @@ func RCPropertyParseRequisition(pspec gobject.ParamSpec, gstring *glib.String, p
 	arg3 = (*C.GValue)(propertyValue.GValue)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_rc_property_parse_requisition(pspec, gstring, propertyValue)
+	cret = C.gtk_rc_property_parse_requisition(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Settings gtkSettings provide a mechanism to share global settings between
@@ -187,15 +194,15 @@ type Settings interface {
 	// ResetProperty undoes the effect of calling g_object_set() to install an
 	// application-specific value for a setting. After this call, the setting
 	// will again follow the session-wide value for this setting.
-	ResetProperty(name string)
+	ResetProperty(s Settings, name string)
 
-	SetDoubleProperty(name string, vDouble float64, origin string)
+	SetDoubleProperty(s Settings, name string, vDouble float64, origin string)
 
-	SetLongProperty(name string, vLong int32, origin string)
+	SetLongProperty(s Settings, name string, vLong int32, origin string)
 
-	SetPropertyValue(name string, svalue *SettingsValue)
+	SetPropertyValue(s Settings, name string, svalue *SettingsValue)
 
-	SetStringProperty(name string, vString string, origin string)
+	SetStringProperty(s Settings, name string, vString string, origin string)
 }
 
 // settings implements the Settings interface.
@@ -224,7 +231,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // ResetProperty undoes the effect of calling g_object_set() to install an
 // application-specific value for a setting. After this call, the setting
 // will again follow the session-wide value for this setting.
-func (s settings) ResetProperty(name string) {
+func (s settings) ResetProperty(s Settings, name string) {
 	var arg0 *C.GtkSettings
 	var arg1 *C.gchar
 
@@ -232,10 +239,10 @@ func (s settings) ResetProperty(name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_settings_reset_property(arg0, name)
+	C.gtk_settings_reset_property(arg0, arg1)
 }
 
-func (s settings) SetDoubleProperty(name string, vDouble float64, origin string) {
+func (s settings) SetDoubleProperty(s Settings, name string, vDouble float64, origin string) {
 	var arg0 *C.GtkSettings
 	var arg1 *C.gchar
 	var arg2 C.gdouble
@@ -248,10 +255,10 @@ func (s settings) SetDoubleProperty(name string, vDouble float64, origin string)
 	arg3 = (*C.gchar)(C.CString(origin))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.gtk_settings_set_double_property(arg0, name, vDouble, origin)
+	C.gtk_settings_set_double_property(arg0, arg1, arg2, arg3)
 }
 
-func (s settings) SetLongProperty(name string, vLong int32, origin string) {
+func (s settings) SetLongProperty(s Settings, name string, vLong int32, origin string) {
 	var arg0 *C.GtkSettings
 	var arg1 *C.gchar
 	var arg2 C.glong
@@ -264,10 +271,10 @@ func (s settings) SetLongProperty(name string, vLong int32, origin string) {
 	arg3 = (*C.gchar)(C.CString(origin))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.gtk_settings_set_long_property(arg0, name, vLong, origin)
+	C.gtk_settings_set_long_property(arg0, arg1, arg2, arg3)
 }
 
-func (s settings) SetPropertyValue(name string, svalue *SettingsValue) {
+func (s settings) SetPropertyValue(s Settings, name string, svalue *SettingsValue) {
 	var arg0 *C.GtkSettings
 	var arg1 *C.gchar
 	var arg2 *C.GtkSettingsValue
@@ -277,10 +284,10 @@ func (s settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue.Native()))
 
-	C.gtk_settings_set_property_value(arg0, name, svalue)
+	C.gtk_settings_set_property_value(arg0, arg1, arg2)
 }
 
-func (s settings) SetStringProperty(name string, vString string, origin string) {
+func (s settings) SetStringProperty(s Settings, name string, vString string, origin string) {
 	var arg0 *C.GtkSettings
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -294,7 +301,7 @@ func (s settings) SetStringProperty(name string, vString string, origin string) 
 	arg3 = (*C.gchar)(C.CString(origin))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.gtk_settings_set_string_property(arg0, name, vString, origin)
+	C.gtk_settings_set_string_property(arg0, arg1, arg2, arg3)
 }
 
 type SettingsValue struct {
@@ -323,10 +330,14 @@ func (s *SettingsValue) Native() unsafe.Pointer {
 
 // Origin gets the field inside the struct.
 func (s *SettingsValue) Origin() string {
+	var v string
 	v = C.GoString(s.native.origin)
+	return v
 }
 
 // Value gets the field inside the struct.
 func (s *SettingsValue) Value() *externglib.Value {
+	var v *externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
+	return v
 }

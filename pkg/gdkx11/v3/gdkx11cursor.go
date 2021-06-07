@@ -21,6 +21,11 @@ func init() {
 
 type X11Cursor interface {
 	gdk.Cursor
+
+	// Xcursor returns the X cursor belonging to a Cursor.
+	Xcursor(c X11Cursor)
+	// Xdisplay returns the display of a Cursor.
+	Xdisplay(c X11Cursor)
 }
 
 // x11Cursor implements the X11Cursor interface.
@@ -42,4 +47,22 @@ func marshalX11Cursor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapX11Cursor(obj), nil
+}
+
+// Xcursor returns the X cursor belonging to a Cursor.
+func (c x11Cursor) Xcursor(c X11Cursor) {
+	var arg0 *C.GdkCursor
+
+	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	C.gdk_x11_cursor_get_xcursor(arg0)
+}
+
+// Xdisplay returns the display of a Cursor.
+func (c x11Cursor) Xdisplay(c X11Cursor) {
+	var arg0 *C.GdkCursor
+
+	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+
+	C.gdk_x11_cursor_get_xdisplay(arg0)
 }

@@ -28,7 +28,7 @@ type GLTexture interface {
 	//
 	// The texture contents are still available via the gdk_texture_download()
 	// function, after this function has been called.
-	Release()
+	Release(s GLTexture)
 }
 
 // glTexture implements the GLTexture interface.
@@ -59,7 +59,7 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 //
 // The texture contents are still available via the gdk_texture_download()
 // function, after this function has been called.
-func (s glTexture) Release() {
+func (s glTexture) Release(s GLTexture) {
 	var arg0 *C.GdkGLTexture
 
 	arg0 = (*C.GdkGLTexture)(unsafe.Pointer(s.Native()))

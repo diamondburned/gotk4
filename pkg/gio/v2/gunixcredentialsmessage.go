@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,7 +41,7 @@ type UnixCredentialsMessage interface {
 	SocketControlMessage
 
 	// Credentials gets the credentials stored in @message.
-	Credentials() Credentials
+	Credentials(m UnixCredentialsMessage)
 }
 
 // unixCredentialsMessage implements the UnixCredentialsMessage interface.
@@ -69,45 +66,24 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 }
 
 // NewUnixCredentialsMessage constructs a class UnixCredentialsMessage.
-func NewUnixCredentialsMessage() UnixCredentialsMessage {
-	var cret C.GUnixCredentialsMessage
-	var ret1 UnixCredentialsMessage
-
-	cret = C.g_unix_credentials_message_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
-
-	return ret1
+func NewUnixCredentialsMessage() {
+	C.g_unix_credentials_message_new()
 }
 
 // NewUnixCredentialsMessageWithCredentials constructs a class UnixCredentialsMessage.
-func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
+func NewUnixCredentialsMessageWithCredentials(credentials Credentials) {
 	var arg1 *C.GCredentials
 
 	arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
-	var cret C.GUnixCredentialsMessage
-	var ret1 UnixCredentialsMessage
-
-	cret = C.g_unix_credentials_message_new_with_credentials(credentials)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
-
-	return ret1
+	C.g_unix_credentials_message_new_with_credentials(arg1)
 }
 
 // Credentials gets the credentials stored in @message.
-func (m unixCredentialsMessage) Credentials() Credentials {
+func (m unixCredentialsMessage) Credentials(m UnixCredentialsMessage) {
 	var arg0 *C.GUnixCredentialsMessage
 
 	arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GCredentials
-	var ret1 Credentials
-
-	cret = C.g_unix_credentials_message_get_credentials(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
-
-	return ret1
+	C.g_unix_credentials_message_get_credentials(arg0)
 }

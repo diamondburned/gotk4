@@ -3,11 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,19 +19,12 @@ func init() {
 }
 
 // NativeGetForSurface finds the GtkNative associated with the surface.
-func NativeGetForSurface(surface gdk.Surface) Native {
+func NativeGetForSurface(surface gdk.Surface) {
 	var arg1 *C.GdkSurface
 
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var cret *C.GtkNative
-	var ret1 Native
-
-	cret = C.gtk_native_get_for_surface(surface)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Native)
-
-	return ret1
+	C.gtk_native_get_for_surface(arg1)
 }
 
 // Native is the interface implemented by all widgets that can provide a
@@ -47,17 +35,17 @@ type Native interface {
 	Widget
 
 	// Renderer returns the renderer that is used for this Native.
-	Renderer() gsk.Renderer
+	Renderer(s Native)
 	// Surface returns the surface of this Native.
-	Surface() gdk.Surface
+	Surface(s Native)
 	// SurfaceTransform retrieves the surface transform of @self. This is the
 	// translation from @self's surface coordinates into @self's widget
 	// coordinates.
-	SurfaceTransform() (x float64, y float64)
+	SurfaceTransform(s Native) (x float64, y float64)
 	// Realize realizes a Native.
-	Realize()
+	Realize(s Native)
 	// Unrealize unrealizes a Native.
-	Unrealize()
+	Unrealize(s Native)
 }
 
 // native implements the Native interface.
@@ -82,60 +70,46 @@ func marshalNative(p uintptr) (interface{}, error) {
 }
 
 // Renderer returns the renderer that is used for this Native.
-func (s native) Renderer() gsk.Renderer {
+func (s native) Renderer(s Native) {
 	var arg0 *C.GtkNative
 
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GskRenderer
-	var ret1 gsk.Renderer
-
-	cret = C.gtk_native_get_renderer(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gsk.Renderer)
-
-	return ret1
+	C.gtk_native_get_renderer(arg0)
 }
 
 // Surface returns the surface of this Native.
-func (s native) Surface() gdk.Surface {
+func (s native) Surface(s Native) {
 	var arg0 *C.GtkNative
 
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkSurface
-	var ret1 gdk.Surface
-
-	cret = C.gtk_native_get_surface(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
-
-	return ret1
+	C.gtk_native_get_surface(arg0)
 }
 
 // SurfaceTransform retrieves the surface transform of @self. This is the
 // translation from @self's surface coordinates into @self's widget
 // coordinates.
-func (s native) SurfaceTransform() (x float64, y float64) {
+func (s native) SurfaceTransform(s Native) (x float64, y float64) {
 	var arg0 *C.GtkNative
 
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
 	var arg1 C.double
-	var ret1 float64
+	var x float64
 	var arg2 C.double
-	var ret2 float64
+	var y float64
 
 	C.gtk_native_get_surface_transform(arg0, &arg1, &arg2)
 
-	*ret1 = C.double(arg1)
-	*ret2 = C.double(arg2)
+	x = float64(&arg1)
+	y = float64(&arg2)
 
-	return ret1, ret2
+	return x, y
 }
 
 // Realize realizes a Native.
-func (s native) Realize() {
+func (s native) Realize(s Native) {
 	var arg0 *C.GtkNative
 
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
@@ -144,7 +118,7 @@ func (s native) Realize() {
 }
 
 // Unrealize unrealizes a Native.
-func (s native) Unrealize() {
+func (s native) Unrealize(s Native) {
 	var arg0 *C.GtkNative
 
 	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))

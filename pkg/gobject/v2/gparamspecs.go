@@ -2,14 +2,6 @@
 
 package gobject
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	externglib "github.com/gotk3/gotk3/glib"
-)
-
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
@@ -22,7 +14,7 @@ import "C"
 // without breaking API.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecBoolean(name string, nick string, blurb string, defaultValue bool, flags ParamFlags) ParamSpec {
+func ParamSpecBoolean(name string, nick string, blurb string, defaultValue bool, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -40,21 +32,14 @@ func ParamSpecBoolean(name string, nick string, blurb string, defaultValue bool,
 	}
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_boolean(name, nick, blurb, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_boolean(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecBoxed creates a new SpecBoxed instance specifying a G_TYPE_BOXED
 // derived property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecBoxed(name string, nick string, blurb string, boxedType externglib.Type, flags ParamFlags) ParamSpec {
+func ParamSpecBoxed(name string, nick string, blurb string, boxedType externglib.Type, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -70,19 +55,12 @@ func ParamSpecBoxed(name string, nick string, blurb string, boxedType externglib
 	arg4 := C.GType(boxedType)
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_boxed(name, nick, blurb, boxedType, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_boxed(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecChar creates a new SpecChar instance specifying a G_TYPE_CHAR
 // property.
-func ParamSpecChar(name string, nick string, blurb string, minimum int8, maximum int8, defaultValue int8, flags ParamFlags) ParamSpec {
+func ParamSpecChar(name string, nick string, blurb string, minimum int8, maximum int8, defaultValue int8, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -102,21 +80,14 @@ func ParamSpecChar(name string, nick string, blurb string, minimum int8, maximum
 	arg6 = C.gint8(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_char(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_char(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecDouble creates a new SpecDouble instance specifying a G_TYPE_DOUBLE
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecDouble(name string, nick string, blurb string, minimum float64, maximum float64, defaultValue float64, flags ParamFlags) ParamSpec {
+func ParamSpecDouble(name string, nick string, blurb string, minimum float64, maximum float64, defaultValue float64, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -136,21 +107,14 @@ func ParamSpecDouble(name string, nick string, blurb string, minimum float64, ma
 	arg6 = C.gdouble(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_double(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_double(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecEnum creates a new SpecEnum instance specifying a G_TYPE_ENUM
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecEnum(name string, nick string, blurb string, enumType externglib.Type, defaultValue int, flags ParamFlags) ParamSpec {
+func ParamSpecEnum(name string, nick string, blurb string, enumType externglib.Type, defaultValue int, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -168,21 +132,14 @@ func ParamSpecEnum(name string, nick string, blurb string, enumType externglib.T
 	arg5 = C.gint(defaultValue)
 	arg6 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_enum(name, nick, blurb, enumType, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_enum(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // ParamSpecFlags creates a new SpecFlags instance specifying a G_TYPE_FLAGS
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecFlags(name string, nick string, blurb string, flagsType externglib.Type, defaultValue uint, flags ParamFlags) ParamSpec {
+func ParamSpecFlags(name string, nick string, blurb string, flagsType externglib.Type, defaultValue uint, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -200,21 +157,14 @@ func ParamSpecFlags(name string, nick string, blurb string, flagsType externglib
 	arg5 = C.guint(defaultValue)
 	arg6 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_flags(name, nick, blurb, flagsType, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_flags(arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // ParamSpecFloat creates a new SpecFloat instance specifying a G_TYPE_FLOAT
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecFloat(name string, nick string, blurb string, minimum float32, maximum float32, defaultValue float32, flags ParamFlags) ParamSpec {
+func ParamSpecFloat(name string, nick string, blurb string, minimum float32, maximum float32, defaultValue float32, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -234,21 +184,14 @@ func ParamSpecFloat(name string, nick string, blurb string, minimum float32, max
 	arg6 = C.gfloat(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_float(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_float(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecGType creates a new SpecGType instance specifying a G_TYPE_GTYPE
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecGType(name string, nick string, blurb string, isAType externglib.Type, flags ParamFlags) ParamSpec {
+func ParamSpecGType(name string, nick string, blurb string, isAType externglib.Type, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -264,20 +207,13 @@ func ParamSpecGType(name string, nick string, blurb string, isAType externglib.T
 	arg4 := C.GType(isAType)
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_gtype(name, nick, blurb, isAType, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_gtype(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecInt creates a new SpecInt instance specifying a G_TYPE_INT property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecInt(name string, nick string, blurb string, minimum int, maximum int, defaultValue int, flags ParamFlags) ParamSpec {
+func ParamSpecInt(name string, nick string, blurb string, minimum int, maximum int, defaultValue int, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -297,21 +233,14 @@ func ParamSpecInt(name string, nick string, blurb string, minimum int, maximum i
 	arg6 = C.gint(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_int(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_int(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecInt64 creates a new SpecInt64 instance specifying a G_TYPE_INT64
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecInt64(name string, nick string, blurb string, minimum int64, maximum int64, defaultValue int64, flags ParamFlags) ParamSpec {
+func ParamSpecInt64(name string, nick string, blurb string, minimum int64, maximum int64, defaultValue int64, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -331,21 +260,14 @@ func ParamSpecInt64(name string, nick string, blurb string, minimum int64, maxim
 	arg6 = C.gint64(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_int64(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_int64(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecLong creates a new SpecLong instance specifying a G_TYPE_LONG
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecLong(name string, nick string, blurb string, minimum int32, maximum int32, defaultValue int32, flags ParamFlags) ParamSpec {
+func ParamSpecLong(name string, nick string, blurb string, minimum int32, maximum int32, defaultValue int32, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -365,21 +287,14 @@ func ParamSpecLong(name string, nick string, blurb string, minimum int32, maximu
 	arg6 = C.glong(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_long(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_long(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecObject creates a new SpecBoxed instance specifying a G_TYPE_OBJECT
 // derived property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecObject(name string, nick string, blurb string, objectType externglib.Type, flags ParamFlags) ParamSpec {
+func ParamSpecObject(name string, nick string, blurb string, objectType externglib.Type, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -395,20 +310,13 @@ func ParamSpecObject(name string, nick string, blurb string, objectType externgl
 	arg4 := C.GType(objectType)
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_object(name, nick, blurb, objectType, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_object(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecOverride creates a new property of type SpecOverride. This is used
 // to direct operations to another paramspec, and will not be directly useful
 // unless you are implementing a new base type similar to GObject.
-func ParamSpecOverride(name string, overridden ParamSpec) ParamSpec {
+func ParamSpecOverride(name string, overridden ParamSpec) {
 	var arg1 *C.gchar
 	var arg2 *C.GParamSpec
 
@@ -416,21 +324,14 @@ func ParamSpecOverride(name string, overridden ParamSpec) ParamSpec {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GParamSpec)(unsafe.Pointer(overridden.Native()))
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_override(name, overridden)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_override(arg1, arg2)
 }
 
 // ParamSpecParam creates a new SpecParam instance specifying a G_TYPE_PARAM
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecParam(name string, nick string, blurb string, paramType externglib.Type, flags ParamFlags) ParamSpec {
+func ParamSpecParam(name string, nick string, blurb string, paramType externglib.Type, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -446,14 +347,7 @@ func ParamSpecParam(name string, nick string, blurb string, paramType externglib
 	arg4 := C.GType(paramType)
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_param(name, nick, blurb, paramType, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_param(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecPointer creates a new SpecPointer instance specifying a pointer
@@ -461,7 +355,7 @@ func ParamSpecParam(name string, nick string, blurb string, paramType externglib
 // g_param_spec_boxed() to expose memory management information.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecPointer(name string, nick string, blurb string, flags ParamFlags) ParamSpec {
+func ParamSpecPointer(name string, nick string, blurb string, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -475,20 +369,13 @@ func ParamSpecPointer(name string, nick string, blurb string, flags ParamFlags) 
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_pointer(name, nick, blurb, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_pointer(arg1, arg2, arg3, arg4)
 }
 
 // ParamSpecString creates a new SpecString instance.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecString(name string, nick string, blurb string, defaultValue string, flags ParamFlags) ParamSpec {
+func ParamSpecString(name string, nick string, blurb string, defaultValue string, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -505,19 +392,12 @@ func ParamSpecString(name string, nick string, blurb string, defaultValue string
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_string(name, nick, blurb, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_string(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecUchar creates a new SpecUChar instance specifying a G_TYPE_UCHAR
 // property.
-func ParamSpecUchar(name string, nick string, blurb string, minimum byte, maximum byte, defaultValue byte, flags ParamFlags) ParamSpec {
+func ParamSpecUchar(name string, nick string, blurb string, minimum byte, maximum byte, defaultValue byte, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -537,21 +417,14 @@ func ParamSpecUchar(name string, nick string, blurb string, minimum byte, maximu
 	arg6 = C.guint8(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_uchar(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_uchar(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecUint creates a new SpecUInt instance specifying a G_TYPE_UINT
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecUint(name string, nick string, blurb string, minimum uint, maximum uint, defaultValue uint, flags ParamFlags) ParamSpec {
+func ParamSpecUint(name string, nick string, blurb string, minimum uint, maximum uint, defaultValue uint, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -571,21 +444,14 @@ func ParamSpecUint(name string, nick string, blurb string, minimum uint, maximum
 	arg6 = C.guint(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_uint(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_uint(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecUint64 creates a new SpecUInt64 instance specifying a G_TYPE_UINT64
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecUint64(name string, nick string, blurb string, minimum uint64, maximum uint64, defaultValue uint64, flags ParamFlags) ParamSpec {
+func ParamSpecUint64(name string, nick string, blurb string, minimum uint64, maximum uint64, defaultValue uint64, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -605,21 +471,14 @@ func ParamSpecUint64(name string, nick string, blurb string, minimum uint64, max
 	arg6 = C.guint64(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_uint64(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_uint64(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecUlong creates a new SpecULong instance specifying a G_TYPE_ULONG
 // property.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecUlong(name string, nick string, blurb string, minimum uint32, maximum uint32, defaultValue uint32, flags ParamFlags) ParamSpec {
+func ParamSpecUlong(name string, nick string, blurb string, minimum uint32, maximum uint32, defaultValue uint32, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -639,14 +498,7 @@ func ParamSpecUlong(name string, nick string, blurb string, minimum uint32, maxi
 	arg6 = C.gulong(defaultValue)
 	arg7 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_ulong(name, nick, blurb, minimum, maximum, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_ulong(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // ParamSpecUnichar creates a new SpecUnichar instance specifying a G_TYPE_UINT
@@ -654,7 +506,7 @@ func ParamSpecUlong(name string, nick string, blurb string, minimum uint32, maxi
 // g_value_set_uint() and g_value_get_uint().
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint32, flags ParamFlags) ParamSpec {
+func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint32, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -670,14 +522,7 @@ func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint3
 	arg4 = C.gunichar(defaultValue)
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_unichar(name, nick, blurb, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_unichar(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecValueArray creates a new SpecValueArray instance specifying a
@@ -686,7 +531,7 @@ func ParamSpecUnichar(name string, nick string, blurb string, defaultValue uint3
 // g_value_set_boxed() and g_value_get_boxed().
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecValueArray(name string, nick string, blurb string, elementSpec ParamSpec, flags ParamFlags) ParamSpec {
+func ParamSpecValueArray(name string, nick string, blurb string, elementSpec ParamSpec, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -702,14 +547,7 @@ func ParamSpecValueArray(name string, nick string, blurb string, elementSpec Par
 	arg4 = (*C.GParamSpec)(unsafe.Pointer(elementSpec.Native()))
 	arg5 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_value_array(name, nick, blurb, elementSpec, flags)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_value_array(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ParamSpecVariant creates a new SpecVariant instance specifying a #GVariant
@@ -718,7 +556,7 @@ func ParamSpecValueArray(name string, nick string, blurb string, elementSpec Par
 // If @default_value is floating, it is consumed.
 //
 // See g_param_spec_internal() for details on property names.
-func ParamSpecVariant(name string, nick string, blurb string, typ *glib.VariantType, defaultValue *glib.Variant, flags ParamFlags) ParamSpec {
+func ParamSpecVariant(name string, nick string, blurb string, typ *glib.VariantType, defaultValue *glib.Variant, flags ParamFlags) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -736,12 +574,5 @@ func ParamSpecVariant(name string, nick string, blurb string, typ *glib.VariantT
 	arg5 = (*C.GVariant)(unsafe.Pointer(defaultValue.Native()))
 	arg6 = (C.GParamFlags)(flags)
 
-	var cret *C.GParamSpec
-	var ret1 ParamSpec
-
-	cret = C.g_param_spec_variant(name, nick, blurb, typ, defaultValue, flags)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
-
-	return ret1
+	C.g_param_spec_variant(arg1, arg2, arg3, arg4, arg5, arg6)
 }

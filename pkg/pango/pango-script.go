@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -11,7 +10,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -32,19 +30,12 @@ func init() {
 // `PangoScript`, as of Pango 1.18, this function simply returns the return
 // value of g_unichar_get_script(). Callers must be prepared to handle unknown
 // values.
-func ScriptForUnichar(ch uint32) Script {
+func ScriptForUnichar(ch uint32) {
 	var arg1 C.gunichar
 
 	arg1 = C.gunichar(ch)
 
-	var cret C.PangoScript
-	var ret1 Script
-
-	cret = C.pango_script_for_unichar(ch)
-
-	ret1 = Script(cret)
-
-	return ret1
+	C.pango_script_for_unichar(arg1)
 }
 
 // ScriptGetSampleLanguage finds a language tag that is reasonably
@@ -72,22 +63,12 @@ func ScriptForUnichar(ch uint32) Script {
 // Persian (fa) instead of Arabic (ar) when a segment of Arabic text is found in
 // an otherwise non-Arabic text. The same trick can be used to choose a default
 // language for PANGO_SCRIPT_HAN when setting context language is not feasible.
-func ScriptGetSampleLanguage(script Script) *Language {
+func ScriptGetSampleLanguage(script Script) {
 	var arg1 C.PangoScript
 
 	arg1 = (C.PangoScript)(script)
 
-	var cret *C.PangoLanguage
-	var ret1 *Language
-
-	cret = C.pango_script_get_sample_language(script)
-
-	ret1 = WrapLanguage(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *Language) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_script_get_sample_language(arg1)
 }
 
 // ScriptIter: a `PangoScriptIter` is used to iterate through a string and
@@ -112,7 +93,7 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 }
 
 // NewScriptIter constructs a struct ScriptIter.
-func NewScriptIter(text string, length int) *ScriptIter {
+func NewScriptIter(text string, length int) {
 	var arg1 *C.char
 	var arg2 C.int
 
@@ -120,17 +101,7 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(length)
 
-	var cret *C.PangoScriptIter
-	var ret1 *ScriptIter
-
-	cret = C.pango_script_iter_new(text, length)
-
-	ret1 = WrapScriptIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *ScriptIter) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.pango_script_iter_new(arg1, arg2)
 }
 
 // Native returns the underlying C source pointer.
@@ -139,7 +110,7 @@ func (s *ScriptIter) Native() unsafe.Pointer {
 }
 
 // Free frees a ScriptIter created with pango_script_iter_new().
-func (i *ScriptIter) Free() {
+func (i *ScriptIter) Free(i *ScriptIter) {
 	var arg0 *C.PangoScriptIter
 
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
@@ -154,42 +125,44 @@ func (i *ScriptIter) Free() {
 // Note that while the type of the @script argument is declared as PangoScript,
 // as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
 // must be prepared to handle unknown values.
-func (i *ScriptIter) Range() (start string, end string, script Script) {
+func (i *ScriptIter) Range(i *ScriptIter) (start string, end string, script *Script) {
 	var arg0 *C.PangoScriptIter
 
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 *C.char
-	var ret1 string
+	var start string
 	var arg2 *C.char
-	var ret2 string
+	var end string
 	var arg3 C.PangoScript
-	var ret3 *Script
+	var script *Script
 
 	C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
 
-	*ret1 = C.GoString(arg1)
-	defer C.free(unsafe.Pointer(arg1))
-	*ret2 = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	*ret3 = *Script(arg3)
+	start = C.GoString(&arg1)
+	defer C.free(unsafe.Pointer(&arg1))
+	end = C.GoString(&arg2)
+	defer C.free(unsafe.Pointer(&arg2))
+	script = *Script(&arg3)
 
-	return ret1, ret2, ret3
+	return start, end, script
 }
 
 // Next advances a ScriptIter to the next range. If @iter is already at the end,
 // it is left unchanged and false is returned.
-func (i *ScriptIter) Next() bool {
+func (i *ScriptIter) Next(i *ScriptIter) bool {
 	var arg0 *C.PangoScriptIter
 
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.pango_script_iter_next(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

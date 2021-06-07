@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,7 +35,7 @@ type FileIcon interface {
 	LoadableIcon
 
 	// File gets the #GFile associated with the given @icon.
-	File() File
+	File(i FileIcon)
 }
 
 // fileIcon implements the FileIcon interface.
@@ -67,33 +64,19 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 }
 
 // NewFileIcon constructs a class FileIcon.
-func NewFileIcon(file File) FileIcon {
+func NewFileIcon(file File) {
 	var arg1 *C.GFile
 
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var cret C.GFileIcon
-	var ret1 FileIcon
-
-	cret = C.g_file_icon_new(file)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIcon)
-
-	return ret1
+	C.g_file_icon_new(arg1)
 }
 
 // File gets the #GFile associated with the given @icon.
-func (i fileIcon) File() File {
+func (i fileIcon) File(i FileIcon) {
 	var arg0 *C.GFileIcon
 
 	arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GFile
-	var ret1 File
-
-	cret = C.g_file_icon_get_file(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(File)
-
-	return ret1
+	C.g_file_icon_get_file(arg0)
 }

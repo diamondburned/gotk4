@@ -1,6 +1,7 @@
 package pen
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"strings"
@@ -47,9 +48,9 @@ func (b *Block) String() string {
 const maxBlockSections = 10
 
 // BlockSections is a section writer for writing multiple sections of a block at
-// once. It can write 8 sections maximum.
+// once. It can write 10 sections maximum.
 type BlockSections struct {
-	strs [maxBlockSections]strings.Builder
+	bufs [maxBlockSections]bytes.Buffer
 	len  int
 }
 
@@ -61,12 +62,17 @@ func NewBlockSections(preallocs ...int) *BlockSections {
 	}
 
 	var sections BlockSections
-
 	for i, prealloc := range preallocs {
-		sections.strs[i].Grow(prealloc)
+		sections.bufs[i].Grow(prealloc)
 	}
 
 	return &sections
+}
+
+func (sects *BlockSections) Reset() {
+	for i := range sects.bufs {
+		sects.bufs[i].Reset()
+	}
 }
 
 func (sects *BlockSections) grow(sect int) {
@@ -85,11 +91,11 @@ func (sects *BlockSections) grow(sect int) {
 func (sects *BlockSections) Linef(sect int, f string, v ...interface{}) {
 	sects.grow(sect)
 	if len(v) == 0 {
-		sects.strs[sect].WriteString(f)
+		sects.bufs[sect].WriteString(f)
 	} else {
-		fmt.Fprintf(&sects.strs[sect], f, v...)
+		fmt.Fprintf(&sects.bufs[sect], f, v...)
 	}
-	sects.strs[sect].WriteByte('\n')
+	sects.bufs[sect].WriteByte('\n')
 }
 
 // Line writes a single line into the given section.
@@ -98,7 +104,7 @@ func (sects *BlockSections) Line(sect int, line string) { sects.Linef(sect, line
 // EmptyLine writes an empty line into the given section.
 func (sects *BlockSections) EmptyLine(sect int) {
 	sects.grow(sect)
-	sects.strs[sect].WriteByte('\n')
+	sects.bufs[sect].WriteByte('\n')
 }
 
 // Section returns a single section within the block sections.
@@ -110,7 +116,7 @@ func (sects *BlockSections) Section(sect int) *BlockSection {
 func (sects *BlockSections) finalLen() int {
 	var sum int
 	for i := 0; i < sects.len; i++ {
-		sum += sects.strs[i].Len()
+		sum += sects.bufs[i].Len()
 	}
 
 	// Account for new lines.
@@ -135,7 +141,7 @@ func (sects *BlockSections) String() string {
 
 	for i := 0; i < sects.len; i++ {
 		// Ignore empty blocks.
-		if sects.strs[i].Len() == 0 {
+		if sects.bufs[i].Len() == 0 {
 			continue
 		}
 
@@ -146,9 +152,7 @@ func (sects *BlockSections) String() string {
 			first = false
 		}
 
-		joined.WriteString(
-			strings.TrimSuffix(sects.strs[i].String(), "\n"),
-		)
+		joined.Write(bytes.TrimSuffix(sects.bufs[i].Bytes(), []byte("\n")))
 	}
 
 	joined.WriteByte('\n')

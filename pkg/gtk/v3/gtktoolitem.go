@@ -3,16 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -43,24 +38,24 @@ type ToolItem interface {
 	// EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
 	// subclasses of ToolItem should call this function to find out how text
 	// should be ellipsized.
-	EllipsizeMode() pango.EllipsizeMode
+	EllipsizeMode(t ToolItem)
 	// Expand returns whether @tool_item is allocated extra space. See
 	// gtk_tool_item_set_expand().
-	Expand() bool
+	Expand(t ToolItem) bool
 	// Homogeneous returns whether @tool_item is the same size as other
 	// homogeneous items. See gtk_tool_item_set_homogeneous().
-	Homogeneous() bool
+	Homogeneous(t ToolItem) bool
 	// IconSize returns the icon size used for @tool_item. Custom subclasses of
 	// ToolItem should call this function to find out what size icons they
 	// should use.
-	IconSize() int
+	IconSize(t ToolItem)
 	// IsImportant returns whether @tool_item is considered important. See
 	// gtk_tool_item_set_is_important()
-	IsImportant() bool
+	IsImportant(t ToolItem) bool
 	// Orientation returns the orientation used for @tool_item. Custom
 	// subclasses of ToolItem should call this function to find out what size
 	// icons they should use.
-	Orientation() Orientation
+	Orientation(t ToolItem)
 	// ProxyMenuItem: if @menu_item_id matches the string passed to
 	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
 	//
@@ -68,24 +63,24 @@ type ToolItem interface {
 	// menu item when the ToolItem changes. That the @menu_item_ids must match
 	// ensures that a ToolItem will not inadvertently change a menu item that
 	// they did not create.
-	ProxyMenuItem(menuItemID string) Widget
+	ProxyMenuItem(t ToolItem, menuItemID string)
 	// ReliefStyle returns the relief style of @tool_item. See
 	// gtk_button_set_relief(). Custom subclasses of ToolItem should call this
 	// function in the handler of the ToolItem::toolbar_reconfigured signal to
 	// find out the relief style of buttons.
-	ReliefStyle() ReliefStyle
+	ReliefStyle(t ToolItem)
 	// TextAlignment returns the text alignment used for @tool_item. Custom
 	// subclasses of ToolItem should call this function to find out how text
 	// should be aligned.
-	TextAlignment() float32
+	TextAlignment(t ToolItem)
 	// TextOrientation returns the text orientation used for @tool_item. Custom
 	// subclasses of ToolItem should call this function to find out how text
 	// should be orientated.
-	TextOrientation() Orientation
+	TextOrientation(t ToolItem)
 	// TextSizeGroup returns the size group used for labels in @tool_item.
 	// Custom subclasses of ToolItem should call this function and use the size
 	// group for labels.
-	TextSizeGroup() SizeGroup
+	TextSizeGroup(t ToolItem)
 	// ToolbarStyle returns the toolbar style used for @tool_item. Custom
 	// subclasses of ToolItem should call this function in the handler of the
 	// GtkToolItem::toolbar_reconfigured signal to find out in what style the
@@ -96,71 +91,71 @@ type ToolItem interface {
 	// the toolbar shows only icons - GTK_TOOLBAR_TEXT, meaning the tool item
 	// should only show text - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item
 	// should show both an icon and a label, arranged horizontally
-	ToolbarStyle() ToolbarStyle
+	ToolbarStyle(t ToolItem)
 	// UseDragWindow returns whether @tool_item has a drag window. See
 	// gtk_tool_item_set_use_drag_window().
-	UseDragWindow() bool
+	UseDragWindow(t ToolItem) bool
 	// VisibleHorizontal returns whether the @tool_item is visible on toolbars
 	// that are docked horizontally.
-	VisibleHorizontal() bool
+	VisibleHorizontal(t ToolItem) bool
 	// VisibleVertical returns whether @tool_item is visible when the toolbar is
 	// docked vertically. See gtk_tool_item_set_visible_vertical().
-	VisibleVertical() bool
+	VisibleVertical(t ToolItem) bool
 	// RebuildMenu: calling this function signals to the toolbar that the
 	// overflow menu item for @tool_item has changed. If the overflow menu is
 	// visible when this function it called, the menu will be rebuilt.
 	//
 	// The function must be called when the tool item changes what it will do in
 	// response to the ToolItem::create-menu-proxy signal.
-	RebuildMenu()
+	RebuildMenu(t ToolItem)
 	// RetrieveProxyMenuItem returns the MenuItem that was last set by
 	// gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
 	// appear in the overflow menu.
-	RetrieveProxyMenuItem() Widget
+	RetrieveProxyMenuItem(t ToolItem)
 	// SetExpand sets whether @tool_item is allocated extra space when there is
 	// more room on the toolbar then needed for the items. The effect is that
 	// the item gets bigger when the toolbar gets bigger and smaller when the
 	// toolbar gets smaller.
-	SetExpand(expand bool)
+	SetExpand(t ToolItem, expand bool)
 	// SetHomogeneous sets whether @tool_item is to be allocated the same size
 	// as other homogeneous items. The effect is that all homogeneous items will
 	// have the same width as the widest of the items.
-	SetHomogeneous(homogeneous bool)
+	SetHomogeneous(t ToolItem, homogeneous bool)
 	// SetIsImportant sets whether @tool_item should be considered important.
 	// The ToolButton class uses this property to determine whether to show or
 	// hide its label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The
 	// result is that only tool buttons with the “is_important” property set
 	// have labels, an effect known as “priority text”
-	SetIsImportant(isImportant bool)
+	SetIsImportant(t ToolItem, isImportant bool)
 	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
 	// @menu_item_id is used to identify the caller of this function and should
 	// also be used with gtk_tool_item_get_proxy_menu_item().
 	//
 	// See also ToolItem::create-menu-proxy.
-	SetProxyMenuItem(menuItemID string, menuItem Widget)
+	SetProxyMenuItem(t ToolItem, menuItemID string, menuItem Widget)
 	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
 	// item. See gtk_widget_set_tooltip_markup().
-	SetTooltipMarkup(markup string)
+	SetTooltipMarkup(t ToolItem, markup string)
 	// SetTooltipText sets the text to be displayed as tooltip on the item. See
 	// gtk_widget_set_tooltip_text().
-	SetTooltipText(text string)
+	SetTooltipText(t ToolItem, text string)
 	// SetUseDragWindow sets whether @tool_item has a drag window. When true the
 	// toolitem can be used as a drag source through gtk_drag_source_set(). When
 	// @tool_item has a drag window it will intercept all events, even those
 	// that would otherwise be sent to a child of @tool_item.
-	SetUseDragWindow(useDragWindow bool)
+	SetUseDragWindow(t ToolItem, useDragWindow bool)
 	// SetVisibleHorizontal sets whether @tool_item is visible when the toolbar
 	// is docked horizontally.
-	SetVisibleHorizontal(visibleHorizontal bool)
+	SetVisibleHorizontal(t ToolItem, visibleHorizontal bool)
 	// SetVisibleVertical sets whether @tool_item is visible when the toolbar is
 	// docked vertically. Some tool items, such as text entries, are too wide to
 	// be useful on a vertically docked toolbar. If @visible_vertical is false
 	// @tool_item will not appear on toolbars that are docked vertically.
-	SetVisibleVertical(visibleVertical bool)
+	SetVisibleVertical(t ToolItem, visibleVertical bool)
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// @tool_item. Toolbar and other ToolShell implementations use this function
 	// to notify children, when some aspect of their configuration changes.
-	ToolbarReconfigured()
+	ToolbarReconfigured(t ToolItem)
 }
 
 // toolItem implements the ToolItem interface.
@@ -189,120 +184,98 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 }
 
 // NewToolItem constructs a class ToolItem.
-func NewToolItem() ToolItem {
-	var cret C.GtkToolItem
-	var ret1 ToolItem
-
-	cret = C.gtk_tool_item_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
-
-	return ret1
+func NewToolItem() {
+	C.gtk_tool_item_new()
 }
 
 // EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text
 // should be ellipsized.
-func (t toolItem) EllipsizeMode() pango.EllipsizeMode {
+func (t toolItem) EllipsizeMode(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.PangoEllipsizeMode
-	var ret1 pango.EllipsizeMode
-
-	cret = C.gtk_tool_item_get_ellipsize_mode(arg0)
-
-	ret1 = pango.EllipsizeMode(cret)
-
-	return ret1
+	C.gtk_tool_item_get_ellipsize_mode(arg0)
 }
 
 // Expand returns whether @tool_item is allocated extra space. See
 // gtk_tool_item_set_expand().
-func (t toolItem) Expand() bool {
+func (t toolItem) Expand(t ToolItem) bool {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_tool_item_get_expand(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Homogeneous returns whether @tool_item is the same size as other
 // homogeneous items. See gtk_tool_item_set_homogeneous().
-func (t toolItem) Homogeneous() bool {
+func (t toolItem) Homogeneous(t ToolItem) bool {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_tool_item_get_homogeneous(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IconSize returns the icon size used for @tool_item. Custom subclasses of
 // ToolItem should call this function to find out what size icons they
 // should use.
-func (t toolItem) IconSize() int {
+func (t toolItem) IconSize(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.GtkIconSize
-	var ret1 int
-
-	cret = C.gtk_tool_item_get_icon_size(arg0)
-
-	ret1 = C.GtkIconSize(cret)
-
-	return ret1
+	C.gtk_tool_item_get_icon_size(arg0)
 }
 
 // IsImportant returns whether @tool_item is considered important. See
 // gtk_tool_item_set_is_important()
-func (t toolItem) IsImportant() bool {
+func (t toolItem) IsImportant(t ToolItem) bool {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_tool_item_get_is_important(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Orientation returns the orientation used for @tool_item. Custom
 // subclasses of ToolItem should call this function to find out what size
 // icons they should use.
-func (t toolItem) Orientation() Orientation {
+func (t toolItem) Orientation(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.GtkOrientation
-	var ret1 Orientation
-
-	cret = C.gtk_tool_item_get_orientation(arg0)
-
-	ret1 = Orientation(cret)
-
-	return ret1
+	C.gtk_tool_item_get_orientation(arg0)
 }
 
 // ProxyMenuItem: if @menu_item_id matches the string passed to
@@ -312,7 +285,7 @@ func (t toolItem) Orientation() Orientation {
 // menu item when the ToolItem changes. That the @menu_item_ids must match
 // ensures that a ToolItem will not inadvertently change a menu item that
 // they did not create.
-func (t toolItem) ProxyMenuItem(menuItemID string) Widget {
+func (t toolItem) ProxyMenuItem(t ToolItem, menuItemID string) {
 	var arg0 *C.GtkToolItem
 	var arg1 *C.gchar
 
@@ -320,87 +293,52 @@ func (t toolItem) ProxyMenuItem(menuItemID string) Widget {
 	arg1 = (*C.gchar)(C.CString(menuItemID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_tool_item_get_proxy_menu_item(arg0, menuItemID)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_tool_item_get_proxy_menu_item(arg0, arg1)
 }
 
 // ReliefStyle returns the relief style of @tool_item. See
 // gtk_button_set_relief(). Custom subclasses of ToolItem should call this
 // function in the handler of the ToolItem::toolbar_reconfigured signal to
 // find out the relief style of buttons.
-func (t toolItem) ReliefStyle() ReliefStyle {
+func (t toolItem) ReliefStyle(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.GtkReliefStyle
-	var ret1 ReliefStyle
-
-	cret = C.gtk_tool_item_get_relief_style(arg0)
-
-	ret1 = ReliefStyle(cret)
-
-	return ret1
+	C.gtk_tool_item_get_relief_style(arg0)
 }
 
 // TextAlignment returns the text alignment used for @tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text
 // should be aligned.
-func (t toolItem) TextAlignment() float32 {
+func (t toolItem) TextAlignment(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.gfloat
-	var ret1 float32
-
-	cret = C.gtk_tool_item_get_text_alignment(arg0)
-
-	ret1 = C.gfloat(cret)
-
-	return ret1
+	C.gtk_tool_item_get_text_alignment(arg0)
 }
 
 // TextOrientation returns the text orientation used for @tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text
 // should be orientated.
-func (t toolItem) TextOrientation() Orientation {
+func (t toolItem) TextOrientation(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.GtkOrientation
-	var ret1 Orientation
-
-	cret = C.gtk_tool_item_get_text_orientation(arg0)
-
-	ret1 = Orientation(cret)
-
-	return ret1
+	C.gtk_tool_item_get_text_orientation(arg0)
 }
 
 // TextSizeGroup returns the size group used for labels in @tool_item.
 // Custom subclasses of ToolItem should call this function and use the size
 // group for labels.
-func (t toolItem) TextSizeGroup() SizeGroup {
+func (t toolItem) TextSizeGroup(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret *C.GtkSizeGroup
-	var ret1 SizeGroup
-
-	cret = C.gtk_tool_item_get_text_size_group(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
-
-	return ret1
+	C.gtk_tool_item_get_text_size_group(arg0)
 }
 
 // ToolbarStyle returns the toolbar style used for @tool_item. Custom
@@ -413,70 +351,69 @@ func (t toolItem) TextSizeGroup() SizeGroup {
 // the toolbar shows only icons - GTK_TOOLBAR_TEXT, meaning the tool item
 // should only show text - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item
 // should show both an icon and a label, arranged horizontally
-func (t toolItem) ToolbarStyle() ToolbarStyle {
+func (t toolItem) ToolbarStyle(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret C.GtkToolbarStyle
-	var ret1 ToolbarStyle
-
-	cret = C.gtk_tool_item_get_toolbar_style(arg0)
-
-	ret1 = ToolbarStyle(cret)
-
-	return ret1
+	C.gtk_tool_item_get_toolbar_style(arg0)
 }
 
 // UseDragWindow returns whether @tool_item has a drag window. See
 // gtk_tool_item_set_use_drag_window().
-func (t toolItem) UseDragWindow() bool {
+func (t toolItem) UseDragWindow(t ToolItem) bool {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_tool_item_get_use_drag_window(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // VisibleHorizontal returns whether the @tool_item is visible on toolbars
 // that are docked horizontally.
-func (t toolItem) VisibleHorizontal() bool {
+func (t toolItem) VisibleHorizontal(t ToolItem) bool {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_tool_item_get_visible_horizontal(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // VisibleVertical returns whether @tool_item is visible when the toolbar is
 // docked vertically. See gtk_tool_item_set_visible_vertical().
-func (t toolItem) VisibleVertical() bool {
+func (t toolItem) VisibleVertical(t ToolItem) bool {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_tool_item_get_visible_vertical(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // RebuildMenu: calling this function signals to the toolbar that the
@@ -485,7 +422,7 @@ func (t toolItem) VisibleVertical() bool {
 //
 // The function must be called when the tool item changes what it will do in
 // response to the ToolItem::create-menu-proxy signal.
-func (t toolItem) RebuildMenu() {
+func (t toolItem) RebuildMenu(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
@@ -496,26 +433,19 @@ func (t toolItem) RebuildMenu() {
 // RetrieveProxyMenuItem returns the MenuItem that was last set by
 // gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
 // appear in the overflow menu.
-func (t toolItem) RetrieveProxyMenuItem() Widget {
+func (t toolItem) RetrieveProxyMenuItem(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var cret *C.GtkWidget
-	var ret1 Widget
-
-	cret = C.gtk_tool_item_retrieve_proxy_menu_item(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
-
-	return ret1
+	C.gtk_tool_item_retrieve_proxy_menu_item(arg0)
 }
 
 // SetExpand sets whether @tool_item is allocated extra space when there is
 // more room on the toolbar then needed for the items. The effect is that
 // the item gets bigger when the toolbar gets bigger and smaller when the
 // toolbar gets smaller.
-func (t toolItem) SetExpand(expand bool) {
+func (t toolItem) SetExpand(t ToolItem, expand bool) {
 	var arg0 *C.GtkToolItem
 	var arg1 C.gboolean
 
@@ -524,13 +454,13 @@ func (t toolItem) SetExpand(expand bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_tool_item_set_expand(arg0, expand)
+	C.gtk_tool_item_set_expand(arg0, arg1)
 }
 
 // SetHomogeneous sets whether @tool_item is to be allocated the same size
 // as other homogeneous items. The effect is that all homogeneous items will
 // have the same width as the widest of the items.
-func (t toolItem) SetHomogeneous(homogeneous bool) {
+func (t toolItem) SetHomogeneous(t ToolItem, homogeneous bool) {
 	var arg0 *C.GtkToolItem
 	var arg1 C.gboolean
 
@@ -539,7 +469,7 @@ func (t toolItem) SetHomogeneous(homogeneous bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_tool_item_set_homogeneous(arg0, homogeneous)
+	C.gtk_tool_item_set_homogeneous(arg0, arg1)
 }
 
 // SetIsImportant sets whether @tool_item should be considered important.
@@ -547,7 +477,7 @@ func (t toolItem) SetHomogeneous(homogeneous bool) {
 // hide its label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The
 // result is that only tool buttons with the “is_important” property set
 // have labels, an effect known as “priority text”
-func (t toolItem) SetIsImportant(isImportant bool) {
+func (t toolItem) SetIsImportant(t ToolItem, isImportant bool) {
 	var arg0 *C.GtkToolItem
 	var arg1 C.gboolean
 
@@ -556,7 +486,7 @@ func (t toolItem) SetIsImportant(isImportant bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_tool_item_set_is_important(arg0, isImportant)
+	C.gtk_tool_item_set_is_important(arg0, arg1)
 }
 
 // SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
@@ -564,7 +494,7 @@ func (t toolItem) SetIsImportant(isImportant bool) {
 // also be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
-func (t toolItem) SetProxyMenuItem(menuItemID string, menuItem Widget) {
+func (t toolItem) SetProxyMenuItem(t ToolItem, menuItemID string, menuItem Widget) {
 	var arg0 *C.GtkToolItem
 	var arg1 *C.gchar
 	var arg2 *C.GtkWidget
@@ -574,12 +504,12 @@ func (t toolItem) SetProxyMenuItem(menuItemID string, menuItem Widget) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 
-	C.gtk_tool_item_set_proxy_menu_item(arg0, menuItemID, menuItem)
+	C.gtk_tool_item_set_proxy_menu_item(arg0, arg1, arg2)
 }
 
 // SetTooltipMarkup sets the markup text to be displayed as tooltip on the
 // item. See gtk_widget_set_tooltip_markup().
-func (t toolItem) SetTooltipMarkup(markup string) {
+func (t toolItem) SetTooltipMarkup(t ToolItem, markup string) {
 	var arg0 *C.GtkToolItem
 	var arg1 *C.gchar
 
@@ -587,12 +517,12 @@ func (t toolItem) SetTooltipMarkup(markup string) {
 	arg1 = (*C.gchar)(C.CString(markup))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_tool_item_set_tooltip_markup(arg0, markup)
+	C.gtk_tool_item_set_tooltip_markup(arg0, arg1)
 }
 
 // SetTooltipText sets the text to be displayed as tooltip on the item. See
 // gtk_widget_set_tooltip_text().
-func (t toolItem) SetTooltipText(text string) {
+func (t toolItem) SetTooltipText(t ToolItem, text string) {
 	var arg0 *C.GtkToolItem
 	var arg1 *C.gchar
 
@@ -600,14 +530,14 @@ func (t toolItem) SetTooltipText(text string) {
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_tool_item_set_tooltip_text(arg0, text)
+	C.gtk_tool_item_set_tooltip_text(arg0, arg1)
 }
 
 // SetUseDragWindow sets whether @tool_item has a drag window. When true the
 // toolitem can be used as a drag source through gtk_drag_source_set(). When
 // @tool_item has a drag window it will intercept all events, even those
 // that would otherwise be sent to a child of @tool_item.
-func (t toolItem) SetUseDragWindow(useDragWindow bool) {
+func (t toolItem) SetUseDragWindow(t ToolItem, useDragWindow bool) {
 	var arg0 *C.GtkToolItem
 	var arg1 C.gboolean
 
@@ -616,12 +546,12 @@ func (t toolItem) SetUseDragWindow(useDragWindow bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_tool_item_set_use_drag_window(arg0, useDragWindow)
+	C.gtk_tool_item_set_use_drag_window(arg0, arg1)
 }
 
 // SetVisibleHorizontal sets whether @tool_item is visible when the toolbar
 // is docked horizontally.
-func (t toolItem) SetVisibleHorizontal(visibleHorizontal bool) {
+func (t toolItem) SetVisibleHorizontal(t ToolItem, visibleHorizontal bool) {
 	var arg0 *C.GtkToolItem
 	var arg1 C.gboolean
 
@@ -630,14 +560,14 @@ func (t toolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_tool_item_set_visible_horizontal(arg0, visibleHorizontal)
+	C.gtk_tool_item_set_visible_horizontal(arg0, arg1)
 }
 
 // SetVisibleVertical sets whether @tool_item is visible when the toolbar is
 // docked vertically. Some tool items, such as text entries, are too wide to
 // be useful on a vertically docked toolbar. If @visible_vertical is false
 // @tool_item will not appear on toolbars that are docked vertically.
-func (t toolItem) SetVisibleVertical(visibleVertical bool) {
+func (t toolItem) SetVisibleVertical(t ToolItem, visibleVertical bool) {
 	var arg0 *C.GtkToolItem
 	var arg1 C.gboolean
 
@@ -646,13 +576,13 @@ func (t toolItem) SetVisibleVertical(visibleVertical bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_tool_item_set_visible_vertical(arg0, visibleVertical)
+	C.gtk_tool_item_set_visible_vertical(arg0, arg1)
 }
 
 // ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 // @tool_item. Toolbar and other ToolShell implementations use this function
 // to notify children, when some aspect of their configuration changes.
-func (t toolItem) ToolbarReconfigured() {
+func (t toolItem) ToolbarReconfigured(t ToolItem) {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))

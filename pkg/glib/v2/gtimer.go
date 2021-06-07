@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -29,23 +28,25 @@ import "C"
 //    GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
 //    gint64 time_val = g_date_time_to_unix (dt);
 //    g_date_time_unref (dt);
-func TimeValFromISO8601(isoDate string) (time_ TimeVal, ok bool) {
+func TimeValFromISO8601(isoDate string) (time_ *TimeVal, ok bool) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(isoDate))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 C.GTimeVal
-	var ret2 *TimeVal
+	var time_ *TimeVal
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.g_time_val_from_iso8601(isoDate, &arg2)
+	cret = C.g_time_val_from_iso8601(arg1, &arg2)
 
-	*ret2 = WrapTimeVal(unsafe.Pointer(arg2))
-	ret2 = C.bool(cret) != C.false
+	time_ = WrapTimeVal(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return time_, ok
 }
 
 // Usleep pauses the current thread for the given number of microseconds.
@@ -58,7 +59,7 @@ func Usleep(microseconds uint32) {
 
 	arg1 = C.gulong(microseconds)
 
-	C.g_usleep(microseconds)
+	C.g_usleep(arg1)
 }
 
 // Timer: opaque datatype that records a start time.
@@ -88,7 +89,7 @@ func (t *Timer) Native() unsafe.Pointer {
 
 // Continue resumes a timer that has previously been stopped with
 // g_timer_stop(). g_timer_stop() must be called before using this function.
-func (t *Timer) Continue() {
+func (t *Timer) Continue(t *Timer) {
 	var arg0 *C.GTimer
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
@@ -97,7 +98,7 @@ func (t *Timer) Continue() {
 }
 
 // Destroy destroys a timer, freeing associated resources.
-func (t *Timer) Destroy() {
+func (t *Timer) Destroy(t *Timer) {
 	var arg0 *C.GTimer
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
@@ -110,43 +111,38 @@ func (t *Timer) Destroy() {
 // between the time it was started and the time it was stopped. The return value
 // is the number of seconds elapsed, including any fractional part. The
 // @microseconds out parameter is essentially useless.
-func (t *Timer) Elapsed(microseconds uint32) float64 {
+func (t *Timer) Elapsed(t *Timer, microseconds uint32) {
 	var arg0 *C.GTimer
 	var arg1 *C.gulong
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 	arg1 = *C.gulong(microseconds)
 
-	var cret C.gdouble
-	var ret1 float64
-
-	cret = C.g_timer_elapsed(arg0, microseconds)
-
-	ret1 = C.gdouble(cret)
-
-	return ret1
+	C.g_timer_elapsed(arg0, arg1)
 }
 
 // IsActive exposes whether the timer is currently active.
-func (t *Timer) IsActive() bool {
+func (t *Timer) IsActive(t *Timer) bool {
 	var arg0 *C.GTimer
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_timer_is_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Reset: this function is useless; it's fine to call g_timer_start() on an
 // already-started timer to reset the start time, so g_timer_reset() serves no
 // purpose.
-func (t *Timer) Reset() {
+func (t *Timer) Reset(t *Timer) {
 	var arg0 *C.GTimer
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
@@ -158,7 +154,7 @@ func (t *Timer) Reset() {
 // report the time since g_timer_start() was called. g_timer_new() automatically
 // marks the start time, so no need to call g_timer_start() immediately after
 // creating the timer.
-func (t *Timer) Start() {
+func (t *Timer) Start(t *Timer) {
 	var arg0 *C.GTimer
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
@@ -168,7 +164,7 @@ func (t *Timer) Start() {
 
 // Stop marks an end time, so calls to g_timer_elapsed() will return the
 // difference between this end time and the start time.
-func (t *Timer) Stop() {
+func (t *Timer) Stop(t *Timer) {
 	var arg0 *C.GTimer
 
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))

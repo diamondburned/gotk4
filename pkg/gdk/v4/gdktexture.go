@@ -3,18 +3,11 @@
 package gdk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
@@ -31,16 +24,16 @@ type Texture interface {
 	Paintable
 
 	// Height returns the height of the @texture, in pixels.
-	Height() int
+	Height(t Texture)
 	// Width returns the width of @texture, in pixels.
-	Width() int
+	Width(t Texture)
 	// SaveToPng: store the given @texture to the @filename as a PNG file.
 	//
 	// This is a utility function intended for debugging and testing. If you
 	// want more control over formats, proper error handling or want to store to
 	// a #GFile or other location, you might want to look into using the
 	// gdk-pixbuf library.
-	SaveToPng(filename string) bool
+	SaveToPng(t Texture, filename string) bool
 }
 
 // texture implements the Texture interface.
@@ -67,87 +60,56 @@ func marshalTexture(p uintptr) (interface{}, error) {
 }
 
 // NewTextureForPixbuf constructs a class Texture.
-func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
+func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var arg1 *C.GdkPixbuf
 
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	var cret C.GdkTexture
-	var ret1 Texture
-
-	cret = C.gdk_texture_new_for_pixbuf(pixbuf)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
-
-	return ret1
+	C.gdk_texture_new_for_pixbuf(arg1)
 }
 
 // NewTextureFromFile constructs a class Texture.
-func NewTextureFromFile(file gio.File) (texture Texture, err error) {
+func NewTextureFromFile(file gio.File) error {
 	var arg1 *C.GFile
 
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var errout *C.GError
-	var goerr error
-	var cret C.GdkTexture
-	var ret2 Texture
+	var err error
 
-	cret = C.gdk_texture_new_from_file(file, &errout)
+	C.gdk_texture_new_from_file(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
-	ret2 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr, ret2
+	return err
 }
 
 // NewTextureFromResource constructs a class Texture.
-func NewTextureFromResource(resourcePath string) Texture {
+func NewTextureFromResource(resourcePath string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GdkTexture
-	var ret1 Texture
-
-	cret = C.gdk_texture_new_from_resource(resourcePath)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
-
-	return ret1
+	C.gdk_texture_new_from_resource(arg1)
 }
 
 // Height returns the height of the @texture, in pixels.
-func (t texture) Height() int {
+func (t texture) Height(t Texture) {
 	var arg0 *C.GdkTexture
 
 	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gdk_texture_get_height(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gdk_texture_get_height(arg0)
 }
 
 // Width returns the width of @texture, in pixels.
-func (t texture) Width() int {
+func (t texture) Width(t Texture) {
 	var arg0 *C.GdkTexture
 
 	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gdk_texture_get_width(arg0)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gdk_texture_get_width(arg0)
 }
 
 // SaveToPng: store the given @texture to the @filename as a PNG file.
@@ -156,7 +118,7 @@ func (t texture) Width() int {
 // want more control over formats, proper error handling or want to store to
 // a #GFile or other location, you might want to look into using the
 // gdk-pixbuf library.
-func (t texture) SaveToPng(filename string) bool {
+func (t texture) SaveToPng(t Texture, filename string) bool {
 	var arg0 *C.GdkTexture
 	var arg1 *C.char
 
@@ -165,11 +127,13 @@ func (t texture) SaveToPng(filename string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_texture_save_to_png(arg0, filename)
+	cret = C.gdk_texture_save_to_png(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }

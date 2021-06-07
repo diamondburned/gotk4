@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,21 +33,21 @@ func init() {
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
-	Interface(objectPath string, interfaceName string) DBusInterface
+	Interface(m DBusObjectManager, objectPath string, interfaceName string)
 	// Object gets the BusObjectProxy at @object_path, if any.
-	Object(objectPath string) DBusObject
+	Object(m DBusObjectManager, objectPath string)
 	// ObjectPath gets the object path that @manager is for.
-	ObjectPath() string
+	ObjectPath(m DBusObjectManager)
 	// Objects gets all BusObject objects known to @manager.
-	Objects() *glib.List
+	Objects(m DBusObjectManager)
 
-	InterfaceAdded(object DBusObject, interface_ DBusInterface)
+	InterfaceAdded(m DBusObjectManager, object DBusObject, interface_ DBusInterface)
 
-	InterfaceRemoved(object DBusObject, interface_ DBusInterface)
+	InterfaceRemoved(m DBusObjectManager, object DBusObject, interface_ DBusInterface)
 
-	ObjectAdded(object DBusObject)
+	ObjectAdded(m DBusObjectManager, object DBusObject)
 
-	ObjectRemoved(object DBusObject)
+	ObjectRemoved(m DBusObjectManager, object DBusObject)
 }
 
 // DBusObjectManager: the BusObjectManager type is the base type for service-
@@ -91,7 +86,7 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 
 // Interface gets the interface proxy for @interface_name at @object_path,
 // if any.
-func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DBusInterface {
+func (m dBusObjectManager) Interface(m DBusObjectManager, objectPath string, interfaceName string) {
 	var arg0 *C.GDBusObjectManager
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -102,18 +97,11 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 	arg2 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret *C.GDBusInterface
-	var ret1 DBusInterface
-
-	cret = C.g_dbus_object_manager_get_interface(arg0, objectPath, interfaceName)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
-
-	return ret1
+	C.g_dbus_object_manager_get_interface(arg0, arg1, arg2)
 }
 
 // Object gets the BusObjectProxy at @object_path, if any.
-func (m dBusObjectManager) Object(objectPath string) DBusObject {
+func (m dBusObjectManager) Object(m DBusObjectManager, objectPath string) {
 	var arg0 *C.GDBusObjectManager
 	var arg1 *C.gchar
 
@@ -121,47 +109,23 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GDBusObject
-	var ret1 DBusObject
-
-	cret = C.g_dbus_object_manager_get_object(arg0, objectPath)
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
-
-	return ret1
+	C.g_dbus_object_manager_get_object(arg0, arg1)
 }
 
 // ObjectPath gets the object path that @manager is for.
-func (m dBusObjectManager) ObjectPath() string {
+func (m dBusObjectManager) ObjectPath(m DBusObjectManager) {
 	var arg0 *C.GDBusObjectManager
 
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_dbus_object_manager_get_object_path(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_dbus_object_manager_get_object_path(arg0)
 }
 
 // Objects gets all BusObject objects known to @manager.
-func (m dBusObjectManager) Objects() *glib.List {
+func (m dBusObjectManager) Objects(m DBusObjectManager) {
 	var arg0 *C.GDBusObjectManager
 
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GList
-	var ret1 *glib.List
-
-	cret = C.g_dbus_object_manager_get_objects(arg0)
-
-	ret1 = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_dbus_object_manager_get_objects(arg0)
 }

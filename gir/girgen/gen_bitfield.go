@@ -15,14 +15,16 @@ var bitfieldTmpl = newGoTemplate(`
 	const (
 		{{ range .Members -}}
 		{{- $name := ($.FormatMember .Name) -}}
-		{{ with (GoDoc .Doc 1 $name) }} {{- . -}} {{ end }}
-		{{ $name }} {{ $type }} = {{ $.Bits .Value }}
+		{{- if .Doc -}}
+		{{ GoDoc .Doc 1 $name }}
+		{{ end -}}
+		{{ $name }} {{ $type }} = {{ .Value }}
 		{{ end -}}
 	)
 
 	{{ if .GLibGetType }}
 	func marshal{{ $type }}(p uintptr) (interface{}, error) {
-		return {{ $type }}(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+		return {{ $type }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 	}
 	{{ end }}
 `)

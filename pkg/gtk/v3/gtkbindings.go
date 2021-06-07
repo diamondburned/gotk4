@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -35,7 +34,7 @@ import "C"
 //
 // Key combinations must be in a format that can be parsed by
 // gtk_accelerator_parse().
-func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
+func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) {
 	var arg1 *C.GtkBindingSet
 	var arg2 *C.gchar
 
@@ -43,14 +42,7 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 	arg2 = (*C.gchar)(C.CString(signalDesc))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var cret C.GTokenType
-	var ret1 glib.TokenType
-
-	cret = C.gtk_binding_entry_add_signal_from_string(bindingSet, signalDesc)
-
-	ret1 = glib.TokenType(cret)
-
-	return ret1
+	C.gtk_binding_entry_add_signal_from_string(arg1, arg2)
 }
 
 // BindingEntryAddSignall: override or install a new key binding for @keyval
@@ -69,7 +61,7 @@ func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.M
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.GSList)(unsafe.Pointer(bindingArgs.Native()))
 
-	C.gtk_binding_entry_add_signall(bindingSet, keyval, modifiers, signalName, bindingArgs)
+	C.gtk_binding_entry_add_signall(arg1, arg2, arg3, arg4, arg5)
 }
 
 // BindingEntryRemove: remove a binding previously installed via
@@ -83,7 +75,7 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 	arg2 = C.guint(keyval)
 	arg3 = (C.GdkModifierType)(modifiers)
 
-	C.gtk_binding_entry_remove(bindingSet, keyval, modifiers)
+	C.gtk_binding_entry_remove(arg1, arg2, arg3)
 }
 
 // BindingEntrySkip: install a binding on @binding_set which causes key lookups
@@ -97,63 +89,42 @@ func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.Modifie
 	arg2 = C.guint(keyval)
 	arg3 = (C.GdkModifierType)(modifiers)
 
-	C.gtk_binding_entry_skip(bindingSet, keyval, modifiers)
+	C.gtk_binding_entry_skip(arg1, arg2, arg3)
 }
 
 // BindingSetByClass: this function returns the binding set named after the type
 // name of the passed in class structure. New binding sets are created on demand
 // by this function.
-func BindingSetByClass(objectClass interface{}) *BindingSet {
+func BindingSetByClass(objectClass interface{}) {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(objectClass)
 
-	var cret *C.GtkBindingSet
-	var ret1 *BindingSet
-
-	cret = C.gtk_binding_set_by_class(objectClass)
-
-	ret1 = WrapBindingSet(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_binding_set_by_class(arg1)
 }
 
 // BindingSetFind: find a binding set by its globally unique name.
 //
 // The @set_name can either be a name used for gtk_binding_set_new() or the type
 // name of a class used in gtk_binding_set_by_class().
-func BindingSetFind(setName string) *BindingSet {
+func BindingSetFind(setName string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(setName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkBindingSet
-	var ret1 *BindingSet
-
-	cret = C.gtk_binding_set_find(setName)
-
-	ret1 = WrapBindingSet(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_binding_set_find(arg1)
 }
 
 // NewBindingSet: GTK+ maintains a global list of binding sets. Each binding set
 // has a unique name which needs to be specified upon creation.
-func NewBindingSet(setName string) *BindingSet {
+func NewBindingSet(setName string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(setName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret *C.GtkBindingSet
-	var ret1 *BindingSet
-
-	cret = C.gtk_binding_set_new(setName)
-
-	ret1 = WrapBindingSet(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_binding_set_new(arg1)
 }
 
 // BindingsActivate: find a key binding matching @keyval and @modifiers and
@@ -168,13 +139,15 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 	arg3 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_bindings_activate(object, keyval, modifiers)
+	cret = C.gtk_bindings_activate(arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
@@ -187,13 +160,15 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_bindings_activate_event(object, event)
+	cret = C.gtk_bindings_activate_event(arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // BindingArg: a BindingArg holds the data associated with an argument for a key
@@ -224,7 +199,9 @@ func (b *BindingArg) Native() unsafe.Pointer {
 
 // ArgType gets the field inside the struct.
 func (b *BindingArg) ArgType() externglib.Type {
+	var v externglib.Type
 	v = externglib.Type(b.native.arg_type)
+	return v
 }
 
 // BindingEntry: each key binding element of a binding sets binding list is
@@ -255,32 +232,44 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 
 // Keyval gets the field inside the struct.
 func (b *BindingEntry) Keyval() uint {
-	v = C.guint(b.native.keyval)
+	var v uint
+	v = uint(b.native.keyval)
+	return v
 }
 
 // Modifiers gets the field inside the struct.
 func (b *BindingEntry) Modifiers() gdk.ModifierType {
+	var v gdk.ModifierType
 	v = gdk.ModifierType(b.native.modifiers)
+	return v
 }
 
 // BindingSet gets the field inside the struct.
 func (b *BindingEntry) BindingSet() *BindingSet {
+	var v *BindingSet
 	v = WrapBindingSet(unsafe.Pointer(b.native.binding_set))
+	return v
 }
 
 // SetNext gets the field inside the struct.
 func (b *BindingEntry) SetNext() *BindingEntry {
+	var v *BindingEntry
 	v = WrapBindingEntry(unsafe.Pointer(b.native.set_next))
+	return v
 }
 
 // HashNext gets the field inside the struct.
 func (b *BindingEntry) HashNext() *BindingEntry {
+	var v *BindingEntry
 	v = WrapBindingEntry(unsafe.Pointer(b.native.hash_next))
+	return v
 }
 
 // Signals gets the field inside the struct.
 func (b *BindingEntry) Signals() *BindingSignal {
+	var v *BindingSignal
 	v = WrapBindingSignal(unsafe.Pointer(b.native.signals))
+	return v
 }
 
 // BindingSet: a binding set maintains a list of activatable key bindings. A
@@ -314,42 +303,56 @@ func (b *BindingSet) Native() unsafe.Pointer {
 
 // SetName gets the field inside the struct.
 func (b *BindingSet) SetName() string {
+	var v string
 	v = C.GoString(b.native.set_name)
+	return v
 }
 
 // Priority gets the field inside the struct.
 func (b *BindingSet) Priority() int {
-	v = C.gint(b.native.priority)
+	var v int
+	v = int(b.native.priority)
+	return v
 }
 
 // WidgetPathPspecs gets the field inside the struct.
 func (b *BindingSet) WidgetPathPspecs() *glib.SList {
+	var v *glib.SList
 	v = glib.WrapSList(unsafe.Pointer(b.native.widget_path_pspecs))
+	return v
 }
 
 // WidgetClassPspecs gets the field inside the struct.
 func (b *BindingSet) WidgetClassPspecs() *glib.SList {
+	var v *glib.SList
 	v = glib.WrapSList(unsafe.Pointer(b.native.widget_class_pspecs))
+	return v
 }
 
 // ClassBranchPspecs gets the field inside the struct.
 func (b *BindingSet) ClassBranchPspecs() *glib.SList {
+	var v *glib.SList
 	v = glib.WrapSList(unsafe.Pointer(b.native.class_branch_pspecs))
+	return v
 }
 
 // Entries gets the field inside the struct.
 func (b *BindingSet) Entries() *BindingEntry {
+	var v *BindingEntry
 	v = WrapBindingEntry(unsafe.Pointer(b.native.entries))
+	return v
 }
 
 // Current gets the field inside the struct.
 func (b *BindingSet) Current() *BindingEntry {
+	var v *BindingEntry
 	v = WrapBindingEntry(unsafe.Pointer(b.native.current))
+	return v
 }
 
 // Activate: find a key binding matching @keyval and @modifiers within
 // @binding_set and activate the binding on @object.
-func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
+func (b *BindingSet) Activate(b *BindingSet, keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
 	var arg0 *C.GtkBindingSet
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
@@ -361,20 +364,22 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 	arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_binding_set_activate(arg0, keyval, modifiers, object)
+	cret = C.gtk_binding_set_activate(arg0, arg1, arg2, arg3)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // AddPath: this function was used internally by the GtkRC parsing mechanism to
 // assign match patterns to BindingSet structures.
 //
 // In GTK+ 3, these match patterns are unused.
-func (b *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
+func (b *BindingSet) AddPath(b *BindingSet, pathType PathType, pathPattern string, priority PathPriorityType) {
 	var arg0 *C.GtkBindingSet
 	var arg1 C.GtkPathType
 	var arg2 *C.gchar
@@ -386,7 +391,7 @@ func (b *BindingSet) AddPath(pathType PathType, pathPattern string, priority Pat
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (C.GtkPathPriorityType)(priority)
 
-	C.gtk_binding_set_add_path(arg0, pathType, pathPattern, priority)
+	C.gtk_binding_set_add_path(arg0, arg1, arg2, arg3)
 }
 
 // BindingSignal: a GtkBindingSignal stores the necessary information to
@@ -417,15 +422,21 @@ func (b *BindingSignal) Native() unsafe.Pointer {
 
 // Next gets the field inside the struct.
 func (b *BindingSignal) Next() *BindingSignal {
+	var v *BindingSignal
 	v = WrapBindingSignal(unsafe.Pointer(b.native.next))
+	return v
 }
 
 // SignalName gets the field inside the struct.
 func (b *BindingSignal) SignalName() string {
+	var v string
 	v = C.GoString(b.native.signal_name)
+	return v
 }
 
 // NArgs gets the field inside the struct.
 func (b *BindingSignal) NArgs() uint {
-	v = C.guint(b.native.n_args)
+	var v uint
+	v = uint(b.native.n_args)
+	return v
 }

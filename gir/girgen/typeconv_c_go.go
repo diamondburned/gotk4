@@ -52,7 +52,12 @@ func (fg *FileGenerator) CGoConverter(parent string, values []CValueProp) *TypeC
 	}
 }
 
-// WriteAll writes all conversionsto the given sections.
+// ConvertAll converts all values.
+func (conv *TypeConversionToGo) ConvertAll() []TypeConverted {
+	return ConvertAllValues(conv, len(conv.values))
+}
+
+// WriteAll writes all conversions to the given sections.
 func (conv *TypeConversionToGo) WriteAll(in, out, con *pen.BlockSection) bool {
 	// Get the FileGenerator out of nowhere.
 	fg := conv.logger.(*FileGenerator)
@@ -60,7 +65,7 @@ func (conv *TypeConversionToGo) WriteAll(in, out, con *pen.BlockSection) bool {
 	for i := 0; i < len(conv.values); i++ {
 		converted := conv.Convert(i)
 		if converted == nil {
-			conv.logFail(LogDebug, "C->Go cannot convert type", anyTypeC(conv.values[i].Type))
+			conv.logFail(LogDebug, "C->Go cannot convert type", anyTypeC(conv.values[i].AnyType))
 			return false
 		}
 
@@ -80,7 +85,7 @@ func (conv *TypeConversionToGo) Convert(i int) *TypeConverted {
 
 	// Make a shallow copy of the value.
 	value := conv.values[i]
-	value.initState()
+	value.init()
 
 	// Ignored values are manually obtained in the conversion process, so we
 	// don't convert them here. Zero values are not important.
@@ -97,6 +102,7 @@ func (conv *TypeConversionToGo) Convert(i int) *TypeConverted {
 
 	conv.cgoConverter(&value)
 	if conv.failed {
+		conv.logFail(LogDebug, "C->Go cannot convert type", anyTypeC(conv.values[i].AnyType))
 		return nil
 	}
 
@@ -119,23 +125,26 @@ func (conv *TypeConversionToGo) reset() {
 
 // valueAt returns a copy of the value at the given parameter index.
 func (conv *TypeConversionToGo) valueAt(at int) *CValueProp {
-	for i, value := range conv.values {
+	for _, value := range conv.values {
 		if value.ParameterIndex != nil && *value.ParameterIndex == at {
-			value := conv.values[i]
-			value.initState()
+			value.init()
 			return &value
 		}
 	}
 
 	conv.logFail(LogError, "C->Go conversion arg not found at", at)
-	return &CValueProp{ValueProp: errorValueProp}
+
+	prop := CValueProp{ValueProp: errorValueProp}
+	prop.init()
+
+	return &prop
 }
 
 func (conv *TypeConversionToGo) cgoConverter(value *CValueProp) {
 	switch {
-	case value.Type.Array != nil:
+	case value.AnyType.Array != nil:
 		conv.cgoArrayConverter(value)
-	case value.Type.Type != nil:
+	case value.AnyType.Type != nil:
 		conv.cgoTypeConverter(value)
 	default:
 		conv.fail()
@@ -143,14 +152,14 @@ func (conv *TypeConversionToGo) cgoConverter(value *CValueProp) {
 }
 
 func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
-	if value.Type.Array.Type == nil {
+	if value.AnyType.Array.Type == nil {
 		if !value.AllowNone {
-			conv.logFail(LogSkip, "nested array", value.Type.Array.CType)
+			conv.logFail(LogSkip, "nested array", value.AnyType.Array.CType)
 		}
 		return
 	}
 
-	array := value.Type.Array
+	array := value.AnyType.Array
 
 	// All generators must declare src.
 	inner := value.inner("src", value.Out+"[i]")
@@ -164,13 +173,13 @@ func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 		value.OutType = fmt.Sprintf("[%d]%s", array.FixedSize, inner.OutType)
 		value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
-		value.InType = anyTypeCGo(value.Type)
+		value.InType = anyTypeCGo(value.AnyType)
 		value.inDecl.Linef("var %s [%d]%s", value.In, array.FixedSize, inner.InType)
 	} else {
 		value.OutType = fmt.Sprintf("[]%s", inner.OutType)
 		value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
-		value.InType = anyTypeCGo(value.Type)
+		value.InType = anyTypeCGo(value.AnyType)
 		value.inDecl.Linef("var %s %s", value.In, value.InType)
 	}
 
@@ -200,7 +209,7 @@ func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 		conv.sides.addImport(importInternal("ptr"))
 
 		length := conv.valueAt(*array.Length)
-		value.inDecl.Linef("var %s %s", length.In, anyTypeCGo(length.Type))
+		value.inDecl.Linef("var %s %s", length.In, anyTypeCGo(length.AnyType))
 		// Length has no outDecl.
 
 		// If we're owning the new data, then we will directly use the backing
@@ -282,7 +291,7 @@ func (conv *TypeConversionToGo) cgoArrayConverter(value *CValueProp) {
 
 func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 	for _, unsupported := range unsupportedCTypes {
-		if unsupported == value.Type.Type.Name {
+		if unsupported == value.AnyType.Type.Name {
 			conv.fail()
 			return
 		}
@@ -304,8 +313,7 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 		return
 
 	case value.resolved.IsBuiltin("bool"):
-		conv.sides.NeedsStdBool = true
-		value.p.Linef("%s = C.bool(%s) != C.false", value.Out, value.In)
+		value.p.Linef("if %s { %s = true }", value.In, value.Out)
 		return
 
 	case value.resolved.IsBuiltin("error"):
@@ -314,12 +322,12 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 		return
 
 	case value.resolved.IsPrimitive():
-		value.p.Linef("%s = %s(%s)", value.Out, value.InType, value.In)
+		value.p.Linef("%s = %s(%s)", value.Out, value.OutType, value.In)
 		return
 	}
 
 	// Resolve special-case GLib types.
-	switch ensureNamespace(conv.ng.current, value.Type.Type.Name) {
+	switch ensureNamespace(conv.ng.current, value.AnyType.Type.Name) {
 	case "gpointer":
 		conv.sides.addImport(importInternal("box"))
 
@@ -336,13 +344,15 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 
 	case "GObject.Type", "GType":
 		conv.sides.addGLibImport()
+		conv.sides.NeedsGLibObject = true
 
 		value.p.Linef("%s = externglib.Type(%s)", value.Out, value.In)
 		return
 
 	case "GObject.Value":
-		conv.sides.addGLibImport()
 		conv.sides.addImport("unsafe")
+		conv.sides.addGLibImport()
+		conv.sides.NeedsGLibObject = true
 
 		value.p.Linef("%s = externglib.ValueFromNative(unsafe.Pointer(%s))", value.Out, value.In)
 		// Set this to be freed if we have the ownership now.
@@ -356,7 +366,7 @@ func (conv *TypeConversionToGo) cgoTypeConverter(value *CValueProp) {
 	}
 
 	// Pretend that ignored types don't exist.
-	if conv.ng.mustIgnore(value.Type.Type.Name, value.Type.Type.CType) {
+	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
 		conv.fail()
 		return
 	}

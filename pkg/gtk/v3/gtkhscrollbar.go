@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,17 +59,10 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 }
 
 // NewHScrollbar constructs a class HScrollbar.
-func NewHScrollbar(adjustment Adjustment) HScrollbar {
+func NewHScrollbar(adjustment Adjustment) {
 	var arg1 *C.GtkAdjustment
 
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	var cret C.GtkHScrollbar
-	var ret1 HScrollbar
-
-	cret = C.gtk_hscrollbar_new(adjustment)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScrollbar)
-
-	return ret1
+	C.gtk_hscrollbar_new(arg1)
 }

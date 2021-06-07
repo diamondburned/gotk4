@@ -3,15 +3,11 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -92,17 +88,17 @@ type ToggleButton interface {
 
 	// Active queries a ToggleButton and returns its current state. Returns true
 	// if the toggle button is pressed in and false if it is raised.
-	Active() bool
+	Active(t ToggleButton) bool
 	// Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
-	Inconsistent() bool
+	Inconsistent(t ToggleButton) bool
 	// Mode retrieves whether the button is displayed as a separate indicator
 	// and label. See gtk_toggle_button_set_mode().
-	Mode() bool
+	Mode(t ToggleButton) bool
 	// SetActive sets the status of the toggle button. Set to true if you want
 	// the GtkToggleButton to be “pressed in”, and false to raise it. This
 	// action causes the ToggleButton::toggled signal and the Button::clicked
 	// signal to be emitted.
-	SetActive(isActive bool)
+	SetActive(t ToggleButton, isActive bool)
 	// SetInconsistent: if the user has selected a range of elements (such as
 	// some text or spreadsheet cells) that are affected by a toggle button, and
 	// the current values in that range are inconsistent, you may want to
@@ -111,7 +107,7 @@ type ToggleButton interface {
 	// again if the user toggles the toggle button. This has to be done
 	// manually, gtk_toggle_button_set_inconsistent() only affects visual
 	// appearance, it doesn’t affect the semantics of the button.
-	SetInconsistent(setting bool)
+	SetInconsistent(t ToggleButton, setting bool)
 	// SetMode sets whether the button is displayed as a separate indicator and
 	// label. You can call this function on a checkbutton or a radiobutton with
 	// @draw_indicator = false to make the button look like a normal button.
@@ -122,10 +118,10 @@ type ToggleButton interface {
 	// This function only affects instances of classes like CheckButton and
 	// RadioButton that derive from ToggleButton, not instances of ToggleButton
 	// itself.
-	SetMode(drawIndicator bool)
+	SetMode(t ToggleButton, drawIndicator bool)
 	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 	// is no good reason for an application ever to call this function.
-	Toggled()
+	Toggled(t ToggleButton)
 }
 
 // toggleButton implements the ToggleButton interface.
@@ -156,106 +152,91 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 }
 
 // NewToggleButton constructs a class ToggleButton.
-func NewToggleButton() ToggleButton {
-	var cret C.GtkToggleButton
-	var ret1 ToggleButton
-
-	cret = C.gtk_toggle_button_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
-
-	return ret1
+func NewToggleButton() {
+	C.gtk_toggle_button_new()
 }
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
-func NewToggleButtonWithLabel(label string) ToggleButton {
+func NewToggleButtonWithLabel(label string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkToggleButton
-	var ret1 ToggleButton
-
-	cret = C.gtk_toggle_button_new_with_label(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
-
-	return ret1
+	C.gtk_toggle_button_new_with_label(arg1)
 }
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
-func NewToggleButtonWithMnemonic(label string) ToggleButton {
+func NewToggleButtonWithMnemonic(label string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.GtkToggleButton
-	var ret1 ToggleButton
-
-	cret = C.gtk_toggle_button_new_with_mnemonic(label)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
-
-	return ret1
+	C.gtk_toggle_button_new_with_mnemonic(arg1)
 }
 
 // Active queries a ToggleButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
-func (t toggleButton) Active() bool {
+func (t toggleButton) Active(t ToggleButton) bool {
 	var arg0 *C.GtkToggleButton
 
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_toggle_button_get_active(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
-func (t toggleButton) Inconsistent() bool {
+func (t toggleButton) Inconsistent(t ToggleButton) bool {
 	var arg0 *C.GtkToggleButton
 
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_toggle_button_get_inconsistent(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Mode retrieves whether the button is displayed as a separate indicator
 // and label. See gtk_toggle_button_set_mode().
-func (t toggleButton) Mode() bool {
+func (t toggleButton) Mode(t ToggleButton) bool {
 	var arg0 *C.GtkToggleButton
 
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_toggle_button_get_mode(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetActive sets the status of the toggle button. Set to true if you want
 // the GtkToggleButton to be “pressed in”, and false to raise it. This
 // action causes the ToggleButton::toggled signal and the Button::clicked
 // signal to be emitted.
-func (t toggleButton) SetActive(isActive bool) {
+func (t toggleButton) SetActive(t ToggleButton, isActive bool) {
 	var arg0 *C.GtkToggleButton
 	var arg1 C.gboolean
 
@@ -264,7 +245,7 @@ func (t toggleButton) SetActive(isActive bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_active(arg0, isActive)
+	C.gtk_toggle_button_set_active(arg0, arg1)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as
@@ -275,7 +256,7 @@ func (t toggleButton) SetActive(isActive bool) {
 // again if the user toggles the toggle button. This has to be done
 // manually, gtk_toggle_button_set_inconsistent() only affects visual
 // appearance, it doesn’t affect the semantics of the button.
-func (t toggleButton) SetInconsistent(setting bool) {
+func (t toggleButton) SetInconsistent(t ToggleButton, setting bool) {
 	var arg0 *C.GtkToggleButton
 	var arg1 C.gboolean
 
@@ -284,7 +265,7 @@ func (t toggleButton) SetInconsistent(setting bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_inconsistent(arg0, setting)
+	C.gtk_toggle_button_set_inconsistent(arg0, arg1)
 }
 
 // SetMode sets whether the button is displayed as a separate indicator and
@@ -297,7 +278,7 @@ func (t toggleButton) SetInconsistent(setting bool) {
 // This function only affects instances of classes like CheckButton and
 // RadioButton that derive from ToggleButton, not instances of ToggleButton
 // itself.
-func (t toggleButton) SetMode(drawIndicator bool) {
+func (t toggleButton) SetMode(t ToggleButton, drawIndicator bool) {
 	var arg0 *C.GtkToggleButton
 	var arg1 C.gboolean
 
@@ -306,12 +287,12 @@ func (t toggleButton) SetMode(drawIndicator bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_mode(arg0, drawIndicator)
+	C.gtk_toggle_button_set_mode(arg0, arg1)
 }
 
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 // is no good reason for an application ever to call this function.
-func (t toggleButton) Toggled() {
+func (t toggleButton) Toggled(t ToggleButton) {
 	var arg0 *C.GtkToggleButton
 
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))

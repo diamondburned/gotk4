@@ -2,13 +2,6 @@
 
 package gtk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
@@ -34,13 +27,13 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 	arg3 = C.guint32(timestamp)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_show_uri(screen, uri, timestamp, &errout)
+	C.gtk_show_uri(arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // ShowURIOnWindow: this is a convenience function for launching the default
@@ -66,11 +59,11 @@ func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
 	arg3 = C.guint32(timestamp)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.gtk_show_uri_on_window(parent, uri, timestamp, &errout)
+	C.gtk_show_uri_on_window(arg1, arg2, arg3, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }

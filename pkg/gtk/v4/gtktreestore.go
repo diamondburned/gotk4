@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -56,9 +55,9 @@ type TreeStore interface {
 	// this new row. The row will be empty after this function is called. To
 	// fill in values, you need to call gtk_tree_store_set() or
 	// gtk_tree_store_set_value().
-	Append(parent *TreeIter) TreeIter
+	Append(t TreeStore, parent *TreeIter) *TreeIter
 	// Clear removes all rows from @tree_store
-	Clear()
+	Clear(t TreeStore)
 	// Insert creates a new row at @position. If parent is non-nil, then the row
 	// will be made a child of @parent. Otherwise, the row will be created at
 	// the toplevel. If @position is -1 or is larger than the number of rows at
@@ -66,7 +65,7 @@ type TreeStore interface {
 	// @iter will be changed to point to this new row. The row will be empty
 	// after this function is called. To fill in values, you need to call
 	// gtk_tree_store_set() or gtk_tree_store_set_value().
-	Insert(parent *TreeIter, position int) TreeIter
+	Insert(t TreeStore, parent *TreeIter, position int) *TreeIter
 	// InsertAfter inserts a new row after @sibling. If @sibling is nil, then
 	// the row will be prepended to @parent ’s children. If @parent and @sibling
 	// are nil, then the row will be prepended to the toplevel. If both @sibling
@@ -76,7 +75,7 @@ type TreeStore interface {
 	// @iter will be changed to point to this new row. The row will be empty
 	// after this function is called. To fill in values, you need to call
 	// gtk_tree_store_set() or gtk_tree_store_set_value().
-	InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter
+	InsertAfter(t TreeStore, parent *TreeIter, sibling *TreeIter) *TreeIter
 	// InsertBefore inserts a new row before @sibling. If @sibling is nil, then
 	// the row will be appended to @parent ’s children. If @parent and @sibling
 	// are nil, then the row will be appended to the toplevel. If both @sibling
@@ -86,54 +85,54 @@ type TreeStore interface {
 	// @iter will be changed to point to this new row. The row will be empty
 	// after this function is called. To fill in values, you need to call
 	// gtk_tree_store_set() or gtk_tree_store_set_value().
-	InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter
+	InsertBefore(t TreeStore, parent *TreeIter, sibling *TreeIter) *TreeIter
 	// InsertWithValuesv: a variant of gtk_tree_store_insert_with_values() which
 	// takes the columns and values as two arrays, instead of varargs. This
 	// function is mainly intended for language bindings.
-	InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value) TreeIter
+	InsertWithValuesv(t TreeStore) *TreeIter
 	// IsAncestor returns true if @iter is an ancestor of @descendant. That is,
 	// @iter is the parent (or grandparent or great-grandparent) of @descendant.
-	IsAncestor(iter *TreeIter, descendant *TreeIter) bool
+	IsAncestor(t TreeStore, iter *TreeIter, descendant *TreeIter) bool
 	// IterDepth returns the depth of @iter. This will be 0 for anything on the
 	// root level, 1 for anything down a level, etc.
-	IterDepth(iter *TreeIter) int
+	IterDepth(t TreeStore, iter *TreeIter)
 	// IterIsValid: WARNING: This function is slow. Only use it for debugging
 	// and/or testing purposes.
 	//
 	// Checks if the given iter is a valid iter for this TreeStore.
-	IterIsValid(iter *TreeIter) bool
+	IterIsValid(t TreeStore, iter *TreeIter) bool
 	// MoveAfter moves @iter in @tree_store to the position after @position.
 	// @iter and @position should be in the same level. Note that this function
 	// only works with unsorted stores. If @position is nil, @iter will be moved
 	// to the start of the level.
-	MoveAfter(iter *TreeIter, position *TreeIter)
+	MoveAfter(t TreeStore, iter *TreeIter, position *TreeIter)
 	// MoveBefore moves @iter in @tree_store to the position before @position.
 	// @iter and @position should be in the same level. Note that this function
 	// only works with unsorted stores. If @position is nil, @iter will be moved
 	// to the end of the level.
-	MoveBefore(iter *TreeIter, position *TreeIter)
+	MoveBefore(t TreeStore, iter *TreeIter, position *TreeIter)
 	// Prepend prepends a new row to @tree_store. If @parent is non-nil, then it
 	// will prepend the new row before the first child of @parent, otherwise it
 	// will prepend a row to the top level. @iter will be changed to point to
 	// this new row. The row will be empty after this function is called. To
 	// fill in values, you need to call gtk_tree_store_set() or
 	// gtk_tree_store_set_value().
-	Prepend(parent *TreeIter) TreeIter
+	Prepend(t TreeStore, parent *TreeIter) *TreeIter
 	// Remove removes @iter from @tree_store. After being removed, @iter is set
 	// to the next valid row at that level, or invalidated if it previously
 	// pointed to the last one.
-	Remove(iter *TreeIter) bool
+	Remove(t TreeStore, iter *TreeIter) bool
 	// SetValue sets the data in the cell specified by @iter and @column. The
 	// type of @value must be convertible to the type of the column.
-	SetValue(iter *TreeIter, column int, value *externglib.Value)
+	SetValue(t TreeStore, iter *TreeIter, column int, value *externglib.Value)
 	// SetValuesv: a variant of gtk_tree_store_set_valist() which takes the
 	// columns and values as two arrays, instead of varargs. This function is
 	// mainly intended for language bindings or in case the number of columns to
 	// change is not known until run-time.
-	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value)
+	SetValuesv(t TreeStore)
 	// Swap swaps @a and @b in the same level of @tree_store. Note that this
 	// function only works with unsorted stores.
-	Swap(a *TreeIter, b *TreeIter)
+	Swap(t TreeStore, a *TreeIter, b *TreeIter)
 }
 
 // treeStore implements the TreeStore interface.
@@ -173,7 +172,7 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 // this new row. The row will be empty after this function is called. To
 // fill in values, you need to call gtk_tree_store_set() or
 // gtk_tree_store_set_value().
-func (t treeStore) Append(parent *TreeIter) TreeIter {
+func (t treeStore) Append(t TreeStore, parent *TreeIter) *TreeIter {
 	var arg0 *C.GtkTreeStore
 	var arg2 *C.GtkTreeIter
 
@@ -181,17 +180,17 @@ func (t treeStore) Append(parent *TreeIter) TreeIter {
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 
-	C.gtk_tree_store_append(arg0, &arg1, parent)
+	C.gtk_tree_store_append(arg0, &arg1, arg2)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // Clear removes all rows from @tree_store
-func (t treeStore) Clear() {
+func (t treeStore) Clear(t TreeStore) {
 	var arg0 *C.GtkTreeStore
 
 	arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
@@ -206,7 +205,7 @@ func (t treeStore) Clear() {
 // @iter will be changed to point to this new row. The row will be empty
 // after this function is called. To fill in values, you need to call
 // gtk_tree_store_set() or gtk_tree_store_set_value().
-func (t treeStore) Insert(parent *TreeIter, position int) TreeIter {
+func (t treeStore) Insert(t TreeStore, parent *TreeIter, position int) *TreeIter {
 	var arg0 *C.GtkTreeStore
 	var arg2 *C.GtkTreeIter
 	var arg3 C.int
@@ -216,13 +215,13 @@ func (t treeStore) Insert(parent *TreeIter, position int) TreeIter {
 	arg3 = C.int(position)
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 
-	C.gtk_tree_store_insert(arg0, &arg1, parent, position)
+	C.gtk_tree_store_insert(arg0, &arg1, arg2, arg3)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // InsertAfter inserts a new row after @sibling. If @sibling is nil, then
@@ -234,7 +233,7 @@ func (t treeStore) Insert(parent *TreeIter, position int) TreeIter {
 // @iter will be changed to point to this new row. The row will be empty
 // after this function is called. To fill in values, you need to call
 // gtk_tree_store_set() or gtk_tree_store_set_value().
-func (t treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter {
+func (t treeStore) InsertAfter(t TreeStore, parent *TreeIter, sibling *TreeIter) *TreeIter {
 	var arg0 *C.GtkTreeStore
 	var arg2 *C.GtkTreeIter
 	var arg3 *C.GtkTreeIter
@@ -244,13 +243,13 @@ func (t treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter {
 	arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 
-	C.gtk_tree_store_insert_after(arg0, &arg1, parent, sibling)
+	C.gtk_tree_store_insert_after(arg0, &arg1, arg2, arg3)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // InsertBefore inserts a new row before @sibling. If @sibling is nil, then
@@ -262,7 +261,7 @@ func (t treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter {
 // @iter will be changed to point to this new row. The row will be empty
 // after this function is called. To fill in values, you need to call
 // gtk_tree_store_set() or gtk_tree_store_set_value().
-func (t treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter {
+func (t treeStore) InsertBefore(t TreeStore, parent *TreeIter, sibling *TreeIter) *TreeIter {
 	var arg0 *C.GtkTreeStore
 	var arg2 *C.GtkTreeIter
 	var arg3 *C.GtkTreeIter
@@ -272,36 +271,36 @@ func (t treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter {
 	arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 
-	C.gtk_tree_store_insert_before(arg0, &arg1, parent, sibling)
+	C.gtk_tree_store_insert_before(arg0, &arg1, arg2, arg3)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // InsertWithValuesv: a variant of gtk_tree_store_insert_with_values() which
 // takes the columns and values as two arrays, instead of varargs. This
 // function is mainly intended for language bindings.
-func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value) TreeIter {
+func (t treeStore) InsertWithValuesv(t TreeStore) *TreeIter {
 	var arg0 *C.GtkTreeStore
 
 	arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 
-	C.gtk_tree_store_insert_with_valuesv(arg0, &arg1, parent, position, columns, values, nValues)
+	C.gtk_tree_store_insert_with_valuesv(arg0, &arg1, arg2, arg3, arg4, arg5, arg6)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // IsAncestor returns true if @iter is an ancestor of @descendant. That is,
 // @iter is the parent (or grandparent or great-grandparent) of @descendant.
-func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool {
+func (t treeStore) IsAncestor(t TreeStore, iter *TreeIter, descendant *TreeIter) bool {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 	var arg2 *C.GtkTreeIter
@@ -311,39 +310,34 @@ func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool {
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(descendant.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_tree_store_is_ancestor(arg0, iter, descendant)
+	cret = C.gtk_tree_store_is_ancestor(arg0, arg1, arg2)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IterDepth returns the depth of @iter. This will be 0 for anything on the
 // root level, 1 for anything down a level, etc.
-func (t treeStore) IterDepth(iter *TreeIter) int {
+func (t treeStore) IterDepth(t TreeStore, iter *TreeIter) {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 
 	arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.gtk_tree_store_iter_depth(arg0, iter)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.gtk_tree_store_iter_depth(arg0, arg1)
 }
 
 // IterIsValid: WARNING: This function is slow. Only use it for debugging
 // and/or testing purposes.
 //
 // Checks if the given iter is a valid iter for this TreeStore.
-func (t treeStore) IterIsValid(iter *TreeIter) bool {
+func (t treeStore) IterIsValid(t TreeStore, iter *TreeIter) bool {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 
@@ -351,20 +345,22 @@ func (t treeStore) IterIsValid(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_tree_store_iter_is_valid(arg0, iter)
+	cret = C.gtk_tree_store_iter_is_valid(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // MoveAfter moves @iter in @tree_store to the position after @position.
 // @iter and @position should be in the same level. Note that this function
 // only works with unsorted stores. If @position is nil, @iter will be moved
 // to the start of the level.
-func (t treeStore) MoveAfter(iter *TreeIter, position *TreeIter) {
+func (t treeStore) MoveAfter(t TreeStore, iter *TreeIter, position *TreeIter) {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 	var arg2 *C.GtkTreeIter
@@ -373,14 +369,14 @@ func (t treeStore) MoveAfter(iter *TreeIter, position *TreeIter) {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position.Native()))
 
-	C.gtk_tree_store_move_after(arg0, iter, position)
+	C.gtk_tree_store_move_after(arg0, arg1, arg2)
 }
 
 // MoveBefore moves @iter in @tree_store to the position before @position.
 // @iter and @position should be in the same level. Note that this function
 // only works with unsorted stores. If @position is nil, @iter will be moved
 // to the end of the level.
-func (t treeStore) MoveBefore(iter *TreeIter, position *TreeIter) {
+func (t treeStore) MoveBefore(t TreeStore, iter *TreeIter, position *TreeIter) {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 	var arg2 *C.GtkTreeIter
@@ -389,7 +385,7 @@ func (t treeStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position.Native()))
 
-	C.gtk_tree_store_move_before(arg0, iter, position)
+	C.gtk_tree_store_move_before(arg0, arg1, arg2)
 }
 
 // Prepend prepends a new row to @tree_store. If @parent is non-nil, then it
@@ -398,7 +394,7 @@ func (t treeStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 // this new row. The row will be empty after this function is called. To
 // fill in values, you need to call gtk_tree_store_set() or
 // gtk_tree_store_set_value().
-func (t treeStore) Prepend(parent *TreeIter) TreeIter {
+func (t treeStore) Prepend(t TreeStore, parent *TreeIter) *TreeIter {
 	var arg0 *C.GtkTreeStore
 	var arg2 *C.GtkTreeIter
 
@@ -406,19 +402,19 @@ func (t treeStore) Prepend(parent *TreeIter) TreeIter {
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
 
 	var arg1 C.GtkTreeIter
-	var ret1 *TreeIter
+	var iter *TreeIter
 
-	C.gtk_tree_store_prepend(arg0, &arg1, parent)
+	C.gtk_tree_store_prepend(arg0, &arg1, arg2)
 
-	*ret1 = WrapTreeIter(unsafe.Pointer(arg1))
+	iter = WrapTreeIter(unsafe.Pointer(&arg1))
 
-	return ret1
+	return iter
 }
 
 // Remove removes @iter from @tree_store. After being removed, @iter is set
 // to the next valid row at that level, or invalidated if it previously
 // pointed to the last one.
-func (t treeStore) Remove(iter *TreeIter) bool {
+func (t treeStore) Remove(t TreeStore, iter *TreeIter) bool {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 
@@ -426,18 +422,20 @@ func (t treeStore) Remove(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gtk_tree_store_remove(arg0, iter)
+	cret = C.gtk_tree_store_remove(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // SetValue sets the data in the cell specified by @iter and @column. The
 // type of @value must be convertible to the type of the column.
-func (t treeStore) SetValue(iter *TreeIter, column int, value *externglib.Value) {
+func (t treeStore) SetValue(t TreeStore, iter *TreeIter, column int, value *externglib.Value) {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 	var arg2 C.int
@@ -448,24 +446,24 @@ func (t treeStore) SetValue(iter *TreeIter, column int, value *externglib.Value)
 	arg2 = C.int(column)
 	arg3 = (*C.GValue)(value.GValue)
 
-	C.gtk_tree_store_set_value(arg0, iter, column, value)
+	C.gtk_tree_store_set_value(arg0, arg1, arg2, arg3)
 }
 
 // SetValuesv: a variant of gtk_tree_store_set_valist() which takes the
 // columns and values as two arrays, instead of varargs. This function is
 // mainly intended for language bindings or in case the number of columns to
 // change is not known until run-time.
-func (t treeStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value) {
+func (t treeStore) SetValuesv(t TreeStore) {
 	var arg0 *C.GtkTreeStore
 
 	arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
 
-	C.gtk_tree_store_set_valuesv(arg0, iter, columns, values, nValues)
+	C.gtk_tree_store_set_valuesv(arg0, arg1, arg2, arg3, arg4)
 }
 
 // Swap swaps @a and @b in the same level of @tree_store. Note that this
 // function only works with unsorted stores.
-func (t treeStore) Swap(a *TreeIter, b *TreeIter) {
+func (t treeStore) Swap(t TreeStore, a *TreeIter, b *TreeIter) {
 	var arg0 *C.GtkTreeStore
 	var arg1 *C.GtkTreeIter
 	var arg2 *C.GtkTreeIter
@@ -474,5 +472,5 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter) {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(a.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(b.Native()))
 
-	C.gtk_tree_store_swap(arg0, a, b)
+	C.gtk_tree_store_swap(arg0, arg1, arg2)
 }

@@ -2,15 +2,8 @@
 
 package gdkx11
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-)
-
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <gdk/gdkx.h>
 import "C"
 
@@ -21,7 +14,7 @@ func X11FreeCompoundText(ctext byte) {
 
 	arg1 = *C.guchar(ctext)
 
-	C.gdk_x11_free_compound_text(ctext)
+	C.gdk_x11_free_compound_text(arg1)
 }
 
 // X11FreeTextList frees the array of strings created by
@@ -32,5 +25,5 @@ func X11FreeTextList(list string) {
 	arg1 = (**C.gchar)(C.CString(list))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_x11_free_text_list(list)
+	C.gdk_x11_free_text_list(arg1)
 }

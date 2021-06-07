@@ -47,20 +47,12 @@ func (a *Atom) Native() unsafe.Pointer {
 }
 
 // Name determines the string corresponding to an atom.
-func (a *Atom) Name() string {
+func (a *Atom) Name(a Atom) {
 	var arg0 C.GdkAtom
 
 	arg0 = (C.GdkAtom)(unsafe.Pointer(a.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.gdk_atom_name(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gdk_atom_name(arg0)
 }
 
 // Point defines the x and y coordinates of a point.
@@ -90,12 +82,16 @@ func (p *Point) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (p *Point) X() int {
-	v = C.gint(p.native.x)
+	var v int
+	v = int(p.native.x)
+	return v
 }
 
 // Y gets the field inside the struct.
 func (p *Point) Y() int {
-	v = C.gint(p.native.y)
+	var v int
+	v = int(p.native.y)
+	return v
 }
 
 // Rectangle defines the position and size of a rectangle. It is identical to
@@ -126,26 +122,34 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *Rectangle) X() int {
-	v = C.int(r.native.x)
+	var v int
+	v = int(r.native.x)
+	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() int {
-	v = C.int(r.native.y)
+	var v int
+	v = int(r.native.y)
+	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() int {
-	v = C.int(r.native.width)
+	var v int
+	v = int(r.native.width)
+	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() int {
-	v = C.int(r.native.height)
+	var v int
+	v = int(r.native.height)
+	return v
 }
 
 // Equal checks if the two given rectangles are equal.
-func (r *Rectangle) Equal(rect2 *Rectangle) bool {
+func (r *Rectangle) Equal(r *Rectangle, rect2 *Rectangle) bool {
 	var arg0 *C.GdkRectangle
 	var arg1 *C.GdkRectangle
 
@@ -153,13 +157,15 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.gdk_rectangle_equal(arg0, rect2)
+	cret = C.gdk_rectangle_equal(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Intersect calculates the intersection of two rectangles. It is allowed for
@@ -167,7 +173,7 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 // intersect, @dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass nil for @dest.
-func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
+func (s *Rectangle) Intersect(s *Rectangle, src2 *Rectangle) (dest *Rectangle, ok bool) {
 	var arg0 *C.GdkRectangle
 	var arg1 *C.GdkRectangle
 
@@ -175,16 +181,18 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
 	var arg2 C.GdkRectangle
-	var ret2 *Rectangle
+	var dest *Rectangle
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
-	cret = C.gdk_rectangle_intersect(arg0, src2, &arg2)
+	cret = C.gdk_rectangle_intersect(arg0, arg1, &arg2)
 
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
-	ret2 = C.bool(cret) != C.false
+	dest = WrapRectangle(unsafe.Pointer(&arg2))
+	if cret {
+		ok = true
+	}
 
-	return ret2, ret2
+	return dest, ok
 }
 
 // Union calculates the union of two rectangles. The union of rectangles @src1
@@ -193,7 +201,7 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (dest Rectangle, ok bool) {
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
+func (s *Rectangle) Union(s *Rectangle, src2 *Rectangle) *Rectangle {
 	var arg0 *C.GdkRectangle
 	var arg1 *C.GdkRectangle
 
@@ -201,11 +209,11 @@ func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
 	var arg2 C.GdkRectangle
-	var ret2 *Rectangle
+	var dest *Rectangle
 
-	C.gdk_rectangle_union(arg0, src2, &arg2)
+	C.gdk_rectangle_union(arg0, arg1, &arg2)
 
-	*ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	dest = WrapRectangle(unsafe.Pointer(&arg2))
 
-	return ret2
+	return dest
 }

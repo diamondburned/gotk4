@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,7 +69,7 @@ func marshalHBox(p uintptr) (interface{}, error) {
 }
 
 // NewHBox constructs a class HBox.
-func NewHBox(homogeneous bool, spacing int) HBox {
+func NewHBox(homogeneous bool, spacing int) {
 	var arg1 C.gboolean
 	var arg2 C.gint
 
@@ -81,12 +78,5 @@ func NewHBox(homogeneous bool, spacing int) HBox {
 	}
 	arg2 = C.gint(spacing)
 
-	var cret C.GtkHBox
-	var ret1 HBox
-
-	cret = C.gtk_hbox_new(homogeneous, spacing)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HBox)
-
-	return ret1
+	C.gtk_hbox_new(arg1, arg2)
 }

@@ -4,8 +4,6 @@ package glib
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -25,7 +23,7 @@ import "C"
 // file permissions on Windows more exactly should use the Win32 API.
 //
 // See your C library manual for more details about access().
-func Access(filename string, mode int) int {
+func Access(filename string, mode int) {
 	var arg1 *C.gchar
 	var arg2 C.int
 
@@ -33,34 +31,20 @@ func Access(filename string, mode int) int {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(mode)
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_access(filename, mode)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_access(arg1, arg2)
 }
 
 // Chdir: a wrapper for the POSIX chdir() function. The function changes the
 // current directory of the process to @path.
 //
 // See your C library manual for more details about chdir().
-func Chdir(path string) int {
+func Chdir(path string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_chdir(path)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_chdir(arg1)
 }
 
 // Close: this wraps the close() call; in case of error, errno will be
@@ -75,13 +59,13 @@ func Close(fd int) error {
 	arg1 = C.gint(fd)
 
 	var errout *C.GError
-	var goerr error
+	var err error
 
-	C.g_close(fd, &errout)
+	C.g_close(arg1, &errout)
 
-	goerr = gerror.Take(unsafe.Pointer(errout))
+	err = gerror.Take(unsafe.Pointer(errout))
 
-	return goerr
+	return err
 }
 
 // Rmdir: a wrapper for the POSIX rmdir() function. The rmdir() function deletes
@@ -89,20 +73,13 @@ func Close(fd int) error {
 //
 // See your C library manual for more details about how rmdir() works on your
 // system.
-func Rmdir(filename string) int {
+func Rmdir(filename string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_rmdir(filename)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_rmdir(arg1)
 }
 
 // Unlink: a wrapper for the POSIX unlink() function. The unlink() function
@@ -112,20 +89,13 @@ func Rmdir(filename string) int {
 // See your C library manual for more details about unlink(). Note that on
 // Windows, it is in general not possible to delete files that are open to some
 // process, or mapped into memory.
-func Unlink(filename string) int {
+func Unlink(filename string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var cret C.int
-	var ret1 int
-
-	cret = C.g_unlink(filename)
-
-	ret1 = C.int(cret)
-
-	return ret1
+	C.g_unlink(arg1)
 }
 
 // StatBuf: a type corresponding to the appropriate struct type for the stat()

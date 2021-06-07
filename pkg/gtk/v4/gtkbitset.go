@@ -3,13 +3,11 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -17,7 +15,7 @@ import "C"
 // BitsetIterInitAt initializes @iter to point to @target. If @target is not
 // found, finds the next value after it. If no value >= @target exists in @set,
 // this function returns false.
-func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok bool) {
+func BitsetIterInitAt(set *Bitset, target uint) (iter *BitsetIter, value uint, ok bool) {
 	var arg2 *C.GtkBitset
 	var arg3 C.guint
 
@@ -25,66 +23,72 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 	arg3 = C.guint(target)
 
 	var arg1 C.GtkBitsetIter
-	var ret1 *BitsetIter
+	var iter *BitsetIter
 	var arg4 C.guint
-	var ret4 uint
+	var value uint
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.gtk_bitset_iter_init_at(&arg1, set, target, &arg4)
+	cret = C.gtk_bitset_iter_init_at(&arg1, arg2, arg3, &arg4)
 
-	*ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	*ret4 = C.guint(arg4)
-	ret3 = C.bool(cret) != C.false
+	iter = WrapBitsetIter(unsafe.Pointer(&arg1))
+	value = uint(&arg4)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret4, ret3
+	return iter, value, ok
 }
 
 // BitsetIterInitFirst initializes an iterator for @set and points it to the
 // first value in @set. If @set is empty, false is returned and @value is set to
 // G_MAXUINT.
-func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
+func BitsetIterInitFirst(set *Bitset) (iter *BitsetIter, value uint, ok bool) {
 	var arg2 *C.GtkBitset
 
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(set.Native()))
 
 	var arg1 C.GtkBitsetIter
-	var ret1 *BitsetIter
+	var iter *BitsetIter
 	var arg3 C.guint
-	var ret3 uint
+	var value uint
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.gtk_bitset_iter_init_first(&arg1, set, &arg3)
+	cret = C.gtk_bitset_iter_init_first(&arg1, arg2, &arg3)
 
-	*ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	*ret3 = C.guint(arg3)
-	ret3 = C.bool(cret) != C.false
+	iter = WrapBitsetIter(unsafe.Pointer(&arg1))
+	value = uint(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret3, ret3
+	return iter, value, ok
 }
 
 // BitsetIterInitLast initializes an iterator for @set and points it to the last
 // value in @set. If @set is empty, false is returned.
-func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
+func BitsetIterInitLast(set *Bitset) (iter *BitsetIter, value uint, ok bool) {
 	var arg2 *C.GtkBitset
 
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(set.Native()))
 
 	var arg1 C.GtkBitsetIter
-	var ret1 *BitsetIter
+	var iter *BitsetIter
 	var arg3 C.guint
-	var ret3 uint
+	var value uint
 	var cret C.gboolean
-	var ret3 bool
+	var ok bool
 
-	cret = C.gtk_bitset_iter_init_last(&arg1, set, &arg3)
+	cret = C.gtk_bitset_iter_init_last(&arg1, arg2, &arg3)
 
-	*ret1 = WrapBitsetIter(unsafe.Pointer(arg1))
-	*ret3 = C.guint(arg3)
-	ret3 = C.bool(cret) != C.false
+	iter = WrapBitsetIter(unsafe.Pointer(&arg1))
+	value = uint(&arg3)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret3, ret3
+	return iter, value, ok
 }
 
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
@@ -119,74 +123,73 @@ func (b *BitsetIter) Native() unsafe.Pointer {
 //
 // If @iter is not valid and gtk_bitset_iter_is_valid() returns false, this
 // function returns 0.
-func (i *BitsetIter) Value() uint {
+func (i *BitsetIter) Value(i *BitsetIter) {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.gtk_bitset_iter_get_value(arg0)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.gtk_bitset_iter_get_value(arg0)
 }
 
 // IsValid checks if @iter points to a valid value.
-func (i *BitsetIter) IsValid() bool {
+func (i *BitsetIter) IsValid(i *BitsetIter) bool {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.gtk_bitset_iter_is_valid(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Next moves @iter to the next value in the set. If it was already pointing to
 // the last value in the set, false is returned and @iter is invalidated.
-func (i *BitsetIter) Next() (value uint, ok bool) {
+func (i *BitsetIter) Next(i *BitsetIter) (value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.guint
-	var ret1 uint
+	var value uint
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
 	cret = C.gtk_bitset_iter_next(arg0, &arg1)
 
-	*ret1 = C.guint(arg1)
-	ret2 = C.bool(cret) != C.false
+	value = uint(&arg1)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return value, ok
 }
 
 // Previous moves @iter to the previous value in the set. If it was already
 // pointing to the first value in the set, false is returned and @iter is
 // invalidated.
-func (i *BitsetIter) Previous() (value uint, ok bool) {
+func (i *BitsetIter) Previous(i *BitsetIter) (value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var arg1 C.guint
-	var ret1 uint
+	var value uint
 	var cret C.gboolean
-	var ret2 bool
+	var ok bool
 
 	cret = C.gtk_bitset_iter_previous(arg0, &arg1)
 
-	*ret1 = C.guint(arg1)
-	ret2 = C.bool(cret) != C.false
+	value = uint(&arg1)
+	if cret {
+		ok = true
+	}
 
-	return ret1, ret2
+	return value, ok
 }

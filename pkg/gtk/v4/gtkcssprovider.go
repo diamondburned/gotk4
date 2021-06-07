@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,31 +47,31 @@ type CSSProvider interface {
 
 	// LoadFromData loads @data into @css_provider, and by doing so clears any
 	// previously loaded information.
-	LoadFromData(data []byte)
+	LoadFromData(c CSSProvider)
 	// LoadFromFile loads the data contained in @file into @css_provider, making
 	// it clear any previously loaded information.
-	LoadFromFile(file gio.File)
+	LoadFromFile(c CSSProvider, file gio.File)
 	// LoadFromPath loads the data contained in @path into @css_provider, making
 	// it clear any previously loaded information.
-	LoadFromPath(path string)
+	LoadFromPath(c CSSProvider, path string)
 	// LoadFromResource loads the data contained in the resource at
 	// @resource_path into the CssProvider, clearing any previously loaded
 	// information.
 	//
 	// To track errors while loading CSS, connect to the
 	// CssProvider::parsing-error signal.
-	LoadFromResource(resourcePath string)
+	LoadFromResource(c CSSProvider, resourcePath string)
 	// LoadNamed loads a theme from the usual theme paths. The actual process of
 	// finding the theme might change between releases, but it is guaranteed
 	// that this function uses the same mechanism to load the theme that GTK
 	// uses for loading its own theme.
-	LoadNamed(name string, variant string)
+	LoadNamed(p CSSProvider, name string, variant string)
 	// String converts the @provider into a string representation in CSS format.
 	//
 	// Using gtk_css_provider_load_from_data() with the return value from this
 	// function on a new provider created with gtk_css_provider_new() will
 	// basically create a duplicate of this @provider.
-	String() string
+	String(p CSSProvider)
 }
 
 // cssProvider implements the CSSProvider interface.
@@ -102,42 +98,35 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 }
 
 // NewCSSProvider constructs a class CSSProvider.
-func NewCSSProvider() CSSProvider {
-	var cret C.GtkCssProvider
-	var ret1 CSSProvider
-
-	cret = C.gtk_css_provider_new()
-
-	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CSSProvider)
-
-	return ret1
+func NewCSSProvider() {
+	C.gtk_css_provider_new()
 }
 
 // LoadFromData loads @data into @css_provider, and by doing so clears any
 // previously loaded information.
-func (c cssProvider) LoadFromData(data []byte) {
+func (c cssProvider) LoadFromData(c CSSProvider) {
 	var arg0 *C.GtkCssProvider
 
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 
-	C.gtk_css_provider_load_from_data(arg0, data, length)
+	C.gtk_css_provider_load_from_data(arg0, arg1, arg2)
 }
 
 // LoadFromFile loads the data contained in @file into @css_provider, making
 // it clear any previously loaded information.
-func (c cssProvider) LoadFromFile(file gio.File) {
+func (c cssProvider) LoadFromFile(c CSSProvider, file gio.File) {
 	var arg0 *C.GtkCssProvider
 	var arg1 *C.GFile
 
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	C.gtk_css_provider_load_from_file(arg0, file)
+	C.gtk_css_provider_load_from_file(arg0, arg1)
 }
 
 // LoadFromPath loads the data contained in @path into @css_provider, making
 // it clear any previously loaded information.
-func (c cssProvider) LoadFromPath(path string) {
+func (c cssProvider) LoadFromPath(c CSSProvider, path string) {
 	var arg0 *C.GtkCssProvider
 	var arg1 *C.char
 
@@ -145,7 +134,7 @@ func (c cssProvider) LoadFromPath(path string) {
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_css_provider_load_from_path(arg0, path)
+	C.gtk_css_provider_load_from_path(arg0, arg1)
 }
 
 // LoadFromResource loads the data contained in the resource at
@@ -154,7 +143,7 @@ func (c cssProvider) LoadFromPath(path string) {
 //
 // To track errors while loading CSS, connect to the
 // CssProvider::parsing-error signal.
-func (c cssProvider) LoadFromResource(resourcePath string) {
+func (c cssProvider) LoadFromResource(c CSSProvider, resourcePath string) {
 	var arg0 *C.GtkCssProvider
 	var arg1 *C.char
 
@@ -162,14 +151,14 @@ func (c cssProvider) LoadFromResource(resourcePath string) {
 	arg1 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_css_provider_load_from_resource(arg0, resourcePath)
+	C.gtk_css_provider_load_from_resource(arg0, arg1)
 }
 
 // LoadNamed loads a theme from the usual theme paths. The actual process of
 // finding the theme might change between releases, but it is guaranteed
 // that this function uses the same mechanism to load the theme that GTK
 // uses for loading its own theme.
-func (p cssProvider) LoadNamed(name string, variant string) {
+func (p cssProvider) LoadNamed(p CSSProvider, name string, variant string) {
 	var arg0 *C.GtkCssProvider
 	var arg1 *C.char
 	var arg2 *C.char
@@ -180,7 +169,7 @@ func (p cssProvider) LoadNamed(name string, variant string) {
 	arg2 = (*C.char)(C.CString(variant))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_css_provider_load_named(arg0, name, variant)
+	C.gtk_css_provider_load_named(arg0, arg1, arg2)
 }
 
 // String converts the @provider into a string representation in CSS format.
@@ -188,18 +177,10 @@ func (p cssProvider) LoadNamed(name string, variant string) {
 // Using gtk_css_provider_load_from_data() with the return value from this
 // function on a new provider created with gtk_css_provider_new() will
 // basically create a duplicate of this @provider.
-func (p cssProvider) String() string {
+func (p cssProvider) String(p CSSProvider) {
 	var arg0 *C.GtkCssProvider
 
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 
-	var cret *C.char
-	var ret1 string
-
-	cret = C.gtk_css_provider_to_string(arg0)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.gtk_css_provider_to_string(arg0)
 }

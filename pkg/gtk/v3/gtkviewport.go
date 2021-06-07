@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,22 +44,22 @@ type Viewport interface {
 	Scrollable
 
 	// BinWindow gets the bin window of the Viewport.
-	BinWindow() gdk.Window
+	BinWindow(v Viewport)
 	// HAdjustment returns the horizontal adjustment of the viewport.
-	HAdjustment() Adjustment
+	HAdjustment(v Viewport)
 	// ShadowType gets the shadow type of the Viewport. See
 	// gtk_viewport_set_shadow_type().
-	ShadowType() ShadowType
+	ShadowType(v Viewport)
 	// VAdjustment returns the vertical adjustment of the viewport.
-	VAdjustment() Adjustment
+	VAdjustment(v Viewport)
 	// ViewWindow gets the view window of the Viewport.
-	ViewWindow() gdk.Window
+	ViewWindow(v Viewport)
 	// SetHAdjustment sets the horizontal adjustment of the viewport.
-	SetHAdjustment(adjustment Adjustment)
+	SetHAdjustment(v Viewport, adjustment Adjustment)
 	// SetShadowType sets the shadow type of the viewport.
-	SetShadowType(typ ShadowType)
+	SetShadowType(v Viewport, typ ShadowType)
 	// SetVAdjustment sets the vertical adjustment of the viewport.
-	SetVAdjustment(adjustment Adjustment)
+	SetVAdjustment(v Viewport, adjustment Adjustment)
 }
 
 // viewport implements the Viewport interface.
@@ -92,133 +88,91 @@ func marshalViewport(p uintptr) (interface{}, error) {
 }
 
 // NewViewport constructs a class Viewport.
-func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
+func NewViewport(hadjustment Adjustment, vadjustment Adjustment) {
 	var arg1 *C.GtkAdjustment
 	var arg2 *C.GtkAdjustment
 
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
-	var cret C.GtkViewport
-	var ret1 Viewport
-
-	cret = C.gtk_viewport_new(hadjustment, vadjustment)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
-
-	return ret1
+	C.gtk_viewport_new(arg1, arg2)
 }
 
 // BinWindow gets the bin window of the Viewport.
-func (v viewport) BinWindow() gdk.Window {
+func (v viewport) BinWindow(v Viewport) {
 	var arg0 *C.GtkViewport
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GdkWindow
-	var ret1 gdk.Window
-
-	cret = C.gtk_viewport_get_bin_window(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
-
-	return ret1
+	C.gtk_viewport_get_bin_window(arg0)
 }
 
 // HAdjustment returns the horizontal adjustment of the viewport.
-func (v viewport) HAdjustment() Adjustment {
+func (v viewport) HAdjustment(v Viewport) {
 	var arg0 *C.GtkViewport
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GtkAdjustment
-	var ret1 Adjustment
-
-	cret = C.gtk_viewport_get_hadjustment(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
-
-	return ret1
+	C.gtk_viewport_get_hadjustment(arg0)
 }
 
 // ShadowType gets the shadow type of the Viewport. See
 // gtk_viewport_set_shadow_type().
-func (v viewport) ShadowType() ShadowType {
+func (v viewport) ShadowType(v Viewport) {
 	var arg0 *C.GtkViewport
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
-	var cret C.GtkShadowType
-	var ret1 ShadowType
-
-	cret = C.gtk_viewport_get_shadow_type(arg0)
-
-	ret1 = ShadowType(cret)
-
-	return ret1
+	C.gtk_viewport_get_shadow_type(arg0)
 }
 
 // VAdjustment returns the vertical adjustment of the viewport.
-func (v viewport) VAdjustment() Adjustment {
+func (v viewport) VAdjustment(v Viewport) {
 	var arg0 *C.GtkViewport
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GtkAdjustment
-	var ret1 Adjustment
-
-	cret = C.gtk_viewport_get_vadjustment(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
-
-	return ret1
+	C.gtk_viewport_get_vadjustment(arg0)
 }
 
 // ViewWindow gets the view window of the Viewport.
-func (v viewport) ViewWindow() gdk.Window {
+func (v viewport) ViewWindow(v Viewport) {
 	var arg0 *C.GtkViewport
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GdkWindow
-	var ret1 gdk.Window
-
-	cret = C.gtk_viewport_get_view_window(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
-
-	return ret1
+	C.gtk_viewport_get_view_window(arg0)
 }
 
 // SetHAdjustment sets the horizontal adjustment of the viewport.
-func (v viewport) SetHAdjustment(adjustment Adjustment) {
+func (v viewport) SetHAdjustment(v Viewport, adjustment Adjustment) {
 	var arg0 *C.GtkViewport
 	var arg1 *C.GtkAdjustment
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	C.gtk_viewport_set_hadjustment(arg0, adjustment)
+	C.gtk_viewport_set_hadjustment(arg0, arg1)
 }
 
 // SetShadowType sets the shadow type of the viewport.
-func (v viewport) SetShadowType(typ ShadowType) {
+func (v viewport) SetShadowType(v Viewport, typ ShadowType) {
 	var arg0 *C.GtkViewport
 	var arg1 C.GtkShadowType
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	arg1 = (C.GtkShadowType)(typ)
 
-	C.gtk_viewport_set_shadow_type(arg0, typ)
+	C.gtk_viewport_set_shadow_type(arg0, arg1)
 }
 
 // SetVAdjustment sets the vertical adjustment of the viewport.
-func (v viewport) SetVAdjustment(adjustment Adjustment) {
+func (v viewport) SetVAdjustment(v Viewport, adjustment Adjustment) {
 	var arg0 *C.GtkViewport
 	var arg1 *C.GtkAdjustment
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	C.gtk_viewport_set_vadjustment(arg0, adjustment)
+	C.gtk_viewport_set_vadjustment(arg0, arg1)
 }

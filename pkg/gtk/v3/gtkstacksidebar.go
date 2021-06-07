@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,12 +40,12 @@ type StackSidebar interface {
 	Buildable
 
 	// Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
-	Stack() Stack
+	Stack(s StackSidebar)
 	// SetStack: set the Stack associated with this StackSidebar.
 	//
 	// The sidebar widget will automatically update according to the order
 	// (packing) and items within the given Stack.
-	SetStack(stack Stack)
+	SetStack(s StackSidebar, stack Stack)
 }
 
 // stackSidebar implements the StackSidebar interface.
@@ -75,43 +72,29 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 }
 
 // NewStackSidebar constructs a class StackSidebar.
-func NewStackSidebar() StackSidebar {
-	var cret C.GtkStackSidebar
-	var ret1 StackSidebar
-
-	cret = C.gtk_stack_sidebar_new()
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
-
-	return ret1
+func NewStackSidebar() {
+	C.gtk_stack_sidebar_new()
 }
 
 // Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
-func (s stackSidebar) Stack() Stack {
+func (s stackSidebar) Stack(s StackSidebar) {
 	var arg0 *C.GtkStackSidebar
 
 	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkStack
-	var ret1 Stack
-
-	cret = C.gtk_stack_sidebar_get_stack(arg0)
-
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
-
-	return ret1
+	C.gtk_stack_sidebar_get_stack(arg0)
 }
 
 // SetStack: set the Stack associated with this StackSidebar.
 //
 // The sidebar widget will automatically update according to the order
 // (packing) and items within the given Stack.
-func (s stackSidebar) SetStack(stack Stack) {
+func (s stackSidebar) SetStack(s StackSidebar, stack Stack) {
 	var arg0 *C.GtkStackSidebar
 	var arg1 *C.GtkStack
 
 	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
-	C.gtk_stack_sidebar_set_stack(arg0, stack)
+	C.gtk_stack_sidebar_set_stack(arg0, arg1)
 }

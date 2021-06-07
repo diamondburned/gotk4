@@ -9,7 +9,6 @@ import (
 
 // #cgo pkg-config: pangofc pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <stdbool.h>
 // #include <glib-object.h>
 // #include <pango/pangofc-fontmap.h>
 import "C"
@@ -34,24 +33,36 @@ type Font interface {
 	//
 	// If you only want to determine whether the font has the glyph, use
 	// [method@PangoFc.Font.has_char].
-	Glyph(wc uint32) uint
+	Glyph(f Font, wc uint32)
 	// Languages returns the languages that are supported by @font.
 	//
 	// This corresponds to the FC_LANG member of the FcPattern.
 	//
 	// The returned array is only valid as long as the font and its fontmap are
 	// valid.
-	Languages() **pango.Language
+	Languages(f Font)
+	// Pattern returns the FcPattern that @font is based on.
+	Pattern(f Font)
+	// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
+	// unknown character.
+	//
+	// Use PANGO_GET_UNKNOWN_GLYPH() instead.
+	UnknownGlyph(f Font, wc uint32)
 	// HasChar determines whether @font has a glyph for the codepoint @wc.
-	HasChar(wc uint32) bool
+	HasChar(f Font, wc uint32) bool
 	// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
 	// @glyphs according to kerning information in @font.
 	//
 	// Since 1.44, it does nothing.
-	KernGlyphs(glyphs *pango.GlyphString)
+	KernGlyphs(f Font, glyphs *pango.GlyphString)
+	// LockFace gets the FreeType `FT_Face` associated with a font.
+	//
+	// This face will be kept around until you call
+	// [method@PangoFc.Font.unlock_face].
+	LockFace(f Font)
 	// UnlockFace releases a font previously obtained with
 	// [method@PangoFc.Font.lock_face].
-	UnlockFace()
+	UnlockFace(f Font)
 }
 
 // font implements the Font interface.
@@ -79,21 +90,14 @@ func marshalFont(p uintptr) (interface{}, error) {
 //
 // If you only want to determine whether the font has the glyph, use
 // [method@PangoFc.Font.has_char].
-func (f font) Glyph(wc uint32) uint {
+func (f font) Glyph(f Font, wc uint32) {
 	var arg0 *C.PangoFcFont
 	var arg1 C.gunichar
 
 	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 	arg1 = C.gunichar(wc)
 
-	var cret C.guint
-	var ret1 uint
-
-	cret = C.pango_fc_font_get_glyph(arg0, wc)
-
-	ret1 = C.guint(cret)
-
-	return ret1
+	C.pango_fc_font_get_glyph(arg0, arg1)
 }
 
 // Languages returns the languages that are supported by @font.
@@ -102,23 +106,39 @@ func (f font) Glyph(wc uint32) uint {
 //
 // The returned array is only valid as long as the font and its fontmap are
 // valid.
-func (f font) Languages() **pango.Language {
+func (f font) Languages(f Font) {
 	var arg0 *C.PangoFcFont
 
 	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 
-	var cret **C.PangoLanguage
-	var ret1 **pango.Language
+	C.pango_fc_font_get_languages(arg0)
+}
 
-	cret = C.pango_fc_font_get_languages(arg0)
+// Pattern returns the FcPattern that @font is based on.
+func (f font) Pattern(f Font) {
+	var arg0 *C.PangoFcFont
 
-	ret1 = pango.WrapLanguage(unsafe.Pointer(cret))
+	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 
-	return ret1
+	C.pango_fc_font_get_pattern(arg0)
+}
+
+// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
+// unknown character.
+//
+// Use PANGO_GET_UNKNOWN_GLYPH() instead.
+func (f font) UnknownGlyph(f Font, wc uint32) {
+	var arg0 *C.PangoFcFont
+	var arg1 C.gunichar
+
+	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	arg1 = C.gunichar(wc)
+
+	C.pango_fc_font_get_unknown_glyph(arg0, arg1)
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
-func (f font) HasChar(wc uint32) bool {
+func (f font) HasChar(f Font, wc uint32) bool {
 	var arg0 *C.PangoFcFont
 	var arg1 C.gunichar
 
@@ -126,32 +146,46 @@ func (f font) HasChar(wc uint32) bool {
 	arg1 = C.gunichar(wc)
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
-	cret = C.pango_fc_font_has_char(arg0, wc)
+	cret = C.pango_fc_font_has_char(arg0, arg1)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // KernGlyphs: this function used to adjust each adjacent pair of glyphs in
 // @glyphs according to kerning information in @font.
 //
 // Since 1.44, it does nothing.
-func (f font) KernGlyphs(glyphs *pango.GlyphString) {
+func (f font) KernGlyphs(f Font, glyphs *pango.GlyphString) {
 	var arg0 *C.PangoFcFont
 	var arg1 *C.PangoGlyphString
 
 	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
 
-	C.pango_fc_font_kern_glyphs(arg0, glyphs)
+	C.pango_fc_font_kern_glyphs(arg0, arg1)
+}
+
+// LockFace gets the FreeType `FT_Face` associated with a font.
+//
+// This face will be kept around until you call
+// [method@PangoFc.Font.unlock_face].
+func (f font) LockFace(f Font) {
+	var arg0 *C.PangoFcFont
+
+	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+
+	C.pango_fc_font_lock_face(arg0)
 }
 
 // UnlockFace releases a font previously obtained with
 // [method@PangoFc.Font.lock_face].
-func (f font) UnlockFace() {
+func (f font) UnlockFace(f Font) {
 	var arg0 *C.PangoFcFont
 
 	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))

@@ -3,17 +3,14 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
-// #include <stdbool.h>
 // #include <glib.h>
 import "C"
 
@@ -78,34 +75,34 @@ type OptionFlags int
 
 const (
 	// OptionFlagsNone: no flags. Since: 2.42.
-	OptionFlagsNone OptionFlags = 0b0
+	OptionFlagsNone OptionFlags = 0
 	// OptionFlagsHidden: the option doesn't appear in `--help` output.
-	OptionFlagsHidden OptionFlags = 0b1
+	OptionFlagsHidden OptionFlags = 1
 	// OptionFlagsInMain: the option appears in the main section of the `--help`
 	// output, even if it is defined in a group.
-	OptionFlagsInMain OptionFlags = 0b10
+	OptionFlagsInMain OptionFlags = 2
 	// OptionFlagsReverse: for options of the G_OPTION_ARG_NONE kind, this flag
 	// indicates that the sense of the option is reversed.
-	OptionFlagsReverse OptionFlags = 0b100
+	OptionFlagsReverse OptionFlags = 4
 	// OptionFlagsNoArg: for options of the G_OPTION_ARG_CALLBACK kind, this
 	// flag indicates that the callback does not take any argument (like a
 	// G_OPTION_ARG_NONE option). Since 2.8
-	OptionFlagsNoArg OptionFlags = 0b1000
+	OptionFlagsNoArg OptionFlags = 8
 	// OptionFlagsFilename: for options of the G_OPTION_ARG_CALLBACK kind, this
 	// flag indicates that the argument should be passed to the callback in the
 	// GLib filename encoding rather than UTF-8. Since 2.8
-	OptionFlagsFilename OptionFlags = 0b10000
+	OptionFlagsFilename OptionFlags = 16
 	// OptionFlagsOptionalArg: for options of the G_OPTION_ARG_CALLBACK kind,
 	// this flag indicates that the argument supply is optional. If no argument
 	// is given then data of GOptionParseFunc will be set to NULL. Since 2.8
-	OptionFlagsOptionalArg OptionFlags = 0b100000
+	OptionFlagsOptionalArg OptionFlags = 32
 	// OptionFlagsNoalias: this flag turns off the automatic conflict resolution
 	// which prefixes long option names with `groupname-` if there is a
 	// conflict. This option should only be used in situations where aliasing is
 	// necessary to model some legacy commandline interface. It is not safe to
 	// use this option, unless all option groups are under your direct control.
 	// Since 2.8.
-	OptionFlagsNoalias OptionFlags = 0b1000000
+	OptionFlagsNoalias OptionFlags = 64
 )
 
 // OptionContext: a `GOptionContext` struct defines which options are accepted
@@ -138,19 +135,19 @@ func (o *OptionContext) Native() unsafe.Pointer {
 // AddGroup adds a Group to the @context, so that parsing with @context will
 // recognize the options in the group. Note that this will take ownership of the
 // @group and thus the @group should not be freed.
-func (c *OptionContext) AddGroup(group *OptionGroup) {
+func (c *OptionContext) AddGroup(c *OptionContext, group *OptionGroup) {
 	var arg0 *C.GOptionContext
 	var arg1 *C.GOptionGroup
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
-	C.g_option_context_add_group(arg0, group)
+	C.g_option_context_add_group(arg0, arg1)
 }
 
 // AddMainEntries: a convenience function which creates a main group if it
 // doesn't exist, adds the @entries to it and sets the translation domain.
-func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain string) {
+func (c *OptionContext) AddMainEntries(c *OptionContext, entries []OptionEntry, translationDomain string) {
 	var arg0 *C.GOptionContext
 	var arg1 *C.GOptionEntry
 	var arg2 *C.gchar
@@ -170,13 +167,13 @@ func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain 
 	arg2 = (*C.gchar)(C.CString(translationDomain))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_option_context_add_main_entries(arg0, entries, translationDomain)
+	C.g_option_context_add_main_entries(arg0, arg1, arg2)
 }
 
 // Free frees context and all the groups which have been added to it.
 //
 // Please note that parsed arguments need to be freed separately (see Entry).
-func (c *OptionContext) Free() {
+func (c *OptionContext) Free(c *OptionContext) {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
@@ -185,19 +182,12 @@ func (c *OptionContext) Free() {
 }
 
 // Description returns the description. See g_option_context_set_description().
-func (c *OptionContext) Description() string {
+func (c *OptionContext) Description(c *OptionContext) {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_option_context_get_description(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_option_context_get_description(arg0)
 }
 
 // Help returns a formatted, translated help text for the given context. To
@@ -206,7 +196,7 @@ func (c *OptionContext) Description() string {
 // `g_option_context_get_help (context, FALSE, NULL)`. To obtain the help text
 // for an option group, call `g_option_context_get_help (context, FALSE,
 // group)`.
-func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
+func (c *OptionContext) Help(c *OptionContext, mainHelp bool, group *OptionGroup) {
 	var arg0 *C.GOptionContext
 	var arg1 C.gboolean
 	var arg2 *C.GOptionGroup
@@ -217,99 +207,83 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 	}
 	arg2 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_option_context_get_help(arg0, mainHelp, group)
-
-	ret1 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_option_context_get_help(arg0, arg1, arg2)
 }
 
 // HelpEnabled returns whether automatic `--help` generation is turned on for
 // @context. See g_option_context_set_help_enabled().
-func (c *OptionContext) HelpEnabled() bool {
+func (c *OptionContext) HelpEnabled(c *OptionContext) bool {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_option_context_get_help_enabled(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // IgnoreUnknownOptions returns whether unknown options are ignored or not. See
 // g_option_context_set_ignore_unknown_options().
-func (c *OptionContext) IgnoreUnknownOptions() bool {
+func (c *OptionContext) IgnoreUnknownOptions(c *OptionContext) bool {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_option_context_get_ignore_unknown_options(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // MainGroup returns a pointer to the main group of @context.
-func (c *OptionContext) MainGroup() *OptionGroup {
+func (c *OptionContext) MainGroup(c *OptionContext) {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GOptionGroup
-	var ret1 *OptionGroup
-
-	cret = C.g_option_context_get_main_group(arg0)
-
-	ret1 = WrapOptionGroup(unsafe.Pointer(cret))
-
-	return ret1
+	C.g_option_context_get_main_group(arg0)
 }
 
 // StrictPosix returns whether strict POSIX code is enabled.
 //
 // See g_option_context_set_strict_posix() for more information.
-func (c *OptionContext) StrictPosix() bool {
+func (c *OptionContext) StrictPosix(c *OptionContext) bool {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ret1 bool
+	var ok bool
 
 	cret = C.g_option_context_get_strict_posix(arg0)
 
-	ret1 = C.bool(cret) != C.false
+	if cret {
+		ok = true
+	}
 
-	return ret1
+	return ok
 }
 
 // Summary returns the summary. See g_option_context_set_summary().
-func (c *OptionContext) Summary() string {
+func (c *OptionContext) Summary(c *OptionContext) {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
-	var ret1 string
-
-	cret = C.g_option_context_get_summary(arg0)
-
-	ret1 = C.GoString(cret)
-
-	return ret1
+	C.g_option_context_get_summary(arg0)
 }
 
 // SetDescription adds a string to be displayed in `--help` output after the
@@ -317,7 +291,7 @@ func (c *OptionContext) Summary() string {
 //
 // Note that the summary is translated (see
 // g_option_context_set_translate_func()).
-func (c *OptionContext) SetDescription(description string) {
+func (c *OptionContext) SetDescription(c *OptionContext, description string) {
 	var arg0 *C.GOptionContext
 	var arg1 *C.gchar
 
@@ -325,13 +299,13 @@ func (c *OptionContext) SetDescription(description string) {
 	arg1 = (*C.gchar)(C.CString(description))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_option_context_set_description(arg0, description)
+	C.g_option_context_set_description(arg0, arg1)
 }
 
 // SetHelpEnabled enables or disables automatic generation of `--help` output.
 // By default, g_option_context_parse() recognizes `--help`, `-h`, `-?`,
 // `--help-all` and `--help-groupname` and creates suitable output to stdout.
-func (c *OptionContext) SetHelpEnabled(helpEnabled bool) {
+func (c *OptionContext) SetHelpEnabled(c *OptionContext, helpEnabled bool) {
 	var arg0 *C.GOptionContext
 	var arg1 C.gboolean
 
@@ -340,7 +314,7 @@ func (c *OptionContext) SetHelpEnabled(helpEnabled bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_option_context_set_help_enabled(arg0, helpEnabled)
+	C.g_option_context_set_help_enabled(arg0, arg1)
 }
 
 // SetIgnoreUnknownOptions sets whether to ignore unknown options or not. If an
@@ -350,7 +324,7 @@ func (c *OptionContext) SetHelpEnabled(helpEnabled bool) {
 // This setting does not affect non-option arguments (i.e. arguments which don't
 // start with a dash). But note that GOption cannot reliably determine whether a
 // non-option belongs to a preceding unknown option.
-func (c *OptionContext) SetIgnoreUnknownOptions(ignoreUnknown bool) {
+func (c *OptionContext) SetIgnoreUnknownOptions(c *OptionContext, ignoreUnknown bool) {
 	var arg0 *C.GOptionContext
 	var arg1 C.gboolean
 
@@ -359,21 +333,21 @@ func (c *OptionContext) SetIgnoreUnknownOptions(ignoreUnknown bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_option_context_set_ignore_unknown_options(arg0, ignoreUnknown)
+	C.g_option_context_set_ignore_unknown_options(arg0, arg1)
 }
 
 // SetMainGroup sets a Group as main group of the @context. This has the same
 // effect as calling g_option_context_add_group(), the only difference is that
 // the options in the main group are treated differently when generating
 // `--help` output.
-func (c *OptionContext) SetMainGroup(group *OptionGroup) {
+func (c *OptionContext) SetMainGroup(c *OptionContext, group *OptionGroup) {
 	var arg0 *C.GOptionContext
 	var arg1 *C.GOptionGroup
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
-	C.g_option_context_set_main_group(arg0, group)
+	C.g_option_context_set_main_group(arg0, arg1)
 }
 
 // SetStrictPosix sets strict POSIX mode.
@@ -399,7 +373,7 @@ func (c *OptionContext) SetMainGroup(group *OptionGroup) {
 // remaining options to be parsed by the relevant subcommand (which can be
 // determined by examining the verb name, which should be present in argv[1]
 // after parsing).
-func (c *OptionContext) SetStrictPosix(strictPosix bool) {
+func (c *OptionContext) SetStrictPosix(c *OptionContext, strictPosix bool) {
 	var arg0 *C.GOptionContext
 	var arg1 C.gboolean
 
@@ -408,7 +382,7 @@ func (c *OptionContext) SetStrictPosix(strictPosix bool) {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_option_context_set_strict_posix(arg0, strictPosix)
+	C.g_option_context_set_strict_posix(arg0, arg1)
 }
 
 // SetSummary adds a string to be displayed in `--help` output before the list
@@ -417,7 +391,7 @@ func (c *OptionContext) SetStrictPosix(strictPosix bool) {
 // Note that the summary is translated (see
 // g_option_context_set_translate_func() and
 // g_option_context_set_translation_domain()).
-func (c *OptionContext) SetSummary(summary string) {
+func (c *OptionContext) SetSummary(c *OptionContext, summary string) {
 	var arg0 *C.GOptionContext
 	var arg1 *C.gchar
 
@@ -425,7 +399,7 @@ func (c *OptionContext) SetSummary(summary string) {
 	arg1 = (*C.gchar)(C.CString(summary))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_option_context_set_summary(arg0, summary)
+	C.g_option_context_set_summary(arg0, arg1)
 }
 
 // SetTranslateFunc sets the function which is used to translate the contexts
@@ -439,17 +413,17 @@ func (c *OptionContext) SetSummary(summary string) {
 //
 // If you are using gettext(), you only need to set the translation domain, see
 // g_option_context_set_translation_domain().
-func (c *OptionContext) SetTranslateFunc(fn TranslateFunc) {
+func (c *OptionContext) SetTranslateFunc(c *OptionContext) {
 	var arg0 *C.GOptionContext
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	C.g_option_context_set_translate_func(arg0, fn, data, destroyNotify)
+	C.g_option_context_set_translate_func(arg0, arg1, arg2, arg3)
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating
 // user-visible strings.
-func (c *OptionContext) SetTranslationDomain(domain string) {
+func (c *OptionContext) SetTranslationDomain(c *OptionContext, domain string) {
 	var arg0 *C.GOptionContext
 	var arg1 *C.gchar
 
@@ -457,7 +431,7 @@ func (c *OptionContext) SetTranslationDomain(domain string) {
 	arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_option_context_set_translation_domain(arg0, domain)
+	C.g_option_context_set_translation_domain(arg0, arg1)
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
@@ -489,37 +463,51 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 
 // LongName gets the field inside the struct.
 func (o *OptionEntry) LongName() string {
+	var v string
 	v = C.GoString(o.native.long_name)
+	return v
 }
 
 // ShortName gets the field inside the struct.
 func (o *OptionEntry) ShortName() byte {
-	v = C.gchar(o.native.short_name)
+	var v byte
+	v = byte(o.native.short_name)
+	return v
 }
 
 // Flags gets the field inside the struct.
 func (o *OptionEntry) Flags() int {
-	v = C.gint(o.native.flags)
+	var v int
+	v = int(o.native.flags)
+	return v
 }
 
 // Arg gets the field inside the struct.
 func (o *OptionEntry) Arg() OptionArg {
+	var v OptionArg
 	v = OptionArg(o.native.arg)
+	return v
 }
 
 // ArgData gets the field inside the struct.
 func (o *OptionEntry) ArgData() interface{} {
-	v = C.gpointer(o.native.arg_data)
+	var v interface{}
+	v = interface{}(o.native.arg_data)
+	return v
 }
 
 // Description gets the field inside the struct.
 func (o *OptionEntry) Description() string {
+	var v string
 	v = C.GoString(o.native.description)
+	return v
 }
 
 // ArgDescription gets the field inside the struct.
 func (o *OptionEntry) ArgDescription() string {
+	var v string
 	v = C.GoString(o.native.arg_description)
+	return v
 }
 
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
@@ -554,7 +542,7 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 }
 
 // AddEntries adds the options specified in @entries to @group.
-func (g *OptionGroup) AddEntries(entries []OptionEntry) {
+func (g *OptionGroup) AddEntries(g *OptionGroup, entries []OptionEntry) {
 	var arg0 *C.GOptionGroup
 	var arg1 *C.GOptionEntry
 
@@ -571,12 +559,12 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 		}
 	}
 
-	C.g_option_group_add_entries(arg0, entries)
+	C.g_option_group_add_entries(arg0, arg1)
 }
 
 // Free frees a Group. Note that you must not free groups which have been added
 // to a Context.
-func (g *OptionGroup) Free() {
+func (g *OptionGroup) Free(g *OptionGroup) {
 	var arg0 *C.GOptionGroup
 
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
@@ -585,22 +573,12 @@ func (g *OptionGroup) Free() {
 }
 
 // Ref increments the reference count of @group by one.
-func (g *OptionGroup) Ref() *OptionGroup {
+func (g *OptionGroup) Ref(g *OptionGroup) {
 	var arg0 *C.GOptionGroup
 
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
-	var cret *C.GOptionGroup
-	var ret1 *OptionGroup
-
-	cret = C.g_option_group_ref(arg0)
-
-	ret1 = WrapOptionGroup(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret1, func(v *OptionGroup) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret1
+	C.g_option_group_ref(arg0)
 }
 
 // SetTranslateFunc sets the function which is used to translate user-visible
@@ -609,17 +587,17 @@ func (g *OptionGroup) Ref() *OptionGroup {
 //
 // If you are using gettext(), you only need to set the translation domain, see
 // g_option_group_set_translation_domain().
-func (g *OptionGroup) SetTranslateFunc(fn TranslateFunc) {
+func (g *OptionGroup) SetTranslateFunc(g *OptionGroup) {
 	var arg0 *C.GOptionGroup
 
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
-	C.g_option_group_set_translate_func(arg0, fn, data, destroyNotify)
+	C.g_option_group_set_translate_func(arg0, arg1, arg2, arg3)
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating
 // user-visible strings.
-func (g *OptionGroup) SetTranslationDomain(domain string) {
+func (g *OptionGroup) SetTranslationDomain(g *OptionGroup, domain string) {
 	var arg0 *C.GOptionGroup
 	var arg1 *C.gchar
 
@@ -627,13 +605,13 @@ func (g *OptionGroup) SetTranslationDomain(domain string) {
 	arg1 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_option_group_set_translation_domain(arg0, domain)
+	C.g_option_group_set_translation_domain(arg0, arg1)
 }
 
 // Unref decrements the reference count of @group by one. If the reference count
 // drops to 0, the @group will be freed. and all memory allocated by the @group
 // is released.
-func (g *OptionGroup) Unref() {
+func (g *OptionGroup) Unref(g *OptionGroup) {
 	var arg0 *C.GOptionGroup
 
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
